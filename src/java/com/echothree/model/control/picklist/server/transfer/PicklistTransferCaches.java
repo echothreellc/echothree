@@ -17,80 +17,71 @@
 package com.echothree.model.control.picklist.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
-import javax.enterprise.inject.spi.CDI;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 @RequestScoped
 public class PicklistTransferCaches
         extends BaseTransferCaches {
     
-    protected PicklistTypeTransferCache picklistTypeTransferCache;
-    protected PicklistTypeDescriptionTransferCache picklistTypeDescriptionTransferCache;
-    protected PicklistAliasTypeTransferCache picklistAliasTypeTransferCache;
-    protected PicklistAliasTypeDescriptionTransferCache picklistAliasTypeDescriptionTransferCache;
-    protected PicklistAliasTransferCache picklistAliasTransferCache;
-    protected PicklistTimeTypeTransferCache picklistTimeTypeTransferCache;
-    protected PicklistTimeTypeDescriptionTransferCache picklistTimeTypeDescriptionTransferCache;
-    protected PicklistTimeTransferCache picklistTimeTransferCache;
+    @Inject
+    PicklistTypeTransferCache picklistTypeTransferCache;
     
+    @Inject
+    PicklistTypeDescriptionTransferCache picklistTypeDescriptionTransferCache;
+    
+    @Inject
+    PicklistAliasTypeTransferCache picklistAliasTypeTransferCache;
+    
+    @Inject
+    PicklistAliasTypeDescriptionTransferCache picklistAliasTypeDescriptionTransferCache;
+    
+    @Inject
+    PicklistAliasTransferCache picklistAliasTransferCache;
+    
+    @Inject
+    PicklistTimeTypeTransferCache picklistTimeTypeTransferCache;
+    
+    @Inject
+    PicklistTimeTypeDescriptionTransferCache picklistTimeTypeDescriptionTransferCache;
+    
+    @Inject
+    PicklistTimeTransferCache picklistTimeTransferCache;
+
     /** Creates a new instance of PicklistTransferCaches */
     protected PicklistTransferCaches() {
         super();
     }
     
     public PicklistTypeTransferCache getPicklistTypeTransferCache() {
-        if(picklistTypeTransferCache == null)
-            picklistTypeTransferCache = CDI.current().select(PicklistTypeTransferCache.class).get();
-        
         return picklistTypeTransferCache;
     }
     
     public PicklistTypeDescriptionTransferCache getPicklistTypeDescriptionTransferCache() {
-        if(picklistTypeDescriptionTransferCache == null)
-            picklistTypeDescriptionTransferCache = CDI.current().select(PicklistTypeDescriptionTransferCache.class).get();
-        
         return picklistTypeDescriptionTransferCache;
     }
     
     public PicklistAliasTypeTransferCache getPicklistAliasTypeTransferCache() {
-        if(picklistAliasTypeTransferCache == null)
-            picklistAliasTypeTransferCache = CDI.current().select(PicklistAliasTypeTransferCache.class).get();
-        
         return picklistAliasTypeTransferCache;
     }
     
     public PicklistAliasTypeDescriptionTransferCache getPicklistAliasTypeDescriptionTransferCache() {
-        if(picklistAliasTypeDescriptionTransferCache == null)
-            picklistAliasTypeDescriptionTransferCache = CDI.current().select(PicklistAliasTypeDescriptionTransferCache.class).get();
-        
         return picklistAliasTypeDescriptionTransferCache;
     }
     
     public PicklistAliasTransferCache getPicklistAliasTransferCache() {
-        if(picklistAliasTransferCache == null)
-            picklistAliasTransferCache = CDI.current().select(PicklistAliasTransferCache.class).get();
-        
         return picklistAliasTransferCache;
     }
     
     public PicklistTimeTypeTransferCache getPicklistTimeTypeTransferCache() {
-        if(picklistTimeTypeTransferCache == null)
-            picklistTimeTypeTransferCache = CDI.current().select(PicklistTimeTypeTransferCache.class).get();
-
         return picklistTimeTypeTransferCache;
     }
 
     public PicklistTimeTransferCache getPicklistTimeTransferCache() {
-        if(picklistTimeTransferCache == null)
-            picklistTimeTransferCache = CDI.current().select(PicklistTimeTransferCache.class).get();
-
         return picklistTimeTransferCache;
     }
 
     public PicklistTimeTypeDescriptionTransferCache getPicklistTimeTypeDescriptionTransferCache() {
-        if(picklistTimeTypeDescriptionTransferCache == null)
-            picklistTimeTypeDescriptionTransferCache = CDI.current().select(PicklistTimeTypeDescriptionTransferCache.class).get();
-
         return picklistTimeTypeDescriptionTransferCache;
     }
 

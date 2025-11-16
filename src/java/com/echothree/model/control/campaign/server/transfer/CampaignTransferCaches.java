@@ -17,115 +17,92 @@
 package com.echothree.model.control.campaign.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
-import javax.enterprise.inject.spi.CDI;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 @RequestScoped
 public class CampaignTransferCaches
         extends BaseTransferCaches {
     
-    protected CampaignTransferCache campaignTransferCache;
-    protected CampaignDescriptionTransferCache campaignDescriptionTransferCache;
-    protected CampaignSourceTransferCache campaignSourceTransferCache;
-    protected CampaignSourceDescriptionTransferCache campaignSourceDescriptionTransferCache;
-    protected CampaignMediumTransferCache campaignMediumTransferCache;
-    protected CampaignMediumDescriptionTransferCache campaignMediumDescriptionTransferCache;
-    protected CampaignTermTransferCache campaignTermTransferCache;
-    protected CampaignTermDescriptionTransferCache campaignTermDescriptionTransferCache;
-    protected CampaignContentTransferCache campaignContentTransferCache;
-    protected CampaignContentDescriptionTransferCache campaignContentDescriptionTransferCache;
-    protected UserVisitCampaignTransferCache userVisitCampaignTransferCache;
+    @Inject
+    CampaignTransferCache campaignTransferCache;
     
+    @Inject
+    CampaignDescriptionTransferCache campaignDescriptionTransferCache;
+    
+    @Inject
+    CampaignSourceTransferCache campaignSourceTransferCache;
+    
+    @Inject
+    CampaignSourceDescriptionTransferCache campaignSourceDescriptionTransferCache;
+    
+    @Inject
+    CampaignMediumTransferCache campaignMediumTransferCache;
+    
+    @Inject
+    CampaignMediumDescriptionTransferCache campaignMediumDescriptionTransferCache;
+    
+    @Inject
+    CampaignTermTransferCache campaignTermTransferCache;
+    
+    @Inject
+    CampaignTermDescriptionTransferCache campaignTermDescriptionTransferCache;
+    
+    @Inject
+    CampaignContentTransferCache campaignContentTransferCache;
+    
+    @Inject
+    CampaignContentDescriptionTransferCache campaignContentDescriptionTransferCache;
+    
+    @Inject
+    UserVisitCampaignTransferCache userVisitCampaignTransferCache;
+
     /** Creates a new instance of CampaignTransferCaches */
     protected CampaignTransferCaches() {
         super();
     }
     
     public CampaignTransferCache getCampaignTransferCache() {
-        if(campaignTransferCache == null) {
-            campaignTransferCache = CDI.current().select(CampaignTransferCache.class).get();
-        }
-
         return campaignTransferCache;
     }
 
     public CampaignDescriptionTransferCache getCampaignDescriptionTransferCache() {
-        if(campaignDescriptionTransferCache == null) {
-            campaignDescriptionTransferCache = CDI.current().select(CampaignDescriptionTransferCache.class).get();
-        }
-
         return campaignDescriptionTransferCache;
     }
 
     public CampaignSourceTransferCache getCampaignSourceTransferCache() {
-        if(campaignSourceTransferCache == null) {
-            campaignSourceTransferCache = CDI.current().select(CampaignSourceTransferCache.class).get();
-        }
-
         return campaignSourceTransferCache;
     }
 
     public CampaignSourceDescriptionTransferCache getCampaignSourceDescriptionTransferCache() {
-        if(campaignSourceDescriptionTransferCache == null) {
-            campaignSourceDescriptionTransferCache = CDI.current().select(CampaignSourceDescriptionTransferCache.class).get();
-        }
-
         return campaignSourceDescriptionTransferCache;
     }
 
     public CampaignMediumTransferCache getCampaignMediumTransferCache() {
-        if(campaignMediumTransferCache == null) {
-            campaignMediumTransferCache = CDI.current().select(CampaignMediumTransferCache.class).get();
-        }
-
         return campaignMediumTransferCache;
     }
 
     public CampaignMediumDescriptionTransferCache getCampaignMediumDescriptionTransferCache() {
-        if(campaignMediumDescriptionTransferCache == null) {
-            campaignMediumDescriptionTransferCache = CDI.current().select(CampaignMediumDescriptionTransferCache.class).get();
-        }
-
         return campaignMediumDescriptionTransferCache;
     }
 
     public CampaignTermTransferCache getCampaignTermTransferCache() {
-        if(campaignTermTransferCache == null) {
-            campaignTermTransferCache = CDI.current().select(CampaignTermTransferCache.class).get();
-        }
-
         return campaignTermTransferCache;
     }
 
     public CampaignTermDescriptionTransferCache getCampaignTermDescriptionTransferCache() {
-        if(campaignTermDescriptionTransferCache == null) {
-            campaignTermDescriptionTransferCache = CDI.current().select(CampaignTermDescriptionTransferCache.class).get();
-        }
-
         return campaignTermDescriptionTransferCache;
     }
 
     public CampaignContentTransferCache getCampaignContentTransferCache() {
-        if(campaignContentTransferCache == null) {
-            campaignContentTransferCache = CDI.current().select(CampaignContentTransferCache.class).get();
-        }
-
         return campaignContentTransferCache;
     }
 
     public CampaignContentDescriptionTransferCache getCampaignContentDescriptionTransferCache() {
-        if(campaignContentDescriptionTransferCache == null) {
-            campaignContentDescriptionTransferCache = CDI.current().select(CampaignContentDescriptionTransferCache.class).get();
-        }
-
         return campaignContentDescriptionTransferCache;
     }
 
     public UserVisitCampaignTransferCache getUserVisitCampaignTransferCache() {
-        if(userVisitCampaignTransferCache == null) {
-            userVisitCampaignTransferCache = CDI.current().select(UserVisitCampaignTransferCache.class).get();
-        }
-
         return userVisitCampaignTransferCache;
     }
 

@@ -17,80 +17,71 @@
 package com.echothree.model.control.message.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
-import javax.enterprise.inject.spi.CDI;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 @RequestScoped
 public class MessageTransferCaches
         extends BaseTransferCaches {
     
-    protected MessageTypeTransferCache messageTypeTransferCache;
-    protected MessageTypeDescriptionTransferCache messageTypeDescriptionTransferCache;
-    protected MessageTransferCache messageTransferCache;
-    protected MessageStringTransferCache messageStringTransferCache;
-    protected MessageBlobTransferCache messageBlobTransferCache;
-    protected MessageClobTransferCache messageClobTransferCache;
-    protected MessageDescriptionTransferCache messageDescriptionTransferCache;
-    protected EntityMessageTransferCache entityMessageTransferCache;
+    @Inject
+    MessageTypeTransferCache messageTypeTransferCache;
     
+    @Inject
+    MessageTypeDescriptionTransferCache messageTypeDescriptionTransferCache;
+    
+    @Inject
+    MessageTransferCache messageTransferCache;
+    
+    @Inject
+    MessageStringTransferCache messageStringTransferCache;
+    
+    @Inject
+    MessageBlobTransferCache messageBlobTransferCache;
+    
+    @Inject
+    MessageClobTransferCache messageClobTransferCache;
+    
+    @Inject
+    MessageDescriptionTransferCache messageDescriptionTransferCache;
+    
+    @Inject
+    EntityMessageTransferCache entityMessageTransferCache;
+
     /** Creates a new instance of MessageTransferCaches */
     protected MessageTransferCaches() {
         super();
     }
     
     public MessageTypeTransferCache getMessageTypeTransferCache() {
-        if(messageTypeTransferCache == null)
-            messageTypeTransferCache = CDI.current().select(MessageTypeTransferCache.class).get();
-        
         return messageTypeTransferCache;
     }
     
     public MessageTypeDescriptionTransferCache getMessageTypeDescriptionTransferCache() {
-        if(messageTypeDescriptionTransferCache == null)
-            messageTypeDescriptionTransferCache = CDI.current().select(MessageTypeDescriptionTransferCache.class).get();
-        
         return messageTypeDescriptionTransferCache;
     }
     
     public MessageTransferCache getMessageTransferCache() {
-        if(messageTransferCache == null)
-            messageTransferCache = CDI.current().select(MessageTransferCache.class).get();
-        
         return messageTransferCache;
     }
     
     public MessageStringTransferCache getMessageStringTransferCache() {
-        if(messageStringTransferCache == null)
-            messageStringTransferCache = CDI.current().select(MessageStringTransferCache.class).get();
-        
         return messageStringTransferCache;
     }
     
     public MessageBlobTransferCache getMessageBlobTransferCache() {
-        if(messageBlobTransferCache == null)
-            messageBlobTransferCache = CDI.current().select(MessageBlobTransferCache.class).get();
-        
         return messageBlobTransferCache;
     }
     
     public MessageClobTransferCache getMessageClobTransferCache() {
-        if(messageClobTransferCache == null)
-            messageClobTransferCache = CDI.current().select(MessageClobTransferCache.class).get();
-        
         return messageClobTransferCache;
     }
     
     public MessageDescriptionTransferCache getMessageDescriptionTransferCache() {
-        if(messageDescriptionTransferCache == null)
-            messageDescriptionTransferCache = CDI.current().select(MessageDescriptionTransferCache.class).get();
-        
         return messageDescriptionTransferCache;
     }
     
     public EntityMessageTransferCache getEntityMessageTransferCache() {
-        if(entityMessageTransferCache == null)
-            entityMessageTransferCache = CDI.current().select(EntityMessageTransferCache.class).get();
-        
         return entityMessageTransferCache;
     }
     

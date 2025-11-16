@@ -17,64 +17,57 @@
 package com.echothree.model.control.letter.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
-import javax.enterprise.inject.spi.CDI;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 @RequestScoped
 public class LetterTransferCaches
         extends BaseTransferCaches {
     
-    protected LetterTransferCache letterTransferCache;
-    protected LetterDescriptionTransferCache letterDescriptionTransferCache;
-    protected LetterSourceTransferCache letterSourceTransferCache;
-    protected LetterSourceDescriptionTransferCache letterSourceDescriptionTransferCache;
-    protected QueuedLetterTransferCache queuedLetterTransferCache;
-    protected LetterContactMechanismPurposeTransferCache letterContactMechanismPurposeTransferCache;
+    @Inject
+    LetterTransferCache letterTransferCache;
     
+    @Inject
+    LetterDescriptionTransferCache letterDescriptionTransferCache;
+    
+    @Inject
+    LetterSourceTransferCache letterSourceTransferCache;
+    
+    @Inject
+    LetterSourceDescriptionTransferCache letterSourceDescriptionTransferCache;
+    
+    @Inject
+    QueuedLetterTransferCache queuedLetterTransferCache;
+    
+    @Inject
+    LetterContactMechanismPurposeTransferCache letterContactMechanismPurposeTransferCache;
+
     /** Creates a new instance of LetterTransferCaches */
     protected LetterTransferCaches() {
         super();
     }
     
     public LetterTransferCache getLetterTransferCache() {
-        if(letterTransferCache == null)
-            letterTransferCache = CDI.current().select(LetterTransferCache.class).get();
-        
         return letterTransferCache;
     }
     
     public LetterDescriptionTransferCache getLetterDescriptionTransferCache() {
-        if(letterDescriptionTransferCache == null)
-            letterDescriptionTransferCache = CDI.current().select(LetterDescriptionTransferCache.class).get();
-        
         return letterDescriptionTransferCache;
     }
     
     public LetterSourceTransferCache getLetterSourceTransferCache() {
-        if(letterSourceTransferCache == null)
-            letterSourceTransferCache = CDI.current().select(LetterSourceTransferCache.class).get();
-        
         return letterSourceTransferCache;
     }
     
     public LetterSourceDescriptionTransferCache getLetterSourceDescriptionTransferCache() {
-        if(letterSourceDescriptionTransferCache == null)
-            letterSourceDescriptionTransferCache = CDI.current().select(LetterSourceDescriptionTransferCache.class).get();
-        
         return letterSourceDescriptionTransferCache;
     }
     
     public QueuedLetterTransferCache getQueuedLetterTransferCache() {
-        if(queuedLetterTransferCache == null)
-            queuedLetterTransferCache = CDI.current().select(QueuedLetterTransferCache.class).get();
-        
         return queuedLetterTransferCache;
     }
     
     public LetterContactMechanismPurposeTransferCache getLetterContactMechanismPurposeTransferCache() {
-        if(letterContactMechanismPurposeTransferCache == null)
-            letterContactMechanismPurposeTransferCache = CDI.current().select(LetterContactMechanismPurposeTransferCache.class).get();
-        
         return letterContactMechanismPurposeTransferCache;
     }
     

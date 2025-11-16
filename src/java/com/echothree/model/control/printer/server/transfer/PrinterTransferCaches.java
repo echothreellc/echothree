@@ -17,80 +17,71 @@
 package com.echothree.model.control.printer.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
-import javax.enterprise.inject.spi.CDI;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 @RequestScoped
 public class PrinterTransferCaches
         extends BaseTransferCaches {
     
-    protected PrinterGroupTransferCache printerGroupTransferCache;
-    protected PrinterGroupDescriptionTransferCache printerGroupDescriptionTransferCache;
-    protected PrinterGroupUseTypeTransferCache printerGroupUseTypeTransferCache;
-    protected PrinterGroupUseTypeDescriptionTransferCache printerGroupUseTypeDescriptionTransferCache;
-    protected PartyPrinterGroupUseTransferCache partyPrinterGroupUseTransferCache;
-    protected PrinterTransferCache printerTransferCache;
-    protected PrinterDescriptionTransferCache printerDescriptionTransferCache;
-    protected PrinterGroupJobTransferCache printerGroupJobTransferCache;
+    @Inject
+    PrinterGroupTransferCache printerGroupTransferCache;
     
+    @Inject
+    PrinterGroupDescriptionTransferCache printerGroupDescriptionTransferCache;
+    
+    @Inject
+    PrinterGroupUseTypeTransferCache printerGroupUseTypeTransferCache;
+    
+    @Inject
+    PrinterGroupUseTypeDescriptionTransferCache printerGroupUseTypeDescriptionTransferCache;
+    
+    @Inject
+    PartyPrinterGroupUseTransferCache partyPrinterGroupUseTransferCache;
+    
+    @Inject
+    PrinterTransferCache printerTransferCache;
+    
+    @Inject
+    PrinterDescriptionTransferCache printerDescriptionTransferCache;
+    
+    @Inject
+    PrinterGroupJobTransferCache printerGroupJobTransferCache;
+
     /** Creates a new instance of PrinterTransferCaches */
     protected PrinterTransferCaches() {
         super();
     }
     
     public PrinterGroupTransferCache getPrinterGroupTransferCache() {
-        if(printerGroupTransferCache == null)
-            printerGroupTransferCache = CDI.current().select(PrinterGroupTransferCache.class).get();
-        
         return printerGroupTransferCache;
     }
     
     public PrinterGroupDescriptionTransferCache getPrinterGroupDescriptionTransferCache() {
-        if(printerGroupDescriptionTransferCache == null)
-            printerGroupDescriptionTransferCache = CDI.current().select(PrinterGroupDescriptionTransferCache.class).get();
-        
         return printerGroupDescriptionTransferCache;
     }
     
     public PrinterGroupUseTypeTransferCache getPrinterGroupUseTypeTransferCache() {
-        if(printerGroupUseTypeTransferCache == null)
-            printerGroupUseTypeTransferCache = CDI.current().select(PrinterGroupUseTypeTransferCache.class).get();
-
         return printerGroupUseTypeTransferCache;
     }
 
     public PrinterGroupUseTypeDescriptionTransferCache getPrinterGroupUseTypeDescriptionTransferCache() {
-        if(printerGroupUseTypeDescriptionTransferCache == null)
-            printerGroupUseTypeDescriptionTransferCache = CDI.current().select(PrinterGroupUseTypeDescriptionTransferCache.class).get();
-
         return printerGroupUseTypeDescriptionTransferCache;
     }
 
     public PartyPrinterGroupUseTransferCache getPartyPrinterGroupUseTransferCache() {
-        if(partyPrinterGroupUseTransferCache == null)
-            partyPrinterGroupUseTransferCache = CDI.current().select(PartyPrinterGroupUseTransferCache.class).get();
-        
         return partyPrinterGroupUseTransferCache;
     }
     
     public PrinterTransferCache getPrinterTransferCache() {
-        if(printerTransferCache == null)
-            printerTransferCache = CDI.current().select(PrinterTransferCache.class).get();
-        
         return printerTransferCache;
     }
     
     public PrinterDescriptionTransferCache getPrinterDescriptionTransferCache() {
-        if(printerDescriptionTransferCache == null)
-            printerDescriptionTransferCache = CDI.current().select(PrinterDescriptionTransferCache.class).get();
-        
         return printerDescriptionTransferCache;
     }
     
     public PrinterGroupJobTransferCache getPrinterGroupJobTransferCache() {
-        if(printerGroupJobTransferCache == null)
-            printerGroupJobTransferCache = CDI.current().select(PrinterGroupJobTransferCache.class).get();
-        
         return printerGroupJobTransferCache;
     }
     

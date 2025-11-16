@@ -17,160 +17,127 @@
 package com.echothree.model.control.search.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
-import javax.enterprise.inject.spi.CDI;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 @RequestScoped
 public class SearchTransferCaches
         extends BaseTransferCaches {
     
-    protected SearchKindTransferCache searchKindTransferCache;
-    protected SearchKindDescriptionTransferCache searchKindDescriptionTransferCache;
-    protected SearchTypeTransferCache searchTypeTransferCache;
-    protected SearchTypeDescriptionTransferCache searchTypeDescriptionTransferCache;
-    protected SearchSortOrderTransferCache searchSortOrderTransferCache;
-    protected SearchSortOrderDescriptionTransferCache searchSortOrderDescriptionTransferCache;
-    protected SearchSortDirectionTransferCache searchSortDirectionTransferCache;
-    protected SearchSortDirectionDescriptionTransferCache searchSortDirectionDescriptionTransferCache;
-    protected SearchDefaultOperatorTransferCache searchDefaultOperatorTransferCache;
-    protected SearchDefaultOperatorDescriptionTransferCache searchDefaultOperatorDescriptionTransferCache;
-    protected SearchUseTypeTransferCache searchUseTypeTransferCache;
-    protected SearchUseTypeDescriptionTransferCache searchUseTypeDescriptionTransferCache;
-    protected SearchResultActionTypeTransferCache searchResultActionTypeTransferCache;
-    protected SearchResultActionTypeDescriptionTransferCache searchResultActionTypeDescriptionTransferCache;
-    protected SearchCheckSpellingActionTypeTransferCache searchCheckSpellingActionTypeTransferCache;
-    protected SearchCheckSpellingActionTypeDescriptionTransferCache searchCheckSpellingActionTypeDescriptionTransferCache;
+    @Inject
+    SearchKindTransferCache searchKindTransferCache;
     
+    @Inject
+    SearchKindDescriptionTransferCache searchKindDescriptionTransferCache;
+    
+    @Inject
+    SearchTypeTransferCache searchTypeTransferCache;
+    
+    @Inject
+    SearchTypeDescriptionTransferCache searchTypeDescriptionTransferCache;
+    
+    @Inject
+    SearchSortOrderTransferCache searchSortOrderTransferCache;
+    
+    @Inject
+    SearchSortOrderDescriptionTransferCache searchSortOrderDescriptionTransferCache;
+    
+    @Inject
+    SearchSortDirectionTransferCache searchSortDirectionTransferCache;
+    
+    @Inject
+    SearchSortDirectionDescriptionTransferCache searchSortDirectionDescriptionTransferCache;
+    
+    @Inject
+    SearchDefaultOperatorTransferCache searchDefaultOperatorTransferCache;
+    
+    @Inject
+    SearchDefaultOperatorDescriptionTransferCache searchDefaultOperatorDescriptionTransferCache;
+    
+    @Inject
+    SearchUseTypeTransferCache searchUseTypeTransferCache;
+    
+    @Inject
+    SearchUseTypeDescriptionTransferCache searchUseTypeDescriptionTransferCache;
+    
+    @Inject
+    SearchResultActionTypeTransferCache searchResultActionTypeTransferCache;
+    
+    @Inject
+    SearchResultActionTypeDescriptionTransferCache searchResultActionTypeDescriptionTransferCache;
+    
+    @Inject
+    SearchCheckSpellingActionTypeTransferCache searchCheckSpellingActionTypeTransferCache;
+    
+    @Inject
+    SearchCheckSpellingActionTypeDescriptionTransferCache searchCheckSpellingActionTypeDescriptionTransferCache;
+
     /** Creates a new instance of SearchTransferCaches */
     protected SearchTransferCaches() {
         super();
     }
     
     public SearchKindTransferCache getSearchKindTransferCache() {
-        if(searchKindTransferCache == null) {
-            searchKindTransferCache = CDI.current().select(SearchKindTransferCache.class).get();
-        }
-
         return searchKindTransferCache;
     }
 
     public SearchKindDescriptionTransferCache getSearchKindDescriptionTransferCache() {
-        if(searchKindDescriptionTransferCache == null) {
-            searchKindDescriptionTransferCache = CDI.current().select(SearchKindDescriptionTransferCache.class).get();
-        }
-
         return searchKindDescriptionTransferCache;
     }
 
     public SearchTypeTransferCache getSearchTypeTransferCache() {
-        if(searchTypeTransferCache == null) {
-            searchTypeTransferCache = CDI.current().select(SearchTypeTransferCache.class).get();
-        }
-
         return searchTypeTransferCache;
     }
 
     public SearchTypeDescriptionTransferCache getSearchTypeDescriptionTransferCache() {
-        if(searchTypeDescriptionTransferCache == null) {
-            searchTypeDescriptionTransferCache = CDI.current().select(SearchTypeDescriptionTransferCache.class).get();
-        }
-
         return searchTypeDescriptionTransferCache;
     }
 
     public SearchSortOrderTransferCache getSearchSortOrderTransferCache() {
-        if(searchSortOrderTransferCache == null) {
-            searchSortOrderTransferCache = CDI.current().select(SearchSortOrderTransferCache.class).get();
-        }
-
         return searchSortOrderTransferCache;
     }
 
     public SearchSortOrderDescriptionTransferCache getSearchSortOrderDescriptionTransferCache() {
-        if(searchSortOrderDescriptionTransferCache == null) {
-            searchSortOrderDescriptionTransferCache = CDI.current().select(SearchSortOrderDescriptionTransferCache.class).get();
-        }
-
         return searchSortOrderDescriptionTransferCache;
     }
 
     public SearchSortDirectionTransferCache getSearchSortDirectionTransferCache() {
-        if(searchSortDirectionTransferCache == null) {
-            searchSortDirectionTransferCache = CDI.current().select(SearchSortDirectionTransferCache.class).get();
-        }
-
         return searchSortDirectionTransferCache;
     }
 
     public SearchSortDirectionDescriptionTransferCache getSearchSortDirectionDescriptionTransferCache() {
-        if(searchSortDirectionDescriptionTransferCache == null) {
-            searchSortDirectionDescriptionTransferCache = CDI.current().select(SearchSortDirectionDescriptionTransferCache.class).get();
-        }
-
         return searchSortDirectionDescriptionTransferCache;
     }
 
     public SearchDefaultOperatorTransferCache getSearchDefaultOperatorTransferCache() {
-        if(searchDefaultOperatorTransferCache == null) {
-            searchDefaultOperatorTransferCache = CDI.current().select(SearchDefaultOperatorTransferCache.class).get();
-        }
-
         return searchDefaultOperatorTransferCache;
     }
 
     public SearchDefaultOperatorDescriptionTransferCache getSearchDefaultOperatorDescriptionTransferCache() {
-        if(searchDefaultOperatorDescriptionTransferCache == null) {
-            searchDefaultOperatorDescriptionTransferCache = CDI.current().select(SearchDefaultOperatorDescriptionTransferCache.class).get();
-        }
-
         return searchDefaultOperatorDescriptionTransferCache;
     }
 
     public SearchUseTypeTransferCache getSearchUseTypeTransferCache() {
-        if(searchUseTypeTransferCache == null) {
-            searchUseTypeTransferCache = CDI.current().select(SearchUseTypeTransferCache.class).get();
-        }
-
         return searchUseTypeTransferCache;
     }
 
     public SearchUseTypeDescriptionTransferCache getSearchUseTypeDescriptionTransferCache() {
-        if(searchUseTypeDescriptionTransferCache == null) {
-            searchUseTypeDescriptionTransferCache = CDI.current().select(SearchUseTypeDescriptionTransferCache.class).get();
-        }
-
         return searchUseTypeDescriptionTransferCache;
     }
 
     public SearchResultActionTypeTransferCache getSearchResultActionTypeTransferCache() {
-        if(searchResultActionTypeTransferCache == null) {
-            searchResultActionTypeTransferCache = CDI.current().select(SearchResultActionTypeTransferCache.class).get();
-        }
-
         return searchResultActionTypeTransferCache;
     }
 
     public SearchResultActionTypeDescriptionTransferCache getSearchResultActionTypeDescriptionTransferCache() {
-        if(searchResultActionTypeDescriptionTransferCache == null) {
-            searchResultActionTypeDescriptionTransferCache = CDI.current().select(SearchResultActionTypeDescriptionTransferCache.class).get();
-        }
-
         return searchResultActionTypeDescriptionTransferCache;
     }
 
     public SearchCheckSpellingActionTypeTransferCache getSearchCheckSpellingActionTypeTransferCache() {
-        if(searchCheckSpellingActionTypeTransferCache == null) {
-            searchCheckSpellingActionTypeTransferCache = CDI.current().select(SearchCheckSpellingActionTypeTransferCache.class).get();
-        }
-
         return searchCheckSpellingActionTypeTransferCache;
     }
 
     public SearchCheckSpellingActionTypeDescriptionTransferCache getSearchCheckSpellingActionTypeDescriptionTransferCache() {
-        if(searchCheckSpellingActionTypeDescriptionTransferCache == null) {
-            searchCheckSpellingActionTypeDescriptionTransferCache = CDI.current().select(SearchCheckSpellingActionTypeDescriptionTransferCache.class).get();
-        }
-
         return searchCheckSpellingActionTypeDescriptionTransferCache;
     }
 

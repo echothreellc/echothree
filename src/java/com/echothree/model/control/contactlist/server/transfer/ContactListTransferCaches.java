@@ -17,128 +17,113 @@
 package com.echothree.model.control.contactlist.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
-import javax.enterprise.inject.spi.CDI;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 @RequestScoped
 public class ContactListTransferCaches
         extends BaseTransferCaches {
     
-    protected ContactListTypeDescriptionTransferCache contactListTypeDescriptionTransferCache;
-    protected ContactListTypeTransferCache contactListTypeTransferCache;
-    protected ContactListGroupDescriptionTransferCache contactListGroupDescriptionTransferCache;
-    protected ContactListGroupTransferCache contactListGroupTransferCache;
-    protected ContactListFrequencyDescriptionTransferCache contactListFrequencyDescriptionTransferCache;
-    protected ContactListFrequencyTransferCache contactListFrequencyTransferCache;
-    protected ContactListDescriptionTransferCache contactListDescriptionTransferCache;
-    protected ContactListTransferCache contactListTransferCache;
-    protected PartyContactListTransferCache partyContactListTransferCache;
-    protected PartyTypeContactListTransferCache partyTypeContactListTransferCache;
-    protected PartyTypeContactListGroupTransferCache partyTypeContactListGroupTransferCache;
-    protected CustomerTypeContactListTransferCache customerTypeContactListTransferCache;
-    protected CustomerTypeContactListGroupTransferCache customerTypeContactListGroupTransferCache;
-    protected ContactListContactMechanismPurposeTransferCache contactListContactMechanismPurposeTransferCache;
+    @Inject
+    ContactListTypeDescriptionTransferCache contactListTypeDescriptionTransferCache;
     
+    @Inject
+    ContactListTypeTransferCache contactListTypeTransferCache;
+    
+    @Inject
+    ContactListGroupDescriptionTransferCache contactListGroupDescriptionTransferCache;
+    
+    @Inject
+    ContactListGroupTransferCache contactListGroupTransferCache;
+    
+    @Inject
+    ContactListFrequencyDescriptionTransferCache contactListFrequencyDescriptionTransferCache;
+    
+    @Inject
+    ContactListFrequencyTransferCache contactListFrequencyTransferCache;
+    
+    @Inject
+    ContactListDescriptionTransferCache contactListDescriptionTransferCache;
+    
+    @Inject
+    ContactListTransferCache contactListTransferCache;
+    
+    @Inject
+    PartyContactListTransferCache partyContactListTransferCache;
+    
+    @Inject
+    PartyTypeContactListTransferCache partyTypeContactListTransferCache;
+    
+    @Inject
+    PartyTypeContactListGroupTransferCache partyTypeContactListGroupTransferCache;
+    
+    @Inject
+    CustomerTypeContactListTransferCache customerTypeContactListTransferCache;
+    
+    @Inject
+    CustomerTypeContactListGroupTransferCache customerTypeContactListGroupTransferCache;
+    
+    @Inject
+    ContactListContactMechanismPurposeTransferCache contactListContactMechanismPurposeTransferCache;
+
     /** Creates a new instance of ContactListTransferCaches */
     protected ContactListTransferCaches() {
         super();
     }
     
     public ContactListTypeDescriptionTransferCache getContactListTypeDescriptionTransferCache() {
-        if(contactListTypeDescriptionTransferCache == null)
-            contactListTypeDescriptionTransferCache = CDI.current().select(ContactListTypeDescriptionTransferCache.class).get();
-        
         return contactListTypeDescriptionTransferCache;
     }
     
     public ContactListTypeTransferCache getContactListTypeTransferCache() {
-        if(contactListTypeTransferCache == null)
-            contactListTypeTransferCache = CDI.current().select(ContactListTypeTransferCache.class).get();
-        
         return contactListTypeTransferCache;
     }
     
     public ContactListGroupDescriptionTransferCache getContactListGroupDescriptionTransferCache() {
-        if(contactListGroupDescriptionTransferCache == null)
-            contactListGroupDescriptionTransferCache = CDI.current().select(ContactListGroupDescriptionTransferCache.class).get();
-
         return contactListGroupDescriptionTransferCache;
     }
 
     public ContactListGroupTransferCache getContactListGroupTransferCache() {
-        if(contactListGroupTransferCache == null)
-            contactListGroupTransferCache = CDI.current().select(ContactListGroupTransferCache.class).get();
-
         return contactListGroupTransferCache;
     }
 
     public ContactListFrequencyDescriptionTransferCache getContactListFrequencyDescriptionTransferCache() {
-        if(contactListFrequencyDescriptionTransferCache == null)
-            contactListFrequencyDescriptionTransferCache = CDI.current().select(ContactListFrequencyDescriptionTransferCache.class).get();
-
         return contactListFrequencyDescriptionTransferCache;
     }
 
     public ContactListFrequencyTransferCache getContactListFrequencyTransferCache() {
-        if(contactListFrequencyTransferCache == null)
-            contactListFrequencyTransferCache = CDI.current().select(ContactListFrequencyTransferCache.class).get();
-
         return contactListFrequencyTransferCache;
     }
 
     public ContactListDescriptionTransferCache getContactListDescriptionTransferCache() {
-        if(contactListDescriptionTransferCache == null)
-            contactListDescriptionTransferCache = CDI.current().select(ContactListDescriptionTransferCache.class).get();
-        
         return contactListDescriptionTransferCache;
     }
     
     public ContactListTransferCache getContactListTransferCache() {
-        if(contactListTransferCache == null)
-            contactListTransferCache = CDI.current().select(ContactListTransferCache.class).get();
-        
         return contactListTransferCache;
     }
     
     public PartyContactListTransferCache getPartyContactListTransferCache() {
-        if(partyContactListTransferCache == null)
-            partyContactListTransferCache = CDI.current().select(PartyContactListTransferCache.class).get();
-        
         return partyContactListTransferCache;
     }
     
     public PartyTypeContactListTransferCache getPartyTypeContactListTransferCache() {
-        if(partyTypeContactListTransferCache == null)
-            partyTypeContactListTransferCache = CDI.current().select(PartyTypeContactListTransferCache.class).get();
-
         return partyTypeContactListTransferCache;
     }
 
     public PartyTypeContactListGroupTransferCache getPartyTypeContactListGroupTransferCache() {
-        if(partyTypeContactListGroupTransferCache == null)
-            partyTypeContactListGroupTransferCache = CDI.current().select(PartyTypeContactListGroupTransferCache.class).get();
-
         return partyTypeContactListGroupTransferCache;
     }
 
     public CustomerTypeContactListTransferCache getCustomerTypeContactListTransferCache() {
-        if(customerTypeContactListTransferCache == null)
-            customerTypeContactListTransferCache = CDI.current().select(CustomerTypeContactListTransferCache.class).get();
-
         return customerTypeContactListTransferCache;
     }
 
     public CustomerTypeContactListGroupTransferCache getCustomerTypeContactListGroupTransferCache() {
-        if(customerTypeContactListGroupTransferCache == null)
-            customerTypeContactListGroupTransferCache = CDI.current().select(CustomerTypeContactListGroupTransferCache.class).get();
-
         return customerTypeContactListGroupTransferCache;
     }
 
     public ContactListContactMechanismPurposeTransferCache getContactListContactMechanismPurposeTransferCache() {
-        if(contactListContactMechanismPurposeTransferCache == null)
-            contactListContactMechanismPurposeTransferCache = CDI.current().select(ContactListContactMechanismPurposeTransferCache.class).get();
-        
         return contactListContactMechanismPurposeTransferCache;
     }
     

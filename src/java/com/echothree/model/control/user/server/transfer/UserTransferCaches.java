@@ -17,104 +17,92 @@
 package com.echothree.model.control.user.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
-import javax.enterprise.inject.spi.CDI;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 @RequestScoped
 public class UserTransferCaches
         extends BaseTransferCaches {
     
-    protected RecoveryAnswerTransferCache recoveryAnswerTransferCache;
-    protected RecoveryQuestionTransferCache recoveryQuestionTransferCache;
-    protected RecoveryQuestionDescriptionTransferCache recoveryQuestionDescriptionTransferCache;
-    protected UserKeyTransferCache userKeyTransferCache;
-    protected UserSessionTransferCache userSessionTransferCache;
-    protected UserVisitTransferCache userVisitTransferCache;
-    protected UserVisitGroupTransferCache userVisitGroupTransferCache;
-    protected UserLoginTransferCache userLoginTransferCache;
-    protected UserLoginPasswordTransferCache userLoginPasswordTransferCache;
-    protected UserLoginPasswordTypeTransferCache userLoginPasswordTypeTransferCache;
-    protected UserLoginPasswordEncoderTypeTransferCache userLoginPasswordEncoderTypeTransferCache;
+    @Inject
+    RecoveryAnswerTransferCache recoveryAnswerTransferCache;
     
+    @Inject
+    RecoveryQuestionTransferCache recoveryQuestionTransferCache;
+    
+    @Inject
+    RecoveryQuestionDescriptionTransferCache recoveryQuestionDescriptionTransferCache;
+    
+    @Inject
+    UserKeyTransferCache userKeyTransferCache;
+    
+    @Inject
+    UserSessionTransferCache userSessionTransferCache;
+    
+    @Inject
+    UserVisitTransferCache userVisitTransferCache;
+    
+    @Inject
+    UserVisitGroupTransferCache userVisitGroupTransferCache;
+    
+    @Inject
+    UserLoginTransferCache userLoginTransferCache;
+    
+    @Inject
+    UserLoginPasswordTransferCache userLoginPasswordTransferCache;
+    
+    @Inject
+    UserLoginPasswordTypeTransferCache userLoginPasswordTypeTransferCache;
+    
+    @Inject
+    UserLoginPasswordEncoderTypeTransferCache userLoginPasswordEncoderTypeTransferCache;
+
     /** Creates a new instance of UserTransferCaches */
     protected UserTransferCaches() {
         super();
     }
     
     public RecoveryAnswerTransferCache getRecoveryAnswerTransferCache() {
-        if(recoveryAnswerTransferCache == null)
-            recoveryAnswerTransferCache = CDI.current().select(RecoveryAnswerTransferCache.class).get();
-        
         return recoveryAnswerTransferCache;
     }
     
     public RecoveryQuestionTransferCache getRecoveryQuestionTransferCache() {
-        if(recoveryQuestionTransferCache == null)
-            recoveryQuestionTransferCache = CDI.current().select(RecoveryQuestionTransferCache.class).get();
-        
         return recoveryQuestionTransferCache;
     }
     
     public RecoveryQuestionDescriptionTransferCache getRecoveryQuestionDescriptionTransferCache() {
-        if(recoveryQuestionDescriptionTransferCache == null)
-            recoveryQuestionDescriptionTransferCache = CDI.current().select(RecoveryQuestionDescriptionTransferCache.class).get();
-        
         return recoveryQuestionDescriptionTransferCache;
     }
     
     public UserKeyTransferCache getUserKeyTransferCache() {
-        if(userKeyTransferCache == null)
-            userKeyTransferCache = CDI.current().select(UserKeyTransferCache.class).get();
-        
         return userKeyTransferCache;
     }
     
     public UserSessionTransferCache getUserSessionTransferCache() {
-        if(userSessionTransferCache == null)
-            userSessionTransferCache = CDI.current().select(UserSessionTransferCache.class).get();
-        
         return userSessionTransferCache;
     }
     
     public UserVisitTransferCache getUserVisitTransferCache() {
-        if(userVisitTransferCache == null)
-            userVisitTransferCache = CDI.current().select(UserVisitTransferCache.class).get();
-        
         return userVisitTransferCache;
     }
     
     public UserVisitGroupTransferCache getUserVisitGroupTransferCache() {
-        if(userVisitGroupTransferCache == null)
-            userVisitGroupTransferCache = CDI.current().select(UserVisitGroupTransferCache.class).get();
-        
         return userVisitGroupTransferCache;
     }
     
     public UserLoginTransferCache getUserLoginTransferCache() {
-        if(userLoginTransferCache == null)
-            userLoginTransferCache = CDI.current().select(UserLoginTransferCache.class).get();
-
         return userLoginTransferCache;
     }
 
     public UserLoginPasswordTransferCache getUserLoginPasswordTransferCache() {
-        if(userLoginPasswordTransferCache == null)
-            userLoginPasswordTransferCache = CDI.current().select(UserLoginPasswordTransferCache.class).get();
-
         return userLoginPasswordTransferCache;
     }
 
     public UserLoginPasswordTypeTransferCache getUserLoginPasswordTypeTransferCache() {
-        if(userLoginPasswordTypeTransferCache == null)
-            userLoginPasswordTypeTransferCache = CDI.current().select(UserLoginPasswordTypeTransferCache.class).get();
-
         return userLoginPasswordTypeTransferCache;
     }
 
     public UserLoginPasswordEncoderTypeTransferCache getUserLoginPasswordEncoderTypeTransferCache() {
-        if(userLoginPasswordEncoderTypeTransferCache == null)
-            userLoginPasswordEncoderTypeTransferCache = CDI.current().select(UserLoginPasswordEncoderTypeTransferCache.class).get();
-
         return userLoginPasswordEncoderTypeTransferCache;
     }
 

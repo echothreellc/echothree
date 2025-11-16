@@ -17,64 +17,57 @@
 package com.echothree.model.control.workrequirement.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
-import javax.enterprise.inject.spi.CDI;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 @RequestScoped
 public class WorkRequirementTransferCaches
         extends BaseTransferCaches {
     
-    protected WorkRequirementTypeDescriptionTransferCache workRequirementTypeDescriptionTransferCache;
-    protected WorkRequirementTypeTransferCache workRequirementTypeTransferCache;
-    protected WorkRequirementScopeTransferCache workRequirementScopeTransferCache;
-    protected WorkRequirementTransferCache workRequirementTransferCache;
-    protected WorkAssignmentTransferCache workAssignmentTransferCache;
-    protected WorkTimeTransferCache workTimeTransferCache;
+    @Inject
+    WorkRequirementTypeDescriptionTransferCache workRequirementTypeDescriptionTransferCache;
     
+    @Inject
+    WorkRequirementTypeTransferCache workRequirementTypeTransferCache;
+    
+    @Inject
+    WorkRequirementScopeTransferCache workRequirementScopeTransferCache;
+    
+    @Inject
+    WorkRequirementTransferCache workRequirementTransferCache;
+    
+    @Inject
+    WorkAssignmentTransferCache workAssignmentTransferCache;
+    
+    @Inject
+    WorkTimeTransferCache workTimeTransferCache;
+
     /** Creates a new instance of WorkRequirementTransferCaches */
     protected WorkRequirementTransferCaches() {
         super();
     }
     
     public WorkRequirementTypeDescriptionTransferCache getWorkRequirementTypeDescriptionTransferCache() {
-        if(workRequirementTypeDescriptionTransferCache == null)
-            workRequirementTypeDescriptionTransferCache = CDI.current().select(WorkRequirementTypeDescriptionTransferCache.class).get();
-        
         return workRequirementTypeDescriptionTransferCache;
     }
     
     public WorkRequirementTypeTransferCache getWorkRequirementTypeTransferCache() {
-        if(workRequirementTypeTransferCache == null)
-            workRequirementTypeTransferCache = CDI.current().select(WorkRequirementTypeTransferCache.class).get();
-        
         return workRequirementTypeTransferCache;
     }
     
     public WorkRequirementScopeTransferCache getWorkRequirementScopeTransferCache() {
-        if(workRequirementScopeTransferCache == null)
-            workRequirementScopeTransferCache = CDI.current().select(WorkRequirementScopeTransferCache.class).get();
-        
         return workRequirementScopeTransferCache;
     }
     
     public WorkRequirementTransferCache getWorkRequirementTransferCache() {
-        if(workRequirementTransferCache == null)
-            workRequirementTransferCache = CDI.current().select(WorkRequirementTransferCache.class).get();
-        
         return workRequirementTransferCache;
     }
     
     public WorkAssignmentTransferCache getWorkAssignmentTransferCache() {
-        if(workAssignmentTransferCache == null)
-            workAssignmentTransferCache = CDI.current().select(WorkAssignmentTransferCache.class).get();
-        
         return workAssignmentTransferCache;
     }
     
     public WorkTimeTransferCache getWorkTimeTransferCache() {
-        if(workTimeTransferCache == null)
-            workTimeTransferCache = CDI.current().select(WorkTimeTransferCache.class).get();
-        
         return workTimeTransferCache;
     }
     

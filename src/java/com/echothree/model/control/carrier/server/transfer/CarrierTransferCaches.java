@@ -17,7 +17,6 @@
 package com.echothree.model.control.carrier.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
-import javax.enterprise.inject.spi.CDI;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
@@ -41,72 +40,42 @@ public class CarrierTransferCaches
     }
     
     public CarrierTransferCache getCarrierTransferCache() {
-        if(carrierTransferCache == null)
-            carrierTransferCache = CDI.current().select(CarrierTransferCache.class).get();
-        
         return carrierTransferCache;
     }
     
     public CarrierTypeTransferCache getCarrierTypeTransferCache() {
-        if(carrierTypeTransferCache == null)
-            carrierTypeTransferCache = CDI.current().select(CarrierTypeTransferCache.class).get();
-        
         return carrierTypeTransferCache;
     }
     
     public CarrierTypeDescriptionTransferCache getCarrierTypeDescriptionTransferCache() {
-        if(carrierTypeDescriptionTransferCache == null)
-            carrierTypeDescriptionTransferCache = CDI.current().select(CarrierTypeDescriptionTransferCache.class).get();
-
         return carrierTypeDescriptionTransferCache;
     }
 
     public CarrierServiceDescriptionTransferCache getCarrierServiceDescriptionTransferCache() {
-        if(carrierServiceDescriptionTransferCache == null)
-            carrierServiceDescriptionTransferCache = CDI.current().select(CarrierServiceDescriptionTransferCache.class).get();
-
         return carrierServiceDescriptionTransferCache;
     }
 
     public CarrierServiceTransferCache getCarrierServiceTransferCache() {
-        if(carrierServiceTransferCache == null)
-            carrierServiceTransferCache = CDI.current().select(CarrierServiceTransferCache.class).get();
-        
         return carrierServiceTransferCache;
     }
     
     public CarrierOptionDescriptionTransferCache getCarrierOptionDescriptionTransferCache() {
-        if(carrierOptionDescriptionTransferCache == null)
-            carrierOptionDescriptionTransferCache = CDI.current().select(CarrierOptionDescriptionTransferCache.class).get();
-        
         return carrierOptionDescriptionTransferCache;
     }
     
     public CarrierOptionTransferCache getCarrierOptionTransferCache() {
-        if(carrierOptionTransferCache == null)
-            carrierOptionTransferCache = CDI.current().select(CarrierOptionTransferCache.class).get();
-        
         return carrierOptionTransferCache;
     }
     
     public PartyCarrierTransferCache getPartyCarrierTransferCache() {
-        if(partyCarrierTransferCache == null)
-            partyCarrierTransferCache = CDI.current().select(PartyCarrierTransferCache.class).get();
-
         return partyCarrierTransferCache;
     }
 
     public PartyCarrierAccountTransferCache getPartyCarrierAccountTransferCache() {
-        if(partyCarrierAccountTransferCache == null)
-            partyCarrierAccountTransferCache = CDI.current().select(PartyCarrierAccountTransferCache.class).get();
-
         return partyCarrierAccountTransferCache;
     }
 
     public CarrierServiceOptionTransferCache getCarrierServiceOptionTransferCache() {
-        if(carrierServiceOptionTransferCache == null)
-            carrierServiceOptionTransferCache = CDI.current().select(CarrierServiceOptionTransferCache.class).get();
-        
         return carrierServiceOptionTransferCache;
     }
     

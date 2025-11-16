@@ -17,200 +17,176 @@
 package com.echothree.model.control.inventory.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
-import javax.enterprise.inject.spi.CDI;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 @RequestScoped
 public class InventoryTransferCaches
         extends BaseTransferCaches {
     
-    protected InventoryLocationGroupTransferCache inventoryLocationGroupTransferCache;
-    protected InventoryLocationGroupDescriptionTransferCache inventoryLocationGroupDescriptionTransferCache;
-    protected InventoryConditionTransferCache inventoryConditionTransferCache;
-    protected InventoryConditionDescriptionTransferCache inventoryConditionDescriptionTransferCache;
-    protected InventoryLocationGroupCapacityTransferCache inventoryLocationGroupCapacityTransferCache;
-    protected InventoryLocationGroupVolumeTransferCache inventoryLocationGroupVolumeTransferCache;
-    protected PartyInventoryLevelTransferCache partyInventoryLevelTransferCache;
-    protected InventoryConditionUseTransferCache inventoryKindUseTransferCache;
-    protected InventoryConditionUseTypeTransferCache inventoryConditionUseTypeTransferCache;
-    protected InventoryConditionGlAccountTransferCache inventoryConditionGlAccountTransferCache;
-    protected LotAliasTypeTransferCache lotAliasTypeTransferCache;
-    protected LotAliasTypeDescriptionTransferCache lotAliasTypeDescriptionTransferCache;
-    protected LotAliasTransferCache lotAliasTransferCache;
-    protected LotTimeTypeTransferCache lotTimeTypeTransferCache;
-    protected LotTimeTypeDescriptionTransferCache lotTimeTypeDescriptionTransferCache;
-    protected LotTimeTransferCache lotTimeTransferCache;
-    protected AllocationPriorityTransferCache allocationPriorityTransferCache;
-    protected AllocationPriorityDescriptionTransferCache allocationPriorityDescriptionTransferCache;
-    protected LotTransferCache lotTransferCache;
-    protected InventoryTransactionTypeTransferCache inventoryTransactionTypeTransferCache;
-    protected InventoryTransactionTypeDescriptionTransferCache inventoryTransactionTypeDescriptionTransferCache;
-    protected InventoryAdjustmentTypeTransferCache inventoryAdjustmentTypeTransferCache;
-    protected InventoryAdjustmentTypeDescriptionTransferCache inventoryAdjustmentTypeDescriptionTransferCache;
-
+    @Inject
+    InventoryLocationGroupTransferCache inventoryLocationGroupTransferCache;
+    
+    @Inject
+    InventoryLocationGroupDescriptionTransferCache inventoryLocationGroupDescriptionTransferCache;
+    
+    @Inject
+    InventoryConditionTransferCache inventoryConditionTransferCache;
+    
+    @Inject
+    InventoryConditionDescriptionTransferCache inventoryConditionDescriptionTransferCache;
+    
+    @Inject
+    InventoryLocationGroupCapacityTransferCache inventoryLocationGroupCapacityTransferCache;
+    
+    @Inject
+    InventoryLocationGroupVolumeTransferCache inventoryLocationGroupVolumeTransferCache;
+    
+    @Inject
+    PartyInventoryLevelTransferCache partyInventoryLevelTransferCache;
+    
+    @Inject
+    InventoryConditionUseTransferCache inventoryKindUseTransferCache;
+    
+    @Inject
+    InventoryConditionUseTypeTransferCache inventoryConditionUseTypeTransferCache;
+    
+    @Inject
+    InventoryConditionGlAccountTransferCache inventoryConditionGlAccountTransferCache;
+    
+    @Inject
+    LotAliasTypeTransferCache lotAliasTypeTransferCache;
+    
+    @Inject
+    LotAliasTypeDescriptionTransferCache lotAliasTypeDescriptionTransferCache;
+    
+    @Inject
+    LotAliasTransferCache lotAliasTransferCache;
+    
+    @Inject
+    LotTimeTypeTransferCache lotTimeTypeTransferCache;
+    
+    @Inject
+    LotTimeTypeDescriptionTransferCache lotTimeTypeDescriptionTransferCache;
+    
+    @Inject
+    LotTimeTransferCache lotTimeTransferCache;
+    
+    @Inject
+    AllocationPriorityTransferCache allocationPriorityTransferCache;
+    
+    @Inject
+    AllocationPriorityDescriptionTransferCache allocationPriorityDescriptionTransferCache;
+    
+    @Inject
+    LotTransferCache lotTransferCache;
+    
+    @Inject
+    InventoryTransactionTypeTransferCache inventoryTransactionTypeTransferCache;
+    
+    @Inject
+    InventoryTransactionTypeDescriptionTransferCache inventoryTransactionTypeDescriptionTransferCache;
+    
+    @Inject
+    InventoryAdjustmentTypeTransferCache inventoryAdjustmentTypeTransferCache;
+    
+    @Inject
+    InventoryAdjustmentTypeDescriptionTransferCache inventoryAdjustmentTypeDescriptionTransferCache;
+    
     /** Creates a new instance of InventoryTransferCaches */
     protected InventoryTransferCaches() {
         super();
     }
     
     public InventoryLocationGroupTransferCache getInventoryLocationGroupTransferCache() {
-        if(inventoryLocationGroupTransferCache == null)
-            inventoryLocationGroupTransferCache = CDI.current().select(InventoryLocationGroupTransferCache.class).get();
-        
         return inventoryLocationGroupTransferCache;
     }
     
     public InventoryLocationGroupDescriptionTransferCache getInventoryLocationGroupDescriptionTransferCache() {
-        if(inventoryLocationGroupDescriptionTransferCache == null)
-            inventoryLocationGroupDescriptionTransferCache = CDI.current().select(InventoryLocationGroupDescriptionTransferCache.class).get();
-        
         return inventoryLocationGroupDescriptionTransferCache;
     }
     
     public InventoryConditionTransferCache getInventoryConditionTransferCache() {
-        if(inventoryConditionTransferCache == null)
-            inventoryConditionTransferCache = CDI.current().select(InventoryConditionTransferCache.class).get();
-        
         return inventoryConditionTransferCache;
     }
     
     public InventoryConditionDescriptionTransferCache getInventoryConditionDescriptionTransferCache() {
-        if(inventoryConditionDescriptionTransferCache == null)
-            inventoryConditionDescriptionTransferCache = CDI.current().select(InventoryConditionDescriptionTransferCache.class).get();
-        
         return inventoryConditionDescriptionTransferCache;
     }
     
     public InventoryLocationGroupCapacityTransferCache getInventoryLocationGroupCapacityTransferCache() {
-        if(inventoryLocationGroupCapacityTransferCache == null)
-            inventoryLocationGroupCapacityTransferCache = CDI.current().select(InventoryLocationGroupCapacityTransferCache.class).get();
-        
         return inventoryLocationGroupCapacityTransferCache;
     }
     
     public InventoryLocationGroupVolumeTransferCache getInventoryLocationGroupVolumeTransferCache() {
-        if(inventoryLocationGroupVolumeTransferCache == null)
-            inventoryLocationGroupVolumeTransferCache = CDI.current().select(InventoryLocationGroupVolumeTransferCache.class).get();
-        
         return inventoryLocationGroupVolumeTransferCache;
     }
     
     public PartyInventoryLevelTransferCache getPartyInventoryLevelTransferCache() {
-        if(partyInventoryLevelTransferCache == null)
-            partyInventoryLevelTransferCache = CDI.current().select(PartyInventoryLevelTransferCache.class).get();
-        
         return partyInventoryLevelTransferCache;
     }
     
     public InventoryConditionUseTransferCache getInventoryConditionUseTransferCache() {
-        if(inventoryKindUseTransferCache == null)
-            inventoryKindUseTransferCache = CDI.current().select(InventoryConditionUseTransferCache.class).get();
-        
         return inventoryKindUseTransferCache;
     }
     
     public InventoryConditionUseTypeTransferCache getInventoryConditionUseTypeTransferCache() {
-        if(inventoryConditionUseTypeTransferCache == null)
-            inventoryConditionUseTypeTransferCache = CDI.current().select(InventoryConditionUseTypeTransferCache.class).get();
-        
         return inventoryConditionUseTypeTransferCache;
     }
     
     public InventoryConditionGlAccountTransferCache getInventoryConditionGlAccountTransferCache() {
-        if(inventoryConditionGlAccountTransferCache == null)
-            inventoryConditionGlAccountTransferCache = CDI.current().select(InventoryConditionGlAccountTransferCache.class).get();
-        
         return inventoryConditionGlAccountTransferCache;
     }
     
     public LotAliasTypeTransferCache getLotAliasTypeTransferCache() {
-        if(lotAliasTypeTransferCache == null)
-            lotAliasTypeTransferCache = CDI.current().select(LotAliasTypeTransferCache.class).get();
-
         return lotAliasTypeTransferCache;
     }
 
     public LotAliasTypeDescriptionTransferCache getLotAliasTypeDescriptionTransferCache() {
-        if(lotAliasTypeDescriptionTransferCache == null)
-            lotAliasTypeDescriptionTransferCache = CDI.current().select(LotAliasTypeDescriptionTransferCache.class).get();
-
         return lotAliasTypeDescriptionTransferCache;
     }
 
     public LotAliasTransferCache getLotAliasTransferCache() {
-        if(lotAliasTransferCache == null)
-            lotAliasTransferCache = CDI.current().select(LotAliasTransferCache.class).get();
-
         return lotAliasTransferCache;
     }
 
     public LotTimeTypeTransferCache getLotTimeTypeTransferCache() {
-        if(lotTimeTypeTransferCache == null)
-            lotTimeTypeTransferCache = CDI.current().select(LotTimeTypeTransferCache.class).get();
-
         return lotTimeTypeTransferCache;
     }
 
     public LotTimeTransferCache getLotTimeTransferCache() {
-        if(lotTimeTransferCache == null)
-            lotTimeTransferCache = CDI.current().select(LotTimeTransferCache.class).get();
-
         return lotTimeTransferCache;
     }
 
     public LotTimeTypeDescriptionTransferCache getLotTimeTypeDescriptionTransferCache() {
-        if(lotTimeTypeDescriptionTransferCache == null)
-            lotTimeTypeDescriptionTransferCache = CDI.current().select(LotTimeTypeDescriptionTransferCache.class).get();
-
         return lotTimeTypeDescriptionTransferCache;
     }
 
     public AllocationPriorityTransferCache getAllocationPriorityTransferCache() {
-        if(allocationPriorityTransferCache == null)
-            allocationPriorityTransferCache = CDI.current().select(AllocationPriorityTransferCache.class).get();
-
         return allocationPriorityTransferCache;
     }
 
     public AllocationPriorityDescriptionTransferCache getAllocationPriorityDescriptionTransferCache() {
-        if(allocationPriorityDescriptionTransferCache == null)
-            allocationPriorityDescriptionTransferCache = CDI.current().select(AllocationPriorityDescriptionTransferCache.class).get();
-
         return allocationPriorityDescriptionTransferCache;
     }
 
     public LotTransferCache getLotTransferCache() {
-        if(lotTransferCache == null)
-            lotTransferCache = CDI.current().select(LotTransferCache.class).get();
-
         return lotTransferCache;
     }
 
     public InventoryTransactionTypeTransferCache getInventoryTransactionTypeTransferCache() {
-        if(inventoryTransactionTypeTransferCache == null)
-            inventoryTransactionTypeTransferCache = CDI.current().select(InventoryTransactionTypeTransferCache.class).get();
-
         return inventoryTransactionTypeTransferCache;
     }
 
     public InventoryTransactionTypeDescriptionTransferCache getInventoryTransactionTypeDescriptionTransferCache() {
-        if(inventoryTransactionTypeDescriptionTransferCache == null)
-            inventoryTransactionTypeDescriptionTransferCache = CDI.current().select(InventoryTransactionTypeDescriptionTransferCache.class).get();
-
         return inventoryTransactionTypeDescriptionTransferCache;
     }
 
     public InventoryAdjustmentTypeTransferCache getInventoryAdjustmentTypeTransferCache() {
-        if(inventoryAdjustmentTypeTransferCache == null)
-            inventoryAdjustmentTypeTransferCache = CDI.current().select(InventoryAdjustmentTypeTransferCache.class).get();
-
         return inventoryAdjustmentTypeTransferCache;
     }
 
     public InventoryAdjustmentTypeDescriptionTransferCache getInventoryAdjustmentTypeDescriptionTransferCache() {
-        if(inventoryAdjustmentTypeDescriptionTransferCache == null)
-            inventoryAdjustmentTypeDescriptionTransferCache = CDI.current().select(InventoryAdjustmentTypeDescriptionTransferCache.class).get();
-
         return inventoryAdjustmentTypeDescriptionTransferCache;
     }
 

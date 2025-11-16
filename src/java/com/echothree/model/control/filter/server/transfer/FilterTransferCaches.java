@@ -17,168 +17,148 @@
 package com.echothree.model.control.filter.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
-import javax.enterprise.inject.spi.CDI;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 @RequestScoped
 public class FilterTransferCaches
         extends BaseTransferCaches {
     
-    protected FilterKindTransferCache filterKindTransferCache;
-    protected FilterKindDescriptionTransferCache filterKindDescriptionTransferCache;
-    protected FilterTypeTransferCache filterTypeTransferCache;
-    protected FilterTypeDescriptionTransferCache filterTypeDescriptionTransferCache;
-    protected FilterAdjustmentDescriptionTransferCache filterAdjustmentDescriptionTransferCache;
-    protected FilterAdjustmentTypeTransferCache filterAdjustmentTypeTransferCache;
-    protected FilterAdjustmentSourceTransferCache filterAdjustmentSourceTransferCache;
-    protected FilterAdjustmentTransferCache filterAdjustmentTransferCache;
-    protected FilterTransferCache filterTransferCache;
-    protected FilterDescriptionTransferCache filterDescriptionTransferCache;
-    protected FilterAdjustmentAmountTransferCache filterAdjustmentAmountTransferCache;
-    protected FilterAdjustmentFixedAmountTransferCache filterAdjustmentFixedAmountTransferCache;
-    protected FilterAdjustmentPercentTransferCache filterAdjustmentPercentTransferCache;
-    protected FilterStepTransferCache filterStepTransferCache;
-    protected FilterStepDescriptionTransferCache filterStepDescriptionTransferCache;
-    protected FilterEntranceStepTransferCache filterEntranceStepTransferCache;
-    protected FilterStepDestinationTransferCache filterStepDestinationTransferCache;
-    protected FilterStepElementTransferCache filterStepElementTransferCache;
-    protected FilterStepElementDescriptionTransferCache filterStepElementDescriptionTransferCache;
+    @Inject
+    FilterKindTransferCache filterKindTransferCache;
     
+    @Inject
+    FilterKindDescriptionTransferCache filterKindDescriptionTransferCache;
+    
+    @Inject
+    FilterTypeTransferCache filterTypeTransferCache;
+    
+    @Inject
+    FilterTypeDescriptionTransferCache filterTypeDescriptionTransferCache;
+    
+    @Inject
+    FilterAdjustmentDescriptionTransferCache filterAdjustmentDescriptionTransferCache;
+    
+    @Inject
+    FilterAdjustmentTypeTransferCache filterAdjustmentTypeTransferCache;
+    
+    @Inject
+    FilterAdjustmentSourceTransferCache filterAdjustmentSourceTransferCache;
+    
+    @Inject
+    FilterAdjustmentTransferCache filterAdjustmentTransferCache;
+    
+    @Inject
+    FilterTransferCache filterTransferCache;
+    
+    @Inject
+    FilterDescriptionTransferCache filterDescriptionTransferCache;
+    
+    @Inject
+    FilterAdjustmentAmountTransferCache filterAdjustmentAmountTransferCache;
+    
+    @Inject
+    FilterAdjustmentFixedAmountTransferCache filterAdjustmentFixedAmountTransferCache;
+    
+    @Inject
+    FilterAdjustmentPercentTransferCache filterAdjustmentPercentTransferCache;
+    
+    @Inject
+    FilterStepTransferCache filterStepTransferCache;
+    
+    @Inject
+    FilterStepDescriptionTransferCache filterStepDescriptionTransferCache;
+    
+    @Inject
+    FilterEntranceStepTransferCache filterEntranceStepTransferCache;
+    
+    @Inject
+    FilterStepDestinationTransferCache filterStepDestinationTransferCache;
+    
+    @Inject
+    FilterStepElementTransferCache filterStepElementTransferCache;
+    
+    @Inject
+    FilterStepElementDescriptionTransferCache filterStepElementDescriptionTransferCache;
+
     /** Creates a new instance of FilterTransferCaches */
     protected FilterTransferCaches() {
         super();
     }
     
     public FilterKindTransferCache getFilterKindTransferCache() {
-        if(filterKindTransferCache == null)
-            filterKindTransferCache = CDI.current().select(FilterKindTransferCache.class).get();
-
         return filterKindTransferCache;
     }
 
     public FilterKindDescriptionTransferCache getFilterKindDescriptionTransferCache() {
-        if(filterKindDescriptionTransferCache == null)
-            filterKindDescriptionTransferCache = CDI.current().select(FilterKindDescriptionTransferCache.class).get();
-
         return filterKindDescriptionTransferCache;
     }
 
     public FilterTypeTransferCache getFilterTypeTransferCache() {
-        if(filterTypeTransferCache == null)
-            filterTypeTransferCache = CDI.current().select(FilterTypeTransferCache.class).get();
-
         return filterTypeTransferCache;
     }
 
     public FilterTypeDescriptionTransferCache getFilterTypeDescriptionTransferCache() {
-        if(filterTypeDescriptionTransferCache == null)
-            filterTypeDescriptionTransferCache = CDI.current().select(FilterTypeDescriptionTransferCache.class).get();
-
         return filterTypeDescriptionTransferCache;
     }
 
     public FilterAdjustmentTypeTransferCache getFilterAdjustmentTypeTransferCache() {
-        if(filterAdjustmentTypeTransferCache == null)
-            filterAdjustmentTypeTransferCache = CDI.current().select(FilterAdjustmentTypeTransferCache.class).get();
-        
         return filterAdjustmentTypeTransferCache;
     }
     
     public FilterAdjustmentSourceTransferCache getFilterAdjustmentSourceTransferCache() {
-        if(filterAdjustmentSourceTransferCache == null)
-            filterAdjustmentSourceTransferCache = CDI.current().select(FilterAdjustmentSourceTransferCache.class).get();
-        
         return filterAdjustmentSourceTransferCache;
     }
     
     public FilterAdjustmentTransferCache getFilterAdjustmentTransferCache() {
-        if(filterAdjustmentTransferCache == null)
-            filterAdjustmentTransferCache = CDI.current().select(FilterAdjustmentTransferCache.class).get();
-        
         return filterAdjustmentTransferCache;
     }
     
     public FilterTransferCache getFilterTransferCache() {
-        if(filterTransferCache == null)
-            filterTransferCache = CDI.current().select(FilterTransferCache.class).get();
-        
         return filterTransferCache;
     }
     
     public FilterDescriptionTransferCache getFilterDescriptionTransferCache() {
-        if(filterDescriptionTransferCache == null)
-            filterDescriptionTransferCache = CDI.current().select(FilterDescriptionTransferCache.class).get();
-        
         return filterDescriptionTransferCache;
     }
     
     public FilterAdjustmentDescriptionTransferCache getFilterAdjustmentDescriptionTransferCache() {
-        if(filterAdjustmentDescriptionTransferCache == null)
-            filterAdjustmentDescriptionTransferCache = CDI.current().select(FilterAdjustmentDescriptionTransferCache.class).get();
-        
         return filterAdjustmentDescriptionTransferCache;
     }
     
     public FilterAdjustmentAmountTransferCache getFilterAdjustmentAmountTransferCache() {
-        if(filterAdjustmentAmountTransferCache == null)
-            filterAdjustmentAmountTransferCache = CDI.current().select(FilterAdjustmentAmountTransferCache.class).get();
-        
         return filterAdjustmentAmountTransferCache;
     }
     
     public FilterAdjustmentFixedAmountTransferCache getFilterAdjustmentFixedAmountTransferCache() {
-        if(filterAdjustmentFixedAmountTransferCache == null)
-            filterAdjustmentFixedAmountTransferCache = CDI.current().select(FilterAdjustmentFixedAmountTransferCache.class).get();
-        
         return filterAdjustmentFixedAmountTransferCache;
     }
     
     public FilterAdjustmentPercentTransferCache getFilterAdjustmentPercentTransferCache() {
-        if(filterAdjustmentPercentTransferCache == null)
-            filterAdjustmentPercentTransferCache = CDI.current().select(FilterAdjustmentPercentTransferCache.class).get();
-        
         return filterAdjustmentPercentTransferCache;
     }
     
     public FilterStepTransferCache getFilterStepTransferCache() {
-        if(filterStepTransferCache == null)
-            filterStepTransferCache = CDI.current().select(FilterStepTransferCache.class).get();
-        
         return filterStepTransferCache;
     }
     
     public FilterStepDescriptionTransferCache getFilterStepDescriptionTransferCache() {
-        if(filterStepDescriptionTransferCache == null)
-            filterStepDescriptionTransferCache = CDI.current().select(FilterStepDescriptionTransferCache.class).get();
-        
         return filterStepDescriptionTransferCache;
     }
     
     public FilterEntranceStepTransferCache getFilterEntranceStepTransferCache() {
-        if(filterEntranceStepTransferCache == null)
-            filterEntranceStepTransferCache = CDI.current().select(FilterEntranceStepTransferCache.class).get();
-        
         return filterEntranceStepTransferCache;
     }
     
     public FilterStepDestinationTransferCache getFilterStepDestinationTransferCache() {
-        if(filterStepDestinationTransferCache == null)
-            filterStepDestinationTransferCache = CDI.current().select(FilterStepDestinationTransferCache.class).get();
-        
         return filterStepDestinationTransferCache;
     }
     
     public FilterStepElementTransferCache getFilterStepElementTransferCache() {
-        if(filterStepElementTransferCache == null)
-            filterStepElementTransferCache = CDI.current().select(FilterStepElementTransferCache.class).get();
-        
         return filterStepElementTransferCache;
     }
     
     public FilterStepElementDescriptionTransferCache getFilterStepElementDescriptionTransferCache() {
-        if(filterStepElementDescriptionTransferCache == null)
-            filterStepElementDescriptionTransferCache = CDI.current().select(FilterStepElementDescriptionTransferCache.class).get();
-        
         return filterStepElementDescriptionTransferCache;
     }
     

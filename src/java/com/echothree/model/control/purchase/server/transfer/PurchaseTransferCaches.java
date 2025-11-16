@@ -17,7 +17,6 @@
 package com.echothree.model.control.purchase.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
-import javax.enterprise.inject.spi.CDI;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped

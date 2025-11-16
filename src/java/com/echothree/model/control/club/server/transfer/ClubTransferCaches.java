@@ -17,48 +17,43 @@
 package com.echothree.model.control.club.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
-import javax.enterprise.inject.spi.CDI;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 @RequestScoped
 public class ClubTransferCaches
         extends BaseTransferCaches {
     
-    protected ClubItemTransferCache clubItemTransferCache;
-    protected ClubItemTypeTransferCache clubItemTypeTransferCache;
-    protected ClubTransferCache clubTransferCache;
-    protected ClubDescriptionTransferCache clubDescriptionTransferCache;
+    @Inject
+    ClubItemTransferCache clubItemTransferCache;
     
+    @Inject
+    ClubItemTypeTransferCache clubItemTypeTransferCache;
+    
+    @Inject
+    ClubTransferCache clubTransferCache;
+    
+    @Inject
+    ClubDescriptionTransferCache clubDescriptionTransferCache;
+
     /** Creates a new instance of ClubTransferCaches */
     protected ClubTransferCaches() {
         super();
     }
     
     public ClubItemTransferCache getClubItemTransferCache() {
-        if(clubItemTransferCache == null)
-            clubItemTransferCache = CDI.current().select(ClubItemTransferCache.class).get();
-        
         return clubItemTransferCache;
     }
     
     public ClubItemTypeTransferCache getClubItemTypeTransferCache() {
-        if(clubItemTypeTransferCache == null)
-            clubItemTypeTransferCache = CDI.current().select(ClubItemTypeTransferCache.class).get();
-        
         return clubItemTypeTransferCache;
     }
     
     public ClubTransferCache getClubTransferCache() {
-        if(clubTransferCache == null)
-            clubTransferCache = CDI.current().select(ClubTransferCache.class).get();
-        
         return clubTransferCache;
     }
     
     public ClubDescriptionTransferCache getClubDescriptionTransferCache() {
-        if(clubDescriptionTransferCache == null)
-            clubDescriptionTransferCache = CDI.current().select(ClubDescriptionTransferCache.class).get();
-        
         return clubDescriptionTransferCache;
     }
     

@@ -17,16 +17,21 @@
 package com.echothree.model.control.queue.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
-import javax.enterprise.inject.spi.CDI;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 @RequestScoped
 public class QueueTransferCaches
         extends BaseTransferCaches {
     
-    protected QueueTypeTransferCache queueTypeTransferCache;
-    protected QueueTypeDescriptionTransferCache queueTypeDescriptionTransferCache;
-    protected QueuedEntityTransferCache queuedEntityTransferCache;
+    @Inject
+    QueueTypeTransferCache queueTypeTransferCache;
+    
+    @Inject
+    QueueTypeDescriptionTransferCache queueTypeDescriptionTransferCache;
+    
+    @Inject
+    QueuedEntityTransferCache queuedEntityTransferCache;
     
     /** Creates a new instance of QueueTransferCaches */
     protected QueueTransferCaches() {
@@ -34,26 +39,14 @@ public class QueueTransferCaches
     }
     
     public QueueTypeTransferCache getQueueTypeTransferCache() {
-        if(queueTypeTransferCache == null) {
-            queueTypeTransferCache = CDI.current().select(QueueTypeTransferCache.class).get();
-        }
-
         return queueTypeTransferCache;
     }
 
     public QueueTypeDescriptionTransferCache getQueueTypeDescriptionTransferCache() {
-        if(queueTypeDescriptionTransferCache == null) {
-            queueTypeDescriptionTransferCache = CDI.current().select(QueueTypeDescriptionTransferCache.class).get();
-        }
-
         return queueTypeDescriptionTransferCache;
     }
 
     public QueuedEntityTransferCache getQueuedEntityTransferCache() {
-        if(queuedEntityTransferCache == null) {
-            queuedEntityTransferCache = CDI.current().select(QueuedEntityTransferCache.class).get();
-        }
-
         return queuedEntityTransferCache;
     }
 

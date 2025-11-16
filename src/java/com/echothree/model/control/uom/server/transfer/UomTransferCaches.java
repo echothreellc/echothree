@@ -17,88 +17,78 @@
 package com.echothree.model.control.uom.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
-import javax.enterprise.inject.spi.CDI;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 @RequestScoped
 public class UomTransferCaches
         extends BaseTransferCaches {
     
-    protected UnitOfMeasureKindTransferCache uomKindTransferCache;
-    protected UnitOfMeasureTypeTransferCache uomTypeTransferCache;
-    protected UnitOfMeasureKindDescriptionTransferCache uomKindDescriptionTransferCache;
-    protected UnitOfMeasureTypeDescriptionTransferCache uomTypeDescriptionTransferCache;
-    protected UnitOfMeasureKindUseTransferCache uomKindUseTransferCache;
-    protected UnitOfMeasureKindUseTypeTransferCache uomKindUseTypeTransferCache;
-    protected UnitOfMeasureEquivalentTransferCache uomEquivalentTransferCache;
-    protected UnitOfMeasureTypeVolumeTransferCache uomTypeVolumeTransferCache;
-    protected UnitOfMeasureTypeWeightTransferCache uomTypeWeightTransferCache;
+    @Inject
+    UnitOfMeasureKindTransferCache uomKindTransferCache;
     
+    @Inject
+    UnitOfMeasureTypeTransferCache uomTypeTransferCache;
+    
+    @Inject
+    UnitOfMeasureKindDescriptionTransferCache uomKindDescriptionTransferCache;
+    
+    @Inject
+    UnitOfMeasureTypeDescriptionTransferCache uomTypeDescriptionTransferCache;
+    
+    @Inject
+    UnitOfMeasureKindUseTransferCache uomKindUseTransferCache;
+    
+    @Inject
+    UnitOfMeasureKindUseTypeTransferCache uomKindUseTypeTransferCache;
+    
+    @Inject
+    UnitOfMeasureEquivalentTransferCache uomEquivalentTransferCache;
+    
+    @Inject
+    UnitOfMeasureTypeVolumeTransferCache uomTypeVolumeTransferCache;
+    
+    @Inject
+    UnitOfMeasureTypeWeightTransferCache uomTypeWeightTransferCache;
+
     /** Creates a new instance of UomTransferCaches */
     protected UomTransferCaches() {
         super();
     }
     
     public UnitOfMeasureKindTransferCache getUnitOfMeasureKindTransferCache() {
-        if(uomKindTransferCache == null)
-            uomKindTransferCache = CDI.current().select(UnitOfMeasureKindTransferCache.class).get();
-        
         return uomKindTransferCache;
     }
     
     public UnitOfMeasureTypeTransferCache getUnitOfMeasureTypeTransferCache() {
-        if(uomTypeTransferCache == null)
-            uomTypeTransferCache = CDI.current().select(UnitOfMeasureTypeTransferCache.class).get();
-        
         return uomTypeTransferCache;
     }
     
     public UnitOfMeasureKindDescriptionTransferCache getUnitOfMeasureKindDescriptionTransferCache() {
-        if(uomKindDescriptionTransferCache == null)
-            uomKindDescriptionTransferCache = CDI.current().select(UnitOfMeasureKindDescriptionTransferCache.class).get();
-        
         return uomKindDescriptionTransferCache;
     }
     
     public UnitOfMeasureTypeDescriptionTransferCache getUnitOfMeasureTypeDescriptionTransferCache() {
-        if(uomTypeDescriptionTransferCache == null)
-            uomTypeDescriptionTransferCache = CDI.current().select(UnitOfMeasureTypeDescriptionTransferCache.class).get();
-        
         return uomTypeDescriptionTransferCache;
     }
     
     public UnitOfMeasureKindUseTransferCache getUnitOfMeasureKindUseTransferCache() {
-        if(uomKindUseTransferCache == null)
-            uomKindUseTransferCache = CDI.current().select(UnitOfMeasureKindUseTransferCache.class).get();
-        
         return uomKindUseTransferCache;
     }
     
     public UnitOfMeasureKindUseTypeTransferCache getUnitOfMeasureKindUseTypeTransferCache() {
-        if(uomKindUseTypeTransferCache == null)
-            uomKindUseTypeTransferCache = CDI.current().select(UnitOfMeasureKindUseTypeTransferCache.class).get();
-        
         return uomKindUseTypeTransferCache;
     }
     
     public UnitOfMeasureEquivalentTransferCache getUnitOfMeasureEquivalentTransferCache() {
-        if(uomEquivalentTransferCache == null)
-            uomEquivalentTransferCache = CDI.current().select(UnitOfMeasureEquivalentTransferCache.class).get();
-        
         return uomEquivalentTransferCache;
     }
     
     public UnitOfMeasureTypeVolumeTransferCache getUnitOfMeasureTypeVolumeTransferCache() {
-        if(uomTypeVolumeTransferCache == null)
-            uomTypeVolumeTransferCache = CDI.current().select(UnitOfMeasureTypeVolumeTransferCache.class).get();
-        
         return uomTypeVolumeTransferCache;
     }
     
     public UnitOfMeasureTypeWeightTransferCache getUnitOfMeasureTypeWeightTransferCache() {
-        if(uomTypeWeightTransferCache == null)
-            uomTypeWeightTransferCache = CDI.current().select(UnitOfMeasureTypeWeightTransferCache.class).get();
-        
         return uomTypeWeightTransferCache;
     }
     

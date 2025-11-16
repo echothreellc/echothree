@@ -17,160 +17,127 @@
 package com.echothree.model.control.training.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
-import javax.enterprise.inject.spi.CDI;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 @RequestScoped
 public class TrainingTransferCaches
         extends BaseTransferCaches {
     
-    protected TrainingClassTransferCache trainingClassTransferCache;
-    protected TrainingClassTranslationTransferCache trainingClassTranslationTransferCache;
-    protected TrainingClassSectionTransferCache trainingClassSectionTransferCache;
-    protected TrainingClassSectionTranslationTransferCache trainingClassSectionTranslationTransferCache;
-    protected TrainingClassPageTransferCache trainingClassPageTransferCache;
-    protected TrainingClassPageTranslationTransferCache trainingClassPageTranslationTransferCache;
-    protected TrainingClassQuestionTransferCache trainingClassQuestionTransferCache;
-    protected TrainingClassQuestionTranslationTransferCache trainingClassQuestionTranslationTransferCache;
-    protected TrainingClassAnswerTransferCache trainingClassAnswerTransferCache;
-    protected TrainingClassAnswerTranslationTransferCache trainingClassAnswerTranslationTransferCache;
-    protected PartyTrainingClassTransferCache partyTrainingClassTransferCache;
-    protected PartyTrainingClassSessionTransferCache partyTrainingClassSessionTransferCache;
-    protected PartyTrainingClassSessionSectionTransferCache partyTrainingClassSessionSectionTransferCache;
-    protected PartyTrainingClassSessionPageTransferCache partyTrainingClassSessionPageTransferCache;
-    protected PartyTrainingClassSessionQuestionTransferCache partyTrainingClassSessionQuestionTransferCache;
-    protected PartyTrainingClassSessionAnswerTransferCache partyTrainingClassSessionAnswerTransferCache;
+    @Inject
+    TrainingClassTransferCache trainingClassTransferCache;
     
+    @Inject
+    TrainingClassTranslationTransferCache trainingClassTranslationTransferCache;
+    
+    @Inject
+    TrainingClassSectionTransferCache trainingClassSectionTransferCache;
+    
+    @Inject
+    TrainingClassSectionTranslationTransferCache trainingClassSectionTranslationTransferCache;
+    
+    @Inject
+    TrainingClassPageTransferCache trainingClassPageTransferCache;
+    
+    @Inject
+    TrainingClassPageTranslationTransferCache trainingClassPageTranslationTransferCache;
+    
+    @Inject
+    TrainingClassQuestionTransferCache trainingClassQuestionTransferCache;
+    
+    @Inject
+    TrainingClassQuestionTranslationTransferCache trainingClassQuestionTranslationTransferCache;
+    
+    @Inject
+    TrainingClassAnswerTransferCache trainingClassAnswerTransferCache;
+    
+    @Inject
+    TrainingClassAnswerTranslationTransferCache trainingClassAnswerTranslationTransferCache;
+    
+    @Inject
+    PartyTrainingClassTransferCache partyTrainingClassTransferCache;
+    
+    @Inject
+    PartyTrainingClassSessionTransferCache partyTrainingClassSessionTransferCache;
+    
+    @Inject
+    PartyTrainingClassSessionSectionTransferCache partyTrainingClassSessionSectionTransferCache;
+    
+    @Inject
+    PartyTrainingClassSessionPageTransferCache partyTrainingClassSessionPageTransferCache;
+    
+    @Inject
+    PartyTrainingClassSessionQuestionTransferCache partyTrainingClassSessionQuestionTransferCache;
+    
+    @Inject
+    PartyTrainingClassSessionAnswerTransferCache partyTrainingClassSessionAnswerTransferCache;
+
     /** Creates a new instance of TrainingTransferCaches */
     protected TrainingTransferCaches() {
         super();
     }
     
     public TrainingClassTransferCache getTrainingClassTransferCache() {
-        if(trainingClassTransferCache == null) {
-            trainingClassTransferCache = CDI.current().select(TrainingClassTransferCache.class).get();
-        }
-        
         return trainingClassTransferCache;
     }
     
     public TrainingClassTranslationTransferCache getTrainingClassTranslationTransferCache() {
-        if(trainingClassTranslationTransferCache == null) {
-            trainingClassTranslationTransferCache = CDI.current().select(TrainingClassTranslationTransferCache.class).get();
-        }
-        
         return trainingClassTranslationTransferCache;
     }
     
     public TrainingClassSectionTransferCache getTrainingClassSectionTransferCache() {
-        if(trainingClassSectionTransferCache == null) {
-            trainingClassSectionTransferCache = CDI.current().select(TrainingClassSectionTransferCache.class).get();
-        }
-        
         return trainingClassSectionTransferCache;
     }
     
     public TrainingClassSectionTranslationTransferCache getTrainingClassSectionTranslationTransferCache() {
-        if(trainingClassSectionTranslationTransferCache == null) {
-            trainingClassSectionTranslationTransferCache = CDI.current().select(TrainingClassSectionTranslationTransferCache.class).get();
-        }
-        
         return trainingClassSectionTranslationTransferCache;
     }
     
     public TrainingClassPageTransferCache getTrainingClassPageTransferCache() {
-        if(trainingClassPageTransferCache == null) {
-            trainingClassPageTransferCache = CDI.current().select(TrainingClassPageTransferCache.class).get();
-        }
-        
         return trainingClassPageTransferCache;
     }
     
     public TrainingClassPageTranslationTransferCache getTrainingClassPageTranslationTransferCache() {
-        if(trainingClassPageTranslationTransferCache == null) {
-            trainingClassPageTranslationTransferCache = CDI.current().select(TrainingClassPageTranslationTransferCache.class).get();
-        }
-        
         return trainingClassPageTranslationTransferCache;
     }
     
     public TrainingClassQuestionTransferCache getTrainingClassQuestionTransferCache() {
-        if(trainingClassQuestionTransferCache == null) {
-            trainingClassQuestionTransferCache = CDI.current().select(TrainingClassQuestionTransferCache.class).get();
-        }
-        
         return trainingClassQuestionTransferCache;
     }
     
     public TrainingClassQuestionTranslationTransferCache getTrainingClassQuestionTranslationTransferCache() {
-        if(trainingClassQuestionTranslationTransferCache == null) {
-            trainingClassQuestionTranslationTransferCache = CDI.current().select(TrainingClassQuestionTranslationTransferCache.class).get();
-        }
-        
         return trainingClassQuestionTranslationTransferCache;
     }
     
     public TrainingClassAnswerTransferCache getTrainingClassAnswerTransferCache() {
-        if(trainingClassAnswerTransferCache == null) {
-            trainingClassAnswerTransferCache = CDI.current().select(TrainingClassAnswerTransferCache.class).get();
-        }
-        
         return trainingClassAnswerTransferCache;
     }
     
     public TrainingClassAnswerTranslationTransferCache getTrainingClassAnswerTranslationTransferCache() {
-        if(trainingClassAnswerTranslationTransferCache == null) {
-            trainingClassAnswerTranslationTransferCache = CDI.current().select(TrainingClassAnswerTranslationTransferCache.class).get();
-        }
-        
         return trainingClassAnswerTranslationTransferCache;
     }
     
     public PartyTrainingClassTransferCache getPartyTrainingClassTransferCache() {
-        if(partyTrainingClassTransferCache == null) {
-            partyTrainingClassTransferCache = CDI.current().select(PartyTrainingClassTransferCache.class).get();
-        }
-        
         return partyTrainingClassTransferCache;
     }
     
     public PartyTrainingClassSessionTransferCache getPartyTrainingClassSessionTransferCache() {
-        if(partyTrainingClassSessionTransferCache == null) {
-            partyTrainingClassSessionTransferCache = CDI.current().select(PartyTrainingClassSessionTransferCache.class).get();
-        }
-        
         return partyTrainingClassSessionTransferCache;
     }
     
     public PartyTrainingClassSessionSectionTransferCache getPartyTrainingClassSessionSectionTransferCache() {
-        if(partyTrainingClassSessionSectionTransferCache == null) {
-            partyTrainingClassSessionSectionTransferCache = CDI.current().select(PartyTrainingClassSessionSectionTransferCache.class).get();
-        }
-        
         return partyTrainingClassSessionSectionTransferCache;
     }
     
     public PartyTrainingClassSessionPageTransferCache getPartyTrainingClassSessionPageTransferCache() {
-        if(partyTrainingClassSessionPageTransferCache == null) {
-            partyTrainingClassSessionPageTransferCache = CDI.current().select(PartyTrainingClassSessionPageTransferCache.class).get();
-        }
-        
         return partyTrainingClassSessionPageTransferCache;
     }
     
     public PartyTrainingClassSessionQuestionTransferCache getPartyTrainingClassSessionQuestionTransferCache() {
-        if(partyTrainingClassSessionQuestionTransferCache == null) {
-            partyTrainingClassSessionQuestionTransferCache = CDI.current().select(PartyTrainingClassSessionQuestionTransferCache.class).get();
-        }
-        
         return partyTrainingClassSessionQuestionTransferCache;
     }
     
     public PartyTrainingClassSessionAnswerTransferCache getPartyTrainingClassSessionAnswerTransferCache() {
-        if(partyTrainingClassSessionAnswerTransferCache == null) {
-            partyTrainingClassSessionAnswerTransferCache = CDI.current().select(PartyTrainingClassSessionAnswerTransferCache.class).get();
-        }
-        
         return partyTrainingClassSessionAnswerTransferCache;
     }
     

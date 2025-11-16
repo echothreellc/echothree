@@ -17,56 +17,50 @@
 package com.echothree.model.control.associate.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
-import javax.enterprise.inject.spi.CDI;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 @RequestScoped
 public class AssociateTransferCaches
         extends BaseTransferCaches {
     
-    protected AssociateProgramTransferCache associateProgramTransferCache;
-    protected AssociateProgramDescriptionTransferCache associateProgramDescriptionTransferCache;
-    protected AssociateTransferCache associateTransferCache;
-    protected AssociatePartyContactMechanismTransferCache associatePartyContactMechanismTransferCache;
-    protected AssociateReferralTransferCache associateReferralTransferCache;
+    @Inject
+    AssociateProgramTransferCache associateProgramTransferCache;
     
+    @Inject
+    AssociateProgramDescriptionTransferCache associateProgramDescriptionTransferCache;
+    
+    @Inject
+    AssociateTransferCache associateTransferCache;
+    
+    @Inject
+    AssociatePartyContactMechanismTransferCache associatePartyContactMechanismTransferCache;
+    
+    @Inject
+    AssociateReferralTransferCache associateReferralTransferCache;
+
     /** Creates a new instance of AssociateTransferCaches */
     protected AssociateTransferCaches() {
         super();
     }
     
     public AssociateProgramTransferCache getAssociateProgramTransferCache() {
-        if(associateProgramTransferCache == null)
-            associateProgramTransferCache = CDI.current().select(AssociateProgramTransferCache.class).get();
-        
         return associateProgramTransferCache;
     }
     
     public AssociateProgramDescriptionTransferCache getAssociateProgramDescriptionTransferCache() {
-        if(associateProgramDescriptionTransferCache == null)
-            associateProgramDescriptionTransferCache = CDI.current().select(AssociateProgramDescriptionTransferCache.class).get();
-        
         return associateProgramDescriptionTransferCache;
     }
     
     public AssociateTransferCache getAssociateTransferCache() {
-        if(associateTransferCache == null)
-            associateTransferCache = CDI.current().select(AssociateTransferCache.class).get();
-        
         return associateTransferCache;
     }
     
     public AssociatePartyContactMechanismTransferCache getAssociatePartyContactMechanismTransferCache() {
-        if(associatePartyContactMechanismTransferCache == null)
-            associatePartyContactMechanismTransferCache = CDI.current().select(AssociatePartyContactMechanismTransferCache.class).get();
-        
         return associatePartyContactMechanismTransferCache;
     }
     
     public AssociateReferralTransferCache getAssociateReferralTransferCache() {
-        if(associateReferralTransferCache == null)
-            associateReferralTransferCache = CDI.current().select(AssociateReferralTransferCache.class).get();
-        
         return associateReferralTransferCache;
     }
     

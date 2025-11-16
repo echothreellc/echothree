@@ -17,88 +17,78 @@
 package com.echothree.model.control.security.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
-import javax.enterprise.inject.spi.CDI;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 @RequestScoped
 public class SecurityTransferCaches
         extends BaseTransferCaches {
     
-    protected SecurityRoleGroupTransferCache securityRoleGroupTransferCache;
-    protected SecurityRoleGroupDescriptionTransferCache securityRoleGroupDescriptionTransferCache;
-    protected SecurityRoleTransferCache securityRoleTransferCache;
-    protected SecurityRoleDescriptionTransferCache securityRoleDescriptionTransferCache;
-    protected SecurityRolePartyTypeTransferCache securityRolePartyTypeTransferCache;
-    protected PartySecurityRoleTemplateTransferCache partySecurityRoleTemplateTransferCache;
-    protected PartySecurityRoleTemplateDescriptionTransferCache partySecurityRoleTemplateDescriptionTransferCache;
-    protected PartySecurityRoleTemplateRoleTransferCache partySecurityRoleTemplateRoleTransferCache;
-    protected PartySecurityRoleTemplateTrainingClassTransferCache partySecurityRoleTemplateTrainingClassTransferCache;
+    @Inject
+    SecurityRoleGroupTransferCache securityRoleGroupTransferCache;
     
+    @Inject
+    SecurityRoleGroupDescriptionTransferCache securityRoleGroupDescriptionTransferCache;
+    
+    @Inject
+    SecurityRoleTransferCache securityRoleTransferCache;
+    
+    @Inject
+    SecurityRoleDescriptionTransferCache securityRoleDescriptionTransferCache;
+    
+    @Inject
+    SecurityRolePartyTypeTransferCache securityRolePartyTypeTransferCache;
+    
+    @Inject
+    PartySecurityRoleTemplateTransferCache partySecurityRoleTemplateTransferCache;
+    
+    @Inject
+    PartySecurityRoleTemplateDescriptionTransferCache partySecurityRoleTemplateDescriptionTransferCache;
+    
+    @Inject
+    PartySecurityRoleTemplateRoleTransferCache partySecurityRoleTemplateRoleTransferCache;
+    
+    @Inject
+    PartySecurityRoleTemplateTrainingClassTransferCache partySecurityRoleTemplateTrainingClassTransferCache;
+
     /** Creates a new instance of SecurityTransferCaches */
     protected SecurityTransferCaches() {
         super();
     }
     
     public SecurityRoleGroupTransferCache getSecurityRoleGroupTransferCache() {
-        if(securityRoleGroupTransferCache == null)
-            securityRoleGroupTransferCache = CDI.current().select(SecurityRoleGroupTransferCache.class).get();
-        
         return securityRoleGroupTransferCache;
     }
     
     public SecurityRoleGroupDescriptionTransferCache getSecurityRoleGroupDescriptionTransferCache() {
-        if(securityRoleGroupDescriptionTransferCache == null)
-            securityRoleGroupDescriptionTransferCache = CDI.current().select(SecurityRoleGroupDescriptionTransferCache.class).get();
-        
         return securityRoleGroupDescriptionTransferCache;
     }
     
     public SecurityRoleTransferCache getSecurityRoleTransferCache() {
-        if(securityRoleTransferCache == null)
-            securityRoleTransferCache = CDI.current().select(SecurityRoleTransferCache.class).get();
-        
         return securityRoleTransferCache;
     }
     
     public SecurityRoleDescriptionTransferCache getSecurityRoleDescriptionTransferCache() {
-        if(securityRoleDescriptionTransferCache == null)
-            securityRoleDescriptionTransferCache = CDI.current().select(SecurityRoleDescriptionTransferCache.class).get();
-        
         return securityRoleDescriptionTransferCache;
     }
     
     public SecurityRolePartyTypeTransferCache getSecurityRolePartyTypeTransferCache() {
-        if(securityRolePartyTypeTransferCache == null)
-            securityRolePartyTypeTransferCache = CDI.current().select(SecurityRolePartyTypeTransferCache.class).get();
-        
         return securityRolePartyTypeTransferCache;
     }
     
     public PartySecurityRoleTemplateTransferCache getPartySecurityRoleTemplateTransferCache() {
-        if(partySecurityRoleTemplateTransferCache == null)
-            partySecurityRoleTemplateTransferCache = CDI.current().select(PartySecurityRoleTemplateTransferCache.class).get();
-        
         return partySecurityRoleTemplateTransferCache;
     }
     
     public PartySecurityRoleTemplateDescriptionTransferCache getPartySecurityRoleTemplateDescriptionTransferCache() {
-        if(partySecurityRoleTemplateDescriptionTransferCache == null)
-            partySecurityRoleTemplateDescriptionTransferCache = CDI.current().select(PartySecurityRoleTemplateDescriptionTransferCache.class).get();
-        
         return partySecurityRoleTemplateDescriptionTransferCache;
     }
     
     public PartySecurityRoleTemplateRoleTransferCache getPartySecurityRoleTemplateRoleTransferCache() {
-        if(partySecurityRoleTemplateRoleTransferCache == null)
-            partySecurityRoleTemplateRoleTransferCache = CDI.current().select(PartySecurityRoleTemplateRoleTransferCache.class).get();
-        
         return partySecurityRoleTemplateRoleTransferCache;
     }
     
     public PartySecurityRoleTemplateTrainingClassTransferCache getPartySecurityRoleTemplateTrainingClassTransferCache() {
-        if(partySecurityRoleTemplateTrainingClassTransferCache == null)
-            partySecurityRoleTemplateTrainingClassTransferCache = CDI.current().select(PartySecurityRoleTemplateTrainingClassTransferCache.class).get();
-        
         return partySecurityRoleTemplateTrainingClassTransferCache;
     }
     

@@ -17,67 +17,57 @@
 package com.echothree.model.control.tax.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
-import javax.enterprise.inject.spi.CDI;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 @RequestScoped
 public class TaxTransferCaches
         extends BaseTransferCaches {
     
-    protected TaxClassificationTransferCache taxClassificationTransferCache;
-    protected TaxClassificationTranslationTransferCache taxClassificationTranslationTransferCache;
-    protected ItemTaxClassificationTransferCache itemTaxClassificationTransferCache;
-    protected TaxTransferCache taxTransferCache;
-    protected TaxDescriptionTransferCache taxDescriptionTransferCache;
-    protected GeoCodeTaxTransferCache geoCodeTaxTransferCache;
+    @Inject
+    TaxClassificationTransferCache taxClassificationTransferCache;
     
+    @Inject
+    TaxClassificationTranslationTransferCache taxClassificationTranslationTransferCache;
+    
+    @Inject
+    ItemTaxClassificationTransferCache itemTaxClassificationTransferCache;
+    
+    @Inject
+    TaxTransferCache taxTransferCache;
+    
+    @Inject
+    TaxDescriptionTransferCache taxDescriptionTransferCache;
+    
+    @Inject
+    GeoCodeTaxTransferCache geoCodeTaxTransferCache;
+
     /** Creates a new instance of TaxTransferCaches */
     protected TaxTransferCaches() {
         super();
     }
     
     public TaxClassificationTransferCache getTaxClassificationTransferCache() {
-        if(taxClassificationTransferCache == null) {
-            taxClassificationTransferCache = CDI.current().select(TaxClassificationTransferCache.class).get();
-        }
-
         return taxClassificationTransferCache;
     }
                                                                 
     public TaxClassificationTranslationTransferCache getTaxClassificationTranslationTransferCache() {
-        if(taxClassificationTranslationTransferCache == null) {
-            taxClassificationTranslationTransferCache = CDI.current().select(TaxClassificationTranslationTransferCache.class).get();
-        }
-
         return taxClassificationTranslationTransferCache;
     }
     
     public ItemTaxClassificationTransferCache getItemTaxClassificationTransferCache() {
-        if(itemTaxClassificationTransferCache == null) {
-            itemTaxClassificationTransferCache = CDI.current().select(ItemTaxClassificationTransferCache.class).get();
-        }
-
         return itemTaxClassificationTransferCache;
     }
 
     public TaxTransferCache getTaxTransferCache() {
-        if(taxTransferCache == null)
-            taxTransferCache = CDI.current().select(TaxTransferCache.class).get();
-        
         return taxTransferCache;
     }
     
     public TaxDescriptionTransferCache getTaxDescriptionTransferCache() {
-        if(taxDescriptionTransferCache == null)
-            taxDescriptionTransferCache = CDI.current().select(TaxDescriptionTransferCache.class).get();
-        
         return taxDescriptionTransferCache;
     }
     
     public GeoCodeTaxTransferCache getGeoCodeTaxTransferCache() {
-        if(geoCodeTaxTransferCache == null)
-            geoCodeTaxTransferCache = CDI.current().select(GeoCodeTaxTransferCache.class).get();
-        
         return geoCodeTaxTransferCache;
     }
     

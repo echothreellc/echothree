@@ -17,56 +17,50 @@
 package com.echothree.model.control.workeffort.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
-import javax.enterprise.inject.spi.CDI;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 @RequestScoped
 public class WorkEffortTransferCaches
         extends BaseTransferCaches {
     
-    protected WorkEffortTransferCache workEffortTransferCache;
-    protected WorkEffortTypeTransferCache workEffortTypeTransferCache;
-    protected WorkEffortTypeDescriptionTransferCache workEffortTypeDescriptionTransferCache;
-    protected WorkEffortScopeTransferCache workEffortScopeTransferCache;
-    protected WorkEffortScopeDescriptionTransferCache workEffortScopeDescriptionTransferCache;
+    @Inject
+    WorkEffortTransferCache workEffortTransferCache;
     
+    @Inject
+    WorkEffortTypeTransferCache workEffortTypeTransferCache;
+    
+    @Inject
+    WorkEffortTypeDescriptionTransferCache workEffortTypeDescriptionTransferCache;
+    
+    @Inject
+    WorkEffortScopeTransferCache workEffortScopeTransferCache;
+    
+    @Inject
+    WorkEffortScopeDescriptionTransferCache workEffortScopeDescriptionTransferCache;
+
     /** Creates a new instance of WorkEffortTransferCaches */
     protected WorkEffortTransferCaches() {
         super();
     }
     
     public WorkEffortTransferCache getWorkEffortTransferCache() {
-        if(workEffortTransferCache == null)
-            workEffortTransferCache = CDI.current().select(WorkEffortTransferCache.class).get();
-        
         return workEffortTransferCache;
     }
     
     public WorkEffortTypeTransferCache getWorkEffortTypeTransferCache() {
-        if(workEffortTypeTransferCache == null)
-            workEffortTypeTransferCache = CDI.current().select(WorkEffortTypeTransferCache.class).get();
-        
         return workEffortTypeTransferCache;
     }
     
     public WorkEffortTypeDescriptionTransferCache getWorkEffortTypeDescriptionTransferCache() {
-        if(workEffortTypeDescriptionTransferCache == null)
-            workEffortTypeDescriptionTransferCache = CDI.current().select(WorkEffortTypeDescriptionTransferCache.class).get();
-        
         return workEffortTypeDescriptionTransferCache;
     }
     
     public WorkEffortScopeTransferCache getWorkEffortScopeTransferCache() {
-        if(workEffortScopeTransferCache == null)
-            workEffortScopeTransferCache = CDI.current().select(WorkEffortScopeTransferCache.class).get();
-        
         return workEffortScopeTransferCache;
     }
     
     public WorkEffortScopeDescriptionTransferCache getWorkEffortScopeDescriptionTransferCache() {
-        if(workEffortScopeDescriptionTransferCache == null)
-            workEffortScopeDescriptionTransferCache = CDI.current().select(WorkEffortScopeDescriptionTransferCache.class).get();
-        
         return workEffortScopeDescriptionTransferCache;
     }
     
