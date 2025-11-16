@@ -17,6 +17,7 @@
 package com.echothree.model.control.employee.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.inject.spi.CDI;
 
 public class EmployeeTransferCaches
         extends BaseTransferCaches {
@@ -48,21 +49,21 @@ public class EmployeeTransferCaches
     
     public EmployeeTypeTransferCache getEmployeeTypeTransferCache() {
         if(employeeTypeTransferCache == null)
-            employeeTypeTransferCache = new EmployeeTypeTransferCache();
+            employeeTypeTransferCache = CDI.current().select(EmployeeTypeTransferCache.class).get();
         
         return employeeTypeTransferCache;
     }
     
     public EmployeeTypeDescriptionTransferCache getEmployeeTypeDescriptionTransferCache() {
         if(employeeTypeDescriptionTransferCache == null)
-            employeeTypeDescriptionTransferCache = new EmployeeTypeDescriptionTransferCache();
+            employeeTypeDescriptionTransferCache = CDI.current().select(EmployeeTypeDescriptionTransferCache.class).get();
         
         return employeeTypeDescriptionTransferCache;
     }
     
     public EmployeeTransferCache getEmployeeTransferCache() {
         if(employeeTransferCache == null) {
-            employeeTransferCache = new EmployeeTransferCache();
+            employeeTransferCache = CDI.current().select(EmployeeTransferCache.class).get();
         }
         
         return employeeTransferCache;
@@ -70,7 +71,7 @@ public class EmployeeTransferCaches
     
     public ResponsibilityTypeTransferCache getResponsibilityTypeTransferCache() {
         if(responsibilityTypeTransferCache == null) {
-            responsibilityTypeTransferCache = new ResponsibilityTypeTransferCache();
+            responsibilityTypeTransferCache = CDI.current().select(ResponsibilityTypeTransferCache.class).get();
         }
         
         return responsibilityTypeTransferCache;
@@ -78,7 +79,7 @@ public class EmployeeTransferCaches
     
     public ResponsibilityTypeDescriptionTransferCache getResponsibilityTypeDescriptionTransferCache() {
         if(responsibilityTypeDescriptionTransferCache == null) {
-            responsibilityTypeDescriptionTransferCache = new ResponsibilityTypeDescriptionTransferCache();
+            responsibilityTypeDescriptionTransferCache = CDI.current().select(ResponsibilityTypeDescriptionTransferCache.class).get();
         }
         
         return responsibilityTypeDescriptionTransferCache;
@@ -86,7 +87,7 @@ public class EmployeeTransferCaches
     
     public SkillTypeTransferCache getSkillTypeTransferCache() {
         if(skillTypeTransferCache == null) {
-            skillTypeTransferCache = new SkillTypeTransferCache();
+            skillTypeTransferCache = CDI.current().select(SkillTypeTransferCache.class).get();
         }
         
         return skillTypeTransferCache;
@@ -94,7 +95,7 @@ public class EmployeeTransferCaches
     
     public SkillTypeDescriptionTransferCache getSkillTypeDescriptionTransferCache() {
         if(skillTypeDescriptionTransferCache == null) {
-            skillTypeDescriptionTransferCache = new SkillTypeDescriptionTransferCache();
+            skillTypeDescriptionTransferCache = CDI.current().select(SkillTypeDescriptionTransferCache.class).get();
         }
         
         return skillTypeDescriptionTransferCache;
@@ -102,7 +103,7 @@ public class EmployeeTransferCaches
     
     public LeaveTypeTransferCache getLeaveTypeTransferCache() {
         if(leaveTypeTransferCache == null) {
-            leaveTypeTransferCache = new LeaveTypeTransferCache();
+            leaveTypeTransferCache = CDI.current().select(LeaveTypeTransferCache.class).get();
         }
 
         return leaveTypeTransferCache;
@@ -110,7 +111,7 @@ public class EmployeeTransferCaches
 
     public LeaveTypeDescriptionTransferCache getLeaveTypeDescriptionTransferCache() {
         if(leaveTypeDescriptionTransferCache == null) {
-            leaveTypeDescriptionTransferCache = new LeaveTypeDescriptionTransferCache();
+            leaveTypeDescriptionTransferCache = CDI.current().select(LeaveTypeDescriptionTransferCache.class).get();
         }
 
         return leaveTypeDescriptionTransferCache;
@@ -118,7 +119,7 @@ public class EmployeeTransferCaches
 
     public LeaveReasonTransferCache getLeaveReasonTransferCache() {
         if(leaveReasonTransferCache == null) {
-            leaveReasonTransferCache = new LeaveReasonTransferCache();
+            leaveReasonTransferCache = CDI.current().select(LeaveReasonTransferCache.class).get();
         }
 
         return leaveReasonTransferCache;
@@ -126,7 +127,7 @@ public class EmployeeTransferCaches
 
     public LeaveReasonDescriptionTransferCache getLeaveReasonDescriptionTransferCache() {
         if(leaveReasonDescriptionTransferCache == null) {
-            leaveReasonDescriptionTransferCache = new LeaveReasonDescriptionTransferCache();
+            leaveReasonDescriptionTransferCache = CDI.current().select(LeaveReasonDescriptionTransferCache.class).get();
         }
 
         return leaveReasonDescriptionTransferCache;
@@ -134,7 +135,7 @@ public class EmployeeTransferCaches
 
     public LeaveTransferCache getLeaveTransferCache() {
         if(leaveTransferCache == null) {
-            leaveTransferCache = new LeaveTransferCache();
+            leaveTransferCache = CDI.current().select(LeaveTransferCache.class).get();
         }
 
         return leaveTransferCache;
@@ -142,7 +143,7 @@ public class EmployeeTransferCaches
 
     public TerminationReasonTransferCache getTerminationReasonTransferCache() {
         if(terminationReasonTransferCache == null) {
-            terminationReasonTransferCache = new TerminationReasonTransferCache();
+            terminationReasonTransferCache = CDI.current().select(TerminationReasonTransferCache.class).get();
         }
         
         return terminationReasonTransferCache;
@@ -150,7 +151,7 @@ public class EmployeeTransferCaches
     
     public TerminationReasonDescriptionTransferCache getTerminationReasonDescriptionTransferCache() {
         if(terminationReasonDescriptionTransferCache == null) {
-            terminationReasonDescriptionTransferCache = new TerminationReasonDescriptionTransferCache();
+            terminationReasonDescriptionTransferCache = CDI.current().select(TerminationReasonDescriptionTransferCache.class).get();
         }
         
         return terminationReasonDescriptionTransferCache;
@@ -158,7 +159,7 @@ public class EmployeeTransferCaches
     
     public TerminationTypeTransferCache getTerminationTypeTransferCache() {
         if(terminationTypeTransferCache == null) {
-            terminationTypeTransferCache = new TerminationTypeTransferCache();
+            terminationTypeTransferCache = CDI.current().select(TerminationTypeTransferCache.class).get();
         }
         
         return terminationTypeTransferCache;
@@ -166,7 +167,7 @@ public class EmployeeTransferCaches
     
     public TerminationTypeDescriptionTransferCache getTerminationTypeDescriptionTransferCache() {
         if(terminationTypeDescriptionTransferCache == null) {
-            terminationTypeDescriptionTransferCache = new TerminationTypeDescriptionTransferCache();
+            terminationTypeDescriptionTransferCache = CDI.current().select(TerminationTypeDescriptionTransferCache.class).get();
         }
         
         return terminationTypeDescriptionTransferCache;
@@ -174,7 +175,7 @@ public class EmployeeTransferCaches
     
     public EmploymentTransferCache getEmploymentTransferCache() {
         if(employmentTransferCache == null) {
-            employmentTransferCache = new EmploymentTransferCache();
+            employmentTransferCache = CDI.current().select(EmploymentTransferCache.class).get();
         }
 
         return employmentTransferCache;
@@ -182,7 +183,7 @@ public class EmployeeTransferCaches
 
     public PartyResponsibilityTransferCache getPartyResponsibilityTransferCache() {
         if(partyResponsibilityTransferCache == null) {
-            partyResponsibilityTransferCache = new PartyResponsibilityTransferCache();
+            partyResponsibilityTransferCache = CDI.current().select(PartyResponsibilityTransferCache.class).get();
         }
         
         return partyResponsibilityTransferCache;
@@ -190,7 +191,7 @@ public class EmployeeTransferCaches
     
     public PartySkillTransferCache getPartySkillTransferCache() {
         if(partySkillTransferCache == null) {
-            partySkillTransferCache = new PartySkillTransferCache();
+            partySkillTransferCache = CDI.current().select(PartySkillTransferCache.class).get();
         }
         
         return partySkillTransferCache;

@@ -17,6 +17,7 @@
 package com.echothree.model.control.search.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.inject.spi.CDI;
 
 public class SearchTransferCaches
         extends BaseTransferCaches {
@@ -45,7 +46,7 @@ public class SearchTransferCaches
     
     public SearchKindTransferCache getSearchKindTransferCache() {
         if(searchKindTransferCache == null) {
-            searchKindTransferCache = new SearchKindTransferCache();
+            searchKindTransferCache = CDI.current().select(SearchKindTransferCache.class).get();
         }
 
         return searchKindTransferCache;
@@ -53,7 +54,7 @@ public class SearchTransferCaches
 
     public SearchKindDescriptionTransferCache getSearchKindDescriptionTransferCache() {
         if(searchKindDescriptionTransferCache == null) {
-            searchKindDescriptionTransferCache = new SearchKindDescriptionTransferCache();
+            searchKindDescriptionTransferCache = CDI.current().select(SearchKindDescriptionTransferCache.class).get();
         }
 
         return searchKindDescriptionTransferCache;
@@ -61,7 +62,7 @@ public class SearchTransferCaches
 
     public SearchTypeTransferCache getSearchTypeTransferCache() {
         if(searchTypeTransferCache == null) {
-            searchTypeTransferCache = new SearchTypeTransferCache();
+            searchTypeTransferCache = CDI.current().select(SearchTypeTransferCache.class).get();
         }
 
         return searchTypeTransferCache;
@@ -69,7 +70,7 @@ public class SearchTransferCaches
 
     public SearchTypeDescriptionTransferCache getSearchTypeDescriptionTransferCache() {
         if(searchTypeDescriptionTransferCache == null) {
-            searchTypeDescriptionTransferCache = new SearchTypeDescriptionTransferCache();
+            searchTypeDescriptionTransferCache = CDI.current().select(SearchTypeDescriptionTransferCache.class).get();
         }
 
         return searchTypeDescriptionTransferCache;
@@ -77,7 +78,7 @@ public class SearchTransferCaches
 
     public SearchSortOrderTransferCache getSearchSortOrderTransferCache() {
         if(searchSortOrderTransferCache == null) {
-            searchSortOrderTransferCache = new SearchSortOrderTransferCache();
+            searchSortOrderTransferCache = CDI.current().select(SearchSortOrderTransferCache.class).get();
         }
 
         return searchSortOrderTransferCache;
@@ -85,7 +86,7 @@ public class SearchTransferCaches
 
     public SearchSortOrderDescriptionTransferCache getSearchSortOrderDescriptionTransferCache() {
         if(searchSortOrderDescriptionTransferCache == null) {
-            searchSortOrderDescriptionTransferCache = new SearchSortOrderDescriptionTransferCache();
+            searchSortOrderDescriptionTransferCache = CDI.current().select(SearchSortOrderDescriptionTransferCache.class).get();
         }
 
         return searchSortOrderDescriptionTransferCache;
@@ -93,7 +94,7 @@ public class SearchTransferCaches
 
     public SearchSortDirectionTransferCache getSearchSortDirectionTransferCache() {
         if(searchSortDirectionTransferCache == null) {
-            searchSortDirectionTransferCache = new SearchSortDirectionTransferCache();
+            searchSortDirectionTransferCache = CDI.current().select(SearchSortDirectionTransferCache.class).get();
         }
 
         return searchSortDirectionTransferCache;
@@ -101,7 +102,7 @@ public class SearchTransferCaches
 
     public SearchSortDirectionDescriptionTransferCache getSearchSortDirectionDescriptionTransferCache() {
         if(searchSortDirectionDescriptionTransferCache == null) {
-            searchSortDirectionDescriptionTransferCache = new SearchSortDirectionDescriptionTransferCache();
+            searchSortDirectionDescriptionTransferCache = CDI.current().select(SearchSortDirectionDescriptionTransferCache.class).get();
         }
 
         return searchSortDirectionDescriptionTransferCache;
@@ -109,7 +110,7 @@ public class SearchTransferCaches
 
     public SearchDefaultOperatorTransferCache getSearchDefaultOperatorTransferCache() {
         if(searchDefaultOperatorTransferCache == null) {
-            searchDefaultOperatorTransferCache = new SearchDefaultOperatorTransferCache();
+            searchDefaultOperatorTransferCache = CDI.current().select(SearchDefaultOperatorTransferCache.class).get();
         }
 
         return searchDefaultOperatorTransferCache;
@@ -117,7 +118,7 @@ public class SearchTransferCaches
 
     public SearchDefaultOperatorDescriptionTransferCache getSearchDefaultOperatorDescriptionTransferCache() {
         if(searchDefaultOperatorDescriptionTransferCache == null) {
-            searchDefaultOperatorDescriptionTransferCache = new SearchDefaultOperatorDescriptionTransferCache();
+            searchDefaultOperatorDescriptionTransferCache = CDI.current().select(SearchDefaultOperatorDescriptionTransferCache.class).get();
         }
 
         return searchDefaultOperatorDescriptionTransferCache;
@@ -125,7 +126,7 @@ public class SearchTransferCaches
 
     public SearchUseTypeTransferCache getSearchUseTypeTransferCache() {
         if(searchUseTypeTransferCache == null) {
-            searchUseTypeTransferCache = new SearchUseTypeTransferCache();
+            searchUseTypeTransferCache = CDI.current().select(SearchUseTypeTransferCache.class).get();
         }
 
         return searchUseTypeTransferCache;
@@ -133,7 +134,7 @@ public class SearchTransferCaches
 
     public SearchUseTypeDescriptionTransferCache getSearchUseTypeDescriptionTransferCache() {
         if(searchUseTypeDescriptionTransferCache == null) {
-            searchUseTypeDescriptionTransferCache = new SearchUseTypeDescriptionTransferCache();
+            searchUseTypeDescriptionTransferCache = CDI.current().select(SearchUseTypeDescriptionTransferCache.class).get();
         }
 
         return searchUseTypeDescriptionTransferCache;
@@ -141,7 +142,7 @@ public class SearchTransferCaches
 
     public SearchResultActionTypeTransferCache getSearchResultActionTypeTransferCache() {
         if(searchResultActionTypeTransferCache == null) {
-            searchResultActionTypeTransferCache = new SearchResultActionTypeTransferCache();
+            searchResultActionTypeTransferCache = CDI.current().select(SearchResultActionTypeTransferCache.class).get();
         }
 
         return searchResultActionTypeTransferCache;
@@ -149,7 +150,7 @@ public class SearchTransferCaches
 
     public SearchResultActionTypeDescriptionTransferCache getSearchResultActionTypeDescriptionTransferCache() {
         if(searchResultActionTypeDescriptionTransferCache == null) {
-            searchResultActionTypeDescriptionTransferCache = new SearchResultActionTypeDescriptionTransferCache();
+            searchResultActionTypeDescriptionTransferCache = CDI.current().select(SearchResultActionTypeDescriptionTransferCache.class).get();
         }
 
         return searchResultActionTypeDescriptionTransferCache;
@@ -157,7 +158,7 @@ public class SearchTransferCaches
 
     public SearchCheckSpellingActionTypeTransferCache getSearchCheckSpellingActionTypeTransferCache() {
         if(searchCheckSpellingActionTypeTransferCache == null) {
-            searchCheckSpellingActionTypeTransferCache = new SearchCheckSpellingActionTypeTransferCache();
+            searchCheckSpellingActionTypeTransferCache = CDI.current().select(SearchCheckSpellingActionTypeTransferCache.class).get();
         }
 
         return searchCheckSpellingActionTypeTransferCache;
@@ -165,7 +166,7 @@ public class SearchTransferCaches
 
     public SearchCheckSpellingActionTypeDescriptionTransferCache getSearchCheckSpellingActionTypeDescriptionTransferCache() {
         if(searchCheckSpellingActionTypeDescriptionTransferCache == null) {
-            searchCheckSpellingActionTypeDescriptionTransferCache = new SearchCheckSpellingActionTypeDescriptionTransferCache();
+            searchCheckSpellingActionTypeDescriptionTransferCache = CDI.current().select(SearchCheckSpellingActionTypeDescriptionTransferCache.class).get();
         }
 
         return searchCheckSpellingActionTypeDescriptionTransferCache;

@@ -21,7 +21,9 @@ import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.data.search.server.entity.SearchType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class SearchTypeTransferCache
         extends BaseSearchTransferCache<SearchType, SearchTypeTransfer> {
 

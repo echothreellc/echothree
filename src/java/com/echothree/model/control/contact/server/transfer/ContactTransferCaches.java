@@ -17,6 +17,7 @@
 package com.echothree.model.control.contact.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.inject.spi.CDI;
 
 public class ContactTransferCaches
         extends BaseTransferCaches {
@@ -49,133 +50,133 @@ public class ContactTransferCaches
     
     public PostalAddressFormatTransferCache getPostalAddressFormatTransferCache() {
         if(postalAddressFormatTransferCache == null)
-            postalAddressFormatTransferCache = new PostalAddressFormatTransferCache();
+            postalAddressFormatTransferCache = CDI.current().select(PostalAddressFormatTransferCache.class).get();
         
         return postalAddressFormatTransferCache;
     }
     
     public PostalAddressElementTypeTransferCache getPostalAddressElementTypeTransferCache() {
         if(postalAddressElementTypeTransferCache == null)
-            postalAddressElementTypeTransferCache = new PostalAddressElementTypeTransferCache();
+            postalAddressElementTypeTransferCache = CDI.current().select(PostalAddressElementTypeTransferCache.class).get();
         
         return postalAddressElementTypeTransferCache;
     }
     
     public ContactMechanismAliasTypeTransferCache getContactMechanismAliasTypeTransferCache() {
         if(contactMechanismAliasTypeTransferCache == null)
-            contactMechanismAliasTypeTransferCache = new ContactMechanismAliasTypeTransferCache();
+            contactMechanismAliasTypeTransferCache = CDI.current().select(ContactMechanismAliasTypeTransferCache.class).get();
 
         return contactMechanismAliasTypeTransferCache;
     }
 
     public ContactMechanismAliasTypeDescriptionTransferCache getContactMechanismAliasTypeDescriptionTransferCache() {
         if(contactMechanismAliasTypeDescriptionTransferCache == null)
-            contactMechanismAliasTypeDescriptionTransferCache = new ContactMechanismAliasTypeDescriptionTransferCache();
+            contactMechanismAliasTypeDescriptionTransferCache = CDI.current().select(ContactMechanismAliasTypeDescriptionTransferCache.class).get();
 
         return contactMechanismAliasTypeDescriptionTransferCache;
     }
 
     public ContactMechanismPurposeTransferCache getContactMechanismPurposeTransferCache() {
         if(contactMechanismPurposeTransferCache == null)
-            contactMechanismPurposeTransferCache = new ContactMechanismPurposeTransferCache();
+            contactMechanismPurposeTransferCache = CDI.current().select(ContactMechanismPurposeTransferCache.class).get();
         
         return contactMechanismPurposeTransferCache;
     }
     
     public ContactMechanismTypeTransferCache getContactMechanismTypeTransferCache() {
         if(contactMechanismTypeTransferCache == null)
-            contactMechanismTypeTransferCache = new ContactMechanismTypeTransferCache();
+            contactMechanismTypeTransferCache = CDI.current().select(ContactMechanismTypeTransferCache.class).get();
         
         return contactMechanismTypeTransferCache;
     }
     
     public ContactMechanismTransferCache getContactMechanismTransferCache() {
         if(contactMechanismTransferCache == null)
-            contactMechanismTransferCache = new ContactMechanismTransferCache();
+            contactMechanismTransferCache = CDI.current().select(ContactMechanismTransferCache.class).get();
         
         return contactMechanismTransferCache;
     }
     
     public ContactEmailAddressTransferCache getContactEmailAddressTransferCache() {
         if(contactEmailAddressTransferCache == null)
-            contactEmailAddressTransferCache = new ContactEmailAddressTransferCache();
+            contactEmailAddressTransferCache = CDI.current().select(ContactEmailAddressTransferCache.class).get();
         
         return contactEmailAddressTransferCache;
     }
     
     public ContactPostalAddressTransferCache getContactPostalAddressTransferCache() {
         if(contactPostalAddressTransferCache == null)
-            contactPostalAddressTransferCache = new ContactPostalAddressTransferCache();
+            contactPostalAddressTransferCache = CDI.current().select(ContactPostalAddressTransferCache.class).get();
         
         return contactPostalAddressTransferCache;
     }
     
     public ContactTelephoneTransferCache getContactTelephoneTransferCache() {
         if(contactTelephoneTransferCache == null)
-            contactTelephoneTransferCache = new ContactTelephoneTransferCache();
+            contactTelephoneTransferCache = CDI.current().select(ContactTelephoneTransferCache.class).get();
         
         return contactTelephoneTransferCache;
     }
     
     public PostalAddressFormatDescriptionTransferCache getPostalAddressFormatDescriptionTransferCache() {
         if(postalAddressFormatDescriptionTransferCache == null)
-            postalAddressFormatDescriptionTransferCache = new PostalAddressFormatDescriptionTransferCache();
+            postalAddressFormatDescriptionTransferCache = CDI.current().select(PostalAddressFormatDescriptionTransferCache.class).get();
         
         return postalAddressFormatDescriptionTransferCache;
     }
     
     public PostalAddressLineTransferCache getPostalAddressLineTransferCache() {
         if(postalAddressLineTransferCache == null)
-            postalAddressLineTransferCache = new PostalAddressLineTransferCache();
+            postalAddressLineTransferCache = CDI.current().select(PostalAddressLineTransferCache.class).get();
         
         return postalAddressLineTransferCache;
     }
     
     public PostalAddressLineElementTransferCache getPostalAddressLineElementTransferCache() {
         if(postalAddressLineElementTransferCache == null)
-            postalAddressLineElementTransferCache = new PostalAddressLineElementTransferCache();
+            postalAddressLineElementTransferCache = CDI.current().select(PostalAddressLineElementTransferCache.class).get();
         
         return postalAddressLineElementTransferCache;
     }
     
     public ContactWebAddressTransferCache getContactWebAddressTransferCache() {
         if(contactWebAddressTransferCache == null)
-            contactWebAddressTransferCache = new ContactWebAddressTransferCache();
+            contactWebAddressTransferCache = CDI.current().select(ContactWebAddressTransferCache.class).get();
         
         return contactWebAddressTransferCache;
     }
     
     public ContactMechanismAliasTransferCache getContactMechanismAliasTransferCache() {
         if(contactMechanismAliasTransferCache == null)
-            contactMechanismAliasTransferCache = new ContactMechanismAliasTransferCache();
+            contactMechanismAliasTransferCache = CDI.current().select(ContactMechanismAliasTransferCache.class).get();
         
         return contactMechanismAliasTransferCache;
     }
     
     public PartyContactMechanismAliasTransferCache getPartyContactMechanismAliasTransferCache() {
         if(partyContactMechanismAliasTransferCache == null)
-            partyContactMechanismAliasTransferCache = new PartyContactMechanismAliasTransferCache();
+            partyContactMechanismAliasTransferCache = CDI.current().select(PartyContactMechanismAliasTransferCache.class).get();
         
         return partyContactMechanismAliasTransferCache;
     }
     
     public PartyContactMechanismPurposeTransferCache getPartyContactMechanismPurposeTransferCache() {
         if(partyContactMechanismPurposeTransferCache == null)
-            partyContactMechanismPurposeTransferCache = new PartyContactMechanismPurposeTransferCache();
+            partyContactMechanismPurposeTransferCache = CDI.current().select(PartyContactMechanismPurposeTransferCache.class).get();
         
         return partyContactMechanismPurposeTransferCache;
     }
     
     public PartyContactMechanismRelationshipTransferCache getPartyContactMechanismRelationshipTransferCache() {
         if(partyContactMechanismRelationshipTransferCache == null)
-            partyContactMechanismRelationshipTransferCache = new PartyContactMechanismRelationshipTransferCache();
+            partyContactMechanismRelationshipTransferCache = CDI.current().select(PartyContactMechanismRelationshipTransferCache.class).get();
         
         return partyContactMechanismRelationshipTransferCache;
     }
     
     public PartyContactMechanismTransferCache getPartyContactMechanismTransferCache() {
         if(partyContactMechanismTransferCache == null)
-            partyContactMechanismTransferCache = new PartyContactMechanismTransferCache();
+            partyContactMechanismTransferCache = CDI.current().select(PartyContactMechanismTransferCache.class).get();
         
         return partyContactMechanismTransferCache;
     }

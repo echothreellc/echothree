@@ -17,6 +17,7 @@
 package com.echothree.model.control.contactlist.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.inject.spi.CDI;
 
 public class ContactListTransferCaches
         extends BaseTransferCaches {
@@ -43,98 +44,98 @@ public class ContactListTransferCaches
     
     public ContactListTypeDescriptionTransferCache getContactListTypeDescriptionTransferCache() {
         if(contactListTypeDescriptionTransferCache == null)
-            contactListTypeDescriptionTransferCache = new ContactListTypeDescriptionTransferCache();
+            contactListTypeDescriptionTransferCache = CDI.current().select(ContactListTypeDescriptionTransferCache.class).get();
         
         return contactListTypeDescriptionTransferCache;
     }
     
     public ContactListTypeTransferCache getContactListTypeTransferCache() {
         if(contactListTypeTransferCache == null)
-            contactListTypeTransferCache = new ContactListTypeTransferCache();
+            contactListTypeTransferCache = CDI.current().select(ContactListTypeTransferCache.class).get();
         
         return contactListTypeTransferCache;
     }
     
     public ContactListGroupDescriptionTransferCache getContactListGroupDescriptionTransferCache() {
         if(contactListGroupDescriptionTransferCache == null)
-            contactListGroupDescriptionTransferCache = new ContactListGroupDescriptionTransferCache();
+            contactListGroupDescriptionTransferCache = CDI.current().select(ContactListGroupDescriptionTransferCache.class).get();
 
         return contactListGroupDescriptionTransferCache;
     }
 
     public ContactListGroupTransferCache getContactListGroupTransferCache() {
         if(contactListGroupTransferCache == null)
-            contactListGroupTransferCache = new ContactListGroupTransferCache();
+            contactListGroupTransferCache = CDI.current().select(ContactListGroupTransferCache.class).get();
 
         return contactListGroupTransferCache;
     }
 
     public ContactListFrequencyDescriptionTransferCache getContactListFrequencyDescriptionTransferCache() {
         if(contactListFrequencyDescriptionTransferCache == null)
-            contactListFrequencyDescriptionTransferCache = new ContactListFrequencyDescriptionTransferCache();
+            contactListFrequencyDescriptionTransferCache = CDI.current().select(ContactListFrequencyDescriptionTransferCache.class).get();
 
         return contactListFrequencyDescriptionTransferCache;
     }
 
     public ContactListFrequencyTransferCache getContactListFrequencyTransferCache() {
         if(contactListFrequencyTransferCache == null)
-            contactListFrequencyTransferCache = new ContactListFrequencyTransferCache();
+            contactListFrequencyTransferCache = CDI.current().select(ContactListFrequencyTransferCache.class).get();
 
         return contactListFrequencyTransferCache;
     }
 
     public ContactListDescriptionTransferCache getContactListDescriptionTransferCache() {
         if(contactListDescriptionTransferCache == null)
-            contactListDescriptionTransferCache = new ContactListDescriptionTransferCache();
+            contactListDescriptionTransferCache = CDI.current().select(ContactListDescriptionTransferCache.class).get();
         
         return contactListDescriptionTransferCache;
     }
     
     public ContactListTransferCache getContactListTransferCache() {
         if(contactListTransferCache == null)
-            contactListTransferCache = new ContactListTransferCache();
+            contactListTransferCache = CDI.current().select(ContactListTransferCache.class).get();
         
         return contactListTransferCache;
     }
     
     public PartyContactListTransferCache getPartyContactListTransferCache() {
         if(partyContactListTransferCache == null)
-            partyContactListTransferCache = new PartyContactListTransferCache();
+            partyContactListTransferCache = CDI.current().select(PartyContactListTransferCache.class).get();
         
         return partyContactListTransferCache;
     }
     
     public PartyTypeContactListTransferCache getPartyTypeContactListTransferCache() {
         if(partyTypeContactListTransferCache == null)
-            partyTypeContactListTransferCache = new PartyTypeContactListTransferCache();
+            partyTypeContactListTransferCache = CDI.current().select(PartyTypeContactListTransferCache.class).get();
 
         return partyTypeContactListTransferCache;
     }
 
     public PartyTypeContactListGroupTransferCache getPartyTypeContactListGroupTransferCache() {
         if(partyTypeContactListGroupTransferCache == null)
-            partyTypeContactListGroupTransferCache = new PartyTypeContactListGroupTransferCache();
+            partyTypeContactListGroupTransferCache = CDI.current().select(PartyTypeContactListGroupTransferCache.class).get();
 
         return partyTypeContactListGroupTransferCache;
     }
 
     public CustomerTypeContactListTransferCache getCustomerTypeContactListTransferCache() {
         if(customerTypeContactListTransferCache == null)
-            customerTypeContactListTransferCache = new CustomerTypeContactListTransferCache();
+            customerTypeContactListTransferCache = CDI.current().select(CustomerTypeContactListTransferCache.class).get();
 
         return customerTypeContactListTransferCache;
     }
 
     public CustomerTypeContactListGroupTransferCache getCustomerTypeContactListGroupTransferCache() {
         if(customerTypeContactListGroupTransferCache == null)
-            customerTypeContactListGroupTransferCache = new CustomerTypeContactListGroupTransferCache();
+            customerTypeContactListGroupTransferCache = CDI.current().select(CustomerTypeContactListGroupTransferCache.class).get();
 
         return customerTypeContactListGroupTransferCache;
     }
 
     public ContactListContactMechanismPurposeTransferCache getContactListContactMechanismPurposeTransferCache() {
         if(contactListContactMechanismPurposeTransferCache == null)
-            contactListContactMechanismPurposeTransferCache = new ContactListContactMechanismPurposeTransferCache();
+            contactListContactMechanismPurposeTransferCache = CDI.current().select(ContactListContactMechanismPurposeTransferCache.class).get();
         
         return contactListContactMechanismPurposeTransferCache;
     }

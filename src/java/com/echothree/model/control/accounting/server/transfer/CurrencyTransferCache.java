@@ -23,7 +23,9 @@ import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CurrencyTransferCache
         extends BaseAccountingTransferCache<Currency, CurrencyTransfer> {
 

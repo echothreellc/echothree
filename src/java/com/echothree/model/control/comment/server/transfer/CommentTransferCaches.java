@@ -17,6 +17,7 @@
 package com.echothree.model.control.comment.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.inject.spi.CDI;
 
 public class CommentTransferCaches
         extends BaseTransferCaches {
@@ -35,42 +36,42 @@ public class CommentTransferCaches
     
     public CommentTypeTransferCache getCommentTypeTransferCache() {
         if(commentTypeTransferCache == null)
-            commentTypeTransferCache = new CommentTypeTransferCache();
+            commentTypeTransferCache = CDI.current().select(CommentTypeTransferCache.class).get();
         
         return commentTypeTransferCache;
     }
     
     public CommentTypeDescriptionTransferCache getCommentTypeDescriptionTransferCache() {
         if(commentTypeDescriptionTransferCache == null)
-            commentTypeDescriptionTransferCache = new CommentTypeDescriptionTransferCache();
+            commentTypeDescriptionTransferCache = CDI.current().select(CommentTypeDescriptionTransferCache.class).get();
         
         return commentTypeDescriptionTransferCache;
     }
     
     public CommentUsageTypeTransferCache getCommentUsageTypeTransferCache() {
         if(commentUsageTypeTransferCache == null)
-            commentUsageTypeTransferCache = new CommentUsageTypeTransferCache();
+            commentUsageTypeTransferCache = CDI.current().select(CommentUsageTypeTransferCache.class).get();
         
         return commentUsageTypeTransferCache;
     }
     
     public CommentUsageTypeDescriptionTransferCache getCommentUsageTypeDescriptionTransferCache() {
         if(commentUsageTypeDescriptionTransferCache == null)
-            commentUsageTypeDescriptionTransferCache = new CommentUsageTypeDescriptionTransferCache();
+            commentUsageTypeDescriptionTransferCache = CDI.current().select(CommentUsageTypeDescriptionTransferCache.class).get();
         
         return commentUsageTypeDescriptionTransferCache;
     }
     
     public CommentTransferCache getCommentTransferCache() {
         if(commentTransferCache == null)
-            commentTransferCache = new CommentTransferCache();
+            commentTransferCache = CDI.current().select(CommentTransferCache.class).get();
         
         return commentTransferCache;
     }
     
     public CommentUsageTransferCache getCommentUsageTransferCache() {
         if(commentUsageTransferCache == null)
-            commentUsageTransferCache = new CommentUsageTransferCache();
+            commentUsageTransferCache = CDI.current().select(CommentUsageTransferCache.class).get();
         
         return commentUsageTransferCache;
     }

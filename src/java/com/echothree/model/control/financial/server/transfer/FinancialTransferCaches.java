@@ -17,6 +17,7 @@
 package com.echothree.model.control.financial.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.inject.spi.CDI;
 
 public class FinancialTransferCaches
         extends BaseTransferCaches {
@@ -40,77 +41,77 @@ public class FinancialTransferCaches
     
     public FinancialAccountRoleTypeTransferCache getFinancialAccountRoleTypeTransferCache() {
         if(financialAccountRoleTypeTransferCache == null)
-            financialAccountRoleTypeTransferCache = new FinancialAccountRoleTypeTransferCache();
+            financialAccountRoleTypeTransferCache = CDI.current().select(FinancialAccountRoleTypeTransferCache.class).get();
         
         return financialAccountRoleTypeTransferCache;
     }
     
     public FinancialAccountTypeTransferCache getFinancialAccountTypeTransferCache() {
         if(financialAccountTypeTransferCache == null)
-            financialAccountTypeTransferCache = new FinancialAccountTypeTransferCache();
+            financialAccountTypeTransferCache = CDI.current().select(FinancialAccountTypeTransferCache.class).get();
         
         return financialAccountTypeTransferCache;
     }
     
     public FinancialAccountTypeDescriptionTransferCache getFinancialAccountTypeDescriptionTransferCache() {
         if(financialAccountTypeDescriptionTransferCache == null)
-            financialAccountTypeDescriptionTransferCache = new FinancialAccountTypeDescriptionTransferCache();
+            financialAccountTypeDescriptionTransferCache = CDI.current().select(FinancialAccountTypeDescriptionTransferCache.class).get();
         
         return financialAccountTypeDescriptionTransferCache;
     }
     
     public FinancialAccountTransactionTypeTransferCache getFinancialAccountTransactionTypeTransferCache() {
         if(financialAccountTransactionTypeTransferCache == null)
-            financialAccountTransactionTypeTransferCache = new FinancialAccountTransactionTypeTransferCache();
+            financialAccountTransactionTypeTransferCache = CDI.current().select(FinancialAccountTransactionTypeTransferCache.class).get();
         
         return financialAccountTransactionTypeTransferCache;
     }
     
     public FinancialAccountTransactionTypeDescriptionTransferCache getFinancialAccountTransactionTypeDescriptionTransferCache() {
         if(financialAccountTransactionTypeDescriptionTransferCache == null)
-            financialAccountTransactionTypeDescriptionTransferCache = new FinancialAccountTransactionTypeDescriptionTransferCache();
+            financialAccountTransactionTypeDescriptionTransferCache = CDI.current().select(FinancialAccountTransactionTypeDescriptionTransferCache.class).get();
         
         return financialAccountTransactionTypeDescriptionTransferCache;
     }
     
     public FinancialAccountAliasTypeTransferCache getFinancialAccountAliasTypeTransferCache() {
         if(financialAccountAliasTypeTransferCache == null)
-            financialAccountAliasTypeTransferCache = new FinancialAccountAliasTypeTransferCache();
+            financialAccountAliasTypeTransferCache = CDI.current().select(FinancialAccountAliasTypeTransferCache.class).get();
         
         return financialAccountAliasTypeTransferCache;
     }
     
     public FinancialAccountAliasTypeDescriptionTransferCache getFinancialAccountAliasTypeDescriptionTransferCache() {
         if(financialAccountAliasTypeDescriptionTransferCache == null)
-            financialAccountAliasTypeDescriptionTransferCache = new FinancialAccountAliasTypeDescriptionTransferCache();
+            financialAccountAliasTypeDescriptionTransferCache = CDI.current().select(FinancialAccountAliasTypeDescriptionTransferCache.class).get();
         
         return financialAccountAliasTypeDescriptionTransferCache;
     }
     
     public FinancialAccountRoleTransferCache getFinancialAccountRoleTransferCache() {
         if(financialAccountRoleTransferCache == null)
-            financialAccountRoleTransferCache = new FinancialAccountRoleTransferCache();
+            financialAccountRoleTransferCache = CDI.current().select(FinancialAccountRoleTransferCache.class).get();
         
         return financialAccountRoleTransferCache;
     }
     
     public FinancialAccountTransferCache getFinancialAccountTransferCache() {
         if(financialAccountTransferCache == null)
-            financialAccountTransferCache = new FinancialAccountTransferCache();
+            financialAccountTransferCache = CDI.current().select(FinancialAccountTransferCache.class).get();
         
         return financialAccountTransferCache;
     }
     
     public FinancialAccountAliasTransferCache getFinancialAccountAliasTransferCache() {
         if(financialAccountAliasTransferCache == null)
-            financialAccountAliasTransferCache = new FinancialAccountAliasTransferCache();
+            financialAccountAliasTransferCache = CDI.current().select(FinancialAccountAliasTransferCache.class).get();
         
         return financialAccountAliasTransferCache;
     }
     
     public FinancialAccountTransactionTransferCache getFinancialAccountTransactionTransferCache() {
         if(financialAccountTransactionTransferCache == null)
-            financialAccountTransactionTransferCache = new FinancialAccountTransactionTransferCache();
+            financialAccountTransactionTransferCache = CDI.current().select(FinancialAccountTransactionTransferCache.class).get();
         
         return financialAccountTransactionTransferCache;
     }

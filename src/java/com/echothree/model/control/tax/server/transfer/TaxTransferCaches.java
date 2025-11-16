@@ -17,6 +17,7 @@
 package com.echothree.model.control.tax.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.inject.spi.CDI;
 
 public class TaxTransferCaches
         extends BaseTransferCaches {
@@ -35,7 +36,7 @@ public class TaxTransferCaches
     
     public TaxClassificationTransferCache getTaxClassificationTransferCache() {
         if(taxClassificationTransferCache == null) {
-            taxClassificationTransferCache = new TaxClassificationTransferCache();
+            taxClassificationTransferCache = CDI.current().select(TaxClassificationTransferCache.class).get();
         }
 
         return taxClassificationTransferCache;
@@ -43,7 +44,7 @@ public class TaxTransferCaches
                                                                 
     public TaxClassificationTranslationTransferCache getTaxClassificationTranslationTransferCache() {
         if(taxClassificationTranslationTransferCache == null) {
-            taxClassificationTranslationTransferCache = new TaxClassificationTranslationTransferCache();
+            taxClassificationTranslationTransferCache = CDI.current().select(TaxClassificationTranslationTransferCache.class).get();
         }
 
         return taxClassificationTranslationTransferCache;
@@ -51,7 +52,7 @@ public class TaxTransferCaches
     
     public ItemTaxClassificationTransferCache getItemTaxClassificationTransferCache() {
         if(itemTaxClassificationTransferCache == null) {
-            itemTaxClassificationTransferCache = new ItemTaxClassificationTransferCache();
+            itemTaxClassificationTransferCache = CDI.current().select(ItemTaxClassificationTransferCache.class).get();
         }
 
         return itemTaxClassificationTransferCache;
@@ -59,21 +60,21 @@ public class TaxTransferCaches
 
     public TaxTransferCache getTaxTransferCache() {
         if(taxTransferCache == null)
-            taxTransferCache = new TaxTransferCache();
+            taxTransferCache = CDI.current().select(TaxTransferCache.class).get();
         
         return taxTransferCache;
     }
     
     public TaxDescriptionTransferCache getTaxDescriptionTransferCache() {
         if(taxDescriptionTransferCache == null)
-            taxDescriptionTransferCache = new TaxDescriptionTransferCache();
+            taxDescriptionTransferCache = CDI.current().select(TaxDescriptionTransferCache.class).get();
         
         return taxDescriptionTransferCache;
     }
     
     public GeoCodeTaxTransferCache getGeoCodeTaxTransferCache() {
         if(geoCodeTaxTransferCache == null)
-            geoCodeTaxTransferCache = new GeoCodeTaxTransferCache();
+            geoCodeTaxTransferCache = CDI.current().select(GeoCodeTaxTransferCache.class).get();
         
         return geoCodeTaxTransferCache;
     }

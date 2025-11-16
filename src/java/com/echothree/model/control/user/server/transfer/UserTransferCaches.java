@@ -17,6 +17,7 @@
 package com.echothree.model.control.user.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.inject.spi.CDI;
 
 public class UserTransferCaches
         extends BaseTransferCaches {
@@ -40,77 +41,77 @@ public class UserTransferCaches
     
     public RecoveryAnswerTransferCache getRecoveryAnswerTransferCache() {
         if(recoveryAnswerTransferCache == null)
-            recoveryAnswerTransferCache = new RecoveryAnswerTransferCache();
+            recoveryAnswerTransferCache = CDI.current().select(RecoveryAnswerTransferCache.class).get();
         
         return recoveryAnswerTransferCache;
     }
     
     public RecoveryQuestionTransferCache getRecoveryQuestionTransferCache() {
         if(recoveryQuestionTransferCache == null)
-            recoveryQuestionTransferCache = new RecoveryQuestionTransferCache();
+            recoveryQuestionTransferCache = CDI.current().select(RecoveryQuestionTransferCache.class).get();
         
         return recoveryQuestionTransferCache;
     }
     
     public RecoveryQuestionDescriptionTransferCache getRecoveryQuestionDescriptionTransferCache() {
         if(recoveryQuestionDescriptionTransferCache == null)
-            recoveryQuestionDescriptionTransferCache = new RecoveryQuestionDescriptionTransferCache();
+            recoveryQuestionDescriptionTransferCache = CDI.current().select(RecoveryQuestionDescriptionTransferCache.class).get();
         
         return recoveryQuestionDescriptionTransferCache;
     }
     
     public UserKeyTransferCache getUserKeyTransferCache() {
         if(userKeyTransferCache == null)
-            userKeyTransferCache = new UserKeyTransferCache();
+            userKeyTransferCache = CDI.current().select(UserKeyTransferCache.class).get();
         
         return userKeyTransferCache;
     }
     
     public UserSessionTransferCache getUserSessionTransferCache() {
         if(userSessionTransferCache == null)
-            userSessionTransferCache = new UserSessionTransferCache();
+            userSessionTransferCache = CDI.current().select(UserSessionTransferCache.class).get();
         
         return userSessionTransferCache;
     }
     
     public UserVisitTransferCache getUserVisitTransferCache() {
         if(userVisitTransferCache == null)
-            userVisitTransferCache = new UserVisitTransferCache();
+            userVisitTransferCache = CDI.current().select(UserVisitTransferCache.class).get();
         
         return userVisitTransferCache;
     }
     
     public UserVisitGroupTransferCache getUserVisitGroupTransferCache() {
         if(userVisitGroupTransferCache == null)
-            userVisitGroupTransferCache = new UserVisitGroupTransferCache();
+            userVisitGroupTransferCache = CDI.current().select(UserVisitGroupTransferCache.class).get();
         
         return userVisitGroupTransferCache;
     }
     
     public UserLoginTransferCache getUserLoginTransferCache() {
         if(userLoginTransferCache == null)
-            userLoginTransferCache = new UserLoginTransferCache();
+            userLoginTransferCache = CDI.current().select(UserLoginTransferCache.class).get();
 
         return userLoginTransferCache;
     }
 
     public UserLoginPasswordTransferCache getUserLoginPasswordTransferCache() {
         if(userLoginPasswordTransferCache == null)
-            userLoginPasswordTransferCache = new UserLoginPasswordTransferCache();
+            userLoginPasswordTransferCache = CDI.current().select(UserLoginPasswordTransferCache.class).get();
 
         return userLoginPasswordTransferCache;
     }
 
     public UserLoginPasswordTypeTransferCache getUserLoginPasswordTypeTransferCache() {
         if(userLoginPasswordTypeTransferCache == null)
-            userLoginPasswordTypeTransferCache = new UserLoginPasswordTypeTransferCache();
+            userLoginPasswordTypeTransferCache = CDI.current().select(UserLoginPasswordTypeTransferCache.class).get();
 
         return userLoginPasswordTypeTransferCache;
     }
 
     public UserLoginPasswordEncoderTypeTransferCache getUserLoginPasswordEncoderTypeTransferCache() {
         if(userLoginPasswordEncoderTypeTransferCache == null)
-            userLoginPasswordEncoderTypeTransferCache = new UserLoginPasswordEncoderTypeTransferCache();
+            userLoginPasswordEncoderTypeTransferCache = CDI.current().select(UserLoginPasswordEncoderTypeTransferCache.class).get();
 
         return userLoginPasswordEncoderTypeTransferCache;
     }

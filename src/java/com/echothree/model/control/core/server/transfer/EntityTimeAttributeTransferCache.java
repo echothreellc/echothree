@@ -23,7 +23,9 @@ import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityTimeAttribute;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EntityTimeAttributeTransferCache
         extends BaseCoreTransferCache<EntityTimeAttribute, EntityTimeAttributeTransfer> {
 

@@ -21,7 +21,9 @@ import com.echothree.model.control.core.common.transfer.ComponentVendorTransfer;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ComponentVendorTransferCache
         extends BaseCoreTransferCache<ComponentVendor, ComponentVendorTransfer> {
     

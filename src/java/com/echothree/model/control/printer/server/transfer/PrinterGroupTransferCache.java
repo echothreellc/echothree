@@ -29,7 +29,9 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.UnitOfMeasureUtils;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PrinterGroupTransferCache
         extends BasePrinterTransferCache<PrinterGroup, PrinterGroupTransfer> {
     

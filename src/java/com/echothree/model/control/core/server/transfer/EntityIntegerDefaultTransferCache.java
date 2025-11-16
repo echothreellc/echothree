@@ -21,7 +21,9 @@ import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.EntityIntegerDefault;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EntityIntegerDefaultTransferCache
         extends BaseCoreTransferCache<EntityIntegerDefault, EntityIntegerDefaultTransfer> {
 

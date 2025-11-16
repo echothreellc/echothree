@@ -23,7 +23,9 @@ import com.echothree.model.control.survey.server.control.SurveyControl;
 import com.echothree.model.data.chain.server.entity.ChainActionSurvey;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ChainActionSurveyTransferCache
         extends BaseChainTransferCache<ChainActionSurvey, ChainActionSurveyTransfer> {
 

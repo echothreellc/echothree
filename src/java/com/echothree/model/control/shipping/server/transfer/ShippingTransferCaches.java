@@ -18,6 +18,7 @@ package com.echothree.model.control.shipping.server.transfer;
 
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.inject.spi.CDI;
 
 public class ShippingTransferCaches
         extends BaseTransferCaches {
@@ -33,21 +34,21 @@ public class ShippingTransferCaches
     
     public ShippingMethodDescriptionTransferCache getShippingMethodDescriptionTransferCache() {
         if(shippingMethodDescriptionTransferCache == null)
-            shippingMethodDescriptionTransferCache = new ShippingMethodDescriptionTransferCache();
+            shippingMethodDescriptionTransferCache = CDI.current().select(ShippingMethodDescriptionTransferCache.class).get();
         
         return shippingMethodDescriptionTransferCache;
     }
     
     public ShippingMethodTransferCache getShippingMethodTransferCache() {
         if(shippingMethodTransferCache == null)
-            shippingMethodTransferCache = new ShippingMethodTransferCache();
+            shippingMethodTransferCache = CDI.current().select(ShippingMethodTransferCache.class).get();
         
         return shippingMethodTransferCache;
     }
     
     public ShippingMethodCarrierServiceTransferCache getShippingMethodCarrierServiceTransferCache() {
         if(shippingMethodCarrierServiceTransferCache == null)
-            shippingMethodCarrierServiceTransferCache = new ShippingMethodCarrierServiceTransferCache();
+            shippingMethodCarrierServiceTransferCache = CDI.current().select(ShippingMethodCarrierServiceTransferCache.class).get();
         
         return shippingMethodCarrierServiceTransferCache;
     }

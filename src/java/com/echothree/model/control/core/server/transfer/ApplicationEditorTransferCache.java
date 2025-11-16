@@ -22,7 +22,9 @@ import com.echothree.model.control.core.server.control.EditorControl;
 import com.echothree.model.data.core.server.entity.ApplicationEditor;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ApplicationEditorTransferCache
         extends BaseCoreTransferCache<ApplicationEditor, ApplicationEditorTransfer> {
 

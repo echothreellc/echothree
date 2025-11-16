@@ -17,6 +17,7 @@
 package com.echothree.model.control.subscription.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.inject.spi.CDI;
 
 public class SubscriptionTransferCaches
         extends BaseTransferCaches {
@@ -35,42 +36,42 @@ public class SubscriptionTransferCaches
     
     public SubscriptionKindTransferCache getSubscriptionKindTransferCache() {
         if(subscriptionKindTransferCache == null)
-            subscriptionKindTransferCache = new SubscriptionKindTransferCache();
+            subscriptionKindTransferCache = CDI.current().select(SubscriptionKindTransferCache.class).get();
 
         return subscriptionKindTransferCache;
     }
 
     public SubscriptionKindDescriptionTransferCache getSubscriptionKindDescriptionTransferCache() {
         if(subscriptionKindDescriptionTransferCache == null)
-            subscriptionKindDescriptionTransferCache = new SubscriptionKindDescriptionTransferCache();
+            subscriptionKindDescriptionTransferCache = CDI.current().select(SubscriptionKindDescriptionTransferCache.class).get();
 
         return subscriptionKindDescriptionTransferCache;
     }
 
     public SubscriptionTypeTransferCache getSubscriptionTypeTransferCache() {
         if(subscriptionTypeTransferCache == null)
-            subscriptionTypeTransferCache = new SubscriptionTypeTransferCache();
+            subscriptionTypeTransferCache = CDI.current().select(SubscriptionTypeTransferCache.class).get();
         
         return subscriptionTypeTransferCache;
     }
     
     public SubscriptionTypeDescriptionTransferCache getSubscriptionTypeDescriptionTransferCache() {
         if(subscriptionTypeDescriptionTransferCache == null)
-            subscriptionTypeDescriptionTransferCache = new SubscriptionTypeDescriptionTransferCache();
+            subscriptionTypeDescriptionTransferCache = CDI.current().select(SubscriptionTypeDescriptionTransferCache.class).get();
         
         return subscriptionTypeDescriptionTransferCache;
     }
     
     public SubscriptionTransferCache getSubscriptionTransferCache() {
         if(subscriptionTransferCache == null)
-            subscriptionTransferCache = new SubscriptionTransferCache();
+            subscriptionTransferCache = CDI.current().select(SubscriptionTransferCache.class).get();
         
         return subscriptionTransferCache;
     }
     
     public SubscriptionTypeChainTransferCache getSubscriptionTypeChainTransferCache() {
         if(subscriptionTypeChainTransferCache == null)
-            subscriptionTypeChainTransferCache = new SubscriptionTypeChainTransferCache();
+            subscriptionTypeChainTransferCache = CDI.current().select(SubscriptionTypeChainTransferCache.class).get();
         
         return subscriptionTypeChainTransferCache;
     }

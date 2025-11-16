@@ -17,6 +17,7 @@
 package com.echothree.model.control.campaign.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.inject.spi.CDI;
 
 public class CampaignTransferCaches
         extends BaseTransferCaches {
@@ -40,7 +41,7 @@ public class CampaignTransferCaches
     
     public CampaignTransferCache getCampaignTransferCache() {
         if(campaignTransferCache == null) {
-            campaignTransferCache = new CampaignTransferCache();
+            campaignTransferCache = CDI.current().select(CampaignTransferCache.class).get();
         }
 
         return campaignTransferCache;
@@ -48,7 +49,7 @@ public class CampaignTransferCaches
 
     public CampaignDescriptionTransferCache getCampaignDescriptionTransferCache() {
         if(campaignDescriptionTransferCache == null) {
-            campaignDescriptionTransferCache = new CampaignDescriptionTransferCache();
+            campaignDescriptionTransferCache = CDI.current().select(CampaignDescriptionTransferCache.class).get();
         }
 
         return campaignDescriptionTransferCache;
@@ -56,7 +57,7 @@ public class CampaignTransferCaches
 
     public CampaignSourceTransferCache getCampaignSourceTransferCache() {
         if(campaignSourceTransferCache == null) {
-            campaignSourceTransferCache = new CampaignSourceTransferCache();
+            campaignSourceTransferCache = CDI.current().select(CampaignSourceTransferCache.class).get();
         }
 
         return campaignSourceTransferCache;
@@ -64,7 +65,7 @@ public class CampaignTransferCaches
 
     public CampaignSourceDescriptionTransferCache getCampaignSourceDescriptionTransferCache() {
         if(campaignSourceDescriptionTransferCache == null) {
-            campaignSourceDescriptionTransferCache = new CampaignSourceDescriptionTransferCache();
+            campaignSourceDescriptionTransferCache = CDI.current().select(CampaignSourceDescriptionTransferCache.class).get();
         }
 
         return campaignSourceDescriptionTransferCache;
@@ -72,7 +73,7 @@ public class CampaignTransferCaches
 
     public CampaignMediumTransferCache getCampaignMediumTransferCache() {
         if(campaignMediumTransferCache == null) {
-            campaignMediumTransferCache = new CampaignMediumTransferCache();
+            campaignMediumTransferCache = CDI.current().select(CampaignMediumTransferCache.class).get();
         }
 
         return campaignMediumTransferCache;
@@ -80,7 +81,7 @@ public class CampaignTransferCaches
 
     public CampaignMediumDescriptionTransferCache getCampaignMediumDescriptionTransferCache() {
         if(campaignMediumDescriptionTransferCache == null) {
-            campaignMediumDescriptionTransferCache = new CampaignMediumDescriptionTransferCache();
+            campaignMediumDescriptionTransferCache = CDI.current().select(CampaignMediumDescriptionTransferCache.class).get();
         }
 
         return campaignMediumDescriptionTransferCache;
@@ -88,7 +89,7 @@ public class CampaignTransferCaches
 
     public CampaignTermTransferCache getCampaignTermTransferCache() {
         if(campaignTermTransferCache == null) {
-            campaignTermTransferCache = new CampaignTermTransferCache();
+            campaignTermTransferCache = CDI.current().select(CampaignTermTransferCache.class).get();
         }
 
         return campaignTermTransferCache;
@@ -96,7 +97,7 @@ public class CampaignTransferCaches
 
     public CampaignTermDescriptionTransferCache getCampaignTermDescriptionTransferCache() {
         if(campaignTermDescriptionTransferCache == null) {
-            campaignTermDescriptionTransferCache = new CampaignTermDescriptionTransferCache();
+            campaignTermDescriptionTransferCache = CDI.current().select(CampaignTermDescriptionTransferCache.class).get();
         }
 
         return campaignTermDescriptionTransferCache;
@@ -104,7 +105,7 @@ public class CampaignTransferCaches
 
     public CampaignContentTransferCache getCampaignContentTransferCache() {
         if(campaignContentTransferCache == null) {
-            campaignContentTransferCache = new CampaignContentTransferCache();
+            campaignContentTransferCache = CDI.current().select(CampaignContentTransferCache.class).get();
         }
 
         return campaignContentTransferCache;
@@ -112,7 +113,7 @@ public class CampaignTransferCaches
 
     public CampaignContentDescriptionTransferCache getCampaignContentDescriptionTransferCache() {
         if(campaignContentDescriptionTransferCache == null) {
-            campaignContentDescriptionTransferCache = new CampaignContentDescriptionTransferCache();
+            campaignContentDescriptionTransferCache = CDI.current().select(CampaignContentDescriptionTransferCache.class).get();
         }
 
         return campaignContentDescriptionTransferCache;
@@ -120,7 +121,7 @@ public class CampaignTransferCaches
 
     public UserVisitCampaignTransferCache getUserVisitCampaignTransferCache() {
         if(userVisitCampaignTransferCache == null) {
-            userVisitCampaignTransferCache = new UserVisitCampaignTransferCache();
+            userVisitCampaignTransferCache = CDI.current().select(UserVisitCampaignTransferCache.class).get();
         }
 
         return userVisitCampaignTransferCache;

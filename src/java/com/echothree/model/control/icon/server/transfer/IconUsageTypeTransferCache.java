@@ -21,7 +21,9 @@ import com.echothree.model.control.icon.server.control.IconControl;
 import com.echothree.model.data.icon.server.entity.IconUsageType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class IconUsageTypeTransferCache
         extends BaseIconTransferCache<IconUsageType, IconUsageTypeTransfer> {
 

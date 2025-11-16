@@ -17,6 +17,7 @@
 package com.echothree.model.control.communication.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.inject.spi.CDI;
 
 public class CommunicationTransferCaches
         extends BaseTransferCaches {
@@ -39,70 +40,70 @@ public class CommunicationTransferCaches
     
     public CommunicationEventRoleTypeTransferCache getCommunicationEventRoleTypeTransferCache() {
         if(communicationEventRoleTypeTransferCache == null)
-            communicationEventRoleTypeTransferCache = new CommunicationEventRoleTypeTransferCache();
+            communicationEventRoleTypeTransferCache = CDI.current().select(CommunicationEventRoleTypeTransferCache.class).get();
         
         return communicationEventRoleTypeTransferCache;
     }
     
     public CommunicationEventTypeTransferCache getCommunicationEventTypeTransferCache() {
         if(communicationEventTypeTransferCache == null)
-            communicationEventTypeTransferCache = new CommunicationEventTypeTransferCache();
+            communicationEventTypeTransferCache = CDI.current().select(CommunicationEventTypeTransferCache.class).get();
         
         return communicationEventTypeTransferCache;
     }
     
     public CommunicationEventPurposeTransferCache getCommunicationEventPurposeTransferCache() {
         if(communicationEventPurposeTransferCache == null)
-            communicationEventPurposeTransferCache = new CommunicationEventPurposeTransferCache();
+            communicationEventPurposeTransferCache = CDI.current().select(CommunicationEventPurposeTransferCache.class).get();
         
         return communicationEventPurposeTransferCache;
     }
     
     public CommunicationEventPurposeDescriptionTransferCache getCommunicationEventPurposeDescriptionTransferCache() {
         if(communicationEventPurposeDescriptionTransferCache == null)
-            communicationEventPurposeDescriptionTransferCache = new CommunicationEventPurposeDescriptionTransferCache();
+            communicationEventPurposeDescriptionTransferCache = CDI.current().select(CommunicationEventPurposeDescriptionTransferCache.class).get();
         
         return communicationEventPurposeDescriptionTransferCache;
     }
     
     public CommunicationEventTransferCache getCommunicationEventTransferCache() {
         if(communicationEventTransferCache == null)
-            communicationEventTransferCache = new CommunicationEventTransferCache();
+            communicationEventTransferCache = CDI.current().select(CommunicationEventTransferCache.class).get();
         
         return communicationEventTransferCache;
     }
     
     public CommunicationEventRoleTransferCache getCommunicationEventRoleTransferCache() {
         if(communicationEventRoleTransferCache == null)
-            communicationEventRoleTransferCache = new CommunicationEventRoleTransferCache();
+            communicationEventRoleTransferCache = CDI.current().select(CommunicationEventRoleTransferCache.class).get();
         
         return communicationEventRoleTransferCache;
     }
     
     public CommunicationSourceTypeTransferCache getCommunicationSourceTypeTransferCache() {
         if(communicationSourceTypeTransferCache == null)
-            communicationSourceTypeTransferCache = new CommunicationSourceTypeTransferCache();
+            communicationSourceTypeTransferCache = CDI.current().select(CommunicationSourceTypeTransferCache.class).get();
         
         return communicationSourceTypeTransferCache;
     }
     
     public CommunicationSourceTransferCache getCommunicationSourceTransferCache() {
         if(communicationSourceTransferCache == null)
-            communicationSourceTransferCache = new CommunicationSourceTransferCache();
+            communicationSourceTransferCache = CDI.current().select(CommunicationSourceTransferCache.class).get();
         
         return communicationSourceTransferCache;
     }
     
     public CommunicationSourceDescriptionTransferCache getCommunicationSourceDescriptionTransferCache() {
         if(communicationSourceDescriptionTransferCache == null)
-            communicationSourceDescriptionTransferCache = new CommunicationSourceDescriptionTransferCache();
+            communicationSourceDescriptionTransferCache = CDI.current().select(CommunicationSourceDescriptionTransferCache.class).get();
         
         return communicationSourceDescriptionTransferCache;
     }
     
     public CommunicationEmailSourceTransferCache getCommunicationEmailSourceTransferCache() {
         if(communicationEmailSourceTransferCache == null)
-            communicationEmailSourceTransferCache = new CommunicationEmailSourceTransferCache();
+            communicationEmailSourceTransferCache = CDI.current().select(CommunicationEmailSourceTransferCache.class).get();
         
         return communicationEmailSourceTransferCache;
     }

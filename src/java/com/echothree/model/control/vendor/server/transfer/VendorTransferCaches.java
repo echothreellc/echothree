@@ -17,6 +17,7 @@
 package com.echothree.model.control.vendor.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.inject.spi.CDI;
 
 public class VendorTransferCaches
         extends BaseTransferCaches {
@@ -36,49 +37,49 @@ public class VendorTransferCaches
     
     public VendorTypeTransferCache getVendorTypeTransferCache() {
         if(vendorTypeTransferCache == null)
-            vendorTypeTransferCache = new VendorTypeTransferCache();
+            vendorTypeTransferCache = CDI.current().select(VendorTypeTransferCache.class).get();
         
         return vendorTypeTransferCache;
     }
     
     public VendorTypeDescriptionTransferCache getVendorTypeDescriptionTransferCache() {
         if(vendorTypeDescriptionTransferCache == null)
-            vendorTypeDescriptionTransferCache = new VendorTypeDescriptionTransferCache();
+            vendorTypeDescriptionTransferCache = CDI.current().select(VendorTypeDescriptionTransferCache.class).get();
         
         return vendorTypeDescriptionTransferCache;
     }
     
     public VendorTransferCache getVendorTransferCache() {
         if(vendorTransferCache == null)
-            vendorTransferCache = new VendorTransferCache();
+            vendorTransferCache = CDI.current().select(VendorTransferCache.class).get();
         
         return vendorTransferCache;
     }
     
     public VendorItemTransferCache getVendorItemTransferCache() {
         if(vendorItemTransferCache == null)
-            vendorItemTransferCache = new VendorItemTransferCache();
+            vendorItemTransferCache = CDI.current().select(VendorItemTransferCache.class).get();
         
         return vendorItemTransferCache;
     }
     
     public VendorItemCostTransferCache getVendorItemCostTransferCache() {
         if(vendorItemCostTransferCache == null)
-            vendorItemCostTransferCache = new VendorItemCostTransferCache();
+            vendorItemCostTransferCache = CDI.current().select(VendorItemCostTransferCache.class).get();
         
         return vendorItemCostTransferCache;
     }
     
     public ItemPurchasingCategoryDescriptionTransferCache getItemPurchasingCategoryDescriptionTransferCache() {
         if(itemPurchasingCategoryDescriptionTransferCache == null)
-            itemPurchasingCategoryDescriptionTransferCache = new ItemPurchasingCategoryDescriptionTransferCache();
+            itemPurchasingCategoryDescriptionTransferCache = CDI.current().select(ItemPurchasingCategoryDescriptionTransferCache.class).get();
         
         return itemPurchasingCategoryDescriptionTransferCache;
     }
     
     public ItemPurchasingCategoryTransferCache getItemPurchasingCategoryTransferCache() {
         if(itemPurchasingCategoryTransferCache == null)
-            itemPurchasingCategoryTransferCache = new ItemPurchasingCategoryTransferCache();
+            itemPurchasingCategoryTransferCache = CDI.current().select(ItemPurchasingCategoryTransferCache.class).get();
         
         return itemPurchasingCategoryTransferCache;
     }

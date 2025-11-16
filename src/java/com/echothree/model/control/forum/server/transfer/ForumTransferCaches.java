@@ -17,6 +17,7 @@
 package com.echothree.model.control.forum.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.inject.spi.CDI;
 
 public class ForumTransferCaches
         extends BaseTransferCaches {
@@ -49,140 +50,140 @@ public class ForumTransferCaches
     
     public ForumTypeTransferCache getForumTypeTransferCache() {
         if(forumTypeTransferCache == null)
-            forumTypeTransferCache = new ForumTypeTransferCache();
+            forumTypeTransferCache = CDI.current().select(ForumTypeTransferCache.class).get();
         
         return forumTypeTransferCache;
     }
     
     public ForumMessageTypeTransferCache getForumMessageTypeTransferCache() {
         if(forumMessageTypeTransferCache == null)
-            forumMessageTypeTransferCache = new ForumMessageTypeTransferCache();
+            forumMessageTypeTransferCache = CDI.current().select(ForumMessageTypeTransferCache.class).get();
         
         return forumMessageTypeTransferCache;
     }
     
     public ForumRoleTypeTransferCache getForumRoleTypeTransferCache() {
         if(forumRoleTypeTransferCache == null)
-            forumRoleTypeTransferCache = new ForumRoleTypeTransferCache();
+            forumRoleTypeTransferCache = CDI.current().select(ForumRoleTypeTransferCache.class).get();
         
         return forumRoleTypeTransferCache;
     }
     
     public ForumGroupDescriptionTransferCache getForumGroupDescriptionTransferCache() {
         if(forumGroupDescriptionTransferCache == null)
-            forumGroupDescriptionTransferCache = new ForumGroupDescriptionTransferCache();
+            forumGroupDescriptionTransferCache = CDI.current().select(ForumGroupDescriptionTransferCache.class).get();
         
         return forumGroupDescriptionTransferCache;
     }
     
     public ForumDescriptionTransferCache getForumDescriptionTransferCache() {
         if(forumDescriptionTransferCache == null)
-            forumDescriptionTransferCache = new ForumDescriptionTransferCache();
+            forumDescriptionTransferCache = CDI.current().select(ForumDescriptionTransferCache.class).get();
         
         return forumDescriptionTransferCache;
     }
     
     public ForumGroupTransferCache getForumGroupTransferCache() {
         if(forumGroupTransferCache == null)
-            forumGroupTransferCache = new ForumGroupTransferCache();
+            forumGroupTransferCache = CDI.current().select(ForumGroupTransferCache.class).get();
         
         return forumGroupTransferCache;
     }
     
     public ForumGroupForumTransferCache getForumGroupForumTransferCache() {
         if(forumGroupForumTransferCache == null)
-            forumGroupForumTransferCache = new ForumGroupForumTransferCache();
+            forumGroupForumTransferCache = CDI.current().select(ForumGroupForumTransferCache.class).get();
         
         return forumGroupForumTransferCache;
     }
     
     public ForumTransferCache getForumTransferCache() {
         if(forumTransferCache == null)
-            forumTransferCache = new ForumTransferCache();
+            forumTransferCache = CDI.current().select(ForumTransferCache.class).get();
         
         return forumTransferCache;
     }
     
     public ForumMessagePartTypeTransferCache getForumMessagePartTypeTransferCache() {
         if(forumMessagePartTypeTransferCache == null)
-            forumMessagePartTypeTransferCache = new ForumMessagePartTypeTransferCache();
+            forumMessagePartTypeTransferCache = CDI.current().select(ForumMessagePartTypeTransferCache.class).get();
         
         return forumMessagePartTypeTransferCache;
     }
     
     public ForumMessageTypePartTypeTransferCache getForumMessageTypePartTypeTransferCache() {
         if(forumMessageTypePartTypeTransferCache == null)
-            forumMessageTypePartTypeTransferCache = new ForumMessageTypePartTypeTransferCache();
+            forumMessageTypePartTypeTransferCache = CDI.current().select(ForumMessageTypePartTypeTransferCache.class).get();
         
         return forumMessageTypePartTypeTransferCache;
     }
     
     public ForumMimeTypeTransferCache getForumMimeTypeTransferCache() {
         if(forumMimeTypeTransferCache == null)
-            forumMimeTypeTransferCache = new ForumMimeTypeTransferCache();
+            forumMimeTypeTransferCache = CDI.current().select(ForumMimeTypeTransferCache.class).get();
         
         return forumMimeTypeTransferCache;
     }
     
     public ForumPartyRoleTransferCache getForumPartyRoleTransferCache() {
         if(forumPartyRoleTransferCache == null)
-            forumPartyRoleTransferCache = new ForumPartyRoleTransferCache();
+            forumPartyRoleTransferCache = CDI.current().select(ForumPartyRoleTransferCache.class).get();
         
         return forumPartyRoleTransferCache;
     }
     
     public ForumPartyTypeRoleTransferCache getForumPartyTypeRoleTransferCache() {
         if(forumPartyTypeRoleTransferCache == null)
-            forumPartyTypeRoleTransferCache = new ForumPartyTypeRoleTransferCache();
+            forumPartyTypeRoleTransferCache = CDI.current().select(ForumPartyTypeRoleTransferCache.class).get();
         
         return forumPartyTypeRoleTransferCache;
     }
     
     public ForumForumThreadTransferCache getForumForumThreadTransferCache() {
         if(forumForumThreadTransferCache == null)
-            forumForumThreadTransferCache = new ForumForumThreadTransferCache();
+            forumForumThreadTransferCache = CDI.current().select(ForumForumThreadTransferCache.class).get();
         
         return forumForumThreadTransferCache;
     }
     
     public ForumMessagePartTransferCache getForumMessagePartTransferCache() {
         if(forumMessagePartTransferCache == null)
-            forumMessagePartTransferCache = new ForumMessagePartTransferCache();
+            forumMessagePartTransferCache = CDI.current().select(ForumMessagePartTransferCache.class).get();
         
         return forumMessagePartTransferCache;
     }
     
     public ForumMessageRoleTransferCache getForumMessageRoleTransferCache() {
         if(forumMessageRoleTransferCache == null)
-            forumMessageRoleTransferCache = new ForumMessageRoleTransferCache();
+            forumMessageRoleTransferCache = CDI.current().select(ForumMessageRoleTransferCache.class).get();
         
         return forumMessageRoleTransferCache;
     }
     
     public ForumMessageTransferCache getForumMessageTransferCache() {
         if(forumMessageTransferCache == null)
-            forumMessageTransferCache = new ForumMessageTransferCache();
+            forumMessageTransferCache = CDI.current().select(ForumMessageTransferCache.class).get();
         
         return forumMessageTransferCache;
     }
     
     public ForumMessageAttachmentTransferCache getForumMessageAttachmentTransferCache() {
         if(forumMessageAttachmentTransferCache == null)
-            forumMessageAttachmentTransferCache = new ForumMessageAttachmentTransferCache();
+            forumMessageAttachmentTransferCache = CDI.current().select(ForumMessageAttachmentTransferCache.class).get();
 
         return forumMessageAttachmentTransferCache;
     }
 
     public ForumMessageAttachmentDescriptionTransferCache getForumMessageAttachmentDescriptionTransferCache() {
         if(forumMessageAttachmentDescriptionTransferCache == null)
-            forumMessageAttachmentDescriptionTransferCache = new ForumMessageAttachmentDescriptionTransferCache();
+            forumMessageAttachmentDescriptionTransferCache = CDI.current().select(ForumMessageAttachmentDescriptionTransferCache.class).get();
 
         return forumMessageAttachmentDescriptionTransferCache;
     }
 
     public ForumThreadTransferCache getForumThreadTransferCache() {
         if(forumThreadTransferCache == null)
-            forumThreadTransferCache = new ForumThreadTransferCache();
+            forumThreadTransferCache = CDI.current().select(ForumThreadTransferCache.class).get();
         
         return forumThreadTransferCache;
     }

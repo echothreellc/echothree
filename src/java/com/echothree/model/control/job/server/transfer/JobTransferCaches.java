@@ -17,6 +17,7 @@
 package com.echothree.model.control.job.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.inject.spi.CDI;
 
 public class JobTransferCaches
         extends BaseTransferCaches {
@@ -31,14 +32,14 @@ public class JobTransferCaches
     
     public JobDescriptionTransferCache getJobDescriptionTransferCache() {
         if(jobDescriptionTransferCache == null)
-            jobDescriptionTransferCache = new JobDescriptionTransferCache();
+            jobDescriptionTransferCache = CDI.current().select(JobDescriptionTransferCache.class).get();
         
         return jobDescriptionTransferCache;
     }
     
     public JobTransferCache getJobTransferCache() {
         if(jobTransferCache == null)
-            jobTransferCache = new JobTransferCache();
+            jobTransferCache = CDI.current().select(JobTransferCache.class).get();
         
         return jobTransferCache;
     }

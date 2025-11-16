@@ -18,6 +18,7 @@ package com.echothree.model.control.filter.server.transfer;
 
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.inject.spi.CDI;
 
 public class FilterTransferCaches
         extends BaseTransferCaches {
@@ -49,133 +50,133 @@ public class FilterTransferCaches
     
     public FilterKindTransferCache getFilterKindTransferCache() {
         if(filterKindTransferCache == null)
-            filterKindTransferCache = new FilterKindTransferCache();
+            filterKindTransferCache = CDI.current().select(FilterKindTransferCache.class).get();
 
         return filterKindTransferCache;
     }
 
     public FilterKindDescriptionTransferCache getFilterKindDescriptionTransferCache() {
         if(filterKindDescriptionTransferCache == null)
-            filterKindDescriptionTransferCache = new FilterKindDescriptionTransferCache();
+            filterKindDescriptionTransferCache = CDI.current().select(FilterKindDescriptionTransferCache.class).get();
 
         return filterKindDescriptionTransferCache;
     }
 
     public FilterTypeTransferCache getFilterTypeTransferCache() {
         if(filterTypeTransferCache == null)
-            filterTypeTransferCache = new FilterTypeTransferCache();
+            filterTypeTransferCache = CDI.current().select(FilterTypeTransferCache.class).get();
 
         return filterTypeTransferCache;
     }
 
     public FilterTypeDescriptionTransferCache getFilterTypeDescriptionTransferCache() {
         if(filterTypeDescriptionTransferCache == null)
-            filterTypeDescriptionTransferCache = new FilterTypeDescriptionTransferCache();
+            filterTypeDescriptionTransferCache = CDI.current().select(FilterTypeDescriptionTransferCache.class).get();
 
         return filterTypeDescriptionTransferCache;
     }
 
     public FilterAdjustmentTypeTransferCache getFilterAdjustmentTypeTransferCache() {
         if(filterAdjustmentTypeTransferCache == null)
-            filterAdjustmentTypeTransferCache = new FilterAdjustmentTypeTransferCache();
+            filterAdjustmentTypeTransferCache = CDI.current().select(FilterAdjustmentTypeTransferCache.class).get();
         
         return filterAdjustmentTypeTransferCache;
     }
     
     public FilterAdjustmentSourceTransferCache getFilterAdjustmentSourceTransferCache() {
         if(filterAdjustmentSourceTransferCache == null)
-            filterAdjustmentSourceTransferCache = new FilterAdjustmentSourceTransferCache();
+            filterAdjustmentSourceTransferCache = CDI.current().select(FilterAdjustmentSourceTransferCache.class).get();
         
         return filterAdjustmentSourceTransferCache;
     }
     
     public FilterAdjustmentTransferCache getFilterAdjustmentTransferCache() {
         if(filterAdjustmentTransferCache == null)
-            filterAdjustmentTransferCache = new FilterAdjustmentTransferCache();
+            filterAdjustmentTransferCache = CDI.current().select(FilterAdjustmentTransferCache.class).get();
         
         return filterAdjustmentTransferCache;
     }
     
     public FilterTransferCache getFilterTransferCache() {
         if(filterTransferCache == null)
-            filterTransferCache = new FilterTransferCache();
+            filterTransferCache = CDI.current().select(FilterTransferCache.class).get();
         
         return filterTransferCache;
     }
     
     public FilterDescriptionTransferCache getFilterDescriptionTransferCache() {
         if(filterDescriptionTransferCache == null)
-            filterDescriptionTransferCache = new FilterDescriptionTransferCache();
+            filterDescriptionTransferCache = CDI.current().select(FilterDescriptionTransferCache.class).get();
         
         return filterDescriptionTransferCache;
     }
     
     public FilterAdjustmentDescriptionTransferCache getFilterAdjustmentDescriptionTransferCache() {
         if(filterAdjustmentDescriptionTransferCache == null)
-            filterAdjustmentDescriptionTransferCache = new FilterAdjustmentDescriptionTransferCache();
+            filterAdjustmentDescriptionTransferCache = CDI.current().select(FilterAdjustmentDescriptionTransferCache.class).get();
         
         return filterAdjustmentDescriptionTransferCache;
     }
     
     public FilterAdjustmentAmountTransferCache getFilterAdjustmentAmountTransferCache() {
         if(filterAdjustmentAmountTransferCache == null)
-            filterAdjustmentAmountTransferCache = new FilterAdjustmentAmountTransferCache();
+            filterAdjustmentAmountTransferCache = CDI.current().select(FilterAdjustmentAmountTransferCache.class).get();
         
         return filterAdjustmentAmountTransferCache;
     }
     
     public FilterAdjustmentFixedAmountTransferCache getFilterAdjustmentFixedAmountTransferCache() {
         if(filterAdjustmentFixedAmountTransferCache == null)
-            filterAdjustmentFixedAmountTransferCache = new FilterAdjustmentFixedAmountTransferCache();
+            filterAdjustmentFixedAmountTransferCache = CDI.current().select(FilterAdjustmentFixedAmountTransferCache.class).get();
         
         return filterAdjustmentFixedAmountTransferCache;
     }
     
     public FilterAdjustmentPercentTransferCache getFilterAdjustmentPercentTransferCache() {
         if(filterAdjustmentPercentTransferCache == null)
-            filterAdjustmentPercentTransferCache = new FilterAdjustmentPercentTransferCache();
+            filterAdjustmentPercentTransferCache = CDI.current().select(FilterAdjustmentPercentTransferCache.class).get();
         
         return filterAdjustmentPercentTransferCache;
     }
     
     public FilterStepTransferCache getFilterStepTransferCache() {
         if(filterStepTransferCache == null)
-            filterStepTransferCache = new FilterStepTransferCache();
+            filterStepTransferCache = CDI.current().select(FilterStepTransferCache.class).get();
         
         return filterStepTransferCache;
     }
     
     public FilterStepDescriptionTransferCache getFilterStepDescriptionTransferCache() {
         if(filterStepDescriptionTransferCache == null)
-            filterStepDescriptionTransferCache = new FilterStepDescriptionTransferCache();
+            filterStepDescriptionTransferCache = CDI.current().select(FilterStepDescriptionTransferCache.class).get();
         
         return filterStepDescriptionTransferCache;
     }
     
     public FilterEntranceStepTransferCache getFilterEntranceStepTransferCache() {
         if(filterEntranceStepTransferCache == null)
-            filterEntranceStepTransferCache = new FilterEntranceStepTransferCache();
+            filterEntranceStepTransferCache = CDI.current().select(FilterEntranceStepTransferCache.class).get();
         
         return filterEntranceStepTransferCache;
     }
     
     public FilterStepDestinationTransferCache getFilterStepDestinationTransferCache() {
         if(filterStepDestinationTransferCache == null)
-            filterStepDestinationTransferCache = new FilterStepDestinationTransferCache();
+            filterStepDestinationTransferCache = CDI.current().select(FilterStepDestinationTransferCache.class).get();
         
         return filterStepDestinationTransferCache;
     }
     
     public FilterStepElementTransferCache getFilterStepElementTransferCache() {
         if(filterStepElementTransferCache == null)
-            filterStepElementTransferCache = new FilterStepElementTransferCache();
+            filterStepElementTransferCache = CDI.current().select(FilterStepElementTransferCache.class).get();
         
         return filterStepElementTransferCache;
     }
     
     public FilterStepElementDescriptionTransferCache getFilterStepElementDescriptionTransferCache() {
         if(filterStepElementDescriptionTransferCache == null)
-            filterStepElementDescriptionTransferCache = new FilterStepElementDescriptionTransferCache();
+            filterStepElementDescriptionTransferCache = CDI.current().select(FilterStepElementDescriptionTransferCache.class).get();
         
         return filterStepElementDescriptionTransferCache;
     }

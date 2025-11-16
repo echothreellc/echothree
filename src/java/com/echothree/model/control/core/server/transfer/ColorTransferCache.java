@@ -21,7 +21,9 @@ import com.echothree.model.control.core.server.control.ColorControl;
 import com.echothree.model.data.core.server.entity.Color;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ColorTransferCache
         extends BaseCoreTransferCache<Color, ColorTransfer> {
 

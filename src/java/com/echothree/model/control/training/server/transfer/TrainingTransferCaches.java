@@ -17,6 +17,7 @@
 package com.echothree.model.control.training.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.inject.spi.CDI;
 
 public class TrainingTransferCaches
         extends BaseTransferCaches {
@@ -45,7 +46,7 @@ public class TrainingTransferCaches
     
     public TrainingClassTransferCache getTrainingClassTransferCache() {
         if(trainingClassTransferCache == null) {
-            trainingClassTransferCache = new TrainingClassTransferCache();
+            trainingClassTransferCache = CDI.current().select(TrainingClassTransferCache.class).get();
         }
         
         return trainingClassTransferCache;
@@ -53,7 +54,7 @@ public class TrainingTransferCaches
     
     public TrainingClassTranslationTransferCache getTrainingClassTranslationTransferCache() {
         if(trainingClassTranslationTransferCache == null) {
-            trainingClassTranslationTransferCache = new TrainingClassTranslationTransferCache();
+            trainingClassTranslationTransferCache = CDI.current().select(TrainingClassTranslationTransferCache.class).get();
         }
         
         return trainingClassTranslationTransferCache;
@@ -61,7 +62,7 @@ public class TrainingTransferCaches
     
     public TrainingClassSectionTransferCache getTrainingClassSectionTransferCache() {
         if(trainingClassSectionTransferCache == null) {
-            trainingClassSectionTransferCache = new TrainingClassSectionTransferCache();
+            trainingClassSectionTransferCache = CDI.current().select(TrainingClassSectionTransferCache.class).get();
         }
         
         return trainingClassSectionTransferCache;
@@ -69,7 +70,7 @@ public class TrainingTransferCaches
     
     public TrainingClassSectionTranslationTransferCache getTrainingClassSectionTranslationTransferCache() {
         if(trainingClassSectionTranslationTransferCache == null) {
-            trainingClassSectionTranslationTransferCache = new TrainingClassSectionTranslationTransferCache();
+            trainingClassSectionTranslationTransferCache = CDI.current().select(TrainingClassSectionTranslationTransferCache.class).get();
         }
         
         return trainingClassSectionTranslationTransferCache;
@@ -77,7 +78,7 @@ public class TrainingTransferCaches
     
     public TrainingClassPageTransferCache getTrainingClassPageTransferCache() {
         if(trainingClassPageTransferCache == null) {
-            trainingClassPageTransferCache = new TrainingClassPageTransferCache();
+            trainingClassPageTransferCache = CDI.current().select(TrainingClassPageTransferCache.class).get();
         }
         
         return trainingClassPageTransferCache;
@@ -85,7 +86,7 @@ public class TrainingTransferCaches
     
     public TrainingClassPageTranslationTransferCache getTrainingClassPageTranslationTransferCache() {
         if(trainingClassPageTranslationTransferCache == null) {
-            trainingClassPageTranslationTransferCache = new TrainingClassPageTranslationTransferCache();
+            trainingClassPageTranslationTransferCache = CDI.current().select(TrainingClassPageTranslationTransferCache.class).get();
         }
         
         return trainingClassPageTranslationTransferCache;
@@ -93,7 +94,7 @@ public class TrainingTransferCaches
     
     public TrainingClassQuestionTransferCache getTrainingClassQuestionTransferCache() {
         if(trainingClassQuestionTransferCache == null) {
-            trainingClassQuestionTransferCache = new TrainingClassQuestionTransferCache();
+            trainingClassQuestionTransferCache = CDI.current().select(TrainingClassQuestionTransferCache.class).get();
         }
         
         return trainingClassQuestionTransferCache;
@@ -101,7 +102,7 @@ public class TrainingTransferCaches
     
     public TrainingClassQuestionTranslationTransferCache getTrainingClassQuestionTranslationTransferCache() {
         if(trainingClassQuestionTranslationTransferCache == null) {
-            trainingClassQuestionTranslationTransferCache = new TrainingClassQuestionTranslationTransferCache();
+            trainingClassQuestionTranslationTransferCache = CDI.current().select(TrainingClassQuestionTranslationTransferCache.class).get();
         }
         
         return trainingClassQuestionTranslationTransferCache;
@@ -109,7 +110,7 @@ public class TrainingTransferCaches
     
     public TrainingClassAnswerTransferCache getTrainingClassAnswerTransferCache() {
         if(trainingClassAnswerTransferCache == null) {
-            trainingClassAnswerTransferCache = new TrainingClassAnswerTransferCache();
+            trainingClassAnswerTransferCache = CDI.current().select(TrainingClassAnswerTransferCache.class).get();
         }
         
         return trainingClassAnswerTransferCache;
@@ -117,7 +118,7 @@ public class TrainingTransferCaches
     
     public TrainingClassAnswerTranslationTransferCache getTrainingClassAnswerTranslationTransferCache() {
         if(trainingClassAnswerTranslationTransferCache == null) {
-            trainingClassAnswerTranslationTransferCache = new TrainingClassAnswerTranslationTransferCache();
+            trainingClassAnswerTranslationTransferCache = CDI.current().select(TrainingClassAnswerTranslationTransferCache.class).get();
         }
         
         return trainingClassAnswerTranslationTransferCache;
@@ -125,7 +126,7 @@ public class TrainingTransferCaches
     
     public PartyTrainingClassTransferCache getPartyTrainingClassTransferCache() {
         if(partyTrainingClassTransferCache == null) {
-            partyTrainingClassTransferCache = new PartyTrainingClassTransferCache();
+            partyTrainingClassTransferCache = CDI.current().select(PartyTrainingClassTransferCache.class).get();
         }
         
         return partyTrainingClassTransferCache;
@@ -133,7 +134,7 @@ public class TrainingTransferCaches
     
     public PartyTrainingClassSessionTransferCache getPartyTrainingClassSessionTransferCache() {
         if(partyTrainingClassSessionTransferCache == null) {
-            partyTrainingClassSessionTransferCache = new PartyTrainingClassSessionTransferCache();
+            partyTrainingClassSessionTransferCache = CDI.current().select(PartyTrainingClassSessionTransferCache.class).get();
         }
         
         return partyTrainingClassSessionTransferCache;
@@ -141,7 +142,7 @@ public class TrainingTransferCaches
     
     public PartyTrainingClassSessionSectionTransferCache getPartyTrainingClassSessionSectionTransferCache() {
         if(partyTrainingClassSessionSectionTransferCache == null) {
-            partyTrainingClassSessionSectionTransferCache = new PartyTrainingClassSessionSectionTransferCache();
+            partyTrainingClassSessionSectionTransferCache = CDI.current().select(PartyTrainingClassSessionSectionTransferCache.class).get();
         }
         
         return partyTrainingClassSessionSectionTransferCache;
@@ -149,7 +150,7 @@ public class TrainingTransferCaches
     
     public PartyTrainingClassSessionPageTransferCache getPartyTrainingClassSessionPageTransferCache() {
         if(partyTrainingClassSessionPageTransferCache == null) {
-            partyTrainingClassSessionPageTransferCache = new PartyTrainingClassSessionPageTransferCache();
+            partyTrainingClassSessionPageTransferCache = CDI.current().select(PartyTrainingClassSessionPageTransferCache.class).get();
         }
         
         return partyTrainingClassSessionPageTransferCache;
@@ -157,7 +158,7 @@ public class TrainingTransferCaches
     
     public PartyTrainingClassSessionQuestionTransferCache getPartyTrainingClassSessionQuestionTransferCache() {
         if(partyTrainingClassSessionQuestionTransferCache == null) {
-            partyTrainingClassSessionQuestionTransferCache = new PartyTrainingClassSessionQuestionTransferCache();
+            partyTrainingClassSessionQuestionTransferCache = CDI.current().select(PartyTrainingClassSessionQuestionTransferCache.class).get();
         }
         
         return partyTrainingClassSessionQuestionTransferCache;
@@ -165,7 +166,7 @@ public class TrainingTransferCaches
     
     public PartyTrainingClassSessionAnswerTransferCache getPartyTrainingClassSessionAnswerTransferCache() {
         if(partyTrainingClassSessionAnswerTransferCache == null) {
-            partyTrainingClassSessionAnswerTransferCache = new PartyTrainingClassSessionAnswerTransferCache();
+            partyTrainingClassSessionAnswerTransferCache = CDI.current().select(PartyTrainingClassSessionAnswerTransferCache.class).get();
         }
         
         return partyTrainingClassSessionAnswerTransferCache;

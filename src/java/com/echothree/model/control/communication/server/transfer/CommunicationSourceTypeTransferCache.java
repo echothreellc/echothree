@@ -21,7 +21,9 @@ import com.echothree.model.control.communication.server.control.CommunicationCon
 import com.echothree.model.data.communication.server.entity.CommunicationSourceType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CommunicationSourceTypeTransferCache
         extends BaseCommunicationTransferCache<CommunicationSourceType, CommunicationSourceTypeTransfer> {
 

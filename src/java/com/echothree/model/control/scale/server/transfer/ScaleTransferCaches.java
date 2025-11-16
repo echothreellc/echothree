@@ -17,6 +17,7 @@
 package com.echothree.model.control.scale.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.inject.spi.CDI;
 
 public class ScaleTransferCaches
         extends BaseTransferCaches {
@@ -36,49 +37,49 @@ public class ScaleTransferCaches
     
     public ScaleTypeTransferCache getScaleTypeTransferCache() {
         if(scaleTypeTransferCache == null)
-            scaleTypeTransferCache = new ScaleTypeTransferCache();
+            scaleTypeTransferCache = CDI.current().select(ScaleTypeTransferCache.class).get();
 
         return scaleTypeTransferCache;
     }
 
     public ScaleTypeDescriptionTransferCache getScaleTypeDescriptionTransferCache() {
         if(scaleTypeDescriptionTransferCache == null)
-            scaleTypeDescriptionTransferCache = new ScaleTypeDescriptionTransferCache();
+            scaleTypeDescriptionTransferCache = CDI.current().select(ScaleTypeDescriptionTransferCache.class).get();
 
         return scaleTypeDescriptionTransferCache;
     }
 
     public ScaleTransferCache getScaleTransferCache() {
         if(scaleTransferCache == null)
-            scaleTransferCache = new ScaleTransferCache();
+            scaleTransferCache = CDI.current().select(ScaleTransferCache.class).get();
         
         return scaleTransferCache;
     }
     
     public ScaleDescriptionTransferCache getScaleDescriptionTransferCache() {
         if(scaleDescriptionTransferCache == null)
-            scaleDescriptionTransferCache = new ScaleDescriptionTransferCache();
+            scaleDescriptionTransferCache = CDI.current().select(ScaleDescriptionTransferCache.class).get();
         
         return scaleDescriptionTransferCache;
     }
     
     public ScaleUseTypeTransferCache getScaleUseTypeTransferCache() {
         if(scaleUseTypeTransferCache == null)
-            scaleUseTypeTransferCache = new ScaleUseTypeTransferCache();
+            scaleUseTypeTransferCache = CDI.current().select(ScaleUseTypeTransferCache.class).get();
 
         return scaleUseTypeTransferCache;
     }
 
     public ScaleUseTypeDescriptionTransferCache getScaleUseTypeDescriptionTransferCache() {
         if(scaleUseTypeDescriptionTransferCache == null)
-            scaleUseTypeDescriptionTransferCache = new ScaleUseTypeDescriptionTransferCache();
+            scaleUseTypeDescriptionTransferCache = CDI.current().select(ScaleUseTypeDescriptionTransferCache.class).get();
 
         return scaleUseTypeDescriptionTransferCache;
     }
 
     public PartyScaleUseTransferCache getPartyScaleUseTransferCache() {
         if(partyScaleUseTransferCache == null)
-            partyScaleUseTransferCache = new PartyScaleUseTransferCache();
+            partyScaleUseTransferCache = CDI.current().select(PartyScaleUseTransferCache.class).get();
         
         return partyScaleUseTransferCache;
     }

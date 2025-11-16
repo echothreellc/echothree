@@ -21,7 +21,9 @@ import com.echothree.model.control.shipment.server.ShipmentControl;
 import com.echothree.model.data.shipment.server.entity.ShipmentAliasTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ShipmentAliasTypeDescriptionTransferCache
         extends BaseShipmentDescriptionTransferCache<ShipmentAliasTypeDescription, ShipmentAliasTypeDescriptionTransfer> {
 

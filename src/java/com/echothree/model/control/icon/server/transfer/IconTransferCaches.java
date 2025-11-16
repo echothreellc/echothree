@@ -17,6 +17,7 @@
 package com.echothree.model.control.icon.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.inject.spi.CDI;
 
 public class IconTransferCaches
         extends BaseTransferCaches {
@@ -33,28 +34,28 @@ public class IconTransferCaches
     
     public IconTransferCache getIconTransferCache() {
         if(iconTransferCache == null)
-            iconTransferCache = new IconTransferCache();
+            iconTransferCache = CDI.current().select(IconTransferCache.class).get();
         
         return iconTransferCache;
     }
     
     public IconUsageTypeTransferCache getIconUsageTypeTransferCache() {
         if(iconUsageTypeTransferCache == null)
-            iconUsageTypeTransferCache = new IconUsageTypeTransferCache();
+            iconUsageTypeTransferCache = CDI.current().select(IconUsageTypeTransferCache.class).get();
         
         return iconUsageTypeTransferCache;
     }
     
     public IconUsageTypeDescriptionTransferCache getIconUsageTypeDescriptionTransferCache() {
         if(iconUsageTypeDescriptionTransferCache == null)
-            iconUsageTypeDescriptionTransferCache = new IconUsageTypeDescriptionTransferCache();
+            iconUsageTypeDescriptionTransferCache = CDI.current().select(IconUsageTypeDescriptionTransferCache.class).get();
         
         return iconUsageTypeDescriptionTransferCache;
     }
     
     public IconUsageTransferCache getIconUsageTransferCache() {
         if(iconUsageTransferCache == null)
-            iconUsageTransferCache = new IconUsageTransferCache();
+            iconUsageTransferCache = CDI.current().select(IconUsageTransferCache.class).get();
         
         return iconUsageTransferCache;
     }

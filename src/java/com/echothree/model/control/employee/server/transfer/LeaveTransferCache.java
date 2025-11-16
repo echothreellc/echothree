@@ -29,7 +29,9 @@ import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.UnitOfMeasureUtils;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class LeaveTransferCache
         extends BaseEmployeeTransferCache<Leave, LeaveTransfer> {
 

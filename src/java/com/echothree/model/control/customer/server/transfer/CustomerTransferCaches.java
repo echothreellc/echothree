@@ -17,6 +17,7 @@
 package com.echothree.model.control.customer.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.inject.spi.CDI;
 
 public class CustomerTransferCaches
         extends BaseTransferCaches {
@@ -34,35 +35,35 @@ public class CustomerTransferCaches
     
     public CustomerTypeTransferCache getCustomerTypeTransferCache() {
         if(customerTypeTransferCache == null)
-            customerTypeTransferCache = new CustomerTypeTransferCache();
+            customerTypeTransferCache = CDI.current().select(CustomerTypeTransferCache.class).get();
         
         return customerTypeTransferCache;
     }
     
     public CustomerTypeDescriptionTransferCache getCustomerTypeDescriptionTransferCache() {
         if(customerTypeDescriptionTransferCache == null)
-            customerTypeDescriptionTransferCache = new CustomerTypeDescriptionTransferCache();
+            customerTypeDescriptionTransferCache = CDI.current().select(CustomerTypeDescriptionTransferCache.class).get();
         
         return customerTypeDescriptionTransferCache;
     }
     
     public CustomerTransferCache getCustomerTransferCache() {
         if(customerTransferCache == null)
-            customerTransferCache = new CustomerTransferCache();
+            customerTransferCache = CDI.current().select(CustomerTransferCache.class).get();
         
         return customerTransferCache;
     }
     
     public CustomerTypePaymentMethodTransferCache getCustomerTypePaymentMethodTransferCache() {
         if(customerTypePaymentMethodTransferCache == null)
-            customerTypePaymentMethodTransferCache = new CustomerTypePaymentMethodTransferCache();
+            customerTypePaymentMethodTransferCache = CDI.current().select(CustomerTypePaymentMethodTransferCache.class).get();
         
         return customerTypePaymentMethodTransferCache;
     }
     
     public CustomerTypeShippingMethodTransferCache getCustomerTypeShippingMethodTransferCache() {
         if(customerTypeShippingMethodTransferCache == null)
-            customerTypeShippingMethodTransferCache = new CustomerTypeShippingMethodTransferCache();
+            customerTypeShippingMethodTransferCache = CDI.current().select(CustomerTypeShippingMethodTransferCache.class).get();
         
         return customerTypeShippingMethodTransferCache;
     }

@@ -24,7 +24,9 @@ import com.echothree.model.data.party.server.entity.Profile;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.DateUtils;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ProfileTransferCache
         extends BasePartyTransferCache<Profile, ProfileTransfer> {
 

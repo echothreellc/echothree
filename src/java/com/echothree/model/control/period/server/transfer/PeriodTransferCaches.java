@@ -17,6 +17,7 @@
 package com.echothree.model.control.period.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.inject.spi.CDI;
 
 public class PeriodTransferCaches
         extends BaseTransferCaches {
@@ -35,42 +36,42 @@ public class PeriodTransferCaches
     
     public PeriodKindTransferCache getPeriodKindTransferCache() {
         if(periodKindTransferCache == null)
-            periodKindTransferCache = new PeriodKindTransferCache();
+            periodKindTransferCache = CDI.current().select(PeriodKindTransferCache.class).get();
         
         return periodKindTransferCache;
     }
 
     public PeriodKindDescriptionTransferCache getPeriodKindDescriptionTransferCache() {
         if(periodKindDescriptionTransferCache == null)
-            periodKindDescriptionTransferCache = new PeriodKindDescriptionTransferCache();
+            periodKindDescriptionTransferCache = CDI.current().select(PeriodKindDescriptionTransferCache.class).get();
         
         return periodKindDescriptionTransferCache;
     }
     
     public PeriodTypeTransferCache getPeriodTypeTransferCache() {
         if(periodTypeTransferCache == null)
-            periodTypeTransferCache = new PeriodTypeTransferCache();
+            periodTypeTransferCache = CDI.current().select(PeriodTypeTransferCache.class).get();
         
         return periodTypeTransferCache;
     }
     
     public PeriodTypeDescriptionTransferCache getPeriodTypeDescriptionTransferCache() {
         if(periodTypeDescriptionTransferCache == null)
-            periodTypeDescriptionTransferCache = new PeriodTypeDescriptionTransferCache();
+            periodTypeDescriptionTransferCache = CDI.current().select(PeriodTypeDescriptionTransferCache.class).get();
         
         return periodTypeDescriptionTransferCache;
     }
     
     public PeriodTransferCache getPeriodTransferCache() {
         if(periodTransferCache == null)
-            periodTransferCache = new PeriodTransferCache();
+            periodTransferCache = CDI.current().select(PeriodTransferCache.class).get();
         
         return periodTransferCache;
     }
     
     public PeriodDescriptionTransferCache getPeriodDescriptionTransferCache() {
         if(periodDescriptionTransferCache == null)
-            periodDescriptionTransferCache = new PeriodDescriptionTransferCache();
+            periodDescriptionTransferCache = CDI.current().select(PeriodDescriptionTransferCache.class).get();
         
         return periodDescriptionTransferCache;
     }

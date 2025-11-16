@@ -18,6 +18,7 @@ package com.echothree.model.control.order.server.transfer;
 
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.inject.spi.CDI;
 
 public class OrderTransferCaches
         extends BaseTransferCaches {
@@ -49,133 +50,133 @@ public class OrderTransferCaches
     
     public OrderTypeTransferCache getOrderTypeTransferCache() {
         if(orderTypeTransferCache == null)
-            orderTypeTransferCache = new OrderTypeTransferCache();
+            orderTypeTransferCache = CDI.current().select(OrderTypeTransferCache.class).get();
         
         return orderTypeTransferCache;
     }
     
     public OrderTypeDescriptionTransferCache getOrderTypeDescriptionTransferCache() {
         if(orderTypeDescriptionTransferCache == null)
-            orderTypeDescriptionTransferCache = new OrderTypeDescriptionTransferCache();
+            orderTypeDescriptionTransferCache = CDI.current().select(OrderTypeDescriptionTransferCache.class).get();
 
         return orderTypeDescriptionTransferCache;
     }
 
     public OrderTimeTypeTransferCache getOrderTimeTypeTransferCache() {
         if(orderTimeTypeTransferCache == null)
-            orderTimeTypeTransferCache = new OrderTimeTypeTransferCache();
+            orderTimeTypeTransferCache = CDI.current().select(OrderTimeTypeTransferCache.class).get();
 
         return orderTimeTypeTransferCache;
     }
 
     public OrderTimeTypeDescriptionTransferCache getOrderTimeTypeDescriptionTransferCache() {
         if(orderTimeTypeDescriptionTransferCache == null)
-            orderTimeTypeDescriptionTransferCache = new OrderTimeTypeDescriptionTransferCache();
+            orderTimeTypeDescriptionTransferCache = CDI.current().select(OrderTimeTypeDescriptionTransferCache.class).get();
 
         return orderTimeTypeDescriptionTransferCache;
     }
 
     public OrderPaymentPreferenceTransferCache getOrderPaymentPreferenceTransferCache() {
         if(orderPaymentPreferenceTransferCache == null)
-            orderPaymentPreferenceTransferCache = new OrderPaymentPreferenceTransferCache();
+            orderPaymentPreferenceTransferCache = CDI.current().select(OrderPaymentPreferenceTransferCache.class).get();
 
         return orderPaymentPreferenceTransferCache;
     }
 
     public OrderShipmentGroupTransferCache getOrderShipmentGroupTransferCache() {
         if(orderShipmentGroupTransferCache == null)
-            orderShipmentGroupTransferCache = new OrderShipmentGroupTransferCache();
+            orderShipmentGroupTransferCache = CDI.current().select(OrderShipmentGroupTransferCache.class).get();
 
         return orderShipmentGroupTransferCache;
     }
 
     public OrderTimeTransferCache getOrderTimeTransferCache() {
         if(orderTimeTransferCache == null)
-            orderTimeTransferCache = new OrderTimeTransferCache();
+            orderTimeTransferCache = CDI.current().select(OrderTimeTransferCache.class).get();
 
         return orderTimeTransferCache;
     }
 
     public OrderLineTimeTransferCache getOrderLineTimeTransferCache() {
         if(orderLineTimeTransferCache == null)
-            orderLineTimeTransferCache = new OrderLineTimeTransferCache();
+            orderLineTimeTransferCache = CDI.current().select(OrderLineTimeTransferCache.class).get();
 
         return orderLineTimeTransferCache;
     }
 
     public OrderAdjustmentTypeTransferCache getOrderAdjustmentTypeTransferCache() {
         if(orderAdjustmentTypeTransferCache == null)
-            orderAdjustmentTypeTransferCache = new OrderAdjustmentTypeTransferCache();
+            orderAdjustmentTypeTransferCache = CDI.current().select(OrderAdjustmentTypeTransferCache.class).get();
 
         return orderAdjustmentTypeTransferCache;
     }
 
     public OrderAdjustmentTypeDescriptionTransferCache getOrderAdjustmentTypeDescriptionTransferCache() {
         if(orderAdjustmentTypeDescriptionTransferCache == null)
-            orderAdjustmentTypeDescriptionTransferCache = new OrderAdjustmentTypeDescriptionTransferCache();
+            orderAdjustmentTypeDescriptionTransferCache = CDI.current().select(OrderAdjustmentTypeDescriptionTransferCache.class).get();
 
         return orderAdjustmentTypeDescriptionTransferCache;
     }
 
     public OrderLineAdjustmentTypeTransferCache getOrderLineAdjustmentTypeTransferCache() {
         if(orderLineAdjustmentTypeTransferCache == null)
-            orderLineAdjustmentTypeTransferCache = new OrderLineAdjustmentTypeTransferCache();
+            orderLineAdjustmentTypeTransferCache = CDI.current().select(OrderLineAdjustmentTypeTransferCache.class).get();
 
         return orderLineAdjustmentTypeTransferCache;
     }
 
     public OrderLineAdjustmentTypeDescriptionTransferCache getOrderLineAdjustmentTypeDescriptionTransferCache() {
         if(orderLineAdjustmentTypeDescriptionTransferCache == null)
-            orderLineAdjustmentTypeDescriptionTransferCache = new OrderLineAdjustmentTypeDescriptionTransferCache();
+            orderLineAdjustmentTypeDescriptionTransferCache = CDI.current().select(OrderLineAdjustmentTypeDescriptionTransferCache.class).get();
 
         return orderLineAdjustmentTypeDescriptionTransferCache;
     }
 
     public OrderRoleTypeTransferCache getOrderRoleTypeTransferCache() {
         if(orderRoleTypeTransferCache == null)
-            orderRoleTypeTransferCache = new OrderRoleTypeTransferCache();
+            orderRoleTypeTransferCache = CDI.current().select(OrderRoleTypeTransferCache.class).get();
 
         return orderRoleTypeTransferCache;
     }
 
     public OrderRoleTransferCache getOrderRoleTransferCache() {
         if(orderRoleTransferCache == null)
-            orderRoleTransferCache = new OrderRoleTransferCache();
+            orderRoleTransferCache = CDI.current().select(OrderRoleTransferCache.class).get();
 
         return orderRoleTransferCache;
     }
 
     public OrderAliasTypeTransferCache getOrderAliasTypeTransferCache() {
         if(orderAliasTypeTransferCache == null)
-            orderAliasTypeTransferCache = new OrderAliasTypeTransferCache();
+            orderAliasTypeTransferCache = CDI.current().select(OrderAliasTypeTransferCache.class).get();
 
         return orderAliasTypeTransferCache;
     }
 
     public OrderAliasTypeDescriptionTransferCache getOrderAliasTypeDescriptionTransferCache() {
         if(orderAliasTypeDescriptionTransferCache == null)
-            orderAliasTypeDescriptionTransferCache = new OrderAliasTypeDescriptionTransferCache();
+            orderAliasTypeDescriptionTransferCache = CDI.current().select(OrderAliasTypeDescriptionTransferCache.class).get();
 
         return orderAliasTypeDescriptionTransferCache;
     }
 
     public OrderAliasTransferCache getOrderAliasTransferCache() {
         if(orderAliasTransferCache == null)
-            orderAliasTransferCache = new OrderAliasTransferCache();
+            orderAliasTransferCache = CDI.current().select(OrderAliasTransferCache.class).get();
 
         return orderAliasTransferCache;
     }
 
     public OrderPriorityTransferCache getOrderPriorityTransferCache() {
         if(orderPriorityTransferCache == null)
-            orderPriorityTransferCache = new OrderPriorityTransferCache();
+            orderPriorityTransferCache = CDI.current().select(OrderPriorityTransferCache.class).get();
 
         return orderPriorityTransferCache;
     }
 
     public OrderPriorityDescriptionTransferCache getOrderPriorityDescriptionTransferCache() {
         if(orderPriorityDescriptionTransferCache == null)
-            orderPriorityDescriptionTransferCache = new OrderPriorityDescriptionTransferCache();
+            orderPriorityDescriptionTransferCache = CDI.current().select(OrderPriorityDescriptionTransferCache.class).get();
 
         return orderPriorityDescriptionTransferCache;
     }

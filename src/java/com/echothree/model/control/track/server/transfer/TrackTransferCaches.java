@@ -17,6 +17,7 @@
 package com.echothree.model.control.track.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.inject.spi.CDI;
 
 public class TrackTransferCaches
         extends BaseTransferCaches {
@@ -32,7 +33,7 @@ public class TrackTransferCaches
     
     public TrackTransferCache getTrackTransferCache() {
         if(trackTransferCache == null) {
-            trackTransferCache = new TrackTransferCache();
+            trackTransferCache = CDI.current().select(TrackTransferCache.class).get();
         }
 
         return trackTransferCache;
@@ -40,7 +41,7 @@ public class TrackTransferCaches
 
     public TrackDescriptionTransferCache getTrackDescriptionTransferCache() {
         if(trackDescriptionTransferCache == null) {
-            trackDescriptionTransferCache = new TrackDescriptionTransferCache();
+            trackDescriptionTransferCache = CDI.current().select(TrackDescriptionTransferCache.class).get();
         }
 
         return trackDescriptionTransferCache;
@@ -48,7 +49,7 @@ public class TrackTransferCaches
 
     public UserVisitTrackTransferCache getUserVisitTrackTransferCache() {
         if(userVisitTrackTransferCache == null) {
-            userVisitTrackTransferCache = new UserVisitTrackTransferCache();
+            userVisitTrackTransferCache = CDI.current().select(UserVisitTrackTransferCache.class).get();
         }
 
         return userVisitTrackTransferCache;

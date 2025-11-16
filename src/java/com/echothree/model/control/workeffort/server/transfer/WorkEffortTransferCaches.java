@@ -17,6 +17,7 @@
 package com.echothree.model.control.workeffort.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.inject.spi.CDI;
 
 public class WorkEffortTransferCaches
         extends BaseTransferCaches {
@@ -34,35 +35,35 @@ public class WorkEffortTransferCaches
     
     public WorkEffortTransferCache getWorkEffortTransferCache() {
         if(workEffortTransferCache == null)
-            workEffortTransferCache = new WorkEffortTransferCache();
+            workEffortTransferCache = CDI.current().select(WorkEffortTransferCache.class).get();
         
         return workEffortTransferCache;
     }
     
     public WorkEffortTypeTransferCache getWorkEffortTypeTransferCache() {
         if(workEffortTypeTransferCache == null)
-            workEffortTypeTransferCache = new WorkEffortTypeTransferCache();
+            workEffortTypeTransferCache = CDI.current().select(WorkEffortTypeTransferCache.class).get();
         
         return workEffortTypeTransferCache;
     }
     
     public WorkEffortTypeDescriptionTransferCache getWorkEffortTypeDescriptionTransferCache() {
         if(workEffortTypeDescriptionTransferCache == null)
-            workEffortTypeDescriptionTransferCache = new WorkEffortTypeDescriptionTransferCache();
+            workEffortTypeDescriptionTransferCache = CDI.current().select(WorkEffortTypeDescriptionTransferCache.class).get();
         
         return workEffortTypeDescriptionTransferCache;
     }
     
     public WorkEffortScopeTransferCache getWorkEffortScopeTransferCache() {
         if(workEffortScopeTransferCache == null)
-            workEffortScopeTransferCache = new WorkEffortScopeTransferCache();
+            workEffortScopeTransferCache = CDI.current().select(WorkEffortScopeTransferCache.class).get();
         
         return workEffortScopeTransferCache;
     }
     
     public WorkEffortScopeDescriptionTransferCache getWorkEffortScopeDescriptionTransferCache() {
         if(workEffortScopeDescriptionTransferCache == null)
-            workEffortScopeDescriptionTransferCache = new WorkEffortScopeDescriptionTransferCache();
+            workEffortScopeDescriptionTransferCache = CDI.current().select(WorkEffortScopeDescriptionTransferCache.class).get();
         
         return workEffortScopeDescriptionTransferCache;
     }

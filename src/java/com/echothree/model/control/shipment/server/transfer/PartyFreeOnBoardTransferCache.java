@@ -22,7 +22,9 @@ import com.echothree.model.control.shipment.server.control.FreeOnBoardControl;
 import com.echothree.model.data.shipment.server.entity.PartyFreeOnBoard;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PartyFreeOnBoardTransferCache
         extends BaseShipmentTransferCache<PartyFreeOnBoard, PartyFreeOnBoardTransfer> {
 

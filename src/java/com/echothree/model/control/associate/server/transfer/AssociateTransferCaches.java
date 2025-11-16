@@ -17,6 +17,7 @@
 package com.echothree.model.control.associate.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.inject.spi.CDI;
 
 public class AssociateTransferCaches
         extends BaseTransferCaches {
@@ -34,35 +35,35 @@ public class AssociateTransferCaches
     
     public AssociateProgramTransferCache getAssociateProgramTransferCache() {
         if(associateProgramTransferCache == null)
-            associateProgramTransferCache = new AssociateProgramTransferCache();
+            associateProgramTransferCache = CDI.current().select(AssociateProgramTransferCache.class).get();
         
         return associateProgramTransferCache;
     }
     
     public AssociateProgramDescriptionTransferCache getAssociateProgramDescriptionTransferCache() {
         if(associateProgramDescriptionTransferCache == null)
-            associateProgramDescriptionTransferCache = new AssociateProgramDescriptionTransferCache();
+            associateProgramDescriptionTransferCache = CDI.current().select(AssociateProgramDescriptionTransferCache.class).get();
         
         return associateProgramDescriptionTransferCache;
     }
     
     public AssociateTransferCache getAssociateTransferCache() {
         if(associateTransferCache == null)
-            associateTransferCache = new AssociateTransferCache();
+            associateTransferCache = CDI.current().select(AssociateTransferCache.class).get();
         
         return associateTransferCache;
     }
     
     public AssociatePartyContactMechanismTransferCache getAssociatePartyContactMechanismTransferCache() {
         if(associatePartyContactMechanismTransferCache == null)
-            associatePartyContactMechanismTransferCache = new AssociatePartyContactMechanismTransferCache();
+            associatePartyContactMechanismTransferCache = CDI.current().select(AssociatePartyContactMechanismTransferCache.class).get();
         
         return associatePartyContactMechanismTransferCache;
     }
     
     public AssociateReferralTransferCache getAssociateReferralTransferCache() {
         if(associateReferralTransferCache == null)
-            associateReferralTransferCache = new AssociateReferralTransferCache();
+            associateReferralTransferCache = CDI.current().select(AssociateReferralTransferCache.class).get();
         
         return associateReferralTransferCache;
     }

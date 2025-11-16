@@ -21,7 +21,9 @@ import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.data.accounting.server.entity.GlAccountCategory;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class GlAccountCategoryTransferCache
         extends BaseAccountingTransferCache<GlAccountCategory, GlAccountCategoryTransfer> {
 

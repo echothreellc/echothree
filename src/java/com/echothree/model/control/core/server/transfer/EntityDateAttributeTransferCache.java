@@ -24,7 +24,9 @@ import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.DateUtils;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EntityDateAttributeTransferCache
         extends BaseCoreTransferCache<EntityDateAttribute, EntityDateAttributeTransfer> {
 

@@ -26,7 +26,9 @@ import com.echothree.model.control.payment.server.control.PaymentProcessorContro
 import com.echothree.model.data.payment.server.entity.PaymentMethod;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PaymentMethodTransferCache
         extends BasePaymentTransferCache<PaymentMethod, PaymentMethodTransfer> {
 

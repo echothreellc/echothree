@@ -21,7 +21,9 @@ import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.data.filter.server.entity.FilterStepDestination;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class FilterStepDestinationTransferCache
         extends BaseFilterTransferCache<FilterStepDestination, FilterStepDestinationTransfer> {
 

@@ -21,7 +21,9 @@ import com.echothree.model.control.user.common.transfer.UserKeyTransfer;
 import com.echothree.model.data.user.server.entity.UserKey;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class UserKeyTransferCache
         extends BaseUserTransferCache<UserKey, UserKeyTransfer> {
     

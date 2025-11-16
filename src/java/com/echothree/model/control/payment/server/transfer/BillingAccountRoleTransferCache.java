@@ -23,7 +23,9 @@ import com.echothree.model.control.payment.server.control.BillingControl;
 import com.echothree.model.data.payment.server.entity.BillingAccountRole;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class BillingAccountRoleTransferCache
         extends BasePaymentTransferCache<BillingAccountRole, BillingAccountRoleTransfer> {
 

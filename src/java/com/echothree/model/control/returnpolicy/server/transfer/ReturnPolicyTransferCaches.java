@@ -17,6 +17,7 @@
 package com.echothree.model.control.returnpolicy.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.inject.spi.CDI;
 
 public class ReturnPolicyTransferCaches
         extends BaseTransferCaches {
@@ -41,84 +42,84 @@ public class ReturnPolicyTransferCaches
     
     public ReturnPolicyTransferCache getReturnPolicyTransferCache() {
         if(returnPolicyTransferCache == null)
-            returnPolicyTransferCache = new ReturnPolicyTransferCache();
+            returnPolicyTransferCache = CDI.current().select(ReturnPolicyTransferCache.class).get();
         
         return returnPolicyTransferCache;
     }
     
     public ReturnPolicyTranslationTransferCache getReturnPolicyTranslationTransferCache() {
         if(returnPolicyTranslationTransferCache == null)
-            returnPolicyTranslationTransferCache = new ReturnPolicyTranslationTransferCache();
+            returnPolicyTranslationTransferCache = CDI.current().select(ReturnPolicyTranslationTransferCache.class).get();
         
         return returnPolicyTranslationTransferCache;
     }
     
     public PartyReturnPolicyTransferCache getPartyReturnPolicyTransferCache() {
         if(partyReturnPolicyTransferCache == null)
-            partyReturnPolicyTransferCache = new PartyReturnPolicyTransferCache();
+            partyReturnPolicyTransferCache = CDI.current().select(PartyReturnPolicyTransferCache.class).get();
         
         return partyReturnPolicyTransferCache;
     }
     
     public ReturnKindDescriptionTransferCache getReturnKindDescriptionTransferCache() {
         if(returnKindDescriptionTransferCache == null)
-            returnKindDescriptionTransferCache = new ReturnKindDescriptionTransferCache();
+            returnKindDescriptionTransferCache = CDI.current().select(ReturnKindDescriptionTransferCache.class).get();
         
         return returnKindDescriptionTransferCache;
     }
     
     public ReturnReasonDescriptionTransferCache getReturnReasonDescriptionTransferCache() {
         if(returnReasonDescriptionTransferCache == null)
-            returnReasonDescriptionTransferCache = new ReturnReasonDescriptionTransferCache();
+            returnReasonDescriptionTransferCache = CDI.current().select(ReturnReasonDescriptionTransferCache.class).get();
         
         return returnReasonDescriptionTransferCache;
     }
     
     public ReturnTypeDescriptionTransferCache getReturnTypeDescriptionTransferCache() {
         if(returnTypeDescriptionTransferCache == null)
-            returnTypeDescriptionTransferCache = new ReturnTypeDescriptionTransferCache();
+            returnTypeDescriptionTransferCache = CDI.current().select(ReturnTypeDescriptionTransferCache.class).get();
         
         return returnTypeDescriptionTransferCache;
     }
     
     public ReturnKindTransferCache getReturnKindTransferCache() {
         if(returnKindTransferCache == null)
-            returnKindTransferCache = new ReturnKindTransferCache();
+            returnKindTransferCache = CDI.current().select(ReturnKindTransferCache.class).get();
         
         return returnKindTransferCache;
     }
     
     public ReturnReasonTransferCache getReturnReasonTransferCache() {
         if(returnReasonTransferCache == null)
-            returnReasonTransferCache = new ReturnReasonTransferCache();
+            returnReasonTransferCache = CDI.current().select(ReturnReasonTransferCache.class).get();
         
         return returnReasonTransferCache;
     }
     
     public ReturnTypeTransferCache getReturnTypeTransferCache() {
         if(returnTypeTransferCache == null)
-            returnTypeTransferCache = new ReturnTypeTransferCache();
+            returnTypeTransferCache = CDI.current().select(ReturnTypeTransferCache.class).get();
         
         return returnTypeTransferCache;
     }
     
     public ReturnPolicyReasonTransferCache getReturnPolicyReasonTransferCache() {
         if(returnPolicyReasonTransferCache == null)
-            returnPolicyReasonTransferCache = new ReturnPolicyReasonTransferCache();
+            returnPolicyReasonTransferCache = CDI.current().select(ReturnPolicyReasonTransferCache.class).get();
         
         return returnPolicyReasonTransferCache;
     }
     
     public ReturnReasonTypeTransferCache getReturnReasonTypeTransferCache() {
         if(returnReasonTypeTransferCache == null)
-            returnReasonTypeTransferCache = new ReturnReasonTypeTransferCache();
+            returnReasonTypeTransferCache = CDI.current().select(ReturnReasonTypeTransferCache.class).get();
         
         return returnReasonTypeTransferCache;
     }
     
     public ReturnTypeShippingMethodTransferCache getReturnTypeShippingMethodTransferCache() {
         if(returnTypeShippingMethodTransferCache == null)
-            returnTypeShippingMethodTransferCache = new ReturnTypeShippingMethodTransferCache();
+            returnTypeShippingMethodTransferCache = CDI.current().select(ReturnTypeShippingMethodTransferCache.class).get();
         
         return returnTypeShippingMethodTransferCache;
     }

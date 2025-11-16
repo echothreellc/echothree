@@ -21,7 +21,9 @@ import com.echothree.model.control.geo.common.GeoOptions;
 import com.echothree.model.control.geo.common.transfer.CountyTransfer;
 import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CountyTransferCache
         extends BaseGeoCodeTransferCache<GeoCode, CountyTransfer> {
 

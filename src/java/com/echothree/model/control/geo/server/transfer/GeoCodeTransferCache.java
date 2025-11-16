@@ -20,7 +20,9 @@ import com.echothree.model.control.geo.common.GeoOptions;
 import com.echothree.model.control.geo.common.transfer.GeoCodeTransfer;
 import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class GeoCodeTransferCache
         extends BaseGeoCodeTransferCache<GeoCode, GeoCodeTransfer> {
 

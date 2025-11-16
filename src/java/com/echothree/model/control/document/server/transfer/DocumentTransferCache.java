@@ -24,7 +24,9 @@ import com.echothree.model.data.document.server.entity.Document;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.persistence.type.ByteArray;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class DocumentTransferCache
         extends BaseDocumentTransferCache<Document, DocumentTransfer> {
 

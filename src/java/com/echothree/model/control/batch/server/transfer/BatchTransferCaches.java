@@ -17,6 +17,7 @@
 package com.echothree.model.control.batch.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.inject.spi.CDI;
 
 public class BatchTransferCaches
         extends BaseTransferCaches {
@@ -37,56 +38,56 @@ public class BatchTransferCaches
     
     public BatchTypeTransferCache getBatchTypeTransferCache() {
         if(batchTypeTransferCache == null)
-            batchTypeTransferCache = new BatchTypeTransferCache();
+            batchTypeTransferCache = CDI.current().select(BatchTypeTransferCache.class).get();
         
         return batchTypeTransferCache;
     }
     
     public BatchTypeDescriptionTransferCache getBatchTypeDescriptionTransferCache() {
         if(batchTypeDescriptionTransferCache == null)
-            batchTypeDescriptionTransferCache = new BatchTypeDescriptionTransferCache();
+            batchTypeDescriptionTransferCache = CDI.current().select(BatchTypeDescriptionTransferCache.class).get();
 
         return batchTypeDescriptionTransferCache;
     }
 
     public BatchTypeEntityTypeTransferCache getBatchTypeEntityTypeTransferCache() {
         if(batchTypeEntityTypeTransferCache == null)
-            batchTypeEntityTypeTransferCache = new BatchTypeEntityTypeTransferCache();
+            batchTypeEntityTypeTransferCache = CDI.current().select(BatchTypeEntityTypeTransferCache.class).get();
 
         return batchTypeEntityTypeTransferCache;
     }
 
     public BatchAliasTypeTransferCache getBatchAliasTypeTransferCache() {
         if(batchAliasTypeTransferCache == null)
-            batchAliasTypeTransferCache = new BatchAliasTypeTransferCache();
+            batchAliasTypeTransferCache = CDI.current().select(BatchAliasTypeTransferCache.class).get();
         
         return batchAliasTypeTransferCache;
     }
     
     public BatchAliasTypeDescriptionTransferCache getBatchAliasTypeDescriptionTransferCache() {
         if(batchAliasTypeDescriptionTransferCache == null)
-            batchAliasTypeDescriptionTransferCache = new BatchAliasTypeDescriptionTransferCache();
+            batchAliasTypeDescriptionTransferCache = CDI.current().select(BatchAliasTypeDescriptionTransferCache.class).get();
         
         return batchAliasTypeDescriptionTransferCache;
     }
     
     public BatchTransferCache getBatchTransferCache() {
         if(batchTransferCache == null)
-            batchTransferCache = new BatchTransferCache();
+            batchTransferCache = CDI.current().select(BatchTransferCache.class).get();
         
         return batchTransferCache;
     }
     
     public BatchAliasTransferCache getBatchAliasTransferCache() {
         if(batchAliasTransferCache == null)
-            batchAliasTransferCache = new BatchAliasTransferCache();
+            batchAliasTransferCache = CDI.current().select(BatchAliasTransferCache.class).get();
 
         return batchAliasTransferCache;
     }
 
     public BatchEntityTransferCache getBatchEntityTransferCache() {
         if(batchEntityTransferCache == null)
-            batchEntityTransferCache = new BatchEntityTransferCache();
+            batchEntityTransferCache = CDI.current().select(BatchEntityTransferCache.class).get();
 
         return batchEntityTransferCache;
     }

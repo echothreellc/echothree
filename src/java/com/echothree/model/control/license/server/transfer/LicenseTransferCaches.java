@@ -17,6 +17,7 @@
 package com.echothree.model.control.license.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.inject.spi.CDI;
 
 public class LicenseTransferCaches
         extends BaseTransferCaches {
@@ -31,7 +32,7 @@ public class LicenseTransferCaches
     
     public LicenseTypeTransferCache getLicenseTypeTransferCache() {
         if(licenseTypeTransferCache == null) {
-            licenseTypeTransferCache = new LicenseTypeTransferCache();
+            licenseTypeTransferCache = CDI.current().select(LicenseTypeTransferCache.class).get();
         }
 
         return licenseTypeTransferCache;
@@ -39,7 +40,7 @@ public class LicenseTransferCaches
 
     public LicenseTypeDescriptionTransferCache getLicenseTypeDescriptionTransferCache() {
         if(licenseTypeDescriptionTransferCache == null) {
-            licenseTypeDescriptionTransferCache = new LicenseTypeDescriptionTransferCache();
+            licenseTypeDescriptionTransferCache = CDI.current().select(LicenseTypeDescriptionTransferCache.class).get();
         }
 
         return licenseTypeDescriptionTransferCache;

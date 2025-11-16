@@ -28,7 +28,9 @@ import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.common.persistence.type.ByteArray;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CacheEntryTransferCache
         extends BaseCoreTransferCache<CacheEntry, CacheEntryTransfer> {
 

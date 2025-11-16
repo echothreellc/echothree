@@ -18,6 +18,7 @@ package com.echothree.model.control.offer.server.transfer;
 
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.inject.spi.CDI;
 
 public class OfferTransferCaches
         extends BaseTransferCaches {
@@ -46,112 +47,112 @@ public class OfferTransferCaches
     
     public OfferTransferCache getOfferTransferCache() {
         if(offerTransferCache == null)
-            offerTransferCache = new OfferTransferCache();
+            offerTransferCache = CDI.current().select(OfferTransferCache.class).get();
         
         return offerTransferCache;
     }
     
     public OfferDescriptionTransferCache getOfferDescriptionTransferCache() {
         if(offerDescriptionTransferCache == null)
-            offerDescriptionTransferCache = new OfferDescriptionTransferCache();
+            offerDescriptionTransferCache = CDI.current().select(OfferDescriptionTransferCache.class).get();
         
         return offerDescriptionTransferCache;
     }
     
     public OfferUseTransferCache getOfferUseTransferCache() {
         if(offerUseTransferCache == null)
-            offerUseTransferCache = new OfferUseTransferCache();
+            offerUseTransferCache = CDI.current().select(OfferUseTransferCache.class).get();
         
         return offerUseTransferCache;
     }
     
     public SourceTransferCache getSourceTransferCache() {
         if(sourceTransferCache == null)
-            sourceTransferCache = new SourceTransferCache();
+            sourceTransferCache = CDI.current().select(SourceTransferCache.class).get();
         
         return sourceTransferCache;
     }
     
     public OfferItemPriceTransferCache getOfferItemPriceTransferCache() {
         if(offerItemPriceTransferCache == null)
-            offerItemPriceTransferCache = new OfferItemPriceTransferCache();
+            offerItemPriceTransferCache = CDI.current().select(OfferItemPriceTransferCache.class).get();
         
         return offerItemPriceTransferCache;
     }
     
     public OfferItemTransferCache getOfferItemTransferCache() {
         if(offerItemTransferCache == null)
-            offerItemTransferCache = new OfferItemTransferCache();
+            offerItemTransferCache = CDI.current().select(OfferItemTransferCache.class).get();
         
         return offerItemTransferCache;
     }
     
     public OfferNameElementDescriptionTransferCache getOfferNameElementDescriptionTransferCache() {
         if(offerNameElementDescriptionTransferCache == null)
-            offerNameElementDescriptionTransferCache = new OfferNameElementDescriptionTransferCache();
+            offerNameElementDescriptionTransferCache = CDI.current().select(OfferNameElementDescriptionTransferCache.class).get();
         
         return offerNameElementDescriptionTransferCache;
     }
     
     public OfferNameElementTransferCache getOfferNameElementTransferCache() {
         if(offerNameElementTransferCache == null)
-            offerNameElementTransferCache = new OfferNameElementTransferCache();
+            offerNameElementTransferCache = CDI.current().select(OfferNameElementTransferCache.class).get();
         
         return offerNameElementTransferCache;
     }
     
     public UseNameElementDescriptionTransferCache getUseNameElementDescriptionTransferCache() {
         if(useNameElementDescriptionTransferCache == null)
-            useNameElementDescriptionTransferCache = new UseNameElementDescriptionTransferCache();
+            useNameElementDescriptionTransferCache = CDI.current().select(UseNameElementDescriptionTransferCache.class).get();
         
         return useNameElementDescriptionTransferCache;
     }
     
     public UseNameElementTransferCache getUseNameElementTransferCache() {
         if(useNameElementTransferCache == null)
-            useNameElementTransferCache = new UseNameElementTransferCache();
+            useNameElementTransferCache = CDI.current().select(UseNameElementTransferCache.class).get();
         
         return useNameElementTransferCache;
     }
     
     public UseDescriptionTransferCache getUseDescriptionTransferCache() {
         if(useDescriptionTransferCache == null)
-            useDescriptionTransferCache = new UseDescriptionTransferCache();
+            useDescriptionTransferCache = CDI.current().select(UseDescriptionTransferCache.class).get();
         
         return useDescriptionTransferCache;
     }
     
     public UseTransferCache getUseTransferCache() {
         if(useTransferCache == null)
-            useTransferCache = new UseTransferCache();
+            useTransferCache = CDI.current().select(UseTransferCache.class).get();
         
         return useTransferCache;
     }
     
     public UseTypeDescriptionTransferCache getUseTypeDescriptionTransferCache() {
         if(useTypeDescriptionTransferCache == null)
-            useTypeDescriptionTransferCache = new UseTypeDescriptionTransferCache();
+            useTypeDescriptionTransferCache = CDI.current().select(UseTypeDescriptionTransferCache.class).get();
         
         return useTypeDescriptionTransferCache;
     }
     
     public UseTypeTransferCache getUseTypeTransferCache() {
         if(useTypeTransferCache == null)
-            useTypeTransferCache = new UseTypeTransferCache();
+            useTypeTransferCache = CDI.current().select(UseTypeTransferCache.class).get();
         
         return useTypeTransferCache;
     }
     
     public OfferCustomerTypeTransferCache getOfferCustomerTypeTransferCache() {
         if(offerCustomerTypeTransferCache == null)
-            offerCustomerTypeTransferCache = new OfferCustomerTypeTransferCache();
+            offerCustomerTypeTransferCache = CDI.current().select(OfferCustomerTypeTransferCache.class).get();
         
         return offerCustomerTypeTransferCache;
     }
     
     public OfferChainTypeTransferCache getOfferChainTypeTransferCache() {
         if(offerChainTypeTransferCache == null)
-            offerChainTypeTransferCache = new OfferChainTypeTransferCache();
+            offerChainTypeTransferCache = CDI.current().select(OfferChainTypeTransferCache.class).get();
         
         return offerChainTypeTransferCache;
     }

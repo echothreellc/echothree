@@ -23,7 +23,9 @@ import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.contact.server.entity.ContactWebAddress;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ContactWebAddressTransferCache
         extends BaseContactTransferCache<ContactWebAddress, ContactWebAddressTransfer> {
 

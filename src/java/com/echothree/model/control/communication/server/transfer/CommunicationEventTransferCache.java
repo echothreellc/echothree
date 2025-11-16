@@ -23,7 +23,9 @@ import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.data.communication.server.entity.CommunicationEvent;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CommunicationEventTransferCache
         extends BaseCommunicationTransferCache<CommunicationEvent, CommunicationEventTransfer> {
 

@@ -18,6 +18,7 @@ package com.echothree.model.control.sales.server.transfer;
 
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.inject.spi.CDI;
 
 public class SalesTransferCaches
         extends BaseTransferCaches {
@@ -31,7 +32,7 @@ public class SalesTransferCaches
     
     public SalesOrderBatchTransferCache getSalesOrderBatchTransferCache() {
         if(salesOrderBatchTransferCache == null)
-            salesOrderBatchTransferCache = new SalesOrderBatchTransferCache();
+            salesOrderBatchTransferCache = CDI.current().select(SalesOrderBatchTransferCache.class).get();
         
         return salesOrderBatchTransferCache;
     }

@@ -21,7 +21,9 @@ import com.echothree.model.control.tag.server.control.TagControl;
 import com.echothree.model.data.tag.server.entity.TagScopeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class TagScopeDescriptionTransferCache
         extends BaseTagDescriptionTransferCache<TagScopeDescription, TagScopeDescriptionTransfer> {
 

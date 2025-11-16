@@ -17,6 +17,7 @@
 package com.echothree.model.control.index.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.inject.spi.CDI;
 
 public class IndexTransferCaches
         extends BaseTransferCaches {
@@ -35,7 +36,7 @@ public class IndexTransferCaches
     
     public IndexTypeTransferCache getIndexTypeTransferCache() {
         if(indexTypeTransferCache == null) {
-            indexTypeTransferCache = new IndexTypeTransferCache();
+            indexTypeTransferCache = CDI.current().select(IndexTypeTransferCache.class).get();
         }
 
         return indexTypeTransferCache;
@@ -43,7 +44,7 @@ public class IndexTransferCaches
 
     public IndexTypeDescriptionTransferCache getIndexTypeDescriptionTransferCache() {
         if(indexTypeDescriptionTransferCache == null) {
-            indexTypeDescriptionTransferCache = new IndexTypeDescriptionTransferCache();
+            indexTypeDescriptionTransferCache = CDI.current().select(IndexTypeDescriptionTransferCache.class).get();
         }
 
         return indexTypeDescriptionTransferCache;
@@ -51,7 +52,7 @@ public class IndexTransferCaches
 
     public IndexFieldTransferCache getIndexFieldTransferCache() {
         if(indexFieldTransferCache == null) {
-            indexFieldTransferCache = new IndexFieldTransferCache();
+            indexFieldTransferCache = CDI.current().select(IndexFieldTransferCache.class).get();
         }
 
         return indexFieldTransferCache;
@@ -59,7 +60,7 @@ public class IndexTransferCaches
 
     public IndexFieldDescriptionTransferCache getIndexFieldDescriptionTransferCache() {
         if(indexFieldDescriptionTransferCache == null) {
-            indexFieldDescriptionTransferCache = new IndexFieldDescriptionTransferCache();
+            indexFieldDescriptionTransferCache = CDI.current().select(IndexFieldDescriptionTransferCache.class).get();
         }
 
         return indexFieldDescriptionTransferCache;
@@ -67,7 +68,7 @@ public class IndexTransferCaches
 
     public IndexTransferCache getIndexTransferCache() {
         if(indexTransferCache == null) {
-            indexTransferCache = new IndexTransferCache();
+            indexTransferCache = CDI.current().select(IndexTransferCache.class).get();
         }
 
         return indexTransferCache;
@@ -75,7 +76,7 @@ public class IndexTransferCaches
 
     public IndexDescriptionTransferCache getIndexDescriptionTransferCache() {
         if(indexDescriptionTransferCache == null) {
-            indexDescriptionTransferCache = new IndexDescriptionTransferCache();
+            indexDescriptionTransferCache = CDI.current().select(IndexDescriptionTransferCache.class).get();
         }
 
         return indexDescriptionTransferCache;

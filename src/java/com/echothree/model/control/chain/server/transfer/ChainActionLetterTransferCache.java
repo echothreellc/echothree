@@ -22,7 +22,9 @@ import com.echothree.model.control.letter.server.control.LetterControl;
 import com.echothree.model.data.chain.server.entity.ChainActionLetter;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ChainActionLetterTransferCache
         extends BaseChainTransferCache<ChainActionLetter, ChainActionLetterTransfer> {
 

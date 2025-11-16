@@ -18,6 +18,7 @@ package com.echothree.model.control.accounting.server.transfer;
 
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.inject.spi.CDI;
 
 public class AccountingTransferCaches
         extends BaseTransferCaches {
@@ -59,203 +60,203 @@ public class AccountingTransferCaches
     
     public CurrencyTransferCache getCurrencyTransferCache() {
         if(currencyTransferCache == null)
-            currencyTransferCache = new CurrencyTransferCache();
+            currencyTransferCache = CDI.current().select(CurrencyTransferCache.class).get();
         
         return currencyTransferCache;
     }
     
     public CurrencyDescriptionTransferCache getCurrencyDescriptionTransferCache() {
         if(currencyDescriptionTransferCache == null)
-            currencyDescriptionTransferCache = new CurrencyDescriptionTransferCache();
+            currencyDescriptionTransferCache = CDI.current().select(CurrencyDescriptionTransferCache.class).get();
         
         return currencyDescriptionTransferCache;
     }
     
     public GlAccountClassDescriptionTransferCache getGlAccountClassDescriptionTransferCache() {
         if(glAccountClassDescriptionTransferCache == null)
-            glAccountClassDescriptionTransferCache = new GlAccountClassDescriptionTransferCache();
+            glAccountClassDescriptionTransferCache = CDI.current().select(GlAccountClassDescriptionTransferCache.class).get();
         
         return glAccountClassDescriptionTransferCache;
     }
     
     public GlAccountClassTransferCache getGlAccountClassTransferCache() {
         if(glAccountClassTransferCache == null)
-            glAccountClassTransferCache = new GlAccountClassTransferCache();
+            glAccountClassTransferCache = CDI.current().select(GlAccountClassTransferCache.class).get();
         
         return glAccountClassTransferCache;
     }
     
     public GlAccountDescriptionTransferCache getGlAccountDescriptionTransferCache() {
         if(glAccountDescriptionTransferCache == null)
-            glAccountDescriptionTransferCache = new GlAccountDescriptionTransferCache();
+            glAccountDescriptionTransferCache = CDI.current().select(GlAccountDescriptionTransferCache.class).get();
         
         return glAccountDescriptionTransferCache;
     }
     
     public GlAccountTransferCache getGlAccountTransferCache() {
         if(glAccountTransferCache == null)
-            glAccountTransferCache = new GlAccountTransferCache();
+            glAccountTransferCache = CDI.current().select(GlAccountTransferCache.class).get();
         
         return glAccountTransferCache;
     }
     
     public GlAccountCategoryDescriptionTransferCache getGlAccountCategoryDescriptionTransferCache() {
         if(glAccountCategoryDescriptionTransferCache == null)
-            glAccountCategoryDescriptionTransferCache = new GlAccountCategoryDescriptionTransferCache();
+            glAccountCategoryDescriptionTransferCache = CDI.current().select(GlAccountCategoryDescriptionTransferCache.class).get();
         
         return glAccountCategoryDescriptionTransferCache;
     }
     
     public GlAccountCategoryTransferCache getGlAccountCategoryTransferCache() {
         if(glAccountCategoryTransferCache == null)
-            glAccountCategoryTransferCache = new GlAccountCategoryTransferCache();
+            glAccountCategoryTransferCache = CDI.current().select(GlAccountCategoryTransferCache.class).get();
         
         return glAccountCategoryTransferCache;
     }
     
     public GlResourceTypeDescriptionTransferCache getGlResourceTypeDescriptionTransferCache() {
         if(glResourceTypeDescriptionTransferCache == null)
-            glResourceTypeDescriptionTransferCache = new GlResourceTypeDescriptionTransferCache();
+            glResourceTypeDescriptionTransferCache = CDI.current().select(GlResourceTypeDescriptionTransferCache.class).get();
         
         return glResourceTypeDescriptionTransferCache;
     }
     
     public GlResourceTypeTransferCache getGlResourceTypeTransferCache() {
         if(glResourceTypeTransferCache == null)
-            glResourceTypeTransferCache = new GlResourceTypeTransferCache();
+            glResourceTypeTransferCache = CDI.current().select(GlResourceTypeTransferCache.class).get();
         
         return glResourceTypeTransferCache;
     }
     
     public ItemAccountingCategoryDescriptionTransferCache getItemAccountingCategoryDescriptionTransferCache() {
         if(itemAccountingCategoryDescriptionTransferCache == null)
-            itemAccountingCategoryDescriptionTransferCache = new ItemAccountingCategoryDescriptionTransferCache();
+            itemAccountingCategoryDescriptionTransferCache = CDI.current().select(ItemAccountingCategoryDescriptionTransferCache.class).get();
         
         return itemAccountingCategoryDescriptionTransferCache;
     }
     
     public ItemAccountingCategoryTransferCache getItemAccountingCategoryTransferCache() {
         if(itemAccountingCategoryTransferCache == null)
-            itemAccountingCategoryTransferCache = new ItemAccountingCategoryTransferCache();
+            itemAccountingCategoryTransferCache = CDI.current().select(ItemAccountingCategoryTransferCache.class).get();
         
         return itemAccountingCategoryTransferCache;
     }
     
     public TransactionEntityRoleTransferCache getTransactionEntityRoleTransferCache() {
         if(transactionEntityRoleTransferCache == null)
-            transactionEntityRoleTransferCache = new TransactionEntityRoleTransferCache();
+            transactionEntityRoleTransferCache = CDI.current().select(TransactionEntityRoleTransferCache.class).get();
         
         return transactionEntityRoleTransferCache;
     }
     
     public TransactionEntityRoleTypeTransferCache getTransactionEntityRoleTypeTransferCache() {
         if(transactionEntityRoleTypeTransferCache == null)
-            transactionEntityRoleTypeTransferCache = new TransactionEntityRoleTypeTransferCache();
+            transactionEntityRoleTypeTransferCache = CDI.current().select(TransactionEntityRoleTypeTransferCache.class).get();
         
         return transactionEntityRoleTypeTransferCache;
     }
     
     public TransactionGlEntryTransferCache getTransactionGlEntryTransferCache() {
         if(transactionGlEntryTransferCache == null)
-            transactionGlEntryTransferCache = new TransactionGlEntryTransferCache();
+            transactionGlEntryTransferCache = CDI.current().select(TransactionGlEntryTransferCache.class).get();
         
         return transactionGlEntryTransferCache;
     }
     
     public TransactionGlAccountTransferCache getTransactionGlAccountTransferCache() {
         if(transactionGlAccountTransferCache == null)
-            transactionGlAccountTransferCache = new TransactionGlAccountTransferCache();
+            transactionGlAccountTransferCache = CDI.current().select(TransactionGlAccountTransferCache.class).get();
         
         return transactionGlAccountTransferCache;
     }
     
     public TransactionGlAccountCategoryTransferCache getTransactionGlAccountCategoryTransferCache() {
         if(transactionGlAccountCategoryTransferCache == null)
-            transactionGlAccountCategoryTransferCache = new TransactionGlAccountCategoryTransferCache();
+            transactionGlAccountCategoryTransferCache = CDI.current().select(TransactionGlAccountCategoryTransferCache.class).get();
         
         return transactionGlAccountCategoryTransferCache;
     }
     
     public TransactionGroupTransferCache getTransactionGroupTransferCache() {
         if(transactionGroupTransferCache == null)
-            transactionGroupTransferCache = new TransactionGroupTransferCache();
+            transactionGroupTransferCache = CDI.current().select(TransactionGroupTransferCache.class).get();
         
         return transactionGroupTransferCache;
     }
     
     public TransactionTransferCache getTransactionTransferCache() {
         if(transactionTransferCache == null)
-            transactionTransferCache = new TransactionTransferCache();
+            transactionTransferCache = CDI.current().select(TransactionTransferCache.class).get();
         
         return transactionTransferCache;
     }
     
     public TransactionTypeTransferCache getTransactionTypeTransferCache() {
         if(transactionTypeTransferCache == null)
-            transactionTypeTransferCache = new TransactionTypeTransferCache();
+            transactionTypeTransferCache = CDI.current().select(TransactionTypeTransferCache.class).get();
         
         return transactionTypeTransferCache;
     }
     
     public GlAccountTypeTransferCache getGlAccountTypeTransferCache() {
         if(glAccountTypeTransferCache == null)
-            glAccountTypeTransferCache = new GlAccountTypeTransferCache();
+            glAccountTypeTransferCache = CDI.current().select(GlAccountTypeTransferCache.class).get();
         
         return glAccountTypeTransferCache;
     }
     
     public TransactionTypeDescriptionTransferCache getTransactionTypeDescriptionTransferCache() {
         if(transactionTypeDescriptionTransferCache == null)
-            transactionTypeDescriptionTransferCache = new TransactionTypeDescriptionTransferCache();
+            transactionTypeDescriptionTransferCache = CDI.current().select(TransactionTypeDescriptionTransferCache.class).get();
         
         return transactionTypeDescriptionTransferCache;
     }
     
     public TransactionGlAccountCategoryDescriptionTransferCache getTransactionGlAccountCategoryDescriptionTransferCache() {
         if(transactionGlAccountCategoryDescriptionTransferCache == null)
-            transactionGlAccountCategoryDescriptionTransferCache = new TransactionGlAccountCategoryDescriptionTransferCache();
+            transactionGlAccountCategoryDescriptionTransferCache = CDI.current().select(TransactionGlAccountCategoryDescriptionTransferCache.class).get();
         
         return transactionGlAccountCategoryDescriptionTransferCache;
     }
     
     public TransactionEntityRoleTypeDescriptionTransferCache getTransactionEntityRoleTypeDescriptionTransferCache() {
         if(transactionEntityRoleTypeDescriptionTransferCache == null)
-            transactionEntityRoleTypeDescriptionTransferCache = new TransactionEntityRoleTypeDescriptionTransferCache();
+            transactionEntityRoleTypeDescriptionTransferCache = CDI.current().select(TransactionEntityRoleTypeDescriptionTransferCache.class).get();
         
         return transactionEntityRoleTypeDescriptionTransferCache;
     }
     
     public SymbolPositionDescriptionTransferCache getSymbolPositionDescriptionTransferCache() {
         if(symbolPositionDescriptionTransferCache == null)
-            symbolPositionDescriptionTransferCache = new SymbolPositionDescriptionTransferCache();
+            symbolPositionDescriptionTransferCache = CDI.current().select(SymbolPositionDescriptionTransferCache.class).get();
         
         return symbolPositionDescriptionTransferCache;
     }
     
     public SymbolPositionTransferCache getSymbolPositionTransferCache() {
         if(symbolPositionTransferCache == null)
-            symbolPositionTransferCache = new SymbolPositionTransferCache();
+            symbolPositionTransferCache = CDI.current().select(SymbolPositionTransferCache.class).get();
         
         return symbolPositionTransferCache;
     }
 
     public TransactionTimeTypeTransferCache getTransactionTimeTypeTransferCache() {
         if(transactionTimeTypeTransferCache == null)
-            transactionTimeTypeTransferCache = new TransactionTimeTypeTransferCache();
+            transactionTimeTypeTransferCache = CDI.current().select(TransactionTimeTypeTransferCache.class).get();
 
         return transactionTimeTypeTransferCache;
     }
 
     public TransactionTimeTypeDescriptionTransferCache getTransactionTimeTypeDescriptionTransferCache() {
         if(transactionTimeTypeDescriptionTransferCache == null)
-            transactionTimeTypeDescriptionTransferCache = new TransactionTimeTypeDescriptionTransferCache();
+            transactionTimeTypeDescriptionTransferCache = CDI.current().select(TransactionTimeTypeDescriptionTransferCache.class).get();
 
         return transactionTimeTypeDescriptionTransferCache;
     }
 
     public TransactionTimeTransferCache getTransactionTimeTransferCache() {
         if(transactionTimeTransferCache == null)
-            transactionTimeTransferCache = new TransactionTimeTransferCache();
+            transactionTimeTransferCache = CDI.current().select(TransactionTimeTransferCache.class).get();
 
         return transactionTimeTransferCache;
     }

@@ -17,6 +17,7 @@
 package com.echothree.model.control.rating.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.inject.spi.CDI;
 
 public class RatingTransferCaches
         extends BaseTransferCaches {
@@ -34,35 +35,35 @@ public class RatingTransferCaches
     
     public RatingTransferCache getRatingTransferCache() {
         if(ratingTransferCache == null)
-            ratingTransferCache = new RatingTransferCache();
+            ratingTransferCache = CDI.current().select(RatingTransferCache.class).get();
         
         return ratingTransferCache;
     }
     
     public RatingTypeTransferCache getRatingTypeTransferCache() {
         if(ratingTypeTransferCache == null)
-            ratingTypeTransferCache = new RatingTypeTransferCache();
+            ratingTypeTransferCache = CDI.current().select(RatingTypeTransferCache.class).get();
         
         return ratingTypeTransferCache;
     }
     
     public RatingTypeDescriptionTransferCache getRatingTypeDescriptionTransferCache() {
         if(ratingTypeDescriptionTransferCache == null)
-            ratingTypeDescriptionTransferCache = new RatingTypeDescriptionTransferCache();
+            ratingTypeDescriptionTransferCache = CDI.current().select(RatingTypeDescriptionTransferCache.class).get();
         
         return ratingTypeDescriptionTransferCache;
     }
     
     public RatingTypeListItemTransferCache getRatingTypeListItemTransferCache() {
         if(ratingTypeListItemTransferCache == null)
-            ratingTypeListItemTransferCache = new RatingTypeListItemTransferCache();
+            ratingTypeListItemTransferCache = CDI.current().select(RatingTypeListItemTransferCache.class).get();
         
         return ratingTypeListItemTransferCache;
     }
     
     public RatingTypeListItemDescriptionTransferCache getRatingTypeListItemDescriptionTransferCache() {
         if(ratingTypeListItemDescriptionTransferCache == null)
-            ratingTypeListItemDescriptionTransferCache = new RatingTypeListItemDescriptionTransferCache();
+            ratingTypeListItemDescriptionTransferCache = CDI.current().select(RatingTypeListItemDescriptionTransferCache.class).get();
         
         return ratingTypeListItemDescriptionTransferCache;
     }

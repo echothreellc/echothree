@@ -17,6 +17,7 @@
 package com.echothree.model.control.queue.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.inject.spi.CDI;
 
 public class QueueTransferCaches
         extends BaseTransferCaches {
@@ -32,7 +33,7 @@ public class QueueTransferCaches
     
     public QueueTypeTransferCache getQueueTypeTransferCache() {
         if(queueTypeTransferCache == null) {
-            queueTypeTransferCache = new QueueTypeTransferCache();
+            queueTypeTransferCache = CDI.current().select(QueueTypeTransferCache.class).get();
         }
 
         return queueTypeTransferCache;
@@ -40,7 +41,7 @@ public class QueueTransferCaches
 
     public QueueTypeDescriptionTransferCache getQueueTypeDescriptionTransferCache() {
         if(queueTypeDescriptionTransferCache == null) {
-            queueTypeDescriptionTransferCache = new QueueTypeDescriptionTransferCache();
+            queueTypeDescriptionTransferCache = CDI.current().select(QueueTypeDescriptionTransferCache.class).get();
         }
 
         return queueTypeDescriptionTransferCache;
@@ -48,7 +49,7 @@ public class QueueTransferCaches
 
     public QueuedEntityTransferCache getQueuedEntityTransferCache() {
         if(queuedEntityTransferCache == null) {
-            queuedEntityTransferCache = new QueuedEntityTransferCache();
+            queuedEntityTransferCache = CDI.current().select(QueuedEntityTransferCache.class).get();
         }
 
         return queuedEntityTransferCache;

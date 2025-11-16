@@ -23,7 +23,9 @@ import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.chain.server.entity.ChainActionChainActionSet;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ChainActionChainActionSetTransferCache
         extends BaseChainTransferCache<ChainActionChainActionSet, ChainActionChainActionSetTransfer> {
 

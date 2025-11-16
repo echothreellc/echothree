@@ -23,7 +23,9 @@ import com.echothree.model.control.shipping.server.control.ShippingControl;
 import com.echothree.model.data.order.server.entity.OrderShipmentGroup;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class OrderShipmentGroupTransferCache
         extends BaseOrderTransferCache<OrderShipmentGroup, OrderShipmentGroupTransfer> {
     

@@ -17,6 +17,7 @@
 package com.echothree.model.control.workflow.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.inject.spi.CDI;
 
 public class WorkflowTransferCaches
         extends BaseTransferCaches {
@@ -49,140 +50,140 @@ public class WorkflowTransferCaches
     
     public WorkflowDescriptionTransferCache getWorkflowDescriptionTransferCache() {
         if(workflowDescriptionTransferCache == null)
-            workflowDescriptionTransferCache = new WorkflowDescriptionTransferCache();
+            workflowDescriptionTransferCache = CDI.current().select(WorkflowDescriptionTransferCache.class).get();
         
         return workflowDescriptionTransferCache;
     }
     
     public WorkflowDestinationDescriptionTransferCache getWorkflowDestinationDescriptionTransferCache() {
         if(workflowDestinationDescriptionTransferCache == null)
-            workflowDestinationDescriptionTransferCache = new WorkflowDestinationDescriptionTransferCache();
+            workflowDestinationDescriptionTransferCache = CDI.current().select(WorkflowDestinationDescriptionTransferCache.class).get();
         
         return workflowDestinationDescriptionTransferCache;
     }
     
     public WorkflowDestinationSelectorTransferCache getWorkflowDestinationSelectorTransferCache() {
         if(workflowDestinationSelectorTransferCache == null)
-            workflowDestinationSelectorTransferCache = new WorkflowDestinationSelectorTransferCache();
+            workflowDestinationSelectorTransferCache = CDI.current().select(WorkflowDestinationSelectorTransferCache.class).get();
         
         return workflowDestinationSelectorTransferCache;
     }
     
     public WorkflowDestinationStepTransferCache getWorkflowDestinationStepTransferCache() {
         if(workflowDestinationStepTransferCache == null)
-            workflowDestinationStepTransferCache = new WorkflowDestinationStepTransferCache();
+            workflowDestinationStepTransferCache = CDI.current().select(WorkflowDestinationStepTransferCache.class).get();
         
         return workflowDestinationStepTransferCache;
     }
     
     public WorkflowDestinationTransferCache getWorkflowDestinationTransferCache() {
         if(workflowDestinationTransferCache == null)
-            workflowDestinationTransferCache = new WorkflowDestinationTransferCache();
+            workflowDestinationTransferCache = CDI.current().select(WorkflowDestinationTransferCache.class).get();
         
         return workflowDestinationTransferCache;
     }
     
     public WorkflowEntityStatusTransferCache getWorkflowEntityStatusTransferCache() {
         if(workflowEntityStatusTransferCache == null)
-            workflowEntityStatusTransferCache = new WorkflowEntityStatusTransferCache();
+            workflowEntityStatusTransferCache = CDI.current().select(WorkflowEntityStatusTransferCache.class).get();
         
         return workflowEntityStatusTransferCache;
     }
     
     public WorkflowEntityTypeTransferCache getWorkflowEntityTypeTransferCache() {
         if(workflowEntityTypeTransferCache == null)
-            workflowEntityTypeTransferCache = new WorkflowEntityTypeTransferCache();
+            workflowEntityTypeTransferCache = CDI.current().select(WorkflowEntityTypeTransferCache.class).get();
         
         return workflowEntityTypeTransferCache;
     }
     
     public WorkflowEntranceDescriptionTransferCache getWorkflowEntranceDescriptionTransferCache() {
         if(workflowEntranceDescriptionTransferCache == null)
-            workflowEntranceDescriptionTransferCache = new WorkflowEntranceDescriptionTransferCache();
+            workflowEntranceDescriptionTransferCache = CDI.current().select(WorkflowEntranceDescriptionTransferCache.class).get();
         
         return workflowEntranceDescriptionTransferCache;
     }
     
     public WorkflowEntranceSelectorTransferCache getWorkflowEntranceSelectorTransferCache() {
         if(workflowEntranceSelectorTransferCache == null)
-            workflowEntranceSelectorTransferCache = new WorkflowEntranceSelectorTransferCache();
+            workflowEntranceSelectorTransferCache = CDI.current().select(WorkflowEntranceSelectorTransferCache.class).get();
         
         return workflowEntranceSelectorTransferCache;
     }
     
     public WorkflowEntranceStepTransferCache getWorkflowEntranceStepTransferCache() {
         if(workflowEntranceStepTransferCache == null)
-            workflowEntranceStepTransferCache = new WorkflowEntranceStepTransferCache();
+            workflowEntranceStepTransferCache = CDI.current().select(WorkflowEntranceStepTransferCache.class).get();
         
         return workflowEntranceStepTransferCache;
     }
     
     public WorkflowEntranceTransferCache getWorkflowEntranceTransferCache() {
         if(workflowEntranceTransferCache == null)
-            workflowEntranceTransferCache = new WorkflowEntranceTransferCache();
+            workflowEntranceTransferCache = CDI.current().select(WorkflowEntranceTransferCache.class).get();
         
         return workflowEntranceTransferCache;
     }
     
     public WorkflowStepDescriptionTransferCache getWorkflowStepDescriptionTransferCache() {
         if(workflowStepDescriptionTransferCache == null)
-            workflowStepDescriptionTransferCache = new WorkflowStepDescriptionTransferCache();
+            workflowStepDescriptionTransferCache = CDI.current().select(WorkflowStepDescriptionTransferCache.class).get();
         
         return workflowStepDescriptionTransferCache;
     }
     
     public WorkflowStepTransferCache getWorkflowStepTransferCache() {
         if(workflowStepTransferCache == null)
-            workflowStepTransferCache = new WorkflowStepTransferCache();
+            workflowStepTransferCache = CDI.current().select(WorkflowStepTransferCache.class).get();
         
         return workflowStepTransferCache;
     }
     
     public WorkflowStepTypeTransferCache getWorkflowStepTypeTransferCache() {
         if(workflowStepTypeTransferCache == null)
-            workflowStepTypeTransferCache = new WorkflowStepTypeTransferCache();
+            workflowStepTypeTransferCache = CDI.current().select(WorkflowStepTypeTransferCache.class).get();
         
         return workflowStepTypeTransferCache;
     }
     
     public WorkflowTransferCache getWorkflowTransferCache() {
         if(workflowTransferCache == null)
-            workflowTransferCache = new WorkflowTransferCache();
+            workflowTransferCache = CDI.current().select(WorkflowTransferCache.class).get();
         
         return workflowTransferCache;
     }
     
     public WorkflowSelectorKindTransferCache getWorkflowSelectorKindTransferCache() {
         if(workflowSelectorKindTransferCache == null)
-            workflowSelectorKindTransferCache = new WorkflowSelectorKindTransferCache();
+            workflowSelectorKindTransferCache = CDI.current().select(WorkflowSelectorKindTransferCache.class).get();
         
         return workflowSelectorKindTransferCache;
     }
     
     public WorkflowDestinationPartyTypeTransferCache getWorkflowDestinationPartyTypeTransferCache() {
         if(workflowDestinationPartyTypeTransferCache == null)
-            workflowDestinationPartyTypeTransferCache = new WorkflowDestinationPartyTypeTransferCache();
+            workflowDestinationPartyTypeTransferCache = CDI.current().select(WorkflowDestinationPartyTypeTransferCache.class).get();
         
         return workflowDestinationPartyTypeTransferCache;
     }
     
     public WorkflowDestinationSecurityRoleTransferCache getWorkflowDestinationSecurityRoleTransferCache() {
         if(workflowDestinationSecurityRoleTransferCache == null)
-            workflowDestinationSecurityRoleTransferCache = new WorkflowDestinationSecurityRoleTransferCache();
+            workflowDestinationSecurityRoleTransferCache = CDI.current().select(WorkflowDestinationSecurityRoleTransferCache.class).get();
         
         return workflowDestinationSecurityRoleTransferCache;
     }
     
     public WorkflowEntrancePartyTypeTransferCache getWorkflowEntrancePartyTypeTransferCache() {
         if(workflowEntrancePartyTypeTransferCache == null)
-            workflowEntrancePartyTypeTransferCache = new WorkflowEntrancePartyTypeTransferCache();
+            workflowEntrancePartyTypeTransferCache = CDI.current().select(WorkflowEntrancePartyTypeTransferCache.class).get();
         
         return workflowEntrancePartyTypeTransferCache;
     }
     
     public WorkflowEntranceSecurityRoleTransferCache getWorkflowEntranceSecurityRoleTransferCache() {
         if(workflowEntranceSecurityRoleTransferCache == null)
-            workflowEntranceSecurityRoleTransferCache = new WorkflowEntranceSecurityRoleTransferCache();
+            workflowEntranceSecurityRoleTransferCache = CDI.current().select(WorkflowEntranceSecurityRoleTransferCache.class).get();
         
         return workflowEntranceSecurityRoleTransferCache;
     }

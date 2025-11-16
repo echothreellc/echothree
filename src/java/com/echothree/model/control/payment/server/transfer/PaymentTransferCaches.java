@@ -18,6 +18,7 @@ package com.echothree.model.control.payment.server.transfer;
 
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.inject.spi.CDI;
 
 public class PaymentTransferCaches
         extends BaseTransferCaches {
@@ -56,182 +57,182 @@ public class PaymentTransferCaches
 
     public PaymentMethodTypeTransferCache getPaymentMethodTypeTransferCache() {
         if(paymentMethodTypeTransferCache == null)
-            paymentMethodTypeTransferCache = new PaymentMethodTypeTransferCache();
+            paymentMethodTypeTransferCache = CDI.current().select(PaymentMethodTypeTransferCache.class).get();
 
         return paymentMethodTypeTransferCache;
     }
 
     public PaymentMethodTypeDescriptionTransferCache getPaymentMethodTypeDescriptionTransferCache() {
         if(paymentMethodTypeDescriptionTransferCache == null)
-            paymentMethodTypeDescriptionTransferCache = new PaymentMethodTypeDescriptionTransferCache();
+            paymentMethodTypeDescriptionTransferCache = CDI.current().select(PaymentMethodTypeDescriptionTransferCache.class).get();
 
         return paymentMethodTypeDescriptionTransferCache;
     }
 
     public PaymentMethodTypePartyTypeTransferCache getPaymentMethodTypePartyTypeTransferCache() {
         if(paymentMethodTypePartyTypeTransferCache == null)
-            paymentMethodTypePartyTypeTransferCache = new PaymentMethodTypePartyTypeTransferCache();
+            paymentMethodTypePartyTypeTransferCache = CDI.current().select(PaymentMethodTypePartyTypeTransferCache.class).get();
 
         return paymentMethodTypePartyTypeTransferCache;
     }
 
     public PaymentMethodTransferCache getPaymentMethodTransferCache() {
         if(paymentMethodTransferCache == null)
-            paymentMethodTransferCache = new PaymentMethodTransferCache();
+            paymentMethodTransferCache = CDI.current().select(PaymentMethodTransferCache.class).get();
         
         return paymentMethodTransferCache;
     }
     
     public PaymentMethodDescriptionTransferCache getPaymentMethodDescriptionTransferCache() {
         if(paymentMethodDescriptionTransferCache == null)
-            paymentMethodDescriptionTransferCache = new PaymentMethodDescriptionTransferCache();
+            paymentMethodDescriptionTransferCache = CDI.current().select(PaymentMethodDescriptionTransferCache.class).get();
         
         return paymentMethodDescriptionTransferCache;
     }
     
     public BillingAccountTransferCache getBillingAccountTransferCache() {
         if(billingAccountTransferCache == null)
-            billingAccountTransferCache = new BillingAccountTransferCache();
+            billingAccountTransferCache = CDI.current().select(BillingAccountTransferCache.class).get();
         
         return billingAccountTransferCache;
     }
     
     public BillingAccountRoleTypeTransferCache getBillingAccountRoleTypeTransferCache() {
         if(billingAccountRoleTypeTransferCache == null)
-            billingAccountRoleTypeTransferCache = new BillingAccountRoleTypeTransferCache();
+            billingAccountRoleTypeTransferCache = CDI.current().select(BillingAccountRoleTypeTransferCache.class).get();
         
         return billingAccountRoleTypeTransferCache;
     }
     
     public BillingAccountRoleTransferCache getBillingAccountRoleTransferCache() {
         if(billingAccountRoleTransferCache == null)
-            billingAccountRoleTransferCache = new BillingAccountRoleTransferCache();
+            billingAccountRoleTransferCache = CDI.current().select(BillingAccountRoleTransferCache.class).get();
         
         return billingAccountRoleTransferCache;
     }
     
     public PartyPaymentMethodTransferCache getPartyPaymentMethodTransferCache() {
         if(partyPaymentMethodTransferCache == null)
-            partyPaymentMethodTransferCache = new PartyPaymentMethodTransferCache();
+            partyPaymentMethodTransferCache = CDI.current().select(PartyPaymentMethodTransferCache.class).get();
         
         return partyPaymentMethodTransferCache;
     }
 
     public PaymentProcessorTypeTransferCache getPaymentProcessorTypeTransferCache() {
         if(paymentProcessorTypeTransferCache == null)
-            paymentProcessorTypeTransferCache = new PaymentProcessorTypeTransferCache();
+            paymentProcessorTypeTransferCache = CDI.current().select(PaymentProcessorTypeTransferCache.class).get();
 
         return paymentProcessorTypeTransferCache;
     }
 
     public PaymentProcessorTypeDescriptionTransferCache getPaymentProcessorTypeDescriptionTransferCache() {
         if(paymentProcessorTypeDescriptionTransferCache == null)
-            paymentProcessorTypeDescriptionTransferCache = new PaymentProcessorTypeDescriptionTransferCache();
+            paymentProcessorTypeDescriptionTransferCache = CDI.current().select(PaymentProcessorTypeDescriptionTransferCache.class).get();
 
         return paymentProcessorTypeDescriptionTransferCache;
     }
 
     public PaymentProcessorTransferCache getPaymentProcessorTransferCache() {
         if(paymentProcessorTransferCache == null)
-            paymentProcessorTransferCache = new PaymentProcessorTransferCache();
+            paymentProcessorTransferCache = CDI.current().select(PaymentProcessorTransferCache.class).get();
         
         return paymentProcessorTransferCache;
     }
     
     public PaymentProcessorDescriptionTransferCache getPaymentProcessorDescriptionTransferCache() {
         if(paymentProcessorDescriptionTransferCache == null)
-            paymentProcessorDescriptionTransferCache = new PaymentProcessorDescriptionTransferCache();
+            paymentProcessorDescriptionTransferCache = CDI.current().select(PaymentProcessorDescriptionTransferCache.class).get();
         
         return paymentProcessorDescriptionTransferCache;
     }
     
     public PartyPaymentMethodContactMechanismTransferCache getPartyPaymentMethodContactMechanismTransferCache() {
         if(partyPaymentMethodContactMechanismTransferCache == null)
-            partyPaymentMethodContactMechanismTransferCache = new PartyPaymentMethodContactMechanismTransferCache();
+            partyPaymentMethodContactMechanismTransferCache = CDI.current().select(PartyPaymentMethodContactMechanismTransferCache.class).get();
         
         return partyPaymentMethodContactMechanismTransferCache;
     }
 
     public PaymentProcessorActionTypeTransferCache getPaymentProcessorActionTypeTransferCache() {
         if(paymentProcessorActionTypeTransferCache == null)
-            paymentProcessorActionTypeTransferCache = new PaymentProcessorActionTypeTransferCache();
+            paymentProcessorActionTypeTransferCache = CDI.current().select(PaymentProcessorActionTypeTransferCache.class).get();
 
         return paymentProcessorActionTypeTransferCache;
     }
 
     public PaymentProcessorActionTypeDescriptionTransferCache getPaymentProcessorActionTypeDescriptionTransferCache() {
         if(paymentProcessorActionTypeDescriptionTransferCache == null)
-            paymentProcessorActionTypeDescriptionTransferCache = new PaymentProcessorActionTypeDescriptionTransferCache();
+            paymentProcessorActionTypeDescriptionTransferCache = CDI.current().select(PaymentProcessorActionTypeDescriptionTransferCache.class).get();
 
         return paymentProcessorActionTypeDescriptionTransferCache;
     }
 
     public PaymentProcessorResultCodeTransferCache getPaymentProcessorResultCodeTransferCache() {
         if(paymentProcessorResultCodeTransferCache == null)
-            paymentProcessorResultCodeTransferCache = new PaymentProcessorResultCodeTransferCache();
+            paymentProcessorResultCodeTransferCache = CDI.current().select(PaymentProcessorResultCodeTransferCache.class).get();
 
         return paymentProcessorResultCodeTransferCache;
     }
 
     public PaymentProcessorResultCodeDescriptionTransferCache getPaymentProcessorResultCodeDescriptionTransferCache() {
         if(paymentProcessorResultCodeDescriptionTransferCache == null)
-            paymentProcessorResultCodeDescriptionTransferCache = new PaymentProcessorResultCodeDescriptionTransferCache();
+            paymentProcessorResultCodeDescriptionTransferCache = CDI.current().select(PaymentProcessorResultCodeDescriptionTransferCache.class).get();
 
         return paymentProcessorResultCodeDescriptionTransferCache;
     }
 
     public PaymentProcessorTypeCodeTypeTransferCache getPaymentProcessorTypeCodeTypeTransferCache() {
         if(paymentProcessorTypeCodeTypeTransferCache == null)
-            paymentProcessorTypeCodeTypeTransferCache = new PaymentProcessorTypeCodeTypeTransferCache();
+            paymentProcessorTypeCodeTypeTransferCache = CDI.current().select(PaymentProcessorTypeCodeTypeTransferCache.class).get();
 
         return paymentProcessorTypeCodeTypeTransferCache;
     }
 
     public PaymentProcessorTypeCodeTypeDescriptionTransferCache getPaymentProcessorTypeCodeTypeDescriptionTransferCache() {
         if(paymentProcessorTypeCodeTypeDescriptionTransferCache == null)
-            paymentProcessorTypeCodeTypeDescriptionTransferCache = new PaymentProcessorTypeCodeTypeDescriptionTransferCache();
+            paymentProcessorTypeCodeTypeDescriptionTransferCache = CDI.current().select(PaymentProcessorTypeCodeTypeDescriptionTransferCache.class).get();
 
         return paymentProcessorTypeCodeTypeDescriptionTransferCache;
     }
 
     public PaymentProcessorTypeCodeTransferCache getPaymentProcessorTypeCodeTransferCache() {
         if(paymentProcessorTypeCodeTransferCache == null)
-            paymentProcessorTypeCodeTransferCache = new PaymentProcessorTypeCodeTransferCache();
+            paymentProcessorTypeCodeTransferCache = CDI.current().select(PaymentProcessorTypeCodeTransferCache.class).get();
 
         return paymentProcessorTypeCodeTransferCache;
     }
 
     public PaymentProcessorTypeCodeDescriptionTransferCache getPaymentProcessorTypeCodeDescriptionTransferCache() {
         if(paymentProcessorTypeCodeDescriptionTransferCache == null)
-            paymentProcessorTypeCodeDescriptionTransferCache = new PaymentProcessorTypeCodeDescriptionTransferCache();
+            paymentProcessorTypeCodeDescriptionTransferCache = CDI.current().select(PaymentProcessorTypeCodeDescriptionTransferCache.class).get();
 
         return paymentProcessorTypeCodeDescriptionTransferCache;
     }
 
     public PaymentProcessorTypeActionTransferCache getPaymentProcessorTypeActionTransferCache() {
         if(paymentProcessorTypeActionTransferCache == null)
-            paymentProcessorTypeActionTransferCache = new PaymentProcessorTypeActionTransferCache();
+            paymentProcessorTypeActionTransferCache = CDI.current().select(PaymentProcessorTypeActionTransferCache.class).get();
 
         return paymentProcessorTypeActionTransferCache;
     }
 
     public PaymentProcessorActionTransferCache getPaymentProcessorActionTransferCache() {
         if(paymentProcessorActionTransferCache == null)
-            paymentProcessorActionTransferCache = new PaymentProcessorActionTransferCache();
+            paymentProcessorActionTransferCache = CDI.current().select(PaymentProcessorActionTransferCache.class).get();
 
         return paymentProcessorActionTransferCache;
     }
 
     public PaymentProcessorTransactionTransferCache getPaymentProcessorTransactionTransferCache() {
         if(paymentProcessorTransactionTransferCache == null)
-            paymentProcessorTransactionTransferCache = new PaymentProcessorTransactionTransferCache();
+            paymentProcessorTransactionTransferCache = CDI.current().select(PaymentProcessorTransactionTransferCache.class).get();
 
         return paymentProcessorTransactionTransferCache;
     }
 
     public PaymentProcessorTransactionCodeTransferCache getPaymentProcessorTransactionCodeTransferCache() {
         if(paymentProcessorTransactionCodeTransferCache == null)
-            paymentProcessorTransactionCodeTransferCache = new PaymentProcessorTransactionCodeTransferCache();
+            paymentProcessorTransactionCodeTransferCache = CDI.current().select(PaymentProcessorTransactionCodeTransferCache.class).get();
 
         return paymentProcessorTransactionCodeTransferCache;
     }

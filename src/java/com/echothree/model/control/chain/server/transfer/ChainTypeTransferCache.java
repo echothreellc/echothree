@@ -21,7 +21,9 @@ import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.data.chain.server.entity.ChainType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ChainTypeTransferCache
         extends BaseChainTransferCache<ChainType, ChainTypeTransfer> {
 

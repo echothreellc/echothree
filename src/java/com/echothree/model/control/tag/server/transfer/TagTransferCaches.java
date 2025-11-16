@@ -18,6 +18,7 @@ package com.echothree.model.control.tag.server.transfer;
 
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.inject.spi.CDI;
 
 public class TagTransferCaches
         extends BaseTransferCaches {
@@ -35,35 +36,35 @@ public class TagTransferCaches
     
     public TagScopeTransferCache getTagScopeTransferCache() {
         if(tagScopeTransferCache == null)
-            tagScopeTransferCache = new TagScopeTransferCache();
+            tagScopeTransferCache = CDI.current().select(TagScopeTransferCache.class).get();
         
         return tagScopeTransferCache;
     }
     
     public TagScopeDescriptionTransferCache getTagScopeDescriptionTransferCache() {
         if(tagScopeDescriptionTransferCache == null)
-            tagScopeDescriptionTransferCache = new TagScopeDescriptionTransferCache();
+            tagScopeDescriptionTransferCache = CDI.current().select(TagScopeDescriptionTransferCache.class).get();
         
         return tagScopeDescriptionTransferCache;
     }
     
     public TagScopeEntityTypeTransferCache getTagScopeEntityTypeTransferCache() {
         if(tagScopeEntityTypeTransferCache == null)
-            tagScopeEntityTypeTransferCache = new TagScopeEntityTypeTransferCache();
+            tagScopeEntityTypeTransferCache = CDI.current().select(TagScopeEntityTypeTransferCache.class).get();
         
         return tagScopeEntityTypeTransferCache;
     }
     
     public TagTransferCache getTagTransferCache() {
         if(tagTransferCache == null)
-            tagTransferCache = new TagTransferCache();
+            tagTransferCache = CDI.current().select(TagTransferCache.class).get();
         
         return tagTransferCache;
     }
     
     public EntityTagTransferCache getEntityTagTransferCache() {
         if(entityTagTransferCache == null)
-            entityTagTransferCache = new EntityTagTransferCache();
+            entityTagTransferCache = CDI.current().select(EntityTagTransferCache.class).get();
         
         return entityTagTransferCache;
     }

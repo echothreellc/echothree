@@ -22,7 +22,9 @@ import com.echothree.model.control.payment.server.control.PaymentProcessorTypeCo
 import com.echothree.model.data.payment.server.entity.PaymentProcessorTypeAction;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PaymentProcessorTypeActionTransferCache
         extends BasePaymentTransferCache<PaymentProcessorTypeAction, PaymentProcessorTypeActionTransfer> {
 

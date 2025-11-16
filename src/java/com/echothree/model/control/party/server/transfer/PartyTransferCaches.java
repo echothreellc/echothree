@@ -17,6 +17,7 @@
 package com.echothree.model.control.party.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.inject.spi.CDI;
 
 public class PartyTransferCaches
         extends BaseTransferCaches {
@@ -60,217 +61,217 @@ public class PartyTransferCaches
     
     public CompanyTransferCache getCompanyTransferCache() {
         if(companyTransferCache == null)
-            companyTransferCache = new CompanyTransferCache();
+            companyTransferCache = CDI.current().select(CompanyTransferCache.class).get();
         
         return companyTransferCache;
     }
     
     public DivisionTransferCache getDivisionTransferCache() {
         if(divisionTransferCache == null)
-            divisionTransferCache = new DivisionTransferCache();
+            divisionTransferCache = CDI.current().select(DivisionTransferCache.class).get();
         
         return divisionTransferCache;
     }
     
     public DepartmentTransferCache getDepartmentTransferCache() {
         if(departmentTransferCache == null)
-            departmentTransferCache = new DepartmentTransferCache();
+            departmentTransferCache = CDI.current().select(DepartmentTransferCache.class).get();
         
         return departmentTransferCache;
     }
     
     public LanguageTransferCache getLanguageTransferCache() {
         if(languageTransferCache == null)
-            languageTransferCache = new LanguageTransferCache();
+            languageTransferCache = CDI.current().select(LanguageTransferCache.class).get();
         
         return languageTransferCache;
     }
     
     public DateTimeFormatTransferCache getDateTimeFormatTransferCache() {
         if(dateTimeFormatTransferCache == null)
-            dateTimeFormatTransferCache = new DateTimeFormatTransferCache();
+            dateTimeFormatTransferCache = CDI.current().select(DateTimeFormatTransferCache.class).get();
         
         return dateTimeFormatTransferCache;
     }
     
     public PartyTypeTransferCache getPartyTypeTransferCache() {
         if(partyTypeTransferCache == null)
-            partyTypeTransferCache = new PartyTypeTransferCache();
+            partyTypeTransferCache = CDI.current().select(PartyTypeTransferCache.class).get();
         
         return partyTypeTransferCache;
     }
     
     public TimeZoneTransferCache getTimeZoneTransferCache() {
         if(timeZoneTransferCache == null)
-            timeZoneTransferCache = new TimeZoneTransferCache();
+            timeZoneTransferCache = CDI.current().select(TimeZoneTransferCache.class).get();
         
         return timeZoneTransferCache;
     }
     
     public NameSuffixTransferCache getNameSuffixTransferCache() {
         if(nameSuffixTransferCache == null)
-            nameSuffixTransferCache = new NameSuffixTransferCache();
+            nameSuffixTransferCache = CDI.current().select(NameSuffixTransferCache.class).get();
         
         return nameSuffixTransferCache;
     }
     
     public PartyGroupTransferCache getPartyGroupTransferCache() {
         if(partyGroupTransferCache == null)
-            partyGroupTransferCache = new PartyGroupTransferCache();
+            partyGroupTransferCache = CDI.current().select(PartyGroupTransferCache.class).get();
         
         return partyGroupTransferCache;
     }
     
     public ProfileTransferCache getProfileTransferCache() {
         if(profileTransferCache == null)
-            profileTransferCache = new ProfileTransferCache();
+            profileTransferCache = CDI.current().select(ProfileTransferCache.class).get();
         
         return profileTransferCache;
     }
     
     public PersonTransferCache getPersonTransferCache() {
         if(personTransferCache == null)
-            personTransferCache = new PersonTransferCache();
+            personTransferCache = CDI.current().select(PersonTransferCache.class).get();
         
         return personTransferCache;
     }
     
     public PersonalTitleTransferCache getPersonalTitleTransferCache() {
         if(personalTitleTransferCache == null)
-            personalTitleTransferCache = new PersonalTitleTransferCache();
+            personalTitleTransferCache = CDI.current().select(PersonalTitleTransferCache.class).get();
         
         return personalTitleTransferCache;
     }
     
     public PartyTransferCache getPartyTransferCache() {
         if(partyTransferCache == null)
-            partyTransferCache = new PartyTransferCache();
+            partyTransferCache = CDI.current().select(PartyTransferCache.class).get();
         
         return partyTransferCache;
     }
     
     public DateTimeFormatDescriptionTransferCache getDateTimeFormatDescriptionTransferCache() {
         if(dateTimeFormatDescriptionTransferCache == null)
-            dateTimeFormatDescriptionTransferCache = new DateTimeFormatDescriptionTransferCache();
+            dateTimeFormatDescriptionTransferCache = CDI.current().select(DateTimeFormatDescriptionTransferCache.class).get();
         
         return dateTimeFormatDescriptionTransferCache;
     }
     
     public TimeZoneDescriptionTransferCache getTimeZoneDescriptionTransferCache() {
         if(timeZoneDescriptionTransferCache == null)
-            timeZoneDescriptionTransferCache = new TimeZoneDescriptionTransferCache();
+            timeZoneDescriptionTransferCache = CDI.current().select(TimeZoneDescriptionTransferCache.class).get();
         
         return timeZoneDescriptionTransferCache;
     }
     
     public PartyRelationshipTransferCache getPartyRelationshipTransferCache() {
         if(partyRelationshipTransferCache == null)
-            partyRelationshipTransferCache = new PartyRelationshipTransferCache();
+            partyRelationshipTransferCache = CDI.current().select(PartyRelationshipTransferCache.class).get();
         
         return partyRelationshipTransferCache;
     }
     
     public RoleTypeTransferCache getRoleTypeTransferCache() {
         if(roleTypeTransferCache == null)
-            roleTypeTransferCache = new RoleTypeTransferCache();
+            roleTypeTransferCache = CDI.current().select(RoleTypeTransferCache.class).get();
         
         return roleTypeTransferCache;
     }
     
     public PartyTypeAuditPolicyTransferCache getPartyTypeAuditPolicyTransferCache() {
         if(partyTypeAuditPolicyTransferCache == null)
-            partyTypeAuditPolicyTransferCache = new PartyTypeAuditPolicyTransferCache();
+            partyTypeAuditPolicyTransferCache = CDI.current().select(PartyTypeAuditPolicyTransferCache.class).get();
         
         return partyTypeAuditPolicyTransferCache;
     }
     
     public PartyTypeLockoutPolicyTransferCache getPartyTypeLockoutPolicyTransferCache() {
         if(partyTypeLockoutPolicyTransferCache == null)
-            partyTypeLockoutPolicyTransferCache = new PartyTypeLockoutPolicyTransferCache();
+            partyTypeLockoutPolicyTransferCache = CDI.current().select(PartyTypeLockoutPolicyTransferCache.class).get();
         
         return partyTypeLockoutPolicyTransferCache;
     }
     
     public PartyTypePasswordStringPolicyTransferCache getPartyTypePasswordStringPolicyTransferCache() {
         if(partyTypePasswordStringPolicyTransferCache == null)
-            partyTypePasswordStringPolicyTransferCache = new PartyTypePasswordStringPolicyTransferCache();
+            partyTypePasswordStringPolicyTransferCache = CDI.current().select(PartyTypePasswordStringPolicyTransferCache.class).get();
         
         return partyTypePasswordStringPolicyTransferCache;
     }
     
     public GenderTransferCache getGenderTransferCache() {
         if(genderTransferCache == null)
-            genderTransferCache = new GenderTransferCache();
+            genderTransferCache = CDI.current().select(GenderTransferCache.class).get();
         
         return genderTransferCache;
     }
     
     public GenderDescriptionTransferCache getGenderDescriptionTransferCache() {
         if(genderDescriptionTransferCache == null)
-            genderDescriptionTransferCache = new GenderDescriptionTransferCache();
+            genderDescriptionTransferCache = CDI.current().select(GenderDescriptionTransferCache.class).get();
         
         return genderDescriptionTransferCache;
     }
     
     public MoodTransferCache getMoodTransferCache() {
         if(moodTransferCache == null)
-            moodTransferCache = new MoodTransferCache();
+            moodTransferCache = CDI.current().select(MoodTransferCache.class).get();
 
         return moodTransferCache;
     }
 
     public MoodDescriptionTransferCache getMoodDescriptionTransferCache() {
         if(moodDescriptionTransferCache == null)
-            moodDescriptionTransferCache = new MoodDescriptionTransferCache();
+            moodDescriptionTransferCache = CDI.current().select(MoodDescriptionTransferCache.class).get();
 
         return moodDescriptionTransferCache;
     }
 
     public BirthdayFormatTransferCache getBirthdayFormatTransferCache() {
         if(birthdayFormatTransferCache == null)
-            birthdayFormatTransferCache = new BirthdayFormatTransferCache();
+            birthdayFormatTransferCache = CDI.current().select(BirthdayFormatTransferCache.class).get();
 
         return birthdayFormatTransferCache;
     }
 
     public BirthdayFormatDescriptionTransferCache getBirthdayFormatDescriptionTransferCache() {
         if(birthdayFormatDescriptionTransferCache == null)
-            birthdayFormatDescriptionTransferCache = new BirthdayFormatDescriptionTransferCache();
+            birthdayFormatDescriptionTransferCache = CDI.current().select(BirthdayFormatDescriptionTransferCache.class).get();
 
         return birthdayFormatDescriptionTransferCache;
     }
 
     public PartyAliasTypeTransferCache getPartyAliasTypeTransferCache() {
         if(partyAliasTypeTransferCache == null)
-            partyAliasTypeTransferCache = new PartyAliasTypeTransferCache();
+            partyAliasTypeTransferCache = CDI.current().select(PartyAliasTypeTransferCache.class).get();
 
         return partyAliasTypeTransferCache;
     }
 
     public PartyAliasTypeDescriptionTransferCache getPartyAliasTypeDescriptionTransferCache() {
         if(partyAliasTypeDescriptionTransferCache == null)
-            partyAliasTypeDescriptionTransferCache = new PartyAliasTypeDescriptionTransferCache();
+            partyAliasTypeDescriptionTransferCache = CDI.current().select(PartyAliasTypeDescriptionTransferCache.class).get();
 
         return partyAliasTypeDescriptionTransferCache;
     }
 
     public PartyAliasTransferCache getPartyAliasTransferCache() {
         if(partyAliasTransferCache == null)
-            partyAliasTransferCache = new PartyAliasTransferCache();
+            partyAliasTransferCache = CDI.current().select(PartyAliasTransferCache.class).get();
 
         return partyAliasTransferCache;
     }
 
     public PartyEntityTypeTransferCache getPartyEntityTypeTransferCache() {
         if(partyEntityTypeTransferCache == null)
-            partyEntityTypeTransferCache = new PartyEntityTypeTransferCache();
+            partyEntityTypeTransferCache = CDI.current().select(PartyEntityTypeTransferCache.class).get();
 
         return partyEntityTypeTransferCache;
     }
 
     public PartyApplicationEditorUseTransferCache getPartyApplicationEditorUseTransferCache() {
         if(partyApplicationEditorUseTransferCache == null)
-            partyApplicationEditorUseTransferCache = new PartyApplicationEditorUseTransferCache();
+            partyApplicationEditorUseTransferCache = CDI.current().select(PartyApplicationEditorUseTransferCache.class).get();
 
         return partyApplicationEditorUseTransferCache;
     }

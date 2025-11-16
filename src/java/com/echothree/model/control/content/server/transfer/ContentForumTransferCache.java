@@ -22,7 +22,9 @@ import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.data.content.server.entity.ContentForum;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ContentForumTransferCache
         extends BaseContentTransferCache<ContentForum, ContentForumTransfer> {
 

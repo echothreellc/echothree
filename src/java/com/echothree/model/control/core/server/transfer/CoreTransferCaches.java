@@ -16,8 +16,8 @@
 
 package com.echothree.model.control.core.server.transfer;
 
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.inject.spi.CDI;
 
 public class CoreTransferCaches
         extends BaseTransferCaches {
@@ -122,644 +122,644 @@ public class CoreTransferCaches
     
     public ComponentVendorTransferCache getComponentVendorTransferCache() {
         if(componentVendorTransferCache == null)
-            componentVendorTransferCache = new ComponentVendorTransferCache();
+            componentVendorTransferCache = CDI.current().select(ComponentVendorTransferCache.class).get();
 
         return componentVendorTransferCache;
     }
 
     public EntityTypeTransferCache getEntityTypeTransferCache() {
         if(entityTypeTransferCache == null)
-            entityTypeTransferCache = new EntityTypeTransferCache();
+            entityTypeTransferCache = CDI.current().select(EntityTypeTransferCache.class).get();
         
         return entityTypeTransferCache;
     }
     
     public EntityTypeDescriptionTransferCache getEntityTypeDescriptionTransferCache() {
         if(entityTypeDescriptionTransferCache == null)
-            entityTypeDescriptionTransferCache = new EntityTypeDescriptionTransferCache();
+            entityTypeDescriptionTransferCache = CDI.current().select(EntityTypeDescriptionTransferCache.class).get();
         
         return entityTypeDescriptionTransferCache;
     }
     
     public CommandTransferCache getCommandTransferCache() {
         if(commandTransferCache == null)
-            commandTransferCache = new CommandTransferCache();
+            commandTransferCache = CDI.current().select(CommandTransferCache.class).get();
         
         return commandTransferCache;
     }
     
     public CommandDescriptionTransferCache getCommandDescriptionTransferCache() {
         if(commandDescriptionTransferCache == null)
-            commandDescriptionTransferCache = new CommandDescriptionTransferCache();
+            commandDescriptionTransferCache = CDI.current().select(CommandDescriptionTransferCache.class).get();
         
         return commandDescriptionTransferCache;
     }
     
     public CommandMessageTransferCache getCommandMessageTransferCache() {
         if(commandMessageTransferCache == null)
-            commandMessageTransferCache = new CommandMessageTransferCache();
+            commandMessageTransferCache = CDI.current().select(CommandMessageTransferCache.class).get();
         
         return commandMessageTransferCache;
     }
     
     public CommandMessageTranslationTransferCache getCommandMessageTranslationTransferCache() {
         if(commandMessageTranslationTransferCache == null)
-            commandMessageTranslationTransferCache = new CommandMessageTranslationTransferCache();
+            commandMessageTranslationTransferCache = CDI.current().select(CommandMessageTranslationTransferCache.class).get();
         
         return commandMessageTranslationTransferCache;
     }
 
     public EntityAliasTransferCache getEntityAliasTransferCache() {
         if(entityAliasTransferCache == null)
-            entityAliasTransferCache = new EntityAliasTransferCache();
+            entityAliasTransferCache = CDI.current().select(EntityAliasTransferCache.class).get();
 
         return entityAliasTransferCache;
     }
 
     public EntityAliasTypeTransferCache getEntityAliasTypeTransferCache() {
         if(entityAliasTypeTransferCache == null)
-            entityAliasTypeTransferCache = new EntityAliasTypeTransferCache();
+            entityAliasTypeTransferCache = CDI.current().select(EntityAliasTypeTransferCache.class).get();
 
         return entityAliasTypeTransferCache;
     }
 
     public EntityAliasTypeDescriptionTransferCache getEntityAliasTypeDescriptionTransferCache() {
         if(entityAliasTypeDescriptionTransferCache == null)
-            entityAliasTypeDescriptionTransferCache = new EntityAliasTypeDescriptionTransferCache();
+            entityAliasTypeDescriptionTransferCache = CDI.current().select(EntityAliasTypeDescriptionTransferCache.class).get();
 
         return entityAliasTypeDescriptionTransferCache;
     }
 
     public EntityAttributeTransferCache getEntityAttributeTransferCache() {
         if(entityAttributeTransferCache == null)
-            entityAttributeTransferCache = new EntityAttributeTransferCache();
+            entityAttributeTransferCache = CDI.current().select(EntityAttributeTransferCache.class).get();
 
         return entityAttributeTransferCache;
     }
 
     public EntityAttributeDescriptionTransferCache getEntityAttributeDescriptionTransferCache() {
         if(entityAttributeDescriptionTransferCache == null)
-            entityAttributeDescriptionTransferCache = new EntityAttributeDescriptionTransferCache();
+            entityAttributeDescriptionTransferCache = CDI.current().select(EntityAttributeDescriptionTransferCache.class).get();
 
         return entityAttributeDescriptionTransferCache;
     }
 
     public EntityAttributeEntityAttributeGroupTransferCache getEntityAttributeEntityAttributeGroupTransferCache() {
         if(entityAttributeEntityAttributeGroupTransferCache == null)
-            entityAttributeEntityAttributeGroupTransferCache = new EntityAttributeEntityAttributeGroupTransferCache();
+            entityAttributeEntityAttributeGroupTransferCache = CDI.current().select(EntityAttributeEntityAttributeGroupTransferCache.class).get();
         
         return entityAttributeEntityAttributeGroupTransferCache;
     }
     
     public EntityAttributeGroupTransferCache getEntityAttributeGroupTransferCache() {
         if(entityAttributeGroupTransferCache == null)
-            entityAttributeGroupTransferCache = new EntityAttributeGroupTransferCache();
+            entityAttributeGroupTransferCache = CDI.current().select(EntityAttributeGroupTransferCache.class).get();
         
         return entityAttributeGroupTransferCache;
     }
     
     public EntityAttributeGroupDescriptionTransferCache getEntityAttributeGroupDescriptionTransferCache() {
         if(entityAttributeGroupDescriptionTransferCache == null)
-            entityAttributeGroupDescriptionTransferCache = new EntityAttributeGroupDescriptionTransferCache();
+            entityAttributeGroupDescriptionTransferCache = CDI.current().select(EntityAttributeGroupDescriptionTransferCache.class).get();
         
         return entityAttributeGroupDescriptionTransferCache;
     }
     
     public EntityListItemTransferCache getEntityListItemTransferCache() {
         if(entityListItemTransferCache == null)
-            entityListItemTransferCache = new EntityListItemTransferCache();
+            entityListItemTransferCache = CDI.current().select(EntityListItemTransferCache.class).get();
         
         return entityListItemTransferCache;
     }
     
     public EntityListItemDescriptionTransferCache getEntityListItemDescriptionTransferCache() {
         if(entityListItemDescriptionTransferCache == null)
-            entityListItemDescriptionTransferCache = new EntityListItemDescriptionTransferCache();
+            entityListItemDescriptionTransferCache = CDI.current().select(EntityListItemDescriptionTransferCache.class).get();
         
         return entityListItemDescriptionTransferCache;
     }
     
     public EntityIntegerRangeTransferCache getEntityIntegerRangeTransferCache() {
         if(entityIntegerRangeTransferCache == null)
-            entityIntegerRangeTransferCache = new EntityIntegerRangeTransferCache();
+            entityIntegerRangeTransferCache = CDI.current().select(EntityIntegerRangeTransferCache.class).get();
         
         return entityIntegerRangeTransferCache;
     }
     
     public EntityIntegerRangeDescriptionTransferCache getEntityIntegerRangeDescriptionTransferCache() {
         if(entityIntegerRangeDescriptionTransferCache == null)
-            entityIntegerRangeDescriptionTransferCache = new EntityIntegerRangeDescriptionTransferCache();
+            entityIntegerRangeDescriptionTransferCache = CDI.current().select(EntityIntegerRangeDescriptionTransferCache.class).get();
         
         return entityIntegerRangeDescriptionTransferCache;
     }
     
     public EntityLongRangeTransferCache getEntityLongRangeTransferCache() {
         if(entityLongRangeTransferCache == null)
-            entityLongRangeTransferCache = new EntityLongRangeTransferCache();
+            entityLongRangeTransferCache = CDI.current().select(EntityLongRangeTransferCache.class).get();
         
         return entityLongRangeTransferCache;
     }
     
     public EntityLongRangeDescriptionTransferCache getEntityLongRangeDescriptionTransferCache() {
         if(entityLongRangeDescriptionTransferCache == null)
-            entityLongRangeDescriptionTransferCache = new EntityLongRangeDescriptionTransferCache();
+            entityLongRangeDescriptionTransferCache = CDI.current().select(EntityLongRangeDescriptionTransferCache.class).get();
         
         return entityLongRangeDescriptionTransferCache;
     }
     
     public EntityAttributeTypeTransferCache getEntityAttributeTypeTransferCache() {
         if(entityAttributeTypeTransferCache == null)
-            entityAttributeTypeTransferCache = new EntityAttributeTypeTransferCache();
+            entityAttributeTypeTransferCache = CDI.current().select(EntityAttributeTypeTransferCache.class).get();
         
         return entityAttributeTypeTransferCache;
     }
     
     public EventTypeTransferCache getEventTypeTransferCache() {
         if(eventTypeTransferCache == null)
-            eventTypeTransferCache = new EventTypeTransferCache();
+            eventTypeTransferCache = CDI.current().select(EventTypeTransferCache.class).get();
         
         return eventTypeTransferCache;
     }
     
     public MimeTypeTransferCache getMimeTypeTransferCache() {
         if(mimeTypeTransferCache == null)
-            mimeTypeTransferCache = new MimeTypeTransferCache();
+            mimeTypeTransferCache = CDI.current().select(MimeTypeTransferCache.class).get();
 
         return mimeTypeTransferCache;
     }
 
     public MimeTypeDescriptionTransferCache getMimeTypeDescriptionTransferCache() {
         if(mimeTypeDescriptionTransferCache == null)
-            mimeTypeDescriptionTransferCache = new MimeTypeDescriptionTransferCache();
+            mimeTypeDescriptionTransferCache = CDI.current().select(MimeTypeDescriptionTransferCache.class).get();
 
         return mimeTypeDescriptionTransferCache;
     }
 
     public EntityTimeTransferCache getEntityTimeTransferCache() {
         if(entityTimeTransferCache == null)
-            entityTimeTransferCache = new EntityTimeTransferCache();
+            entityTimeTransferCache = CDI.current().select(EntityTimeTransferCache.class).get();
 
         return entityTimeTransferCache;
     }
 
     public EntityVisitTransferCache getEntityVisitTransferCache() {
         if(entityVisitTransferCache == null)
-            entityVisitTransferCache = new EntityVisitTransferCache();
+            entityVisitTransferCache = CDI.current().select(EntityVisitTransferCache.class).get();
 
         return entityVisitTransferCache;
     }
 
     public EntityInstanceTransferCache getEntityInstanceTransferCache() {
         if(entityInstanceTransferCache == null)
-            entityInstanceTransferCache = new EntityInstanceTransferCache();
+            entityInstanceTransferCache = CDI.current().select(EntityInstanceTransferCache.class).get();
         
         return entityInstanceTransferCache;
     }
     
     public EventGroupTransferCache getEventGroupTransferCache() {
         if(eventGroupTransferCache == null)
-            eventGroupTransferCache = new EventGroupTransferCache();
+            eventGroupTransferCache = CDI.current().select(EventGroupTransferCache.class).get();
         
         return eventGroupTransferCache;
     }
     
     public EventTransferCache getEventTransferCache() {
         if(eventTransferCache == null)
-            eventTransferCache = new EventTransferCache();
+            eventTransferCache = CDI.current().select(EventTransferCache.class).get();
         
         return eventTransferCache;
     }
     
     public EntityLockTransferCache getEntityLockTransferCache() {
         if(entityLockTransferCache == null)
-            entityLockTransferCache = new EntityLockTransferCache();
+            entityLockTransferCache = CDI.current().select(EntityLockTransferCache.class).get();
         
         return entityLockTransferCache;
     }
     
     public MimeTypeUsageTypeTransferCache getMimeTypeUsageTypeTransferCache() {
         if(mimeTypeUsageTypeTransferCache == null)
-            mimeTypeUsageTypeTransferCache = new MimeTypeUsageTypeTransferCache();
+            mimeTypeUsageTypeTransferCache = CDI.current().select(MimeTypeUsageTypeTransferCache.class).get();
         
         return mimeTypeUsageTypeTransferCache;
     }
     
     public MimeTypeUsageTransferCache getMimeTypeUsageTransferCache() {
         if(mimeTypeUsageTransferCache == null)
-            mimeTypeUsageTransferCache = new MimeTypeUsageTransferCache();
+            mimeTypeUsageTransferCache = CDI.current().select(MimeTypeUsageTransferCache.class).get();
         
         return mimeTypeUsageTransferCache;
     }
     
     public ServerTransferCache getServerTransferCache() {
         if(serverTransferCache == null)
-            serverTransferCache = new ServerTransferCache();
+            serverTransferCache = CDI.current().select(ServerTransferCache.class).get();
 
         return serverTransferCache;
     }
 
     public ServerDescriptionTransferCache getServerDescriptionTransferCache() {
         if(serverDescriptionTransferCache == null)
-            serverDescriptionTransferCache = new ServerDescriptionTransferCache();
+            serverDescriptionTransferCache = CDI.current().select(ServerDescriptionTransferCache.class).get();
 
         return serverDescriptionTransferCache;
     }
 
     public ServerServiceTransferCache getServerServiceTransferCache() {
         if(serverServiceTransferCache == null)
-            serverServiceTransferCache = new ServerServiceTransferCache();
+            serverServiceTransferCache = CDI.current().select(ServerServiceTransferCache.class).get();
 
         return serverServiceTransferCache;
     }
 
     public MimeTypeFileExtensionTransferCache getMimeTypeFileExtensionTransferCache() {
         if(mimeTypeFileExtensionTransferCache == null)
-            mimeTypeFileExtensionTransferCache = new MimeTypeFileExtensionTransferCache();
+            mimeTypeFileExtensionTransferCache = CDI.current().select(MimeTypeFileExtensionTransferCache.class).get();
         
         return mimeTypeFileExtensionTransferCache;
     }
     
     public EntityBlobAttributeTransferCache getEntityBlobAttributeTransferCache() {
         if(entityBlobAttributeTransferCache == null)
-            entityBlobAttributeTransferCache = new EntityBlobAttributeTransferCache();
+            entityBlobAttributeTransferCache = CDI.current().select(EntityBlobAttributeTransferCache.class).get();
         
         return entityBlobAttributeTransferCache;
     }
 
     public EntityBooleanDefaultTransferCache getEntityBooleanDefaultTransferCache() {
         if(entityBooleanDefaultTransferCache == null)
-            entityBooleanDefaultTransferCache = new EntityBooleanDefaultTransferCache();
+            entityBooleanDefaultTransferCache = CDI.current().select(EntityBooleanDefaultTransferCache.class).get();
 
         return entityBooleanDefaultTransferCache;
     }
 
     public EntityBooleanAttributeTransferCache getEntityBooleanAttributeTransferCache() {
         if(entityBooleanAttributeTransferCache == null)
-            entityBooleanAttributeTransferCache = new EntityBooleanAttributeTransferCache();
+            entityBooleanAttributeTransferCache = CDI.current().select(EntityBooleanAttributeTransferCache.class).get();
 
         return entityBooleanAttributeTransferCache;
     }
 
     public EntityClobAttributeTransferCache getEntityClobAttributeTransferCache() {
         if(entityClobAttributeTransferCache == null)
-            entityClobAttributeTransferCache = new EntityClobAttributeTransferCache();
+            entityClobAttributeTransferCache = CDI.current().select(EntityClobAttributeTransferCache.class).get();
         
         return entityClobAttributeTransferCache;
     }
 
     public EntityDateDefaultTransferCache getEntityDateDefaultTransferCache() {
         if(entityDateDefaultTransferCache == null)
-            entityDateDefaultTransferCache = new EntityDateDefaultTransferCache();
+            entityDateDefaultTransferCache = CDI.current().select(EntityDateDefaultTransferCache.class).get();
 
         return entityDateDefaultTransferCache;
     }
 
     public EntityDateAttributeTransferCache getEntityDateAttributeTransferCache() {
         if(entityDateAttributeTransferCache == null)
-            entityDateAttributeTransferCache = new EntityDateAttributeTransferCache();
+            entityDateAttributeTransferCache = CDI.current().select(EntityDateAttributeTransferCache.class).get();
 
         return entityDateAttributeTransferCache;
     }
 
     public EntityIntegerDefaultTransferCache getEntityIntegerDefaultTransferCache() {
         if(entityIntegerDefaultTransferCache == null)
-            entityIntegerDefaultTransferCache = new EntityIntegerDefaultTransferCache();
+            entityIntegerDefaultTransferCache = CDI.current().select(EntityIntegerDefaultTransferCache.class).get();
 
         return entityIntegerDefaultTransferCache;
     }
 
     public EntityIntegerAttributeTransferCache getEntityIntegerAttributeTransferCache() {
         if(entityIntegerAttributeTransferCache == null)
-            entityIntegerAttributeTransferCache = new EntityIntegerAttributeTransferCache();
+            entityIntegerAttributeTransferCache = CDI.current().select(EntityIntegerAttributeTransferCache.class).get();
         
         return entityIntegerAttributeTransferCache;
     }
 
     public EntityListItemDefaultTransferCache getEntityListItemDefaultTransferCache() {
         if(entityListItemDefaultTransferCache == null)
-            entityListItemDefaultTransferCache = new EntityListItemDefaultTransferCache();
+            entityListItemDefaultTransferCache = CDI.current().select(EntityListItemDefaultTransferCache.class).get();
 
         return entityListItemDefaultTransferCache;
     }
 
     public EntityListItemAttributeTransferCache getEntityListItemAttributeTransferCache() {
         if(entityListItemAttributeTransferCache == null)
-            entityListItemAttributeTransferCache = new EntityListItemAttributeTransferCache();
+            entityListItemAttributeTransferCache = CDI.current().select(EntityListItemAttributeTransferCache.class).get();
 
         return entityListItemAttributeTransferCache;
     }
 
     public EntityLongDefaultTransferCache getEntityLongDefaultTransferCache() {
         if(entityLongDefaultTransferCache == null)
-            entityLongDefaultTransferCache = new EntityLongDefaultTransferCache();
+            entityLongDefaultTransferCache = CDI.current().select(EntityLongDefaultTransferCache.class).get();
 
         return entityLongDefaultTransferCache;
     }
 
     public EntityLongAttributeTransferCache getEntityLongAttributeTransferCache() {
         if(entityLongAttributeTransferCache == null)
-            entityLongAttributeTransferCache = new EntityLongAttributeTransferCache();
+            entityLongAttributeTransferCache = CDI.current().select(EntityLongAttributeTransferCache.class).get();
         
         return entityLongAttributeTransferCache;
     }
 
     public EntityMultipleListItemDefaultTransferCache getEntityMultipleListItemDefaultTransferCache() {
         if(entityMultipleListItemDefaultTransferCache == null)
-            entityMultipleListItemDefaultTransferCache = new EntityMultipleListItemDefaultTransferCache();
+            entityMultipleListItemDefaultTransferCache = CDI.current().select(EntityMultipleListItemDefaultTransferCache.class).get();
 
         return entityMultipleListItemDefaultTransferCache;
     }
 
     public EntityMultipleListItemAttributeTransferCache getEntityMultipleListItemAttributeTransferCache() {
         if(entityMultipleListItemAttributeTransferCache == null)
-            entityMultipleListItemAttributeTransferCache = new EntityMultipleListItemAttributeTransferCache();
+            entityMultipleListItemAttributeTransferCache = CDI.current().select(EntityMultipleListItemAttributeTransferCache.class).get();
 
         return entityMultipleListItemAttributeTransferCache;
     }
 
     public EntityNameAttributeTransferCache getEntityNameAttributeTransferCache() {
         if(entityNameAttributeTransferCache == null)
-            entityNameAttributeTransferCache = new EntityNameAttributeTransferCache();
+            entityNameAttributeTransferCache = CDI.current().select(EntityNameAttributeTransferCache.class).get();
         
         return entityNameAttributeTransferCache;
     }
 
     public EntityGeoPointDefaultTransferCache getEntityGeoPointDefaultTransferCache() {
         if(entityGeoPointDefaultTransferCache == null)
-            entityGeoPointDefaultTransferCache = new EntityGeoPointDefaultTransferCache();
+            entityGeoPointDefaultTransferCache = CDI.current().select(EntityGeoPointDefaultTransferCache.class).get();
 
         return entityGeoPointDefaultTransferCache;
     }
 
     public EntityGeoPointAttributeTransferCache getEntityGeoPointAttributeTransferCache() {
         if(entityGeoPointAttributeTransferCache == null)
-            entityGeoPointAttributeTransferCache = new EntityGeoPointAttributeTransferCache();
+            entityGeoPointAttributeTransferCache = CDI.current().select(EntityGeoPointAttributeTransferCache.class).get();
 
         return entityGeoPointAttributeTransferCache;
     }
 
     public EntityStringDefaultTransferCache getEntityStringDefaultTransferCache() {
         if(entityStringDefaultTransferCache == null)
-            entityStringDefaultTransferCache = new EntityStringDefaultTransferCache();
+            entityStringDefaultTransferCache = CDI.current().select(EntityStringDefaultTransferCache.class).get();
 
         return entityStringDefaultTransferCache;
     }
 
     public EntityStringAttributeTransferCache getEntityStringAttributeTransferCache() {
         if(entityStringAttributeTransferCache == null)
-            entityStringAttributeTransferCache = new EntityStringAttributeTransferCache();
+            entityStringAttributeTransferCache = CDI.current().select(EntityStringAttributeTransferCache.class).get();
 
         return entityStringAttributeTransferCache;
     }
 
     public EntityTimeDefaultTransferCache getEntityTimeDefaultTransferCache() {
         if(entityTimeDefaultTransferCache == null)
-            entityTimeDefaultTransferCache = new EntityTimeDefaultTransferCache();
+            entityTimeDefaultTransferCache = CDI.current().select(EntityTimeDefaultTransferCache.class).get();
 
         return entityTimeDefaultTransferCache;
     }
 
     public EntityTimeAttributeTransferCache getEntityTimeAttributeTransferCache() {
         if(entityTimeAttributeTransferCache == null)
-            entityTimeAttributeTransferCache = new EntityTimeAttributeTransferCache();
+            entityTimeAttributeTransferCache = CDI.current().select(EntityTimeAttributeTransferCache.class).get();
 
         return entityTimeAttributeTransferCache;
     }
 
     public EntityAttributeEntityTypeTransferCache getEntityAttributeEntityTypeTransferCache() {
         if(entityAttributeEntityTypeTransferCache == null)
-            entityAttributeEntityTypeTransferCache = new EntityAttributeEntityTypeTransferCache();
+            entityAttributeEntityTypeTransferCache = CDI.current().select(EntityAttributeEntityTypeTransferCache.class).get();
         
         return entityAttributeEntityTypeTransferCache;
     }
     
     public EntityEntityAttributeTransferCache getEntityEntityAttributeTransferCache() {
         if(entityEntityAttributeTransferCache == null)
-            entityEntityAttributeTransferCache = new EntityEntityAttributeTransferCache();
+            entityEntityAttributeTransferCache = CDI.current().select(EntityEntityAttributeTransferCache.class).get();
         
         return entityEntityAttributeTransferCache;
     }
     
     public EntityCollectionAttributeTransferCache getEntityCollectionAttributeTransferCache() {
         if(entityCollectionAttributeTransferCache == null)
-            entityCollectionAttributeTransferCache = new EntityCollectionAttributeTransferCache();
+            entityCollectionAttributeTransferCache = CDI.current().select(EntityCollectionAttributeTransferCache.class).get();
         
         return entityCollectionAttributeTransferCache;
     }
     
     public CommandMessageTypeTransferCache getCommandMessageTypeTransferCache() {
         if(commandMessageTypeTransferCache == null)
-            commandMessageTypeTransferCache = new CommandMessageTypeTransferCache();
+            commandMessageTypeTransferCache = CDI.current().select(CommandMessageTypeTransferCache.class).get();
         
         return commandMessageTypeTransferCache;
     }
     
     public CommandMessageTypeDescriptionTransferCache getCommandMessageTypeDescriptionTransferCache() {
         if(commandMessageTypeDescriptionTransferCache == null)
-            commandMessageTypeDescriptionTransferCache = new CommandMessageTypeDescriptionTransferCache();
+            commandMessageTypeDescriptionTransferCache = CDI.current().select(CommandMessageTypeDescriptionTransferCache.class).get();
         
         return commandMessageTypeDescriptionTransferCache;
     }
     
     public BaseEncryptionKeyTransferCache getBaseEncryptionKeyTransferCache() {
         if(baseEncryptionKeyTransferCache == null)
-            baseEncryptionKeyTransferCache = new BaseEncryptionKeyTransferCache();
+            baseEncryptionKeyTransferCache = CDI.current().select(BaseEncryptionKeyTransferCache.class).get();
         
         return baseEncryptionKeyTransferCache;
     }
     
     public ProtocolTransferCache getProtocolTransferCache() {
         if(protocolTransferCache == null)
-            protocolTransferCache = new ProtocolTransferCache();
+            protocolTransferCache = CDI.current().select(ProtocolTransferCache.class).get();
 
         return protocolTransferCache;
     }
 
     public ProtocolDescriptionTransferCache getProtocolDescriptionTransferCache() {
         if(protocolDescriptionTransferCache == null)
-            protocolDescriptionTransferCache = new ProtocolDescriptionTransferCache();
+            protocolDescriptionTransferCache = CDI.current().select(ProtocolDescriptionTransferCache.class).get();
 
         return protocolDescriptionTransferCache;
     }
 
     public ServiceTransferCache getServiceTransferCache() {
         if(serviceTransferCache == null)
-            serviceTransferCache = new ServiceTransferCache();
+            serviceTransferCache = CDI.current().select(ServiceTransferCache.class).get();
 
         return serviceTransferCache;
     }
 
     public ServiceDescriptionTransferCache getServiceDescriptionTransferCache() {
         if(serviceDescriptionTransferCache == null)
-            serviceDescriptionTransferCache = new ServiceDescriptionTransferCache();
+            serviceDescriptionTransferCache = CDI.current().select(ServiceDescriptionTransferCache.class).get();
 
         return serviceDescriptionTransferCache;
     }
 
     public CacheEntryTransferCache getCacheEntryTransferCache() {
         if(cacheEntryTransferCache == null)
-            cacheEntryTransferCache = new CacheEntryTransferCache();
+            cacheEntryTransferCache = CDI.current().select(CacheEntryTransferCache.class).get();
 
         return cacheEntryTransferCache;
     }
 
     public CacheEntryDependencyTransferCache getCacheEntryDependencyTransferCache() {
         if(cacheEntryDependencyTransferCache == null)
-            cacheEntryDependencyTransferCache = new CacheEntryDependencyTransferCache();
+            cacheEntryDependencyTransferCache = CDI.current().select(CacheEntryDependencyTransferCache.class).get();
 
         return cacheEntryDependencyTransferCache;
     }
 
     public ApplicationTransferCache getApplicationTransferCache() {
         if(applicationTransferCache == null)
-            applicationTransferCache = new ApplicationTransferCache();
+            applicationTransferCache = CDI.current().select(ApplicationTransferCache.class).get();
 
         return applicationTransferCache;
     }
 
     public ApplicationDescriptionTransferCache getApplicationDescriptionTransferCache() {
         if(applicationDescriptionTransferCache == null)
-            applicationDescriptionTransferCache = new ApplicationDescriptionTransferCache();
+            applicationDescriptionTransferCache = CDI.current().select(ApplicationDescriptionTransferCache.class).get();
 
         return applicationDescriptionTransferCache;
     }
 
     public EditorTransferCache getEditorTransferCache() {
         if(editorTransferCache == null)
-            editorTransferCache = new EditorTransferCache();
+            editorTransferCache = CDI.current().select(EditorTransferCache.class).get();
 
         return editorTransferCache;
     }
 
     public EditorDescriptionTransferCache getEditorDescriptionTransferCache() {
         if(editorDescriptionTransferCache == null)
-            editorDescriptionTransferCache = new EditorDescriptionTransferCache();
+            editorDescriptionTransferCache = CDI.current().select(EditorDescriptionTransferCache.class).get();
 
         return editorDescriptionTransferCache;
     }
 
     public ApplicationEditorTransferCache getApplicationEditorTransferCache() {
         if(applicationEditorTransferCache == null)
-            applicationEditorTransferCache = new ApplicationEditorTransferCache();
+            applicationEditorTransferCache = CDI.current().select(ApplicationEditorTransferCache.class).get();
 
         return applicationEditorTransferCache;
     }
 
     public ApplicationEditorUseTransferCache getApplicationEditorUseTransferCache() {
         if(applicationEditorUseTransferCache == null)
-            applicationEditorUseTransferCache = new ApplicationEditorUseTransferCache();
+            applicationEditorUseTransferCache = CDI.current().select(ApplicationEditorUseTransferCache.class).get();
 
         return applicationEditorUseTransferCache;
     }
 
     public ApplicationEditorUseDescriptionTransferCache getApplicationEditorUseDescriptionTransferCache() {
         if(applicationEditorUseDescriptionTransferCache == null)
-            applicationEditorUseDescriptionTransferCache = new ApplicationEditorUseDescriptionTransferCache();
+            applicationEditorUseDescriptionTransferCache = CDI.current().select(ApplicationEditorUseDescriptionTransferCache.class).get();
 
         return applicationEditorUseDescriptionTransferCache;
     }
 
     public ColorTransferCache getColorTransferCache() {
         if(colorTransferCache == null)
-            colorTransferCache = new ColorTransferCache();
+            colorTransferCache = CDI.current().select(ColorTransferCache.class).get();
 
         return colorTransferCache;
     }
 
     public ColorDescriptionTransferCache getColorDescriptionTransferCache() {
         if(colorDescriptionTransferCache == null)
-            colorDescriptionTransferCache = new ColorDescriptionTransferCache();
+            colorDescriptionTransferCache = CDI.current().select(ColorDescriptionTransferCache.class).get();
 
         return colorDescriptionTransferCache;
     }
 
     public FontStyleTransferCache getFontStyleTransferCache() {
         if(fontStyleTransferCache == null)
-            fontStyleTransferCache = new FontStyleTransferCache();
+            fontStyleTransferCache = CDI.current().select(FontStyleTransferCache.class).get();
 
         return fontStyleTransferCache;
     }
 
     public FontStyleDescriptionTransferCache getFontStyleDescriptionTransferCache() {
         if(fontStyleDescriptionTransferCache == null)
-            fontStyleDescriptionTransferCache = new FontStyleDescriptionTransferCache();
+            fontStyleDescriptionTransferCache = CDI.current().select(FontStyleDescriptionTransferCache.class).get();
 
         return fontStyleDescriptionTransferCache;
     }
 
     public FontWeightTransferCache getFontWeightTransferCache() {
         if(fontWeightTransferCache == null)
-            fontWeightTransferCache = new FontWeightTransferCache();
+            fontWeightTransferCache = CDI.current().select(FontWeightTransferCache.class).get();
 
         return fontWeightTransferCache;
     }
 
     public FontWeightDescriptionTransferCache getFontWeightDescriptionTransferCache() {
         if(fontWeightDescriptionTransferCache == null)
-            fontWeightDescriptionTransferCache = new FontWeightDescriptionTransferCache();
+            fontWeightDescriptionTransferCache = CDI.current().select(FontWeightDescriptionTransferCache.class).get();
 
         return fontWeightDescriptionTransferCache;
     }
 
     public TextDecorationTransferCache getTextDecorationTransferCache() {
         if(textDecorationTransferCache == null)
-            textDecorationTransferCache = new TextDecorationTransferCache();
+            textDecorationTransferCache = CDI.current().select(TextDecorationTransferCache.class).get();
 
         return textDecorationTransferCache;
     }
 
     public TextDecorationDescriptionTransferCache getTextDecorationDescriptionTransferCache() {
         if(textDecorationDescriptionTransferCache == null)
-            textDecorationDescriptionTransferCache = new TextDecorationDescriptionTransferCache();
+            textDecorationDescriptionTransferCache = CDI.current().select(TextDecorationDescriptionTransferCache.class).get();
 
         return textDecorationDescriptionTransferCache;
     }
 
     public TextTransformationTransferCache getTextTransformationTransferCache() {
         if(textTransformationTransferCache == null)
-            textTransformationTransferCache = new TextTransformationTransferCache();
+            textTransformationTransferCache = CDI.current().select(TextTransformationTransferCache.class).get();
 
         return textTransformationTransferCache;
     }
 
     public TextTransformationDescriptionTransferCache getTextTransformationDescriptionTransferCache() {
         if(textTransformationDescriptionTransferCache == null)
-            textTransformationDescriptionTransferCache = new TextTransformationDescriptionTransferCache();
+            textTransformationDescriptionTransferCache = CDI.current().select(TextTransformationDescriptionTransferCache.class).get();
 
         return textTransformationDescriptionTransferCache;
     }
 
     public AppearanceTransferCache getAppearanceTransferCache() {
         if(appearanceTransferCache == null)
-            appearanceTransferCache = new AppearanceTransferCache();
+            appearanceTransferCache = CDI.current().select(AppearanceTransferCache.class).get();
 
         return appearanceTransferCache;
     }
 
     public AppearanceDescriptionTransferCache getAppearanceDescriptionTransferCache() {
         if(appearanceDescriptionTransferCache == null)
-            appearanceDescriptionTransferCache = new AppearanceDescriptionTransferCache();
+            appearanceDescriptionTransferCache = CDI.current().select(AppearanceDescriptionTransferCache.class).get();
 
         return appearanceDescriptionTransferCache;
     }
 
     public AppearanceTextDecorationTransferCache getAppearanceTextDecorationTransferCache() {
         if(appearanceTextDecorationTransferCache == null)
-            appearanceTextDecorationTransferCache = new AppearanceTextDecorationTransferCache();
+            appearanceTextDecorationTransferCache = CDI.current().select(AppearanceTextDecorationTransferCache.class).get();
 
         return appearanceTextDecorationTransferCache;
     }
 
     public AppearanceTextTransformationTransferCache getAppearanceTextTransformationTransferCache() {
         if(appearanceTextTransformationTransferCache == null)
-            appearanceTextTransformationTransferCache = new AppearanceTextTransformationTransferCache();
+            appearanceTextTransformationTransferCache = CDI.current().select(AppearanceTextTransformationTransferCache.class).get();
 
         return appearanceTextTransformationTransferCache;
     }
 
     public EntityAppearanceTransferCache getEntityAppearanceTransferCache() {
         if(entityAppearanceTransferCache == null)
-            entityAppearanceTransferCache = new EntityAppearanceTransferCache();
+            entityAppearanceTransferCache = CDI.current().select(EntityAppearanceTransferCache.class).get();
         
         return entityAppearanceTransferCache;
     }

@@ -17,6 +17,7 @@
 package com.echothree.model.control.item.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.inject.spi.CDI;
 
 public class ItemTransferCaches
         extends BaseTransferCaches {
@@ -75,7 +76,7 @@ public class ItemTransferCaches
     
     public ItemTypeTransferCache getItemTypeTransferCache() {
         if(itemTypeTransferCache == null) {
-            itemTypeTransferCache = new ItemTypeTransferCache();
+            itemTypeTransferCache = CDI.current().select(ItemTypeTransferCache.class).get();
         }
         
         return itemTypeTransferCache;
@@ -83,7 +84,7 @@ public class ItemTransferCaches
     
     public ItemDeliveryTypeTransferCache getItemDeliveryTypeTransferCache() {
         if(itemDeliveryTypeTransferCache == null) {
-            itemDeliveryTypeTransferCache = new ItemDeliveryTypeTransferCache();
+            itemDeliveryTypeTransferCache = CDI.current().select(ItemDeliveryTypeTransferCache.class).get();
         }
         
         return itemDeliveryTypeTransferCache;
@@ -91,7 +92,7 @@ public class ItemTransferCaches
     
     public ItemInventoryTypeTransferCache getItemInventoryTypeTransferCache() {
         if(itemInventoryTypeTransferCache == null) {
-            itemInventoryTypeTransferCache = new ItemInventoryTypeTransferCache();
+            itemInventoryTypeTransferCache = CDI.current().select(ItemInventoryTypeTransferCache.class).get();
         }
         
         return itemInventoryTypeTransferCache;
@@ -99,7 +100,7 @@ public class ItemTransferCaches
     
     public RelatedItemTypeTransferCache getRelatedItemTypeTransferCache() {
         if(relatedItemTypeTransferCache == null) {
-            relatedItemTypeTransferCache = new RelatedItemTypeTransferCache();
+            relatedItemTypeTransferCache = CDI.current().select(RelatedItemTypeTransferCache.class).get();
         }
 
         return relatedItemTypeTransferCache;
@@ -107,7 +108,7 @@ public class ItemTransferCaches
 
     public RelatedItemTypeDescriptionTransferCache getRelatedItemTypeDescriptionTransferCache() {
         if(relatedItemTypeDescriptionTransferCache == null) {
-            relatedItemTypeDescriptionTransferCache = new RelatedItemTypeDescriptionTransferCache();
+            relatedItemTypeDescriptionTransferCache = CDI.current().select(RelatedItemTypeDescriptionTransferCache.class).get();
         }
 
         return relatedItemTypeDescriptionTransferCache;
@@ -115,7 +116,7 @@ public class ItemTransferCaches
 
     public RelatedItemTransferCache getRelatedItemTransferCache() {
         if(relatedItemTransferCache == null) {
-            relatedItemTransferCache = new RelatedItemTransferCache();
+            relatedItemTransferCache = CDI.current().select(RelatedItemTransferCache.class).get();
         }
         
         return relatedItemTransferCache;
@@ -123,7 +124,7 @@ public class ItemTransferCaches
     
     public ItemUseTypeTransferCache getItemUseTypeTransferCache() {
         if(itemUseTypeTransferCache == null) {
-            itemUseTypeTransferCache = new ItemUseTypeTransferCache();
+            itemUseTypeTransferCache = CDI.current().select(ItemUseTypeTransferCache.class).get();
         }
         
         return itemUseTypeTransferCache;
@@ -131,7 +132,7 @@ public class ItemTransferCaches
     
     public ItemPriceTypeTransferCache getItemPriceTypeTransferCache() {
         if(itemPriceTypeTransferCache == null) {
-            itemPriceTypeTransferCache = new ItemPriceTypeTransferCache();
+            itemPriceTypeTransferCache = CDI.current().select(ItemPriceTypeTransferCache.class).get();
         }
         
         return itemPriceTypeTransferCache;
@@ -139,7 +140,7 @@ public class ItemTransferCaches
     
     public ItemTransferCache getItemTransferCache() {
         if(itemTransferCache == null) {
-            itemTransferCache = new ItemTransferCache();
+            itemTransferCache = CDI.current().select(ItemTransferCache.class).get();
         }
         
         return itemTransferCache;
@@ -147,7 +148,7 @@ public class ItemTransferCaches
     
     public ItemUnitOfMeasureTypeTransferCache getItemUnitOfMeasureTypeTransferCache() {
         if(itemUnitOfMeasureTypeTransferCache == null) {
-            itemUnitOfMeasureTypeTransferCache = new ItemUnitOfMeasureTypeTransferCache();
+            itemUnitOfMeasureTypeTransferCache = CDI.current().select(ItemUnitOfMeasureTypeTransferCache.class).get();
         }
         
         return itemUnitOfMeasureTypeTransferCache;
@@ -155,7 +156,7 @@ public class ItemTransferCaches
     
     public ItemPriceTransferCache getItemPriceTransferCache() {
         if(itemPriceTransferCache == null) {
-            itemPriceTransferCache = new ItemPriceTransferCache();
+            itemPriceTransferCache = CDI.current().select(ItemPriceTransferCache.class).get();
         }
         
         return itemPriceTransferCache;
@@ -163,7 +164,7 @@ public class ItemTransferCaches
 
     public ItemVolumeTypeTransferCache getItemVolumeTypeTransferCache() {
         if(itemVolumeTypeTransferCache == null) {
-            itemVolumeTypeTransferCache = new ItemVolumeTypeTransferCache();
+            itemVolumeTypeTransferCache = CDI.current().select(ItemVolumeTypeTransferCache.class).get();
         }
 
         return itemVolumeTypeTransferCache;
@@ -171,7 +172,7 @@ public class ItemTransferCaches
 
     public ItemVolumeTypeDescriptionTransferCache getItemVolumeTypeDescriptionTransferCache() {
         if(itemVolumeTypeDescriptionTransferCache == null) {
-            itemVolumeTypeDescriptionTransferCache = new ItemVolumeTypeDescriptionTransferCache();
+            itemVolumeTypeDescriptionTransferCache = CDI.current().select(ItemVolumeTypeDescriptionTransferCache.class).get();
         }
 
         return itemVolumeTypeDescriptionTransferCache;
@@ -179,7 +180,7 @@ public class ItemTransferCaches
 
     public ItemVolumeTransferCache getItemVolumeTransferCache() {
         if(itemVolumeTransferCache == null) {
-            itemVolumeTransferCache = new ItemVolumeTransferCache();
+            itemVolumeTransferCache = CDI.current().select(ItemVolumeTransferCache.class).get();
         }
         
         return itemVolumeTransferCache;
@@ -187,7 +188,7 @@ public class ItemTransferCaches
     
     public ItemShippingTimeTransferCache getItemShippingTimeTransferCache() {
         if(itemShippingTimeTransferCache == null) {
-            itemShippingTimeTransferCache = new ItemShippingTimeTransferCache();
+            itemShippingTimeTransferCache = CDI.current().select(ItemShippingTimeTransferCache.class).get();
         }
         
         return itemShippingTimeTransferCache;
@@ -195,7 +196,7 @@ public class ItemTransferCaches
     
     public ItemAliasTransferCache getItemAliasTransferCache() {
         if(itemAliasTransferCache == null) {
-            itemAliasTransferCache = new ItemAliasTransferCache();
+            itemAliasTransferCache = CDI.current().select(ItemAliasTransferCache.class).get();
         }
         
         return itemAliasTransferCache;
@@ -203,7 +204,7 @@ public class ItemTransferCaches
     
     public ItemAliasChecksumTypeTransferCache getItemAliasChecksumTypeTransferCache() {
         if(itemAliasChecksumTypeTransferCache == null) {
-            itemAliasChecksumTypeTransferCache = new ItemAliasChecksumTypeTransferCache();
+            itemAliasChecksumTypeTransferCache = CDI.current().select(ItemAliasChecksumTypeTransferCache.class).get();
         }
 
         return itemAliasChecksumTypeTransferCache;
@@ -211,7 +212,7 @@ public class ItemTransferCaches
 
     public ItemAliasTypeTransferCache getItemAliasTypeTransferCache() {
         if(itemAliasTypeTransferCache == null) {
-            itemAliasTypeTransferCache = new ItemAliasTypeTransferCache();
+            itemAliasTypeTransferCache = CDI.current().select(ItemAliasTypeTransferCache.class).get();
         }
 
         return itemAliasTypeTransferCache;
@@ -219,7 +220,7 @@ public class ItemTransferCaches
 
     public ItemAliasTypeDescriptionTransferCache getItemAliasTypeDescriptionTransferCache() {
         if(itemAliasTypeDescriptionTransferCache == null) {
-            itemAliasTypeDescriptionTransferCache = new ItemAliasTypeDescriptionTransferCache();
+            itemAliasTypeDescriptionTransferCache = CDI.current().select(ItemAliasTypeDescriptionTransferCache.class).get();
         }
         
         return itemAliasTypeDescriptionTransferCache;
@@ -227,7 +228,7 @@ public class ItemTransferCaches
     
     public ItemDescriptionTransferCache getItemDescriptionTransferCache() {
         if(itemDescriptionTransferCache == null) {
-            itemDescriptionTransferCache = new ItemDescriptionTransferCache();
+            itemDescriptionTransferCache = CDI.current().select(ItemDescriptionTransferCache.class).get();
         }
         
         return itemDescriptionTransferCache;
@@ -235,7 +236,7 @@ public class ItemTransferCaches
     
     public ItemDescriptionTypeTransferCache getItemDescriptionTypeTransferCache() {
         if(itemDescriptionTypeTransferCache == null) {
-            itemDescriptionTypeTransferCache = new ItemDescriptionTypeTransferCache();
+            itemDescriptionTypeTransferCache = CDI.current().select(ItemDescriptionTypeTransferCache.class).get();
         }
 
         return itemDescriptionTypeTransferCache;
@@ -243,7 +244,7 @@ public class ItemTransferCaches
 
     public ItemDescriptionTypeDescriptionTransferCache getItemDescriptionTypeDescriptionTransferCache() {
         if(itemDescriptionTypeDescriptionTransferCache == null) {
-            itemDescriptionTypeDescriptionTransferCache = new ItemDescriptionTypeDescriptionTransferCache();
+            itemDescriptionTypeDescriptionTransferCache = CDI.current().select(ItemDescriptionTypeDescriptionTransferCache.class).get();
         }
 
         return itemDescriptionTypeDescriptionTransferCache;
@@ -251,7 +252,7 @@ public class ItemTransferCaches
 
     public ItemDescriptionTypeUseTypeTransferCache getItemDescriptionTypeUseTypeTransferCache() {
         if(itemDescriptionTypeUseTypeTransferCache == null) {
-            itemDescriptionTypeUseTypeTransferCache = new ItemDescriptionTypeUseTypeTransferCache();
+            itemDescriptionTypeUseTypeTransferCache = CDI.current().select(ItemDescriptionTypeUseTypeTransferCache.class).get();
         }
 
         return itemDescriptionTypeUseTypeTransferCache;
@@ -259,7 +260,7 @@ public class ItemTransferCaches
 
     public ItemDescriptionTypeUseTypeDescriptionTransferCache getItemDescriptionTypeUseTypeDescriptionTransferCache() {
         if(itemDescriptionTypeUseTypeDescriptionTransferCache == null) {
-            itemDescriptionTypeUseTypeDescriptionTransferCache = new ItemDescriptionTypeUseTypeDescriptionTransferCache();
+            itemDescriptionTypeUseTypeDescriptionTransferCache = CDI.current().select(ItemDescriptionTypeUseTypeDescriptionTransferCache.class).get();
         }
 
         return itemDescriptionTypeUseTypeDescriptionTransferCache;
@@ -267,7 +268,7 @@ public class ItemTransferCaches
 
     public ItemDescriptionTypeUseTransferCache getItemDescriptionTypeUseTransferCache() {
         if(itemDescriptionTypeUseTransferCache == null) {
-            itemDescriptionTypeUseTransferCache = new ItemDescriptionTypeUseTransferCache();
+            itemDescriptionTypeUseTransferCache = CDI.current().select(ItemDescriptionTypeUseTransferCache.class).get();
         }
 
         return itemDescriptionTypeUseTransferCache;
@@ -275,7 +276,7 @@ public class ItemTransferCaches
 
     public ItemWeightTypeTransferCache getItemWeightTypeTransferCache() {
         if(itemWeightTypeTransferCache == null) {
-            itemWeightTypeTransferCache = new ItemWeightTypeTransferCache();
+            itemWeightTypeTransferCache = CDI.current().select(ItemWeightTypeTransferCache.class).get();
         }
 
         return itemWeightTypeTransferCache;
@@ -283,7 +284,7 @@ public class ItemTransferCaches
 
     public ItemWeightTypeDescriptionTransferCache getItemWeightTypeDescriptionTransferCache() {
         if(itemWeightTypeDescriptionTransferCache == null) {
-            itemWeightTypeDescriptionTransferCache = new ItemWeightTypeDescriptionTransferCache();
+            itemWeightTypeDescriptionTransferCache = CDI.current().select(ItemWeightTypeDescriptionTransferCache.class).get();
         }
 
         return itemWeightTypeDescriptionTransferCache;
@@ -291,7 +292,7 @@ public class ItemTransferCaches
 
     public ItemWeightTransferCache getItemWeightTransferCache() {
         if(itemWeightTransferCache == null) {
-            itemWeightTransferCache = new ItemWeightTransferCache();
+            itemWeightTransferCache = CDI.current().select(ItemWeightTransferCache.class).get();
         }
 
         return itemWeightTransferCache;
@@ -299,7 +300,7 @@ public class ItemTransferCaches
 
     public ItemCategoryDescriptionTransferCache getItemCategoryDescriptionTransferCache() {
         if(itemCategoryDescriptionTransferCache == null) {
-            itemCategoryDescriptionTransferCache = new ItemCategoryDescriptionTransferCache();
+            itemCategoryDescriptionTransferCache = CDI.current().select(ItemCategoryDescriptionTransferCache.class).get();
         }
         
         return itemCategoryDescriptionTransferCache;
@@ -307,7 +308,7 @@ public class ItemTransferCaches
     
     public ItemCategoryTransferCache getItemCategoryTransferCache() {
         if(itemCategoryTransferCache == null) {
-            itemCategoryTransferCache = new ItemCategoryTransferCache();
+            itemCategoryTransferCache = CDI.current().select(ItemCategoryTransferCache.class).get();
         }
         
         return itemCategoryTransferCache;
@@ -315,7 +316,7 @@ public class ItemTransferCaches
     
     public ItemKitMemberTransferCache getItemKitMemberTransferCache() {
         if(itemKitMemberTransferCache == null) {
-            itemKitMemberTransferCache = new ItemKitMemberTransferCache();
+            itemKitMemberTransferCache = CDI.current().select(ItemKitMemberTransferCache.class).get();
         }
         
         return itemKitMemberTransferCache;
@@ -323,7 +324,7 @@ public class ItemTransferCaches
     
     public ItemCountryOfOriginTransferCache getItemCountryOfOriginTransferCache() {
         if(itemCountryOfOriginTransferCache == null) {
-            itemCountryOfOriginTransferCache = new ItemCountryOfOriginTransferCache();
+            itemCountryOfOriginTransferCache = CDI.current().select(ItemCountryOfOriginTransferCache.class).get();
         }
         
         return itemCountryOfOriginTransferCache;
@@ -331,7 +332,7 @@ public class ItemTransferCaches
     
     public ItemPackCheckRequirementTransferCache getItemPackCheckRequirementTransferCache() {
         if(itemPackCheckRequirementTransferCache == null) {
-            itemPackCheckRequirementTransferCache = new ItemPackCheckRequirementTransferCache();
+            itemPackCheckRequirementTransferCache = CDI.current().select(ItemPackCheckRequirementTransferCache.class).get();
         }
         
         return itemPackCheckRequirementTransferCache;
@@ -339,7 +340,7 @@ public class ItemTransferCaches
     
     public ItemUnitCustomerTypeLimitTransferCache getItemUnitCustomerTypeLimitTransferCache() {
         if(itemUnitCustomerTypeLimitTransferCache == null) {
-            itemUnitCustomerTypeLimitTransferCache = new ItemUnitCustomerTypeLimitTransferCache();
+            itemUnitCustomerTypeLimitTransferCache = CDI.current().select(ItemUnitCustomerTypeLimitTransferCache.class).get();
         }
         
         return itemUnitCustomerTypeLimitTransferCache;
@@ -347,7 +348,7 @@ public class ItemTransferCaches
     
     public ItemUnitLimitTransferCache getItemUnitLimitTransferCache() {
         if(itemUnitLimitTransferCache == null) {
-            itemUnitLimitTransferCache = new ItemUnitLimitTransferCache();
+            itemUnitLimitTransferCache = CDI.current().select(ItemUnitLimitTransferCache.class).get();
         }
         
         return itemUnitLimitTransferCache;
@@ -355,7 +356,7 @@ public class ItemTransferCaches
     
     public ItemUnitPriceLimitTransferCache getItemUnitPriceLimitTransferCache() {
         if(itemUnitPriceLimitTransferCache == null) {
-            itemUnitPriceLimitTransferCache = new ItemUnitPriceLimitTransferCache();
+            itemUnitPriceLimitTransferCache = CDI.current().select(ItemUnitPriceLimitTransferCache.class).get();
         }
         
         return itemUnitPriceLimitTransferCache;
@@ -363,7 +364,7 @@ public class ItemTransferCaches
     
     public ItemImageTypeTransferCache getItemImageTypeTransferCache() {
         if(itemImageTypeTransferCache == null) {
-            itemImageTypeTransferCache = new ItemImageTypeTransferCache();
+            itemImageTypeTransferCache = CDI.current().select(ItemImageTypeTransferCache.class).get();
         }
 
         return itemImageTypeTransferCache;
@@ -371,7 +372,7 @@ public class ItemTransferCaches
 
     public ItemImageTypeDescriptionTransferCache getItemImageTypeDescriptionTransferCache() {
         if(itemImageTypeDescriptionTransferCache == null) {
-            itemImageTypeDescriptionTransferCache = new ItemImageTypeDescriptionTransferCache();
+            itemImageTypeDescriptionTransferCache = CDI.current().select(ItemImageTypeDescriptionTransferCache.class).get();
         }
 
         return itemImageTypeDescriptionTransferCache;
@@ -379,7 +380,7 @@ public class ItemTransferCaches
 
     public HarmonizedTariffScheduleCodeTransferCache getHarmonizedTariffScheduleCodeTransferCache() {
         if(harmonizedTariffScheduleCodeTransferCache == null) {
-            harmonizedTariffScheduleCodeTransferCache = new HarmonizedTariffScheduleCodeTransferCache();
+            harmonizedTariffScheduleCodeTransferCache = CDI.current().select(HarmonizedTariffScheduleCodeTransferCache.class).get();
         }
 
         return harmonizedTariffScheduleCodeTransferCache;
@@ -387,7 +388,7 @@ public class ItemTransferCaches
                                                                 
     public HarmonizedTariffScheduleCodeTranslationTransferCache getHarmonizedTariffScheduleCodeTranslationTransferCache() {
         if(harmonizedTariffScheduleCodeTranslationTransferCache == null) {
-            harmonizedTariffScheduleCodeTranslationTransferCache = new HarmonizedTariffScheduleCodeTranslationTransferCache();
+            harmonizedTariffScheduleCodeTranslationTransferCache = CDI.current().select(HarmonizedTariffScheduleCodeTranslationTransferCache.class).get();
         }
 
         return harmonizedTariffScheduleCodeTranslationTransferCache;
@@ -395,7 +396,7 @@ public class ItemTransferCaches
 
     public HarmonizedTariffScheduleCodeUnitTransferCache getHarmonizedTariffScheduleCodeUnitTransferCache() {
         if(harmonizedTariffScheduleCodeUnitTransferCache == null) {
-            harmonizedTariffScheduleCodeUnitTransferCache = new HarmonizedTariffScheduleCodeUnitTransferCache();
+            harmonizedTariffScheduleCodeUnitTransferCache = CDI.current().select(HarmonizedTariffScheduleCodeUnitTransferCache.class).get();
         }
 
         return harmonizedTariffScheduleCodeUnitTransferCache;
@@ -403,7 +404,7 @@ public class ItemTransferCaches
                                                                 
     public HarmonizedTariffScheduleCodeUnitDescriptionTransferCache getHarmonizedTariffScheduleCodeUnitDescriptionTransferCache() {
         if(harmonizedTariffScheduleCodeUnitDescriptionTransferCache == null) {
-            harmonizedTariffScheduleCodeUnitDescriptionTransferCache = new HarmonizedTariffScheduleCodeUnitDescriptionTransferCache();
+            harmonizedTariffScheduleCodeUnitDescriptionTransferCache = CDI.current().select(HarmonizedTariffScheduleCodeUnitDescriptionTransferCache.class).get();
         }
 
         return harmonizedTariffScheduleCodeUnitDescriptionTransferCache;
@@ -411,7 +412,7 @@ public class ItemTransferCaches
 
     public HarmonizedTariffScheduleCodeUseTypeTransferCache getHarmonizedTariffScheduleCodeUseTypeTransferCache() {
         if(harmonizedTariffScheduleCodeUseTypeTransferCache == null) {
-            harmonizedTariffScheduleCodeUseTypeTransferCache = new HarmonizedTariffScheduleCodeUseTypeTransferCache();
+            harmonizedTariffScheduleCodeUseTypeTransferCache = CDI.current().select(HarmonizedTariffScheduleCodeUseTypeTransferCache.class).get();
         }
 
         return harmonizedTariffScheduleCodeUseTypeTransferCache;
@@ -419,7 +420,7 @@ public class ItemTransferCaches
                                                                 
     public HarmonizedTariffScheduleCodeUseTypeDescriptionTransferCache getHarmonizedTariffScheduleCodeUseTypeDescriptionTransferCache() {
         if(harmonizedTariffScheduleCodeUseTypeDescriptionTransferCache == null) {
-            harmonizedTariffScheduleCodeUseTypeDescriptionTransferCache = new HarmonizedTariffScheduleCodeUseTypeDescriptionTransferCache();
+            harmonizedTariffScheduleCodeUseTypeDescriptionTransferCache = CDI.current().select(HarmonizedTariffScheduleCodeUseTypeDescriptionTransferCache.class).get();
         }
 
         return harmonizedTariffScheduleCodeUseTypeDescriptionTransferCache;
@@ -427,7 +428,7 @@ public class ItemTransferCaches
 
     public HarmonizedTariffScheduleCodeUseTransferCache getHarmonizedTariffScheduleCodeUseTransferCache() {
         if(harmonizedTariffScheduleCodeUseTransferCache == null) {
-            harmonizedTariffScheduleCodeUseTransferCache = new HarmonizedTariffScheduleCodeUseTransferCache();
+            harmonizedTariffScheduleCodeUseTransferCache = CDI.current().select(HarmonizedTariffScheduleCodeUseTransferCache.class).get();
         }
 
         return harmonizedTariffScheduleCodeUseTransferCache;
@@ -435,7 +436,7 @@ public class ItemTransferCaches
     
     public ItemHarmonizedTariffScheduleCodeTransferCache getItemHarmonizedTariffScheduleCodeTransferCache() {
         if(itemHarmonizedTariffScheduleCodeTransferCache == null) {
-            itemHarmonizedTariffScheduleCodeTransferCache = new ItemHarmonizedTariffScheduleCodeTransferCache();
+            itemHarmonizedTariffScheduleCodeTransferCache = CDI.current().select(ItemHarmonizedTariffScheduleCodeTransferCache.class).get();
         }
 
         return itemHarmonizedTariffScheduleCodeTransferCache;

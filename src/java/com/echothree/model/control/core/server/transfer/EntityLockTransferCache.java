@@ -30,7 +30,9 @@ import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.PersistenceUtils;
 import com.echothree.util.server.persistence.Session;
 import java.sql.SQLException;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EntityLockTransferCache
         extends BaseCoreTransferCache {
 

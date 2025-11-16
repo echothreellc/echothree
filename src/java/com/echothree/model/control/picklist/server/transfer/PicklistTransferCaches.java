@@ -17,6 +17,7 @@
 package com.echothree.model.control.picklist.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.inject.spi.CDI;
 
 public class PicklistTransferCaches
         extends BaseTransferCaches {
@@ -37,56 +38,56 @@ public class PicklistTransferCaches
     
     public PicklistTypeTransferCache getPicklistTypeTransferCache() {
         if(picklistTypeTransferCache == null)
-            picklistTypeTransferCache = new PicklistTypeTransferCache();
+            picklistTypeTransferCache = CDI.current().select(PicklistTypeTransferCache.class).get();
         
         return picklistTypeTransferCache;
     }
     
     public PicklistTypeDescriptionTransferCache getPicklistTypeDescriptionTransferCache() {
         if(picklistTypeDescriptionTransferCache == null)
-            picklistTypeDescriptionTransferCache = new PicklistTypeDescriptionTransferCache();
+            picklistTypeDescriptionTransferCache = CDI.current().select(PicklistTypeDescriptionTransferCache.class).get();
         
         return picklistTypeDescriptionTransferCache;
     }
     
     public PicklistAliasTypeTransferCache getPicklistAliasTypeTransferCache() {
         if(picklistAliasTypeTransferCache == null)
-            picklistAliasTypeTransferCache = new PicklistAliasTypeTransferCache();
+            picklistAliasTypeTransferCache = CDI.current().select(PicklistAliasTypeTransferCache.class).get();
         
         return picklistAliasTypeTransferCache;
     }
     
     public PicklistAliasTypeDescriptionTransferCache getPicklistAliasTypeDescriptionTransferCache() {
         if(picklistAliasTypeDescriptionTransferCache == null)
-            picklistAliasTypeDescriptionTransferCache = new PicklistAliasTypeDescriptionTransferCache();
+            picklistAliasTypeDescriptionTransferCache = CDI.current().select(PicklistAliasTypeDescriptionTransferCache.class).get();
         
         return picklistAliasTypeDescriptionTransferCache;
     }
     
     public PicklistAliasTransferCache getPicklistAliasTransferCache() {
         if(picklistAliasTransferCache == null)
-            picklistAliasTransferCache = new PicklistAliasTransferCache();
+            picklistAliasTransferCache = CDI.current().select(PicklistAliasTransferCache.class).get();
         
         return picklistAliasTransferCache;
     }
     
     public PicklistTimeTypeTransferCache getPicklistTimeTypeTransferCache() {
         if(picklistTimeTypeTransferCache == null)
-            picklistTimeTypeTransferCache = new PicklistTimeTypeTransferCache();
+            picklistTimeTypeTransferCache = CDI.current().select(PicklistTimeTypeTransferCache.class).get();
 
         return picklistTimeTypeTransferCache;
     }
 
     public PicklistTimeTransferCache getPicklistTimeTransferCache() {
         if(picklistTimeTransferCache == null)
-            picklistTimeTransferCache = new PicklistTimeTransferCache();
+            picklistTimeTransferCache = CDI.current().select(PicklistTimeTransferCache.class).get();
 
         return picklistTimeTransferCache;
     }
 
     public PicklistTimeTypeDescriptionTransferCache getPicklistTimeTypeDescriptionTransferCache() {
         if(picklistTimeTypeDescriptionTransferCache == null)
-            picklistTimeTypeDescriptionTransferCache = new PicklistTimeTypeDescriptionTransferCache();
+            picklistTimeTypeDescriptionTransferCache = CDI.current().select(PicklistTimeTypeDescriptionTransferCache.class).get();
 
         return picklistTimeTypeDescriptionTransferCache;
     }

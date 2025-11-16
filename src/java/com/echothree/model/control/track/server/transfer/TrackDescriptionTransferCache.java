@@ -21,7 +21,9 @@ import com.echothree.model.control.track.server.control.TrackControl;
 import com.echothree.model.data.track.server.entity.TrackDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class TrackDescriptionTransferCache
         extends BaseTrackDescriptionTransferCache<TrackDescription, TrackDescriptionTransfer> {
 

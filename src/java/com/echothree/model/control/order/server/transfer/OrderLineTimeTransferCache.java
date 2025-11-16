@@ -21,7 +21,9 @@ import com.echothree.model.control.order.server.control.OrderTimeControl;
 import com.echothree.model.data.order.server.entity.OrderLineTime;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class OrderLineTimeTransferCache
         extends BaseOrderTransferCache<OrderLineTime, OrderLineTimeTransfer> {
 

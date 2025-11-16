@@ -29,7 +29,9 @@ import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.server.persistence.EntityDescriptionUtils;
 import com.echothree.util.server.persistence.EntityNamesUtils;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EntityInstanceTransferCache
         extends BaseCoreTransferCache<EntityInstance, EntityInstanceTransfer> {
 

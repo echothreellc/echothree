@@ -23,7 +23,9 @@ import com.echothree.model.data.associate.server.entity.AssociateProgram;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.PercentUtils;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class AssociateProgramTransferCache
         extends BaseAssociateTransferCache<AssociateProgram, AssociateProgramTransfer> {
 

@@ -26,7 +26,9 @@ import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.vendor.server.entity.VendorType;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class VendorTypeTransferCache
         extends BaseVendorTransferCache<VendorType, VendorTypeTransfer> {
     

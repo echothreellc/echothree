@@ -17,6 +17,7 @@
 package com.echothree.model.control.warehouse.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.inject.spi.CDI;
 
 public class WarehouseTransferCaches
         extends BaseTransferCaches {
@@ -41,84 +42,84 @@ public class WarehouseTransferCaches
     
     public LocationDescriptionTransferCache getLocationDescriptionTransferCache() {
         if(locationDescriptionTransferCache == null)
-            locationDescriptionTransferCache = new LocationDescriptionTransferCache();
+            locationDescriptionTransferCache = CDI.current().select(LocationDescriptionTransferCache.class).get();
         
         return locationDescriptionTransferCache;
     }
     
     public LocationNameElementDescriptionTransferCache getLocationNameElementDescriptionTransferCache() {
         if(locationNameElementDescriptionTransferCache == null)
-            locationNameElementDescriptionTransferCache = new LocationNameElementDescriptionTransferCache();
+            locationNameElementDescriptionTransferCache = CDI.current().select(LocationNameElementDescriptionTransferCache.class).get();
         
         return locationNameElementDescriptionTransferCache;
     }
     
     public LocationNameElementTransferCache getLocationNameElementTransferCache() {
         if(locationNameElementTransferCache == null)
-            locationNameElementTransferCache = new LocationNameElementTransferCache();
+            locationNameElementTransferCache = CDI.current().select(LocationNameElementTransferCache.class).get();
         
         return locationNameElementTransferCache;
     }
     
     public LocationTransferCache getLocationTransferCache() {
         if(locationTransferCache == null)
-            locationTransferCache = new LocationTransferCache();
+            locationTransferCache = CDI.current().select(LocationTransferCache.class).get();
         
         return locationTransferCache;
     }
     
     public LocationTypeDescriptionTransferCache getLocationTypeDescriptionTransferCache() {
         if(locationTypeDescriptionTransferCache == null)
-            locationTypeDescriptionTransferCache = new LocationTypeDescriptionTransferCache();
+            locationTypeDescriptionTransferCache = CDI.current().select(LocationTypeDescriptionTransferCache.class).get();
         
         return locationTypeDescriptionTransferCache;
     }
     
     public LocationTypeTransferCache getLocationTypeTransferCache() {
         if(locationTypeTransferCache == null)
-            locationTypeTransferCache = new LocationTypeTransferCache();
+            locationTypeTransferCache = CDI.current().select(LocationTypeTransferCache.class).get();
         
         return locationTypeTransferCache;
     }
     
     public LocationUseTypeTransferCache getLocationUseTypeTransferCache() {
         if(locationUseTypeTransferCache == null)
-            locationUseTypeTransferCache = new LocationUseTypeTransferCache();
+            locationUseTypeTransferCache = CDI.current().select(LocationUseTypeTransferCache.class).get();
         
         return locationUseTypeTransferCache;
     }
     
     public WarehouseTransferCache getWarehouseTransferCache() {
         if(warehouseTransferCache == null)
-            warehouseTransferCache = new WarehouseTransferCache();
+            warehouseTransferCache = CDI.current().select(WarehouseTransferCache.class).get();
         
         return warehouseTransferCache;
     }
     
     public LocationVolumeTransferCache getLocationVolumeTransferCache() {
         if(locationVolumeTransferCache == null)
-            locationVolumeTransferCache = new LocationVolumeTransferCache();
+            locationVolumeTransferCache = CDI.current().select(LocationVolumeTransferCache.class).get();
         
         return locationVolumeTransferCache;
     }
     
     public LocationCapacityTransferCache getLocationCapacityTransferCache() {
         if(locationCapacityTransferCache == null)
-            locationCapacityTransferCache = new LocationCapacityTransferCache();
+            locationCapacityTransferCache = CDI.current().select(LocationCapacityTransferCache.class).get();
         
         return locationCapacityTransferCache;
     }
 
     public WarehouseTypeTransferCache getWarehouseTypeTransferCache() {
         if(warehouseTypeTransferCache == null)
-            warehouseTypeTransferCache = new WarehouseTypeTransferCache();
+            warehouseTypeTransferCache = CDI.current().select(WarehouseTypeTransferCache.class).get();
 
         return warehouseTypeTransferCache;
     }
 
     public WarehouseTypeDescriptionTransferCache getWarehouseTypeDescriptionTransferCache() {
         if(warehouseTypeDescriptionTransferCache == null)
-            warehouseTypeDescriptionTransferCache = new WarehouseTypeDescriptionTransferCache();
+            warehouseTypeDescriptionTransferCache = CDI.current().select(WarehouseTypeDescriptionTransferCache.class).get();
 
         return warehouseTypeDescriptionTransferCache;
     }

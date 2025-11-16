@@ -17,6 +17,7 @@
 package com.echothree.model.control.club.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.inject.spi.CDI;
 
 public class ClubTransferCaches
         extends BaseTransferCaches {
@@ -33,28 +34,28 @@ public class ClubTransferCaches
     
     public ClubItemTransferCache getClubItemTransferCache() {
         if(clubItemTransferCache == null)
-            clubItemTransferCache = new ClubItemTransferCache();
+            clubItemTransferCache = CDI.current().select(ClubItemTransferCache.class).get();
         
         return clubItemTransferCache;
     }
     
     public ClubItemTypeTransferCache getClubItemTypeTransferCache() {
         if(clubItemTypeTransferCache == null)
-            clubItemTypeTransferCache = new ClubItemTypeTransferCache();
+            clubItemTypeTransferCache = CDI.current().select(ClubItemTypeTransferCache.class).get();
         
         return clubItemTypeTransferCache;
     }
     
     public ClubTransferCache getClubTransferCache() {
         if(clubTransferCache == null)
-            clubTransferCache = new ClubTransferCache();
+            clubTransferCache = CDI.current().select(ClubTransferCache.class).get();
         
         return clubTransferCache;
     }
     
     public ClubDescriptionTransferCache getClubDescriptionTransferCache() {
         if(clubDescriptionTransferCache == null)
-            clubDescriptionTransferCache = new ClubDescriptionTransferCache();
+            clubDescriptionTransferCache = CDI.current().select(ClubDescriptionTransferCache.class).get();
         
         return clubDescriptionTransferCache;
     }

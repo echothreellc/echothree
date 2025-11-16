@@ -17,6 +17,7 @@
 package com.echothree.model.control.invoice.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.inject.spi.CDI;
 
 public class InvoiceTransferCaches
         extends BaseTransferCaches {
@@ -46,119 +47,119 @@ public class InvoiceTransferCaches
     
     public InvoiceLineUseTypeTransferCache getInvoiceLineUseTypeTransferCache() {
         if(invoiceLineUseTypeTransferCache == null)
-            invoiceLineUseTypeTransferCache = new InvoiceLineUseTypeTransferCache();
+            invoiceLineUseTypeTransferCache = CDI.current().select(InvoiceLineUseTypeTransferCache.class).get();
         
         return invoiceLineUseTypeTransferCache;
     }
     
     public InvoiceRoleTypeTransferCache getInvoiceRoleTypeTransferCache() {
         if(invoiceRoleTypeTransferCache == null)
-            invoiceRoleTypeTransferCache = new InvoiceRoleTypeTransferCache();
+            invoiceRoleTypeTransferCache = CDI.current().select(InvoiceRoleTypeTransferCache.class).get();
         
         return invoiceRoleTypeTransferCache;
     }
     
     public InvoiceRoleTransferCache getInvoiceRoleTransferCache() {
         if(invoiceRoleTransferCache == null)
-            invoiceRoleTransferCache = new InvoiceRoleTransferCache();
+            invoiceRoleTransferCache = CDI.current().select(InvoiceRoleTransferCache.class).get();
         
         return invoiceRoleTransferCache;
     }
     
     public InvoiceTypeTransferCache getInvoiceTypeTransferCache() {
         if(invoiceTypeTransferCache == null)
-            invoiceTypeTransferCache = new InvoiceTypeTransferCache();
+            invoiceTypeTransferCache = CDI.current().select(InvoiceTypeTransferCache.class).get();
         
         return invoiceTypeTransferCache;
     }
     
     public InvoiceTypeDescriptionTransferCache getInvoiceTypeDescriptionTransferCache() {
         if(invoiceTypeDescriptionTransferCache == null)
-            invoiceTypeDescriptionTransferCache = new InvoiceTypeDescriptionTransferCache();
+            invoiceTypeDescriptionTransferCache = CDI.current().select(InvoiceTypeDescriptionTransferCache.class).get();
         
         return invoiceTypeDescriptionTransferCache;
     }
     
     public InvoiceAliasTypeTransferCache getInvoiceAliasTypeTransferCache() {
         if(invoiceAliasTypeTransferCache == null)
-            invoiceAliasTypeTransferCache = new InvoiceAliasTypeTransferCache();
+            invoiceAliasTypeTransferCache = CDI.current().select(InvoiceAliasTypeTransferCache.class).get();
         
         return invoiceAliasTypeTransferCache;
     }
     
     public InvoiceAliasTypeDescriptionTransferCache getInvoiceAliasTypeDescriptionTransferCache() {
         if(invoiceAliasTypeDescriptionTransferCache == null)
-            invoiceAliasTypeDescriptionTransferCache = new InvoiceAliasTypeDescriptionTransferCache();
+            invoiceAliasTypeDescriptionTransferCache = CDI.current().select(InvoiceAliasTypeDescriptionTransferCache.class).get();
         
         return invoiceAliasTypeDescriptionTransferCache;
     }
     
     public InvoiceLineTypeTransferCache getInvoiceLineTypeTransferCache() {
         if(invoiceLineTypeTransferCache == null)
-            invoiceLineTypeTransferCache = new InvoiceLineTypeTransferCache();
+            invoiceLineTypeTransferCache = CDI.current().select(InvoiceLineTypeTransferCache.class).get();
         
         return invoiceLineTypeTransferCache;
     }
     
     public InvoiceLineTypeDescriptionTransferCache getInvoiceLineTypeDescriptionTransferCache() {
         if(invoiceLineTypeDescriptionTransferCache == null)
-            invoiceLineTypeDescriptionTransferCache = new InvoiceLineTypeDescriptionTransferCache();
+            invoiceLineTypeDescriptionTransferCache = CDI.current().select(InvoiceLineTypeDescriptionTransferCache.class).get();
         
         return invoiceLineTypeDescriptionTransferCache;
     }
     
     public InvoiceTransferCache getInvoiceTransferCache() {
         if(invoiceTransferCache == null)
-            invoiceTransferCache = new InvoiceTransferCache();
+            invoiceTransferCache = CDI.current().select(InvoiceTransferCache.class).get();
         
         return invoiceTransferCache;
     }
     
     public InvoiceAliasTransferCache getInvoiceAliasTransferCache() {
         if(invoiceAliasTransferCache == null)
-            invoiceAliasTransferCache = new InvoiceAliasTransferCache();
+            invoiceAliasTransferCache = CDI.current().select(InvoiceAliasTransferCache.class).get();
         
         return invoiceAliasTransferCache;
     }
     
     public InvoiceLineTransferCache getInvoiceLineTransferCache() {
         if(invoiceLineTransferCache == null)
-            invoiceLineTransferCache = new InvoiceLineTransferCache();
+            invoiceLineTransferCache = CDI.current().select(InvoiceLineTransferCache.class).get();
         
         return invoiceLineTransferCache;
     }
     
     public InvoiceLineGlAccountTransferCache getInvoiceLineGlAccountTransferCache() {
         if(invoiceLineGlAccountTransferCache == null)
-            invoiceLineGlAccountTransferCache = new InvoiceLineGlAccountTransferCache();
+            invoiceLineGlAccountTransferCache = CDI.current().select(InvoiceLineGlAccountTransferCache.class).get();
         
         return invoiceLineGlAccountTransferCache;
     }
     
     public InvoiceLineItemTransferCache getInvoiceLineItemTransferCache() {
         if(invoiceLineItemTransferCache == null)
-            invoiceLineItemTransferCache = new InvoiceLineItemTransferCache();
+            invoiceLineItemTransferCache = CDI.current().select(InvoiceLineItemTransferCache.class).get();
         
         return invoiceLineItemTransferCache;
     }
     
     public InvoiceTimeTypeTransferCache getInvoiceTimeTypeTransferCache() {
         if(invoiceTimeTypeTransferCache == null)
-            invoiceTimeTypeTransferCache = new InvoiceTimeTypeTransferCache();
+            invoiceTimeTypeTransferCache = CDI.current().select(InvoiceTimeTypeTransferCache.class).get();
 
         return invoiceTimeTypeTransferCache;
     }
 
     public InvoiceTimeTransferCache getInvoiceTimeTransferCache() {
         if(invoiceTimeTransferCache == null)
-            invoiceTimeTransferCache = new InvoiceTimeTransferCache();
+            invoiceTimeTransferCache = CDI.current().select(InvoiceTimeTransferCache.class).get();
 
         return invoiceTimeTransferCache;
     }
 
     public InvoiceTimeTypeDescriptionTransferCache getInvoiceTimeTypeDescriptionTransferCache() {
         if(invoiceTimeTypeDescriptionTransferCache == null)
-            invoiceTimeTypeDescriptionTransferCache = new InvoiceTimeTypeDescriptionTransferCache();
+            invoiceTimeTypeDescriptionTransferCache = CDI.current().select(InvoiceTimeTypeDescriptionTransferCache.class).get();
 
         return invoiceTimeTypeDescriptionTransferCache;
     }

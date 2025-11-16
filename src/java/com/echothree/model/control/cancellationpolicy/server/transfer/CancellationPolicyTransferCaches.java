@@ -17,6 +17,7 @@
 package com.echothree.model.control.cancellationpolicy.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.inject.spi.CDI;
 
 public class CancellationPolicyTransferCaches
         extends BaseTransferCaches {
@@ -40,77 +41,77 @@ public class CancellationPolicyTransferCaches
     
     public CancellationPolicyTransferCache getCancellationPolicyTransferCache() {
         if(cancellationPolicyTransferCache == null)
-            cancellationPolicyTransferCache = new CancellationPolicyTransferCache();
+            cancellationPolicyTransferCache = CDI.current().select(CancellationPolicyTransferCache.class).get();
         
         return cancellationPolicyTransferCache;
     }
     
     public CancellationPolicyTranslationTransferCache getCancellationPolicyTranslationTransferCache() {
         if(cancellationPolicyTranslationTransferCache == null)
-            cancellationPolicyTranslationTransferCache = new CancellationPolicyTranslationTransferCache();
+            cancellationPolicyTranslationTransferCache = CDI.current().select(CancellationPolicyTranslationTransferCache.class).get();
         
         return cancellationPolicyTranslationTransferCache;
     }
     
     public PartyCancellationPolicyTransferCache getPartyCancellationPolicyTransferCache() {
         if(partyCancellationPolicyTransferCache == null)
-            partyCancellationPolicyTransferCache = new PartyCancellationPolicyTransferCache();
+            partyCancellationPolicyTransferCache = CDI.current().select(PartyCancellationPolicyTransferCache.class).get();
         
         return partyCancellationPolicyTransferCache;
     }
     
     public CancellationKindDescriptionTransferCache getCancellationKindDescriptionTransferCache() {
         if(cancellationKindDescriptionTransferCache == null)
-            cancellationKindDescriptionTransferCache = new CancellationKindDescriptionTransferCache();
+            cancellationKindDescriptionTransferCache = CDI.current().select(CancellationKindDescriptionTransferCache.class).get();
         
         return cancellationKindDescriptionTransferCache;
     }
     
     public CancellationReasonDescriptionTransferCache getCancellationReasonDescriptionTransferCache() {
         if(cancellationReasonDescriptionTransferCache == null)
-            cancellationReasonDescriptionTransferCache = new CancellationReasonDescriptionTransferCache();
+            cancellationReasonDescriptionTransferCache = CDI.current().select(CancellationReasonDescriptionTransferCache.class).get();
         
         return cancellationReasonDescriptionTransferCache;
     }
     
     public CancellationTypeDescriptionTransferCache getCancellationTypeDescriptionTransferCache() {
         if(cancellationTypeDescriptionTransferCache == null)
-            cancellationTypeDescriptionTransferCache = new CancellationTypeDescriptionTransferCache();
+            cancellationTypeDescriptionTransferCache = CDI.current().select(CancellationTypeDescriptionTransferCache.class).get();
         
         return cancellationTypeDescriptionTransferCache;
     }
     
     public CancellationKindTransferCache getCancellationKindTransferCache() {
         if(cancellationKindTransferCache == null)
-            cancellationKindTransferCache = new CancellationKindTransferCache();
+            cancellationKindTransferCache = CDI.current().select(CancellationKindTransferCache.class).get();
         
         return cancellationKindTransferCache;
     }
     
     public CancellationReasonTransferCache getCancellationReasonTransferCache() {
         if(cancellationReasonTransferCache == null)
-            cancellationReasonTransferCache = new CancellationReasonTransferCache();
+            cancellationReasonTransferCache = CDI.current().select(CancellationReasonTransferCache.class).get();
         
         return cancellationReasonTransferCache;
     }
     
     public CancellationTypeTransferCache getCancellationTypeTransferCache() {
         if(cancellationTypeTransferCache == null)
-            cancellationTypeTransferCache = new CancellationTypeTransferCache();
+            cancellationTypeTransferCache = CDI.current().select(CancellationTypeTransferCache.class).get();
         
         return cancellationTypeTransferCache;
     }
     
     public CancellationPolicyReasonTransferCache getCancellationPolicyReasonTransferCache() {
         if(cancellationPolicyReasonTransferCache == null)
-            cancellationPolicyReasonTransferCache = new CancellationPolicyReasonTransferCache();
+            cancellationPolicyReasonTransferCache = CDI.current().select(CancellationPolicyReasonTransferCache.class).get();
         
         return cancellationPolicyReasonTransferCache;
     }
     
     public CancellationReasonTypeTransferCache getCancellationReasonTypeTransferCache() {
         if(cancellationReasonTypeTransferCache == null)
-            cancellationReasonTypeTransferCache = new CancellationReasonTypeTransferCache();
+            cancellationReasonTypeTransferCache = CDI.current().select(CancellationReasonTypeTransferCache.class).get();
         
         return cancellationReasonTypeTransferCache;
     }

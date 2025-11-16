@@ -17,6 +17,7 @@
 package com.echothree.model.control.wishlist.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.inject.spi.CDI;
 
 public class WishlistTransferCaches
         extends BaseTransferCaches {
@@ -35,42 +36,42 @@ public class WishlistTransferCaches
     
     public WishlistTypeTransferCache getWishlistTypeTransferCache() {
         if(wishlistTypeTransferCache == null)
-            wishlistTypeTransferCache = new WishlistTypeTransferCache();
+            wishlistTypeTransferCache = CDI.current().select(WishlistTypeTransferCache.class).get();
         
         return wishlistTypeTransferCache;
     }
     
     public WishlistTypeDescriptionTransferCache getWishlistTypeDescriptionTransferCache() {
         if(wishlistTypeDescriptionTransferCache == null)
-            wishlistTypeDescriptionTransferCache = new WishlistTypeDescriptionTransferCache();
+            wishlistTypeDescriptionTransferCache = CDI.current().select(WishlistTypeDescriptionTransferCache.class).get();
         
         return wishlistTypeDescriptionTransferCache;
     }
     
     public WishlistPriorityTransferCache getWishlistPriorityTransferCache() {
         if(wishlistPriorityTransferCache == null)
-            wishlistPriorityTransferCache = new WishlistPriorityTransferCache();
+            wishlistPriorityTransferCache = CDI.current().select(WishlistPriorityTransferCache.class).get();
         
         return wishlistPriorityTransferCache;
     }
     
     public WishlistPriorityDescriptionTransferCache getWishlistPriorityDescriptionTransferCache() {
         if(wishlistPriorityDescriptionTransferCache == null)
-            wishlistPriorityDescriptionTransferCache = new WishlistPriorityDescriptionTransferCache();
+            wishlistPriorityDescriptionTransferCache = CDI.current().select(WishlistPriorityDescriptionTransferCache.class).get();
         
         return wishlistPriorityDescriptionTransferCache;
     }
     
     public WishlistTransferCache getWishlistTransferCache() {
         if(wishlistTransferCache == null)
-            wishlistTransferCache = new WishlistTransferCache();
+            wishlistTransferCache = CDI.current().select(WishlistTransferCache.class).get();
         
         return wishlistTransferCache;
     }
     
     public WishlistLineTransferCache getWishlistLineTransferCache() {
         if(wishlistLineTransferCache == null)
-            wishlistLineTransferCache = new WishlistLineTransferCache();
+            wishlistLineTransferCache = CDI.current().select(WishlistLineTransferCache.class).get();
         
         return wishlistLineTransferCache;
     }

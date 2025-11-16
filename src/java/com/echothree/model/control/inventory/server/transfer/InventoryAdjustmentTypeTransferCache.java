@@ -21,7 +21,9 @@ import com.echothree.model.control.inventory.server.control.InventoryAdjustmentT
 import com.echothree.model.data.inventory.server.entity.InventoryAdjustmentType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class InventoryAdjustmentTypeTransferCache
         extends BaseInventoryTransferCache<InventoryAdjustmentType, InventoryAdjustmentTypeTransfer> {
 

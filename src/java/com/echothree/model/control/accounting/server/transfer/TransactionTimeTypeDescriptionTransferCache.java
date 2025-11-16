@@ -21,7 +21,9 @@ import com.echothree.model.control.accounting.server.control.TransactionTimeCont
 import com.echothree.model.data.accounting.server.entity.TransactionTimeTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class TransactionTimeTypeDescriptionTransferCache
         extends BaseAccountingDescriptionTransferCache<TransactionTimeTypeDescription, TransactionTimeTypeDescriptionTransfer> {
 

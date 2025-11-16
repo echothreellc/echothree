@@ -17,6 +17,7 @@
 package com.echothree.model.control.chain.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.inject.spi.CDI;
 
 public class ChainTransferCaches
         extends BaseTransferCaches {
@@ -50,147 +51,147 @@ public class ChainTransferCaches
     
     public ChainKindTransferCache getChainKindTransferCache() {
         if(chainKindTransferCache == null)
-            chainKindTransferCache = new ChainKindTransferCache();
+            chainKindTransferCache = CDI.current().select(ChainKindTransferCache.class).get();
 
         return chainKindTransferCache;
     }
 
     public ChainKindDescriptionTransferCache getChainKindDescriptionTransferCache() {
         if(chainKindDescriptionTransferCache == null)
-            chainKindDescriptionTransferCache = new ChainKindDescriptionTransferCache();
+            chainKindDescriptionTransferCache = CDI.current().select(ChainKindDescriptionTransferCache.class).get();
 
         return chainKindDescriptionTransferCache;
     }
 
     public ChainTypeTransferCache getChainTypeTransferCache() {
         if(chainTypeTransferCache == null)
-            chainTypeTransferCache = new ChainTypeTransferCache();
+            chainTypeTransferCache = CDI.current().select(ChainTypeTransferCache.class).get();
 
         return chainTypeTransferCache;
     }
 
     public ChainTypeDescriptionTransferCache getChainTypeDescriptionTransferCache() {
         if(chainTypeDescriptionTransferCache == null)
-            chainTypeDescriptionTransferCache = new ChainTypeDescriptionTransferCache();
+            chainTypeDescriptionTransferCache = CDI.current().select(ChainTypeDescriptionTransferCache.class).get();
 
         return chainTypeDescriptionTransferCache;
     }
 
     public ChainTransferCache getChainTransferCache() {
         if(chainTransferCache == null)
-            chainTransferCache = new ChainTransferCache();
+            chainTransferCache = CDI.current().select(ChainTransferCache.class).get();
         
         return chainTransferCache;
     }
     
     public ChainDescriptionTransferCache getChainDescriptionTransferCache() {
         if(chainDescriptionTransferCache == null)
-            chainDescriptionTransferCache = new ChainDescriptionTransferCache();
+            chainDescriptionTransferCache = CDI.current().select(ChainDescriptionTransferCache.class).get();
         
         return chainDescriptionTransferCache;
     }
     
     public ChainEntityRoleTypeTransferCache getChainEntityRoleTypeTransferCache() {
         if(chainEntityRoleTypeTransferCache == null)
-            chainEntityRoleTypeTransferCache = new ChainEntityRoleTypeTransferCache();
+            chainEntityRoleTypeTransferCache = CDI.current().select(ChainEntityRoleTypeTransferCache.class).get();
         
         return chainEntityRoleTypeTransferCache;
     }
     
     public ChainEntityRoleTypeDescriptionTransferCache getChainEntityRoleTypeDescriptionTransferCache() {
         if(chainEntityRoleTypeDescriptionTransferCache == null)
-            chainEntityRoleTypeDescriptionTransferCache = new ChainEntityRoleTypeDescriptionTransferCache();
+            chainEntityRoleTypeDescriptionTransferCache = CDI.current().select(ChainEntityRoleTypeDescriptionTransferCache.class).get();
 
         return chainEntityRoleTypeDescriptionTransferCache;
     }
 
     public ChainInstanceTransferCache getChainInstanceTransferCache() {
         if(chainInstanceTransferCache == null)
-            chainInstanceTransferCache = new ChainInstanceTransferCache();
+            chainInstanceTransferCache = CDI.current().select(ChainInstanceTransferCache.class).get();
         
         return chainInstanceTransferCache;
     }
     
     public ChainInstanceEntityRoleTransferCache getChainInstanceEntityRoleTransferCache() {
         if(chainInstanceEntityRoleTransferCache == null)
-            chainInstanceEntityRoleTransferCache = new ChainInstanceEntityRoleTransferCache();
+            chainInstanceEntityRoleTransferCache = CDI.current().select(ChainInstanceEntityRoleTransferCache.class).get();
         
         return chainInstanceEntityRoleTransferCache;
     }
     
     public ChainActionTypeTransferCache getChainActionTypeTransferCache() {
         if(chainActionTypeTransferCache == null)
-            chainActionTypeTransferCache = new ChainActionTypeTransferCache();
+            chainActionTypeTransferCache = CDI.current().select(ChainActionTypeTransferCache.class).get();
 
         return chainActionTypeTransferCache;
     }
 
     public ChainActionTypeDescriptionTransferCache getChainActionTypeDescriptionTransferCache() {
         if(chainActionTypeDescriptionTransferCache == null)
-            chainActionTypeDescriptionTransferCache = new ChainActionTypeDescriptionTransferCache();
+            chainActionTypeDescriptionTransferCache = CDI.current().select(ChainActionTypeDescriptionTransferCache.class).get();
 
         return chainActionTypeDescriptionTransferCache;
     }
 
     public ChainActionTypeUseTransferCache getChainActionTypeUseTransferCache() {
         if(chainActionTypeUseTransferCache == null)
-            chainActionTypeUseTransferCache = new ChainActionTypeUseTransferCache();
+            chainActionTypeUseTransferCache = CDI.current().select(ChainActionTypeUseTransferCache.class).get();
         
         return chainActionTypeUseTransferCache;
     }
     
         public ChainActionSetDescriptionTransferCache getChainActionSetDescriptionTransferCache() {
         if(chainActionSetDescriptionTransferCache == null)
-            chainActionSetDescriptionTransferCache = new ChainActionSetDescriptionTransferCache();
+            chainActionSetDescriptionTransferCache = CDI.current().select(ChainActionSetDescriptionTransferCache.class).get();
         
         return chainActionSetDescriptionTransferCache;
     }
     
     public ChainActionDescriptionTransferCache getChainActionDescriptionTransferCache() {
         if(chainActionDescriptionTransferCache == null)
-            chainActionDescriptionTransferCache = new ChainActionDescriptionTransferCache();
+            chainActionDescriptionTransferCache = CDI.current().select(ChainActionDescriptionTransferCache.class).get();
         
         return chainActionDescriptionTransferCache;
     }
     
     public ChainActionSetTransferCache getChainActionSetTransferCache() {
         if(chainActionSetTransferCache == null)
-            chainActionSetTransferCache = new ChainActionSetTransferCache();
+            chainActionSetTransferCache = CDI.current().select(ChainActionSetTransferCache.class).get();
         
         return chainActionSetTransferCache;
     }
     
     public ChainActionTransferCache getChainActionTransferCache() {
         if(chainActionTransferCache == null)
-            chainActionTransferCache = new ChainActionTransferCache();
+            chainActionTransferCache = CDI.current().select(ChainActionTransferCache.class).get();
         
         return chainActionTransferCache;
     }
     
     public ChainInstanceStatusTransferCache getChainInstanceStatusTransferCache() {
         if(chainInstanceStatusTransferCache == null)
-            chainInstanceStatusTransferCache = new ChainInstanceStatusTransferCache();
+            chainInstanceStatusTransferCache = CDI.current().select(ChainInstanceStatusTransferCache.class).get();
         
         return chainInstanceStatusTransferCache;
     }
     
     public ChainActionLetterTransferCache getChainActionLetterTransferCache() {
         if(chainActionLetterTransferCache == null)
-            chainActionLetterTransferCache = new ChainActionLetterTransferCache();
+            chainActionLetterTransferCache = CDI.current().select(ChainActionLetterTransferCache.class).get();
         
         return chainActionLetterTransferCache;
     }
     
     public ChainActionSurveyTransferCache getChainActionSurveyTransferCache() {
         if(chainActionSurveyTransferCache == null)
-            chainActionSurveyTransferCache = new ChainActionSurveyTransferCache();
+            chainActionSurveyTransferCache = CDI.current().select(ChainActionSurveyTransferCache.class).get();
         
         return chainActionSurveyTransferCache;
     }
     
     public ChainActionChainActionSetTransferCache getChainActionChainActionSetTransferCache() {
         if(chainActionChainActionSetTransferCache == null)
-            chainActionChainActionSetTransferCache = new ChainActionChainActionSetTransferCache();
+            chainActionChainActionSetTransferCache = CDI.current().select(ChainActionChainActionSetTransferCache.class).get();
         
         return chainActionChainActionSetTransferCache;
     }

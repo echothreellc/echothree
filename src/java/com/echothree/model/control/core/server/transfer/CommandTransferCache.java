@@ -22,7 +22,9 @@ import com.echothree.model.control.core.server.control.ComponentControl;
 import com.echothree.model.data.core.server.entity.Command;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CommandTransferCache
         extends BaseCoreTransferCache<Command, CommandTransfer> {
 

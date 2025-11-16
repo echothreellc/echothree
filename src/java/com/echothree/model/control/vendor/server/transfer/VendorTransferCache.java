@@ -51,7 +51,9 @@ import com.echothree.model.data.vendor.server.factory.VendorItemFactory;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.AmountUtils;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class VendorTransferCache
         extends BaseVendorTransferCache<Party, VendorTransfer> {
 

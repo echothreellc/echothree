@@ -18,6 +18,7 @@ package com.echothree.model.control.purchase.server.transfer;
 
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.inject.spi.CDI;
 
 public class PurchaseTransferCaches
         extends BaseTransferCaches {

@@ -17,6 +17,7 @@
 package com.echothree.model.control.sequence.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.inject.spi.CDI;
 
 public class SequenceTransferCaches
         extends BaseTransferCaches {
@@ -35,42 +36,42 @@ public class SequenceTransferCaches
     
     public SequenceEncoderTypeTransferCache getSequenceEncoderTypeTransferCache() {
         if(sequenceEncoderTypeTransferCache == null)
-            sequenceEncoderTypeTransferCache = new SequenceEncoderTypeTransferCache();
+            sequenceEncoderTypeTransferCache = CDI.current().select(SequenceEncoderTypeTransferCache.class).get();
         
         return sequenceEncoderTypeTransferCache;
     }
     
     public SequenceChecksumTypeTransferCache getSequenceChecksumTypeTransferCache() {
         if(sequenceChecksumTypeTransferCache == null)
-            sequenceChecksumTypeTransferCache = new SequenceChecksumTypeTransferCache();
+            sequenceChecksumTypeTransferCache = CDI.current().select(SequenceChecksumTypeTransferCache.class).get();
         
         return sequenceChecksumTypeTransferCache;
     }
     
     public SequenceTypeTransferCache getSequenceTypeTransferCache() {
         if(sequenceTypeTransferCache == null)
-            sequenceTypeTransferCache = new SequenceTypeTransferCache();
+            sequenceTypeTransferCache = CDI.current().select(SequenceTypeTransferCache.class).get();
         
         return sequenceTypeTransferCache;
     }
     
     public SequenceTypeDescriptionTransferCache getSequenceTypeDescriptionTransferCache() {
         if(sequenceTypeDescriptionTransferCache == null)
-            sequenceTypeDescriptionTransferCache = new SequenceTypeDescriptionTransferCache();
+            sequenceTypeDescriptionTransferCache = CDI.current().select(SequenceTypeDescriptionTransferCache.class).get();
         
         return sequenceTypeDescriptionTransferCache;
     }
     
     public SequenceTransferCache getSequenceTransferCache() {
         if(sequenceTransferCache == null)
-            sequenceTransferCache = new SequenceTransferCache();
+            sequenceTransferCache = CDI.current().select(SequenceTransferCache.class).get();
         
         return sequenceTransferCache;
     }
     
     public SequenceDescriptionTransferCache getSequenceDescriptionTransferCache() {
         if(sequenceDescriptionTransferCache == null)
-            sequenceDescriptionTransferCache = new SequenceDescriptionTransferCache();
+            sequenceDescriptionTransferCache = CDI.current().select(SequenceDescriptionTransferCache.class).get();
         
         return sequenceDescriptionTransferCache;
     }

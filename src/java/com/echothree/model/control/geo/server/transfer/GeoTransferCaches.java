@@ -17,6 +17,7 @@
 package com.echothree.model.control.geo.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.inject.spi.CDI;
 
 public class GeoTransferCaches
         extends BaseTransferCaches {
@@ -48,133 +49,133 @@ public class GeoTransferCaches
     
     public CityTransferCache getCityTransferCache() {
         if(cityTransferCache == null)
-            cityTransferCache = new CityTransferCache();
+            cityTransferCache = CDI.current().select(CityTransferCache.class).get();
         
         return cityTransferCache;
     }
     
     public CountryTransferCache getCountryTransferCache() {
         if(countryTransferCache == null)
-            countryTransferCache = new CountryTransferCache();
+            countryTransferCache = CDI.current().select(CountryTransferCache.class).get();
         
         return countryTransferCache;
     }
     
     public CountyTransferCache getCountyTransferCache() {
         if(countyTransferCache == null)
-            countyTransferCache = new CountyTransferCache();
+            countyTransferCache = CDI.current().select(CountyTransferCache.class).get();
         
         return countyTransferCache;
     }
     
     public PostalCodeTransferCache getPostalCodeTransferCache() {
         if(postalCodeTransferCache == null)
-            postalCodeTransferCache = new PostalCodeTransferCache();
+            postalCodeTransferCache = CDI.current().select(PostalCodeTransferCache.class).get();
         
         return postalCodeTransferCache;
     }
     
     public StateTransferCache getStateTransferCache() {
         if(stateTransferCache == null)
-            stateTransferCache = new StateTransferCache();
+            stateTransferCache = CDI.current().select(StateTransferCache.class).get();
         
         return stateTransferCache;
     }
     
     public GeoCodeTransferCache getGeoCodeTransferCache() {
         if(geoCodeTransferCache == null)
-            geoCodeTransferCache = new GeoCodeTransferCache();
+            geoCodeTransferCache = CDI.current().select(GeoCodeTransferCache.class).get();
         
         return geoCodeTransferCache;
     }
     
     public GeoCodeAliasTransferCache getGeoCodeAliasTransferCache() {
         if(geoCodeAliasTransferCache == null)
-            geoCodeAliasTransferCache = new GeoCodeAliasTransferCache();
+            geoCodeAliasTransferCache = CDI.current().select(GeoCodeAliasTransferCache.class).get();
         
         return geoCodeAliasTransferCache;
     }
     
     public GeoCodeAliasTypeTransferCache getGeoCodeAliasTypeTransferCache() {
         if(geoCodeAliasTypeTransferCache == null)
-            geoCodeAliasTypeTransferCache = new GeoCodeAliasTypeTransferCache();
+            geoCodeAliasTypeTransferCache = CDI.current().select(GeoCodeAliasTypeTransferCache.class).get();
         
         return geoCodeAliasTypeTransferCache;
     }
     
     public GeoCodeScopeTransferCache getGeoCodeScopeTransferCache() {
         if(geoCodeScopeTransferCache == null)
-            geoCodeScopeTransferCache = new GeoCodeScopeTransferCache();
+            geoCodeScopeTransferCache = CDI.current().select(GeoCodeScopeTransferCache.class).get();
         
         return geoCodeScopeTransferCache;
     }
     
     public GeoCodeTypeTransferCache getGeoCodeTypeTransferCache() {
         if(geoCodeTypeTransferCache == null)
-            geoCodeTypeTransferCache = new GeoCodeTypeTransferCache();
+            geoCodeTypeTransferCache = CDI.current().select(GeoCodeTypeTransferCache.class).get();
         
         return geoCodeTypeTransferCache;
     }
     
     public GeoCodeRelationshipTransferCache getGeoCodeRelationshipTransferCache() {
         if(geoCodeRelationshipTransferCache == null)
-            geoCodeRelationshipTransferCache = new GeoCodeRelationshipTransferCache();
+            geoCodeRelationshipTransferCache = CDI.current().select(GeoCodeRelationshipTransferCache.class).get();
         
         return geoCodeRelationshipTransferCache;
     }
     
     public GeoCodeCurrencyTransferCache getGeoCodeCurrencyTransferCache() {
         if(geoCodeCurrencyTransferCache == null)
-            geoCodeCurrencyTransferCache = new GeoCodeCurrencyTransferCache();
+            geoCodeCurrencyTransferCache = CDI.current().select(GeoCodeCurrencyTransferCache.class).get();
         
         return geoCodeCurrencyTransferCache;
     }
     
     public GeoCodeLanguageTransferCache getGeoCodeLanguageTransferCache() {
         if(geoCodeLanguageTransferCache == null)
-            geoCodeLanguageTransferCache = new GeoCodeLanguageTransferCache();
+            geoCodeLanguageTransferCache = CDI.current().select(GeoCodeLanguageTransferCache.class).get();
         
         return geoCodeLanguageTransferCache;
     }
     
     public GeoCodeTimeZoneTransferCache getGeoCodeTimeZoneTransferCache() {
         if(geoCodeTimeZoneTransferCache == null)
-            geoCodeTimeZoneTransferCache = new GeoCodeTimeZoneTransferCache();
+            geoCodeTimeZoneTransferCache = CDI.current().select(GeoCodeTimeZoneTransferCache.class).get();
         
         return geoCodeTimeZoneTransferCache;
     }
     
     public GeoCodeDateTimeFormatTransferCache getGeoCodeDateTimeFormatTransferCache() {
         if(geoCodeDateTimeFormatTransferCache == null)
-            geoCodeDateTimeFormatTransferCache = new GeoCodeDateTimeFormatTransferCache();
+            geoCodeDateTimeFormatTransferCache = CDI.current().select(GeoCodeDateTimeFormatTransferCache.class).get();
         
         return geoCodeDateTimeFormatTransferCache;
     }
     
     public GeoCodeDescriptionTransferCache getGeoCodeDescriptionTransferCache() {
         if(geoCodeDescriptionTransferCache == null)
-            geoCodeDescriptionTransferCache = new GeoCodeDescriptionTransferCache();
+            geoCodeDescriptionTransferCache = CDI.current().select(GeoCodeDescriptionTransferCache.class).get();
         
         return geoCodeDescriptionTransferCache;
     }
     
     public GeoCodeScopeDescriptionTransferCache getGeoCodeScopeDescriptionTransferCache() {
         if(geoCodeScopeDescriptionTransferCache == null)
-            geoCodeScopeDescriptionTransferCache = new GeoCodeScopeDescriptionTransferCache();
+            geoCodeScopeDescriptionTransferCache = CDI.current().select(GeoCodeScopeDescriptionTransferCache.class).get();
         
         return geoCodeScopeDescriptionTransferCache;
     }
     
     public GeoCodeAliasTypeDescriptionTransferCache getGeoCodeAliasTypeDescriptionTransferCache() {
         if(geoCodeAliasTypeDescriptionTransferCache == null)
-            geoCodeAliasTypeDescriptionTransferCache = new GeoCodeAliasTypeDescriptionTransferCache();
+            geoCodeAliasTypeDescriptionTransferCache = CDI.current().select(GeoCodeAliasTypeDescriptionTransferCache.class).get();
         
         return geoCodeAliasTypeDescriptionTransferCache;
     }
     
     public GeoCodeTypeDescriptionTransferCache getGeoCodeTypeDescriptionTransferCache() {
         if(geoCodeTypeDescriptionTransferCache == null)
-            geoCodeTypeDescriptionTransferCache = new GeoCodeTypeDescriptionTransferCache();
+            geoCodeTypeDescriptionTransferCache = CDI.current().select(GeoCodeTypeDescriptionTransferCache.class).get();
         
         return geoCodeTypeDescriptionTransferCache;
     }

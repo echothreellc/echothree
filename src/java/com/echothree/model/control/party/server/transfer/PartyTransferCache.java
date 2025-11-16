@@ -37,7 +37,9 @@ import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PartyTransferCache
         extends BasePartyTransferCache<Party, PartyTransfer> {
     

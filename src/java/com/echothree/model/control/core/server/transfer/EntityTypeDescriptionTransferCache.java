@@ -21,7 +21,9 @@ import com.echothree.model.control.core.server.control.EntityTypeControl;
 import com.echothree.model.data.core.server.entity.EntityTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EntityTypeDescriptionTransferCache
         extends BaseCoreDescriptionTransferCache<EntityTypeDescription, EntityTypeDescriptionTransfer> {
 

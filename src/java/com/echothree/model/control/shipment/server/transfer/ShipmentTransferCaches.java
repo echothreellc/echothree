@@ -18,6 +18,7 @@ package com.echothree.model.control.shipment.server.transfer;
 
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.inject.spi.CDI;
 
 public class ShipmentTransferCaches
         extends BaseTransferCaches {
@@ -42,84 +43,84 @@ public class ShipmentTransferCaches
     
     public ShipmentTypeTransferCache getShipmentTypeTransferCache() {
         if(shipmentTypeTransferCache == null)
-            shipmentTypeTransferCache = new ShipmentTypeTransferCache();
+            shipmentTypeTransferCache = CDI.current().select(ShipmentTypeTransferCache.class).get();
         
         return shipmentTypeTransferCache;
     }
     
     public ShipmentTypeDescriptionTransferCache getShipmentTypeDescriptionTransferCache() {
         if(shipmentTypeDescriptionTransferCache == null)
-            shipmentTypeDescriptionTransferCache = new ShipmentTypeDescriptionTransferCache();
+            shipmentTypeDescriptionTransferCache = CDI.current().select(ShipmentTypeDescriptionTransferCache.class).get();
 
         return shipmentTypeDescriptionTransferCache;
     }
 
     public ShipmentTypeShippingMethodTransferCache getShipmentTypeShippingMethodTransferCache() {
         if(shipmentTypeShippingMethodTransferCache == null)
-            shipmentTypeShippingMethodTransferCache = new ShipmentTypeShippingMethodTransferCache();
+            shipmentTypeShippingMethodTransferCache = CDI.current().select(ShipmentTypeShippingMethodTransferCache.class).get();
 
         return shipmentTypeShippingMethodTransferCache;
     }
 
     public ShipmentAliasTypeTransferCache getShipmentAliasTypeTransferCache() {
         if(shipmentAliasTypeTransferCache == null)
-            shipmentAliasTypeTransferCache = new ShipmentAliasTypeTransferCache();
+            shipmentAliasTypeTransferCache = CDI.current().select(ShipmentAliasTypeTransferCache.class).get();
         
         return shipmentAliasTypeTransferCache;
     }
     
     public ShipmentAliasTypeDescriptionTransferCache getShipmentAliasTypeDescriptionTransferCache() {
         if(shipmentAliasTypeDescriptionTransferCache == null)
-            shipmentAliasTypeDescriptionTransferCache = new ShipmentAliasTypeDescriptionTransferCache();
+            shipmentAliasTypeDescriptionTransferCache = CDI.current().select(ShipmentAliasTypeDescriptionTransferCache.class).get();
         
         return shipmentAliasTypeDescriptionTransferCache;
     }
     
     public ShipmentAliasTransferCache getShipmentAliasTransferCache() {
         if(shipmentAliasTransferCache == null)
-            shipmentAliasTransferCache = new ShipmentAliasTransferCache();
+            shipmentAliasTransferCache = CDI.current().select(ShipmentAliasTransferCache.class).get();
         
         return shipmentAliasTransferCache;
     }
     
     public ShipmentTimeTypeTransferCache getShipmentTimeTypeTransferCache() {
         if(shipmentTimeTypeTransferCache == null)
-            shipmentTimeTypeTransferCache = new ShipmentTimeTypeTransferCache();
+            shipmentTimeTypeTransferCache = CDI.current().select(ShipmentTimeTypeTransferCache.class).get();
 
         return shipmentTimeTypeTransferCache;
     }
 
     public ShipmentTimeTransferCache getShipmentTimeTransferCache() {
         if(shipmentTimeTransferCache == null)
-            shipmentTimeTransferCache = new ShipmentTimeTransferCache();
+            shipmentTimeTransferCache = CDI.current().select(ShipmentTimeTransferCache.class).get();
 
         return shipmentTimeTransferCache;
     }
 
     public ShipmentTimeTypeDescriptionTransferCache getShipmentTimeTypeDescriptionTransferCache() {
         if(shipmentTimeTypeDescriptionTransferCache == null)
-            shipmentTimeTypeDescriptionTransferCache = new ShipmentTimeTypeDescriptionTransferCache();
+            shipmentTimeTypeDescriptionTransferCache = CDI.current().select(ShipmentTimeTypeDescriptionTransferCache.class).get();
 
         return shipmentTimeTypeDescriptionTransferCache;
     }
 
     public FreeOnBoardTransferCache getFreeOnBoardTransferCache() {
         if(freeOnBoardTransferCache == null)
-            freeOnBoardTransferCache = new FreeOnBoardTransferCache();
+            freeOnBoardTransferCache = CDI.current().select(FreeOnBoardTransferCache.class).get();
 
         return freeOnBoardTransferCache;
     }
 
     public FreeOnBoardDescriptionTransferCache getFreeOnBoardDescriptionTransferCache() {
         if(freeOnBoardDescriptionTransferCache == null)
-            freeOnBoardDescriptionTransferCache = new FreeOnBoardDescriptionTransferCache();
+            freeOnBoardDescriptionTransferCache = CDI.current().select(FreeOnBoardDescriptionTransferCache.class).get();
 
         return freeOnBoardDescriptionTransferCache;
     }
 
     public PartyFreeOnBoardTransferCache getPartyFreeOnBoardTransferCache() {
         if(partyFreeOnBoardTransferCache == null)
-            partyFreeOnBoardTransferCache = new PartyFreeOnBoardTransferCache();
+            partyFreeOnBoardTransferCache = CDI.current().select(PartyFreeOnBoardTransferCache.class).get();
 
         return partyFreeOnBoardTransferCache;
     }

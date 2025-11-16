@@ -21,7 +21,9 @@ import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.data.employee.server.entity.LeaveReason;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class LeaveReasonTransferCache
         extends BaseEmployeeTransferCache<LeaveReason, LeaveReasonTransfer> {
 

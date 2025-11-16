@@ -17,6 +17,7 @@
 package com.echothree.model.control.term.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.inject.spi.CDI;
 
 public class TermTransferCaches
         extends BaseTransferCaches {
@@ -35,42 +36,42 @@ public class TermTransferCaches
     
     public TermTypeTransferCache getTermTypeTransferCache() {
         if(termTypeTransferCache == null)
-            termTypeTransferCache = new TermTypeTransferCache();
+            termTypeTransferCache = CDI.current().select(TermTypeTransferCache.class).get();
         
         return termTypeTransferCache;
     }
     
     public TermTransferCache getTermTransferCache() {
         if(termTransferCache == null)
-            termTransferCache = new TermTransferCache();
+            termTransferCache = CDI.current().select(TermTransferCache.class).get();
         
         return termTransferCache;
     }
     
     public TermDescriptionTransferCache getTermDescriptionTransferCache() {
         if(termDescriptionTransferCache == null)
-            termDescriptionTransferCache = new TermDescriptionTransferCache();
+            termDescriptionTransferCache = CDI.current().select(TermDescriptionTransferCache.class).get();
         
         return termDescriptionTransferCache;
     }
     
     public PartyTermTransferCache getPartyTermTransferCache() {
         if(partyTermTransferCache == null)
-            partyTermTransferCache = new PartyTermTransferCache();
+            partyTermTransferCache = CDI.current().select(PartyTermTransferCache.class).get();
         
         return partyTermTransferCache;
     }
     
     public CustomerTypeCreditLimitTransferCache getCustomerTypeCreditLimitTransferCache() {
         if(customerTypeCreditLimitTransferCache == null)
-            customerTypeCreditLimitTransferCache = new CustomerTypeCreditLimitTransferCache();
+            customerTypeCreditLimitTransferCache = CDI.current().select(CustomerTypeCreditLimitTransferCache.class).get();
         
         return customerTypeCreditLimitTransferCache;
     }
     
     public PartyCreditLimitTransferCache getPartyCreditLimitTransferCache() {
         if(partyCreditLimitTransferCache == null)
-            partyCreditLimitTransferCache = new PartyCreditLimitTransferCache();
+            partyCreditLimitTransferCache = CDI.current().select(PartyCreditLimitTransferCache.class).get();
         
         return partyCreditLimitTransferCache;
     }
