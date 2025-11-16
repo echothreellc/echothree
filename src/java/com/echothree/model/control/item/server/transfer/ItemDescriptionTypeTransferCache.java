@@ -26,7 +26,9 @@ import com.echothree.model.data.item.server.entity.ItemDescriptionType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ItemDescriptionTypeTransferCache
         extends BaseItemTransferCache<ItemDescriptionType, ItemDescriptionTypeTransfer> {
 
@@ -56,7 +58,7 @@ public class ItemDescriptionTypeTransferCache
     boolean filterEntityInstance;
 
     /** Creates a new instance of ItemDescriptionTypeTransferCache */
-    public ItemDescriptionTypeTransferCache() {
+    protected ItemDescriptionTypeTransferCache() {
         super();
         
         transferProperties = session.getTransferProperties();

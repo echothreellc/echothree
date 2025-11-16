@@ -224,12 +224,12 @@ public class FontControl
     }
 
     public FontStyleTransfer getFontStyleTransfer(UserVisit userVisit, FontStyle fontStyle) {
-        return getCoreTransferCaches().getFontStyleTransferCache().getFontStyleTransfer(userVisit, fontStyle);
+        return coreTransferCaches.getFontStyleTransferCache().getFontStyleTransfer(userVisit, fontStyle);
     }
 
     public List<FontStyleTransfer> getFontStyleTransfers(UserVisit userVisit, Collection<FontStyle> entities) {
         List<FontStyleTransfer> transfers = new ArrayList<>(entities.size());
-        var transferCache = getCoreTransferCaches().getFontStyleTransferCache();
+        var transferCache = coreTransferCaches.getFontStyleTransferCache();
 
         entities.forEach((entity) ->
                 transfers.add(transferCache.getFontStyleTransfer(userVisit, entity))
@@ -466,13 +466,13 @@ public class FontControl
     }
 
     public FontStyleDescriptionTransfer getFontStyleDescriptionTransfer(UserVisit userVisit, FontStyleDescription fontStyleDescription) {
-        return getCoreTransferCaches().getFontStyleDescriptionTransferCache().getFontStyleDescriptionTransfer(userVisit, fontStyleDescription);
+        return coreTransferCaches.getFontStyleDescriptionTransferCache().getFontStyleDescriptionTransfer(userVisit, fontStyleDescription);
     }
 
     public List<FontStyleDescriptionTransfer> getFontStyleDescriptionTransfersByFontStyle(UserVisit userVisit, FontStyle fontStyle) {
         var fontStyleDescriptions = getFontStyleDescriptionsByFontStyle(fontStyle);
         List<FontStyleDescriptionTransfer> fontStyleDescriptionTransfers = new ArrayList<>(fontStyleDescriptions.size());
-        var fontStyleDescriptionTransferCache = getCoreTransferCaches().getFontStyleDescriptionTransferCache();
+        var fontStyleDescriptionTransferCache = coreTransferCaches.getFontStyleDescriptionTransferCache();
 
         fontStyleDescriptions.forEach((fontStyleDescription) ->
                 fontStyleDescriptionTransfers.add(fontStyleDescriptionTransferCache.getFontStyleDescriptionTransfer(userVisit, fontStyleDescription))
@@ -676,12 +676,12 @@ public class FontControl
     }
 
     public FontWeightTransfer getFontWeightTransfer(UserVisit userVisit, FontWeight fontWeight) {
-        return getCoreTransferCaches().getFontWeightTransferCache().getFontWeightTransfer(userVisit, fontWeight);
+        return coreTransferCaches.getFontWeightTransferCache().getFontWeightTransfer(userVisit, fontWeight);
     }
 
     public List<FontWeightTransfer> getFontWeightTransfers(UserVisit userVisit, Collection<FontWeight> entities) {
         List<FontWeightTransfer> transfers = new ArrayList<>(entities.size());
-        var transferCache = getCoreTransferCaches().getFontWeightTransferCache();
+        var transferCache = coreTransferCaches.getFontWeightTransferCache();
 
         entities.forEach((entity) ->
                 transfers.add(transferCache.getFontWeightTransfer(userVisit, entity))
@@ -918,13 +918,13 @@ public class FontControl
     }
 
     public FontWeightDescriptionTransfer getFontWeightDescriptionTransfer(UserVisit userVisit, FontWeightDescription fontWeightDescription) {
-        return getCoreTransferCaches().getFontWeightDescriptionTransferCache().getFontWeightDescriptionTransfer(userVisit, fontWeightDescription);
+        return coreTransferCaches.getFontWeightDescriptionTransferCache().getFontWeightDescriptionTransfer(userVisit, fontWeightDescription);
     }
 
     public List<FontWeightDescriptionTransfer> getFontWeightDescriptionTransfersByFontWeight(UserVisit userVisit, FontWeight fontWeight) {
         var fontWeightDescriptions = getFontWeightDescriptionsByFontWeight(fontWeight);
         List<FontWeightDescriptionTransfer> fontWeightDescriptionTransfers = new ArrayList<>(fontWeightDescriptions.size());
-        var fontWeightDescriptionTransferCache = getCoreTransferCaches().getFontWeightDescriptionTransferCache();
+        var fontWeightDescriptionTransferCache = coreTransferCaches.getFontWeightDescriptionTransferCache();
 
         fontWeightDescriptions.forEach((fontWeightDescription) ->
                 fontWeightDescriptionTransfers.add(fontWeightDescriptionTransferCache.getFontWeightDescriptionTransfer(userVisit, fontWeightDescription))

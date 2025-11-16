@@ -23,7 +23,9 @@ import com.echothree.model.data.queue.server.entity.QueueType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class QueueTypeTransferCache
         extends BaseQueueTransferCache<QueueType, QueueTypeTransfer> {
 
@@ -35,7 +37,7 @@ public class QueueTypeTransferCache
     boolean includeQueuedEntities;
     
     /** Creates a new instance of QueueTypeTransferCache */
-    public QueueTypeTransferCache() {
+    protected QueueTypeTransferCache() {
         super();
         
         var options = session.getOptions();

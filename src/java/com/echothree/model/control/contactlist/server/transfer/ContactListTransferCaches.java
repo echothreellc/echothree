@@ -17,125 +17,113 @@
 package com.echothree.model.control.contactlist.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
+@RequestScoped
 public class ContactListTransferCaches
         extends BaseTransferCaches {
     
-    protected ContactListTypeDescriptionTransferCache contactListTypeDescriptionTransferCache;
-    protected ContactListTypeTransferCache contactListTypeTransferCache;
-    protected ContactListGroupDescriptionTransferCache contactListGroupDescriptionTransferCache;
-    protected ContactListGroupTransferCache contactListGroupTransferCache;
-    protected ContactListFrequencyDescriptionTransferCache contactListFrequencyDescriptionTransferCache;
-    protected ContactListFrequencyTransferCache contactListFrequencyTransferCache;
-    protected ContactListDescriptionTransferCache contactListDescriptionTransferCache;
-    protected ContactListTransferCache contactListTransferCache;
-    protected PartyContactListTransferCache partyContactListTransferCache;
-    protected PartyTypeContactListTransferCache partyTypeContactListTransferCache;
-    protected PartyTypeContactListGroupTransferCache partyTypeContactListGroupTransferCache;
-    protected CustomerTypeContactListTransferCache customerTypeContactListTransferCache;
-    protected CustomerTypeContactListGroupTransferCache customerTypeContactListGroupTransferCache;
-    protected ContactListContactMechanismPurposeTransferCache contactListContactMechanismPurposeTransferCache;
+    @Inject
+    ContactListTypeDescriptionTransferCache contactListTypeDescriptionTransferCache;
     
+    @Inject
+    ContactListTypeTransferCache contactListTypeTransferCache;
+    
+    @Inject
+    ContactListGroupDescriptionTransferCache contactListGroupDescriptionTransferCache;
+    
+    @Inject
+    ContactListGroupTransferCache contactListGroupTransferCache;
+    
+    @Inject
+    ContactListFrequencyDescriptionTransferCache contactListFrequencyDescriptionTransferCache;
+    
+    @Inject
+    ContactListFrequencyTransferCache contactListFrequencyTransferCache;
+    
+    @Inject
+    ContactListDescriptionTransferCache contactListDescriptionTransferCache;
+    
+    @Inject
+    ContactListTransferCache contactListTransferCache;
+    
+    @Inject
+    PartyContactListTransferCache partyContactListTransferCache;
+    
+    @Inject
+    PartyTypeContactListTransferCache partyTypeContactListTransferCache;
+    
+    @Inject
+    PartyTypeContactListGroupTransferCache partyTypeContactListGroupTransferCache;
+    
+    @Inject
+    CustomerTypeContactListTransferCache customerTypeContactListTransferCache;
+    
+    @Inject
+    CustomerTypeContactListGroupTransferCache customerTypeContactListGroupTransferCache;
+    
+    @Inject
+    ContactListContactMechanismPurposeTransferCache contactListContactMechanismPurposeTransferCache;
+
     /** Creates a new instance of ContactListTransferCaches */
-    public ContactListTransferCaches() {
+    protected ContactListTransferCaches() {
         super();
     }
     
     public ContactListTypeDescriptionTransferCache getContactListTypeDescriptionTransferCache() {
-        if(contactListTypeDescriptionTransferCache == null)
-            contactListTypeDescriptionTransferCache = new ContactListTypeDescriptionTransferCache();
-        
         return contactListTypeDescriptionTransferCache;
     }
     
     public ContactListTypeTransferCache getContactListTypeTransferCache() {
-        if(contactListTypeTransferCache == null)
-            contactListTypeTransferCache = new ContactListTypeTransferCache();
-        
         return contactListTypeTransferCache;
     }
     
     public ContactListGroupDescriptionTransferCache getContactListGroupDescriptionTransferCache() {
-        if(contactListGroupDescriptionTransferCache == null)
-            contactListGroupDescriptionTransferCache = new ContactListGroupDescriptionTransferCache();
-
         return contactListGroupDescriptionTransferCache;
     }
 
     public ContactListGroupTransferCache getContactListGroupTransferCache() {
-        if(contactListGroupTransferCache == null)
-            contactListGroupTransferCache = new ContactListGroupTransferCache();
-
         return contactListGroupTransferCache;
     }
 
     public ContactListFrequencyDescriptionTransferCache getContactListFrequencyDescriptionTransferCache() {
-        if(contactListFrequencyDescriptionTransferCache == null)
-            contactListFrequencyDescriptionTransferCache = new ContactListFrequencyDescriptionTransferCache();
-
         return contactListFrequencyDescriptionTransferCache;
     }
 
     public ContactListFrequencyTransferCache getContactListFrequencyTransferCache() {
-        if(contactListFrequencyTransferCache == null)
-            contactListFrequencyTransferCache = new ContactListFrequencyTransferCache();
-
         return contactListFrequencyTransferCache;
     }
 
     public ContactListDescriptionTransferCache getContactListDescriptionTransferCache() {
-        if(contactListDescriptionTransferCache == null)
-            contactListDescriptionTransferCache = new ContactListDescriptionTransferCache();
-        
         return contactListDescriptionTransferCache;
     }
     
     public ContactListTransferCache getContactListTransferCache() {
-        if(contactListTransferCache == null)
-            contactListTransferCache = new ContactListTransferCache();
-        
         return contactListTransferCache;
     }
     
     public PartyContactListTransferCache getPartyContactListTransferCache() {
-        if(partyContactListTransferCache == null)
-            partyContactListTransferCache = new PartyContactListTransferCache();
-        
         return partyContactListTransferCache;
     }
     
     public PartyTypeContactListTransferCache getPartyTypeContactListTransferCache() {
-        if(partyTypeContactListTransferCache == null)
-            partyTypeContactListTransferCache = new PartyTypeContactListTransferCache();
-
         return partyTypeContactListTransferCache;
     }
 
     public PartyTypeContactListGroupTransferCache getPartyTypeContactListGroupTransferCache() {
-        if(partyTypeContactListGroupTransferCache == null)
-            partyTypeContactListGroupTransferCache = new PartyTypeContactListGroupTransferCache();
-
         return partyTypeContactListGroupTransferCache;
     }
 
     public CustomerTypeContactListTransferCache getCustomerTypeContactListTransferCache() {
-        if(customerTypeContactListTransferCache == null)
-            customerTypeContactListTransferCache = new CustomerTypeContactListTransferCache();
-
         return customerTypeContactListTransferCache;
     }
 
     public CustomerTypeContactListGroupTransferCache getCustomerTypeContactListGroupTransferCache() {
-        if(customerTypeContactListGroupTransferCache == null)
-            customerTypeContactListGroupTransferCache = new CustomerTypeContactListGroupTransferCache();
-
         return customerTypeContactListGroupTransferCache;
     }
 
     public ContactListContactMechanismPurposeTransferCache getContactListContactMechanismPurposeTransferCache() {
-        if(contactListContactMechanismPurposeTransferCache == null)
-            contactListContactMechanismPurposeTransferCache = new ContactListContactMechanismPurposeTransferCache();
-        
         return contactListContactMechanismPurposeTransferCache;
     }
     

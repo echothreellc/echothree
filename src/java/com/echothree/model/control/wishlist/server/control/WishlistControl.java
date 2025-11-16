@@ -77,6 +77,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 @RequestScoped
 public class WishlistControl
@@ -91,16 +92,9 @@ public class WishlistControl
     //   Wishlist Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private WishlistTransferCaches wishlistTransferCaches;
-    
-    public WishlistTransferCaches getWishlistTransferCaches() {
-        if(wishlistTransferCaches == null) {
-            wishlistTransferCaches = new WishlistTransferCaches();
-        }
-        
-        return wishlistTransferCaches;
-    }
-    
+    @Inject
+    WishlistTransferCaches wishlistTransferCaches;
+
     // --------------------------------------------------------------------------------
     //   Wishlist Types
     // --------------------------------------------------------------------------------
@@ -301,12 +295,12 @@ public class WishlistControl
     }
     
     public WishlistTypeTransfer getWishlistTypeTransfer(UserVisit userVisit, WishlistType wishlistType) {
-        return getWishlistTransferCaches().getWishlistTypeTransferCache().getWishlistTypeTransfer(userVisit, wishlistType);
+        return wishlistTransferCaches.getWishlistTypeTransferCache().getWishlistTypeTransfer(userVisit, wishlistType);
     }
 
     public List<WishlistTypeTransfer> getWishlistTypeTransfers(UserVisit userVisit, Collection<WishlistType> wishlistTypes) {
         List<WishlistTypeTransfer> wishlistTypeTransfers = new ArrayList<>(wishlistTypes.size());
-        var wishlistTypeTransferCache = getWishlistTransferCaches().getWishlistTypeTransferCache();
+        var wishlistTypeTransferCache = wishlistTransferCaches.getWishlistTypeTransferCache();
 
         wishlistTypes.forEach((wishlistType) ->
                 wishlistTypeTransfers.add(wishlistTypeTransferCache.getWishlistTypeTransfer(userVisit, wishlistType))
@@ -517,13 +511,13 @@ public class WishlistControl
     }
     
     public WishlistTypeDescriptionTransfer getWishlistTypeDescriptionTransfer(UserVisit userVisit, WishlistTypeDescription wishlistTypeDescription) {
-        return getWishlistTransferCaches().getWishlistTypeDescriptionTransferCache().getWishlistTypeDescriptionTransfer(userVisit, wishlistTypeDescription);
+        return wishlistTransferCaches.getWishlistTypeDescriptionTransferCache().getWishlistTypeDescriptionTransfer(userVisit, wishlistTypeDescription);
     }
     
     public List<WishlistTypeDescriptionTransfer> getWishlistTypeDescriptionTransfers(UserVisit userVisit, WishlistType wishlistType) {
         var wishlistTypeDescriptions = getWishlistTypeDescriptionsByWishlistType(wishlistType);
         List<WishlistTypeDescriptionTransfer> wishlistTypeDescriptionTransfers = new ArrayList<>(wishlistTypeDescriptions.size());
-        var wishlistTypeDescriptionTransferCache = getWishlistTransferCaches().getWishlistTypeDescriptionTransferCache();
+        var wishlistTypeDescriptionTransferCache = wishlistTransferCaches.getWishlistTypeDescriptionTransferCache();
         
         wishlistTypeDescriptions.forEach((wishlistTypeDescription) ->
                 wishlistTypeDescriptionTransfers.add(wishlistTypeDescriptionTransferCache.getWishlistTypeDescriptionTransfer(userVisit, wishlistTypeDescription))
@@ -794,12 +788,12 @@ public class WishlistControl
     }
     
     public WishlistPriorityTransfer getWishlistPriorityTransfer(UserVisit userVisit, WishlistPriority wishlistPriority) {
-        return getWishlistTransferCaches().getWishlistPriorityTransferCache().getWishlistPriorityTransfer(userVisit, wishlistPriority);
+        return wishlistTransferCaches.getWishlistPriorityTransferCache().getWishlistPriorityTransfer(userVisit, wishlistPriority);
     }
 
     public List<WishlistPriorityTransfer> getWishlistPriorityTransfers(UserVisit userVisit, Collection<WishlistPriority> wishlistPriorities) {
         List<WishlistPriorityTransfer> wishlistPriorityTransfers = new ArrayList<>(wishlistPriorities.size());
-        var wishlistPriorityTransferCache = getWishlistTransferCaches().getWishlistPriorityTransferCache();
+        var wishlistPriorityTransferCache = wishlistTransferCaches.getWishlistPriorityTransferCache();
 
         wishlistPriorities.forEach((wishlistPriority) ->
                 wishlistPriorityTransfers.add(wishlistPriorityTransferCache.getWishlistPriorityTransfer(userVisit, wishlistPriority))
@@ -1016,13 +1010,13 @@ public class WishlistControl
     }
     
     public WishlistPriorityDescriptionTransfer getWishlistPriorityDescriptionTransfer(UserVisit userVisit, WishlistPriorityDescription wishlistPriorityDescription) {
-        return getWishlistTransferCaches().getWishlistPriorityDescriptionTransferCache().getWishlistPriorityDescriptionTransfer(userVisit, wishlistPriorityDescription);
+        return wishlistTransferCaches.getWishlistPriorityDescriptionTransferCache().getWishlistPriorityDescriptionTransfer(userVisit, wishlistPriorityDescription);
     }
     
     public List<WishlistPriorityDescriptionTransfer> getWishlistPriorityDescriptionTransfers(UserVisit userVisit, WishlistPriority wishlistPriority) {
         var wishlistPriorityDescriptions = getWishlistPriorityDescriptionsByWishlistPriority(wishlistPriority);
         List<WishlistPriorityDescriptionTransfer> wishlistPriorityDescriptionTransfers = new ArrayList<>(wishlistPriorityDescriptions.size());
-        var wishlistPriorityDescriptionTransferCache = getWishlistTransferCaches().getWishlistPriorityDescriptionTransferCache();
+        var wishlistPriorityDescriptionTransferCache = wishlistTransferCaches.getWishlistPriorityDescriptionTransferCache();
         
         wishlistPriorityDescriptions.forEach((wishlistPriorityDescription) ->
                 wishlistPriorityDescriptionTransfers.add(wishlistPriorityDescriptionTransferCache.getWishlistPriorityDescriptionTransfer(userVisit, wishlistPriorityDescription))
@@ -1494,7 +1488,7 @@ public class WishlistControl
     }
     
     public WishlistTransfer getWishlistTransfer(UserVisit userVisit, Order order) {
-        return getWishlistTransferCaches().getWishlistTransferCache().getWishlistTransfer(userVisit, order);
+        return wishlistTransferCaches.getWishlistTransferCache().getWishlistTransfer(userVisit, order);
     }
     
     private List<Order> getOrdersByWishlistType(WishlistType wishlistType, EntityPermission entityPermission) {
@@ -1540,7 +1534,7 @@ public class WishlistControl
     public List<WishlistTransfer> getWishlistTransfers(UserVisit userVisit, Party companyParty, Party party) {
         var orders = getWishlists(companyParty, party);
         List<WishlistTransfer> wishlistTransfers = new ArrayList<>(orders.size());
-        var wishlistTransferCache = getWishlistTransferCaches().getWishlistTransferCache();
+        var wishlistTransferCache = wishlistTransferCaches.getWishlistTransferCache();
         
         orders.forEach((order) ->
                 wishlistTransfers.add(wishlistTransferCache.getWishlistTransfer(userVisit, order))
@@ -1765,12 +1759,12 @@ public class WishlistControl
     }
     
     public WishlistLineTransfer getWishlistLineTransfer(UserVisit userVisit, OrderLine orderLine) {
-        return getWishlistTransferCaches().getWishlistLineTransferCache().getWishlistLineTransfer(userVisit, orderLine);
+        return wishlistTransferCaches.getWishlistLineTransferCache().getWishlistLineTransfer(userVisit, orderLine);
     }
     
     public List<WishlistLineTransfer> getWishlistLineTransfers(UserVisit userVisit, Collection<OrderLine> orderLines) {
         List<WishlistLineTransfer> wishlistLineTransfers = new ArrayList<>(orderLines.size());
-        var wishlistLineTransferCache = getWishlistTransferCaches().getWishlistLineTransferCache();
+        var wishlistLineTransferCache = wishlistTransferCaches.getWishlistLineTransferCache();
         
         orderLines.forEach((orderLine) ->
                 wishlistLineTransfers.add(wishlistLineTransferCache.getWishlistLineTransfer(userVisit, orderLine))

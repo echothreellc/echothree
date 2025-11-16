@@ -22,14 +22,16 @@ import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.data.content.server.entity.ContentWebAddress;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ContentWebAddressTransferCache
         extends BaseContentTransferCache<ContentWebAddress, ContentWebAddressTransfer> {
 
     ContentControl contentControl = Session.getModelController(ContentControl.class);
 
     /** Creates a new instance of ContentWebAddressTransferCache */
-    public ContentWebAddressTransferCache() {
+    protected ContentWebAddressTransferCache() {
         super();
         
         var options = session.getOptions();

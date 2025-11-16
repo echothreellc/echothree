@@ -21,14 +21,16 @@ import com.echothree.model.control.cancellationpolicy.server.control.Cancellatio
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationReason;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CancellationReasonTransferCache
         extends BaseCancellationPolicyTransferCache<CancellationReason, CancellationReasonTransfer> {
 
     CancellationPolicyControl cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
 
     /** Creates a new instance of CancellationReasonTransferCache */
-    public CancellationReasonTransferCache() {
+    protected CancellationReasonTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

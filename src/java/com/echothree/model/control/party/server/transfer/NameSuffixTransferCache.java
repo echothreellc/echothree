@@ -19,12 +19,14 @@ package com.echothree.model.control.party.server.transfer;
 import com.echothree.model.control.party.common.transfer.NameSuffixTransfer;
 import com.echothree.model.data.party.server.entity.NameSuffix;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class NameSuffixTransferCache
         extends BasePartyTransferCache<NameSuffix, NameSuffixTransfer> {
     
     /** Creates a new instance of NameSuffixTransferCache */
-    public NameSuffixTransferCache() {
+    protected NameSuffixTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

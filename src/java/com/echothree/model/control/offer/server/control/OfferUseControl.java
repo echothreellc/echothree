@@ -276,7 +276,7 @@ public class OfferUseControl
 
     public List<OfferUseTransfer> getOfferUseTransfers(UserVisit userVisit, Collection<OfferUse> offerUses) {
         List<OfferUseTransfer> offerUseTransfers = new ArrayList<>(offerUses.size());
-        var offerUseTransferCache = getOfferTransferCaches().getOfferUseTransferCache();
+        var offerUseTransferCache = offerTransferCaches.getOfferUseTransferCache();
 
         offerUses.forEach((offerUse) ->
                 offerUseTransfers.add(offerUseTransferCache.getOfferUseTransfer(userVisit, offerUse))
@@ -290,7 +290,7 @@ public class OfferUseControl
     }
 
     public OfferUseTransfer getOfferUseTransfer(UserVisit userVisit, OfferUse offerUse) {
-        return getOfferTransferCaches().getOfferUseTransferCache().getOfferUseTransfer(userVisit, offerUse);
+        return offerTransferCaches.getOfferUseTransferCache().getOfferUseTransfer(userVisit, offerUse);
     }
 
     public void updateOfferUseFromValue(OfferUseDetailValue offerUseDetailValue, BasePK updatedBy) {

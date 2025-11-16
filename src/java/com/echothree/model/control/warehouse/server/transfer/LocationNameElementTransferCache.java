@@ -21,14 +21,16 @@ import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.warehouse.server.entity.LocationNameElement;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class LocationNameElementTransferCache
         extends BaseWarehouseTransferCache<LocationNameElement, LocationNameElementTransfer> {
 
     WarehouseControl warehouseControl = Session.getModelController(WarehouseControl.class);
 
     /** Creates a new instance of LocationNameElementTransferCache */
-    public LocationNameElementTransferCache() {
+    protected LocationNameElementTransferCache() {
         super();
         
         setIncludeEntityInstance(true);
@@ -40,8 +42,7 @@ public class LocationNameElementTransferCache
         if(locationNameElementTransfer == null) {
             var locationNameElementDetail = locationNameElement.getLastDetail();
             var locationNameElementName = locationNameElementDetail.getLocationNameElementName();
-            var locationTypeTransferCache = warehouseControl.getWarehouseTransferCaches().getLocationTypeTransferCache();
-            var locationType = locationTypeTransferCache.getLocationTypeTransfer(userVisit, locationNameElementDetail.getLocationType());
+            var locationType = warehouseControl.getLocationTypeTransfer(userVisit, locationNameElementDetail.getLocationType());
             var offset = locationNameElementDetail.getOffset();
             var length = locationNameElementDetail.getLength();
             var validationPattern = locationNameElementDetail.getValidationPattern();

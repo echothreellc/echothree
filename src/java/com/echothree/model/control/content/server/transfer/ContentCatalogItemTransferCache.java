@@ -30,7 +30,9 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.AmountUtils;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ContentCatalogItemTransferCache
         extends BaseContentTransferCache<ContentCatalogItem, ContentCatalogItemTransfer> {
 
@@ -58,7 +60,7 @@ public class ContentCatalogItemTransferCache
     boolean filterEntityInstance;
     
     /** Creates a new instance of ContentCatalogItemTransferCache */
-    public ContentCatalogItemTransferCache() {
+    protected ContentCatalogItemTransferCache() {
         super();
 
         var options = session.getOptions();

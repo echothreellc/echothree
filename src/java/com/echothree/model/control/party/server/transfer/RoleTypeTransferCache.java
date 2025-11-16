@@ -21,14 +21,16 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.party.server.entity.RoleType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class RoleTypeTransferCache
         extends BasePartyTransferCache<RoleType, RoleTypeTransfer> {
 
     PartyControl partyControl = Session.getModelController(PartyControl.class);
 
     /** Creates a new instance of RoleTypeTransferCache */
-    public RoleTypeTransferCache() {
+    protected RoleTypeTransferCache() {
         super();
     }
 

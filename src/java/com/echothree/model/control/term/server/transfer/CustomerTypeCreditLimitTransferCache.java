@@ -23,7 +23,9 @@ import com.echothree.model.data.term.server.entity.CustomerTypeCreditLimit;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.AmountUtils;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CustomerTypeCreditLimitTransferCache
         extends BaseTermTransferCache<CustomerTypeCreditLimit, CustomerTypeCreditLimitTransfer> {
     
@@ -31,7 +33,7 @@ public class CustomerTypeCreditLimitTransferCache
     CustomerControl customerControl = Session.getModelController(CustomerControl.class);
 
     /** Creates a new instance of CustomerTypeCreditLimitTransferCache */
-    public CustomerTypeCreditLimitTransferCache() {
+    protected CustomerTypeCreditLimitTransferCache() {
         super();
     }
     

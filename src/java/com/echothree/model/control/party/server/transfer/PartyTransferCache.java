@@ -37,7 +37,9 @@ import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PartyTransferCache
         extends BasePartyTransferCache<Party, PartyTransfer> {
     
@@ -74,7 +76,7 @@ public class PartyTransferCache
     boolean includePartySkills;
     
     /** Creates a new instance of PartyTransferCache */
-    public PartyTransferCache() {
+    protected PartyTransferCache() {
         super();
         
         var options = session.getOptions();

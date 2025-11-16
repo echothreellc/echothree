@@ -25,7 +25,9 @@ import com.echothree.model.data.item.server.entity.ItemUnitPriceLimit;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.AmountUtils;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ItemUnitPriceLimitTransferCache
         extends BaseItemTransferCache<ItemUnitPriceLimit, ItemUnitPriceLimitTransfer> {
     
@@ -35,7 +37,7 @@ public class ItemUnitPriceLimitTransferCache
     UomControl uomControl = Session.getModelController(UomControl.class);
     
     /** Creates a new instance of ItemUnitPriceLimitTransferCache */
-    public ItemUnitPriceLimitTransferCache() {
+    protected ItemUnitPriceLimitTransferCache() {
         super();
     }
     

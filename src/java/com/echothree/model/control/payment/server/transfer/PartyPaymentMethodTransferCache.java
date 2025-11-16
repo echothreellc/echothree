@@ -41,7 +41,9 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.string.StringUtils;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PartyPaymentMethodTransferCache
         extends BasePaymentTransferCache<PartyPaymentMethod, PartyPaymentMethodTransfer> {
     
@@ -61,7 +63,7 @@ public class PartyPaymentMethodTransferCache
     boolean maskNumberAndSecurityCode;
 
     /** Creates a new instance of PartyPaymentMethodTransferCache */
-    public PartyPaymentMethodTransferCache() {
+    protected PartyPaymentMethodTransferCache() {
         super();
 
         var options = session.getOptions();

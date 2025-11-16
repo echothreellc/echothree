@@ -23,14 +23,16 @@ import com.echothree.model.data.term.server.entity.Term;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.PercentUtils;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class TermTransferCache
         extends BaseTermTransferCache<Term, TermTransfer> {
 
     TermControl termControl = Session.getModelController(TermControl.class);
 
     /** Creates a new instance of TermTransferCache */
-    public TermTransferCache() {
+    protected TermTransferCache() {
         super();
         
         setIncludeEntityInstance(true);
@@ -42,8 +44,7 @@ public class TermTransferCache
         if(termTransfer == null) {
             var termDetail = term.getLastDetail();
             var termName = termDetail.getTermName();
-            var termTypeTransferCache = termControl.getTermTransferCaches().getTermTypeTransferCache();
-            var termType = termTypeTransferCache.getTermTypeTransfer(userVisit, termDetail.getTermType());
+            var termType = termControl.getTermTypeTransfer(userVisit, termDetail.getTermType());
             var isDefault = termDetail.getIsDefault();
             var sortOrder = termDetail.getSortOrder();
             var description = termControl.getBestTermDescription(term, getLanguage(userVisit));

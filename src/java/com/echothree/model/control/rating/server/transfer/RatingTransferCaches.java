@@ -17,53 +17,50 @@
 package com.echothree.model.control.rating.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
+@RequestScoped
 public class RatingTransferCaches
         extends BaseTransferCaches {
     
-    protected RatingTransferCache ratingTransferCache;
-    protected RatingTypeTransferCache ratingTypeTransferCache;
-    protected RatingTypeDescriptionTransferCache ratingTypeDescriptionTransferCache;
-    protected RatingTypeListItemTransferCache ratingTypeListItemTransferCache;
-    protected RatingTypeListItemDescriptionTransferCache ratingTypeListItemDescriptionTransferCache;
+    @Inject
+    RatingTransferCache ratingTransferCache;
     
+    @Inject
+    RatingTypeTransferCache ratingTypeTransferCache;
+    
+    @Inject
+    RatingTypeDescriptionTransferCache ratingTypeDescriptionTransferCache;
+    
+    @Inject
+    RatingTypeListItemTransferCache ratingTypeListItemTransferCache;
+    
+    @Inject
+    RatingTypeListItemDescriptionTransferCache ratingTypeListItemDescriptionTransferCache;
+
     /** Creates a new instance of RatingTransferCaches */
-    public RatingTransferCaches() {
+    protected RatingTransferCaches() {
         super();
     }
     
     public RatingTransferCache getRatingTransferCache() {
-        if(ratingTransferCache == null)
-            ratingTransferCache = new RatingTransferCache();
-        
         return ratingTransferCache;
     }
     
     public RatingTypeTransferCache getRatingTypeTransferCache() {
-        if(ratingTypeTransferCache == null)
-            ratingTypeTransferCache = new RatingTypeTransferCache();
-        
         return ratingTypeTransferCache;
     }
     
     public RatingTypeDescriptionTransferCache getRatingTypeDescriptionTransferCache() {
-        if(ratingTypeDescriptionTransferCache == null)
-            ratingTypeDescriptionTransferCache = new RatingTypeDescriptionTransferCache();
-        
         return ratingTypeDescriptionTransferCache;
     }
     
     public RatingTypeListItemTransferCache getRatingTypeListItemTransferCache() {
-        if(ratingTypeListItemTransferCache == null)
-            ratingTypeListItemTransferCache = new RatingTypeListItemTransferCache();
-        
         return ratingTypeListItemTransferCache;
     }
     
     public RatingTypeListItemDescriptionTransferCache getRatingTypeListItemDescriptionTransferCache() {
-        if(ratingTypeListItemDescriptionTransferCache == null)
-            ratingTypeListItemDescriptionTransferCache = new RatingTypeListItemDescriptionTransferCache();
-        
         return ratingTypeListItemDescriptionTransferCache;
     }
     

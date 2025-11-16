@@ -21,14 +21,16 @@ import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.data.customer.server.entity.CustomerTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CustomerTypeDescriptionTransferCache
         extends BaseCustomerDescriptionTransferCache<CustomerTypeDescription, CustomerTypeDescriptionTransfer> {
 
     CustomerControl customerControl = Session.getModelController(CustomerControl.class);
 
     /** Creates a new instance of CustomerTypeDescriptionTransferCache */
-    public CustomerTypeDescriptionTransferCache() {
+    protected CustomerTypeDescriptionTransferCache() {
         super();
     }
     

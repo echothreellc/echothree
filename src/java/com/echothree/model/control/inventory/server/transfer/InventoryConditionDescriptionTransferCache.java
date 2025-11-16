@@ -21,14 +21,16 @@ import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.data.inventory.server.entity.InventoryConditionDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class InventoryConditionDescriptionTransferCache
         extends BaseInventoryDescriptionTransferCache<InventoryConditionDescription, InventoryConditionDescriptionTransfer> {
 
     InventoryControl inventoryControl = Session.getModelController(InventoryControl.class);
 
     /** Creates a new instance of InventoryConditionDescriptionTransferCache */
-    public InventoryConditionDescriptionTransferCache() {
+    protected InventoryConditionDescriptionTransferCache() {
         super();
     }
     
@@ -37,8 +39,7 @@ public class InventoryConditionDescriptionTransferCache
         var inventoryConditionDescriptionTransfer = get(inventoryConditionDescription);
         
         if(inventoryConditionDescriptionTransfer == null) {
-            var inventoryConditionTransferCache = inventoryControl.getInventoryTransferCaches().getInventoryConditionTransferCache();
-            var inventoryConditionTransfer = inventoryConditionTransferCache.getTransfer(userVisit, inventoryConditionDescription.getInventoryCondition());
+            var inventoryConditionTransfer = inventoryControl.getInventoryConditionTransfer(userVisit, inventoryConditionDescription.getInventoryCondition());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, inventoryConditionDescription.getLanguage());
             
             inventoryConditionDescriptionTransfer = new InventoryConditionDescriptionTransfer(languageTransfer, inventoryConditionTransfer, inventoryConditionDescription.getDescription());

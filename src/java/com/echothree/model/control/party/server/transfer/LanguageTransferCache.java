@@ -23,7 +23,9 @@ import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class LanguageTransferCache
         extends BasePartyTransferCache<Language, LanguageTransfer> {
 
@@ -36,7 +38,7 @@ public class LanguageTransferCache
     boolean filterDescription;
     
     /** Creates a new instance of LanguageTransferCache */
-    public LanguageTransferCache() {
+    protected LanguageTransferCache() {
         super();
 
         transferProperties = session.getTransferProperties();

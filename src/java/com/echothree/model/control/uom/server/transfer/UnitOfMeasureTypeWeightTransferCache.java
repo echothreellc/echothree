@@ -22,14 +22,16 @@ import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureTypeWeight;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class UnitOfMeasureTypeWeightTransferCache
         extends BaseUomTransferCache<UnitOfMeasureTypeWeight, UnitOfMeasureTypeWeightTransfer> {
 
     UomControl uomControl = Session.getModelController(UomControl.class);
 
     /** Creates a new instance of UnitOfMeasureTypeWeightTransferCache */
-    public UnitOfMeasureTypeWeightTransferCache() {
+    protected UnitOfMeasureTypeWeightTransferCache() {
         super();
     }
     

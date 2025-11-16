@@ -19,12 +19,14 @@ package com.echothree.model.control.party.server.transfer;
 import com.echothree.model.control.party.common.transfer.PersonalTitleTransfer;
 import com.echothree.model.data.party.server.entity.PersonalTitle;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PersonalTitleTransferCache
         extends BasePartyTransferCache<PersonalTitle, PersonalTitleTransfer> {
     
     /** Creates a new instance of PersonalTitleTransferCache */
-    public PersonalTitleTransferCache() {
+    protected PersonalTitleTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

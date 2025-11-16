@@ -29,7 +29,9 @@ import com.echothree.model.data.party.server.entity.PartyDepartment;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class DepartmentTransferCache
         extends BasePartyTransferCache<Party, DepartmentTransfer> {
     
@@ -45,7 +47,7 @@ public class DepartmentTransferCache
     boolean includePartyScaleUses;
     
     /** Creates a new instance of DepartmentTransferCache */
-    public DepartmentTransferCache() {
+    protected DepartmentTransferCache() {
         super();
         
         var options = session.getOptions();

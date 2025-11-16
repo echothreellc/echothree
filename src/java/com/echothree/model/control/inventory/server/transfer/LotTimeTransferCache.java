@@ -21,14 +21,16 @@ import com.echothree.model.control.inventory.server.control.LotTimeControl;
 import com.echothree.model.data.inventory.server.entity.LotTime;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class LotTimeTransferCache
         extends BaseInventoryTransferCache<LotTime, LotTimeTransfer> {
 
     LotTimeControl lotTimeControl = Session.getModelController(LotTimeControl.class);
 
     /** Creates a new instance of LotTimeTransferCache */
-    public LotTimeTransferCache() {
+    protected LotTimeTransferCache() {
         super();
     }
     

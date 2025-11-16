@@ -28,7 +28,9 @@ import com.echothree.model.data.batch.server.entity.Batch;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.AmountUtils;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class SalesOrderBatchTransferCache
         extends GenericBatchTransferCache<SalesOrderBatchTransfer> {
     
@@ -40,7 +42,7 @@ public class SalesOrderBatchTransferCache
     SalesOrderBatchControl salesOrderBatchControl = Session.getModelController(SalesOrderBatchControl.class);
 
     /** Creates a new instance of SalesOrderBatchTransferCache */
-    public SalesOrderBatchTransferCache() {
+    protected SalesOrderBatchTransferCache() {
         super();
 
         setIncludeEntityInstance(true);

@@ -21,14 +21,16 @@ import com.echothree.model.control.associate.server.control.AssociateControl;
 import com.echothree.model.data.associate.server.entity.AssociateProgramDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class AssociateProgramDescriptionTransferCache
         extends BaseAssociateDescriptionTransferCache<AssociateProgramDescription, AssociateProgramDescriptionTransfer> {
 
     AssociateControl associateControl = Session.getModelController(AssociateControl.class);
 
     /** Creates a new instance of AssociateProgramDescriptionTransferCache */
-    public AssociateProgramDescriptionTransferCache() {
+    protected AssociateProgramDescriptionTransferCache() {
         super();
     }
     

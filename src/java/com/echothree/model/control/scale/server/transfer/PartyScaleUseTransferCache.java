@@ -22,7 +22,9 @@ import com.echothree.model.control.scale.server.control.ScaleControl;
 import com.echothree.model.data.scale.server.entity.PartyScaleUse;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PartyScaleUseTransferCache
         extends BaseScaleTransferCache<PartyScaleUse, PartyScaleUseTransfer> {
 
@@ -30,7 +32,7 @@ public class PartyScaleUseTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of PartyScaleUseTransferCache */
-    public PartyScaleUseTransferCache() {
+    protected PartyScaleUseTransferCache() {
         super();
     }
     

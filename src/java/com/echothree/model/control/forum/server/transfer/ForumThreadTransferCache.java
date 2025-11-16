@@ -25,7 +25,9 @@ import com.echothree.model.data.forum.server.factory.ForumMessageFactory;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ForumThreadTransferCache
         extends BaseForumTransferCache<ForumThread, ForumThreadTransfer> {
 
@@ -37,7 +39,7 @@ public class ForumThreadTransferCache
     boolean hasForumMessageLimits;
     
     /** Creates a new instance of ForumThreadTransferCache */
-    public ForumThreadTransferCache() {
+    protected ForumThreadTransferCache() {
         super();
         
         var options = session.getOptions();

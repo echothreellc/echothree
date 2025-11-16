@@ -24,7 +24,9 @@ import com.echothree.model.data.party.server.entity.PartyTypeAuditPolicy;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PartyTypeAuditPolicyTransferCache
         extends BasePartyTransferCache<PartyTypeAuditPolicy, PartyTypeAuditPolicyTransfer> {
 
@@ -34,7 +36,7 @@ public class PartyTypeAuditPolicyTransferCache
     UnitOfMeasureKind timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
 
     /** Creates a new instance of PartyTypeAuditPolicyTransferCache */
-    public PartyTypeAuditPolicyTransferCache() {
+    protected PartyTypeAuditPolicyTransferCache() {
         super();
 
         setIncludeEntityInstance(true);

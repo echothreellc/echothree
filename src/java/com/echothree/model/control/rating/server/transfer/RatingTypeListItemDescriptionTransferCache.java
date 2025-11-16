@@ -21,14 +21,16 @@ import com.echothree.model.control.rating.server.control.RatingControl;
 import com.echothree.model.data.rating.server.entity.RatingTypeListItemDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class RatingTypeListItemDescriptionTransferCache
         extends BaseRatingDescriptionTransferCache<RatingTypeListItemDescription, RatingTypeListItemDescriptionTransfer> {
 
     RatingControl ratingControl = Session.getModelController(RatingControl.class);
 
     /** Creates a new instance of RatingTypeListItemDescriptionTransferCache */
-    public RatingTypeListItemDescriptionTransferCache() {
+    protected RatingTypeListItemDescriptionTransferCache() {
         super();
     }
     
@@ -36,8 +38,7 @@ public class RatingTypeListItemDescriptionTransferCache
         var ratingTypeListItemDescriptionTransfer = get(ratingTypeListItemDescription);
         
         if(ratingTypeListItemDescriptionTransfer == null) {
-            var ratingTypeListItemTransferCache = ratingControl.getRatingTransferCaches().getRatingTypeListItemTransferCache();
-            var ratingTypeListItemTransfer = ratingTypeListItemTransferCache.getRatingTypeListItemTransfer(userVisit, ratingTypeListItemDescription.getRatingTypeListItem());
+            var ratingTypeListItemTransfer = ratingControl.getRatingTypeListItemTransfer(userVisit, ratingTypeListItemDescription.getRatingTypeListItem());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, ratingTypeListItemDescription.getLanguage());
             
             ratingTypeListItemDescriptionTransfer = new RatingTypeListItemDescriptionTransfer(languageTransfer, ratingTypeListItemTransfer, ratingTypeListItemDescription.getDescription());

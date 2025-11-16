@@ -35,7 +35,9 @@ import com.echothree.util.server.string.AmountUtils;
 import com.echothree.util.server.transfer.HistoryCache;
 import java.util.ArrayList;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ItemPriceTransferCache
         extends BaseItemTransferCache<ItemPrice, ItemPriceTransfer>
         implements HistoryCache<ItemPrice, ItemPriceTransfer> {
@@ -64,7 +66,7 @@ public class ItemPriceTransferCache
     boolean filterThruTime;
     
     /** Creates a new instance of ItemPriceTransferCache */
-    public ItemPriceTransferCache() {
+    protected ItemPriceTransferCache() {
         super();
         
         transferProperties = session.getTransferProperties();

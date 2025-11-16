@@ -21,14 +21,16 @@ import com.echothree.model.control.contactlist.server.control.ContactListControl
 import com.echothree.model.data.contactlist.server.entity.ContactListGroupDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ContactListGroupDescriptionTransferCache
         extends BaseContactListDescriptionTransferCache<ContactListGroupDescription, ContactListGroupDescriptionTransfer> {
 
     ContactListControl contactListControl = Session.getModelController(ContactListControl.class);
 
     /** Creates a new instance of ContactListGroupDescriptionTransferCache */
-    public ContactListGroupDescriptionTransferCache() {
+    protected ContactListGroupDescriptionTransferCache() {
         super();
     }
     

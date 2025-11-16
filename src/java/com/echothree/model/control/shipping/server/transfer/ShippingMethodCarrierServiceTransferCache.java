@@ -22,7 +22,9 @@ import com.echothree.model.control.shipping.server.control.ShippingControl;
 import com.echothree.model.data.shipping.server.entity.ShippingMethodCarrierService;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ShippingMethodCarrierServiceTransferCache
         extends BaseShippingTransferCache<ShippingMethodCarrierService, ShippingMethodCarrierServiceTransfer> {
     
@@ -30,7 +32,7 @@ public class ShippingMethodCarrierServiceTransferCache
     ShippingControl shippingControl = Session.getModelController(ShippingControl.class);
 
     /** Creates a new instance of ShippingMethodCarrierServiceTransferCache */
-    public ShippingMethodCarrierServiceTransferCache() {
+    protected ShippingMethodCarrierServiceTransferCache() {
         super();
     }
     

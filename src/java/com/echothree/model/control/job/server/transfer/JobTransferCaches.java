@@ -17,29 +17,29 @@
 package com.echothree.model.control.job.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
+@RequestScoped
 public class JobTransferCaches
         extends BaseTransferCaches {
     
-    protected JobDescriptionTransferCache jobDescriptionTransferCache;
-    protected JobTransferCache jobTransferCache;
+    @Inject
+    JobDescriptionTransferCache jobDescriptionTransferCache;
     
+    @Inject
+    JobTransferCache jobTransferCache;
+
     /** Creates a new instance of JobTransferCaches */
-    public JobTransferCaches() {
+    protected JobTransferCaches() {
         super();
     }
     
     public JobDescriptionTransferCache getJobDescriptionTransferCache() {
-        if(jobDescriptionTransferCache == null)
-            jobDescriptionTransferCache = new JobDescriptionTransferCache();
-        
         return jobDescriptionTransferCache;
     }
     
     public JobTransferCache getJobTransferCache() {
-        if(jobTransferCache == null)
-            jobTransferCache = new JobTransferCache();
-        
         return jobTransferCache;
     }
     

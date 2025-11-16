@@ -21,14 +21,16 @@ import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyContr
 import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ReturnPolicyTransferCache
         extends BaseReturnPolicyTransferCache<ReturnPolicy, ReturnPolicyTransfer> {
 
     ReturnPolicyControl returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
 
     /** Creates a new instance of ReturnPolicyTransferCache */
-    public ReturnPolicyTransferCache() {
+    protected ReturnPolicyTransferCache() {
         super();
 
         setIncludeEntityInstance(true);

@@ -25,7 +25,9 @@ import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.MapWrapper;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EntityAttributeGroupTransferCache
         extends BaseCoreTransferCache<EntityAttributeGroup, EntityAttributeGroupTransfer> {
 
@@ -34,7 +36,7 @@ public class EntityAttributeGroupTransferCache
     boolean includeEntityAttributes;
     
     /** Creates a new instance of EntityAttributeGroupTransferCache */
-    public EntityAttributeGroupTransferCache() {
+    protected EntityAttributeGroupTransferCache() {
         super();
         
         var options = session.getOptions();

@@ -22,7 +22,9 @@ import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationKind;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CancellationKindTransferCache
         extends BaseCancellationPolicyTransferCache<CancellationKind, CancellationKindTransfer> {
 
@@ -30,7 +32,7 @@ public class CancellationKindTransferCache
     SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
     
     /** Creates a new instance of CancellationKindTransferCache */
-    public CancellationKindTransferCache() {
+    protected CancellationKindTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

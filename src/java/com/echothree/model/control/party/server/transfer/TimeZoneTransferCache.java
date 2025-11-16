@@ -23,7 +23,9 @@ import com.echothree.model.data.party.server.entity.TimeZone;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class TimeZoneTransferCache
         extends BasePartyTransferCache<TimeZone, TimeZoneTransfer> {
 
@@ -38,7 +40,7 @@ public class TimeZoneTransferCache
     boolean filterEntityInstance;
     
     /** Creates a new instance of TimeZoneTransferCache */
-    public TimeZoneTransferCache() {
+    protected TimeZoneTransferCache() {
         super();
 
         transferProperties = session.getTransferProperties();

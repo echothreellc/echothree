@@ -21,14 +21,16 @@ import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.data.forum.server.entity.ForumMessageAttachmentDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ForumMessageAttachmentDescriptionTransferCache
         extends BaseForumDescriptionTransferCache<ForumMessageAttachmentDescription, ForumMessageAttachmentDescriptionTransfer> {
 
     ForumControl forumControl = Session.getModelController(ForumControl.class);
 
     /** Creates a new instance of ForumMessageAttachmentDescriptionTransferCache */
-    public ForumMessageAttachmentDescriptionTransferCache() {
+    protected ForumMessageAttachmentDescriptionTransferCache() {
         super();
     }
     
@@ -36,8 +38,7 @@ public class ForumMessageAttachmentDescriptionTransferCache
         var forumMessageAttachmentDescriptionTransfer = get(forumMessageAttachmentDescription);
         
         if(forumMessageAttachmentDescriptionTransfer == null) {
-            var forumMessageAttachmentTransferCache = forumControl.getForumTransferCaches().getForumMessageAttachmentTransferCache();
-            var forumMessageAttachmentTransfer = forumMessageAttachmentTransferCache.getForumMessageAttachmentTransfer(userVisit, forumMessageAttachmentDescription.getForumMessageAttachment());
+            var forumMessageAttachmentTransfer = forumControl.getForumMessageAttachmentTransfer(userVisit, forumMessageAttachmentDescription.getForumMessageAttachment());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, forumMessageAttachmentDescription.getLanguage());
             
             forumMessageAttachmentDescriptionTransfer = new ForumMessageAttachmentDescriptionTransfer(languageTransfer, forumMessageAttachmentTransfer, forumMessageAttachmentDescription.getDescription());

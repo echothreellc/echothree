@@ -25,7 +25,9 @@ import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityStringAttribute;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EntityStringAttributeTransferCache
         extends BaseCoreTransferCache<EntityStringAttribute, EntityStringAttributeTransfer> {
 
@@ -35,7 +37,7 @@ public class EntityStringAttributeTransferCache
     boolean includeString;
     
     /** Creates a new instance of EntityStringAttributeTransferCache */
-    public EntityStringAttributeTransferCache() {
+    protected EntityStringAttributeTransferCache() {
         super();
         
         var options = session.getOptions();

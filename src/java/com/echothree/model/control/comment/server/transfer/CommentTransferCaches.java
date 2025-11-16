@@ -17,61 +17,57 @@
 package com.echothree.model.control.comment.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
+@RequestScoped
 public class CommentTransferCaches
         extends BaseTransferCaches {
     
-    protected CommentTypeTransferCache commentTypeTransferCache;
-    protected CommentTypeDescriptionTransferCache commentTypeDescriptionTransferCache;
-    protected CommentUsageTypeTransferCache commentUsageTypeTransferCache;
-    protected CommentUsageTypeDescriptionTransferCache commentUsageTypeDescriptionTransferCache;
-    protected CommentTransferCache commentTransferCache;
-    protected CommentUsageTransferCache commentUsageTransferCache;
+    @Inject
+    CommentTypeTransferCache commentTypeTransferCache;
     
+    @Inject
+    CommentTypeDescriptionTransferCache commentTypeDescriptionTransferCache;
+    
+    @Inject
+    CommentUsageTypeTransferCache commentUsageTypeTransferCache;
+    
+    @Inject
+    CommentUsageTypeDescriptionTransferCache commentUsageTypeDescriptionTransferCache;
+    
+    @Inject
+    CommentTransferCache commentTransferCache;
+    
+    @Inject
+    CommentUsageTransferCache commentUsageTransferCache;
+
     /** Creates a new instance of CommentTransferCaches */
-    public CommentTransferCaches() {
+    protected CommentTransferCaches() {
         super();
     }
     
     public CommentTypeTransferCache getCommentTypeTransferCache() {
-        if(commentTypeTransferCache == null)
-            commentTypeTransferCache = new CommentTypeTransferCache();
-        
         return commentTypeTransferCache;
     }
     
     public CommentTypeDescriptionTransferCache getCommentTypeDescriptionTransferCache() {
-        if(commentTypeDescriptionTransferCache == null)
-            commentTypeDescriptionTransferCache = new CommentTypeDescriptionTransferCache();
-        
         return commentTypeDescriptionTransferCache;
     }
     
     public CommentUsageTypeTransferCache getCommentUsageTypeTransferCache() {
-        if(commentUsageTypeTransferCache == null)
-            commentUsageTypeTransferCache = new CommentUsageTypeTransferCache();
-        
         return commentUsageTypeTransferCache;
     }
     
     public CommentUsageTypeDescriptionTransferCache getCommentUsageTypeDescriptionTransferCache() {
-        if(commentUsageTypeDescriptionTransferCache == null)
-            commentUsageTypeDescriptionTransferCache = new CommentUsageTypeDescriptionTransferCache();
-        
         return commentUsageTypeDescriptionTransferCache;
     }
     
     public CommentTransferCache getCommentTransferCache() {
-        if(commentTransferCache == null)
-            commentTransferCache = new CommentTransferCache();
-        
         return commentTransferCache;
     }
     
     public CommentUsageTransferCache getCommentUsageTransferCache() {
-        if(commentUsageTransferCache == null)
-            commentUsageTransferCache = new CommentUsageTransferCache();
-        
         return commentUsageTransferCache;
     }
     

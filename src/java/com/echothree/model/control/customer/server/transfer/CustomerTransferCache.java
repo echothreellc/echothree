@@ -51,7 +51,9 @@ import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CustomerTransferCache
         extends BaseCustomerTransferCache<Party, CustomerTransfer> {
 
@@ -105,7 +107,7 @@ public class CustomerTransferCache
     boolean hasCommunicationEventLimits;
 
     /** Creates a new instance of CustomerTransferCache */
-    public CustomerTransferCache() {
+    protected CustomerTransferCache() {
         super();
 
         var options = session.getOptions();

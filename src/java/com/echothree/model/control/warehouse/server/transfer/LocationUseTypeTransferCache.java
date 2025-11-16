@@ -21,14 +21,16 @@ import com.echothree.model.control.warehouse.server.control.LocationUseTypeContr
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.warehouse.server.entity.LocationUseType;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class LocationUseTypeTransferCache
         extends BaseWarehouseTransferCache<LocationUseType, LocationUseTypeTransfer> {
 
     LocationUseTypeControl locationUseTypeControl = Session.getModelController(LocationUseTypeControl.class);
 
     /** Creates a new instance of LocationUseTypeTransferCache */
-    public LocationUseTypeTransferCache() {
+    protected LocationUseTypeTransferCache() {
         super();
     }
     

@@ -21,14 +21,16 @@ import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.data.employee.server.entity.LeaveReasonDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class LeaveReasonDescriptionTransferCache
         extends BaseEmployeeDescriptionTransferCache<LeaveReasonDescription, LeaveReasonDescriptionTransfer> {
 
     EmployeeControl employeeControl = Session.getModelController(EmployeeControl.class);
 
     /** Creates a new instance of LeaveReasonDescriptionTransferCache */
-    public LeaveReasonDescriptionTransferCache() {
+    protected LeaveReasonDescriptionTransferCache() {
         super();
     }
     

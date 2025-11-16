@@ -21,14 +21,16 @@ import com.echothree.model.control.offer.server.control.OfferNameElementControl;
 import com.echothree.model.data.offer.server.entity.OfferNameElement;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class OfferNameElementTransferCache
         extends BaseOfferTransferCache<OfferNameElement, OfferNameElementTransfer> {
 
     OfferNameElementControl offerNameElementControl = Session.getModelController(OfferNameElementControl.class);
 
     /** Creates a new instance of OfferNameElementTransferCache */
-    public OfferNameElementTransferCache() {
+    protected OfferNameElementTransferCache() {
         super();
 
         setIncludeEntityInstance(true);

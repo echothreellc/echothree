@@ -21,14 +21,16 @@ import com.echothree.model.control.picklist.server.control.PicklistControl;
 import com.echothree.model.data.picklist.server.entity.PicklistTimeTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PicklistTimeTypeDescriptionTransferCache
         extends BasePicklistDescriptionTransferCache<PicklistTimeTypeDescription, PicklistTimeTypeDescriptionTransfer> {
 
     PicklistControl picklistControl = Session.getModelController(PicklistControl.class);
 
     /** Creates a new instance of PicklistTimeTypeDescriptionTransferCache */
-    public PicklistTimeTypeDescriptionTransferCache() {
+    protected PicklistTimeTypeDescriptionTransferCache() {
         super();
     }
     

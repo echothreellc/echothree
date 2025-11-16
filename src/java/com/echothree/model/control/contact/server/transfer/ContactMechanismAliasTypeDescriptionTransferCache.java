@@ -21,14 +21,16 @@ import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.data.contact.server.entity.ContactMechanismAliasTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ContactMechanismAliasTypeDescriptionTransferCache
         extends BaseContactDescriptionTransferCache<ContactMechanismAliasTypeDescription, ContactMechanismAliasTypeDescriptionTransfer> {
 
     ContactControl contactControl = Session.getModelController(ContactControl.class);
 
     /** Creates a new instance of ContactMechanismAliasTypeDescriptionTransferCache */
-    public ContactMechanismAliasTypeDescriptionTransferCache() {
+    protected ContactMechanismAliasTypeDescriptionTransferCache() {
         super();
     }
     

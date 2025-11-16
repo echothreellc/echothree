@@ -21,14 +21,16 @@ import com.echothree.model.control.invoice.server.control.InvoiceControl;
 import com.echothree.model.data.invoice.server.entity.InvoiceRoleType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class InvoiceRoleTypeTransferCache
         extends BaseInvoiceTransferCache<InvoiceRoleType, InvoiceRoleTypeTransfer> {
 
     InvoiceControl invoiceControl = Session.getModelController(InvoiceControl.class);
 
     /** Creates a new instance of InvoiceRoleTypeTransferCache */
-    public InvoiceRoleTypeTransferCache() {
+    protected InvoiceRoleTypeTransferCache() {
         super();
     }
     

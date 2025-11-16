@@ -24,7 +24,9 @@ import com.echothree.model.data.forum.server.entity.ForumMessageAttachment;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.persistence.type.ByteArray;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ForumMessageAttachmentTransferCache
         extends BaseForumTransferCache<ForumMessageAttachment, ForumMessageAttachmentTransfer> {
 
@@ -36,7 +38,7 @@ public class ForumMessageAttachmentTransferCache
     boolean includeETag;
     
     /** Creates a new instance of ForumMessageAttachmentTransferCache */
-    public ForumMessageAttachmentTransferCache() {
+    protected ForumMessageAttachmentTransferCache() {
         super();
         
         var options = session.getOptions();

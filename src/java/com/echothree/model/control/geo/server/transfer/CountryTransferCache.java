@@ -22,7 +22,9 @@ import com.echothree.model.control.geo.common.transfer.CountryTransfer;
 import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CountryTransferCache
         extends BaseGeoCodeTransferCache<GeoCode, CountryTransfer> {
 
@@ -31,7 +33,7 @@ public class CountryTransferCache
     boolean includeAliases;
     
     /** Creates a new instance of CountryTransferCache */
-    public CountryTransferCache() {
+    protected CountryTransferCache() {
         super();
         
         var options = session.getOptions();

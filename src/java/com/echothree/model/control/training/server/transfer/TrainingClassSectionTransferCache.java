@@ -24,7 +24,9 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.PercentUtils;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class TrainingClassSectionTransferCache
         extends BaseTrainingTransferCache<TrainingClassSection, TrainingClassSectionTransfer> {
 
@@ -34,7 +36,7 @@ public class TrainingClassSectionTransferCache
     boolean includeTrainingClassQuestions;
     
     /** Creates a new instance of TrainingClassSectionTransferCache */
-    public TrainingClassSectionTransferCache() {
+    protected TrainingClassSectionTransferCache() {
         super();
         
         var options = session.getOptions();

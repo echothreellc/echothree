@@ -22,14 +22,16 @@ import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.filter.server.entity.FilterStepElement;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class FilterStepElementTransferCache
         extends BaseFilterTransferCache<FilterStepElement, FilterStepElementTransfer> {
 
     FilterControl filterControl = Session.getModelController(FilterControl.class);
 
     /** Creates a new instance of FilterStepElementTransferCache */
-    public FilterStepElementTransferCache() {
+    protected FilterStepElementTransferCache() {
         super();
     }
 

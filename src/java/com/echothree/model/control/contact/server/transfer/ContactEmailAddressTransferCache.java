@@ -24,7 +24,9 @@ import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.contact.server.entity.ContactEmailAddress;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ContactEmailAddressTransferCache
         extends BaseContactTransferCache<ContactEmailAddress, ContactEmailAddressTransfer> {
 
@@ -32,7 +34,7 @@ public class ContactEmailAddressTransferCache
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
 
     /** Creates a new instance of ContactEmailAddressTransferCache */
-    public ContactEmailAddressTransferCache() {
+    protected ContactEmailAddressTransferCache() {
         super();
     }
     

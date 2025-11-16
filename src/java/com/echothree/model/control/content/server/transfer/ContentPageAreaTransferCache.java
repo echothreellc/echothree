@@ -27,7 +27,9 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.common.persistence.type.ByteArray;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ContentPageAreaTransferCache
         extends BaseContentTransferCache<ContentPageArea, ContentPageAreaTransfer> {
 
@@ -48,7 +50,7 @@ public class ContentPageAreaTransferCache
     boolean filterEntityInstance;
     
     /** Creates a new instance of ContentPageAreaTransferCache */
-    public ContentPageAreaTransferCache() {
+    protected ContentPageAreaTransferCache() {
         super();
 
         var options = session.getOptions();

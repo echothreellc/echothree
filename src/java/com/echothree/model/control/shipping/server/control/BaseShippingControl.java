@@ -17,8 +17,8 @@
 package com.echothree.model.control.shipping.server.control;
 
 import com.echothree.model.control.shipping.server.transfer.ShippingTransferCaches;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.control.BaseModelControl;
+import javax.inject.Inject;
 
 public abstract class BaseShippingControl
         extends BaseModelControl {
@@ -32,14 +32,7 @@ public abstract class BaseShippingControl
     //   Shipping Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private ShippingTransferCaches shippingTransferCaches;
-    
-    public ShippingTransferCaches getShippingTransferCaches() {
-        if(shippingTransferCaches == null) {
-            shippingTransferCaches = new ShippingTransferCaches();
-        }
-        
-        return shippingTransferCaches;
-    }
-    
+    @Inject
+    ShippingTransferCaches shippingTransferCaches;
+
  }

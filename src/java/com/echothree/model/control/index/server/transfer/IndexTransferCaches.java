@@ -17,67 +17,57 @@
 package com.echothree.model.control.index.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
+@RequestScoped
 public class IndexTransferCaches
         extends BaseTransferCaches {
     
-    protected IndexTypeTransferCache indexTypeTransferCache;
-    protected IndexTypeDescriptionTransferCache indexTypeDescriptionTransferCache;
-    protected IndexFieldTransferCache indexFieldTransferCache;
-    protected IndexFieldDescriptionTransferCache indexFieldDescriptionTransferCache;
-    protected IndexTransferCache indexTransferCache;
-    protected IndexDescriptionTransferCache indexDescriptionTransferCache;
+    @Inject
+    IndexTypeTransferCache indexTypeTransferCache;
     
+    @Inject
+    IndexTypeDescriptionTransferCache indexTypeDescriptionTransferCache;
+    
+    @Inject
+    IndexFieldTransferCache indexFieldTransferCache;
+    
+    @Inject
+    IndexFieldDescriptionTransferCache indexFieldDescriptionTransferCache;
+    
+    @Inject
+    IndexTransferCache indexTransferCache;
+    
+    @Inject
+    IndexDescriptionTransferCache indexDescriptionTransferCache;
+
     /** Creates a new instance of IndexTransferCaches */
-    public IndexTransferCaches() {
+    protected IndexTransferCaches() {
         super();
     }
     
     public IndexTypeTransferCache getIndexTypeTransferCache() {
-        if(indexTypeTransferCache == null) {
-            indexTypeTransferCache = new IndexTypeTransferCache();
-        }
-
         return indexTypeTransferCache;
     }
 
     public IndexTypeDescriptionTransferCache getIndexTypeDescriptionTransferCache() {
-        if(indexTypeDescriptionTransferCache == null) {
-            indexTypeDescriptionTransferCache = new IndexTypeDescriptionTransferCache();
-        }
-
         return indexTypeDescriptionTransferCache;
     }
 
     public IndexFieldTransferCache getIndexFieldTransferCache() {
-        if(indexFieldTransferCache == null) {
-            indexFieldTransferCache = new IndexFieldTransferCache();
-        }
-
         return indexFieldTransferCache;
     }
 
     public IndexFieldDescriptionTransferCache getIndexFieldDescriptionTransferCache() {
-        if(indexFieldDescriptionTransferCache == null) {
-            indexFieldDescriptionTransferCache = new IndexFieldDescriptionTransferCache();
-        }
-
         return indexFieldDescriptionTransferCache;
     }
 
     public IndexTransferCache getIndexTransferCache() {
-        if(indexTransferCache == null) {
-            indexTransferCache = new IndexTransferCache();
-        }
-
         return indexTransferCache;
     }
 
     public IndexDescriptionTransferCache getIndexDescriptionTransferCache() {
-        if(indexDescriptionTransferCache == null) {
-            indexDescriptionTransferCache = new IndexDescriptionTransferCache();
-        }
-
         return indexDescriptionTransferCache;
     }
 

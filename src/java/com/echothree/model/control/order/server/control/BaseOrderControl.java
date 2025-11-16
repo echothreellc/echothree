@@ -17,14 +17,14 @@
 package com.echothree.model.control.order.server.control;
 
 import com.echothree.model.control.order.server.transfer.OrderTransferCaches;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.control.BaseModelControl;
+import javax.inject.Inject;
 
 public class BaseOrderControl
         extends BaseModelControl {
 
     /** Creates a new instance of OrderControl */
-    public BaseOrderControl() {
+    protected BaseOrderControl() {
         super();
     }
     
@@ -32,14 +32,7 @@ public class BaseOrderControl
     //   Order Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private OrderTransferCaches orderTransferCaches;
-    
-    public OrderTransferCaches getOrderTransferCaches() {
-        if(orderTransferCaches == null) {
-            orderTransferCaches = new OrderTransferCaches();
-        }
-        
-        return orderTransferCaches;
-    }
+    @Inject
+    OrderTransferCaches orderTransferCaches;
     
 }

@@ -21,14 +21,16 @@ import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.item.server.entity.ItemVolumeType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ItemVolumeTypeTransferCache
         extends BaseItemTransferCache<ItemVolumeType, ItemVolumeTypeTransfer> {
 
     ItemControl itemControl = Session.getModelController(ItemControl.class);
 
     /** Creates a new instance of ItemVolumeTypeTransferCache */
-    public ItemVolumeTypeTransferCache() {
+    protected ItemVolumeTypeTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

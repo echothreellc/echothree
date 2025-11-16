@@ -22,7 +22,9 @@ import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workflow.server.entity.WorkflowDestinationSecurityRole;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class WorkflowDestinationSecurityRoleTransferCache
         extends BaseWorkflowTransferCache<WorkflowDestinationSecurityRole, WorkflowDestinationSecurityRoleTransfer> {
     
@@ -30,7 +32,7 @@ public class WorkflowDestinationSecurityRoleTransferCache
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
 
     /** Creates a new instance of WorkflowDestinationSecurityRoleTransferCache */
-    public WorkflowDestinationSecurityRoleTransferCache() {
+    protected WorkflowDestinationSecurityRoleTransferCache() {
         super();
     }
     

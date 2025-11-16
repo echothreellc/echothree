@@ -28,7 +28,9 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.warehouse.server.entity.Location;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class LocationTransferCache
         extends BaseWarehouseTransferCache<Location, LocationTransfer> {
     
@@ -42,7 +44,7 @@ public class LocationTransferCache
     boolean includeVolume;
     
     /** Creates a new instance of LocationTransferCache */
-    public LocationTransferCache() {
+    protected LocationTransferCache() {
         super();
         
         var options = session.getOptions();

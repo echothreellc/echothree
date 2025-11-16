@@ -23,7 +23,9 @@ import com.echothree.model.data.message.server.entity.Message;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class MessageTransferCache
         extends BaseMessageTransferCache<Message, MessageTransfer> {
 
@@ -34,7 +36,7 @@ public class MessageTransferCache
     boolean includeClob;
     
     /** Creates a new instance of MessageTransferCache */
-    public MessageTransferCache() {
+    protected MessageTransferCache() {
         super();
         
         var options = session.getOptions();

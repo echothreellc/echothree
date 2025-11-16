@@ -24,7 +24,9 @@ import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntityStatus;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class WorkflowEntityStatusTransferCache
         extends BaseWorkflowTransferCache<WorkflowEntityStatus, WorkflowEntityStatusTransfer> {
 
@@ -34,7 +36,7 @@ public class WorkflowEntityStatusTransferCache
     boolean includeTriggerTime;
 
     /** Creates a new instance of WorkflowEntityStatusTransferCache */
-    public WorkflowEntityStatusTransferCache() {
+    protected WorkflowEntityStatusTransferCache() {
         super();
 
         var options = session.getOptions();

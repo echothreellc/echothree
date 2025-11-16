@@ -22,14 +22,16 @@ import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.data.search.server.entity.SearchResultActionType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class SearchResultActionTypeTransferCache
         extends BaseSearchTransferCache<SearchResultActionType, SearchResultActionTypeTransfer> {
 
     SearchControl searchControl = Session.getModelController(SearchControl.class);
 
     /** Creates a new instance of SearchResultActionTypeTransferCache */
-    public SearchResultActionTypeTransferCache() {
+    protected SearchResultActionTypeTransferCache() {
         super();
         
         var options = session.getOptions();

@@ -28,7 +28,9 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workeffort.server.entity.WorkEffortScope;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class WorkEffortScopeTransferCache
         extends BaseWorkEffortTransferCache<WorkEffortScope, WorkEffortScopeTransfer> {
     
@@ -43,7 +45,7 @@ public class WorkEffortScopeTransferCache
     boolean includeWorkEfforts;
     
     /** Creates a new instance of WorkEffortScopeTransferCache */
-    public WorkEffortScopeTransferCache() {
+    protected WorkEffortScopeTransferCache() {
         super();
 
         var options = session.getOptions();

@@ -17,53 +17,50 @@
 package com.echothree.model.control.customer.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
+@RequestScoped
 public class CustomerTransferCaches
         extends BaseTransferCaches {
     
-    protected CustomerTypeTransferCache customerTypeTransferCache;
-    protected CustomerTypeDescriptionTransferCache customerTypeDescriptionTransferCache;
-    protected CustomerTransferCache customerTransferCache;
-    protected CustomerTypePaymentMethodTransferCache customerTypePaymentMethodTransferCache;
-    protected CustomerTypeShippingMethodTransferCache customerTypeShippingMethodTransferCache;
+    @Inject
+    CustomerTypeTransferCache customerTypeTransferCache;
     
+    @Inject
+    CustomerTypeDescriptionTransferCache customerTypeDescriptionTransferCache;
+    
+    @Inject
+    CustomerTransferCache customerTransferCache;
+    
+    @Inject
+    CustomerTypePaymentMethodTransferCache customerTypePaymentMethodTransferCache;
+    
+    @Inject
+    CustomerTypeShippingMethodTransferCache customerTypeShippingMethodTransferCache;
+
     /** Creates a new instance of CustomerTransferCaches */
-    public CustomerTransferCaches() {
+    protected CustomerTransferCaches() {
         super();
     }
     
     public CustomerTypeTransferCache getCustomerTypeTransferCache() {
-        if(customerTypeTransferCache == null)
-            customerTypeTransferCache = new CustomerTypeTransferCache();
-        
         return customerTypeTransferCache;
     }
     
     public CustomerTypeDescriptionTransferCache getCustomerTypeDescriptionTransferCache() {
-        if(customerTypeDescriptionTransferCache == null)
-            customerTypeDescriptionTransferCache = new CustomerTypeDescriptionTransferCache();
-        
         return customerTypeDescriptionTransferCache;
     }
     
     public CustomerTransferCache getCustomerTransferCache() {
-        if(customerTransferCache == null)
-            customerTransferCache = new CustomerTransferCache();
-        
         return customerTransferCache;
     }
     
     public CustomerTypePaymentMethodTransferCache getCustomerTypePaymentMethodTransferCache() {
-        if(customerTypePaymentMethodTransferCache == null)
-            customerTypePaymentMethodTransferCache = new CustomerTypePaymentMethodTransferCache();
-        
         return customerTypePaymentMethodTransferCache;
     }
     
     public CustomerTypeShippingMethodTransferCache getCustomerTypeShippingMethodTransferCache() {
-        if(customerTypeShippingMethodTransferCache == null)
-            customerTypeShippingMethodTransferCache = new CustomerTypeShippingMethodTransferCache();
-        
         return customerTypeShippingMethodTransferCache;
     }
     

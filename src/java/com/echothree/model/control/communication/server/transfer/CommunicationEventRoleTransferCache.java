@@ -22,7 +22,9 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.communication.server.entity.CommunicationEventRole;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CommunicationEventRoleTransferCache
         extends BaseCommunicationTransferCache<CommunicationEventRole, CommunicationEventRoleTransfer> {
 
@@ -30,7 +32,7 @@ public class CommunicationEventRoleTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of CommunicationEventRoleTransferCache */
-    public CommunicationEventRoleTransferCache() {
+    protected CommunicationEventRoleTransferCache() {
         super();
     }
     

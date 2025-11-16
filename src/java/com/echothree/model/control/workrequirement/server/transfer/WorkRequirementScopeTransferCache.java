@@ -28,7 +28,9 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workrequirement.server.entity.WorkRequirementScope;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class WorkRequirementScopeTransferCache
         extends BaseWorkRequirementTransferCache<WorkRequirementScope, WorkRequirementScopeTransfer> {
     
@@ -41,7 +43,7 @@ public class WorkRequirementScopeTransferCache
     boolean includeWorkRequirements;
     
     /** Creates a new instance of WorkRequirementScopeTransferCache */
-    public WorkRequirementScopeTransferCache() {
+    protected WorkRequirementScopeTransferCache() {
         var options = session.getOptions();
         if(options != null) {
             includeWorkRequirements = options.contains(WorkRequirementOptions.WorkRequirementScopeIncludeWorkRequirements);

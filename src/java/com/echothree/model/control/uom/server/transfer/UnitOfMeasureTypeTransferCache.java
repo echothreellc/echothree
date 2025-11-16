@@ -25,7 +25,9 @@ import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class UnitOfMeasureTypeTransferCache
         extends BaseUomTransferCache<UnitOfMeasureType, UnitOfMeasureTypeTransfer> {
     
@@ -46,7 +48,7 @@ public class UnitOfMeasureTypeTransferCache
     boolean filterEntityInstance;
     
     /** Creates a new instance of UnitOfMeasureTypeTransferCache */
-    public UnitOfMeasureTypeTransferCache() {
+    protected UnitOfMeasureTypeTransferCache() {
         super();
         
         var options = session.getOptions();

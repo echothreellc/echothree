@@ -23,7 +23,9 @@ import com.echothree.model.data.core.server.entity.EntityCollectionAttribute;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EntityCollectionAttributeTransferCache
         extends BaseCoreTransferCache<EntityCollectionAttribute, EntityCollectionAttributeTransfer> {
 
@@ -31,7 +33,7 @@ public class EntityCollectionAttributeTransferCache
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
     /** Creates a new instance of EntityCollectionAttributeTransferCache */
-    public EntityCollectionAttributeTransferCache() {
+    protected EntityCollectionAttributeTransferCache() {
         super();
     }
     

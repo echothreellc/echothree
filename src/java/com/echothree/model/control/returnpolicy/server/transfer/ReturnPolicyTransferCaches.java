@@ -17,109 +17,99 @@
 package com.echothree.model.control.returnpolicy.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
+@RequestScoped
 public class ReturnPolicyTransferCaches
         extends BaseTransferCaches {
     
-    protected ReturnPolicyTransferCache returnPolicyTransferCache;
-    protected ReturnPolicyTranslationTransferCache returnPolicyTranslationTransferCache;
-    protected PartyReturnPolicyTransferCache partyReturnPolicyTransferCache;
-    protected ReturnKindDescriptionTransferCache returnKindDescriptionTransferCache;
-    protected ReturnReasonDescriptionTransferCache returnReasonDescriptionTransferCache;
-    protected ReturnTypeDescriptionTransferCache returnTypeDescriptionTransferCache;
-    protected ReturnKindTransferCache returnKindTransferCache;
-    protected ReturnReasonTransferCache returnReasonTransferCache;
-    protected ReturnTypeTransferCache returnTypeTransferCache;
-    protected ReturnPolicyReasonTransferCache returnPolicyReasonTransferCache;
-    protected ReturnReasonTypeTransferCache returnReasonTypeTransferCache;
-    protected ReturnTypeShippingMethodTransferCache returnTypeShippingMethodTransferCache;
+    @Inject
+    ReturnPolicyTransferCache returnPolicyTransferCache;
     
+    @Inject
+    ReturnPolicyTranslationTransferCache returnPolicyTranslationTransferCache;
+    
+    @Inject
+    PartyReturnPolicyTransferCache partyReturnPolicyTransferCache;
+    
+    @Inject
+    ReturnKindDescriptionTransferCache returnKindDescriptionTransferCache;
+    
+    @Inject
+    ReturnReasonDescriptionTransferCache returnReasonDescriptionTransferCache;
+    
+    @Inject
+    ReturnTypeDescriptionTransferCache returnTypeDescriptionTransferCache;
+    
+    @Inject
+    ReturnKindTransferCache returnKindTransferCache;
+    
+    @Inject
+    ReturnReasonTransferCache returnReasonTransferCache;
+    
+    @Inject
+    ReturnTypeTransferCache returnTypeTransferCache;
+    
+    @Inject
+    ReturnPolicyReasonTransferCache returnPolicyReasonTransferCache;
+    
+    @Inject
+    ReturnReasonTypeTransferCache returnReasonTypeTransferCache;
+    
+    @Inject
+    ReturnTypeShippingMethodTransferCache returnTypeShippingMethodTransferCache;
+
     /** Creates a new instance of ReturnPolicyTransferCaches */
-    public ReturnPolicyTransferCaches() {
+    protected ReturnPolicyTransferCaches() {
         super();
     }
     
     public ReturnPolicyTransferCache getReturnPolicyTransferCache() {
-        if(returnPolicyTransferCache == null)
-            returnPolicyTransferCache = new ReturnPolicyTransferCache();
-        
         return returnPolicyTransferCache;
     }
     
     public ReturnPolicyTranslationTransferCache getReturnPolicyTranslationTransferCache() {
-        if(returnPolicyTranslationTransferCache == null)
-            returnPolicyTranslationTransferCache = new ReturnPolicyTranslationTransferCache();
-        
         return returnPolicyTranslationTransferCache;
     }
     
     public PartyReturnPolicyTransferCache getPartyReturnPolicyTransferCache() {
-        if(partyReturnPolicyTransferCache == null)
-            partyReturnPolicyTransferCache = new PartyReturnPolicyTransferCache();
-        
         return partyReturnPolicyTransferCache;
     }
     
     public ReturnKindDescriptionTransferCache getReturnKindDescriptionTransferCache() {
-        if(returnKindDescriptionTransferCache == null)
-            returnKindDescriptionTransferCache = new ReturnKindDescriptionTransferCache();
-        
         return returnKindDescriptionTransferCache;
     }
     
     public ReturnReasonDescriptionTransferCache getReturnReasonDescriptionTransferCache() {
-        if(returnReasonDescriptionTransferCache == null)
-            returnReasonDescriptionTransferCache = new ReturnReasonDescriptionTransferCache();
-        
         return returnReasonDescriptionTransferCache;
     }
     
     public ReturnTypeDescriptionTransferCache getReturnTypeDescriptionTransferCache() {
-        if(returnTypeDescriptionTransferCache == null)
-            returnTypeDescriptionTransferCache = new ReturnTypeDescriptionTransferCache();
-        
         return returnTypeDescriptionTransferCache;
     }
     
     public ReturnKindTransferCache getReturnKindTransferCache() {
-        if(returnKindTransferCache == null)
-            returnKindTransferCache = new ReturnKindTransferCache();
-        
         return returnKindTransferCache;
     }
     
     public ReturnReasonTransferCache getReturnReasonTransferCache() {
-        if(returnReasonTransferCache == null)
-            returnReasonTransferCache = new ReturnReasonTransferCache();
-        
         return returnReasonTransferCache;
     }
     
     public ReturnTypeTransferCache getReturnTypeTransferCache() {
-        if(returnTypeTransferCache == null)
-            returnTypeTransferCache = new ReturnTypeTransferCache();
-        
         return returnTypeTransferCache;
     }
     
     public ReturnPolicyReasonTransferCache getReturnPolicyReasonTransferCache() {
-        if(returnPolicyReasonTransferCache == null)
-            returnPolicyReasonTransferCache = new ReturnPolicyReasonTransferCache();
-        
         return returnPolicyReasonTransferCache;
     }
     
     public ReturnReasonTypeTransferCache getReturnReasonTypeTransferCache() {
-        if(returnReasonTypeTransferCache == null)
-            returnReasonTypeTransferCache = new ReturnReasonTypeTransferCache();
-        
         return returnReasonTypeTransferCache;
     }
     
     public ReturnTypeShippingMethodTransferCache getReturnTypeShippingMethodTransferCache() {
-        if(returnTypeShippingMethodTransferCache == null)
-            returnTypeShippingMethodTransferCache = new ReturnTypeShippingMethodTransferCache();
-        
         return returnTypeShippingMethodTransferCache;
     }
     

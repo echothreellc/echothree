@@ -219,12 +219,12 @@ public class InventoryAdjustmentTypeControl
     }
 
     public InventoryAdjustmentTypeTransfer getInventoryAdjustmentTypeTransfer(UserVisit userVisit, InventoryAdjustmentType inventoryAdjustmentType) {
-        return getInventoryTransferCaches().getInventoryAdjustmentTypeTransferCache().getTransfer(userVisit, inventoryAdjustmentType);
+        return inventoryTransferCaches.getInventoryAdjustmentTypeTransferCache().getTransfer(userVisit, inventoryAdjustmentType);
     }
 
     public List<InventoryAdjustmentTypeTransfer> getInventoryAdjustmentTypeTransfers(UserVisit userVisit, Collection<InventoryAdjustmentType> inventoryAdjustmentTypes) {
         List<InventoryAdjustmentTypeTransfer> inventoryAdjustmentTypeTransfers = new ArrayList<>(inventoryAdjustmentTypes.size());
-        var inventoryAdjustmentTypeTransferCache = getInventoryTransferCaches().getInventoryAdjustmentTypeTransferCache();
+        var inventoryAdjustmentTypeTransferCache = inventoryTransferCaches.getInventoryAdjustmentTypeTransferCache();
 
         inventoryAdjustmentTypes.forEach((inventoryAdjustmentType) ->
                 inventoryAdjustmentTypeTransfers.add(inventoryAdjustmentTypeTransferCache.getTransfer(userVisit, inventoryAdjustmentType))
@@ -461,13 +461,13 @@ public class InventoryAdjustmentTypeControl
     }
 
     public InventoryAdjustmentTypeDescriptionTransfer getInventoryAdjustmentTypeDescriptionTransfer(UserVisit userVisit, InventoryAdjustmentTypeDescription inventoryAdjustmentTypeDescription) {
-        return getInventoryTransferCaches().getInventoryAdjustmentTypeDescriptionTransferCache().getTransfer(userVisit, inventoryAdjustmentTypeDescription);
+        return inventoryTransferCaches.getInventoryAdjustmentTypeDescriptionTransferCache().getTransfer(userVisit, inventoryAdjustmentTypeDescription);
     }
 
     public List<InventoryAdjustmentTypeDescriptionTransfer> getInventoryAdjustmentTypeDescriptionTransfersByInventoryAdjustmentType(UserVisit userVisit, InventoryAdjustmentType inventoryAdjustmentType) {
         var inventoryAdjustmentTypeDescriptions = getInventoryAdjustmentTypeDescriptionsByInventoryAdjustmentType(inventoryAdjustmentType);
         List<InventoryAdjustmentTypeDescriptionTransfer> inventoryAdjustmentTypeDescriptionTransfers = new ArrayList<>(inventoryAdjustmentTypeDescriptions.size());
-        var inventoryAdjustmentTypeDescriptionTransferCache = getInventoryTransferCaches().getInventoryAdjustmentTypeDescriptionTransferCache();
+        var inventoryAdjustmentTypeDescriptionTransferCache = inventoryTransferCaches.getInventoryAdjustmentTypeDescriptionTransferCache();
 
         inventoryAdjustmentTypeDescriptions.forEach((inventoryAdjustmentTypeDescription) ->
                 inventoryAdjustmentTypeDescriptionTransfers.add(inventoryAdjustmentTypeDescriptionTransferCache.getTransfer(userVisit, inventoryAdjustmentTypeDescription))

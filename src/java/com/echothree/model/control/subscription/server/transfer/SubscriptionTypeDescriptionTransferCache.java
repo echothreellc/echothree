@@ -21,14 +21,16 @@ import com.echothree.model.control.subscription.server.control.SubscriptionContr
 import com.echothree.model.data.subscription.server.entity.SubscriptionTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class SubscriptionTypeDescriptionTransferCache
         extends BaseSubscriptionDescriptionTransferCache<SubscriptionTypeDescription, SubscriptionTypeDescriptionTransfer> {
 
     SubscriptionControl subscriptionControl = Session.getModelController(SubscriptionControl.class);
 
     /** Creates a new instance of SubscriptionTypeDescriptionTransferCache */
-    public SubscriptionTypeDescriptionTransferCache() {
+    protected SubscriptionTypeDescriptionTransferCache() {
         super();
     }
     

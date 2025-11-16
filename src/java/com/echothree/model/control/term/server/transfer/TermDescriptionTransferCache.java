@@ -21,14 +21,16 @@ import com.echothree.model.control.term.server.control.TermControl;
 import com.echothree.model.data.term.server.entity.TermDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class TermDescriptionTransferCache
         extends BaseTermDescriptionTransferCache<TermDescription, TermDescriptionTransfer> {
 
     TermControl termControl = Session.getModelController(TermControl.class);
 
     /** Creates a new instance of TermDescriptionTransferCache */
-    public TermDescriptionTransferCache() {
+    protected TermDescriptionTransferCache() {
         super();
     }
     
@@ -36,8 +38,7 @@ public class TermDescriptionTransferCache
         var termDescriptionTransfer = get(termDescription);
         
         if(termDescriptionTransfer == null) {
-            var termTransferCache = termControl.getTermTransferCaches().getTermTransferCache();
-            var termTransfer = termTransferCache.getTermTransfer(userVisit, termDescription.getTerm());
+            var termTransfer = termControl.getTermTransfer(userVisit, termDescription.getTerm());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, termDescription.getLanguage());
             
             termDescriptionTransfer = new TermDescriptionTransfer(languageTransfer, termTransfer, termDescription.getDescription());

@@ -24,7 +24,9 @@ import com.echothree.model.data.core.server.entity.CommandMessage;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.MapWrapper;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CommandMessageTransferCache
         extends BaseCoreTransferCache<CommandMessage, CommandMessageTransfer> {
 
@@ -33,7 +35,7 @@ public class CommandMessageTransferCache
     boolean includeTranslations;
     
     /** Creates a new instance of CommandMessageTransferCache */
-    public CommandMessageTransferCache() {
+    protected CommandMessageTransferCache() {
         super();
         
         var options = session.getOptions();

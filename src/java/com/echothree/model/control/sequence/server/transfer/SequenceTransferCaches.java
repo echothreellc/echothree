@@ -17,61 +17,57 @@
 package com.echothree.model.control.sequence.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
+@RequestScoped
 public class SequenceTransferCaches
         extends BaseTransferCaches {
     
-    protected SequenceEncoderTypeTransferCache sequenceEncoderTypeTransferCache;
-    protected SequenceChecksumTypeTransferCache sequenceChecksumTypeTransferCache;
-    protected SequenceTypeTransferCache sequenceTypeTransferCache;
-    protected SequenceTypeDescriptionTransferCache sequenceTypeDescriptionTransferCache;
-    protected SequenceTransferCache sequenceTransferCache;
-    protected SequenceDescriptionTransferCache sequenceDescriptionTransferCache;
+    @Inject
+    SequenceEncoderTypeTransferCache sequenceEncoderTypeTransferCache;
     
+    @Inject
+    SequenceChecksumTypeTransferCache sequenceChecksumTypeTransferCache;
+    
+    @Inject
+    SequenceTypeTransferCache sequenceTypeTransferCache;
+    
+    @Inject
+    SequenceTypeDescriptionTransferCache sequenceTypeDescriptionTransferCache;
+    
+    @Inject
+    SequenceTransferCache sequenceTransferCache;
+    
+    @Inject
+    SequenceDescriptionTransferCache sequenceDescriptionTransferCache;
+
     /** Creates a new instance of SequenceTransferCaches */
-    public SequenceTransferCaches() {
+    protected SequenceTransferCaches() {
         super();
     }
     
     public SequenceEncoderTypeTransferCache getSequenceEncoderTypeTransferCache() {
-        if(sequenceEncoderTypeTransferCache == null)
-            sequenceEncoderTypeTransferCache = new SequenceEncoderTypeTransferCache();
-        
         return sequenceEncoderTypeTransferCache;
     }
     
     public SequenceChecksumTypeTransferCache getSequenceChecksumTypeTransferCache() {
-        if(sequenceChecksumTypeTransferCache == null)
-            sequenceChecksumTypeTransferCache = new SequenceChecksumTypeTransferCache();
-        
         return sequenceChecksumTypeTransferCache;
     }
     
     public SequenceTypeTransferCache getSequenceTypeTransferCache() {
-        if(sequenceTypeTransferCache == null)
-            sequenceTypeTransferCache = new SequenceTypeTransferCache();
-        
         return sequenceTypeTransferCache;
     }
     
     public SequenceTypeDescriptionTransferCache getSequenceTypeDescriptionTransferCache() {
-        if(sequenceTypeDescriptionTransferCache == null)
-            sequenceTypeDescriptionTransferCache = new SequenceTypeDescriptionTransferCache();
-        
         return sequenceTypeDescriptionTransferCache;
     }
     
     public SequenceTransferCache getSequenceTransferCache() {
-        if(sequenceTransferCache == null)
-            sequenceTransferCache = new SequenceTransferCache();
-        
         return sequenceTransferCache;
     }
     
     public SequenceDescriptionTransferCache getSequenceDescriptionTransferCache() {
-        if(sequenceDescriptionTransferCache == null)
-            sequenceDescriptionTransferCache = new SequenceDescriptionTransferCache();
-        
         return sequenceDescriptionTransferCache;
     }
     

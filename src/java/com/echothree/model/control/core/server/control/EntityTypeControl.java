@@ -312,12 +312,12 @@ public class EntityTypeControl
     }
 
     public EntityTypeTransfer getEntityTypeTransfer(UserVisit userVisit, EntityType entityType) {
-        return getCoreTransferCaches().getEntityTypeTransferCache().getEntityTypeTransfer(userVisit, entityType);
+        return coreTransferCaches.getEntityTypeTransferCache().getEntityTypeTransfer(userVisit, entityType);
     }
 
     public List<EntityTypeTransfer> getEntityTypeTransfers(UserVisit userVisit, Collection<EntityType> entityTypes) {
         List<EntityTypeTransfer> entityTypeTransfers = new ArrayList<>(entityTypes.size());
-        var entityTypeTransferCache = getCoreTransferCaches().getEntityTypeTransferCache();
+        var entityTypeTransferCache = coreTransferCaches.getEntityTypeTransferCache();
 
         entityTypes.forEach((entityType) ->
                 entityTypeTransfers.add(entityTypeTransferCache.getEntityTypeTransfer(userVisit, entityType))
@@ -519,14 +519,14 @@ public class EntityTypeControl
     }
 
     public EntityTypeDescriptionTransfer getEntityTypeDescriptionTransfer(UserVisit userVisit, EntityTypeDescription entityTypeDescription) {
-        return getCoreTransferCaches().getEntityTypeDescriptionTransferCache().getEntityTypeDescriptionTransfer(userVisit, entityTypeDescription);
+        return coreTransferCaches.getEntityTypeDescriptionTransferCache().getEntityTypeDescriptionTransfer(userVisit, entityTypeDescription);
     }
 
     public List<EntityTypeDescriptionTransfer> getEntityTypeDescriptionTransfersByEntityType(UserVisit userVisit,
             EntityType entityType) {
         var entityTypeDescriptions = getEntityTypeDescriptionsByEntityType(entityType);
         List<EntityTypeDescriptionTransfer> entityTypeDescriptionTransfers = new ArrayList<>(entityTypeDescriptions.size());
-        var entityTypeDescriptionTransferCache = getCoreTransferCaches().getEntityTypeDescriptionTransferCache();
+        var entityTypeDescriptionTransferCache = coreTransferCaches.getEntityTypeDescriptionTransferCache();
 
         entityTypeDescriptions.forEach((entityTypeDescription) ->
                 entityTypeDescriptionTransfers.add(entityTypeDescriptionTransferCache.getEntityTypeDescriptionTransfer(userVisit, entityTypeDescription))

@@ -21,14 +21,16 @@ import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.item.server.entity.ItemVolumeTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ItemVolumeTypeDescriptionTransferCache
         extends BaseItemDescriptionTransferCache<ItemVolumeTypeDescription, ItemVolumeTypeDescriptionTransfer> {
 
     ItemControl itemControl = Session.getModelController(ItemControl.class);
 
     /** Creates a new instance of ItemVolumeTypeDescriptionTransferCache */
-    public ItemVolumeTypeDescriptionTransferCache() {
+    protected ItemVolumeTypeDescriptionTransferCache() {
         super();
     }
     
@@ -37,8 +39,7 @@ public class ItemVolumeTypeDescriptionTransferCache
         var itemVolumeTypeDescriptionTransfer = get(itemVolumeTypeDescription);
         
         if(itemVolumeTypeDescriptionTransfer == null) {
-            var itemVolumeTypeTransferCache = itemControl.getItemTransferCaches().getItemVolumeTypeTransferCache();
-            var itemVolumeTypeTransfer = itemVolumeTypeTransferCache.getTransfer(userVisit, itemVolumeTypeDescription.getItemVolumeType());
+            var itemVolumeTypeTransfer = itemControl.getItemVolumeTypeTransfer(userVisit, itemVolumeTypeDescription.getItemVolumeType());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, itemVolumeTypeDescription.getLanguage());
             
             itemVolumeTypeDescriptionTransfer = new ItemVolumeTypeDescriptionTransfer(languageTransfer, itemVolumeTypeTransfer, itemVolumeTypeDescription.getDescription());

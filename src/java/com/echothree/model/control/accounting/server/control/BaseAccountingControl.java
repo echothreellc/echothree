@@ -17,29 +17,22 @@
 package com.echothree.model.control.accounting.server.control;
 
 import com.echothree.model.control.accounting.server.transfer.AccountingTransferCaches;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.control.BaseModelControl;
+import javax.inject.Inject;
 
 public class BaseAccountingControl
         extends BaseModelControl {
 
     /** Creates a new instance of AccountingControl */
-    public BaseAccountingControl() {
+    protected BaseAccountingControl() {
         super();
     }
     
     // --------------------------------------------------------------------------------
     //   Accounting Transfer Caches
     // --------------------------------------------------------------------------------
-    
-    private AccountingTransferCaches accountingTransferCaches;
-    
-    public AccountingTransferCaches getAccountingTransferCaches() {
-        if(accountingTransferCaches == null) {
-            accountingTransferCaches = new AccountingTransferCaches();
-        }
-        
-        return accountingTransferCaches;
-    }
-    
+
+    @Inject
+    AccountingTransferCaches accountingTransferCaches;
+
 }

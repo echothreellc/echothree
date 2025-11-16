@@ -23,7 +23,9 @@ import com.echothree.model.data.order.server.entity.OrderPaymentPreference;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.AmountUtils;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class OrderPaymentPreferenceTransferCache
         extends BaseOrderTransferCache<OrderPaymentPreference, OrderPaymentPreferenceTransfer> {
 
@@ -31,7 +33,7 @@ public class OrderPaymentPreferenceTransferCache
     PaymentMethodControl paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
 
     /** Creates a new instance of OrderPaymentPreferenceTransferCache */
-    public OrderPaymentPreferenceTransferCache() {
+    protected OrderPaymentPreferenceTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

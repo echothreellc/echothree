@@ -22,7 +22,9 @@ import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.warehouse.server.entity.LocationCapacity;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class LocationCapacityTransferCache
         extends BaseWarehouseTransferCache<LocationCapacity, LocationCapacityTransfer> {
 
@@ -30,7 +32,7 @@ public class LocationCapacityTransferCache
     WarehouseControl warehouseControl = Session.getModelController(WarehouseControl.class);
 
     /** Creates a new instance of LocationCapacityTransferCache */
-    public LocationCapacityTransferCache() {
+    protected LocationCapacityTransferCache() {
         super();
     }
     
@@ -38,11 +40,9 @@ public class LocationCapacityTransferCache
         var locationCapacityTransfer = get(locationCapacity);
         
         if(locationCapacityTransfer == null) {
-            var locationTransferCache = warehouseControl.getWarehouseTransferCaches().getLocationTransferCache();
-            var locationTransfer = locationTransferCache.getLocationTransfer(userVisit, locationCapacity.getLocation());
-            var unitOfMeasureTypeTransferCache = uomControl.getUomTransferCaches().getUnitOfMeasureTypeTransferCache();
+            var locationTransfer = warehouseControl.getLocationTransfer(userVisit, locationCapacity.getLocation());
             var unitOfMeasureType = locationCapacity.getUnitOfMeasureType();
-            var unitOfMeasureTypeTransfer = unitOfMeasureTypeTransferCache.getUnitOfMeasureTypeTransfer(userVisit, unitOfMeasureType);
+            var unitOfMeasureTypeTransfer = uomControl.getUnitOfMeasureTypeTransfer(userVisit, unitOfMeasureType);
             var capacity = locationCapacity.getCapacity();
             
             locationCapacityTransfer = new LocationCapacityTransfer(locationTransfer, unitOfMeasureTypeTransfer, capacity);

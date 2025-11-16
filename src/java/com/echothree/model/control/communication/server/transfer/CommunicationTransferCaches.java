@@ -17,93 +17,85 @@
 package com.echothree.model.control.communication.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
+@RequestScoped
 public class CommunicationTransferCaches
         extends BaseTransferCaches {
     
-    protected CommunicationEventRoleTypeTransferCache communicationEventRoleTypeTransferCache;
-    protected CommunicationEventTypeTransferCache communicationEventTypeTransferCache;
-    protected CommunicationEventPurposeTransferCache communicationEventPurposeTransferCache;
-    protected CommunicationEventPurposeDescriptionTransferCache communicationEventPurposeDescriptionTransferCache;
-    protected CommunicationEventTransferCache communicationEventTransferCache;
-    protected CommunicationEventRoleTransferCache communicationEventRoleTransferCache;
-    protected CommunicationSourceTypeTransferCache communicationSourceTypeTransferCache;
-    protected CommunicationSourceTransferCache communicationSourceTransferCache;
-    protected CommunicationSourceDescriptionTransferCache communicationSourceDescriptionTransferCache;
-    protected CommunicationEmailSourceTransferCache communicationEmailSourceTransferCache;
+    @Inject
+    CommunicationEventRoleTypeTransferCache communicationEventRoleTypeTransferCache;
     
+    @Inject
+    CommunicationEventTypeTransferCache communicationEventTypeTransferCache;
+    
+    @Inject
+    CommunicationEventPurposeTransferCache communicationEventPurposeTransferCache;
+    
+    @Inject
+    CommunicationEventPurposeDescriptionTransferCache communicationEventPurposeDescriptionTransferCache;
+    
+    @Inject
+    CommunicationEventTransferCache communicationEventTransferCache;
+    
+    @Inject
+    CommunicationEventRoleTransferCache communicationEventRoleTransferCache;
+    
+    @Inject
+    CommunicationSourceTypeTransferCache communicationSourceTypeTransferCache;
+    
+    @Inject
+    CommunicationSourceTransferCache communicationSourceTransferCache;
+    
+    @Inject
+    CommunicationSourceDescriptionTransferCache communicationSourceDescriptionTransferCache;
+    
+    @Inject
+    CommunicationEmailSourceTransferCache communicationEmailSourceTransferCache;
+
     /** Creates a new instance of CommunicationTransferCaches */
-    public CommunicationTransferCaches() {
+    protected CommunicationTransferCaches() {
         super();
     }
     
     public CommunicationEventRoleTypeTransferCache getCommunicationEventRoleTypeTransferCache() {
-        if(communicationEventRoleTypeTransferCache == null)
-            communicationEventRoleTypeTransferCache = new CommunicationEventRoleTypeTransferCache();
-        
         return communicationEventRoleTypeTransferCache;
     }
     
     public CommunicationEventTypeTransferCache getCommunicationEventTypeTransferCache() {
-        if(communicationEventTypeTransferCache == null)
-            communicationEventTypeTransferCache = new CommunicationEventTypeTransferCache();
-        
         return communicationEventTypeTransferCache;
     }
     
     public CommunicationEventPurposeTransferCache getCommunicationEventPurposeTransferCache() {
-        if(communicationEventPurposeTransferCache == null)
-            communicationEventPurposeTransferCache = new CommunicationEventPurposeTransferCache();
-        
         return communicationEventPurposeTransferCache;
     }
     
     public CommunicationEventPurposeDescriptionTransferCache getCommunicationEventPurposeDescriptionTransferCache() {
-        if(communicationEventPurposeDescriptionTransferCache == null)
-            communicationEventPurposeDescriptionTransferCache = new CommunicationEventPurposeDescriptionTransferCache();
-        
         return communicationEventPurposeDescriptionTransferCache;
     }
     
     public CommunicationEventTransferCache getCommunicationEventTransferCache() {
-        if(communicationEventTransferCache == null)
-            communicationEventTransferCache = new CommunicationEventTransferCache();
-        
         return communicationEventTransferCache;
     }
     
     public CommunicationEventRoleTransferCache getCommunicationEventRoleTransferCache() {
-        if(communicationEventRoleTransferCache == null)
-            communicationEventRoleTransferCache = new CommunicationEventRoleTransferCache();
-        
         return communicationEventRoleTransferCache;
     }
     
     public CommunicationSourceTypeTransferCache getCommunicationSourceTypeTransferCache() {
-        if(communicationSourceTypeTransferCache == null)
-            communicationSourceTypeTransferCache = new CommunicationSourceTypeTransferCache();
-        
         return communicationSourceTypeTransferCache;
     }
     
     public CommunicationSourceTransferCache getCommunicationSourceTransferCache() {
-        if(communicationSourceTransferCache == null)
-            communicationSourceTransferCache = new CommunicationSourceTransferCache();
-        
         return communicationSourceTransferCache;
     }
     
     public CommunicationSourceDescriptionTransferCache getCommunicationSourceDescriptionTransferCache() {
-        if(communicationSourceDescriptionTransferCache == null)
-            communicationSourceDescriptionTransferCache = new CommunicationSourceDescriptionTransferCache();
-        
         return communicationSourceDescriptionTransferCache;
     }
     
     public CommunicationEmailSourceTransferCache getCommunicationEmailSourceTransferCache() {
-        if(communicationEmailSourceTransferCache == null)
-            communicationEmailSourceTransferCache = new CommunicationEmailSourceTransferCache();
-        
         return communicationEmailSourceTransferCache;
     }
     

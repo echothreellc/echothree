@@ -21,14 +21,16 @@ import com.echothree.model.control.security.server.control.SecurityControl;
 import com.echothree.model.data.security.server.entity.SecurityRoleGroupDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class SecurityRoleGroupDescriptionTransferCache
         extends BaseSecurityDescriptionTransferCache<SecurityRoleGroupDescription, SecurityRoleGroupDescriptionTransfer> {
 
     SecurityControl securityControl = Session.getModelController(SecurityControl.class);
 
     /** Creates a new instance of SecurityRoleGroupDescriptionTransferCache */
-    public SecurityRoleGroupDescriptionTransferCache() {
+    protected SecurityRoleGroupDescriptionTransferCache() {
         super();
     }
     
@@ -36,8 +38,7 @@ public class SecurityRoleGroupDescriptionTransferCache
         var securityRoleGroupDescriptionTransfer = get(securityRoleGroupDescription);
         
         if(securityRoleGroupDescriptionTransfer == null) {
-            var securityRoleGroupTransferCache = securityControl.getSecurityTransferCaches().getSecurityRoleGroupTransferCache();
-            var securityRoleGroupTransfer = securityRoleGroupTransferCache.getSecurityRoleGroupTransfer(userVisit, securityRoleGroupDescription.getSecurityRoleGroup());
+            var securityRoleGroupTransfer = securityControl.getSecurityRoleGroupTransfer(userVisit, securityRoleGroupDescription.getSecurityRoleGroup());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, securityRoleGroupDescription.getLanguage());
             
             securityRoleGroupDescriptionTransfer = new SecurityRoleGroupDescriptionTransfer(languageTransfer, securityRoleGroupTransfer, securityRoleGroupDescription.getDescription());

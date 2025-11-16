@@ -21,14 +21,16 @@ import com.echothree.model.control.order.server.control.OrderLineAdjustmentContr
 import com.echothree.model.data.order.server.entity.OrderLineAdjustmentType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class OrderLineAdjustmentTypeTransferCache
         extends BaseOrderTransferCache<OrderLineAdjustmentType, OrderLineAdjustmentTypeTransfer> {
 
     OrderLineAdjustmentControl orderLineAdjustmentControl = Session.getModelController(OrderLineAdjustmentControl.class);
 
     /** Creates a new instance of OrderLineAdjustmentTypeTransferCache */
-    public OrderLineAdjustmentTypeTransferCache() {
+    protected OrderLineAdjustmentTypeTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

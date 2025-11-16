@@ -21,14 +21,16 @@ import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.EntityTimeDefault;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EntityTimeDefaultTransferCache
         extends BaseCoreTransferCache<EntityTimeDefault, EntityTimeDefaultTransfer> {
 
     CoreControl coreControl = Session.getModelController(CoreControl.class);
 
     /** Creates a new instance of EntityTimeDefaultTransferCache */
-    public EntityTimeDefaultTransferCache() {
+    protected EntityTimeDefaultTransferCache() {
         super();
     }
     

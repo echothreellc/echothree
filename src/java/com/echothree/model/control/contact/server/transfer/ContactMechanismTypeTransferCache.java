@@ -21,14 +21,16 @@ import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.data.contact.server.entity.ContactMechanismType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ContactMechanismTypeTransferCache
         extends BaseContactTransferCache<ContactMechanismType, ContactMechanismTypeTransfer> {
 
     ContactControl contactControl = Session.getModelController(ContactControl.class);
 
     /** Creates a new instance of ContactMechanismTypeTransferCache */
-    public ContactMechanismTypeTransferCache() {
+    protected ContactMechanismTypeTransferCache() {
         super();
     }
     

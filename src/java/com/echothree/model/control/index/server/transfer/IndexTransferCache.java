@@ -23,7 +23,9 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.index.server.entity.Index;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class IndexTransferCache
         extends BaseIndexTransferCache<Index, IndexTransfer> {
 
@@ -31,7 +33,7 @@ public class IndexTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of IndexTransferCache */
-    public IndexTransferCache() {
+    protected IndexTransferCache() {
         super();
         
         var options = session.getOptions();

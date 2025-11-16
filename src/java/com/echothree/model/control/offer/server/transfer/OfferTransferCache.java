@@ -30,7 +30,9 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.transfer.ListWrapperBuilder;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class OfferTransferCache
         extends BaseOfferTransferCache<Offer, OfferTransfer> {
     
@@ -56,7 +58,7 @@ public class OfferTransferCache
     boolean filterEntityInstance;
     
     /** Creates a new instance of OfferTransferCache */
-    public OfferTransferCache() {
+    protected OfferTransferCache() {
         super();
 
         var options = session.getOptions();

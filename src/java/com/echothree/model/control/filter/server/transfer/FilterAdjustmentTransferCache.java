@@ -23,7 +23,9 @@ import com.echothree.model.data.filter.server.entity.FilterAdjustment;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class FilterAdjustmentTransferCache
         extends BaseFilterTransferCache<FilterAdjustment, FilterAdjustmentTransfer> {
 
@@ -34,7 +36,7 @@ public class FilterAdjustmentTransferCache
     boolean includeFilterAdjustmentPercents;
     
     /** Creates a new instance of FilterAdjustmentTransferCache */
-    public FilterAdjustmentTransferCache() {
+    protected FilterAdjustmentTransferCache() {
         super();
         
         var options = session.getOptions();

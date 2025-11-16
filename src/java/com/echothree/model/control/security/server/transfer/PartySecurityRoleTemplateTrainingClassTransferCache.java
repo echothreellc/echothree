@@ -22,7 +22,9 @@ import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.data.security.server.entity.PartySecurityRoleTemplateTrainingClass;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PartySecurityRoleTemplateTrainingClassTransferCache
         extends BaseSecurityTransferCache<PartySecurityRoleTemplateTrainingClass, PartySecurityRoleTemplateTrainingClassTransfer> {
 
@@ -30,7 +32,7 @@ public class PartySecurityRoleTemplateTrainingClassTransferCache
     TrainingControl trainingControl = Session.getModelController(TrainingControl.class);
     
     /** Creates a new instance of PartySecurityRoleTemplateTrainingClassTransferCache */
-    public PartySecurityRoleTemplateTrainingClassTransferCache() {
+    protected PartySecurityRoleTemplateTrainingClassTransferCache() {
         super();
     }
     

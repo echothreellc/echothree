@@ -176,6 +176,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 @RequestScoped
 public class ContentControl
@@ -190,16 +191,9 @@ public class ContentControl
     //   Content Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private ContentTransferCaches contentTransferCaches;
-    
-    public ContentTransferCaches getContentTransferCaches() {
-        if(contentTransferCaches == null) {
-            contentTransferCaches = new ContentTransferCaches();
-        }
-        
-        return contentTransferCaches;
-    }
-    
+    @Inject
+    ContentTransferCaches contentTransferCaches;
+
     // --------------------------------------------------------------------------------
     //   Content Page Area Types
     // --------------------------------------------------------------------------------
@@ -294,12 +288,12 @@ public class ContentControl
     }
     
     public ContentPageAreaTypeTransfer getContentPageAreaTypeTransfer(UserVisit userVisit, ContentPageAreaType contentPageAreaType) {
-        return getContentTransferCaches().getContentPageAreaTypeTransferCache().getTransfer(userVisit, contentPageAreaType);
+        return contentTransferCaches.getContentPageAreaTypeTransferCache().getTransfer(userVisit, contentPageAreaType);
     }
     
     public List<ContentPageAreaTypeTransfer> getContentPageAreaTypeTransfers(UserVisit userVisit, Collection<ContentPageAreaType> contentPageAreaTypes) {
         List<ContentPageAreaTypeTransfer> contentPageAreaTypeTransfers = new ArrayList<>(contentPageAreaTypes.size());
-        var contentPageAreaTypeTransferCache = getContentTransferCaches().getContentPageAreaTypeTransferCache();
+        var contentPageAreaTypeTransferCache = contentTransferCaches.getContentPageAreaTypeTransferCache();
         
         contentPageAreaTypes.forEach((contentPageAreaType) ->
                 contentPageAreaTypeTransfers.add(contentPageAreaTypeTransferCache.getTransfer(userVisit, contentPageAreaType))
@@ -556,12 +550,12 @@ public class ContentControl
     }
     
     public ContentPageLayoutTransfer getContentPageLayoutTransfer(UserVisit userVisit, ContentPageLayout contentPageLayout) {
-        return getContentTransferCaches().getContentPageLayoutTransferCache().getTransfer(userVisit, contentPageLayout);
+        return contentTransferCaches.getContentPageLayoutTransferCache().getTransfer(userVisit, contentPageLayout);
     }
     
     public List<ContentPageLayoutTransfer> getContentPageLayoutTransfers(UserVisit userVisit, Collection<ContentPageLayout> contentPageLayouts) {
         List<ContentPageLayoutTransfer> contentPageLayoutTransfers = new ArrayList<>(contentPageLayouts.size());
-        var contentPageLayoutTransferCache = getContentTransferCaches().getContentPageLayoutTransferCache();
+        var contentPageLayoutTransferCache = contentTransferCaches.getContentPageLayoutTransferCache();
         
         contentPageLayouts.forEach((contentPageLayout) ->
                 contentPageLayoutTransfers.add(contentPageLayoutTransferCache.getTransfer(userVisit, contentPageLayout))
@@ -800,13 +794,13 @@ public class ContentControl
     }
     
     public ContentPageLayoutDescriptionTransfer getContentPageLayoutDescriptionTransfer(UserVisit userVisit, ContentPageLayoutDescription contentPageLayoutDescription) {
-        return getContentTransferCaches().getContentPageLayoutDescriptionTransferCache().getTransfer(userVisit, contentPageLayoutDescription);
+        return contentTransferCaches.getContentPageLayoutDescriptionTransferCache().getTransfer(userVisit, contentPageLayoutDescription);
     }
     
     public List<ContentPageLayoutDescriptionTransfer> getContentPageLayoutDescriptionTransfersByContentPageLayout(UserVisit userVisit, ContentPageLayout contentPageLayout) {
         var contentPageLayoutDescriptions = getContentPageLayoutDescriptionsByContentPageLayout(contentPageLayout);
         List<ContentPageLayoutDescriptionTransfer> contentPageLayoutDescriptionTransfers = new ArrayList<>(contentPageLayoutDescriptions.size());
-        var contentPageLayoutDescriptionTransferCache = getContentTransferCaches().getContentPageLayoutDescriptionTransferCache();
+        var contentPageLayoutDescriptionTransferCache = contentTransferCaches.getContentPageLayoutDescriptionTransferCache();
         
         contentPageLayoutDescriptions.forEach((contentPageLayoutDescription) ->
                 contentPageLayoutDescriptionTransfers.add(contentPageLayoutDescriptionTransferCache.getTransfer(userVisit, contentPageLayoutDescription))
@@ -909,7 +903,7 @@ public class ContentControl
     
     public List<ContentPageLayoutAreaTransfer> getContentPageLayoutAreaTransfers(UserVisit userVisit, Collection<ContentPageLayoutArea> contentPageLayoutAreas) {
         List<ContentPageLayoutAreaTransfer> contentPageLayoutAreaTransfers = new ArrayList<>(contentPageLayoutAreas.size());
-        var contentPageLayoutAreaTransferCache = getContentTransferCaches().getContentPageLayoutAreaTransferCache();
+        var contentPageLayoutAreaTransferCache = contentTransferCaches.getContentPageLayoutAreaTransferCache();
         
         contentPageLayoutAreas.forEach((contentPageLayoutArea) ->
                 contentPageLayoutAreaTransfers.add(contentPageLayoutAreaTransferCache.getContentPageLayoutAreaTransfer(userVisit, contentPageLayoutArea))
@@ -923,7 +917,7 @@ public class ContentControl
     }
     
     public ContentPageLayoutAreaTransfer getContentPageLayoutAreaTransfer(UserVisit userVisit, ContentPageLayoutArea contentPageLayoutArea) {
-        return getContentTransferCaches().getContentPageLayoutAreaTransferCache().getContentPageLayoutAreaTransfer(userVisit, contentPageLayoutArea);
+        return contentTransferCaches.getContentPageLayoutAreaTransferCache().getContentPageLayoutAreaTransfer(userVisit, contentPageLayoutArea);
     }
     
     // --------------------------------------------------------------------------------
@@ -1113,12 +1107,12 @@ public class ContentControl
     }
     
     public ContentCollectionTransfer getContentCollectionTransfer(UserVisit userVisit, ContentCollection contentCollection) {
-        return getContentTransferCaches().getContentCollectionTransferCache().getContentCollectionTransfer(userVisit, contentCollection);
+        return contentTransferCaches.getContentCollectionTransferCache().getContentCollectionTransfer(userVisit, contentCollection);
     }
     
     public List<ContentCollectionTransfer> getContentCollectionTransfers(UserVisit userVisit, Collection<ContentCollection> contentCollections) {
         List<ContentCollectionTransfer> contentCollectionTransfers = new ArrayList<>(contentCollections.size());
-        var contentCollectionTransferCache = getContentTransferCaches().getContentCollectionTransferCache();
+        var contentCollectionTransferCache = contentTransferCaches.getContentCollectionTransferCache();
         
         contentCollections.forEach((contentCollection) ->
                 contentCollectionTransfers.add(contentCollectionTransferCache.getContentCollectionTransfer(userVisit, contentCollection))
@@ -1286,13 +1280,13 @@ public class ContentControl
     }
     
     public ContentCollectionDescriptionTransfer getContentCollectionDescriptionTransfer(UserVisit userVisit, ContentCollectionDescription contentCollectionDescription) {
-        return getContentTransferCaches().getContentCollectionDescriptionTransferCache().getContentCollectionDescriptionTransfer(userVisit, contentCollectionDescription);
+        return contentTransferCaches.getContentCollectionDescriptionTransferCache().getContentCollectionDescriptionTransfer(userVisit, contentCollectionDescription);
     }
     
     public List<ContentCollectionDescriptionTransfer> getContentCollectionDescriptionTransfers(UserVisit userVisit, ContentCollection contentCollection) {
         var contentCollectionDescriptions = getContentCollectionDescriptionsByContentCollection(contentCollection);
         List<ContentCollectionDescriptionTransfer> contentCollectionDescriptionTransfers = new ArrayList<>(contentCollectionDescriptions.size());
-        var contentCollectionDescriptionTransferCache = getContentTransferCaches().getContentCollectionDescriptionTransferCache();
+        var contentCollectionDescriptionTransferCache = contentTransferCaches.getContentCollectionDescriptionTransferCache();
         
         for(var contentCollectionDescription : contentCollectionDescriptions) {
             contentCollectionDescriptionTransfers.add(contentCollectionDescriptionTransferCache.getContentCollectionDescriptionTransfer(userVisit, contentCollectionDescription));
@@ -1593,12 +1587,12 @@ public class ContentControl
     }
     
     public ContentSectionTransfer getContentSectionTransfer(UserVisit userVisit, ContentSection contentSection) {
-        return getContentTransferCaches().getContentSectionTransferCache().getContentSectionTransfer(userVisit, contentSection);
+        return contentTransferCaches.getContentSectionTransferCache().getContentSectionTransfer(userVisit, contentSection);
     }
     
     public List<ContentSectionTransfer> getContentSectionTransfers(UserVisit userVisit, Collection<ContentSection> contentSections) {
         List<ContentSectionTransfer> contentSectionTransfers = new ArrayList<>(contentSections.size());
-        var contentSectionTransferCache = getContentTransferCaches().getContentSectionTransferCache();
+        var contentSectionTransferCache = contentTransferCaches.getContentSectionTransferCache();
         
         contentSections.forEach((contentSection) ->
                 contentSectionTransfers.add(contentSectionTransferCache.getContentSectionTransfer(userVisit, contentSection))
@@ -1861,13 +1855,13 @@ public class ContentControl
     }
     
     public ContentSectionDescriptionTransfer getContentSectionDescriptionTransfer(UserVisit userVisit, ContentSectionDescription contentSectionDescription) {
-        return getContentTransferCaches().getContentSectionDescriptionTransferCache().getContentSectionDescriptionTransfer(userVisit, contentSectionDescription);
+        return contentTransferCaches.getContentSectionDescriptionTransferCache().getContentSectionDescriptionTransfer(userVisit, contentSectionDescription);
     }
     
     public List<ContentSectionDescriptionTransfer> getContentSectionDescriptionTransfers(UserVisit userVisit, ContentSection contentSection) {
         var contentSectionDescriptions = getContentSectionDescriptionsByContentSection(contentSection);
         List<ContentSectionDescriptionTransfer> contentSectionDescriptionTransfers = new ArrayList<>(contentSectionDescriptions.size());
-        var contentSectionDescriptionTransferCache = getContentTransferCaches().getContentSectionDescriptionTransferCache();
+        var contentSectionDescriptionTransferCache = contentTransferCaches.getContentSectionDescriptionTransferCache();
             
         contentSectionDescriptions.forEach((contentSectionDescription) ->
                 contentSectionDescriptionTransfers.add(contentSectionDescriptionTransferCache.getContentSectionDescriptionTransfer(userVisit, contentSectionDescription))
@@ -2129,12 +2123,12 @@ public class ContentControl
     }
     
     public ContentPageTransfer getContentPageTransfer(UserVisit userVisit, ContentPage contentPage) {
-        return getContentTransferCaches().getContentPageTransferCache().getContentPageTransfer(userVisit, contentPage);
+        return contentTransferCaches.getContentPageTransferCache().getContentPageTransfer(userVisit, contentPage);
     }
     
     public List<ContentPageTransfer> getContentPageTransfers(UserVisit userVisit, Collection<ContentPage> contentPages) {
         List<ContentPageTransfer> contentPageTransfers = new ArrayList<>(contentPages.size());
-        var contentPageTransferCache = getContentTransferCaches().getContentPageTransferCache();
+        var contentPageTransferCache = contentTransferCaches.getContentPageTransferCache();
             
         contentPages.forEach((contentPage) ->
                 contentPageTransfers.add(contentPageTransferCache.getContentPageTransfer(userVisit, contentPage))
@@ -2356,13 +2350,13 @@ public class ContentControl
     }
     
     public ContentPageDescriptionTransfer getContentPageDescriptionTransfer(UserVisit userVisit, ContentPageDescription contentPageDescription) {
-        return getContentTransferCaches().getContentPageDescriptionTransferCache().getContentPageDescriptionTransfer(userVisit, contentPageDescription);
+        return contentTransferCaches.getContentPageDescriptionTransferCache().getContentPageDescriptionTransfer(userVisit, contentPageDescription);
     }
     
     public List<ContentPageDescriptionTransfer> getContentPageDescriptionTransfers(UserVisit userVisit, ContentPage contentPage) {
         var contentPageDescriptions = getContentPageDescriptionsByContentPage(contentPage);
         List<ContentPageDescriptionTransfer> contentPageDescriptionTransfers = new ArrayList<>(contentPageDescriptions.size());
-        var contentPageDescriptionTransferCache = getContentTransferCaches().getContentPageDescriptionTransferCache();
+        var contentPageDescriptionTransferCache = contentTransferCaches.getContentPageDescriptionTransferCache();
         
         contentPageDescriptions.forEach((contentPageDescription) ->
                 contentPageDescriptionTransfers.add(contentPageDescriptionTransferCache.getContentPageDescriptionTransfer(userVisit, contentPageDescription))
@@ -2578,12 +2572,12 @@ public class ContentControl
     }
     
     public ContentPageAreaTransfer getContentPageAreaTransfer(UserVisit userVisit, ContentPageArea contentPageArea) {
-        return getContentTransferCaches().getContentPageAreaTransferCache().getContentPageAreaTransfer(userVisit, contentPageArea);
+        return contentTransferCaches.getContentPageAreaTransferCache().getContentPageAreaTransfer(userVisit, contentPageArea);
     }
     
     public List<ContentPageAreaTransfer> getContentPageAreaTransfers(UserVisit userVisit, Collection<ContentPageArea> contentPageAreas) {
         List<ContentPageAreaTransfer> contentPageAreaTransfers = new ArrayList<>(contentPageAreas.size());
-        var contentPageAreaTransferCache = getContentTransferCaches().getContentPageAreaTransferCache();
+        var contentPageAreaTransferCache = contentTransferCaches.getContentPageAreaTransferCache();
 
         contentPageAreas.forEach((contentPageArea) -> {
             contentPageAreaTransfers.add(contentPageAreaTransferCache.getContentPageAreaTransfer(userVisit, contentPageArea));
@@ -2969,12 +2963,12 @@ public class ContentControl
     }
     
     public ContentCatalogTransfer getContentCatalogTransfer(UserVisit userVisit, ContentCatalog contentCatalog) {
-        return getContentTransferCaches().getContentCatalogTransferCache().getContentCatalogTransfer(userVisit, contentCatalog);
+        return contentTransferCaches.getContentCatalogTransferCache().getContentCatalogTransfer(userVisit, contentCatalog);
     }
     
     public List<ContentCatalogTransfer> getContentCatalogTransfers(UserVisit userVisit, Collection<ContentCatalog> contentCatalogs) {
         List<ContentCatalogTransfer> contentCatalogTransfers = new ArrayList<>(contentCatalogs.size());
-        var contentCatalogTransferCache = getContentTransferCaches().getContentCatalogTransferCache();
+        var contentCatalogTransferCache = contentTransferCaches.getContentCatalogTransferCache();
 
         contentCatalogs.forEach((contentCatalog) ->
                 contentCatalogTransfers.add(contentCatalogTransferCache.getContentCatalogTransfer(userVisit, contentCatalog))
@@ -3193,13 +3187,13 @@ public class ContentControl
     }
     
     public ContentCatalogDescriptionTransfer getContentCatalogDescriptionTransfer(UserVisit userVisit, ContentCatalogDescription contentCatalogDescription) {
-        return getContentTransferCaches().getContentCatalogDescriptionTransferCache().getContentCatalogDescriptionTransfer(userVisit, contentCatalogDescription);
+        return contentTransferCaches.getContentCatalogDescriptionTransferCache().getContentCatalogDescriptionTransfer(userVisit, contentCatalogDescription);
     }
     
     public List<ContentCatalogDescriptionTransfer> getContentCatalogDescriptionTransfers(UserVisit userVisit, ContentCatalog contentCatalog) {
         var contentCatalogDescriptions = getContentCatalogDescriptionsByContentCatalog(contentCatalog);
         List<ContentCatalogDescriptionTransfer> contentCatalogDescriptionTransfers = new ArrayList<>(contentCatalogDescriptions.size());
-        var contentCatalogDescriptionTransferCache = getContentTransferCaches().getContentCatalogDescriptionTransferCache();
+        var contentCatalogDescriptionTransferCache = contentTransferCaches.getContentCatalogDescriptionTransferCache();
 
         contentCatalogDescriptions.forEach((contentCatalogDescription) ->
                 contentCatalogDescriptionTransfers.add(contentCatalogDescriptionTransferCache.getContentCatalogDescriptionTransfer(userVisit, contentCatalogDescription))
@@ -3555,7 +3549,7 @@ public class ContentControl
     
     public List<ContentCatalogItemTransfer> getContentCatalogItemTransfers(UserVisit userVisit, Collection<ContentCatalogItem> contentCatalogItems) {
         List<ContentCatalogItemTransfer> contentCatalogItemTransfers = new ArrayList<>(contentCatalogItems.size());
-        var contentCatalogItemTransferCache = getContentTransferCaches().getContentCatalogItemTransferCache();
+        var contentCatalogItemTransferCache = contentTransferCaches.getContentCatalogItemTransferCache();
 
         contentCatalogItems.forEach((contentCatalogItem) ->
                 contentCatalogItemTransfers.add(contentCatalogItemTransferCache.getContentCatalogItemTransfer(userVisit, contentCatalogItem))
@@ -3565,7 +3559,7 @@ public class ContentControl
     }
 
     public ContentCatalogItemTransfer getContentCatalogItemTransfer(UserVisit userVisit, ContentCatalogItem contentCatalogItem) {
-        return getContentTransferCaches().getContentCatalogItemTransferCache().getContentCatalogItemTransfer(userVisit, contentCatalogItem);
+        return contentTransferCaches.getContentCatalogItemTransferCache().getContentCatalogItemTransfer(userVisit, contentCatalogItem);
     }
 
     public List<ContentCatalogItemTransfer> getContentCatalogItemTransfers(UserVisit userVisit, ContentCatalog contentCatalog) {
@@ -4163,7 +4157,7 @@ public class ContentControl
     
     public List<ContentCategoryTransfer> getContentCategoryTransfers(UserVisit userVisit, Collection<ContentCategory> contentCategories) {
         List<ContentCategoryTransfer> contentCategoryTransfers = new ArrayList<>(contentCategories.size());
-        var contentCategoryTransferCache = getContentTransferCaches().getContentCategoryTransferCache();
+        var contentCategoryTransferCache = contentTransferCaches.getContentCategoryTransferCache();
 
         contentCategories.forEach((contentCategory) ->
                 contentCategoryTransfers.add(contentCategoryTransferCache.getContentCategoryTransfer(userVisit, contentCategory))
@@ -4173,7 +4167,7 @@ public class ContentControl
     }
     
     public ContentCategoryTransfer getContentCategoryTransfer(UserVisit userVisit, ContentCategory contentCategory) {
-        return getContentTransferCaches().getContentCategoryTransferCache().getContentCategoryTransfer(userVisit, contentCategory);
+        return contentTransferCaches.getContentCategoryTransferCache().getContentCategoryTransfer(userVisit, contentCategory);
     }
     
     public List<ContentCategoryTransfer> getContentCategoryTransfers(UserVisit userVisit, ContentCatalog contentCatalog) {
@@ -4439,13 +4433,13 @@ public class ContentControl
     }
     
     public ContentCategoryDescriptionTransfer getContentCategoryDescriptionTransfer(UserVisit userVisit, ContentCategoryDescription contentCategoryDescription) {
-        return getContentTransferCaches().getContentCategoryDescriptionTransferCache().getContentCategoryDescriptionTransfer(userVisit, contentCategoryDescription);
+        return contentTransferCaches.getContentCategoryDescriptionTransferCache().getContentCategoryDescriptionTransfer(userVisit, contentCategoryDescription);
     }
     
     public List<ContentCategoryDescriptionTransfer> getContentCategoryDescriptionTransfers(UserVisit userVisit, ContentCategory contentCategory) {
         var contentCategoryDescriptions = getContentCategoryDescriptionsByContentCategory(contentCategory);
         List<ContentCategoryDescriptionTransfer> contentCategoryDescriptionTransfers = new ArrayList<>(contentCategoryDescriptions.size());
-        var contentCategoryDescriptionTransferCache = getContentTransferCaches().getContentCategoryDescriptionTransferCache();
+        var contentCategoryDescriptionTransferCache = contentTransferCaches.getContentCategoryDescriptionTransferCache();
 
         contentCategoryDescriptions.forEach((contentCategoryDescription) ->
                 contentCategoryDescriptionTransfers.add(contentCategoryDescriptionTransferCache.getContentCategoryDescriptionTransfer(userVisit, contentCategoryDescription))
@@ -4701,12 +4695,12 @@ public class ContentControl
     }
     
     public ContentCategoryItemTransfer getContentCategoryItemTransfer(UserVisit userVisit, ContentCategoryItem contentCategoryItem) {
-        return getContentTransferCaches().getContentCategoryItemTransferCache().getContentCategoryItemTransfer(userVisit, contentCategoryItem);
+        return contentTransferCaches.getContentCategoryItemTransferCache().getContentCategoryItemTransfer(userVisit, contentCategoryItem);
     }
     
     public List<ContentCategoryItemTransfer> getContentCategoryItemTransfers(UserVisit userVisit, Collection<ContentCategoryItem> contentCategoryItems) {
         List<ContentCategoryItemTransfer> contentCategoryItemTransfers = new ArrayList<>(contentCategoryItems.size());
-        var contentCategoryItemTransferCache = getContentTransferCaches().getContentCategoryItemTransferCache();
+        var contentCategoryItemTransferCache = contentTransferCaches.getContentCategoryItemTransferCache();
         
         contentCategoryItems.forEach((contentCategoryItem) ->
                 contentCategoryItemTransfers.add(contentCategoryItemTransferCache.getContentCategoryItemTransfer(userVisit, contentCategoryItem))
@@ -4974,12 +4968,12 @@ public class ContentControl
     }
     
     public ContentForumTransfer getContentForumTransfer(UserVisit userVisit, ContentForum contentForum) {
-        return getContentTransferCaches().getContentForumTransferCache().getContentForumTransfer(userVisit, contentForum);
+        return contentTransferCaches.getContentForumTransferCache().getContentForumTransfer(userVisit, contentForum);
     }
     
     public List<ContentForumTransfer> getContentForumTransfers(UserVisit userVisit, Collection<ContentForum> contentForums) {
         List<ContentForumTransfer> contentForumTransfers = new ArrayList<>(contentForums.size());
-        var contentForumTransferCache = getContentTransferCaches().getContentForumTransferCache();
+        var contentForumTransferCache = contentTransferCaches.getContentForumTransferCache();
 
         contentForums.forEach((contentForum) ->
                 contentForumTransfers.add(contentForumTransferCache.getContentForumTransfer(userVisit, contentForum))
@@ -5280,7 +5274,7 @@ public class ContentControl
     
     public List<ContentWebAddressTransfer> getContentWebAddressTransfers(UserVisit userVisit, Collection<ContentWebAddress> contentWebAddresses) {
         List<ContentWebAddressTransfer> contentWebAddressTransfers = new ArrayList<>(contentWebAddresses.size());
-        var contentWebAddressTransferCache = getContentTransferCaches().getContentWebAddressTransferCache();
+        var contentWebAddressTransferCache = contentTransferCaches.getContentWebAddressTransferCache();
 
         contentWebAddresses.forEach((contentWebAddress) ->
                 contentWebAddressTransfers.add(contentWebAddressTransferCache.getContentWebAddressTransfer(userVisit, contentWebAddress))
@@ -5294,7 +5288,7 @@ public class ContentControl
     }
     
     public ContentWebAddressTransfer getContentWebAddressTransfer(UserVisit userVisit, ContentWebAddress contentWebAddress) {
-        return getContentTransferCaches().getContentWebAddressTransferCache().getContentWebAddressTransfer(userVisit, contentWebAddress);
+        return contentTransferCaches.getContentWebAddressTransferCache().getContentWebAddressTransfer(userVisit, contentWebAddress);
     }
     
     public void updateContentWebAddressFromValue(ContentWebAddressDetailValue contentWebAddressDetailValue, BasePK updatedBy) {
@@ -5454,13 +5448,13 @@ public class ContentControl
     }
     
     public ContentWebAddressDescriptionTransfer getContentWebAddressDescriptionTransfer(UserVisit userVisit, ContentWebAddressDescription contentWebAddressDescription) {
-        return getContentTransferCaches().getContentWebAddressDescriptionTransferCache().getContentWebAddressDescriptionTransfer(userVisit, contentWebAddressDescription);
+        return contentTransferCaches.getContentWebAddressDescriptionTransferCache().getContentWebAddressDescriptionTransfer(userVisit, contentWebAddressDescription);
     }
     
     public List<ContentWebAddressDescriptionTransfer> getContentWebAddressDescriptionTransfers(UserVisit userVisit, ContentWebAddress contentWebAddress) {
         var contentWebAddressDescriptions = getContentWebAddressDescriptionsByContentWebAddress(contentWebAddress);
         List<ContentWebAddressDescriptionTransfer> contentWebAddressDescriptionTransfers = new ArrayList<>(contentWebAddressDescriptions.size());
-        var contentWebAddressDescriptionTransferCache = getContentTransferCaches().getContentWebAddressDescriptionTransferCache();
+        var contentWebAddressDescriptionTransferCache = contentTransferCaches.getContentWebAddressDescriptionTransferCache();
 
         contentWebAddressDescriptions.forEach((contentWebAddressDescription) ->
                 contentWebAddressDescriptionTransfers.add(contentWebAddressDescriptionTransferCache.getContentWebAddressDescriptionTransfer(userVisit, contentWebAddressDescription))

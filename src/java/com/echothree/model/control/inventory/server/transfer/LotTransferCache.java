@@ -27,7 +27,9 @@ import com.echothree.model.data.inventory.server.entity.Lot;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.MapWrapper;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class LotTransferCache
         extends BaseInventoryTransferCache<Lot, LotTransfer> {
 
@@ -39,7 +41,7 @@ public class LotTransferCache
     boolean includeLotTimes;
 
     /** Creates a new instance of LotTransferCache */
-    public LotTransferCache() {
+    protected LotTransferCache() {
         super();
 
         var options = session.getOptions();

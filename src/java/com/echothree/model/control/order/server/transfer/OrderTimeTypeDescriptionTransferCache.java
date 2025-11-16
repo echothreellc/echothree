@@ -21,14 +21,16 @@ import com.echothree.model.control.order.server.control.OrderTimeControl;
 import com.echothree.model.data.order.server.entity.OrderTimeTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class OrderTimeTypeDescriptionTransferCache
         extends BaseOrderDescriptionTransferCache<OrderTimeTypeDescription, OrderTimeTypeDescriptionTransfer> {
 
     OrderTimeControl orderTimeControl = Session.getModelController(OrderTimeControl.class);
 
     /** Creates a new instance of OrderTimeTypeDescriptionTransferCache */
-    public OrderTimeTypeDescriptionTransferCache() {
+    protected OrderTimeTypeDescriptionTransferCache() {
         super();
     }
     

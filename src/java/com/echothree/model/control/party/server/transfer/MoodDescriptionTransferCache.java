@@ -19,12 +19,14 @@ package com.echothree.model.control.party.server.transfer;
 import com.echothree.model.control.party.common.transfer.MoodDescriptionTransfer;
 import com.echothree.model.data.party.server.entity.MoodDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class MoodDescriptionTransferCache
         extends BasePartyDescriptionTransferCache<MoodDescription, MoodDescriptionTransfer> {
     
     /** Creates a new instance of MoodDescriptionTransferCache */
-    public MoodDescriptionTransferCache() {
+    protected MoodDescriptionTransferCache() {
         super();
     }
 

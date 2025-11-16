@@ -32,7 +32,9 @@ import com.echothree.model.data.party.server.entity.PartyCompany;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CompanyTransferCache
         extends BasePartyTransferCache<Party, CompanyTransfer> {
     
@@ -56,7 +58,7 @@ public class CompanyTransferCache
     boolean hasInvoiceLimits;
     
     /** Creates a new instance of CompanyTransferCache */
-    public CompanyTransferCache() {
+    protected CompanyTransferCache() {
         super();
         
         var options = session.getOptions();

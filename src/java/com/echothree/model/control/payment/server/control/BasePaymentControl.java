@@ -17,8 +17,8 @@
 package com.echothree.model.control.payment.server.control;
 
 import com.echothree.model.control.payment.server.transfer.PaymentTransferCaches;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.control.BaseModelControl;
+import javax.inject.Inject;
 
 public abstract class BasePaymentControl
         extends BaseModelControl {
@@ -32,14 +32,7 @@ public abstract class BasePaymentControl
     //   Payment Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private PaymentTransferCaches paymentTransferCaches;
-    
-    public PaymentTransferCaches getPaymentTransferCaches() {
-        if(paymentTransferCaches == null) {
-            paymentTransferCaches = new PaymentTransferCaches();
-        }
-        
-        return paymentTransferCaches;
-    }
-    
+    @Inject
+    PaymentTransferCaches paymentTransferCaches;
+
  }

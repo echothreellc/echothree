@@ -21,14 +21,16 @@ import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.data.accounting.server.entity.GlAccountDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class GlAccountDescriptionTransferCache
         extends BaseAccountingDescriptionTransferCache<GlAccountDescription, GlAccountDescriptionTransfer> {
 
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
 
     /** Creates a new instance of GlAccountDescriptionTransferCache */
-    public GlAccountDescriptionTransferCache() {
+    protected GlAccountDescriptionTransferCache() {
         super();
     }
     
@@ -37,8 +39,7 @@ public class GlAccountDescriptionTransferCache
         var glAccountDescriptionTransfer = get(glAccountDescription);
         
         if(glAccountDescriptionTransfer == null) {
-            var glAccountTransferCache = accountingControl.getAccountingTransferCaches().getGlAccountTransferCache();
-            var glAccountTransfer = glAccountTransferCache.getTransfer(userVisit, glAccountDescription.getGlAccount());
+            var glAccountTransfer = accountingControl.getGlAccountTransfer(userVisit, glAccountDescription.getGlAccount());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, glAccountDescription.getLanguage());
             
             glAccountDescriptionTransfer = new GlAccountDescriptionTransfer(languageTransfer, glAccountTransfer, glAccountDescription.getDescription());

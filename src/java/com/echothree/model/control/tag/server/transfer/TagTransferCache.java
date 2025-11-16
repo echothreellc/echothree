@@ -22,7 +22,9 @@ import com.echothree.model.control.tag.server.control.TagControl;
 import com.echothree.model.data.tag.server.entity.Tag;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class TagTransferCache
         extends BaseTagTransferCache<Tag, TagTransfer> {
 
@@ -31,7 +33,7 @@ public class TagTransferCache
     boolean includeUsageCount;
 
     /** Creates a new instance of TagTransferCache */
-    public TagTransferCache() {
+    protected TagTransferCache() {
         super();
 
         var options = session.getOptions();

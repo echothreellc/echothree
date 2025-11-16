@@ -23,7 +23,9 @@ import com.echothree.model.data.core.server.entity.EntityBooleanAttribute;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EntityBooleanAttributeTransferCache
         extends BaseCoreTransferCache<EntityBooleanAttribute, EntityBooleanAttributeTransfer> {
 
@@ -31,7 +33,7 @@ public class EntityBooleanAttributeTransferCache
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
     /** Creates a new instance of EntityBooleanAttributeTransferCache */
-    public EntityBooleanAttributeTransferCache() {
+    protected EntityBooleanAttributeTransferCache() {
         super();
     }
     

@@ -21,14 +21,16 @@ import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workeffort.server.entity.WorkEffortTypeDescription;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class WorkEffortTypeDescriptionTransferCache
         extends BaseWorkEffortDescriptionTransferCache<WorkEffortTypeDescription, WorkEffortTypeDescriptionTransfer> {
 
     WorkEffortControl workEffortControl = Session.getModelController(WorkEffortControl.class);
 
     /** Creates a new instance of WorkEffortTypeDescriptionTransferCache */
-    public WorkEffortTypeDescriptionTransferCache() {
+    protected WorkEffortTypeDescriptionTransferCache() {
         super();
     }
     

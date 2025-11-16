@@ -21,14 +21,16 @@ import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.selector.server.entity.SelectorNode;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class SelectorNodeTransferCache
         extends BaseSelectorTransferCache<SelectorNode, SelectorNodeTransfer> {
 
     SelectorControl selectorControl = Session.getModelController(SelectorControl.class);
 
     /** Creates a new instance of SelectorNodeTransferCache */
-    public SelectorNodeTransferCache() {
+    protected SelectorNodeTransferCache() {
         super();
     }
 
@@ -37,12 +39,10 @@ public class SelectorNodeTransferCache
         
         if(selectorNodeTransfer == null) {
             var selectorNodeDetail = selectorNode.getLastDetail();
-            var selectorTransferCache = selectorControl.getSelectorTransferCaches().getSelectorTransferCache();
-            var selector = selectorTransferCache.getSelectorTransfer(userVisit, selectorNodeDetail.getSelector());
+            var selector = selectorControl.getSelectorTransfer(userVisit, selectorNodeDetail.getSelector());
             var selectorNodeName = selectorNodeDetail.getSelectorNodeName();
             var isRootSelectorNode = selectorNodeDetail.getIsRootSelectorNode();
-            var selectorNodeTypeTransferCache = selectorControl.getSelectorTransferCaches().getSelectorNodeTypeTransferCache();
-            var selectorNodeType = selectorNodeTypeTransferCache.getSelectorNodeTypeTransfer(userVisit, selectorNodeDetail.getSelectorNodeType());
+            var selectorNodeType = selectorControl.getSelectorNodeTypeTransfer(userVisit, selectorNodeDetail.getSelectorNodeType());
             var negate = selectorNodeDetail.getNegate();
             var description = selectorControl.getBestSelectorNodeDescription(selectorNode, getLanguage(userVisit));
             

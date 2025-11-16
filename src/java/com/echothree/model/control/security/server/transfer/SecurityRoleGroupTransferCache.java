@@ -24,7 +24,9 @@ import com.echothree.model.data.security.server.entity.SecurityRoleGroup;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.MapWrapper;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class SecurityRoleGroupTransferCache
         extends BaseSecurityTransferCache<SecurityRoleGroup, SecurityRoleGroupTransfer> {
 
@@ -34,7 +36,7 @@ public class SecurityRoleGroupTransferCache
     boolean includeSecurityRoles;
 
     /** Creates a new instance of SecurityRoleGroupTransferCache */
-    public SecurityRoleGroupTransferCache() {
+    protected SecurityRoleGroupTransferCache() {
         super();
 
         var options = session.getOptions();

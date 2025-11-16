@@ -21,14 +21,16 @@ import com.echothree.model.control.message.server.control.MessageControl;
 import com.echothree.model.data.message.server.entity.MessageDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class MessageDescriptionTransferCache
         extends BaseMessageDescriptionTransferCache<MessageDescription, MessageDescriptionTransfer> {
 
     MessageControl messageControl = Session.getModelController(MessageControl.class);
 
     /** Creates a new instance of MessageDescriptionTransferCache */
-    public MessageDescriptionTransferCache() {
+    protected MessageDescriptionTransferCache() {
         super();
     }
     
@@ -36,8 +38,7 @@ public class MessageDescriptionTransferCache
         var messageDescriptionTransfer = get(messageDescription);
         
         if(messageDescriptionTransfer == null) {
-            var messageTransferCache = messageControl.getMessageTransferCaches().getMessageTransferCache();
-            var messageTransfer = messageTransferCache.getMessageTransfer(userVisit, messageDescription.getMessage());
+            var messageTransfer = messageControl.getMessageTransfer(userVisit, messageDescription.getMessage());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, messageDescription.getLanguage());
             
             messageDescriptionTransfer = new MessageDescriptionTransfer(languageTransfer, messageTransfer, messageDescription.getDescription());

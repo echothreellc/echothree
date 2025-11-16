@@ -17,14 +17,14 @@
 package com.echothree.model.control.offer.server.control;
 
 import com.echothree.model.control.offer.server.transfer.OfferTransferCaches;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.control.BaseModelControl;
+import javax.inject.Inject;
 
 public class BaseOfferControl
         extends BaseModelControl {
 
     /** Creates a new instance of BaseOfferControl */
-    public BaseOfferControl() {
+    protected BaseOfferControl() {
         super();
     }
     
@@ -32,14 +32,7 @@ public class BaseOfferControl
     //   Offer Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private OfferTransferCaches offerTransferCaches;
-    
-    public OfferTransferCaches getOfferTransferCaches() {
-        if(offerTransferCaches == null) {
-            offerTransferCaches = new OfferTransferCaches();
-        }
-        
-        return offerTransferCaches;
-    }
-    
+    @Inject
+    OfferTransferCaches offerTransferCaches;
+
 }

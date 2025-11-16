@@ -98,12 +98,12 @@ public class BillingControl
     
     public BillingAccountRoleTypeTransfer getBillingAccountRoleTypeTransfer(UserVisit userVisit,
             BillingAccountRoleType billingAccountRoleType) {
-        return getPaymentTransferCaches().getBillingAccountRoleTypeTransferCache().getTransfer(userVisit, billingAccountRoleType);
+        return paymentTransferCaches.getBillingAccountRoleTypeTransferCache().getTransfer(userVisit, billingAccountRoleType);
     }
 
     private List<BillingAccountRoleTypeTransfer> getBillingAccountRoleTypeTransfers(final UserVisit userVisit, final List<BillingAccountRoleType> billingAccountRoleTypes) {
         List<BillingAccountRoleTypeTransfer> billingAccountRoleTypeTransfers = new ArrayList<>(billingAccountRoleTypes.size());
-        var billingAccountRoleTypeTransferCache = getPaymentTransferCaches().getBillingAccountRoleTypeTransferCache();
+        var billingAccountRoleTypeTransferCache = paymentTransferCaches.getBillingAccountRoleTypeTransferCache();
 
         billingAccountRoleTypes.forEach((billingAccountRoleType) ->
                 billingAccountRoleTypeTransfers.add(billingAccountRoleTypeTransferCache.getTransfer(userVisit, billingAccountRoleType))
@@ -385,12 +385,12 @@ public class BillingControl
     }
     
     public BillingAccountTransfer getBillingAccountTransfer(UserVisit userVisit, BillingAccount billingAccount) {
-        return getPaymentTransferCaches().getBillingAccountTransferCache().getTransfer(userVisit, billingAccount);
+        return paymentTransferCaches.getBillingAccountTransferCache().getTransfer(userVisit, billingAccount);
     }
     
     public List<BillingAccountTransfer> getBillingAccountTransfers(UserVisit userVisit, Collection<BillingAccount> billingAccounts) {
         List<BillingAccountTransfer> billingAccountTransfers = new ArrayList<>(billingAccounts.size());
-        var billingAccountTransferCache = getPaymentTransferCaches().getBillingAccountTransferCache();
+        var billingAccountTransferCache = paymentTransferCaches.getBillingAccountTransferCache();
         
         billingAccounts.forEach((billingAccount) ->
                 billingAccountTransfers.add(billingAccountTransferCache.getTransfer(userVisit, billingAccount))
@@ -610,12 +610,12 @@ public class BillingControl
     }
     
     public BillingAccountRoleTransfer getBillingAccountRoleTransfer(UserVisit userVisit, BillingAccountRole billingAccountRole) {
-        return getPaymentTransferCaches().getBillingAccountRoleTransferCache().getTransfer(userVisit, billingAccountRole);
+        return paymentTransferCaches.getBillingAccountRoleTransferCache().getTransfer(userVisit, billingAccountRole);
     }
     
     public List<BillingAccountRoleTransfer> getBillingAccountRoleTransfers(UserVisit userVisit, Collection<BillingAccountRole> billingAccountRoles) {
         List<BillingAccountRoleTransfer> billingAccountRoleTransfers = new ArrayList<>(billingAccountRoles.size());
-        var billingAccountRoleTransferCache = getPaymentTransferCaches().getBillingAccountRoleTransferCache();
+        var billingAccountRoleTransferCache = paymentTransferCaches.getBillingAccountRoleTransferCache();
         
         billingAccountRoles.forEach((billingAccountRole) ->
                 billingAccountRoleTransfers.add(billingAccountRoleTransferCache.getTransfer(userVisit, billingAccountRole))

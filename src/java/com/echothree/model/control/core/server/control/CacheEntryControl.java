@@ -145,7 +145,7 @@ public class CacheEntryControl
     }
 
     public CacheEntryTransfer getCacheEntryTransfer(UserVisit userVisit, CacheEntry cacheEntry) {
-        return getCoreTransferCaches().getCacheEntryTransferCache().getCacheEntryTransfer(userVisit, cacheEntry);
+        return coreTransferCaches.getCacheEntryTransferCache().getCacheEntryTransfer(userVisit, cacheEntry);
     }
 
     public CacheEntryTransfer getCacheEntryTransferByCacheEntryKey(UserVisit userVisit, String cacheEntryKey) {
@@ -167,7 +167,7 @@ public class CacheEntryControl
 
     public List<CacheEntryTransfer> getCacheEntryTransfers(UserVisit userVisit, Collection<CacheEntry> cacheEntries) {
         List<CacheEntryTransfer> cacheEntryTransfers = new ArrayList<>(cacheEntries.size());
-        var cacheEntryTransferCache = getCoreTransferCaches().getCacheEntryTransferCache();
+        var cacheEntryTransferCache = coreTransferCaches.getCacheEntryTransferCache();
 
         cacheEntries.forEach((cacheEntry) ->
                 cacheEntryTransfers.add(cacheEntryTransferCache.getCacheEntryTransfer(userVisit, cacheEntry))
@@ -374,12 +374,12 @@ public class CacheEntryControl
     }
 
     public CacheEntryDependencyTransfer getCacheEntryDependencyTransfer(UserVisit userVisit, CacheEntryDependency cacheEntryDependency) {
-        return getCoreTransferCaches().getCacheEntryDependencyTransferCache().getCacheEntryDependencyTransfer(userVisit, cacheEntryDependency);
+        return coreTransferCaches.getCacheEntryDependencyTransferCache().getCacheEntryDependencyTransfer(userVisit, cacheEntryDependency);
     }
 
     public List<CacheEntryDependencyTransfer> getCacheEntryDependencyTransfers(UserVisit userVisit, Collection<CacheEntryDependency> cacheEntries) {
         List<CacheEntryDependencyTransfer> cacheEntryDependencyTransfers = new ArrayList<>(cacheEntries.size());
-        var cacheEntryDependencyTransferCache = getCoreTransferCaches().getCacheEntryDependencyTransferCache();
+        var cacheEntryDependencyTransferCache = coreTransferCaches.getCacheEntryDependencyTransferCache();
 
         cacheEntries.forEach((cacheEntryDependency) ->
                 cacheEntryDependencyTransfers.add(cacheEntryDependencyTransferCache.getCacheEntryDependencyTransfer(userVisit, cacheEntryDependency))

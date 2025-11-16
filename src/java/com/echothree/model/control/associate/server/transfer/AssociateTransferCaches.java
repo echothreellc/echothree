@@ -17,53 +17,50 @@
 package com.echothree.model.control.associate.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
+@RequestScoped
 public class AssociateTransferCaches
         extends BaseTransferCaches {
     
-    protected AssociateProgramTransferCache associateProgramTransferCache;
-    protected AssociateProgramDescriptionTransferCache associateProgramDescriptionTransferCache;
-    protected AssociateTransferCache associateTransferCache;
-    protected AssociatePartyContactMechanismTransferCache associatePartyContactMechanismTransferCache;
-    protected AssociateReferralTransferCache associateReferralTransferCache;
+    @Inject
+    AssociateProgramTransferCache associateProgramTransferCache;
     
+    @Inject
+    AssociateProgramDescriptionTransferCache associateProgramDescriptionTransferCache;
+    
+    @Inject
+    AssociateTransferCache associateTransferCache;
+    
+    @Inject
+    AssociatePartyContactMechanismTransferCache associatePartyContactMechanismTransferCache;
+    
+    @Inject
+    AssociateReferralTransferCache associateReferralTransferCache;
+
     /** Creates a new instance of AssociateTransferCaches */
-    public AssociateTransferCaches() {
+    protected AssociateTransferCaches() {
         super();
     }
     
     public AssociateProgramTransferCache getAssociateProgramTransferCache() {
-        if(associateProgramTransferCache == null)
-            associateProgramTransferCache = new AssociateProgramTransferCache();
-        
         return associateProgramTransferCache;
     }
     
     public AssociateProgramDescriptionTransferCache getAssociateProgramDescriptionTransferCache() {
-        if(associateProgramDescriptionTransferCache == null)
-            associateProgramDescriptionTransferCache = new AssociateProgramDescriptionTransferCache();
-        
         return associateProgramDescriptionTransferCache;
     }
     
     public AssociateTransferCache getAssociateTransferCache() {
-        if(associateTransferCache == null)
-            associateTransferCache = new AssociateTransferCache();
-        
         return associateTransferCache;
     }
     
     public AssociatePartyContactMechanismTransferCache getAssociatePartyContactMechanismTransferCache() {
-        if(associatePartyContactMechanismTransferCache == null)
-            associatePartyContactMechanismTransferCache = new AssociatePartyContactMechanismTransferCache();
-        
         return associatePartyContactMechanismTransferCache;
     }
     
     public AssociateReferralTransferCache getAssociateReferralTransferCache() {
-        if(associateReferralTransferCache == null)
-            associateReferralTransferCache = new AssociateReferralTransferCache();
-        
         return associateReferralTransferCache;
     }
     

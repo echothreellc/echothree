@@ -21,14 +21,16 @@ import com.echothree.model.control.core.server.control.ServerControl;
 import com.echothree.model.data.core.server.entity.ProtocolDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ProtocolDescriptionTransferCache
         extends BaseCoreDescriptionTransferCache<ProtocolDescription, ProtocolDescriptionTransfer> {
 
     ServerControl serverControl = Session.getModelController(ServerControl.class);
 
     /** Creates a new instance of ProtocolDescriptionTransferCache */
-    public ProtocolDescriptionTransferCache() {
+    protected ProtocolDescriptionTransferCache() {
         super();
     }
     

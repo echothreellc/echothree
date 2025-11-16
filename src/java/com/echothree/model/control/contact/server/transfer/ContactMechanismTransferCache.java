@@ -24,7 +24,9 @@ import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.data.contact.server.entity.ContactMechanism;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ContactMechanismTransferCache
         extends BaseContactTransferCache<ContactMechanism, ContactMechanismTransfer> {
 
@@ -33,7 +35,7 @@ public class ContactMechanismTransferCache
     boolean includeComments;
 
     /** Creates a new instance of ContactMechanismTransferCache */
-    public ContactMechanismTransferCache() {
+    protected ContactMechanismTransferCache() {
         super();
 
         var options = session.getOptions();

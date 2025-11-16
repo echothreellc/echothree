@@ -22,7 +22,9 @@ import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.carrier.server.entity.CarrierOption;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CarrierOptionTransferCache
         extends BaseCarrierTransferCache<CarrierOption, CarrierOptionTransfer> {
 
@@ -30,7 +32,7 @@ public class CarrierOptionTransferCache
     SelectorControl selectorControl = Session.getModelController(SelectorControl.class);
 
     /** Creates a new instance of CarrierOptionTransferCache */
-    public CarrierOptionTransferCache() {
+    protected CarrierOptionTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

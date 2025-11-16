@@ -224,12 +224,12 @@ public class TransactionTimeControl
     }
 
     public TransactionTimeTypeTransfer getTransactionTimeTypeTransfer(UserVisit userVisit, TransactionTimeType transactionTimeType) {
-        return getAccountingTransferCaches().getTransactionTimeTypeTransferCache().getTransfer(userVisit, transactionTimeType);
+        return accountingTransferCaches.getTransactionTimeTypeTransferCache().getTransfer(userVisit, transactionTimeType);
     }
 
     public List<TransactionTimeTypeTransfer> getTransactionTimeTypeTransfers(UserVisit userVisit, Collection<TransactionTimeType> transactionTimeTypes) {
         List<TransactionTimeTypeTransfer> transactionTimeTypeTransfers = new ArrayList<>(transactionTimeTypes.size());
-        var transactionTimeTypeTransferCache = getAccountingTransferCaches().getTransactionTimeTypeTransferCache();
+        var transactionTimeTypeTransferCache = accountingTransferCaches.getTransactionTimeTypeTransferCache();
 
         transactionTimeTypes.forEach((transactionTimeType) ->
                 transactionTimeTypeTransfers.add(transactionTimeTypeTransferCache.getTransfer(userVisit, transactionTimeType))
@@ -450,13 +450,13 @@ public class TransactionTimeControl
     }
 
     public TransactionTimeTypeDescriptionTransfer getTransactionTimeTypeDescriptionTransfer(UserVisit userVisit, TransactionTimeTypeDescription transactionTimeTypeDescription) {
-        return getAccountingTransferCaches().getTransactionTimeTypeDescriptionTransferCache().getTransfer(userVisit, transactionTimeTypeDescription);
+        return accountingTransferCaches.getTransactionTimeTypeDescriptionTransferCache().getTransfer(userVisit, transactionTimeTypeDescription);
     }
 
     public List<TransactionTimeTypeDescriptionTransfer> getTransactionTimeTypeDescriptionTransfersByTransactionTimeType(UserVisit userVisit, TransactionTimeType transactionTimeType) {
         var transactionTimeTypeDescriptions = getTransactionTimeTypeDescriptionsByTransactionTimeType(transactionTimeType);
         List<TransactionTimeTypeDescriptionTransfer> transactionTimeTypeDescriptionTransfers = new ArrayList<>(transactionTimeTypeDescriptions.size());
-        var transactionTimeTypeDescriptionTransferCache = getAccountingTransferCaches().getTransactionTimeTypeDescriptionTransferCache();
+        var transactionTimeTypeDescriptionTransferCache = accountingTransferCaches.getTransactionTimeTypeDescriptionTransferCache();
 
         transactionTimeTypeDescriptions.forEach((transactionTimeTypeDescription) ->
                 transactionTimeTypeDescriptionTransfers.add(transactionTimeTypeDescriptionTransferCache.getTransfer(userVisit, transactionTimeTypeDescription))
@@ -635,12 +635,12 @@ public class TransactionTimeControl
     }
 
     public TransactionTimeTransfer getTransactionTimeTransfer(UserVisit userVisit, TransactionTime transactionTime) {
-        return getAccountingTransferCaches().getTransactionTimeTransferCache().getTransfer(userVisit, transactionTime);
+        return accountingTransferCaches.getTransactionTimeTransferCache().getTransfer(userVisit, transactionTime);
     }
 
     public List<TransactionTimeTransfer> getTransactionTimeTransfers(UserVisit userVisit, Collection<TransactionTime> transactionTimes) {
         List<TransactionTimeTransfer> transactionTimeTransfers = new ArrayList<>(transactionTimes.size());
-        var transactionTimeTransferCache = getAccountingTransferCaches().getTransactionTimeTransferCache();
+        var transactionTimeTransferCache = accountingTransferCaches.getTransactionTimeTransferCache();
 
         transactionTimes.forEach((transactionTime) ->
                 transactionTimeTransfers.add(transactionTimeTransferCache.getTransfer(userVisit, transactionTime))

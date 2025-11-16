@@ -23,7 +23,9 @@ import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.item.server.entity.ItemHarmonizedTariffScheduleCode;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ItemHarmonizedTariffScheduleCodeTransferCache
         extends BaseItemTransferCache<ItemHarmonizedTariffScheduleCode, ItemHarmonizedTariffScheduleCodeTransfer> {
     
@@ -31,7 +33,7 @@ public class ItemHarmonizedTariffScheduleCodeTransferCache
     ItemControl itemControl = Session.getModelController(ItemControl.class);
 
     /** Creates a new instance of ItemHarmonizedTariffScheduleCodeTransferCache */
-    public ItemHarmonizedTariffScheduleCodeTransferCache() {
+    protected ItemHarmonizedTariffScheduleCodeTransferCache() {
         super();
         
         var options = session.getOptions();

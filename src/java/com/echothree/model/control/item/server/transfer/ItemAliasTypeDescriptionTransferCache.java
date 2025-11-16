@@ -21,14 +21,16 @@ import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.item.server.entity.ItemAliasTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ItemAliasTypeDescriptionTransferCache
         extends BaseItemDescriptionTransferCache<ItemAliasTypeDescription, ItemAliasTypeDescriptionTransfer> {
 
     ItemControl itemControl = Session.getModelController(ItemControl.class);
 
     /** Creates a new instance of ItemAliasTypeDescriptionTransferCache */
-    public ItemAliasTypeDescriptionTransferCache() {
+    protected ItemAliasTypeDescriptionTransferCache() {
         super();
     }
     
@@ -37,8 +39,7 @@ public class ItemAliasTypeDescriptionTransferCache
         var itemAliasTypeDescriptionTransfer = get(itemAliasTypeDescription);
         
         if(itemAliasTypeDescriptionTransfer == null) {
-            var itemAliasTypeTransferCache = itemControl.getItemTransferCaches().getItemAliasTypeTransferCache();
-            var itemAliasTypeTransfer = itemAliasTypeTransferCache.getTransfer(userVisit, itemAliasTypeDescription.getItemAliasType());
+            var itemAliasTypeTransfer = itemControl.getItemAliasTypeTransfer(userVisit, itemAliasTypeDescription.getItemAliasType());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, itemAliasTypeDescription.getLanguage());
             
             itemAliasTypeDescriptionTransfer = new ItemAliasTypeDescriptionTransfer(languageTransfer, itemAliasTypeTransfer, itemAliasTypeDescription.getDescription());

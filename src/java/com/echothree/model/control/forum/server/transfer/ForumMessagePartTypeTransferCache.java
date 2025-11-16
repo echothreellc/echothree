@@ -21,14 +21,16 @@ import com.echothree.model.control.forum.common.transfer.ForumMessagePartTypeTra
 import com.echothree.model.data.forum.server.entity.ForumMessagePartType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ForumMessagePartTypeTransferCache
         extends BaseForumTransferCache<ForumMessagePartType, ForumMessagePartTypeTransfer> {
 
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
 
     /** Creates a new instance of ForumMessagePartTypeTransferCache */
-    public ForumMessagePartTypeTransferCache() {
+    protected ForumMessagePartTypeTransferCache() {
         super();
     }
     

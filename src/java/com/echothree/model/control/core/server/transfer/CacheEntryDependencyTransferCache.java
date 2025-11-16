@@ -24,7 +24,9 @@ import com.echothree.model.data.core.server.entity.CacheEntryDependency;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CacheEntryDependencyTransferCache
         extends BaseCoreTransferCache<CacheEntryDependency, CacheEntryDependencyTransfer> {
 
@@ -36,7 +38,7 @@ public class CacheEntryDependencyTransferCache
     boolean filterEntityInstance;
     
     /** Creates a new instance of CacheEntryTransferCache */
-    public CacheEntryDependencyTransferCache() {
+    protected CacheEntryDependencyTransferCache() {
         super();
         
         transferProperties = session.getTransferProperties();

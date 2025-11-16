@@ -17,182 +17,148 @@
 package com.echothree.model.control.employee.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
+@RequestScoped
 public class EmployeeTransferCaches
         extends BaseTransferCaches {
     
-    protected EmployeeTypeTransferCache employeeTypeTransferCache;
-    protected EmployeeTypeDescriptionTransferCache employeeTypeDescriptionTransferCache;
-    protected EmployeeTransferCache employeeTransferCache;
-    protected ResponsibilityTypeTransferCache responsibilityTypeTransferCache;
-    protected ResponsibilityTypeDescriptionTransferCache responsibilityTypeDescriptionTransferCache;
-    protected SkillTypeTransferCache skillTypeTransferCache;
-    protected SkillTypeDescriptionTransferCache skillTypeDescriptionTransferCache;
-    protected LeaveTypeTransferCache leaveTypeTransferCache;
-    protected LeaveTypeDescriptionTransferCache leaveTypeDescriptionTransferCache;
-    protected LeaveReasonTransferCache leaveReasonTransferCache;
-    protected LeaveReasonDescriptionTransferCache leaveReasonDescriptionTransferCache;
-    protected LeaveTransferCache leaveTransferCache;
-    protected TerminationReasonTransferCache terminationReasonTransferCache;
-    protected TerminationReasonDescriptionTransferCache terminationReasonDescriptionTransferCache;
-    protected TerminationTypeTransferCache terminationTypeTransferCache;
-    protected TerminationTypeDescriptionTransferCache terminationTypeDescriptionTransferCache;
-    protected EmploymentTransferCache employmentTransferCache;
-    protected PartyResponsibilityTransferCache partyResponsibilityTransferCache;
-    protected PartySkillTransferCache partySkillTransferCache;
+    @Inject
+    EmployeeTypeTransferCache employeeTypeTransferCache;
     
+    @Inject
+    EmployeeTypeDescriptionTransferCache employeeTypeDescriptionTransferCache;
+    
+    @Inject
+    EmployeeTransferCache employeeTransferCache;
+    
+    @Inject
+    ResponsibilityTypeTransferCache responsibilityTypeTransferCache;
+    
+    @Inject
+    ResponsibilityTypeDescriptionTransferCache responsibilityTypeDescriptionTransferCache;
+    
+    @Inject
+    SkillTypeTransferCache skillTypeTransferCache;
+    
+    @Inject
+    SkillTypeDescriptionTransferCache skillTypeDescriptionTransferCache;
+    
+    @Inject
+    LeaveTypeTransferCache leaveTypeTransferCache;
+    
+    @Inject
+    LeaveTypeDescriptionTransferCache leaveTypeDescriptionTransferCache;
+    
+    @Inject
+    LeaveReasonTransferCache leaveReasonTransferCache;
+    
+    @Inject
+    LeaveReasonDescriptionTransferCache leaveReasonDescriptionTransferCache;
+    
+    @Inject
+    LeaveTransferCache leaveTransferCache;
+    
+    @Inject
+    TerminationReasonTransferCache terminationReasonTransferCache;
+    
+    @Inject
+    TerminationReasonDescriptionTransferCache terminationReasonDescriptionTransferCache;
+    
+    @Inject
+    TerminationTypeTransferCache terminationTypeTransferCache;
+    
+    @Inject
+    TerminationTypeDescriptionTransferCache terminationTypeDescriptionTransferCache;
+    
+    @Inject
+    EmploymentTransferCache employmentTransferCache;
+    
+    @Inject
+    PartyResponsibilityTransferCache partyResponsibilityTransferCache;
+    
+    @Inject
+    PartySkillTransferCache partySkillTransferCache;
+
     /** Creates a new instance of EmployeeTransferCaches */
-    public EmployeeTransferCaches() {
+    protected EmployeeTransferCaches() {
         super();
     }
     
     public EmployeeTypeTransferCache getEmployeeTypeTransferCache() {
-        if(employeeTypeTransferCache == null)
-            employeeTypeTransferCache = new EmployeeTypeTransferCache();
-        
         return employeeTypeTransferCache;
     }
     
     public EmployeeTypeDescriptionTransferCache getEmployeeTypeDescriptionTransferCache() {
-        if(employeeTypeDescriptionTransferCache == null)
-            employeeTypeDescriptionTransferCache = new EmployeeTypeDescriptionTransferCache();
-        
         return employeeTypeDescriptionTransferCache;
     }
     
     public EmployeeTransferCache getEmployeeTransferCache() {
-        if(employeeTransferCache == null) {
-            employeeTransferCache = new EmployeeTransferCache();
-        }
-        
         return employeeTransferCache;
     }
     
     public ResponsibilityTypeTransferCache getResponsibilityTypeTransferCache() {
-        if(responsibilityTypeTransferCache == null) {
-            responsibilityTypeTransferCache = new ResponsibilityTypeTransferCache();
-        }
-        
         return responsibilityTypeTransferCache;
     }
     
     public ResponsibilityTypeDescriptionTransferCache getResponsibilityTypeDescriptionTransferCache() {
-        if(responsibilityTypeDescriptionTransferCache == null) {
-            responsibilityTypeDescriptionTransferCache = new ResponsibilityTypeDescriptionTransferCache();
-        }
-        
         return responsibilityTypeDescriptionTransferCache;
     }
     
     public SkillTypeTransferCache getSkillTypeTransferCache() {
-        if(skillTypeTransferCache == null) {
-            skillTypeTransferCache = new SkillTypeTransferCache();
-        }
-        
         return skillTypeTransferCache;
     }
     
     public SkillTypeDescriptionTransferCache getSkillTypeDescriptionTransferCache() {
-        if(skillTypeDescriptionTransferCache == null) {
-            skillTypeDescriptionTransferCache = new SkillTypeDescriptionTransferCache();
-        }
-        
         return skillTypeDescriptionTransferCache;
     }
     
     public LeaveTypeTransferCache getLeaveTypeTransferCache() {
-        if(leaveTypeTransferCache == null) {
-            leaveTypeTransferCache = new LeaveTypeTransferCache();
-        }
-
         return leaveTypeTransferCache;
     }
 
     public LeaveTypeDescriptionTransferCache getLeaveTypeDescriptionTransferCache() {
-        if(leaveTypeDescriptionTransferCache == null) {
-            leaveTypeDescriptionTransferCache = new LeaveTypeDescriptionTransferCache();
-        }
-
         return leaveTypeDescriptionTransferCache;
     }
 
     public LeaveReasonTransferCache getLeaveReasonTransferCache() {
-        if(leaveReasonTransferCache == null) {
-            leaveReasonTransferCache = new LeaveReasonTransferCache();
-        }
-
         return leaveReasonTransferCache;
     }
 
     public LeaveReasonDescriptionTransferCache getLeaveReasonDescriptionTransferCache() {
-        if(leaveReasonDescriptionTransferCache == null) {
-            leaveReasonDescriptionTransferCache = new LeaveReasonDescriptionTransferCache();
-        }
-
         return leaveReasonDescriptionTransferCache;
     }
 
     public LeaveTransferCache getLeaveTransferCache() {
-        if(leaveTransferCache == null) {
-            leaveTransferCache = new LeaveTransferCache();
-        }
-
         return leaveTransferCache;
     }
 
     public TerminationReasonTransferCache getTerminationReasonTransferCache() {
-        if(terminationReasonTransferCache == null) {
-            terminationReasonTransferCache = new TerminationReasonTransferCache();
-        }
-        
         return terminationReasonTransferCache;
     }
     
     public TerminationReasonDescriptionTransferCache getTerminationReasonDescriptionTransferCache() {
-        if(terminationReasonDescriptionTransferCache == null) {
-            terminationReasonDescriptionTransferCache = new TerminationReasonDescriptionTransferCache();
-        }
-        
         return terminationReasonDescriptionTransferCache;
     }
     
     public TerminationTypeTransferCache getTerminationTypeTransferCache() {
-        if(terminationTypeTransferCache == null) {
-            terminationTypeTransferCache = new TerminationTypeTransferCache();
-        }
-        
         return terminationTypeTransferCache;
     }
     
     public TerminationTypeDescriptionTransferCache getTerminationTypeDescriptionTransferCache() {
-        if(terminationTypeDescriptionTransferCache == null) {
-            terminationTypeDescriptionTransferCache = new TerminationTypeDescriptionTransferCache();
-        }
-        
         return terminationTypeDescriptionTransferCache;
     }
     
     public EmploymentTransferCache getEmploymentTransferCache() {
-        if(employmentTransferCache == null) {
-            employmentTransferCache = new EmploymentTransferCache();
-        }
-
         return employmentTransferCache;
     }
 
     public PartyResponsibilityTransferCache getPartyResponsibilityTransferCache() {
-        if(partyResponsibilityTransferCache == null) {
-            partyResponsibilityTransferCache = new PartyResponsibilityTransferCache();
-        }
-        
         return partyResponsibilityTransferCache;
     }
     
     public PartySkillTransferCache getPartySkillTransferCache() {
-        if(partySkillTransferCache == null) {
-            partySkillTransferCache = new PartySkillTransferCache();
-        }
-        
         return partySkillTransferCache;
     }
     

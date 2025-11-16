@@ -21,14 +21,16 @@ import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.data.batch.server.entity.BatchEntity;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class BatchEntityTransferCache
         extends BaseBatchTransferCache<BatchEntity, BatchEntityTransfer> {
 
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
     /** Creates a new instance of BatchEntityTransferCache */
-    public BatchEntityTransferCache() {
+    protected BatchEntityTransferCache() {
         super();
     }
 

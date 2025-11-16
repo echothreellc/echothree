@@ -22,7 +22,9 @@ import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.data.training.server.entity.TrainingClassTranslation;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class TrainingClassTranslationTransferCache
         extends BaseTrainingDescriptionTransferCache<TrainingClassTranslation, TrainingClassTranslationTransfer> {
 
@@ -30,7 +32,7 @@ public class TrainingClassTranslationTransferCache
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
     
     /** Creates a new instance of TrainingClassTranslationTransferCache */
-    public TrainingClassTranslationTransferCache() {
+    protected TrainingClassTranslationTransferCache() {
         super();
     }
     

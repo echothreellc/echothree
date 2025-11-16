@@ -21,14 +21,16 @@ import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class SequenceTypeTransferCache
         extends BaseSequenceTransferCache<SequenceType, SequenceTypeTransfer> {
 
     SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
 
     /** Creates a new instance of SequenceTypeTransferCache */
-    public SequenceTypeTransferCache() {
+    protected SequenceTypeTransferCache() {
         super();
         
         setIncludeEntityInstance(true);
@@ -42,10 +44,8 @@ public class SequenceTypeTransferCache
             var sequenceTypeName = sequenceTypeDetail.getSequenceTypeName();
             var prefix = sequenceTypeDetail.getPrefix();
             var suffix = sequenceTypeDetail.getSuffix();
-            var sequenceEncoderTypeTransferCache = sequenceControl.getSequenceTransferCaches().getSequenceEncoderTypeTransferCache();
-            var sequenceEncoderType = sequenceEncoderTypeTransferCache.getSequenceEncoderTypeTransfer(userVisit, sequenceTypeDetail.getSequenceEncoderType());
-            var sequenceChecksumTypeTransferCache = sequenceControl.getSequenceTransferCaches().getSequenceChecksumTypeTransferCache();
-            var sequenceChecksumType = sequenceChecksumTypeTransferCache.getSequenceChecksumTypeTransfer(userVisit, sequenceTypeDetail.getSequenceChecksumType());
+            var sequenceEncoderType = sequenceControl.getSequenceEncoderTypeTransfer(userVisit, sequenceTypeDetail.getSequenceEncoderType());
+            var sequenceChecksumType = sequenceControl.getSequenceChecksumTypeTransfer(userVisit, sequenceTypeDetail.getSequenceChecksumType());
             var chunkSize = sequenceTypeDetail.getChunkSize();
             var isDefault = sequenceTypeDetail.getIsDefault();
             var sortOrder = sequenceTypeDetail.getSortOrder();

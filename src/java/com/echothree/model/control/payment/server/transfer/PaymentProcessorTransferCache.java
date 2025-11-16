@@ -26,7 +26,9 @@ import com.echothree.model.data.payment.server.entity.PaymentProcessor;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PaymentProcessorTransferCache
         extends BasePaymentTransferCache<PaymentProcessor, PaymentProcessorTransfer> {
 
@@ -38,7 +40,7 @@ public class PaymentProcessorTransferCache
     boolean includePaymentProcessorTransactions;
 
     /** Creates a new instance of PaymentProcessorTransferCache */
-    public PaymentProcessorTransferCache() {
+    protected PaymentProcessorTransferCache() {
         super();
 
         var options = session.getOptions();

@@ -79,7 +79,7 @@ public class OrderRoleControl
     }
     
     public OrderRoleTypeTransfer getOrderRoleTypeTransfer(UserVisit userVisit, OrderRoleType orderRoleType) {
-        return getOrderTransferCaches().getOrderRoleTypeTransferCache().getOrderRoleTypeTransfer(userVisit, orderRoleType);
+        return orderTransferCaches.getOrderRoleTypeTransferCache().getOrderRoleTypeTransfer(userVisit, orderRoleType);
     }
 
     // --------------------------------------------------------------------------------
@@ -256,7 +256,7 @@ public class OrderRoleControl
     }
 
     public OrderRoleTransfer getOrderRoleTransfer(UserVisit userVisit, OrderRole orderRole) {
-        return getOrderTransferCaches().getOrderRoleTransferCache().getOrderRoleTransfer(userVisit, orderRole);
+        return orderTransferCaches.getOrderRoleTransferCache().getOrderRoleTransfer(userVisit, orderRole);
     }
 
     public List<OrderRoleTransfer> getOrderRoleTransfers(UserVisit userVisit, Collection<OrderRole> orderRoles) {

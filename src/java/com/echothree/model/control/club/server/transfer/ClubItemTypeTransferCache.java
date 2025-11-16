@@ -21,14 +21,16 @@ import com.echothree.model.control.club.server.control.ClubControl;
 import com.echothree.model.data.club.server.entity.ClubItemType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ClubItemTypeTransferCache
         extends BaseClubTransferCache<ClubItemType, ClubItemTypeTransfer> {
 
     ClubControl clubControl = Session.getModelController(ClubControl.class);
 
     /** Creates a new instance of ClubItemTypeTransferCache */
-    public ClubItemTypeTransferCache() {
+    protected ClubItemTypeTransferCache() {
         super();
     }
     

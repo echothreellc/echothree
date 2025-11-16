@@ -21,14 +21,16 @@ import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workflow.server.entity.WorkflowStepType;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class WorkflowStepTypeTransferCache
         extends BaseWorkflowTransferCache<WorkflowStepType, WorkflowStepTypeTransfer> {
 
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
 
     /** Creates a new instance of WorkflowStepTypeTransferCache */
-    public WorkflowStepTypeTransferCache() {
+    protected WorkflowStepTypeTransferCache() {
         super();
     }
     

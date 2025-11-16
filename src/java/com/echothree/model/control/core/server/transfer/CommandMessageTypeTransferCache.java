@@ -21,14 +21,16 @@ import com.echothree.model.control.core.server.control.CommandControl;
 import com.echothree.model.data.core.server.entity.CommandMessageType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CommandMessageTypeTransferCache
         extends BaseCoreTransferCache<CommandMessageType, CommandMessageTypeTransfer> {
 
     CommandControl commandControl = Session.getModelController(CommandControl.class);
 
     /** Creates a new instance of CommandMessageTypeTransferCache */
-    public CommandMessageTypeTransferCache() {
+    protected CommandMessageTypeTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

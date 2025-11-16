@@ -25,7 +25,9 @@ import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.string.GeoPointUtils;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EntityGeoPointDefaultTransferCache
         extends BaseCoreTransferCache<EntityGeoPointDefault, EntityGeoPointDefaultTransfer> {
 
@@ -36,7 +38,7 @@ public class EntityGeoPointDefaultTransferCache
     GeoPointUtils geoPointUtils = GeoPointUtils.getInstance();
     
     /** Creates a new instance of EntityGeoPointDefaultTransferCache */
-    public EntityGeoPointDefaultTransferCache() {
+    protected EntityGeoPointDefaultTransferCache() {
         super();
     }
     

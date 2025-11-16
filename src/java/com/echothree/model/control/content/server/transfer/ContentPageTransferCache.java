@@ -28,7 +28,9 @@ import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.transfer.MapWrapperBuilder;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ContentPageTransferCache
         extends BaseContentTransferCache<ContentPage, ContentPageTransfer> {
 
@@ -46,7 +48,7 @@ public class ContentPageTransferCache
     boolean filterEntityInstance;
     
     /** Creates a new instance of ContentPageTransferCache */
-    public ContentPageTransferCache() {
+    protected ContentPageTransferCache() {
         super();
 
         var options = session.getOptions();

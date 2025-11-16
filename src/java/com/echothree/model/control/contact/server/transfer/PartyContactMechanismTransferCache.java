@@ -28,7 +28,9 @@ import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PartyContactMechanismTransferCache
         extends BaseContactTransferCache<PartyContactMechanism, PartyContactMechanismTransfer> {
 
@@ -41,7 +43,7 @@ public class PartyContactMechanismTransferCache
     boolean includePartyContactMechanismRelationshipsByToPartyContactMechanism;
     
     /** Creates a new instance of PartyContactMechanismTransferCache */
-    public PartyContactMechanismTransferCache() {
+    protected PartyContactMechanismTransferCache() {
         super();
         
         var options = session.getOptions();

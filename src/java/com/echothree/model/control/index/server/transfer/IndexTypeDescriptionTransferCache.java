@@ -21,14 +21,16 @@ import com.echothree.model.control.index.server.control.IndexControl;
 import com.echothree.model.data.index.server.entity.IndexTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class IndexTypeDescriptionTransferCache
         extends BaseIndexDescriptionTransferCache<IndexTypeDescription, IndexTypeDescriptionTransfer> {
 
     IndexControl indexControl = Session.getModelController(IndexControl.class);
 
     /** Creates a new instance of IndexTypeDescriptionTransferCache */
-    public IndexTypeDescriptionTransferCache() {
+    protected IndexTypeDescriptionTransferCache() {
         super();
     }
     

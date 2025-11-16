@@ -23,7 +23,9 @@ import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.batch.server.entity.BatchType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class BatchTypeTransferCache
         extends BaseBatchTransferCache<BatchType, BatchTypeTransfer> {
 
@@ -32,7 +34,7 @@ public class BatchTypeTransferCache
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of BatchTypeTransferCache */
-    public BatchTypeTransferCache() {
+    protected BatchTypeTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

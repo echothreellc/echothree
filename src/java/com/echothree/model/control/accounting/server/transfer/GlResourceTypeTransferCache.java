@@ -21,14 +21,16 @@ import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.data.accounting.server.entity.GlResourceType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class GlResourceTypeTransferCache
         extends BaseAccountingTransferCache<GlResourceType, GlResourceTypeTransfer> {
 
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
 
     /** Creates a new instance of GlResourceTypeTransferCache */
-    public GlResourceTypeTransferCache() {
+    protected GlResourceTypeTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

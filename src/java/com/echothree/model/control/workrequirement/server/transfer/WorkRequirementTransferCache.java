@@ -27,7 +27,9 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workrequirement.server.entity.WorkRequirement;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class WorkRequirementTransferCache
         extends BaseWorkRequirementTransferCache<WorkRequirement, WorkRequirementTransfer> {
     
@@ -40,7 +42,7 @@ public class WorkRequirementTransferCache
     boolean includeWorkTimes;
     
     /** Creates a new instance of WorkRequirementTransferCache */
-    public WorkRequirementTransferCache() {
+    protected WorkRequirementTransferCache() {
         var options = session.getOptions();
         if(options != null) {
             includeWorkAssignments = options.contains(WorkRequirementOptions.WorkRequirementIncludeWorkAssignments);

@@ -29,7 +29,9 @@ import com.echothree.model.data.party.server.entity.PartyDivision;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class DivisionTransferCache
         extends BasePartyTransferCache<Party, DivisionTransfer> {
     
@@ -45,7 +47,7 @@ public class DivisionTransferCache
     boolean includePartyScaleUses;
     
     /** Creates a new instance of DivisionTransferCache */
-    public DivisionTransferCache() {
+    protected DivisionTransferCache() {
         super();
         
         var options = session.getOptions();

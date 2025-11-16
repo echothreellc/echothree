@@ -22,7 +22,9 @@ import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.data.forum.server.entity.ForumMimeType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ForumMimeTypeTransferCache
         extends BaseForumTransferCache<ForumMimeType, ForumMimeTypeTransfer> {
 
@@ -30,7 +32,7 @@ public class ForumMimeTypeTransferCache
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
     
     /** Creates a new instance of ForumMimeTypeTransferCache */
-    public ForumMimeTypeTransferCache() {
+    protected ForumMimeTypeTransferCache() {
         super();
     }
     

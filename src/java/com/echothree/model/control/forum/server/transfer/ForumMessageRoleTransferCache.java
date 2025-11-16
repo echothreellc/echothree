@@ -22,7 +22,9 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.forum.server.entity.ForumMessageRole;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ForumMessageRoleTransferCache
         extends BaseForumTransferCache<ForumMessageRole, ForumMessageRoleTransfer> {
 
@@ -30,7 +32,7 @@ public class ForumMessageRoleTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of ForumMessageRoleTransferCache */
-    public ForumMessageRoleTransferCache() {
+    protected ForumMessageRoleTransferCache() {
         super();
     }
     

@@ -24,7 +24,9 @@ import com.echothree.model.data.core.server.entity.EntityIntegerRange;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EntityIntegerRangeTransferCache
         extends BaseCoreTransferCache<EntityIntegerRange, EntityIntegerRangeTransfer> {
 
@@ -41,7 +43,7 @@ public class EntityIntegerRangeTransferCache
     boolean filterEntityInstance;
 
     /** Creates a new instance of EntityIntegerRangeTransferCache */
-    public EntityIntegerRangeTransferCache() {
+    protected EntityIntegerRangeTransferCache() {
         super();
         
         transferProperties = session.getTransferProperties();

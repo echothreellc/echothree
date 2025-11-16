@@ -22,7 +22,9 @@ import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.item.server.entity.ItemUnitOfMeasureType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ItemUnitOfMeasureTypeTransferCache
         extends BaseItemTransferCache<ItemUnitOfMeasureType, ItemUnitOfMeasureTypeTransfer> {
 
@@ -30,7 +32,7 @@ public class ItemUnitOfMeasureTypeTransferCache
     UomControl uomControl = Session.getModelController(UomControl.class);
     
     /** Creates a new instance of ItemUnitOfMeasureTypeTransferCache */
-    public ItemUnitOfMeasureTypeTransferCache() {
+    protected ItemUnitOfMeasureTypeTransferCache() {
         super();
     }
     

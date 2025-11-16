@@ -17,85 +17,78 @@
 package com.echothree.model.control.document.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
+@RequestScoped
 public class DocumentTransferCaches
         extends BaseTransferCaches {
     
-    protected DocumentTypeTransferCache documentTypeTransferCache;
-    protected DocumentTypeDescriptionTransferCache documentTypeDescriptionTransferCache;
-    protected DocumentTypeUsageTypeTransferCache documentTypeUsageTypeTransferCache;
-    protected DocumentTypeUsageTypeDescriptionTransferCache documentTypeUsageTypeDescriptionTransferCache;
-    protected DocumentTypeUsageTransferCache documentTypeUsageTransferCache;
-    protected DocumentTransferCache documentTransferCache;
-    protected DocumentDescriptionTransferCache documentDescriptionTransferCache;
-    protected PartyTypeDocumentTypeUsageTypeTransferCache partyTypeDocumentTypeUsageTypeTransferCache;
-    protected PartyDocumentTransferCache partyDocumentTransferCache;
+    @Inject
+    DocumentTypeTransferCache documentTypeTransferCache;
     
+    @Inject
+    DocumentTypeDescriptionTransferCache documentTypeDescriptionTransferCache;
+    
+    @Inject
+    DocumentTypeUsageTypeTransferCache documentTypeUsageTypeTransferCache;
+    
+    @Inject
+    DocumentTypeUsageTypeDescriptionTransferCache documentTypeUsageTypeDescriptionTransferCache;
+    
+    @Inject
+    DocumentTypeUsageTransferCache documentTypeUsageTransferCache;
+    
+    @Inject
+    DocumentTransferCache documentTransferCache;
+    
+    @Inject
+    DocumentDescriptionTransferCache documentDescriptionTransferCache;
+    
+    @Inject
+    PartyTypeDocumentTypeUsageTypeTransferCache partyTypeDocumentTypeUsageTypeTransferCache;
+    
+    @Inject
+    PartyDocumentTransferCache partyDocumentTransferCache;
+
     /** Creates a new instance of DocumentTransferCaches */
-    public DocumentTransferCaches() {
+    protected DocumentTransferCaches() {
         super();
     }
     
     public DocumentTypeTransferCache getDocumentTypeTransferCache() {
-        if(documentTypeTransferCache == null)
-            documentTypeTransferCache = new DocumentTypeTransferCache();
-
         return documentTypeTransferCache;
     }
 
     public DocumentTypeDescriptionTransferCache getDocumentTypeDescriptionTransferCache() {
-        if(documentTypeDescriptionTransferCache == null)
-            documentTypeDescriptionTransferCache = new DocumentTypeDescriptionTransferCache();
-
         return documentTypeDescriptionTransferCache;
     }
 
     public DocumentTypeUsageTypeTransferCache getDocumentTypeUsageTypeTransferCache() {
-        if(documentTypeUsageTypeTransferCache == null)
-            documentTypeUsageTypeTransferCache = new DocumentTypeUsageTypeTransferCache();
-
         return documentTypeUsageTypeTransferCache;
     }
 
     public DocumentTypeUsageTypeDescriptionTransferCache getDocumentTypeUsageTypeDescriptionTransferCache() {
-        if(documentTypeUsageTypeDescriptionTransferCache == null)
-            documentTypeUsageTypeDescriptionTransferCache = new DocumentTypeUsageTypeDescriptionTransferCache();
-
         return documentTypeUsageTypeDescriptionTransferCache;
     }
 
     public DocumentTypeUsageTransferCache getDocumentTypeUsageTransferCache() {
-        if(documentTypeUsageTransferCache == null)
-            documentTypeUsageTransferCache = new DocumentTypeUsageTransferCache();
-
         return documentTypeUsageTransferCache;
     }
 
     public DocumentTransferCache getDocumentTransferCache() {
-        if(documentTransferCache == null)
-            documentTransferCache = new DocumentTransferCache();
-        
         return documentTransferCache;
     }
     
     public DocumentDescriptionTransferCache getDocumentDescriptionTransferCache() {
-        if(documentDescriptionTransferCache == null)
-            documentDescriptionTransferCache = new DocumentDescriptionTransferCache();
-
         return documentDescriptionTransferCache;
     }
 
     public PartyTypeDocumentTypeUsageTypeTransferCache getPartyTypeDocumentTypeUsageTypeTransferCache() {
-        if(partyTypeDocumentTypeUsageTypeTransferCache == null)
-            partyTypeDocumentTypeUsageTypeTransferCache = new PartyTypeDocumentTypeUsageTypeTransferCache();
-
         return partyTypeDocumentTypeUsageTypeTransferCache;
     }
 
     public PartyDocumentTransferCache getPartyDocumentTransferCache() {
-        if(partyDocumentTransferCache == null)
-            partyDocumentTransferCache = new PartyDocumentTransferCache();
-
         return partyDocumentTransferCache;
     }
 

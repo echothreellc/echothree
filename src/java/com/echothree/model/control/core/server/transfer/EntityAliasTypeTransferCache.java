@@ -26,7 +26,9 @@ import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EntityAliasTypeTransferCache
         extends BaseCoreTransferCache<EntityAliasType, EntityAliasTypeTransfer> {
 
@@ -45,7 +47,7 @@ public class EntityAliasTypeTransferCache
     boolean filterEntityInstance;
 
     /** Creates a new instance of EntityAliasTypeTransferCache */
-    public EntityAliasTypeTransferCache() {
+    protected EntityAliasTypeTransferCache() {
         super();
         
         var options = session.getOptions();

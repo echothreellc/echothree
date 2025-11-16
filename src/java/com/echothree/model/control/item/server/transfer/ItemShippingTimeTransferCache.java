@@ -24,7 +24,9 @@ import com.echothree.model.data.item.server.entity.ItemShippingTime;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ItemShippingTimeTransferCache
         extends BaseItemTransferCache<ItemShippingTime, ItemShippingTimeTransfer> {
     
@@ -40,7 +42,7 @@ public class ItemShippingTimeTransferCache
     boolean filterShippingEndTime;
 
     /** Creates a new instance of ItemShippingTimeTransferCache */
-    public ItemShippingTimeTransferCache() {
+    protected ItemShippingTimeTransferCache() {
         super();
 
         transferProperties = session.getTransferProperties();

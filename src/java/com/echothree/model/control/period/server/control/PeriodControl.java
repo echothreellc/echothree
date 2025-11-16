@@ -68,6 +68,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 @RequestScoped
 public class PeriodControl
@@ -82,16 +83,9 @@ public class PeriodControl
     //   Period Transfer Caches
     // --------------------------------------------------------------------------------
     
-    private PeriodTransferCaches periodTransferCaches;
-    
-    public PeriodTransferCaches getPeriodTransferCaches() {
-        if(periodTransferCaches == null) {
-            periodTransferCaches = new PeriodTransferCaches();
-        }
-        
-        return periodTransferCaches;
-    }
-    
+    @Inject
+    PeriodTransferCaches periodTransferCaches;
+
     // --------------------------------------------------------------------------------
     //   Period Kinds
     // --------------------------------------------------------------------------------
@@ -264,13 +258,13 @@ public class PeriodControl
     }
     
     public PeriodKindTransfer getPeriodKindTransfer(UserVisit userVisit, PeriodKind periodKind) {
-        return getPeriodTransferCaches().getPeriodKindTransferCache().getPeriodKindTransfer(userVisit, periodKind);
+        return periodTransferCaches.getPeriodKindTransferCache().getPeriodKindTransfer(userVisit, periodKind);
     }
     
     public List<PeriodKindTransfer> getPeriodKindTransfers(UserVisit userVisit) {
         var periodKinds = getPeriodKinds();
         List<PeriodKindTransfer> periodKindTransfers = new ArrayList<>(periodKinds.size());
-        var periodKindTransferCache = getPeriodTransferCaches().getPeriodKindTransferCache();
+        var periodKindTransferCache = periodTransferCaches.getPeriodKindTransferCache();
         
         periodKinds.forEach((periodKind) ->
                 periodKindTransfers.add(periodKindTransferCache.getPeriodKindTransfer(userVisit, periodKind))
@@ -469,7 +463,7 @@ public class PeriodControl
     }
     
     public PeriodKindDescriptionTransfer getPeriodKindDescriptionTransfer(UserVisit userVisit, PeriodKindDescription periodKindDescription) {
-        return getPeriodTransferCaches().getPeriodKindDescriptionTransferCache().getPeriodKindDescriptionTransfer(userVisit, periodKindDescription);
+        return periodTransferCaches.getPeriodKindDescriptionTransferCache().getPeriodKindDescriptionTransfer(userVisit, periodKindDescription);
     }
     
     public List<PeriodKindDescriptionTransfer> getPeriodKindDescriptionTransfersByPeriodKind(UserVisit userVisit, PeriodKind periodKind) {
@@ -477,7 +471,7 @@ public class PeriodControl
         List<PeriodKindDescriptionTransfer> periodKindDescriptionTransfers = new ArrayList<>(periodKindDescriptions.size());
         
         periodKindDescriptions.forEach((periodKindDescription) -> {
-            periodKindDescriptionTransfers.add(getPeriodTransferCaches().getPeriodKindDescriptionTransferCache().getPeriodKindDescriptionTransfer(userVisit, periodKindDescription));
+            periodKindDescriptionTransfers.add(periodTransferCaches.getPeriodKindDescriptionTransferCache().getPeriodKindDescriptionTransfer(userVisit, periodKindDescription));
         });
         
         return periodKindDescriptionTransfers;
@@ -736,13 +730,13 @@ public class PeriodControl
     }
     
     public PeriodTypeTransfer getPeriodTypeTransfer(UserVisit userVisit, PeriodType periodType) {
-        return getPeriodTransferCaches().getPeriodTypeTransferCache().getPeriodTypeTransfer(userVisit, periodType);
+        return periodTransferCaches.getPeriodTypeTransferCache().getPeriodTypeTransfer(userVisit, periodType);
     }
     
     public List<PeriodTypeTransfer> getPeriodTypeTransfersByPeriodKind(UserVisit userVisit, PeriodKind periodKind) {
         var periodTypes = getPeriodTypes(periodKind);
         List<PeriodTypeTransfer> periodTypeTransfers = new ArrayList<>(periodTypes.size());
-        var periodTypeTransferCache = getPeriodTransferCaches().getPeriodTypeTransferCache();
+        var periodTypeTransferCache = periodTransferCaches.getPeriodTypeTransferCache();
         
         periodTypes.forEach((periodType) ->
                 periodTypeTransfers.add(periodTypeTransferCache.getPeriodTypeTransfer(userVisit, periodType))
@@ -955,7 +949,7 @@ public class PeriodControl
     }
     
     public PeriodTypeDescriptionTransfer getPeriodTypeDescriptionTransfer(UserVisit userVisit, PeriodTypeDescription periodTypeDescription) {
-        return getPeriodTransferCaches().getPeriodTypeDescriptionTransferCache().getPeriodTypeDescriptionTransfer(userVisit, periodTypeDescription);
+        return periodTransferCaches.getPeriodTypeDescriptionTransferCache().getPeriodTypeDescriptionTransfer(userVisit, periodTypeDescription);
     }
     
     public List<PeriodTypeDescriptionTransfer> getPeriodTypeDescriptionTransfersByPeriodType(UserVisit userVisit, PeriodType periodType) {
@@ -963,7 +957,7 @@ public class PeriodControl
         List<PeriodTypeDescriptionTransfer> periodTypeDescriptionTransfers = new ArrayList<>(periodTypeDescriptions.size());
         
         periodTypeDescriptions.forEach((periodTypeDescription) -> {
-            periodTypeDescriptionTransfers.add(getPeriodTransferCaches().getPeriodTypeDescriptionTransferCache().getPeriodTypeDescriptionTransfer(userVisit, periodTypeDescription));
+            periodTypeDescriptionTransfers.add(periodTransferCaches.getPeriodTypeDescriptionTransferCache().getPeriodTypeDescriptionTransfer(userVisit, periodTypeDescription));
         });
         
         return periodTypeDescriptionTransfers;
@@ -1224,13 +1218,13 @@ public class PeriodControl
     }
     
     public PeriodTransfer getPeriodTransfer(UserVisit userVisit, Period period) {
-        return getPeriodTransferCaches().getPeriodTransferCache().getPeriodTransfer(userVisit, period);
+        return periodTransferCaches.getPeriodTransferCache().getPeriodTransfer(userVisit, period);
     }
     
     public List<PeriodTransfer> getPeriodTransfersByPeriodType(UserVisit userVisit, PeriodType periodType) {
         var periods = getPeriods(periodType);
         List<PeriodTransfer> periodTransfers = new ArrayList<>(periods.size());
-        var periodTransferCache = getPeriodTransferCaches().getPeriodTransferCache();
+        var periodTransferCache = periodTransferCaches.getPeriodTransferCache();
         
         periods.forEach((period) ->
                 periodTransfers.add(periodTransferCache.getPeriodTransfer(userVisit, period))
@@ -1413,7 +1407,7 @@ public class PeriodControl
     }
     
     public PeriodDescriptionTransfer getPeriodDescriptionTransfer(UserVisit userVisit, PeriodDescription periodDescription) {
-        return getPeriodTransferCaches().getPeriodDescriptionTransferCache().getPeriodDescriptionTransfer(userVisit, periodDescription);
+        return periodTransferCaches.getPeriodDescriptionTransferCache().getPeriodDescriptionTransfer(userVisit, periodDescription);
     }
     
     public List<PeriodDescriptionTransfer> getPeriodDescriptionTransfersByPeriod(UserVisit userVisit, Period period) {
@@ -1421,7 +1415,7 @@ public class PeriodControl
         List<PeriodDescriptionTransfer> periodDescriptionTransfers = new ArrayList<>(periodDescriptions.size());
         
         periodDescriptions.forEach((periodDescription) -> {
-            periodDescriptionTransfers.add(getPeriodTransferCaches().getPeriodDescriptionTransferCache().getPeriodDescriptionTransfer(userVisit, periodDescription));
+            periodDescriptionTransfers.add(periodTransferCaches.getPeriodDescriptionTransferCache().getPeriodDescriptionTransfer(userVisit, periodDescription));
         });
         
         return periodDescriptionTransfers;

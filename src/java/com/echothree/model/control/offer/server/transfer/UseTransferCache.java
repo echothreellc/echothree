@@ -22,7 +22,9 @@ import com.echothree.model.control.offer.server.control.UseTypeControl;
 import com.echothree.model.data.offer.server.entity.Use;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class UseTransferCache
         extends BaseOfferTransferCache<Use, UseTransfer> {
 
@@ -30,7 +32,7 @@ public class UseTransferCache
     UseTypeControl useTypeControl = Session.getModelController(UseTypeControl.class);
 
     /** Creates a new instance of UseTransferCache */
-    public UseTransferCache() {
+    protected UseTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

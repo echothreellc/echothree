@@ -31,7 +31,9 @@ import com.echothree.model.data.customer.server.entity.CustomerType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CustomerTypeTransferCache
         extends BaseCustomerTransferCache<CustomerType, CustomerTypeTransfer> {
 
@@ -69,7 +71,7 @@ public class CustomerTypeTransferCache
     boolean filterEntityInstance;
 
     /** Creates a new instance of CustomerTypeTransferCache */
-    public CustomerTypeTransferCache() {
+    protected CustomerTypeTransferCache() {
         super();
 
         transferProperties = session.getTransferProperties();

@@ -23,7 +23,9 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.associate.server.entity.Associate;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class AssociateTransferCache
         extends BaseAssociateTransferCache<Associate, AssociateTransfer> {
 
@@ -32,7 +34,7 @@ public class AssociateTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of AssociateTransferCache */
-    public AssociateTransferCache() {
+    protected AssociateTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

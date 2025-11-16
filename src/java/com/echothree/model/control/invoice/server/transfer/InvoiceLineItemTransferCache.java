@@ -24,7 +24,9 @@ import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.invoice.server.entity.InvoiceLineItem;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class InvoiceLineItemTransferCache
         extends BaseInvoiceTransferCache<InvoiceLineItem, InvoiceLineItemTransfer> {
 
@@ -34,7 +36,7 @@ public class InvoiceLineItemTransferCache
     UomControl uomControl = Session.getModelController(UomControl.class);
 
     /** Creates a new instance of InvoiceLineItemTransferCache */
-    public InvoiceLineItemTransferCache() {
+    protected InvoiceLineItemTransferCache() {
         super();
     }
 

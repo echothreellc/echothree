@@ -25,7 +25,9 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.transfer.ListWrapperBuilder;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ContentSectionTransferCache
         extends BaseContentTransferCache<ContentSection, ContentSectionTransfer> {
 
@@ -43,7 +45,7 @@ public class ContentSectionTransferCache
     boolean filterEntityInstance;
     
     /** Creates a new instance of ContentSectionTransferCache */
-    public ContentSectionTransferCache() {
+    protected ContentSectionTransferCache() {
         super();
 
         var options = session.getOptions();

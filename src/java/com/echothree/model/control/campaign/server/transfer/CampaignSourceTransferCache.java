@@ -25,7 +25,9 @@ import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.campaign.server.entity.CampaignSource;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CampaignSourceTransferCache
         extends BaseCampaignTransferCache<CampaignSource, CampaignSourceTransfer> {
 
@@ -34,7 +36,7 @@ public class CampaignSourceTransferCache
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of CampaignSourceTransferCache */
-    public CampaignSourceTransferCache() {
+    protected CampaignSourceTransferCache() {
         super();
         
         var options = session.getOptions();

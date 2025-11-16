@@ -17,93 +17,85 @@
 package com.echothree.model.control.selector.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
+@RequestScoped
 public class SelectorTransferCaches
         extends BaseTransferCaches {
     
-    protected SelectorKindTransferCache filterKindTransferCache;
-    protected SelectorKindDescriptionTransferCache filterKindDescriptionTransferCache;
-    protected SelectorTypeTransferCache filterTypeTransferCache;
-    protected SelectorTypeDescriptionTransferCache filterTypeDescriptionTransferCache;
-    protected SelectorTransferCache selectorTransferCache;
-    protected SelectorDescriptionTransferCache selectorDescriptionTransferCache;
-    protected SelectorNodeDescriptionTransferCache selectorNodeDescriptionTransferCache;
-    protected SelectorNodeTransferCache selectorNodeTransferCache;
-    protected SelectorNodeTypeTransferCache selectorNodeTypeTransferCache;
-    protected SelectorPartyTransferCache selectorPartyTransferCache;
+    @Inject
+    SelectorKindTransferCache filterKindTransferCache;
     
+    @Inject
+    SelectorKindDescriptionTransferCache filterKindDescriptionTransferCache;
+    
+    @Inject
+    SelectorTypeTransferCache filterTypeTransferCache;
+    
+    @Inject
+    SelectorTypeDescriptionTransferCache filterTypeDescriptionTransferCache;
+    
+    @Inject
+    SelectorTransferCache selectorTransferCache;
+    
+    @Inject
+    SelectorDescriptionTransferCache selectorDescriptionTransferCache;
+    
+    @Inject
+    SelectorNodeDescriptionTransferCache selectorNodeDescriptionTransferCache;
+    
+    @Inject
+    SelectorNodeTransferCache selectorNodeTransferCache;
+    
+    @Inject
+    SelectorNodeTypeTransferCache selectorNodeTypeTransferCache;
+    
+    @Inject
+    SelectorPartyTransferCache selectorPartyTransferCache;
+
     /** Creates a new instance of SelectorTransferCaches */
-    public SelectorTransferCaches() {
+    protected SelectorTransferCaches() {
         super();
     }
     
     public SelectorKindTransferCache getSelectorKindTransferCache() {
-        if(filterKindTransferCache == null)
-            filterKindTransferCache = new SelectorKindTransferCache();
-
         return filterKindTransferCache;
     }
 
     public SelectorKindDescriptionTransferCache getSelectorKindDescriptionTransferCache() {
-        if(filterKindDescriptionTransferCache == null)
-            filterKindDescriptionTransferCache = new SelectorKindDescriptionTransferCache();
-
         return filterKindDescriptionTransferCache;
     }
 
     public SelectorTypeTransferCache getSelectorTypeTransferCache() {
-        if(filterTypeTransferCache == null)
-            filterTypeTransferCache = new SelectorTypeTransferCache();
-
         return filterTypeTransferCache;
     }
 
     public SelectorTypeDescriptionTransferCache getSelectorTypeDescriptionTransferCache() {
-        if(filterTypeDescriptionTransferCache == null)
-            filterTypeDescriptionTransferCache = new SelectorTypeDescriptionTransferCache();
-
         return filterTypeDescriptionTransferCache;
     }
 
     public SelectorTransferCache getSelectorTransferCache() {
-        if(selectorTransferCache == null)
-            selectorTransferCache = new SelectorTransferCache();
-        
         return selectorTransferCache;
     }
     
     public SelectorDescriptionTransferCache getSelectorDescriptionTransferCache() {
-        if(selectorDescriptionTransferCache == null)
-            selectorDescriptionTransferCache = new SelectorDescriptionTransferCache();
-        
         return selectorDescriptionTransferCache;
     }
     
     public SelectorNodeDescriptionTransferCache getSelectorNodeDescriptionTransferCache() {
-        if(selectorNodeDescriptionTransferCache == null)
-            selectorNodeDescriptionTransferCache = new SelectorNodeDescriptionTransferCache();
-        
         return selectorNodeDescriptionTransferCache;
     }
     
     public SelectorNodeTransferCache getSelectorNodeTransferCache() {
-        if(selectorNodeTransferCache == null)
-            selectorNodeTransferCache = new SelectorNodeTransferCache();
-        
         return selectorNodeTransferCache;
     }
     
     public SelectorNodeTypeTransferCache getSelectorNodeTypeTransferCache() {
-        if(selectorNodeTypeTransferCache == null)
-            selectorNodeTypeTransferCache = new SelectorNodeTypeTransferCache();
-        
         return selectorNodeTypeTransferCache;
     }
     
     public SelectorPartyTransferCache getSelectorPartyTransferCache() {
-        if(selectorPartyTransferCache == null)
-            selectorPartyTransferCache = new SelectorPartyTransferCache();
-        
         return selectorPartyTransferCache;
     }
     

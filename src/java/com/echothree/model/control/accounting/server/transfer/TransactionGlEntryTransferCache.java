@@ -23,7 +23,9 @@ import com.echothree.model.data.accounting.server.entity.TransactionGlEntry;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.AmountUtils;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class TransactionGlEntryTransferCache
         extends BaseAccountingTransferCache<TransactionGlEntry, TransactionGlEntryTransfer> {
 
@@ -31,7 +33,7 @@ public class TransactionGlEntryTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
 
     /** Creates a new instance of TransactionGlEntryTransferCache */
-    public TransactionGlEntryTransferCache() {
+    protected TransactionGlEntryTransferCache() {
         super();
     }
 

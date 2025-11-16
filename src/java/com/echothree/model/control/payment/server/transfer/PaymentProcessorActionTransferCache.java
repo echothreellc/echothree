@@ -22,7 +22,9 @@ import com.echothree.model.control.payment.server.control.PaymentProcessorTypeAc
 import com.echothree.model.data.payment.server.entity.PaymentProcessorAction;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PaymentProcessorActionTransferCache
         extends BasePaymentTransferCache<PaymentProcessorAction, PaymentProcessorActionTransfer> {
 
@@ -30,7 +32,7 @@ public class PaymentProcessorActionTransferCache
     PaymentProcessorTypeActionControl paymentProcessorTypeActionControl = Session.getModelController(PaymentProcessorTypeActionControl.class);
 
     /** Creates a new instance of PaymentProcessorTypeTransferCache */
-    public PaymentProcessorActionTransferCache() {
+    protected PaymentProcessorActionTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

@@ -17,77 +17,71 @@
 package com.echothree.model.control.printer.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
+@RequestScoped
 public class PrinterTransferCaches
         extends BaseTransferCaches {
     
-    protected PrinterGroupTransferCache printerGroupTransferCache;
-    protected PrinterGroupDescriptionTransferCache printerGroupDescriptionTransferCache;
-    protected PrinterGroupUseTypeTransferCache printerGroupUseTypeTransferCache;
-    protected PrinterGroupUseTypeDescriptionTransferCache printerGroupUseTypeDescriptionTransferCache;
-    protected PartyPrinterGroupUseTransferCache partyPrinterGroupUseTransferCache;
-    protected PrinterTransferCache printerTransferCache;
-    protected PrinterDescriptionTransferCache printerDescriptionTransferCache;
-    protected PrinterGroupJobTransferCache printerGroupJobTransferCache;
+    @Inject
+    PrinterGroupTransferCache printerGroupTransferCache;
     
+    @Inject
+    PrinterGroupDescriptionTransferCache printerGroupDescriptionTransferCache;
+    
+    @Inject
+    PrinterGroupUseTypeTransferCache printerGroupUseTypeTransferCache;
+    
+    @Inject
+    PrinterGroupUseTypeDescriptionTransferCache printerGroupUseTypeDescriptionTransferCache;
+    
+    @Inject
+    PartyPrinterGroupUseTransferCache partyPrinterGroupUseTransferCache;
+    
+    @Inject
+    PrinterTransferCache printerTransferCache;
+    
+    @Inject
+    PrinterDescriptionTransferCache printerDescriptionTransferCache;
+    
+    @Inject
+    PrinterGroupJobTransferCache printerGroupJobTransferCache;
+
     /** Creates a new instance of PrinterTransferCaches */
-    public PrinterTransferCaches() {
+    protected PrinterTransferCaches() {
         super();
     }
     
     public PrinterGroupTransferCache getPrinterGroupTransferCache() {
-        if(printerGroupTransferCache == null)
-            printerGroupTransferCache = new PrinterGroupTransferCache();
-        
         return printerGroupTransferCache;
     }
     
     public PrinterGroupDescriptionTransferCache getPrinterGroupDescriptionTransferCache() {
-        if(printerGroupDescriptionTransferCache == null)
-            printerGroupDescriptionTransferCache = new PrinterGroupDescriptionTransferCache();
-        
         return printerGroupDescriptionTransferCache;
     }
     
     public PrinterGroupUseTypeTransferCache getPrinterGroupUseTypeTransferCache() {
-        if(printerGroupUseTypeTransferCache == null)
-            printerGroupUseTypeTransferCache = new PrinterGroupUseTypeTransferCache();
-
         return printerGroupUseTypeTransferCache;
     }
 
     public PrinterGroupUseTypeDescriptionTransferCache getPrinterGroupUseTypeDescriptionTransferCache() {
-        if(printerGroupUseTypeDescriptionTransferCache == null)
-            printerGroupUseTypeDescriptionTransferCache = new PrinterGroupUseTypeDescriptionTransferCache();
-
         return printerGroupUseTypeDescriptionTransferCache;
     }
 
     public PartyPrinterGroupUseTransferCache getPartyPrinterGroupUseTransferCache() {
-        if(partyPrinterGroupUseTransferCache == null)
-            partyPrinterGroupUseTransferCache = new PartyPrinterGroupUseTransferCache();
-        
         return partyPrinterGroupUseTransferCache;
     }
     
     public PrinterTransferCache getPrinterTransferCache() {
-        if(printerTransferCache == null)
-            printerTransferCache = new PrinterTransferCache();
-        
         return printerTransferCache;
     }
     
     public PrinterDescriptionTransferCache getPrinterDescriptionTransferCache() {
-        if(printerDescriptionTransferCache == null)
-            printerDescriptionTransferCache = new PrinterDescriptionTransferCache();
-        
         return printerDescriptionTransferCache;
     }
     
     public PrinterGroupJobTransferCache getPrinterGroupJobTransferCache() {
-        if(printerGroupJobTransferCache == null)
-            printerGroupJobTransferCache = new PrinterGroupJobTransferCache();
-        
         return printerGroupJobTransferCache;
     }
     
