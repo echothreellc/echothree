@@ -30,7 +30,7 @@ public class CommunicationEventPurposeTransferCache
     CommunicationControl communicationControl = Session.getModelController(CommunicationControl.class);
 
     /** Creates a new instance of CommunicationEventPurposeTransferCache */
-    public CommunicationEventPurposeTransferCache() {
+    protected CommunicationEventPurposeTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

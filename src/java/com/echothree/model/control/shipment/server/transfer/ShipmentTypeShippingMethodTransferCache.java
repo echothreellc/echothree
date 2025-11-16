@@ -32,7 +32,7 @@ public class ShipmentTypeShippingMethodTransferCache
     ShippingControl shippingControl = Session.getModelController(ShippingControl.class);
 
     /** Creates a new instance of ShipmentTypeShippingMethodTransferCache */
-    public ShipmentTypeShippingMethodTransferCache() {
+    protected ShipmentTypeShippingMethodTransferCache() {
         super();
     }
 

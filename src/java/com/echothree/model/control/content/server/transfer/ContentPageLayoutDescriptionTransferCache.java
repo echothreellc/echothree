@@ -30,7 +30,7 @@ public class ContentPageLayoutDescriptionTransferCache
     ContentControl contentControl = Session.getModelController(ContentControl.class);
 
     /** Creates a new instance of ContentPageLayoutDescriptionTransferCache */
-    public ContentPageLayoutDescriptionTransferCache() {
+    protected ContentPageLayoutDescriptionTransferCache() {
         super();
     }
     

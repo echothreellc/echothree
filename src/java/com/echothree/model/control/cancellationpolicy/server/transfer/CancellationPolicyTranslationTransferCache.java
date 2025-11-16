@@ -32,7 +32,7 @@ public class CancellationPolicyTranslationTransferCache
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
     
     /** Creates a new instance of CancellationPolicyTranslationTransferCache */
-    public CancellationPolicyTranslationTransferCache() {
+    protected CancellationPolicyTranslationTransferCache() {
         super();
     }
     

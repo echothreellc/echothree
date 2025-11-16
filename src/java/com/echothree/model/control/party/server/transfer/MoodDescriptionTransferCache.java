@@ -26,7 +26,7 @@ public class MoodDescriptionTransferCache
         extends BasePartyDescriptionTransferCache<MoodDescription, MoodDescriptionTransfer> {
     
     /** Creates a new instance of MoodDescriptionTransferCache */
-    public MoodDescriptionTransferCache() {
+    protected MoodDescriptionTransferCache() {
         super();
     }
 

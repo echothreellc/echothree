@@ -39,7 +39,7 @@ public class AppearanceTransferCache
     boolean includeTextTransformations;
     
     /** Creates a new instance of AppearanceTransferCache */
-    public AppearanceTransferCache() {
+    protected AppearanceTransferCache() {
         super();
         
         var options = session.getOptions();

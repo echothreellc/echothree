@@ -31,7 +31,7 @@ public class EntityIntegerRangeDescriptionTransferCache
     CoreControl coreControl = Session.getModelController(CoreControl.class);
 
     /** Creates a new instance of EntityIntegerRangeDescriptionTransferCache */
-    public EntityIntegerRangeDescriptionTransferCache() {
+    protected EntityIntegerRangeDescriptionTransferCache() {
         super();
     }
     

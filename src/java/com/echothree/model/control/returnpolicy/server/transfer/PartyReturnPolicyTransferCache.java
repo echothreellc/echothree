@@ -35,7 +35,7 @@ public class PartyReturnPolicyTransferCache
     ReturnPolicyControl returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
 
     /** Creates a new instance of PartyReturnPolicyTransferCache */
-    public PartyReturnPolicyTransferCache() {
+    protected PartyReturnPolicyTransferCache() {
         super();
     }
 

@@ -30,7 +30,7 @@ public class LeaveTypeDescriptionTransferCache
     EmployeeControl employeeControl = Session.getModelController(EmployeeControl.class);
 
     /** Creates a new instance of LeaveTypeDescriptionTransferCache */
-    public LeaveTypeDescriptionTransferCache() {
+    protected LeaveTypeDescriptionTransferCache() {
         super();
     }
     

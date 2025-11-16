@@ -30,7 +30,7 @@ public class GeoCodeRelationshipTransferCache
     GeoControl geoControl = Session.getModelController(GeoControl.class);
 
     /** Creates a new instance of GeoCodeRelationshipTransferCache */
-    public GeoCodeRelationshipTransferCache() {
+    protected GeoCodeRelationshipTransferCache() {
         super();
     }
     

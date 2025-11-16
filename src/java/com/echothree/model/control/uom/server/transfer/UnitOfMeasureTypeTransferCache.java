@@ -48,7 +48,7 @@ public class UnitOfMeasureTypeTransferCache
     boolean filterEntityInstance;
     
     /** Creates a new instance of UnitOfMeasureTypeTransferCache */
-    public UnitOfMeasureTypeTransferCache() {
+    protected UnitOfMeasureTypeTransferCache() {
         super();
         
         var options = session.getOptions();

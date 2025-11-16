@@ -33,7 +33,7 @@ public class IndexTypeTransferCache
     IndexControl indexControl = Session.getModelController(IndexControl.class);
 
     /** Creates a new instance of IndexTypeTransferCache */
-    public IndexTypeTransferCache() {
+    protected IndexTypeTransferCache() {
         super();
         
         var options = session.getOptions();

@@ -30,7 +30,7 @@ public class GlResourceTypeDescriptionTransferCache
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
 
     /** Creates a new instance of GlResourceTypeDescriptionTransferCache */
-    public GlResourceTypeDescriptionTransferCache() {
+    protected GlResourceTypeDescriptionTransferCache() {
         super();
     }
     

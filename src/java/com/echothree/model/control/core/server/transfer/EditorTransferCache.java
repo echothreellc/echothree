@@ -30,7 +30,7 @@ public class EditorTransferCache
     EditorControl editorControl = Session.getModelController(EditorControl.class);
 
     /** Creates a new instance of EditorTransferCache */
-    public EditorTransferCache() {
+    protected EditorTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

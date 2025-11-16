@@ -32,7 +32,7 @@ public class AssociatePartyContactMechanismTransferCache
     ContactControl contactControl = Session.getModelController(ContactControl.class);
     
     /** Creates a new instance of AssociatePartyContactMechanismTransferCache */
-    public AssociatePartyContactMechanismTransferCache() {
+    protected AssociatePartyContactMechanismTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

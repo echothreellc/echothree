@@ -30,7 +30,7 @@ public class InventoryLocationGroupDescriptionTransferCache
     InventoryControl inventoryControl = Session.getModelController(InventoryControl.class);
 
     /** Creates a new instance of InventoryLocationGroupDescriptionTransferCache */
-    public InventoryLocationGroupDescriptionTransferCache() {
+    protected InventoryLocationGroupDescriptionTransferCache() {
         super();
     }
     

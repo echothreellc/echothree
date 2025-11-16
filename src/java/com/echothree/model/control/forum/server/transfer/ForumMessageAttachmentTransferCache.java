@@ -38,7 +38,7 @@ public class ForumMessageAttachmentTransferCache
     boolean includeETag;
     
     /** Creates a new instance of ForumMessageAttachmentTransferCache */
-    public ForumMessageAttachmentTransferCache() {
+    protected ForumMessageAttachmentTransferCache() {
         super();
         
         var options = session.getOptions();

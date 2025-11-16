@@ -32,7 +32,7 @@ public class EmploymentTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
 
     /** Creates a new instance of EmploymentTransferCache */
-    public EmploymentTransferCache() {
+    protected EmploymentTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

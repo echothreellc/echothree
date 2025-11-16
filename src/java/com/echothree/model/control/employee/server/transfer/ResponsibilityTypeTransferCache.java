@@ -30,7 +30,7 @@ public class ResponsibilityTypeTransferCache
     EmployeeControl employeeControl = Session.getModelController(EmployeeControl.class);
 
     /** Creates a new instance of ResponsibilityTypeTransferCache */
-    public ResponsibilityTypeTransferCache() {
+    protected ResponsibilityTypeTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

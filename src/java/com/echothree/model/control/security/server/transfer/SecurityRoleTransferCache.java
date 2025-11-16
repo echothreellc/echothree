@@ -30,7 +30,7 @@ public class SecurityRoleTransferCache
     SecurityControl securityControl = Session.getModelController(SecurityControl.class);
 
     /** Creates a new instance of SecurityRoleTransferCache */
-    public SecurityRoleTransferCache() {
+    protected SecurityRoleTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

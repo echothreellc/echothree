@@ -32,7 +32,7 @@ public class ReturnTypeTransferCache
     SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
     
     /** Creates a new instance of ReturnTypeTransferCache */
-    public ReturnTypeTransferCache() {
+    protected ReturnTypeTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

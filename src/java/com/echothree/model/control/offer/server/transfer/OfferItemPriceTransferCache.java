@@ -66,7 +66,7 @@ public class OfferItemPriceTransferCache
     boolean filterThruTime;
     
     /** Creates a new instance of OfferItemPriceTransferCache */
-    public OfferItemPriceTransferCache() {
+    protected OfferItemPriceTransferCache() {
         super();
         
         transferProperties = session.getTransferProperties();

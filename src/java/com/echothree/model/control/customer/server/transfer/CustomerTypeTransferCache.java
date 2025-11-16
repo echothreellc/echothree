@@ -71,7 +71,7 @@ public class CustomerTypeTransferCache
     boolean filterEntityInstance;
 
     /** Creates a new instance of CustomerTypeTransferCache */
-    public CustomerTypeTransferCache() {
+    protected CustomerTypeTransferCache() {
         super();
 
         transferProperties = session.getTransferProperties();

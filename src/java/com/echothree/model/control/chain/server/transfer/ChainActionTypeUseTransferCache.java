@@ -31,7 +31,7 @@ public class ChainActionTypeUseTransferCache
     ChainControl chainControl = Session.getModelController(ChainControl.class);
 
     /** Creates a new instance of ChainActionTypeUseTransferCache */
-    public ChainActionTypeUseTransferCache() {
+    protected ChainActionTypeUseTransferCache() {
         super();
     }
     

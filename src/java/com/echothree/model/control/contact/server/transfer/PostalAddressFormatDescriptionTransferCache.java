@@ -30,7 +30,7 @@ public class PostalAddressFormatDescriptionTransferCache
     ContactControl contactControl = Session.getModelController(ContactControl.class);
 
     /** Creates a new instance of PostalAddressFormatDescriptionTransferCache */
-    public PostalAddressFormatDescriptionTransferCache() {
+    protected PostalAddressFormatDescriptionTransferCache() {
         super();
     }
     

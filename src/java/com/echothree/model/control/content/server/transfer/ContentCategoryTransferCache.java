@@ -51,7 +51,7 @@ public class ContentCategoryTransferCache
     boolean filterEntityInstance;
     
     /** Creates a new instance of ContentCategoryTransferCache */
-    public ContentCategoryTransferCache() {
+    protected ContentCategoryTransferCache() {
         super();
         
         var options = session.getOptions();

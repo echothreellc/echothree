@@ -33,7 +33,7 @@ public class LocationVolumeTransferCache
     WarehouseControl warehouseControl = Session.getModelController(WarehouseControl.class);
 
     /** Creates a new instance of LocationVolumeTransferCache */
-    public LocationVolumeTransferCache() {
+    protected LocationVolumeTransferCache() {
         super();
     }
     

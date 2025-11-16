@@ -58,7 +58,7 @@ public class ItemDescriptionTypeTransferCache
     boolean filterEntityInstance;
 
     /** Creates a new instance of ItemDescriptionTypeTransferCache */
-    public ItemDescriptionTypeTransferCache() {
+    protected ItemDescriptionTypeTransferCache() {
         super();
         
         transferProperties = session.getTransferProperties();

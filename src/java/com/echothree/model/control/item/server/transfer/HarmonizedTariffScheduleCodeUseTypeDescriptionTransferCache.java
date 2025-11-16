@@ -30,7 +30,7 @@ public class HarmonizedTariffScheduleCodeUseTypeDescriptionTransferCache
     ItemControl itemControl = Session.getModelController(ItemControl.class);
 
     /** Creates a new instance of HarmonizedTariffScheduleCodeUseTypeDescriptionTransferCache */
-    public HarmonizedTariffScheduleCodeUseTypeDescriptionTransferCache() {
+    protected HarmonizedTariffScheduleCodeUseTypeDescriptionTransferCache() {
         super();
     }
     

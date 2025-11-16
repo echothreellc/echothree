@@ -37,7 +37,7 @@ public class QueueTypeTransferCache
     boolean includeQueuedEntities;
     
     /** Creates a new instance of QueueTypeTransferCache */
-    public QueueTypeTransferCache() {
+    protected QueueTypeTransferCache() {
         super();
         
         var options = session.getOptions();

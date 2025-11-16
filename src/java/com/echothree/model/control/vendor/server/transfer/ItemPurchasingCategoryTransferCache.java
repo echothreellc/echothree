@@ -30,7 +30,7 @@ public class ItemPurchasingCategoryTransferCache
     VendorControl vendorControl = Session.getModelController(VendorControl.class);
 
     /** Creates a new instance of ItemPurchasingCategoryTransferCache */
-    public ItemPurchasingCategoryTransferCache() {
+    protected ItemPurchasingCategoryTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

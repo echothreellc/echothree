@@ -33,7 +33,7 @@ public class CustomerTypeCreditLimitTransferCache
     CustomerControl customerControl = Session.getModelController(CustomerControl.class);
 
     /** Creates a new instance of CustomerTypeCreditLimitTransferCache */
-    public CustomerTypeCreditLimitTransferCache() {
+    protected CustomerTypeCreditLimitTransferCache() {
         super();
     }
     

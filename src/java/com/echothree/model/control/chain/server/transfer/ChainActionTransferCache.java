@@ -34,7 +34,7 @@ public class ChainActionTransferCache
     boolean includeRelated;
 
     /** Creates a new instance of ChainActionTransferCache */
-    public ChainActionTransferCache() {
+    protected ChainActionTransferCache() {
         super();
 
         var options = session.getOptions();

@@ -30,7 +30,7 @@ public class ScaleTypeTransferCache
     ScaleControl scaleControl = Session.getModelController(ScaleControl.class);
 
     /** Creates a new instance of ScaleTypeTransferCache */
-    public ScaleTypeTransferCache() {
+    protected ScaleTypeTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

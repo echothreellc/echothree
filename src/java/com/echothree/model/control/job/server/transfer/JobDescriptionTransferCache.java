@@ -30,7 +30,7 @@ public class JobDescriptionTransferCache
     JobControl jobControl = Session.getModelController(JobControl.class);
 
     /** Creates a new instance of JobDescriptionTransferCache */
-    public JobDescriptionTransferCache() {
+    protected JobDescriptionTransferCache() {
         super();
     }
     

@@ -46,7 +46,7 @@ public class TransactionTransferCache
     boolean includeTransactionTimes;
 
     /** Creates a new instance of TransactionTransferCache */
-    public TransactionTransferCache() {
+    protected TransactionTransferCache() {
         super();
         
         var options = session.getOptions();

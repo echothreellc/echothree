@@ -32,7 +32,7 @@ public class TrainingClassSectionTranslationTransferCache
     TrainingControl trainingControl = Session.getModelController(TrainingControl.class);
 
     /** Creates a new instance of TrainingClassSectionTranslationTransferCache */
-    public TrainingClassSectionTranslationTransferCache() {
+    protected TrainingClassSectionTranslationTransferCache() {
         super();
     }
     

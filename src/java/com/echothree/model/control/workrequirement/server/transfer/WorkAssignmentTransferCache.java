@@ -37,7 +37,7 @@ public class WorkAssignmentTransferCache
     WorkRequirementControl workRequirementControl = Session.getModelController(WorkRequirementControl.class);
 
     /** Creates a new instance of WorkAssignmentTransferCache */
-    public WorkAssignmentTransferCache() {
+    protected WorkAssignmentTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

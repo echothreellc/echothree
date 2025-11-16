@@ -36,7 +36,7 @@ public class WorkflowEntityStatusTransferCache
     boolean includeTriggerTime;
 
     /** Creates a new instance of WorkflowEntityStatusTransferCache */
-    public WorkflowEntityStatusTransferCache() {
+    protected WorkflowEntityStatusTransferCache() {
         super();
 
         var options = session.getOptions();

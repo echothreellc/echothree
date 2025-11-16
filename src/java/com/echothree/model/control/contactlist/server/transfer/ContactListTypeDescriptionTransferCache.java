@@ -30,7 +30,7 @@ public class ContactListTypeDescriptionTransferCache
     ContactListControl contactListControl = Session.getModelController(ContactListControl.class);
 
     /** Creates a new instance of ContactListTypeDescriptionTransferCache */
-    public ContactListTypeDescriptionTransferCache() {
+    protected ContactListTypeDescriptionTransferCache() {
         super();
     }
     

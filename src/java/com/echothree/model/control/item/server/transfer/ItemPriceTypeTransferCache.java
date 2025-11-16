@@ -40,7 +40,7 @@ public class ItemPriceTypeTransferCache
     /**
      * Creates a new instance of ItemPriceTypeTransferCache
      */
-    public ItemPriceTypeTransferCache() {
+    protected ItemPriceTypeTransferCache() {
         super();
 
         transferProperties = session.getTransferProperties();

@@ -30,7 +30,7 @@ public class ContactMechanismAliasTypeTransferCache
     ContactControl contactControl = Session.getModelController(ContactControl.class);
 
     /** Creates a new instance of ContactMechanismAliasTypeTransferCache */
-    public ContactMechanismAliasTypeTransferCache() {
+    protected ContactMechanismAliasTypeTransferCache() {
         super();
     }
     

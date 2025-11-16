@@ -33,7 +33,7 @@ public class CountryTransferCache
     boolean includeAliases;
     
     /** Creates a new instance of CountryTransferCache */
-    public CountryTransferCache() {
+    protected CountryTransferCache() {
         super();
         
         var options = session.getOptions();

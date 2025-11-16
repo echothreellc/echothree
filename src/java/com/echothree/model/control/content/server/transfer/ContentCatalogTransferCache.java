@@ -49,7 +49,7 @@ public class ContentCatalogTransferCache
     boolean filterEntityInstance;
     
     /** Creates a new instance of ContentCatalogTransferCache */
-    public ContentCatalogTransferCache() {
+    protected ContentCatalogTransferCache() {
         super();
     
         var options = session.getOptions();

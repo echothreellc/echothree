@@ -30,7 +30,7 @@ public class CommentTypeDescriptionTransferCache
     CommentControl commentControl = Session.getModelController(CommentControl.class);
 
     /** Creates a new instance of CommentTypeDescriptionTransferCache */
-    public CommentTypeDescriptionTransferCache() {
+    protected CommentTypeDescriptionTransferCache() {
         super();
     }
     

@@ -32,7 +32,7 @@ public class SelectorPartyTransferCache
     SelectorControl selectorControl = Session.getModelController(SelectorControl.class);
 
     /** Creates a new instance of SelectorPartyTransferCache */
-    public SelectorPartyTransferCache() {
+    protected SelectorPartyTransferCache() {
         super();
     }
     

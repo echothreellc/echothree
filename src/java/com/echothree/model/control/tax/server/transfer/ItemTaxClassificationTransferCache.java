@@ -35,7 +35,7 @@ public class ItemTaxClassificationTransferCache
     TaxControl taxControl = Session.getModelController(TaxControl.class);
 
     /** Creates a new instance of ItemTaxClassificationTransferCache */
-    public ItemTaxClassificationTransferCache() {
+    protected ItemTaxClassificationTransferCache() {
         super();
         
         var options = session.getOptions();

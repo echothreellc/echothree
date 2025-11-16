@@ -30,7 +30,7 @@ public class TrainingClassAnswerTransferCache
     TrainingControl trainingControl = Session.getModelController(TrainingControl.class);
 
     /** Creates a new instance of TrainingClassAnswerTransferCache */
-    public TrainingClassAnswerTransferCache() {
+    protected TrainingClassAnswerTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

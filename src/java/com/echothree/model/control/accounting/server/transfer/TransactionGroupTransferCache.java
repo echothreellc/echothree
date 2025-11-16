@@ -38,7 +38,7 @@ public class TransactionGroupTransferCache
     boolean includeTransactions;
     
     /** Creates a new instance of TransactionGroupTransferCache */
-    public TransactionGroupTransferCache() {
+    protected TransactionGroupTransferCache() {
         super();
         
         var options = session.getOptions();

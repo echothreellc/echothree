@@ -42,7 +42,7 @@ public class ItemShippingTimeTransferCache
     boolean filterShippingEndTime;
 
     /** Creates a new instance of ItemShippingTimeTransferCache */
-    public ItemShippingTimeTransferCache() {
+    protected ItemShippingTimeTransferCache() {
         super();
 
         transferProperties = session.getTransferProperties();

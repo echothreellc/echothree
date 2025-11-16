@@ -32,7 +32,7 @@ public class TaxClassificationTransferCache
     TaxControl taxControl = Session.getModelController(TaxControl.class);
     
     /** Creates a new instance of TaxClassificationTransferCache */
-    public TaxClassificationTransferCache() {
+    protected TaxClassificationTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

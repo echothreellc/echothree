@@ -30,7 +30,7 @@ public class CountyTransferCache
     boolean includeAliases;
     
     /** Creates a new instance of CountyTransferCache */
-    public CountyTransferCache() {
+    protected CountyTransferCache() {
         super();
         
         var options = session.getOptions();

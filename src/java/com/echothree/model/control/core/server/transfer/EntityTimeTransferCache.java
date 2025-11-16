@@ -36,7 +36,7 @@ public class EntityTimeTransferCache
     boolean filterDeletedTime;
     
     /** Creates a new instance of EntityTimeTransferCache */
-    public EntityTimeTransferCache() {
+    protected EntityTimeTransferCache() {
         super();
         
         transferProperties = session.getTransferProperties();

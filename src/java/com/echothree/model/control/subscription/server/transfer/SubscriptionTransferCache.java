@@ -32,7 +32,7 @@ public class SubscriptionTransferCache
     SubscriptionControl subscriptionControl = Session.getModelController(SubscriptionControl.class);
 
     /** Creates a new instance of SubscriptionTransferCache */
-    public SubscriptionTransferCache() {
+    protected SubscriptionTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

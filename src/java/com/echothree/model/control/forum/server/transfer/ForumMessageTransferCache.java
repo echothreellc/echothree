@@ -40,7 +40,7 @@ public class ForumMessageTransferCache
     boolean includeForumMessageAttachments;
 
     /** Creates a new instance of ForumMessageTransferCache */
-    public ForumMessageTransferCache() {
+    protected ForumMessageTransferCache() {
         super();
 
         var options = session.getOptions();

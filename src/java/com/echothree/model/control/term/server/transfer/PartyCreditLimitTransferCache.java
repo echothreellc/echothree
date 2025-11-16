@@ -33,7 +33,7 @@ public class PartyCreditLimitTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
 
     /** Creates a new instance of PartyCreditLimitTransferCache */
-    public PartyCreditLimitTransferCache() {
+    protected PartyCreditLimitTransferCache() {
         super();
     }
     

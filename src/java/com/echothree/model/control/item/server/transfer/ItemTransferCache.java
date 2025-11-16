@@ -124,7 +124,7 @@ public class ItemTransferCache
     boolean filterEntityInstance;
     
     /** Creates a new instance of ItemTransferCache */
-    public ItemTransferCache() {
+    protected ItemTransferCache() {
         super();
         
         var options = session.getOptions();

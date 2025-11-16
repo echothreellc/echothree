@@ -33,7 +33,7 @@ public class DocumentTypeTransferCache
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
 
     /** Creates a new instance of DocumentTypeTransferCache */
-    public DocumentTypeTransferCache() {
+    protected DocumentTypeTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

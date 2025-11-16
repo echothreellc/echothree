@@ -42,7 +42,7 @@ public class WorkRequirementTransferCache
     boolean includeWorkTimes;
     
     /** Creates a new instance of WorkRequirementTransferCache */
-    public WorkRequirementTransferCache() {
+    protected WorkRequirementTransferCache() {
         var options = session.getOptions();
         if(options != null) {
             includeWorkAssignments = options.contains(WorkRequirementOptions.WorkRequirementIncludeWorkAssignments);

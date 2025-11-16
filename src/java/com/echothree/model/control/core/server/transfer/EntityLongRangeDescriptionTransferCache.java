@@ -31,7 +31,7 @@ public class EntityLongRangeDescriptionTransferCache
     CoreControl coreControl = Session.getModelController(CoreControl.class);
 
     /** Creates a new instance of EntityLongRangeDescriptionTransferCache */
-    public EntityLongRangeDescriptionTransferCache() {
+    protected EntityLongRangeDescriptionTransferCache() {
         super();
     }
     

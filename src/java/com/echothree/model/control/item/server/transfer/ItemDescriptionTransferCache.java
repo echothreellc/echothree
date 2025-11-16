@@ -60,7 +60,7 @@ public class ItemDescriptionTransferCache
     boolean filterEntityInstance;
 
     /** Creates a new instance of ItemDescriptionTransferCache */
-    public ItemDescriptionTransferCache() {
+    protected ItemDescriptionTransferCache() {
         super();
 
         var options = session.getOptions();

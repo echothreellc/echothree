@@ -38,7 +38,7 @@ public class EntityGeoPointDefaultTransferCache
     GeoPointUtils geoPointUtils = GeoPointUtils.getInstance();
     
     /** Creates a new instance of EntityGeoPointDefaultTransferCache */
-    public EntityGeoPointDefaultTransferCache() {
+    protected EntityGeoPointDefaultTransferCache() {
         super();
     }
     

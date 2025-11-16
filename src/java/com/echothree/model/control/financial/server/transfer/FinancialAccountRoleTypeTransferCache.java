@@ -30,7 +30,7 @@ public class FinancialAccountRoleTypeTransferCache
     FinancialControl financialControl = Session.getModelController(FinancialControl.class);
 
     /** Creates a new instance of FinancialAccountRoleTypeTransferCache */
-    public FinancialAccountRoleTypeTransferCache() {
+    protected FinancialAccountRoleTypeTransferCache() {
         super();
     }
     

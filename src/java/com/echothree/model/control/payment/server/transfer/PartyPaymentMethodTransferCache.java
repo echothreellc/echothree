@@ -63,7 +63,7 @@ public class PartyPaymentMethodTransferCache
     boolean maskNumberAndSecurityCode;
 
     /** Creates a new instance of PartyPaymentMethodTransferCache */
-    public PartyPaymentMethodTransferCache() {
+    protected PartyPaymentMethodTransferCache() {
         super();
 
         var options = session.getOptions();

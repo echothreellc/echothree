@@ -39,7 +39,7 @@ public class PartyTypeTransferCache
     boolean includePartyAliasTypes;
     
     /** Creates a new instance of PartyTypeTransferCache */
-    public PartyTypeTransferCache() {
+    protected PartyTypeTransferCache() {
         super();
         
         var options = session.getOptions();

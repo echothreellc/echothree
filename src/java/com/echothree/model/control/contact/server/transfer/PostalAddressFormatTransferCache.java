@@ -34,7 +34,7 @@ public class PostalAddressFormatTransferCache
     boolean includeLines;
     
     /** Creates a new instance of PostalAddressFormatTransferCache */
-    public PostalAddressFormatTransferCache() {
+    protected PostalAddressFormatTransferCache() {
         super();
         
         var options = session.getOptions();

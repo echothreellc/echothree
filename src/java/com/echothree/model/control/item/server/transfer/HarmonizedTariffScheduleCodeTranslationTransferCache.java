@@ -32,7 +32,7 @@ public class HarmonizedTariffScheduleCodeTranslationTransferCache
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
     
     /** Creates a new instance of HarmonizedTariffScheduleCodeTranslationTransferCache */
-    public HarmonizedTariffScheduleCodeTranslationTransferCache() {
+    protected HarmonizedTariffScheduleCodeTranslationTransferCache() {
         super();
     }
     

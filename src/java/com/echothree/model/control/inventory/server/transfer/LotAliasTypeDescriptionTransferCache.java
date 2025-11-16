@@ -30,7 +30,7 @@ public class LotAliasTypeDescriptionTransferCache
     LotAliasControl lotAliasControl = Session.getModelController(LotAliasControl.class);
 
     /** Creates a new instance of LotAliasTypeDescriptionTransferCache */
-    public LotAliasTypeDescriptionTransferCache() {
+    protected LotAliasTypeDescriptionTransferCache() {
         super();
     }
     

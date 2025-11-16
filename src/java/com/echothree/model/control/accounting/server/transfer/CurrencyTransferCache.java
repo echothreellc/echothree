@@ -53,7 +53,7 @@ public class CurrencyTransferCache
     boolean filterDescription;
     
     /** Creates a new instance of CurrencyTransferCache */
-    public CurrencyTransferCache() {
+    protected CurrencyTransferCache() {
         super();
 
         transferProperties = session.getTransferProperties();

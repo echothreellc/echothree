@@ -30,7 +30,7 @@ public class ScaleDescriptionTransferCache
     ScaleControl scaleControl = Session.getModelController(ScaleControl.class);
 
     /** Creates a new instance of ScaleDescriptionTransferCache */
-    public ScaleDescriptionTransferCache() {
+    protected ScaleDescriptionTransferCache() {
         super();
     }
     

@@ -43,7 +43,7 @@ public class PrinterGroupTransferCache
     boolean includePrinters;
     
     /** Creates a new instance of PrinterGroupTransferCache */
-    public PrinterGroupTransferCache() {
+    protected PrinterGroupTransferCache() {
         super();
 
         var options = session.getOptions();

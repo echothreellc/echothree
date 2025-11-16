@@ -32,7 +32,7 @@ public class CancellationKindTransferCache
     SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
     
     /** Creates a new instance of CancellationKindTransferCache */
-    public CancellationKindTransferCache() {
+    protected CancellationKindTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

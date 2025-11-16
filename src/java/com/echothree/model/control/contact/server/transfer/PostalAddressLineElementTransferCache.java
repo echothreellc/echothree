@@ -30,7 +30,7 @@ public class PostalAddressLineElementTransferCache
     ContactControl contactControl = Session.getModelController(ContactControl.class);
 
     /** Creates a new instance of PostalAddressLineElementTransferCache */
-    public PostalAddressLineElementTransferCache() {
+    protected PostalAddressLineElementTransferCache() {
         super();
     }
     

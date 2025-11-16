@@ -38,7 +38,7 @@ public class ContentCollectionTransferCache
     boolean includeContentSections;
 
     /** Creates a new instance of ContentCollectionTransferCache */
-    public ContentCollectionTransferCache() {
+    protected ContentCollectionTransferCache() {
         super();
 
         var options = session.getOptions();

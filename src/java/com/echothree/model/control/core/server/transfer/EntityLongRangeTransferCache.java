@@ -43,7 +43,7 @@ public class EntityLongRangeTransferCache
     boolean filterEntityInstance;
 
     /** Creates a new instance of EntityLongRangeTransferCache */
-    public EntityLongRangeTransferCache() {
+    protected EntityLongRangeTransferCache() {
         super();
         
         transferProperties = session.getTransferProperties();

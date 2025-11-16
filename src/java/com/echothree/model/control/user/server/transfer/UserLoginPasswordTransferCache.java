@@ -33,7 +33,7 @@ public class UserLoginPasswordTransferCache
     UserControl userControl = Session.getModelController(UserControl.class);
 
     /** Creates a new instance of UserLoginPasswordTransferCache */
-    public UserLoginPasswordTransferCache() {
+    protected UserLoginPasswordTransferCache() {
         super();
     }
     

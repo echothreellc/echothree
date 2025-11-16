@@ -31,7 +31,7 @@ public class WarehouseTypeTransferCache
     WarehouseControl warehouseControl = Session.getModelController(WarehouseControl.class);
 
     /** Creates a new instance of WarehouseTypeTransferCache */
-    public WarehouseTypeTransferCache() {
+    protected WarehouseTypeTransferCache() {
         super();
 
         var options = session.getOptions();

@@ -43,7 +43,7 @@ public class WorkRequirementScopeTransferCache
     boolean includeWorkRequirements;
     
     /** Creates a new instance of WorkRequirementScopeTransferCache */
-    public WorkRequirementScopeTransferCache() {
+    protected WorkRequirementScopeTransferCache() {
         var options = session.getOptions();
         if(options != null) {
             includeWorkRequirements = options.contains(WorkRequirementOptions.WorkRequirementScopeIncludeWorkRequirements);

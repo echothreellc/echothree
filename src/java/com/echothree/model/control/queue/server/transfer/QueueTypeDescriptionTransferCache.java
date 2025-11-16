@@ -30,7 +30,7 @@ public class QueueTypeDescriptionTransferCache
     QueueControl queueControl = Session.getModelController(QueueControl.class);
 
     /** Creates a new instance of QueueTypeDescriptionTransferCache */
-    public QueueTypeDescriptionTransferCache() {
+    protected QueueTypeDescriptionTransferCache() {
         super();
     }
     

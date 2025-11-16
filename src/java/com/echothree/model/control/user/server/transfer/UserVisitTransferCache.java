@@ -43,7 +43,7 @@ public class UserVisitTransferCache
     boolean includeUserVisitCampaigns;
     
     /** Creates a new instance of UserVisitTransferCache */
-    public UserVisitTransferCache() {
+    protected UserVisitTransferCache() {
         super();
 
         var options = session.getOptions();

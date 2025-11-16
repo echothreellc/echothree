@@ -32,7 +32,7 @@ public class PartyScaleUseTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of PartyScaleUseTransferCache */
-    public PartyScaleUseTransferCache() {
+    protected PartyScaleUseTransferCache() {
         super();
     }
     

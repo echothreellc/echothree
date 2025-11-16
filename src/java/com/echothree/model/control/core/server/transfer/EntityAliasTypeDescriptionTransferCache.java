@@ -31,7 +31,7 @@ public class EntityAliasTypeDescriptionTransferCache
     EntityAliasControl entityAliasControl = Session.getModelController(EntityAliasControl.class);
 
     /** Creates a new instance of EntityAliasTypeDescriptionTransferCache */
-    public EntityAliasTypeDescriptionTransferCache() {
+    protected EntityAliasTypeDescriptionTransferCache() {
         super();
     }
     

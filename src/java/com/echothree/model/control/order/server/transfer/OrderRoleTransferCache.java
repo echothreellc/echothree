@@ -32,7 +32,7 @@ public class OrderRoleTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
 
     /** Creates a new instance of OrderRoleTransferCache */
-    public OrderRoleTransferCache() {
+    protected OrderRoleTransferCache() {
         super();
 
         setIncludeEntityInstance(true);

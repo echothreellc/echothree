@@ -26,7 +26,7 @@ public class DateTimeFormatDescriptionTransferCache
         extends BasePartyDescriptionTransferCache<DateTimeFormatDescription, DateTimeFormatDescriptionTransfer> {
     
     /** Creates a new instance of DateTimeFormatDescriptionTransferCache */
-    public DateTimeFormatDescriptionTransferCache() {
+    protected DateTimeFormatDescriptionTransferCache() {
         super();
     }
 

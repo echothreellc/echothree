@@ -30,7 +30,7 @@ public class SequenceTypeDescriptionTransferCache
     SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
 
     /** Creates a new instance of SequenceTypeDescriptionTransferCache */
-    public SequenceTypeDescriptionTransferCache() {
+    protected SequenceTypeDescriptionTransferCache() {
         super();
     }
     

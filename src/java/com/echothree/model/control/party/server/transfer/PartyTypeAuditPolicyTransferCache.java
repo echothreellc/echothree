@@ -36,7 +36,7 @@ public class PartyTypeAuditPolicyTransferCache
     UnitOfMeasureKind timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
 
     /** Creates a new instance of PartyTypeAuditPolicyTransferCache */
-    public PartyTypeAuditPolicyTransferCache() {
+    protected PartyTypeAuditPolicyTransferCache() {
         super();
 
         setIncludeEntityInstance(true);

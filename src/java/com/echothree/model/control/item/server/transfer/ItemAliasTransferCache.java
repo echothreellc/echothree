@@ -32,7 +32,7 @@ public class ItemAliasTransferCache
     UomControl uomControl = Session.getModelController(UomControl.class);
     
     /** Creates a new instance of ItemAliasTransferCache */
-    public ItemAliasTransferCache() {
+    protected ItemAliasTransferCache() {
         super();
     }
     

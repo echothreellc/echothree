@@ -30,7 +30,7 @@ public class RatingTypeListItemTransferCache
     RatingControl ratingControl = Session.getModelController(RatingControl.class);
 
     /** Creates a new instance of RatingTypeListItemTransferCache */
-    public RatingTypeListItemTransferCache() {
+    protected RatingTypeListItemTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

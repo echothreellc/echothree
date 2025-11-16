@@ -41,7 +41,7 @@ public class LotTransferCache
     boolean includeLotTimes;
 
     /** Creates a new instance of LotTransferCache */
-    public LotTransferCache() {
+    protected LotTransferCache() {
         super();
 
         var options = session.getOptions();

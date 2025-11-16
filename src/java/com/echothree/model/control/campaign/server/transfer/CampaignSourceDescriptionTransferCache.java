@@ -30,7 +30,7 @@ public class CampaignSourceDescriptionTransferCache
     CampaignControl campaignControl = Session.getModelController(CampaignControl.class);
 
     /** Creates a new instance of CampaignSourceDescriptionTransferCache */
-    public CampaignSourceDescriptionTransferCache() {
+    protected CampaignSourceDescriptionTransferCache() {
         super();
     }
     

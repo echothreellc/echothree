@@ -47,7 +47,7 @@ public class DepartmentTransferCache
     boolean includePartyScaleUses;
     
     /** Creates a new instance of DepartmentTransferCache */
-    public DepartmentTransferCache() {
+    protected DepartmentTransferCache() {
         super();
         
         var options = session.getOptions();

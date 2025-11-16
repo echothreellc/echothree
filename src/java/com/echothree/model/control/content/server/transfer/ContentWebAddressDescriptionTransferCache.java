@@ -30,7 +30,7 @@ public class ContentWebAddressDescriptionTransferCache
     ContentControl contentControl = Session.getModelController(ContentControl.class);
 
     /** Creates a new instance of ContentWebAddressDescriptionTransferCache */
-    public ContentWebAddressDescriptionTransferCache() {
+    protected ContentWebAddressDescriptionTransferCache() {
         super();
     }
     

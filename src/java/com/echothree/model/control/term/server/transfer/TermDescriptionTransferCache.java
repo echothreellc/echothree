@@ -30,7 +30,7 @@ public class TermDescriptionTransferCache
     TermControl termControl = Session.getModelController(TermControl.class);
 
     /** Creates a new instance of TermDescriptionTransferCache */
-    public TermDescriptionTransferCache() {
+    protected TermDescriptionTransferCache() {
         super();
     }
     

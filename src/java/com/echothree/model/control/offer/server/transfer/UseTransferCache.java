@@ -32,7 +32,7 @@ public class UseTransferCache
     UseTypeControl useTypeControl = Session.getModelController(UseTypeControl.class);
 
     /** Creates a new instance of UseTransferCache */
-    public UseTransferCache() {
+    protected UseTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

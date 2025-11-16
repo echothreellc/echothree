@@ -30,7 +30,7 @@ public class LocationNameElementDescriptionTransferCache
     WarehouseControl warehouseControl = Session.getModelController(WarehouseControl.class);
 
     /** Creates a new instance of LocationNameElementDescriptionTransferCache */
-    public LocationNameElementDescriptionTransferCache() {
+    protected LocationNameElementDescriptionTransferCache() {
         super();
     }
     

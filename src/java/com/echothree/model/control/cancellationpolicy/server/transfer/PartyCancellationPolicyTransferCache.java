@@ -35,7 +35,7 @@ public class PartyCancellationPolicyTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of PartyCancellationPolicyTransferCache */
-    public PartyCancellationPolicyTransferCache() {
+    protected PartyCancellationPolicyTransferCache() {
         super();
     }
 

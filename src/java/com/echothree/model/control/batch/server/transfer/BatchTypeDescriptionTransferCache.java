@@ -30,7 +30,7 @@ public class BatchTypeDescriptionTransferCache
     BatchControl batchControl = Session.getModelController(BatchControl.class);
 
     /** Creates a new instance of BatchTypeDescriptionTransferCache */
-    public BatchTypeDescriptionTransferCache() {
+    protected BatchTypeDescriptionTransferCache() {
         super();
     }
     

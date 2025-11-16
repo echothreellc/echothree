@@ -34,7 +34,7 @@ public class MessageTypeTransferCache
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
 
     /** Creates a new instance of MessageTypeTransferCache */
-    public MessageTypeTransferCache() {
+    protected MessageTypeTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

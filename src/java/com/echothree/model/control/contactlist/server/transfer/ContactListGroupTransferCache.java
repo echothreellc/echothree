@@ -30,7 +30,7 @@ public class ContactListGroupTransferCache
     ContactListControl contactListControl = Session.getModelController(ContactListControl.class);
 
     /** Creates a new instance of ContactListGroupTransferCache */
-    public ContactListGroupTransferCache() {
+    protected ContactListGroupTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

@@ -30,7 +30,7 @@ public class InvoiceRoleTypeTransferCache
     InvoiceControl invoiceControl = Session.getModelController(InvoiceControl.class);
 
     /** Creates a new instance of InvoiceRoleTypeTransferCache */
-    public InvoiceRoleTypeTransferCache() {
+    protected InvoiceRoleTypeTransferCache() {
         super();
     }
     

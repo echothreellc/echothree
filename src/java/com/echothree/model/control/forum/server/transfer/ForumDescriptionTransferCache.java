@@ -30,7 +30,7 @@ public class ForumDescriptionTransferCache
     ForumControl forumControl = Session.getModelController(ForumControl.class);
 
     /** Creates a new instance of ForumDescriptionTransferCache */
-    public ForumDescriptionTransferCache() {
+    protected ForumDescriptionTransferCache() {
         super();
     }
     

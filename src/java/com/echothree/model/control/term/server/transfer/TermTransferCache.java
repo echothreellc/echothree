@@ -32,7 +32,7 @@ public class TermTransferCache
     TermControl termControl = Session.getModelController(TermControl.class);
 
     /** Creates a new instance of TermTransferCache */
-    public TermTransferCache() {
+    protected TermTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

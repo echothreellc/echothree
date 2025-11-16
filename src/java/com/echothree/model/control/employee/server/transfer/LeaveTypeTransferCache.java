@@ -30,7 +30,7 @@ public class LeaveTypeTransferCache
     EmployeeControl employeeControl = Session.getModelController(EmployeeControl.class);
 
     /** Creates a new instance of LeaveTypeTransferCache */
-    public LeaveTypeTransferCache() {
+    protected LeaveTypeTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

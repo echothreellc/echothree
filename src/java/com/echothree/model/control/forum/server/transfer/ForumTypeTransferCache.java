@@ -30,7 +30,7 @@ public class ForumTypeTransferCache
     ForumControl forumControl = Session.getModelController(ForumControl.class);
 
     /** Creates a new instance of ForumTypeTransferCache */
-    public ForumTypeTransferCache() {
+    protected ForumTypeTransferCache() {
         super();
     }
     

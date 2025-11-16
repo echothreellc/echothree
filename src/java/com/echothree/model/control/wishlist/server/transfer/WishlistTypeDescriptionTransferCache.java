@@ -30,7 +30,7 @@ public class WishlistTypeDescriptionTransferCache
     WishlistControl wishlistControl = Session.getModelController(WishlistControl.class);
 
     /** Creates a new instance of WishlistTypeDescriptionTransferCache */
-    public WishlistTypeDescriptionTransferCache() {
+    protected WishlistTypeDescriptionTransferCache() {
         super();
     }
     

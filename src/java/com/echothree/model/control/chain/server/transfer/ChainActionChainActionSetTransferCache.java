@@ -33,7 +33,7 @@ public class ChainActionChainActionSetTransferCache
     UomControl uomControl = Session.getModelController(UomControl.class);
     
     /** Creates a new instance of ChainActionChainActionSetTransferCache */
-    public ChainActionChainActionSetTransferCache() {
+    protected ChainActionChainActionSetTransferCache() {
         super();
     }
     

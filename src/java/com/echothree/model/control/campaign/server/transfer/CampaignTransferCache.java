@@ -36,7 +36,7 @@ public class CampaignTransferCache
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of CampaignTransferCache */
-    public CampaignTransferCache() {
+    protected CampaignTransferCache() {
         super();
         
         var options = session.getOptions();

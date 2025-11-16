@@ -42,7 +42,7 @@ public class SalesOrderBatchTransferCache
     SalesOrderBatchControl salesOrderBatchControl = Session.getModelController(SalesOrderBatchControl.class);
 
     /** Creates a new instance of SalesOrderBatchTransferCache */
-    public SalesOrderBatchTransferCache() {
+    protected SalesOrderBatchTransferCache() {
         super();
 
         setIncludeEntityInstance(true);

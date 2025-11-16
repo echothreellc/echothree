@@ -34,7 +34,7 @@ public class PicklistTypeTransferCache
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of PicklistTypeTransferCache */
-    public PicklistTypeTransferCache() {
+    protected PicklistTypeTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

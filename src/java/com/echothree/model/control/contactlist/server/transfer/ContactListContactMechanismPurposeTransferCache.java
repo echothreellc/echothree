@@ -32,7 +32,7 @@ public class ContactListContactMechanismPurposeTransferCache
     ContactListControl contactListControl = Session.getModelController(ContactListControl.class);
 
     /** Creates a new instance of ContactListContactMechanismPurposeTransferCache */
-    public ContactListContactMechanismPurposeTransferCache() {
+    protected ContactListContactMechanismPurposeTransferCache() {
         super();
     }
     

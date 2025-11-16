@@ -35,7 +35,7 @@ public class CommandMessageTransferCache
     boolean includeTranslations;
     
     /** Creates a new instance of CommandMessageTransferCache */
-    public CommandMessageTransferCache() {
+    protected CommandMessageTransferCache() {
         super();
         
         var options = session.getOptions();

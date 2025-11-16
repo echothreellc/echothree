@@ -31,7 +31,7 @@ public class EntityAttributeGroupDescriptionTransferCache
     CoreControl coreControl = Session.getModelController(CoreControl.class);
 
     /** Creates a new instance of EntityAttributeGroupDescriptionTransferCache */
-    public EntityAttributeGroupDescriptionTransferCache() {
+    protected EntityAttributeGroupDescriptionTransferCache() {
         super();
     }
     

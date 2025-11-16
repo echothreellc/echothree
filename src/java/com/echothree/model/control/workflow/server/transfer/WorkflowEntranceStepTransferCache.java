@@ -30,7 +30,7 @@ public class WorkflowEntranceStepTransferCache
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
 
     /** Creates a new instance of WorkflowEntranceStepTransferCache */
-    public WorkflowEntranceStepTransferCache() {
+    protected WorkflowEntranceStepTransferCache() {
         super();
     }
     

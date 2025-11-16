@@ -37,7 +37,7 @@ public class VendorItemCostTransferCache
     VendorControl vendorControl = Session.getModelController(VendorControl.class);
 
     /** Creates a new instance of VendorItemCostTransferCache */
-    public VendorItemCostTransferCache() {
+    protected VendorItemCostTransferCache() {
         super();
     }
     

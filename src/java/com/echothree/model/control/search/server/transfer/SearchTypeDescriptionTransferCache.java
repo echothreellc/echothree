@@ -30,7 +30,7 @@ public class SearchTypeDescriptionTransferCache
     SearchControl searchControl = Session.getModelController(SearchControl.class);
 
     /** Creates a new instance of SearchTypeDescriptionTransferCache */
-    public SearchTypeDescriptionTransferCache() {
+    protected SearchTypeDescriptionTransferCache() {
         super();
     }
     

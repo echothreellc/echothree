@@ -31,7 +31,7 @@ public class SearchDefaultOperatorTransferCache
     SearchControl searchControl = Session.getModelController(SearchControl.class);
 
     /** Creates a new instance of SearchDefaultOperatorTransferCache */
-    public SearchDefaultOperatorTransferCache() {
+    protected SearchDefaultOperatorTransferCache() {
         super();
         
         var options = session.getOptions();

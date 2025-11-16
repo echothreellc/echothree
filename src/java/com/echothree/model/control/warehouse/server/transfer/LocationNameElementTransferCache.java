@@ -30,7 +30,7 @@ public class LocationNameElementTransferCache
     WarehouseControl warehouseControl = Session.getModelController(WarehouseControl.class);
 
     /** Creates a new instance of LocationNameElementTransferCache */
-    public LocationNameElementTransferCache() {
+    protected LocationNameElementTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

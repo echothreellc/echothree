@@ -30,7 +30,7 @@ public class ItemAliasTypeTransferCache
     ItemControl itemControl = Session.getModelController(ItemControl.class);
 
     /** Creates a new instance of ItemAliasTypeTransferCache */
-    public ItemAliasTypeTransferCache() {
+    protected ItemAliasTypeTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

@@ -30,7 +30,7 @@ public class TransactionTimeTypeDescriptionTransferCache
     TransactionTimeControl transactionTimeControl = Session.getModelController(TransactionTimeControl.class);
 
     /** Creates a new instance of TransactionTimeTypeDescriptionTransferCache */
-    public TransactionTimeTypeDescriptionTransferCache() {
+    protected TransactionTimeTypeDescriptionTransferCache() {
         super();
     }
 

@@ -30,7 +30,7 @@ public class SearchSortOrderTransferCache
     SearchControl searchControl = Session.getModelController(SearchControl.class);
 
     /** Creates a new instance of SearchSortOrderTransferCache */
-    public SearchSortOrderTransferCache() {
+    protected SearchSortOrderTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

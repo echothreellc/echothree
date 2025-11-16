@@ -32,7 +32,7 @@ public class PartyDocumentTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
 
     /** Creates a new instance of PartyDocumentTransferCache */
-    public PartyDocumentTransferCache() {
+    protected PartyDocumentTransferCache() {
         super();
     }
     

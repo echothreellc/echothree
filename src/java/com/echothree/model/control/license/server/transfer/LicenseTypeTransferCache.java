@@ -31,7 +31,7 @@ public class LicenseTypeTransferCache
     LicenseControl licenseControl = Session.getModelController(LicenseControl.class);
 
     /** Creates a new instance of LicenseTypeTransferCache */
-    public LicenseTypeTransferCache() {
+    protected LicenseTypeTransferCache() {
         super();
         
         var options = session.getOptions();

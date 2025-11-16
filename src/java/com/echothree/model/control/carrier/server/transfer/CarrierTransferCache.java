@@ -52,7 +52,7 @@ public class CarrierTransferCache
     boolean includePartyScaleUses;
     
     /** Creates a new instance of CarrierTransferCache */
-    public CarrierTransferCache() {
+    protected CarrierTransferCache() {
         super();
         
         var options = session.getOptions();

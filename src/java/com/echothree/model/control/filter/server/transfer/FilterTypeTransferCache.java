@@ -30,7 +30,7 @@ public class FilterTypeTransferCache
     FilterControl filterControl = Session.getModelController(FilterControl.class);
 
     /** Creates a new instance of FilterTypeTransferCache */
-    public FilterTypeTransferCache() {
+    protected FilterTypeTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

@@ -32,7 +32,7 @@ public class LetterContactMechanismPurposeTransferCache
     LetterControl letterControl = Session.getModelController(LetterControl.class);
     
     /** Creates a new instance of LetterContactMechanismPurposeTransferCache */
-    public LetterContactMechanismPurposeTransferCache() {
+    protected LetterContactMechanismPurposeTransferCache() {
         super();
     }
     

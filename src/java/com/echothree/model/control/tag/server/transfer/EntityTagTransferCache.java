@@ -32,7 +32,7 @@ public class EntityTagTransferCache
     TagControl tagControl = Session.getModelController(TagControl.class);
 
     /** Creates a new instance of EntityTagTransferCache */
-    public EntityTagTransferCache() {
+    protected EntityTagTransferCache() {
         super();
     }
     

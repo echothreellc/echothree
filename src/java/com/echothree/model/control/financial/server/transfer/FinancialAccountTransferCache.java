@@ -40,7 +40,7 @@ public class FinancialAccountTransferCache
     boolean includeTransactions;
     
     /** Creates a new instance of FinancialAccountTransferCache */
-    public FinancialAccountTransferCache() {
+    protected FinancialAccountTransferCache() {
         super();
 
         var options = session.getOptions();

@@ -30,7 +30,7 @@ public class SequenceChecksumTypeTransferCache
     SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
 
     /** Creates a new instance of SequenceChecksumTypeTransferCache */
-    public SequenceChecksumTypeTransferCache() {
+    protected SequenceChecksumTypeTransferCache() {
         super();
     }
     

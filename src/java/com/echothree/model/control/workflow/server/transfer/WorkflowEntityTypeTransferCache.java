@@ -32,7 +32,7 @@ public class WorkflowEntityTypeTransferCache
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
 
     /** Creates a new instance of WorkflowEntityTypeTransferCache */
-    public WorkflowEntityTypeTransferCache() {
+    protected WorkflowEntityTypeTransferCache() {
         super();
     }
     

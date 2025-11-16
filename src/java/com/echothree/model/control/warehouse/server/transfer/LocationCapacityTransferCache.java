@@ -32,7 +32,7 @@ public class LocationCapacityTransferCache
     WarehouseControl warehouseControl = Session.getModelController(WarehouseControl.class);
 
     /** Creates a new instance of LocationCapacityTransferCache */
-    public LocationCapacityTransferCache() {
+    protected LocationCapacityTransferCache() {
         super();
     }
     

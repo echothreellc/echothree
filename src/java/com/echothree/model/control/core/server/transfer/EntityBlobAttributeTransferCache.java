@@ -41,7 +41,7 @@ public class EntityBlobAttributeTransferCache
     boolean includeETag;
     
     /** Creates a new instance of EntityBlobAttributeTransferCache */
-    public EntityBlobAttributeTransferCache() {
+    protected EntityBlobAttributeTransferCache() {
         super();
         
         var options = session.getOptions();

@@ -30,7 +30,7 @@ public class IconTransferCache
     DocumentControl documentControl = Session.getModelController(DocumentControl.class);
 
     /** Creates a new instance of IconTransferCache */
-    public IconTransferCache() {
+    protected IconTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

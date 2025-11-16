@@ -33,7 +33,7 @@ public class TransactionGlEntryTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
 
     /** Creates a new instance of TransactionGlEntryTransferCache */
-    public TransactionGlEntryTransferCache() {
+    protected TransactionGlEntryTransferCache() {
         super();
     }
 

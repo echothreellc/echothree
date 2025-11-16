@@ -62,7 +62,7 @@ public class EntityAttributeTransferCache
     boolean filterEntityInstance;
 
     /** Creates a new instance of EntityAttributeTransferCache */
-    public EntityAttributeTransferCache() {
+    protected EntityAttributeTransferCache() {
         super();
         
         var options = session.getOptions();

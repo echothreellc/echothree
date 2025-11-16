@@ -30,7 +30,7 @@ public class PrinterGroupUseTypeDescriptionTransferCache
     PrinterControl printerControl = Session.getModelController(PrinterControl.class);
 
     /** Creates a new instance of PrinterGroupUseTypeDescriptionTransferCache */
-    public PrinterGroupUseTypeDescriptionTransferCache() {
+    protected PrinterGroupUseTypeDescriptionTransferCache() {
         super();
     }
     

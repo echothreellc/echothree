@@ -32,7 +32,7 @@ public class ContentForumTransferCache
     ForumControl forumControl = Session.getModelController(ForumControl.class);
 
     /** Creates a new instance of ContentForumTransferCache */
-    public ContentForumTransferCache() {
+    protected ContentForumTransferCache() {
         super();
 
         setIncludeEntityInstance(true);

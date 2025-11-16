@@ -30,7 +30,7 @@ public class RoleTypeTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
 
     /** Creates a new instance of RoleTypeTransferCache */
-    public RoleTypeTransferCache() {
+    protected RoleTypeTransferCache() {
         super();
     }
 

@@ -33,7 +33,7 @@ public class EntityEntityAttributeTransferCache
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
     /** Creates a new instance of EntityEntityAttributeTransferCache */
-    public EntityEntityAttributeTransferCache() {
+    protected EntityEntityAttributeTransferCache() {
         super();
     }
     

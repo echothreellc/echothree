@@ -30,7 +30,7 @@ public class EntityTypeDescriptionTransferCache
     EntityTypeControl entityTypeControl = Session.getModelController(EntityTypeControl.class);
 
     /** Creates a new instance of EntityTypeDescriptionTransferCache */
-    public EntityTypeDescriptionTransferCache() {
+    protected EntityTypeDescriptionTransferCache() {
         super();
     }
     

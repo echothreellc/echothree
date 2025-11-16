@@ -30,7 +30,7 @@ public class PartyContactMechanismPurposeTransferCache
     ContactControl contactControl = Session.getModelController(ContactControl.class);
 
     /** Creates a new instance of PartyContactMechanismPurposeTransferCache */
-    public PartyContactMechanismPurposeTransferCache() {
+    protected PartyContactMechanismPurposeTransferCache() {
         super();
     }
     

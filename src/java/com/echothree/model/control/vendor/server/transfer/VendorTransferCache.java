@@ -104,7 +104,7 @@ public class VendorTransferCache
     boolean hasCommunicationEventLimits;
 
     /** Creates a new instance of VendorTransferCache */
-    public VendorTransferCache() {
+    protected VendorTransferCache() {
         super();
 
         var options = session.getOptions();

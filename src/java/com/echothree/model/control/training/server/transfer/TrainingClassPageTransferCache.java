@@ -30,7 +30,7 @@ public class TrainingClassPageTransferCache
     TrainingControl trainingControl = Session.getModelController(TrainingControl.class);
 
     /** Creates a new instance of TrainingClassPageTransferCache */
-    public TrainingClassPageTransferCache() {
+    protected TrainingClassPageTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

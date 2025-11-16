@@ -30,7 +30,7 @@ public class PaymentProcessorTypeTransferCache
     PaymentProcessorTypeControl paymentProcessorTypeControl = Session.getModelController(PaymentProcessorTypeControl.class);
 
     /** Creates a new instance of PaymentProcessorTypeTransferCache */
-    public PaymentProcessorTypeTransferCache() {
+    protected PaymentProcessorTypeTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

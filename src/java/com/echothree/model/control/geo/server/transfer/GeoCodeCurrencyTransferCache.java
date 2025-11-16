@@ -32,7 +32,7 @@ public class GeoCodeCurrencyTransferCache
     GeoControl geoControl = Session.getModelController(GeoControl.class);
 
     /** Creates a new instance of GeoCodeCurrencyTransferCache */
-    public GeoCodeCurrencyTransferCache() {
+    protected GeoCodeCurrencyTransferCache() {
         super();
     }
     

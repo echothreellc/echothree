@@ -32,7 +32,7 @@ public class PartyPrinterGroupUseTransferCache
     PrinterControl printerControl = Session.getModelController(PrinterControl.class);
 
     /** Creates a new instance of PartyPrinterGroupUseTransferCache */
-    public PartyPrinterGroupUseTransferCache() {
+    protected PartyPrinterGroupUseTransferCache() {
         super();
     }
     

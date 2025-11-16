@@ -33,7 +33,7 @@ public class AssociateProgramTransferCache
     SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
     
     /** Creates a new instance of AssociateProgramTransferCache */
-    public AssociateProgramTransferCache() {
+    protected AssociateProgramTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

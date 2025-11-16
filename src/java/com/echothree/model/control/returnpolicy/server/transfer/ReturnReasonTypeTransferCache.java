@@ -30,7 +30,7 @@ public class ReturnReasonTypeTransferCache
     ReturnPolicyControl returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
 
     /** Creates a new instance of ReturnReasonTypeTransferCache */
-    public ReturnReasonTypeTransferCache() {
+    protected ReturnReasonTypeTransferCache() {
         super();
     }
     

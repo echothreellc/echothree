@@ -30,7 +30,7 @@ public class GeoCodeAliasTypeTransferCache
     GeoControl geoControl = Session.getModelController(GeoControl.class);
 
     /** Creates a new instance of GeoCodeAliasTypeTransferCache */
-    public GeoCodeAliasTypeTransferCache() {
+    protected GeoCodeAliasTypeTransferCache() {
         super();
 
         setIncludeEntityInstance(true);

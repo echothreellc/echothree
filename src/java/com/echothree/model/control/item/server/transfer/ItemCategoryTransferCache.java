@@ -30,7 +30,7 @@ public class ItemCategoryTransferCache
     ItemControl itemControl = Session.getModelController(ItemControl.class);
 
     /** Creates a new instance of ItemCategoryTransferCache */
-    public ItemCategoryTransferCache() {
+    protected ItemCategoryTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

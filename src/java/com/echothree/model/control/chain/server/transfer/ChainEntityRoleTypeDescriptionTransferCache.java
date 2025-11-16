@@ -30,7 +30,7 @@ public class ChainEntityRoleTypeDescriptionTransferCache
     ChainControl chainControl = Session.getModelController(ChainControl.class);
 
     /** Creates a new instance of ChainEntityRoleTypeDescriptionTransferCache */
-    public ChainEntityRoleTypeDescriptionTransferCache() {
+    protected ChainEntityRoleTypeDescriptionTransferCache() {
         super();
     }
     

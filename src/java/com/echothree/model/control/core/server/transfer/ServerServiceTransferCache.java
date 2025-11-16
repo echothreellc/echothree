@@ -30,7 +30,7 @@ public class ServerServiceTransferCache
     ServerControl serverControl = Session.getModelController(ServerControl.class);
 
     /** Creates a new instance of ServerServiceTransferCache */
-    public ServerServiceTransferCache() {
+    protected ServerServiceTransferCache() {
         super();
     }
     

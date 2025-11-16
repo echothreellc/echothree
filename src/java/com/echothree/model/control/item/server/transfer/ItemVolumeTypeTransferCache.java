@@ -30,7 +30,7 @@ public class ItemVolumeTypeTransferCache
     ItemControl itemControl = Session.getModelController(ItemControl.class);
 
     /** Creates a new instance of ItemVolumeTypeTransferCache */
-    public ItemVolumeTypeTransferCache() {
+    protected ItemVolumeTypeTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

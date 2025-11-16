@@ -30,7 +30,7 @@ public class DocumentTypeUsageTypeTransferCache
     DocumentControl documentControl = Session.getModelController(DocumentControl.class);
 
     /** Creates a new instance of DocumentTypeUsageTypeTransferCache */
-    public DocumentTypeUsageTypeTransferCache() {
+    protected DocumentTypeUsageTypeTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

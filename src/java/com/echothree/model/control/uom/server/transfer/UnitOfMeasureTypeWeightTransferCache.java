@@ -31,7 +31,7 @@ public class UnitOfMeasureTypeWeightTransferCache
     UomControl uomControl = Session.getModelController(UomControl.class);
 
     /** Creates a new instance of UnitOfMeasureTypeWeightTransferCache */
-    public UnitOfMeasureTypeWeightTransferCache() {
+    protected UnitOfMeasureTypeWeightTransferCache() {
         super();
     }
     

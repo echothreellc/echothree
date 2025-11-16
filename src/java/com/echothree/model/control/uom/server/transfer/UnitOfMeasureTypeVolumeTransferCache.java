@@ -31,7 +31,7 @@ public class UnitOfMeasureTypeVolumeTransferCache
     UomControl uomControl = Session.getModelController(UomControl.class);
 
     /** Creates a new instance of UnitOfMeasureTypeVolumeTransferCache */
-    public UnitOfMeasureTypeVolumeTransferCache() {
+    protected UnitOfMeasureTypeVolumeTransferCache() {
         super();
     }
     

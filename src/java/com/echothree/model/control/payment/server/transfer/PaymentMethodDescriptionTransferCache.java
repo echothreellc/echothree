@@ -30,7 +30,7 @@ public class PaymentMethodDescriptionTransferCache
     PaymentMethodControl paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
 
     /** Creates a new instance of PaymentMethodDescriptionTransferCache */
-    public PaymentMethodDescriptionTransferCache() {
+    protected PaymentMethodDescriptionTransferCache() {
         super();
     }
 

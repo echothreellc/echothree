@@ -43,7 +43,7 @@ public class EntityIntegerRangeTransferCache
     boolean filterEntityInstance;
 
     /** Creates a new instance of EntityIntegerRangeTransferCache */
-    public EntityIntegerRangeTransferCache() {
+    protected EntityIntegerRangeTransferCache() {
         super();
         
         transferProperties = session.getTransferProperties();

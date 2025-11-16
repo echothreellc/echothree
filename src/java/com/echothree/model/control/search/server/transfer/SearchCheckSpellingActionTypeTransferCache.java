@@ -31,7 +31,7 @@ public class SearchCheckSpellingActionTypeTransferCache
     SearchControl searchControl = Session.getModelController(SearchControl.class);
 
     /** Creates a new instance of SearchCheckSpellingActionTypeTransferCache */
-    public SearchCheckSpellingActionTypeTransferCache() {
+    protected SearchCheckSpellingActionTypeTransferCache() {
         super();
         
         var options = session.getOptions();

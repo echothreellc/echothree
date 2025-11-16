@@ -30,7 +30,7 @@ public class WishlistPriorityTransferCache
     WishlistControl wishlistControl = Session.getModelController(WishlistControl.class);
 
     /** Creates a new instance of WishlistPriorityTransferCache */
-    public WishlistPriorityTransferCache() {
+    protected WishlistPriorityTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

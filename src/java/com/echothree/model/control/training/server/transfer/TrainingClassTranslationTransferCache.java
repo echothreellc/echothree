@@ -32,7 +32,7 @@ public class TrainingClassTranslationTransferCache
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
     
     /** Creates a new instance of TrainingClassTranslationTransferCache */
-    public TrainingClassTranslationTransferCache() {
+    protected TrainingClassTranslationTransferCache() {
         super();
     }
     

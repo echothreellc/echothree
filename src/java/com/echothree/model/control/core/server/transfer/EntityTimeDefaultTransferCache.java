@@ -30,7 +30,7 @@ public class EntityTimeDefaultTransferCache
     CoreControl coreControl = Session.getModelController(CoreControl.class);
 
     /** Creates a new instance of EntityTimeDefaultTransferCache */
-    public EntityTimeDefaultTransferCache() {
+    protected EntityTimeDefaultTransferCache() {
         super();
     }
     

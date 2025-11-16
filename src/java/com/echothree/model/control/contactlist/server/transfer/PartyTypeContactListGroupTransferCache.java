@@ -32,7 +32,7 @@ public class PartyTypeContactListGroupTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of PartyTypeContactListGroupTransferCache */
-    public PartyTypeContactListGroupTransferCache() {
+    protected PartyTypeContactListGroupTransferCache() {
         super();
     }
     

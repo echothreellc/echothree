@@ -33,7 +33,7 @@ public class ItemWeightTransferCache
     UomControl uomControl = Session.getModelController(UomControl.class);
     
     /** Creates a new instance of ItemWeightTransferCache */
-    public ItemWeightTransferCache() {
+    protected ItemWeightTransferCache() {
         super();
     }
     

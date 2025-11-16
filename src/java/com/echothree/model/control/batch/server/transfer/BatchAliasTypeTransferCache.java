@@ -30,7 +30,7 @@ public class BatchAliasTypeTransferCache
     BatchControl batchControl = Session.getModelController(BatchControl.class);
 
     /** Creates a new instance of BatchAliasTypeTransferCache */
-    public BatchAliasTypeTransferCache() {
+    protected BatchAliasTypeTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

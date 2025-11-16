@@ -32,7 +32,7 @@ public class PartyResponsibilityTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of PartyResponsibilityTransferCache */
-    public PartyResponsibilityTransferCache() {
+    protected PartyResponsibilityTransferCache() {
         super();
     }
     

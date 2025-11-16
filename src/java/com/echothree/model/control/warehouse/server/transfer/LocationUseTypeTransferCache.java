@@ -30,7 +30,7 @@ public class LocationUseTypeTransferCache
     LocationUseTypeControl locationUseTypeControl = Session.getModelController(LocationUseTypeControl.class);
 
     /** Creates a new instance of LocationUseTypeTransferCache */
-    public LocationUseTypeTransferCache() {
+    protected LocationUseTypeTransferCache() {
         super();
     }
     

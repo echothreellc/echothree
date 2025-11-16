@@ -30,7 +30,7 @@ public class FilterAdjustmentDescriptionTransferCache
     FilterControl filterControl = Session.getModelController(FilterControl.class);
 
     /** Creates a new instance of FilterAdjustmentDescriptionTransferCache */
-    public FilterAdjustmentDescriptionTransferCache() {
+    protected FilterAdjustmentDescriptionTransferCache() {
         super();
     }
 

@@ -39,7 +39,7 @@ public class ForumThreadTransferCache
     boolean hasForumMessageLimits;
     
     /** Creates a new instance of ForumThreadTransferCache */
-    public ForumThreadTransferCache() {
+    protected ForumThreadTransferCache() {
         super();
         
         var options = session.getOptions();

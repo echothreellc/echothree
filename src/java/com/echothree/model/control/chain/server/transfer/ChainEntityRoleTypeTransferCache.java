@@ -32,7 +32,7 @@ public class ChainEntityRoleTypeTransferCache
     EntityTypeControl entityTypeControl = Session.getModelController(EntityTypeControl.class);
 
     /** Creates a new instance of ChainEntityRoleTypeTransferCache */
-    public ChainEntityRoleTypeTransferCache() {
+    protected ChainEntityRoleTypeTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

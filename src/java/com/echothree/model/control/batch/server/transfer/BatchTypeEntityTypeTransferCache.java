@@ -32,7 +32,7 @@ public class BatchTypeEntityTypeTransferCache
     EntityTypeControl entityTypeControl = Session.getModelController(EntityTypeControl.class);
 
     /** Creates a new instance of BatchTypeEntityTypeTransferCache */
-    public BatchTypeEntityTypeTransferCache() {
+    protected BatchTypeEntityTypeTransferCache() {
         super();
     }
     

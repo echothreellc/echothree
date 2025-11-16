@@ -32,7 +32,7 @@ public class CustomerTypeContactListTransferCache
     CustomerControl customerControl = Session.getModelController(CustomerControl.class);
     
     /** Creates a new instance of CustomerTypeContactListTransferCache */
-    public CustomerTypeContactListTransferCache() {
+    protected CustomerTypeContactListTransferCache() {
         super();
     }
     

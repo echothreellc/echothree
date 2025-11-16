@@ -30,7 +30,7 @@ public class ApplicationEditorUseTransferCache
     ApplicationControl applicationControl = Session.getModelController(ApplicationControl.class);
 
     /** Creates a new instance of ApplicationEditorUseTransferCache */
-    public ApplicationEditorUseTransferCache() {
+    protected ApplicationEditorUseTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

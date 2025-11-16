@@ -30,7 +30,7 @@ public class ClubDescriptionTransferCache
     ClubControl clubControl = Session.getModelController(ClubControl.class);
 
     /** Creates a new instance of ClubDescriptionTransferCache */
-    public ClubDescriptionTransferCache() {
+    protected ClubDescriptionTransferCache() {
         super();
     }
     

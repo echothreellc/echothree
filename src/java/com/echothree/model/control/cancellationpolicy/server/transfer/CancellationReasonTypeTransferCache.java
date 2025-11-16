@@ -30,7 +30,7 @@ public class CancellationReasonTypeTransferCache
     CancellationPolicyControl cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
 
     /** Creates a new instance of CancellationReasonTypeTransferCache */
-    public CancellationReasonTypeTransferCache() {
+    protected CancellationReasonTypeTransferCache() {
         super();
     }
     

@@ -30,7 +30,7 @@ public class ColorTransferCache
     ColorControl colorControl = Session.getModelController(ColorControl.class);
 
     /** Creates a new instance of ColorTransferCache */
-    public ColorTransferCache() {
+    protected ColorTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

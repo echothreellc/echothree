@@ -30,7 +30,7 @@ public class ItemAliasChecksumTypeTransferCache
     ItemControl itemControl = Session.getModelController(ItemControl.class);
 
     /** Creates a new instance of ItemAliasChecksumTypeTransferCache */
-    public ItemAliasChecksumTypeTransferCache() {
+    protected ItemAliasChecksumTypeTransferCache() {
         super();
     }
     

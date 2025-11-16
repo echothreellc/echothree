@@ -32,7 +32,7 @@ public class UserVisitTrackTransferCache
     UserControl userControl = Session.getModelController(UserControl.class);
     
     /** Creates a new instance of UserVisitTrackTransferCache */
-    public UserVisitTrackTransferCache() {
+    protected UserVisitTrackTransferCache() {
         super();
     }
 

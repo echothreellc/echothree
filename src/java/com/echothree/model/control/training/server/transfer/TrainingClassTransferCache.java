@@ -42,7 +42,7 @@ public class TrainingClassTransferCache
     boolean includePartyTrainingClasses;
     
     /** Creates a new instance of TrainingClassTransferCache */
-    public TrainingClassTransferCache() {
+    protected TrainingClassTransferCache() {
         super();
         
         var options = session.getOptions();

@@ -30,7 +30,7 @@ public class FreeOnBoardDescriptionTransferCache
     FreeOnBoardControl freeOnBoardControl = Session.getModelController(FreeOnBoardControl.class);
 
     /** Creates a new instance of FreeOnBoardDescriptionTransferCache */
-    public FreeOnBoardDescriptionTransferCache() {
+    protected FreeOnBoardDescriptionTransferCache() {
         super();
     }
     

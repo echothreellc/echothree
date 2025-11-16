@@ -33,7 +33,7 @@ public class IndexTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of IndexTransferCache */
-    public IndexTransferCache() {
+    protected IndexTransferCache() {
         super();
         
         var options = session.getOptions();

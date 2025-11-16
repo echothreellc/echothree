@@ -41,7 +41,7 @@ public class PartyContactListTransferCache
     boolean includeComments;
     
     /** Creates a new instance of PartyContactListTransferCache */
-    public PartyContactListTransferCache() {
+    protected PartyContactListTransferCache() {
         super();
         
         var options = session.getOptions();

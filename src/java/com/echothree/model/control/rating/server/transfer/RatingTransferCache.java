@@ -32,7 +32,7 @@ public class RatingTransferCache
     RatingControl ratingControl = Session.getModelController(RatingControl.class);
 
     /** Creates a new instance of RatingTransferCache */
-    public RatingTransferCache() {
+    protected RatingTransferCache() {
         super();
     }
     

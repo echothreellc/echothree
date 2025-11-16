@@ -30,7 +30,7 @@ public class LicenseTypeDescriptionTransferCache
     LicenseControl licenseControl = Session.getModelController(LicenseControl.class);
 
     /** Creates a new instance of LicenseTypeDescriptionTransferCache */
-    public LicenseTypeDescriptionTransferCache() {
+    protected LicenseTypeDescriptionTransferCache() {
         super();
     }
     

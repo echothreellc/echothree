@@ -32,7 +32,7 @@ public class PartySecurityRoleTemplateTrainingClassTransferCache
     TrainingControl trainingControl = Session.getModelController(TrainingControl.class);
     
     /** Creates a new instance of PartySecurityRoleTemplateTrainingClassTransferCache */
-    public PartySecurityRoleTemplateTrainingClassTransferCache() {
+    protected PartySecurityRoleTemplateTrainingClassTransferCache() {
         super();
     }
     

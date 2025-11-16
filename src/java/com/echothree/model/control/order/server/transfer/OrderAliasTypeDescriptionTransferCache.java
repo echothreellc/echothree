@@ -30,7 +30,7 @@ public class OrderAliasTypeDescriptionTransferCache
     OrderAliasControl orderAliasControl = Session.getModelController(OrderAliasControl.class);
 
     /** Creates a new instance of OrderAliasTypeDescriptionTransferCache */
-    public OrderAliasTypeDescriptionTransferCache() {
+    protected OrderAliasTypeDescriptionTransferCache() {
         super();
     }
     

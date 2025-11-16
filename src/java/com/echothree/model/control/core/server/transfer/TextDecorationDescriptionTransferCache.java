@@ -30,7 +30,7 @@ public class TextDecorationDescriptionTransferCache
     TextControl textControl = Session.getModelController(TextControl.class);
 
     /** Creates a new instance of TextDecorationDescriptionTransferCache */
-    public TextDecorationDescriptionTransferCache() {
+    protected TextDecorationDescriptionTransferCache() {
         super();
     }
     

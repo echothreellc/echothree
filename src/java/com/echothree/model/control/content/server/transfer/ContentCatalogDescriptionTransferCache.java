@@ -30,7 +30,7 @@ public class ContentCatalogDescriptionTransferCache
     ContentControl contentControl = Session.getModelController(ContentControl.class);
 
     /** Creates a new instance of ContentCatalogDescriptionTransferCache */
-    public ContentCatalogDescriptionTransferCache() {
+    protected ContentCatalogDescriptionTransferCache() {
         super();
     }
     

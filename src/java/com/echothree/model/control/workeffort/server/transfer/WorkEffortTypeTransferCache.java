@@ -47,7 +47,7 @@ public class WorkEffortTypeTransferCache
     boolean includeWorkEffortScopes;
     
     /** Creates a new instance of WorkEffortTypeTransferCache */
-    public WorkEffortTypeTransferCache() {
+    protected WorkEffortTypeTransferCache() {
         super();
 
         var options = session.getOptions();

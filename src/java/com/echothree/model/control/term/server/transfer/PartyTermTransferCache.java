@@ -32,7 +32,7 @@ public class PartyTermTransferCache
     TermControl termControl = Session.getModelController(TermControl.class);
 
     /** Creates a new instance of PartyTermTransferCache */
-    public PartyTermTransferCache() {
+    protected PartyTermTransferCache() {
         super();
     }
     

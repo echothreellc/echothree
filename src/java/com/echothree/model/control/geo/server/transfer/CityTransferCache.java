@@ -30,7 +30,7 @@ public class CityTransferCache
     boolean includeAliases;
     
     /** Creates a new instance of CityTransferCache */
-    public CityTransferCache() {
+    protected CityTransferCache() {
         super();
         
         var options = session.getOptions();

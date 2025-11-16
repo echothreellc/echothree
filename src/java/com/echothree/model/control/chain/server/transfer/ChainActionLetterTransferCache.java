@@ -32,7 +32,7 @@ public class ChainActionLetterTransferCache
     LetterControl letterControl = Session.getModelController(LetterControl.class);
     
     /** Creates a new instance of ChainActionLetterTransferCache */
-    public ChainActionLetterTransferCache() {
+    protected ChainActionLetterTransferCache() {
         super();
     }
     

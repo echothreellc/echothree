@@ -30,7 +30,7 @@ public class ItemPurchasingCategoryDescriptionTransferCache
     VendorControl vendorControl = Session.getModelController(VendorControl.class);
 
     /** Creates a new instance of ItemPurchasingCategoryDescriptionTransferCache */
-    public ItemPurchasingCategoryDescriptionTransferCache() {
+    protected ItemPurchasingCategoryDescriptionTransferCache() {
         super();
     }
     

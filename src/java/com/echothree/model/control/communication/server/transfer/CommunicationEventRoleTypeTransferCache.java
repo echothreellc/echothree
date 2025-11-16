@@ -30,7 +30,7 @@ public class CommunicationEventRoleTypeTransferCache
     CommunicationControl communicationControl = Session.getModelController(CommunicationControl.class);
 
     /** Creates a new instance of CommunicationEventRoleTypeTransferCache */
-    public CommunicationEventRoleTypeTransferCache() {
+    protected CommunicationEventRoleTypeTransferCache() {
         super();
     }
     

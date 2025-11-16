@@ -39,7 +39,7 @@ public class ForumGroupTransferCache
     boolean includeForums;
     
     /** Creates a new instance of ForumGroupTransferCache */
-    public ForumGroupTransferCache() {
+    protected ForumGroupTransferCache() {
         super();
         
         var options = session.getOptions();

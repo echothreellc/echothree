@@ -30,7 +30,7 @@ public class InventoryConditionTransferCache
     InventoryControl inventoryControl = Session.getModelController(InventoryControl.class);
 
     /** Creates a new instance of InventoryConditionTransferCache */
-    public InventoryConditionTransferCache() {
+    protected InventoryConditionTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

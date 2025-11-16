@@ -34,7 +34,7 @@ public class LetterTransferCache
     LetterControl letterControl = Session.getModelController(LetterControl.class);
 
     /** Creates a new instance of LetterTransferCache */
-    public LetterTransferCache() {
+    protected LetterTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

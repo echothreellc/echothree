@@ -30,7 +30,7 @@ public class TaxDescriptionTransferCache
     TaxControl taxControl = Session.getModelController(TaxControl.class);
 
     /** Creates a new instance of TaxDescriptionTransferCache */
-    public TaxDescriptionTransferCache() {
+    protected TaxDescriptionTransferCache() {
         super();
     }
     

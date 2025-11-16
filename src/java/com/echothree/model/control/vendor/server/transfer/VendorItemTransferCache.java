@@ -51,7 +51,7 @@ public class VendorItemTransferCache
     boolean includePurchasingComments;
     
     /** Creates a new instance of VendorItemTransferCache */
-    public VendorItemTransferCache() {
+    protected VendorItemTransferCache() {
         super();
         
         var options = session.getOptions();

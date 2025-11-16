@@ -40,7 +40,7 @@ public class VendorTypeTransferCache
     VendorControl vendorControl = Session.getModelController(VendorControl.class);
 
     /** Creates a new instance of VendorTypeTransferCache */
-    public VendorTypeTransferCache() {
+    protected VendorTypeTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

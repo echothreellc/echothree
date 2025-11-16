@@ -30,7 +30,7 @@ public class CarrierServiceDescriptionTransferCache
     CarrierControl carrierControl = Session.getModelController(CarrierControl.class);
 
     /** Creates a new instance of CarrierServiceDescriptionTransferCache */
-    public CarrierServiceDescriptionTransferCache() {
+    protected CarrierServiceDescriptionTransferCache() {
         super();
     }
     

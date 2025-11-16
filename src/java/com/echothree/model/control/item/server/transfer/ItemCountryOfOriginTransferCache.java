@@ -33,7 +33,7 @@ public class ItemCountryOfOriginTransferCache
     ItemControl itemControl = Session.getModelController(ItemControl.class);
 
     /** Creates a new instance of ItemCountryOfOriginTransferCache */
-    public ItemCountryOfOriginTransferCache() {
+    protected ItemCountryOfOriginTransferCache() {
         super();
     }
     

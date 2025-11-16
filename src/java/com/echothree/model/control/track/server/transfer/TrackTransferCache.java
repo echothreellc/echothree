@@ -36,7 +36,7 @@ public class TrackTransferCache
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of TrackTransferCache */
-    public TrackTransferCache() {
+    protected TrackTransferCache() {
         var options = session.getOptions();
         if(options != null) {
             setIncludeUuid(options.contains(TrackOptions.TrackIncludeUuid));

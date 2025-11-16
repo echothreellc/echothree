@@ -30,7 +30,7 @@ public class GlResourceTypeTransferCache
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
 
     /** Creates a new instance of GlResourceTypeTransferCache */
-    public GlResourceTypeTransferCache() {
+    protected GlResourceTypeTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

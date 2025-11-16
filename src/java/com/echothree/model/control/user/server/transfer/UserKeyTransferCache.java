@@ -30,7 +30,7 @@ public class UserKeyTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
 
     /** Creates a new instance of UserKeyTransferCache */
-    public UserKeyTransferCache() {
+    protected UserKeyTransferCache() {
         super();
     }
     

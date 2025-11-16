@@ -30,7 +30,7 @@ public class StateTransferCache
     boolean includeAliases;
     
     /** Creates a new instance of StateTransferCache */
-    public StateTransferCache() {
+    protected StateTransferCache() {
         super();
         
         var options = session.getOptions();

@@ -30,7 +30,7 @@ public class RecoveryQuestionDescriptionTransferCache
     UserControl userControl = Session.getModelController(UserControl.class);
 
     /** Creates a new instance of RecoveryQuestionDescriptionTransferCache */
-    public RecoveryQuestionDescriptionTransferCache() {
+    protected RecoveryQuestionDescriptionTransferCache() {
         super();
     }
     

@@ -30,7 +30,7 @@ public class WorkEffortTypeDescriptionTransferCache
     WorkEffortControl workEffortControl = Session.getModelController(WorkEffortControl.class);
 
     /** Creates a new instance of WorkEffortTypeDescriptionTransferCache */
-    public WorkEffortTypeDescriptionTransferCache() {
+    protected WorkEffortTypeDescriptionTransferCache() {
         super();
     }
     

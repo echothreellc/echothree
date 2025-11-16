@@ -30,7 +30,7 @@ public class SkillTypeDescriptionTransferCache
     EmployeeControl employeeControl = Session.getModelController(EmployeeControl.class);
 
     /** Creates a new instance of SkillTypeDescriptionTransferCache */
-    public SkillTypeDescriptionTransferCache() {
+    protected SkillTypeDescriptionTransferCache() {
         super();
     }
     

@@ -34,7 +34,7 @@ public class TrainingClassQuestionTransferCache
     boolean includeTrainingClassAnswers;
     
     /** Creates a new instance of TrainingClassQuestionTransferCache */
-    public TrainingClassQuestionTransferCache() {
+    protected TrainingClassQuestionTransferCache() {
         super();
         
         var options = session.getOptions();

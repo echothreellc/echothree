@@ -30,7 +30,7 @@ public class OrderTypeDescriptionTransferCache
     OrderTypeControl orderTypeControl = Session.getModelController(OrderTypeControl.class);
 
     /** Creates a new instance of OrderTypeDescriptionTransferCache */
-    public OrderTypeDescriptionTransferCache() {
+    protected OrderTypeDescriptionTransferCache() {
         super();
     }
     

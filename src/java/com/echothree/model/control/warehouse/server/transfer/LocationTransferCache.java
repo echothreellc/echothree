@@ -44,7 +44,7 @@ public class LocationTransferCache
     boolean includeVolume;
     
     /** Creates a new instance of LocationTransferCache */
-    public LocationTransferCache() {
+    protected LocationTransferCache() {
         super();
         
         var options = session.getOptions();

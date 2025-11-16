@@ -38,7 +38,7 @@ public class ContentCategoryItemTransferCache
     boolean filterSortOrder;
 
     /** Creates a new instance of ContentCategoryItemTransferCache */
-    public ContentCategoryItemTransferCache() {
+    protected ContentCategoryItemTransferCache() {
         super();
         
         transferProperties = session.getTransferProperties();

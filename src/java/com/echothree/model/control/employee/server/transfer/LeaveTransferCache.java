@@ -45,7 +45,7 @@ public class LeaveTransferCache
     UnitOfMeasureUtils unitOfMeasureUtils;
 
     /** Creates a new instance of LeaveTransferCache */
-    public LeaveTransferCache() {
+    protected LeaveTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

@@ -30,7 +30,7 @@ public class FilterEntranceStepTransferCache
     FilterControl filterControl = Session.getModelController(FilterControl.class);
 
     /** Creates a new instance of FilterEntranceStepTransferCache */
-    public FilterEntranceStepTransferCache() {
+    protected FilterEntranceStepTransferCache() {
         super();
     }
 

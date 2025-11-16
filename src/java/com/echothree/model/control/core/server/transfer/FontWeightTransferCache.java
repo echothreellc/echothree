@@ -30,7 +30,7 @@ public class FontWeightTransferCache
     FontControl fontControl = Session.getModelController(FontControl.class);
 
     /** Creates a new instance of FontWeightTransferCache */
-    public FontWeightTransferCache() {
+    protected FontWeightTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

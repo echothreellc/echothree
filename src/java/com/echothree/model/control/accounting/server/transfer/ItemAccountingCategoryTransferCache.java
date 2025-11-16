@@ -30,7 +30,7 @@ public class ItemAccountingCategoryTransferCache
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
 
     /** Creates a new instance of ItemAccountingCategoryTransferCache */
-    public ItemAccountingCategoryTransferCache() {
+    protected ItemAccountingCategoryTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

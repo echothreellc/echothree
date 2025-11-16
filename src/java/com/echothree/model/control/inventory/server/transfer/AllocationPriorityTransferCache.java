@@ -30,7 +30,7 @@ public class AllocationPriorityTransferCache
     InventoryControl inventoryControl = Session.getModelController(InventoryControl.class);
 
     /** Creates a new instance of AllocationPriorityTransferCache */
-    public AllocationPriorityTransferCache() {
+    protected AllocationPriorityTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

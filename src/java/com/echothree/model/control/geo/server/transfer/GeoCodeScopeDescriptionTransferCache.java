@@ -30,7 +30,7 @@ public class GeoCodeScopeDescriptionTransferCache
     GeoControl geoControl = Session.getModelController(GeoControl.class);
 
     /** Creates a new instance of GeoCodeScopeDescriptionTransferCache */
-    public GeoCodeScopeDescriptionTransferCache() {
+    protected GeoCodeScopeDescriptionTransferCache() {
         super();
     }
     

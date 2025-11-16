@@ -50,7 +50,7 @@ public class InvoiceTransferCache
     boolean includeRoles;
 
     /** Creates a new instance of InvoiceTransferCache */
-    public InvoiceTransferCache() {
+    protected InvoiceTransferCache() {
         super();
 
         var options = session.getOptions();

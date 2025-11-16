@@ -84,7 +84,7 @@ public class EmployeeTransferCache
     boolean includePartySkills;
 
     /** Creates a new instance of EmployeeTransferCache */
-    public EmployeeTransferCache() {
+    protected EmployeeTransferCache() {
         super();
 
         var options = session.getOptions();

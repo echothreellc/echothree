@@ -30,7 +30,7 @@ public class PostalCodeTransferCache
     boolean includeAliases;
     
     /** Creates a new instance of PostalCodeTransferCache */
-    public PostalCodeTransferCache() {
+    protected PostalCodeTransferCache() {
         super();
         
         var options = session.getOptions();

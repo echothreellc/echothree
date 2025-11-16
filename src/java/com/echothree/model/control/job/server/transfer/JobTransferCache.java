@@ -37,7 +37,7 @@ public class JobTransferCache
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of JobTransferCache */
-    public JobTransferCache() {
+    protected JobTransferCache() {
         setIncludeEntityInstance(true);
     }
     

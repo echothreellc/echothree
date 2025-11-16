@@ -32,7 +32,7 @@ public class TagScopeEntityTypeTransferCache
     TagControl tagControl = Session.getModelController(TagControl.class);
 
     /** Creates a new instance of TagScopeEntityTypeTransferCache */
-    public TagScopeEntityTypeTransferCache() {
+    protected TagScopeEntityTypeTransferCache() {
         super();
     }
     

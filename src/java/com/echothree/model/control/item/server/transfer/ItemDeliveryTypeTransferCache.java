@@ -30,7 +30,7 @@ public class ItemDeliveryTypeTransferCache
     ItemControl itemControl = Session.getModelController(ItemControl.class);
 
     /** Creates a new instance of ItemDeliveryTypeTransferCache */
-    public ItemDeliveryTypeTransferCache() {
+    protected ItemDeliveryTypeTransferCache() {
         super();
     }
     

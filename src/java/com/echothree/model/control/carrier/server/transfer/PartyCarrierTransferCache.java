@@ -34,7 +34,7 @@ public class PartyCarrierTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of PartyCarrierTransferCache */
-    public PartyCarrierTransferCache() {
+    protected PartyCarrierTransferCache() {
         super();
     }
     

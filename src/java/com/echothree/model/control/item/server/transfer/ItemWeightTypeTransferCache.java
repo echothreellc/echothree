@@ -30,7 +30,7 @@ public class ItemWeightTypeTransferCache
     ItemControl itemControl = Session.getModelController(ItemControl.class);
 
     /** Creates a new instance of ItemWeightTypeTransferCache */
-    public ItemWeightTypeTransferCache() {
+    protected ItemWeightTypeTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

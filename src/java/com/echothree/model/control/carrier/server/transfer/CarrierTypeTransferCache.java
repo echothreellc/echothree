@@ -30,7 +30,7 @@ public class CarrierTypeTransferCache
     CarrierControl carrierControl = Session.getModelController(CarrierControl.class);
 
     /** Creates a new instance of CarrierTypeTransferCache */
-    public CarrierTypeTransferCache() {
+    protected CarrierTypeTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

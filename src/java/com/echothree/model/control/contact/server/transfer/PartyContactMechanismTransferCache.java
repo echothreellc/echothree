@@ -43,7 +43,7 @@ public class PartyContactMechanismTransferCache
     boolean includePartyContactMechanismRelationshipsByToPartyContactMechanism;
     
     /** Creates a new instance of PartyContactMechanismTransferCache */
-    public PartyContactMechanismTransferCache() {
+    protected PartyContactMechanismTransferCache() {
         super();
         
         var options = session.getOptions();

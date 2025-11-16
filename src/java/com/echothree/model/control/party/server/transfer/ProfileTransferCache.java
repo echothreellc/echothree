@@ -35,7 +35,7 @@ public class ProfileTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
 
     /** Creates a new instance of ProfileTransferCache */
-    public ProfileTransferCache() {
+    protected ProfileTransferCache() {
         super();
     }
 

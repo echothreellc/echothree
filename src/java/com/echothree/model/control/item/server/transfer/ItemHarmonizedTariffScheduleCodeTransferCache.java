@@ -33,7 +33,7 @@ public class ItemHarmonizedTariffScheduleCodeTransferCache
     ItemControl itemControl = Session.getModelController(ItemControl.class);
 
     /** Creates a new instance of ItemHarmonizedTariffScheduleCodeTransferCache */
-    public ItemHarmonizedTariffScheduleCodeTransferCache() {
+    protected ItemHarmonizedTariffScheduleCodeTransferCache() {
         super();
         
         var options = session.getOptions();

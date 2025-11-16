@@ -30,7 +30,7 @@ public class SecurityRoleGroupDescriptionTransferCache
     SecurityControl securityControl = Session.getModelController(SecurityControl.class);
 
     /** Creates a new instance of SecurityRoleGroupDescriptionTransferCache */
-    public SecurityRoleGroupDescriptionTransferCache() {
+    protected SecurityRoleGroupDescriptionTransferCache() {
         super();
     }
     

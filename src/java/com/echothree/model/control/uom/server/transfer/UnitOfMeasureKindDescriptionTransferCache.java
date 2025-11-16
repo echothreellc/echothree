@@ -30,7 +30,7 @@ public class UnitOfMeasureKindDescriptionTransferCache
     UomControl uomControl = Session.getModelController(UomControl.class);
 
     /** Creates a new instance of UnitOfMeasureKindDescriptionTransferCache */
-    public UnitOfMeasureKindDescriptionTransferCache() {
+    protected UnitOfMeasureKindDescriptionTransferCache() {
         super();
     }
     

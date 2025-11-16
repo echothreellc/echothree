@@ -32,7 +32,7 @@ public class TransactionEntityRoleTypeTransferCache
     EntityTypeControl entityTypeControl = Session.getModelController(EntityTypeControl.class);
     
     /** Creates a new instance of TransactionEntityRoleTypeTransferCache */
-    public TransactionEntityRoleTypeTransferCache() {
+    protected TransactionEntityRoleTypeTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

@@ -30,7 +30,7 @@ public class SourceTransferCache
     OfferUseControl offerUseControl = Session.getModelController(OfferUseControl.class);
 
     /** Creates a new instance of SourceTransferCache */
-    public SourceTransferCache() {
+    protected SourceTransferCache() {
         super();
     }
     

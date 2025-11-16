@@ -30,7 +30,7 @@ public class PeriodDescriptionTransferCache
     PeriodControl periodControl = Session.getModelController(PeriodControl.class);
 
     /** Creates a new instance of PeriodDescriptionTransferCache */
-    public PeriodDescriptionTransferCache() {
+    protected PeriodDescriptionTransferCache() {
         super();
     }
     

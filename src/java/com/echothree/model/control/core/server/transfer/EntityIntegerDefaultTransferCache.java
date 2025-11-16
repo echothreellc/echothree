@@ -30,7 +30,7 @@ public class EntityIntegerDefaultTransferCache
     CoreControl coreControl = Session.getModelController(CoreControl.class);
 
     /** Creates a new instance of EntityIntegerDefaultTransferCache */
-    public EntityIntegerDefaultTransferCache() {
+    protected EntityIntegerDefaultTransferCache() {
         super();
     }
     

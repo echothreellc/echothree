@@ -30,7 +30,7 @@ public class SubscriptionTypeDescriptionTransferCache
     SubscriptionControl subscriptionControl = Session.getModelController(SubscriptionControl.class);
 
     /** Creates a new instance of SubscriptionTypeDescriptionTransferCache */
-    public SubscriptionTypeDescriptionTransferCache() {
+    protected SubscriptionTypeDescriptionTransferCache() {
         super();
     }
     

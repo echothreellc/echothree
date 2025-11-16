@@ -33,7 +33,7 @@ public class ItemVolumeTransferCache
     UomControl uomControl = Session.getModelController(UomControl.class);
     
     /** Creates a new instance of ItemVolumeTransferCache */
-    public ItemVolumeTransferCache() {
+    protected ItemVolumeTransferCache() {
         super();
     }
     

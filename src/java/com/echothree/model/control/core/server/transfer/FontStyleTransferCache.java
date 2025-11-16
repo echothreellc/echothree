@@ -30,7 +30,7 @@ public class FontStyleTransferCache
     FontControl fontControl = Session.getModelController(FontControl.class);
 
     /** Creates a new instance of FontStyleTransferCache */
-    public FontStyleTransferCache() {
+    protected FontStyleTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

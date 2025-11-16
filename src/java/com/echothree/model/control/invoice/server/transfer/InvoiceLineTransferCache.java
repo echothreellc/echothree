@@ -32,7 +32,7 @@ public class InvoiceLineTransferCache
     InvoiceControl invoiceControl = Session.getModelController(InvoiceControl.class);
 
     /** Creates a new instance of InvoiceLineTransferCache */
-    public InvoiceLineTransferCache() {
+    protected InvoiceLineTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

@@ -30,7 +30,7 @@ public class PicklistTimeTypeTransferCache
     PicklistControl picklistControl = Session.getModelController(PicklistControl.class);
 
     /** Creates a new instance of PicklistTimeTypeTransferCache */
-    public PicklistTimeTypeTransferCache() {
+    protected PicklistTimeTypeTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

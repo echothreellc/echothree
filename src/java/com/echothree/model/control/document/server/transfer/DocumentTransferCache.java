@@ -38,7 +38,7 @@ public class DocumentTransferCache
     boolean includeETag;
     
     /** Creates a new instance of DocumentTransferCache */
-    public DocumentTransferCache() {
+    protected DocumentTransferCache() {
         super();
         
         var options = session.getOptions();

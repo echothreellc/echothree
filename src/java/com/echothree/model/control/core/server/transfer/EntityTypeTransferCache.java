@@ -75,7 +75,7 @@ public class EntityTypeTransferCache
     boolean includeEntityInstances;
 
     /** Creates a new instance of EntityTypeTransferCache */
-    public EntityTypeTransferCache() {
+    protected EntityTypeTransferCache() {
         super();
         
         transferProperties = session.getTransferProperties();

@@ -37,7 +37,7 @@ public class FilterTransferCache
     boolean includeFilterSteps;
     
     /** Creates a new instance of FilterTransferCache */
-    public FilterTransferCache() {
+    protected FilterTransferCache() {
         super();
 
         var options = session.getOptions();

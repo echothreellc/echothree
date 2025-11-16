@@ -43,7 +43,7 @@ public class ForumTransferCache
     boolean includeFutureForumThreads;
     
     /** Creates a new instance of ForumTransferCache */
-    public ForumTransferCache() {
+    protected ForumTransferCache() {
         super();
         
         var options = session.getOptions();

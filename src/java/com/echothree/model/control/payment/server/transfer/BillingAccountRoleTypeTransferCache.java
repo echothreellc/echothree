@@ -30,7 +30,7 @@ public class BillingAccountRoleTypeTransferCache
     BillingControl billingControl = Session.getModelController(BillingControl.class);
 
     /** Creates a new instance of BillingAccountRoleTypeTransferCache */
-    public BillingAccountRoleTypeTransferCache() {
+    protected BillingAccountRoleTypeTransferCache() {
         super();
     }
 

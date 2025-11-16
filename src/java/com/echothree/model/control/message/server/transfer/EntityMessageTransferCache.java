@@ -32,7 +32,7 @@ public class EntityMessageTransferCache
     MessageControl messageControl = Session.getModelController(MessageControl.class);
 
     /** Creates a new instance of EntityMessageTransferCache */
-    public EntityMessageTransferCache() {
+    protected EntityMessageTransferCache() {
         super();
     }
     

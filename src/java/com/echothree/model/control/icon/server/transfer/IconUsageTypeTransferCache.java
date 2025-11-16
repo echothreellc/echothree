@@ -30,7 +30,7 @@ public class IconUsageTypeTransferCache
     IconControl iconControl = Session.getModelController(IconControl.class);
 
     /** Creates a new instance of IconUsageTypeTransferCache */
-    public IconUsageTypeTransferCache() {
+    protected IconUsageTypeTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

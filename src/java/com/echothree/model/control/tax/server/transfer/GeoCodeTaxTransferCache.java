@@ -31,7 +31,7 @@ public class GeoCodeTaxTransferCache
     TaxControl taxControl = Session.getModelController(TaxControl.class);
 
     /** Creates a new instance of GeoCodeTaxTransferCache */
-    public GeoCodeTaxTransferCache() {
+    protected GeoCodeTaxTransferCache() {
         super();
     }
     

@@ -30,7 +30,7 @@ public class AssociateProgramDescriptionTransferCache
     AssociateControl associateControl = Session.getModelController(AssociateControl.class);
 
     /** Creates a new instance of AssociateProgramDescriptionTransferCache */
-    public AssociateProgramDescriptionTransferCache() {
+    protected AssociateProgramDescriptionTransferCache() {
         super();
     }
     

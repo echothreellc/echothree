@@ -34,7 +34,7 @@ public class TagScopeTransferCache
     boolean includeTags;
     
     /** Creates a new instance of TagScopeTransferCache */
-    public TagScopeTransferCache() {
+    protected TagScopeTransferCache() {
         super();
         
         var options = session.getOptions();

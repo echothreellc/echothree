@@ -30,7 +30,7 @@ public class TrackDescriptionTransferCache
     TrackControl trackControl = Session.getModelController(TrackControl.class);
 
     /** Creates a new instance of TrackDescriptionTransferCache */
-    public TrackDescriptionTransferCache() {
+    protected TrackDescriptionTransferCache() {
         super();
     }
     

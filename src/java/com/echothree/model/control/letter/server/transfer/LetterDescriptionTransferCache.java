@@ -30,7 +30,7 @@ public class LetterDescriptionTransferCache
     LetterControl letterControl = Session.getModelController(LetterControl.class);
 
     /** Creates a new instance of LetterDescriptionTransferCache */
-    public LetterDescriptionTransferCache() {
+    protected LetterDescriptionTransferCache() {
         super();
     }
     

@@ -40,7 +40,7 @@ public class WorkflowEntranceTransferCache
     boolean filterEntityInstance;
     
     /** Creates a new instance of WorkflowEntranceTransferCache */
-    public WorkflowEntranceTransferCache() {
+    protected WorkflowEntranceTransferCache() {
         super();
         
         transferProperties = session.getTransferProperties();

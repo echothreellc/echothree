@@ -32,7 +32,7 @@ public class OfferCustomerTypeTransferCache
     OfferControl offerControl = Session.getModelController(OfferControl.class);
 
     /** Creates a new instance of OfferCustomerTypeTransferCache */
-    public OfferCustomerTypeTransferCache() {
+    protected OfferCustomerTypeTransferCache() {
         super();
     }
     

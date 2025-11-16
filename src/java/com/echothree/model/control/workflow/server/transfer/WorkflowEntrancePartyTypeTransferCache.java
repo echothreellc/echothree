@@ -32,7 +32,7 @@ public class WorkflowEntrancePartyTypeTransferCache
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
 
     /** Creates a new instance of WorkflowEntrancePartyTypeTransferCache */
-    public WorkflowEntrancePartyTypeTransferCache() {
+    protected WorkflowEntrancePartyTypeTransferCache() {
         super();
     }
     

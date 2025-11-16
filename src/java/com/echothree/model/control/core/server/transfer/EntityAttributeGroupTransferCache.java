@@ -36,7 +36,7 @@ public class EntityAttributeGroupTransferCache
     boolean includeEntityAttributes;
     
     /** Creates a new instance of EntityAttributeGroupTransferCache */
-    public EntityAttributeGroupTransferCache() {
+    protected EntityAttributeGroupTransferCache() {
         super();
         
         var options = session.getOptions();

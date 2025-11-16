@@ -34,7 +34,7 @@ public class PartyInventoryLevelTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of PartyInventoryLevelTransferCache */
-    public PartyInventoryLevelTransferCache() {
+    protected PartyInventoryLevelTransferCache() {
         super();
     }
     

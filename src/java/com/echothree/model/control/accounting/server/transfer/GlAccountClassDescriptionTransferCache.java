@@ -30,7 +30,7 @@ public class GlAccountClassDescriptionTransferCache
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
 
     /** Creates a new instance of GlAccountClassDescriptionTransferCache */
-    public GlAccountClassDescriptionTransferCache() {
+    protected GlAccountClassDescriptionTransferCache() {
         super();
     }
     

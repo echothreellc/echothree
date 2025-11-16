@@ -30,7 +30,7 @@ public class InvoiceTimeTypeDescriptionTransferCache
     InvoiceControl invoiceControl = Session.getModelController(InvoiceControl.class);
 
     /** Creates a new instance of InvoiceTimeTypeDescriptionTransferCache */
-    public InvoiceTimeTypeDescriptionTransferCache() {
+    protected InvoiceTimeTypeDescriptionTransferCache() {
         super();
     }
     

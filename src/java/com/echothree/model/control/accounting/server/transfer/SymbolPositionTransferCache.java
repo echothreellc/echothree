@@ -30,7 +30,7 @@ public class SymbolPositionTransferCache
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
 
     /** Creates a new instance of SymbolPositionTransferCache */
-    public SymbolPositionTransferCache() {
+    protected SymbolPositionTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

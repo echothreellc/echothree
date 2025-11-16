@@ -32,7 +32,7 @@ public class RecoveryAnswerTransferCache
     UserControl userControl = Session.getModelController(UserControl.class);
     
     /** Creates a new instance of RecoveryAnswerTransferCache */
-    public RecoveryAnswerTransferCache() {
+    protected RecoveryAnswerTransferCache() {
         super();
 
         setIncludeEntityInstance(true);

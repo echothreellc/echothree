@@ -30,7 +30,7 @@ public class MessageDescriptionTransferCache
     MessageControl messageControl = Session.getModelController(MessageControl.class);
 
     /** Creates a new instance of MessageDescriptionTransferCache */
-    public MessageDescriptionTransferCache() {
+    protected MessageDescriptionTransferCache() {
         super();
     }
     

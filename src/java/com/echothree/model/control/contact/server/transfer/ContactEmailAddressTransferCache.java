@@ -34,7 +34,7 @@ public class ContactEmailAddressTransferCache
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
 
     /** Creates a new instance of ContactEmailAddressTransferCache */
-    public ContactEmailAddressTransferCache() {
+    protected ContactEmailAddressTransferCache() {
         super();
     }
     

@@ -30,7 +30,7 @@ public class UserLoginPasswordEncoderTypeTransferCache
     UserControl userControl = Session.getModelController(UserControl.class);
 
     /** Creates a new instance of UserLoginPasswordEncoderTypeTransferCache */
-    public UserLoginPasswordEncoderTypeTransferCache() {
+    protected UserLoginPasswordEncoderTypeTransferCache() {
         super();
     }
     

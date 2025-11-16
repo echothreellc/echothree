@@ -30,7 +30,7 @@ public class ForumMessagePartTypeTransferCache
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
 
     /** Creates a new instance of ForumMessagePartTypeTransferCache */
-    public ForumMessagePartTypeTransferCache() {
+    protected ForumMessagePartTypeTransferCache() {
         super();
     }
     

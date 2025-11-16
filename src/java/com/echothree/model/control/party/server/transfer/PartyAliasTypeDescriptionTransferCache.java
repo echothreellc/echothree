@@ -26,7 +26,7 @@ public class PartyAliasTypeDescriptionTransferCache
         extends BasePartyDescriptionTransferCache<PartyAliasTypeDescription, PartyAliasTypeDescriptionTransfer> {
     
     /** Creates a new instance of PartyAliasTypeDescriptionTransferCache */
-    public PartyAliasTypeDescriptionTransferCache() {
+    protected PartyAliasTypeDescriptionTransferCache() {
         super();
     }
 

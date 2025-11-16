@@ -30,7 +30,7 @@ public class PartySecurityRoleTemplateRoleTransferCache
     SecurityControl securityControl = Session.getModelController(SecurityControl.class);
 
     /** Creates a new instance of PartySecurityRoleTemplateRoleTransferCache */
-    public PartySecurityRoleTemplateRoleTransferCache() {
+    protected PartySecurityRoleTemplateRoleTransferCache() {
         super();
     }
     

@@ -32,7 +32,7 @@ public class WorkflowDestinationSelectorTransferCache
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
 
     /** Creates a new instance of WorkflowDestinationSelectorTransferCache */
-    public WorkflowDestinationSelectorTransferCache() {
+    protected WorkflowDestinationSelectorTransferCache() {
         super();
     }
     

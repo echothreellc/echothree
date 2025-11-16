@@ -31,7 +31,7 @@ public class CustomerTypeShippingMethodTransferCache
     CustomerControl customerControl = Session.getModelController(CustomerControl.class);
 
     /** Creates a new instance of CustomerTypeShippingMethodTransferCache */
-    public CustomerTypeShippingMethodTransferCache() {
+    protected CustomerTypeShippingMethodTransferCache() {
         super();
     }
     

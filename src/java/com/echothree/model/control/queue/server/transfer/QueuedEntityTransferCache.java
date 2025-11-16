@@ -32,7 +32,7 @@ public class QueuedEntityTransferCache
     QueueControl queueControl = Session.getModelController(QueueControl.class);
 
     /** Creates a new instance of QueuedEntityTransferCache */
-    public QueuedEntityTransferCache() {
+    protected QueuedEntityTransferCache() {
         super();
     }
 

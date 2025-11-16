@@ -30,7 +30,7 @@ public class ItemWeightTypeDescriptionTransferCache
     ItemControl itemControl = Session.getModelController(ItemControl.class);
 
     /** Creates a new instance of ItemWeightTypeDescriptionTransferCache */
-    public ItemWeightTypeDescriptionTransferCache() {
+    protected ItemWeightTypeDescriptionTransferCache() {
         super();
     }
     

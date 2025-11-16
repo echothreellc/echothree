@@ -30,7 +30,7 @@ public class SelectorNodeTransferCache
     SelectorControl selectorControl = Session.getModelController(SelectorControl.class);
 
     /** Creates a new instance of SelectorNodeTransferCache */
-    public SelectorNodeTransferCache() {
+    protected SelectorNodeTransferCache() {
         super();
     }
 

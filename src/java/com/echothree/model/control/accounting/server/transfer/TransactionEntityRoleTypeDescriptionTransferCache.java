@@ -30,7 +30,7 @@ public class TransactionEntityRoleTypeDescriptionTransferCache
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
 
     /** Creates a new instance of TransactionEntityRoleTypeDescriptionTransferCache */
-    public TransactionEntityRoleTypeDescriptionTransferCache() {
+    protected TransactionEntityRoleTypeDescriptionTransferCache() {
         super();
     }
     

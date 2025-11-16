@@ -34,7 +34,7 @@ public class PostalAddressLineTransferCache
     boolean includeElements;
     
     /** Creates a new instance of PostalAddressLineTransferCache */
-    public PostalAddressLineTransferCache() {
+    protected PostalAddressLineTransferCache() {
         super();
         
         var options = session.getOptions();

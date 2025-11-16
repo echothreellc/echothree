@@ -30,7 +30,7 @@ public class TerminationTypeDescriptionTransferCache
     EmployeeControl employeeControl = Session.getModelController(EmployeeControl.class);
 
     /** Creates a new instance of TerminationTypeDescriptionTransferCache */
-    public TerminationTypeDescriptionTransferCache() {
+    protected TerminationTypeDescriptionTransferCache() {
         super();
     }
     

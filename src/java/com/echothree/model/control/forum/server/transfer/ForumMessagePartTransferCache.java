@@ -42,7 +42,7 @@ public class ForumMessagePartTransferCache
     boolean includeString;
     
     /** Creates a new instance of ForumMessagePartTransferCache */
-    public ForumMessagePartTransferCache() {
+    protected ForumMessagePartTransferCache() {
         super();
         
         var options = session.getOptions();

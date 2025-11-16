@@ -32,7 +32,7 @@ public class QueuedLetterTransferCache
     LetterControl letterControl = Session.getModelController(LetterControl.class);
 
     /** Creates a new instance of QueuedLetterTransferCache */
-    public QueuedLetterTransferCache() {
+    protected QueuedLetterTransferCache() {
         super();
     }
     

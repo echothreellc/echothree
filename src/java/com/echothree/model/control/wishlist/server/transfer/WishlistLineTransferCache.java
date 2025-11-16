@@ -40,7 +40,7 @@ public class WishlistLineTransferCache
     WishlistControl wishlistControl = Session.getModelController(WishlistControl.class);
     
     /** Creates a new instance of WishlistLineTransferCache */
-    public WishlistLineTransferCache() {
+    protected WishlistLineTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

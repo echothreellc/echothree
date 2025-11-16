@@ -36,7 +36,7 @@ public class ClubTransferCache
     SubscriptionControl subscriptionControl = Session.getModelController(SubscriptionControl.class);
     
     /** Creates a new instance of ClubTransferCache */
-    public ClubTransferCache() {
+    protected ClubTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

@@ -33,7 +33,7 @@ public class InventoryLocationGroupVolumeTransferCache
     UomControl uomControl = Session.getModelController(UomControl.class);
     
     /** Creates a new instance of InventoryLocationGroupVolumeTransferCache */
-    public InventoryLocationGroupVolumeTransferCache() {
+    protected InventoryLocationGroupVolumeTransferCache() {
         super();
     }
     

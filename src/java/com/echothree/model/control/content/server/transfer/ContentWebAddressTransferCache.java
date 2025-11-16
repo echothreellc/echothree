@@ -31,7 +31,7 @@ public class ContentWebAddressTransferCache
     ContentControl contentControl = Session.getModelController(ContentControl.class);
 
     /** Creates a new instance of ContentWebAddressTransferCache */
-    public ContentWebAddressTransferCache() {
+    protected ContentWebAddressTransferCache() {
         super();
         
         var options = session.getOptions();

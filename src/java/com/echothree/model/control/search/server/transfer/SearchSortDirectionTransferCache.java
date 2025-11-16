@@ -31,7 +31,7 @@ public class SearchSortDirectionTransferCache
     SearchControl searchControl = Session.getModelController(SearchControl.class);
 
     /** Creates a new instance of SearchSortDirectionTransferCache */
-    public SearchSortDirectionTransferCache() {
+    protected SearchSortDirectionTransferCache() {
         super();
         
         var options = session.getOptions();

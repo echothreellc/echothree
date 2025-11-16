@@ -35,7 +35,7 @@ public class EntityVisitTransferCache
     boolean includeVisitedTime;
 
     /** Creates a new instance of EntityVisitTransferCache */
-    public EntityVisitTransferCache() {
+    protected EntityVisitTransferCache() {
         super();
 
         var options = session.getOptions();

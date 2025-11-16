@@ -33,7 +33,7 @@ public class TagTransferCache
     boolean includeUsageCount;
 
     /** Creates a new instance of TagTransferCache */
-    public TagTransferCache() {
+    protected TagTransferCache() {
         super();
 
         var options = session.getOptions();

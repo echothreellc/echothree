@@ -32,7 +32,7 @@ public class InventoryConditionGlAccountTransferCache
     InventoryControl inventoryControl = Session.getModelController(InventoryControl.class);
     
     /** Creates a new instance of InventoryConditionGlAccountTransferCache */
-    public InventoryConditionGlAccountTransferCache() {
+    protected InventoryConditionGlAccountTransferCache() {
         super();
     }
     

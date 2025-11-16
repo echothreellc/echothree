@@ -32,7 +32,7 @@ public class CarrierServiceTransferCache
     SelectorControl selectorControl = Session.getModelController(SelectorControl.class);
     
     /** Creates a new instance of CarrierServiceTransferCache */
-    public CarrierServiceTransferCache() {
+    protected CarrierServiceTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

@@ -37,7 +37,7 @@ public class SubscriptionTypeChainTransferCache
     UnitOfMeasureKind timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
     
     /** Creates a new instance of SubscriptionTypeChainTransferCache */
-    public SubscriptionTypeChainTransferCache() {
+    protected SubscriptionTypeChainTransferCache() {
         super();
     }
     

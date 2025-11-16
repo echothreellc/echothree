@@ -76,7 +76,7 @@ public class PartyTransferCache
     boolean includePartySkills;
     
     /** Creates a new instance of PartyTransferCache */
-    public PartyTransferCache() {
+    protected PartyTransferCache() {
         super();
         
         var options = session.getOptions();

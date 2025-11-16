@@ -30,7 +30,7 @@ public class InventoryAdjustmentTypeDescriptionTransferCache
     InventoryAdjustmentTypeControl inventoryAdjustmentTypeControl = Session.getModelController(InventoryAdjustmentTypeControl.class);
 
     /** Creates a new instance of InventoryAdjustmentTypeDescriptionTransferCache */
-    public InventoryAdjustmentTypeDescriptionTransferCache() {
+    protected InventoryAdjustmentTypeDescriptionTransferCache() {
         super();
     }
 

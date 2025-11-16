@@ -40,7 +40,7 @@ public class UnitOfMeasureKindTransferCache
     boolean filterEntityInstance;
     
     /** Creates a new instance of UnitOfMeasureKindTransferCache */
-    public UnitOfMeasureKindTransferCache() {
+    protected UnitOfMeasureKindTransferCache() {
         super();
 
         transferProperties = session.getTransferProperties();

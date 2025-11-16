@@ -30,7 +30,7 @@ public class PartyTrainingClassSessionPageTransferCache
     TrainingControl trainingControl = Session.getModelController(TrainingControl.class);
 
     /** Creates a new instance of PartyTrainingClassSessionPageTransferCache */
-    public PartyTrainingClassSessionPageTransferCache() {
+    protected PartyTrainingClassSessionPageTransferCache() {
         super();
     }
     

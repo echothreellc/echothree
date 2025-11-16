@@ -32,7 +32,7 @@ public class ItemPackCheckRequirementTransferCache
     UomControl uomControl = Session.getModelController(UomControl.class);
     
     /** Creates a new instance of ItemPackCheckRequirementTransferCache */
-    public ItemPackCheckRequirementTransferCache() {
+    protected ItemPackCheckRequirementTransferCache() {
         super();
     }
     

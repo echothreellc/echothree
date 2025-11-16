@@ -30,7 +30,7 @@ public class ChainKindTransferCache
     ChainControl chainControl = Session.getModelController(ChainControl.class);
 
     /** Creates a new instance of ChainKindTransferCache */
-    public ChainKindTransferCache() {
+    protected ChainKindTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

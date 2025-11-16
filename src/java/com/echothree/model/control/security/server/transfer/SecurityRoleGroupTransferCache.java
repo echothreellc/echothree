@@ -36,7 +36,7 @@ public class SecurityRoleGroupTransferCache
     boolean includeSecurityRoles;
 
     /** Creates a new instance of SecurityRoleGroupTransferCache */
-    public SecurityRoleGroupTransferCache() {
+    protected SecurityRoleGroupTransferCache() {
         super();
 
         var options = session.getOptions();

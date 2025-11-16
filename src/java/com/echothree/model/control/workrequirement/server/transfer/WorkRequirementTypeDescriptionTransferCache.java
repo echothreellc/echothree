@@ -30,7 +30,7 @@ public class WorkRequirementTypeDescriptionTransferCache
     WorkRequirementControl workRequirementControl = Session.getModelController(WorkRequirementControl.class);
 
     /** Creates a new instance of WorkRequirementTypeDescriptionTransferCache */
-    public WorkRequirementTypeDescriptionTransferCache() {
+    protected WorkRequirementTypeDescriptionTransferCache() {
         super();
     }
     

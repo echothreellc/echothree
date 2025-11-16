@@ -30,7 +30,7 @@ public class DocumentTypeUsageTypeDescriptionTransferCache
     DocumentControl documentControl = Session.getModelController(DocumentControl.class);
 
     /** Creates a new instance of DocumentTypeUsageTypeDescriptionTransferCache */
-    public DocumentTypeUsageTypeDescriptionTransferCache() {
+    protected DocumentTypeUsageTypeDescriptionTransferCache() {
         super();
     }
     

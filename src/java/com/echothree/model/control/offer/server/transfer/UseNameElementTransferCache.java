@@ -30,7 +30,7 @@ public class UseNameElementTransferCache
     UseNameElementControl useNameElementControl = Session.getModelController(UseNameElementControl.class);
 
     /** Creates a new instance of UseNameElementTransferCache */
-    public UseNameElementTransferCache() {
+    protected UseNameElementTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

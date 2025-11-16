@@ -26,7 +26,7 @@ public class PersonalTitleTransferCache
         extends BasePartyTransferCache<PersonalTitle, PersonalTitleTransfer> {
     
     /** Creates a new instance of PersonalTitleTransferCache */
-    public PersonalTitleTransferCache() {
+    protected PersonalTitleTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

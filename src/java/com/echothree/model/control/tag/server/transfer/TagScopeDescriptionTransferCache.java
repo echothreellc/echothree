@@ -30,7 +30,7 @@ public class TagScopeDescriptionTransferCache
     TagControl tagControl = Session.getModelController(TagControl.class);
 
     /** Creates a new instance of TagScopeDescriptionTransferCache */
-    public TagScopeDescriptionTransferCache() {
+    protected TagScopeDescriptionTransferCache() {
         super();
     }
     

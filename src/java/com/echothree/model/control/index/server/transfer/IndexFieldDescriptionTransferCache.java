@@ -30,7 +30,7 @@ public class IndexFieldDescriptionTransferCache
     IndexControl indexControl = Session.getModelController(IndexControl.class);
 
     /** Creates a new instance of IndexFieldDescriptionTransferCache */
-    public IndexFieldDescriptionTransferCache() {
+    protected IndexFieldDescriptionTransferCache() {
         super();
     }
     

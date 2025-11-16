@@ -30,7 +30,7 @@ public class RelatedItemTypeTransferCache
     ItemControl itemControl = Session.getModelController(ItemControl.class);
 
     /** Creates a new instance of RelatedItemTypeTransferCache */
-    public RelatedItemTypeTransferCache() {
+    protected RelatedItemTypeTransferCache() {
         super();
         
         setIncludeEntityInstance(true);

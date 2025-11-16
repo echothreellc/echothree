@@ -35,7 +35,7 @@ public class CommunicationSourceTransferCache
     boolean includeRelated;
     
     /** Creates a new instance of CommunicationSourceTransferCache */
-    public CommunicationSourceTransferCache() {
+    protected CommunicationSourceTransferCache() {
         super();
         
         var options = session.getOptions();

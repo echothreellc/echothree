@@ -32,7 +32,7 @@ public class EntityAliasTransferCache
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
     /** Creates a new instance of EntityAliasTransferCache */
-    public EntityAliasTransferCache() {
+    protected EntityAliasTransferCache() {
         super();
     }
     

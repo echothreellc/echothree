@@ -39,7 +39,7 @@ public class PartyPaymentMethodContactMechanismTransferCache
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of PartyPaymentMethodContactMechanismTransferCache */
-    public PartyPaymentMethodContactMechanismTransferCache() {
+    protected PartyPaymentMethodContactMechanismTransferCache() {
         super();
     }
 

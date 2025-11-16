@@ -30,7 +30,7 @@ public class PicklistAliasTypeDescriptionTransferCache
     PicklistControl picklistControl = Session.getModelController(PicklistControl.class);
 
     /** Creates a new instance of PicklistAliasTypeDescriptionTransferCache */
-    public PicklistAliasTypeDescriptionTransferCache() {
+    protected PicklistAliasTypeDescriptionTransferCache() {
         super();
     }
     
