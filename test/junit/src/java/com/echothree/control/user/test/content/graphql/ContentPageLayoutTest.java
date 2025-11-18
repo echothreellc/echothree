@@ -205,19 +205,27 @@ public class ContentPageLayoutTest
         var queryBody = executeUsingPost("""
                 query {
                     contentPageLayouts {
-                        id
-                        sortOrder
-                        description
+                        edges {
+                            node {
+                                id
+                                sortOrder
+                                description
+                            }
+                        }
                     }
                 }
                 """);
         
-        var contentPageLayouts = getList(queryBody, "data.contentPageLayouts");
+        var contentPageLayouts = getList(queryBody, "data.contentPageLayouts.edges");
+        assertThat(contentPageLayouts.isEmpty()).isFalse();
+
         var foundContentPageLayout = false;
         for(var contentPageLayout : contentPageLayouts) {
-            if(id.equals(getString(contentPageLayout, "id"))) {
-                assertThat(getInteger(contentPageLayout, "sortOrder")).isEqualTo(ORIGINAL_SORT_ORDER);
-                assertThat(getString(contentPageLayout, "description")).isEqualTo(ORIGINAL_DESCRIPTION);
+            var node = getMap(contentPageLayout, "node");
+
+            if(id.equals(getString(node, "id"))) {
+                assertThat(getInteger(node, "sortOrder")).isEqualTo(ORIGINAL_SORT_ORDER);
+                assertThat(getString(node, "description")).isEqualTo(ORIGINAL_DESCRIPTION);
                 foundContentPageLayout = true;
             }
         }
@@ -280,7 +288,8 @@ public class ContentPageLayoutTest
         assertThat(getBoolean(editBody, "data.editContentPageLayout.commandResult.hasErrors")).isFalse();
         
         var queryBody = executeUsingPost("""
-                query { contentPageLayout(id: "%s") {
+                query {
+                    contentPageLayout(id: "%s") {
                         id
                         contentPageLayoutName
                         sortOrder

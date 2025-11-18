@@ -18,13 +18,19 @@ package com.echothree.model.control.shipping.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 @RequestScoped
 public class ShippingTransferCaches
         extends BaseTransferCaches {
-    
+
+    @Inject
     ShippingMethodDescriptionTransferCache shippingMethodDescriptionTransferCache;
+
+    @Inject
     ShippingMethodTransferCache shippingMethodTransferCache;
+
+    @Inject
     ShippingMethodCarrierServiceTransferCache shippingMethodCarrierServiceTransferCache;
     
     /** Creates a new instance of ShippingTransferCaches */
