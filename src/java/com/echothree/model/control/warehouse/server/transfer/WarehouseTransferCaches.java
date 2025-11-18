@@ -18,22 +18,46 @@ package com.echothree.model.control.warehouse.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 @RequestScoped
 public class WarehouseTransferCaches
         extends BaseTransferCaches {
-    
+
+    @Inject
     LocationDescriptionTransferCache locationDescriptionTransferCache;
+
+    @Inject
     LocationNameElementDescriptionTransferCache locationNameElementDescriptionTransferCache;
+
+    @Inject
     LocationNameElementTransferCache locationNameElementTransferCache;
+
+    @Inject
     LocationTransferCache locationTransferCache;
+
+    @Inject
     LocationTypeDescriptionTransferCache locationTypeDescriptionTransferCache;
+
+    @Inject
     LocationTypeTransferCache locationTypeTransferCache;
+
+    @Inject
     LocationUseTypeTransferCache locationUseTypeTransferCache;
+
+    @Inject
     WarehouseTransferCache warehouseTransferCache;
+
+    @Inject
     LocationVolumeTransferCache locationVolumeTransferCache;
+
+    @Inject
     LocationCapacityTransferCache locationCapacityTransferCache;
+
+    @Inject
     WarehouseTypeTransferCache warehouseTypeTransferCache;
+
+    @Inject
     WarehouseTypeDescriptionTransferCache warehouseTypeDescriptionTransferCache;
     
     /** Creates a new instance of WarehouseTransferCaches */
