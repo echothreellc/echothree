@@ -18,20 +18,40 @@ package com.echothree.model.control.carrier.server.transfer;
 
 import com.echothree.util.server.transfer.BaseTransferCaches;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 @RequestScoped
 public class CarrierTransferCaches
         extends BaseTransferCaches {
-    
+
+    @Inject
     CarrierTransferCache carrierTransferCache;
+
+    @Inject
     CarrierTypeTransferCache carrierTypeTransferCache;
+
+    @Inject
     CarrierTypeDescriptionTransferCache carrierTypeDescriptionTransferCache;
+
+    @Inject
     CarrierServiceDescriptionTransferCache carrierServiceDescriptionTransferCache;
+
+    @Inject
     CarrierServiceTransferCache carrierServiceTransferCache;
+
+    @Inject
     CarrierOptionDescriptionTransferCache carrierOptionDescriptionTransferCache;
+
+    @Inject
     CarrierOptionTransferCache carrierOptionTransferCache;
+
+    @Inject
     PartyCarrierTransferCache partyCarrierTransferCache;
+
+    @Inject
     PartyCarrierAccountTransferCache partyCarrierAccountTransferCache;
+
+    @Inject
     CarrierServiceOptionTransferCache carrierServiceOptionTransferCache;
     
     /** Creates a new instance of CarrierTransferCaches */
