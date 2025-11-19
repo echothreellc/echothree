@@ -16,7 +16,29 @@
 
 package com.echothree.model.control.inventory.server.control;
 
-import com.echothree.model.control.inventory.server.transfer.InventoryTransferCaches;
+import com.echothree.model.control.inventory.server.transfer.AllocationPriorityDescriptionTransferCache;
+import com.echothree.model.control.inventory.server.transfer.AllocationPriorityTransferCache;
+import com.echothree.model.control.inventory.server.transfer.InventoryAdjustmentTypeDescriptionTransferCache;
+import com.echothree.model.control.inventory.server.transfer.InventoryAdjustmentTypeTransferCache;
+import com.echothree.model.control.inventory.server.transfer.InventoryConditionDescriptionTransferCache;
+import com.echothree.model.control.inventory.server.transfer.InventoryConditionGlAccountTransferCache;
+import com.echothree.model.control.inventory.server.transfer.InventoryConditionTransferCache;
+import com.echothree.model.control.inventory.server.transfer.InventoryConditionUseTransferCache;
+import com.echothree.model.control.inventory.server.transfer.InventoryConditionUseTypeTransferCache;
+import com.echothree.model.control.inventory.server.transfer.InventoryLocationGroupCapacityTransferCache;
+import com.echothree.model.control.inventory.server.transfer.InventoryLocationGroupDescriptionTransferCache;
+import com.echothree.model.control.inventory.server.transfer.InventoryLocationGroupTransferCache;
+import com.echothree.model.control.inventory.server.transfer.InventoryLocationGroupVolumeTransferCache;
+import com.echothree.model.control.inventory.server.transfer.InventoryTransactionTypeDescriptionTransferCache;
+import com.echothree.model.control.inventory.server.transfer.InventoryTransactionTypeTransferCache;
+import com.echothree.model.control.inventory.server.transfer.LotAliasTransferCache;
+import com.echothree.model.control.inventory.server.transfer.LotAliasTypeDescriptionTransferCache;
+import com.echothree.model.control.inventory.server.transfer.LotAliasTypeTransferCache;
+import com.echothree.model.control.inventory.server.transfer.LotTimeTransferCache;
+import com.echothree.model.control.inventory.server.transfer.LotTimeTypeDescriptionTransferCache;
+import com.echothree.model.control.inventory.server.transfer.LotTimeTypeTransferCache;
+import com.echothree.model.control.inventory.server.transfer.LotTransferCache;
+import com.echothree.model.control.inventory.server.transfer.PartyInventoryLevelTransferCache;
 import com.echothree.util.server.control.BaseModelControl;
 import javax.inject.Inject;
 
@@ -31,8 +53,74 @@ public abstract class BaseInventoryControl
     // --------------------------------------------------------------------------------
     //   Inventory Transfer Caches
     // --------------------------------------------------------------------------------
-    
+
     @Inject
-    InventoryTransferCaches inventoryTransferCaches;
+    InventoryLocationGroupTransferCache inventoryLocationGroupTransferCache;
+
+    @Inject
+    InventoryLocationGroupDescriptionTransferCache inventoryLocationGroupDescriptionTransferCache;
+
+    @Inject
+    InventoryConditionTransferCache inventoryConditionTransferCache;
+
+    @Inject
+    InventoryConditionDescriptionTransferCache inventoryConditionDescriptionTransferCache;
+
+    @Inject
+    InventoryLocationGroupCapacityTransferCache inventoryLocationGroupCapacityTransferCache;
+
+    @Inject
+    InventoryLocationGroupVolumeTransferCache inventoryLocationGroupVolumeTransferCache;
+
+    @Inject
+    PartyInventoryLevelTransferCache partyInventoryLevelTransferCache;
+
+    @Inject
+    InventoryConditionUseTransferCache inventoryConditionUseTransferCache;
+
+    @Inject
+    InventoryConditionUseTypeTransferCache inventoryConditionUseTypeTransferCache;
+
+    @Inject
+    InventoryConditionGlAccountTransferCache inventoryConditionGlAccountTransferCache;
+
+    @Inject
+    LotAliasTypeTransferCache lotAliasTypeTransferCache;
+
+    @Inject
+    LotAliasTypeDescriptionTransferCache lotAliasTypeDescriptionTransferCache;
+
+    @Inject
+    LotAliasTransferCache lotAliasTransferCache;
+
+    @Inject
+    LotTimeTypeTransferCache lotTimeTypeTransferCache;
+
+    @Inject
+    LotTimeTypeDescriptionTransferCache lotTimeTypeDescriptionTransferCache;
+
+    @Inject
+    LotTimeTransferCache lotTimeTransferCache;
+
+    @Inject
+    AllocationPriorityTransferCache allocationPriorityTransferCache;
+
+    @Inject
+    AllocationPriorityDescriptionTransferCache allocationPriorityDescriptionTransferCache;
+
+    @Inject
+    LotTransferCache lotTransferCache;
+
+    @Inject
+    InventoryTransactionTypeTransferCache inventoryTransactionTypeTransferCache;
+
+    @Inject
+    InventoryTransactionTypeDescriptionTransferCache inventoryTransactionTypeDescriptionTransferCache;
+
+    @Inject
+    InventoryAdjustmentTypeTransferCache inventoryAdjustmentTypeTransferCache;
+
+    @Inject
+    InventoryAdjustmentTypeDescriptionTransferCache inventoryAdjustmentTypeDescriptionTransferCache;
 
 }

@@ -23,7 +23,11 @@ import com.echothree.model.control.workeffort.common.transfer.WorkEffortScopeTra
 import com.echothree.model.control.workeffort.common.transfer.WorkEffortTransfer;
 import com.echothree.model.control.workeffort.common.transfer.WorkEffortTypeDescriptionTransfer;
 import com.echothree.model.control.workeffort.common.transfer.WorkEffortTypeTransfer;
-import com.echothree.model.control.workeffort.server.transfer.WorkEffortTransferCaches;
+import com.echothree.model.control.workeffort.server.transfer.WorkEffortScopeDescriptionTransferCache;
+import com.echothree.model.control.workeffort.server.transfer.WorkEffortScopeTransferCache;
+import com.echothree.model.control.workeffort.server.transfer.WorkEffortTransferCache;
+import com.echothree.model.control.workeffort.server.transfer.WorkEffortTypeDescriptionTransferCache;
+import com.echothree.model.control.workeffort.server.transfer.WorkEffortTypeTransferCache;
 import com.echothree.model.control.workrequirement.server.control.WorkRequirementControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityType;
@@ -73,9 +77,21 @@ public class WorkEffortControl
     // --------------------------------------------------------------------------------
     //   Work Effort Transfer Caches
     // --------------------------------------------------------------------------------
-    
+
     @Inject
-    WorkEffortTransferCaches workEffortTransferCaches;
+    WorkEffortTransferCache workEffortTransferCache;
+
+    @Inject
+    WorkEffortTypeTransferCache workEffortTypeTransferCache;
+
+    @Inject
+    WorkEffortTypeDescriptionTransferCache workEffortTypeDescriptionTransferCache;
+
+    @Inject
+    WorkEffortScopeTransferCache workEffortScopeTransferCache;
+
+    @Inject
+    WorkEffortScopeDescriptionTransferCache workEffortScopeDescriptionTransferCache;
 
     // --------------------------------------------------------------------------------
     //   Work Effort Types
@@ -174,13 +190,12 @@ public class WorkEffortControl
     }
     
     public WorkEffortTypeTransfer getWorkEffortTypeTransfer(UserVisit userVisit, WorkEffortType workEffortType) {
-        return workEffortTransferCaches.getWorkEffortTypeTransferCache().getWorkEffortTypeTransfer(userVisit, workEffortType);
+        return workEffortTypeTransferCache.getWorkEffortTypeTransfer(userVisit, workEffortType);
     }
     
     public List<WorkEffortTypeTransfer> getWorkEffortTypeTransfers(UserVisit userVisit) {
         var workEffortTypes = getWorkEffortTypes();
         List<WorkEffortTypeTransfer> workEffortTypeTransfers = new ArrayList<>(workEffortTypes.size());
-        var workEffortTypeTransferCache = workEffortTransferCaches.getWorkEffortTypeTransferCache();
         
         workEffortTypes.forEach((workEffortType) ->
                 workEffortTypeTransfers.add(workEffortTypeTransferCache.getWorkEffortTypeTransfer(userVisit, workEffortType))
@@ -352,13 +367,12 @@ public class WorkEffortControl
     }
     
     public WorkEffortTypeDescriptionTransfer getWorkEffortTypeDescriptionTransfer(UserVisit userVisit, WorkEffortTypeDescription workEffortTypeDescription) {
-        return workEffortTransferCaches.getWorkEffortTypeDescriptionTransferCache().getWorkEffortTypeDescriptionTransfer(userVisit, workEffortTypeDescription);
+        return workEffortTypeDescriptionTransferCache.getWorkEffortTypeDescriptionTransfer(userVisit, workEffortTypeDescription);
     }
     
     public List<WorkEffortTypeDescriptionTransfer> getWorkEffortTypeDescriptionTransfers(UserVisit userVisit, WorkEffortType workEffortType) {
         var workEffortTypeDescriptions = getWorkEffortTypeDescriptionsByWorkEffortType(workEffortType);
         List<WorkEffortTypeDescriptionTransfer> workEffortTypeDescriptionTransfers = new ArrayList<>(workEffortTypeDescriptions.size());
-        var workEffortTypeDescriptionTransferCache = workEffortTransferCaches.getWorkEffortTypeDescriptionTransferCache();
         
         workEffortTypeDescriptions.forEach((workEffortTypeDescription) ->
                 workEffortTypeDescriptionTransfers.add(workEffortTypeDescriptionTransferCache.getWorkEffortTypeDescriptionTransfer(userVisit, workEffortTypeDescription))
@@ -602,13 +616,12 @@ public class WorkEffortControl
     }
     
     public WorkEffortScopeTransfer getWorkEffortScopeTransfer(UserVisit userVisit, WorkEffortScope workEffortScope) {
-        return workEffortTransferCaches.getWorkEffortScopeTransferCache().getWorkEffortScopeTransfer(userVisit, workEffortScope);
+        return workEffortScopeTransferCache.getWorkEffortScopeTransfer(userVisit, workEffortScope);
     }
     
     public List<WorkEffortScopeTransfer> getWorkEffortScopeTransfers(UserVisit userVisit, WorkEffortType workEffortType) {
         var workEffortScopes = getWorkEffortScopes(workEffortType);
         List<WorkEffortScopeTransfer> workEffortScopeTransfers = new ArrayList<>(workEffortScopes.size());
-        var workEffortScopeTransferCache = workEffortTransferCaches.getWorkEffortScopeTransferCache();
         
         workEffortScopes.forEach((workEffortScope) ->
                 workEffortScopeTransfers.add(workEffortScopeTransferCache.getWorkEffortScopeTransfer(userVisit, workEffortScope))
@@ -838,13 +851,12 @@ public class WorkEffortControl
     }
     
     public WorkEffortScopeDescriptionTransfer getWorkEffortScopeDescriptionTransfer(UserVisit userVisit, WorkEffortScopeDescription workEffortScopeDescription) {
-        return workEffortTransferCaches.getWorkEffortScopeDescriptionTransferCache().getWorkEffortScopeDescriptionTransfer(userVisit, workEffortScopeDescription);
+        return workEffortScopeDescriptionTransferCache.getWorkEffortScopeDescriptionTransfer(userVisit, workEffortScopeDescription);
     }
     
     public List<WorkEffortScopeDescriptionTransfer> getWorkEffortScopeDescriptionTransfers(UserVisit userVisit, WorkEffortScope workEffortScope) {
         var workEffortScopeDescriptions = getWorkEffortScopeDescriptionsByWorkEffortScope(workEffortScope);
         List<WorkEffortScopeDescriptionTransfer> workEffortScopeDescriptionTransfers = new ArrayList<>(workEffortScopeDescriptions.size());
-        var workEffortScopeDescriptionTransferCache = workEffortTransferCaches.getWorkEffortScopeDescriptionTransferCache();
         
         workEffortScopeDescriptions.forEach((workEffortScopeDescription) ->
                 workEffortScopeDescriptionTransfers.add(workEffortScopeDescriptionTransferCache.getWorkEffortScopeDescriptionTransfer(userVisit, workEffortScopeDescription))
@@ -1078,12 +1090,11 @@ public class WorkEffortControl
     }
     
     public WorkEffortTransfer getWorkEffortTransfer(UserVisit userVisit, WorkEffort workEffort) {
-        return workEffortTransferCaches.getWorkEffortTransferCache().getWorkEffortTransfer(userVisit, workEffort);
+        return workEffortTransferCache.getWorkEffortTransfer(userVisit, workEffort);
     }
     
     public List<WorkEffortTransfer> getWorkEffortTransfers(UserVisit userVisit, Collection<WorkEffort> workEfforts) {
         List<WorkEffortTransfer> workEffortTransfers = new ArrayList<>(workEfforts.size());
-        var workEffortTransferCache = workEffortTransferCaches.getWorkEffortTransferCache();
 
         workEfforts.forEach((workEffort) ->
                 workEffortTransfers.add(workEffortTransferCache.getWorkEffortTransfer(userVisit, workEffort))

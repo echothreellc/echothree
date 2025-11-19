@@ -265,7 +265,7 @@ public class UseControl
         List<UseTransfer> useTransfers = new ArrayList<>(uses.size());
 
         uses.forEach((use) -> {
-            useTransfers.add(offerTransferCaches.getUseTransferCache().getUseTransfer(userVisit, use));
+            useTransfers.add(useTransferCache.getUseTransfer(userVisit, use));
         });
 
         return useTransfers;
@@ -276,7 +276,7 @@ public class UseControl
     }
 
     public UseTransfer getUseTransfer(UserVisit userVisit, Use use) {
-        return offerTransferCaches.getUseTransferCache().getUseTransfer(userVisit, use);
+        return useTransferCache.getUseTransfer(userVisit, use);
     }
 
     public UseChoicesBean getUseChoices(String defaultUseChoice, Language language, boolean allowNullChoice) {
@@ -518,7 +518,7 @@ public class UseControl
     }
 
     public UseDescriptionTransfer getUseDescriptionTransfer(UserVisit userVisit, UseDescription useDescription) {
-        return offerTransferCaches.getUseDescriptionTransferCache().getUseDescriptionTransfer(userVisit, useDescription);
+        return useDescriptionTransferCache.getUseDescriptionTransfer(userVisit, useDescription);
     }
 
     public List<UseDescriptionTransfer> getUseDescriptionTransfers(UserVisit userVisit, Use use) {
@@ -526,7 +526,7 @@ public class UseControl
         List<UseDescriptionTransfer> useDescriptionTransfers = new ArrayList<>(useDescriptions.size());
 
         useDescriptions.forEach((useDescription) -> {
-            useDescriptionTransfers.add(offerTransferCaches.getUseDescriptionTransferCache().getUseDescriptionTransfer(userVisit, useDescription));
+            useDescriptionTransfers.add(useDescriptionTransferCache.getUseDescriptionTransfer(userVisit, useDescription));
         });
 
         return useDescriptionTransfers;

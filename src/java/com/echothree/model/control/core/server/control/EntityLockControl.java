@@ -18,7 +18,6 @@ package com.echothree.model.control.core.server.control;
 
 import com.echothree.model.control.core.common.transfer.EntityLockTransfer;
 import com.echothree.model.control.core.server.CoreDebugFlags;
-import com.echothree.model.control.core.server.transfer.EntityLockTransferCache;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.EntityLockException;
@@ -31,14 +30,10 @@ import com.echothree.util.server.persistence.Session;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
 
 @RequestScoped
 public class EntityLockControl
         extends BaseCoreControl {
-
-    @Inject
-    EntityLockTransferCache entityLockTransferCache;
 
     /** Creates a new instance of EntityLockControl */
     protected EntityLockControl() {

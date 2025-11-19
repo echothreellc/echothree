@@ -47,7 +47,26 @@ import com.echothree.model.control.forum.common.transfer.ForumRoleTypeTransfer;
 import com.echothree.model.control.forum.common.transfer.ForumThreadTransfer;
 import com.echothree.model.control.forum.common.transfer.ForumTransfer;
 import com.echothree.model.control.forum.common.transfer.ForumTypeTransfer;
-import com.echothree.model.control.forum.server.transfer.ForumTransferCaches;
+import com.echothree.model.control.forum.server.transfer.ForumDescriptionTransferCache;
+import com.echothree.model.control.forum.server.transfer.ForumForumThreadTransferCache;
+import com.echothree.model.control.forum.server.transfer.ForumGroupDescriptionTransferCache;
+import com.echothree.model.control.forum.server.transfer.ForumGroupForumTransferCache;
+import com.echothree.model.control.forum.server.transfer.ForumGroupTransferCache;
+import com.echothree.model.control.forum.server.transfer.ForumMessageAttachmentDescriptionTransferCache;
+import com.echothree.model.control.forum.server.transfer.ForumMessageAttachmentTransferCache;
+import com.echothree.model.control.forum.server.transfer.ForumMessagePartTransferCache;
+import com.echothree.model.control.forum.server.transfer.ForumMessagePartTypeTransferCache;
+import com.echothree.model.control.forum.server.transfer.ForumMessageRoleTransferCache;
+import com.echothree.model.control.forum.server.transfer.ForumMessageTransferCache;
+import com.echothree.model.control.forum.server.transfer.ForumMessageTypePartTypeTransferCache;
+import com.echothree.model.control.forum.server.transfer.ForumMessageTypeTransferCache;
+import com.echothree.model.control.forum.server.transfer.ForumMimeTypeTransferCache;
+import com.echothree.model.control.forum.server.transfer.ForumPartyRoleTransferCache;
+import com.echothree.model.control.forum.server.transfer.ForumPartyTypeRoleTransferCache;
+import com.echothree.model.control.forum.server.transfer.ForumRoleTypeTransferCache;
+import com.echothree.model.control.forum.server.transfer.ForumThreadTransferCache;
+import com.echothree.model.control.forum.server.transfer.ForumTransferCache;
+import com.echothree.model.control.forum.server.transfer.ForumTypeTransferCache;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
@@ -177,9 +196,66 @@ public class ForumControl
     // --------------------------------------------------------------------------------
     //   Forum Transfer Caches
     // --------------------------------------------------------------------------------
-    
+
     @Inject
-    ForumTransferCaches forumTransferCaches;
+    ForumTypeTransferCache forumTypeTransferCache;
+
+    @Inject
+    ForumMessageTypeTransferCache forumMessageTypeTransferCache;
+
+    @Inject
+    ForumRoleTypeTransferCache forumRoleTypeTransferCache;
+
+    @Inject
+    ForumGroupDescriptionTransferCache forumGroupDescriptionTransferCache;
+
+    @Inject
+    ForumDescriptionTransferCache forumDescriptionTransferCache;
+
+    @Inject
+    ForumGroupTransferCache forumGroupTransferCache;
+
+    @Inject
+    ForumGroupForumTransferCache forumGroupForumTransferCache;
+
+    @Inject
+    ForumTransferCache forumTransferCache;
+
+    @Inject
+    ForumMessagePartTypeTransferCache forumMessagePartTypeTransferCache;
+
+    @Inject
+    ForumMessageTypePartTypeTransferCache forumMessageTypePartTypeTransferCache;
+
+    @Inject
+    ForumMimeTypeTransferCache forumMimeTypeTransferCache;
+
+    @Inject
+    ForumPartyRoleTransferCache forumPartyRoleTransferCache;
+
+    @Inject
+    ForumPartyTypeRoleTransferCache forumPartyTypeRoleTransferCache;
+
+    @Inject
+    ForumForumThreadTransferCache forumForumThreadTransferCache;
+
+    @Inject
+    ForumMessagePartTransferCache forumMessagePartTransferCache;
+
+    @Inject
+    ForumMessageRoleTransferCache forumMessageRoleTransferCache;
+
+    @Inject
+    ForumMessageTransferCache forumMessageTransferCache;
+
+    @Inject
+    ForumMessageAttachmentTransferCache forumMessageAttachmentTransferCache;
+
+    @Inject
+    ForumMessageAttachmentDescriptionTransferCache forumMessageAttachmentDescriptionTransferCache;
+
+    @Inject
+    ForumThreadTransferCache forumThreadTransferCache;
 
     // --------------------------------------------------------------------------------
     //   Forum Groups
@@ -306,12 +382,11 @@ public class ForumControl
     }
     
     public ForumGroupTransfer getForumGroupTransfer(UserVisit userVisit, ForumGroup forumGroup) {
-        return forumTransferCaches.getForumGroupTransferCache().getForumGroupTransfer(userVisit, forumGroup);
+        return forumGroupTransferCache.getForumGroupTransfer(userVisit, forumGroup);
     }
     
     public List<ForumGroupTransfer> getForumGroupTransfers(UserVisit userVisit, Collection<ForumGroup> forumGroups) {
         List<ForumGroupTransfer> forumGroupTransfers = new ArrayList<>(forumGroups.size());
-        var forumGroupTransferCache = forumTransferCaches.getForumGroupTransferCache();
         
         forumGroups.forEach((forumGroup) ->
                 forumGroupTransfers.add(forumGroupTransferCache.getForumGroupTransfer(userVisit, forumGroup))
@@ -481,7 +556,7 @@ public class ForumControl
     
     public ForumGroupDescriptionTransfer getForumGroupDescriptionTransfer(UserVisit userVisit,
             ForumGroupDescription forumGroupDescription) {
-        return forumTransferCaches.getForumGroupDescriptionTransferCache().getForumGroupDescriptionTransfer(userVisit, forumGroupDescription);
+        return forumGroupDescriptionTransferCache.getForumGroupDescriptionTransfer(userVisit, forumGroupDescription);
     }
     
     public List<ForumGroupDescriptionTransfer> getForumGroupDescriptionTransfersByForumGroup(UserVisit userVisit,
@@ -490,7 +565,6 @@ public class ForumControl
         List<ForumGroupDescriptionTransfer> forumGroupDescriptionTransfers = null;
         
         if(forumGroupDescriptions != null) {
-            var forumGroupDescriptionTransferCache = forumTransferCaches.getForumGroupDescriptionTransferCache();
             
             forumGroupDescriptionTransfers = new ArrayList<>(forumGroupDescriptions.size());
             
@@ -628,7 +702,7 @@ public class ForumControl
     }
     
     public ForumTransfer getForumTransfer(UserVisit userVisit, Forum forum) {
-        return forumTransferCaches.getForumTransferCache().getForumTransfer(userVisit, forum);
+        return forumTransferCache.getForumTransfer(userVisit, forum);
     }
     
     public ForumChoicesBean getForumChoices(String defaultForumChoice, Language language, boolean allowNullChoice) {
@@ -666,7 +740,6 @@ public class ForumControl
     
     public List<ForumTransfer> getForumTransfers(final UserVisit userVisit, final List<Forum> forums) {
         List<ForumTransfer> forumTransfers = new ArrayList<>(forums.size());
-        var forumTransferCache = forumTransferCaches.getForumTransferCache();
         
         forums.forEach((forum) ->
                 forumTransfers.add(forumTransferCache.getForumTransfer(userVisit, forum))
@@ -851,7 +924,7 @@ public class ForumControl
     }
     
     public ForumDescriptionTransfer getForumDescriptionTransfer(UserVisit userVisit, ForumDescription forumDescription) {
-        return forumTransferCaches.getForumDescriptionTransferCache().getForumDescriptionTransfer(userVisit, forumDescription);
+        return forumDescriptionTransferCache.getForumDescriptionTransfer(userVisit, forumDescription);
     }
     
     public List<ForumDescriptionTransfer> getForumDescriptionTransfersByForum(UserVisit userVisit, Forum forum) {
@@ -859,7 +932,6 @@ public class ForumControl
         List<ForumDescriptionTransfer> forumDescriptionTransfers = null;
         
         if(forumDescriptions != null) {
-            var forumDescriptionTransferCache = forumTransferCaches.getForumDescriptionTransferCache();
             
             forumDescriptionTransfers = new ArrayList<>(forumDescriptions.size());
             
@@ -1111,7 +1183,6 @@ public class ForumControl
     
     public List<ForumGroupForumTransfer> getForumGroupForumTransfers(UserVisit userVisit, Collection<ForumGroupForum> forumGroupForums) {
         List<ForumGroupForumTransfer> forumGroupForumTransfers = new ArrayList<>(forumGroupForums.size());
-        var forumGroupForumTransferCache = forumTransferCaches.getForumGroupForumTransferCache();
         
         forumGroupForums.forEach((forumGroupForum) ->
                 forumGroupForumTransfers.add(forumGroupForumTransferCache.getForumGroupForumTransfer(userVisit, forumGroupForum))
@@ -1129,7 +1200,7 @@ public class ForumControl
     }
     
     public ForumGroupForumTransfer getForumGroupForumTransfer(UserVisit userVisit, ForumGroupForum forumGroupForum) {
-        return forumTransferCaches.getForumGroupForumTransferCache().getForumGroupForumTransfer(userVisit, forumGroupForum);
+        return forumGroupForumTransferCache.getForumGroupForumTransfer(userVisit, forumGroupForum);
     }
     
     private void updateForumGroupForumFromValue(ForumGroupForumValue forumGroupForumValue, boolean checkDefault, BasePK updatedBy) {
@@ -1280,7 +1351,7 @@ public class ForumControl
     }
     
     public ForumRoleTypeTransfer getForumRoleTypeTransfer(UserVisit userVisit, ForumRoleType forumRoleType) {
-        return forumTransferCaches.getForumRoleTypeTransferCache().getForumRoleTypeTransfer(userVisit, forumRoleType);
+        return forumRoleTypeTransferCache.getForumRoleTypeTransfer(userVisit, forumRoleType);
     }
     
     // --------------------------------------------------------------------------------
@@ -1398,7 +1469,7 @@ public class ForumControl
     }
     
     public ForumTypeTransfer getForumTypeTransfer(UserVisit userVisit, ForumType forumType) {
-        return forumTransferCaches.getForumTypeTransferCache().getForumTypeTransfer(userVisit, forumType);
+        return forumTypeTransferCache.getForumTypeTransfer(userVisit, forumType);
     }
     
     // --------------------------------------------------------------------------------
@@ -1681,7 +1752,6 @@ public class ForumControl
     
     public List<ForumMimeTypeTransfer> getForumMimeTypeTransfers(UserVisit userVisit, Collection<ForumMimeType> forumMimeTypes) {
         List<ForumMimeTypeTransfer> forumMimeTypeTransfers = new ArrayList<>(forumMimeTypes.size());
-        var forumMimeTypeTransferCache = forumTransferCaches.getForumMimeTypeTransferCache();
         
         forumMimeTypes.forEach((forumMimeType) ->
                 forumMimeTypeTransfers.add(forumMimeTypeTransferCache.getForumMimeTypeTransfer(userVisit, forumMimeType))
@@ -1699,7 +1769,7 @@ public class ForumControl
     }
     
     public ForumMimeTypeTransfer getForumMimeTypeTransfer(UserVisit userVisit, ForumMimeType forumMimeType) {
-        return forumTransferCaches.getForumMimeTypeTransferCache().getForumMimeTypeTransfer(userVisit, forumMimeType);
+        return forumMimeTypeTransferCache.getForumMimeTypeTransfer(userVisit, forumMimeType);
     }
     
     private void updateForumMimeTypeFromValue(ForumMimeTypeValue forumMimeTypeValue, boolean checkDefault, BasePK updatedBy) {
@@ -1940,7 +2010,6 @@ public class ForumControl
         List<ForumPartyRoleTransfer> forumPartyRoleTransfers = null;
         
         if(forumPartyRoles != null) {
-            var forumPartyRoleTransferCache = forumTransferCaches.getForumPartyRoleTransferCache();
             
             forumPartyRoleTransfers = new ArrayList<>(forumPartyRoles.size());
             
@@ -1953,7 +2022,7 @@ public class ForumControl
     }
     
     public ForumPartyRoleTransfer getForumPartyRoleTransfer(UserVisit userVisit, ForumPartyRole forumPartyRole) {
-        return forumTransferCaches.getForumPartyRoleTransferCache().getForumPartyRoleTransfer(userVisit, forumPartyRole);
+        return forumPartyRoleTransferCache.getForumPartyRoleTransfer(userVisit, forumPartyRole);
     }
     
     public void deleteForumPartyRole(ForumPartyRole forumPartyRole, BasePK deletedBy) {
@@ -2088,7 +2157,6 @@ public class ForumControl
         List<ForumPartyTypeRoleTransfer> forumPartyTypeRoleTransfers = null;
         
         if(forumPartyTypeRoles != null) {
-            var forumPartyTypeRoleTransferCache = forumTransferCaches.getForumPartyTypeRoleTransferCache();
             
             forumPartyTypeRoleTransfers = new ArrayList<>(forumPartyTypeRoles.size());
             
@@ -2101,7 +2169,7 @@ public class ForumControl
     }
     
     public ForumPartyTypeRoleTransfer getForumPartyTypeRoleTransfer(UserVisit userVisit, ForumPartyTypeRole forumPartyTypeRole) {
-        return forumTransferCaches.getForumPartyTypeRoleTransferCache().getForumPartyTypeRoleTransfer(userVisit, forumPartyTypeRole);
+        return forumPartyTypeRoleTransferCache.getForumPartyTypeRoleTransfer(userVisit, forumPartyTypeRole);
     }
     
     public void deleteForumPartyTypeRole(ForumPartyTypeRole forumPartyTypeRole, BasePK deletedBy) {
@@ -2440,7 +2508,6 @@ public class ForumControl
     
     public List<ForumForumThreadTransfer> getForumForumThreadTransfers(UserVisit userVisit, Collection<ForumForumThread> forumForumThreads) {
         List<ForumForumThreadTransfer> forumForumThreadTransfers = new ArrayList<>(forumForumThreads.size());
-        var forumForumThreadTransferCache = forumTransferCaches.getForumForumThreadTransferCache();
         
         forumForumThreads.forEach((forumForumThread) ->
                 forumForumThreadTransfers.add(forumForumThreadTransferCache.getForumForumThreadTransfer(userVisit, forumForumThread))
@@ -2458,7 +2525,7 @@ public class ForumControl
     }
     
     public ForumForumThreadTransfer getForumForumThreadTransfer(UserVisit userVisit, ForumForumThread forumForumThread) {
-        return forumTransferCaches.getForumForumThreadTransferCache().getForumForumThreadTransfer(userVisit, forumForumThread);
+        return forumForumThreadTransferCache.getForumForumThreadTransfer(userVisit, forumForumThread);
     }
     
     private void updateForumForumThreadFromValue(ForumForumThreadValue forumForumThreadValue, boolean checkDefault, BasePK updatedBy) {
@@ -2715,12 +2782,11 @@ public class ForumControl
     }
     
     public ForumThreadTransfer getForumThreadTransfer(UserVisit userVisit, ForumThread forumThread) {
-        return forumTransferCaches.getForumThreadTransferCache().getForumThreadTransfer(userVisit, forumThread);
+        return forumThreadTransferCache.getForumThreadTransfer(userVisit, forumThread);
     }
     
     public List<ForumThreadTransfer> getForumThreadTransfers(UserVisit userVisit, Collection<ForumThread> forumThreads) {
         List<ForumThreadTransfer> forumThreadTransfers = new ArrayList<>(forumThreads.size());
-        var forumThreadTransferCache = forumTransferCaches.getForumThreadTransferCache();
         
         forumThreads.forEach((forumThread) ->
                 forumThreadTransfers.add(forumThreadTransferCache.getForumThreadTransfer(userVisit, forumThread))
@@ -2960,12 +3026,11 @@ public class ForumControl
     }
 
     public ForumMessageTransfer getForumMessageTransfer(UserVisit userVisit, ForumMessage forumMessage) {
-        return forumTransferCaches.getForumMessageTransferCache().getForumMessageTransfer(userVisit, forumMessage);
+        return forumMessageTransferCache.getForumMessageTransfer(userVisit, forumMessage);
     }
     
     public List<ForumMessageTransfer> getForumMessageTransfers(UserVisit userVisit, Collection<ForumMessage> forumMessages) {
         List<ForumMessageTransfer> forumMessageTransfers = new ArrayList<>(forumMessages.size());
-        var forumMessageTransferCache = forumTransferCaches.getForumMessageTransferCache();
         
         forumMessages.forEach((forumMessage) ->
                 forumMessageTransfers.add(forumMessageTransferCache.getForumMessageTransfer(userVisit, forumMessage))
@@ -3185,12 +3250,11 @@ public class ForumControl
     }
 
     public ForumMessageAttachmentTransfer getForumMessageAttachmentTransfer(UserVisit userVisit, ForumMessageAttachment forumMessageAttachment) {
-        return forumTransferCaches.getForumMessageAttachmentTransferCache().getForumMessageAttachmentTransfer(userVisit, forumMessageAttachment);
+        return forumMessageAttachmentTransferCache.getForumMessageAttachmentTransfer(userVisit, forumMessageAttachment);
     }
 
     public List<ForumMessageAttachmentTransfer> getForumMessageAttachmentTransfers(UserVisit userVisit, Collection<ForumMessageAttachment> forumMessageAttachments) {
         List<ForumMessageAttachmentTransfer> forumMessageAttachmentTransfers = new ArrayList<>(forumMessageAttachments.size());
-        var forumMessageAttachmentTransferCache = forumTransferCaches.getForumMessageAttachmentTransferCache();
 
         forumMessageAttachments.forEach((forumMessageAttachment) ->
                 forumMessageAttachmentTransfers.add(forumMessageAttachmentTransferCache.getForumMessageAttachmentTransfer(userVisit, forumMessageAttachment))
@@ -3538,7 +3602,7 @@ public class ForumControl
     }
 
     public ForumMessageAttachmentDescriptionTransfer getForumMessageAttachmentDescriptionTransfer(UserVisit userVisit, ForumMessageAttachmentDescription forumMessageAttachmentDescription) {
-        return forumTransferCaches.getForumMessageAttachmentDescriptionTransferCache().getForumMessageAttachmentDescriptionTransfer(userVisit, forumMessageAttachmentDescription);
+        return forumMessageAttachmentDescriptionTransferCache.getForumMessageAttachmentDescriptionTransfer(userVisit, forumMessageAttachmentDescription);
     }
 
     public List<ForumMessageAttachmentDescriptionTransfer> getForumMessageAttachmentDescriptionTransfersByForumMessageAttachment(UserVisit userVisit, ForumMessageAttachment forumMessageAttachment) {
@@ -3549,7 +3613,7 @@ public class ForumControl
             forumMessageAttachmentDescriptionTransfers = new ArrayList<>(forumMessageAttachmentDescriptions.size());
 
             for(var forumMessageAttachmentDescription : forumMessageAttachmentDescriptions) {
-                forumMessageAttachmentDescriptionTransfers.add(forumTransferCaches.getForumMessageAttachmentDescriptionTransferCache().getForumMessageAttachmentDescriptionTransfer(userVisit, forumMessageAttachmentDescription));
+                forumMessageAttachmentDescriptionTransfers.add(forumMessageAttachmentDescriptionTransferCache.getForumMessageAttachmentDescriptionTransfer(userVisit, forumMessageAttachmentDescription));
             }
         }
 
@@ -3685,12 +3749,11 @@ public class ForumControl
     }
     
     public ForumMessageRoleTransfer getForumMessageRoleTransfer(UserVisit userVisit, ForumMessageRole forumMessageRole) {
-        return forumTransferCaches.getForumMessageRoleTransferCache().getForumMessageRoleTransfer(userVisit, forumMessageRole);
+        return forumMessageRoleTransferCache.getForumMessageRoleTransfer(userVisit, forumMessageRole);
     }
     
     public List<ForumMessageRoleTransfer> getForumMessageRoleTransfers(UserVisit userVisit, Collection<ForumMessageRole> forumMessageRoles) {
         List<ForumMessageRoleTransfer> forumMessageRoleTransfers = new ArrayList<>(forumMessageRoles.size());
-        var forumMessageRoleTransferCache = forumTransferCaches.getForumMessageRoleTransferCache();
         
         forumMessageRoles.forEach((forumMessageRole) ->
                 forumMessageRoleTransfers.add(forumMessageRoleTransferCache.getForumMessageRoleTransfer(userVisit, forumMessageRole))
@@ -3829,12 +3892,11 @@ public class ForumControl
     }
     
     public ForumMessagePartTransfer getForumMessagePartTransfer(UserVisit userVisit, ForumMessagePart forumMessagePart) {
-        return forumTransferCaches.getForumMessagePartTransferCache().getForumMessagePartTransfer(userVisit, forumMessagePart);
+        return forumMessagePartTransferCache.getForumMessagePartTransfer(userVisit, forumMessagePart);
     }
     
     public List<ForumMessagePartTransfer> getForumMessagePartTransfers(UserVisit userVisit, Collection<ForumMessagePart> forumMessageParts) {
         List<ForumMessagePartTransfer> forumMessagePartTransfers = new ArrayList<>(forumMessageParts.size());
-        var forumMessagePartTransferCache = forumTransferCaches.getForumMessagePartTransferCache();
         
         forumMessageParts.forEach((forumMessagePart) ->
                 forumMessagePartTransfers.add(forumMessagePartTransferCache.getForumMessagePartTransfer(userVisit, forumMessagePart))
@@ -4227,7 +4289,7 @@ public class ForumControl
     }
     
     public ForumMessagePartTypeTransfer getForumMessagePartTypeTransfer(UserVisit userVisit, ForumMessagePartType forumMessagePartType) {
-        return forumTransferCaches.getForumMessagePartTypeTransferCache().getForumMessagePartTypeTransfer(userVisit, forumMessagePartType);
+        return forumMessagePartTypeTransferCache.getForumMessagePartTypeTransfer(userVisit, forumMessagePartType);
     }
     
     // --------------------------------------------------------------------------------
@@ -4349,7 +4411,7 @@ public class ForumControl
     }
     
     public ForumMessageTypeTransfer getForumMessageTypeTransfer(UserVisit userVisit, ForumMessageType forumMessageType) {
-        return forumTransferCaches.getForumMessageTypeTransferCache().getForumMessageTypeTransfer(userVisit, forumMessageType);
+        return forumMessageTypeTransferCache.getForumMessageTypeTransfer(userVisit, forumMessageType);
     }
     
     // --------------------------------------------------------------------------------
@@ -4494,7 +4556,6 @@ public class ForumControl
         List<ForumMessageTypePartTypeTransfer> forumMessageTypePartTypeTransfers = null;
         
         if(forumMessageTypePartTypes != null) {
-            var forumMessageTypePartTypeTransferCache = forumTransferCaches.getForumMessageTypePartTypeTransferCache();
             
             forumMessageTypePartTypeTransfers = new ArrayList<>(forumMessageTypePartTypes.size());
             
@@ -4507,7 +4568,7 @@ public class ForumControl
     }
     
     public ForumMessageTypePartTypeTransfer getForumMessageTypePartTypeTransfer(UserVisit userVisit, ForumMessageTypePartType forumMessageTypePartType) {
-        return forumTransferCaches.getForumMessageTypePartTypeTransferCache().getForumMessageTypePartTypeTransfer(userVisit, forumMessageTypePartType);
+        return forumMessageTypePartTypeTransferCache.getForumMessageTypePartTypeTransfer(userVisit, forumMessageTypePartType);
     }
     
 }

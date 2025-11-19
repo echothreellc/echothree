@@ -286,14 +286,14 @@ public class SourceControl
     }
 
     public SourceTransfer getSourceTransfer(UserVisit userVisit, Source source) {
-        return offerTransferCaches.getSourceTransferCache().getSourceTransfer(userVisit, source);
+        return sourceTransferCache.getSourceTransfer(userVisit, source);
     }
 
     public List<SourceTransfer> getSourceTransfers(UserVisit userVisit, Collection<Source> sources) {
         List<SourceTransfer> sourceTransfers = new ArrayList<>(sources.size());
 
         sources.forEach((source) -> {
-            sourceTransfers.add(offerTransferCaches.getSourceTransferCache().getSourceTransfer(userVisit, source));
+            sourceTransfers.add(sourceTransferCache.getSourceTransfer(userVisit, source));
         });
 
         return sourceTransfers;

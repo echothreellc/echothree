@@ -16,7 +16,25 @@
 
 package com.echothree.model.control.order.server.control;
 
-import com.echothree.model.control.order.server.transfer.OrderTransferCaches;
+import com.echothree.model.control.order.server.transfer.OrderAdjustmentTypeDescriptionTransferCache;
+import com.echothree.model.control.order.server.transfer.OrderAdjustmentTypeTransferCache;
+import com.echothree.model.control.order.server.transfer.OrderAliasTransferCache;
+import com.echothree.model.control.order.server.transfer.OrderAliasTypeDescriptionTransferCache;
+import com.echothree.model.control.order.server.transfer.OrderAliasTypeTransferCache;
+import com.echothree.model.control.order.server.transfer.OrderLineAdjustmentTypeDescriptionTransferCache;
+import com.echothree.model.control.order.server.transfer.OrderLineAdjustmentTypeTransferCache;
+import com.echothree.model.control.order.server.transfer.OrderLineTimeTransferCache;
+import com.echothree.model.control.order.server.transfer.OrderPaymentPreferenceTransferCache;
+import com.echothree.model.control.order.server.transfer.OrderPriorityDescriptionTransferCache;
+import com.echothree.model.control.order.server.transfer.OrderPriorityTransferCache;
+import com.echothree.model.control.order.server.transfer.OrderRoleTransferCache;
+import com.echothree.model.control.order.server.transfer.OrderRoleTypeTransferCache;
+import com.echothree.model.control.order.server.transfer.OrderShipmentGroupTransferCache;
+import com.echothree.model.control.order.server.transfer.OrderTimeTransferCache;
+import com.echothree.model.control.order.server.transfer.OrderTimeTypeDescriptionTransferCache;
+import com.echothree.model.control.order.server.transfer.OrderTimeTypeTransferCache;
+import com.echothree.model.control.order.server.transfer.OrderTypeDescriptionTransferCache;
+import com.echothree.model.control.order.server.transfer.OrderTypeTransferCache;
 import com.echothree.util.server.control.BaseModelControl;
 import javax.inject.Inject;
 
@@ -31,8 +49,62 @@ public class BaseOrderControl
     // --------------------------------------------------------------------------------
     //   Order Transfer Caches
     // --------------------------------------------------------------------------------
-    
+
     @Inject
-    OrderTransferCaches orderTransferCaches;
+    OrderTypeTransferCache orderTypeTransferCache;
+
+    @Inject
+    OrderTypeDescriptionTransferCache orderTypeDescriptionTransferCache;
+
+    @Inject
+    OrderTimeTypeTransferCache orderTimeTypeTransferCache;
+
+    @Inject
+    OrderTimeTypeDescriptionTransferCache orderTimeTypeDescriptionTransferCache;
+
+    @Inject
+    OrderPaymentPreferenceTransferCache orderPaymentPreferenceTransferCache;
+
+    @Inject
+    OrderShipmentGroupTransferCache orderShipmentGroupTransferCache;
+
+    @Inject
+    OrderTimeTransferCache orderTimeTransferCache;
+
+    @Inject
+    OrderLineTimeTransferCache orderLineTimeTransferCache;
+
+    @Inject
+    OrderAdjustmentTypeTransferCache orderAdjustmentTypeTransferCache;
+
+    @Inject
+    OrderAdjustmentTypeDescriptionTransferCache orderAdjustmentTypeDescriptionTransferCache;
+
+    @Inject
+    OrderLineAdjustmentTypeTransferCache orderLineAdjustmentTypeTransferCache;
+
+    @Inject
+    OrderLineAdjustmentTypeDescriptionTransferCache orderLineAdjustmentTypeDescriptionTransferCache;
+
+    @Inject
+    OrderRoleTypeTransferCache orderRoleTypeTransferCache;
+
+    @Inject
+    OrderRoleTransferCache orderRoleTransferCache;
+
+    @Inject
+    OrderAliasTypeTransferCache orderAliasTypeTransferCache;
+
+    @Inject
+    OrderAliasTypeDescriptionTransferCache orderAliasTypeDescriptionTransferCache;
+
+    @Inject
+    OrderAliasTransferCache orderAliasTransferCache;
+
+    @Inject
+    OrderPriorityTransferCache orderPriorityTransferCache;
+
+    @Inject
+    OrderPriorityDescriptionTransferCache orderPriorityDescriptionTransferCache;
     
 }

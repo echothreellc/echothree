@@ -183,13 +183,12 @@ public class PaymentMethodTypeControl
 
     public PaymentMethodTypeTransfer getPaymentMethodTypeTransfer(final UserVisit userVisit,
             final PaymentMethodType paymentMethodType) {
-        return paymentTransferCaches.getPaymentMethodTypeTransferCache().getTransfer(userVisit, paymentMethodType);
+        return paymentMethodTypeTransferCache.getTransfer(userVisit, paymentMethodType);
     }
 
     public List<PaymentMethodTypeTransfer> getPaymentMethodTypeTransfers(final UserVisit userVisit,
             final Collection<PaymentMethodType> paymentMethodTypes) {
         var paymentMethodTypeTransfers = new ArrayList<PaymentMethodTypeTransfer>(paymentMethodTypes.size());
-        var paymentMethodTypeTransferCache = paymentTransferCaches.getPaymentMethodTypeTransferCache();
 
         paymentMethodTypes.forEach((paymentMethodType) ->
                 paymentMethodTypeTransfers.add(paymentMethodTypeTransferCache.getTransfer(userVisit, paymentMethodType))
@@ -410,14 +409,13 @@ public class PaymentMethodTypeControl
 
     public PaymentMethodTypeDescriptionTransfer getPaymentMethodTypeDescriptionTransfer(final UserVisit userVisit,
             final PaymentMethodTypeDescription paymentMethodTypeDescription) {
-        return paymentTransferCaches.getPaymentMethodTypeDescriptionTransferCache().getTransfer(userVisit, paymentMethodTypeDescription);
+        return paymentMethodTypeDescriptionTransferCache.getTransfer(userVisit, paymentMethodTypeDescription);
     }
 
     public List<PaymentMethodTypeDescriptionTransfer> getPaymentMethodTypeDescriptionTransfersByPaymentMethodType(final UserVisit userVisit,
             final PaymentMethodType paymentMethodType) {
         var paymentMethodTypeDescriptions = getPaymentMethodTypeDescriptionsByPaymentMethodType(paymentMethodType);
         var paymentMethodTypeDescriptionTransfers = new ArrayList<PaymentMethodTypeDescriptionTransfer>(paymentMethodTypeDescriptions.size());
-        var paymentMethodTypeDescriptionTransferCache = paymentTransferCaches.getPaymentMethodTypeDescriptionTransferCache();
 
         paymentMethodTypeDescriptions.forEach((paymentMethodTypeDescription) ->
                 paymentMethodTypeDescriptionTransfers.add(paymentMethodTypeDescriptionTransferCache.getTransfer(userVisit, paymentMethodTypeDescription))

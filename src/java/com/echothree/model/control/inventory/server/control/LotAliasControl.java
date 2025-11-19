@@ -193,13 +193,12 @@ public class LotAliasControl
     }
 
     public LotAliasTypeTransfer getLotAliasTypeTransfer(UserVisit userVisit, LotAliasType lotAliasType) {
-        return inventoryTransferCaches.getLotAliasTypeTransferCache().getTransfer(userVisit, lotAliasType);
+        return lotAliasTypeTransferCache.getTransfer(userVisit, lotAliasType);
     }
 
     public List<LotAliasTypeTransfer> getLotAliasTypeTransfers(UserVisit userVisit) {
         var lotAliasTypes = getLotAliasTypes();
         List<LotAliasTypeTransfer> lotAliasTypeTransfers = new ArrayList<>(lotAliasTypes.size());
-        var lotAliasTypeTransferCache = inventoryTransferCaches.getLotAliasTypeTransferCache();
 
         lotAliasTypes.forEach((lotAliasType) ->
                 lotAliasTypeTransfers.add(lotAliasTypeTransferCache.getTransfer(userVisit, lotAliasType))
@@ -424,13 +423,12 @@ public class LotAliasControl
     }
 
     public LotAliasTypeDescriptionTransfer getLotAliasTypeDescriptionTransfer(UserVisit userVisit, LotAliasTypeDescription lotAliasTypeDescription) {
-        return inventoryTransferCaches.getLotAliasTypeDescriptionTransferCache().getTransfer(userVisit, lotAliasTypeDescription);
+        return lotAliasTypeDescriptionTransferCache.getTransfer(userVisit, lotAliasTypeDescription);
     }
 
     public List<LotAliasTypeDescriptionTransfer> getLotAliasTypeDescriptionTransfersByLotAliasType(UserVisit userVisit, LotAliasType lotAliasType) {
         var lotAliasTypeDescriptions = getLotAliasTypeDescriptionsByLotAliasType(lotAliasType);
         List<LotAliasTypeDescriptionTransfer> lotAliasTypeDescriptionTransfers = new ArrayList<>(lotAliasTypeDescriptions.size());
-        var lotAliasTypeDescriptionTransferCache = inventoryTransferCaches.getLotAliasTypeDescriptionTransferCache();
 
         lotAliasTypeDescriptions.forEach((lotAliasTypeDescription) ->
                 lotAliasTypeDescriptionTransfers.add(lotAliasTypeDescriptionTransferCache.getTransfer(userVisit, lotAliasTypeDescription))
@@ -617,13 +615,12 @@ public class LotAliasControl
     }
 
     public LotAliasTransfer getLotAliasTransfer(UserVisit userVisit, LotAlias lotAlias) {
-        return inventoryTransferCaches.getLotAliasTransferCache().getTransfer(userVisit, lotAlias);
+        return lotAliasTransferCache.getTransfer(userVisit, lotAlias);
     }
 
     public List<LotAliasTransfer> getLotAliasTransfersByLot(UserVisit userVisit, Lot lot) {
         var lotaliases = getLotAliasesByLot(lot);
         List<LotAliasTransfer> lotAliasTransfers = new ArrayList<>(lotaliases.size());
-        var lotAliasTransferCache = inventoryTransferCaches.getLotAliasTransferCache();
 
         lotaliases.forEach((lotAlias) ->
                 lotAliasTransfers.add(lotAliasTransferCache.getTransfer(userVisit, lotAlias))

@@ -39,7 +39,17 @@ import com.echothree.model.control.user.common.transfer.UserVisitGroupTransfer;
 import com.echothree.model.control.user.common.transfer.UserVisitTransfer;
 import static com.echothree.model.control.user.common.workflow.UserVisitGroupStatusConstants.WorkflowStep_USER_VISIT_GROUP_STATUS_ACTIVE;
 import static com.echothree.model.control.user.common.workflow.UserVisitGroupStatusConstants.Workflow_USER_VISIT_GROUP_STATUS;
-import com.echothree.model.control.user.server.transfer.UserTransferCaches;
+import com.echothree.model.control.user.server.transfer.RecoveryAnswerTransferCache;
+import com.echothree.model.control.user.server.transfer.RecoveryQuestionDescriptionTransferCache;
+import com.echothree.model.control.user.server.transfer.RecoveryQuestionTransferCache;
+import com.echothree.model.control.user.server.transfer.UserKeyTransferCache;
+import com.echothree.model.control.user.server.transfer.UserLoginPasswordEncoderTypeTransferCache;
+import com.echothree.model.control.user.server.transfer.UserLoginPasswordTransferCache;
+import com.echothree.model.control.user.server.transfer.UserLoginPasswordTypeTransferCache;
+import com.echothree.model.control.user.server.transfer.UserLoginTransferCache;
+import com.echothree.model.control.user.server.transfer.UserSessionTransferCache;
+import com.echothree.model.control.user.server.transfer.UserVisitGroupTransferCache;
+import com.echothree.model.control.user.server.transfer.UserVisitTransferCache;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.associate.server.entity.AssociateReferral;
 import com.echothree.model.data.core.server.entity.Command;
@@ -144,9 +154,39 @@ public class UserControl
     // --------------------------------------------------------------------------------
     //   User Transfer Caches
     // --------------------------------------------------------------------------------
-    
+
     @Inject
-    UserTransferCaches userTransferCaches;
+    RecoveryAnswerTransferCache recoveryAnswerTransferCache;
+
+    @Inject
+    RecoveryQuestionTransferCache recoveryQuestionTransferCache;
+
+    @Inject
+    RecoveryQuestionDescriptionTransferCache recoveryQuestionDescriptionTransferCache;
+
+    @Inject
+    UserKeyTransferCache userKeyTransferCache;
+
+    @Inject
+    UserSessionTransferCache userSessionTransferCache;
+
+    @Inject
+    UserVisitTransferCache userVisitTransferCache;
+
+    @Inject
+    UserVisitGroupTransferCache userVisitGroupTransferCache;
+
+    @Inject
+    UserLoginTransferCache userLoginTransferCache;
+
+    @Inject
+    UserLoginPasswordTransferCache userLoginPasswordTransferCache;
+
+    @Inject
+    UserLoginPasswordTypeTransferCache userLoginPasswordTypeTransferCache;
+
+    @Inject
+    UserLoginPasswordEncoderTypeTransferCache userLoginPasswordEncoderTypeTransferCache;
 
     // --------------------------------------------------------------------------------
     //   User Keys
@@ -307,7 +347,7 @@ public class UserControl
     }
     
     public UserKeyTransfer getUserKeyTransfer(UserVisit userVisit, UserKey userKey) {
-        return userTransferCaches.getUserKeyTransferCache().getUserKeyTransfer(userVisit, userKey);
+        return userKeyTransferCache.getUserKeyTransfer(userVisit, userKey);
     }
     
     public void updateUserKeyFromValue(UserKeyDetailValue userKeyDetailValue) {
@@ -577,12 +617,11 @@ public class UserControl
     }
     
     public UserVisitGroupTransfer getUserVisitGroupTransfer(UserVisit userVisit, UserVisitGroup userVisitGroup) {
-        return userTransferCaches.getUserVisitGroupTransferCache().getUserVisitGroupTransfer(userVisit, userVisitGroup);
+        return userVisitGroupTransferCache.getUserVisitGroupTransfer(userVisit, userVisitGroup);
     }
     
     public List<UserVisitGroupTransfer> getUserVisitGroupTransfers(UserVisit userVisit, Collection<UserVisitGroup> userVisitGroups) {
         List<UserVisitGroupTransfer> userVisitGroupTransfers = new ArrayList<>(userVisitGroups.size());
-        var userVisitGroupTransferCache = userTransferCaches.getUserVisitGroupTransferCache();
         
         userVisitGroups.forEach((userVisitGroup) ->
                 userVisitGroupTransfers.add(userVisitGroupTransferCache.getUserVisitGroupTransfer(userVisit, userVisitGroup))
@@ -977,7 +1016,7 @@ public class UserControl
     }
     
     public UserVisitTransfer getUserVisitTransfer(UserVisit userVisit, UserVisit userVisitEntity) {
-        return userTransferCaches.getUserVisitTransferCache().getUserVisitTransfer(userVisit, userVisitEntity);
+        return userVisitTransferCache.getUserVisitTransfer(userVisit, userVisitEntity);
     }
 
     private static final Map<EntityPermission, String> getAbandonedUserVisitsQueries;
@@ -1270,7 +1309,7 @@ public class UserControl
     }
 
     public UserSessionTransfer getUserSessionTransfer(UserVisit userVisit, UserSession userSession) {
-        return userTransferCaches.getUserSessionTransferCache().getUserSessionTransfer(userVisit, userSession);
+        return userSessionTransferCache.getUserSessionTransfer(userVisit, userSession);
     }
     
     public void deleteUserSession(UserSession userSession) {
@@ -1482,12 +1521,11 @@ public class UserControl
     }
     
     public RecoveryQuestionTransfer getRecoveryQuestionTransfer(UserVisit userVisit, RecoveryQuestion recoveryQuestion) {
-        return userTransferCaches.getRecoveryQuestionTransferCache().getRecoveryQuestionTransfer(userVisit, recoveryQuestion);
+        return recoveryQuestionTransferCache.getRecoveryQuestionTransfer(userVisit, recoveryQuestion);
     }
     
     public List<RecoveryQuestionTransfer> getRecoveryQuestionTransfers(UserVisit userVisit, Collection<RecoveryQuestion> recoveryQuestions) {
         List<RecoveryQuestionTransfer> recoveryQuestionTransfers = new ArrayList<>(recoveryQuestions.size());
-        var recoveryQuestionTransferCache = userTransferCaches.getRecoveryQuestionTransferCache();
         
         recoveryQuestions.forEach((recoveryQuestion) ->
                 recoveryQuestionTransfers.add(recoveryQuestionTransferCache.getRecoveryQuestionTransfer(userVisit, recoveryQuestion))
@@ -1702,13 +1740,12 @@ public class UserControl
     }
     
     public RecoveryQuestionDescriptionTransfer getRecoveryQuestionDescriptionTransfer(UserVisit userVisit, RecoveryQuestionDescription recoveryQuestionDescription) {
-        return userTransferCaches.getRecoveryQuestionDescriptionTransferCache().getRecoveryQuestionDescriptionTransfer(userVisit, recoveryQuestionDescription);
+        return recoveryQuestionDescriptionTransferCache.getRecoveryQuestionDescriptionTransfer(userVisit, recoveryQuestionDescription);
     }
     
     public List<RecoveryQuestionDescriptionTransfer> getRecoveryQuestionDescriptionTransfers(UserVisit userVisit, RecoveryQuestion recoveryQuestion) {
         var recoveryQuestionDescriptions = getRecoveryQuestionDescriptionsByRecoveryQuestion(recoveryQuestion);
         List<RecoveryQuestionDescriptionTransfer> recoveryQuestionDescriptionTransfers = new ArrayList<>(recoveryQuestionDescriptions.size());
-        var recoveryQuestionDescriptionTransferCache = userTransferCaches.getRecoveryQuestionDescriptionTransferCache();
         
         recoveryQuestionDescriptions.forEach((recoveryQuestionDescription) ->
                 recoveryQuestionDescriptionTransfers.add(recoveryQuestionDescriptionTransferCache.getRecoveryQuestionDescriptionTransfer(userVisit, recoveryQuestionDescription))
@@ -1869,7 +1906,7 @@ public class UserControl
     }
     
     public RecoveryAnswerTransfer getRecoveryAnswerTransfer(UserVisit userVisit, RecoveryAnswer recoveryAnswer) {
-        return userTransferCaches.getRecoveryAnswerTransferCache().getRecoveryAnswerTransfer(userVisit, recoveryAnswer);
+        return recoveryAnswerTransferCache.getRecoveryAnswerTransfer(userVisit, recoveryAnswer);
     }
     
     public void updateRecoveryAnswerFromValue(RecoveryAnswerDetailValue recoveryAnswerDetailValue, BasePK updatedBy) {
@@ -1962,7 +1999,7 @@ public class UserControl
     }
     
     public UserLoginPasswordEncoderTypeTransfer getUserLoginPasswordEncoderTypeTransfer(UserVisit userVisit, UserLoginPasswordEncoderType userLoginPasswordEncoderType) {
-        return userTransferCaches.getUserLoginPasswordEncoderTypeTransferCache().getUserLoginPasswordEncoderTypeTransfer(userVisit, userLoginPasswordEncoderType);
+        return userLoginPasswordEncoderTypeTransferCache.getUserLoginPasswordEncoderTypeTransfer(userVisit, userLoginPasswordEncoderType);
     }
 
     // --------------------------------------------------------------------------------
@@ -2050,7 +2087,7 @@ public class UserControl
     }
     
     public UserLoginPasswordTypeTransfer getUserLoginPasswordTypeTransfer(UserVisit userVisit, UserLoginPasswordType userLoginPasswordType) {
-        return userTransferCaches.getUserLoginPasswordTypeTransferCache().getUserLoginPasswordTypeTransfer(userVisit, userLoginPasswordType);
+        return userLoginPasswordTypeTransferCache.getUserLoginPasswordTypeTransfer(userVisit, userLoginPasswordType);
     }
 
     // --------------------------------------------------------------------------------
@@ -2190,12 +2227,11 @@ public class UserControl
     }
 
     public UserLoginPasswordTransfer getUserLoginPasswordTransfer(UserVisit userVisit, UserLoginPassword userLoginPassword) {
-        return userTransferCaches.getUserLoginPasswordTransferCache().getUserLoginPasswordTransfer(userVisit, userLoginPassword);
+        return userLoginPasswordTransferCache.getUserLoginPasswordTransfer(userVisit, userLoginPassword);
     }
 
     public List<UserLoginPasswordTransfer> getUserLoginPasswordTransfers(UserVisit userVisit, Collection<UserLoginPassword> userLoginPasswords) {
         List<UserLoginPasswordTransfer> userLoginPasswordTransfers = new ArrayList<>(userLoginPasswords.size());
-        var userLoginPasswordTransferCache = userTransferCaches.getUserLoginPasswordTransferCache();
 
         userLoginPasswords.forEach((userLoginPassword) ->
                 userLoginPasswordTransfers.add(userLoginPasswordTransferCache.getUserLoginPasswordTransfer(userVisit, userLoginPassword))
@@ -2484,7 +2520,7 @@ public class UserControl
     }
     
     public UserLoginTransfer getUserLoginTransfer(UserVisit userVisit, UserLogin userLogin) {
-        return userTransferCaches.getUserLoginTransferCache().getUserLoginTransfer(userVisit, userLogin);
+        return userLoginTransferCache.getUserLoginTransfer(userVisit, userLogin);
     }
     
     public void updateUserLoginFromValue(UserLoginValue userLoginValue, BasePK updatedBy) {

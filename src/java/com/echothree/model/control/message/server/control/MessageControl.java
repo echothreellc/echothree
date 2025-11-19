@@ -26,7 +26,14 @@ import com.echothree.model.control.message.common.transfer.MessageStringTransfer
 import com.echothree.model.control.message.common.transfer.MessageTransfer;
 import com.echothree.model.control.message.common.transfer.MessageTypeDescriptionTransfer;
 import com.echothree.model.control.message.common.transfer.MessageTypeTransfer;
-import com.echothree.model.control.message.server.transfer.MessageTransferCaches;
+import com.echothree.model.control.message.server.transfer.EntityMessageTransferCache;
+import com.echothree.model.control.message.server.transfer.MessageBlobTransferCache;
+import com.echothree.model.control.message.server.transfer.MessageClobTransferCache;
+import com.echothree.model.control.message.server.transfer.MessageDescriptionTransferCache;
+import com.echothree.model.control.message.server.transfer.MessageStringTransferCache;
+import com.echothree.model.control.message.server.transfer.MessageTransferCache;
+import com.echothree.model.control.message.server.transfer.MessageTypeDescriptionTransferCache;
+import com.echothree.model.control.message.server.transfer.MessageTypeTransferCache;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.core.server.entity.MimeType;
@@ -84,9 +91,30 @@ public class MessageControl
     // --------------------------------------------------------------------------------
     //   Message Transfer Caches
     // --------------------------------------------------------------------------------
-    
+
     @Inject
-    MessageTransferCaches messageTransferCaches;
+    MessageTypeTransferCache messageTypeTransferCache;
+
+    @Inject
+    MessageTypeDescriptionTransferCache messageTypeDescriptionTransferCache;
+
+    @Inject
+    MessageTransferCache messageTransferCache;
+
+    @Inject
+    MessageStringTransferCache messageStringTransferCache;
+
+    @Inject
+    MessageBlobTransferCache messageBlobTransferCache;
+
+    @Inject
+    MessageClobTransferCache messageClobTransferCache;
+
+    @Inject
+    MessageDescriptionTransferCache messageDescriptionTransferCache;
+
+    @Inject
+    EntityMessageTransferCache entityMessageTransferCache;
     
     // --------------------------------------------------------------------------------
     //   Message Types
@@ -197,13 +225,12 @@ public class MessageControl
     }
     
     public MessageTypeTransfer getMessageTypeTransfer(UserVisit userVisit, MessageType messageType) {
-        return messageTransferCaches.getMessageTypeTransferCache().getMessageTypeTransfer(userVisit, messageType);
+        return messageTypeTransferCache.getMessageTypeTransfer(userVisit, messageType);
     }
     
     public List<MessageTypeTransfer> getMessageTypeTransfers(UserVisit userVisit, EntityType entityType) {
         var messageTypes = getMessageTypes(entityType);
         List<MessageTypeTransfer> messageTypeTransfers = new ArrayList<>(messageTypes.size());
-        var messageTypeTransferCache = messageTransferCaches.getMessageTypeTransferCache();
         
         messageTypes.forEach((messageType) ->
                 messageTypeTransfers.add(messageTypeTransferCache.getMessageTypeTransfer(userVisit, messageType))
@@ -376,13 +403,12 @@ public class MessageControl
     }
     
     public MessageTypeDescriptionTransfer getMessageTypeDescriptionTransfer(UserVisit userVisit, MessageTypeDescription messageTypeDescription) {
-        return messageTransferCaches.getMessageTypeDescriptionTransferCache().getMessageTypeDescriptionTransfer(userVisit, messageTypeDescription);
+        return messageTypeDescriptionTransferCache.getMessageTypeDescriptionTransfer(userVisit, messageTypeDescription);
     }
     
     public List<MessageTypeDescriptionTransfer> getMessageTypeDescriptionTransfers(UserVisit userVisit, MessageType messageType) {
         var messageTypeDescriptions = getMessageTypeDescriptionsByMessageType(messageType);
         List<MessageTypeDescriptionTransfer> messageTypeDescriptionTransfers = new ArrayList<>(messageTypeDescriptions.size());
-        var messageTypeDescriptionTransferCache = messageTransferCaches.getMessageTypeDescriptionTransferCache();
         
         messageTypeDescriptions.forEach((messageTypeDescription) ->
                 messageTypeDescriptionTransfers.add(messageTypeDescriptionTransferCache.getMessageTypeDescriptionTransfer(userVisit, messageTypeDescription))
@@ -623,13 +649,12 @@ public class MessageControl
     }
     
     public MessageTransfer getMessageTransfer(UserVisit userVisit, Message message) {
-        return messageTransferCaches.getMessageTransferCache().getMessageTransfer(userVisit, message);
+        return messageTransferCache.getMessageTransfer(userVisit, message);
     }
     
     public List<MessageTransfer> getMessageTransfers(UserVisit userVisit, MessageType messageType) {
         var messages = getMessagesByMessageType(messageType);
         List<MessageTransfer> messageTransfers = new ArrayList<>(messages.size());
-        var messageTransferCache = messageTransferCaches.getMessageTransferCache();
         
         messages.forEach((message) ->
                 messageTransfers.add(messageTransferCache.getMessageTransfer(userVisit, message))
@@ -846,13 +871,12 @@ public class MessageControl
     }
     
     public MessageDescriptionTransfer getMessageDescriptionTransfer(UserVisit userVisit, MessageDescription messageDescription) {
-        return messageTransferCaches.getMessageDescriptionTransferCache().getMessageDescriptionTransfer(userVisit, messageDescription);
+        return messageDescriptionTransferCache.getMessageDescriptionTransfer(userVisit, messageDescription);
     }
     
     public List<MessageDescriptionTransfer> getMessageDescriptionTransfers(UserVisit userVisit, Message message) {
         var messageDescriptions = getMessageDescriptionsByMessage(message);
         List<MessageDescriptionTransfer> messageDescriptionTransfers = new ArrayList<>(messageDescriptions.size());
-        var messageDescriptionTransferCache = messageTransferCaches.getMessageDescriptionTransferCache();
         
         messageDescriptions.forEach((messageDescription) ->
                 messageDescriptionTransfers.add(messageDescriptionTransferCache.getMessageDescriptionTransfer(userVisit, messageDescription))
@@ -997,7 +1021,6 @@ public class MessageControl
     
     public List<MessageStringTransfer> getMessageStringTransfers(UserVisit userVisit, Collection<MessageString> messageStrings) {
         List<MessageStringTransfer> messageStringTransfers = new ArrayList<>(messageStrings.size());
-        var messageStringTransferCache = messageTransferCaches.getMessageStringTransferCache();
         
         messageStrings.forEach((messageString) ->
                 messageStringTransfers.add(messageStringTransferCache.getMessageStringTransfer(userVisit, messageString))
@@ -1149,7 +1172,6 @@ public class MessageControl
     
     public List<MessageBlobTransfer> getMessageBlobTransfers(UserVisit userVisit, Collection<MessageBlob> messageBlobs) {
         List<MessageBlobTransfer> messageBlobTransfers = new ArrayList<>(messageBlobs.size());
-        var messageBlobTransferCache = messageTransferCaches.getMessageBlobTransferCache();
         
         messageBlobs.forEach((messageBlob) ->
                 messageBlobTransfers.add(messageBlobTransferCache.getMessageBlobTransfer(userVisit, messageBlob))
@@ -1302,7 +1324,6 @@ public class MessageControl
     
     public List<MessageClobTransfer> getMessageClobTransfers(UserVisit userVisit, Collection<MessageClob> messageClobs) {
         List<MessageClobTransfer> messageClobTransfers = new ArrayList<>(messageClobs.size());
-        var messageClobTransferCache = messageTransferCaches.getMessageClobTransferCache();
         
         messageClobs.forEach((messageClob) ->
                 messageClobTransfers.add(messageClobTransferCache.getMessageClobTransfer(userVisit, messageClob))
@@ -1483,12 +1504,11 @@ public class MessageControl
     }
     
     public EntityMessageTransfer getEntityMessageTransfer(UserVisit userVisit, EntityMessage entityMessage) {
-        return messageTransferCaches.getEntityMessageTransferCache().getEntityMessageTransfer(userVisit, entityMessage);
+        return entityMessageTransferCache.getEntityMessageTransfer(userVisit, entityMessage);
     }
     
     public List<EntityMessageTransfer> getEntityMessageTransfers(UserVisit userVisit, Collection<EntityMessage> entityMessages) {
         List<EntityMessageTransfer> entityMessageTransfers = new ArrayList<>(entityMessages.size());
-        var entityMessageTransferCache = messageTransferCaches.getEntityMessageTransferCache();
         
         entityMessages.forEach((entityMessage) ->
                 entityMessageTransfers.add(entityMessageTransferCache.getEntityMessageTransfer(userVisit, entityMessage))

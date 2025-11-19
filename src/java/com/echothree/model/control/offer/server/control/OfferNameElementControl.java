@@ -169,12 +169,11 @@ public class OfferNameElementControl
     }
     
     public OfferNameElementTransfer getOfferNameElementTransfer(UserVisit userVisit, OfferNameElement offerNameElement) {
-        return offerTransferCaches.getOfferNameElementTransferCache().getOfferNameElementTransfer(userVisit, offerNameElement);
+        return offerNameElementTransferCache.getOfferNameElementTransfer(userVisit, offerNameElement);
     }
     
     public List<OfferNameElementTransfer> getOfferNameElementTransfers(UserVisit userVisit, Collection<OfferNameElement> offerNameElements) {
         List<OfferNameElementTransfer> offerNameElementTransfers = new ArrayList<>(offerNameElements.size());
-        var offerNameElementTransferCache = offerTransferCaches.getOfferNameElementTransferCache();
         
         for(var offerNameElement : offerNameElements) {
             offerNameElementTransfers.add(offerNameElementTransferCache.getOfferNameElementTransfer(userVisit, offerNameElement));
@@ -345,13 +344,12 @@ public class OfferNameElementControl
     
     public OfferNameElementDescriptionTransfer getOfferNameElementDescriptionTransfer(UserVisit userVisit,
             OfferNameElementDescription offerNameElementDescription) {
-        return offerTransferCaches.getOfferNameElementDescriptionTransferCache().getOfferNameElementDescriptionTransfer(userVisit, offerNameElementDescription);
+        return offerNameElementDescriptionTransferCache.getOfferNameElementDescriptionTransfer(userVisit, offerNameElementDescription);
     }
     
     public List<OfferNameElementDescriptionTransfer> getOfferNameElementDescriptionTransfersByOfferNameElement(UserVisit userVisit, OfferNameElement offerNameElement) {
         var offerNameElementDescriptions = getOfferNameElementDescriptionsByOfferNameElement(offerNameElement);
         List<OfferNameElementDescriptionTransfer> offerNameElementDescriptionTransfers = new ArrayList<>(offerNameElementDescriptions.size());
-        var offerNameElementDescriptionTransferCache = offerTransferCaches.getOfferNameElementDescriptionTransferCache();
         
         offerNameElementDescriptions.forEach((offerNameElementDescription) ->
                 offerNameElementDescriptionTransfers.add(offerNameElementDescriptionTransferCache.getOfferNameElementDescriptionTransfer(userVisit, offerNameElementDescription))

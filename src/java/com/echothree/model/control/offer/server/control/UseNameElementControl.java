@@ -169,12 +169,11 @@ public class UseNameElementControl
     }
 
     public UseNameElementTransfer getUseNameElementTransfer(UserVisit userVisit, UseNameElement useNameElement) {
-        return offerTransferCaches.getUseNameElementTransferCache().getUseNameElementTransfer(userVisit, useNameElement);
+        return useNameElementTransferCache.getUseNameElementTransfer(userVisit, useNameElement);
     }
 
     public List<UseNameElementTransfer> getUseNameElementTransfers(UserVisit userVisit, Collection<UseNameElement> useNameElements) {
         List<UseNameElementTransfer> useNameElementTransfers = new ArrayList<>(useNameElements.size());
-        var useNameElementTransferCache = offerTransferCaches.getUseNameElementTransferCache();
 
         useNameElements.forEach((useNameElement) ->
                 useNameElementTransfers.add(useNameElementTransferCache.getUseNameElementTransfer(userVisit, useNameElement))
@@ -345,13 +344,12 @@ public class UseNameElementControl
 
     public UseNameElementDescriptionTransfer getUseNameElementDescriptionTransfer(UserVisit userVisit,
             UseNameElementDescription useNameElementDescription) {
-        return offerTransferCaches.getUseNameElementDescriptionTransferCache().getUseNameElementDescriptionTransfer(userVisit, useNameElementDescription);
+        return useNameElementDescriptionTransferCache.getUseNameElementDescriptionTransfer(userVisit, useNameElementDescription);
     }
 
     public List<UseNameElementDescriptionTransfer> getUseNameElementDescriptionTransfersByUseNameElement(UserVisit userVisit, UseNameElement useNameElement) {
         var useNameElementDescriptions = getUseNameElementDescriptionsByUseNameElement(useNameElement);
         List<UseNameElementDescriptionTransfer> useNameElementDescriptionTransfers = new ArrayList<>(useNameElementDescriptions.size());
-        var useNameElementDescriptionTransferCache = offerTransferCaches.getUseNameElementDescriptionTransferCache();
 
         useNameElementDescriptions.forEach((useNameElementDescription) ->
                 useNameElementDescriptionTransfers.add(useNameElementDescriptionTransferCache.getUseNameElementDescriptionTransfer(userVisit, useNameElementDescription))

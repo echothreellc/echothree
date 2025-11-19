@@ -31,7 +31,15 @@ import com.echothree.model.control.security.common.transfer.SecurityRoleGroupTra
 import com.echothree.model.control.security.common.transfer.SecurityRolePartyTypeTransfer;
 import com.echothree.model.control.security.common.transfer.SecurityRoleTransfer;
 import com.echothree.model.control.security.server.logic.PartySecurityRoleTemplateLogic;
-import com.echothree.model.control.security.server.transfer.SecurityTransferCaches;
+import com.echothree.model.control.security.server.transfer.PartySecurityRoleTemplateDescriptionTransferCache;
+import com.echothree.model.control.security.server.transfer.PartySecurityRoleTemplateRoleTransferCache;
+import com.echothree.model.control.security.server.transfer.PartySecurityRoleTemplateTrainingClassTransferCache;
+import com.echothree.model.control.security.server.transfer.PartySecurityRoleTemplateTransferCache;
+import com.echothree.model.control.security.server.transfer.SecurityRoleDescriptionTransferCache;
+import com.echothree.model.control.security.server.transfer.SecurityRoleGroupDescriptionTransferCache;
+import com.echothree.model.control.security.server.transfer.SecurityRoleGroupTransferCache;
+import com.echothree.model.control.security.server.transfer.SecurityRolePartyTypeTransferCache;
+import com.echothree.model.control.security.server.transfer.SecurityRoleTransferCache;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
@@ -110,7 +118,31 @@ public class SecurityControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    SecurityTransferCaches securityTransferCaches;
+    SecurityRoleGroupTransferCache securityRoleGroupTransferCache;
+
+    @Inject
+    SecurityRoleGroupDescriptionTransferCache securityRoleGroupDescriptionTransferCache;
+
+    @Inject
+    SecurityRoleTransferCache securityRoleTransferCache;
+
+    @Inject
+    SecurityRoleDescriptionTransferCache securityRoleDescriptionTransferCache;
+
+    @Inject
+    SecurityRolePartyTypeTransferCache securityRolePartyTypeTransferCache;
+
+    @Inject
+    PartySecurityRoleTemplateTransferCache partySecurityRoleTemplateTransferCache;
+
+    @Inject
+    PartySecurityRoleTemplateDescriptionTransferCache partySecurityRoleTemplateDescriptionTransferCache;
+
+    @Inject
+    PartySecurityRoleTemplateRoleTransferCache partySecurityRoleTemplateRoleTransferCache;
+
+    @Inject
+    PartySecurityRoleTemplateTrainingClassTransferCache partySecurityRoleTemplateTrainingClassTransferCache;
 
     // --------------------------------------------------------------------------------
     //   Security Role Groups
@@ -323,12 +355,11 @@ public class SecurityControl
     }
 
     public SecurityRoleGroupTransfer getSecurityRoleGroupTransfer(UserVisit userVisit, SecurityRoleGroup securityRoleGroup) {
-        return securityTransferCaches.getSecurityRoleGroupTransferCache().getSecurityRoleGroupTransfer(userVisit, securityRoleGroup);
+        return securityRoleGroupTransferCache.getSecurityRoleGroupTransfer(userVisit, securityRoleGroup);
     }
     
     public List<SecurityRoleGroupTransfer> getSecurityRoleGroupTransfers(UserVisit userVisit, Collection<SecurityRoleGroup> securityRoleGroups) {
         List<SecurityRoleGroupTransfer> securityRoleGroupTransfers = new ArrayList<>(securityRoleGroups.size());
-        var securityRoleGroupTransferCache = securityTransferCaches.getSecurityRoleGroupTransferCache();
         
         securityRoleGroups.forEach((securityRoleGroup) ->
                 securityRoleGroupTransfers.add(securityRoleGroupTransferCache.getSecurityRoleGroupTransfer(userVisit, securityRoleGroup))
@@ -622,13 +653,12 @@ public class SecurityControl
     }
     
     public SecurityRoleGroupDescriptionTransfer getSecurityRoleGroupDescriptionTransfer(UserVisit userVisit, SecurityRoleGroupDescription securityRoleGroupDescription) {
-        return securityTransferCaches.getSecurityRoleGroupDescriptionTransferCache().getSecurityRoleGroupDescriptionTransfer(userVisit, securityRoleGroupDescription);
+        return securityRoleGroupDescriptionTransferCache.getSecurityRoleGroupDescriptionTransfer(userVisit, securityRoleGroupDescription);
     }
     
     public List<SecurityRoleGroupDescriptionTransfer> getSecurityRoleGroupDescriptionTransfersBySecurityRoleGroup(UserVisit userVisit, SecurityRoleGroup securityRoleGroup) {
         var securityRoleGroupDescriptions = getSecurityRoleGroupDescriptionsBySecurityRoleGroup(securityRoleGroup);
         List<SecurityRoleGroupDescriptionTransfer> securityRoleGroupDescriptionTransfers = new ArrayList<>(securityRoleGroupDescriptions.size());
-        var securityRoleGroupDescriptionTransferCache = securityTransferCaches.getSecurityRoleGroupDescriptionTransferCache();
         
         securityRoleGroupDescriptions.forEach((securityRoleGroupDescription) ->
                 securityRoleGroupDescriptionTransfers.add(securityRoleGroupDescriptionTransferCache.getSecurityRoleGroupDescriptionTransfer(userVisit, securityRoleGroupDescription))
@@ -915,12 +945,11 @@ public class SecurityControl
     }
     
     public SecurityRoleTransfer getSecurityRoleTransfer(UserVisit userVisit, SecurityRole securityRole) {
-        return securityTransferCaches.getSecurityRoleTransferCache().getSecurityRoleTransfer(userVisit, securityRole);
+        return securityRoleTransferCache.getSecurityRoleTransfer(userVisit, securityRole);
     }
 
     public List<SecurityRoleTransfer> getSecurityRoleTransfers(UserVisit userVisit, Collection<SecurityRole> securityRoles) {
         List<SecurityRoleTransfer> securityRoleTransfers = new ArrayList<>(securityRoles.size());
-        var securityRoleTransferCache = securityTransferCaches.getSecurityRoleTransferCache();
 
         securityRoles.forEach((securityRole) ->
                 securityRoleTransfers.add(securityRoleTransferCache.getSecurityRoleTransfer(userVisit, securityRole))
@@ -1141,13 +1170,12 @@ public class SecurityControl
     }
     
     public SecurityRoleDescriptionTransfer getSecurityRoleDescriptionTransfer(UserVisit userVisit, SecurityRoleDescription securityRoleDescription) {
-        return securityTransferCaches.getSecurityRoleDescriptionTransferCache().getSecurityRoleDescriptionTransfer(userVisit, securityRoleDescription);
+        return securityRoleDescriptionTransferCache.getSecurityRoleDescriptionTransfer(userVisit, securityRoleDescription);
     }
     
     public List<SecurityRoleDescriptionTransfer> getSecurityRoleDescriptionTransfersBySecurityRole(UserVisit userVisit, SecurityRole securityRole) {
         var securityRoleDescriptions = getSecurityRoleDescriptionsBySecurityRole(securityRole);
         List<SecurityRoleDescriptionTransfer> securityRoleDescriptionTransfers = new ArrayList<>(securityRoleDescriptions.size());
-        var securityRoleDescriptionTransferCache = securityTransferCaches.getSecurityRoleDescriptionTransferCache();
         
         securityRoleDescriptions.forEach((securityRoleDescription) ->
                 securityRoleDescriptionTransfers.add(securityRoleDescriptionTransferCache.getSecurityRoleDescriptionTransfer(userVisit, securityRoleDescription))
@@ -1308,12 +1336,11 @@ public class SecurityControl
     }
     
     public SecurityRolePartyTypeTransfer getSecurityRolePartyTypeTransfer(UserVisit userVisit, SecurityRolePartyType securityRolePartyType) {
-        return securityTransferCaches.getSecurityRolePartyTypeTransferCache().getSecurityRolePartyTypeTransfer(userVisit, securityRolePartyType);
+        return securityRolePartyTypeTransferCache.getSecurityRolePartyTypeTransfer(userVisit, securityRolePartyType);
     }
     
     public List<SecurityRolePartyTypeTransfer> getSecurityRolePartyTypeTransfers(UserVisit userVisit, Collection<SecurityRolePartyType> securityRolePartyTypes) {
         List<SecurityRolePartyTypeTransfer> securityRolePartyTypeTransfers = new ArrayList<>(securityRolePartyTypes.size());
-        var securityRolePartyTypeTransferCache = securityTransferCaches.getSecurityRolePartyTypeTransferCache();
         
         securityRolePartyTypes.forEach((securityRolePartyType) ->
                 securityRolePartyTypeTransfers.add(securityRolePartyTypeTransferCache.getSecurityRolePartyTypeTransfer(userVisit, securityRolePartyType))
@@ -1554,13 +1581,12 @@ public class SecurityControl
     }
     
     public PartySecurityRoleTemplateTransfer getPartySecurityRoleTemplateTransfer(UserVisit userVisit, PartySecurityRoleTemplate partySecurityRoleTemplate) {
-        return securityTransferCaches.getPartySecurityRoleTemplateTransferCache().getPartySecurityRoleTemplateTransfer(userVisit, partySecurityRoleTemplate);
+        return partySecurityRoleTemplateTransferCache.getPartySecurityRoleTemplateTransfer(userVisit, partySecurityRoleTemplate);
     }
     
     public List<PartySecurityRoleTemplateTransfer> getPartySecurityRoleTemplateTransfers(UserVisit userVisit) {
         var partySecurityRoleTemplates = getPartySecurityRoleTemplates();
         List<PartySecurityRoleTemplateTransfer> partySecurityRoleTemplateTransfers = new ArrayList<>(partySecurityRoleTemplates.size());
-        var partySecurityRoleTemplateTransferCache = securityTransferCaches.getPartySecurityRoleTemplateTransferCache();
         
         partySecurityRoleTemplates.forEach((partySecurityRoleTemplate) ->
                 partySecurityRoleTemplateTransfers.add(partySecurityRoleTemplateTransferCache.getPartySecurityRoleTemplateTransfer(userVisit, partySecurityRoleTemplate))
@@ -1768,14 +1794,13 @@ public class SecurityControl
     
     public PartySecurityRoleTemplateDescriptionTransfer getPartySecurityRoleTemplateDescriptionTransfer(UserVisit userVisit,
             PartySecurityRoleTemplateDescription partySecurityRoleTemplateDescription) {
-        return securityTransferCaches.getPartySecurityRoleTemplateDescriptionTransferCache().getPartySecurityRoleTemplateDescriptionTransfer(userVisit, partySecurityRoleTemplateDescription);
+        return partySecurityRoleTemplateDescriptionTransferCache.getPartySecurityRoleTemplateDescriptionTransfer(userVisit, partySecurityRoleTemplateDescription);
     }
     
     public List<PartySecurityRoleTemplateDescriptionTransfer> getPartySecurityRoleTemplateDescriptionTransfersByPartySecurityRoleTemplate(UserVisit userVisit,
             PartySecurityRoleTemplate partySecurityRoleTemplate) {
         var partySecurityRoleTemplateDescriptions = getPartySecurityRoleTemplateDescriptionsByPartySecurityRoleTemplate(partySecurityRoleTemplate);
         List<PartySecurityRoleTemplateDescriptionTransfer> partySecurityRoleTemplateDescriptionTransfers = new ArrayList<>(partySecurityRoleTemplateDescriptions.size());
-        var partySecurityRoleTemplateDescriptionTransferCache = securityTransferCaches.getPartySecurityRoleTemplateDescriptionTransferCache();
         
         partySecurityRoleTemplateDescriptions.forEach((partySecurityRoleTemplateDescription) ->
                 partySecurityRoleTemplateDescriptionTransfers.add(partySecurityRoleTemplateDescriptionTransferCache.getPartySecurityRoleTemplateDescriptionTransfer(userVisit, partySecurityRoleTemplateDescription))
@@ -1960,12 +1985,11 @@ public class SecurityControl
     }
     
     public PartySecurityRoleTemplateRoleTransfer getPartySecurityRoleTemplateRoleTransfer(UserVisit userVisit, PartySecurityRoleTemplateRole partySecurityRoleTemplateRole) {
-        return securityTransferCaches.getPartySecurityRoleTemplateRoleTransferCache().getPartySecurityRoleTemplateRoleTransfer(userVisit, partySecurityRoleTemplateRole);
+        return partySecurityRoleTemplateRoleTransferCache.getPartySecurityRoleTemplateRoleTransfer(userVisit, partySecurityRoleTemplateRole);
     }
     
     public List<PartySecurityRoleTemplateRoleTransfer> getPartySecurityRoleTemplateRoleTransfers(UserVisit userVisit, Collection<PartySecurityRoleTemplateRole> partySecurityRoleTemplateRoles) {
         List<PartySecurityRoleTemplateRoleTransfer> partySecurityRoleTemplateRoleTransfers = new ArrayList<>(partySecurityRoleTemplateRoles.size());
-        var partySecurityRoleTemplateRoleTransferCache = securityTransferCaches.getPartySecurityRoleTemplateRoleTransferCache();
 
         partySecurityRoleTemplateRoles.forEach((partySecurityRoleTemplateRole) ->
                 partySecurityRoleTemplateRoleTransfers.add(partySecurityRoleTemplateRoleTransferCache.getPartySecurityRoleTemplateRoleTransfer(userVisit, partySecurityRoleTemplateRole))
@@ -2129,12 +2153,11 @@ public class SecurityControl
     }
     
     public PartySecurityRoleTemplateTrainingClassTransfer getPartySecurityRoleTemplateTrainingClassTransfer(UserVisit userVisit, PartySecurityRoleTemplateTrainingClass partySecurityRoleTemplateTrainingClass) {
-        return securityTransferCaches.getPartySecurityRoleTemplateTrainingClassTransferCache().getPartySecurityRoleTemplateTrainingClassTransfer(userVisit, partySecurityRoleTemplateTrainingClass);
+        return partySecurityRoleTemplateTrainingClassTransferCache.getPartySecurityRoleTemplateTrainingClassTransfer(userVisit, partySecurityRoleTemplateTrainingClass);
     }
     
     public List<PartySecurityRoleTemplateTrainingClassTransfer> getPartySecurityRoleTemplateTrainingClassTransfers(UserVisit userVisit, Collection<PartySecurityRoleTemplateTrainingClass> partySecurityRoleTemplateTrainingClasses) {
         List<PartySecurityRoleTemplateTrainingClassTransfer> partySecurityRoleTemplateTrainingClassTransfers = new ArrayList<>(partySecurityRoleTemplateTrainingClasses.size());
-        var partySecurityRoleTemplateTrainingClassTransferCache = securityTransferCaches.getPartySecurityRoleTemplateTrainingClassTransferCache();
 
         partySecurityRoleTemplateTrainingClasses.forEach((partySecurityRoleTemplateTrainingClass) ->
                 partySecurityRoleTemplateTrainingClassTransfers.add(partySecurityRoleTemplateTrainingClassTransferCache.getPartySecurityRoleTemplateTrainingClassTransfer(userVisit, partySecurityRoleTemplateTrainingClass))

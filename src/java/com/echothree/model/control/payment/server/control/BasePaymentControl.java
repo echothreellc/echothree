@@ -16,7 +16,32 @@
 
 package com.echothree.model.control.payment.server.control;
 
-import com.echothree.model.control.payment.server.transfer.PaymentTransferCaches;
+import com.echothree.model.control.payment.server.transfer.BillingAccountRoleTransferCache;
+import com.echothree.model.control.payment.server.transfer.BillingAccountRoleTypeTransferCache;
+import com.echothree.model.control.payment.server.transfer.BillingAccountTransferCache;
+import com.echothree.model.control.payment.server.transfer.PartyPaymentMethodContactMechanismTransferCache;
+import com.echothree.model.control.payment.server.transfer.PartyPaymentMethodTransferCache;
+import com.echothree.model.control.payment.server.transfer.PaymentMethodDescriptionTransferCache;
+import com.echothree.model.control.payment.server.transfer.PaymentMethodTransferCache;
+import com.echothree.model.control.payment.server.transfer.PaymentMethodTypeDescriptionTransferCache;
+import com.echothree.model.control.payment.server.transfer.PaymentMethodTypePartyTypeTransferCache;
+import com.echothree.model.control.payment.server.transfer.PaymentMethodTypeTransferCache;
+import com.echothree.model.control.payment.server.transfer.PaymentProcessorActionTransferCache;
+import com.echothree.model.control.payment.server.transfer.PaymentProcessorActionTypeDescriptionTransferCache;
+import com.echothree.model.control.payment.server.transfer.PaymentProcessorActionTypeTransferCache;
+import com.echothree.model.control.payment.server.transfer.PaymentProcessorDescriptionTransferCache;
+import com.echothree.model.control.payment.server.transfer.PaymentProcessorResultCodeDescriptionTransferCache;
+import com.echothree.model.control.payment.server.transfer.PaymentProcessorResultCodeTransferCache;
+import com.echothree.model.control.payment.server.transfer.PaymentProcessorTransactionCodeTransferCache;
+import com.echothree.model.control.payment.server.transfer.PaymentProcessorTransactionTransferCache;
+import com.echothree.model.control.payment.server.transfer.PaymentProcessorTransferCache;
+import com.echothree.model.control.payment.server.transfer.PaymentProcessorTypeActionTransferCache;
+import com.echothree.model.control.payment.server.transfer.PaymentProcessorTypeCodeDescriptionTransferCache;
+import com.echothree.model.control.payment.server.transfer.PaymentProcessorTypeCodeTransferCache;
+import com.echothree.model.control.payment.server.transfer.PaymentProcessorTypeCodeTypeDescriptionTransferCache;
+import com.echothree.model.control.payment.server.transfer.PaymentProcessorTypeCodeTypeTransferCache;
+import com.echothree.model.control.payment.server.transfer.PaymentProcessorTypeDescriptionTransferCache;
+import com.echothree.model.control.payment.server.transfer.PaymentProcessorTypeTransferCache;
 import com.echothree.util.server.control.BaseModelControl;
 import javax.inject.Inject;
 
@@ -31,8 +56,83 @@ public abstract class BasePaymentControl
     // --------------------------------------------------------------------------------
     //   Payment Transfer Caches
     // --------------------------------------------------------------------------------
-    
+
     @Inject
-    PaymentTransferCaches paymentTransferCaches;
+    PaymentMethodTypeTransferCache paymentMethodTypeTransferCache;
+
+    @Inject
+    PaymentMethodTypeDescriptionTransferCache paymentMethodTypeDescriptionTransferCache;
+
+    @Inject
+    PaymentMethodTypePartyTypeTransferCache paymentMethodTypePartyTypeTransferCache;
+
+    @Inject
+    PaymentMethodTransferCache paymentMethodTransferCache;
+
+    @Inject
+    PaymentMethodDescriptionTransferCache paymentMethodDescriptionTransferCache;
+
+    @Inject
+    BillingAccountTransferCache billingAccountTransferCache;
+
+    @Inject
+    BillingAccountRoleTypeTransferCache billingAccountRoleTypeTransferCache;
+
+    @Inject
+    BillingAccountRoleTransferCache billingAccountRoleTransferCache;
+
+    @Inject
+    PartyPaymentMethodTransferCache partyPaymentMethodTransferCache;
+
+    @Inject
+    PaymentProcessorTypeTransferCache paymentProcessorTypeTransferCache;
+
+    @Inject
+    PaymentProcessorTypeDescriptionTransferCache paymentProcessorTypeDescriptionTransferCache;
+
+    @Inject
+    PaymentProcessorTransferCache paymentProcessorTransferCache;
+
+    @Inject
+    PaymentProcessorDescriptionTransferCache paymentProcessorDescriptionTransferCache;
+
+    @Inject
+    PartyPaymentMethodContactMechanismTransferCache partyPaymentMethodContactMechanismTransferCache;
+
+    @Inject
+    PaymentProcessorActionTypeTransferCache paymentProcessorActionTypeTransferCache;
+
+    @Inject
+    PaymentProcessorActionTypeDescriptionTransferCache paymentProcessorActionTypeDescriptionTransferCache;
+
+    @Inject
+    PaymentProcessorResultCodeTransferCache paymentProcessorResultCodeTransferCache;
+
+    @Inject
+    PaymentProcessorResultCodeDescriptionTransferCache paymentProcessorResultCodeDescriptionTransferCache;
+
+    @Inject
+    PaymentProcessorTypeCodeTypeTransferCache paymentProcessorTypeCodeTypeTransferCache;
+
+    @Inject
+    PaymentProcessorTypeCodeTypeDescriptionTransferCache paymentProcessorTypeCodeTypeDescriptionTransferCache;
+
+    @Inject
+    PaymentProcessorTypeCodeTransferCache paymentProcessorTypeCodeTransferCache;
+
+    @Inject
+    PaymentProcessorTypeCodeDescriptionTransferCache paymentProcessorTypeCodeDescriptionTransferCache;
+
+    @Inject
+    PaymentProcessorTypeActionTransferCache paymentProcessorTypeActionTransferCache;
+
+    @Inject
+    PaymentProcessorActionTransferCache paymentProcessorActionTransferCache;
+
+    @Inject
+    PaymentProcessorTransactionTransferCache paymentProcessorTransactionTransferCache;
+
+    @Inject
+    PaymentProcessorTransactionCodeTransferCache paymentProcessorTransactionCodeTransferCache;
 
  }

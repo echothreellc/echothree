@@ -26,7 +26,12 @@ import com.echothree.model.control.term.common.transfer.PartyTermTransfer;
 import com.echothree.model.control.term.common.transfer.TermDescriptionTransfer;
 import com.echothree.model.control.term.common.transfer.TermTransfer;
 import com.echothree.model.control.term.common.transfer.TermTypeTransfer;
-import com.echothree.model.control.term.server.transfer.TermTransferCaches;
+import com.echothree.model.control.term.server.transfer.CustomerTypeCreditLimitTransferCache;
+import com.echothree.model.control.term.server.transfer.PartyCreditLimitTransferCache;
+import com.echothree.model.control.term.server.transfer.PartyTermTransferCache;
+import com.echothree.model.control.term.server.transfer.TermDescriptionTransferCache;
+import com.echothree.model.control.term.server.transfer.TermTransferCache;
+import com.echothree.model.control.term.server.transfer.TermTypeTransferCache;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.customer.server.entity.CustomerType;
@@ -89,9 +94,24 @@ public class TermControl
     // --------------------------------------------------------------------------------
     //   Term Transfer Caches
     // --------------------------------------------------------------------------------
-    
+
     @Inject
-    TermTransferCaches termTransferCaches;
+    TermTypeTransferCache termTypeTransferCache;
+
+    @Inject
+    TermTransferCache termTransferCache;
+
+    @Inject
+    TermDescriptionTransferCache termDescriptionTransferCache;
+
+    @Inject
+    PartyTermTransferCache partyTermTransferCache;
+
+    @Inject
+    CustomerTypeCreditLimitTransferCache customerTypeCreditLimitTransferCache;
+
+    @Inject
+    PartyCreditLimitTransferCache partyCreditLimitTransferCache;
 
     // --------------------------------------------------------------------------------
     //   Term Types
@@ -214,12 +234,11 @@ public class TermControl
     }
 
     public TermTypeTransfer getTermTypeTransfer(UserVisit userVisit, TermType termType) {
-        return termTransferCaches.getTermTypeTransferCache().getTermTypeTransfer(userVisit, termType);
+        return termTypeTransferCache.getTermTypeTransfer(userVisit, termType);
     }
 
     public List<TermTypeTransfer> getTermTypeTransfers(UserVisit userVisit, Collection<TermType> termTypes) {
         List<TermTypeTransfer> termTypeTransfers = new ArrayList<>(termTypes.size());
-        var termTypeTransferCache = termTransferCaches.getTermTypeTransferCache();
 
         termTypes.forEach((termType) ->
                 termTypeTransfers.add(termTypeTransferCache.getTermTypeTransfer(userVisit, termType))
@@ -506,12 +525,11 @@ public class TermControl
     }
     
     public TermTransfer getTermTransfer(UserVisit userVisit, Term term) {
-        return termTransferCaches.getTermTransferCache().getTermTransfer(userVisit, term);
+        return termTransferCache.getTermTransfer(userVisit, term);
     }
 
     public List<TermTransfer> getTermTransfers(UserVisit userVisit, Collection<Term> terms) {
         List<TermTransfer> termTransfers = new ArrayList<>(terms.size());
-        var termTransferCache = termTransferCaches.getTermTransferCache();
 
         terms.forEach((term) ->
                 termTransfers.add(termTransferCache.getTermTransfer(userVisit, term))
@@ -721,7 +739,7 @@ public class TermControl
     }
     
     public TermDescriptionTransfer getTermDescriptionTransfer(UserVisit userVisit, TermDescription termDescription) {
-        return termTransferCaches.getTermDescriptionTransferCache().getTermDescriptionTransfer(userVisit, termDescription);
+        return termDescriptionTransferCache.getTermDescriptionTransfer(userVisit, termDescription);
     }
     
     public List<TermDescriptionTransfer> getTermDescriptionTransfersByTerm(UserVisit userVisit, Term term) {
@@ -729,7 +747,7 @@ public class TermControl
         List<TermDescriptionTransfer> termDescriptionTransfers = new ArrayList<>(termDescriptions.size());
         
         termDescriptions.forEach((termDescription) -> {
-            termDescriptionTransfers.add(termTransferCaches.getTermDescriptionTransferCache().getTermDescriptionTransfer(userVisit, termDescription));
+            termDescriptionTransfers.add(termDescriptionTransferCache.getTermDescriptionTransfer(userVisit, termDescription));
         });
         
         return termDescriptionTransfers;
@@ -1060,13 +1078,12 @@ public class TermControl
     }
     
     public CustomerTypeCreditLimitTransfer getCustomerTypeCreditLimitTransfer(UserVisit userVisit, CustomerTypeCreditLimit customerTypeCreditLimit) {
-        return termTransferCaches.getCustomerTypeCreditLimitTransferCache().getCustomerTypeCreditLimitTransfer(userVisit, customerTypeCreditLimit);
+        return customerTypeCreditLimitTransferCache.getCustomerTypeCreditLimitTransfer(userVisit, customerTypeCreditLimit);
     }
     
     public List<CustomerTypeCreditLimitTransfer> getCustomerTypeCreditLimitTransfersByCustomerType(UserVisit userVisit, CustomerType customerType) {
         var customerTypeCreditLimits = getCustomerTypeCreditLimitsByCustomerType(customerType);
         List<CustomerTypeCreditLimitTransfer> customerTypeCreditLimitTransfers = new ArrayList<>(customerTypeCreditLimits.size());
-        var customerTypeCreditLimitTransferCache = termTransferCaches.getCustomerTypeCreditLimitTransferCache();
         
         customerTypeCreditLimits.forEach((customerTypeCreditLimit) ->
                 customerTypeCreditLimitTransfers.add(customerTypeCreditLimitTransferCache.getCustomerTypeCreditLimitTransfer(userVisit, customerTypeCreditLimit))
@@ -1211,13 +1228,12 @@ public class TermControl
     }
     
     public PartyCreditLimitTransfer getPartyCreditLimitTransfer(UserVisit userVisit, PartyCreditLimit partyCreditLimit) {
-        return termTransferCaches.getPartyCreditLimitTransferCache().getPartyCreditLimitTransfer(userVisit, partyCreditLimit);
+        return partyCreditLimitTransferCache.getPartyCreditLimitTransfer(userVisit, partyCreditLimit);
     }
     
     public List<PartyCreditLimitTransfer> getPartyCreditLimitTransfersByParty(UserVisit userVisit, Party party) {
         var partyCreditLimits = getPartyCreditLimitsByParty(party);
         List<PartyCreditLimitTransfer> partyCreditLimitTransfers = new ArrayList<>(partyCreditLimits.size());
-        var partyCreditLimitTransferCache = termTransferCaches.getPartyCreditLimitTransferCache();
         
         partyCreditLimits.forEach((partyCreditLimit) ->
                 partyCreditLimitTransfers.add(partyCreditLimitTransferCache.getPartyCreditLimitTransfer(userVisit, partyCreditLimit))
@@ -1362,11 +1378,11 @@ public class TermControl
     public PartyTermTransfer getPartyTermTransfer(UserVisit userVisit, Party party) {
         var partyTerm = getPartyTerm(party);
         
-        return partyTerm == null? null: termTransferCaches.getPartyTermTransferCache().getPartyTermTransfer(userVisit, partyTerm);
+        return partyTerm == null? null: partyTermTransferCache.getPartyTermTransfer(userVisit, partyTerm);
     }
     
     public PartyTermTransfer getPartyTermTransfer(UserVisit userVisit, PartyTerm partyTerm) {
-        return termTransferCaches.getPartyTermTransferCache().getPartyTermTransfer(userVisit, partyTerm);
+        return partyTermTransferCache.getPartyTermTransfer(userVisit, partyTerm);
     }
     
     public void updatePartyTermFromValue(PartyTermValue partyTermValue, BasePK updatedBy) {

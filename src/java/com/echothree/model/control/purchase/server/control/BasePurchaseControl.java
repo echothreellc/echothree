@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.purchase.server.control;
 
-import com.echothree.model.control.purchase.server.transfer.PurchaseTransferCaches;
 import com.echothree.util.server.control.BaseModelControl;
-import javax.inject.Inject;
 
 public abstract class BasePurchaseControl
         extends BaseModelControl {
@@ -27,12 +25,5 @@ public abstract class BasePurchaseControl
     protected BasePurchaseControl() {
         super();
     }
-
-    // --------------------------------------------------------------------------------
-    //   Purchase Transfer Caches
-    // --------------------------------------------------------------------------------
-
-    @Inject
-    PurchaseTransferCaches purchaseTransferCaches;
 
 }

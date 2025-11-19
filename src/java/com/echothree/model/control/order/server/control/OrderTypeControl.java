@@ -223,12 +223,11 @@ public class OrderTypeControl
     }
 
     public OrderTypeTransfer getOrderTypeTransfer(UserVisit userVisit, OrderType orderType) {
-        return orderTransferCaches.getOrderTypeTransferCache().getOrderTypeTransfer(userVisit, orderType);
+        return orderTypeTransferCache.getOrderTypeTransfer(userVisit, orderType);
     }
 
     public List<OrderTypeTransfer> getOrderTypeTransfers(UserVisit userVisit, Collection<OrderType> orderTypes) {
         List<OrderTypeTransfer> orderTypeTransfers = new ArrayList<>(orderTypes.size());
-        var orderTypeTransferCache = orderTransferCaches.getOrderTypeTransferCache();
 
         orderTypes.forEach((orderType) ->
                 orderTypeTransfers.add(orderTypeTransferCache.getOrderTypeTransfer(userVisit, orderType))
@@ -470,13 +469,12 @@ public class OrderTypeControl
     }
 
     public OrderTypeDescriptionTransfer getOrderTypeDescriptionTransfer(UserVisit userVisit, OrderTypeDescription orderTypeDescription) {
-        return orderTransferCaches.getOrderTypeDescriptionTransferCache().getOrderTypeDescriptionTransfer(userVisit, orderTypeDescription);
+        return orderTypeDescriptionTransferCache.getOrderTypeDescriptionTransfer(userVisit, orderTypeDescription);
     }
 
     public List<OrderTypeDescriptionTransfer> getOrderTypeDescriptionTransfersByOrderType(UserVisit userVisit, OrderType orderType) {
         var orderTypeDescriptions = getOrderTypeDescriptionsByOrderType(orderType);
         List<OrderTypeDescriptionTransfer> orderTypeDescriptionTransfers = new ArrayList<>(orderTypeDescriptions.size());
-        var orderTypeDescriptionTransferCache = orderTransferCaches.getOrderTypeDescriptionTransferCache();
 
         orderTypeDescriptions.forEach((orderTypeDescription) ->
                 orderTypeDescriptionTransfers.add(orderTypeDescriptionTransferCache.getOrderTypeDescriptionTransfer(userVisit, orderTypeDescription))

@@ -200,13 +200,12 @@ public class OrderLineAdjustmentControl
     }
 
     public OrderLineAdjustmentTypeTransfer getOrderLineAdjustmentTypeTransfer(UserVisit userVisit, OrderLineAdjustmentType orderLineAdjustmentType) {
-        return orderTransferCaches.getOrderLineAdjustmentTypeTransferCache().getOrderLineAdjustmentTypeTransfer(userVisit, orderLineAdjustmentType);
+        return orderLineAdjustmentTypeTransferCache.getOrderLineAdjustmentTypeTransfer(userVisit, orderLineAdjustmentType);
     }
 
     public List<OrderLineAdjustmentTypeTransfer> getOrderLineAdjustmentTypeTransfers(UserVisit userVisit, OrderType orderType) {
         var orderLineAdjustmentTypes = getOrderLineAdjustmentTypes(orderType);
         List<OrderLineAdjustmentTypeTransfer> orderLineAdjustmentTypeTransfers = new ArrayList<>(orderLineAdjustmentTypes.size());
-        var orderLineAdjustmentTypeTransferCache = orderTransferCaches.getOrderLineAdjustmentTypeTransferCache();
 
         orderLineAdjustmentTypes.forEach((orderLineAdjustmentType) ->
                 orderLineAdjustmentTypeTransfers.add(orderLineAdjustmentTypeTransferCache.getOrderLineAdjustmentTypeTransfer(userVisit, orderLineAdjustmentType))
@@ -427,13 +426,12 @@ public class OrderLineAdjustmentControl
     }
 
     public OrderLineAdjustmentTypeDescriptionTransfer getOrderLineAdjustmentTypeDescriptionTransfer(UserVisit userVisit, OrderLineAdjustmentTypeDescription orderLineAdjustmentTypeDescription) {
-        return orderTransferCaches.getOrderLineAdjustmentTypeDescriptionTransferCache().getOrderLineAdjustmentTypeDescriptionTransfer(userVisit, orderLineAdjustmentTypeDescription);
+        return orderLineAdjustmentTypeDescriptionTransferCache.getOrderLineAdjustmentTypeDescriptionTransfer(userVisit, orderLineAdjustmentTypeDescription);
     }
 
     public List<OrderLineAdjustmentTypeDescriptionTransfer> getOrderLineAdjustmentTypeDescriptionTransfersByOrderLineAdjustmentType(UserVisit userVisit, OrderLineAdjustmentType orderLineAdjustmentType) {
         var orderLineAdjustmentTypeDescriptions = getOrderLineAdjustmentTypeDescriptionsByOrderLineAdjustmentType(orderLineAdjustmentType);
         List<OrderLineAdjustmentTypeDescriptionTransfer> orderLineAdjustmentTypeDescriptionTransfers = new ArrayList<>(orderLineAdjustmentTypeDescriptions.size());
-        var orderLineAdjustmentTypeDescriptionTransferCache = orderTransferCaches.getOrderLineAdjustmentTypeDescriptionTransferCache();
 
         orderLineAdjustmentTypeDescriptions.forEach((orderLineAdjustmentTypeDescription) ->
                 orderLineAdjustmentTypeDescriptionTransfers.add(orderLineAdjustmentTypeDescriptionTransferCache.getOrderLineAdjustmentTypeDescriptionTransfer(userVisit, orderLineAdjustmentTypeDescription))

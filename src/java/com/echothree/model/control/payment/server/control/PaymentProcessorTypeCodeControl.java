@@ -195,13 +195,12 @@ public class PaymentProcessorTypeCodeControl
 
     public PaymentProcessorTypeCodeTransfer getPaymentProcessorTypeCodeTransfer(final UserVisit userVisit,
             final PaymentProcessorTypeCode paymentProcessorTypeCode) {
-        return paymentTransferCaches.getPaymentProcessorTypeCodeTransferCache().getTransfer(userVisit, paymentProcessorTypeCode);
+        return paymentProcessorTypeCodeTransferCache.getTransfer(userVisit, paymentProcessorTypeCode);
     }
 
     public List<PaymentProcessorTypeCodeTransfer> getPaymentProcessorTypeCodeTransfers(final UserVisit userVisit,
             final Collection<PaymentProcessorTypeCode> paymentProcessorTypeCodes) {
         var paymentProcessorTypeCodeTransfers = new ArrayList<PaymentProcessorTypeCodeTransfer>(paymentProcessorTypeCodes.size());
-        var paymentProcessorTypeCodeTransferCache = paymentTransferCaches.getPaymentProcessorTypeCodeTransferCache();
 
         paymentProcessorTypeCodes.forEach((paymentProcessorTypeCode) ->
                 paymentProcessorTypeCodeTransfers.add(paymentProcessorTypeCodeTransferCache.getTransfer(userVisit, paymentProcessorTypeCode))
@@ -433,14 +432,13 @@ public class PaymentProcessorTypeCodeControl
 
     public PaymentProcessorTypeCodeDescriptionTransfer getPaymentProcessorTypeCodeDescriptionTransfer(final UserVisit userVisit,
             final PaymentProcessorTypeCodeDescription paymentProcessorTypeCodeDescription) {
-        return paymentTransferCaches.getPaymentProcessorTypeCodeDescriptionTransferCache().getTransfer(userVisit, paymentProcessorTypeCodeDescription);
+        return paymentProcessorTypeCodeDescriptionTransferCache.getTransfer(userVisit, paymentProcessorTypeCodeDescription);
     }
 
     public List<PaymentProcessorTypeCodeDescriptionTransfer> getPaymentProcessorTypeCodeDescriptionTransfersByPaymentProcessorTypeCode(final UserVisit userVisit,
             final PaymentProcessorTypeCode paymentProcessorTypeCode) {
         var paymentProcessorTypeCodeDescriptions = getPaymentProcessorTypeCodeDescriptionsByPaymentProcessorTypeCode(paymentProcessorTypeCode);
         var paymentProcessorTypeCodeDescriptionTransfers = new ArrayList<PaymentProcessorTypeCodeDescriptionTransfer>(paymentProcessorTypeCodeDescriptions.size());
-        var paymentProcessorTypeCodeDescriptionTransferCache = paymentTransferCaches.getPaymentProcessorTypeCodeDescriptionTransferCache();
 
         paymentProcessorTypeCodeDescriptions.forEach((paymentProcessorTypeCodeDescription) ->
                 paymentProcessorTypeCodeDescriptionTransfers.add(paymentProcessorTypeCodeDescriptionTransferCache.getTransfer(userVisit, paymentProcessorTypeCodeDescription))

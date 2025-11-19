@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.sales.server.control;
 
-import com.echothree.model.control.sales.server.transfer.SalesTransferCaches;
+import com.echothree.model.control.sales.server.transfer.SalesOrderBatchTransferCache;
 import com.echothree.util.server.control.BaseModelControl;
 import javax.inject.Inject;
 
@@ -33,6 +33,6 @@ public abstract class BaseSalesControl
     // --------------------------------------------------------------------------------
 
     @Inject
-    SalesTransferCaches saleTransferCaches;
+    SalesOrderBatchTransferCache salesOrderBatchTransferCache;
 
 }

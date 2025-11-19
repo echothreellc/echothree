@@ -246,17 +246,16 @@ public class EncryptionKeyControl
     }
 
     public BaseEncryptionKeyTransfer getBaseEncryptionKeyTransfer(UserVisit userVisit, BaseEncryptionKey baseEncryptionKey) {
-        return coreTransferCaches.getBaseEncryptionKeyTransferCache().getBaseEncryptionKeyTransfer(userVisit, baseEncryptionKey);
+        return baseEncryptionKeyTransferCache.getBaseEncryptionKeyTransfer(userVisit, baseEncryptionKey);
     }
 
     public BaseEncryptionKeyTransfer getActiveBaseEncryptionKeyTransfer(UserVisit userVisit) {
-        return coreTransferCaches.getBaseEncryptionKeyTransferCache().getBaseEncryptionKeyTransfer(userVisit, getActiveBaseEncryptionKey());
+        return baseEncryptionKeyTransferCache.getBaseEncryptionKeyTransfer(userVisit, getActiveBaseEncryptionKey());
     }
 
     public List<BaseEncryptionKeyTransfer> getBaseEncryptionKeyTransfers(UserVisit userVisit) {
         var baseEncryptionKeys = getBaseEncryptionKeys();
         List<BaseEncryptionKeyTransfer> baseEncryptionKeyTransfers = new ArrayList<>(baseEncryptionKeys.size());
-        var baseEncryptionKeyTransferCache = coreTransferCaches.getBaseEncryptionKeyTransferCache();
 
         baseEncryptionKeys.forEach((baseEncryptionKey) ->
                 baseEncryptionKeyTransfers.add(baseEncryptionKeyTransferCache.getBaseEncryptionKeyTransfer(userVisit, baseEncryptionKey))

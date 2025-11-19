@@ -26,7 +26,12 @@ import com.echothree.model.control.letter.common.transfer.LetterSourceDescriptio
 import com.echothree.model.control.letter.common.transfer.LetterSourceTransfer;
 import com.echothree.model.control.letter.common.transfer.LetterTransfer;
 import com.echothree.model.control.letter.common.transfer.QueuedLetterTransfer;
-import com.echothree.model.control.letter.server.transfer.LetterTransferCaches;
+import com.echothree.model.control.letter.server.transfer.LetterContactMechanismPurposeTransferCache;
+import com.echothree.model.control.letter.server.transfer.LetterDescriptionTransferCache;
+import com.echothree.model.control.letter.server.transfer.LetterSourceDescriptionTransferCache;
+import com.echothree.model.control.letter.server.transfer.LetterSourceTransferCache;
+import com.echothree.model.control.letter.server.transfer.LetterTransferCache;
+import com.echothree.model.control.letter.server.transfer.QueuedLetterTransferCache;
 import com.echothree.model.data.chain.server.entity.ChainInstance;
 import com.echothree.model.data.chain.server.entity.ChainType;
 import com.echothree.model.data.contact.server.entity.ContactMechanismPurpose;
@@ -84,9 +89,24 @@ public class LetterControl
     // --------------------------------------------------------------------------------
     //   Letter Transfer Caches
     // --------------------------------------------------------------------------------
-    
+
     @Inject
-    LetterTransferCaches letterTransferCaches;
+    LetterTransferCache letterTransferCache;
+
+    @Inject
+    LetterDescriptionTransferCache letterDescriptionTransferCache;
+
+    @Inject
+    LetterSourceTransferCache letterSourceTransferCache;
+
+    @Inject
+    LetterSourceDescriptionTransferCache letterSourceDescriptionTransferCache;
+
+    @Inject
+    QueuedLetterTransferCache queuedLetterTransferCache;
+
+    @Inject
+    LetterContactMechanismPurposeTransferCache letterContactMechanismPurposeTransferCache;
 
     // --------------------------------------------------------------------------------
     //   Letter Sources
@@ -345,13 +365,12 @@ public class LetterControl
     }
     
     public LetterSourceTransfer getLetterSourceTransfer(UserVisit userVisit, LetterSource letterSource) {
-        return letterTransferCaches.getLetterSourceTransferCache().getLetterSourceTransfer(userVisit, letterSource);
+        return letterSourceTransferCache.getLetterSourceTransfer(userVisit, letterSource);
     }
     
     public List<LetterSourceTransfer> getLetterSourceTransfers(UserVisit userVisit) {
         var letterSources = getLetterSources();
         List<LetterSourceTransfer> letterSourceTransfers = new ArrayList<>(letterSources.size());
-        var letterSourceTransferCache = letterTransferCaches.getLetterSourceTransferCache();
         
         letterSources.forEach((letterSource) ->
                 letterSourceTransfers.add(letterSourceTransferCache.getLetterSourceTransfer(userVisit, letterSource))
@@ -614,7 +633,7 @@ public class LetterControl
     }
     
     public LetterSourceDescriptionTransfer getLetterSourceDescriptionTransfer(UserVisit userVisit, LetterSourceDescription letterSourceDescription) {
-        return letterTransferCaches.getLetterSourceDescriptionTransferCache().getLetterSourceDescriptionTransfer(userVisit, letterSourceDescription);
+        return letterSourceDescriptionTransferCache.getLetterSourceDescriptionTransfer(userVisit, letterSourceDescription);
     }
     
     public List<LetterSourceDescriptionTransfer> getLetterSourceDescriptionTransfersByLetterSource(UserVisit userVisit, LetterSource letterSource) {
@@ -622,7 +641,6 @@ public class LetterControl
         List<LetterSourceDescriptionTransfer> letterSourceDescriptionTransfers = null;
         
         if(letterSourceDescriptions != null) {
-            var letterSourceDescriptionTransferCache = letterTransferCaches.getLetterSourceDescriptionTransferCache();
             
             letterSourceDescriptionTransfers = new ArrayList<>(letterSourceDescriptions.size());
             
@@ -902,12 +920,11 @@ public class LetterControl
     }
     
     public LetterTransfer getLetterTransfer(UserVisit userVisit, Letter letter) {
-        return letterTransferCaches.getLetterTransferCache().getLetterTransfer(userVisit, letter);
+        return letterTransferCache.getLetterTransfer(userVisit, letter);
     }
     
     public List<LetterTransfer> getLetterTransfers(UserVisit userVisit, Collection<Letter> letters) {
         List<LetterTransfer> letterTransfers = new ArrayList<>(letters.size());
-        var letterTransferCache = letterTransferCaches.getLetterTransferCache();
         
         letters.forEach((letter) ->
                 letterTransfers.add(letterTransferCache.getLetterTransfer(userVisit, letter))
@@ -1168,7 +1185,7 @@ public class LetterControl
     }
     
     public LetterDescriptionTransfer getLetterDescriptionTransfer(UserVisit userVisit, LetterDescription letterDescription) {
-        return letterTransferCaches.getLetterDescriptionTransferCache().getLetterDescriptionTransfer(userVisit, letterDescription);
+        return letterDescriptionTransferCache.getLetterDescriptionTransfer(userVisit, letterDescription);
     }
     
     public List<LetterDescriptionTransfer> getLetterDescriptionTransfersByLetter(UserVisit userVisit, Letter letter) {
@@ -1176,7 +1193,6 @@ public class LetterControl
         List<LetterDescriptionTransfer> letterDescriptionTransfers = null;
         
         if(letterDescriptions != null) {
-            var letterDescriptionTransferCache = letterTransferCaches.getLetterDescriptionTransferCache();
             
             letterDescriptionTransfers = new ArrayList<>(letterDescriptions.size());
             
@@ -1335,13 +1351,12 @@ public class LetterControl
     }
     
     public LetterContactMechanismPurposeTransfer getLetterContactMechanismPurposeTransfer(UserVisit userVisit, LetterContactMechanismPurpose letterContactMechanismPurpose) {
-        return letterTransferCaches.getLetterContactMechanismPurposeTransferCache().getLetterContactMechanismPurposeTransfer(userVisit, letterContactMechanismPurpose);
+        return letterContactMechanismPurposeTransferCache.getLetterContactMechanismPurposeTransfer(userVisit, letterContactMechanismPurpose);
     }
     
     public List<LetterContactMechanismPurposeTransfer> getLetterContactMechanismPurposeTransfersByLetter(UserVisit userVisit, Letter letter) {
         var letterContactMechanismPurposes = getLetterContactMechanismPurposesByLetter(letter);
         List<LetterContactMechanismPurposeTransfer> letterContactMechanismPurposeTransfers = new ArrayList<>(letterContactMechanismPurposes.size());
-        var letterContactMechanismPurposeTransferCache = letterTransferCaches.getLetterContactMechanismPurposeTransferCache();
         
         letterContactMechanismPurposes.forEach((letterContactMechanismPurpose) ->
                 letterContactMechanismPurposeTransfers.add(letterContactMechanismPurposeTransferCache.getLetterContactMechanismPurposeTransfer(userVisit, letterContactMechanismPurpose))
@@ -1558,12 +1573,11 @@ public class LetterControl
     }
     
     public QueuedLetterTransfer getQueuedLetterTransfer(UserVisit userVisit, QueuedLetter queuedLetter) {
-        return letterTransferCaches.getQueuedLetterTransferCache().getQueuedLetterTransfer(userVisit, queuedLetter);
+        return queuedLetterTransferCache.getQueuedLetterTransfer(userVisit, queuedLetter);
     }
     
     public List<QueuedLetterTransfer> getQueuedLetterTransfers(UserVisit userVisit, Collection<QueuedLetter> queuedLetters) {
         List<QueuedLetterTransfer> queuedLetterTransfers = new ArrayList<>(queuedLetters.size());
-        var queuedLetterTransferCache = letterTransferCaches.getQueuedLetterTransferCache();
 
         queuedLetters.forEach((queuedLetter) ->
                 queuedLetterTransfers.add(queuedLetterTransferCache.getQueuedLetterTransfer(userVisit, queuedLetter))
