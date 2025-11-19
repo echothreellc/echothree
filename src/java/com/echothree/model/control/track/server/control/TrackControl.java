@@ -27,7 +27,9 @@ import com.echothree.model.control.track.common.transfer.TrackDescriptionTransfe
 import com.echothree.model.control.track.common.transfer.TrackTransfer;
 import com.echothree.model.control.track.common.transfer.UserVisitTrackTransfer;
 import com.echothree.model.control.track.common.workflow.TrackStatusConstants;
-import com.echothree.model.control.track.server.transfer.TrackTransferCaches;
+import com.echothree.model.control.track.server.transfer.TrackDescriptionTransferCache;
+import com.echothree.model.control.track.server.transfer.TrackTransferCache;
+import com.echothree.model.control.track.server.transfer.UserVisitTrackTransferCache;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.common.pk.PartyPK;
@@ -74,9 +76,15 @@ public class TrackControl
     // --------------------------------------------------------------------------------
     //   Track Transfer Caches
     // --------------------------------------------------------------------------------
-    
+
     @Inject
-    TrackTransferCaches trackTransferCaches;
+    TrackTransferCache trackTransferCache;
+
+    @Inject
+    TrackDescriptionTransferCache trackDescriptionTransferCache;
+
+    @Inject
+    UserVisitTrackTransferCache userVisitTrackTransferCache;
 
     // --------------------------------------------------------------------------------
     //   Tracks
@@ -305,13 +313,12 @@ public class TrackControl
     }
     
    public TrackTransfer getTrackTransfer(UserVisit userVisit, Track track) {
-        return trackTransferCaches.getTrackTransferCache().getTrackTransfer(userVisit, track);
+        return trackTransferCache.getTrackTransfer(userVisit, track);
     }
 
     public List<TrackTransfer> getTrackTransfers(UserVisit userVisit) {
         var tracks = getTracks();
         List<TrackTransfer> trackTransfers = new ArrayList<>(tracks.size());
-        var trackTransferCache = trackTransferCaches.getTrackTransferCache();
 
         tracks.forEach((track) ->
                 trackTransfers.add(trackTransferCache.getTrackTransfer(userVisit, track))
@@ -545,13 +552,12 @@ public class TrackControl
     }
 
     public TrackDescriptionTransfer getTrackDescriptionTransfer(UserVisit userVisit, TrackDescription trackDescription) {
-        return trackTransferCaches.getTrackDescriptionTransferCache().getTrackDescriptionTransfer(userVisit, trackDescription);
+        return trackDescriptionTransferCache.getTrackDescriptionTransfer(userVisit, trackDescription);
     }
 
     public List<TrackDescriptionTransfer> getTrackDescriptionTransfersByTrack(UserVisit userVisit, Track track) {
         var trackDescriptions = getTrackDescriptionsByTrack(track);
         List<TrackDescriptionTransfer> trackDescriptionTransfers = new ArrayList<>(trackDescriptions.size());
-        var trackDescriptionTransferCache = trackTransferCaches.getTrackDescriptionTransferCache();
 
         trackDescriptions.forEach((trackDescription) ->
                 trackDescriptionTransfers.add(trackDescriptionTransferCache.getTrackDescriptionTransfer(userVisit, trackDescription))
@@ -707,12 +713,11 @@ public class TrackControl
     }
 
     public UserVisitTrackTransfer getUserVisitTrackTransfer(UserVisit userVisit, UserVisitTrack userVisitTrack) {
-        return trackTransferCaches.getUserVisitTrackTransferCache().getUserVisitTrackTransfer(userVisit, userVisitTrack);
+        return userVisitTrackTransferCache.getUserVisitTrackTransfer(userVisit, userVisitTrack);
     }
 
     public List<UserVisitTrackTransfer> getUserVisitTrackTransfers(UserVisit userVisit, Collection<UserVisitTrack> userVisitTracks) {
         var userVisitTrackTransfers = new ArrayList<UserVisitTrackTransfer>(userVisitTracks.size());
-        var userVisitTrackTransferCache = trackTransferCaches.getUserVisitTrackTransferCache();
 
         userVisitTracks.forEach((userVisitTrack) ->
                 userVisitTrackTransfers.add(userVisitTrackTransferCache.getUserVisitTrackTransfer(userVisit, userVisitTrack))

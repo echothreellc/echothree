@@ -23,7 +23,12 @@ import com.echothree.model.control.comment.common.transfer.CommentTypeTransfer;
 import com.echothree.model.control.comment.common.transfer.CommentUsageTransfer;
 import com.echothree.model.control.comment.common.transfer.CommentUsageTypeDescriptionTransfer;
 import com.echothree.model.control.comment.common.transfer.CommentUsageTypeTransfer;
-import com.echothree.model.control.comment.server.transfer.CommentTransferCaches;
+import com.echothree.model.control.comment.server.transfer.CommentTransferCache;
+import com.echothree.model.control.comment.server.transfer.CommentTypeDescriptionTransferCache;
+import com.echothree.model.control.comment.server.transfer.CommentTypeTransferCache;
+import com.echothree.model.control.comment.server.transfer.CommentUsageTransferCache;
+import com.echothree.model.control.comment.server.transfer.CommentUsageTypeDescriptionTransferCache;
+import com.echothree.model.control.comment.server.transfer.CommentUsageTypeTransferCache;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.data.comment.server.entity.Comment;
@@ -92,9 +97,24 @@ public class CommentControl
     // --------------------------------------------------------------------------------
     //   Comment Transfer Caches
     // --------------------------------------------------------------------------------
-    
+
     @Inject
-    CommentTransferCaches commentTransferCaches;
+    CommentTypeTransferCache commentTypeTransferCache;
+
+    @Inject
+    CommentTypeDescriptionTransferCache commentTypeDescriptionTransferCache;
+
+    @Inject
+    CommentUsageTypeTransferCache commentUsageTypeTransferCache;
+
+    @Inject
+    CommentUsageTypeDescriptionTransferCache commentUsageTypeDescriptionTransferCache;
+
+    @Inject
+    CommentTransferCache commentTransferCache;
+
+    @Inject
+    CommentUsageTransferCache commentUsageTransferCache;
 
     // --------------------------------------------------------------------------------
     //   Comment Types
@@ -206,13 +226,12 @@ public class CommentControl
     }
     
     public CommentTypeTransfer getCommentTypeTransfer(UserVisit userVisit, CommentType commentType) {
-        return commentTransferCaches.getCommentTypeTransferCache().getCommentTypeTransfer(userVisit, commentType);
+        return commentTypeTransferCache.getCommentTypeTransfer(userVisit, commentType);
     }
     
     public List<CommentTypeTransfer> getCommentTypeTransfers(UserVisit userVisit, EntityType entityType) {
         var commentTypes = getCommentTypes(entityType);
         List<CommentTypeTransfer> commentTypeTransfers = new ArrayList<>(commentTypes.size());
-        var commentTypeTransferCache = commentTransferCaches.getCommentTypeTransferCache();
         
         commentTypes.forEach((commentType) ->
                 commentTypeTransfers.add(commentTypeTransferCache.getCommentTypeTransfer(userVisit, commentType))
@@ -390,13 +409,12 @@ public class CommentControl
     }
     
     public CommentTypeDescriptionTransfer getCommentTypeDescriptionTransfer(UserVisit userVisit, CommentTypeDescription commentTypeDescription) {
-        return commentTransferCaches.getCommentTypeDescriptionTransferCache().getCommentTypeDescriptionTransfer(userVisit, commentTypeDescription);
+        return commentTypeDescriptionTransferCache.getCommentTypeDescriptionTransfer(userVisit, commentTypeDescription);
     }
     
     public List<CommentTypeDescriptionTransfer> getCommentTypeDescriptionTransfers(UserVisit userVisit, CommentType commentType) {
         var commentTypeDescriptions = getCommentTypeDescriptionsByCommentType(commentType);
         List<CommentTypeDescriptionTransfer> commentTypeDescriptionTransfers = new ArrayList<>(commentTypeDescriptions.size());
-        var commentTypeDescriptionTransferCache = commentTransferCaches.getCommentTypeDescriptionTransferCache();
         
         commentTypeDescriptions.forEach((commentTypeDescription) ->
                 commentTypeDescriptionTransfers.add(commentTypeDescriptionTransferCache.getCommentTypeDescriptionTransfer(userVisit, commentTypeDescription))
@@ -550,13 +568,12 @@ public class CommentControl
     }
     
     public CommentUsageTypeTransfer getCommentUsageTypeTransfer(UserVisit userVisit, CommentUsageType commentUsageType) {
-        return commentTransferCaches.getCommentUsageTypeTransferCache().getCommentUsageTypeTransfer(userVisit, commentUsageType);
+        return commentUsageTypeTransferCache.getCommentUsageTypeTransfer(userVisit, commentUsageType);
     }
     
     public List<CommentUsageTypeTransfer> getCommentUsageTypeTransfers(UserVisit userVisit, CommentType commentType) {
         var commentUsageTypes = getCommentUsageTypes(commentType);
         List<CommentUsageTypeTransfer> commentUsageTypeTransfers = new ArrayList<>(commentUsageTypes.size());
-        var commentUsageTypeTransferCache = commentTransferCaches.getCommentUsageTypeTransferCache();
         
         commentUsageTypes.forEach((commentUsageType) ->
                 commentUsageTypeTransfers.add(commentUsageTypeTransferCache.getCommentUsageTypeTransfer(userVisit, commentUsageType))
@@ -733,13 +750,12 @@ public class CommentControl
     }
     
     public CommentUsageTypeDescriptionTransfer getCommentUsageTypeDescriptionTransfer(UserVisit userVisit, CommentUsageTypeDescription commentUsageTypeDescription) {
-        return commentTransferCaches.getCommentUsageTypeDescriptionTransferCache().getCommentUsageTypeDescriptionTransfer(userVisit, commentUsageTypeDescription);
+        return commentUsageTypeDescriptionTransferCache.getCommentUsageTypeDescriptionTransfer(userVisit, commentUsageTypeDescription);
     }
     
     public List<CommentUsageTypeDescriptionTransfer> getCommentUsageTypeDescriptionTransfers(UserVisit userVisit, CommentUsageType commentUsageType) {
         var commentUsageTypeDescriptions = getCommentUsageTypeDescriptionsByCommentUsageType(commentUsageType);
         List<CommentUsageTypeDescriptionTransfer> commentUsageTypeDescriptionTransfers = new ArrayList<>(commentUsageTypeDescriptions.size());
-        var commentUsageTypeDescriptionTransferCache = commentTransferCaches.getCommentUsageTypeDescriptionTransferCache();
         
         commentUsageTypeDescriptions.forEach((commentUsageTypeDescription) ->
                 commentUsageTypeDescriptionTransfers.add(commentUsageTypeDescriptionTransferCache.getCommentUsageTypeDescriptionTransfer(userVisit, commentUsageTypeDescription))
@@ -1009,12 +1025,11 @@ public class CommentControl
     }
     
     public CommentTransfer getCommentTransfer(UserVisit userVisit, Comment comment) {
-        return commentTransferCaches.getCommentTransferCache().getCommentTransfer(userVisit, comment);
+        return commentTransferCache.getCommentTransfer(userVisit, comment);
     }
     
     public List<CommentTransfer> getCommentTransfers(UserVisit userVisit, Collection<Comment> comments) {
         List<CommentTransfer> commentTransfers = new ArrayList<>(comments.size());
-        var commentTransferCache = commentTransferCaches.getCommentTransferCache();
         
         comments.forEach((comment) ->
                 commentTransfers.add(commentTransferCache.getCommentTransfer(userVisit, comment))
@@ -1561,16 +1576,15 @@ public class CommentControl
     }
     
     public CommentUsageTransfer getCommentUsageTransfer(UserVisit userVisit, CommentUsage commentUsage) {
-        return commentTransferCaches.getCommentUsageTransferCache().getCommentUsageTransfer(userVisit, commentUsage);
+        return commentUsageTransferCache.getCommentUsageTransfer(userVisit, commentUsage);
     }
     
     public List<CommentUsageTransfer> getCommentUsageTransfersByComment(UserVisit userVisit, Comment comment) {
         var entities = getCommentUsagesByComment(comment);
         List<CommentUsageTransfer> transfers = new ArrayList<>(entities.size());
-        var cache = commentTransferCaches.getCommentUsageTransferCache();
-        
+
         entities.forEach((entity) ->
-                transfers.add(cache.getCommentUsageTransfer(userVisit, entity))
+                transfers.add(commentUsageTransferCache.getCommentUsageTransfer(userVisit, entity))
         );
         
         return transfers;

@@ -38,7 +38,20 @@ import com.echothree.model.control.contactlist.common.transfer.PartyContactListT
 import com.echothree.model.control.contactlist.common.transfer.PartyTypeContactListGroupTransfer;
 import com.echothree.model.control.contactlist.common.transfer.PartyTypeContactListTransfer;
 import com.echothree.model.control.contactlist.common.workflow.PartyContactListStatusConstants;
-import com.echothree.model.control.contactlist.server.transfer.ContactListTransferCaches;
+import com.echothree.model.control.contactlist.server.transfer.ContactListContactMechanismPurposeTransferCache;
+import com.echothree.model.control.contactlist.server.transfer.ContactListDescriptionTransferCache;
+import com.echothree.model.control.contactlist.server.transfer.ContactListFrequencyDescriptionTransferCache;
+import com.echothree.model.control.contactlist.server.transfer.ContactListFrequencyTransferCache;
+import com.echothree.model.control.contactlist.server.transfer.ContactListGroupDescriptionTransferCache;
+import com.echothree.model.control.contactlist.server.transfer.ContactListGroupTransferCache;
+import com.echothree.model.control.contactlist.server.transfer.ContactListTransferCache;
+import com.echothree.model.control.contactlist.server.transfer.ContactListTypeDescriptionTransferCache;
+import com.echothree.model.control.contactlist.server.transfer.ContactListTypeTransferCache;
+import com.echothree.model.control.contactlist.server.transfer.CustomerTypeContactListGroupTransferCache;
+import com.echothree.model.control.contactlist.server.transfer.CustomerTypeContactListTransferCache;
+import com.echothree.model.control.contactlist.server.transfer.PartyContactListTransferCache;
+import com.echothree.model.control.contactlist.server.transfer.PartyTypeContactListGroupTransferCache;
+import com.echothree.model.control.contactlist.server.transfer.PartyTypeContactListTransferCache;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.letter.server.control.LetterControl;
@@ -127,9 +140,48 @@ public class ContactListControl
     // --------------------------------------------------------------------------------
     //   Contact List Transfer Caches
     // --------------------------------------------------------------------------------
-    
+
     @Inject
-    ContactListTransferCaches contactListTransferCaches;
+    ContactListTypeDescriptionTransferCache contactListTypeDescriptionTransferCache;
+
+    @Inject
+    ContactListTypeTransferCache contactListTypeTransferCache;
+
+    @Inject
+    ContactListGroupDescriptionTransferCache contactListGroupDescriptionTransferCache;
+
+    @Inject
+    ContactListGroupTransferCache contactListGroupTransferCache;
+
+    @Inject
+    ContactListFrequencyDescriptionTransferCache contactListFrequencyDescriptionTransferCache;
+
+    @Inject
+    ContactListFrequencyTransferCache contactListFrequencyTransferCache;
+
+    @Inject
+    ContactListDescriptionTransferCache contactListDescriptionTransferCache;
+
+    @Inject
+    ContactListTransferCache contactListTransferCache;
+
+    @Inject
+    PartyContactListTransferCache partyContactListTransferCache;
+
+    @Inject
+    PartyTypeContactListTransferCache partyTypeContactListTransferCache;
+
+    @Inject
+    PartyTypeContactListGroupTransferCache partyTypeContactListGroupTransferCache;
+
+    @Inject
+    CustomerTypeContactListTransferCache customerTypeContactListTransferCache;
+
+    @Inject
+    CustomerTypeContactListGroupTransferCache customerTypeContactListGroupTransferCache;
+
+    @Inject
+    ContactListContactMechanismPurposeTransferCache contactListContactMechanismPurposeTransferCache;
 
     // --------------------------------------------------------------------------------
     //   Contact List Types
@@ -395,13 +447,12 @@ public class ContactListControl
     }
 
     public ContactListTypeTransfer getContactListTypeTransfer(UserVisit userVisit, ContactListType contactListType) {
-        return contactListTransferCaches.getContactListTypeTransferCache().getContactListTypeTransfer(userVisit, contactListType);
+        return contactListTypeTransferCache.getContactListTypeTransfer(userVisit, contactListType);
     }
 
     public List<ContactListTypeTransfer> getContactListTypeTransfers(UserVisit userVisit) {
         var contactListTypes = getContactListTypes();
         List<ContactListTypeTransfer> contactListTypeTransfers = new ArrayList<>(contactListTypes.size());
-        var contactListTypeTransferCache = contactListTransferCaches.getContactListTypeTransferCache();
 
         contactListTypes.forEach((contactListType) ->
                 contactListTypeTransfers.add(contactListTypeTransferCache.getContactListTypeTransfer(userVisit, contactListType))
@@ -611,7 +662,7 @@ public class ContactListControl
     }
 
     public ContactListTypeDescriptionTransfer getContactListTypeDescriptionTransfer(UserVisit userVisit, ContactListTypeDescription contactListTypeDescription) {
-        return contactListTransferCaches.getContactListTypeDescriptionTransferCache().getContactListTypeDescriptionTransfer(userVisit, contactListTypeDescription);
+        return contactListTypeDescriptionTransferCache.getContactListTypeDescriptionTransfer(userVisit, contactListTypeDescription);
     }
 
     public List<ContactListTypeDescriptionTransfer> getContactListTypeDescriptionTransfersByContactListType(UserVisit userVisit, ContactListType contactListType) {
@@ -619,7 +670,7 @@ public class ContactListControl
         List<ContactListTypeDescriptionTransfer> contactListTypeDescriptionTransfers = new ArrayList<>(contactListTypeDescriptions.size());
 
         contactListTypeDescriptions.forEach((contactListTypeDescription) -> {
-            contactListTypeDescriptionTransfers.add(contactListTransferCaches.getContactListTypeDescriptionTransferCache().getContactListTypeDescriptionTransfer(userVisit, contactListTypeDescription));
+            contactListTypeDescriptionTransfers.add(contactListTypeDescriptionTransferCache.getContactListTypeDescriptionTransfer(userVisit, contactListTypeDescription));
         });
 
         return contactListTypeDescriptionTransfers;
@@ -828,13 +879,12 @@ public class ContactListControl
     }
 
     public ContactListGroupTransfer getContactListGroupTransfer(UserVisit userVisit, ContactListGroup contactListGroup) {
-        return contactListTransferCaches.getContactListGroupTransferCache().getContactListGroupTransfer(userVisit, contactListGroup);
+        return contactListGroupTransferCache.getContactListGroupTransfer(userVisit, contactListGroup);
     }
 
     public List<ContactListGroupTransfer> getContactListGroupTransfers(UserVisit userVisit) {
         var contactListGroups = getContactListGroups();
         List<ContactListGroupTransfer> contactListGroupTransfers = new ArrayList<>(contactListGroups.size());
-        var contactListGroupTransferCache = contactListTransferCaches.getContactListGroupTransferCache();
 
         contactListGroups.forEach((contactListGroup) ->
                 contactListGroupTransfers.add(contactListGroupTransferCache.getContactListGroupTransfer(userVisit, contactListGroup))
@@ -1019,7 +1069,7 @@ public class ContactListControl
     }
 
     public ContactListGroupDescriptionTransfer getContactListGroupDescriptionTransfer(UserVisit userVisit, ContactListGroupDescription contactListGroupDescription) {
-        return contactListTransferCaches.getContactListGroupDescriptionTransferCache().getContactListGroupDescriptionTransfer(userVisit, contactListGroupDescription);
+        return contactListGroupDescriptionTransferCache.getContactListGroupDescriptionTransfer(userVisit, contactListGroupDescription);
     }
 
     public List<ContactListGroupDescriptionTransfer> getContactListGroupDescriptionTransfersByContactListGroup(UserVisit userVisit, ContactListGroup contactListGroup) {
@@ -1027,7 +1077,7 @@ public class ContactListControl
         List<ContactListGroupDescriptionTransfer> contactListGroupDescriptionTransfers = new ArrayList<>(contactListGroupDescriptions.size());
 
         contactListGroupDescriptions.forEach((contactListGroupDescription) -> {
-            contactListGroupDescriptionTransfers.add(contactListTransferCaches.getContactListGroupDescriptionTransferCache().getContactListGroupDescriptionTransfer(userVisit, contactListGroupDescription));
+            contactListGroupDescriptionTransfers.add(contactListGroupDescriptionTransferCache.getContactListGroupDescriptionTransfer(userVisit, contactListGroupDescription));
         });
 
         return contactListGroupDescriptionTransfers;
@@ -1236,13 +1286,12 @@ public class ContactListControl
     }
 
     public ContactListFrequencyTransfer getContactListFrequencyTransfer(UserVisit userVisit, ContactListFrequency contactListFrequency) {
-        return contactListTransferCaches.getContactListFrequencyTransferCache().getContactListFrequencyTransfer(userVisit, contactListFrequency);
+        return contactListFrequencyTransferCache.getContactListFrequencyTransfer(userVisit, contactListFrequency);
     }
 
     public List<ContactListFrequencyTransfer> getContactListFrequencyTransfers(UserVisit userVisit) {
         var contactListFrequencies = getContactListFrequencies();
         List<ContactListFrequencyTransfer> contactListFrequencyTransfers = new ArrayList<>(contactListFrequencies.size());
-        var contactListFrequencyTransferCache = contactListTransferCaches.getContactListFrequencyTransferCache();
 
         contactListFrequencies.forEach((contactListFrequency) ->
                 contactListFrequencyTransfers.add(contactListFrequencyTransferCache.getContactListFrequencyTransfer(userVisit, contactListFrequency))
@@ -1424,7 +1473,7 @@ public class ContactListControl
     }
 
     public ContactListFrequencyDescriptionTransfer getContactListFrequencyDescriptionTransfer(UserVisit userVisit, ContactListFrequencyDescription contactListFrequencyDescription) {
-        return contactListTransferCaches.getContactListFrequencyDescriptionTransferCache().getContactListFrequencyDescriptionTransfer(userVisit, contactListFrequencyDescription);
+        return contactListFrequencyDescriptionTransferCache.getContactListFrequencyDescriptionTransfer(userVisit, contactListFrequencyDescription);
     }
 
     public List<ContactListFrequencyDescriptionTransfer> getContactListFrequencyDescriptionTransfersByContactListFrequency(UserVisit userVisit, ContactListFrequency contactListFrequency) {
@@ -1432,7 +1481,7 @@ public class ContactListControl
         List<ContactListFrequencyDescriptionTransfer> contactListFrequencyDescriptionTransfers = new ArrayList<>(contactListFrequencyDescriptions.size());
 
         contactListFrequencyDescriptions.forEach((contactListFrequencyDescription) -> {
-            contactListFrequencyDescriptionTransfers.add(contactListTransferCaches.getContactListFrequencyDescriptionTransferCache().getContactListFrequencyDescriptionTransfer(userVisit, contactListFrequencyDescription));
+            contactListFrequencyDescriptionTransfers.add(contactListFrequencyDescriptionTransferCache.getContactListFrequencyDescriptionTransfer(userVisit, contactListFrequencyDescription));
         });
 
         return contactListFrequencyDescriptionTransfers;
@@ -1774,13 +1823,12 @@ public class ContactListControl
     }
 
     public ContactListTransfer getContactListTransfer(UserVisit userVisit, ContactList contactList) {
-        return contactListTransferCaches.getContactListTransferCache().getContactListTransfer(userVisit, contactList);
+        return contactListTransferCache.getContactListTransfer(userVisit, contactList);
     }
 
     public List<ContactListTransfer> getContactListTransfers(UserVisit userVisit) {
         var contactLists = getContactLists();
         List<ContactListTransfer> contactListTransfers = new ArrayList<>(contactLists.size());
-        var contactListTransferCache = contactListTransferCaches.getContactListTransferCache();
 
         contactLists.forEach((contactList) ->
                 contactListTransfers.add(contactListTransferCache.getContactListTransfer(userVisit, contactList))
@@ -1994,7 +2042,7 @@ public class ContactListControl
     }
 
     public ContactListDescriptionTransfer getContactListDescriptionTransfer(UserVisit userVisit, ContactListDescription contactListDescription) {
-        return contactListTransferCaches.getContactListDescriptionTransferCache().getContactListDescriptionTransfer(userVisit, contactListDescription);
+        return contactListDescriptionTransferCache.getContactListDescriptionTransfer(userVisit, contactListDescription);
     }
 
     public List<ContactListDescriptionTransfer> getContactListDescriptionTransfersByContactList(UserVisit userVisit, ContactList contactList) {
@@ -2002,7 +2050,7 @@ public class ContactListControl
         List<ContactListDescriptionTransfer> contactListDescriptionTransfers = new ArrayList<>(contactListDescriptions.size());
 
         contactListDescriptions.forEach((contactListDescription) -> {
-            contactListDescriptionTransfers.add(contactListTransferCaches.getContactListDescriptionTransferCache().getContactListDescriptionTransfer(userVisit, contactListDescription));
+            contactListDescriptionTransfers.add(contactListDescriptionTransferCache.getContactListDescriptionTransfer(userVisit, contactListDescription));
         });
 
         return contactListDescriptionTransfers;
@@ -2200,7 +2248,6 @@ public class ContactListControl
     
     public List<PartyContactListTransfer> getPartyContactListTransfers(UserVisit userVisit, Collection<PartyContactList> partyContactLists) {
         List<PartyContactListTransfer> partyContactListTransfers = new ArrayList<>(partyContactLists.size());
-        var partyContactListTransferCache = contactListTransferCaches.getPartyContactListTransferCache();
         
         partyContactLists.forEach((partyContactList) ->
                 partyContactListTransfers.add(partyContactListTransferCache.getPartyContactListTransfer(userVisit, partyContactList))
@@ -2218,7 +2265,7 @@ public class ContactListControl
     }
     
     public PartyContactListTransfer getPartyContactListTransfer(UserVisit userVisit, PartyContactList partyContactList) {
-        return contactListTransferCaches.getPartyContactListTransferCache().getPartyContactListTransfer(userVisit, partyContactList);
+        return partyContactListTransferCache.getPartyContactListTransfer(userVisit, partyContactList);
     }
     
     public PartyContactListStatusChoicesBean getPartyContactListStatusChoices(String defaultPartyContactListStatusChoice, Language language,
@@ -2432,7 +2479,6 @@ public class ContactListControl
     
     public List<PartyTypeContactListGroupTransfer> getPartyTypeContactListGroupTransfers(UserVisit userVisit, Collection<PartyTypeContactListGroup> partyTypeContactListGroups) {
         List<PartyTypeContactListGroupTransfer> partyTypeContactListGroupTransfers = new ArrayList<>(partyTypeContactListGroups.size());
-        var partyTypeContactListGroupTransferCache = contactListTransferCaches.getPartyTypeContactListGroupTransferCache();
         
         partyTypeContactListGroups.forEach((partyTypeContactListGroup) ->
                 partyTypeContactListGroupTransfers.add(partyTypeContactListGroupTransferCache.getPartyTypeContactListGroupTransfer(userVisit, partyTypeContactListGroup))
@@ -2450,7 +2496,7 @@ public class ContactListControl
     }
     
     public PartyTypeContactListGroupTransfer getPartyTypeContactListGroupTransfer(UserVisit userVisit, PartyTypeContactListGroup partyTypeContactListGroup) {
-        return contactListTransferCaches.getPartyTypeContactListGroupTransferCache().getPartyTypeContactListGroupTransfer(userVisit, partyTypeContactListGroup);
+        return partyTypeContactListGroupTransferCache.getPartyTypeContactListGroupTransfer(userVisit, partyTypeContactListGroup);
     }
     
     public void updatePartyTypeContactListGroupFromValue(PartyTypeContactListGroupValue partyTypeContactListGroupValue, BasePK updatedBy) {
@@ -2610,7 +2656,6 @@ public class ContactListControl
     
     public List<PartyTypeContactListTransfer> getPartyTypeContactListTransfers(UserVisit userVisit, Collection<PartyTypeContactList> partyTypeContactLists) {
         List<PartyTypeContactListTransfer> partyTypeContactListTransfers = new ArrayList<>(partyTypeContactLists.size());
-        var partyTypeContactListTransferCache = contactListTransferCaches.getPartyTypeContactListTransferCache();
         
         partyTypeContactLists.forEach((partyTypeContactList) ->
                 partyTypeContactListTransfers.add(partyTypeContactListTransferCache.getPartyTypeContactListTransfer(userVisit, partyTypeContactList))
@@ -2628,7 +2673,7 @@ public class ContactListControl
     }
     
     public PartyTypeContactListTransfer getPartyTypeContactListTransfer(UserVisit userVisit, PartyTypeContactList partyTypeContactList) {
-        return contactListTransferCaches.getPartyTypeContactListTransferCache().getPartyTypeContactListTransfer(userVisit, partyTypeContactList);
+        return partyTypeContactListTransferCache.getPartyTypeContactListTransfer(userVisit, partyTypeContactList);
     }
     
     public void updatePartyTypeContactListFromValue(PartyTypeContactListValue partyTypeContactListValue, BasePK updatedBy) {
@@ -2789,7 +2834,6 @@ public class ContactListControl
 
     public List<CustomerTypeContactListGroupTransfer> getCustomerTypeContactListGroupTransfers(UserVisit userVisit, Collection<CustomerTypeContactListGroup> customerTypeContactListGroups) {
         List<CustomerTypeContactListGroupTransfer> customerTypeContactListGroupTransfers = new ArrayList<>(customerTypeContactListGroups.size());
-        var customerTypeContactListGroupTransferCache = contactListTransferCaches.getCustomerTypeContactListGroupTransferCache();
 
         customerTypeContactListGroups.forEach((customerTypeContactListGroup) ->
                 customerTypeContactListGroupTransfers.add(customerTypeContactListGroupTransferCache.getCustomerTypeContactListGroupTransfer(userVisit, customerTypeContactListGroup))
@@ -2807,7 +2851,7 @@ public class ContactListControl
     }
 
     public CustomerTypeContactListGroupTransfer getCustomerTypeContactListGroupTransfer(UserVisit userVisit, CustomerTypeContactListGroup customerTypeContactListGroup) {
-        return contactListTransferCaches.getCustomerTypeContactListGroupTransferCache().getCustomerTypeContactListGroupTransfer(userVisit, customerTypeContactListGroup);
+        return customerTypeContactListGroupTransferCache.getCustomerTypeContactListGroupTransfer(userVisit, customerTypeContactListGroup);
     }
 
     public void updateCustomerTypeContactListGroupFromValue(CustomerTypeContactListGroupValue customerTypeContactListGroupValue, BasePK updatedBy) {
@@ -2967,7 +3011,6 @@ public class ContactListControl
 
     public List<CustomerTypeContactListTransfer> getCustomerTypeContactListTransfers(UserVisit userVisit, Collection<CustomerTypeContactList> customerTypeContactLists) {
         List<CustomerTypeContactListTransfer> customerTypeContactListTransfers = new ArrayList<>(customerTypeContactLists.size());
-        var customerTypeContactListTransferCache = contactListTransferCaches.getCustomerTypeContactListTransferCache();
 
         customerTypeContactLists.forEach((customerTypeContactList) ->
                 customerTypeContactListTransfers.add(customerTypeContactListTransferCache.getCustomerTypeContactListTransfer(userVisit, customerTypeContactList))
@@ -2985,7 +3028,7 @@ public class ContactListControl
     }
 
     public CustomerTypeContactListTransfer getCustomerTypeContactListTransfer(UserVisit userVisit, CustomerTypeContactList customerTypeContactList) {
-        return contactListTransferCaches.getCustomerTypeContactListTransferCache().getCustomerTypeContactListTransfer(userVisit, customerTypeContactList);
+        return customerTypeContactListTransferCache.getCustomerTypeContactListTransfer(userVisit, customerTypeContactList);
     }
 
     public void updateCustomerTypeContactListFromValue(CustomerTypeContactListValue customerTypeContactListValue, BasePK updatedBy) {
@@ -3203,12 +3246,11 @@ public class ContactListControl
     }
 
    public ContactListContactMechanismPurposeTransfer getContactListContactMechanismPurposeTransfer(UserVisit userVisit, ContactListContactMechanismPurpose contactListContactMechanismPurpose) {
-        return contactListTransferCaches.getContactListContactMechanismPurposeTransferCache().getContactListContactMechanismPurposeTransfer(userVisit, contactListContactMechanismPurpose);
+        return contactListContactMechanismPurposeTransferCache.getContactListContactMechanismPurposeTransfer(userVisit, contactListContactMechanismPurpose);
     }
 
     public List<ContactListContactMechanismPurposeTransfer> getContactListContactMechanismPurposeTransfers(List<ContactListContactMechanismPurpose> contactListContactMechanismPurposes, UserVisit userVisit) {
         List<ContactListContactMechanismPurposeTransfer> contactListContactMechanismPurposeTransfers = new ArrayList<>(contactListContactMechanismPurposes.size());
-        var contactListContactMechanismPurposeTransferCache = contactListTransferCaches.getContactListContactMechanismPurposeTransferCache();
 
         contactListContactMechanismPurposes.forEach((contactListContactMechanismPurpose) ->
                 contactListContactMechanismPurposeTransfers.add(contactListContactMechanismPurposeTransferCache.getContactListContactMechanismPurposeTransfer(userVisit, contactListContactMechanismPurpose))

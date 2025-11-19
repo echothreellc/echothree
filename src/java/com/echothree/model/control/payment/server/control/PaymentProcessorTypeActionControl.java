@@ -224,13 +224,12 @@ public class PaymentProcessorTypeActionControl
 
     public PaymentProcessorTypeActionTransfer getPaymentProcessorTypeActionTransfer(final UserVisit userVisit,
             final PaymentProcessorTypeAction paymentProcessorTypeAction) {
-        return paymentTransferCaches.getPaymentProcessorTypeActionTransferCache().getTransfer(userVisit, paymentProcessorTypeAction);
+        return paymentProcessorTypeActionTransferCache.getTransfer(userVisit, paymentProcessorTypeAction);
     }
 
     public List<PaymentProcessorTypeActionTransfer> getPaymentProcessorTypeActionTransfers(final UserVisit userVisit,
             final Collection<PaymentProcessorTypeAction> paymentProcessorTypeActions) {
         var paymentProcessorTypeActionTransfers = new ArrayList<PaymentProcessorTypeActionTransfer>(paymentProcessorTypeActions.size());
-        var paymentProcessorTypeActionTransferCache = paymentTransferCaches.getPaymentProcessorTypeActionTransferCache();
 
         paymentProcessorTypeActions.forEach((paymentProcessorTypeAction) ->
                 paymentProcessorTypeActionTransfers.add(paymentProcessorTypeActionTransferCache.getTransfer(userVisit, paymentProcessorTypeAction))

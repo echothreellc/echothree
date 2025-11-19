@@ -30,7 +30,12 @@ import com.echothree.model.control.subscription.common.transfer.SubscriptionTran
 import com.echothree.model.control.subscription.common.transfer.SubscriptionTypeChainTransfer;
 import com.echothree.model.control.subscription.common.transfer.SubscriptionTypeDescriptionTransfer;
 import com.echothree.model.control.subscription.common.transfer.SubscriptionTypeTransfer;
-import com.echothree.model.control.subscription.server.transfer.SubscriptionTransferCaches;
+import com.echothree.model.control.subscription.server.transfer.SubscriptionKindDescriptionTransferCache;
+import com.echothree.model.control.subscription.server.transfer.SubscriptionKindTransferCache;
+import com.echothree.model.control.subscription.server.transfer.SubscriptionTransferCache;
+import com.echothree.model.control.subscription.server.transfer.SubscriptionTypeChainTransferCache;
+import com.echothree.model.control.subscription.server.transfer.SubscriptionTypeDescriptionTransferCache;
+import com.echothree.model.control.subscription.server.transfer.SubscriptionTypeTransferCache;
 import com.echothree.model.data.chain.server.entity.Chain;
 import com.echothree.model.data.chain.server.entity.ChainType;
 import com.echothree.model.data.party.server.entity.Language;
@@ -61,7 +66,6 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseModelControl;
-import javax.enterprise.inject.spi.CDI;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.sql.SQLException;
@@ -87,9 +91,24 @@ public class SubscriptionControl
     // --------------------------------------------------------------------------------
     //   Subscription Transfer Caches
     // --------------------------------------------------------------------------------
-    
+
     @Inject
-    SubscriptionTransferCaches subscriptionTransferCaches;
+    SubscriptionKindTransferCache subscriptionKindTransferCache;
+
+    @Inject
+    SubscriptionKindDescriptionTransferCache subscriptionKindDescriptionTransferCache;
+
+    @Inject
+    SubscriptionTypeTransferCache subscriptionTypeTransferCache;
+
+    @Inject
+    SubscriptionTypeDescriptionTransferCache subscriptionTypeDescriptionTransferCache;
+
+    @Inject
+    SubscriptionTransferCache subscriptionTransferCache;
+
+    @Inject
+    SubscriptionTypeChainTransferCache subscriptionTypeChainTransferCache;
 
     // --------------------------------------------------------------------------------
     //   Subscription Kinds
@@ -260,13 +279,12 @@ public class SubscriptionControl
     }
 
     public SubscriptionKindTransfer getSubscriptionKindTransfer(UserVisit userVisit, SubscriptionKind subscriptionKind) {
-        return subscriptionTransferCaches.getSubscriptionKindTransferCache().getSubscriptionKindTransfer(userVisit, subscriptionKind);
+        return subscriptionKindTransferCache.getSubscriptionKindTransfer(userVisit, subscriptionKind);
     }
 
     public List<SubscriptionKindTransfer> getSubscriptionKindTransfers(UserVisit userVisit) {
         var subscriptionKinds = getSubscriptionKinds();
         List<SubscriptionKindTransfer> subscriptionKindTransfers = new ArrayList<>(subscriptionKinds.size());
-        var subscriptionKindTransferCache = subscriptionTransferCaches.getSubscriptionKindTransferCache();
 
         subscriptionKinds.forEach((subscriptionKind) ->
                 subscriptionKindTransfers.add(subscriptionKindTransferCache.getSubscriptionKindTransfer(userVisit, subscriptionKind))
@@ -447,7 +465,7 @@ public class SubscriptionControl
     }
 
     public SubscriptionKindDescriptionTransfer getSubscriptionKindDescriptionTransfer(UserVisit userVisit, SubscriptionKindDescription subscriptionKindDescription) {
-        return subscriptionTransferCaches.getSubscriptionKindDescriptionTransferCache().getSubscriptionKindDescriptionTransfer(userVisit, subscriptionKindDescription);
+        return subscriptionKindDescriptionTransferCache.getSubscriptionKindDescriptionTransfer(userVisit, subscriptionKindDescription);
     }
 
     public List<SubscriptionKindDescriptionTransfer> getSubscriptionKindDescriptionTransfersBySubscriptionKind(UserVisit userVisit, SubscriptionKind subscriptionKind) {
@@ -455,7 +473,7 @@ public class SubscriptionControl
         List<SubscriptionKindDescriptionTransfer> subscriptionKindDescriptionTransfers = new ArrayList<>(subscriptionKindDescriptions.size());
 
         subscriptionKindDescriptions.forEach((subscriptionKindDescription) -> {
-            subscriptionKindDescriptionTransfers.add(subscriptionTransferCaches.getSubscriptionKindDescriptionTransferCache().getSubscriptionKindDescriptionTransfer(userVisit, subscriptionKindDescription));
+            subscriptionKindDescriptionTransfers.add(subscriptionKindDescriptionTransferCache.getSubscriptionKindDescriptionTransfer(userVisit, subscriptionKindDescription));
         });
 
         return subscriptionKindDescriptionTransfers;
@@ -695,13 +713,12 @@ public class SubscriptionControl
     
     public SubscriptionTypeTransfer getSubscriptionTypeTransfer(UserVisit userVisit,
             SubscriptionType subscriptionType) {
-        return subscriptionTransferCaches.getSubscriptionTypeTransferCache().getSubscriptionTypeTransfer(userVisit, subscriptionType);
+        return subscriptionTypeTransferCache.getSubscriptionTypeTransfer(userVisit, subscriptionType);
     }
     
     public List<SubscriptionTypeTransfer> getSubscriptionTypeTransfersBySubscriptionKind(UserVisit userVisit, SubscriptionKind subscriptionKind) {
         var subscriptionTypes = getSubscriptionTypesBySubscriptionKind(subscriptionKind);
         List<SubscriptionTypeTransfer> subscriptionTypeTransfers = new ArrayList<>(subscriptionTypes.size());
-        var subscriptionTypeTransferCache = subscriptionTransferCaches.getSubscriptionTypeTransferCache();
         
         subscriptionTypes.forEach((subscriptionType) ->
                 subscriptionTypeTransfers.add(subscriptionTypeTransferCache.getSubscriptionTypeTransfer(userVisit, subscriptionType))
@@ -925,7 +942,7 @@ public class SubscriptionControl
     
     public SubscriptionTypeDescriptionTransfer getSubscriptionTypeDescriptionTransfer(UserVisit userVisit,
             SubscriptionTypeDescription subscriptionTypeDescription) {
-        return subscriptionTransferCaches.getSubscriptionTypeDescriptionTransferCache().getSubscriptionTypeDescriptionTransfer(userVisit, subscriptionTypeDescription);
+        return subscriptionTypeDescriptionTransferCache.getSubscriptionTypeDescriptionTransfer(userVisit, subscriptionTypeDescription);
     }
     
     public List<SubscriptionTypeDescriptionTransfer> getSubscriptionTypeDescriptionTransfersBySubscriptionType(UserVisit userVisit,
@@ -937,7 +954,7 @@ public class SubscriptionControl
             subscriptionTypeDescriptionTransfers = new ArrayList<>(subscriptionTypeDescriptions.size());
             
             for(var subscriptionTypeDescription : subscriptionTypeDescriptions) {
-                subscriptionTypeDescriptionTransfers.add(subscriptionTransferCaches.getSubscriptionTypeDescriptionTransferCache().getSubscriptionTypeDescriptionTransfer(userVisit, subscriptionTypeDescription));
+                subscriptionTypeDescriptionTransfers.add(subscriptionTypeDescriptionTransferCache.getSubscriptionTypeDescriptionTransfer(userVisit, subscriptionTypeDescription));
             }
         }
         
@@ -1130,7 +1147,6 @@ public class SubscriptionControl
     
     private List<SubscriptionTypeChainTransfer> getSubscriptionTypeChainTransfers(UserVisit userVisit, Collection<SubscriptionTypeChain> subscriptionTypeChains) {
         List<SubscriptionTypeChainTransfer> subscriptionTypeChainTransfers = new ArrayList<>(subscriptionTypeChains.size());
-        var subscriptionTypeChainTransferCache = subscriptionTransferCaches.getSubscriptionTypeChainTransferCache();
         
         subscriptionTypeChains.forEach((subscriptionTypeChain) ->
                 subscriptionTypeChainTransfers.add(subscriptionTypeChainTransferCache.getSubscriptionTypeChainTransfer(userVisit, subscriptionTypeChain))
@@ -1373,12 +1389,11 @@ public class SubscriptionControl
     }
     
     public SubscriptionTransfer getSubscriptionTransfer(UserVisit userVisit, Subscription subscription) {
-        return subscriptionTransferCaches.getSubscriptionTransferCache().getSubscriptionTransfer(userVisit, subscription);
+        return subscriptionTransferCache.getSubscriptionTransfer(userVisit, subscription);
     }
     
     private List<SubscriptionTransfer> getSubscriptionTransfers(UserVisit userVisit, Collection<Subscription> subscriptions) {
         List<SubscriptionTransfer> subscriptionTransfers = new ArrayList<>(subscriptions.size());
-        var subscriptionTransferCache = subscriptionTransferCaches.getSubscriptionTransferCache();
         
         subscriptions.forEach((subscription) ->
                 subscriptionTransfers.add(subscriptionTransferCache.getSubscriptionTransfer(userVisit, subscription))
