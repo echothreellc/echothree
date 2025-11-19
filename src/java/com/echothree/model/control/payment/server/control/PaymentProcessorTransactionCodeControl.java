@@ -151,13 +151,12 @@ public class PaymentProcessorTransactionCodeControl
 
     public PaymentProcessorTransactionCodeTransfer getPaymentProcessorTransactionCodeTransfer(final UserVisit userVisit,
             final PaymentProcessorTransactionCode paymentProcessorTransactionCode) {
-        return paymentTransferCaches.getPaymentProcessorTransactionCodeTransferCache().getTransfer(userVisit, paymentProcessorTransactionCode);
+        return paymentProcessorTransactionCodeTransferCache.getTransfer(userVisit, paymentProcessorTransactionCode);
     }
 
     public List<PaymentProcessorTransactionCodeTransfer> getPaymentProcessorTransactionCodeTransfers(final UserVisit userVisit,
             final Collection<PaymentProcessorTransactionCode> paymentProcessorTransactionCodes) {
         var paymentProcessorTransactionCodeTransfers = new ArrayList<PaymentProcessorTransactionCodeTransfer>(paymentProcessorTransactionCodes.size());
-        var paymentProcessorTransactionCodeTransferCache = paymentTransferCaches.getPaymentProcessorTransactionCodeTransferCache();
 
         paymentProcessorTransactionCodes.forEach((paymentProcessorTransactionCode) ->
                 paymentProcessorTransactionCodeTransfers.add(paymentProcessorTransactionCodeTransferCache.getTransfer(userVisit, paymentProcessorTransactionCode))

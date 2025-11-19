@@ -16,7 +16,18 @@
 
 package com.echothree.model.control.warehouse.server.control;
 
-import com.echothree.model.control.warehouse.server.transfer.WarehouseTransferCaches;
+import com.echothree.model.control.warehouse.server.transfer.LocationCapacityTransferCache;
+import com.echothree.model.control.warehouse.server.transfer.LocationDescriptionTransferCache;
+import com.echothree.model.control.warehouse.server.transfer.LocationNameElementDescriptionTransferCache;
+import com.echothree.model.control.warehouse.server.transfer.LocationNameElementTransferCache;
+import com.echothree.model.control.warehouse.server.transfer.LocationTransferCache;
+import com.echothree.model.control.warehouse.server.transfer.LocationTypeDescriptionTransferCache;
+import com.echothree.model.control.warehouse.server.transfer.LocationTypeTransferCache;
+import com.echothree.model.control.warehouse.server.transfer.LocationUseTypeTransferCache;
+import com.echothree.model.control.warehouse.server.transfer.LocationVolumeTransferCache;
+import com.echothree.model.control.warehouse.server.transfer.WarehouseTransferCache;
+import com.echothree.model.control.warehouse.server.transfer.WarehouseTypeDescriptionTransferCache;
+import com.echothree.model.control.warehouse.server.transfer.WarehouseTypeTransferCache;
 import com.echothree.util.server.control.BaseModelControl;
 import javax.inject.Inject;
 
@@ -31,8 +42,41 @@ public abstract class BaseWarehouseControl
     // --------------------------------------------------------------------------------
     //   Warehouse Transfer Caches
     // --------------------------------------------------------------------------------
-    
+
     @Inject
-    WarehouseTransferCaches warehouseTransferCaches;
+    LocationDescriptionTransferCache locationDescriptionTransferCache;
+
+    @Inject
+    LocationNameElementDescriptionTransferCache locationNameElementDescriptionTransferCache;
+
+    @Inject
+    LocationNameElementTransferCache locationNameElementTransferCache;
+
+    @Inject
+    LocationTransferCache locationTransferCache;
+
+    @Inject
+    LocationTypeDescriptionTransferCache locationTypeDescriptionTransferCache;
+
+    @Inject
+    LocationTypeTransferCache locationTypeTransferCache;
+
+    @Inject
+    LocationUseTypeTransferCache locationUseTypeTransferCache;
+
+    @Inject
+    WarehouseTransferCache warehouseTransferCache;
+
+    @Inject
+    LocationVolumeTransferCache locationVolumeTransferCache;
+
+    @Inject
+    LocationCapacityTransferCache locationCapacityTransferCache;
+
+    @Inject
+    WarehouseTypeTransferCache warehouseTypeTransferCache;
+
+    @Inject
+    WarehouseTypeDescriptionTransferCache warehouseTypeDescriptionTransferCache;
 
 }

@@ -29,7 +29,12 @@ import com.echothree.model.control.sequence.common.transfer.SequenceEncoderTypeT
 import com.echothree.model.control.sequence.common.transfer.SequenceTransfer;
 import com.echothree.model.control.sequence.common.transfer.SequenceTypeDescriptionTransfer;
 import com.echothree.model.control.sequence.common.transfer.SequenceTypeTransfer;
-import com.echothree.model.control.sequence.server.transfer.SequenceTransferCaches;
+import com.echothree.model.control.sequence.server.transfer.SequenceChecksumTypeTransferCache;
+import com.echothree.model.control.sequence.server.transfer.SequenceDescriptionTransferCache;
+import com.echothree.model.control.sequence.server.transfer.SequenceEncoderTypeTransferCache;
+import com.echothree.model.control.sequence.server.transfer.SequenceTransferCache;
+import com.echothree.model.control.sequence.server.transfer.SequenceTypeDescriptionTransferCache;
+import com.echothree.model.control.sequence.server.transfer.SequenceTypeTransferCache;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.sequence.common.pk.SequencePK;
@@ -84,9 +89,24 @@ public class SequenceControl
     // --------------------------------------------------------------------------------
     //   Sequence Transfer Caches
     // --------------------------------------------------------------------------------
-    
+
     @Inject
-    SequenceTransferCaches sequenceTransferCaches;
+    SequenceEncoderTypeTransferCache sequenceEncoderTypeTransferCache;
+
+    @Inject
+    SequenceChecksumTypeTransferCache sequenceChecksumTypeTransferCache;
+
+    @Inject
+    SequenceTypeTransferCache sequenceTypeTransferCache;
+
+    @Inject
+    SequenceTypeDescriptionTransferCache sequenceTypeDescriptionTransferCache;
+
+    @Inject
+    SequenceTransferCache sequenceTransferCache;
+
+    @Inject
+    SequenceDescriptionTransferCache sequenceDescriptionTransferCache;
 
     // --------------------------------------------------------------------------------
     //   Sequence Types
@@ -359,12 +379,11 @@ public class SequenceControl
     }
     
     public SequenceTypeTransfer getSequenceTypeTransfer(UserVisit userVisit, SequenceType sequenceType) {
-        return sequenceTransferCaches.getSequenceTypeTransferCache().getSequenceTypeTransfer(userVisit, sequenceType);
+        return sequenceTypeTransferCache.getSequenceTypeTransfer(userVisit, sequenceType);
     }
 
     public List<SequenceTypeTransfer> getSequenceTypeTransfers(UserVisit userVisit, Collection<SequenceType> sequenceTypes) {
         List<SequenceTypeTransfer> sequenceTypeTransfers = new ArrayList<>(sequenceTypes.size());
-        var sequenceTypeTransferCache = sequenceTransferCaches.getSequenceTypeTransferCache();
 
         sequenceTypes.forEach((sequenceType) ->
                 sequenceTypeTransfers.add(sequenceTypeTransferCache.getSequenceTypeTransfer(userVisit, sequenceType))
@@ -573,13 +592,12 @@ public class SequenceControl
     }
     
     public SequenceTypeDescriptionTransfer getSequenceTypeDescriptionTransfer(UserVisit userVisit, SequenceTypeDescription sequenceTypeDescription) {
-        return sequenceTransferCaches.getSequenceTypeDescriptionTransferCache().getSequenceTypeDescriptionTransfer(userVisit, sequenceTypeDescription);
+        return sequenceTypeDescriptionTransferCache.getSequenceTypeDescriptionTransfer(userVisit, sequenceTypeDescription);
     }
     
     public List<SequenceTypeDescriptionTransfer> getSequenceTypeDescriptionTransfers(UserVisit userVisit, SequenceType sequenceType) {
         var sequenceTypeDescriptions = getSequenceTypeDescriptionsBySequenceType(sequenceType);
         List<SequenceTypeDescriptionTransfer> sequenceTypeDescriptionTransfers = new ArrayList<>(sequenceTypeDescriptions.size());
-        var sequenceTypeDescriptionTransferCache = sequenceTransferCaches.getSequenceTypeDescriptionTransferCache();
         
         sequenceTypeDescriptions.forEach((sequenceTypeDescription) ->
                 sequenceTypeDescriptionTransfers.add(sequenceTypeDescriptionTransferCache.getSequenceTypeDescriptionTransfer(userVisit, sequenceTypeDescription))
@@ -662,12 +680,11 @@ public class SequenceControl
     }
 
     public SequenceChecksumTypeTransfer getSequenceChecksumTypeTransfer(UserVisit userVisit, SequenceChecksumType sequenceChecksumType) {
-        return sequenceTransferCaches.getSequenceChecksumTypeTransferCache().getSequenceChecksumTypeTransfer(userVisit, sequenceChecksumType);
+        return sequenceChecksumTypeTransferCache.getSequenceChecksumTypeTransfer(userVisit, sequenceChecksumType);
     }
 
     public List<SequenceChecksumTypeTransfer> getSequenceChecksumTypeTransfers(UserVisit userVisit, Collection<SequenceChecksumType> sequenceChecksumTypes) {
         List<SequenceChecksumTypeTransfer> sequenceChecksumTypeTransfers = new ArrayList<>(sequenceChecksumTypes.size());
-        var sequenceChecksumTypeTransferCache = sequenceTransferCaches.getSequenceChecksumTypeTransferCache();
 
         sequenceChecksumTypes.forEach((sequenceChecksumType) ->
                 sequenceChecksumTypeTransfers.add(sequenceChecksumTypeTransferCache.getSequenceChecksumTypeTransfer(userVisit, sequenceChecksumType))
@@ -800,12 +817,11 @@ public class SequenceControl
     }
 
     public SequenceEncoderTypeTransfer getSequenceEncoderTypeTransfer(UserVisit userVisit, SequenceEncoderType sequenceEncoderType) {
-        return sequenceTransferCaches.getSequenceEncoderTypeTransferCache().getSequenceEncoderTypeTransfer(userVisit, sequenceEncoderType);
+        return sequenceEncoderTypeTransferCache.getSequenceEncoderTypeTransfer(userVisit, sequenceEncoderType);
     }
 
     public List<SequenceEncoderTypeTransfer> getSequenceEncoderTypeTransfers(UserVisit userVisit, Collection<SequenceEncoderType> sequenceEncoderTypes) {
         List<SequenceEncoderTypeTransfer> sequenceEncoderTypeTransfers = new ArrayList<>(sequenceEncoderTypes.size());
-        var sequenceEncoderTypeTransferCache = sequenceTransferCaches.getSequenceEncoderTypeTransferCache();
 
         sequenceEncoderTypes.forEach((sequenceEncoderType) ->
                 sequenceEncoderTypeTransfers.add(sequenceEncoderTypeTransferCache.getSequenceEncoderTypeTransfer(userVisit, sequenceEncoderType))
@@ -1132,12 +1148,11 @@ public class SequenceControl
     }
     
     public SequenceTransfer getSequenceTransfer(UserVisit userVisit, Sequence sequence) {
-        return sequenceTransferCaches.getSequenceTransferCache().getSequenceTransfer(userVisit, sequence);
+        return sequenceTransferCache.getSequenceTransfer(userVisit, sequence);
     }
 
     public List<SequenceTransfer> getSequenceTransfers(UserVisit userVisit, Collection<Sequence> sequences) {
         var sequenceTransfers = new ArrayList<SequenceTransfer>(sequences.size());
-        var sequenceTransferCache = sequenceTransferCaches.getSequenceTransferCache();
 
         sequences.forEach((sequence) ->
             sequenceTransfers.add(sequenceTransferCache.getSequenceTransfer(userVisit, sequence))
@@ -1360,13 +1375,12 @@ public class SequenceControl
     }
     
     public SequenceDescriptionTransfer getSequenceDescriptionTransfer(UserVisit userVisit, SequenceDescription sequenceDescription) {
-        return sequenceTransferCaches.getSequenceDescriptionTransferCache().getSequenceDescriptionTransfer(userVisit, sequenceDescription);
+        return sequenceDescriptionTransferCache.getSequenceDescriptionTransfer(userVisit, sequenceDescription);
     }
     
     public List<SequenceDescriptionTransfer> getSequenceDescriptionTransfers(UserVisit userVisit, Sequence sequence) {
         var sequenceDescriptions = getSequenceDescriptionsBySequence(sequence);
         List<SequenceDescriptionTransfer> sequenceDescriptionTransfers = new ArrayList<>(sequenceDescriptions.size());
-        var sequenceDescriptionTransferCache = sequenceTransferCaches.getSequenceDescriptionTransferCache();
         
         sequenceDescriptions.forEach((sequenceDescription) ->
                 sequenceDescriptionTransfers.add(sequenceDescriptionTransferCache.getSequenceDescriptionTransfer(userVisit, sequenceDescription))
