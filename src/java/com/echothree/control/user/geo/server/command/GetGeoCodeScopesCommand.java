@@ -24,21 +24,23 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.geo.server.entity.GeoCodeScope;
 import com.echothree.model.data.geo.server.factory.GeoCodeScopeFactory;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 @RequestScoped
 public class GetGeoCodeScopesCommand
-        extends BaseMultipleEntitiesCommand<GeoCodeScope, GetGeoCodeScopesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<GeoCodeScope, GetGeoCodeScopesForm> {
+
+    @Inject
+    GeoControl geoControl;
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -60,9 +62,17 @@ public class GetGeoCodeScopesCommand
     }
 
     @Override
-    protected Collection<GeoCodeScope> getEntities() {
-        var geoControl = Session.getModelController(GeoControl.class);
+    protected void handleForm() {
+        // No form fields.
+    }
 
+    @Override
+    protected Long getTotalEntities() {
+        return geoControl.countGeoCodeScopes();
+    }
+
+    @Override
+    protected Collection<GeoCodeScope> getEntities() {
         return geoControl.getGeoCodeScopes();
     }
 
@@ -71,10 +81,8 @@ public class GetGeoCodeScopesCommand
         var result = GeoResultFactory.getGetGeoCodeScopesResult();
 
         if(entities != null) {
-            var geoControl = Session.getModelController(GeoControl.class);
-
             if(session.hasLimit(GeoCodeScopeFactory.class)) {
-                result.setGeoCodeScopeCount(geoControl.countGeoCodeScopes());
+                result.setGeoCodeScopeCount(getTotalEntities());
             }
 
             result.setGeoCodeScopes(geoControl.getGeoCodeScopeTransfers(getUserVisit(), entities));

@@ -1102,7 +1102,8 @@ public class GeoControl
             query = "SELECT _ALL_ " +
                     "FROM geocodescopes, geocodescopedetails " +
                     "WHERE geos_activedetailid = geosdt_geocodescopedetailid " +
-                    "ORDER BY geosdt_sortorder, geosdt_geocodescopename";
+                    "ORDER BY geosdt_sortorder, geosdt_geocodescopename " +
+                    "_LIMIT_";
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
             query = "SELECT _ALL_ " +
                     "FROM geocodescopes, geocodescopedetails " +
