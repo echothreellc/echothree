@@ -7626,17 +7626,19 @@ public interface GraphQlQueries {
         CountingPaginatedData<PartyTypeObject> data;
 
         try {
-            var partyControl = Session.getModelController(PartyControl.class);
-            var totalCount = partyControl.countPartyTypes();
+            var commandForm = PartyUtil.getHome().getGetPartyTypesForm();
+            var command = CDI.current().select(GetPartyTypesCommand.class).get();
 
-            try(var objectLimiter = new ObjectLimiter(env, PartyTypeConstants.COMPONENT_VENDOR_NAME, PartyTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var commandForm = PartyUtil.getHome().getGetPartyTypesForm();
-                var entities = CDI.current().select(GetPartyTypesCommand.class).get().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, PartyTypeConstants.COMPONENT_VENDOR_NAME, PartyTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
 
-                if(entities == null) {
-                    data = Connections.emptyConnection();
-                } else {
-                    var partyTypes = entities.stream().map(PartyTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+                    var partyTypes = entities.stream()
+                            .map(PartyTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, partyTypes);
                 }
