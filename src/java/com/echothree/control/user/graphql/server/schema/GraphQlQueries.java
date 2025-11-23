@@ -2944,29 +2944,34 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("filterAdjustmentSources")
-    static Collection<FilterAdjustmentSourceObject> filterAdjustmentSources(final DataFetchingEnvironment env) {
-        Collection<FilterAdjustmentSource> filterAdjustmentSources;
-        Collection<FilterAdjustmentSourceObject> filterAdjustmentSourceObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<FilterAdjustmentSourceObject> filterAdjustmentSources(final DataFetchingEnvironment env) {
+        CountingPaginatedData<FilterAdjustmentSourceObject> data;
 
         try {
             var commandForm = FilterUtil.getHome().getGetFilterAdjustmentSourcesForm();
+            var command = CDI.current().select(GetFilterAdjustmentSourcesCommand.class).get();
 
-            filterAdjustmentSources = CDI.current().select(GetFilterAdjustmentSourcesCommand.class).get().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, com.echothree.model.data.filter.common.FilterAdjustmentSourceConstants.COMPONENT_VENDOR_NAME, com.echothree.model.data.filter.common.FilterAdjustmentSourceConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var filterAdjustmentSources = entities.stream()
+                            .map(FilterAdjustmentSourceObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, filterAdjustmentSources);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(filterAdjustmentSources == null) {
-            filterAdjustmentSourceObjects = emptyList();
-        } else {
-            filterAdjustmentSourceObjects = new ArrayList<>(filterAdjustmentSources.size());
-
-            filterAdjustmentSources.stream()
-                    .map(FilterAdjustmentSourceObject::new)
-                    .forEachOrdered(filterAdjustmentSourceObjects::add);
-        }
-
-        return filterAdjustmentSourceObjects;
+        return data;
     }
 
     @GraphQLField
