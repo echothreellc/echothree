@@ -1120,7 +1120,8 @@ public class FilterControl
         var ps = FilterAdjustmentSourceFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM filteradjustmentsources " +
-                "ORDER BY fltas_sortorder, fltas_filteradjustmentsourcename");
+                "ORDER BY fltas_sortorder, fltas_filteradjustmentsourcename " +
+                "_LIMIT_");
         
         return FilterAdjustmentSourceFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }

@@ -24,37 +24,36 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.filter.server.entity.FilterAdjustmentSource;
 import com.echothree.model.data.filter.server.factory.FilterAdjustmentSourceFactory;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 @RequestScoped
 public class GetFilterAdjustmentSourcesCommand
-        extends BaseMultipleEntitiesCommand<FilterAdjustmentSource, GetFilterAdjustmentSourcesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<FilterAdjustmentSource, GetFilterAdjustmentSourcesForm> {
+
+    @Inject
+    FilterControl filterControl;
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.FilterAdjustmentSource.name(), SecurityRoles.List.name())
-                )))
-        )));
-
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+                ))
         ));
+
+        FORM_FIELD_DEFINITIONS = List.of();
     }
 
     /** Creates a new instance of GetFilterAdjustmentSourcesCommand */
@@ -63,9 +62,17 @@ public class GetFilterAdjustmentSourcesCommand
     }
 
     @Override
-    protected Collection<FilterAdjustmentSource> getEntities() {
-        var filterControl = Session.getModelController(FilterControl.class);
+    protected void handleForm() {
+        // No form fields to process.
+    }
 
+    @Override
+    protected Long getTotalEntities() {
+        return filterControl.countFilterAdjustmentSources();
+    }
+
+    @Override
+    protected Collection<FilterAdjustmentSource> getEntities() {
         return filterControl.getFilterAdjustmentSources();
     }
 
@@ -74,10 +81,8 @@ public class GetFilterAdjustmentSourcesCommand
         var result = FilterResultFactory.getGetFilterAdjustmentSourcesResult();
 
         if(entities != null) {
-            var filterControl = Session.getModelController(FilterControl.class);
-
             if(session.hasLimit(FilterAdjustmentSourceFactory.class)) {
-                result.setFilterAdjustmentSourceCount(filterControl.countFilterAdjustmentSources());
+                result.setFilterAdjustmentSourceCount(getTotalEntities());
             }
 
             result.setFilterAdjustmentSources(filterControl.getFilterAdjustmentSourceTransfers(getUserVisit(), entities));
