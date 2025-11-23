@@ -7139,17 +7139,19 @@ public interface GraphQlQueries {
         CountingPaginatedData<TimeZoneObject> data;
 
         try {
-            var partyControl = Session.getModelController(PartyControl.class);
-            var totalCount = partyControl.countTimeZones();
+            var commandForm = PartyUtil.getHome().getGetTimeZonesForm();
+            var command = CDI.current().select(GetTimeZonesCommand.class).get();
 
-            try(var objectLimiter = new ObjectLimiter(env, TimeZoneConstants.COMPONENT_VENDOR_NAME, TimeZoneConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var commandForm = PartyUtil.getHome().getGetTimeZonesForm();
-                var entities = CDI.current().select(GetTimeZonesCommand.class).get().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, TimeZoneConstants.COMPONENT_VENDOR_NAME, TimeZoneConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
 
-                if(entities == null) {
-                    data = Connections.emptyConnection();
-                } else {
-                    var timeZones = entities.stream().map(TimeZoneObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+                    var timeZones = entities.stream()
+                            .map(TimeZoneObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, timeZones);
                 }
