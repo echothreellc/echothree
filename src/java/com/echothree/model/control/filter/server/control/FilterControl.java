@@ -1255,7 +1255,8 @@ public class FilterControl
         var ps = FilterAdjustmentTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM filteradjustmenttypes " +
-                "ORDER BY fltat_sortorder, fltat_filteradjustmenttypename");
+                "ORDER BY fltat_sortorder, fltat_filteradjustmenttypename " +
+                "_LIMIT_");
         
         return FilterAdjustmentTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
