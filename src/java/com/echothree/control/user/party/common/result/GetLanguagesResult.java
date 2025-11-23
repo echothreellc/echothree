@@ -22,7 +22,10 @@ import java.util.List;
 
 public interface GetLanguagesResult
         extends BaseResult {
-    
+
+    Long getLanguageCount();
+    void setLanguageCount(Long languageCount);
+
     List<LanguageTransfer> getLanguages();
     void setLanguages(List<LanguageTransfer> languages);
     

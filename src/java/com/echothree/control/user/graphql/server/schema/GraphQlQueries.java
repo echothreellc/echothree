@@ -7035,17 +7035,19 @@ public interface GraphQlQueries {
         CountingPaginatedData<LanguageObject> data;
 
         try {
-            var partyControl = Session.getModelController(PartyControl.class);
-            var totalCount = partyControl.countLanguages();
+            var commandForm = PartyUtil.getHome().getGetLanguagesForm();
+            var command = CDI.current().select(GetLanguagesCommand.class).get();
 
-            try(var objectLimiter = new ObjectLimiter(env, LanguageConstants.COMPONENT_VENDOR_NAME, LanguageConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var commandForm = PartyUtil.getHome().getGetLanguagesForm();
-                var entities = CDI.current().select(GetLanguagesCommand.class).get().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, LanguageConstants.COMPONENT_VENDOR_NAME, LanguageConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
 
-                if(entities == null) {
-                    data = Connections.emptyConnection();
-                } else {
-                    var languages = entities.stream().map(LanguageObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+                    var languages = entities.stream()
+                            .map(LanguageObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, languages);
                 }
