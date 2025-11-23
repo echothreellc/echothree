@@ -7088,17 +7088,19 @@ public interface GraphQlQueries {
         CountingPaginatedData<DateTimeFormatObject> data;
 
         try {
-            var partyControl = Session.getModelController(PartyControl.class);
-            var totalCount = partyControl.countDateTimeFormats();
+            var commandForm = PartyUtil.getHome().getGetDateTimeFormatsForm();
+            var command = CDI.current().select(GetDateTimeFormatsCommand.class).get();
 
-            try(var objectLimiter = new ObjectLimiter(env, DateTimeFormatConstants.COMPONENT_VENDOR_NAME, DateTimeFormatConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var commandForm = PartyUtil.getHome().getGetDateTimeFormatsForm();
-                var entities = CDI.current().select(GetDateTimeFormatsCommand.class).get().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, DateTimeFormatConstants.COMPONENT_VENDOR_NAME, DateTimeFormatConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
 
-                if(entities == null) {
-                    data = Connections.emptyConnection();
-                } else {
-                    var dateTimeFormats = entities.stream().map(DateTimeFormatObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+                    var dateTimeFormats = entities.stream()
+                            .map(DateTimeFormatObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, dateTimeFormats);
                 }
