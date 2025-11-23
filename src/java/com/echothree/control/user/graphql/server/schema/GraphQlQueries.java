@@ -10776,17 +10776,19 @@ public interface GraphQlQueries {
         CountingPaginatedData<GeoCodeScopeObject> data;
 
         try {
-            var geoControl = Session.getModelController(GeoControl.class);
-            var totalCount = geoControl.countGeoCodeScopes();
+            var commandForm = GeoUtil.getHome().getGetGeoCodeScopesForm();
+            var command = CDI.current().select(GetGeoCodeScopesCommand.class).get();
 
-            try(var objectLimiter = new ObjectLimiter(env, GeoCodeScopeConstants.COMPONENT_VENDOR_NAME, GeoCodeScopeConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var commandForm = GeoUtil.getHome().getGetGeoCodeScopesForm();
-                var entities = CDI.current().select(GetGeoCodeScopesCommand.class).get().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, GeoCodeScopeConstants.COMPONENT_VENDOR_NAME, GeoCodeScopeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
 
-                if(entities == null) {
-                    data = Connections.emptyConnection();
-                } else {
-                    var geoCodeScopes = entities.stream().map(GeoCodeScopeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+                    var geoCodeScopes = entities.stream()
+                            .map(GeoCodeScopeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, geoCodeScopes);
                 }
