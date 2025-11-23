@@ -52,7 +52,25 @@ import com.echothree.model.control.employee.common.workflow.EmployeeAvailability
 import com.echothree.model.control.employee.common.workflow.EmployeeStatusConstants;
 import com.echothree.model.control.employee.common.workflow.LeaveStatusConstants;
 import com.echothree.model.control.employee.server.graphql.EmployeeObject;
-import com.echothree.model.control.employee.server.transfer.EmployeeTransferCaches;
+import com.echothree.model.control.employee.server.transfer.EmployeeTransferCache;
+import com.echothree.model.control.employee.server.transfer.EmployeeTypeDescriptionTransferCache;
+import com.echothree.model.control.employee.server.transfer.EmployeeTypeTransferCache;
+import com.echothree.model.control.employee.server.transfer.EmploymentTransferCache;
+import com.echothree.model.control.employee.server.transfer.LeaveReasonDescriptionTransferCache;
+import com.echothree.model.control.employee.server.transfer.LeaveReasonTransferCache;
+import com.echothree.model.control.employee.server.transfer.LeaveTransferCache;
+import com.echothree.model.control.employee.server.transfer.LeaveTypeDescriptionTransferCache;
+import com.echothree.model.control.employee.server.transfer.LeaveTypeTransferCache;
+import com.echothree.model.control.employee.server.transfer.PartyResponsibilityTransferCache;
+import com.echothree.model.control.employee.server.transfer.PartySkillTransferCache;
+import com.echothree.model.control.employee.server.transfer.ResponsibilityTypeDescriptionTransferCache;
+import com.echothree.model.control.employee.server.transfer.ResponsibilityTypeTransferCache;
+import com.echothree.model.control.employee.server.transfer.SkillTypeDescriptionTransferCache;
+import com.echothree.model.control.employee.server.transfer.SkillTypeTransferCache;
+import com.echothree.model.control.employee.server.transfer.TerminationReasonDescriptionTransferCache;
+import com.echothree.model.control.employee.server.transfer.TerminationReasonTransferCache;
+import com.echothree.model.control.employee.server.transfer.TerminationTypeDescriptionTransferCache;
+import com.echothree.model.control.employee.server.transfer.TerminationTypeTransferCache;
 import com.echothree.model.control.search.common.SearchOptions;
 import com.echothree.model.control.search.server.control.SearchControl;
 import static com.echothree.model.control.search.server.control.SearchControl.ENI_ENTITYUNIQUEID_COLUMN_INDEX;
@@ -148,29 +166,79 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
+@RequestScoped
 public class EmployeeControl
         extends BaseModelControl {
     
     /** Creates a new instance of EmployeeControl */
-    public EmployeeControl() {
+    protected EmployeeControl() {
         super();
     }
     
     // --------------------------------------------------------------------------------
     //   Employee Transfer Caches
     // --------------------------------------------------------------------------------
-    
-    private EmployeeTransferCaches employeeTransferCaches;
-    
-    public EmployeeTransferCaches getEmployeeTransferCaches(UserVisit userVisit) {
-        if(employeeTransferCaches == null) {
-            employeeTransferCaches = new EmployeeTransferCaches(userVisit, this);
-        }
-        
-        return employeeTransferCaches;
-    }
-    
+
+    @Inject
+    EmployeeTypeTransferCache employeeTypeTransferCache;
+
+    @Inject
+    EmployeeTypeDescriptionTransferCache employeeTypeDescriptionTransferCache;
+
+    @Inject
+    EmployeeTransferCache employeeTransferCache;
+
+    @Inject
+    ResponsibilityTypeTransferCache responsibilityTypeTransferCache;
+
+    @Inject
+    ResponsibilityTypeDescriptionTransferCache responsibilityTypeDescriptionTransferCache;
+
+    @Inject
+    SkillTypeTransferCache skillTypeTransferCache;
+
+    @Inject
+    SkillTypeDescriptionTransferCache skillTypeDescriptionTransferCache;
+
+    @Inject
+    LeaveTypeTransferCache leaveTypeTransferCache;
+
+    @Inject
+    LeaveTypeDescriptionTransferCache leaveTypeDescriptionTransferCache;
+
+    @Inject
+    LeaveReasonTransferCache leaveReasonTransferCache;
+
+    @Inject
+    LeaveReasonDescriptionTransferCache leaveReasonDescriptionTransferCache;
+
+    @Inject
+    LeaveTransferCache leaveTransferCache;
+
+    @Inject
+    TerminationReasonTransferCache terminationReasonTransferCache;
+
+    @Inject
+    TerminationReasonDescriptionTransferCache terminationReasonDescriptionTransferCache;
+
+    @Inject
+    TerminationTypeTransferCache terminationTypeTransferCache;
+
+    @Inject
+    TerminationTypeDescriptionTransferCache terminationTypeDescriptionTransferCache;
+
+    @Inject
+    EmploymentTransferCache employmentTransferCache;
+
+    @Inject
+    PartyResponsibilityTransferCache partyResponsibilityTransferCache;
+
+    @Inject
+    PartySkillTransferCache partySkillTransferCache;
+
     // --------------------------------------------------------------------------------
     //   Responsibility Types
     // --------------------------------------------------------------------------------
@@ -308,16 +376,15 @@ public class EmployeeControl
     }
     
     public ResponsibilityTypeTransfer getResponsibilityTypeTransfer(UserVisit userVisit, ResponsibilityType responsibilityType) {
-        return getEmployeeTransferCaches(userVisit).getResponsibilityTypeTransferCache().getResponsibilityTypeTransfer(responsibilityType);
+        return responsibilityTypeTransferCache.getResponsibilityTypeTransfer(userVisit, responsibilityType);
     }
     
     public List<ResponsibilityTypeTransfer> getResponsibilityTypeTransfers(UserVisit userVisit) {
         var responsibilityTypes = getResponsibilityTypes();
         List<ResponsibilityTypeTransfer> responsibilityTypeTransfers = new ArrayList<>(responsibilityTypes.size());
-        var responsibilityTypeTransferCache = getEmployeeTransferCaches(userVisit).getResponsibilityTypeTransferCache();
         
         responsibilityTypes.forEach((responsibilityType) ->
-                responsibilityTypeTransfers.add(responsibilityTypeTransferCache.getResponsibilityTypeTransfer(responsibilityType))
+                responsibilityTypeTransfers.add(responsibilityTypeTransferCache.getResponsibilityTypeTransfer(userVisit, responsibilityType))
         );
         
         return responsibilityTypeTransfers;
@@ -538,7 +605,7 @@ public class EmployeeControl
         var responsibilityTypeDescription = getResponsibilityTypeDescription(responsibilityType, language);
         
         if(responsibilityTypeDescription == null && !language.getIsDefault()) {
-            responsibilityTypeDescription = getResponsibilityTypeDescription(responsibilityType, getPartyControl().getDefaultLanguage());
+            responsibilityTypeDescription = getResponsibilityTypeDescription(responsibilityType, partyControl.getDefaultLanguage());
         }
         
         if(responsibilityTypeDescription == null) {
@@ -551,16 +618,15 @@ public class EmployeeControl
     }
     
     public ResponsibilityTypeDescriptionTransfer getResponsibilityTypeDescriptionTransfer(UserVisit userVisit, ResponsibilityTypeDescription responsibilityTypeDescription) {
-        return getEmployeeTransferCaches(userVisit).getResponsibilityTypeDescriptionTransferCache().getResponsibilityTypeDescriptionTransfer(responsibilityTypeDescription);
+        return responsibilityTypeDescriptionTransferCache.getResponsibilityTypeDescriptionTransfer(userVisit, responsibilityTypeDescription);
     }
     
     public List<ResponsibilityTypeDescriptionTransfer> getResponsibilityTypeDescriptionTransfers(UserVisit userVisit, ResponsibilityType responsibilityType) {
         var responsibilityTypeDescriptions = getResponsibilityTypeDescriptionsByResponsibilityType(responsibilityType);
         List<ResponsibilityTypeDescriptionTransfer> responsibilityTypeDescriptionTransfers = new ArrayList<>(responsibilityTypeDescriptions.size());
-        var responsibilityTypeDescriptionTransferCache = getEmployeeTransferCaches(userVisit).getResponsibilityTypeDescriptionTransferCache();
         
         responsibilityTypeDescriptions.forEach((responsibilityTypeDescription) ->
-                responsibilityTypeDescriptionTransfers.add(responsibilityTypeDescriptionTransferCache.getResponsibilityTypeDescriptionTransfer(responsibilityTypeDescription))
+                responsibilityTypeDescriptionTransfers.add(responsibilityTypeDescriptionTransferCache.getResponsibilityTypeDescriptionTransfer(userVisit, responsibilityTypeDescription))
         );
         
         return responsibilityTypeDescriptionTransfers;
@@ -736,16 +802,15 @@ public class EmployeeControl
     }
     
     public SkillTypeTransfer getSkillTypeTransfer(UserVisit userVisit, SkillType skillType) {
-        return getEmployeeTransferCaches(userVisit).getSkillTypeTransferCache().getSkillTypeTransfer(skillType);
+        return skillTypeTransferCache.getSkillTypeTransfer(userVisit, skillType);
     }
     
     public List<SkillTypeTransfer> getSkillTypeTransfers(UserVisit userVisit) {
         var skillTypes = getSkillTypes();
         List<SkillTypeTransfer> skillTypeTransfers = new ArrayList<>(skillTypes.size());
-        var skillTypeTransferCache = getEmployeeTransferCaches(userVisit).getSkillTypeTransferCache();
         
         skillTypes.forEach((skillType) ->
-                skillTypeTransfers.add(skillTypeTransferCache.getSkillTypeTransfer(skillType))
+                skillTypeTransfers.add(skillTypeTransferCache.getSkillTypeTransfer(userVisit, skillType))
         );
         
         return skillTypeTransfers;
@@ -965,7 +1030,7 @@ public class EmployeeControl
         var skillTypeDescription = getSkillTypeDescription(skillType, language);
         
         if(skillTypeDescription == null && !language.getIsDefault()) {
-            skillTypeDescription = getSkillTypeDescription(skillType, getPartyControl().getDefaultLanguage());
+            skillTypeDescription = getSkillTypeDescription(skillType, partyControl.getDefaultLanguage());
         }
         
         if(skillTypeDescription == null) {
@@ -978,16 +1043,15 @@ public class EmployeeControl
     }
     
     public SkillTypeDescriptionTransfer getSkillTypeDescriptionTransfer(UserVisit userVisit, SkillTypeDescription skillTypeDescription) {
-        return getEmployeeTransferCaches(userVisit).getSkillTypeDescriptionTransferCache().getSkillTypeDescriptionTransfer(skillTypeDescription);
+        return skillTypeDescriptionTransferCache.getSkillTypeDescriptionTransfer(userVisit, skillTypeDescription);
     }
     
     public List<SkillTypeDescriptionTransfer> getSkillTypeDescriptionTransfers(UserVisit userVisit, SkillType skillType) {
         var skillTypeDescriptions = getSkillTypeDescriptionsBySkillType(skillType);
         List<SkillTypeDescriptionTransfer> skillTypeDescriptionTransfers = new ArrayList<>(skillTypeDescriptions.size());
-        var skillTypeDescriptionTransferCache = getEmployeeTransferCaches(userVisit).getSkillTypeDescriptionTransferCache();
         
         skillTypeDescriptions.forEach((skillTypeDescription) ->
-                skillTypeDescriptionTransfers.add(skillTypeDescriptionTransferCache.getSkillTypeDescriptionTransfer(skillTypeDescription))
+                skillTypeDescriptionTransfers.add(skillTypeDescriptionTransferCache.getSkillTypeDescriptionTransfer(userVisit, skillTypeDescription))
         );
         
         return skillTypeDescriptionTransfers;
@@ -1165,15 +1229,14 @@ public class EmployeeControl
     }
 
     public LeaveTypeTransfer getLeaveTypeTransfer(UserVisit userVisit, LeaveType leaveType) {
-        return getEmployeeTransferCaches(userVisit).getLeaveTypeTransferCache().getLeaveTypeTransfer(leaveType);
+        return leaveTypeTransferCache.getLeaveTypeTransfer(userVisit, leaveType);
     }
 
     public List<LeaveTypeTransfer> getLeaveTypeTransfers(UserVisit userVisit, Collection<LeaveType> leaveTypes) {
         List<LeaveTypeTransfer> leaveTypeTransfers = new ArrayList<>(leaveTypes.size());
-        var leaveTypeTransferCache = getEmployeeTransferCaches(userVisit).getLeaveTypeTransferCache();
 
         leaveTypes.forEach((leaveType) ->
-                leaveTypeTransfers.add(leaveTypeTransferCache.getLeaveTypeTransfer(leaveType))
+                leaveTypeTransfers.add(leaveTypeTransferCache.getLeaveTypeTransfer(userVisit, leaveType))
         );
 
         return leaveTypeTransfers;
@@ -1381,7 +1444,7 @@ public class EmployeeControl
         var leaveTypeDescription = getLeaveTypeDescription(leaveType, language);
 
         if(leaveTypeDescription == null && !language.getIsDefault()) {
-            leaveTypeDescription = getLeaveTypeDescription(leaveType, getPartyControl().getDefaultLanguage());
+            leaveTypeDescription = getLeaveTypeDescription(leaveType, partyControl.getDefaultLanguage());
         }
 
         if(leaveTypeDescription == null) {
@@ -1394,16 +1457,15 @@ public class EmployeeControl
     }
 
     public LeaveTypeDescriptionTransfer getLeaveTypeDescriptionTransfer(UserVisit userVisit, LeaveTypeDescription leaveTypeDescription) {
-        return getEmployeeTransferCaches(userVisit).getLeaveTypeDescriptionTransferCache().getLeaveTypeDescriptionTransfer(leaveTypeDescription);
+        return leaveTypeDescriptionTransferCache.getLeaveTypeDescriptionTransfer(userVisit, leaveTypeDescription);
     }
 
     public List<LeaveTypeDescriptionTransfer> getLeaveTypeDescriptionTransfersByLeaveType(UserVisit userVisit, LeaveType leaveType) {
         var leaveTypeDescriptions = getLeaveTypeDescriptionsByLeaveType(leaveType);
         List<LeaveTypeDescriptionTransfer> leaveTypeDescriptionTransfers = new ArrayList<>(leaveTypeDescriptions.size());
-        var leaveTypeDescriptionTransferCache = getEmployeeTransferCaches(userVisit).getLeaveTypeDescriptionTransferCache();
 
         leaveTypeDescriptions.forEach((leaveTypeDescription) ->
-                leaveTypeDescriptionTransfers.add(leaveTypeDescriptionTransferCache.getLeaveTypeDescriptionTransfer(leaveTypeDescription))
+                leaveTypeDescriptionTransfers.add(leaveTypeDescriptionTransferCache.getLeaveTypeDescriptionTransfer(userVisit, leaveTypeDescription))
         );
 
         return leaveTypeDescriptionTransfers;
@@ -1582,15 +1644,14 @@ public class EmployeeControl
     }
 
     public LeaveReasonTransfer getLeaveReasonTransfer(UserVisit userVisit, LeaveReason leaveReason) {
-        return getEmployeeTransferCaches(userVisit).getLeaveReasonTransferCache().getLeaveReasonTransfer(leaveReason);
+        return leaveReasonTransferCache.getLeaveReasonTransfer(userVisit, leaveReason);
     }
 
     public List<LeaveReasonTransfer> getLeaveReasonTransfers(UserVisit userVisit, Collection<LeaveReason> leaveReasons) {
         List<LeaveReasonTransfer> leaveReasonTransfers = new ArrayList<>(leaveReasons.size());
-        var leaveReasonTransferCache = getEmployeeTransferCaches(userVisit).getLeaveReasonTransferCache();
 
         leaveReasons.forEach((leaveReason) ->
-                leaveReasonTransfers.add(leaveReasonTransferCache.getLeaveReasonTransfer(leaveReason))
+                leaveReasonTransfers.add(leaveReasonTransferCache.getLeaveReasonTransfer(userVisit, leaveReason))
         );
 
         return leaveReasonTransfers;
@@ -1798,7 +1859,7 @@ public class EmployeeControl
         var leaveReasonDescription = getLeaveReasonDescription(leaveReason, language);
 
         if(leaveReasonDescription == null && !language.getIsDefault()) {
-            leaveReasonDescription = getLeaveReasonDescription(leaveReason, getPartyControl().getDefaultLanguage());
+            leaveReasonDescription = getLeaveReasonDescription(leaveReason, partyControl.getDefaultLanguage());
         }
 
         if(leaveReasonDescription == null) {
@@ -1811,16 +1872,15 @@ public class EmployeeControl
     }
 
     public LeaveReasonDescriptionTransfer getLeaveReasonDescriptionTransfer(UserVisit userVisit, LeaveReasonDescription leaveReasonDescription) {
-        return getEmployeeTransferCaches(userVisit).getLeaveReasonDescriptionTransferCache().getLeaveReasonDescriptionTransfer(leaveReasonDescription);
+        return leaveReasonDescriptionTransferCache.getLeaveReasonDescriptionTransfer(userVisit, leaveReasonDescription);
     }
 
     public List<LeaveReasonDescriptionTransfer> getLeaveReasonDescriptionTransfersByLeaveReason(UserVisit userVisit, LeaveReason leaveReason) {
         var leaveReasonDescriptions = getLeaveReasonDescriptionsByLeaveReason(leaveReason);
         List<LeaveReasonDescriptionTransfer> leaveReasonDescriptionTransfers = new ArrayList<>(leaveReasonDescriptions.size());
-        var leaveReasonDescriptionTransferCache = getEmployeeTransferCaches(userVisit).getLeaveReasonDescriptionTransferCache();
 
         leaveReasonDescriptions.forEach((leaveReasonDescription) ->
-                leaveReasonDescriptionTransfers.add(leaveReasonDescriptionTransferCache.getLeaveReasonDescriptionTransfer(leaveReasonDescription))
+                leaveReasonDescriptionTransfers.add(leaveReasonDescriptionTransferCache.getLeaveReasonDescriptionTransfer(userVisit, leaveReasonDescription))
         );
 
         return leaveReasonDescriptionTransfers;
@@ -2095,7 +2155,6 @@ public class EmployeeControl
 
     public LeaveStatusChoicesBean getLeaveStatusChoices(String defaultLeaveStatusChoice, Language language,
             boolean allowNullChoice, Leave leave, PartyPK partyPK) {
-        var workflowControl = getWorkflowControl();
         var leaveStatusChoicesBean = new LeaveStatusChoicesBean();
 
         if(leave == null) {
@@ -2115,7 +2174,6 @@ public class EmployeeControl
     }
 
     public void setLeaveStatus(ExecutionErrorAccumulator eea, Leave leave, String leaveStatusChoice, PartyPK modifiedBy) {
-        var workflowControl = getWorkflowControl();
         var entityInstance = getEntityInstanceByBaseEntity(leave);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(LeaveStatusConstants.Workflow_LEAVE_STATUS,
                 entityInstance);
@@ -2130,15 +2188,14 @@ public class EmployeeControl
     }
 
     public LeaveTransfer getLeaveTransfer(UserVisit userVisit, Leave leave) {
-        return getEmployeeTransferCaches(userVisit).getLeaveTransferCache().getLeaveTransfer(leave);
+        return leaveTransferCache.getLeaveTransfer(userVisit, leave);
     }
 
     public List<LeaveTransfer> getLeaveTransfers(UserVisit userVisit, Collection<Leave> leaves) {
         List<LeaveTransfer> leaveTransfers = new ArrayList<>(leaves.size());
-        var leaveTransferCache = getEmployeeTransferCaches(userVisit).getLeaveTransferCache();
 
         leaves.forEach((leave) ->
-                leaveTransfers.add(leaveTransferCache.getLeaveTransfer(leave))
+                leaveTransfers.add(leaveTransferCache.getLeaveTransfer(userVisit, leave))
         );
 
         return leaveTransfers;
@@ -2344,16 +2401,15 @@ public class EmployeeControl
     }
     
     public TerminationReasonTransfer getTerminationReasonTransfer(UserVisit userVisit, TerminationReason terminationReason) {
-        return getEmployeeTransferCaches(userVisit).getTerminationReasonTransferCache().getTerminationReasonTransfer(terminationReason);
+        return terminationReasonTransferCache.getTerminationReasonTransfer(userVisit, terminationReason);
     }
     
     public List<TerminationReasonTransfer> getTerminationReasonTransfers(UserVisit userVisit) {
         var terminationReasons = getTerminationReasons();
         List<TerminationReasonTransfer> terminationReasonTransfers = new ArrayList<>(terminationReasons.size());
-        var terminationReasonTransferCache = getEmployeeTransferCaches(userVisit).getTerminationReasonTransferCache();
         
         terminationReasons.forEach((terminationReason) ->
-                terminationReasonTransfers.add(terminationReasonTransferCache.getTerminationReasonTransfer(terminationReason))
+                terminationReasonTransfers.add(terminationReasonTransferCache.getTerminationReasonTransfer(userVisit, terminationReason))
         );
         
         return terminationReasonTransfers;
@@ -2574,7 +2630,7 @@ public class EmployeeControl
         var terminationReasonDescription = getTerminationReasonDescription(terminationReason, language);
         
         if(terminationReasonDescription == null && !language.getIsDefault()) {
-            terminationReasonDescription = getTerminationReasonDescription(terminationReason, getPartyControl().getDefaultLanguage());
+            terminationReasonDescription = getTerminationReasonDescription(terminationReason, partyControl.getDefaultLanguage());
         }
         
         if(terminationReasonDescription == null) {
@@ -2587,16 +2643,15 @@ public class EmployeeControl
     }
     
     public TerminationReasonDescriptionTransfer getTerminationReasonDescriptionTransfer(UserVisit userVisit, TerminationReasonDescription terminationReasonDescription) {
-        return getEmployeeTransferCaches(userVisit).getTerminationReasonDescriptionTransferCache().getTerminationReasonDescriptionTransfer(terminationReasonDescription);
+        return terminationReasonDescriptionTransferCache.getTerminationReasonDescriptionTransfer(userVisit, terminationReasonDescription);
     }
     
     public List<TerminationReasonDescriptionTransfer> getTerminationReasonDescriptionTransfers(UserVisit userVisit, TerminationReason terminationReason) {
         var terminationReasonDescriptions = getTerminationReasonDescriptionsByTerminationReason(terminationReason);
         List<TerminationReasonDescriptionTransfer> terminationReasonDescriptionTransfers = new ArrayList<>(terminationReasonDescriptions.size());
-        var terminationReasonDescriptionTransferCache = getEmployeeTransferCaches(userVisit).getTerminationReasonDescriptionTransferCache();
         
         terminationReasonDescriptions.forEach((terminationReasonDescription) ->
-                terminationReasonDescriptionTransfers.add(terminationReasonDescriptionTransferCache.getTerminationReasonDescriptionTransfer(terminationReasonDescription))
+                terminationReasonDescriptionTransfers.add(terminationReasonDescriptionTransferCache.getTerminationReasonDescriptionTransfer(userVisit, terminationReasonDescription))
         );
         
         return terminationReasonDescriptionTransfers;
@@ -2772,16 +2827,15 @@ public class EmployeeControl
     }
     
     public TerminationTypeTransfer getTerminationTypeTransfer(UserVisit userVisit, TerminationType terminationType) {
-        return getEmployeeTransferCaches(userVisit).getTerminationTypeTransferCache().getTerminationTypeTransfer(terminationType);
+        return terminationTypeTransferCache.getTerminationTypeTransfer(userVisit, terminationType);
     }
     
     public List<TerminationTypeTransfer> getTerminationTypeTransfers(UserVisit userVisit) {
         var terminationTypes = getTerminationTypes();
         List<TerminationTypeTransfer> terminationTypeTransfers = new ArrayList<>(terminationTypes.size());
-        var terminationTypeTransferCache = getEmployeeTransferCaches(userVisit).getTerminationTypeTransferCache();
         
         terminationTypes.forEach((terminationType) ->
-                terminationTypeTransfers.add(terminationTypeTransferCache.getTerminationTypeTransfer(terminationType))
+                terminationTypeTransfers.add(terminationTypeTransferCache.getTerminationTypeTransfer(userVisit, terminationType))
         );
         
         return terminationTypeTransfers;
@@ -3002,7 +3056,7 @@ public class EmployeeControl
         var terminationTypeDescription = getTerminationTypeDescription(terminationType, language);
         
         if(terminationTypeDescription == null && !language.getIsDefault()) {
-            terminationTypeDescription = getTerminationTypeDescription(terminationType, getPartyControl().getDefaultLanguage());
+            terminationTypeDescription = getTerminationTypeDescription(terminationType, partyControl.getDefaultLanguage());
         }
         
         if(terminationTypeDescription == null) {
@@ -3015,16 +3069,15 @@ public class EmployeeControl
     }
     
     public TerminationTypeDescriptionTransfer getTerminationTypeDescriptionTransfer(UserVisit userVisit, TerminationTypeDescription terminationTypeDescription) {
-        return getEmployeeTransferCaches(userVisit).getTerminationTypeDescriptionTransferCache().getTerminationTypeDescriptionTransfer(terminationTypeDescription);
+        return terminationTypeDescriptionTransferCache.getTerminationTypeDescriptionTransfer(userVisit, terminationTypeDescription);
     }
     
     public List<TerminationTypeDescriptionTransfer> getTerminationTypeDescriptionTransfers(UserVisit userVisit, TerminationType terminationType) {
         var terminationTypeDescriptions = getTerminationTypeDescriptionsByTerminationType(terminationType);
         List<TerminationTypeDescriptionTransfer> terminationTypeDescriptionTransfers = new ArrayList<>(terminationTypeDescriptions.size());
-        var terminationTypeDescriptionTransferCache = getEmployeeTransferCaches(userVisit).getTerminationTypeDescriptionTransferCache();
         
         terminationTypeDescriptions.forEach((terminationTypeDescription) ->
-                terminationTypeDescriptionTransfers.add(terminationTypeDescriptionTransferCache.getTerminationTypeDescriptionTransfer(terminationTypeDescription))
+                terminationTypeDescriptionTransfers.add(terminationTypeDescriptionTransferCache.getTerminationTypeDescriptionTransfer(userVisit, terminationTypeDescription))
         );
         
         return terminationTypeDescriptionTransfers;
@@ -3297,15 +3350,14 @@ public class EmployeeControl
     }
 
     public EmploymentTransfer getEmploymentTransfer(UserVisit userVisit, Employment employment) {
-        return getEmployeeTransferCaches(userVisit).getEmploymentTransferCache().getEmploymentTransfer(employment);
+        return employmentTransferCache.getEmploymentTransfer(userVisit, employment);
     }
 
     public List<EmploymentTransfer> getEmploymentTransfers(UserVisit userVisit, Collection<Employment> employments) {
         List<EmploymentTransfer> employmentTransfers = new ArrayList<>(employments.size());
-        var employmentTransferCache = getEmployeeTransferCaches(userVisit).getEmploymentTransferCache();
 
         employments.forEach((employment) ->
-                employmentTransfers.add(employmentTransferCache.getEmploymentTransfer(employment))
+                employmentTransfers.add(employmentTransferCache.getEmploymentTransfer(userVisit, employment))
         );
 
         return employmentTransfers;
@@ -3568,7 +3620,7 @@ public class EmployeeControl
     }
     
     public EmployeeTypeTransfer getEmployeeTypeTransfer(UserVisit userVisit, EmployeeType employeeType) {
-        return getEmployeeTransferCaches(userVisit).getEmployeeTypeTransferCache().getEmployeeTypeTransfer(employeeType);
+        return employeeTypeTransferCache.getEmployeeTypeTransfer(userVisit, employeeType);
     }
     
     public List<EmployeeTypeTransfer> getEmployeeTypeTransfers(UserVisit userVisit) {
@@ -3576,12 +3628,11 @@ public class EmployeeControl
         List<EmployeeTypeTransfer> employeeTypeTransfers = null;
         
         if(employeeTypes != null) {
-            var employeeTypeTransferCache = getEmployeeTransferCaches(userVisit).getEmployeeTypeTransferCache();
             
             employeeTypeTransfers = new ArrayList<>(employeeTypes.size());
             
             for(var employeeType : employeeTypes) {
-                employeeTypeTransfers.add(employeeTypeTransferCache.getEmployeeTypeTransfer(employeeType));
+                employeeTypeTransfers.add(employeeTypeTransferCache.getEmployeeTypeTransfer(userVisit, employeeType));
             }
         }
         
@@ -3768,7 +3819,7 @@ public class EmployeeControl
         var employeeTypeDescription = getEmployeeTypeDescription(employeeType, language);
         
         if(employeeTypeDescription == null && !language.getIsDefault()) {
-            employeeTypeDescription = getEmployeeTypeDescription(employeeType, getPartyControl().getDefaultLanguage());
+            employeeTypeDescription = getEmployeeTypeDescription(employeeType, partyControl.getDefaultLanguage());
         }
         
         if(employeeTypeDescription == null) {
@@ -3781,7 +3832,7 @@ public class EmployeeControl
     }
     
     public EmployeeTypeDescriptionTransfer getEmployeeTypeDescriptionTransfer(UserVisit userVisit, EmployeeTypeDescription employeeTypeDescription) {
-        return getEmployeeTransferCaches(userVisit).getEmployeeTypeDescriptionTransferCache().getEmployeeTypeDescriptionTransfer(employeeTypeDescription);
+        return employeeTypeDescriptionTransferCache.getEmployeeTypeDescriptionTransfer(userVisit, employeeTypeDescription);
     }
     
     public List<EmployeeTypeDescriptionTransfer> getEmployeeTypeDescriptionTransfers(UserVisit userVisit, EmployeeType employeeType) {
@@ -3789,12 +3840,11 @@ public class EmployeeControl
         List<EmployeeTypeDescriptionTransfer> employeeTypeDescriptionTransfers = null;
         
         if(employeeTypeDescriptions != null) {
-            var employeeTypeDescriptionTransferCache = getEmployeeTransferCaches(userVisit).getEmployeeTypeDescriptionTransferCache();
             
             employeeTypeDescriptionTransfers = new ArrayList<>(employeeTypeDescriptions.size());
             
             for(var employeeTypeDescription : employeeTypeDescriptions) {
-                employeeTypeDescriptionTransfers.add(employeeTypeDescriptionTransferCache.getEmployeeTypeDescriptionTransfer(employeeTypeDescription));
+                employeeTypeDescriptionTransfers.add(employeeTypeDescriptionTransferCache.getEmployeeTypeDescriptionTransfer(userVisit, employeeTypeDescription));
             }
         }
         
@@ -3954,7 +4004,6 @@ public class EmployeeControl
     
     public EmployeeStatusChoicesBean getEmployeeStatusChoices(String defaultEmployeeStatusChoice, Language language,
             boolean allowNullChoice, Party employeeParty, PartyPK partyPK) {
-        var workflowControl = getWorkflowControl();
         var employeeStatusChoicesBean = new EmployeeStatusChoicesBean();
         
         if(employeeParty == null) {
@@ -3974,7 +4023,6 @@ public class EmployeeControl
     }
     
     public void setEmployeeStatus(ExecutionErrorAccumulator eea, Party party, String employeeStatusChoice, PartyPK modifiedBy) {
-        var workflowControl = getWorkflowControl();
         var entityInstance = getEntityInstanceByBaseEntity(party);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(EmployeeStatusConstants.Workflow_EMPLOYEE_STATUS,
                 entityInstance);
@@ -3990,7 +4038,6 @@ public class EmployeeControl
     
     public EmployeeAvailabilityChoicesBean getEmployeeAvailabilityChoices(String defaultEmployeeAvailabilityChoice, Language language,
             boolean allowNullChoice, Party employeeParty, PartyPK partyPK) {
-        var workflowControl = getWorkflowControl();
         var employeeAvailabilityChoicesBean = new EmployeeAvailabilityChoicesBean();
         
         if(employeeParty == null) {
@@ -4010,7 +4057,6 @@ public class EmployeeControl
     }
     
     public void setEmployeeAvailability(ExecutionErrorAccumulator eea, Party party, String employeeAvailabilityChoice, PartyPK modifiedBy) {
-        var workflowControl = getWorkflowControl();
         var entityInstance = getEntityInstanceByBaseEntity(party);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(EmployeeAvailabilityConstants.Workflow_EMPLOYEE_AVAILABILITY,
                 entityInstance);
@@ -4026,9 +4072,8 @@ public class EmployeeControl
 
     public List<EmployeeTransfer> getEmployeeTransfers(UserVisit userVisit, Collection<PartyEmployee> partyEmployees) {
         List<EmployeeTransfer> employeeTransfers = new ArrayList<>(partyEmployees.size());
-        var employeeTransferCache = getEmployeeTransferCaches(userVisit).getEmployeeTransferCache();
 
-        partyEmployees.stream().map((partyEmployee) -> partyEmployee.getParty()).forEach((party) -> employeeTransfers.add(employeeTransferCache.getTransfer(party)));
+        partyEmployees.stream().map((partyEmployee) -> partyEmployee.getParty()).forEach((party) -> employeeTransfers.add(employeeTransferCache.getTransfer(userVisit, party)));
 
         return employeeTransfers;
     }
@@ -4038,11 +4083,11 @@ public class EmployeeControl
     }
 
     public EmployeeTransfer getEmployeeTransfer(UserVisit userVisit, PartyEmployee partyEmployee) {
-        return getEmployeeTransferCaches(userVisit).getEmployeeTransferCache().getTransfer(partyEmployee);
+        return employeeTransferCache.getTransfer(userVisit, partyEmployee);
     }
 
     public EmployeeTransfer getEmployeeTransfer(UserVisit userVisit, Party party) {
-        return getEmployeeTransferCaches(userVisit).getEmployeeTransferCache().getTransfer(party);
+        return employeeTransferCache.getTransfer(userVisit, party);
     }
     
     public void updatePartyEmployeeFromValue(PartyEmployeeValue partyEmployeeValue, BasePK updatedBy) {
@@ -4220,19 +4265,18 @@ public class EmployeeControl
     public PartyResponsibilityTransfer getPartyResponsibilityTransfer(UserVisit userVisit, Party party, ResponsibilityType responsibilityType) {
         var partyResponsibility = getPartyResponsibility(party, responsibilityType);
         
-        return partyResponsibility == null? null: getEmployeeTransferCaches(userVisit).getPartyResponsibilityTransferCache().getPartyResponsibilityTransfer(partyResponsibility);
+        return partyResponsibility == null? null: partyResponsibilityTransferCache.getPartyResponsibilityTransfer(userVisit, partyResponsibility);
     }
     
     public PartyResponsibilityTransfer getPartyResponsibilityTransfer(UserVisit userVisit, PartyResponsibility partyResponsibility) {
-        return getEmployeeTransferCaches(userVisit).getPartyResponsibilityTransferCache().getPartyResponsibilityTransfer(partyResponsibility);
+        return partyResponsibilityTransferCache.getPartyResponsibilityTransfer(userVisit, partyResponsibility);
     }
     
     public List<PartyResponsibilityTransfer> getPartyResponsibilityTransfers(UserVisit userVisit, Collection<PartyResponsibility> partyResponsibilities) {
         List<PartyResponsibilityTransfer> partyResponsibilityTransfers = new ArrayList<>(partyResponsibilities.size());
-        var partyResponsibilityTransferCache = getEmployeeTransferCaches(userVisit).getPartyResponsibilityTransferCache();
         
         partyResponsibilities.forEach((partyResponsibility) ->
-                partyResponsibilityTransfers.add(partyResponsibilityTransferCache.getPartyResponsibilityTransfer(partyResponsibility))
+                partyResponsibilityTransfers.add(partyResponsibilityTransferCache.getPartyResponsibilityTransfer(userVisit, partyResponsibility))
         );
         
         return partyResponsibilityTransfers;
@@ -4411,19 +4455,18 @@ public class EmployeeControl
     public PartySkillTransfer getPartySkillTransfer(UserVisit userVisit, Party party, SkillType skillType) {
         var partySkill = getPartySkill(party, skillType);
         
-        return partySkill == null? null: getEmployeeTransferCaches(userVisit).getPartySkillTransferCache().getPartySkillTransfer(partySkill);
+        return partySkill == null? null: partySkillTransferCache.getPartySkillTransfer(userVisit, partySkill);
     }
     
     public PartySkillTransfer getPartySkillTransfer(UserVisit userVisit, PartySkill partySkill) {
-        return getEmployeeTransferCaches(userVisit).getPartySkillTransferCache().getPartySkillTransfer(partySkill);
+        return partySkillTransferCache.getPartySkillTransfer(userVisit, partySkill);
     }
     
     public List<PartySkillTransfer> getPartySkillTransfers(UserVisit userVisit, Collection<PartySkill> partySkills) {
         List<PartySkillTransfer> partySkillTransfers = new ArrayList<>(partySkills.size());
-        var partySkillTransferCache = getEmployeeTransferCaches(userVisit).getPartySkillTransferCache();
         
         partySkills.forEach((partySkill) ->
-                partySkillTransfers.add(partySkillTransferCache.getPartySkillTransfer(partySkill))
+                partySkillTransfers.add(partySkillTransferCache.getPartySkillTransfer(userVisit, partySkill))
         );
         
         return partySkillTransfers;
@@ -4477,7 +4520,7 @@ public class EmployeeControl
             var employeeControl = Session.getModelController(EmployeeControl.class);
 
             while(rs.next()) {
-                var party = getPartyControl().getPartyByPK(new PartyPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
+                var party = partyControl.getPartyByPK(new PartyPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
 
                 employeeResultTransfers.add(new EmployeeResultTransfer(party.getLastDetail().getPartyName(),
                         includeEmployee ? employeeControl.getEmployeeTransfer(userVisit, party) : null));
@@ -4495,7 +4538,7 @@ public class EmployeeControl
 
         try (var rs = searchControl.getUserVisitSearchResultSet(userVisitSearch)) {
             while(rs.next()) {
-                var party = getPartyControl().getPartyByPK(new PartyPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
+                var party = partyControl.getPartyByPK(new PartyPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
 
                 employeeObjects.add(new EmployeeObject(party));
             }

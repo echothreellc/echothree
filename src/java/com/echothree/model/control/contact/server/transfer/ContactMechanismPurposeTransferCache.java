@@ -20,16 +20,21 @@ import com.echothree.model.control.contact.common.transfer.ContactMechanismPurpo
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.data.contact.server.entity.ContactMechanismPurpose;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ContactMechanismPurposeTransferCache
         extends BaseContactTransferCache<ContactMechanismPurpose, ContactMechanismPurposeTransfer> {
-    
+
+    ContactControl contactControl = Session.getModelController(ContactControl.class);
+
     /** Creates a new instance of ContactMechanismPurposeTransferCache */
-    public ContactMechanismPurposeTransferCache(UserVisit userVisit, ContactControl contactControl) {
-        super(userVisit, contactControl);
+    protected ContactMechanismPurposeTransferCache() {
+        super();
     }
     
-    public ContactMechanismPurposeTransfer getContactMechanismPurposeTransfer(ContactMechanismPurpose contactMechanismPurpose) {
+    public ContactMechanismPurposeTransfer getContactMechanismPurposeTransfer(UserVisit userVisit, ContactMechanismPurpose contactMechanismPurpose) {
         var contactMechanismPurposeTransfer = get(contactMechanismPurpose);
         
         if(contactMechanismPurposeTransfer == null) {
@@ -38,11 +43,11 @@ public class ContactMechanismPurposeTransferCache
             var eventSubscriber = contactMechanismPurpose.getEventSubscriber();
             var isDefault = contactMechanismPurpose.getIsDefault();
             var sortOrder = contactMechanismPurpose.getSortOrder();
-            var description = contactControl.getBestContactMechanismPurposeDescription(contactMechanismPurpose, getLanguage());
+            var description = contactControl.getBestContactMechanismPurposeDescription(contactMechanismPurpose, getLanguage(userVisit));
             
             contactMechanismPurposeTransfer = new ContactMechanismPurposeTransfer(contactMechanismPurposeName, contactMechanismType,
                     eventSubscriber, isDefault, sortOrder, description);
-            put(contactMechanismPurpose, contactMechanismPurposeTransfer);
+            put(userVisit, contactMechanismPurpose, contactMechanismPurposeTransfer);
         }
         
         return contactMechanismPurposeTransfer;

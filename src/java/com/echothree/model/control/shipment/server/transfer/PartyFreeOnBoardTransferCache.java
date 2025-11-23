@@ -22,7 +22,9 @@ import com.echothree.model.control.shipment.server.control.FreeOnBoardControl;
 import com.echothree.model.data.shipment.server.entity.PartyFreeOnBoard;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PartyFreeOnBoardTransferCache
         extends BaseShipmentTransferCache<PartyFreeOnBoard, PartyFreeOnBoardTransfer> {
 
@@ -30,12 +32,12 @@ public class PartyFreeOnBoardTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
 
     /** Creates a new instance of FreeOnBoardTransferCache */
-    public PartyFreeOnBoardTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected PartyFreeOnBoardTransferCache() {
+        super();
     }
     
     @Override
-    public PartyFreeOnBoardTransfer getTransfer(PartyFreeOnBoard partyFreeOnBoard) {
+    public PartyFreeOnBoardTransfer getTransfer(UserVisit userVisit, PartyFreeOnBoard partyFreeOnBoard) {
         var partyFreeOnBoardTransfer = get(partyFreeOnBoard);
         
         if(partyFreeOnBoardTransfer == null) {
@@ -43,7 +45,7 @@ public class PartyFreeOnBoardTransferCache
             var freeOnBoardTransfer = freeOnBoardControl.getFreeOnBoardTransfer(userVisit, partyFreeOnBoard.getFreeOnBoard());
 
             partyFreeOnBoardTransfer = new PartyFreeOnBoardTransfer(partyTransfer, freeOnBoardTransfer);
-            put(partyFreeOnBoard, partyFreeOnBoardTransfer);
+            put(userVisit, partyFreeOnBoard, partyFreeOnBoardTransfer);
         }
         
         return partyFreeOnBoardTransfer;

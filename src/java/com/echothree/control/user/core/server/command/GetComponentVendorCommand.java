@@ -34,7 +34,9 @@ import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class GetComponentVendorCommand
         extends BaseSingleEntityCommand<ComponentVendor, GetComponentVendorForm> {
     
@@ -73,7 +75,7 @@ public class GetComponentVendorCommand
         var result = CoreResultFactory.getGetComponentVendorResult();
         
         if(componentVendor != null) {
-            result.setComponentVendor(getComponentControl().getComponentVendorTransfer(getUserVisit(), componentVendor));
+            result.setComponentVendor(componentControl.getComponentVendorTransfer(getUserVisit(), componentVendor));
         }
         
         return result;

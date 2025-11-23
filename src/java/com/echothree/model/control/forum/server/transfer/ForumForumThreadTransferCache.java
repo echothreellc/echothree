@@ -20,16 +20,21 @@ import com.echothree.model.control.forum.common.transfer.ForumForumThreadTransfe
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.data.forum.server.entity.ForumForumThread;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ForumForumThreadTransferCache
         extends BaseForumTransferCache<ForumForumThread, ForumForumThreadTransfer> {
-    
+
+    ForumControl forumControl = Session.getModelController(ForumControl.class);
+
     /** Creates a new instance of ForumForumThreadTransferCache */
-    public ForumForumThreadTransferCache(UserVisit userVisit, ForumControl forumControl) {
-        super(userVisit, forumControl);
+    protected ForumForumThreadTransferCache() {
+        super();
     }
     
-    public ForumForumThreadTransfer getForumForumThreadTransfer(ForumForumThread forumForumThread) {
+    public ForumForumThreadTransfer getForumForumThreadTransfer(UserVisit userVisit, ForumForumThread forumForumThread) {
         var forumForumThreadTransfer = get(forumForumThread);
         
         if(forumForumThreadTransfer == null) {
@@ -39,7 +44,7 @@ public class ForumForumThreadTransferCache
             var sortOrder = forumForumThread.getSortOrder();
             
             forumForumThreadTransfer = new ForumForumThreadTransfer(forum, forumThread, isDefault, sortOrder);
-            put(forumForumThread, forumForumThreadTransfer);
+            put(userVisit, forumForumThread, forumForumThreadTransfer);
         }
         
         return forumForumThreadTransfer;

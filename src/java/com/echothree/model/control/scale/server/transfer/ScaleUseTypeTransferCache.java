@@ -16,26 +16,27 @@
 
 package com.echothree.model.control.scale.server.transfer;
 
-import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.scale.common.transfer.ScaleUseTypeTransfer;
 import com.echothree.model.control.scale.server.control.ScaleControl;
 import com.echothree.model.data.scale.server.entity.ScaleUseType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ScaleUseTypeTransferCache
         extends BaseScaleTransferCache<ScaleUseType, ScaleUseTypeTransfer> {
 
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    ScaleControl scaleControl = Session.getModelController(ScaleControl.class);
 
     /** Creates a new instance of ScaleUseTypeTransferCache */
-    public ScaleUseTypeTransferCache(UserVisit userVisit, ScaleControl scaleControl) {
-        super(userVisit, scaleControl);
+    protected ScaleUseTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
 
-    public ScaleUseTypeTransfer getScaleUseTypeTransfer(ScaleUseType scaleUseType) {
+    public ScaleUseTypeTransfer getScaleUseTypeTransfer(UserVisit userVisit, ScaleUseType scaleUseType) {
         var scaleUseTypeTransfer = get(scaleUseType);
 
         if(scaleUseTypeTransfer == null) {
@@ -43,10 +44,10 @@ public class ScaleUseTypeTransferCache
             var scaleUseTypeName = scaleUseTypeDetail.getScaleUseTypeName();
             var isDefault = scaleUseTypeDetail.getIsDefault();
             var sortOrder = scaleUseTypeDetail.getSortOrder();
-            var description = scaleControl.getBestScaleUseTypeDescription(scaleUseType, getLanguage());
+            var description = scaleControl.getBestScaleUseTypeDescription(scaleUseType, getLanguage(userVisit));
 
             scaleUseTypeTransfer = new ScaleUseTypeTransfer(scaleUseTypeName, isDefault, sortOrder, description);
-            put(scaleUseType, scaleUseTypeTransfer);
+            put(userVisit, scaleUseType, scaleUseTypeTransfer);
         }
 
         return scaleUseTypeTransfer;

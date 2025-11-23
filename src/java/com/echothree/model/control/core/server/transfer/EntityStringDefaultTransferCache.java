@@ -23,7 +23,9 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.core.server.entity.EntityStringDefault;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EntityStringDefaultTransferCache
         extends BaseCoreTransferCache<EntityStringDefault, EntityStringDefaultTransfer> {
 
@@ -32,8 +34,8 @@ public class EntityStringDefaultTransferCache
     boolean includeString;
 
     /** Creates a new instance of EntityStringDefaultTransferCache */
-    public EntityStringDefaultTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected EntityStringDefaultTransferCache() {
+        super();
 
         var options = session.getOptions();
         if(options != null) {
@@ -41,7 +43,7 @@ public class EntityStringDefaultTransferCache
         }
     }
     
-    public EntityStringDefaultTransfer getEntityStringDefaultTransfer(EntityStringDefault entityStringDefault) {
+    public EntityStringDefaultTransfer getEntityStringDefaultTransfer(UserVisit userVisit, EntityStringDefault entityStringDefault) {
         var entityStringDefaultTransfer = get(entityStringDefault);
         
         if(entityStringDefaultTransfer == null) {
@@ -50,7 +52,7 @@ public class EntityStringDefaultTransferCache
             var stringAttribute = includeString ? entityStringDefault.getStringAttribute() : null;
 
             entityStringDefaultTransfer = new EntityStringDefaultTransfer(entityAttribute, language, stringAttribute);
-            put(entityStringDefault, entityStringDefaultTransfer);
+            put(userVisit, entityStringDefault, entityStringDefaultTransfer);
         }
         
         return entityStringDefaultTransfer;

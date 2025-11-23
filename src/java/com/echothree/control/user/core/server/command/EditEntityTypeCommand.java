@@ -41,7 +41,9 @@ import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EditEntityTypeCommand
         extends BaseAbstractEditCommand<EntityTypeSpec, EntityTypeEdit, EditEntityTypeResult, EntityType, EntityType> {
     
@@ -95,15 +97,15 @@ public class EditEntityTypeCommand
         EntityType entityType = null;
         var componentVendorName = spec.getComponentVendorName();
         
-        componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
+        componentVendor = componentControl.getComponentVendorByName(componentVendorName);
 
         if(componentVendor != null) {
             var entityTypeName = spec.getEntityTypeName();
 
             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
+                entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
             } else { // EditMode.UPDATE
-                entityType = getEntityTypeControl().getEntityTypeByNameForUpdate(componentVendor, entityTypeName);
+                entityType = entityTypeControl.getEntityTypeByNameForUpdate(componentVendor, entityTypeName);
             }
 
             if(entityType == null) {
@@ -123,13 +125,13 @@ public class EditEntityTypeCommand
 
     @Override
     public void fillInResult(EditEntityTypeResult result, EntityType entityType) {
-        result.setEntityType(getEntityTypeControl().getEntityTypeTransfer(getUserVisit(), entityType));
+        result.setEntityType(entityTypeControl.getEntityTypeTransfer(getUserVisit(), entityType));
     }
 
     @Override
     public void doLock(EntityTypeEdit edit, EntityType entityType) {
         var unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
-        var entityTypeDescription = getEntityTypeControl().getEntityTypeDescription(entityType, getPreferredLanguage());
+        var entityTypeDescription = entityTypeControl.getEntityTypeDescription(entityType, getPreferredLanguage());
         var entityTypeDetail = entityType.getLastDetail();
         UnitOfMeasureTypeLogic.StringUnitOfMeasure stringUnitOfMeasure;
 
@@ -151,7 +153,7 @@ public class EditEntityTypeCommand
     @Override
     public void canUpdate(EntityType entityType) {
         var entityTypeName = edit.getEntityTypeName();
-        var duplicateEntityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
+        var duplicateEntityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
 
         if(duplicateEntityType != null && !entityType.equals(duplicateEntityType)) {
             addExecutionError(ExecutionErrors.DuplicateEntityTypeName.name(), entityTypeName);
@@ -169,8 +171,8 @@ public class EditEntityTypeCommand
     @Override
     public void doUpdate(EntityType entityType) {
         var partyPK = getPartyPK();
-        var entityTypeDetailValue = getEntityTypeControl().getEntityTypeDetailValueForUpdate(entityType);
-        var entityTypeDescription = getEntityTypeControl().getEntityTypeDescriptionForUpdate(entityType, getPreferredLanguage());
+        var entityTypeDetailValue = entityTypeControl.getEntityTypeDetailValueForUpdate(entityType);
+        var entityTypeDescription = entityTypeControl.getEntityTypeDescriptionForUpdate(entityType, getPreferredLanguage());
         var description = edit.getDescription();
 
         entityTypeDetailValue.setEntityTypeName(edit.getEntityTypeName());
@@ -179,19 +181,19 @@ public class EditEntityTypeCommand
         entityTypeDetailValue.setIsExtensible(Boolean.valueOf(edit.getIsExtensible()));
         entityTypeDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 
-        getEntityTypeControl().updateEntityTypeFromValue(entityTypeDetailValue, partyPK);
+        entityTypeControl.updateEntityTypeFromValue(entityTypeDetailValue, partyPK);
 
         if(entityTypeDescription == null && description != null) {
-            getEntityTypeControl().createEntityTypeDescription(entityType, getPreferredLanguage(), description, partyPK);
+            entityTypeControl.createEntityTypeDescription(entityType, getPreferredLanguage(), description, partyPK);
         } else {
             if(entityTypeDescription != null && description == null) {
-                getEntityTypeControl().deleteEntityTypeDescription(entityTypeDescription, partyPK);
+                entityTypeControl.deleteEntityTypeDescription(entityTypeDescription, partyPK);
             } else {
                 if(entityTypeDescription != null && description != null) {
-                    var entityTypeDescriptionValue = getEntityTypeControl().getEntityTypeDescriptionValue(entityTypeDescription);
+                    var entityTypeDescriptionValue = entityTypeControl.getEntityTypeDescriptionValue(entityTypeDescription);
 
                     entityTypeDescriptionValue.setDescription(description);
-                    getEntityTypeControl().updateEntityTypeDescriptionFromValue(entityTypeDescriptionValue, partyPK);
+                    entityTypeControl.updateEntityTypeDescriptionFromValue(entityTypeDescriptionValue, partyPK);
                 }
             }
         }

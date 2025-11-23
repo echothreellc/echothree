@@ -48,12 +48,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class BillingControl
         extends BasePaymentControl {
 
     /** Creates a new instance of BillingControl */
-    public BillingControl() {
+    protected BillingControl() {
         super();
     }
     
@@ -96,15 +98,14 @@ public class BillingControl
     
     public BillingAccountRoleTypeTransfer getBillingAccountRoleTypeTransfer(UserVisit userVisit,
             BillingAccountRoleType billingAccountRoleType) {
-        return getPaymentTransferCaches(userVisit).getBillingAccountRoleTypeTransferCache().getTransfer(billingAccountRoleType);
+        return billingAccountRoleTypeTransferCache.getTransfer(userVisit, billingAccountRoleType);
     }
 
     private List<BillingAccountRoleTypeTransfer> getBillingAccountRoleTypeTransfers(final UserVisit userVisit, final List<BillingAccountRoleType> billingAccountRoleTypes) {
         List<BillingAccountRoleTypeTransfer> billingAccountRoleTypeTransfers = new ArrayList<>(billingAccountRoleTypes.size());
-        var billingAccountRoleTypeTransferCache = getPaymentTransferCaches(userVisit).getBillingAccountRoleTypeTransferCache();
 
         billingAccountRoleTypes.forEach((billingAccountRoleType) ->
-                billingAccountRoleTypeTransfers.add(billingAccountRoleTypeTransferCache.getTransfer(billingAccountRoleType))
+                billingAccountRoleTypeTransfers.add(billingAccountRoleTypeTransferCache.getTransfer(userVisit, billingAccountRoleType))
         );
 
             return billingAccountRoleTypeTransfers;
@@ -147,7 +148,7 @@ public class BillingControl
         var billingAccountRoleTypeDescription = getBillingAccountRoleTypeDescription(billingAccountRoleType, language);
         
         if(billingAccountRoleTypeDescription == null && !language.getIsDefault()) {
-            billingAccountRoleTypeDescription = getBillingAccountRoleTypeDescription(billingAccountRoleType, getPartyControl().getDefaultLanguage());
+            billingAccountRoleTypeDescription = getBillingAccountRoleTypeDescription(billingAccountRoleType, partyControl.getDefaultLanguage());
         }
         
         if(billingAccountRoleTypeDescription == null) {
@@ -383,15 +384,14 @@ public class BillingControl
     }
     
     public BillingAccountTransfer getBillingAccountTransfer(UserVisit userVisit, BillingAccount billingAccount) {
-        return getPaymentTransferCaches(userVisit).getBillingAccountTransferCache().getTransfer(billingAccount);
+        return billingAccountTransferCache.getTransfer(userVisit, billingAccount);
     }
     
     public List<BillingAccountTransfer> getBillingAccountTransfers(UserVisit userVisit, Collection<BillingAccount> billingAccounts) {
         List<BillingAccountTransfer> billingAccountTransfers = new ArrayList<>(billingAccounts.size());
-        var billingAccountTransferCache = getPaymentTransferCaches(userVisit).getBillingAccountTransferCache();
         
         billingAccounts.forEach((billingAccount) ->
-                billingAccountTransfers.add(billingAccountTransferCache.getTransfer(billingAccount))
+                billingAccountTransfers.add(billingAccountTransferCache.getTransfer(userVisit, billingAccount))
         );
         
         return billingAccountTransfers;
@@ -608,15 +608,14 @@ public class BillingControl
     }
     
     public BillingAccountRoleTransfer getBillingAccountRoleTransfer(UserVisit userVisit, BillingAccountRole billingAccountRole) {
-        return getPaymentTransferCaches(userVisit).getBillingAccountRoleTransferCache().getTransfer(billingAccountRole);
+        return billingAccountRoleTransferCache.getTransfer(userVisit, billingAccountRole);
     }
     
     public List<BillingAccountRoleTransfer> getBillingAccountRoleTransfers(UserVisit userVisit, Collection<BillingAccountRole> billingAccountRoles) {
         List<BillingAccountRoleTransfer> billingAccountRoleTransfers = new ArrayList<>(billingAccountRoles.size());
-        var billingAccountRoleTransferCache = getPaymentTransferCaches(userVisit).getBillingAccountRoleTransferCache();
         
         billingAccountRoles.forEach((billingAccountRole) ->
-                billingAccountRoleTransfers.add(billingAccountRoleTransferCache.getTransfer(billingAccountRole))
+                billingAccountRoleTransfers.add(billingAccountRoleTransferCache.getTransfer(userVisit, billingAccountRole))
         );
         
         return billingAccountRoleTransfers;

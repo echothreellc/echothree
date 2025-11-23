@@ -30,7 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CreateEntityEntityAttributeCommand
         extends BaseSimpleCommand<CreateEntityEntityAttributeForm> {
 
@@ -67,7 +69,6 @@ public class CreateEntityEntityAttributeCommand
                     EntityAttributeTypes.ENTITY);
 
             if(!hasExecutionErrors()) {
-                var coreControl = getCoreControl();
                 var entityEntityAttribute = coreControl.getEntityEntityAttribute(entityAttribute, entityInstance);
 
                 if(entityEntityAttribute == null) {

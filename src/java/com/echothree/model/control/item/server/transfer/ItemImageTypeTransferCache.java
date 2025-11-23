@@ -22,21 +22,24 @@ import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.item.server.entity.ItemImageType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ItemImageTypeTransferCache
         extends BaseItemTransferCache<ItemImageType, ItemImageTypeTransfer> {
 
+    ItemControl itemControl = Session.getModelController(ItemControl.class);
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
     
     /** Creates a new instance of ItemImageTypeTransferCache */
-    public ItemImageTypeTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    protected ItemImageTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
     @Override
-    public ItemImageTypeTransfer getTransfer(ItemImageType itemImageType) {
+    public ItemImageTypeTransfer getTransfer(UserVisit userVisit, ItemImageType itemImageType) {
         var itemImageTypeTransfer = get(itemImageType);
         
         if(itemImageTypeTransfer == null) {
@@ -47,10 +50,10 @@ public class ItemImageTypeTransferCache
             var quality = itemImageTypeDetail.getQuality();
             var isDefault = itemImageTypeDetail.getIsDefault();
             var sortOrder = itemImageTypeDetail.getSortOrder();
-            var description = itemControl.getBestItemImageTypeDescription(itemImageType, getLanguage());
+            var description = itemControl.getBestItemImageTypeDescription(itemImageType, getLanguage(userVisit));
             
             itemImageTypeTransfer = new ItemImageTypeTransfer(itemImageTypeName, preferredMimeTypeTransfer, quality, isDefault, sortOrder, description);
-            put(itemImageType, itemImageTypeTransfer);
+            put(userVisit, itemImageType, itemImageTypeTransfer);
         }
         
         return itemImageTypeTransfer;

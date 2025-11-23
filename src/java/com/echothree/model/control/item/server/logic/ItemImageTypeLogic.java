@@ -34,20 +34,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class ItemImageTypeLogic
     extends BaseLogic {
 
-    private ItemImageTypeLogic() {
+    protected ItemImageTypeLogic() {
         super();
     }
 
-    private static class ItemImageTypeLogicHolder {
-        static ItemImageTypeLogic instance = new ItemImageTypeLogic();
-    }
-
     public static ItemImageTypeLogic getInstance() {
-        return ItemImageTypeLogicHolder.instance;
+        return CDI.current().select(ItemImageTypeLogic.class).get();
     }
 
     public ItemImageType createItemImageType(final ExecutionErrorAccumulator eea, final String itemImageTypeName,
@@ -98,7 +97,7 @@ public class ItemImageTypeLogic
         var parameterCount = (itemImageTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
-            case 0:
+            case 0 -> {
                 if(allowDefault) {
                     itemImageType = itemControl.getDefaultItemImageType(entityPermission);
 
@@ -108,8 +107,8 @@ public class ItemImageTypeLogic
                 } else {
                     handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                 }
-                break;
-            case 1:
+            }
+            case 1 -> {
                 if(itemImageTypeName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.ItemImageType.name());
@@ -120,10 +119,9 @@ public class ItemImageTypeLogic
                 } else {
                     itemImageType = getItemImageTypeByName(eea, itemImageTypeName, entityPermission);
                 }
-                break;
-            default:
-                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
-                break;
+            }
+            default ->
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
 
         return itemImageType;

@@ -23,16 +23,21 @@ import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.data.chain.server.entity.ChainInstance;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.MapWrapper;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ChainInstanceTransferCache
         extends BaseChainTransferCache<ChainInstance, ChainInstanceTransfer> {
-    
+
+    ChainControl chainControl = Session.getModelController(ChainControl.class);
+
     boolean includeChainInstanceStatus;
     boolean includeChainInstanceEntityRoles;
     
     /** Creates a new instance of ChainInstanceTransferCache */
-    public ChainInstanceTransferCache(UserVisit userVisit, ChainControl chainControl) {
-        super(userVisit, chainControl);
+    protected ChainInstanceTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {
@@ -43,7 +48,7 @@ public class ChainInstanceTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public ChainInstanceTransfer getChainInstanceTransfer(ChainInstance chainInstance) {
+    public ChainInstanceTransfer getChainInstanceTransfer(UserVisit userVisit, ChainInstance chainInstance) {
         var chainInstanceTransfer = get(chainInstance);
         
         if(chainInstanceTransfer == null) {
@@ -52,7 +57,7 @@ public class ChainInstanceTransferCache
             var chain = chainControl.getChainTransfer(userVisit, chainInstanceDetail.getChain());
             
             chainInstanceTransfer = new ChainInstanceTransfer(chainInstanceName, chain);
-            put(chainInstance, chainInstanceTransfer);
+            put(userVisit, chainInstance, chainInstanceTransfer);
             
             if(includeChainInstanceStatus) {
                 chainInstanceTransfer.setChainInstanceStatus(chainControl.getChainInstanceStatusTransfer(userVisit, chainInstance));

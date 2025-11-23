@@ -31,7 +31,11 @@ import com.echothree.model.control.customer.common.transfer.CustomerTypeTransfer
 import com.echothree.model.control.customer.common.workflow.CustomerCreditStatusConstants;
 import com.echothree.model.control.customer.common.workflow.CustomerStatusConstants;
 import com.echothree.model.control.customer.server.graphql.CustomerObject;
-import com.echothree.model.control.customer.server.transfer.CustomerTransferCaches;
+import com.echothree.model.control.customer.server.transfer.CustomerTransferCache;
+import com.echothree.model.control.customer.server.transfer.CustomerTypeDescriptionTransferCache;
+import com.echothree.model.control.customer.server.transfer.CustomerTypePaymentMethodTransferCache;
+import com.echothree.model.control.customer.server.transfer.CustomerTypeShippingMethodTransferCache;
+import com.echothree.model.control.customer.server.transfer.CustomerTypeTransferCache;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.search.common.SearchOptions;
@@ -88,29 +92,37 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
+@RequestScoped
 public class CustomerControl
         extends BaseModelControl {
     
     /** Creates a new instance of CustomerControl */
-    public CustomerControl() {
+    protected CustomerControl() {
         super();
     }
     
     // --------------------------------------------------------------------------------
     //   Customer Transfer Caches
     // --------------------------------------------------------------------------------
-    
-    private CustomerTransferCaches customerTransferCaches;
-    
-    public CustomerTransferCaches getCustomerTransferCaches(UserVisit userVisit) {
-        if(customerTransferCaches == null) {
-            customerTransferCaches = new CustomerTransferCaches(userVisit, this);
-        }
-        
-        return customerTransferCaches;
-    }
-    
+
+    @Inject
+    CustomerTypeTransferCache customerTypeTransferCache;
+
+    @Inject
+    CustomerTypeDescriptionTransferCache customerTypeDescriptionTransferCache;
+
+    @Inject
+    CustomerTransferCache customerTransferCache;
+
+    @Inject
+    CustomerTypePaymentMethodTransferCache customerTypePaymentMethodTransferCache;
+
+    @Inject
+    CustomerTypeShippingMethodTransferCache customerTypeShippingMethodTransferCache;
+
     // --------------------------------------------------------------------------------
     //   Customer Types
     // --------------------------------------------------------------------------------
@@ -323,19 +335,18 @@ public class CustomerControl
     }
     
     public CustomerTypeTransfer getCustomerTypeTransfer(UserVisit userVisit, CustomerType customerType) {
-        return getCustomerTransferCaches(userVisit).getCustomerTypeTransferCache().getCustomerTypeTransfer(customerType);
+        return customerTypeTransferCache.getCustomerTypeTransfer(userVisit, customerType);
     }
 
     public List<CustomerTypeTransfer> getCustomerTypeTransfers(UserVisit userVisit, Collection<CustomerType> customerTypes) {
         List<CustomerTypeTransfer> customerTypeTransfers = null;
 
         if(customerTypes != null) {
-            var customerTypeTransferCache = getCustomerTransferCaches(userVisit).getCustomerTypeTransferCache();
 
             customerTypeTransfers = new ArrayList<>(customerTypes.size());
 
             for(var customerType : customerTypes) {
-                customerTypeTransfers.add(customerTypeTransferCache.getCustomerTypeTransfer(customerType));
+                customerTypeTransfers.add(customerTypeTransferCache.getCustomerTypeTransfer(userVisit, customerType));
             }
         }
 
@@ -554,7 +565,7 @@ public class CustomerControl
         var customerTypeDescription = getCustomerTypeDescription(customerType, language);
         
         if(customerTypeDescription == null && !language.getIsDefault()) {
-            customerTypeDescription = getCustomerTypeDescription(customerType, getPartyControl().getDefaultLanguage());
+            customerTypeDescription = getCustomerTypeDescription(customerType, partyControl.getDefaultLanguage());
         }
         
         if(customerTypeDescription == null) {
@@ -567,7 +578,7 @@ public class CustomerControl
     }
     
     public CustomerTypeDescriptionTransfer getCustomerTypeDescriptionTransfer(UserVisit userVisit, CustomerTypeDescription customerTypeDescription) {
-        return getCustomerTransferCaches(userVisit).getCustomerTypeDescriptionTransferCache().getCustomerTypeDescriptionTransfer(customerTypeDescription);
+        return customerTypeDescriptionTransferCache.getCustomerTypeDescriptionTransfer(userVisit, customerTypeDescription);
     }
     
     public List<CustomerTypeDescriptionTransfer> getCustomerTypeDescriptionTransfers(UserVisit userVisit, CustomerType customerType) {
@@ -575,12 +586,11 @@ public class CustomerControl
         List<CustomerTypeDescriptionTransfer> customerTypeDescriptionTransfers = null;
         
         if(customerTypeDescriptions != null) {
-            var customerTypeDescriptionTransferCache = getCustomerTransferCaches(userVisit).getCustomerTypeDescriptionTransferCache();
             
             customerTypeDescriptionTransfers = new ArrayList<>(customerTypeDescriptions.size());
             
             for(var customerTypeDescription : customerTypeDescriptions) {
-                customerTypeDescriptionTransfers.add(customerTypeDescriptionTransferCache.getCustomerTypeDescriptionTransfer(customerTypeDescription));
+                customerTypeDescriptionTransfers.add(customerTypeDescriptionTransferCache.getCustomerTypeDescriptionTransfer(userVisit, customerTypeDescription));
             }
         }
         
@@ -780,19 +790,18 @@ public class CustomerControl
     }
     
     public CustomerTransfer getCustomerTransfer(UserVisit userVisit, Customer customer) {
-        return getCustomerTransferCaches(userVisit).getCustomerTransferCache().getTransfer(customer);
+        return customerTransferCache.getTransfer(userVisit, customer);
     }
     
     public CustomerTransfer getCustomerTransfer(UserVisit userVisit, Party party) {
-        return getCustomerTransferCaches(userVisit).getCustomerTransferCache().getTransfer(party);
+        return customerTransferCache.getTransfer(userVisit, party);
     }
 
     public List<CustomerTransfer> getCustomerTransfers(UserVisit userVisit, Collection<Customer> customers) {
         var customerTransfers = new ArrayList<CustomerTransfer>(customers.size());
-        var customerTransferCache = getCustomerTransferCaches(userVisit).getCustomerTransferCache();
 
         customers.forEach((customer) ->
-                customerTransfers.add(customerTransferCache.getTransfer(customer))
+                customerTransfers.add(customerTransferCache.getTransfer(userVisit, customer))
         );
 
         return customerTransfers;
@@ -834,7 +843,6 @@ public class CustomerControl
     
     public CustomerStatusChoicesBean getCustomerStatusChoices(String defaultCustomerStatusChoice, Language language,
             boolean allowNullChoice, Party customerParty, PartyPK partyPK) {
-        var workflowControl = getWorkflowControl();
         var customerStatusChoicesBean = new CustomerStatusChoicesBean();
         
         if(customerParty == null) {
@@ -854,7 +862,6 @@ public class CustomerControl
     }
     
     public void setCustomerStatus(ExecutionErrorAccumulator eea, Party party, String customerStatusChoice, PartyPK modifiedBy) {
-        var workflowControl = getWorkflowControl();
         var entityInstance = getEntityInstanceByBaseEntity(party);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(CustomerStatusConstants.Workflow_CUSTOMER_STATUS,
                 entityInstance);
@@ -870,7 +877,6 @@ public class CustomerControl
     
     public CustomerCreditStatusChoicesBean getCustomerCreditStatusChoices(String defaultCustomerCreditStatusChoice, Language language,
             boolean allowNullChoice, Party customerParty, PartyPK partyPK) {
-        var workflowControl = getWorkflowControl();
         var customerCreditStatusChoicesBean = new CustomerCreditStatusChoicesBean();
         
         if(customerParty == null) {
@@ -890,7 +896,6 @@ public class CustomerControl
     }
     
     public void setCustomerCreditStatus(ExecutionErrorAccumulator eea, Party party, String customerCreditStatusChoice, PartyPK modifiedBy) {
-        var workflowControl = getWorkflowControl();
         var entityInstance = getEntityInstanceByBaseEntity(party);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(CustomerCreditStatusConstants.Workflow_CUSTOMER_CREDIT_STATUS,
                 entityInstance);
@@ -1093,16 +1098,15 @@ public class CustomerControl
     }
     
     public CustomerTypePaymentMethodTransfer getCustomerTypePaymentMethodTransfer(UserVisit userVisit, CustomerTypePaymentMethod customerTypePaymentMethod) {
-        return getCustomerTransferCaches(userVisit).getCustomerTypePaymentMethodTransferCache().getCustomerTypePaymentMethodTransfer(customerTypePaymentMethod);
+        return customerTypePaymentMethodTransferCache.getCustomerTypePaymentMethodTransfer(userVisit, customerTypePaymentMethod);
     }
     
     private List<CustomerTypePaymentMethodTransfer> getCustomerTypePaymentMethodTransfersByPaymentMethod(UserVisit userVisit,
             List<CustomerTypePaymentMethod> customerTypePaymentMethods) {
         List<CustomerTypePaymentMethodTransfer> customerTypePaymentMethodTransfers = new ArrayList<>(customerTypePaymentMethods.size());
-        var customerTypePaymentMethodTransferCache = getCustomerTransferCaches(userVisit).getCustomerTypePaymentMethodTransferCache();
 
         for(var customerTypePaymentMethod : customerTypePaymentMethods) {
-            customerTypePaymentMethodTransfers.add(customerTypePaymentMethodTransferCache.getCustomerTypePaymentMethodTransfer(customerTypePaymentMethod));
+            customerTypePaymentMethodTransfers.add(customerTypePaymentMethodTransferCache.getCustomerTypePaymentMethodTransfer(userVisit, customerTypePaymentMethod));
         }
 
         return customerTypePaymentMethodTransfers;
@@ -1389,16 +1393,15 @@ public class CustomerControl
     }
     
     public CustomerTypeShippingMethodTransfer getCustomerTypeShippingMethodTransfer(UserVisit userVisit, CustomerTypeShippingMethod customerTypeShippingMethod) {
-        return getCustomerTransferCaches(userVisit).getCustomerTypeShippingMethodTransferCache().getCustomerTypeShippingMethodTransfer(customerTypeShippingMethod);
+        return customerTypeShippingMethodTransferCache.getCustomerTypeShippingMethodTransfer(userVisit, customerTypeShippingMethod);
     }
     
     private List<CustomerTypeShippingMethodTransfer> getCustomerTypeShippingMethodTransfersByShippingMethod(UserVisit userVisit,
             List<CustomerTypeShippingMethod> customerTypeShippingMethods) {
         List<CustomerTypeShippingMethodTransfer> customerTypeShippingMethodTransfers = new ArrayList<>(customerTypeShippingMethods.size());
-        var customerTypeShippingMethodTransferCache = getCustomerTransferCaches(userVisit).getCustomerTypeShippingMethodTransferCache();
 
         for(var customerTypeShippingMethod : customerTypeShippingMethods) {
-            customerTypeShippingMethodTransfers.add(customerTypeShippingMethodTransferCache.getCustomerTypeShippingMethodTransfer(customerTypeShippingMethod));
+            customerTypeShippingMethodTransfers.add(customerTypeShippingMethodTransferCache.getCustomerTypeShippingMethodTransfer(userVisit, customerTypeShippingMethod));
         }
 
         return customerTypeShippingMethodTransfers;
@@ -1512,7 +1515,7 @@ public class CustomerControl
             var customerControl = Session.getModelController(CustomerControl.class);
 
             while(rs.next()) {
-                var party = getPartyControl().getPartyByPK(new PartyPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
+                var party = partyControl.getPartyByPK(new PartyPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
 
                 customerResultTransfers.add(new CustomerResultTransfer(party.getLastDetail().getPartyName(),
                         includeCustomer ? customerControl.getCustomerTransfer(userVisit, party) : null));
@@ -1530,7 +1533,7 @@ public class CustomerControl
 
         try (var rs = searchControl.getUserVisitSearchResultSet(userVisitSearch)) {
             while(rs.next()) {
-                var party = getPartyControl().getPartyByPK(new PartyPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
+                var party = partyControl.getPartyByPK(new PartyPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
 
                 customerObjects.add(new CustomerObject(party));
             }

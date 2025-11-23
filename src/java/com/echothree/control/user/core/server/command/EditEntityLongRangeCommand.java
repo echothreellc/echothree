@@ -39,7 +39,9 @@ import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EditEntityLongRangeCommand
         extends BaseAbstractEditCommand<EntityLongRangeSpec, EntityLongRangeEdit, EditEntityLongRangeResult, EntityLongRange, EntityLongRange> {
     
@@ -91,14 +93,13 @@ public class EditEntityLongRangeCommand
     
     @Override
     public EntityLongRange getEntity(EditEntityLongRangeResult result) {
-        var coreControl = getCoreControl();
         EntityLongRange entityLongRange = null;
         var componentVendorName = spec.getComponentVendorName();
-        var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
+        var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
 
         if(componentVendor != null) {
             var entityTypeName = spec.getEntityTypeName();
-            var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
+            var entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
 
             if(entityType != null) {
                 var entityAttributeName = spec.getEntityAttributeName();
@@ -137,14 +138,12 @@ public class EditEntityLongRangeCommand
 
     @Override
     public void fillInResult(EditEntityLongRangeResult result, EntityLongRange entityLongRange) {
-        var coreControl = getCoreControl();
 
         result.setEntityLongRange(coreControl.getEntityLongRangeTransfer(getUserVisit(), entityLongRange, null));
     }
 
     @Override
     public void doLock(EntityLongRangeEdit edit, EntityLongRange entityLongRange) {
-        var coreControl = getCoreControl();
         var entityLongRangeDescription = coreControl.getEntityLongRangeDescription(entityLongRange, getPreferredLanguage());
         var entityLongRangeDetail = entityLongRange.getLastDetail();
         var minimumLongValue = entityLongRangeDetail.getMinimumLongValue();
@@ -169,7 +168,6 @@ public class EditEntityLongRangeCommand
         var maximumLongValue = strMaximumLongValue == null ? null : Long.valueOf(strMaximumLongValue);
 
         if(minimumLongValue == null || maximumLongValue == null || maximumLongValue >= minimumLongValue) {
-            var coreControl = getCoreControl();
             var entityLongRangeName = edit.getEntityLongRangeName();
             var duplicateEntityLongRange = coreControl.getEntityLongRangeByName(entityAttribute, entityLongRangeName);
 
@@ -183,7 +181,6 @@ public class EditEntityLongRangeCommand
 
     @Override
     public void doUpdate(EntityLongRange entityLongRange) {
-        var coreControl = getCoreControl();
         var partyPK = getPartyPK();
         var entityLongRangeDetailValue = coreControl.getEntityLongRangeDetailValueForUpdate(entityLongRange);
         var entityLongRangeDescription = coreControl.getEntityLongRangeDescriptionForUpdate(entityLongRange, getPreferredLanguage());

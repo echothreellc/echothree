@@ -17,23 +17,25 @@
 package com.echothree.model.control.inventory.server.transfer;
 
 import com.echothree.model.control.inventory.common.transfer.InventoryTransactionTypeDescriptionTransfer;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.inventory.server.control.InventoryTransactionTypeControl;
 import com.echothree.model.data.inventory.server.entity.InventoryTransactionTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class InventoryTransactionTypeDescriptionTransferCache
         extends BaseInventoryDescriptionTransferCache<InventoryTransactionTypeDescription, InventoryTransactionTypeDescriptionTransfer> {
 
     InventoryTransactionTypeControl inventoryTransactionTypeControl = Session.getModelController(InventoryTransactionTypeControl.class);
 
     /** Creates a new instance of InventoryTransactionTypeDescriptionTransferCache */
-    public InventoryTransactionTypeDescriptionTransferCache(UserVisit userVisit, InventoryControl inventoryControl) {
-        super(userVisit, inventoryControl);
+    protected InventoryTransactionTypeDescriptionTransferCache() {
+        super();
     }
-    
-    public InventoryTransactionTypeDescriptionTransfer getTransfer(InventoryTransactionTypeDescription inventoryTransactionTypeDescription) {
+
+    @Override
+    public InventoryTransactionTypeDescriptionTransfer getTransfer(UserVisit userVisit, InventoryTransactionTypeDescription inventoryTransactionTypeDescription) {
         var inventoryTransactionTypeDescriptionTransfer = get(inventoryTransactionTypeDescription);
         
         if(inventoryTransactionTypeDescriptionTransfer == null) {
@@ -41,7 +43,7 @@ public class InventoryTransactionTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, inventoryTransactionTypeDescription.getLanguage());
             
             inventoryTransactionTypeDescriptionTransfer = new InventoryTransactionTypeDescriptionTransfer(languageTransfer, inventoryTransactionTypeTransfer, inventoryTransactionTypeDescription.getDescription());
-            put(inventoryTransactionTypeDescription, inventoryTransactionTypeDescriptionTransfer);
+            put(userVisit, inventoryTransactionTypeDescription, inventoryTransactionTypeDescriptionTransfer);
         }
         
         return inventoryTransactionTypeDescriptionTransfer;

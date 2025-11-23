@@ -22,7 +22,9 @@ import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.data.core.server.entity.EntityAppearance;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EntityAppearanceTransferCache
         extends BaseCoreTransferCache<EntityAppearance, EntityAppearanceTransfer> {
 
@@ -30,11 +32,11 @@ public class EntityAppearanceTransferCache
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
     /** Creates a new instance of EntityAppearanceTransferCache */
-    public EntityAppearanceTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected EntityAppearanceTransferCache() {
+        super();
     }
     
-    public EntityAppearanceTransfer getEntityAppearanceTransfer(EntityAppearance entityAppearance) {
+    public EntityAppearanceTransfer getEntityAppearanceTransfer(UserVisit userVisit, EntityAppearance entityAppearance) {
         var entityAppearanceTransfer = get(entityAppearance);
         
         if(entityAppearanceTransfer == null) {
@@ -42,7 +44,7 @@ public class EntityAppearanceTransferCache
             var appearance = appearanceControl.getAppearanceTransfer(userVisit, entityAppearance.getAppearance());
             
             entityAppearanceTransfer = new EntityAppearanceTransfer(entityInstance, appearance);
-            put(entityAppearance, entityAppearanceTransfer);
+            put(userVisit, entityAppearance, entityAppearanceTransfer);
         }
         
         return entityAppearanceTransfer;

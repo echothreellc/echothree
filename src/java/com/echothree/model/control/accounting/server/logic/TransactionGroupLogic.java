@@ -29,20 +29,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class TransactionGroupLogic
         extends BaseLogic {
 
-    private TransactionGroupLogic() {
+    protected TransactionGroupLogic() {
         super();
     }
 
-    private static class TransactionGroupLogicHolder {
-        static TransactionGroupLogic instance = new TransactionGroupLogic();
-    }
-
     public static TransactionGroupLogic getInstance() {
-        return TransactionGroupLogic.TransactionGroupLogicHolder.instance;
+        return CDI.current().select(TransactionGroupLogic.class).get();
     }
 
     public TransactionGroup getTransactionGroupByName(final ExecutionErrorAccumulator eea, final String transactionGroupName,
@@ -72,22 +71,19 @@ public class TransactionGroupLogic
         var transactionGroupName = universalSpec.getTransactionGroupName();
         var parameterCount = (transactionGroupName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
-        switch(parameterCount) {
-            case 1:
-                if(transactionGroupName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
-                            ComponentVendors.ECHO_THREE.name(), EntityTypes.TransactionGroup.name());
+        if(parameterCount == 1) {
+            if(transactionGroupName == null) {
+                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                        ComponentVendors.ECHO_THREE.name(), EntityTypes.TransactionGroup.name());
 
-                    if(!eea.hasExecutionErrors()) {
-                        transactionGroup = accountingControl.getTransactionGroupByEntityInstance(entityInstance, entityPermission);
-                    }
-                } else {
-                    transactionGroup = getTransactionGroupByName(eea, transactionGroupName, entityPermission);
+                if(!eea.hasExecutionErrors()) {
+                    transactionGroup = accountingControl.getTransactionGroupByEntityInstance(entityInstance, entityPermission);
                 }
-                break;
-            default:
-                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
-                break;
+            } else {
+                transactionGroup = getTransactionGroupByName(eea, transactionGroupName, entityPermission);
+            }
+        } else {
+            handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
 
         return transactionGroup;

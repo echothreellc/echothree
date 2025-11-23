@@ -41,7 +41,9 @@ import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EditEntityListItemDescriptionCommand
         extends BaseAbstractEditCommand<EntityListItemDescriptionSpec, EntityListItemDescriptionEdit, EditEntityListItemDescriptionResult, EntityListItemDescription, EntityListItem> {
     
@@ -87,14 +89,13 @@ public class EditEntityListItemDescriptionCommand
 
     @Override
     public EntityListItemDescription getEntity(EditEntityListItemDescriptionResult result) {
-        var coreControl = getCoreControl();
         EntityListItemDescription entityListItemDescription = null;
         var componentVendorName = spec.getComponentVendorName();
-        var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
+        var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
 
         if(componentVendor != null) {
             var entityTypeName = spec.getEntityTypeName();
-            var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
+            var entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
 
             if(entityType != null) {
                 var entityAttributeName = spec.getEntityAttributeName();
@@ -146,7 +147,6 @@ public class EditEntityListItemDescriptionCommand
 
     @Override
     public void fillInResult(EditEntityListItemDescriptionResult result, EntityListItemDescription entityListItemDescription) {
-        var coreControl = getCoreControl();
 
         result.setEntityListItemDescription(coreControl.getEntityListItemDescriptionTransfer(getUserVisit(), entityListItemDescription, null));
     }
@@ -158,7 +158,6 @@ public class EditEntityListItemDescriptionCommand
 
     @Override
     public void doUpdate(EntityListItemDescription entityListItemDescription) {
-        var coreControl = getCoreControl();
         var entityListItemDescriptionValue = coreControl.getEntityListItemDescriptionValue(entityListItemDescription);
         
         entityListItemDescriptionValue.setDescription(edit.getDescription());

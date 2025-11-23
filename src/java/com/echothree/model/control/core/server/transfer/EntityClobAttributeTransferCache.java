@@ -26,7 +26,9 @@ import com.echothree.model.data.core.server.entity.EntityClobAttribute;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EntityClobAttributeTransferCache
         extends BaseCoreTransferCache<EntityClobAttribute, EntityClobAttributeTransfer> {
 
@@ -39,8 +41,8 @@ public class EntityClobAttributeTransferCache
     boolean includeETag;
     
     /** Creates a new instance of EntityClobAttributeTransferCache */
-    public EntityClobAttributeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected EntityClobAttributeTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {
@@ -49,7 +51,7 @@ public class EntityClobAttributeTransferCache
         }
     }
     
-    public EntityClobAttributeTransfer getEntityClobAttributeTransfer(EntityClobAttribute entityClobAttribute, EntityInstance entityInstance) {
+    public EntityClobAttributeTransfer getEntityClobAttributeTransfer(final UserVisit userVisit, final EntityClobAttribute entityClobAttribute, final EntityInstance entityInstance) {
         var entityClobAttributeTransfer = get(entityClobAttribute);
         
         if(entityClobAttributeTransfer == null) {
@@ -73,7 +75,7 @@ public class EntityClobAttributeTransferCache
             }
             
             entityClobAttributeTransfer = new EntityClobAttributeTransfer(entityAttribute, entityInstanceTransfer, language, clobAttribute, mimeType, eTag);
-            put(entityClobAttribute, entityClobAttributeTransfer);
+            put(userVisit, entityClobAttribute, entityClobAttributeTransfer);
         }
         
         return entityClobAttributeTransfer;

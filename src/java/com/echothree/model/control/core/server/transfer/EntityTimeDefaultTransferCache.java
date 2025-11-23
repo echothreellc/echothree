@@ -21,27 +21,29 @@ import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.EntityTimeDefault;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EntityTimeDefaultTransferCache
         extends BaseCoreTransferCache<EntityTimeDefault, EntityTimeDefaultTransfer> {
 
     CoreControl coreControl = Session.getModelController(CoreControl.class);
 
     /** Creates a new instance of EntityTimeDefaultTransferCache */
-    public EntityTimeDefaultTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected EntityTimeDefaultTransferCache() {
+        super();
     }
     
-    public EntityTimeDefaultTransfer getEntityTimeDefaultTransfer(EntityTimeDefault entityTimeDefault) {
+    public EntityTimeDefaultTransfer getEntityTimeDefaultTransfer(UserVisit userVisit, EntityTimeDefault entityTimeDefault) {
         var entityTimeDefaultTransfer = get(entityTimeDefault);
         
         if(entityTimeDefaultTransfer == null) {
             var entityDefault = coreControl.getEntityAttributeTransfer(userVisit, entityTimeDefault.getEntityAttribute(), null);
             var unformattedTimeAttribute = entityTimeDefault.getTimeAttribute();
-            var timeAttribute = formatTypicalDateTime(unformattedTimeAttribute);
+            var timeAttribute = formatTypicalDateTime(userVisit, unformattedTimeAttribute);
             
             entityTimeDefaultTransfer = new EntityTimeDefaultTransfer(entityDefault, timeAttribute, unformattedTimeAttribute);
-            put(entityTimeDefault, entityTimeDefaultTransfer);
+            put(userVisit, entityTimeDefault, entityTimeDefaultTransfer);
         }
         
         return entityTimeDefaultTransfer;

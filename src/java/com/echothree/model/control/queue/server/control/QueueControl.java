@@ -21,7 +21,9 @@ import com.echothree.model.control.queue.common.choice.QueueTypeChoicesBean;
 import com.echothree.model.control.queue.common.transfer.QueueTypeDescriptionTransfer;
 import com.echothree.model.control.queue.common.transfer.QueueTypeTransfer;
 import com.echothree.model.control.queue.common.transfer.QueuedEntityTransfer;
-import com.echothree.model.control.queue.server.transfer.QueueTransferCaches;
+import com.echothree.model.control.queue.server.transfer.QueueTypeDescriptionTransferCache;
+import com.echothree.model.control.queue.server.transfer.QueueTypeTransferCache;
+import com.echothree.model.control.queue.server.transfer.QueuedEntityTransferCache;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.party.server.entity.Language;
@@ -50,29 +52,31 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
+@RequestScoped
 public class QueueControl
         extends BaseModelControl {
     
     /** Creates a new instance of QueueControl */
-    public QueueControl() {
+    protected QueueControl() {
         super();
     }
     
     // --------------------------------------------------------------------------------
     //   Queue Transfer Caches
     // --------------------------------------------------------------------------------
-    
-    private QueueTransferCaches queueTransferCaches;
-    
-    public QueueTransferCaches getQueueTransferCaches(UserVisit userVisit) {
-        if(queueTransferCaches == null) {
-            queueTransferCaches = new QueueTransferCaches(userVisit, this);
-        }
-        
-        return queueTransferCaches;
-    }
-    
+
+    @Inject
+    QueueTypeTransferCache queueTypeTransferCache;
+
+    @Inject
+    QueueTypeDescriptionTransferCache queueTypeDescriptionTransferCache;
+
+    @Inject
+    QueuedEntityTransferCache queuedEntityTransferCache;
+
     // --------------------------------------------------------------------------------
     //   Queue Types
     // --------------------------------------------------------------------------------
@@ -234,15 +238,14 @@ public class QueueControl
     }
 
    public QueueTypeTransfer getQueueTypeTransfer(UserVisit userVisit, QueueType queueType) {
-        return getQueueTransferCaches(userVisit).getQueueTypeTransferCache().getQueueTypeTransfer(queueType);
+        return queueTypeTransferCache.getQueueTypeTransfer(userVisit, queueType);
     }
 
     public List<QueueTypeTransfer> getQueueTypeTransfers(UserVisit userVisit, Collection<QueueType> queueTypes) {
         List<QueueTypeTransfer> queueTypeTransfers = new ArrayList<>(queueTypes.size());
-        var queueTypeTransferCache = getQueueTransferCaches(userVisit).getQueueTypeTransferCache();
 
         queueTypes.forEach((queueType) ->
-                queueTypeTransfers.add(queueTypeTransferCache.getQueueTypeTransfer(queueType))
+                queueTypeTransfers.add(queueTypeTransferCache.getQueueTypeTransfer(userVisit, queueType))
         );
 
         return queueTypeTransfers;
@@ -462,7 +465,7 @@ public class QueueControl
         var queueTypeDescription = getQueueTypeDescription(queueType, language);
 
         if(queueTypeDescription == null && !language.getIsDefault()) {
-            queueTypeDescription = getQueueTypeDescription(queueType, getPartyControl().getDefaultLanguage());
+            queueTypeDescription = getQueueTypeDescription(queueType, partyControl.getDefaultLanguage());
         }
 
         if(queueTypeDescription == null) {
@@ -475,16 +478,15 @@ public class QueueControl
     }
 
     public QueueTypeDescriptionTransfer getQueueTypeDescriptionTransfer(UserVisit userVisit, QueueTypeDescription queueTypeDescription) {
-        return getQueueTransferCaches(userVisit).getQueueTypeDescriptionTransferCache().getQueueTypeDescriptionTransfer(queueTypeDescription);
+        return queueTypeDescriptionTransferCache.getQueueTypeDescriptionTransfer(userVisit, queueTypeDescription);
     }
 
     public List<QueueTypeDescriptionTransfer> getQueueTypeDescriptionTransfersByQueueType(UserVisit userVisit, QueueType queueType) {
         var queueTypeDescriptions = getQueueTypeDescriptionsByQueueType(queueType);
         List<QueueTypeDescriptionTransfer> queueTypeDescriptionTransfers = new ArrayList<>(queueTypeDescriptions.size());
-        var queueTypeDescriptionTransferCache = getQueueTransferCaches(userVisit).getQueueTypeDescriptionTransferCache();
 
         queueTypeDescriptions.forEach((queueTypeDescription) ->
-                queueTypeDescriptionTransfers.add(queueTypeDescriptionTransferCache.getQueueTypeDescriptionTransfer(queueTypeDescription))
+                queueTypeDescriptionTransfers.add(queueTypeDescriptionTransferCache.getQueueTypeDescriptionTransfer(userVisit, queueTypeDescription))
         );
 
         return queueTypeDescriptionTransfers;
@@ -698,15 +700,14 @@ public class QueueControl
     }
     
     public QueuedEntityTransfer getQueuedEntityTransfer(UserVisit userVisit, QueuedEntity queuedEntity) {
-        return getQueueTransferCaches(userVisit).getQueuedEntityTransferCache().getQueuedEntityTransfer(queuedEntity);
+        return queuedEntityTransferCache.getQueuedEntityTransfer(userVisit, queuedEntity);
     }
     
     public List<QueuedEntityTransfer> getQueuedEntityTransfers(UserVisit userVisit, Collection<QueuedEntity> queuedEntities) {
         List<QueuedEntityTransfer> queuedEntityTransfers = new ArrayList<>(queuedEntities.size());
-        var queuedEntityTransferCache = getQueueTransferCaches(userVisit).getQueuedEntityTransferCache();
 
         queuedEntities.forEach((queuedEntity) ->
-                queuedEntityTransfers.add(queuedEntityTransferCache.getQueuedEntityTransfer(queuedEntity))
+                queuedEntityTransfers.add(queuedEntityTransferCache.getQueuedEntityTransfer(userVisit, queuedEntity))
         );
 
         return queuedEntityTransfers;

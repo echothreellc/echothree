@@ -17,23 +17,25 @@
 package com.echothree.model.control.shipment.server.transfer;
 
 import com.echothree.model.control.shipment.common.transfer.ShipmentTimeTypeDescriptionTransfer;
-import com.echothree.model.control.shipment.server.ShipmentControl;
+import com.echothree.model.control.shipment.server.control.ShipmentControl;
 import com.echothree.model.data.shipment.server.entity.ShipmentTimeTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ShipmentTimeTypeDescriptionTransferCache
         extends BaseShipmentDescriptionTransferCache<ShipmentTimeTypeDescription, ShipmentTimeTypeDescriptionTransfer> {
 
     ShipmentControl shipmentControl = Session.getModelController(ShipmentControl.class);
 
     /** Creates a new instance of ShipmentTimeTypeDescriptionTransferCache */
-    public ShipmentTimeTypeDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected ShipmentTimeTypeDescriptionTransferCache() {
+        super();
     }
 
     @Override
-    public ShipmentTimeTypeDescriptionTransfer getTransfer(ShipmentTimeTypeDescription shipmentTimeTypeDescription) {
+    public ShipmentTimeTypeDescriptionTransfer getTransfer(UserVisit userVisit, ShipmentTimeTypeDescription shipmentTimeTypeDescription) {
         var shipmentTimeTypeDescriptionTransfer = get(shipmentTimeTypeDescription);
         
         if(shipmentTimeTypeDescriptionTransfer == null) {
@@ -41,7 +43,7 @@ public class ShipmentTimeTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, shipmentTimeTypeDescription.getLanguage());
             
             shipmentTimeTypeDescriptionTransfer = new ShipmentTimeTypeDescriptionTransfer(languageTransfer, shipmentTimeTypeTransfer, shipmentTimeTypeDescription.getDescription());
-            put(shipmentTimeTypeDescription, shipmentTimeTypeDescriptionTransfer);
+            put(userVisit, shipmentTimeTypeDescription, shipmentTimeTypeDescriptionTransfer);
         }
         
         return shipmentTimeTypeDescriptionTransfer;

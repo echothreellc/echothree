@@ -20,19 +20,24 @@ import com.echothree.model.control.item.common.transfer.ItemVolumeTypeTransfer;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.item.server.entity.ItemVolumeType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ItemVolumeTypeTransferCache
         extends BaseItemTransferCache<ItemVolumeType, ItemVolumeTypeTransfer> {
-    
+
+    ItemControl itemControl = Session.getModelController(ItemControl.class);
+
     /** Creates a new instance of ItemVolumeTypeTransferCache */
-    public ItemVolumeTypeTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    protected ItemVolumeTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
     @Override
-    public ItemVolumeTypeTransfer getTransfer(ItemVolumeType itemVolumeType) {
+    public ItemVolumeTypeTransfer getTransfer(UserVisit userVisit, ItemVolumeType itemVolumeType) {
         var itemVolumeTypeTransfer = get(itemVolumeType);
         
         if(itemVolumeTypeTransfer == null) {
@@ -40,11 +45,11 @@ public class ItemVolumeTypeTransferCache
             var itemVolumeTypeName = itemVolumeTypeDetail.getItemVolumeTypeName();
             var isDefault = itemVolumeTypeDetail.getIsDefault();
             var sortOrder = itemVolumeTypeDetail.getSortOrder();
-            var description = itemControl.getBestItemVolumeTypeDescription(itemVolumeType, getLanguage());
+            var description = itemControl.getBestItemVolumeTypeDescription(itemVolumeType, getLanguage(userVisit));
             
             itemVolumeTypeTransfer = new ItemVolumeTypeTransfer(itemVolumeTypeName, isDefault, sortOrder,
                     description);
-            put(itemVolumeType, itemVolumeTypeTransfer);
+            put(userVisit, itemVolumeType, itemVolumeTypeTransfer);
         }
         
         return itemVolumeTypeTransfer;

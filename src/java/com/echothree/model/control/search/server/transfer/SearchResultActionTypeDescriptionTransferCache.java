@@ -20,16 +20,21 @@ import com.echothree.model.control.search.common.transfer.SearchResultActionType
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.data.search.server.entity.SearchResultActionTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class SearchResultActionTypeDescriptionTransferCache
         extends BaseSearchDescriptionTransferCache<SearchResultActionTypeDescription, SearchResultActionTypeDescriptionTransfer> {
-    
+
+    SearchControl searchControl = Session.getModelController(SearchControl.class);
+
     /** Creates a new instance of SearchResultActionTypeDescriptionTransferCache */
-    public SearchResultActionTypeDescriptionTransferCache(UserVisit userVisit, SearchControl searchControl) {
-        super(userVisit, searchControl);
+    protected SearchResultActionTypeDescriptionTransferCache() {
+        super();
     }
     
-    public SearchResultActionTypeDescriptionTransfer getSearchResultActionTypeDescriptionTransfer(SearchResultActionTypeDescription searchResultActionTypeDescription) {
+    public SearchResultActionTypeDescriptionTransfer getSearchResultActionTypeDescriptionTransfer(UserVisit userVisit, SearchResultActionTypeDescription searchResultActionTypeDescription) {
         var searchResultActionTypeDescriptionTransfer = get(searchResultActionTypeDescription);
         
         if(searchResultActionTypeDescriptionTransfer == null) {
@@ -37,7 +42,7 @@ public class SearchResultActionTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, searchResultActionTypeDescription.getLanguage());
             
             searchResultActionTypeDescriptionTransfer = new SearchResultActionTypeDescriptionTransfer(languageTransfer, searchResultActionTypeTransfer, searchResultActionTypeDescription.getDescription());
-            put(searchResultActionTypeDescription, searchResultActionTypeDescriptionTransfer);
+            put(userVisit, searchResultActionTypeDescription, searchResultActionTypeDescriptionTransfer);
         }
         return searchResultActionTypeDescriptionTransfer;
     }

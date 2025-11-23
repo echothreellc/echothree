@@ -21,20 +21,22 @@ import com.echothree.model.control.core.server.control.ApplicationControl;
 import com.echothree.model.data.core.server.entity.ApplicationEditorUse;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ApplicationEditorUseTransferCache
         extends BaseCoreTransferCache<ApplicationEditorUse, ApplicationEditorUseTransfer> {
 
     ApplicationControl applicationControl = Session.getModelController(ApplicationControl.class);
 
     /** Creates a new instance of ApplicationEditorUseTransferCache */
-    public ApplicationEditorUseTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected ApplicationEditorUseTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
 
-    public ApplicationEditorUseTransfer getApplicationEditorUseTransfer(ApplicationEditorUse applicationEditorUse) {
+    public ApplicationEditorUseTransfer getApplicationEditorUseTransfer(UserVisit userVisit, ApplicationEditorUse applicationEditorUse) {
         var applicationEditorUseTransfer = get(applicationEditorUse);
 
         if(applicationEditorUseTransfer == null) {
@@ -47,11 +49,11 @@ public class ApplicationEditorUseTransferCache
             var defaultWidth = applicationEditorUseDetail.getDefaultWidth();
             var isDefault = applicationEditorUseDetail.getIsDefault();
             var sortOrder = applicationEditorUseDetail.getSortOrder();
-            var description = applicationControl.getBestApplicationEditorUseDescription(applicationEditorUse, getLanguage());
+            var description = applicationControl.getBestApplicationEditorUseDescription(applicationEditorUse, getLanguage(userVisit));
 
             applicationEditorUseTransfer = new ApplicationEditorUseTransfer(applicationTransfer, applicationEditorUseName, defaultApplicationEditorTransfer,
                     defaultHeight, defaultWidth, isDefault, sortOrder, description);
-            put(applicationEditorUse, applicationEditorUseTransfer);
+            put(userVisit, applicationEditorUse, applicationEditorUseTransfer);
         }
 
         return applicationEditorUseTransfer;

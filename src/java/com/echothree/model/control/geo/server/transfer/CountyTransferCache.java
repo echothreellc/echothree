@@ -19,18 +19,19 @@ package com.echothree.model.control.geo.server.transfer;
 import com.echothree.model.control.geo.common.GeoCodeTypes;
 import com.echothree.model.control.geo.common.GeoOptions;
 import com.echothree.model.control.geo.common.transfer.CountyTransfer;
-import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CountyTransferCache
         extends BaseGeoCodeTransferCache<GeoCode, CountyTransfer> {
-    
+
     boolean includeAliases;
     
     /** Creates a new instance of CountyTransferCache */
-    public CountyTransferCache(UserVisit userVisit, GeoControl geoControl) {
-        super(userVisit, geoControl);
+    protected CountyTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {
@@ -40,7 +41,7 @@ public class CountyTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public CountyTransfer getCountyTransfer(GeoCode geoCode) {
+    public CountyTransfer getCountyTransfer(UserVisit userVisit, GeoCode geoCode) {
         var countyTransfer = get(geoCode);
         
         if(countyTransfer == null) {
@@ -50,7 +51,7 @@ public class CountyTransferCache
             var geoCodeScope = geoControl.getGeoCodeScopeTransfer(userVisit, geoCodeDetail.getGeoCodeScope());
             var isDefault = geoCodeDetail.getIsDefault();
             var sortOrder = geoCodeDetail.getSortOrder();
-            var description = geoControl.getBestGeoCodeDescription(geoCode, getLanguage());
+            var description = geoControl.getBestGeoCodeDescription(geoCode, getLanguage(userVisit));
 
             var stateGeoCodeType = geoControl.getGeoCodeTypeByName(GeoCodeTypes.STATE.name());
             var geoCodeRelationships = geoControl.getGeoCodeRelationshipsByFromGeoCodeAndGeoCodeType(geoCode, stateGeoCodeType);
@@ -60,10 +61,10 @@ public class CountyTransferCache
             var state = geoControl.getStateTransfer(userVisit, geoCodeRelationships.getFirst().getToGeoCode());
             
             countyTransfer = new CountyTransfer(state, geoCodeName, geoCodeType, geoCodeScope, isDefault, sortOrder, description);
-            put(geoCode, countyTransfer);
+            put(userVisit, geoCode, countyTransfer);
             
             if(includeAliases) {
-                setupGeoCodeAliasTransfers(geoCode, countyTransfer);
+                setupGeoCodeAliasTransfers(userVisit, geoCode, countyTransfer);
             }
         }
         

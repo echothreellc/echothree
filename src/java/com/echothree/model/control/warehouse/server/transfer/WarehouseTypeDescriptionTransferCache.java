@@ -20,16 +20,21 @@ import com.echothree.model.control.warehouse.common.transfer.WarehouseTypeDescri
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.warehouse.server.entity.WarehouseTypeDescription;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class WarehouseTypeDescriptionTransferCache
         extends BaseWarehouseDescriptionTransferCache<WarehouseTypeDescription, WarehouseTypeDescriptionTransfer> {
 
+    WarehouseControl warehouseControl = Session.getModelController(WarehouseControl.class);
+
     /** Creates a new instance of WarehouseTypeDescriptionTransferCache */
-    public WarehouseTypeDescriptionTransferCache(UserVisit userVisit, WarehouseControl warehouseControl) {
-        super(userVisit, warehouseControl);
+    protected WarehouseTypeDescriptionTransferCache() {
+        super();
     }
 
-    public WarehouseTypeDescriptionTransfer getTransfer(WarehouseTypeDescription warehouseTypeDescription) {
+    public WarehouseTypeDescriptionTransfer getTransfer(UserVisit userVisit, WarehouseTypeDescription warehouseTypeDescription) {
         var warehouseTypeDescriptionTransfer = get(warehouseTypeDescription);
         
         if(warehouseTypeDescriptionTransfer == null) {
@@ -37,7 +42,7 @@ public class WarehouseTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, warehouseTypeDescription.getLanguage());
             
             warehouseTypeDescriptionTransfer = new WarehouseTypeDescriptionTransfer(languageTransfer, warehouseTypeTransfer, warehouseTypeDescription.getDescription());
-            put(warehouseTypeDescription, warehouseTypeDescriptionTransfer);
+            put(userVisit, warehouseTypeDescription, warehouseTypeDescriptionTransfer);
         }
         
         return warehouseTypeDescriptionTransfer;

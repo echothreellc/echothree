@@ -22,20 +22,23 @@ import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.contactlist.server.entity.ContactList;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ContactListTransferCache
         extends BaseContactListTransferCache<ContactList, ContactListTransfer> {
-    
+
+    ContactListControl contactListControl = Session.getModelController(ContactListControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of ContactListTransferCache */
-    public ContactListTransferCache(UserVisit userVisit, ContactListControl contactListControl) {
-        super(userVisit, contactListControl);
+    protected ContactListTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public ContactListTransfer getContactListTransfer(ContactList contactList) {
+    public ContactListTransfer getContactListTransfer(UserVisit userVisit, ContactList contactList) {
         var contactListTransfer = get(contactList);
         
         if(contactListTransfer == null) {
@@ -48,11 +51,11 @@ public class ContactListTransferCache
             var defaultPartyContactListStatus = workflowControl.getWorkflowEntranceTransfer(userVisit, contactListDetail.getDefaultPartyContactListStatus());
             var isDefault = contactListDetail.getIsDefault();
             var sortOrder = contactListDetail.getSortOrder();
-            var description = contactListControl.getBestContactListDescription(contactList, getLanguage());
+            var description = contactListControl.getBestContactListDescription(contactList, getLanguage(userVisit));
             
             contactListTransfer = new ContactListTransfer(contactListName, contactListGroupTransfer, contactListTypeTransfer, contactListFrequencyTransfer,
                     defaultPartyContactListStatus, isDefault, sortOrder, description);
-            put(contactList, contactListTransfer);
+            put(userVisit, contactList, contactListTransfer);
         }
         
         return contactListTransfer;

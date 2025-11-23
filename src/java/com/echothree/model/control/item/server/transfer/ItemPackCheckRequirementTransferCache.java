@@ -22,19 +22,22 @@ import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.item.server.entity.ItemPackCheckRequirement;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ItemPackCheckRequirementTransferCache
         extends BaseItemTransferCache<ItemPackCheckRequirement, ItemPackCheckRequirementTransfer> {
-    
+
+    ItemControl itemControl = Session.getModelController(ItemControl.class);
     UomControl uomControl = Session.getModelController(UomControl.class);
     
     /** Creates a new instance of ItemPackCheckRequirementTransferCache */
-    public ItemPackCheckRequirementTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    protected ItemPackCheckRequirementTransferCache() {
+        super();
     }
     
     @Override
-    public ItemPackCheckRequirementTransfer getTransfer(ItemPackCheckRequirement itemPackCheckRequirement) {
+    public ItemPackCheckRequirementTransfer getTransfer(UserVisit userVisit, ItemPackCheckRequirement itemPackCheckRequirement) {
         var itemPackCheckRequirementTransfer = get(itemPackCheckRequirement);
         
         if(itemPackCheckRequirementTransfer == null) {
@@ -46,7 +49,7 @@ public class ItemPackCheckRequirementTransferCache
             var maximumQuantity = longMaximumQuantity == null ? null : longMaximumQuantity.toString();
             
             itemPackCheckRequirementTransfer = new ItemPackCheckRequirementTransfer(item, unitOfMeasureType, minimumQuantity, maximumQuantity);
-            put(itemPackCheckRequirement, itemPackCheckRequirementTransfer);
+            put(userVisit, itemPackCheckRequirement, itemPackCheckRequirementTransfer);
         }
         
         return itemPackCheckRequirementTransfer;

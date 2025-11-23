@@ -22,9 +22,14 @@ import com.echothree.model.control.queue.server.control.QueueControl;
 import com.echothree.model.data.queue.server.entity.QueueType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class QueueTypeTransferCache
         extends BaseQueueTransferCache<QueueType, QueueTypeTransfer> {
+
+    QueueControl queueControl = Session.getModelController(QueueControl.class);
 
     boolean includeQueuedEntityCount;
     boolean includeOldestQueuedEntityTime;
@@ -32,8 +37,8 @@ public class QueueTypeTransferCache
     boolean includeQueuedEntities;
     
     /** Creates a new instance of QueueTypeTransferCache */
-    public QueueTypeTransferCache(UserVisit userVisit, QueueControl queueControl) {
-        super(userVisit, queueControl);
+    protected QueueTypeTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {
@@ -47,7 +52,7 @@ public class QueueTypeTransferCache
         setIncludeEntityInstance(true);
     }
 
-    public QueueTypeTransfer getQueueTypeTransfer(QueueType queueType) {
+    public QueueTypeTransfer getQueueTypeTransfer(UserVisit userVisit, QueueType queueType) {
         var queueTypeTransfer = get(queueType);
 
         if(queueTypeTransfer == null) {
@@ -55,10 +60,10 @@ public class QueueTypeTransferCache
             var queueTypeName = queueTypeDetail.getQueueTypeName();
             var isDefault = queueTypeDetail.getIsDefault();
             var sortOrder = queueTypeDetail.getSortOrder();
-            var description = queueControl.getBestQueueTypeDescription(queueType, getLanguage());
+            var description = queueControl.getBestQueueTypeDescription(queueType, getLanguage(userVisit));
 
             queueTypeTransfer = new QueueTypeTransfer(queueTypeName, isDefault, sortOrder, description);
-            put(queueType, queueTypeTransfer);
+            put(userVisit, queueType, queueTypeTransfer);
             
             if(includeQueuedEntityCount) {
                 queueTypeTransfer.setQueuedEntityCount(queueControl.countQueuedEntitiesByQueueType(queueType));
@@ -69,7 +74,7 @@ public class QueueTypeTransferCache
                 
                 if(unformattedOldestQueuedEntityTime != null) {
                     queueTypeTransfer.setUnformattedOldestQueuedEntityTime(unformattedOldestQueuedEntityTime);
-                    queueTypeTransfer.setOldestQueuedEntityTime(formatTypicalDateTime(unformattedOldestQueuedEntityTime));
+                    queueTypeTransfer.setOldestQueuedEntityTime(formatTypicalDateTime(userVisit, unformattedOldestQueuedEntityTime));
                 }
             }
 
@@ -78,7 +83,7 @@ public class QueueTypeTransferCache
                 
                 if(unformattedLatestQueuedEntityTime != null) {
                     queueTypeTransfer.setUnformattedLatestQueuedEntityTime(unformattedLatestQueuedEntityTime);
-                    queueTypeTransfer.setLatestQueuedEntityTime(formatTypicalDateTime(unformattedLatestQueuedEntityTime));
+                    queueTypeTransfer.setLatestQueuedEntityTime(formatTypicalDateTime(userVisit, unformattedLatestQueuedEntityTime));
                 }
             }
             

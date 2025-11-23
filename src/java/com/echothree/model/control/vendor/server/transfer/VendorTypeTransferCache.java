@@ -26,7 +26,9 @@ import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.vendor.server.entity.VendorType;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class VendorTypeTransferCache
         extends BaseVendorTransferCache<VendorType, VendorTypeTransfer> {
     
@@ -35,15 +37,16 @@ public class VendorTypeTransferCache
     FreeOnBoardControl freeOnBoardControl = Session.getModelController(FreeOnBoardControl.class);
     ReturnPolicyControl returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
     TermControl termControl = Session.getModelController(TermControl.class);
+    VendorControl vendorControl = Session.getModelController(VendorControl.class);
 
     /** Creates a new instance of VendorTypeTransferCache */
-    public VendorTypeTransferCache(UserVisit userVisit, VendorControl vendorControl) {
-        super(userVisit, vendorControl);
+    protected VendorTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public VendorTypeTransfer getVendorTypeTransfer(VendorType vendorType) {
+    public VendorTypeTransfer getVendorTypeTransfer(UserVisit userVisit, VendorType vendorType) {
         var vendorTypeTransfer = get(vendorType);
         
         if(vendorTypeTransfer == null) {
@@ -68,12 +71,12 @@ public class VendorTypeTransferCache
             var defaultReferenceValidationPattern = vendorTypeDetail.getDefaultReferenceValidationPattern();
             var isDefault = vendorTypeDetail.getIsDefault();
             var sortOrder = vendorTypeDetail.getSortOrder();
-            var description = vendorControl.getBestVendorTypeDescription(vendorType, getLanguage());
+            var description = vendorControl.getBestVendorTypeDescription(vendorType, getLanguage(userVisit));
             
             vendorTypeTransfer = new VendorTypeTransfer(vendorTypeName, defaultTermTransfer, defaultFreeOnBoardTransfer, defaultCancellationPolicyTransfer, defaultReturnPolicyTransfer,
                     defaultApGlAccountTransfer, defaultHoldUntilComplete, defaultAllowBackorders, defaultAllowSubstitutions, defaultAllowCombiningShipments,
                     defaultRequireReference, defaultAllowReferenceDuplicates, defaultReferenceValidationPattern, isDefault, sortOrder, description);
-            put(vendorType, vendorTypeTransfer);
+            put(userVisit, vendorType, vendorTypeTransfer);
         }
         
         return vendorTypeTransfer;

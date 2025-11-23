@@ -29,14 +29,15 @@ import com.echothree.util.server.persistence.Session;
 
 public abstract class GenericBatchTransferCache<V extends GenericBatchTransfer>
         extends BaseBatchTransferCache<Batch, V> {
-    
+
+    BatchControl batchControl = Session.getModelController(BatchControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     boolean includeAliases;
     boolean includeEntities;
     
     /** Creates a new instance of GenericBatchTransferCache */
-    public GenericBatchTransferCache(UserVisit userVisit, BatchControl batchControl) {
-        super(userVisit, batchControl);
+    protected GenericBatchTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {
@@ -47,13 +48,13 @@ public abstract class GenericBatchTransferCache<V extends GenericBatchTransfer>
         setIncludeEntityInstance(true);
     }
     
-    protected WorkflowEntityStatusTransfer getBatchStatus(Batch batch, EntityInstance entityInstance) {
+    protected WorkflowEntityStatusTransfer getBatchStatus(UserVisit userVisit, Batch batch, EntityInstance entityInstance) {
         var batchWorkflow = batch.getLastDetail().getBatchType().getLastDetail().getBatchWorkflow();
         
         return batchWorkflow == null ? null : workflowControl.getWorkflowEntityStatusTransferByEntityInstance(userVisit, batchWorkflow, entityInstance);
     }
     
-    protected void handleOptions(Batch batch, V genericBatchTransfer) {
+    protected void handleOptions(UserVisit userVisit, Batch batch, V genericBatchTransfer) {
         if(includeAliases) {
             genericBatchTransfer.setBatchAliases(new ListWrapper<>(batchControl.getBatchAliasTransfersByBatch(userVisit, batch)));
         }

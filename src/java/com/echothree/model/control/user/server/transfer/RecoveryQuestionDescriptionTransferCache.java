@@ -20,16 +20,21 @@ import com.echothree.model.control.user.common.transfer.RecoveryQuestionDescript
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.user.server.entity.RecoveryQuestionDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class RecoveryQuestionDescriptionTransferCache
         extends BaseUserDescriptionTransferCache<RecoveryQuestionDescription, RecoveryQuestionDescriptionTransfer> {
-    
+
+    UserControl userControl = Session.getModelController(UserControl.class);
+
     /** Creates a new instance of RecoveryQuestionDescriptionTransferCache */
-    public RecoveryQuestionDescriptionTransferCache(UserVisit userVisit, UserControl userControl) {
-        super(userVisit, userControl);
+    protected RecoveryQuestionDescriptionTransferCache() {
+        super();
     }
     
-    public RecoveryQuestionDescriptionTransfer getRecoveryQuestionDescriptionTransfer(RecoveryQuestionDescription recoveryQuestionDescription) {
+    public RecoveryQuestionDescriptionTransfer getRecoveryQuestionDescriptionTransfer(UserVisit userVisit, RecoveryQuestionDescription recoveryQuestionDescription) {
         var recoveryQuestionDescriptionTransfer = get(recoveryQuestionDescription);
         
         if(recoveryQuestionDescriptionTransfer == null) {
@@ -37,7 +42,7 @@ public class RecoveryQuestionDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, recoveryQuestionDescription.getLanguage());
             
             recoveryQuestionDescriptionTransfer = new RecoveryQuestionDescriptionTransfer(languageTransfer, recoveryQuestionTransfer, recoveryQuestionDescription.getDescription());
-            put(recoveryQuestionDescription, recoveryQuestionDescriptionTransfer);
+            put(userVisit, recoveryQuestionDescription, recoveryQuestionDescriptionTransfer);
         }
         
         return recoveryQuestionDescriptionTransfer;

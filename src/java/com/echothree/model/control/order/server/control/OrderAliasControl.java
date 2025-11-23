@@ -44,12 +44,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class OrderAliasControl
         extends BaseOrderControl {
 
     /** Creates a new instance of OrderControl */
-    public OrderAliasControl() {
+    protected OrderAliasControl() {
         super();
     }
 
@@ -193,16 +195,15 @@ public class OrderAliasControl
     }
 
     public OrderAliasTypeTransfer getOrderAliasTypeTransfer(UserVisit userVisit, OrderAliasType orderAliasType) {
-        return getOrderTransferCaches(userVisit).getOrderAliasTypeTransferCache().getOrderAliasTypeTransfer(orderAliasType);
+        return orderAliasTypeTransferCache.getOrderAliasTypeTransfer(userVisit, orderAliasType);
     }
 
     public List<OrderAliasTypeTransfer> getOrderAliasTypeTransfers(UserVisit userVisit, OrderType orderType) {
         var orderAliasTypes = getOrderAliasTypes(orderType);
         List<OrderAliasTypeTransfer> orderAliasTypeTransfers = new ArrayList<>(orderAliasTypes.size());
-        var orderAliasTypeTransferCache = getOrderTransferCaches(userVisit).getOrderAliasTypeTransferCache();
 
         orderAliasTypes.forEach((orderAliasType) ->
-                orderAliasTypeTransfers.add(orderAliasTypeTransferCache.getOrderAliasTypeTransfer(orderAliasType))
+                orderAliasTypeTransfers.add(orderAliasTypeTransferCache.getOrderAliasTypeTransfer(userVisit, orderAliasType))
         );
 
         return orderAliasTypeTransfers;
@@ -418,7 +419,7 @@ public class OrderAliasControl
         var orderAliasTypeDescription = getOrderAliasTypeDescription(orderAliasType, language);
 
         if(orderAliasTypeDescription == null && !language.getIsDefault()) {
-            orderAliasTypeDescription = getOrderAliasTypeDescription(orderAliasType, getPartyControl().getDefaultLanguage());
+            orderAliasTypeDescription = getOrderAliasTypeDescription(orderAliasType, partyControl.getDefaultLanguage());
         }
 
         if(orderAliasTypeDescription == null) {
@@ -431,16 +432,15 @@ public class OrderAliasControl
     }
 
     public OrderAliasTypeDescriptionTransfer getOrderAliasTypeDescriptionTransfer(UserVisit userVisit, OrderAliasTypeDescription orderAliasTypeDescription) {
-        return getOrderTransferCaches(userVisit).getOrderAliasTypeDescriptionTransferCache().getOrderAliasTypeDescriptionTransfer(orderAliasTypeDescription);
+        return orderAliasTypeDescriptionTransferCache.getOrderAliasTypeDescriptionTransfer(userVisit, orderAliasTypeDescription);
     }
 
     public List<OrderAliasTypeDescriptionTransfer> getOrderAliasTypeDescriptionTransfersByOrderAliasType(UserVisit userVisit, OrderAliasType orderAliasType) {
         var orderAliasTypeDescriptions = getOrderAliasTypeDescriptionsByOrderAliasType(orderAliasType);
         List<OrderAliasTypeDescriptionTransfer> orderAliasTypeDescriptionTransfers = new ArrayList<>(orderAliasTypeDescriptions.size());
-        var orderAliasTypeDescriptionTransferCache = getOrderTransferCaches(userVisit).getOrderAliasTypeDescriptionTransferCache();
 
         orderAliasTypeDescriptions.forEach((orderAliasTypeDescription) ->
-                orderAliasTypeDescriptionTransfers.add(orderAliasTypeDescriptionTransferCache.getOrderAliasTypeDescriptionTransfer(orderAliasTypeDescription))
+                orderAliasTypeDescriptionTransfers.add(orderAliasTypeDescriptionTransferCache.getOrderAliasTypeDescriptionTransfer(userVisit, orderAliasTypeDescription))
         );
 
         return orderAliasTypeDescriptionTransfers;
@@ -624,16 +624,15 @@ public class OrderAliasControl
     }
 
     public OrderAliasTransfer getOrderAliasTransfer(UserVisit userVisit, OrderAlias orderAlias) {
-        return getOrderTransferCaches(userVisit).getOrderAliasTransferCache().getOrderAliasTransfer(orderAlias);
+        return orderAliasTransferCache.getOrderAliasTransfer(userVisit, orderAlias);
     }
 
     public List<OrderAliasTransfer> getOrderAliasTransfersByOrder(UserVisit userVisit, Order order) {
         var orderaliases = getOrderAliasesByOrder(order);
         List<OrderAliasTransfer> orderAliasTransfers = new ArrayList<>(orderaliases.size());
-        var orderAliasTransferCache = getOrderTransferCaches(userVisit).getOrderAliasTransferCache();
 
         orderaliases.forEach((orderAlias) ->
-                orderAliasTransfers.add(orderAliasTransferCache.getOrderAliasTransfer(orderAlias))
+                orderAliasTransfers.add(orderAliasTransferCache.getOrderAliasTransfer(userVisit, orderAlias))
         );
 
         return orderAliasTransfers;

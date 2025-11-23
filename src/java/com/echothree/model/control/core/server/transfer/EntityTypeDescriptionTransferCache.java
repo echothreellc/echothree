@@ -21,18 +21,20 @@ import com.echothree.model.control.core.server.control.EntityTypeControl;
 import com.echothree.model.data.core.server.entity.EntityTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EntityTypeDescriptionTransferCache
         extends BaseCoreDescriptionTransferCache<EntityTypeDescription, EntityTypeDescriptionTransfer> {
 
     EntityTypeControl entityTypeControl = Session.getModelController(EntityTypeControl.class);
 
     /** Creates a new instance of EntityTypeDescriptionTransferCache */
-    public EntityTypeDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected EntityTypeDescriptionTransferCache() {
+        super();
     }
     
-    public EntityTypeDescriptionTransfer getEntityTypeDescriptionTransfer(EntityTypeDescription entityTypeDescription) {
+    public EntityTypeDescriptionTransfer getEntityTypeDescriptionTransfer(UserVisit userVisit, EntityTypeDescription entityTypeDescription) {
         var entityTypeDescriptionTransfer = get(entityTypeDescription);
         
         if(entityTypeDescriptionTransfer == null) {
@@ -41,7 +43,7 @@ public class EntityTypeDescriptionTransferCache
             
             entityTypeDescriptionTransfer = new EntityTypeDescriptionTransfer(languageTransfer, entityTypeTransfer,
                     entityTypeDescription.getDescription());
-            put(entityTypeDescription, entityTypeDescriptionTransfer);
+            put(userVisit, entityTypeDescription, entityTypeDescriptionTransfer);
         }
         return entityTypeDescriptionTransfer;
     }

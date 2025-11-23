@@ -39,20 +39,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class VendorTypeLogic
         extends BaseLogic {
-    
-    private VendorTypeLogic() {
+
+    protected VendorTypeLogic() {
         super();
     }
-    
-    private static class VendorTypeLogicHolder {
-        static VendorTypeLogic instance = new VendorTypeLogic();
-    }
-    
+
     public static VendorTypeLogic getInstance() {
-        return VendorTypeLogicHolder.instance;
+        return CDI.current().select(VendorTypeLogic.class).get();
     }
 
     public VendorType createVendorType(final ExecutionErrorAccumulator eea, final String vendorTypeName, final Term defaultTerm,
@@ -109,7 +108,7 @@ public class VendorTypeLogic
         var parameterCount = (vendorTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
-            case 0:
+            case 0 -> {
                 if(allowDefault) {
                     vendorType = vendorControl.getDefaultVendorType(entityPermission);
 
@@ -119,8 +118,8 @@ public class VendorTypeLogic
                 } else {
                     handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                 }
-                break;
-            case 1:
+            }
+            case 1 -> {
                 if(vendorTypeName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.VendorType.name());
@@ -131,10 +130,9 @@ public class VendorTypeLogic
                 } else {
                     vendorType = getVendorTypeByName(eea, vendorTypeName, entityPermission);
                 }
-                break;
-            default:
-                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
-                break;
+            }
+            default ->
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
 
         return vendorType;

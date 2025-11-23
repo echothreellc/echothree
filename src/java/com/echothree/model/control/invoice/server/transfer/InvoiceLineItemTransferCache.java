@@ -24,24 +24,23 @@ import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.invoice.server.entity.InvoiceLineItem;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class InvoiceLineItemTransferCache
         extends BaseInvoiceTransferCache<InvoiceLineItem, InvoiceLineItemTransfer> {
 
-    InventoryControl inventoryControl;
-    ItemControl itemControl;
-    UomControl uomControl;
+    InventoryControl inventoryControl = Session.getModelController(InventoryControl.class);
+    InvoiceControl invoiceControl = Session.getModelController(InvoiceControl.class);
+    ItemControl itemControl = Session.getModelController(ItemControl.class);
+    UomControl uomControl = Session.getModelController(UomControl.class);
 
     /** Creates a new instance of InvoiceLineItemTransferCache */
-    public InvoiceLineItemTransferCache(UserVisit userVisit, InvoiceControl invoiceControl) {
-        super(userVisit, invoiceControl);
-
-        inventoryControl = Session.getModelController(InventoryControl.class);
-        itemControl = Session.getModelController(ItemControl.class);
-        uomControl = Session.getModelController(UomControl.class);
+    protected InvoiceLineItemTransferCache() {
+        super();
     }
 
-    public InvoiceLineItemTransfer getInvoiceLineItemTransfer(InvoiceLineItem invoiceLineItem) {
+    public InvoiceLineItemTransfer getInvoiceLineItemTransfer(UserVisit userVisit, InvoiceLineItem invoiceLineItem) {
         var invoiceLineItemTransfer = get(invoiceLineItem);
 
         if(invoiceLineItemTransfer == null) {
@@ -52,7 +51,7 @@ public class InvoiceLineItemTransferCache
             var quantity = invoiceLineItem.getQuantity();
             
             invoiceLineItemTransfer = new InvoiceLineItemTransfer(invoiceLine, item, inventoryCondition, unitOfMeasureType, quantity);
-            put(invoiceLineItem, invoiceLineItemTransfer);
+            put(userVisit, invoiceLineItem, invoiceLineItemTransfer);
         }
 
         return invoiceLineItemTransfer;

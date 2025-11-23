@@ -30,7 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class DeleteEntityMultipleListItemAttributeCommand
         extends BaseSimpleCommand<DeleteEntityMultipleListItemAttributeForm> {
 
@@ -70,7 +72,6 @@ public class DeleteEntityMultipleListItemAttributeCommand
                 var entityListItem = EntityAttributeLogic.getInstance().getEntityListItem(this, entityAttribute, form);
 
                 if(!hasExecutionErrors()) {
-                    var coreControl = getCoreControl();
                     var entityListItemAttribute = coreControl.getEntityMultipleListItemAttributeForUpdate(entityAttribute, entityInstance, entityListItem);
 
                     if(entityListItemAttribute != null) {

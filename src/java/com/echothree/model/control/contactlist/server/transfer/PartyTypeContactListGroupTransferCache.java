@@ -16,26 +16,27 @@
 
 package com.echothree.model.control.contactlist.server.transfer;
 
-import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.contactlist.common.transfer.PartyTypeContactListGroupTransfer;
 import com.echothree.model.control.contactlist.server.control.ContactListControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.contactlist.server.entity.PartyTypeContactListGroup;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PartyTypeContactListGroupTransferCache
         extends BaseContactListTransferCache<PartyTypeContactListGroup, PartyTypeContactListGroupTransfer> {
     
-    ChainControl chainControl = Session.getModelController(ChainControl.class);
+    ContactListControl contactListControl = Session.getModelController(ContactListControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of PartyTypeContactListGroupTransferCache */
-    public PartyTypeContactListGroupTransferCache(UserVisit userVisit, ContactListControl contactListControl) {
-        super(userVisit, contactListControl);
+    protected PartyTypeContactListGroupTransferCache() {
+        super();
     }
     
-    public PartyTypeContactListGroupTransfer getPartyTypeContactListGroupTransfer(PartyTypeContactListGroup partyTypeContactListGroup) {
+    public PartyTypeContactListGroupTransfer getPartyTypeContactListGroupTransfer(UserVisit userVisit, PartyTypeContactListGroup partyTypeContactListGroup) {
         var partyTypeContactListGroupTransfer = get(partyTypeContactListGroup);
         
         if(partyTypeContactListGroupTransfer == null) {
@@ -44,7 +45,7 @@ public class PartyTypeContactListGroupTransferCache
             var addWhenCreated = partyTypeContactListGroup.getAddWhenCreated();
             
             partyTypeContactListGroupTransfer = new PartyTypeContactListGroupTransfer(partyTypeTransfer, contactListGroupTransfer, addWhenCreated);
-            put(partyTypeContactListGroup, partyTypeContactListGroupTransfer);
+            put(userVisit, partyTypeContactListGroup, partyTypeContactListGroupTransfer);
         }
         
         return partyTypeContactListGroupTransfer;

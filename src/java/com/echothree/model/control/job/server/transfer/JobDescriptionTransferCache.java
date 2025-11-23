@@ -20,16 +20,21 @@ import com.echothree.model.control.job.common.transfer.JobDescriptionTransfer;
 import com.echothree.model.control.job.server.control.JobControl;
 import com.echothree.model.data.job.server.entity.JobDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class JobDescriptionTransferCache
         extends BaseJobDescriptionTransferCache<JobDescription, JobDescriptionTransfer> {
-    
+
+    JobControl jobControl = Session.getModelController(JobControl.class);
+
     /** Creates a new instance of JobDescriptionTransferCache */
-    public JobDescriptionTransferCache(UserVisit userVisit, JobControl jobControl) {
-        super(userVisit, jobControl);
+    protected JobDescriptionTransferCache() {
+        super();
     }
     
-    public JobDescriptionTransfer getJobDescriptionTransfer(JobDescription jobDescription) {
+    public JobDescriptionTransfer getJobDescriptionTransfer(UserVisit userVisit, JobDescription jobDescription) {
         var jobDescriptionTransfer = get(jobDescription);
         
         if(jobDescriptionTransfer == null) {
@@ -37,7 +42,7 @@ public class JobDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, jobDescription.getLanguage());
             
             jobDescriptionTransfer = new JobDescriptionTransfer(languageTransfer, jobTransfer, jobDescription.getDescription());
-            put(jobDescription, jobDescriptionTransfer);
+            put(userVisit, jobDescription, jobDescriptionTransfer);
         }
         
         return jobDescriptionTransfer;

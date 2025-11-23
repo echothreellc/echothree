@@ -20,19 +20,24 @@ import com.echothree.model.control.item.common.transfer.RelatedItemTransfer;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.item.server.entity.RelatedItem;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class RelatedItemTransferCache
         extends BaseItemTransferCache<RelatedItem, RelatedItemTransfer> {
-    
+
+    ItemControl itemControl = Session.getModelController(ItemControl.class);
+
     /** Creates a new instance of RelatedItemTransferCache */
-    public RelatedItemTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    protected RelatedItemTransferCache() {
+        super();
 
         setIncludeEntityInstance(true);
     }
     
     @Override
-    public RelatedItemTransfer getTransfer(RelatedItem relatedItem) {
+    public RelatedItemTransfer getTransfer(UserVisit userVisit, RelatedItem relatedItem) {
         var relatedItemTransfer = get(relatedItem);
         
         if(relatedItemTransfer == null) {
@@ -43,7 +48,7 @@ public class RelatedItemTransferCache
             var sortOrder = relatedItemDetail.getSortOrder();
             
             relatedItemTransfer = new RelatedItemTransfer(relatedItemType, fromItem, toItem, sortOrder);
-            put(relatedItem, relatedItemTransfer);
+            put(userVisit, relatedItem, relatedItemTransfer);
         }
         
         return relatedItemTransfer;

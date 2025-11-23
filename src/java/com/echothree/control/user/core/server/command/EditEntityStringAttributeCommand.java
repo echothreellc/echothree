@@ -40,7 +40,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EditEntityStringAttributeCommand
         extends BaseEditCommand<EntityStringAttributeSpec, EntityStringAttributeEdit> {
 
@@ -105,7 +107,6 @@ public class EditEntityStringAttributeCommand
                                         LanguageLogic.getInstance().getLanguageByName(this, languageIsoName);
 
                                 if(!hasExecutionErrors()) {
-                                    var coreControl = getCoreControl();
                                     EntityStringAttribute entityStringAttribute = null;
                                     var basePK = PersistenceUtils.getInstance().getBasePKFromEntityInstance(entityInstance);
 

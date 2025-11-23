@@ -21,18 +21,20 @@ import com.echothree.model.control.tag.server.control.TagControl;
 import com.echothree.model.data.tag.server.entity.TagScopeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class TagScopeDescriptionTransferCache
         extends BaseTagDescriptionTransferCache<TagScopeDescription, TagScopeDescriptionTransfer> {
 
     TagControl tagControl = Session.getModelController(TagControl.class);
 
     /** Creates a new instance of TagScopeDescriptionTransferCache */
-    public TagScopeDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected TagScopeDescriptionTransferCache() {
+        super();
     }
     
-    public TagScopeDescriptionTransfer getTagScopeDescriptionTransfer(TagScopeDescription tagScopeDescription) {
+    public TagScopeDescriptionTransfer getTagScopeDescriptionTransfer(UserVisit userVisit, TagScopeDescription tagScopeDescription) {
         var tagScopeDescriptionTransfer = get(tagScopeDescription);
         
         if(tagScopeDescriptionTransfer == null) {
@@ -40,7 +42,7 @@ public class TagScopeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, tagScopeDescription.getLanguage());
             
             tagScopeDescriptionTransfer = new TagScopeDescriptionTransfer(languageTransfer, tagScopeTransfer, tagScopeDescription.getDescription());
-            put(tagScopeDescription, tagScopeDescriptionTransfer);
+            put(userVisit, tagScopeDescription, tagScopeDescriptionTransfer);
         }
         
         return tagScopeDescriptionTransfer;

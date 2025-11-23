@@ -22,18 +22,21 @@ import com.echothree.model.control.queue.server.control.QueueControl;
 import com.echothree.model.data.queue.server.entity.QueuedEntity;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class QueuedEntityTransferCache
         extends BaseQueueTransferCache<QueuedEntity, QueuedEntityTransfer> {
 
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-        
+    QueueControl queueControl = Session.getModelController(QueueControl.class);
+
     /** Creates a new instance of QueuedEntityTransferCache */
-    public QueuedEntityTransferCache(UserVisit userVisit, QueueControl queueControl) {
-        super(userVisit, queueControl);
+    protected QueuedEntityTransferCache() {
+        super();
     }
 
-    public QueuedEntityTransfer getQueuedEntityTransfer(QueuedEntity queuedEntity) {
+    public QueuedEntityTransfer getQueuedEntityTransfer(UserVisit userVisit, QueuedEntity queuedEntity) {
         var queuedEntityTransfer = get(queuedEntity);
 
         if(queuedEntityTransfer == null) {
@@ -41,7 +44,7 @@ public class QueuedEntityTransferCache
             var entityInstance = entityInstanceControl.getEntityInstanceTransfer(userVisit, queuedEntity.getEntityInstance(), true, true, true, true);
 
             queuedEntityTransfer = new QueuedEntityTransfer(queueType, entityInstance);
-            put(queuedEntity, queuedEntityTransfer);
+            put(userVisit, queuedEntity, queuedEntityTransfer);
         }
 
         return queuedEntityTransfer;

@@ -51,20 +51,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.BaseEntity;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class SearchLogic
         extends BaseLogic {
 
-    private SearchLogic() {
+    protected SearchLogic() {
         super();
     }
 
-    private static class SearchLogicHolder {
-        static SearchLogic instance = new SearchLogic();
-    }
-
     public static SearchLogic getInstance() {
-        return SearchLogicHolder.instance;
+        return CDI.current().select(SearchLogic.class).get();
     }
     
     public SearchDefaultOperator getSearchDefaultOperatorByName(final ExecutionErrorAccumulator eea, final String searchDefaultOperatorName) {

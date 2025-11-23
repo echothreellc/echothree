@@ -20,19 +20,24 @@ import com.echothree.model.control.item.common.transfer.HarmonizedTariffSchedule
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.item.server.entity.HarmonizedTariffScheduleCodeUseType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class HarmonizedTariffScheduleCodeUseTypeTransferCache
         extends BaseItemTransferCache<HarmonizedTariffScheduleCodeUseType, HarmonizedTariffScheduleCodeUseTypeTransfer> {
-    
+
+    ItemControl itemControl = Session.getModelController(ItemControl.class);
+
     /** Creates a new instance of HarmonizedTariffScheduleCodeUseTypeTransferCache */
-    public HarmonizedTariffScheduleCodeUseTypeTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    protected HarmonizedTariffScheduleCodeUseTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
     @Override
-    public HarmonizedTariffScheduleCodeUseTypeTransfer getTransfer(HarmonizedTariffScheduleCodeUseType harmonizedTariffScheduleCodeUseType) {
+    public HarmonizedTariffScheduleCodeUseTypeTransfer getTransfer(UserVisit userVisit, HarmonizedTariffScheduleCodeUseType harmonizedTariffScheduleCodeUseType) {
         var harmonizedTariffScheduleCodeUseTypeTransfer = get(harmonizedTariffScheduleCodeUseType);
         
         if(harmonizedTariffScheduleCodeUseTypeTransfer == null) {
@@ -40,10 +45,10 @@ public class HarmonizedTariffScheduleCodeUseTypeTransferCache
             var harmonizedTariffScheduleCodeUseTypeName = harmonizedTariffScheduleCodeUseTypeDetail.getHarmonizedTariffScheduleCodeUseTypeName();
             var isDefault = harmonizedTariffScheduleCodeUseTypeDetail.getIsDefault();
             var sortOrder = harmonizedTariffScheduleCodeUseTypeDetail.getSortOrder();
-            var description = itemControl.getBestHarmonizedTariffScheduleCodeUseTypeDescription(harmonizedTariffScheduleCodeUseType, getLanguage());
+            var description = itemControl.getBestHarmonizedTariffScheduleCodeUseTypeDescription(harmonizedTariffScheduleCodeUseType, getLanguage(userVisit));
             
             harmonizedTariffScheduleCodeUseTypeTransfer = new HarmonizedTariffScheduleCodeUseTypeTransfer(harmonizedTariffScheduleCodeUseTypeName, isDefault, sortOrder, description);
-            put(harmonizedTariffScheduleCodeUseType, harmonizedTariffScheduleCodeUseTypeTransfer);
+            put(userVisit, harmonizedTariffScheduleCodeUseType, harmonizedTariffScheduleCodeUseTypeTransfer);
         }
         
         return harmonizedTariffScheduleCodeUseTypeTransfer;

@@ -40,12 +40,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class OrderShipmentGroupControl
         extends BaseOrderControl {
 
     /** Creates a new instance of OrderControl */
-    public OrderShipmentGroupControl() {
+    protected OrderShipmentGroupControl() {
         super();
     }
 
@@ -226,15 +228,14 @@ public class OrderShipmentGroupControl
     }
 
     public OrderShipmentGroupTransfer getOrderShipmentGroupTransfer(UserVisit userVisit, OrderShipmentGroup orderShipmentGroup) {
-        return getOrderTransferCaches(userVisit).getOrderShipmentGroupTransferCache().getOrderShipmentGroupTransfer(orderShipmentGroup);
+        return orderShipmentGroupTransferCache.getOrderShipmentGroupTransfer(userVisit, orderShipmentGroup);
     }
 
     public List<OrderShipmentGroupTransfer> getOrderShipmentGroupTransfers(UserVisit userVisit, Collection<OrderShipmentGroup> orderShipmentGroups) {
         List<OrderShipmentGroupTransfer> orderShipmentGroupTransfers = new ArrayList<>(orderShipmentGroups.size());
-        var orderShipmentGroupTransferCache = getOrderTransferCaches(userVisit).getOrderShipmentGroupTransferCache();
 
         orderShipmentGroups.forEach((orderShipmentGroup) ->
-                orderShipmentGroupTransfers.add(orderShipmentGroupTransferCache.getOrderShipmentGroupTransfer(orderShipmentGroup))
+                orderShipmentGroupTransfers.add(orderShipmentGroupTransferCache.getOrderShipmentGroupTransfer(userVisit, orderShipmentGroup))
         );
 
         return orderShipmentGroupTransfers;

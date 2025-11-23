@@ -20,32 +20,37 @@ import com.echothree.model.control.invoice.common.transfer.InvoiceTypeTransfer;
 import com.echothree.model.control.invoice.server.control.InvoiceControl;
 import com.echothree.model.data.invoice.server.entity.InvoiceType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class InvoiceTypeTransferCache
         extends BaseInvoiceTransferCache<InvoiceType, InvoiceTypeTransfer> {
-    
+
+    InvoiceControl invoiceControl = Session.getModelController(InvoiceControl.class);
+
     /** Creates a new instance of InvoiceTypeTransferCache */
-    public InvoiceTypeTransferCache(UserVisit userVisit, InvoiceControl invoiceControl) {
-        super(userVisit, invoiceControl);
+    protected InvoiceTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public InvoiceTypeTransfer getInvoiceTypeTransfer(InvoiceType invoiceType) {
+    public InvoiceTypeTransfer getInvoiceTypeTransfer(UserVisit userVisit, InvoiceType invoiceType) {
         var invoiceTypeTransfer = get(invoiceType);
         
         if(invoiceTypeTransfer == null) {
             var invoiceTypeDetail = invoiceType.getLastDetail();
             var invoiceTypeName = invoiceTypeDetail.getInvoiceTypeName();
             var parentInvoiceType = invoiceTypeDetail.getParentInvoiceType();
-            var parentInvoiceTypeTransfer = parentInvoiceType == null? null: getInvoiceTypeTransfer(parentInvoiceType);
+            var parentInvoiceTypeTransfer = parentInvoiceType == null ? null : getInvoiceTypeTransfer(userVisit, parentInvoiceType);
             var isDefault = invoiceTypeDetail.getIsDefault();
             var sortOrder = invoiceTypeDetail.getSortOrder();
-            var description = invoiceControl.getBestInvoiceTypeDescription(invoiceType, getLanguage());
+            var description = invoiceControl.getBestInvoiceTypeDescription(invoiceType, getLanguage(userVisit));
             
             invoiceTypeTransfer = new InvoiceTypeTransfer(invoiceTypeName, parentInvoiceTypeTransfer, isDefault, sortOrder,
                     description);
-            put(invoiceType, invoiceTypeTransfer);
+            put(userVisit, invoiceType, invoiceTypeTransfer);
         }
         
         return invoiceTypeTransfer;

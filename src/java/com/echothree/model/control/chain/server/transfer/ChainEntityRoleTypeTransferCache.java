@@ -22,20 +22,23 @@ import com.echothree.model.control.core.server.control.EntityTypeControl;
 import com.echothree.model.data.chain.server.entity.ChainEntityRoleType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ChainEntityRoleTypeTransferCache
         extends BaseChainTransferCache<ChainEntityRoleType, ChainEntityRoleTypeTransfer> {
 
+    ChainControl chainControl = Session.getModelController(ChainControl.class);
     EntityTypeControl entityTypeControl = Session.getModelController(EntityTypeControl.class);
 
     /** Creates a new instance of ChainEntityRoleTypeTransferCache */
-    public ChainEntityRoleTypeTransferCache(UserVisit userVisit, ChainControl chainControl) {
-        super(userVisit, chainControl);
+    protected ChainEntityRoleTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public ChainEntityRoleTypeTransfer getChainEntityRoleTypeTransfer(ChainEntityRoleType chainEntityRoleType) {
+    public ChainEntityRoleTypeTransfer getChainEntityRoleTypeTransfer(UserVisit userVisit, ChainEntityRoleType chainEntityRoleType) {
         var chainEntityRoleTypeTransfer = get(chainEntityRoleType);
         
         if(chainEntityRoleTypeTransfer == null) {
@@ -44,10 +47,10 @@ public class ChainEntityRoleTypeTransferCache
             var chainEntityRoleTypeName = chainEntityRoleTypeDetail.getChainEntityRoleTypeName();
             var entityType = entityTypeControl.getEntityTypeTransfer(userVisit, chainEntityRoleTypeDetail.getEntityType());
             var sortOrder = chainEntityRoleTypeDetail.getSortOrder();
-            var description = chainControl.getBestChainEntityRoleTypeDescription(chainEntityRoleType, getLanguage());
+            var description = chainControl.getBestChainEntityRoleTypeDescription(chainEntityRoleType, getLanguage(userVisit));
             
             chainEntityRoleTypeTransfer = new ChainEntityRoleTypeTransfer(chainType, chainEntityRoleTypeName, entityType, sortOrder, description);
-            put(chainEntityRoleType, chainEntityRoleTypeTransfer);
+            put(userVisit, chainEntityRoleType, chainEntityRoleTypeTransfer);
         }
         
         return chainEntityRoleTypeTransfer;

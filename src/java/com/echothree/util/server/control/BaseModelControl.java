@@ -28,6 +28,7 @@ import com.echothree.util.server.persistence.BaseEntity;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.persistence.ThreadSession;
 import java.sql.Connection;
+import javax.inject.Inject;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -36,8 +37,18 @@ public abstract class BaseModelControl {
     protected Session session;
     protected Connection connection;
     private Log log;
-    private PartyControl partyControl;
-    private WorkflowControl workflowControl;
+
+    @Inject
+    protected EntityInstanceControl entityInstanceControl;
+
+    @Inject
+    protected EventControl eventControl;
+
+    @Inject
+    protected PartyControl partyControl;
+
+    @Inject
+    protected WorkflowControl workflowControl;
     
     /** Creates a new instance of BaseModelControl */
     protected BaseModelControl() {
@@ -65,25 +76,7 @@ public abstract class BaseModelControl {
     //   Utilities
     // --------------------------------------------------------------------------------
 
-    protected PartyControl getPartyControl() {
-        if(partyControl == null) {
-            partyControl = Session.getModelController(PartyControl.class);
-        }
-        
-        return partyControl;
-    }
-    
-    protected WorkflowControl getWorkflowControl() {
-        if(workflowControl == null) {
-            workflowControl = Session.getModelController(WorkflowControl.class);
-        }
-
-        return workflowControl;
-    }
-    
     protected EntityInstance getEntityInstanceByBasePK(final BasePK pk) {
-        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-
         return entityInstanceControl.getEntityInstanceByBasePK(pk);
     }
     
@@ -93,22 +86,16 @@ public abstract class BaseModelControl {
 
     protected Event sendEvent(final BasePK basePK, final EventTypes eventType, final BasePK relatedBasePK,
             final EventTypes relatedEventType, final BasePK createdByBasePK) {
-        var eventControl = Session.getModelController(EventControl.class);
-
         return eventControl.sendEvent(basePK, eventType, relatedBasePK, relatedEventType, createdByBasePK);
     }
     
     protected Event sendEvent(final EntityInstance entityInstance, final EventTypes eventType, final BasePK relatedBasePK,
             final EventTypes relatedEventType, final BasePK createdByBasePK) {
-        var eventControl = Session.getModelController(EventControl.class);
-
         return eventControl.sendEvent(entityInstance, eventType, relatedBasePK, relatedEventType, createdByBasePK);
     }
     
     public Event sendEvent(final EntityInstance entityInstance, final EventTypes eventType, final EntityInstance relatedEntityInstance,
             final EventTypes relatedEventType, final BasePK createdByBasePK) {
-        var eventControl = Session.getModelController(EventControl.class);
-
         return eventControl.sendEvent(entityInstance, eventType, relatedEntityInstance, relatedEventType, createdByBasePK);
     }
     

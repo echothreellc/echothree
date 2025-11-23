@@ -20,26 +20,30 @@ import com.echothree.model.control.inventory.common.transfer.InventoryLocationGr
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.data.inventory.server.entity.InventoryLocationGroupDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class InventoryLocationGroupDescriptionTransferCache
         extends BaseInventoryDescriptionTransferCache<InventoryLocationGroupDescription, InventoryLocationGroupDescriptionTransfer> {
-    
+
+    InventoryControl inventoryControl = Session.getModelController(InventoryControl.class);
+
     /** Creates a new instance of InventoryLocationGroupDescriptionTransferCache */
-    public InventoryLocationGroupDescriptionTransferCache(UserVisit userVisit, InventoryControl inventoryControl) {
-        super(userVisit, inventoryControl);
+    protected InventoryLocationGroupDescriptionTransferCache() {
+        super();
     }
     
     @Override
-    public InventoryLocationGroupDescriptionTransfer getTransfer(InventoryLocationGroupDescription inventoryLocationGroupDescription) {
+    public InventoryLocationGroupDescriptionTransfer getTransfer(UserVisit userVisit, InventoryLocationGroupDescription inventoryLocationGroupDescription) {
         var inventoryLocationGroupDescriptionTransfer = get(inventoryLocationGroupDescription);
         
         if(inventoryLocationGroupDescriptionTransfer == null) {
-            var inventoryLocationGroupTransferCache = inventoryControl.getInventoryTransferCaches(userVisit).getInventoryLocationGroupTransferCache();
-            var inventoryLocationGroupTransfer = inventoryLocationGroupTransferCache.getTransfer(inventoryLocationGroupDescription.getInventoryLocationGroup());
+            var inventoryLocationGroupTransfer = inventoryControl.getInventoryLocationGroupTransfer(userVisit, inventoryLocationGroupDescription.getInventoryLocationGroup());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, inventoryLocationGroupDescription.getLanguage());
             
             inventoryLocationGroupDescriptionTransfer = new InventoryLocationGroupDescriptionTransfer(languageTransfer, inventoryLocationGroupTransfer, inventoryLocationGroupDescription.getDescription());
-            put(inventoryLocationGroupDescription, inventoryLocationGroupDescriptionTransfer);
+            put(userVisit, inventoryLocationGroupDescription, inventoryLocationGroupDescriptionTransfer);
         }
         
         return inventoryLocationGroupDescriptionTransfer;

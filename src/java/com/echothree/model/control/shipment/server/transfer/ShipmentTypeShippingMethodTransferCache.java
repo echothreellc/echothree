@@ -17,12 +17,14 @@
 package com.echothree.model.control.shipment.server.transfer;
 
 import com.echothree.model.control.shipment.common.transfer.ShipmentTypeShippingMethodTransfer;
-import com.echothree.model.control.shipment.server.ShipmentControl;
+import com.echothree.model.control.shipment.server.control.ShipmentControl;
 import com.echothree.model.control.shipping.server.control.ShippingControl;
 import com.echothree.model.data.shipment.server.entity.ShipmentTypeShippingMethod;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ShipmentTypeShippingMethodTransferCache
         extends BaseShipmentTransferCache<ShipmentTypeShippingMethod, ShipmentTypeShippingMethodTransfer> {
 
@@ -30,12 +32,12 @@ public class ShipmentTypeShippingMethodTransferCache
     ShippingControl shippingControl = Session.getModelController(ShippingControl.class);
 
     /** Creates a new instance of ShipmentTypeShippingMethodTransferCache */
-    public ShipmentTypeShippingMethodTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected ShipmentTypeShippingMethodTransferCache() {
+        super();
     }
 
     @Override
-    public ShipmentTypeShippingMethodTransfer getTransfer(ShipmentTypeShippingMethod shipmentTypeShippingMethod) {
+    public ShipmentTypeShippingMethodTransfer getTransfer(UserVisit userVisit, ShipmentTypeShippingMethod shipmentTypeShippingMethod) {
         var shipmentTypeShippingMethodTransfer = get(shipmentTypeShippingMethod);
         
         if(shipmentTypeShippingMethodTransfer == null) {
@@ -46,7 +48,7 @@ public class ShipmentTypeShippingMethodTransferCache
             
             shipmentTypeShippingMethodTransfer = new ShipmentTypeShippingMethodTransfer(shipmentType, shippingMethod, isDefault,
                     sortOrder);
-            put(shipmentTypeShippingMethod, shipmentTypeShippingMethodTransfer);
+            put(userVisit, shipmentTypeShippingMethod, shipmentTypeShippingMethodTransfer);
         }
         
         return shipmentTypeShippingMethodTransfer;

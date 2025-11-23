@@ -24,21 +24,24 @@ import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.item.server.entity.ItemUnitCustomerTypeLimit;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ItemUnitCustomerTypeLimitTransferCache
         extends BaseItemTransferCache<ItemUnitCustomerTypeLimit, ItemUnitCustomerTypeLimitTransfer> {
     
     InventoryControl inventoryControl = Session.getModelController(InventoryControl.class);
+    ItemControl itemControl = Session.getModelController(ItemControl.class);
     UomControl uomControl = Session.getModelController(UomControl.class);
     CustomerControl customerControl = Session.getModelController(CustomerControl.class);
     
     /** Creates a new instance of ItemUnitCustomerTypeLimitTransferCache */
-    public ItemUnitCustomerTypeLimitTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    protected ItemUnitCustomerTypeLimitTransferCache() {
+        super();
     }
     
     @Override
-    public ItemUnitCustomerTypeLimitTransfer getTransfer(ItemUnitCustomerTypeLimit itemUnitCustomerTypeLimit) {
+    public ItemUnitCustomerTypeLimitTransfer getTransfer(UserVisit userVisit, ItemUnitCustomerTypeLimit itemUnitCustomerTypeLimit) {
         var itemUnitCustomerTypeLimitTransfer = get(itemUnitCustomerTypeLimit);
         
         if(itemUnitCustomerTypeLimitTransfer == null) {
@@ -53,7 +56,7 @@ public class ItemUnitCustomerTypeLimitTransferCache
             
             itemUnitCustomerTypeLimitTransfer = new ItemUnitCustomerTypeLimitTransfer(item, inventoryCondition, unitOfMeasureType, customerType,
                     minimumQuantity, maximumQuantity);
-            put(itemUnitCustomerTypeLimit, itemUnitCustomerTypeLimitTransfer);
+            put(userVisit, itemUnitCustomerTypeLimit, itemUnitCustomerTypeLimitTransfer);
         }
         
         return itemUnitCustomerTypeLimitTransfer;

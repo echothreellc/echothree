@@ -20,16 +20,21 @@ import com.echothree.model.control.index.common.transfer.IndexDescriptionTransfe
 import com.echothree.model.control.index.server.control.IndexControl;
 import com.echothree.model.data.index.server.entity.IndexDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class IndexDescriptionTransferCache
         extends BaseIndexDescriptionTransferCache<IndexDescription, IndexDescriptionTransfer> {
-    
+
+    IndexControl indexControl = Session.getModelController(IndexControl.class);
+
     /** Creates a new instance of IndexDescriptionTransferCache */
-    public IndexDescriptionTransferCache(UserVisit userVisit, IndexControl indexControl) {
-        super(userVisit, indexControl);
+    protected IndexDescriptionTransferCache() {
+        super();
     }
     
-    public IndexDescriptionTransfer getIndexDescriptionTransfer(IndexDescription indexDescription) {
+    public IndexDescriptionTransfer getIndexDescriptionTransfer(UserVisit userVisit, IndexDescription indexDescription) {
         var indexDescriptionTransfer = get(indexDescription);
         
         if(indexDescriptionTransfer == null) {
@@ -37,7 +42,7 @@ public class IndexDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, indexDescription.getLanguage());
             
             indexDescriptionTransfer = new IndexDescriptionTransfer(languageTransfer, indexTransfer, indexDescription.getDescription());
-            put(indexDescription, indexDescriptionTransfer);
+            put(userVisit, indexDescription, indexDescriptionTransfer);
         }
         return indexDescriptionTransfer;
     }

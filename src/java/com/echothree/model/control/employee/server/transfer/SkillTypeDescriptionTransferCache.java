@@ -20,16 +20,21 @@ import com.echothree.model.control.employee.common.transfer.SkillTypeDescription
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.data.employee.server.entity.SkillTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class SkillTypeDescriptionTransferCache
         extends BaseEmployeeDescriptionTransferCache<SkillTypeDescription, SkillTypeDescriptionTransfer> {
-    
+
+    EmployeeControl employeeControl = Session.getModelController(EmployeeControl.class);
+
     /** Creates a new instance of SkillTypeDescriptionTransferCache */
-    public SkillTypeDescriptionTransferCache(UserVisit userVisit, EmployeeControl employeeControl) {
-        super(userVisit, employeeControl);
+    protected SkillTypeDescriptionTransferCache() {
+        super();
     }
     
-    public SkillTypeDescriptionTransfer getSkillTypeDescriptionTransfer(SkillTypeDescription skillTypeDescription) {
+    public SkillTypeDescriptionTransfer getSkillTypeDescriptionTransfer(UserVisit userVisit, SkillTypeDescription skillTypeDescription) {
         var skillTypeDescriptionTransfer = get(skillTypeDescription);
         
         if(skillTypeDescriptionTransfer == null) {
@@ -38,7 +43,7 @@ public class SkillTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, skillTypeDescription.getLanguage());
             
             skillTypeDescriptionTransfer = new SkillTypeDescriptionTransfer(languageTransfer, skillTypeTransfer, skillTypeDescription.getDescription());
-            put(skillTypeDescription, skillTypeDescriptionTransfer);
+            put(userVisit, skillTypeDescription, skillTypeDescriptionTransfer);
         }
         
         return skillTypeDescriptionTransfer;

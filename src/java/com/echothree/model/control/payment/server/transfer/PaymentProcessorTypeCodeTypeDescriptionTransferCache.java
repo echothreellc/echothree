@@ -21,19 +21,21 @@ import com.echothree.model.control.payment.server.control.PaymentProcessorTypeCo
 import com.echothree.model.data.payment.server.entity.PaymentProcessorTypeCodeTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PaymentProcessorTypeCodeTypeDescriptionTransferCache
         extends BasePaymentDescriptionTransferCache<PaymentProcessorTypeCodeTypeDescription, PaymentProcessorTypeCodeTypeDescriptionTransfer> {
 
     PaymentProcessorTypeCodeTypeControl paymentProcessorTypeCodeType = Session.getModelController(PaymentProcessorTypeCodeTypeControl.class);
 
     /** Creates a new instance of PaymentProcessorTypeDescriptionTransferCache */
-    public PaymentProcessorTypeCodeTypeDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected PaymentProcessorTypeCodeTypeDescriptionTransferCache() {
+        super();
     }
     
     @Override
-    public PaymentProcessorTypeCodeTypeDescriptionTransfer getTransfer(PaymentProcessorTypeCodeTypeDescription paymentProcessorTypeCodeTypeDescription) {
+    public PaymentProcessorTypeCodeTypeDescriptionTransfer getTransfer(UserVisit userVisit, PaymentProcessorTypeCodeTypeDescription paymentProcessorTypeCodeTypeDescription) {
         var paymentProcessorTypeCodeTypeDescriptionTransfer = get(paymentProcessorTypeCodeTypeDescription);
         
         if(paymentProcessorTypeCodeTypeDescriptionTransfer == null) {
@@ -41,7 +43,7 @@ public class PaymentProcessorTypeCodeTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, paymentProcessorTypeCodeTypeDescription.getLanguage());
             
             paymentProcessorTypeCodeTypeDescriptionTransfer = new PaymentProcessorTypeCodeTypeDescriptionTransfer(languageTransfer, paymentProcessorTypeCodeTypeTransfer, paymentProcessorTypeCodeTypeDescription.getDescription());
-            put(paymentProcessorTypeCodeTypeDescription, paymentProcessorTypeCodeTypeDescriptionTransfer);
+            put(userVisit, paymentProcessorTypeCodeTypeDescription, paymentProcessorTypeCodeTypeDescriptionTransfer);
         }
         
         return paymentProcessorTypeCodeTypeDescriptionTransfer;

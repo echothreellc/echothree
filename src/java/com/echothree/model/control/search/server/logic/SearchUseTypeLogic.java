@@ -25,28 +25,27 @@ import com.echothree.model.control.search.common.exception.DuplicateSearchUseTyp
 import com.echothree.model.control.search.common.exception.UnknownDefaultSearchUseTypeException;
 import com.echothree.model.control.search.common.exception.UnknownSearchUseTypeNameException;
 import com.echothree.model.control.search.server.control.SearchControl;
-import com.echothree.model.data.search.server.entity.SearchUseType;
 import com.echothree.model.data.party.server.entity.Language;
+import com.echothree.model.data.search.server.entity.SearchUseType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class SearchUseTypeLogic
         extends BaseLogic {
 
-    private SearchUseTypeLogic() {
+    protected SearchUseTypeLogic() {
         super();
     }
 
-    private static class SearchUseTypeLogicHolder {
-        static SearchUseTypeLogic instance = new SearchUseTypeLogic();
-    }
-
     public static SearchUseTypeLogic getInstance() {
-        return SearchUseTypeLogic.SearchUseTypeLogicHolder.instance;
+        return CDI.current().select(SearchUseTypeLogic.class).get();
     }
 
     public SearchUseType createSearchUseType(final ExecutionErrorAccumulator eea, final String searchUseTypeName,
@@ -96,7 +95,7 @@ public class SearchUseTypeLogic
         var parameterCount = (searchUseTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
-            case 0:
+            case 0 -> {
                 if(allowDefault) {
                     searchUseType = searchControl.getDefaultSearchUseType(entityPermission);
 
@@ -106,8 +105,8 @@ public class SearchUseTypeLogic
                 } else {
                     handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                 }
-                break;
-            case 1:
+            }
+            case 1 -> {
                 if(searchUseTypeName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.SearchUseType.name());
@@ -118,10 +117,9 @@ public class SearchUseTypeLogic
                 } else {
                     searchUseType = getSearchUseTypeByName(eea, searchUseTypeName, entityPermission);
                 }
-                break;
-            default:
-                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
-                break;
+            }
+            default ->
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
 
         return searchUseType;

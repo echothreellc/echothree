@@ -23,7 +23,9 @@ import com.echothree.model.control.shipping.server.control.ShippingControl;
 import com.echothree.model.data.order.server.entity.OrderShipmentGroup;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class OrderShipmentGroupTransferCache
         extends BaseOrderTransferCache<OrderShipmentGroup, OrderShipmentGroupTransfer> {
     
@@ -32,13 +34,13 @@ public class OrderShipmentGroupTransferCache
     ShippingControl shippingControl = Session.getModelController(ShippingControl.class);;
     
     /** Creates a new instance of OrderShipmentGroupTransferCache */
-    public OrderShipmentGroupTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected OrderShipmentGroupTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public OrderShipmentGroupTransfer getOrderShipmentGroupTransfer(OrderShipmentGroup orderShipmentGroup) {
+    public OrderShipmentGroupTransfer getOrderShipmentGroupTransfer(UserVisit userVisit, OrderShipmentGroup orderShipmentGroup) {
         var orderShipmentGroupTransfer = get(orderShipmentGroup);
         
         if(orderShipmentGroupTransfer == null) {
@@ -54,7 +56,7 @@ public class OrderShipmentGroupTransferCache
             
             orderShipmentGroupTransfer = new OrderShipmentGroupTransfer(orderShipmentGroupSequence, itemDeliveryTypeTransfer, isDefault,
                     partyContactMechanismTransfer, shippingMethodTransfer, holdUntilComplete);
-            put(orderShipmentGroup, orderShipmentGroupTransfer);
+            put(userVisit, orderShipmentGroup, orderShipmentGroupTransfer);
         }
         
         return orderShipmentGroupTransfer;

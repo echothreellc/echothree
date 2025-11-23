@@ -21,20 +21,22 @@ import com.echothree.model.control.order.server.control.OrderPriorityControl;
 import com.echothree.model.data.order.server.entity.OrderPriority;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class OrderPriorityTransferCache
         extends BaseOrderTransferCache<OrderPriority, OrderPriorityTransfer> {
 
     OrderPriorityControl orderPriorityControl = Session.getModelController(OrderPriorityControl.class);
 
     /** Creates a new instance of OrderPriorityTransferCache */
-    public OrderPriorityTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected OrderPriorityTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public OrderPriorityTransfer getOrderPriorityTransfer(OrderPriority orderPriority) {
+    public OrderPriorityTransfer getOrderPriorityTransfer(UserVisit userVisit, OrderPriority orderPriority) {
         var orderPriorityTransfer = get(orderPriority);
         
         if(orderPriorityTransfer == null) {
@@ -43,10 +45,10 @@ public class OrderPriorityTransferCache
             var priority = orderPriorityDetail.getPriority();
             var isDefault = orderPriorityDetail.getIsDefault();
             var sortOrder = orderPriorityDetail.getSortOrder();
-            var description = orderPriorityControl.getBestOrderPriorityDescription(orderPriority, getLanguage());
+            var description = orderPriorityControl.getBestOrderPriorityDescription(orderPriority, getLanguage(userVisit));
             
             orderPriorityTransfer = new OrderPriorityTransfer(orderPriorityName, priority, isDefault, sortOrder, description);
-            put(orderPriority, orderPriorityTransfer);
+            put(userVisit, orderPriority, orderPriorityTransfer);
         }
         
         return orderPriorityTransfer;

@@ -27,7 +27,16 @@ import com.echothree.model.control.communication.common.transfer.CommunicationEv
 import com.echothree.model.control.communication.common.transfer.CommunicationSourceDescriptionTransfer;
 import com.echothree.model.control.communication.common.transfer.CommunicationSourceTransfer;
 import com.echothree.model.control.communication.common.transfer.CommunicationSourceTypeTransfer;
-import com.echothree.model.control.communication.server.transfer.CommunicationTransferCaches;
+import com.echothree.model.control.communication.server.transfer.CommunicationEmailSourceTransferCache;
+import com.echothree.model.control.communication.server.transfer.CommunicationEventPurposeDescriptionTransferCache;
+import com.echothree.model.control.communication.server.transfer.CommunicationEventPurposeTransferCache;
+import com.echothree.model.control.communication.server.transfer.CommunicationEventRoleTransferCache;
+import com.echothree.model.control.communication.server.transfer.CommunicationEventRoleTypeTransferCache;
+import com.echothree.model.control.communication.server.transfer.CommunicationEventTransferCache;
+import com.echothree.model.control.communication.server.transfer.CommunicationEventTypeTransferCache;
+import com.echothree.model.control.communication.server.transfer.CommunicationSourceDescriptionTransferCache;
+import com.echothree.model.control.communication.server.transfer.CommunicationSourceTransferCache;
+import com.echothree.model.control.communication.server.transfer.CommunicationSourceTypeTransferCache;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
@@ -89,29 +98,52 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
+@RequestScoped
 public class CommunicationControl
         extends BaseModelControl {
     
     /** Creates a new instance of CommunicationControl */
-    public CommunicationControl() {
+    protected CommunicationControl() {
         super();
     }
     
     // --------------------------------------------------------------------------------
     //   Communication Transfer Caches
     // --------------------------------------------------------------------------------
-    
-    private CommunicationTransferCaches communicationTransferCaches;
-    
-    public CommunicationTransferCaches getCommunicationTransferCaches(UserVisit userVisit) {
-        if(communicationTransferCaches == null) {
-            communicationTransferCaches = new CommunicationTransferCaches(userVisit, this);
-        }
-        
-        return communicationTransferCaches;
-    }
-    
+
+    @Inject
+    CommunicationEventRoleTypeTransferCache communicationEventRoleTypeTransferCache;
+
+    @Inject
+    CommunicationEventTypeTransferCache communicationEventTypeTransferCache;
+
+    @Inject
+    CommunicationEventPurposeTransferCache communicationEventPurposeTransferCache;
+
+    @Inject
+    CommunicationEventPurposeDescriptionTransferCache communicationEventPurposeDescriptionTransferCache;
+
+    @Inject
+    CommunicationEventTransferCache communicationEventTransferCache;
+
+    @Inject
+    CommunicationEventRoleTransferCache communicationEventRoleTransferCache;
+
+    @Inject
+    CommunicationSourceTypeTransferCache communicationSourceTypeTransferCache;
+
+    @Inject
+    CommunicationSourceTransferCache communicationSourceTransferCache;
+
+    @Inject
+    CommunicationSourceDescriptionTransferCache communicationSourceDescriptionTransferCache;
+
+    @Inject
+    CommunicationEmailSourceTransferCache communicationEmailSourceTransferCache;
+
     // --------------------------------------------------------------------------------
     //   Communication Event Purposes
     // --------------------------------------------------------------------------------
@@ -249,16 +281,15 @@ public class CommunicationControl
     }
     
     public CommunicationEventPurposeTransfer getCommunicationEventPurposeTransfer(UserVisit userVisit, CommunicationEventPurpose communicationEventPurpose) {
-        return getCommunicationTransferCaches(userVisit).getCommunicationEventPurposeTransferCache().getCommunicationEventPurposeTransfer(communicationEventPurpose);
+        return communicationEventPurposeTransferCache.getCommunicationEventPurposeTransfer(userVisit, communicationEventPurpose);
     }
     
     public List<CommunicationEventPurposeTransfer> getCommunicationEventPurposeTransfers(UserVisit userVisit) {
         var communicationEventPurposes = getCommunicationEventPurposes();
         List<CommunicationEventPurposeTransfer> communicationEventPurposeTransfers = new ArrayList<>(communicationEventPurposes.size());
-        var communicationEventPurposeTransferCache = getCommunicationTransferCaches(userVisit).getCommunicationEventPurposeTransferCache();
         
         communicationEventPurposes.forEach((communicationEventPurpose) ->
-                communicationEventPurposeTransfers.add(communicationEventPurposeTransferCache.getCommunicationEventPurposeTransfer(communicationEventPurpose))
+                communicationEventPurposeTransfers.add(communicationEventPurposeTransferCache.getCommunicationEventPurposeTransfer(userVisit, communicationEventPurpose))
         );
         
         return communicationEventPurposeTransfers;
@@ -478,7 +509,7 @@ public class CommunicationControl
         var communicationEventPurposeDescription = getCommunicationEventPurposeDescription(communicationEventPurpose, language);
         
         if(communicationEventPurposeDescription == null && !language.getIsDefault()) {
-            communicationEventPurposeDescription = getCommunicationEventPurposeDescription(communicationEventPurpose, getPartyControl().getDefaultLanguage());
+            communicationEventPurposeDescription = getCommunicationEventPurposeDescription(communicationEventPurpose, partyControl.getDefaultLanguage());
         }
         
         if(communicationEventPurposeDescription == null) {
@@ -491,16 +522,15 @@ public class CommunicationControl
     }
     
     public CommunicationEventPurposeDescriptionTransfer getCommunicationEventPurposeDescriptionTransfer(UserVisit userVisit, CommunicationEventPurposeDescription communicationEventPurposeDescription) {
-        return getCommunicationTransferCaches(userVisit).getCommunicationEventPurposeDescriptionTransferCache().getCommunicationEventPurposeDescriptionTransfer(communicationEventPurposeDescription);
+        return communicationEventPurposeDescriptionTransferCache.getCommunicationEventPurposeDescriptionTransfer(userVisit, communicationEventPurposeDescription);
     }
     
     public List<CommunicationEventPurposeDescriptionTransfer> getCommunicationEventPurposeDescriptionTransfers(UserVisit userVisit, CommunicationEventPurpose communicationEventPurpose) {
         var communicationEventPurposeDescriptions = getCommunicationEventPurposeDescriptionsByCommunicationEventPurpose(communicationEventPurpose);
         List<CommunicationEventPurposeDescriptionTransfer> communicationEventPurposeDescriptionTransfers = new ArrayList<>(communicationEventPurposeDescriptions.size());
-        var communicationEventPurposeDescriptionTransferCache = getCommunicationTransferCaches(userVisit).getCommunicationEventPurposeDescriptionTransferCache();
         
         communicationEventPurposeDescriptions.forEach((communicationEventPurposeDescription) ->
-                communicationEventPurposeDescriptionTransfers.add(communicationEventPurposeDescriptionTransferCache.getCommunicationEventPurposeDescriptionTransfer(communicationEventPurposeDescription))
+                communicationEventPurposeDescriptionTransfers.add(communicationEventPurposeDescriptionTransferCache.getCommunicationEventPurposeDescriptionTransfer(userVisit, communicationEventPurposeDescription))
         );
         
         return communicationEventPurposeDescriptionTransfers;
@@ -578,7 +608,7 @@ public class CommunicationControl
     
     public CommunicationEventRoleTypeTransfer getCommunicationEventRoleTypeTransfer(UserVisit userVisit,
             CommunicationEventRoleType communicationEventRoleType) {
-        return getCommunicationTransferCaches(userVisit).getCommunicationEventRoleTypeTransferCache().getCommunicationEventRoleTypeTransfer(communicationEventRoleType);
+        return communicationEventRoleTypeTransferCache.getCommunicationEventRoleTypeTransfer(userVisit, communicationEventRoleType);
     }
     
     // --------------------------------------------------------------------------------
@@ -617,7 +647,7 @@ public class CommunicationControl
         var communicationEventRoleTypeDescription = getCommunicationEventRoleTypeDescription(communicationEventRoleType, language);
         
         if(communicationEventRoleTypeDescription == null && !language.getIsDefault()) {
-            communicationEventRoleTypeDescription = getCommunicationEventRoleTypeDescription(communicationEventRoleType, getPartyControl().getDefaultLanguage());
+            communicationEventRoleTypeDescription = getCommunicationEventRoleTypeDescription(communicationEventRoleType, partyControl.getDefaultLanguage());
         }
         
         if(communicationEventRoleTypeDescription == null) {
@@ -669,7 +699,7 @@ public class CommunicationControl
     
     public CommunicationEventTypeTransfer getCommunicationEventTypeTransfer(UserVisit userVisit,
             CommunicationEventType communicationEventType) {
-        return getCommunicationTransferCaches(userVisit).getCommunicationEventTypeTransferCache().getCommunicationEventTypeTransfer(communicationEventType);
+        return communicationEventTypeTransferCache.getCommunicationEventTypeTransfer(userVisit, communicationEventType);
     }
     
     // --------------------------------------------------------------------------------
@@ -708,7 +738,7 @@ public class CommunicationControl
         var communicationEventTypeDescription = getCommunicationEventTypeDescription(communicationEventType, language);
         
         if(communicationEventTypeDescription == null && !language.getIsDefault()) {
-            communicationEventTypeDescription = getCommunicationEventTypeDescription(communicationEventType, getPartyControl().getDefaultLanguage());
+            communicationEventTypeDescription = getCommunicationEventTypeDescription(communicationEventType, partyControl.getDefaultLanguage());
         }
         
         if(communicationEventTypeDescription == null) {
@@ -863,15 +893,14 @@ public class CommunicationControl
     }
     
     public CommunicationEventTransfer getCommunicationEventTransfer(UserVisit userVisit, CommunicationEvent communicationEvent) {
-        return getCommunicationTransferCaches(userVisit).getCommunicationEventTransferCache().getCommunicationEventTransfer(communicationEvent);
+        return communicationEventTransferCache.getCommunicationEventTransfer(userVisit, communicationEvent);
     }
     
     public List<CommunicationEventTransfer> getCommunicationEventTransfers(UserVisit userVisit, Collection<CommunicationEvent> communicationEvents) {
         List<CommunicationEventTransfer> communicationEventTransfers = new ArrayList<>(communicationEvents.size());
-        var communicationEventTransferCache = getCommunicationTransferCaches(userVisit).getCommunicationEventTransferCache();
         
         communicationEvents.forEach((communicationEvent) ->
-                communicationEventTransfers.add(communicationEventTransferCache.getCommunicationEventTransfer(communicationEvent))
+                communicationEventTransfers.add(communicationEventTransferCache.getCommunicationEventTransfer(userVisit, communicationEvent))
         );
         
         return communicationEventTransfers;
@@ -1039,7 +1068,7 @@ public class CommunicationControl
     
     public CommunicationEventRoleTransfer getCommunicationEventRoleTransfer(UserVisit userVisit,
             CommunicationEventRole communicationEventRole) {
-        return getCommunicationTransferCaches(userVisit).getCommunicationEventRoleTransferCache().getCommunicationEventRoleTransfer(communicationEventRole);
+        return communicationEventRoleTransferCache.getCommunicationEventRoleTransfer(userVisit, communicationEventRole);
     }
     
     public void deleteCommunicationEventRole(CommunicationEventRole communicationEventRole, BasePK deletedBy) {
@@ -1089,7 +1118,7 @@ public class CommunicationControl
     
     public CommunicationSourceTypeTransfer getCommunicationSourceTypeTransfer(UserVisit userVisit,
             CommunicationSourceType communicationSourceType) {
-        return getCommunicationTransferCaches(userVisit).getCommunicationSourceTypeTransferCache().getCommunicationSourceTypeTransfer(communicationSourceType);
+        return communicationSourceTypeTransferCache.getCommunicationSourceTypeTransfer(userVisit, communicationSourceType);
     }
     
     // --------------------------------------------------------------------------------
@@ -1128,7 +1157,7 @@ public class CommunicationControl
         var communicationSourceTypeDescription = getCommunicationSourceTypeDescription(communicationSourceType, language);
         
         if(communicationSourceTypeDescription == null && !language.getIsDefault()) {
-            communicationSourceTypeDescription = getCommunicationSourceTypeDescription(communicationSourceType, getPartyControl().getDefaultLanguage());
+            communicationSourceTypeDescription = getCommunicationSourceTypeDescription(communicationSourceType, partyControl.getDefaultLanguage());
         }
         
         if(communicationSourceTypeDescription == null) {
@@ -1275,15 +1304,14 @@ public class CommunicationControl
     }
     
     public CommunicationSourceTransfer getCommunicationSourceTransfer(UserVisit userVisit, CommunicationSource communicationSource) {
-        return getCommunicationTransferCaches(userVisit).getCommunicationSourceTransferCache().getCommunicationSourceTransfer(communicationSource);
+        return communicationSourceTransferCache.getCommunicationSourceTransfer(userVisit, communicationSource);
     }
     
     public List<CommunicationSourceTransfer> getCommunicationSourceTransfers(UserVisit userVisit, Collection<CommunicationSource> communicationSources) {
         List<CommunicationSourceTransfer> communicationSourceTransfers = new ArrayList<>(communicationSources.size());
-        var communicationSourceTransferCache = getCommunicationTransferCaches(userVisit).getCommunicationSourceTransferCache();
         
         communicationSources.forEach((communicationSource) ->
-                communicationSourceTransfers.add(communicationSourceTransferCache.getCommunicationSourceTransfer(communicationSource))
+                communicationSourceTransfers.add(communicationSourceTransferCache.getCommunicationSourceTransfer(userVisit, communicationSource))
         );
         
         return communicationSourceTransfers;
@@ -1440,7 +1468,7 @@ public class CommunicationControl
         var communicationSourceDescription = getCommunicationSourceDescription(communicationSource, language);
         
         if(communicationSourceDescription == null && !language.getIsDefault()) {
-            communicationSourceDescription = getCommunicationSourceDescription(communicationSource, getPartyControl().getDefaultLanguage());
+            communicationSourceDescription = getCommunicationSourceDescription(communicationSource, partyControl.getDefaultLanguage());
         }
         
         if(communicationSourceDescription == null) {
@@ -1453,16 +1481,15 @@ public class CommunicationControl
     }
     
     public CommunicationSourceDescriptionTransfer getCommunicationSourceDescriptionTransfer(UserVisit userVisit, CommunicationSourceDescription communicationSourceDescription) {
-        return getCommunicationTransferCaches(userVisit).getCommunicationSourceDescriptionTransferCache().getCommunicationSourceDescriptionTransfer(communicationSourceDescription);
+        return communicationSourceDescriptionTransferCache.getCommunicationSourceDescriptionTransfer(userVisit, communicationSourceDescription);
     }
     
     public List<CommunicationSourceDescriptionTransfer> getCommunicationSourceDescriptionTransfers(UserVisit userVisit, CommunicationSource communicationSource) {
         var communicationSourceDescriptions = getCommunicationSourceDescriptionsByCommunicationSource(communicationSource);
         List<CommunicationSourceDescriptionTransfer> communicationSourceDescriptionTransfers = new ArrayList<>(communicationSourceDescriptions.size());
-        var communicationSourceDescriptionTransferCache = getCommunicationTransferCaches(userVisit).getCommunicationSourceDescriptionTransferCache();
         
         communicationSourceDescriptions.forEach((communicationSourceDescription) ->
-                communicationSourceDescriptionTransfers.add(communicationSourceDescriptionTransferCache.getCommunicationSourceDescriptionTransfer(communicationSourceDescription))
+                communicationSourceDescriptionTransfers.add(communicationSourceDescriptionTransferCache.getCommunicationSourceDescriptionTransfer(userVisit, communicationSourceDescription))
         );
         
         return communicationSourceDescriptionTransfers;
@@ -1564,7 +1591,7 @@ public class CommunicationControl
     }
     
     public CommunicationEmailSourceTransfer getCommunicationEmailSourceTransfer(UserVisit userVisit, CommunicationEmailSource communicationEmailSource) {
-        return getCommunicationTransferCaches(userVisit).getCommunicationEmailSourceTransferCache().getCommunicationEmailSourceTransfer(communicationEmailSource);
+        return communicationEmailSourceTransferCache.getCommunicationEmailSourceTransfer(userVisit, communicationEmailSource);
     }
     
     public String encodeCommunicationEmailSourcePassword(String password) {

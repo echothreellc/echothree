@@ -19,17 +19,19 @@ package com.echothree.model.control.party.server.transfer;
 import com.echothree.model.control.party.common.transfer.MoodDescriptionTransfer;
 import com.echothree.model.data.party.server.entity.MoodDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class MoodDescriptionTransferCache
         extends BasePartyDescriptionTransferCache<MoodDescription, MoodDescriptionTransfer> {
     
     /** Creates a new instance of MoodDescriptionTransferCache */
-    public MoodDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected MoodDescriptionTransferCache() {
+        super();
     }
 
     @Override
-    public MoodDescriptionTransfer getTransfer(MoodDescription moodDescription) {
+    public MoodDescriptionTransfer getTransfer(UserVisit userVisit, MoodDescription moodDescription) {
         var moodDescriptionTransfer = get(moodDescription);
         
         if(moodDescriptionTransfer == null) {
@@ -37,7 +39,7 @@ public class MoodDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, moodDescription.getLanguage());
             
             moodDescriptionTransfer = new MoodDescriptionTransfer(languageTransfer, moodTransfer, moodDescription.getDescription());
-            put(moodDescription, moodDescriptionTransfer);
+            put(userVisit, moodDescription, moodDescriptionTransfer);
         }
         
         return moodDescriptionTransfer;

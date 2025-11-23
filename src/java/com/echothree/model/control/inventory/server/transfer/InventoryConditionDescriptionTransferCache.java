@@ -20,26 +20,30 @@ import com.echothree.model.control.inventory.common.transfer.InventoryConditionD
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.data.inventory.server.entity.InventoryConditionDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class InventoryConditionDescriptionTransferCache
         extends BaseInventoryDescriptionTransferCache<InventoryConditionDescription, InventoryConditionDescriptionTransfer> {
-    
+
+    InventoryControl inventoryControl = Session.getModelController(InventoryControl.class);
+
     /** Creates a new instance of InventoryConditionDescriptionTransferCache */
-    public InventoryConditionDescriptionTransferCache(UserVisit userVisit, InventoryControl inventoryControl) {
-        super(userVisit, inventoryControl);
+    protected InventoryConditionDescriptionTransferCache() {
+        super();
     }
     
     @Override
-    public InventoryConditionDescriptionTransfer getTransfer(InventoryConditionDescription inventoryConditionDescription) {
+    public InventoryConditionDescriptionTransfer getTransfer(UserVisit userVisit, InventoryConditionDescription inventoryConditionDescription) {
         var inventoryConditionDescriptionTransfer = get(inventoryConditionDescription);
         
         if(inventoryConditionDescriptionTransfer == null) {
-            var inventoryConditionTransferCache = inventoryControl.getInventoryTransferCaches(userVisit).getInventoryConditionTransferCache();
-            var inventoryConditionTransfer = inventoryConditionTransferCache.getTransfer(inventoryConditionDescription.getInventoryCondition());
+            var inventoryConditionTransfer = inventoryControl.getInventoryConditionTransfer(userVisit, inventoryConditionDescription.getInventoryCondition());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, inventoryConditionDescription.getLanguage());
             
             inventoryConditionDescriptionTransfer = new InventoryConditionDescriptionTransfer(languageTransfer, inventoryConditionTransfer, inventoryConditionDescription.getDescription());
-            put(inventoryConditionDescription, inventoryConditionDescriptionTransfer);
+            put(userVisit, inventoryConditionDescription, inventoryConditionDescriptionTransfer);
         }
         
         return inventoryConditionDescriptionTransfer;

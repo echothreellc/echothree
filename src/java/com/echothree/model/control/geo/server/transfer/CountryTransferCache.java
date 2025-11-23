@@ -19,20 +19,22 @@ package com.echothree.model.control.geo.server.transfer;
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.geo.common.GeoOptions;
 import com.echothree.model.control.geo.common.transfer.CountryTransfer;
-import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CountryTransferCache
         extends BaseGeoCodeTransferCache<GeoCode, CountryTransfer> {
-    
+
     ContactControl contactControl = Session.getModelController(ContactControl.class);
+
     boolean includeAliases;
     
     /** Creates a new instance of CountryTransferCache */
-    public CountryTransferCache(UserVisit userVisit, GeoControl geoControl) {
-        super(userVisit, geoControl);
+    protected CountryTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {
@@ -42,7 +44,7 @@ public class CountryTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public CountryTransfer getCountryTransfer(GeoCode geoCode) {
+    public CountryTransfer getCountryTransfer(UserVisit userVisit, GeoCode geoCode) {
         var countryTransfer = get(geoCode);
         
         if(countryTransfer == null) {
@@ -70,17 +72,17 @@ public class CountryTransferCache
             var postalCodeLength = geoCodeCountry.getPostalCodeLength();
             var postalCodeGeoCodeLength = geoCodeCountry.getPostalCodeGeoCodeLength();
             var postalCodeExample = geoCodeCountry.getPostalCodeExample();
-            var description = geoControl.getBestGeoCodeDescription(geoCode, getLanguage());
+            var description = geoControl.getBestGeoCodeDescription(geoCode, getLanguage(userVisit));
             
             countryTransfer = new CountryTransfer(geoCodeName, geoCodeType, geoCodeScope, isDefault, sortOrder, telephoneCode,
                     areaCodePattern, areaCodeRequired, areaCodeExample, telephoneNumberPattern, telephoneNumberExample,
                     postalAddressFormat, cityRequired, cityGeoCodeRequired, stateRequired, stateGeoCodeRequired, postalCodePattern,
                     postalCodeRequired, postalCodeGeoCodeRequired, postalCodeLength, postalCodeGeoCodeLength, postalCodeExample,
                     description);
-            put(geoCode, countryTransfer);
+            put(userVisit, geoCode, countryTransfer);
             
             if(includeAliases) {
-                setupGeoCodeAliasTransfers(geoCode, countryTransfer);
+                setupGeoCodeAliasTransfers(userVisit, geoCode, countryTransfer);
             }
         }
         

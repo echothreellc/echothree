@@ -20,19 +20,24 @@ import com.echothree.model.control.financial.common.transfer.FinancialAccountTra
 import com.echothree.model.control.financial.server.control.FinancialControl;
 import com.echothree.model.data.financial.server.entity.FinancialAccountTransaction;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.AmountUtils;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class FinancialAccountTransactionTransferCache
         extends BaseFinancialTransferCache<FinancialAccountTransaction, FinancialAccountTransactionTransfer> {
-    
+
+    FinancialControl financialControl = Session.getModelController(FinancialControl.class);
+
     /** Creates a new instance of FinancialAccountTransactionTransferCache */
-    public FinancialAccountTransactionTransferCache(UserVisit userVisit, FinancialControl financialControl) {
-        super(userVisit, financialControl);
+    protected FinancialAccountTransactionTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public FinancialAccountTransactionTransfer getFinancialAccountTransactionTransfer(FinancialAccountTransaction financialAccountTransaction) {
+    public FinancialAccountTransactionTransfer getFinancialAccountTransactionTransfer(UserVisit userVisit, FinancialAccountTransaction financialAccountTransaction) {
         var financialAccountTransactionTransfer = get(financialAccountTransaction);
         
         if(financialAccountTransactionTransfer == null) {
@@ -47,7 +52,7 @@ public class FinancialAccountTransactionTransferCache
             
             financialAccountTransactionTransfer = new FinancialAccountTransactionTransfer(financialAccountTransactionName, financialAccountTransfer,
                     financialAccountTransactionTypeTransfer, unformattedAmount, amount, comment);
-            put(financialAccountTransaction, financialAccountTransactionTransfer);
+            put(userVisit, financialAccountTransaction, financialAccountTransactionTransfer);
         }
         
         return financialAccountTransactionTransfer;

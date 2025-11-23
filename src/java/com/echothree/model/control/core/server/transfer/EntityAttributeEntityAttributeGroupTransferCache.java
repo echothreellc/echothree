@@ -22,18 +22,20 @@ import com.echothree.model.data.core.server.entity.EntityAttributeEntityAttribut
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EntityAttributeEntityAttributeGroupTransferCache
         extends BaseCoreTransferCache<EntityAttributeEntityAttributeGroup, EntityAttributeEntityAttributeGroupTransfer> {
 
     CoreControl coreControl = Session.getModelController(CoreControl.class);
 
     /** Creates a new instance of EntityAttributeEntityAttributeGroupTransferCache */
-    public EntityAttributeEntityAttributeGroupTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected EntityAttributeEntityAttributeGroupTransferCache() {
+        super();
     }
     
-    public EntityAttributeEntityAttributeGroupTransfer getEntityAttributeEntityAttributeGroupTransfer(EntityAttributeEntityAttributeGroup entityAttributeEntityAttributeGroup, EntityInstance entityInstance) {
+    public EntityAttributeEntityAttributeGroupTransfer getEntityAttributeEntityAttributeGroupTransfer(final UserVisit userVisit, final EntityAttributeEntityAttributeGroup entityAttributeEntityAttributeGroup, final EntityInstance entityInstance) {
         var entityAttributeEntityAttributeGroupTransfer = get(entityAttributeEntityAttributeGroup);
         
         if(entityAttributeEntityAttributeGroupTransfer == null) {
@@ -42,7 +44,7 @@ public class EntityAttributeEntityAttributeGroupTransferCache
             var sortOrder = entityAttributeEntityAttributeGroup.getSortOrder();
             
             entityAttributeEntityAttributeGroupTransfer = new EntityAttributeEntityAttributeGroupTransfer(entityAttributeTransfer, entityAttributeGroupTransfer, sortOrder);
-            put(entityAttributeEntityAttributeGroup, entityAttributeEntityAttributeGroupTransfer);
+            put(userVisit, entityAttributeEntityAttributeGroup, entityAttributeEntityAttributeGroupTransfer);
         }
         return entityAttributeEntityAttributeGroupTransfer;
     }

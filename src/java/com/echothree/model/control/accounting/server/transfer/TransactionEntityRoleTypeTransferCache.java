@@ -22,7 +22,9 @@ import com.echothree.model.control.core.server.control.EntityTypeControl;
 import com.echothree.model.data.accounting.server.entity.TransactionEntityRoleType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class TransactionEntityRoleTypeTransferCache
         extends BaseAccountingTransferCache<TransactionEntityRoleType, TransactionEntityRoleTypeTransfer> {
 
@@ -30,14 +32,14 @@ public class TransactionEntityRoleTypeTransferCache
     EntityTypeControl entityTypeControl = Session.getModelController(EntityTypeControl.class);
     
     /** Creates a new instance of TransactionEntityRoleTypeTransferCache */
-    public TransactionEntityRoleTypeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected TransactionEntityRoleTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
     @Override
-    public TransactionEntityRoleTypeTransfer getTransfer(TransactionEntityRoleType transactionEntityRoleType) {
+    public TransactionEntityRoleTypeTransfer getTransfer(UserVisit userVisit, TransactionEntityRoleType transactionEntityRoleType) {
         var transactionEntityRoleTypeTransfer = get(transactionEntityRoleType);
         
         if(transactionEntityRoleTypeTransfer == null) {
@@ -46,10 +48,10 @@ public class TransactionEntityRoleTypeTransferCache
             var transactionEntityRoleTypeName = transactionEntityRoleTypeDetail.getTransactionEntityRoleTypeName();
             var entityType = entityTypeControl.getEntityTypeTransfer(userVisit, transactionEntityRoleTypeDetail.getEntityType());
             var sortOrder = transactionEntityRoleTypeDetail.getSortOrder();
-            var description = accountingControl.getBestTransactionEntityRoleTypeDescription(transactionEntityRoleType, getLanguage());
+            var description = accountingControl.getBestTransactionEntityRoleTypeDescription(transactionEntityRoleType, getLanguage(userVisit));
             
             transactionEntityRoleTypeTransfer = new TransactionEntityRoleTypeTransfer(transactionType, transactionEntityRoleTypeName, entityType, sortOrder, description);
-            put(transactionEntityRoleType, transactionEntityRoleTypeTransfer);
+            put(userVisit, transactionEntityRoleType, transactionEntityRoleTypeTransfer);
         }
         
         return transactionEntityRoleTypeTransfer;

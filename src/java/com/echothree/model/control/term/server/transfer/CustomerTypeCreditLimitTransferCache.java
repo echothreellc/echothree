@@ -19,27 +19,25 @@ package com.echothree.model.control.term.server.transfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.term.common.transfer.CustomerTypeCreditLimitTransfer;
-import com.echothree.model.control.term.server.control.TermControl;
 import com.echothree.model.data.term.server.entity.CustomerTypeCreditLimit;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.AmountUtils;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CustomerTypeCreditLimitTransferCache
         extends BaseTermTransferCache<CustomerTypeCreditLimit, CustomerTypeCreditLimitTransfer> {
     
-    AccountingControl accountingControl;
-    CustomerControl customerControl;
-    
+    AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
+    CustomerControl customerControl = Session.getModelController(CustomerControl.class);
+
     /** Creates a new instance of CustomerTypeCreditLimitTransferCache */
-    public CustomerTypeCreditLimitTransferCache(UserVisit userVisit, TermControl termControl) {
-        super(userVisit, termControl);
-        
-        accountingControl = Session.getModelController(AccountingControl.class);
-        customerControl = Session.getModelController(CustomerControl.class);
+    protected CustomerTypeCreditLimitTransferCache() {
+        super();
     }
     
-    public CustomerTypeCreditLimitTransfer getCustomerTypeCreditLimitTransfer(CustomerTypeCreditLimit customerTypeCreditLimit) {
+    public CustomerTypeCreditLimitTransfer getCustomerTypeCreditLimitTransfer(UserVisit userVisit, CustomerTypeCreditLimit customerTypeCreditLimit) {
         var customerTypeCreditLimitTransfer = get(customerTypeCreditLimit);
         
         if(customerTypeCreditLimitTransfer == null) {
@@ -52,7 +50,7 @@ public class CustomerTypeCreditLimitTransferCache
             
             customerTypeCreditLimitTransfer = new CustomerTypeCreditLimitTransfer(customerTypeTransfer, currencyTransfer,
                     creditLimit, potentialCreditLimit);
-            put(customerTypeCreditLimit, customerTypeCreditLimitTransfer);
+            put(userVisit, customerTypeCreditLimit, customerTypeCreditLimitTransfer);
         }
         
         return customerTypeCreditLimitTransfer;

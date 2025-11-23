@@ -24,7 +24,9 @@ import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.user.server.entity.UserVisitGroup;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class UserVisitGroupTransferCache
         extends BaseUserTransferCache<UserVisitGroup, UserVisitGroupTransfer> {
 
@@ -32,13 +34,13 @@ public class UserVisitGroupTransferCache
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
 
     /** Creates a new instance of UserVisitGroupTransferCache */
-    public UserVisitGroupTransferCache(UserVisit userVisit, UserControl userControl) {
-        super(userVisit, userControl);
+    protected UserVisitGroupTransferCache() {
+        super();
 
         setIncludeEntityInstance(true);
     }
 
-    public UserVisitGroupTransfer getUserVisitGroupTransfer(UserVisitGroup userVisitGroup) {
+    public UserVisitGroupTransfer getUserVisitGroupTransfer(UserVisit userVisit, UserVisitGroup userVisitGroup) {
         var userVisitGroupTransfer = get(userVisitGroup);
 
         if(userVisitGroupTransfer == null) {
@@ -50,7 +52,7 @@ public class UserVisitGroupTransferCache
                     UserVisitGroupStatusConstants.Workflow_USER_VISIT_GROUP_STATUS, entityInstance);
 
             userVisitGroupTransfer = new UserVisitGroupTransfer(userVisitGroupName, userVisitGroupStatusTransfer);
-            put(userVisitGroup, userVisitGroupTransfer);
+            put(userVisit, userVisitGroup, userVisitGroupTransfer);
         }
 
         return userVisitGroupTransfer;

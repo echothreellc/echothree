@@ -19,13 +19,14 @@ package com.echothree.model.control.contact.server.transfer;
 import com.echothree.model.control.contact.common.transfer.ContactEmailAddressTransfer;
 import com.echothree.model.control.contact.common.workflow.EmailAddressStatusConstants;
 import com.echothree.model.control.contact.common.workflow.EmailAddressVerificationConstants;
-import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.contact.server.entity.ContactEmailAddress;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ContactEmailAddressTransferCache
         extends BaseContactTransferCache<ContactEmailAddress, ContactEmailAddressTransfer> {
 
@@ -33,11 +34,11 @@ public class ContactEmailAddressTransferCache
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
 
     /** Creates a new instance of ContactEmailAddressTransferCache */
-    public ContactEmailAddressTransferCache(UserVisit userVisit, ContactControl contactControl) {
-        super(userVisit, contactControl);
+    protected ContactEmailAddressTransferCache() {
+        super();
     }
     
-    public ContactEmailAddressTransfer getContactEmailAddressTransfer(ContactEmailAddress contactEmailAddress) {
+    public ContactEmailAddressTransfer getContactEmailAddressTransfer(UserVisit userVisit, ContactEmailAddress contactEmailAddress) {
         var contactEmailAddressTransfer = get(contactEmailAddress);
         
         if(contactEmailAddressTransfer == null) {
@@ -50,7 +51,7 @@ public class ContactEmailAddressTransferCache
                     EmailAddressVerificationConstants.Workflow_EMAIL_ADDRESS_VERIFICATION, entityInstance);
             
             contactEmailAddressTransfer = new ContactEmailAddressTransfer(emailAddress, emailAddressStatusTransfer, emailAddressVerificationTransfer);
-            put(contactEmailAddress, contactEmailAddressTransfer);
+            put(userVisit, contactEmailAddress, contactEmailAddressTransfer);
         }
         
         return contactEmailAddressTransfer;

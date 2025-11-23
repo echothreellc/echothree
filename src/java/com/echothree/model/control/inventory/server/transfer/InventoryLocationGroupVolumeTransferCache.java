@@ -23,30 +23,33 @@ import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.inventory.server.entity.InventoryLocationGroupVolume;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class InventoryLocationGroupVolumeTransferCache
         extends BaseInventoryTransferCache<InventoryLocationGroupVolume, InventoryLocationGroupVolumeTransfer> {
-    
+
+    InventoryControl inventoryControl = Session.getModelController(InventoryControl.class);
     UomControl uomControl = Session.getModelController(UomControl.class);
     
     /** Creates a new instance of InventoryLocationGroupVolumeTransferCache */
-    public InventoryLocationGroupVolumeTransferCache(UserVisit userVisit, InventoryControl inventoryControl) {
-        super(userVisit, inventoryControl);
+    protected InventoryLocationGroupVolumeTransferCache() {
+        super();
     }
     
     @Override
-    public InventoryLocationGroupVolumeTransfer getTransfer(InventoryLocationGroupVolume inventoryLocationGroupVolume) {
+    public InventoryLocationGroupVolumeTransfer getTransfer(UserVisit userVisit, InventoryLocationGroupVolume inventoryLocationGroupVolume) {
         var inventoryLocationGroupVolumeTransfer = get(inventoryLocationGroupVolume);
         
         if(inventoryLocationGroupVolumeTransfer == null) {
             var inventoryLocationGroupTransfer = inventoryControl.getInventoryLocationGroupTransfer(userVisit, inventoryLocationGroupVolume.getInventoryLocationGroup());
             var volumeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_VOLUME);
-            var height = formatUnitOfMeasure(volumeUnitOfMeasureKind, inventoryLocationGroupVolume.getHeight());
-            var width = formatUnitOfMeasure(volumeUnitOfMeasureKind, inventoryLocationGroupVolume.getWidth());
-            var depth = formatUnitOfMeasure(volumeUnitOfMeasureKind, inventoryLocationGroupVolume.getDepth());
+            var height = formatUnitOfMeasure(userVisit, volumeUnitOfMeasureKind, inventoryLocationGroupVolume.getHeight());
+            var width = formatUnitOfMeasure(userVisit, volumeUnitOfMeasureKind, inventoryLocationGroupVolume.getWidth());
+            var depth = formatUnitOfMeasure(userVisit, volumeUnitOfMeasureKind, inventoryLocationGroupVolume.getDepth());
             
             inventoryLocationGroupVolumeTransfer = new InventoryLocationGroupVolumeTransfer(inventoryLocationGroupTransfer, height, width, depth);
-            put(inventoryLocationGroupVolume, inventoryLocationGroupVolumeTransfer);
+            put(userVisit, inventoryLocationGroupVolume, inventoryLocationGroupVolumeTransfer);
         }
         
         return inventoryLocationGroupVolumeTransfer;

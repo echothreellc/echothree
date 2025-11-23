@@ -26,7 +26,9 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class MimeTypeTransferCache
         extends BaseCoreTransferCache<MimeType, MimeTypeTransfer> {
 
@@ -44,8 +46,8 @@ public class MimeTypeTransferCache
     boolean filterEntityInstance;
     
     /** Creates a new instance of MimeTypeTransferCache */
-    public MimeTypeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected MimeTypeTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {
@@ -69,7 +71,7 @@ public class MimeTypeTransferCache
         setIncludeEntityInstance(!filterEntityInstance);
     }
 
-    public MimeTypeTransfer getMimeTypeTransfer(MimeType mimeType) {
+    public MimeTypeTransfer getMimeTypeTransfer(UserVisit userVisit, MimeType mimeType) {
         var mimeTypeTransfer = get(mimeType);
 
         if(mimeTypeTransfer == null) {
@@ -78,10 +80,10 @@ public class MimeTypeTransferCache
             var entityAttributeType = filterEntityAttributeType ? null : coreControl.getEntityAttributeTypeTransfer(userVisit, mimeTypeDetail.getEntityAttributeType());
             var isDefault = filterIsDefault ? null : mimeTypeDetail.getIsDefault();
             var sortOrder = filterSortOrder ? null : mimeTypeDetail.getSortOrder();
-            var description = filterDescription ? null : mimeTypeControl.getBestMimeTypeDescription(mimeType, getLanguage());
+            var description = filterDescription ? null : mimeTypeControl.getBestMimeTypeDescription(mimeType, getLanguage(userVisit));
 
             mimeTypeTransfer = new MimeTypeTransfer(mimeTypeName, entityAttributeType, isDefault, sortOrder, description);
-            put(mimeType, mimeTypeTransfer);
+            put(userVisit, mimeType, mimeTypeTransfer);
 
             if(includeMimeTypeFileExtensions) {
                 mimeTypeTransfer.setMimeTypeFileExtensions(new ListWrapper<>(mimeTypeControl.getMimeTypeFileExtensionTransfersByMimeType(userVisit, mimeType)));

@@ -17,13 +17,14 @@
 package com.echothree.model.control.inventory.server.transfer;
 
 import com.echothree.model.control.inventory.common.transfer.LotAliasTransfer;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.inventory.server.control.LotAliasControl;
 import com.echothree.model.control.inventory.server.control.LotControl;
 import com.echothree.model.data.inventory.server.entity.LotAlias;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class LotAliasTransferCache
         extends BaseInventoryTransferCache<LotAlias, LotAliasTransfer> {
 
@@ -31,21 +32,21 @@ public class LotAliasTransferCache
     LotAliasControl lotAliasControl = Session.getModelController(LotAliasControl.class);
 
     /** Creates a new instance of LotAliasTransferCache */
-    public LotAliasTransferCache(UserVisit userVisit, InventoryControl inventoryControl) {
-        super(userVisit, inventoryControl);
+    protected LotAliasTransferCache() {
+        super();
     }
     
     @Override
-    public LotAliasTransfer getTransfer(LotAlias lotAlias) {
+    public LotAliasTransfer getTransfer(UserVisit userVisit, LotAlias lotAlias) {
         var lotAliasTransfer = get(lotAlias);
         
         if(lotAliasTransfer == null) {
-            //LotTransfer lot = lotControl.getLotTransfer(userVisit, lotAlias.getLot());
+            var lot = lotControl.getLotTransfer(userVisit, lotAlias.getLot());
             var lotAliasType = lotAliasControl.getLotAliasTypeTransfer(userVisit, lotAlias.getLotAliasType());
             var alias = lotAlias.getAlias();
             
-            lotAliasTransfer = new LotAliasTransfer(/*lot,*/ lotAliasType, alias);
-            put(lotAlias, lotAliasTransfer);
+            lotAliasTransfer = new LotAliasTransfer(lot, lotAliasType, alias);
+            put(userVisit, lotAlias, lotAliasTransfer);
         }
         
         return lotAliasTransfer;

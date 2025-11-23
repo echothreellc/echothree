@@ -20,18 +20,23 @@ import com.echothree.model.control.returnpolicy.common.transfer.ReturnPolicyTran
 import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ReturnPolicyTransferCache
         extends BaseReturnPolicyTransferCache<ReturnPolicy, ReturnPolicyTransfer> {
-    
+
+    ReturnPolicyControl returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
+
     /** Creates a new instance of ReturnPolicyTransferCache */
-    public ReturnPolicyTransferCache(UserVisit userVisit, ReturnPolicyControl returnPolicyControl) {
-        super(userVisit, returnPolicyControl);
+    protected ReturnPolicyTransferCache() {
+        super();
 
         setIncludeEntityInstance(true);
     }
     
-    public ReturnPolicyTransfer getReturnPolicyTransfer(ReturnPolicy returnPolicy) {
+    public ReturnPolicyTransfer getReturnPolicyTransfer(UserVisit userVisit, ReturnPolicy returnPolicy) {
         var returnPolicyTransfer = get(returnPolicy);
         
         if(returnPolicyTransfer == null) {
@@ -40,11 +45,11 @@ public class ReturnPolicyTransferCache
             var returnPolicyName = returnPolicyDetail.getReturnPolicyName();
             var isDefault = returnPolicyDetail.getIsDefault();
             var sortOrder = returnPolicyDetail.getSortOrder();
-            var returnPolicyTranslation = returnPolicyControl.getBestReturnPolicyTranslation(returnPolicy, getLanguage());
+            var returnPolicyTranslation = returnPolicyControl.getBestReturnPolicyTranslation(returnPolicy, getLanguage(userVisit));
             var description = returnPolicyTranslation == null ? returnPolicyName : returnPolicyTranslation.getDescription();
             
             returnPolicyTransfer = new ReturnPolicyTransfer(returnKind, returnPolicyName, isDefault, sortOrder, description);
-            put(returnPolicy, returnPolicyTransfer);
+            put(userVisit, returnPolicy, returnPolicyTransfer);
         }
         return returnPolicyTransfer;
     }

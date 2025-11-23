@@ -98,17 +98,16 @@ public class DatabaseUtilitiesForMySQL
                             var type = c.getInt("DATA_TYPE");
 
                             switch(type) {
-                                case Types.VARCHAR:
-                                case Types.LONGVARCHAR:
+                                case Types.VARCHAR, Types.LONGVARCHAR -> {
                                     var myTable = myDatabase.getTableLowerCase(tableName);
 
-                                    for (var foundColumn : myTable.getColumns()) {
-                                        if (foundColumn.getDbColumnName().equals(columnName)) {
+                                    for(var foundColumn : myTable.getColumns()) {
+                                        if(foundColumn.getDbColumnName().equals(columnName)) {
                                             stmt.execute("ALTER TABLE " + tableName + " MODIFY " + getColumnDefinition(foundColumn));
                                             break;
                                         }
                                     }
-                                    break;
+                                }
                             }
                         }
                     }
@@ -174,20 +173,14 @@ public class DatabaseUtilitiesForMySQL
         var columnRealType = theColumn.getType();
         var result = true;
 
-        switch (columnRealType) {
-            case ColumnType.columnEID:
-            case ColumnType.columnLong:
-            case ColumnType.columnTime:
-                result = cc.getType() == Types.BIGINT && cc.getColumnSize() == 19;
-                break;
-            case ColumnType.columnBoolean:
-                result = cc.getType() == Types.BIT && cc.getColumnSize() == 1;
-                break;
-            case ColumnType.columnInteger:
-            case ColumnType.columnDate:
-                result = cc.getType() == Types.INTEGER && cc.getColumnSize() == 10;
-                break;
-            case ColumnType.columnString:
+        switch(columnRealType) {
+            case ColumnType.columnEID, ColumnType.columnLong, ColumnType.columnTime ->
+                    result = cc.getType() == Types.BIGINT && cc.getColumnSize() == 19;
+            case ColumnType.columnBoolean ->
+                    result = cc.getType() == Types.BIT && cc.getColumnSize() == 1;
+            case ColumnType.columnInteger, ColumnType.columnDate ->
+                    result = cc.getType() == Types.INTEGER && cc.getColumnSize() == 10;
+            case ColumnType.columnString -> {
                 var maxLength = theColumn.getMaxLength();
 
                 if(maxLength < 256) {
@@ -195,23 +188,20 @@ public class DatabaseUtilitiesForMySQL
                 } else {
                     result = cc.getType() == Types.LONGVARCHAR;
                 }
-                break;
-            case ColumnType.columnCLOB:
-                result = cc.getType() == Types.LONGVARCHAR && cc.getColumnSize() == 2147483647;
-                break;
-            case ColumnType.columnBLOB:
-                result = cc.getType() == Types.LONGVARBINARY && cc.getColumnSize() == 2147483647;
-                break;
-            case ColumnType.columnForeignKey:
+            }
+            case ColumnType.columnCLOB ->
+                    result = cc.getType() == Types.LONGVARCHAR && cc.getColumnSize() == 2147483647;
+            case ColumnType.columnBLOB ->
+                    result = cc.getType() == Types.LONGVARBINARY && cc.getColumnSize() == 2147483647;
+            case ColumnType.columnForeignKey -> {
                 var destinationColumn = myDatabase.getTable(theColumn.getDestinationTable()).getColumn(theColumn.getDestinationColumn());
 
                 result = checkColumnDefinition(cc, destinationColumn, true);
-                break;
-            case ColumnType.columnUUID:
-                result = cc.getType() == Types.BINARY && cc.getColumnSize() == 16;
-                break;
-            default:
-                break;
+            }
+            case ColumnType.columnUUID ->
+                    result = cc.getType() == Types.BINARY && cc.getColumnSize() == 16;
+            default -> {
+            }
         }
         
         if(!fkCheck && result && (cc.isNullable() != theColumn.getNullAllowed())) {
@@ -298,12 +288,8 @@ public class DatabaseUtilitiesForMySQL
                 + destinationTable.getNamePlural().toLowerCase(Locale.getDefault()) + "("
                 + destinationColumnName + ") ON DELETE ";
         switch(theFK.getOnParentDelete()) {
-            case Column.parentDelete:
-                result += "CASCADE";
-                break;
-            case Column.parentSetNull:
-                result += "SET NULL";
-                break;
+            case Column.parentDelete -> result += "CASCADE";
+            case Column.parentSetNull -> result += "SET NULL";
         }
         return result;
     }

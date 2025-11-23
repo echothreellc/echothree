@@ -29,7 +29,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class GetEntityAttributeTypeCommand
         extends BaseSingleEntityCommand<EntityAttributeType, GetEntityAttributeTypeForm> {
     
@@ -57,7 +59,6 @@ public class GetEntityAttributeTypeCommand
     
     @Override
     protected BaseResult getResult(EntityAttributeType entityAttributeType) {
-        var coreControl = getCoreControl();
         var result = CoreResultFactory.getGetEntityAttributeTypeResult();
 
         if(entityAttributeType != null) {

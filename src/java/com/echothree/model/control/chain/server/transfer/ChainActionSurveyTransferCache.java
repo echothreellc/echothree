@@ -23,18 +23,21 @@ import com.echothree.model.control.survey.server.control.SurveyControl;
 import com.echothree.model.data.chain.server.entity.ChainActionSurvey;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ChainActionSurveyTransferCache
         extends BaseChainTransferCache<ChainActionSurvey, ChainActionSurveyTransfer> {
-    
+
+    ChainControl chainControl = Session.getModelController(ChainControl.class);
     SurveyControl surveyControl = Session.getModelController(SurveyControl.class);
     
     /** Creates a new instance of ChainActionSurveyTransferCache */
-    public ChainActionSurveyTransferCache(UserVisit userVisit, ChainControl chainControl) {
-        super(userVisit, chainControl);
+    protected ChainActionSurveyTransferCache() {
+        super();
     }
     
-    public ChainActionSurveyTransfer getChainActionSurveyTransfer(ChainActionSurvey chainActionSurvey) {
+    public ChainActionSurveyTransfer getChainActionSurveyTransfer(UserVisit userVisit, ChainActionSurvey chainActionSurvey) {
         var chainActionSurveyTransfer = get(chainActionSurvey);
         
         if(chainActionSurveyTransfer == null) {
@@ -42,7 +45,7 @@ public class ChainActionSurveyTransferCache
             SurveyTransfer survey = null; // TODO: surveyControl.getSurveyTransfer(userVisit, chainActionSurvey.getSurvey());
             
             chainActionSurveyTransfer = new ChainActionSurveyTransfer(chainAction, survey);
-            put(chainActionSurvey, chainActionSurveyTransfer);
+            put(userVisit, chainActionSurvey, chainActionSurveyTransfer);
         }
         
         return chainActionSurveyTransfer;

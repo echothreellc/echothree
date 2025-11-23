@@ -23,22 +23,22 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.invoice.server.entity.InvoiceRole;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class InvoiceRoleTransferCache
         extends BaseInvoiceTransferCache<InvoiceRole, InvoiceRoleTransfer> {
 
-    ContactControl contactControl;
-    PartyControl partyControl;
+    ContactControl contactControl = Session.getModelController(ContactControl.class);
+    InvoiceControl invoiceControl = Session.getModelController(InvoiceControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
 
     /** Creates a new instance of InvoiceRoleTransferCache */
-    public InvoiceRoleTransferCache(UserVisit userVisit, InvoiceControl invoiceControl) {
-        super(userVisit, invoiceControl);
-
-        contactControl = Session.getModelController(ContactControl.class);
-        partyControl = Session.getModelController(PartyControl.class);
+    protected InvoiceRoleTransferCache() {
+        super();
     }
 
-    public InvoiceRoleTransfer getInvoiceRoleTransfer(InvoiceRole invoiceRole) {
+    public InvoiceRoleTransfer getInvoiceRoleTransfer(UserVisit userVisit, InvoiceRole invoiceRole) {
         var invoiceRoleTransfer = get(invoiceRole);
 
         if(invoiceRoleTransfer == null) {
@@ -48,7 +48,7 @@ public class InvoiceRoleTransferCache
             var invoiceRoleType = invoiceControl.getInvoiceRoleTypeTransfer(userVisit, invoiceRole.getInvoiceRoleType());
 
             invoiceRoleTransfer = new InvoiceRoleTransfer(invoice, party, partyContactMechanism, invoiceRoleType);
-            put(invoiceRole, invoiceRoleTransfer);
+            put(userVisit, invoiceRole, invoiceRoleTransfer);
         }
 
         return invoiceRoleTransfer;

@@ -20,16 +20,21 @@ import com.echothree.model.control.chain.common.transfer.ChainActionSetDescripti
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.data.chain.server.entity.ChainActionSetDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ChainActionSetDescriptionTransferCache
         extends BaseChainDescriptionTransferCache<ChainActionSetDescription, ChainActionSetDescriptionTransfer> {
-    
+
+    ChainControl chainControl = Session.getModelController(ChainControl.class);
+
     /** Creates a new instance of ChainActionSetDescriptionTransferCache */
-    public ChainActionSetDescriptionTransferCache(UserVisit userVisit, ChainControl chainControl) {
-        super(userVisit, chainControl);
+    protected ChainActionSetDescriptionTransferCache() {
+        super();
     }
     
-    public ChainActionSetDescriptionTransfer getChainActionSetDescriptionTransfer(ChainActionSetDescription chainActionSetDescription) {
+    public ChainActionSetDescriptionTransfer getChainActionSetDescriptionTransfer(UserVisit userVisit, ChainActionSetDescription chainActionSetDescription) {
         var chainActionSetDescriptionTransfer = get(chainActionSetDescription);
         
         if(chainActionSetDescriptionTransfer == null) {
@@ -37,7 +42,7 @@ public class ChainActionSetDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, chainActionSetDescription.getLanguage());
             
             chainActionSetDescriptionTransfer = new ChainActionSetDescriptionTransfer(languageTransfer, chainActionSetTransfer, chainActionSetDescription.getDescription());
-            put(chainActionSetDescription, chainActionSetDescriptionTransfer);
+            put(userVisit, chainActionSetDescription, chainActionSetDescriptionTransfer);
         }
         
         return chainActionSetDescriptionTransfer;

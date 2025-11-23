@@ -20,16 +20,21 @@ import com.echothree.model.control.campaign.common.transfer.CampaignSourceDescri
 import com.echothree.model.control.campaign.server.control.CampaignControl;
 import com.echothree.model.data.campaign.server.entity.CampaignSourceDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CampaignSourceDescriptionTransferCache
         extends BaseCampaignDescriptionTransferCache<CampaignSourceDescription, CampaignSourceDescriptionTransfer> {
-    
+
+    CampaignControl campaignControl = Session.getModelController(CampaignControl.class);
+
     /** Creates a new instance of CampaignSourceDescriptionTransferCache */
-    public CampaignSourceDescriptionTransferCache(UserVisit userVisit, CampaignControl campaignControl) {
-        super(userVisit, campaignControl);
+    protected CampaignSourceDescriptionTransferCache() {
+        super();
     }
     
-    public CampaignSourceDescriptionTransfer getCampaignSourceDescriptionTransfer(CampaignSourceDescription campaignSourceDescription) {
+    public CampaignSourceDescriptionTransfer getCampaignSourceDescriptionTransfer(UserVisit userVisit, CampaignSourceDescription campaignSourceDescription) {
         var campaignSourceDescriptionTransfer = get(campaignSourceDescription);
         
         if(campaignSourceDescriptionTransfer == null) {
@@ -37,7 +42,7 @@ public class CampaignSourceDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, campaignSourceDescription.getLanguage());
             
             campaignSourceDescriptionTransfer = new CampaignSourceDescriptionTransfer(languageTransfer, campaignSourceTransfer, campaignSourceDescription.getDescription());
-            put(campaignSourceDescription, campaignSourceDescriptionTransfer);
+            put(userVisit, campaignSourceDescription, campaignSourceDescriptionTransfer);
         }
         return campaignSourceDescriptionTransfer;
     }

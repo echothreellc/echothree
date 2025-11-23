@@ -21,18 +21,20 @@ import com.echothree.model.control.core.server.control.TextControl;
 import com.echothree.model.data.core.server.entity.TextTransformationDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class TextTransformationDescriptionTransferCache
         extends BaseCoreDescriptionTransferCache<TextTransformationDescription, TextTransformationDescriptionTransfer> {
 
     TextControl textControl = Session.getModelController(TextControl.class);
 
     /** Creates a new instance of TextTransformationDescriptionTransferCache */
-    public TextTransformationDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected TextTransformationDescriptionTransferCache() {
+        super();
     }
     
-    public TextTransformationDescriptionTransfer getTextTransformationDescriptionTransfer(TextTransformationDescription textTransformationDescription) {
+    public TextTransformationDescriptionTransfer getTextTransformationDescriptionTransfer(UserVisit userVisit, TextTransformationDescription textTransformationDescription) {
         var textTransformationDescriptionTransfer = get(textTransformationDescription);
         
         if(textTransformationDescriptionTransfer == null) {
@@ -40,7 +42,7 @@ public class TextTransformationDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, textTransformationDescription.getLanguage());
             
             textTransformationDescriptionTransfer = new TextTransformationDescriptionTransfer(languageTransfer, textTransformationTransfer, textTransformationDescription.getDescription());
-            put(textTransformationDescription, textTransformationDescriptionTransfer);
+            put(userVisit, textTransformationDescription, textTransformationDescriptionTransfer);
         }
         return textTransformationDescriptionTransfer;
     }

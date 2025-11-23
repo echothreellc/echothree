@@ -30,11 +30,14 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.AmountUtils;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ContentCatalogItemTransferCache
         extends BaseContentTransferCache<ContentCatalogItem, ContentCatalogItemTransfer> {
 
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
+    ContentControl contentControl = Session.getModelController(ContentControl.class);
     InventoryControl inventoryControl = Session.getModelController(InventoryControl.class);
     ItemControl itemControl = Session.getModelController(ItemControl.class);
     UomControl uomControl = Session.getModelController(UomControl.class);
@@ -57,8 +60,8 @@ public class ContentCatalogItemTransferCache
     boolean filterEntityInstance;
     
     /** Creates a new instance of ContentCatalogItemTransferCache */
-    public ContentCatalogItemTransferCache(UserVisit userVisit, ContentControl contentControl) {
-        super(userVisit, contentControl);
+    protected ContentCatalogItemTransferCache() {
+        super();
 
         var options = session.getOptions();
         if(options != null) {
@@ -91,7 +94,7 @@ public class ContentCatalogItemTransferCache
         setIncludeEntityInstance(!filterEntityInstance);
     }
     
-    public ContentCatalogItemTransfer getContentCatalogItemTransfer(ContentCatalogItem contentCatalogItem) {
+    public ContentCatalogItemTransfer getContentCatalogItemTransfer(UserVisit userVisit, ContentCatalogItem contentCatalogItem) {
         var contentCatalogItemTransfer = get(contentCatalogItem);
         
         if(contentCatalogItemTransfer == null) {
@@ -146,7 +149,7 @@ public class ContentCatalogItemTransferCache
             contentCatalogItemTransfer = new ContentCatalogItemTransfer(contentCatalog, itemTransfer, inventoryConditionTransfer, unitOfMeasureTypeTransfer,
                     currencyTransfer, unformattedUnitPrice, unitPrice, unformattedMinimumUnitPrice, minimumUnitPrice, unformattedMaximumUnitPrice,
                     maximumUnitPrice, unformattedUnitPriceIncrement, unitPriceIncrement);
-            put(contentCatalogItem, contentCatalogItemTransfer);
+            put(userVisit, contentCatalogItem, contentCatalogItemTransfer);
         }
         
         return contentCatalogItemTransfer;

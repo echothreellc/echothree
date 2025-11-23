@@ -44,20 +44,19 @@ import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.List;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class ItemAliasTypeLogic
     extends BaseLogic {
 
-    private ItemAliasTypeLogic() {
+    protected ItemAliasTypeLogic() {
         super();
     }
 
-    private static class ItemAliasTypeLogicHolder {
-        static ItemAliasTypeLogic instance = new ItemAliasTypeLogic();
-    }
-
     public static ItemAliasTypeLogic getInstance() {
-        return ItemAliasTypeLogicHolder.instance;
+        return CDI.current().select(ItemAliasTypeLogic.class).get();
     }
 
     public ItemAliasType createItemAliasType(final ExecutionErrorAccumulator eea, final String itemAliasTypeName,
@@ -109,7 +108,7 @@ public class ItemAliasTypeLogic
         var parameterCount = (itemAliasTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
-            case 0:
+            case 0 -> {
                 if(allowDefault) {
                     itemAliasType = itemControl.getDefaultItemAliasType(entityPermission);
 
@@ -119,8 +118,8 @@ public class ItemAliasTypeLogic
                 } else {
                     handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                 }
-                break;
-            case 1:
+            }
+            case 1 -> {
                 if(itemAliasTypeName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.ItemAliasType.name());
@@ -131,10 +130,9 @@ public class ItemAliasTypeLogic
                 } else {
                     itemAliasType = getItemAliasTypeByName(eea, itemAliasTypeName, entityPermission);
                 }
-                break;
-            default:
-                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
-                break;
+            }
+            default ->
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
 
         return itemAliasType;

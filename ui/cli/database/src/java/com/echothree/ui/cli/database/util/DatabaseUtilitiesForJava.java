@@ -1019,6 +1019,8 @@ public class DatabaseUtilitiesForJava {
         pw.println("import java.util.List;");
         pw.println("import java.util.Map;");
         pw.println("import java.util.Set;");
+        pw.println("import javax.enterprise.context.ApplicationScoped;");
+        pw.println("import javax.enterprise.inject.spi.CDI;");
         pw.println("import org.apache.commons.logging.Log;");
         pw.println("import org.apache.commons.logging.LogFactory;");
         pw.println("");
@@ -1100,21 +1102,16 @@ public class DatabaseUtilitiesForJava {
         pw.println("    ");
     }
     
-    // http://www.oreillynet.com/onjava/blog/2007/01/singletons_and_lazy_loading.html
     public void writeFactoryConstructors(PrintWriter pw, Table theTable) {
         var factoryClass = theTable.getFactoryClass();
         
         pw.println("    /** Creates a new instance of " + factoryClass + " */");
-        pw.println("    private " + factoryClass + "() {");
+        pw.println("    protected " + factoryClass + "() {");
         pw.println("        super();");
         pw.println("    }");
         pw.println("    ");
-        pw.println("    private static class " + factoryClass + "Holder {");
-        pw.println("        static " + factoryClass + " instance = new " + factoryClass + "();");
-        pw.println("    }");
-        pw.println("    ");
         pw.println("    public static " + factoryClass + " getInstance() {");
-        pw.println("        return " + factoryClass + "Holder.instance;");
+        pw.println("        return CDI.current().select(" + factoryClass + ".class).get();");
         pw.println("    }");
         pw.println("    ");
     }
@@ -1327,39 +1324,27 @@ public class DatabaseUtilitiesForJava {
                 pw.println("            else");
 
                 switch(type) {
-                    case ColumnType.columnInteger:
-                        pw.println("                _ps.setInt(" + parameterCount + ", " + dbColumnName + ");");
-                        break;
-                    case ColumnType.columnLong:
-                        pw.println("                _ps.setLong(" + parameterCount + ", " + dbColumnName + ");");
-                        break;
-                    case ColumnType.columnString:
-                        pw.println("                _ps.setString(" + parameterCount + ", " + dbColumnName + ");");
-                        break;
-                    case ColumnType.columnBoolean:
-                        pw.println("                _ps.setInt(" + parameterCount + ", " + dbColumnName + "? 1: 0);");
-                        break;
-                    case ColumnType.columnDate:
-                        pw.println("                _ps.setInt(" + parameterCount + ", " + dbColumnName + ");");
-                        break;
-                    case ColumnType.columnTime:
-                        pw.println("                _ps.setLong(" + parameterCount + ", " + dbColumnName + ");");
-                        break;
-                    case ColumnType.columnForeignKey:
-                        pw.println("                _ps.setLong(" + parameterCount + ", " + dbColumnName + ".getEntityId());");
-                        break;
-                    case ColumnType.columnBLOB:
-                        pw.println("                _ps.setBinaryStream(" + parameterCount + ", new ByteArrayInputStream(" + dbColumnName + ".byteArrayValue()), " + dbColumnName + ".length());");
-                        break;
-                    case ColumnType.columnCLOB:
-                        pw.println("                _ps.setCharacterStream(" + parameterCount + ", new StringReader(" + dbColumnName + "), " + dbColumnName + ".length());");
-                        break;
-                    case ColumnType.columnUUID:
-                        pw.println("                _ps.setString(" + parameterCount + ", " + dbColumnName + ");");
-                        break;
-                    default:
-                        pw.println("<error>");
-                        break;
+                    case ColumnType.columnInteger ->
+                            pw.println("                _ps.setInt(" + parameterCount + ", " + dbColumnName + ");");
+                    case ColumnType.columnLong ->
+                            pw.println("                _ps.setLong(" + parameterCount + ", " + dbColumnName + ");");
+                    case ColumnType.columnString ->
+                            pw.println("                _ps.setString(" + parameterCount + ", " + dbColumnName + ");");
+                    case ColumnType.columnBoolean ->
+                            pw.println("                _ps.setInt(" + parameterCount + ", " + dbColumnName + "? 1: 0);");
+                    case ColumnType.columnDate ->
+                            pw.println("                _ps.setInt(" + parameterCount + ", " + dbColumnName + ");");
+                    case ColumnType.columnTime ->
+                            pw.println("                _ps.setLong(" + parameterCount + ", " + dbColumnName + ");");
+                    case ColumnType.columnForeignKey ->
+                            pw.println("                _ps.setLong(" + parameterCount + ", " + dbColumnName + ".getEntityId());");
+                    case ColumnType.columnBLOB ->
+                            pw.println("                _ps.setBinaryStream(" + parameterCount + ", new ByteArrayInputStream(" + dbColumnName + ".byteArrayValue()), " + dbColumnName + ".length());");
+                    case ColumnType.columnCLOB ->
+                            pw.println("                _ps.setCharacterStream(" + parameterCount + ", new StringReader(" + dbColumnName + "), " + dbColumnName + ".length());");
+                    case ColumnType.columnUUID ->
+                            pw.println("                _ps.setString(" + parameterCount + ", " + dbColumnName + ");");
+                    default -> pw.println("<error>");
                 }
 
                 pw.println("            ");
@@ -1542,41 +1527,29 @@ public class DatabaseUtilitiesForJava {
                 pw.println("        if(" + dbColumnName + " == null)");
                 pw.println("            _ps.setNull(" + parameterCount + ", Types." + column.getTypeAsJavaSqlType() + ");");
                 pw.println("        else");
-                
+
                 switch(type) {
-                    case ColumnType.columnInteger:
-                        pw.println("            _ps.setInt(" + parameterCount + ", " + dbColumnName + ");");
-                        break;
-                    case ColumnType.columnLong:
-                        pw.println("            _ps.setLong(" + parameterCount + ", " + dbColumnName + ");");
-                        break;
-                    case ColumnType.columnString:
-                        pw.println("            _ps.setString(" + parameterCount + ", " + dbColumnName + ");");
-                        break;
-                    case ColumnType.columnBoolean:
-                        pw.println("            _ps.setInt(" + parameterCount + ", " + dbColumnName + "? 1: 0);");
-                        break;
-                    case ColumnType.columnDate:
-                        pw.println("            _ps.setInt(" + parameterCount + ", " + dbColumnName + ");");
-                        break;
-                    case ColumnType.columnTime:
-                        pw.println("            _ps.setLong(" + parameterCount + ", " + dbColumnName + ");");
-                        break;
-                    case ColumnType.columnForeignKey:
-                        pw.println("            _ps.setLong(" + parameterCount + ", " + dbColumnName + ".getEntityId());");
-                        break;
-                    case ColumnType.columnBLOB:
-                        pw.println("            _ps.setBinaryStream(" + parameterCount + ", new ByteArrayInputStream(" + dbColumnName + ".byteArrayValue()), " + dbColumnName + ".length());");
-                        break;
-                    case ColumnType.columnCLOB:
-                        pw.println("            _ps.setCharacterStream(" + parameterCount + ", new StringReader(" + dbColumnName + "), " + dbColumnName + ".length());");
-                        break;
-                    case ColumnType.columnUUID:
-                        pw.println("            _ps.setString(" + parameterCount + ", " + dbColumnName + ");");
-                        break;
-                    default:
-                        pw.println("<error>");
-                        break;
+                    case ColumnType.columnInteger ->
+                            pw.println("            _ps.setInt(" + parameterCount + ", " + dbColumnName + ");");
+                    case ColumnType.columnLong ->
+                            pw.println("            _ps.setLong(" + parameterCount + ", " + dbColumnName + ");");
+                    case ColumnType.columnString ->
+                            pw.println("            _ps.setString(" + parameterCount + ", " + dbColumnName + ");");
+                    case ColumnType.columnBoolean ->
+                            pw.println("            _ps.setInt(" + parameterCount + ", " + dbColumnName + "? 1: 0);");
+                    case ColumnType.columnDate ->
+                            pw.println("            _ps.setInt(" + parameterCount + ", " + dbColumnName + ");");
+                    case ColumnType.columnTime ->
+                            pw.println("            _ps.setLong(" + parameterCount + ", " + dbColumnName + ");");
+                    case ColumnType.columnForeignKey ->
+                            pw.println("            _ps.setLong(" + parameterCount + ", " + dbColumnName + ".getEntityId());");
+                    case ColumnType.columnBLOB ->
+                            pw.println("            _ps.setBinaryStream(" + parameterCount + ", new ByteArrayInputStream(" + dbColumnName + ".byteArrayValue()), " + dbColumnName + ".length());");
+                    case ColumnType.columnCLOB ->
+                            pw.println("            _ps.setCharacterStream(" + parameterCount + ", new StringReader(" + dbColumnName + "), " + dbColumnName + ".length());");
+                    case ColumnType.columnUUID ->
+                            pw.println("            _ps.setString(" + parameterCount + ", " + dbColumnName + ");");
+                    default -> pw.println("<error>");
                 }
                 
                 pw.println("            ");
@@ -1739,51 +1712,49 @@ public class DatabaseUtilitiesForJava {
 
             if(type != ColumnType.columnEID) {
                 var dbColumnName = column.getDbColumnName();
-                
+
                 switch(type) {
-                    case ColumnType.columnInteger:
+                    case ColumnType.columnInteger -> {
                         pw.println("                Integer " + dbColumnName + " = rs.getInt(" + dbColumnName.toUpperCase(Locale.getDefault()) + ");");
                         valueParameters += ", " + dbColumnName;
-                        break;
-                    case ColumnType.columnLong:
+                    }
+                    case ColumnType.columnLong -> {
                         pw.println("                Long " + dbColumnName + " = rs.getLong(" + dbColumnName.toUpperCase(Locale.getDefault()) + ");");
                         valueParameters += ", " + dbColumnName;
-                        break;
-                    case ColumnType.columnString:
+                    }
+                    case ColumnType.columnString -> {
                         pw.println("                String " + dbColumnName + " = rs.getString(" + dbColumnName.toUpperCase(Locale.getDefault()) + ");");
                         valueParameters += ", " + dbColumnName;
-                        break;
-                    case ColumnType.columnBoolean:
+                    }
+                    case ColumnType.columnBoolean -> {
                         pw.println("                Boolean " + dbColumnName + " = rs.getInt(" + dbColumnName.toUpperCase(Locale.getDefault()) + ") == 1;");
                         valueParameters += ", " + dbColumnName;
-                        break;
-                    case ColumnType.columnDate:
+                    }
+                    case ColumnType.columnDate -> {
                         pw.println("                Integer " + dbColumnName + " = rs.getInt(" + dbColumnName.toUpperCase(Locale.getDefault()) + ");");
                         valueParameters += ", " + dbColumnName;
-                        break;
-                    case ColumnType.columnTime:
+                    }
+                    case ColumnType.columnTime -> {
                         pw.println("                Long " + dbColumnName + " = rs.getLong(" + dbColumnName.toUpperCase(Locale.getDefault()) + ");");
                         valueParameters += ", " + dbColumnName;
-                        break;
-                    case ColumnType.columnForeignKey:
+                    }
+                    case ColumnType.columnForeignKey -> {
                         pw.println("                Long " + dbColumnName + " = rs.getLong(" + dbColumnName.toUpperCase(Locale.getDefault()) + ");");
                         valueParameters += ", new " + column.getFKPKClass() + "(" + dbColumnName + ")";
-                        break;
-                    case ColumnType.columnBLOB:
+                    }
+                    case ColumnType.columnBLOB -> {
                         pw.println("                Blob " + dbColumnName + " = rs.getBlob(" + dbColumnName.toUpperCase(Locale.getDefault()) + ");");
                         valueParameters += ", new ByteArray(" + dbColumnName + ".getBytes(1L, (int)" + dbColumnName + ".length()))";
-                        break;
-                    case ColumnType.columnCLOB:
+                    }
+                    case ColumnType.columnCLOB -> {
                         pw.println("                Clob " + dbColumnName + " = rs.getClob(" + dbColumnName.toUpperCase(Locale.getDefault()) + ");");
                         valueParameters += ", " + dbColumnName + " == null? null: " + dbColumnName + ".getSubString(1L, (int)" + dbColumnName + ".length())";
-                        break;
-                    case ColumnType.columnUUID:
+                    }
+                    case ColumnType.columnUUID -> {
                         pw.println("                String " + dbColumnName + " = rs.getString(" + dbColumnName.toUpperCase(Locale.getDefault()) + ");");
                         valueParameters += ", " + dbColumnName;
-                        break;
-                    default:
-                        pw.println("<error>");
-                        break;
+                    }
+                    default -> pw.println("<error>");
                 }
                 
                 pw.println("                if(rs.wasNull())");
@@ -2177,51 +2148,49 @@ public class DatabaseUtilitiesForJava {
 
             if(type != ColumnType.columnEID) {
                 var dbColumnName = column.getDbColumnName();
-                
+
                 switch(type) {
-                    case ColumnType.columnInteger:
+                    case ColumnType.columnInteger -> {
                         pw.println("                Integer " + dbColumnName + " = rs.getInt(" + dbColumnName.toUpperCase(Locale.getDefault()) + ");");
                         valueParameters += ", " + dbColumnName;
-                        break;
-                    case ColumnType.columnLong:
+                    }
+                    case ColumnType.columnLong -> {
                         pw.println("                Long " + dbColumnName + " = rs.getLong(" + dbColumnName.toUpperCase(Locale.getDefault()) + ");");
                         valueParameters += ", " + dbColumnName;
-                        break;
-                    case ColumnType.columnString:
+                    }
+                    case ColumnType.columnString -> {
                         pw.println("                String " + dbColumnName + " = rs.getString(" + dbColumnName.toUpperCase(Locale.getDefault()) + ");");
                         valueParameters += ", " + dbColumnName;
-                        break;
-                    case ColumnType.columnBoolean:
+                    }
+                    case ColumnType.columnBoolean -> {
                         pw.println("                Boolean " + dbColumnName + " = rs.getInt(" + dbColumnName.toUpperCase(Locale.getDefault()) + ") == 1;");
                         valueParameters += ", " + dbColumnName;
-                        break;
-                    case ColumnType.columnDate:
+                    }
+                    case ColumnType.columnDate -> {
                         pw.println("                Integer " + dbColumnName + " = rs.getInt(" + dbColumnName.toUpperCase(Locale.getDefault()) + ");");
                         valueParameters += ", " + dbColumnName;
-                        break;
-                    case ColumnType.columnTime:
+                    }
+                    case ColumnType.columnTime -> {
                         pw.println("                Long " + dbColumnName + " = rs.getLong(" + dbColumnName.toUpperCase(Locale.getDefault()) + ");");
                         valueParameters += ", " + dbColumnName;
-                        break;
-                    case ColumnType.columnForeignKey:
+                    }
+                    case ColumnType.columnForeignKey -> {
                         pw.println("                Long " + dbColumnName + " = rs.getLong(" + dbColumnName.toUpperCase(Locale.getDefault()) + ");");
                         valueParameters += ", " + dbColumnName + " == null? null: new " + column.getFKPKClass() + "(" + dbColumnName + ")";
-                        break;
-                    case ColumnType.columnBLOB:
+                    }
+                    case ColumnType.columnBLOB -> {
                         pw.println("                Blob " + dbColumnName + " = rs.getBlob(" + dbColumnName.toUpperCase(Locale.getDefault()) + ");");
                         valueParameters += ", new ByteArray(" + dbColumnName + ".getBytes(1L, (int)" + dbColumnName + ".length()))";
-                        break;
-                    case ColumnType.columnCLOB:
+                    }
+                    case ColumnType.columnCLOB -> {
                         pw.println("                Clob " + dbColumnName + " = rs.getClob(" + dbColumnName.toUpperCase(Locale.getDefault()) + ");");
                         valueParameters += ", " + dbColumnName + " == null? null: " + dbColumnName + ".getSubString(1L, (int)" + dbColumnName + ".length())";
-                        break;
-                    case ColumnType.columnUUID:
+                    }
+                    case ColumnType.columnUUID -> {
                         pw.println("                String " + dbColumnName + " = rs.getString(" + dbColumnName.toUpperCase(Locale.getDefault()) + ");");
                         valueParameters += ", " + dbColumnName;
-                        break;
-                    default:
-                        pw.println("<error>");
-                        break;
+                    }
+                    default -> pw.println("<error>");
                 }
                 
                 pw.println("                if(rs.wasNull())");
@@ -2290,6 +2259,7 @@ public class DatabaseUtilitiesForJava {
     
     public void writeFactoryClass(PrintWriter pw, Table theTable)
     throws Exception {
+        pw.println("@ApplicationScoped");
         pw.println("public class " + theTable.getFactoryClass());
         pw.println("        implements BaseFactory<" + theTable.getPKClass() + ", " + theTable.getEntityClass() + "> {");
         pw.println("    ");

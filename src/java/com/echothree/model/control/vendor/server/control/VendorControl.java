@@ -36,7 +36,13 @@ import com.echothree.model.control.vendor.common.transfer.VendorTypeTransfer;
 import com.echothree.model.control.vendor.common.workflow.VendorItemStatusConstants;
 import com.echothree.model.control.vendor.common.workflow.VendorStatusConstants;
 import com.echothree.model.control.vendor.server.graphql.VendorObject;
-import com.echothree.model.control.vendor.server.transfer.VendorTransferCaches;
+import com.echothree.model.control.vendor.server.transfer.ItemPurchasingCategoryDescriptionTransferCache;
+import com.echothree.model.control.vendor.server.transfer.ItemPurchasingCategoryTransferCache;
+import com.echothree.model.control.vendor.server.transfer.VendorItemCostTransferCache;
+import com.echothree.model.control.vendor.server.transfer.VendorItemTransferCache;
+import com.echothree.model.control.vendor.server.transfer.VendorTransferCache;
+import com.echothree.model.control.vendor.server.transfer.VendorTypeDescriptionTransferCache;
+import com.echothree.model.control.vendor.server.transfer.VendorTypeTransferCache;
 import com.echothree.model.data.accounting.server.entity.GlAccount;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
 import com.echothree.model.data.core.server.entity.EntityInstance;
@@ -99,29 +105,43 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
+@RequestScoped
 public class VendorControl
         extends BaseModelControl {
     
     /** Creates a new instance of VendorControl */
-    public VendorControl() {
+    protected VendorControl() {
         super();
     }
     
     // --------------------------------------------------------------------------------
     //   Vendor Transfer Caches
     // --------------------------------------------------------------------------------
-    
-    private VendorTransferCaches vendorTransferCaches;
-    
-    public VendorTransferCaches getVendorTransferCaches(UserVisit userVisit) {
-        if(vendorTransferCaches == null) {
-            vendorTransferCaches = new VendorTransferCaches(userVisit, this);
-        }
-        
-        return vendorTransferCaches;
-    }
-    
+
+    @Inject
+    VendorTypeTransferCache vendorTypeTransferCache;
+
+    @Inject
+    VendorTypeDescriptionTransferCache vendorTypeDescriptionTransferCache;
+
+    @Inject
+    VendorTransferCache vendorTransferCache;
+
+    @Inject
+    VendorItemTransferCache vendorItemTransferCache;
+
+    @Inject
+    VendorItemCostTransferCache vendorItemCostTransferCache;
+
+    @Inject
+    ItemPurchasingCategoryDescriptionTransferCache itemPurchasingCategoryDescriptionTransferCache;
+
+    @Inject
+    ItemPurchasingCategoryTransferCache itemPurchasingCategoryTransferCache;
+
     // --------------------------------------------------------------------------------
     //   Vendor Types
     // --------------------------------------------------------------------------------
@@ -324,19 +344,18 @@ public class VendorControl
     }
     
     public VendorTypeTransfer getVendorTypeTransfer(UserVisit userVisit, VendorType vendorType) {
-        return getVendorTransferCaches(userVisit).getVendorTypeTransferCache().getVendorTypeTransfer(vendorType);
+        return vendorTypeTransferCache.getVendorTypeTransfer(userVisit, vendorType);
     }
 
     public List<VendorTypeTransfer> getVendorTypeTransfers(UserVisit userVisit, Collection<VendorType> vendorTypes) {
         List<VendorTypeTransfer> vendorTypeTransfers = null;
 
         if(vendorTypes != null) {
-            var vendorTypeTransferCache = getVendorTransferCaches(userVisit).getVendorTypeTransferCache();
 
             vendorTypeTransfers = new ArrayList<>(vendorTypes.size());
 
             for(var vendorType : vendorTypes) {
-                vendorTypeTransfers.add(vendorTypeTransferCache.getVendorTypeTransfer(vendorType));
+                vendorTypeTransfers.add(vendorTypeTransferCache.getVendorTypeTransfer(userVisit, vendorType));
             }
         }
 
@@ -543,7 +562,7 @@ public class VendorControl
         var vendorTypeDescription = getVendorTypeDescription(vendorType, language);
         
         if(vendorTypeDescription == null && !language.getIsDefault()) {
-            vendorTypeDescription = getVendorTypeDescription(vendorType, getPartyControl().getDefaultLanguage());
+            vendorTypeDescription = getVendorTypeDescription(vendorType, partyControl.getDefaultLanguage());
         }
         
         if(vendorTypeDescription == null) {
@@ -556,7 +575,7 @@ public class VendorControl
     }
     
     public VendorTypeDescriptionTransfer getVendorTypeDescriptionTransfer(UserVisit userVisit, VendorTypeDescription vendorTypeDescription) {
-        return getVendorTransferCaches(userVisit).getVendorTypeDescriptionTransferCache().getVendorTypeDescriptionTransfer(vendorTypeDescription);
+        return vendorTypeDescriptionTransferCache.getVendorTypeDescriptionTransfer(userVisit, vendorTypeDescription);
     }
     
     public List<VendorTypeDescriptionTransfer> getVendorTypeDescriptionTransfers(UserVisit userVisit, VendorType vendorType) {
@@ -564,12 +583,11 @@ public class VendorControl
         List<VendorTypeDescriptionTransfer> vendorTypeDescriptionTransfers = null;
         
         if(vendorTypeDescriptions != null) {
-            var vendorTypeDescriptionTransferCache = getVendorTransferCaches(userVisit).getVendorTypeDescriptionTransferCache();
             
             vendorTypeDescriptionTransfers = new ArrayList<>(vendorTypeDescriptions.size());
             
             for(var vendorTypeDescription : vendorTypeDescriptions) {
-                vendorTypeDescriptionTransfers.add(vendorTypeDescriptionTransferCache.getVendorTypeDescriptionTransfer(vendorTypeDescription));
+                vendorTypeDescriptionTransfers.add(vendorTypeDescriptionTransferCache.getVendorTypeDescriptionTransfer(userVisit, vendorTypeDescription));
             }
         }
         
@@ -813,7 +831,6 @@ public class VendorControl
     
     public VendorStatusChoicesBean getVendorStatusChoices(String defaultVendorStatusChoice, Language language,
             boolean allowNullChoice, Party vendorParty, PartyPK partyPK) {
-        var workflowControl = getWorkflowControl();
         var vendorStatusChoicesBean = new VendorStatusChoicesBean();
 
         if(vendorParty == null) {
@@ -833,7 +850,6 @@ public class VendorControl
     }
 
     public void setVendorStatus(ExecutionErrorAccumulator eea, Party party, String vendorStatusChoice, PartyPK modifiedBy) {
-        var workflowControl = getWorkflowControl();
         var entityInstance = getEntityInstanceByBaseEntity(party);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(VendorStatusConstants.Workflow_VENDOR_STATUS,
                 entityInstance);
@@ -848,19 +864,18 @@ public class VendorControl
     }
 
     public VendorTransfer getVendorTransfer(UserVisit userVisit, Vendor vendor) {
-        return getVendorTransferCaches(userVisit).getVendorTransferCache().getTransfer(vendor);
+        return vendorTransferCache.getTransfer(userVisit, vendor);
     }
     
     public VendorTransfer getVendorTransfer(UserVisit userVisit, Party party) {
-        return getVendorTransferCaches(userVisit).getVendorTransferCache().getTransfer(party);
+        return vendorTransferCache.getTransfer(userVisit, party);
     }
 
     public List<VendorTransfer> getVendorTransfers(UserVisit userVisit, Collection<Vendor> vendors) {
         var vendorTransfers = new ArrayList<VendorTransfer>(vendors.size());
-        var vendorTransferCache = getVendorTransferCaches(userVisit).getVendorTransferCache();
 
         vendors.forEach((vendor) ->
-                vendorTransfers.add(vendorTransferCache.getTransfer(vendor))
+                vendorTransfers.add(vendorTransferCache.getTransfer(userVisit, vendor))
         );
 
         return vendorTransfers;
@@ -1158,7 +1173,6 @@ public class VendorControl
     
     public VendorItemStatusChoicesBean getVendorItemStatusChoices(String defaultVendorItemStatusChoice, Language language,
             boolean allowNullChoice, VendorItem vendorItem, PartyPK partyPK) {
-        var workflowControl = getWorkflowControl();
         var vendorItemStatusChoicesBean = new VendorItemStatusChoicesBean();
 
         if(vendorItem == null) {
@@ -1178,7 +1192,6 @@ public class VendorControl
     }
 
     public void setVendorItemStatus(ExecutionErrorAccumulator eea, VendorItem vendorItem, String vendorItemStatusChoice, PartyPK modifiedBy) {
-        var workflowControl = getWorkflowControl();
         var entityInstance = getEntityInstanceByBaseEntity(vendorItem);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(VendorItemStatusConstants.Workflow_VENDOR_ITEM_STATUS,
                 entityInstance);
@@ -1193,15 +1206,14 @@ public class VendorControl
     }
 
     public VendorItemTransfer getVendorItemTransfer(UserVisit userVisit, VendorItem vendorItem) {
-        return getVendorTransferCaches(userVisit).getVendorItemTransferCache().getVendorItemTransfer(vendorItem);
+        return vendorItemTransferCache.getVendorItemTransfer(userVisit, vendorItem);
     }
     
     public List<VendorItemTransfer> getVendorItemTransfers(UserVisit userVisit, Collection<VendorItem> vendorItems) {
         List<VendorItemTransfer> vendorItemTransfers = new ArrayList<>(vendorItems.size());
-        var vendorItemTransferCache = getVendorTransferCaches(userVisit).getVendorItemTransferCache();
         
         vendorItems.forEach((vendorItem) ->
-                vendorItemTransfers.add(vendorItemTransferCache.getVendorItemTransfer(vendorItem))
+                vendorItemTransfers.add(vendorItemTransferCache.getVendorItemTransfer(userVisit, vendorItem))
         );
         
         return vendorItemTransfers;
@@ -1486,15 +1498,14 @@ public class VendorControl
     }
     
     public VendorItemCostTransfer getVendorItemCostTransfer(UserVisit userVisit, VendorItemCost vendorItemCost) {
-        return getVendorTransferCaches(userVisit).getVendorItemCostTransferCache().getVendorItemCostTransfer(vendorItemCost);
+        return vendorItemCostTransferCache.getVendorItemCostTransfer(userVisit, vendorItemCost);
     }
     
     public List<VendorItemCostTransfer> getVendorItemCostTransfers(UserVisit userVisit, Collection<VendorItemCost> vendorItemCosts) {
         List<VendorItemCostTransfer> vendorItemCostTransfers = new ArrayList<>(vendorItemCosts.size());
-        var vendorItemCostTransferCache = getVendorTransferCaches(userVisit).getVendorItemCostTransferCache();
         
         for(var vendorItemCost : vendorItemCosts) {
-            vendorItemCostTransfers.add(vendorItemCostTransferCache.getVendorItemCostTransfer(vendorItemCost));
+            vendorItemCostTransfers.add(vendorItemCostTransferCache.getVendorItemCostTransfer(userVisit, vendorItemCost));
         }
         
         return vendorItemCostTransfers;
@@ -1748,15 +1759,14 @@ public class VendorControl
     }
 
     public ItemPurchasingCategoryTransfer getItemPurchasingCategoryTransfer(UserVisit userVisit, ItemPurchasingCategory itemPurchasingCategory) {
-        return getVendorTransferCaches(userVisit).getItemPurchasingCategoryTransferCache().getItemPurchasingCategoryTransfer(itemPurchasingCategory);
+        return itemPurchasingCategoryTransferCache.getItemPurchasingCategoryTransfer(userVisit, itemPurchasingCategory);
     }
 
     public List<ItemPurchasingCategoryTransfer> getItemPurchasingCategoryTransfers(UserVisit userVisit, Collection<ItemPurchasingCategory> itemPurchasingCategories) {
         var itemPurchasingCategoryTransfers = new ArrayList<ItemPurchasingCategoryTransfer>(itemPurchasingCategories.size());
-        var itemPurchasingCategoryTransferCache = getVendorTransferCaches(userVisit).getItemPurchasingCategoryTransferCache();
 
         itemPurchasingCategories.forEach((itemPurchasingCategory) ->
-                itemPurchasingCategoryTransfers.add(itemPurchasingCategoryTransferCache.getItemPurchasingCategoryTransfer(itemPurchasingCategory))
+                itemPurchasingCategoryTransfers.add(itemPurchasingCategoryTransferCache.getItemPurchasingCategoryTransfer(userVisit, itemPurchasingCategory))
         );
 
         return itemPurchasingCategoryTransfers;
@@ -2024,7 +2034,7 @@ public class VendorControl
         var itemPurchasingCategoryDescription = getItemPurchasingCategoryDescription(itemPurchasingCategory, language);
         
         if(itemPurchasingCategoryDescription == null && !language.getIsDefault()) {
-            itemPurchasingCategoryDescription = getItemPurchasingCategoryDescription(itemPurchasingCategory, getPartyControl().getDefaultLanguage());
+            itemPurchasingCategoryDescription = getItemPurchasingCategoryDescription(itemPurchasingCategory, partyControl.getDefaultLanguage());
         }
         
         if(itemPurchasingCategoryDescription == null) {
@@ -2037,16 +2047,15 @@ public class VendorControl
     }
     
     public ItemPurchasingCategoryDescriptionTransfer getItemPurchasingCategoryDescriptionTransfer(UserVisit userVisit, ItemPurchasingCategoryDescription itemPurchasingCategoryDescription) {
-        return getVendorTransferCaches(userVisit).getItemPurchasingCategoryDescriptionTransferCache().getItemPurchasingCategoryDescriptionTransfer(itemPurchasingCategoryDescription);
+        return itemPurchasingCategoryDescriptionTransferCache.getItemPurchasingCategoryDescriptionTransfer(userVisit, itemPurchasingCategoryDescription);
     }
     
     public List<ItemPurchasingCategoryDescriptionTransfer> getItemPurchasingCategoryDescriptionTransfersByItemPurchasingCategory(UserVisit userVisit, ItemPurchasingCategory itemPurchasingCategory) {
         var itemPurchasingCategoryDescriptions = getItemPurchasingCategoryDescriptionsByItemPurchasingCategory(itemPurchasingCategory);
         List<ItemPurchasingCategoryDescriptionTransfer> itemPurchasingCategoryDescriptionTransfers = new ArrayList<>(itemPurchasingCategoryDescriptions.size());
-        var itemPurchasingCategoryDescriptionTransferCache = getVendorTransferCaches(userVisit).getItemPurchasingCategoryDescriptionTransferCache();
         
         itemPurchasingCategoryDescriptions.forEach((itemPurchasingCategoryDescription) ->
-                itemPurchasingCategoryDescriptionTransfers.add(itemPurchasingCategoryDescriptionTransferCache.getItemPurchasingCategoryDescriptionTransfer(itemPurchasingCategoryDescription))
+                itemPurchasingCategoryDescriptionTransfers.add(itemPurchasingCategoryDescriptionTransferCache.getItemPurchasingCategoryDescriptionTransfer(userVisit, itemPurchasingCategoryDescription))
         );
         
         return itemPurchasingCategoryDescriptionTransfers;
@@ -2103,7 +2112,7 @@ public class VendorControl
             var vendorControl = Session.getModelController(VendorControl.class);
 
             while(rs.next()) {
-                var party = getPartyControl().getPartyByPK(new PartyPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
+                var party = partyControl.getPartyByPK(new PartyPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
 
                 vendorResultTransfers.add(new VendorResultTransfer(party.getLastDetail().getPartyName(),
                         includeVendor ? vendorControl.getVendorTransfer(userVisit, party) : null));
@@ -2121,7 +2130,7 @@ public class VendorControl
 
         try (var rs = searchControl.getUserVisitSearchResultSet(userVisitSearch)) {
             while(rs.next()) {
-                var party = getPartyControl().getPartyByPK(new PartyPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
+                var party = partyControl.getPartyByPK(new PartyPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
 
                 vendorObjects.add(new VendorObject(party));
             }

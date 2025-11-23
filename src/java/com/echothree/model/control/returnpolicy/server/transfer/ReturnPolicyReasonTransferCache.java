@@ -20,16 +20,21 @@ import com.echothree.model.control.returnpolicy.common.transfer.ReturnPolicyReas
 import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicyReason;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ReturnPolicyReasonTransferCache
         extends BaseReturnPolicyTransferCache<ReturnPolicyReason, ReturnPolicyReasonTransfer> {
-    
+
+    ReturnPolicyControl returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
+
     /** Creates a new instance of ReturnPolicyReasonTransferCache */
-    public ReturnPolicyReasonTransferCache(UserVisit userVisit, ReturnPolicyControl returnPolicyControl) {
-        super(userVisit, returnPolicyControl);
+    protected ReturnPolicyReasonTransferCache() {
+        super();
     }
     
-    public ReturnPolicyReasonTransfer getReturnPolicyReasonTransfer(ReturnPolicyReason returnPolicyReason) {
+    public ReturnPolicyReasonTransfer getReturnPolicyReasonTransfer(UserVisit userVisit, ReturnPolicyReason returnPolicyReason) {
         var returnPolicyReasonTransfer = get(returnPolicyReason);
         
         if(returnPolicyReasonTransfer == null) {
@@ -39,7 +44,7 @@ public class ReturnPolicyReasonTransferCache
             var sortOrder = returnPolicyReason.getSortOrder();
             
             returnPolicyReasonTransfer = new ReturnPolicyReasonTransfer(returnPolicy, returnReason, isDefault, sortOrder);
-            put(returnPolicyReason, returnPolicyReasonTransfer);
+            put(userVisit, returnPolicyReason, returnPolicyReasonTransfer);
         }
         
         return returnPolicyReasonTransfer;

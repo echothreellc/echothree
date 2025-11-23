@@ -20,18 +20,23 @@ import com.echothree.model.control.cancellationpolicy.common.transfer.Cancellati
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationReason;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CancellationReasonTransferCache
         extends BaseCancellationPolicyTransferCache<CancellationReason, CancellationReasonTransfer> {
-    
+
+    CancellationPolicyControl cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
+
     /** Creates a new instance of CancellationReasonTransferCache */
-    public CancellationReasonTransferCache(UserVisit userVisit, CancellationPolicyControl cancellationPolicyControl) {
-        super(userVisit, cancellationPolicyControl);
+    protected CancellationReasonTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public CancellationReasonTransfer getCancellationReasonTransfer(CancellationReason cancellationReason) {
+    public CancellationReasonTransfer getCancellationReasonTransfer(UserVisit userVisit, CancellationReason cancellationReason) {
         var cancellationReasonTransfer = get(cancellationReason);
         
         if(cancellationReasonTransfer == null) {
@@ -40,10 +45,10 @@ public class CancellationReasonTransferCache
             var cancellationReasonName = cancellationReasonDetail.getCancellationReasonName();
             var isDefault = cancellationReasonDetail.getIsDefault();
             var sortOrder = cancellationReasonDetail.getSortOrder();
-            var description = cancellationPolicyControl.getBestCancellationReasonDescription(cancellationReason, getLanguage());
+            var description = cancellationPolicyControl.getBestCancellationReasonDescription(cancellationReason, getLanguage(userVisit));
             
             cancellationReasonTransfer = new CancellationReasonTransfer(cancellationKind, cancellationReasonName, isDefault, sortOrder, description);
-            put(cancellationReason, cancellationReasonTransfer);
+            put(userVisit, cancellationReason, cancellationReasonTransfer);
         }
         
         return cancellationReasonTransfer;

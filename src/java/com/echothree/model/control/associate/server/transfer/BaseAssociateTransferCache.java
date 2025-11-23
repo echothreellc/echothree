@@ -16,7 +16,6 @@
 
 package com.echothree.model.control.associate.server.transfer;
 
-import com.echothree.model.control.associate.server.control.AssociateControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.BaseTransfer;
 import com.echothree.util.server.persistence.BaseEntity;
@@ -25,15 +24,11 @@ import com.echothree.util.server.transfer.BaseTransferCache;
 public abstract class BaseAssociateTransferCache<K extends BaseEntity, V extends BaseTransfer>
         extends BaseTransferCache<K, V> {
     
-    AssociateControl associateControl;
-    
     /** Creates a new instance of BaseAssociateTransferCache */
-    protected BaseAssociateTransferCache(UserVisit userVisit, AssociateControl associateControl) {
-        super(userVisit);
-        
-        this.associateControl = associateControl;
+    protected BaseAssociateTransferCache() {
+        super();
     }
     
-    protected abstract V getTransfer(K key);
+    protected abstract V getTransfer(UserVisit userVisit, K key);
     
 }

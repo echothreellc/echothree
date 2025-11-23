@@ -18,22 +18,23 @@ package com.echothree.model.control.warehouse.server.transfer;
 
 import com.echothree.model.control.warehouse.common.transfer.LocationUseTypeTransfer;
 import com.echothree.model.control.warehouse.server.control.LocationUseTypeControl;
-import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.warehouse.server.entity.LocationUseType;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class LocationUseTypeTransferCache
         extends BaseWarehouseTransferCache<LocationUseType, LocationUseTypeTransfer> {
 
     LocationUseTypeControl locationUseTypeControl = Session.getModelController(LocationUseTypeControl.class);
 
     /** Creates a new instance of LocationUseTypeTransferCache */
-    public LocationUseTypeTransferCache(UserVisit userVisit, WarehouseControl warehouseControl) {
-        super(userVisit, warehouseControl);
+    protected LocationUseTypeTransferCache() {
+        super();
     }
     
-    public LocationUseTypeTransfer getLocationUseTypeTransfer(LocationUseType locationUseType) {
+    public LocationUseTypeTransfer getLocationUseTypeTransfer(UserVisit userVisit, LocationUseType locationUseType) {
         var locationUseTypeTransfer = get(locationUseType);
         
         if(locationUseTypeTransfer == null) {
@@ -41,11 +42,11 @@ public class LocationUseTypeTransferCache
             var allowMultiple = locationUseType.getAllowMultiple();
             var isDefault = locationUseType.getIsDefault();
             var sortOrder = locationUseType.getSortOrder();
-            var description = locationUseTypeControl.getBestLocationUseTypeDescription(locationUseType, getLanguage());
+            var description = locationUseTypeControl.getBestLocationUseTypeDescription(locationUseType, getLanguage(userVisit));
             
             locationUseTypeTransfer = new LocationUseTypeTransfer(locationUseTypeName, allowMultiple, isDefault, sortOrder,
             description);
-            put(locationUseType, locationUseTypeTransfer);
+            put(userVisit, locationUseType, locationUseTypeTransfer);
         }
         
         return locationUseTypeTransfer;

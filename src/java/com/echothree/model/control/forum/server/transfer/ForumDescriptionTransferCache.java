@@ -20,16 +20,21 @@ import com.echothree.model.control.forum.common.transfer.ForumDescriptionTransfe
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.data.forum.server.entity.ForumDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ForumDescriptionTransferCache
         extends BaseForumDescriptionTransferCache<ForumDescription, ForumDescriptionTransfer> {
-    
+
+    ForumControl forumControl = Session.getModelController(ForumControl.class);
+
     /** Creates a new instance of ForumDescriptionTransferCache */
-    public ForumDescriptionTransferCache(UserVisit userVisit, ForumControl forumControl) {
-        super(userVisit, forumControl);
+    protected ForumDescriptionTransferCache() {
+        super();
     }
     
-    public ForumDescriptionTransfer getForumDescriptionTransfer(ForumDescription forumDescription) {
+    public ForumDescriptionTransfer getForumDescriptionTransfer(UserVisit userVisit, ForumDescription forumDescription) {
         var forumDescriptionTransfer = get(forumDescription);
         
         if(forumDescriptionTransfer == null) {
@@ -37,7 +42,7 @@ public class ForumDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, forumDescription.getLanguage());
             
             forumDescriptionTransfer = new ForumDescriptionTransfer(languageTransfer, forumTransfer, forumDescription.getDescription());
-            put(forumDescription, forumDescriptionTransfer);
+            put(userVisit, forumDescription, forumDescriptionTransfer);
         }
         
         return forumDescriptionTransfer;

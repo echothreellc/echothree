@@ -20,16 +20,21 @@ import com.echothree.model.control.contact.common.transfer.ContactMechanismAlias
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.data.contact.server.entity.ContactMechanismAlias;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ContactMechanismAliasTransferCache
         extends BaseContactTransferCache<ContactMechanismAlias, ContactMechanismAliasTransfer> {
-    
+
+    ContactControl contactControl = Session.getModelController(ContactControl.class);
+
     /** Creates a new instance of ContactMechanismAliasTransferCache */
-    public ContactMechanismAliasTransferCache(UserVisit userVisit, ContactControl contactControl) {
-        super(userVisit, contactControl);
+    protected ContactMechanismAliasTransferCache() {
+        super();
     }
     
-    public ContactMechanismAliasTransfer getContactMechanismAliasTransfer(ContactMechanismAlias contactMechanismAlias) {
+    public ContactMechanismAliasTransfer getContactMechanismAliasTransfer(UserVisit userVisit, ContactMechanismAlias contactMechanismAlias) {
         var contactMechanismAliasTransfer = get(contactMechanismAlias);
         
         if(contactMechanismAliasTransfer == null) {
@@ -40,7 +45,7 @@ public class ContactMechanismAliasTransferCache
             var alias = contactMechanismAlias.getAlias();
             
             contactMechanismAliasTransfer = new ContactMechanismAliasTransfer(contactMechanism, contactMechanismAliasType, alias);
-            put(contactMechanismAlias, contactMechanismAliasTransfer);
+            put(userVisit, contactMechanismAlias, contactMechanismAliasTransfer);
         }
         
         return contactMechanismAliasTransfer;

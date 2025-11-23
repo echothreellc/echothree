@@ -20,24 +20,29 @@ import com.echothree.model.control.selector.common.transfer.SelectorNodeTypeTran
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.selector.server.entity.SelectorNodeType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class SelectorNodeTypeTransferCache
         extends BaseSelectorTransferCache<SelectorNodeType, SelectorNodeTypeTransfer> {
-    
+
+    SelectorControl selectorControl = Session.getModelController(SelectorControl.class);
+
     /** Creates a new instance of SelectorNodeTypeTransferCache */
-    public SelectorNodeTypeTransferCache(UserVisit userVisit, SelectorControl selectorControl) {
-        super(userVisit, selectorControl);
+    protected SelectorNodeTypeTransferCache() {
+        super();
     }
     
-    public SelectorNodeTypeTransfer getSelectorNodeTypeTransfer(SelectorNodeType selectorNodeType) {
+    public SelectorNodeTypeTransfer getSelectorNodeTypeTransfer(UserVisit userVisit, SelectorNodeType selectorNodeType) {
         var selectorNodeTypeTransfer = get(selectorNodeType);
         
         if(selectorNodeTypeTransfer == null) {
             var selectorNodeTypeName = selectorNodeType.getSelectorNodeTypeName();
-            var description = selectorControl.getBestSelectorNodeTypeDescription(selectorNodeType, getLanguage());
+            var description = selectorControl.getBestSelectorNodeTypeDescription(selectorNodeType, getLanguage(userVisit));
             
             selectorNodeTypeTransfer = new SelectorNodeTypeTransfer(selectorNodeTypeName, description);
-            put(selectorNodeType, selectorNodeTypeTransfer);
+            put(userVisit, selectorNodeType, selectorNodeTypeTransfer);
         }
         return selectorNodeTypeTransfer;
     }

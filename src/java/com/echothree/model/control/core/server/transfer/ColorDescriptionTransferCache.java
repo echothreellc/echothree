@@ -21,18 +21,20 @@ import com.echothree.model.control.core.server.control.ColorControl;
 import com.echothree.model.data.core.server.entity.ColorDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ColorDescriptionTransferCache
         extends BaseCoreDescriptionTransferCache<ColorDescription, ColorDescriptionTransfer> {
 
     ColorControl colorControl = Session.getModelController(ColorControl.class);
 
     /** Creates a new instance of ColorDescriptionTransferCache */
-    public ColorDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected ColorDescriptionTransferCache() {
+        super();
     }
     
-    public ColorDescriptionTransfer getColorDescriptionTransfer(ColorDescription colorDescription) {
+    public ColorDescriptionTransfer getColorDescriptionTransfer(UserVisit userVisit, ColorDescription colorDescription) {
         var colorDescriptionTransfer = get(colorDescription);
         
         if(colorDescriptionTransfer == null) {
@@ -40,7 +42,7 @@ public class ColorDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, colorDescription.getLanguage());
             
             colorDescriptionTransfer = new ColorDescriptionTransfer(languageTransfer, colorTransfer, colorDescription.getDescription());
-            put(colorDescription, colorDescriptionTransfer);
+            put(userVisit, colorDescription, colorDescriptionTransfer);
         }
         return colorDescriptionTransfer;
     }

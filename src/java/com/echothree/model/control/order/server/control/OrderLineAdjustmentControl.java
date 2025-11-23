@@ -45,12 +45,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class OrderLineAdjustmentControl
         extends BaseOrderControl {
 
     /** Creates a new instance of OrderControl */
-    public OrderLineAdjustmentControl() {
+    protected OrderLineAdjustmentControl() {
         super();
     }
 
@@ -198,16 +200,15 @@ public class OrderLineAdjustmentControl
     }
 
     public OrderLineAdjustmentTypeTransfer getOrderLineAdjustmentTypeTransfer(UserVisit userVisit, OrderLineAdjustmentType orderLineAdjustmentType) {
-        return getOrderTransferCaches(userVisit).getOrderLineAdjustmentTypeTransferCache().getOrderLineAdjustmentTypeTransfer(orderLineAdjustmentType);
+        return orderLineAdjustmentTypeTransferCache.getOrderLineAdjustmentTypeTransfer(userVisit, orderLineAdjustmentType);
     }
 
     public List<OrderLineAdjustmentTypeTransfer> getOrderLineAdjustmentTypeTransfers(UserVisit userVisit, OrderType orderType) {
         var orderLineAdjustmentTypes = getOrderLineAdjustmentTypes(orderType);
         List<OrderLineAdjustmentTypeTransfer> orderLineAdjustmentTypeTransfers = new ArrayList<>(orderLineAdjustmentTypes.size());
-        var orderLineAdjustmentTypeTransferCache = getOrderTransferCaches(userVisit).getOrderLineAdjustmentTypeTransferCache();
 
         orderLineAdjustmentTypes.forEach((orderLineAdjustmentType) ->
-                orderLineAdjustmentTypeTransfers.add(orderLineAdjustmentTypeTransferCache.getOrderLineAdjustmentTypeTransfer(orderLineAdjustmentType))
+                orderLineAdjustmentTypeTransfers.add(orderLineAdjustmentTypeTransferCache.getOrderLineAdjustmentTypeTransfer(userVisit, orderLineAdjustmentType))
         );
 
         return orderLineAdjustmentTypeTransfers;
@@ -412,7 +413,7 @@ public class OrderLineAdjustmentControl
         var orderLineAdjustmentTypeDescription = getOrderLineAdjustmentTypeDescription(orderLineAdjustmentType, language);
 
         if(orderLineAdjustmentTypeDescription == null && !language.getIsDefault()) {
-            orderLineAdjustmentTypeDescription = getOrderLineAdjustmentTypeDescription(orderLineAdjustmentType, getPartyControl().getDefaultLanguage());
+            orderLineAdjustmentTypeDescription = getOrderLineAdjustmentTypeDescription(orderLineAdjustmentType, partyControl.getDefaultLanguage());
         }
 
         if(orderLineAdjustmentTypeDescription == null) {
@@ -425,16 +426,15 @@ public class OrderLineAdjustmentControl
     }
 
     public OrderLineAdjustmentTypeDescriptionTransfer getOrderLineAdjustmentTypeDescriptionTransfer(UserVisit userVisit, OrderLineAdjustmentTypeDescription orderLineAdjustmentTypeDescription) {
-        return getOrderTransferCaches(userVisit).getOrderLineAdjustmentTypeDescriptionTransferCache().getOrderLineAdjustmentTypeDescriptionTransfer(orderLineAdjustmentTypeDescription);
+        return orderLineAdjustmentTypeDescriptionTransferCache.getOrderLineAdjustmentTypeDescriptionTransfer(userVisit, orderLineAdjustmentTypeDescription);
     }
 
     public List<OrderLineAdjustmentTypeDescriptionTransfer> getOrderLineAdjustmentTypeDescriptionTransfersByOrderLineAdjustmentType(UserVisit userVisit, OrderLineAdjustmentType orderLineAdjustmentType) {
         var orderLineAdjustmentTypeDescriptions = getOrderLineAdjustmentTypeDescriptionsByOrderLineAdjustmentType(orderLineAdjustmentType);
         List<OrderLineAdjustmentTypeDescriptionTransfer> orderLineAdjustmentTypeDescriptionTransfers = new ArrayList<>(orderLineAdjustmentTypeDescriptions.size());
-        var orderLineAdjustmentTypeDescriptionTransferCache = getOrderTransferCaches(userVisit).getOrderLineAdjustmentTypeDescriptionTransferCache();
 
         orderLineAdjustmentTypeDescriptions.forEach((orderLineAdjustmentTypeDescription) ->
-                orderLineAdjustmentTypeDescriptionTransfers.add(orderLineAdjustmentTypeDescriptionTransferCache.getOrderLineAdjustmentTypeDescriptionTransfer(orderLineAdjustmentTypeDescription))
+                orderLineAdjustmentTypeDescriptionTransfers.add(orderLineAdjustmentTypeDescriptionTransferCache.getOrderLineAdjustmentTypeDescriptionTransfer(userVisit, orderLineAdjustmentTypeDescription))
         );
 
         return orderLineAdjustmentTypeDescriptionTransfers;

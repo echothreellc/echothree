@@ -20,24 +20,29 @@ import com.echothree.model.control.content.common.transfer.ContentPageAreaTypeTr
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.data.content.server.entity.ContentPageAreaType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ContentPageAreaTypeTransferCache
         extends BaseContentTransferCache<ContentPageAreaType, ContentPageAreaTypeTransfer> {
-    
+
+    ContentControl contentControl = Session.getModelController(ContentControl.class);
+
     /** Creates a new instance of ContentPageAreaTypeTransferCache */
-    public ContentPageAreaTypeTransferCache(UserVisit userVisit, ContentControl contentControl) {
-        super(userVisit, contentControl);
+    protected ContentPageAreaTypeTransferCache() {
+        super();
     }
     
-    public ContentPageAreaTypeTransfer getTransfer(ContentPageAreaType contentPageAreaType) {
+    public ContentPageAreaTypeTransfer getTransfer(UserVisit userVisit, ContentPageAreaType contentPageAreaType) {
         var contentPageAreaTypeTransfer = get(contentPageAreaType);
         
         if(contentPageAreaTypeTransfer == null) {
             var contentPageAreaTypeName = contentPageAreaType.getContentPageAreaTypeName();
-            var description = contentControl.getBestContentPageAreaTypeDescription(contentPageAreaType, getLanguage());
+            var description = contentControl.getBestContentPageAreaTypeDescription(contentPageAreaType, getLanguage(userVisit));
             
             contentPageAreaTypeTransfer = new ContentPageAreaTypeTransfer(contentPageAreaTypeName, description);
-            put(contentPageAreaType, contentPageAreaTypeTransfer);
+            put(userVisit, contentPageAreaType, contentPageAreaTypeTransfer);
         }
         
         return contentPageAreaTypeTransfer;

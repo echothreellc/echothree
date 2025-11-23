@@ -20,26 +20,31 @@ import com.echothree.model.control.club.common.transfer.ClubItemTypeTransfer;
 import com.echothree.model.control.club.server.control.ClubControl;
 import com.echothree.model.data.club.server.entity.ClubItemType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ClubItemTypeTransferCache
         extends BaseClubTransferCache<ClubItemType, ClubItemTypeTransfer> {
-    
+
+    ClubControl clubControl = Session.getModelController(ClubControl.class);
+
     /** Creates a new instance of ClubItemTypeTransferCache */
-    public ClubItemTypeTransferCache(UserVisit userVisit, ClubControl clubControl) {
-        super(userVisit, clubControl);
+    protected ClubItemTypeTransferCache() {
+        super();
     }
     
-    public ClubItemTypeTransfer getClubItemTypeTransfer(ClubItemType clubItemType) {
+    public ClubItemTypeTransfer getClubItemTypeTransfer(UserVisit userVisit, ClubItemType clubItemType) {
         var clubItemTypeTransfer = get(clubItemType);
         
         if(clubItemTypeTransfer == null) {
             var clubItemTypeName = clubItemType.getClubItemTypeName();
             var isDefault = clubItemType.getIsDefault();
             var sortOrder = clubItemType.getSortOrder();
-            var description = clubControl.getBestClubItemTypeDescription(clubItemType, getLanguage());
+            var description = clubControl.getBestClubItemTypeDescription(clubItemType, getLanguage(userVisit));
             
             clubItemTypeTransfer = new ClubItemTypeTransfer(clubItemTypeName, isDefault, sortOrder, description);
-            put(clubItemType, clubItemTypeTransfer);
+            put(userVisit, clubItemType, clubItemTypeTransfer);
         }
         return clubItemTypeTransfer;
     }

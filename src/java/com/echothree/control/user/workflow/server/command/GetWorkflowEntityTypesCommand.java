@@ -39,7 +39,9 @@ import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class GetWorkflowEntityTypesCommand
         extends BasePaginatedMultipleEntitiesCommand<WorkflowEntityType, GetWorkflowEntityTypesForm> {
 
@@ -123,7 +125,7 @@ public class GetWorkflowEntityTypesCommand
             var userVisit = getUserVisit();
 
             result.setWorkflow(workflow == null ? null : workflowControl.getWorkflowTransfer(userVisit, workflow));
-            result.setEntityType(entityType == null ? null : getEntityTypeControl().getEntityTypeTransfer(userVisit, entityType));
+            result.setEntityType(entityType == null ? null : entityTypeControl.getEntityTypeTransfer(userVisit, entityType));
             result.setWorkflowEntityTypes(workflowControl.getWorkflowEntityTypeTransfers(userVisit, entities));
         }
 

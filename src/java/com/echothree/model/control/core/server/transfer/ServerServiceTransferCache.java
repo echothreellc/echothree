@@ -21,18 +21,20 @@ import com.echothree.model.control.core.server.control.ServerControl;
 import com.echothree.model.data.core.server.entity.ServerService;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ServerServiceTransferCache
         extends BaseCoreTransferCache<ServerService, ServerServiceTransfer> {
 
     ServerControl serverControl = Session.getModelController(ServerControl.class);
 
     /** Creates a new instance of ServerServiceTransferCache */
-    public ServerServiceTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected ServerServiceTransferCache() {
+        super();
     }
     
-    public ServerServiceTransfer getServerServiceTransfer(ServerService serverService) {
+    public ServerServiceTransfer getServerServiceTransfer(UserVisit userVisit, ServerService serverService) {
         var serverServiceTransfer = get(serverService);
         
         if(serverServiceTransfer == null) {
@@ -40,7 +42,7 @@ public class ServerServiceTransferCache
             var service = serverControl.getServiceTransfer(userVisit, serverService.getService());
             
             serverServiceTransfer = new ServerServiceTransfer(server, service);
-            put(serverService, serverServiceTransfer);
+            put(userVisit, serverService, serverServiceTransfer);
         }
         return serverServiceTransfer;
     }

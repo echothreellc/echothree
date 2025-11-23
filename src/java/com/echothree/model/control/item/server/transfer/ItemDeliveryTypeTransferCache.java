@@ -20,27 +20,32 @@ import com.echothree.model.control.item.common.transfer.ItemDeliveryTypeTransfer
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.item.server.entity.ItemDeliveryType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ItemDeliveryTypeTransferCache
         extends BaseItemTransferCache<ItemDeliveryType, ItemDeliveryTypeTransfer> {
-    
+
+    ItemControl itemControl = Session.getModelController(ItemControl.class);
+
     /** Creates a new instance of ItemDeliveryTypeTransferCache */
-    public ItemDeliveryTypeTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    protected ItemDeliveryTypeTransferCache() {
+        super();
     }
     
     @Override
-    public ItemDeliveryTypeTransfer getTransfer(ItemDeliveryType itemDeliveryType) {
+    public ItemDeliveryTypeTransfer getTransfer(UserVisit userVisit, ItemDeliveryType itemDeliveryType) {
         var itemDeliveryTypeTransfer = get(itemDeliveryType);
         
         if(itemDeliveryTypeTransfer == null) {
             var itemDeliveryTypeName = itemDeliveryType.getItemDeliveryTypeName();
             var isDefault = itemDeliveryType.getIsDefault();
             var sortOrder = itemDeliveryType.getSortOrder();
-            var description = itemControl.getBestItemDeliveryTypeDescription(itemDeliveryType, getLanguage());
+            var description = itemControl.getBestItemDeliveryTypeDescription(itemDeliveryType, getLanguage(userVisit));
             
             itemDeliveryTypeTransfer = new ItemDeliveryTypeTransfer(itemDeliveryTypeName, isDefault, sortOrder, description);
-            put(itemDeliveryType, itemDeliveryTypeTransfer);
+            put(userVisit, itemDeliveryType, itemDeliveryTypeTransfer);
         }
         
         return itemDeliveryTypeTransfer;

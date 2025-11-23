@@ -25,16 +25,21 @@ import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.data.training.server.entity.PartyTrainingClassSession;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PartyTrainingClassSessionTransferCache
         extends BaseTrainingTransferCache<PartyTrainingClassSession, PartyTrainingClassSessionTransfer> {
-    
+
+    TrainingControl trainingControl = Session.getModelController(TrainingControl.class);
+
     boolean includePartyTrainingClassSessionPages;
     boolean includePartyTrainingClassSessionQuestions;
     
     /** Creates a new instance of PartyTrainingClassSessionTransferCache */
-    public PartyTrainingClassSessionTransferCache(UserVisit userVisit, TrainingControl trainingControl) {
-        super(userVisit, trainingControl);
+    protected PartyTrainingClassSessionTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {
@@ -45,7 +50,7 @@ public class PartyTrainingClassSessionTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public PartyTrainingClassSessionTransfer getPartyTrainingClassSessionTransfer(PartyTrainingClassSession partyTrainingClassSession) {
+    public PartyTrainingClassSessionTransfer getPartyTrainingClassSessionTransfer(UserVisit userVisit, PartyTrainingClassSession partyTrainingClassSession) {
         var partyTrainingClassSessionTransfer = get(partyTrainingClassSession);
         
         if(partyTrainingClassSessionTransfer == null) {
@@ -69,7 +74,7 @@ public class PartyTrainingClassSessionTransferCache
             
             partyTrainingClassSessionTransfer = new PartyTrainingClassSessionTransfer(partyTrainingClassTransfer, partyTrainingClassSessionSequence,
                     lastPartyTrainingClassSessionSectionTransfer, lastPartyTrainingClassSessionPageTransfer, lastPartyTrainingClassSessionQuestionTransfer);
-            put(partyTrainingClassSession, partyTrainingClassSessionTransfer);
+            put(userVisit, partyTrainingClassSession, partyTrainingClassSessionTransfer);
             
             if(includePartyTrainingClassSessionPages) {
                 partyTrainingClassSessionTransfer.setPartyTrainingClassSessionPages(new ListWrapper<>(trainingControl.getPartyTrainingClassSessionPageTransfersByPartyTrainingClassSession(userVisit, partyTrainingClassSession)));

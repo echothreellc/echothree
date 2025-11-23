@@ -21,34 +21,36 @@ import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.data.accounting.server.entity.GlAccountClass;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class GlAccountClassTransferCache
         extends BaseAccountingTransferCache<GlAccountClass, GlAccountClassTransfer> {
 
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
 
     /** Creates a new instance of GlAccountClassTransferCache */
-    public GlAccountClassTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected GlAccountClassTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
     @Override
-    public GlAccountClassTransfer getTransfer(GlAccountClass glAccountClass) {
+    public GlAccountClassTransfer getTransfer(UserVisit userVisit, GlAccountClass glAccountClass) {
         var glAccountClassTransfer = get(glAccountClass);
         
         if(glAccountClassTransfer == null) {
             var glAccountClassDetail = glAccountClass.getLastDetail();
             var glAccountClassName = glAccountClassDetail.getGlAccountClassName();
             var parentGlAccountClass = glAccountClassDetail.getParentGlAccountClass();
-            var parentGlAccountClassTransfer = parentGlAccountClass == null? null: getTransfer(parentGlAccountClass);
+            var parentGlAccountClassTransfer = parentGlAccountClass == null ? null : getTransfer(userVisit, parentGlAccountClass);
             var isDefault = glAccountClassDetail.getIsDefault();
             var sortOrder = glAccountClassDetail.getSortOrder();
-            var description = accountingControl.getBestGlAccountClassDescription(glAccountClass, getLanguage());
+            var description = accountingControl.getBestGlAccountClassDescription(glAccountClass, getLanguage(userVisit));
             
             glAccountClassTransfer = new GlAccountClassTransfer(glAccountClassName, parentGlAccountClassTransfer, isDefault, sortOrder, description);
-            put(glAccountClass, glAccountClassTransfer);
+            put(userVisit, glAccountClass, glAccountClassTransfer);
         }
         
         return glAccountClassTransfer;

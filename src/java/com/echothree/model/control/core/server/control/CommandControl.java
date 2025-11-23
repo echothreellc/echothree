@@ -57,12 +57,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
+@RequestScoped
 public class CommandControl
         extends BaseCoreControl {
 
     /** Creates a new instance of CommandControl */
-    public CommandControl() {
+    protected CommandControl() {
         super();
     }
 
@@ -70,13 +73,19 @@ public class CommandControl
     //   Commands
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected CommandFactory commandFactory;
+    
+    @Inject
+    protected CommandDetailFactory commandDetailFactory;
+    
     public Command createCommand(ComponentVendor componentVendor, String commandName, Integer sortOrder, BasePK createdBy) {
-        var command = CommandFactory.getInstance().create();
-        var commandDetail = CommandDetailFactory.getInstance().create(command, componentVendor,
+        var command = commandFactory.create();
+        var commandDetail = commandDetailFactory.create(command, componentVendor,
                 commandName, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
-        command = CommandFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, command.getPrimaryKey());
+        command = commandFactory.getEntityFromPK(EntityPermission.READ_WRITE, command.getPrimaryKey());
         command.setActiveDetail(commandDetail);
         command.setLastDetail(commandDetail);
         command.store();
@@ -105,12 +114,12 @@ public class CommandControl
                         "FOR UPDATE";
             }
 
-            var ps = CommandFactory.getInstance().prepareStatement(query);
+            var ps = commandFactory.prepareStatement(query);
 
             ps.setLong(1, componentVendor.getPrimaryKey().getEntityId());
             ps.setString(2, commandName);
 
-            command = CommandFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            command = commandFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -154,11 +163,11 @@ public class CommandControl
                         "FOR UPDATE";
             }
 
-            var ps = CommandFactory.getInstance().prepareStatement(query);
+            var ps = commandFactory.prepareStatement(query);
 
             ps.setLong(1, componentVendor.getPrimaryKey().getEntityId());
 
-            commands = CommandFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            commands = commandFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -175,25 +184,24 @@ public class CommandControl
     }
 
     public List<Command> getCommands() {
-        var ps = CommandFactory.getInstance().prepareStatement(
+        var ps = commandFactory.prepareStatement(
                 "SELECT _ALL_ " +
                         "FROM commands, commanddetails " +
                         "WHERE cmd_activedetailid = cmddt_commanddetailid " +
                         "ORDER BY cmddt_sortorder, cmddt_commandname");
 
-        return CommandFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        return commandFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
 
     public CommandTransfer getCommandTransfer(UserVisit userVisit, Command command) {
-        return getCoreTransferCaches(userVisit).getCommandTransferCache().getCommandTransfer(command);
+        return commandTransferCache.getCommandTransfer(userVisit, command);
     }
 
     private List<CommandTransfer> getCommandTransfers(UserVisit userVisit, Collection<Command> commands) {
         List<CommandTransfer> commandTransfers = new ArrayList<>(commands.size());
-        var commandTransferCache = getCoreTransferCaches(userVisit).getCommandTransferCache();
 
         commands.forEach((command) ->
-                commandTransfers.add(commandTransferCache.getCommandTransfer(command))
+                commandTransfers.add(commandTransferCache.getCommandTransfer(userVisit, command))
         );
 
         return commandTransfers;
@@ -209,7 +217,7 @@ public class CommandControl
 
     public void updateCommandFromValue(CommandDetailValue commandDetailValue, BasePK updatedBy) {
         if(commandDetailValue.hasBeenModified()) {
-            var command = CommandFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var command = commandFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     commandDetailValue.getCommandPK());
             var commandDetail = command.getActiveDetailForUpdate();
 
@@ -221,7 +229,7 @@ public class CommandControl
             var commandName = commandDetailValue.getCommandName();
             var sortOrder = commandDetailValue.getSortOrder();
 
-            commandDetail = CommandDetailFactory.getInstance().create(commandPK, componentVendorPK, commandName,
+            commandDetail = commandDetailFactory.create(commandPK, componentVendorPK, commandName,
                     sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
             command.setActiveDetail(commandDetail);
@@ -254,9 +262,12 @@ public class CommandControl
     //   Command Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected CommandDescriptionFactory commandDescriptionFactory;
+    
     public CommandDescription createCommandDescription(Command command, Language language, String description,
             BasePK createdBy) {
-        var commandDescription = CommandDescriptionFactory.getInstance().create(command,
+        var commandDescription = commandDescriptionFactory.create(command,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(command.getPrimaryKey(), EventTypes.MODIFY, commandDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -282,13 +293,13 @@ public class CommandControl
                         "FOR UPDATE";
             }
 
-            var ps = CommandDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = commandDescriptionFactory.prepareStatement(query);
 
             ps.setLong(1, command.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
 
-            commandDescription = CommandDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            commandDescription = commandDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -331,12 +342,12 @@ public class CommandControl
                         "FOR UPDATE";
             }
 
-            var ps = CommandDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = commandDescriptionFactory.prepareStatement(query);
 
             ps.setLong(1, command.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
 
-            commandDescriptions = CommandDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            commandDescriptions = commandDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -357,7 +368,7 @@ public class CommandControl
         var commandDescription = getCommandDescription(command, language);
 
         if(commandDescription == null && !language.getIsDefault()) {
-            commandDescription = getCommandDescription(command, getPartyControl().getDefaultLanguage());
+            commandDescription = getCommandDescription(command, partyControl.getDefaultLanguage());
         }
 
         if(commandDescription == null) {
@@ -370,17 +381,16 @@ public class CommandControl
     }
 
     public CommandDescriptionTransfer getCommandDescriptionTransfer(UserVisit userVisit, CommandDescription commandDescription) {
-        return getCoreTransferCaches(userVisit).getCommandDescriptionTransferCache().getCommandDescriptionTransfer(commandDescription);
+        return commandDescriptionTransferCache.getCommandDescriptionTransfer(userVisit, commandDescription);
     }
 
     public List<CommandDescriptionTransfer> getCommandDescriptionTransfersByCommand(UserVisit userVisit,
             Command command) {
         var commandDescriptions = getCommandDescriptionsByCommand(command);
         List<CommandDescriptionTransfer> commandDescriptionTransfers = new ArrayList<>(commandDescriptions.size());
-        var commandDescriptionTransferCache = getCoreTransferCaches(userVisit).getCommandDescriptionTransferCache();
 
         commandDescriptions.forEach((commandDescription) ->
-                commandDescriptionTransfers.add(commandDescriptionTransferCache.getCommandDescriptionTransfer(commandDescription))
+                commandDescriptionTransfers.add(commandDescriptionTransferCache.getCommandDescriptionTransfer(userVisit, commandDescription))
         );
 
         return commandDescriptionTransfers;
@@ -388,7 +398,7 @@ public class CommandControl
 
     public void updateCommandDescriptionFromValue(CommandDescriptionValue commandDescriptionValue, BasePK updatedBy) {
         if(commandDescriptionValue.hasBeenModified()) {
-            var commandDescription = CommandDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var commandDescription = commandDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     commandDescriptionValue.getPrimaryKey());
 
             commandDescription.setThruTime(session.START_TIME_LONG);
@@ -398,7 +408,7 @@ public class CommandControl
             var language = commandDescription.getLanguage();
             var description = commandDescriptionValue.getDescription();
 
-            commandDescription = CommandDescriptionFactory.getInstance().create(command, language,
+            commandDescription = commandDescriptionFactory.create(command, language,
                     description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
             sendEvent(command.getPrimaryKey(), EventTypes.MODIFY, commandDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -423,6 +433,12 @@ public class CommandControl
     //   Command Message Types
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected CommandMessageTypeFactory commandMessageTypeFactory;
+    
+    @Inject
+    protected CommandMessageTypeDetailFactory commandMessageTypeDetailFactory;
+    
     public CommandMessageType createCommandMessageType(String commandMessageTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultCommandMessageType = getDefaultCommandMessageType();
         var defaultFound = defaultCommandMessageType != null;
@@ -436,12 +452,12 @@ public class CommandControl
             isDefault = true;
         }
 
-        var commandMessageType = CommandMessageTypeFactory.getInstance().create();
-        var commandMessageTypeDetail = CommandMessageTypeDetailFactory.getInstance().create(commandMessageType,
+        var commandMessageType = commandMessageTypeFactory.create();
+        var commandMessageTypeDetail = commandMessageTypeDetailFactory.create(commandMessageType,
                 commandMessageTypeName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
-        commandMessageType = CommandMessageTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        commandMessageType = commandMessageTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 commandMessageType.getPrimaryKey());
         commandMessageType.setActiveDetail(commandMessageTypeDetail);
         commandMessageType.setLastDetail(commandMessageTypeDetail);
@@ -467,9 +483,9 @@ public class CommandControl
                     "FOR UPDATE";
         }
 
-        var ps = CommandMessageTypeFactory.getInstance().prepareStatement(query);
+        var ps = commandMessageTypeFactory.prepareStatement(query);
 
-        return CommandMessageTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        return commandMessageTypeFactory.getEntitiesFromQuery(entityPermission, ps);
     }
 
     public List<CommandMessageType> getCommandMessageTypes() {
@@ -494,9 +510,9 @@ public class CommandControl
                     "FOR UPDATE";
         }
 
-        var ps = CommandMessageTypeFactory.getInstance().prepareStatement(query);
+        var ps = commandMessageTypeFactory.prepareStatement(query);
 
-        return CommandMessageTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        return commandMessageTypeFactory.getEntityFromQuery(entityPermission, ps);
     }
 
     public CommandMessageType getDefaultCommandMessageType() {
@@ -528,11 +544,11 @@ public class CommandControl
                         "FOR UPDATE";
             }
 
-            var ps = CommandMessageTypeFactory.getInstance().prepareStatement(query);
+            var ps = commandMessageTypeFactory.prepareStatement(query);
 
             ps.setString(1, commandMessageTypeName);
 
-            commandMessageType = CommandMessageTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            commandMessageType = commandMessageTypeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -591,16 +607,15 @@ public class CommandControl
     }
 
     public CommandMessageTypeTransfer getCommandMessageTypeTransfer(UserVisit userVisit, CommandMessageType commandMessageType) {
-        return getCoreTransferCaches(userVisit).getCommandMessageTypeTransferCache().getCommandMessageTypeTransfer(commandMessageType);
+        return commandMessageTypeTransferCache.getCommandMessageTypeTransfer(userVisit, commandMessageType);
     }
 
     public List<CommandMessageTypeTransfer> getCommandMessageTypeTransfers(UserVisit userVisit) {
         var commandMessageTypes = getCommandMessageTypes();
         List<CommandMessageTypeTransfer> commandMessageTypeTransfers = new ArrayList<>(commandMessageTypes.size());
-        var commandMessageTypeTransferCache = getCoreTransferCaches(userVisit).getCommandMessageTypeTransferCache();
 
         commandMessageTypes.forEach((commandMessageType) ->
-                commandMessageTypeTransfers.add(commandMessageTypeTransferCache.getCommandMessageTypeTransfer(commandMessageType))
+                commandMessageTypeTransfers.add(commandMessageTypeTransferCache.getCommandMessageTypeTransfer(userVisit, commandMessageType))
         );
 
         return commandMessageTypeTransfers;
@@ -609,7 +624,7 @@ public class CommandControl
     private void updateCommandMessageTypeFromValue(CommandMessageTypeDetailValue commandMessageTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(commandMessageTypeDetailValue.hasBeenModified()) {
-            var commandMessageType = CommandMessageTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var commandMessageType = commandMessageTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     commandMessageTypeDetailValue.getCommandMessageTypePK());
             var commandMessageTypeDetail = commandMessageType.getActiveDetailForUpdate();
 
@@ -637,7 +652,7 @@ public class CommandControl
                 }
             }
 
-            commandMessageTypeDetail = CommandMessageTypeDetailFactory.getInstance().create(commandMessageTypePK, commandMessageTypeName, isDefault,
+            commandMessageTypeDetail = commandMessageTypeDetailFactory.create(commandMessageTypePK, commandMessageTypeName, isDefault,
                     sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
             commandMessageType.setActiveDetail(commandMessageTypeDetail);
@@ -684,9 +699,12 @@ public class CommandControl
     //   Command Message Type Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected CommandMessageTypeDescriptionFactory commandMessageTypeDescriptionFactory;
+    
     public CommandMessageTypeDescription createCommandMessageTypeDescription(CommandMessageType commandMessageType,
             Language language, String description, BasePK createdBy) {
-        var commandMessageTypeDescription = CommandMessageTypeDescriptionFactory.getInstance().create(commandMessageType,
+        var commandMessageTypeDescription = commandMessageTypeDescriptionFactory.create(commandMessageType,
                 language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
@@ -714,13 +732,13 @@ public class CommandControl
                         "FOR UPDATE";
             }
 
-            var ps = CommandMessageTypeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = commandMessageTypeDescriptionFactory.prepareStatement(query);
 
             ps.setLong(1, commandMessageType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
 
-            commandMessageTypeDescription = CommandMessageTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            commandMessageTypeDescription = commandMessageTypeDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -763,12 +781,12 @@ public class CommandControl
                         "FOR UPDATE";
             }
 
-            var ps = CommandMessageTypeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = commandMessageTypeDescriptionFactory.prepareStatement(query);
 
             ps.setLong(1, commandMessageType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
 
-            commandMessageTypeDescriptions = CommandMessageTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            commandMessageTypeDescriptions = commandMessageTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -789,7 +807,7 @@ public class CommandControl
         var commandMessageTypeDescription = getCommandMessageTypeDescription(commandMessageType, language);
 
         if(commandMessageTypeDescription == null && !language.getIsDefault()) {
-            commandMessageTypeDescription = getCommandMessageTypeDescription(commandMessageType, getPartyControl().getDefaultLanguage());
+            commandMessageTypeDescription = getCommandMessageTypeDescription(commandMessageType, partyControl.getDefaultLanguage());
         }
 
         if(commandMessageTypeDescription == null) {
@@ -802,16 +820,15 @@ public class CommandControl
     }
 
     public CommandMessageTypeDescriptionTransfer getCommandMessageTypeDescriptionTransfer(UserVisit userVisit, CommandMessageTypeDescription commandMessageTypeDescription) {
-        return getCoreTransferCaches(userVisit).getCommandMessageTypeDescriptionTransferCache().getCommandMessageTypeDescriptionTransfer(commandMessageTypeDescription);
+        return commandMessageTypeDescriptionTransferCache.getCommandMessageTypeDescriptionTransfer(userVisit, commandMessageTypeDescription);
     }
 
     public List<CommandMessageTypeDescriptionTransfer> getCommandMessageTypeDescriptionTransfers(UserVisit userVisit, CommandMessageType commandMessageType) {
         var commandMessageTypeDescriptions = getCommandMessageTypeDescriptionsByCommandMessageType(commandMessageType);
         List<CommandMessageTypeDescriptionTransfer> commandMessageTypeDescriptionTransfers = new ArrayList<>(commandMessageTypeDescriptions.size());
-        var commandMessageTypeDescriptionTransferCache = getCoreTransferCaches(userVisit).getCommandMessageTypeDescriptionTransferCache();
 
         commandMessageTypeDescriptions.forEach((commandMessageTypeDescription) ->
-                commandMessageTypeDescriptionTransfers.add(commandMessageTypeDescriptionTransferCache.getCommandMessageTypeDescriptionTransfer(commandMessageTypeDescription))
+                commandMessageTypeDescriptionTransfers.add(commandMessageTypeDescriptionTransferCache.getCommandMessageTypeDescriptionTransfer(userVisit, commandMessageTypeDescription))
         );
 
         return commandMessageTypeDescriptionTransfers;
@@ -819,7 +836,7 @@ public class CommandControl
 
     public void updateCommandMessageTypeDescriptionFromValue(CommandMessageTypeDescriptionValue commandMessageTypeDescriptionValue, BasePK updatedBy) {
         if(commandMessageTypeDescriptionValue.hasBeenModified()) {
-            var commandMessageTypeDescription = CommandMessageTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var commandMessageTypeDescription = commandMessageTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     commandMessageTypeDescriptionValue.getPrimaryKey());
 
             commandMessageTypeDescription.setThruTime(session.START_TIME_LONG);
@@ -829,7 +846,7 @@ public class CommandControl
             var language = commandMessageTypeDescription.getLanguage();
             var description = commandMessageTypeDescriptionValue.getDescription();
 
-            commandMessageTypeDescription = CommandMessageTypeDescriptionFactory.getInstance().create(commandMessageType, language,
+            commandMessageTypeDescription = commandMessageTypeDescriptionFactory.create(commandMessageType, language,
                     description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
             sendEvent(commandMessageType.getPrimaryKey(), EventTypes.MODIFY, commandMessageTypeDescription.getPrimaryKey(),
@@ -856,13 +873,19 @@ public class CommandControl
     //   Command Messages
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected CommandMessageFactory commandMessageFactory;
+    
+    @Inject
+    protected CommandMessageDetailFactory commandMessageDetailFactory;
+    
     public CommandMessage createCommandMessage(CommandMessageType commandMessageType, String commandMessageKey, BasePK createdBy) {
-        var commandMessage = CommandMessageFactory.getInstance().create();
-        var commandMessageDetail = CommandMessageDetailFactory.getInstance().create(commandMessage,
+        var commandMessage = commandMessageFactory.create();
+        var commandMessageDetail = commandMessageDetailFactory.create(commandMessage,
                 commandMessageType, commandMessageKey, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
-        commandMessage = CommandMessageFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        commandMessage = commandMessageFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 commandMessage.getPrimaryKey());
         commandMessage.setActiveDetail(commandMessageDetail);
         commandMessage.setLastDetail(commandMessageDetail);
@@ -892,12 +915,12 @@ public class CommandControl
                         "FOR UPDATE";
             }
 
-            var ps = CommandMessageFactory.getInstance().prepareStatement(query);
+            var ps = commandMessageFactory.prepareStatement(query);
 
             ps.setLong(1, commandMessageType.getPrimaryKey().getEntityId());
             ps.setString(2, commandMessageKey);
 
-            commandMessage = CommandMessageFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            commandMessage = commandMessageFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -941,11 +964,11 @@ public class CommandControl
                         "FOR UPDATE";
             }
 
-            var ps = CommandMessageFactory.getInstance().prepareStatement(query);
+            var ps = commandMessageFactory.prepareStatement(query);
 
             ps.setLong(1, commandMessageType.getPrimaryKey().getEntityId());
 
-            commandMessages = CommandMessageFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            commandMessages = commandMessageFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -962,15 +985,14 @@ public class CommandControl
     }
 
     public CommandMessageTransfer getCommandMessageTransfer(UserVisit userVisit, CommandMessage commandMessage) {
-        return getCoreTransferCaches(userVisit).getCommandMessageTransferCache().getCommandMessageTransfer(commandMessage);
+        return commandMessageTransferCache.getCommandMessageTransfer(userVisit, commandMessage);
     }
 
     private List<CommandMessageTransfer> getCommandMessageTransfers(UserVisit userVisit, Collection<CommandMessage> commandMessages) {
         List<CommandMessageTransfer> commandMessageTransfers = new ArrayList<>(commandMessages.size());
-        var commandMessageTransferCache = getCoreTransferCaches(userVisit).getCommandMessageTransferCache();
 
         commandMessages.forEach((commandMessage) ->
-                commandMessageTransfers.add(commandMessageTransferCache.getCommandMessageTransfer(commandMessage))
+                commandMessageTransfers.add(commandMessageTransferCache.getCommandMessageTransfer(userVisit, commandMessage))
         );
 
         return commandMessageTransfers;
@@ -982,7 +1004,7 @@ public class CommandControl
 
     public void updateCommandMessageFromValue(CommandMessageDetailValue commandMessageDetailValue, BasePK updatedBy) {
         if(commandMessageDetailValue.hasBeenModified()) {
-            var commandMessage = CommandMessageFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var commandMessage = commandMessageFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     commandMessageDetailValue.getCommandMessagePK());
             var commandMessageDetail = commandMessage.getActiveDetailForUpdate();
 
@@ -993,7 +1015,7 @@ public class CommandControl
             var commandMessageTypePK = commandMessageDetail.getCommandMessageTypePK(); // Not updated
             var commandMessageKey = commandMessageDetailValue.getCommandMessageKey();
 
-            commandMessageDetail = CommandMessageDetailFactory.getInstance().create(commandMessagePK, commandMessageTypePK, commandMessageKey,
+            commandMessageDetail = commandMessageDetailFactory.create(commandMessagePK, commandMessageTypePK, commandMessageKey,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
             commandMessage.setActiveDetail(commandMessageDetail);
@@ -1028,8 +1050,11 @@ public class CommandControl
     //   Command Message Strings
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected CommandMessageTranslationFactory commandMessageTranslationFactory;
+    
     public CommandMessageTranslation createCommandMessageTranslation(CommandMessage commandMessage, Language language, String translation, BasePK createdBy) {
-        var commandMessageTranslation = CommandMessageTranslationFactory.getInstance().create(commandMessage, language, translation,
+        var commandMessageTranslation = commandMessageTranslationFactory.create(commandMessage, language, translation,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(commandMessageTranslation.getCommandMessagePK(), EventTypes.MODIFY, commandMessageTranslation.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1056,12 +1081,12 @@ public class CommandControl
                         "FOR UPDATE";
             }
 
-            var ps = CommandMessageTranslationFactory.getInstance().prepareStatement(query);
+            var ps = commandMessageTranslationFactory.prepareStatement(query);
 
             ps.setLong(1, commandMessage.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
 
-            commandMessageTranslations = CommandMessageTranslationFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            commandMessageTranslations = commandMessageTranslationFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1081,7 +1106,7 @@ public class CommandControl
         var commandMessageTranslation = getCommandMessageTranslation(commandMessage, language);
 
         if(commandMessageTranslation == null && !language.getIsDefault()) {
-            commandMessageTranslation = getCommandMessageTranslation(commandMessage, getPartyControl().getDefaultLanguage());
+            commandMessageTranslation = getCommandMessageTranslation(commandMessage, partyControl.getDefaultLanguage());
         }
 
         return commandMessageTranslation;
@@ -1104,13 +1129,13 @@ public class CommandControl
                         "FOR UPDATE";
             }
 
-            var ps = CommandMessageTranslationFactory.getInstance().prepareStatement(query);
+            var ps = commandMessageTranslationFactory.prepareStatement(query);
 
             ps.setLong(1, commandMessage.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
 
-            commandMessageTranslation = CommandMessageTranslationFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            commandMessageTranslation = commandMessageTranslationFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1138,10 +1163,9 @@ public class CommandControl
 
     public List<CommandMessageTranslationTransfer> getCommandMessageTranslationTransfers(UserVisit userVisit, Collection<CommandMessageTranslation> commandMessageTranslations) {
         List<CommandMessageTranslationTransfer> commandMessageTranslationTransfers = new ArrayList<>(commandMessageTranslations.size());
-        var commandMessageTranslationTransferCache = getCoreTransferCaches(userVisit).getCommandMessageTranslationTransferCache();
 
         commandMessageTranslations.forEach((commandMessageTranslation) ->
-                commandMessageTranslationTransfers.add(commandMessageTranslationTransferCache.getCommandMessageTranslationTransfer(commandMessageTranslation))
+                commandMessageTranslationTransfers.add(commandMessageTranslationTransferCache.getCommandMessageTranslationTransfer(userVisit, commandMessageTranslation))
         );
 
         return commandMessageTranslationTransfers;
@@ -1152,12 +1176,12 @@ public class CommandControl
     }
 
     public CommandMessageTranslationTransfer getCommandMessageTranslationTransfer(UserVisit userVisit, CommandMessageTranslation commandMessageTranslation) {
-        return getCoreTransferCaches(userVisit).getCommandMessageTranslationTransferCache().getCommandMessageTranslationTransfer(commandMessageTranslation);
+        return commandMessageTranslationTransferCache.getCommandMessageTranslationTransfer(userVisit, commandMessageTranslation);
     }
 
     public void updateCommandMessageTranslationFromValue(CommandMessageTranslationValue commandMessageTranslationValue, BasePK updatedBy) {
         if(commandMessageTranslationValue.hasBeenModified()) {
-            var commandMessageTranslation = CommandMessageTranslationFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var commandMessageTranslation = commandMessageTranslationFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     commandMessageTranslationValue.getPrimaryKey());
 
             commandMessageTranslation.setThruTime(session.START_TIME_LONG);
@@ -1167,7 +1191,7 @@ public class CommandControl
             var languagePK = commandMessageTranslation.getLanguagePK(); // Not updated
             var translation = commandMessageTranslationValue.getTranslation();
 
-            commandMessageTranslation = CommandMessageTranslationFactory.getInstance().create(commandMessagePK, languagePK, translation, session.START_TIME_LONG,
+            commandMessageTranslation = commandMessageTranslationFactory.create(commandMessagePK, languagePK, translation, session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
 
             sendEvent(commandMessagePK, EventTypes.MODIFY, commandMessageTranslation.getPrimaryKey(), EventTypes.MODIFY, updatedBy);

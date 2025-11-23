@@ -16,26 +16,27 @@
 
 package com.echothree.model.control.printer.server.transfer;
 
-import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.printer.common.transfer.PrinterGroupUseTypeTransfer;
 import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.data.printer.server.entity.PrinterGroupUseType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PrinterGroupUseTypeTransferCache
         extends BasePrinterTransferCache<PrinterGroupUseType, PrinterGroupUseTypeTransfer> {
 
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    PrinterControl printerControl = Session.getModelController(PrinterControl.class);
 
     /** Creates a new instance of PrinterGroupUseTypeTransferCache */
-    public PrinterGroupUseTypeTransferCache(UserVisit userVisit, PrinterControl printerControl) {
-        super(userVisit, printerControl);
+    protected PrinterGroupUseTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
 
-    public PrinterGroupUseTypeTransfer getPrinterGroupUseTypeTransfer(PrinterGroupUseType printerGroupUseType) {
+    public PrinterGroupUseTypeTransfer getPrinterGroupUseTypeTransfer(UserVisit userVisit, PrinterGroupUseType printerGroupUseType) {
         var printerGroupUseTypeTransfer = get(printerGroupUseType);
 
         if(printerGroupUseTypeTransfer == null) {
@@ -43,10 +44,10 @@ public class PrinterGroupUseTypeTransferCache
             var printerGroupUseTypeName = printerGroupUseTypeDetail.getPrinterGroupUseTypeName();
             var isDefault = printerGroupUseTypeDetail.getIsDefault();
             var sortOrder = printerGroupUseTypeDetail.getSortOrder();
-            var description = printerControl.getBestPrinterGroupUseTypeDescription(printerGroupUseType, getLanguage());
+            var description = printerControl.getBestPrinterGroupUseTypeDescription(printerGroupUseType, getLanguage(userVisit));
 
             printerGroupUseTypeTransfer = new PrinterGroupUseTypeTransfer(printerGroupUseTypeName, isDefault, sortOrder, description);
-            put(printerGroupUseType, printerGroupUseTypeTransfer);
+            put(userVisit, printerGroupUseType, printerGroupUseTypeTransfer);
         }
 
         return printerGroupUseTypeTransfer;

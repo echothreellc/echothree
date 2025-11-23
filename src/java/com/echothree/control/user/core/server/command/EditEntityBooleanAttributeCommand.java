@@ -38,7 +38,9 @@ import com.echothree.util.server.persistence.PersistenceUtils;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EditEntityBooleanAttributeCommand
         extends BaseEditCommand<EntityBooleanAttributeSpec, EntityBooleanAttributeEdit> {
 
@@ -90,7 +92,6 @@ public class EditEntityBooleanAttributeCommand
 
                     if(!hasExecutionErrors()) {
                         if(entityInstance.getEntityType().equals(entityAttribute.getLastDetail().getEntityType())) {
-                            var coreControl = getCoreControl();
                             EntityBooleanAttribute entityBooleanAttribute = null;
                             var basePK = PersistenceUtils.getInstance().getBasePKFromEntityInstance(entityInstance);
 

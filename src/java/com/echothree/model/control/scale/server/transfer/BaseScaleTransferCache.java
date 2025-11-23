@@ -16,8 +16,6 @@
 
 package com.echothree.model.control.scale.server.transfer;
 
-import com.echothree.model.control.scale.server.control.ScaleControl;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.BaseTransfer;
 import com.echothree.util.server.persistence.BaseEntity;
 import com.echothree.util.server.transfer.BaseTransferCache;
@@ -25,13 +23,9 @@ import com.echothree.util.server.transfer.BaseTransferCache;
 public abstract class BaseScaleTransferCache<K extends BaseEntity, V extends BaseTransfer>
         extends BaseTransferCache<K, V> {
     
-    ScaleControl scaleControl;
-    
     /** Creates a new instance of BaseScaleTransferCache */
-    protected BaseScaleTransferCache(UserVisit userVisit, ScaleControl scaleControl) {
-        super(userVisit);
-        
-        this.scaleControl = scaleControl;
+    protected BaseScaleTransferCache() {
+        super();
     }
     
 }

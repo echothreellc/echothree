@@ -22,20 +22,23 @@ import com.echothree.model.control.contactlist.server.control.ContactListControl
 import com.echothree.model.data.contactlist.server.entity.ContactListType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ContactListTypeTransferCache
         extends BaseContactListTransferCache<ContactListType, ContactListTypeTransfer> {
     
     ChainControl chainControl = Session.getModelController(ChainControl.class);
+    ContactListControl contactListControl = Session.getModelController(ContactListControl.class);
 
     /** Creates a new instance of ContactListTypeTransferCache */
-    public ContactListTypeTransferCache(UserVisit userVisit, ContactListControl contactListControl) {
-        super(userVisit, contactListControl);
+    protected ContactListTypeTransferCache() {
+        super();
 
         setIncludeEntityInstance(true);
     }
     
-    public ContactListTypeTransfer getContactListTypeTransfer(ContactListType contactListType) {
+    public ContactListTypeTransfer getContactListTypeTransfer(UserVisit userVisit, ContactListType contactListType) {
         var contactListTypeTransfer = get(contactListType);
         
         if(contactListTypeTransfer == null) {
@@ -50,11 +53,11 @@ public class ContactListTypeTransferCache
             var usedForSolicitation = contactListTypeDetail.getUsedForSolicitation();
             var isDefault = contactListTypeDetail.getIsDefault();
             var sortOrder = contactListTypeDetail.getSortOrder();
-            var description = contactListControl.getBestContactListTypeDescription(contactListType, getLanguage());
+            var description = contactListControl.getBestContactListTypeDescription(contactListType, getLanguage(userVisit));
             
             contactListTypeTransfer = new ContactListTypeTransfer(contactListTypeName, confirmationRequestChainTransfer, subscribeChainTransfer,
                     unsubscribeChainTransfer, usedForSolicitation, isDefault, sortOrder, description);
-            put(contactListType, contactListTypeTransfer);
+            put(userVisit, contactListType, contactListTypeTransfer);
         }
         
         return contactListTypeTransfer;

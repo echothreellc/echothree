@@ -20,16 +20,21 @@ import com.echothree.model.control.invoice.common.transfer.InvoiceTimeTypeDescri
 import com.echothree.model.control.invoice.server.control.InvoiceControl;
 import com.echothree.model.data.invoice.server.entity.InvoiceTimeTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class InvoiceTimeTypeDescriptionTransferCache
         extends BaseInvoiceDescriptionTransferCache<InvoiceTimeTypeDescription, InvoiceTimeTypeDescriptionTransfer> {
-    
+
+    InvoiceControl invoiceControl = Session.getModelController(InvoiceControl.class);
+
     /** Creates a new instance of InvoiceTimeTypeDescriptionTransferCache */
-    public InvoiceTimeTypeDescriptionTransferCache(UserVisit userVisit, InvoiceControl invoiceControl) {
-        super(userVisit, invoiceControl);
+    protected InvoiceTimeTypeDescriptionTransferCache() {
+        super();
     }
     
-    public InvoiceTimeTypeDescriptionTransfer getInvoiceTimeTypeDescriptionTransfer(InvoiceTimeTypeDescription invoiceTimeTypeDescription) {
+    public InvoiceTimeTypeDescriptionTransfer getInvoiceTimeTypeDescriptionTransfer(UserVisit userVisit, InvoiceTimeTypeDescription invoiceTimeTypeDescription) {
         var invoiceTimeTypeDescriptionTransfer = get(invoiceTimeTypeDescription);
         
         if(invoiceTimeTypeDescriptionTransfer == null) {
@@ -37,7 +42,7 @@ public class InvoiceTimeTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, invoiceTimeTypeDescription.getLanguage());
             
             invoiceTimeTypeDescriptionTransfer = new InvoiceTimeTypeDescriptionTransfer(languageTransfer, invoiceTimeTypeTransfer, invoiceTimeTypeDescription.getDescription());
-            put(invoiceTimeTypeDescription, invoiceTimeTypeDescriptionTransfer);
+            put(userVisit, invoiceTimeTypeDescription, invoiceTimeTypeDescriptionTransfer);
         }
         
         return invoiceTimeTypeDescriptionTransfer;

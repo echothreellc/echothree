@@ -30,7 +30,12 @@ import com.echothree.model.control.workrequirement.common.transfer.WorkTimeTrans
 import com.echothree.model.control.workrequirement.common.workflow.WorkAssignmentStatusConstants;
 import com.echothree.model.control.workrequirement.common.workflow.WorkRequirementStatusConstants;
 import com.echothree.model.control.workrequirement.common.workflow.WorkTimeStatusConstants;
-import com.echothree.model.control.workrequirement.server.transfer.WorkRequirementTransferCaches;
+import com.echothree.model.control.workrequirement.server.transfer.WorkAssignmentTransferCache;
+import com.echothree.model.control.workrequirement.server.transfer.WorkRequirementScopeTransferCache;
+import com.echothree.model.control.workrequirement.server.transfer.WorkRequirementTransferCache;
+import com.echothree.model.control.workrequirement.server.transfer.WorkRequirementTypeDescriptionTransferCache;
+import com.echothree.model.control.workrequirement.server.transfer.WorkRequirementTypeTransferCache;
+import com.echothree.model.control.workrequirement.server.transfer.WorkTimeTransferCache;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
@@ -86,28 +91,39 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
+@RequestScoped
 public class WorkRequirementControl
         extends BaseModelControl {
     
     /** Creates a new instance of WorkRequirementControl */
-    public WorkRequirementControl() {
+    protected WorkRequirementControl() {
         super();
     }
     
     // --------------------------------------------------------------------------------
     //   Work Requirement Transfer Caches
     // --------------------------------------------------------------------------------
-    
-    private WorkRequirementTransferCaches workRequirementTransferCaches;
-    
-    public WorkRequirementTransferCaches getWorkRequirementTransferCaches(UserVisit userVisit) {
-        if(workRequirementTransferCaches == null) {
-            workRequirementTransferCaches = new WorkRequirementTransferCaches(userVisit, this);
-        }
-        
-        return workRequirementTransferCaches;
-    }
+
+    @Inject
+    WorkRequirementTypeDescriptionTransferCache workRequirementTypeDescriptionTransferCache;
+
+    @Inject
+    WorkRequirementTypeTransferCache workRequirementTypeTransferCache;
+
+    @Inject
+    WorkRequirementScopeTransferCache workRequirementScopeTransferCache;
+
+    @Inject
+    WorkRequirementTransferCache workRequirementTransferCache;
+
+    @Inject
+    WorkAssignmentTransferCache workAssignmentTransferCache;
+
+    @Inject
+    WorkTimeTransferCache workTimeTransferCache;
     
     // --------------------------------------------------------------------------------
     //   Work Requirement Types
@@ -258,16 +274,15 @@ public class WorkRequirementControl
     }
     
     public WorkRequirementTypeTransfer getWorkRequirementTypeTransfer(UserVisit userVisit, WorkRequirementType workRequirementType) {
-        return getWorkRequirementTransferCaches(userVisit).getWorkRequirementTypeTransferCache().getWorkRequirementTypeTransfer(workRequirementType);
+        return workRequirementTypeTransferCache.getWorkRequirementTypeTransfer(userVisit, workRequirementType);
     }
     
     public List<WorkRequirementTypeTransfer> getWorkRequirementTypeTransfers(UserVisit userVisit, WorkEffortType workEffortType) {
         var workRequirementTypes = getWorkRequirementTypes(workEffortType);
         List<WorkRequirementTypeTransfer> workRequirementTypeTransfers = new ArrayList<>(workRequirementTypes.size());
-        var workRequirementTypeTransferCache = getWorkRequirementTransferCaches(userVisit).getWorkRequirementTypeTransferCache();
         
         workRequirementTypes.forEach((workRequirementType) ->
-                workRequirementTypeTransfers.add(workRequirementTypeTransferCache.getWorkRequirementTypeTransfer(workRequirementType))
+                workRequirementTypeTransfers.add(workRequirementTypeTransferCache.getWorkRequirementTypeTransfer(userVisit, workRequirementType))
         );
         
         return workRequirementTypeTransfers;
@@ -437,7 +452,7 @@ public class WorkRequirementControl
         var workRequirementTypeDescription = getWorkRequirementTypeDescription(workRequirementType, language);
         
         if(workRequirementTypeDescription == null && !language.getIsDefault()) {
-            workRequirementTypeDescription = getWorkRequirementTypeDescription(workRequirementType, getPartyControl().getDefaultLanguage());
+            workRequirementTypeDescription = getWorkRequirementTypeDescription(workRequirementType, partyControl.getDefaultLanguage());
         }
         
         if(workRequirementTypeDescription == null) {
@@ -450,16 +465,15 @@ public class WorkRequirementControl
     }
     
     public WorkRequirementTypeDescriptionTransfer getWorkRequirementTypeDescriptionTransfer(UserVisit userVisit, WorkRequirementTypeDescription workRequirementTypeDescription) {
-        return getWorkRequirementTransferCaches(userVisit).getWorkRequirementTypeDescriptionTransferCache().getWorkRequirementTypeDescriptionTransfer(workRequirementTypeDescription);
+        return workRequirementTypeDescriptionTransferCache.getWorkRequirementTypeDescriptionTransfer(userVisit, workRequirementTypeDescription);
     }
     
     public List<WorkRequirementTypeDescriptionTransfer> getWorkRequirementTypeDescriptionTransfers(UserVisit userVisit, WorkRequirementType workRequirementType) {
         var workRequirementTypeDescriptions = getWorkRequirementTypeDescriptionsByWorkRequirementType(workRequirementType);
         List<WorkRequirementTypeDescriptionTransfer> workRequirementTypeDescriptionTransfers = new ArrayList<>(workRequirementTypeDescriptions.size());
-        var workRequirementTypeDescriptionTransferCache = getWorkRequirementTransferCaches(userVisit).getWorkRequirementTypeDescriptionTransferCache();
         
         workRequirementTypeDescriptions.forEach((workRequirementTypeDescription) ->
-                workRequirementTypeDescriptionTransfers.add(workRequirementTypeDescriptionTransferCache.getWorkRequirementTypeDescriptionTransfer(workRequirementTypeDescription))
+                workRequirementTypeDescriptionTransfers.add(workRequirementTypeDescriptionTransferCache.getWorkRequirementTypeDescriptionTransfer(userVisit, workRequirementTypeDescription))
         );
         
         return workRequirementTypeDescriptionTransfers;
@@ -692,15 +706,14 @@ public class WorkRequirementControl
     }
     
     public WorkRequirementScopeTransfer getWorkRequirementScopeTransfer(UserVisit userVisit, WorkRequirementScope workRequirementScope) {
-        return getWorkRequirementTransferCaches(userVisit).getWorkRequirementScopeTransferCache().getWorkRequirementScopeTransfer(workRequirementScope);
+        return workRequirementScopeTransferCache.getWorkRequirementScopeTransfer(userVisit, workRequirementScope);
     }
     
     public List<WorkRequirementScopeTransfer> getWorkRequirementScopeTransfers(UserVisit userVisit, Collection<WorkRequirementScope> workRequirementScopes) {
         List<WorkRequirementScopeTransfer> workRequirementScopeTransfers = new ArrayList<>(workRequirementScopes.size());
-        var workRequirementScopeTransferCache = getWorkRequirementTransferCaches(userVisit).getWorkRequirementScopeTransferCache();
         
         workRequirementScopes.forEach((workRequirementScope) ->
-                workRequirementScopeTransfers.add(workRequirementScopeTransferCache.getWorkRequirementScopeTransfer(workRequirementScope))
+                workRequirementScopeTransfers.add(workRequirementScopeTransferCache.getWorkRequirementScopeTransfer(userVisit, workRequirementScope))
         );
         
         return workRequirementScopeTransfers;
@@ -921,7 +934,6 @@ public class WorkRequirementControl
     
     public WorkRequirementStatusChoicesBean getWorkRequirementStatusChoices(String defaultWorkRequirementStatusChoice, Language language,
             boolean allowNullChoice, WorkRequirement workRequirement, PartyPK partyPK) {
-        var workflowControl = getWorkflowControl();
         var workRequirementStatusChoicesBean = new WorkRequirementStatusChoicesBean();
 
         if(workRequirement == null) {
@@ -941,7 +953,6 @@ public class WorkRequirementControl
     }
 
     public void setWorkRequirementStatus(ExecutionErrorAccumulator eea, WorkRequirement workRequirement, String workRequirementStatusChoice, PartyPK modifiedBy) {
-        var workflowControl = getWorkflowControl();
         var entityInstance = getEntityInstanceByBaseEntity(workRequirement);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(WorkRequirementStatusConstants.Workflow_WORK_REQUIREMENT_STATUS,
                 entityInstance);
@@ -956,15 +967,14 @@ public class WorkRequirementControl
     }
 
     public WorkRequirementTransfer getWorkRequirementTransfer(UserVisit userVisit, WorkRequirement workRequirement) {
-        return getWorkRequirementTransferCaches(userVisit).getWorkRequirementTransferCache().getWorkRequirementTransfer(workRequirement);
+        return workRequirementTransferCache.getWorkRequirementTransfer(userVisit, workRequirement);
     }
     
     public List<WorkRequirementTransfer> getWorkRequirementTransfers(UserVisit userVisit, Collection<WorkRequirement> workRequirements) {
         List<WorkRequirementTransfer> workRequirementTransfers = new ArrayList<>(workRequirements.size());
-        var workRequirementTransferCache = getWorkRequirementTransferCaches(userVisit).getWorkRequirementTransferCache();
         
         workRequirements.forEach((workRequirement) ->
-                workRequirementTransfers.add(workRequirementTransferCache.getWorkRequirementTransfer(workRequirement))
+                workRequirementTransfers.add(workRequirementTransferCache.getWorkRequirementTransfer(userVisit, workRequirement))
         );
         
         return workRequirementTransfers;
@@ -1228,7 +1238,6 @@ public class WorkRequirementControl
 
     public WorkAssignmentStatusChoicesBean getWorkAssignmentStatusChoices(String defaultWorkAssignmentStatusChoice, Language language,
             boolean allowNullChoice, WorkAssignment workAssignment, PartyPK partyPK) {
-        var workflowControl = getWorkflowControl();
         var workAssignmentStatusChoicesBean = new WorkAssignmentStatusChoicesBean();
 
         if(workAssignment == null) {
@@ -1248,7 +1257,6 @@ public class WorkRequirementControl
     }
 
     public void setWorkAssignmentStatus(ExecutionErrorAccumulator eea, WorkAssignment workAssignment, String workAssignmentStatusChoice, PartyPK modifiedBy) {
-        var workflowControl = getWorkflowControl();
         var entityInstance = getEntityInstanceByBaseEntity(workAssignment);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(WorkAssignmentStatusConstants.Workflow_WORK_ASSIGNMENT_STATUS,
                 entityInstance);
@@ -1263,15 +1271,14 @@ public class WorkRequirementControl
     }
 
     public WorkAssignmentTransfer getWorkAssignmentTransfer(UserVisit userVisit, WorkAssignment workAssignment) {
-        return getWorkRequirementTransferCaches(userVisit).getWorkAssignmentTransferCache().getWorkAssignmentTransfer(workAssignment);
+        return workAssignmentTransferCache.getWorkAssignmentTransfer(userVisit, workAssignment);
     }
 
     public List<WorkAssignmentTransfer> getWorkAssignmentTransfers(UserVisit userVisit, Collection<WorkAssignment> workAssignments) {
         List<WorkAssignmentTransfer> workAssignmentTransfers = new ArrayList<>(workAssignments.size());
-        var workAssignmentTransferCache = getWorkRequirementTransferCaches(userVisit).getWorkAssignmentTransferCache();
 
         workAssignments.forEach((workAssignment) ->
-                workAssignmentTransfers.add(workAssignmentTransferCache.getWorkAssignmentTransfer(workAssignment))
+                workAssignmentTransfers.add(workAssignmentTransferCache.getWorkAssignmentTransfer(userVisit, workAssignment))
         );
 
         return workAssignmentTransfers;
@@ -1480,7 +1487,6 @@ public class WorkRequirementControl
     
     public WorkTimeStatusChoicesBean getWorkTimeStatusChoices(String defaultWorkTimeStatusChoice, Language language,
             boolean allowNullChoice, WorkTime workTime, PartyPK partyPK) {
-        var workflowControl = getWorkflowControl();
         var workTimeStatusChoicesBean = new WorkTimeStatusChoicesBean();
 
         if(workTime == null) {
@@ -1500,7 +1506,6 @@ public class WorkRequirementControl
     }
 
     public void setWorkTimeStatus(ExecutionErrorAccumulator eea, WorkTime workTime, String workTimeStatusChoice, PartyPK modifiedBy) {
-        var workflowControl = getWorkflowControl();
         var entityInstance = getEntityInstanceByBaseEntity(workTime);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(WorkTimeStatusConstants.Workflow_WORK_TIME_STATUS,
                 entityInstance);
@@ -1515,15 +1520,14 @@ public class WorkRequirementControl
     }
 
     public WorkTimeTransfer getWorkTimeTransfer(UserVisit userVisit, WorkTime workTime) {
-        return getWorkRequirementTransferCaches(userVisit).getWorkTimeTransferCache().getWorkTimeTransfer(workTime);
+        return workTimeTransferCache.getWorkTimeTransfer(userVisit, workTime);
     }
     
     public List<WorkTimeTransfer> getWorkTimeTransfers(UserVisit userVisit, Collection<WorkTime> workTimes) {
         List<WorkTimeTransfer> workTimeTransfers = new ArrayList<>(workTimes.size());
-        var workTimeTransferCache = getWorkRequirementTransferCaches(userVisit).getWorkTimeTransferCache();
 
         workTimes.forEach((workTime) ->
-                workTimeTransfers.add(workTimeTransferCache.getWorkTimeTransfer(workTime))
+                workTimeTransfers.add(workTimeTransferCache.getWorkTimeTransfer(userVisit, workTime))
         );
 
         return workTimeTransfers;

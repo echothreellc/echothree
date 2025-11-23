@@ -32,7 +32,9 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class GetEntityAttributeGroupCommand
         extends BaseSingleEntityCommand<EntityAttributeGroup, GetEntityAttributeGroupForm> {
     
@@ -71,7 +73,7 @@ public class GetEntityAttributeGroupCommand
         var result = CoreResultFactory.getGetEntityAttributeGroupResult();
 
         if(entityAttributeGroup != null) {
-            result.setEntityAttributeGroup(getCoreControl().getEntityAttributeGroupTransfer(getUserVisit(), entityAttributeGroup, null));
+            result.setEntityAttributeGroup(coreControl.getEntityAttributeGroupTransfer(getUserVisit(), entityAttributeGroup, null));
         }
 
         return result;

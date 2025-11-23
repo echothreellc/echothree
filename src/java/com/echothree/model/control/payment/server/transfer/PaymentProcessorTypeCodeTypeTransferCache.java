@@ -22,7 +22,9 @@ import com.echothree.model.control.payment.server.control.PaymentProcessorTypeCo
 import com.echothree.model.data.payment.server.entity.PaymentProcessorTypeCodeType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PaymentProcessorTypeCodeTypeTransferCache
         extends BasePaymentTransferCache<PaymentProcessorTypeCodeType, PaymentProcessorTypeCodeTypeTransfer> {
 
@@ -30,14 +32,14 @@ public class PaymentProcessorTypeCodeTypeTransferCache
     PaymentProcessorTypeCodeTypeControl paymentProcessorTypeCodeTypeControl = Session.getModelController(PaymentProcessorTypeCodeTypeControl.class);
 
     /** Creates a new instance of PaymentProcessorTypeTransferCache */
-    public PaymentProcessorTypeCodeTypeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected PaymentProcessorTypeCodeTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
     @Override
-    public PaymentProcessorTypeCodeTypeTransfer getTransfer(PaymentProcessorTypeCodeType paymentProcessorTypeCodeType) {
+    public PaymentProcessorTypeCodeTypeTransfer getTransfer(UserVisit userVisit, PaymentProcessorTypeCodeType paymentProcessorTypeCodeType) {
         var paymentProcessorTypeCodeTypeTransfer = get(paymentProcessorTypeCodeType);
         
         if(paymentProcessorTypeCodeTypeTransfer == null) {
@@ -46,11 +48,11 @@ public class PaymentProcessorTypeCodeTypeTransferCache
             var paymentProcessorTypeCodeTypeName = paymentProcessorTypeCodeTypeDetail.getPaymentProcessorTypeCodeTypeName();
             var isDefault = paymentProcessorTypeCodeTypeDetail.getIsDefault();
             var sortOrder = paymentProcessorTypeCodeTypeDetail.getSortOrder();
-            var description = paymentProcessorTypeCodeTypeControl.getBestPaymentProcessorTypeCodeTypeDescription(paymentProcessorTypeCodeType, getLanguage());
+            var description = paymentProcessorTypeCodeTypeControl.getBestPaymentProcessorTypeCodeTypeDescription(paymentProcessorTypeCodeType, getLanguage(userVisit));
             
             paymentProcessorTypeCodeTypeTransfer = new PaymentProcessorTypeCodeTypeTransfer(paymentProcessorTypeTransfer,
                     paymentProcessorTypeCodeTypeName, isDefault, sortOrder, description);
-            put(paymentProcessorTypeCodeType, paymentProcessorTypeCodeTypeTransfer);
+            put(userVisit, paymentProcessorTypeCodeType, paymentProcessorTypeCodeTypeTransfer);
         }
         
         return paymentProcessorTypeCodeTypeTransfer;

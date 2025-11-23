@@ -22,20 +22,23 @@ import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnKind;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ReturnKindTransferCache
         extends BaseReturnPolicyTransferCache<ReturnKind, ReturnKindTransfer> {
-    
+
+    ReturnPolicyControl returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
     SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
     
     /** Creates a new instance of ReturnKindTransferCache */
-    public ReturnKindTransferCache(UserVisit userVisit, ReturnPolicyControl returnPolicyControl) {
-        super(userVisit, returnPolicyControl);
+    protected ReturnKindTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public ReturnKindTransfer getReturnKindTransfer(ReturnKind returnKind) {
+    public ReturnKindTransfer getReturnKindTransfer(UserVisit userVisit, ReturnKind returnKind) {
         var returnKindTransfer = get(returnKind);
         
         if(returnKindTransfer == null) {
@@ -45,10 +48,10 @@ public class ReturnKindTransferCache
             var returnSequenceTypeTransfer = returnSequenceType == null? null: sequenceControl.getSequenceTypeTransfer(userVisit, returnSequenceType);
             var isDefault = returnKindDetail.getIsDefault();
             var sortOrder = returnKindDetail.getSortOrder();
-            var description = returnPolicyControl.getBestReturnKindDescription(returnKind, getLanguage());
+            var description = returnPolicyControl.getBestReturnKindDescription(returnKind, getLanguage(userVisit));
             
             returnKindTransfer = new ReturnKindTransfer(returnKindName, returnSequenceTypeTransfer, isDefault, sortOrder, description);
-            put(returnKind, returnKindTransfer);
+            put(userVisit, returnKind, returnKindTransfer);
         }
         
         return returnKindTransfer;

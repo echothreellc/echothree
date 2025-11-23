@@ -20,16 +20,21 @@ import com.echothree.model.control.contact.common.transfer.ContactMechanismAlias
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.data.contact.server.entity.ContactMechanismAliasType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ContactMechanismAliasTypeTransferCache
         extends BaseContactTransferCache<ContactMechanismAliasType, ContactMechanismAliasTypeTransfer> {
-    
+
+    ContactControl contactControl = Session.getModelController(ContactControl.class);
+
     /** Creates a new instance of ContactMechanismAliasTypeTransferCache */
-    public ContactMechanismAliasTypeTransferCache(UserVisit userVisit, ContactControl contactControl) {
-        super(userVisit, contactControl);
+    protected ContactMechanismAliasTypeTransferCache() {
+        super();
     }
     
-    public ContactMechanismAliasTypeTransfer getContactMechanismAliasTypeTransfer(ContactMechanismAliasType contactMechanismAliasType) {
+    public ContactMechanismAliasTypeTransfer getContactMechanismAliasTypeTransfer(UserVisit userVisit, ContactMechanismAliasType contactMechanismAliasType) {
         var contactMechanismAliasTypeTransfer = get(contactMechanismAliasType);
         
         if(contactMechanismAliasTypeTransfer == null) {
@@ -38,11 +43,11 @@ public class ContactMechanismAliasTypeTransferCache
             var validationPattern = contactMechanismAliasTypeDetail.getValidationPattern();
             var isDefault = contactMechanismAliasTypeDetail.getIsDefault();
             var sortOrder = contactMechanismAliasTypeDetail.getSortOrder();
-            var description = contactControl.getBestContactMechanismAliasTypeDescription(contactMechanismAliasType, getLanguage());
+            var description = contactControl.getBestContactMechanismAliasTypeDescription(contactMechanismAliasType, getLanguage(userVisit));
             
             contactMechanismAliasTypeTransfer = new ContactMechanismAliasTypeTransfer(contactMechanismAliasTypeName, validationPattern, isDefault, sortOrder,
                     description);
-            put(contactMechanismAliasType, contactMechanismAliasTypeTransfer);
+            put(userVisit, contactMechanismAliasType, contactMechanismAliasTypeTransfer);
         }
         
         return contactMechanismAliasTypeTransfer;

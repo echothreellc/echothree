@@ -21,18 +21,20 @@ import com.echothree.model.control.core.server.control.FontControl;
 import com.echothree.model.data.core.server.entity.FontWeightDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class FontWeightDescriptionTransferCache
         extends BaseCoreDescriptionTransferCache<FontWeightDescription, FontWeightDescriptionTransfer> {
 
     FontControl fontControl = Session.getModelController(FontControl.class);
 
     /** Creates a new instance of FontWeightDescriptionTransferCache */
-    public FontWeightDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected FontWeightDescriptionTransferCache() {
+        super();
     }
     
-    public FontWeightDescriptionTransfer getFontWeightDescriptionTransfer(FontWeightDescription fontWeightDescription) {
+    public FontWeightDescriptionTransfer getFontWeightDescriptionTransfer(UserVisit userVisit, FontWeightDescription fontWeightDescription) {
         var fontWeightDescriptionTransfer = get(fontWeightDescription);
         
         if(fontWeightDescriptionTransfer == null) {
@@ -40,7 +42,7 @@ public class FontWeightDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, fontWeightDescription.getLanguage());
             
             fontWeightDescriptionTransfer = new FontWeightDescriptionTransfer(languageTransfer, fontWeightTransfer, fontWeightDescription.getDescription());
-            put(fontWeightDescription, fontWeightDescriptionTransfer);
+            put(userVisit, fontWeightDescription, fontWeightDescriptionTransfer);
         }
         return fontWeightDescriptionTransfer;
     }

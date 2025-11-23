@@ -22,18 +22,21 @@ import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.data.forum.server.entity.ForumMimeType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ForumMimeTypeTransferCache
         extends BaseForumTransferCache<ForumMimeType, ForumMimeTypeTransfer> {
 
+    ForumControl forumControl = Session.getModelController(ForumControl.class);
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
     
     /** Creates a new instance of ForumMimeTypeTransferCache */
-    public ForumMimeTypeTransferCache(UserVisit userVisit, ForumControl forumControl) {
-        super(userVisit, forumControl);
+    protected ForumMimeTypeTransferCache() {
+        super();
     }
     
-    public ForumMimeTypeTransfer getForumMimeTypeTransfer(ForumMimeType forumMimeType) {
+    public ForumMimeTypeTransfer getForumMimeTypeTransfer(UserVisit userVisit, ForumMimeType forumMimeType) {
         var forumMimeTypeTransfer = get(forumMimeType);
         
         if(forumMimeTypeTransfer == null) {
@@ -43,7 +46,7 @@ public class ForumMimeTypeTransferCache
             var sortOrder = forumMimeType.getSortOrder();
             
             forumMimeTypeTransfer = new ForumMimeTypeTransfer(forum, mimeType, isDefault, sortOrder);
-            put(forumMimeType, forumMimeTypeTransfer);
+            put(userVisit, forumMimeType, forumMimeTypeTransfer);
         }
         
         return forumMimeTypeTransfer;

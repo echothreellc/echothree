@@ -22,7 +22,9 @@ import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.data.offer.server.entity.OfferCustomerType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class OfferCustomerTypeTransferCache
         extends BaseOfferTransferCache<OfferCustomerType, OfferCustomerTypeTransfer> {
     
@@ -30,11 +32,11 @@ public class OfferCustomerTypeTransferCache
     OfferControl offerControl = Session.getModelController(OfferControl.class);
 
     /** Creates a new instance of OfferCustomerTypeTransferCache */
-    public OfferCustomerTypeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected OfferCustomerTypeTransferCache() {
+        super();
     }
     
-    public OfferCustomerTypeTransfer getOfferCustomerTypeTransfer(OfferCustomerType offerCustomerType) {
+    public OfferCustomerTypeTransfer getOfferCustomerTypeTransfer(UserVisit userVisit, OfferCustomerType offerCustomerType) {
         var offerCustomerTypeTransfer = get(offerCustomerType);
         
         if(offerCustomerTypeTransfer == null) {
@@ -44,7 +46,7 @@ public class OfferCustomerTypeTransferCache
             var sortOrder = offerCustomerType.getSortOrder();
             
             offerCustomerTypeTransfer = new OfferCustomerTypeTransfer(offer, customerType, isDefault, sortOrder);
-            put(offerCustomerType, offerCustomerTypeTransfer);
+            put(userVisit, offerCustomerType, offerCustomerTypeTransfer);
         }
         
         return offerCustomerTypeTransfer;

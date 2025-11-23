@@ -25,22 +25,23 @@ import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.job.server.entity.Job;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class JobTransferCache
         extends BaseJobTransferCache<Job, JobTransfer> {
     
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+    JobControl jobControl = Session.getModelController(JobControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of JobTransferCache */
-    public JobTransferCache(UserVisit userVisit, JobControl jobControl) {
-        super(userVisit, jobControl);
-        
+    protected JobTransferCache() {
         setIncludeEntityInstance(true);
     }
     
-    public JobTransfer getJobTransfer(Job job) {
+    public JobTransfer getJobTransfer(UserVisit userVisit, Job job) {
         var jobTransfer = get(job);
         
         if(jobTransfer == null) {
@@ -49,11 +50,11 @@ public class JobTransferCache
             var jobName = jobDetail.getJobName();
             var runAsPartyTransfer = partyControl.getPartyTransfer(userVisit, jobDetail.getRunAsParty());
             var sortOrder = jobDetail.getSortOrder();
-            var description = jobControl.getBestJobDescription(job, getLanguage());
+            var description = jobControl.getBestJobDescription(job, getLanguage(userVisit));
             var unformattedLastStartTime = jobStatus.getLastStartTime();
-            var lastStartTime = formatTypicalDateTime(unformattedLastStartTime);
+            var lastStartTime = formatTypicalDateTime(userVisit, unformattedLastStartTime);
             var unformattedLastEndTime = jobStatus.getLastEndTime();
-            var lastEndTime = formatTypicalDateTime(unformattedLastEndTime);
+            var lastEndTime = formatTypicalDateTime(userVisit, unformattedLastEndTime);
 
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(job.getPrimaryKey());
             var jobStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
@@ -61,7 +62,7 @@ public class JobTransferCache
 
             jobTransfer = new JobTransfer(jobName, runAsPartyTransfer, sortOrder, description, jobStatusTransfer, unformattedLastStartTime, lastStartTime,
                     unformattedLastEndTime, lastEndTime);
-            put(job, jobTransfer);
+            put(userVisit, job, jobTransfer);
         }
         
         return jobTransfer;

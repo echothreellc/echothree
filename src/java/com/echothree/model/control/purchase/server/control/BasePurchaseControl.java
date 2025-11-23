@@ -16,8 +16,6 @@
 
 package com.echothree.model.control.purchase.server.control;
 
-import com.echothree.model.control.purchase.server.transfer.PurchaseTransferCaches;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.control.BaseModelControl;
 
 public abstract class BasePurchaseControl
@@ -26,20 +24,6 @@ public abstract class BasePurchaseControl
     /** Creates a new instance of PurchaseControl */
     protected BasePurchaseControl() {
         super();
-    }
-
-    // --------------------------------------------------------------------------------
-    //   Purchase Transfer Caches
-    // --------------------------------------------------------------------------------
-
-    private PurchaseTransferCaches saleTransferCaches;
-
-    public PurchaseTransferCaches getSaleTransferCaches(UserVisit userVisit) {
-        if(saleTransferCaches == null) {
-            saleTransferCaches = new PurchaseTransferCaches(userVisit);
-        }
-
-        return saleTransferCaches;
     }
 
 }

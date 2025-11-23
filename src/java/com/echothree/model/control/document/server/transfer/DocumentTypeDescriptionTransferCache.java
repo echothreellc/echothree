@@ -20,16 +20,21 @@ import com.echothree.model.control.document.common.transfer.DocumentTypeDescript
 import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.data.document.server.entity.DocumentTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class DocumentTypeDescriptionTransferCache
         extends BaseDocumentDescriptionTransferCache<DocumentTypeDescription, DocumentTypeDescriptionTransfer> {
-    
+
+    DocumentControl documentControl = Session.getModelController(DocumentControl.class);
+
     /** Creates a new instance of DocumentTypeDescriptionTransferCache */
-    public DocumentTypeDescriptionTransferCache(UserVisit userVisit, DocumentControl documentControl) {
-        super(userVisit, documentControl);
+    protected DocumentTypeDescriptionTransferCache() {
+        super();
     }
     
-    public DocumentTypeDescriptionTransfer getDocumentTypeDescriptionTransfer(DocumentTypeDescription documentTypeDescription) {
+    public DocumentTypeDescriptionTransfer getDocumentTypeDescriptionTransfer(UserVisit userVisit, DocumentTypeDescription documentTypeDescription) {
         var documentTypeDescriptionTransfer = get(documentTypeDescription);
         
         if(documentTypeDescriptionTransfer == null) {
@@ -37,7 +42,7 @@ public class DocumentTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, documentTypeDescription.getLanguage());
             
             documentTypeDescriptionTransfer = new DocumentTypeDescriptionTransfer(languageTransfer, documentTypeTransfer, documentTypeDescription.getDescription());
-            put(documentTypeDescription, documentTypeDescriptionTransfer);
+            put(userVisit, documentTypeDescription, documentTypeDescriptionTransfer);
         }
         
         return documentTypeDescriptionTransfer;

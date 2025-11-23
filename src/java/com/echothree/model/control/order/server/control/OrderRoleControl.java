@@ -40,12 +40,14 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class OrderRoleControl
         extends BaseOrderControl {
 
     /** Creates a new instance of OrderControl */
-    public OrderRoleControl() {
+    protected OrderRoleControl() {
         super();
     }
     
@@ -77,7 +79,7 @@ public class OrderRoleControl
     }
     
     public OrderRoleTypeTransfer getOrderRoleTypeTransfer(UserVisit userVisit, OrderRoleType orderRoleType) {
-        return getOrderTransferCaches(userVisit).getOrderRoleTypeTransferCache().getOrderRoleTypeTransfer(orderRoleType);
+        return orderRoleTypeTransferCache.getOrderRoleTypeTransfer(userVisit, orderRoleType);
     }
 
     // --------------------------------------------------------------------------------
@@ -115,7 +117,7 @@ public class OrderRoleControl
         var orderRoleTypeDescription = getOrderRoleTypeDescription(orderRoleType, language);
 
         if(orderRoleTypeDescription == null && !language.getIsDefault()) {
-            orderRoleTypeDescription = getOrderRoleTypeDescription(orderRoleType, getPartyControl().getDefaultLanguage());
+            orderRoleTypeDescription = getOrderRoleTypeDescription(orderRoleType, partyControl.getDefaultLanguage());
         }
 
         if(orderRoleTypeDescription == null) {
@@ -254,7 +256,7 @@ public class OrderRoleControl
     }
 
     public OrderRoleTransfer getOrderRoleTransfer(UserVisit userVisit, OrderRole orderRole) {
-        return getOrderTransferCaches(userVisit).getOrderRoleTransferCache().getOrderRoleTransfer(orderRole);
+        return orderRoleTransferCache.getOrderRoleTransfer(userVisit, orderRole);
     }
 
     public List<OrderRoleTransfer> getOrderRoleTransfers(UserVisit userVisit, Collection<OrderRole> orderRoles) {

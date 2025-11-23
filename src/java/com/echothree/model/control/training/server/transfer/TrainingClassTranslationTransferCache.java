@@ -22,18 +22,21 @@ import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.data.training.server.entity.TrainingClassTranslation;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class TrainingClassTranslationTransferCache
         extends BaseTrainingDescriptionTransferCache<TrainingClassTranslation, TrainingClassTranslationTransfer> {
 
+    TrainingControl trainingControl = Session.getModelController(TrainingControl.class);
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
     
     /** Creates a new instance of TrainingClassTranslationTransferCache */
-    public TrainingClassTranslationTransferCache(UserVisit userVisit, TrainingControl trainingControl) {
-        super(userVisit, trainingControl);
+    protected TrainingClassTranslationTransferCache() {
+        super();
     }
     
-    public TrainingClassTranslationTransfer getTrainingClassTranslationTransfer(TrainingClassTranslation trainingClassTranslation) {
+    public TrainingClassTranslationTransfer getTrainingClassTranslationTransfer(UserVisit userVisit, TrainingClassTranslation trainingClassTranslation) {
         var trainingClassTranslationTransfer = get(trainingClassTranslation);
         
         if(trainingClassTranslationTransfer == null) {
@@ -49,7 +52,7 @@ public class TrainingClassTranslationTransferCache
             
             trainingClassTranslationTransfer = new TrainingClassTranslationTransfer(trainingClassTransfer, languageTransfer, description,
                     overviewMimeTypeTransfer, overview, introductionMimeTypeTransfer, introduction);
-            put(trainingClassTranslation, trainingClassTranslationTransfer);
+            put(userVisit, trainingClassTranslation, trainingClassTranslationTransfer);
         }
         
         return trainingClassTranslationTransfer;

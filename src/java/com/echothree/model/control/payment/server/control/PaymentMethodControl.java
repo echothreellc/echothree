@@ -49,12 +49,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PaymentMethodControl
         extends BasePaymentControl {
 
     /** Creates a new instance of PaymentMethodControl */
-    public PaymentMethodControl() {
+    protected PaymentMethodControl() {
         super();
     }
 
@@ -309,15 +311,14 @@ public class PaymentMethodControl
     }
 
     public PaymentMethodTransfer getPaymentMethodTransfer(UserVisit userVisit, PaymentMethod paymentMethod) {
-        return getPaymentTransferCaches(userVisit).getPaymentMethodTransferCache().getTransfer(paymentMethod);
+        return paymentMethodTransferCache.getTransfer(userVisit, paymentMethod);
     }
     
     public List<PaymentMethodTransfer> getPaymentMethodTransfers(UserVisit userVisit, Collection<PaymentMethod> paymentMethods) {
         List<PaymentMethodTransfer> paymentMethodTransfers = new ArrayList<>(paymentMethods.size());
-        var paymentMethodTransferCache = getPaymentTransferCaches(userVisit).getPaymentMethodTransferCache();
 
         paymentMethods.forEach((paymentMethod) ->
-                paymentMethodTransfers.add(paymentMethodTransferCache.getTransfer(paymentMethod))
+                paymentMethodTransfers.add(paymentMethodTransferCache.getTransfer(userVisit, paymentMethod))
         );
 
         return paymentMethodTransfers;
@@ -530,7 +531,7 @@ public class PaymentMethodControl
         var paymentMethodDescription = getPaymentMethodDescription(paymentMethod, language);
         
         if(paymentMethodDescription == null && !language.getIsDefault()) {
-            paymentMethodDescription = getPaymentMethodDescription(paymentMethod, getPartyControl().getDefaultLanguage());
+            paymentMethodDescription = getPaymentMethodDescription(paymentMethod, partyControl.getDefaultLanguage());
         }
         
         if(paymentMethodDescription == null) {
@@ -543,16 +544,15 @@ public class PaymentMethodControl
     }
     
     public PaymentMethodDescriptionTransfer getPaymentMethodDescriptionTransfer(UserVisit userVisit, PaymentMethodDescription paymentMethodDescription) {
-        return getPaymentTransferCaches(userVisit).getPaymentMethodDescriptionTransferCache().getTransfer(paymentMethodDescription);
+        return paymentMethodDescriptionTransferCache.getTransfer(userVisit, paymentMethodDescription);
     }
     
     public List<PaymentMethodDescriptionTransfer> getPaymentMethodDescriptionTransfers(UserVisit userVisit, PaymentMethod paymentMethod) {
         var paymentMethodDescriptions = getPaymentMethodDescriptions(paymentMethod);
         List<PaymentMethodDescriptionTransfer> paymentMethodDescriptionTransfers = new ArrayList<>(paymentMethodDescriptions.size());
-        var paymentMethodDescriptionTransferCache = getPaymentTransferCaches(userVisit).getPaymentMethodDescriptionTransferCache();
         
         paymentMethodDescriptions.forEach((paymentMethodDescription) ->
-                paymentMethodDescriptionTransfers.add(paymentMethodDescriptionTransferCache.getTransfer(paymentMethodDescription))
+                paymentMethodDescriptionTransfers.add(paymentMethodDescriptionTransferCache.getTransfer(userVisit, paymentMethodDescription))
         );
         
         return paymentMethodDescriptionTransfers;

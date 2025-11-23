@@ -36,7 +36,9 @@ import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CreateEntityWorkflowAttributeCommand
         extends BaseSimpleCommand<CreateEntityWorkflowAttributeForm> {
 
@@ -73,7 +75,7 @@ public class CreateEntityWorkflowAttributeCommand
 
             if(!hasExecutionErrors()) {
                 var workflowControl = Session.getModelController(WorkflowControl.class);
-                var entityAttributeWorkflow = getCoreControl().getEntityAttributeWorkflow(entityAttribute);
+                var entityAttributeWorkflow = coreControl.getEntityAttributeWorkflow(entityAttribute);
                 var workflow = entityAttributeWorkflow.getWorkflow();
 
                 if(workflowControl.countWorkflowEntityStatusesByWorkflowAndEntityInstance(workflow, entityInstance) == 0) {

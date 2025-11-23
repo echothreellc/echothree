@@ -27,9 +27,17 @@ import com.echothree.util.server.persistence.BaseEntity;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.persistence.ThreadSession;
 import java.lang.reflect.InvocationTargetException;
+import javax.inject.Inject;
 
 public abstract class BaseLogic {
-    
+
+    @Inject
+    protected CoreControl coreControl;
+
+    protected BaseLogic() {
+        super();
+    }
+
     public Session getSession() {
         return ThreadSession.currentSession();
     }
@@ -47,14 +55,10 @@ public abstract class BaseLogic {
     }
 
     public EntityInstance getEntityInstanceByBasePK(final BasePK pk) {
-        var coreControl = Session.getModelController(CoreControl.class);
-
         return coreControl.getEntityInstanceByBasePK(pk);
     }
 
     public EntityInstance getEntityInstanceByBaseEntity(final BaseEntity baseEntity) {
-        var coreControl = Session.getModelController(CoreControl.class);
-
         return coreControl.getEntityInstanceByBaseEntity(baseEntity);
     }
 

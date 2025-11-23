@@ -23,7 +23,6 @@ import com.echothree.model.control.comment.common.CommentConstants;
 import com.echothree.model.control.communication.server.control.CommunicationControl;
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.contactlist.server.control.ContactListControl;
-import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.customer.common.CustomerOptions;
 import com.echothree.model.control.customer.common.transfer.CustomerTransfer;
@@ -52,7 +51,9 @@ import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CustomerTransferCache
         extends BaseCustomerTransferCache<Party, CustomerTransfer> {
 
@@ -63,6 +64,7 @@ public class CustomerTransferCache
     CommunicationControl communicationControl = Session.getModelController(CommunicationControl.class);
     ContactControl contactControl = Session.getModelController(ContactControl.class);
     ContactListControl contactListControl = Session.getModelController(ContactListControl.class);
+    CustomerControl customerControl = Session.getModelController(CustomerControl.class);
     DocumentControl documentControl = Session.getModelController(DocumentControl.class);
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     InvoiceControl invoiceControl = Session.getModelController(InvoiceControl.class);
@@ -105,8 +107,8 @@ public class CustomerTransferCache
     boolean hasCommunicationEventLimits;
 
     /** Creates a new instance of CustomerTransferCache */
-    public CustomerTransferCache(UserVisit userVisit, CustomerControl customerControl) {
-        super(userVisit, customerControl);
+    protected CustomerTransferCache() {
+        super();
 
         var options = session.getOptions();
         if(options != null) {
@@ -144,11 +146,11 @@ public class CustomerTransferCache
         hasCommunicationEventLimits = session.hasLimit(CommunicationEventFactory.class);
     }
 
-    public CustomerTransfer getTransfer(Customer customer) {
-        return getTransfer(customer.getParty());
+    public CustomerTransfer getTransfer(UserVisit userVisit, Customer customer) {
+        return getTransfer(userVisit, customer.getParty());
     }
 
-    public CustomerTransfer getTransfer(Party party) {
+    public CustomerTransfer getTransfer(UserVisit userVisit, Party party) {
         var customerTransfer = get(party);
 
         if(customerTransfer == null) {
@@ -199,7 +201,7 @@ public class CustomerTransferCache
                     customerTypeTransfer, initialOfferUse, cancellationPolicyTransfer, returnPolicyTransfer, arGlAccountTransfer, holdUntilComplete,
                     allowBackorders, allowSubstitutions, allowCombiningShipments, requireReference, allowReferenceDuplicates, referenceValidationPattern,
                     customerStatusTransfer, customerCreditStatusTransfer);
-            put(party, customerTransfer, entityInstance);
+            put(userVisit, party, customerTransfer, entityInstance);
 
             if(includeUserLogin) {
                 customerTransfer.setUserLogin(userControl.getUserLoginTransfer(userVisit, party));
@@ -242,11 +244,11 @@ public class CustomerTransferCache
             }
 
             if(includeCustomerServiceComments) {
-                setupComments(null, entityInstance, customerTransfer, CommentConstants.CommentType_CUSTOMER_CUSTOMER_SERVICE);
+                setupComments(userVisit, null, entityInstance, customerTransfer, CommentConstants.CommentType_CUSTOMER_CUSTOMER_SERVICE);
             }
 
             if(includeOrderEntryComments) {
-                setupComments(null, entityInstance, customerTransfer, CommentConstants.CommentType_CUSTOMER_ORDER_ENTRY);
+                setupComments(userVisit, null, entityInstance, customerTransfer, CommentConstants.CommentType_CUSTOMER_ORDER_ENTRY);
             }
             
             if(includeBillingAccounts) {

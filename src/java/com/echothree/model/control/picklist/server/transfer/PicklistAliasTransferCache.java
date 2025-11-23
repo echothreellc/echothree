@@ -20,16 +20,21 @@ import com.echothree.model.control.picklist.common.transfer.PicklistAliasTransfe
 import com.echothree.model.control.picklist.server.control.PicklistControl;
 import com.echothree.model.data.picklist.server.entity.PicklistAlias;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PicklistAliasTransferCache
         extends BasePicklistTransferCache<PicklistAlias, PicklistAliasTransfer> {
-    
+
+    PicklistControl picklistControl = Session.getModelController(PicklistControl.class);
+
     /** Creates a new instance of PicklistAliasTransferCache */
-    public PicklistAliasTransferCache(UserVisit userVisit, PicklistControl picklistControl) {
-        super(userVisit, picklistControl);
+    protected PicklistAliasTransferCache() {
+        super();
     }
     
-    public PicklistAliasTransfer getPicklistAliasTransfer(PicklistAlias picklistAlias) {
+    public PicklistAliasTransfer getPicklistAliasTransfer(UserVisit userVisit, PicklistAlias picklistAlias) {
         var picklistAliasTransfer = get(picklistAlias);
         
         if(picklistAliasTransfer == null) {
@@ -38,7 +43,7 @@ public class PicklistAliasTransferCache
             var alias = picklistAlias.getAlias();
             
             picklistAliasTransfer = new PicklistAliasTransfer(picklist, picklistAliasType, alias);
-            put(picklistAlias, picklistAliasTransfer);
+            put(userVisit, picklistAlias, picklistAliasTransfer);
         }
         
         return picklistAliasTransfer;

@@ -23,22 +23,25 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.associate.server.entity.Associate;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class AssociateTransferCache
         extends BaseAssociateTransferCache<Associate, AssociateTransfer> {
 
+    AssociateControl associateControl = Session.getModelController(AssociateControl.class);
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of AssociateTransferCache */
-    public AssociateTransferCache(UserVisit userVisit, AssociateControl associateControl) {
-        super(userVisit, associateControl);
+    protected AssociateTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
     @Override
-    public AssociateTransfer getTransfer(Associate associate) {
+    public AssociateTransfer getTransfer(UserVisit userVisit, Associate associate) {
         var associateTransfer = get(associate);
         
         if(associateTransfer == null) {
@@ -51,7 +54,7 @@ public class AssociateTransferCache
             var summary = associateDetail.getSummary();
             
             associateTransfer = new AssociateTransfer(associateProgram, associateName, party, description, summaryMimeType, summary);
-            put(associate, associateTransfer);
+            put(userVisit, associate, associateTransfer);
         }
         return associateTransfer;
     }

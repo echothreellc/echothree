@@ -34,12 +34,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class LocationUseTypeControl
         extends BaseWarehouseControl {
 
     /** Creates a new instance of WarehouseControl */
-    public LocationUseTypeControl() {
+    protected LocationUseTypeControl() {
         super();
     }
     
@@ -142,14 +144,14 @@ public class LocationUseTypeControl
     }
 
     public LocationUseTypeTransfer getLocationUseTypeTransfer(UserVisit userVisit, LocationUseType locationUseType) {
-        return getWarehouseTransferCaches(userVisit).getLocationUseTypeTransferCache().getLocationUseTypeTransfer(locationUseType);
+        return locationUseTypeTransferCache.getLocationUseTypeTransfer(userVisit, locationUseType);
     }
 
     public List<LocationUseTypeTransfer> getLocationUseTypeTransfers(UserVisit userVisit, Collection<LocationUseType> locationUseTypes) {
         List<LocationUseTypeTransfer> locationUseTypeTransfers = new ArrayList<>(locationUseTypes.size());
 
         locationUseTypes.forEach((locationUseType) -> {
-            locationUseTypeTransfers.add(getWarehouseTransferCaches(userVisit).getLocationUseTypeTransferCache().getLocationUseTypeTransfer(locationUseType));
+            locationUseTypeTransfers.add(locationUseTypeTransferCache.getLocationUseTypeTransfer(userVisit, locationUseType));
         });
 
         return locationUseTypeTransfers;
@@ -228,7 +230,7 @@ public class LocationUseTypeControl
         var locationUseTypeDescription = getLocationUseTypeDescription(locationUseType, language);
         
         if(locationUseTypeDescription == null && !language.getIsDefault()) {
-            locationUseTypeDescription = getLocationUseTypeDescription(locationUseType, getPartyControl().getDefaultLanguage());
+            locationUseTypeDescription = getLocationUseTypeDescription(locationUseType, partyControl.getDefaultLanguage());
         }
         
         if(locationUseTypeDescription == null) {

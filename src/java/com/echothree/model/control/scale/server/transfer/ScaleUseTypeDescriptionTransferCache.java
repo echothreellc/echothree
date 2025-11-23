@@ -20,16 +20,21 @@ import com.echothree.model.control.scale.common.transfer.ScaleUseTypeDescription
 import com.echothree.model.control.scale.server.control.ScaleControl;
 import com.echothree.model.data.scale.server.entity.ScaleUseTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ScaleUseTypeDescriptionTransferCache
         extends BaseScaleDescriptionTransferCache<ScaleUseTypeDescription, ScaleUseTypeDescriptionTransfer> {
-    
+
+    ScaleControl scaleControl = Session.getModelController(ScaleControl.class);
+
     /** Creates a new instance of ScaleUseTypeDescriptionTransferCache */
-    public ScaleUseTypeDescriptionTransferCache(UserVisit userVisit, ScaleControl scaleControl) {
-        super(userVisit, scaleControl);
+    protected ScaleUseTypeDescriptionTransferCache() {
+        super();
     }
     
-    public ScaleUseTypeDescriptionTransfer getScaleUseTypeDescriptionTransfer(ScaleUseTypeDescription scaleUseTypeDescription) {
+    public ScaleUseTypeDescriptionTransfer getScaleUseTypeDescriptionTransfer(UserVisit userVisit, ScaleUseTypeDescription scaleUseTypeDescription) {
         var scaleUseTypeDescriptionTransfer = get(scaleUseTypeDescription);
         
         if(scaleUseTypeDescriptionTransfer == null) {
@@ -37,7 +42,7 @@ public class ScaleUseTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, scaleUseTypeDescription.getLanguage());
             
             scaleUseTypeDescriptionTransfer = new ScaleUseTypeDescriptionTransfer(languageTransfer, scaleUseTypeTransfer, scaleUseTypeDescription.getDescription());
-            put(scaleUseTypeDescription, scaleUseTypeDescriptionTransfer);
+            put(userVisit, scaleUseTypeDescription, scaleUseTypeDescriptionTransfer);
         }
         
         return scaleUseTypeDescriptionTransfer;

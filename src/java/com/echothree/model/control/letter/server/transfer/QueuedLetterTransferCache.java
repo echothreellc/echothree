@@ -22,20 +22,21 @@ import com.echothree.model.control.letter.server.control.LetterControl;
 import com.echothree.model.data.letter.server.entity.QueuedLetter;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class QueuedLetterTransferCache
         extends BaseLetterTransferCache<QueuedLetter, QueuedLetterTransfer> {
     
-    ChainControl chainControl;
-    
+    ChainControl chainControl = Session.getModelController(ChainControl.class);
+    LetterControl letterControl = Session.getModelController(LetterControl.class);
+
     /** Creates a new instance of QueuedLetterTransferCache */
-    public QueuedLetterTransferCache(UserVisit userVisit, LetterControl letterControl) {
-        super(userVisit, letterControl);
-        
-        chainControl = Session.getModelController(ChainControl.class);
+    protected QueuedLetterTransferCache() {
+        super();
     }
     
-    public QueuedLetterTransfer getQueuedLetterTransfer(QueuedLetter queuedLetter) {
+    public QueuedLetterTransfer getQueuedLetterTransfer(UserVisit userVisit, QueuedLetter queuedLetter) {
         var queuedLetterTransfer = get(queuedLetter);
         
         if(queuedLetterTransfer == null) {
@@ -43,7 +44,7 @@ public class QueuedLetterTransferCache
             var letter = letterControl.getLetterTransfer(userVisit, queuedLetter.getLetter());
             
             queuedLetterTransfer = new QueuedLetterTransfer(chainInstance, letter);
-            put(queuedLetter, queuedLetterTransfer);
+            put(userVisit, queuedLetter, queuedLetterTransfer);
         }
         
         return queuedLetterTransfer;

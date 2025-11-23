@@ -17,12 +17,15 @@
 package com.echothree.model.control.survey.server.control;
 
 import com.echothree.util.server.control.BaseModelControl;
+import javax.enterprise.inject.spi.CDI;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class SurveyControl
         extends BaseModelControl {
     
     /** Creates a new instance of SurveyControl */
-    public SurveyControl() {
+    protected SurveyControl() {
         super();
     }
 }

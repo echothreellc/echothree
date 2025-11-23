@@ -104,12 +104,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class WarehouseControl
         extends BaseWarehouseControl {
     
     /** Creates a new instance of WarehouseControl */
-    public WarehouseControl() {
+    protected WarehouseControl() {
         super();
     }
 
@@ -305,15 +307,14 @@ public class WarehouseControl
     }
 
     public WarehouseTypeTransfer getWarehouseTypeTransfer(UserVisit userVisit, WarehouseType warehouseType) {
-        return getWarehouseTransferCaches(userVisit).getWarehouseTypeTransferCache().getTransfer(warehouseType);
+        return warehouseTypeTransferCache.getTransfer(userVisit, warehouseType);
     }
 
     public List<WarehouseTypeTransfer> getWarehouseTypeTransfers(UserVisit userVisit, Collection<WarehouseType> warehouseTypes) {
         List<WarehouseTypeTransfer> warehouseTypeTransfers = new ArrayList<>(warehouseTypes.size());
-        var warehouseTypeTransferCache = getWarehouseTransferCaches(userVisit).getWarehouseTypeTransferCache();
 
         warehouseTypes.forEach((warehouseType) ->
-                warehouseTypeTransfers.add(warehouseTypeTransferCache.getTransfer(warehouseType))
+                warehouseTypeTransfers.add(warehouseTypeTransferCache.getTransfer(userVisit, warehouseType))
         );
 
         return warehouseTypeTransfers;
@@ -483,7 +484,7 @@ public class WarehouseControl
         var warehouseTypeDescription = getWarehouseTypeDescription(warehouseType, language);
 
         if(warehouseTypeDescription == null && !language.getIsDefault()) {
-            warehouseTypeDescription = getWarehouseTypeDescription(warehouseType, getPartyControl().getDefaultLanguage());
+            warehouseTypeDescription = getWarehouseTypeDescription(warehouseType, partyControl.getDefaultLanguage());
         }
 
         if(warehouseTypeDescription == null) {
@@ -496,7 +497,7 @@ public class WarehouseControl
     }
 
     public WarehouseTypeDescriptionTransfer getWarehouseTypeDescriptionTransfer(UserVisit userVisit, WarehouseTypeDescription warehouseTypeDescription) {
-        return getWarehouseTransferCaches(userVisit).getWarehouseTypeDescriptionTransferCache().getTransfer(warehouseTypeDescription);
+        return warehouseTypeDescriptionTransferCache.getTransfer(userVisit, warehouseTypeDescription);
     }
 
     public List<WarehouseTypeDescriptionTransfer> getWarehouseTypeDescriptionTransfersByWarehouseType(UserVisit userVisit, WarehouseType warehouseType) {
@@ -504,7 +505,7 @@ public class WarehouseControl
         List<WarehouseTypeDescriptionTransfer> warehouseTypeDescriptionTransfers = new ArrayList<>(warehouseTypeDescriptions.size());
 
         warehouseTypeDescriptions.forEach((warehouseTypeDescription) ->
-                warehouseTypeDescriptionTransfers.add(getWarehouseTransferCaches(userVisit).getWarehouseTypeDescriptionTransferCache().getTransfer(warehouseTypeDescription))
+                warehouseTypeDescriptionTransfers.add(warehouseTypeDescriptionTransferCache.getTransfer(userVisit, warehouseTypeDescription))
         );
 
         return warehouseTypeDescriptionTransfers;
@@ -763,7 +764,7 @@ public class WarehouseControl
         }
 
         for(var warehouse : partyCompanies) {
-            var partyGroup = getPartyControl().getPartyGroup(warehouse.getParty());
+            var partyGroup = partyControl.getPartyGroup(warehouse.getParty());
 
             var label = partyGroup.getName();
             var value = warehouse.getWarehouseName();
@@ -781,7 +782,7 @@ public class WarehouseControl
     }
 
     public WarehouseTransfer getWarehouseTransfer(UserVisit userVisit, Warehouse warehouse) {
-        return getWarehouseTransferCaches(userVisit).getWarehouseTransferCache().getWarehouseTransfer(warehouse);
+        return warehouseTransferCache.getWarehouseTransfer(userVisit, warehouse);
     }
     
     public WarehouseTransfer getWarehouseTransfer(UserVisit userVisit, Party party) {
@@ -792,7 +793,7 @@ public class WarehouseControl
         List<WarehouseTransfer> warehouseTransfers = new ArrayList<>(warehouses.size());
 
         warehouses.forEach((warehouse) -> {
-            warehouseTransfers.add(getWarehouseTransferCaches(userVisit).getWarehouseTransferCache().getWarehouseTransfer(warehouse));
+            warehouseTransfers.add(warehouseTransferCache.getWarehouseTransfer(userVisit, warehouse));
         });
 
         return warehouseTransfers;
@@ -851,7 +852,7 @@ public class WarehouseControl
         deleteLocationTypesByWarehouseParty(party, deletedBy);
         inventoryControl.deleteInventoryLocationGroupsByWarehouseParty(party, deletedBy);
         
-        getPartyControl().deleteParty(party, deletedBy);
+        partyControl.deleteParty(party, deletedBy);
         
         warehouse.setThruTime(session.START_TIME_LONG);
         warehouse.store();
@@ -1034,7 +1035,7 @@ public class WarehouseControl
     }
     
     public LocationTypeTransfer getLocationTypeTransfer(UserVisit userVisit, LocationType locationType) {
-        return getWarehouseTransferCaches(userVisit).getLocationTypeTransferCache().getLocationTypeTransfer(locationType);
+        return locationTypeTransferCache.getLocationTypeTransfer(userVisit, locationType);
     }
     
     public List<LocationTypeTransfer> getLocationTypeTransfersByWarehouseParty(UserVisit userVisit, Party warehouseParty) {
@@ -1045,7 +1046,7 @@ public class WarehouseControl
             locationTypeTransfers = new ArrayList<>(locationTypes.size());
             
             for(var locationType : locationTypes) {
-                locationTypeTransfers.add(getWarehouseTransferCaches(userVisit).getLocationTypeTransferCache().getLocationTypeTransfer(locationType));
+                locationTypeTransfers.add(locationTypeTransferCache.getLocationTypeTransfer(userVisit, locationType));
             }
         }
         
@@ -1286,7 +1287,7 @@ public class WarehouseControl
         var locationTypeDescription = getLocationTypeDescription(locationType, language);
         
         if(locationTypeDescription == null && !language.getIsDefault()) {
-            locationTypeDescription = getLocationTypeDescription(locationType, getPartyControl().getDefaultLanguage());
+            locationTypeDescription = getLocationTypeDescription(locationType, partyControl.getDefaultLanguage());
         }
         
         if(locationTypeDescription == null) {
@@ -1299,7 +1300,7 @@ public class WarehouseControl
     }
     
     public LocationTypeDescriptionTransfer getLocationTypeDescriptionTransfer(UserVisit userVisit, LocationTypeDescription locationTypeDescription) {
-        return getWarehouseTransferCaches(userVisit).getLocationTypeDescriptionTransferCache().getLocationTypeDescriptionTransfer(locationTypeDescription);
+        return locationTypeDescriptionTransferCache.getLocationTypeDescriptionTransfer(userVisit, locationTypeDescription);
     }
     
     public List<LocationTypeDescriptionTransfer> getLocationTypeDescriptionTransfersByLocationType(UserVisit userVisit, LocationType locationType) {
@@ -1310,7 +1311,7 @@ public class WarehouseControl
             locationTypeDescriptionTransfers = new ArrayList<>(locationTypeDescriptions.size());
             
             for(var locationTypeDescription  : locationTypeDescriptions) {
-                locationTypeDescriptionTransfers.add(getWarehouseTransferCaches(userVisit).getLocationTypeDescriptionTransferCache().getLocationTypeDescriptionTransfer(locationTypeDescription));
+                locationTypeDescriptionTransfers.add(locationTypeDescriptionTransferCache.getLocationTypeDescriptionTransfer(userVisit, locationTypeDescription));
             }
         }
         
@@ -1476,16 +1477,15 @@ public class WarehouseControl
     }
     
     public LocationNameElementTransfer getLocationNameElementTransfer(UserVisit userVisit, LocationNameElement locationNameElement) {
-        return getWarehouseTransferCaches(userVisit).getLocationNameElementTransferCache().getLocationNameElementTransfer(locationNameElement);
+        return locationNameElementTransferCache.getLocationNameElementTransfer(userVisit, locationNameElement);
     }
     
     public List<LocationNameElementTransfer> getLocationNameElementTransfersByLocationType(UserVisit userVisit, LocationType locationType) {
         var locationNameElements = getLocationNameElementsByLocationType(locationType);
         List<LocationNameElementTransfer> locationNameElementTransfers = new ArrayList<>(locationNameElements.size());
-        var locationNameElementTransferCache = getWarehouseTransferCaches(userVisit).getLocationNameElementTransferCache();
         
         locationNameElements.forEach((locationNameElement) ->
-                locationNameElementTransfers.add(locationNameElementTransferCache.getLocationNameElementTransfer(locationNameElement))
+                locationNameElementTransfers.add(locationNameElementTransferCache.getLocationNameElementTransfer(userVisit, locationNameElement))
         );
         
         return locationNameElementTransfers;
@@ -1644,7 +1644,7 @@ public class WarehouseControl
         var locationNameElementDescription = getLocationNameElementDescription(locationNameElement, language);
         
         if(locationNameElementDescription == null && !language.getIsDefault()) {
-            locationNameElementDescription = getLocationNameElementDescription(locationNameElement, getPartyControl().getDefaultLanguage());
+            locationNameElementDescription = getLocationNameElementDescription(locationNameElement, partyControl.getDefaultLanguage());
         }
         
         if(locationNameElementDescription == null) {
@@ -1657,7 +1657,7 @@ public class WarehouseControl
     }
     
     public LocationNameElementDescriptionTransfer getLocationNameElementDescriptionTransfer(UserVisit userVisit, LocationNameElementDescription locationNameElementDescription) {
-        return getWarehouseTransferCaches(userVisit).getLocationNameElementDescriptionTransferCache().getLocationNameElementDescriptionTransfer(locationNameElementDescription);
+        return locationNameElementDescriptionTransferCache.getLocationNameElementDescriptionTransfer(userVisit, locationNameElementDescription);
     }
     
     public List<LocationNameElementDescriptionTransfer> getLocationNameElementDescriptionTransfersByLocationNameElement(UserVisit userVisit, LocationNameElement locationNameElement) {
@@ -1668,7 +1668,7 @@ public class WarehouseControl
             locationNameElementDescriptionTransfers = new ArrayList<>(locationNameElementDescriptions.size());
             
             for(var locationNameElementDescription : locationNameElementDescriptions) {
-                locationNameElementDescriptionTransfers.add(getWarehouseTransferCaches(userVisit).getLocationNameElementDescriptionTransferCache().getLocationNameElementDescriptionTransfer(locationNameElementDescription));
+                locationNameElementDescriptionTransfers.add(locationNameElementDescriptionTransferCache.getLocationNameElementDescriptionTransfer(userVisit, locationNameElementDescription));
             }
         }
         
@@ -1969,7 +1969,7 @@ public class WarehouseControl
     }
     
     public LocationTransfer getLocationTransfer(UserVisit userVisit, Location location) {
-        return getWarehouseTransferCaches(userVisit).getLocationTransferCache().getLocationTransfer(location);
+        return locationTransferCache.getLocationTransfer(userVisit, location);
     }
     
     public List<LocationTransfer> getLocationTransfersByWarehouseParty(UserVisit userVisit, Party warehouseParty) {
@@ -1980,7 +1980,7 @@ public class WarehouseControl
             locationTransfers = new ArrayList<>(locations.size());
             
             for(var location : locations) {
-                locationTransfers.add(getWarehouseTransferCaches(userVisit).getLocationTransferCache().getLocationTransfer(location));
+                locationTransfers.add(locationTransferCache.getLocationTransfer(userVisit, location));
             }
         }
         
@@ -2013,7 +2013,6 @@ public class WarehouseControl
     
     public LocationStatusChoicesBean getLocationStatusChoices(String defaultLocationStatusChoice, Language language,
             Location location, PartyPK partyPK) {
-        var workflowControl = getWorkflowControl();
         var locationStatusChoicesBean = new LocationStatusChoicesBean();
         var entityInstance = getEntityInstanceByBaseEntity(location);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(LocationStatusConstants.Workflow_LOCATION_STATUS,
@@ -2026,7 +2025,6 @@ public class WarehouseControl
     }
     
     public void setLocationStatus(ExecutionErrorAccumulator eea, Location location, String locationStatusChoice, PartyPK modifiedBy) {
-        var workflowControl = getWorkflowControl();
         var entityInstance = getEntityInstanceByBaseEntity(location);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(LocationStatusConstants.Workflow_LOCATION_STATUS,
                 entityInstance);
@@ -2210,7 +2208,7 @@ public class WarehouseControl
         var locationDescription = getLocationDescription(location, language);
         
         if(locationDescription == null && !language.getIsDefault()) {
-            locationDescription = getLocationDescription(location, getPartyControl().getDefaultLanguage());
+            locationDescription = getLocationDescription(location, partyControl.getDefaultLanguage());
         }
         
         if(locationDescription == null) {
@@ -2223,7 +2221,7 @@ public class WarehouseControl
     }
     
     public LocationDescriptionTransfer getLocationDescriptionTransfer(UserVisit userVisit, LocationDescription locationDescription) {
-        return getWarehouseTransferCaches(userVisit).getLocationDescriptionTransferCache().getLocationDescriptionTransfer(locationDescription);
+        return locationDescriptionTransferCache.getLocationDescriptionTransfer(userVisit, locationDescription);
     }
     
     public List<LocationDescriptionTransfer> getLocationDescriptionTransfersByLocation(UserVisit userVisit, Location location) {
@@ -2234,7 +2232,7 @@ public class WarehouseControl
             locationDescriptionTransfers = new ArrayList<>(locationDescriptions.size());
             
             for(var locationDescription : locationDescriptions) {
-                locationDescriptionTransfers.add(getWarehouseTransferCaches(userVisit).getLocationDescriptionTransferCache().getLocationDescriptionTransfer(locationDescription));
+                locationDescriptionTransfers.add(locationDescriptionTransferCache.getLocationDescriptionTransfer(userVisit, locationDescription));
             }
         }
         
@@ -2332,13 +2330,13 @@ public class WarehouseControl
     }
     
     public LocationVolumeTransfer getLocationVolumeTransfer(UserVisit userVisit, LocationVolume locationVolume) {
-        return locationVolume == null? null: getWarehouseTransferCaches(userVisit).getLocationVolumeTransferCache().getLocationVolumeTransfer(locationVolume);
+        return locationVolume == null? null: locationVolumeTransferCache.getLocationVolumeTransfer(userVisit, locationVolume);
     }
     
     public LocationVolumeTransfer getLocationVolumeTransfer(UserVisit userVisit, Location location) {
         var locationVolume = getLocationVolume(location);
         
-        return locationVolume == null? null: getWarehouseTransferCaches(userVisit).getLocationVolumeTransferCache().getLocationVolumeTransfer(locationVolume);
+        return locationVolume == null? null: locationVolumeTransferCache.getLocationVolumeTransfer(userVisit, locationVolume);
     }
     
     public void updateLocationVolumeFromValue(LocationVolumeValue locationVolumeValue, BasePK updatedBy) {
@@ -2500,16 +2498,15 @@ public class WarehouseControl
     }
     
     public LocationCapacityTransfer getLocationCapacityTransfer(UserVisit userVisit, LocationCapacity locationCapacity) {
-        return getWarehouseTransferCaches(userVisit).getLocationCapacityTransferCache().getLocationCapacityTransfer(locationCapacity);
+        return locationCapacityTransferCache.getLocationCapacityTransfer(userVisit, locationCapacity);
     }
     
     public List<LocationCapacityTransfer> getLocationCapacityTransfersByLocation(UserVisit userVisit, Location location) {
         var locationCapacities = getLocationCapacitiesByLocation(location);
         List<LocationCapacityTransfer> locationCapacityTransfers = new ArrayList<>(locationCapacities.size());
-        var locationCapacityTransferCache = getWarehouseTransferCaches(userVisit).getLocationCapacityTransferCache();
         
         locationCapacities.forEach((locationCapacity) ->
-                locationCapacityTransfers.add(locationCapacityTransferCache.getLocationCapacityTransfer(locationCapacity))
+                locationCapacityTransfers.add(locationCapacityTransferCache.getLocationCapacityTransfer(userVisit, locationCapacity))
         );
         
         return locationCapacityTransfers;
@@ -2547,7 +2544,7 @@ public class WarehouseControl
             var warehouseControl = Session.getModelController(WarehouseControl.class);
 
             while(rs.next()) {
-                var party = getPartyControl().getPartyByPK(new PartyPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
+                var party = partyControl.getPartyByPK(new PartyPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
 
                 warehouseResultTransfers.add(new WarehouseResultTransfer(party.getLastDetail().getPartyName(),
                         includeWarehouse ? warehouseControl.getWarehouseTransfer(userVisit, party) : null));
@@ -2565,7 +2562,7 @@ public class WarehouseControl
 
         try (var rs = searchControl.getUserVisitSearchResultSet(userVisitSearch)) {
             while(rs.next()) {
-                var party = getPartyControl().getPartyByPK(new PartyPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
+                var party = partyControl.getPartyByPK(new PartyPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
 
                 warehouseObjects.add(new WarehouseObject(party));
             }

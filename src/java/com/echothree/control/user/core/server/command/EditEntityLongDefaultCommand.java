@@ -35,7 +35,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EditEntityLongDefaultCommand
         extends BaseAbstractEditCommand<EntityLongDefaultSpec, EntityLongDefaultEdit, EditEntityLongDefaultResult, EntityLongDefault, EntityAttribute> {
     
@@ -83,7 +85,6 @@ public class EditEntityLongDefaultCommand
         EntityLongDefault entityLongDefault = null;
 
         if(!hasExecutionErrors()) {
-            var coreControl = getCoreControl();
 
             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                 entityLongDefault = coreControl.getEntityLongDefault(entityAttribute);
@@ -106,7 +107,6 @@ public class EditEntityLongDefaultCommand
 
     @Override
     public void fillInResult(EditEntityLongDefaultResult result, EntityLongDefault entityLongDefault) {
-        var coreControl = getCoreControl();
 
         result.setEntityLongDefault(coreControl.getEntityLongDefaultTransfer(getUserVisit(), entityLongDefault));
     }
@@ -118,7 +118,6 @@ public class EditEntityLongDefaultCommand
 
     @Override
     public void doUpdate(EntityLongDefault entityLongDefault) {
-        var coreControl = getCoreControl();
         var entityLongDefaultValue = coreControl.getEntityLongDefaultValueForUpdate(entityLongDefault);
 
         entityLongDefaultValue.setLongAttribute(Long.valueOf(edit.getLongAttribute()));

@@ -78,7 +78,7 @@ public abstract class BasePaginatedMultipleEntitiesCommand<BE extends BaseEntity
     }
 
     @Override
-    protected final BaseResult execute() {
+    protected BaseResult execute() {
         handleForm();
         var entities = getEntities();
         

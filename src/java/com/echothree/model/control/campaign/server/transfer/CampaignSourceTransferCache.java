@@ -25,16 +25,19 @@ import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.campaign.server.entity.CampaignSource;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CampaignSourceTransferCache
         extends BaseCampaignTransferCache<CampaignSource, CampaignSourceTransfer> {
 
+    CampaignControl campaignControl = Session.getModelController(CampaignControl.class);
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of CampaignSourceTransferCache */
-    public CampaignSourceTransferCache(UserVisit userVisit, CampaignControl campaignControl) {
-        super(userVisit, campaignControl);
+    protected CampaignSourceTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {
@@ -44,7 +47,7 @@ public class CampaignSourceTransferCache
         setIncludeEntityInstance(true);
     }
 
-    public CampaignSourceTransfer getCampaignSourceTransfer(CampaignSource campaignSource) {
+    public CampaignSourceTransfer getCampaignSourceTransfer(UserVisit userVisit, CampaignSource campaignSource) {
         var campaignSourceTransfer = get(campaignSource);
 
         if(campaignSourceTransfer == null) {
@@ -54,7 +57,7 @@ public class CampaignSourceTransferCache
             var value = campaignSourceDetail.getValue();
             var isDefault = campaignSourceDetail.getIsDefault();
             var sortOrder = campaignSourceDetail.getSortOrder();
-            var description = campaignControl.getBestCampaignSourceDescription(campaignSource, getLanguage());
+            var description = campaignControl.getBestCampaignSourceDescription(campaignSource, getLanguage(userVisit));
 
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(campaignSource.getPrimaryKey());
             var campaignSourceStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
@@ -62,7 +65,7 @@ public class CampaignSourceTransferCache
             
             campaignSourceTransfer = new CampaignSourceTransfer(campaignSourceName, valueSha1Hash, value, isDefault, sortOrder, description,
                     campaignSourceStatusTransfer);
-            put(campaignSource, campaignSourceTransfer);
+            put(userVisit, campaignSource, campaignSourceTransfer);
         }
 
         return campaignSourceTransfer;

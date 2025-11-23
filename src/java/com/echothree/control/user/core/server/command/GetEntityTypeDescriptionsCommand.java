@@ -33,7 +33,9 @@ import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class GetEntityTypeDescriptionsCommand
         extends BaseSimpleCommand<GetEntityTypeDescriptionsForm> {
     
@@ -63,17 +65,17 @@ public class GetEntityTypeDescriptionsCommand
     protected BaseResult execute() {
         var result = CoreResultFactory.getGetEntityTypeDescriptionsResult();
         var componentVendorName = form.getComponentVendorName();
-        var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
+        var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
             var entityTypeName = form.getEntityTypeName();
-            var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
+            var entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
                 var userVisit = getUserVisit();
                 
-                result.setEntityType(getEntityTypeControl().getEntityTypeTransfer(userVisit, entityType));
-                result.setEntityTypeDescriptions(getEntityTypeControl().getEntityTypeDescriptionTransfersByEntityType(userVisit, entityType));
+                result.setEntityType(entityTypeControl.getEntityTypeTransfer(userVisit, entityType));
+                result.setEntityTypeDescriptions(entityTypeControl.getEntityTypeDescriptionTransfersByEntityType(userVisit, entityType));
             } else {
                 addExecutionError(ExecutionErrors.UnknownEntityTypeName.name(), componentVendorName, entityTypeName);
             }

@@ -33,20 +33,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class FreeOnBoardLogic
         extends BaseLogic {
-    
-    private FreeOnBoardLogic() {
+
+    protected FreeOnBoardLogic() {
         super();
     }
-    
-    private static class FreeOnBoardLogicHolder {
-        static FreeOnBoardLogic instance = new FreeOnBoardLogic();
-    }
-    
+
     public static FreeOnBoardLogic getInstance() {
-        return FreeOnBoardLogicHolder.instance;
+        return CDI.current().select(FreeOnBoardLogic.class).get();
     }
 
     public FreeOnBoard createFreeOnBoard(final ExecutionErrorAccumulator eea, final String freeOnBoardName,
@@ -96,7 +95,7 @@ public class FreeOnBoardLogic
         var parameterCount = (freeOnBoardName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
-            case 0:
+            case 0 -> {
                 if(allowDefault) {
                     freeOnBoard = freeOnBoardControl.getDefaultFreeOnBoard(entityPermission);
 
@@ -106,8 +105,8 @@ public class FreeOnBoardLogic
                 } else {
                     handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                 }
-                break;
-            case 1:
+            }
+            case 1 -> {
                 if(freeOnBoardName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.FreeOnBoard.name());
@@ -118,10 +117,9 @@ public class FreeOnBoardLogic
                 } else {
                     freeOnBoard = getFreeOnBoardByName(eea, freeOnBoardName, entityPermission);
                 }
-                break;
-            default:
-                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
-                break;
+            }
+            default ->
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
 
         return freeOnBoard;

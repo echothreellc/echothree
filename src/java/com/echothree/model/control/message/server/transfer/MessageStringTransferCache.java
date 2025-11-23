@@ -22,20 +22,21 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.message.server.entity.MessageString;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class MessageStringTransferCache
         extends BaseMessageTransferCache<MessageString, MessageStringTransfer> {
-    
-    PartyControl partyControl;
+
+    MessageControl messageControl = Session.getModelController(MessageControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of MessageStringTransferCache */
-    public MessageStringTransferCache(UserVisit userVisit, MessageControl messageControl) {
-        super(userVisit, messageControl);
-        
-        partyControl = Session.getModelController(PartyControl.class);
+    protected MessageStringTransferCache() {
+        super();
     }
     
-    public MessageStringTransfer getMessageStringTransfer(MessageString messageString) {
+    public MessageStringTransfer getMessageStringTransfer(UserVisit userVisit, MessageString messageString) {
         var messageStringTransfer = get(messageString);
         
         if(messageStringTransfer == null) {
@@ -44,7 +45,7 @@ public class MessageStringTransferCache
             var string = messageString.getString();
             
             messageStringTransfer = new MessageStringTransfer(message, language, string);
-            put(messageString, messageStringTransfer);
+            put(userVisit, messageString, messageStringTransfer);
         }
         
         return messageStringTransfer;

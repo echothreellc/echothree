@@ -19,17 +19,19 @@ package com.echothree.model.control.party.server.transfer;
 import com.echothree.model.control.party.common.transfer.BirthdayFormatDescriptionTransfer;
 import com.echothree.model.data.party.server.entity.BirthdayFormatDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class BirthdayFormatDescriptionTransferCache
         extends BasePartyDescriptionTransferCache<BirthdayFormatDescription, BirthdayFormatDescriptionTransfer> {
     
     /** Creates a new instance of BirthdayFormatDescriptionTransferCache */
-    public BirthdayFormatDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected BirthdayFormatDescriptionTransferCache() {
+        super();
     }
 
     @Override
-    public BirthdayFormatDescriptionTransfer getTransfer(BirthdayFormatDescription birthdayFormatDescription) {
+    public BirthdayFormatDescriptionTransfer getTransfer(UserVisit userVisit, BirthdayFormatDescription birthdayFormatDescription) {
         var birthdayFormatDescriptionTransfer = get(birthdayFormatDescription);
         
         if(birthdayFormatDescriptionTransfer == null) {
@@ -37,7 +39,7 @@ public class BirthdayFormatDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, birthdayFormatDescription.getLanguage());
             
             birthdayFormatDescriptionTransfer = new BirthdayFormatDescriptionTransfer(languageTransfer, birthdayFormatTransfer, birthdayFormatDescription.getDescription());
-            put(birthdayFormatDescription, birthdayFormatDescriptionTransfer);
+            put(userVisit, birthdayFormatDescription, birthdayFormatDescriptionTransfer);
         }
         
         return birthdayFormatDescriptionTransfer;

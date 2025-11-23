@@ -23,20 +23,19 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class SourceLogic
         extends BaseLogic {
 
-    private SourceLogic() {
+    protected SourceLogic() {
         super();
     }
 
-    private static class SourceLogicHolder {
-        static SourceLogic instance = new SourceLogic();
-    }
-
     public static SourceLogic getInstance() {
-        return SourceLogicHolder.instance;
+        return CDI.current().select(SourceLogic.class).get();
     }
     
     public Source getSourceByName(final ExecutionErrorAccumulator eea, final String sourceName) {

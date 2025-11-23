@@ -27,7 +27,9 @@ import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class UserVisitTransferCache
         extends BaseUserTransferCache<UserVisit, UserVisitTransfer> {
     
@@ -36,12 +38,13 @@ public class UserVisitTransferCache
     CampaignControl campaignControl = Session.getModelController(CampaignControl.class);
     OfferUseControl offerUseControl = Session.getModelController(OfferUseControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
-    
+    UserControl userControl = Session.getModelController(UserControl.class);
+
     boolean includeUserVisitCampaigns;
     
     /** Creates a new instance of UserVisitTransferCache */
-    public UserVisitTransferCache(UserVisit userVisit, UserControl userControl) {
-        super(userVisit, userControl);
+    protected UserVisitTransferCache() {
+        super();
 
         var options = session.getOptions();
         if(options != null) {
@@ -49,7 +52,7 @@ public class UserVisitTransferCache
         }
     }
     
-    public UserVisitTransfer getUserVisitTransfer(UserVisit userVisitEntity) {
+    public UserVisitTransfer getUserVisitTransfer(UserVisit userVisit, UserVisit userVisitEntity) {
         var userVisitTransfer = get(userVisit);
         
         if(userVisitTransfer == null) {
@@ -64,18 +67,18 @@ public class UserVisitTransferCache
             var preferredDateTimeFormat = userVisitEntity.getPreferredDateTimeFormat();
             var preferredDateTimeFormatTransfer = preferredDateTimeFormat == null ? null : partyControl.getDateTimeFormatTransfer(userVisit, preferredDateTimeFormat);
             var unformattedLastCommandTime = userVisitEntity.getLastCommandTime();
-            var lastCommandTime = formatTypicalDateTime(unformattedLastCommandTime);
+            var lastCommandTime = formatTypicalDateTime(userVisit, unformattedLastCommandTime);
             var offerUse = userVisitEntity.getOfferUse();
             var offerUseTransfer = offerUse == null ? null : offerUseControl.getOfferUseTransfer(userVisit, offerUse);
             var associateReferral = userVisitEntity.getAssociateReferral();
             var associateReferralTransfer = associateReferral == null ? null : associateControl.getAssociateReferralTransfer(userVisit, associateReferral);
             var unformattedRetainUntilTime = userVisitEntity.getRetainUntilTime();
-            var retainUntilTime = formatTypicalDateTime(unformattedRetainUntilTime);
+            var retainUntilTime = formatTypicalDateTime(userVisit, unformattedRetainUntilTime);
 
             userVisitTransfer = new UserVisitTransfer(userKeyTransfer, preferredLanguageTransfer, preferredCurrencyTransfer, preferredTimeZoneTransfer,
                     preferredDateTimeFormatTransfer, unformattedLastCommandTime, lastCommandTime, offerUseTransfer, associateReferralTransfer,
                     unformattedRetainUntilTime, retainUntilTime);
-            put(userVisitEntity, userVisitTransfer);
+            put(userVisit, userVisitEntity, userVisitTransfer);
             
             if(includeUserVisitCampaigns) {
                 userVisitTransfer.setUserVisitCampaigns(new ListWrapper<>(campaignControl.getUserVisitCampaignTransfersByUserVisit(userVisit, userVisitEntity)));

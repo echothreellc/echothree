@@ -21,18 +21,20 @@ import com.echothree.model.control.core.server.control.CommandControl;
 import com.echothree.model.data.core.server.entity.CommandMessageTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CommandMessageTypeDescriptionTransferCache
         extends BaseCoreDescriptionTransferCache<CommandMessageTypeDescription, CommandMessageTypeDescriptionTransfer> {
 
     CommandControl commandControl = Session.getModelController(CommandControl.class);
 
     /** Creates a new instance of CommandMessageTypeDescriptionTransferCache */
-    public CommandMessageTypeDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected CommandMessageTypeDescriptionTransferCache() {
+        super();
     }
     
-    public CommandMessageTypeDescriptionTransfer getCommandMessageTypeDescriptionTransfer(CommandMessageTypeDescription commandMessageTypeDescription) {
+    public CommandMessageTypeDescriptionTransfer getCommandMessageTypeDescriptionTransfer(UserVisit userVisit, CommandMessageTypeDescription commandMessageTypeDescription) {
         var commandMessageTypeDescriptionTransfer = get(commandMessageTypeDescription);
         
         if(commandMessageTypeDescriptionTransfer == null) {
@@ -40,7 +42,7 @@ public class CommandMessageTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, commandMessageTypeDescription.getLanguage());
             
             commandMessageTypeDescriptionTransfer = new CommandMessageTypeDescriptionTransfer(languageTransfer, commandMessageTypeTransfer, commandMessageTypeDescription.getDescription());
-            put(commandMessageTypeDescription, commandMessageTypeDescriptionTransfer);
+            put(userVisit, commandMessageTypeDescription, commandMessageTypeDescriptionTransfer);
         }
         
         return commandMessageTypeDescriptionTransfer;

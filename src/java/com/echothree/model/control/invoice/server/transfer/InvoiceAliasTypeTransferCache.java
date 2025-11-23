@@ -20,18 +20,23 @@ import com.echothree.model.control.invoice.common.transfer.InvoiceAliasTypeTrans
 import com.echothree.model.control.invoice.server.control.InvoiceControl;
 import com.echothree.model.data.invoice.server.entity.InvoiceAliasType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class InvoiceAliasTypeTransferCache
         extends BaseInvoiceTransferCache<InvoiceAliasType, InvoiceAliasTypeTransfer> {
-    
+
+    InvoiceControl invoiceControl = Session.getModelController(InvoiceControl.class);
+
     /** Creates a new instance of InvoiceAliasTypeTransferCache */
-    public InvoiceAliasTypeTransferCache(UserVisit userVisit, InvoiceControl invoiceControl) {
-        super(userVisit, invoiceControl);
+    protected InvoiceAliasTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public InvoiceAliasTypeTransfer getInvoiceAliasTypeTransfer(InvoiceAliasType invoiceAliasType) {
+    public InvoiceAliasTypeTransfer getInvoiceAliasTypeTransfer(UserVisit userVisit, InvoiceAliasType invoiceAliasType) {
         var invoiceAliasTypeTransfer = get(invoiceAliasType);
         
         if(invoiceAliasTypeTransfer == null) {
@@ -41,10 +46,10 @@ public class InvoiceAliasTypeTransferCache
             var validationPattern = invoiceAliasTypeDetail.getValidationPattern();
             var isDefault = invoiceAliasTypeDetail.getIsDefault();
             var sortOrder = invoiceAliasTypeDetail.getSortOrder();
-            var description = invoiceControl.getBestInvoiceAliasTypeDescription(invoiceAliasType, getLanguage());
+            var description = invoiceControl.getBestInvoiceAliasTypeDescription(invoiceAliasType, getLanguage(userVisit));
             
             invoiceAliasTypeTransfer = new InvoiceAliasTypeTransfer(invoiceType, invoiceAliasTypeName, validationPattern, isDefault, sortOrder, description);
-            put(invoiceAliasType, invoiceAliasTypeTransfer);
+            put(userVisit, invoiceAliasType, invoiceAliasTypeTransfer);
         }
         
         return invoiceAliasTypeTransfer;

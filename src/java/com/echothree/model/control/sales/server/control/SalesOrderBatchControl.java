@@ -41,12 +41,14 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class SalesOrderBatchControl
         extends BaseSalesControl {
 
     /** Creates a new instance of SalesOrderBatchControl */
-    public SalesOrderBatchControl() {
+    protected SalesOrderBatchControl() {
         super();
     }
 
@@ -101,17 +103,16 @@ public class SalesOrderBatchControl
     }
 
     public SalesOrderBatchTransfer getSalesOrderBatchTransfer(UserVisit userVisit, Batch batch) {
-        return getSaleTransferCaches(userVisit).getSalesOrderBatchTransferCache().getTransfer(batch);
+        return salesOrderBatchTransferCache.getTransfer(userVisit, batch);
     }
 
     public List<SalesOrderBatchTransfer> getSalesOrderBatchTransfers(UserVisit userVisit) {
         var batchControl = Session.getModelController(BatchControl.class);
         var batches = batchControl.getBatchesUsingNames(BatchConstants.BatchType_SALES_ORDER);
         List<SalesOrderBatchTransfer> salesOrderBatchTransfers = new ArrayList<>(batches.size());
-        var salesOrderBatchTransferCache = getSaleTransferCaches(userVisit).getSalesOrderBatchTransferCache();
 
         batches.forEach((batch) ->
-                salesOrderBatchTransfers.add(salesOrderBatchTransferCache.getTransfer(batch))
+                salesOrderBatchTransfers.add(salesOrderBatchTransferCache.getTransfer(userVisit, batch))
         );
 
         return salesOrderBatchTransfers;

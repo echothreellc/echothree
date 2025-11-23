@@ -20,18 +20,23 @@ import com.echothree.model.control.invoice.common.transfer.InvoiceTimeTypeTransf
 import com.echothree.model.control.invoice.server.control.InvoiceControl;
 import com.echothree.model.data.invoice.server.entity.InvoiceTimeType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class InvoiceTimeTypeTransferCache
         extends BaseInvoiceTransferCache<InvoiceTimeType, InvoiceTimeTypeTransfer> {
-    
+
+    InvoiceControl invoiceControl = Session.getModelController(InvoiceControl.class);
+
     /** Creates a new instance of InvoiceTimeTypeTransferCache */
-    public InvoiceTimeTypeTransferCache(UserVisit userVisit, InvoiceControl invoiceControl) {
-        super(userVisit, invoiceControl);
+    protected InvoiceTimeTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public InvoiceTimeTypeTransfer getInvoiceTimeTypeTransfer(InvoiceTimeType invoiceTimeType) {
+    public InvoiceTimeTypeTransfer getInvoiceTimeTypeTransfer(UserVisit userVisit, InvoiceTimeType invoiceTimeType) {
         var invoiceTimeTypeTransfer = get(invoiceTimeType);
         
         if(invoiceTimeTypeTransfer == null) {
@@ -39,10 +44,10 @@ public class InvoiceTimeTypeTransferCache
             var invoiceTimeTypeName = invoiceTimeTypeDetail.getInvoiceTimeTypeName();
             var isDefault = invoiceTimeTypeDetail.getIsDefault();
             var sortOrder = invoiceTimeTypeDetail.getSortOrder();
-            var description = invoiceControl.getBestInvoiceTimeTypeDescription(invoiceTimeType, getLanguage());
+            var description = invoiceControl.getBestInvoiceTimeTypeDescription(invoiceTimeType, getLanguage(userVisit));
             
             invoiceTimeTypeTransfer = new InvoiceTimeTypeTransfer(invoiceTimeTypeName, isDefault, sortOrder, description);
-            put(invoiceTimeType, invoiceTimeTypeTransfer);
+            put(userVisit, invoiceTimeType, invoiceTimeTypeTransfer);
         }
         
         return invoiceTimeTypeTransfer;

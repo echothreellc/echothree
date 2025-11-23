@@ -20,18 +20,23 @@ import com.echothree.model.control.rating.common.transfer.RatingTypeListItemTran
 import com.echothree.model.control.rating.server.control.RatingControl;
 import com.echothree.model.data.rating.server.entity.RatingTypeListItem;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class RatingTypeListItemTransferCache
         extends BaseRatingTransferCache<RatingTypeListItem, RatingTypeListItemTransfer> {
-    
+
+    RatingControl ratingControl = Session.getModelController(RatingControl.class);
+
     /** Creates a new instance of RatingTypeListItemTransferCache */
-    public RatingTypeListItemTransferCache(UserVisit userVisit, RatingControl ratingControl) {
-        super(userVisit, ratingControl);
+    protected RatingTypeListItemTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public RatingTypeListItemTransfer getRatingTypeListItemTransfer(RatingTypeListItem ratingTypeListItem) {
+    public RatingTypeListItemTransfer getRatingTypeListItemTransfer(UserVisit userVisit, RatingTypeListItem ratingTypeListItem) {
         var ratingTypeListItemTransfer = get(ratingTypeListItem);
         
         if(ratingTypeListItemTransfer == null) {
@@ -40,10 +45,10 @@ public class RatingTypeListItemTransferCache
             var ratingTypeListItemName = ratingTypeListItemDetail.getRatingTypeListItemName();
             var isDefault = ratingTypeListItemDetail.getIsDefault();
             var sortOrder = ratingTypeListItemDetail.getSortOrder();
-            var description = ratingControl.getBestRatingTypeListItemDescription(ratingTypeListItem, getLanguage());
+            var description = ratingControl.getBestRatingTypeListItemDescription(ratingTypeListItem, getLanguage(userVisit));
             
             ratingTypeListItemTransfer = new RatingTypeListItemTransfer(ratingType, ratingTypeListItemName, isDefault, sortOrder, description);
-            put(ratingTypeListItem, ratingTypeListItemTransfer);
+            put(userVisit, ratingTypeListItem, ratingTypeListItemTransfer);
         }
         
         return ratingTypeListItemTransfer;

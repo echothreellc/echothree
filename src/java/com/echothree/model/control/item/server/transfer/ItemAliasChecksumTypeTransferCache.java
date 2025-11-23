@@ -20,27 +20,32 @@ import com.echothree.model.control.item.common.transfer.ItemAliasChecksumTypeTra
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.item.server.entity.ItemAliasChecksumType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ItemAliasChecksumTypeTransferCache
         extends BaseItemTransferCache<ItemAliasChecksumType, ItemAliasChecksumTypeTransfer> {
-    
+
+    ItemControl itemControl = Session.getModelController(ItemControl.class);
+
     /** Creates a new instance of ItemAliasChecksumTypeTransferCache */
-    public ItemAliasChecksumTypeTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    protected ItemAliasChecksumTypeTransferCache() {
+        super();
     }
     
     @Override
-    public ItemAliasChecksumTypeTransfer getTransfer(ItemAliasChecksumType itemAliasChecksumType) {
+    public ItemAliasChecksumTypeTransfer getTransfer(UserVisit userVisit, ItemAliasChecksumType itemAliasChecksumType) {
         var itemAliasChecksumTypeTransfer = get(itemAliasChecksumType);
         
         if(itemAliasChecksumTypeTransfer == null) {
             var itemAliasChecksumTypeName = itemAliasChecksumType.getItemAliasChecksumTypeName();
             var isDefault = itemAliasChecksumType.getIsDefault();
             var sortOrder = itemAliasChecksumType.getSortOrder();
-            var description = itemControl.getBestItemAliasChecksumTypeDescription(itemAliasChecksumType, getLanguage());
+            var description = itemControl.getBestItemAliasChecksumTypeDescription(itemAliasChecksumType, getLanguage(userVisit));
             
             itemAliasChecksumTypeTransfer = new ItemAliasChecksumTypeTransfer(itemAliasChecksumTypeName, isDefault, sortOrder, description);
-            put(itemAliasChecksumType, itemAliasChecksumTypeTransfer);
+            put(userVisit, itemAliasChecksumType, itemAliasChecksumTypeTransfer);
         }
         
         return itemAliasChecksumTypeTransfer;

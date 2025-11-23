@@ -20,16 +20,21 @@ import com.echothree.model.control.printer.common.transfer.PrinterDescriptionTra
 import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.data.printer.server.entity.PrinterDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PrinterDescriptionTransferCache
         extends BasePrinterDescriptionTransferCache<PrinterDescription, PrinterDescriptionTransfer> {
-    
+
+    PrinterControl printerControl = Session.getModelController(PrinterControl.class);
+
     /** Creates a new instance of PrinterDescriptionTransferCache */
-    public PrinterDescriptionTransferCache(UserVisit userVisit, PrinterControl printerControl) {
-        super(userVisit, printerControl);
+    protected PrinterDescriptionTransferCache() {
+        super();
     }
     
-    public PrinterDescriptionTransfer getPrinterDescriptionTransfer(PrinterDescription printerDescription) {
+    public PrinterDescriptionTransfer getPrinterDescriptionTransfer(UserVisit userVisit, PrinterDescription printerDescription) {
         var printerDescriptionTransfer = get(printerDescription);
         
         if(printerDescriptionTransfer == null) {
@@ -37,7 +42,7 @@ public class PrinterDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, printerDescription.getLanguage());
             
             printerDescriptionTransfer = new PrinterDescriptionTransfer(languageTransfer, printerTransfer, printerDescription.getDescription());
-            put(printerDescription, printerDescriptionTransfer);
+            put(userVisit, printerDescription, printerDescriptionTransfer);
         }
         
         return printerDescriptionTransfer;

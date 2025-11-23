@@ -16,26 +16,27 @@
 
 package com.echothree.model.control.scale.server.transfer;
 
-import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.scale.common.transfer.ScaleTypeTransfer;
 import com.echothree.model.control.scale.server.control.ScaleControl;
 import com.echothree.model.data.scale.server.entity.ScaleType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ScaleTypeTransferCache
         extends BaseScaleTransferCache<ScaleType, ScaleTypeTransfer> {
 
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    ScaleControl scaleControl = Session.getModelController(ScaleControl.class);
 
     /** Creates a new instance of ScaleTypeTransferCache */
-    public ScaleTypeTransferCache(UserVisit userVisit, ScaleControl scaleControl) {
-        super(userVisit, scaleControl);
+    protected ScaleTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
 
-    public ScaleTypeTransfer getScaleTypeTransfer(ScaleType scaleType) {
+    public ScaleTypeTransfer getScaleTypeTransfer(UserVisit userVisit, ScaleType scaleType) {
         var scaleTypeTransfer = get(scaleType);
 
         if(scaleTypeTransfer == null) {
@@ -43,10 +44,10 @@ public class ScaleTypeTransferCache
             var scaleTypeName = scaleTypeDetail.getScaleTypeName();
             var isDefault = scaleTypeDetail.getIsDefault();
             var sortOrder = scaleTypeDetail.getSortOrder();
-            var description = scaleControl.getBestScaleTypeDescription(scaleType, getLanguage());
+            var description = scaleControl.getBestScaleTypeDescription(scaleType, getLanguage(userVisit));
 
             scaleTypeTransfer = new ScaleTypeTransfer(scaleTypeName, isDefault, sortOrder, description);
-            put(scaleType, scaleTypeTransfer);
+            put(userVisit, scaleType, scaleTypeTransfer);
         }
 
         return scaleTypeTransfer;

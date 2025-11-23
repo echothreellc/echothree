@@ -48,12 +48,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EntityAliasControl
         extends BaseCoreControl {
 
     /** Creates a new instance of EntityAliasControl */
-    public EntityAliasControl() {
+    protected EntityAliasControl() {
         super();
     }
 
@@ -246,15 +248,14 @@ public class EntityAliasControl
     }
 
     public EntityAliasTypeTransfer getEntityAliasTypeTransfer(UserVisit userVisit, EntityAliasType entityAliasType, EntityInstance entityInstance) {
-        return getCoreTransferCaches(userVisit).getEntityAliasTypeTransferCache().getEntityAliasTypeTransfer(entityAliasType, entityInstance);
+        return entityAliasTypeTransferCache.getEntityAliasTypeTransfer(userVisit, entityAliasType, entityInstance);
     }
 
     public List<EntityAliasTypeTransfer> getEntityAliasTypeTransfers(UserVisit userVisit, Collection<EntityAliasType> entityAliasTypes, EntityInstance entityInstance) {
         List<EntityAliasTypeTransfer> entityAliasTypeTransfers = new ArrayList<>(entityAliasTypes.size());
-        var entityAliasTypeTransferCache = getCoreTransferCaches(userVisit).getEntityAliasTypeTransferCache();
 
         entityAliasTypes.forEach((entityAliasType) ->
-                entityAliasTypeTransfers.add(entityAliasTypeTransferCache.getEntityAliasTypeTransfer(entityAliasType, entityInstance))
+                entityAliasTypeTransfers.add(entityAliasTypeTransferCache.getEntityAliasTypeTransfer(userVisit, entityAliasType, entityInstance))
         );
 
         return entityAliasTypeTransfers;
@@ -498,7 +499,7 @@ public class EntityAliasControl
         var entityAliasTypeDescription = getEntityAliasTypeDescription(entityAliasType, language);
 
         if(entityAliasTypeDescription == null && !language.getIsDefault()) {
-            entityAliasTypeDescription = getEntityAliasTypeDescription(entityAliasType, getPartyControl().getDefaultLanguage());
+            entityAliasTypeDescription = getEntityAliasTypeDescription(entityAliasType, partyControl.getDefaultLanguage());
         }
 
         if(entityAliasTypeDescription == null) {
@@ -511,17 +512,16 @@ public class EntityAliasControl
     }
 
     public EntityAliasTypeDescriptionTransfer getEntityAliasTypeDescriptionTransfer(UserVisit userVisit, EntityAliasTypeDescription entityAliasTypeDescription, EntityInstance entityInstance) {
-        return getCoreTransferCaches(userVisit).getEntityAliasTypeDescriptionTransferCache().getEntityAliasTypeDescriptionTransfer(entityAliasTypeDescription, entityInstance);
+        return entityAliasTypeDescriptionTransferCache.getEntityAliasTypeDescriptionTransfer(userVisit, entityAliasTypeDescription, entityInstance);
     }
 
     public List<EntityAliasTypeDescriptionTransfer> getEntityAliasTypeDescriptionTransfersByEntityAliasType(UserVisit userVisit,
             EntityAliasType entityAliasType, EntityInstance entityInstance) {
         var entityAliasTypeDescriptions = getEntityAliasTypeDescriptionsByEntityAliasType(entityAliasType);
         List<EntityAliasTypeDescriptionTransfer> entityAliasTypeDescriptionTransfers = new ArrayList<>(entityAliasTypeDescriptions.size());
-        var entityAliasTypeDescriptionTransferCache = getCoreTransferCaches(userVisit).getEntityAliasTypeDescriptionTransferCache();
 
         entityAliasTypeDescriptions.forEach((entityAliasTypeDescription) ->
-                entityAliasTypeDescriptionTransfers.add(entityAliasTypeDescriptionTransferCache.getEntityAliasTypeDescriptionTransfer(entityAliasTypeDescription, entityInstance))
+                entityAliasTypeDescriptionTransfers.add(entityAliasTypeDescriptionTransferCache.getEntityAliasTypeDescriptionTransfer(userVisit, entityAliasTypeDescription, entityInstance))
         );
 
         return entityAliasTypeDescriptionTransfers;
@@ -744,15 +744,14 @@ public class EntityAliasControl
     }
 
     public EntityAliasTransfer getEntityAliasTransfer(UserVisit userVisit, EntityAlias entityAlias) {
-        return getCoreTransferCaches(userVisit).getEntityAliasTransferCache().getEntityAliasTransfer(entityAlias);
+        return entityAliasTransferCache.getEntityAliasTransfer(userVisit, entityAlias);
     }
 
     public List<EntityAliasTransfer> getEntityAliasTransfers(UserVisit userVisit, Collection<EntityAlias> entityAliases) {
         var entityAliasTransfers = new ArrayList<EntityAliasTransfer>(entityAliases.size());
-        var entityAliasTransferCache = getCoreTransferCaches(userVisit).getEntityAliasTransferCache();
 
         entityAliases.forEach((entityAlias) ->
-                entityAliasTransfers.add(entityAliasTransferCache.getEntityAliasTransfer(entityAlias))
+                entityAliasTransfers.add(entityAliasTransferCache.getEntityAliasTransfer(userVisit, entityAlias))
         );
 
         return entityAliasTransfers;

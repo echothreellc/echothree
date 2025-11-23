@@ -21,19 +21,21 @@ import com.echothree.model.control.payment.server.control.PaymentProcessorContro
 import com.echothree.model.data.payment.server.entity.PaymentProcessorDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PaymentProcessorDescriptionTransferCache
         extends BasePaymentDescriptionTransferCache<PaymentProcessorDescription, PaymentProcessorDescriptionTransfer> {
 
     PaymentProcessorControl paymentProcessorControl = Session.getModelController(com.echothree.model.control.payment.server.control.PaymentProcessorControl.class);
 
     /** Creates a new instance of PaymentProcessorDescriptionTransferCache */
-    public PaymentProcessorDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected PaymentProcessorDescriptionTransferCache() {
+        super();
     }
 
     @Override
-    public PaymentProcessorDescriptionTransfer getTransfer(PaymentProcessorDescription paymentProcessorDescription) {
+    public PaymentProcessorDescriptionTransfer getTransfer(UserVisit userVisit, PaymentProcessorDescription paymentProcessorDescription) {
         var paymentProcessorDescriptionTransfer = get(paymentProcessorDescription);
         
         if(paymentProcessorDescriptionTransfer == null) {
@@ -41,7 +43,7 @@ public class PaymentProcessorDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, paymentProcessorDescription.getLanguage());
             
             paymentProcessorDescriptionTransfer = new PaymentProcessorDescriptionTransfer(languageTransfer, paymentProcessorTransfer, paymentProcessorDescription.getDescription());
-            put(paymentProcessorDescription, paymentProcessorDescriptionTransfer);
+            put(userVisit, paymentProcessorDescription, paymentProcessorDescriptionTransfer);
         }
         
         return paymentProcessorDescriptionTransfer;

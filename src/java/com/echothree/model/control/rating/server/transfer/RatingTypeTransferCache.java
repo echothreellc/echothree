@@ -23,21 +23,24 @@ import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.data.rating.server.entity.RatingType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class RatingTypeTransferCache
         extends BaseRatingTransferCache<RatingType, RatingTypeTransfer> {
     
     EntityTypeControl entityTypeControl = Session.getModelController(EntityTypeControl.class);
+    RatingControl ratingControl = Session.getModelController(RatingControl.class);
     SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
     
     /** Creates a new instance of RatingTypeTransferCache */
-    public RatingTypeTransferCache(UserVisit userVisit, RatingControl ratingControl) {
-        super(userVisit, ratingControl);
+    protected RatingTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public RatingTypeTransfer getRatingTypeTransfer(RatingType ratingType) {
+    public RatingTypeTransfer getRatingTypeTransfer(UserVisit userVisit, RatingType ratingType) {
         var ratingTypeTransfer = get(ratingType);
         
         if(ratingTypeTransfer == null) {
@@ -47,10 +50,10 @@ public class RatingTypeTransferCache
             var ratingSequence = ratingTypeDetail.getRatingSequence();
             var ratingSequenceTransfer = ratingSequence == null? null: sequenceControl.getSequenceTransfer(userVisit, ratingSequence);
             var sortOrder = ratingTypeDetail.getSortOrder();
-            var description = ratingControl.getBestRatingTypeDescription(ratingType, getLanguage());
+            var description = ratingControl.getBestRatingTypeDescription(ratingType, getLanguage(userVisit));
             
             ratingTypeTransfer = new RatingTypeTransfer(entityTypeTransfer, ratingTypeName, ratingSequenceTransfer, sortOrder, description);
-            put(ratingType, ratingTypeTransfer);
+            put(userVisit, ratingType, ratingTypeTransfer);
         }
         
         return ratingTypeTransfer;

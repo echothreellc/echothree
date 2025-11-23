@@ -51,12 +51,14 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EntityInstanceControl
         extends BaseCoreControl {
 
     /** Creates a new instance of EntityInstanceControl */
-    public EntityInstanceControl() {
+    protected EntityInstanceControl() {
         super();
     }
 
@@ -296,7 +298,7 @@ public class EntityInstanceControl
 
     public EntityInstanceTransfer getEntityInstanceTransfer(UserVisit userVisit, EntityInstance entityInstance, boolean includeEntityAppearance,
             boolean includeEntityVisit, boolean includeNames, boolean includeUuid) {
-        return getCoreTransferCaches(userVisit).getEntityInstanceTransferCache().getEntityInstanceTransfer(entityInstance, includeEntityAppearance,
+        return entityInstanceTransferCache.getEntityInstanceTransfer(userVisit, entityInstance, includeEntityAppearance,
                 includeEntityVisit, includeNames, includeUuid);
     }
 
@@ -309,10 +311,9 @@ public class EntityInstanceControl
     public List<EntityInstanceTransfer> getEntityInstanceTransfers(UserVisit userVisit, Collection<EntityInstance> entityInstances,
             boolean includeEntityAppearance, boolean includeEntityVisit, boolean includeNames, boolean includeUuid) {
         var entityInstanceTransfers = new ArrayList<EntityInstanceTransfer>(entityInstances.size());
-        var entityInstanceTransferCache = getCoreTransferCaches(userVisit).getEntityInstanceTransferCache();
 
         entityInstances.forEach((entityInstance) ->
-                entityInstanceTransfers.add(entityInstanceTransferCache.getEntityInstanceTransfer(entityInstance,
+                entityInstanceTransfers.add(entityInstanceTransferCache.getEntityInstanceTransfer(userVisit, entityInstance,
                         includeEntityAppearance, includeEntityVisit, includeNames, includeUuid))
         );
 
@@ -477,7 +478,7 @@ public class EntityInstanceControl
         searchControl.deleteSearchResultActionsByEntityInstance(entityInstance, deletedBy);
         securityControl.deletePartyEntitySecurityRolesByEntityInstance(entityInstance, deletedBy);
         Session.getModelController(TagControl.class).deleteEntityTagsByEntityInstance(entityInstance, deletedBy);
-        getWorkflowControl().deleteWorkflowEntityStatusesByEntityInstance(entityInstance, deletedBy);
+        workflowControl.deleteWorkflowEntityStatusesByEntityInstance(entityInstance, deletedBy);
         Session.getModelController(WorkEffortControl.class).deleteWorkEffortsByOwningEntityInstance(entityInstance, deletedBy);
 
         // If an EntityInstance is in a role for a ChainInstance, then that ChainInstance should be deleted. Because an individual

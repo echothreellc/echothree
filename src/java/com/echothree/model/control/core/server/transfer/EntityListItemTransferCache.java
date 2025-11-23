@@ -25,7 +25,9 @@ import com.echothree.model.data.core.server.entity.EntityListItem;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EntityListItemTransferCache
         extends BaseCoreTransferCache<EntityListItem, EntityListItemTransfer> {
 
@@ -40,8 +42,8 @@ public class EntityListItemTransferCache
     boolean filterEntityInstance;
 
     /** Creates a new instance of EntityListItemTransferCache */
-    public EntityListItemTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected EntityListItemTransferCache() {
+        super();
 
         var options = session.getOptions();
         if(options != null) {
@@ -66,7 +68,7 @@ public class EntityListItemTransferCache
         setIncludeEntityInstance(!filterEntityInstance);
     }
     
-    public EntityListItemTransfer getEntityListItemTransfer(EntityListItem entityListItem, EntityInstance entityInstance) {
+    public EntityListItemTransfer getEntityListItemTransfer(final UserVisit userVisit, final EntityListItem entityListItem, final EntityInstance entityInstance) {
         var entityListItemTransfer = get(entityListItem);
         
         if(entityListItemTransfer == null) {
@@ -75,10 +77,10 @@ public class EntityListItemTransferCache
             var entityListItemName = filterEntityListItemName ? null : entityListItemDetail.getEntityListItemName();
             var isDefault = filterIsDefault ? null : entityListItemDetail.getIsDefault();
             var sortOrder = filterSortOrder ? null : entityListItemDetail.getSortOrder();
-            var description = filterDescription ? null : coreControl.getBestEntityListItemDescription(entityListItem, getLanguage());
+            var description = filterDescription ? null : coreControl.getBestEntityListItemDescription(entityListItem, getLanguage(userVisit));
             
             entityListItemTransfer = new EntityListItemTransfer(entityAttributeTransfer, entityListItemName, isDefault, sortOrder, description);
-            put(entityListItem, entityListItemTransfer);
+            put(userVisit, entityListItem, entityListItemTransfer);
         }
         
         return entityListItemTransfer;

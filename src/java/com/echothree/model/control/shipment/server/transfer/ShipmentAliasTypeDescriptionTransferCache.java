@@ -17,23 +17,25 @@
 package com.echothree.model.control.shipment.server.transfer;
 
 import com.echothree.model.control.shipment.common.transfer.ShipmentAliasTypeDescriptionTransfer;
-import com.echothree.model.control.shipment.server.ShipmentControl;
+import com.echothree.model.control.shipment.server.control.ShipmentControl;
 import com.echothree.model.data.shipment.server.entity.ShipmentAliasTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ShipmentAliasTypeDescriptionTransferCache
         extends BaseShipmentDescriptionTransferCache<ShipmentAliasTypeDescription, ShipmentAliasTypeDescriptionTransfer> {
 
     ShipmentControl shipmentControl = Session.getModelController(ShipmentControl.class);
 
     /** Creates a new instance of ShipmentAliasTypeDescriptionTransferCache */
-    public ShipmentAliasTypeDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected ShipmentAliasTypeDescriptionTransferCache() {
+        super();
     }
 
     @Override
-    public ShipmentAliasTypeDescriptionTransfer getTransfer(ShipmentAliasTypeDescription shipmentAliasTypeDescription) {
+    public ShipmentAliasTypeDescriptionTransfer getTransfer(UserVisit userVisit, ShipmentAliasTypeDescription shipmentAliasTypeDescription) {
         var shipmentAliasTypeDescriptionTransfer = get(shipmentAliasTypeDescription);
         
         if(shipmentAliasTypeDescriptionTransfer == null) {
@@ -41,7 +43,7 @@ public class ShipmentAliasTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, shipmentAliasTypeDescription.getLanguage());
             
             shipmentAliasTypeDescriptionTransfer = new ShipmentAliasTypeDescriptionTransfer(languageTransfer, shipmentAliasTypeTransfer, shipmentAliasTypeDescription.getDescription());
-            put(shipmentAliasTypeDescription, shipmentAliasTypeDescriptionTransfer);
+            put(userVisit, shipmentAliasTypeDescription, shipmentAliasTypeDescriptionTransfer);
         }
         
         return shipmentAliasTypeDescriptionTransfer;

@@ -21,13 +21,18 @@ import com.echothree.model.control.search.common.transfer.SearchDefaultOperatorT
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.data.search.server.entity.SearchDefaultOperator;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class SearchDefaultOperatorTransferCache
         extends BaseSearchTransferCache<SearchDefaultOperator, SearchDefaultOperatorTransfer> {
 
+    SearchControl searchControl = Session.getModelController(SearchControl.class);
+
     /** Creates a new instance of SearchDefaultOperatorTransferCache */
-    public SearchDefaultOperatorTransferCache(UserVisit userVisit, SearchControl searchControl) {
-        super(userVisit, searchControl);
+    protected SearchDefaultOperatorTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {
@@ -37,7 +42,7 @@ public class SearchDefaultOperatorTransferCache
         setIncludeEntityInstance(true);
     }
 
-    public SearchDefaultOperatorTransfer getSearchDefaultOperatorTransfer(SearchDefaultOperator searchDefaultOperator) {
+    public SearchDefaultOperatorTransfer getSearchDefaultOperatorTransfer(UserVisit userVisit, SearchDefaultOperator searchDefaultOperator) {
         var searchDefaultOperatorTransfer = get(searchDefaultOperator);
 
         if(searchDefaultOperatorTransfer == null) {
@@ -45,10 +50,10 @@ public class SearchDefaultOperatorTransferCache
             var searchDefaultOperatorName = searchDefaultOperatorDetail.getSearchDefaultOperatorName();
             var isDefault = searchDefaultOperatorDetail.getIsDefault();
             var sortOrder = searchDefaultOperatorDetail.getSortOrder();
-            var description = searchControl.getBestSearchDefaultOperatorDescription(searchDefaultOperator, getLanguage());
+            var description = searchControl.getBestSearchDefaultOperatorDescription(searchDefaultOperator, getLanguage(userVisit));
 
             searchDefaultOperatorTransfer = new SearchDefaultOperatorTransfer(searchDefaultOperatorName, isDefault, sortOrder, description);
-            put(searchDefaultOperator, searchDefaultOperatorTransfer);
+            put(userVisit, searchDefaultOperator, searchDefaultOperatorTransfer);
         }
 
         return searchDefaultOperatorTransfer;

@@ -21,27 +21,32 @@ import com.echothree.model.control.uom.common.transfer.UnitOfMeasureTypeVolumeTr
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureTypeVolume;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class UnitOfMeasureTypeVolumeTransferCache
         extends BaseUomTransferCache<UnitOfMeasureTypeVolume, UnitOfMeasureTypeVolumeTransfer> {
-    
+
+    UomControl uomControl = Session.getModelController(UomControl.class);
+
     /** Creates a new instance of UnitOfMeasureTypeVolumeTransferCache */
-    public UnitOfMeasureTypeVolumeTransferCache(UserVisit userVisit, UomControl uomControl) {
-        super(userVisit, uomControl);
+    protected UnitOfMeasureTypeVolumeTransferCache() {
+        super();
     }
     
-    public UnitOfMeasureTypeVolumeTransfer getUnitOfMeasureTypeVolumeTransfer(UnitOfMeasureTypeVolume unitOfMeasureTypeVolume) {
+    public UnitOfMeasureTypeVolumeTransfer getUnitOfMeasureTypeVolumeTransfer(UserVisit userVisit, UnitOfMeasureTypeVolume unitOfMeasureTypeVolume) {
         var unitOfMeasureTypeVolumeTransfer = get(unitOfMeasureTypeVolume);
         
         if(unitOfMeasureTypeVolumeTransfer == null) {
             var unitOfMeasureTypeTransfer = uomControl.getUnitOfMeasureTypeTransfer(userVisit, unitOfMeasureTypeVolume.getUnitOfMeasureType());
             var volumeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_VOLUME);
-            var height = formatUnitOfMeasure(volumeUnitOfMeasureKind, unitOfMeasureTypeVolume.getHeight());
-            var width = formatUnitOfMeasure(volumeUnitOfMeasureKind, unitOfMeasureTypeVolume.getWidth());
-            var depth = formatUnitOfMeasure(volumeUnitOfMeasureKind, unitOfMeasureTypeVolume.getDepth());
+            var height = formatUnitOfMeasure(userVisit, volumeUnitOfMeasureKind, unitOfMeasureTypeVolume.getHeight());
+            var width = formatUnitOfMeasure(userVisit, volumeUnitOfMeasureKind, unitOfMeasureTypeVolume.getWidth());
+            var depth = formatUnitOfMeasure(userVisit, volumeUnitOfMeasureKind, unitOfMeasureTypeVolume.getDepth());
             
             unitOfMeasureTypeVolumeTransfer = new UnitOfMeasureTypeVolumeTransfer(unitOfMeasureTypeTransfer, height, width, depth);
-            put(unitOfMeasureTypeVolume, unitOfMeasureTypeVolumeTransfer);
+            put(userVisit, unitOfMeasureTypeVolume, unitOfMeasureTypeVolumeTransfer);
         }
         
         return unitOfMeasureTypeVolumeTransfer;

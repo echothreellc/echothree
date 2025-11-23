@@ -34,7 +34,9 @@ import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CreateEntityTypeDescriptionCommand
         extends BaseSimpleCommand<CreateEntityTypeDescriptionForm> {
     
@@ -65,11 +67,11 @@ public class CreateEntityTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var componentVendorName = form.getComponentVendorName();
-        var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
+        var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
             var entityTypeName = form.getEntityTypeName();
-            var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
+            var entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
@@ -77,12 +79,12 @@ public class CreateEntityTypeDescriptionCommand
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
                 
                 if(language != null) {
-                    var entityTypeDescription = getEntityTypeControl().getEntityTypeDescription(entityType, language);
+                    var entityTypeDescription = entityTypeControl.getEntityTypeDescription(entityType, language);
                     
                     if(entityTypeDescription == null) {
                         var description = form.getDescription();
 
-                        getEntityTypeControl().createEntityTypeDescription(entityType, language, description, getPartyPK());
+                        entityTypeControl.createEntityTypeDescription(entityType, language, description, getPartyPK());
                     } else {
                         addExecutionError(ExecutionErrors.DuplicateEntityTypeDescription.name(), componentVendorName, entityTypeName, languageIsoName);
                     }

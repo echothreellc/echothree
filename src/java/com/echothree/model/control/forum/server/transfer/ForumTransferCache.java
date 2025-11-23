@@ -28,19 +28,23 @@ import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ForumTransferCache
         extends BaseForumTransferCache<Forum, ForumTransfer> {
-    
+
+    ForumControl forumControl = Session.getModelController(ForumControl.class);
     IconControl iconControl = Session.getModelController(IconControl.class);
     SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
+
     boolean includeForumGroups;
     boolean includeForumThreads;
     boolean includeFutureForumThreads;
     
     /** Creates a new instance of ForumTransferCache */
-    public ForumTransferCache(UserVisit userVisit, ForumControl forumControl) {
-        super(userVisit, forumControl);
+    protected ForumTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {
@@ -55,7 +59,7 @@ public class ForumTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public ForumTransfer getForumTransfer(Forum forum) {
+    public ForumTransfer getForumTransfer(UserVisit userVisit, Forum forum) {
         var forumTransfer = get(forum);
         
         if(forumTransfer == null) {
@@ -69,10 +73,10 @@ public class ForumTransferCache
             var forumMessageSequence = forumDetail.getForumMessageSequence();
             var forumMessageSequenceTransfer = forumMessageSequence == null? null: sequenceControl.getSequenceTransfer(userVisit, forumMessageSequence);
             var sortOrder = forumDetail.getSortOrder();
-            var description = forumControl.getBestForumDescription(forum, getLanguage());
+            var description = forumControl.getBestForumDescription(forum, getLanguage(userVisit));
             
             forumTransfer = new ForumTransfer(forumName, forumTypeTransfer, iconTransfer, forumThreadSequenceTransfer, forumMessageSequenceTransfer, sortOrder, description);
-            put(forum, forumTransfer);
+            put(userVisit, forum, forumTransfer);
             
             if(includeForumGroups) {
                 var forumGroupForums = forumControl.getForumGroupForumsByForum(forum);

@@ -31,20 +31,19 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class GlAccountTypeLogic
         extends BaseLogic {
-    
-    private GlAccountTypeLogic() {
+
+    protected GlAccountTypeLogic() {
         super();
     }
-    
-    private static class GlAccountTypeLogicHolder {
-        static GlAccountTypeLogic instance = new GlAccountTypeLogic();
-    }
-    
+
     public static GlAccountTypeLogic getInstance() {
-        return GlAccountTypeLogicHolder.instance;
+        return CDI.current().select(GlAccountTypeLogic.class).get();
     }
 
     public GlAccountType createGlAccountType(final ExecutionErrorAccumulator eea, final String glAccountTypeName,

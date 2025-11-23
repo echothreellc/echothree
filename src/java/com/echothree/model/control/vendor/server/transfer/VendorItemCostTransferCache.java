@@ -25,24 +25,23 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.vendor.server.entity.VendorItemCost;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.AmountUtils;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class VendorItemCostTransferCache
         extends BaseVendorTransferCache<VendorItemCost, VendorItemCostTransfer> {
     
-    InventoryControl inventoryControl;
-    PartyControl partyControl;
-    UomControl uomControl;
-    
+    InventoryControl inventoryControl = Session.getModelController(InventoryControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
+    UomControl uomControl = Session.getModelController(UomControl.class);
+    VendorControl vendorControl = Session.getModelController(VendorControl.class);
+
     /** Creates a new instance of VendorItemCostTransferCache */
-    public VendorItemCostTransferCache(UserVisit userVisit, VendorControl vendorControl) {
-        super(userVisit, vendorControl);
-        
-        inventoryControl = Session.getModelController(InventoryControl.class);
-        partyControl = Session.getModelController(PartyControl.class);
-        uomControl = Session.getModelController(UomControl.class);
+    protected VendorItemCostTransferCache() {
+        super();
     }
     
-    public VendorItemCostTransfer getVendorItemCostTransfer(VendorItemCost vendorItemCost) {
+    public VendorItemCostTransfer getVendorItemCostTransfer(UserVisit userVisit, VendorItemCost vendorItemCost) {
         var vendorItemCostTransfer = get(vendorItemCost);
         
         if(vendorItemCostTransfer == null) {
@@ -56,7 +55,7 @@ public class VendorItemCostTransferCache
             
             vendorItemCostTransfer = new VendorItemCostTransfer(vendorItemTransfer, inventoryConditionTransfer, unitOfMeasureTypeTransfer, unformattedUnitCost,
                     unitCost);
-            put(vendorItemCost, vendorItemCostTransfer);
+            put(userVisit, vendorItemCost, vendorItemCostTransfer);
         }
         
         return vendorItemCostTransfer;

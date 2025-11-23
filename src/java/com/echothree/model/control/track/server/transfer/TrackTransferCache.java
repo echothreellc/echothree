@@ -25,17 +25,18 @@ import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.track.server.entity.Track;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class TrackTransferCache
         extends BaseTrackTransferCache<Track, TrackTransfer> {
 
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+    TrackControl trackControl = Session.getModelController(TrackControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of TrackTransferCache */
-    public TrackTransferCache(UserVisit userVisit, TrackControl trackControl) {
-        super(userVisit, trackControl);
-        
+    protected TrackTransferCache() {
         var options = session.getOptions();
         if(options != null) {
             setIncludeUuid(options.contains(TrackOptions.TrackIncludeUuid));
@@ -44,7 +45,7 @@ public class TrackTransferCache
         setIncludeEntityInstance(true);
     }
 
-    public TrackTransfer getTrackTransfer(Track track) {
+    public TrackTransfer getTrackTransfer(UserVisit userVisit, Track track) {
         var trackTransfer = get(track);
 
         if(trackTransfer == null) {
@@ -54,7 +55,7 @@ public class TrackTransferCache
             var value = trackDetail.getValue();
             var isDefault = trackDetail.getIsDefault();
             var sortOrder = trackDetail.getSortOrder();
-            var description = trackControl.getBestTrackDescription(track, getLanguage());
+            var description = trackControl.getBestTrackDescription(track, getLanguage(userVisit));
 
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(track.getPrimaryKey());
             var trackStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
@@ -62,7 +63,7 @@ public class TrackTransferCache
             
             trackTransfer = new TrackTransfer(trackName, valueSha1Hash, value, isDefault, sortOrder, description,
                     trackStatusTransfer);
-            put(track, trackTransfer);
+            put(userVisit, track, trackTransfer);
         }
 
         return trackTransfer;

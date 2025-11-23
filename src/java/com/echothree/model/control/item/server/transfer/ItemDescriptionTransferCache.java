@@ -30,12 +30,15 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.common.persistence.type.ByteArray;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ItemDescriptionTransferCache
         extends BaseItemTransferCache<ItemDescription, ItemDescriptionTransfer> {
 
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     EventControl eventControl = Session.getModelController(EventControl.class);
+    ItemControl itemControl = Session.getModelController(ItemControl.class);
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     
@@ -57,8 +60,8 @@ public class ItemDescriptionTransferCache
     boolean filterEntityInstance;
 
     /** Creates a new instance of ItemDescriptionTransferCache */
-    public ItemDescriptionTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    protected ItemDescriptionTransferCache() {
+        super();
 
         var options = session.getOptions();
         if(options != null) {
@@ -92,7 +95,7 @@ public class ItemDescriptionTransferCache
     }
     
     @Override
-    public ItemDescriptionTransfer getTransfer(ItemDescription itemDescription) {
+    public ItemDescriptionTransfer getTransfer(UserVisit userVisit, ItemDescription itemDescription) {
         var itemDescriptionTransfer = get(itemDescription);
         
         if(itemDescriptionTransfer == null) {
@@ -187,7 +190,7 @@ public class ItemDescriptionTransferCache
             
             itemDescriptionTransfer = new ItemDescriptionTransfer(itemDescriptionTypeTransfer, itemTransfer, languageTransfer, mimeTypeTransfer,
                     blobDescription, clobDescription, stringDescription, itemImageTypeTransfer, height, width, scaledFromParent, eTag);
-            put(itemDescription, itemDescriptionTransfer);
+            put(userVisit, itemDescription, itemDescriptionTransfer);
         }
         
         return itemDescriptionTransfer;

@@ -20,33 +20,37 @@ import com.echothree.model.control.warehouse.common.transfer.LocationNameElement
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.warehouse.server.entity.LocationNameElement;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class LocationNameElementTransferCache
         extends BaseWarehouseTransferCache<LocationNameElement, LocationNameElementTransfer> {
-    
+
+    WarehouseControl warehouseControl = Session.getModelController(WarehouseControl.class);
+
     /** Creates a new instance of LocationNameElementTransferCache */
-    public LocationNameElementTransferCache(UserVisit userVisit, WarehouseControl warehouseControl) {
-        super(userVisit, warehouseControl);
+    protected LocationNameElementTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public LocationNameElementTransfer getLocationNameElementTransfer(LocationNameElement locationNameElement) {
+    public LocationNameElementTransfer getLocationNameElementTransfer(UserVisit userVisit, LocationNameElement locationNameElement) {
         var locationNameElementTransfer = get(locationNameElement);
         
         if(locationNameElementTransfer == null) {
             var locationNameElementDetail = locationNameElement.getLastDetail();
             var locationNameElementName = locationNameElementDetail.getLocationNameElementName();
-            var locationTypeTransferCache = warehouseControl.getWarehouseTransferCaches(userVisit).getLocationTypeTransferCache();
-            var locationType = locationTypeTransferCache.getLocationTypeTransfer(locationNameElementDetail.getLocationType());
+            var locationType = warehouseControl.getLocationTypeTransfer(userVisit, locationNameElementDetail.getLocationType());
             var offset = locationNameElementDetail.getOffset();
             var length = locationNameElementDetail.getLength();
             var validationPattern = locationNameElementDetail.getValidationPattern();
-            var description = warehouseControl.getBestLocationNameElementDescription(locationNameElement, getLanguage());
+            var description = warehouseControl.getBestLocationNameElementDescription(locationNameElement, getLanguage(userVisit));
             
             locationNameElementTransfer = new LocationNameElementTransfer(locationNameElementName, locationType, offset, length,
                     validationPattern, description);
-            put(locationNameElement, locationNameElementTransfer);
+            put(userVisit, locationNameElement, locationNameElementTransfer);
         }
         
         return locationNameElementTransfer;

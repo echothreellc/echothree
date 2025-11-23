@@ -20,16 +20,21 @@ import com.echothree.model.control.printer.common.transfer.PrinterGroupDescripti
 import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.data.printer.server.entity.PrinterGroupDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PrinterGroupDescriptionTransferCache
         extends BasePrinterDescriptionTransferCache<PrinterGroupDescription, PrinterGroupDescriptionTransfer> {
-    
+
+    PrinterControl printerControl = Session.getModelController(PrinterControl.class);
+
     /** Creates a new instance of PrinterGroupDescriptionTransferCache */
-    public PrinterGroupDescriptionTransferCache(UserVisit userVisit, PrinterControl printerControl) {
-        super(userVisit, printerControl);
+    protected PrinterGroupDescriptionTransferCache() {
+        super();
     }
     
-    public PrinterGroupDescriptionTransfer getPrinterGroupDescriptionTransfer(PrinterGroupDescription printerGroupDescription) {
+    public PrinterGroupDescriptionTransfer getPrinterGroupDescriptionTransfer(UserVisit userVisit, PrinterGroupDescription printerGroupDescription) {
         var printerGroupDescriptionTransfer = get(printerGroupDescription);
         
         if(printerGroupDescriptionTransfer == null) {
@@ -37,7 +42,7 @@ public class PrinterGroupDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, printerGroupDescription.getLanguage());
             
             printerGroupDescriptionTransfer = new PrinterGroupDescriptionTransfer(languageTransfer, printerGroupTransfer, printerGroupDescription.getDescription());
-            put(printerGroupDescription, printerGroupDescriptionTransfer);
+            put(userVisit, printerGroupDescription, printerGroupDescriptionTransfer);
         }
         
         return printerGroupDescriptionTransfer;

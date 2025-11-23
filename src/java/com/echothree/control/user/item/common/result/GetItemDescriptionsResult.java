@@ -17,16 +17,24 @@
 package com.echothree.control.user.item.common.result;
 
 import com.echothree.model.control.item.common.transfer.ItemDescriptionTransfer;
+import com.echothree.model.control.item.common.transfer.ItemDescriptionTypeUseTypeTransfer;
 import com.echothree.model.control.item.common.transfer.ItemTransfer;
+import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.util.common.command.BaseResult;
 import java.util.List;
 
 public interface GetItemDescriptionsResult
         extends BaseResult {
-    
+
     ItemTransfer getItem();
     void setItem(ItemTransfer item);
-    
+
+    ItemDescriptionTypeUseTypeTransfer getItemDescriptionTypeUseType();
+    void setItemDescriptionTypeUseType(ItemDescriptionTypeUseTypeTransfer itemDescriptionTypeUseType);
+
+    LanguageTransfer getLanguage();
+    void setLanguage(LanguageTransfer language);
+
     Long getItemDescriptionCount();
     void setItemDescriptionCount(Long itemDescriptionCount);
 

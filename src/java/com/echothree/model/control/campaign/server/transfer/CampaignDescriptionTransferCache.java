@@ -20,16 +20,21 @@ import com.echothree.model.control.campaign.common.transfer.CampaignDescriptionT
 import com.echothree.model.control.campaign.server.control.CampaignControl;
 import com.echothree.model.data.campaign.server.entity.CampaignDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CampaignDescriptionTransferCache
         extends BaseCampaignDescriptionTransferCache<CampaignDescription, CampaignDescriptionTransfer> {
-    
+
+    CampaignControl campaignControl = Session.getModelController(CampaignControl.class);
+
     /** Creates a new instance of CampaignDescriptionTransferCache */
-    public CampaignDescriptionTransferCache(UserVisit userVisit, CampaignControl campaignControl) {
-        super(userVisit, campaignControl);
+    protected CampaignDescriptionTransferCache() {
+        super();
     }
     
-    public CampaignDescriptionTransfer getCampaignDescriptionTransfer(CampaignDescription campaignDescription) {
+    public CampaignDescriptionTransfer getCampaignDescriptionTransfer(UserVisit userVisit, CampaignDescription campaignDescription) {
         var campaignDescriptionTransfer = get(campaignDescription);
         
         if(campaignDescriptionTransfer == null) {
@@ -37,7 +42,7 @@ public class CampaignDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, campaignDescription.getLanguage());
             
             campaignDescriptionTransfer = new CampaignDescriptionTransfer(languageTransfer, campaignTransfer, campaignDescription.getDescription());
-            put(campaignDescription, campaignDescriptionTransfer);
+            put(userVisit, campaignDescription, campaignDescriptionTransfer);
         }
         return campaignDescriptionTransfer;
     }

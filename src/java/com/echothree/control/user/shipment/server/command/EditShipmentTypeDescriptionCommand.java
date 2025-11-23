@@ -18,7 +18,6 @@ package com.echothree.control.user.shipment.server.command;
 
 import com.echothree.control.user.shipment.common.edit.ShipmentEditFactory;
 import com.echothree.control.user.shipment.common.edit.ShipmentTypeDescriptionEdit;
-import com.echothree.control.user.shipment.common.form.EditShipmentTypeDescriptionForm;
 import com.echothree.control.user.shipment.common.result.EditShipmentTypeDescriptionResult;
 import com.echothree.control.user.shipment.common.result.ShipmentResultFactory;
 import com.echothree.control.user.shipment.common.spec.ShipmentTypeDescriptionSpec;
@@ -26,10 +25,9 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.shipment.server.ShipmentControl;
+import com.echothree.model.control.shipment.server.control.ShipmentControl;
 import com.echothree.model.data.shipment.server.entity.ShipmentType;
 import com.echothree.model.data.shipment.server.entity.ShipmentTypeDescription;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -42,7 +40,9 @@ import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EditShipmentTypeDescriptionCommand
         extends BaseAbstractEditCommand<ShipmentTypeDescriptionSpec, ShipmentTypeDescriptionEdit, EditShipmentTypeDescriptionResult, ShipmentTypeDescription, ShipmentType> {
     

@@ -29,15 +29,17 @@ import com.echothree.util.server.persistence.DslContextFactory;
 import com.echothree.util.server.persistence.Session;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EntityLockControl
         extends BaseCoreControl {
-    
+
     /** Creates a new instance of EntityLockControl */
-    public EntityLockControl() {
+    protected EntityLockControl() {
         super();
     }
-    
+
     // -------------------------------------------------------------------------
     //   Entity Locks
     // -------------------------------------------------------------------------
@@ -53,15 +55,11 @@ public class EntityLockControl
     }
     
     public EntityLockTransfer getEntityLockTransfer(UserVisit userVisit, BasePK lockTarget) {
-        var coreControl = Session.getModelController(CoreControl.class);
-
-        return coreControl.getCoreTransferCaches(userVisit).getEntityLockTransferCache().getEntityLockTransfer(lockTarget);
+        return entityLockTransferCache.getEntityLockTransfer(userVisit, lockTarget);
     }
     
     public EntityLockTransfer getEntityLockTransferByEntityInstance(UserVisit userVisit, EntityInstance entityInstance) {
-        var coreControl = Session.getModelController(CoreControl.class);
-
-        return coreControl.getCoreTransferCaches(userVisit).getEntityLockTransferCache().getEntityLockTransferByEntityInstance(entityInstance);
+        return entityLockTransferCache.getEntityLockTransferByEntityInstance(userVisit, entityInstance);
     }
     
     private static final long defaultLockDuration = 5 * 60 * 1000; // 5 Minutes

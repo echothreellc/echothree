@@ -22,19 +22,21 @@ import com.echothree.model.control.scale.server.control.ScaleControl;
 import com.echothree.model.data.scale.server.entity.PartyScaleUse;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PartyScaleUseTransferCache
         extends BaseScaleTransferCache<PartyScaleUse, PartyScaleUseTransfer> {
-    
-    PartyControl partyControl;
+
+    ScaleControl scaleControl = Session.getModelController(ScaleControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of PartyScaleUseTransferCache */
-    public PartyScaleUseTransferCache(UserVisit userVisit, ScaleControl scaleControl) {
-        super(userVisit, scaleControl);
-        partyControl = Session.getModelController(PartyControl.class);
+    protected PartyScaleUseTransferCache() {
+        super();
     }
     
-    public PartyScaleUseTransfer getPartyScaleUseTransfer(PartyScaleUse partyScaleUse) {
+    public PartyScaleUseTransfer getPartyScaleUseTransfer(UserVisit userVisit, PartyScaleUse partyScaleUse) {
         var partyScaleUseTransfer = get(partyScaleUse);
         
         if(partyScaleUseTransfer == null) {
@@ -43,7 +45,7 @@ public class PartyScaleUseTransferCache
             var scale = scaleControl.getScaleTransfer(userVisit, partyScaleUse.getScale());
             
             partyScaleUseTransfer = new PartyScaleUseTransfer(party, scaleUseType, scale);
-            put(partyScaleUse, partyScaleUseTransfer);
+            put(userVisit, partyScaleUse, partyScaleUseTransfer);
         }
         
         return partyScaleUseTransfer;

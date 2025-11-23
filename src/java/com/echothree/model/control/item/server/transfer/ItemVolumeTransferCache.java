@@ -23,19 +23,22 @@ import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.item.server.entity.ItemVolume;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ItemVolumeTransferCache
         extends BaseItemTransferCache<ItemVolume, ItemVolumeTransfer> {
-    
+
+    ItemControl itemControl = Session.getModelController(ItemControl.class);
     UomControl uomControl = Session.getModelController(UomControl.class);
     
     /** Creates a new instance of ItemVolumeTransferCache */
-    public ItemVolumeTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    protected ItemVolumeTransferCache() {
+        super();
     }
     
     @Override
-    public ItemVolumeTransfer getTransfer(ItemVolume itemVolume) {
+    public ItemVolumeTransfer getTransfer(UserVisit userVisit, ItemVolume itemVolume) {
         var itemVolumeTransfer = get(itemVolume);
         
         if(itemVolumeTransfer == null) {
@@ -44,12 +47,12 @@ public class ItemVolumeTransferCache
                     itemVolume.getUnitOfMeasureType());
             var itemVolumeType = itemControl.getItemVolumeTypeTransfer(userVisit, itemVolume.getItemVolumeType());
             var volumeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_VOLUME);
-            var height = formatUnitOfMeasure(volumeUnitOfMeasureKind, itemVolume.getHeight());
-            var width = formatUnitOfMeasure(volumeUnitOfMeasureKind, itemVolume.getWidth());
-            var depth = formatUnitOfMeasure(volumeUnitOfMeasureKind, itemVolume.getDepth());
+            var height = formatUnitOfMeasure(userVisit, volumeUnitOfMeasureKind, itemVolume.getHeight());
+            var width = formatUnitOfMeasure(userVisit, volumeUnitOfMeasureKind, itemVolume.getWidth());
+            var depth = formatUnitOfMeasure(userVisit, volumeUnitOfMeasureKind, itemVolume.getDepth());
 
             itemVolumeTransfer = new ItemVolumeTransfer(itemTransfer, unitOfMeasureTypeTransfer, itemVolumeType, height, width, depth);
-            put(itemVolume, itemVolumeTransfer);
+            put(userVisit, itemVolume, itemVolumeTransfer);
         }
         
         return itemVolumeTransfer;

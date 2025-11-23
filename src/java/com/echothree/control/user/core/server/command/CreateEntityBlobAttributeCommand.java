@@ -34,7 +34,9 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CreateEntityBlobAttributeCommand
         extends BaseSimpleCommand<CreateEntityBlobAttributeForm> {
 
@@ -97,7 +99,6 @@ public class CreateEntityBlobAttributeCommand
                                             LanguageLogic.getInstance().getLanguageByName(this, languageIsoName);
 
                                     if(!hasExecutionErrors()) {
-                                        var coreControl = getCoreControl();
                                         var entityBlobAttribute = coreControl.getEntityBlobAttribute(entityAttribute, entityInstance, language);
 
                                         if(entityBlobAttribute == null) {

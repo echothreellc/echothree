@@ -17,8 +17,6 @@
 package com.echothree.model.control.printer.server.transfer;
 
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.control.printer.server.control.PrinterControl;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.BaseTransfer;
 import com.echothree.util.server.persistence.BaseEntity;
 import com.echothree.util.server.persistence.Session;
@@ -26,12 +24,11 @@ import com.echothree.util.server.persistence.Session;
 public abstract class BasePrinterDescriptionTransferCache<K extends BaseEntity, V extends BaseTransfer>
         extends BasePrinterTransferCache<K, V> {
     
-    PartyControl partyControl;
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of BasePrinterDescriptionTransferCache */
-    protected BasePrinterDescriptionTransferCache(UserVisit userVisit, PrinterControl printerControl) {
-        super(userVisit, printerControl);
-        partyControl = Session.getModelController(PartyControl.class);
+    protected BasePrinterDescriptionTransferCache() {
+        super();
     }
     
 }

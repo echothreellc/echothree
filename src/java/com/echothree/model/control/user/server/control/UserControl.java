@@ -20,7 +20,6 @@ import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
@@ -40,7 +39,17 @@ import com.echothree.model.control.user.common.transfer.UserVisitGroupTransfer;
 import com.echothree.model.control.user.common.transfer.UserVisitTransfer;
 import static com.echothree.model.control.user.common.workflow.UserVisitGroupStatusConstants.WorkflowStep_USER_VISIT_GROUP_STATUS_ACTIVE;
 import static com.echothree.model.control.user.common.workflow.UserVisitGroupStatusConstants.Workflow_USER_VISIT_GROUP_STATUS;
-import com.echothree.model.control.user.server.transfer.UserTransferCaches;
+import com.echothree.model.control.user.server.transfer.RecoveryAnswerTransferCache;
+import com.echothree.model.control.user.server.transfer.RecoveryQuestionDescriptionTransferCache;
+import com.echothree.model.control.user.server.transfer.RecoveryQuestionTransferCache;
+import com.echothree.model.control.user.server.transfer.UserKeyTransferCache;
+import com.echothree.model.control.user.server.transfer.UserLoginPasswordEncoderTypeTransferCache;
+import com.echothree.model.control.user.server.transfer.UserLoginPasswordTransferCache;
+import com.echothree.model.control.user.server.transfer.UserLoginPasswordTypeTransferCache;
+import com.echothree.model.control.user.server.transfer.UserLoginTransferCache;
+import com.echothree.model.control.user.server.transfer.UserSessionTransferCache;
+import com.echothree.model.control.user.server.transfer.UserVisitGroupTransferCache;
+import com.echothree.model.control.user.server.transfer.UserVisitTransferCache;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.associate.server.entity.AssociateReferral;
 import com.echothree.model.data.core.server.entity.Command;
@@ -121,32 +130,73 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
+@RequestScoped
 public class UserControl
         extends BaseModelControl {
-    
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    SequenceControl sequenceControl;
+
+    @Inject
+    SequenceGeneratorLogic sequenceGeneratorLogic;
+
     /** Creates a new instance of UserControl */
-    public UserControl() {
+    protected UserControl() {
         super();
     }
     
     // --------------------------------------------------------------------------------
     //   User Transfer Caches
     // --------------------------------------------------------------------------------
-    
-    private UserTransferCaches userTransferCaches;
-    
-    public UserTransferCaches getUserTransferCaches(UserVisit userVisit) {
-        if(userTransferCaches == null) {
-            userTransferCaches = new UserTransferCaches(userVisit, this);
-        }
-        
-        return userTransferCaches;
-    }
-    
+
+    @Inject
+    RecoveryAnswerTransferCache recoveryAnswerTransferCache;
+
+    @Inject
+    RecoveryQuestionTransferCache recoveryQuestionTransferCache;
+
+    @Inject
+    RecoveryQuestionDescriptionTransferCache recoveryQuestionDescriptionTransferCache;
+
+    @Inject
+    UserKeyTransferCache userKeyTransferCache;
+
+    @Inject
+    UserSessionTransferCache userSessionTransferCache;
+
+    @Inject
+    UserVisitTransferCache userVisitTransferCache;
+
+    @Inject
+    UserVisitGroupTransferCache userVisitGroupTransferCache;
+
+    @Inject
+    UserLoginTransferCache userLoginTransferCache;
+
+    @Inject
+    UserLoginPasswordTransferCache userLoginPasswordTransferCache;
+
+    @Inject
+    UserLoginPasswordTypeTransferCache userLoginPasswordTypeTransferCache;
+
+    @Inject
+    UserLoginPasswordEncoderTypeTransferCache userLoginPasswordEncoderTypeTransferCache;
+
     // --------------------------------------------------------------------------------
     //   User Keys
     // --------------------------------------------------------------------------------
+    
+    @Inject
+    protected UserKeyFactory userKeyFactory;
+    
+    @Inject
+    protected UserKeyDetailFactory userKeyDetailFactory;
     
     protected static final String characters = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-=";
     protected static final char []characterArray = characters.toCharArray();
@@ -169,12 +219,12 @@ public class UserControl
             userKey = userKeyDetail == null? null: userKeyDetail.getUserKey();
         } while(userKey != null);
         
-        userKey = UserKeyFactory.getInstance().create();
-        var userKeyDetail = UserKeyDetailFactory.getInstance().create(userKey, userKeyName, (Party)null, (PartyRelationship)null,
+        userKey = userKeyFactory.create();
+        var userKeyDetail = userKeyDetailFactory.create(userKey, userKeyName, (Party)null, (PartyRelationship)null,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
-        userKey = UserKeyFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, userKey.getPrimaryKey());
+        userKey = userKeyFactory.getEntityFromPK(EntityPermission.READ_WRITE, userKey.getPrimaryKey());
         userKey.setActiveDetail(userKeyDetail);
         userKey.setLastDetail(userKeyDetail);
         userKey.store();
@@ -202,7 +252,7 @@ public class UserControl
     }
 
     private List<UserKey> getUserKeysByParty(Party party, EntityPermission entityPermission) {
-        return UserKeyFactory.getInstance().getEntitiesFromQuery(entityPermission, getUserKeysByPartyQueries,
+        return userKeyFactory.getEntitiesFromQuery(entityPermission, getUserKeysByPartyQueries,
                 party);
     }
 
@@ -232,7 +282,7 @@ public class UserControl
     }
 
     private List<UserKey> getUserKeysByPartyRelationship(PartyRelationship partyRelationship, EntityPermission entityPermission) {
-        return UserKeyFactory.getInstance().getEntitiesFromQuery(entityPermission, getUserKeysByPartyRelationshipQueries,
+        return userKeyFactory.getEntitiesFromQuery(entityPermission, getUserKeysByPartyRelationshipQueries,
                 partyRelationship);
     }
 
@@ -261,12 +311,12 @@ public class UserControl
                         "FOR UPDATE";
             }
 
-            var ps = UserKeyDetailFactory.getInstance().prepareStatement(query);
+            var ps = userKeyDetailFactory.prepareStatement(query);
             
             ps.setString(1, userKeyName);
             ps.setLong(2, Session.MAX_TIME);
             
-            userKeyDetail = UserKeyDetailFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            userKeyDetail = userKeyDetailFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -293,16 +343,16 @@ public class UserControl
     }
 
     public UserKeyDetailValue getUserKeyDetailValueByPKForUpdate(UserKeyDetailPK userKeyDetailPK) {
-        return UserKeyDetailFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, userKeyDetailPK).getUserKeyDetailValue().clone();
+        return userKeyDetailFactory.getEntityFromPK(EntityPermission.READ_WRITE, userKeyDetailPK).getUserKeyDetailValue().clone();
     }
     
     public UserKeyTransfer getUserKeyTransfer(UserVisit userVisit, UserKey userKey) {
-        return getUserTransferCaches(userVisit).getUserKeyTransferCache().getUserKeyTransfer(userKey);
+        return userKeyTransferCache.getUserKeyTransfer(userVisit, userKey);
     }
     
     public void updateUserKeyFromValue(UserKeyDetailValue userKeyDetailValue) {
         var userKeyPK = userKeyDetailValue.getUserKeyPK();
-        var userKey = UserKeyFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, userKeyPK);
+        var userKey = userKeyFactory.getEntityFromPK(EntityPermission.READ_WRITE, userKeyPK);
         var userKeyDetail = userKey.getLastDetailForUpdate();
         
         userKeyDetail.setThruTime(session.START_TIME_LONG);
@@ -311,7 +361,7 @@ public class UserControl
         var partyPK = userKeyDetailValue.getPartyPK();
         var partyRelationshipPK = userKeyDetailValue.getPartyRelationshipPK();
         
-        userKeyDetail = UserKeyDetailFactory.getInstance().create(userKeyPK, userKeyDetail.getUserKeyName(), partyPK, partyRelationshipPK,
+        userKeyDetail = userKeyDetailFactory.create(userKeyPK, userKeyDetail.getUserKeyName(), partyPK, partyRelationshipPK,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         userKey.setActiveDetail(userKeyDetail);
@@ -334,13 +384,13 @@ public class UserControl
     }
 
     public List<UserKey> getInactiveUserKeys(Long inactiveTime) {
-        return UserKeyFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, getInactiveUserKeysQueries,
+        return userKeyFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, getInactiveUserKeysQueries,
                 session.START_TIME, inactiveTime);
     }
 
     public void removeUserKey(final UserKey userKey) {
         for(var userVisit: getUserVisitsByUserKey(userKey)) {
-            userVisit = UserVisitFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, userVisit.getPrimaryKey());
+            userVisit = userVisitFactory.getEntityFromPK(EntityPermission.READ_WRITE, userVisit.getPrimaryKey());
             
             userVisit.setUserKey(null);
             userVisit.store();
@@ -353,15 +403,18 @@ public class UserControl
     //   User Key Statuses
     // --------------------------------------------------------------------------------
     
+    @Inject
+    protected UserKeyStatusFactory userKeyStatusFactory;
+    
     public UserKeyStatus createUserKeyStatus(UserKey userKey, Long lastSeenTime) {
-        return UserKeyStatusFactory.getInstance().create(userKey, lastSeenTime);
+        return userKeyStatusFactory.create(userKey, lastSeenTime);
     }
     
     public UserKeyStatus getUserKeyStatusForUpdate(UserKey userKey) {
         UserKeyStatus userKeyStatus;
         
         try {
-            var ps = UserKeyStatusFactory.getInstance().prepareStatement(
+            var ps = userKeyStatusFactory.prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM userkeystatuses " +
                     "WHERE ukeyst_ukey_userkeyid = ? " +
@@ -369,7 +422,7 @@ public class UserControl
             
             ps.setLong(1, userKey.getPrimaryKey().getEntityId());
             
-            userKeyStatus = UserKeyStatusFactory.getInstance().getEntityFromQuery(EntityPermission.READ_WRITE, ps);
+            userKeyStatus = userKeyStatusFactory.getEntityFromQuery(EntityPermission.READ_WRITE, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -380,16 +433,22 @@ public class UserControl
     // --------------------------------------------------------------------------------
     //   User Visit Groups
     // --------------------------------------------------------------------------------
+
+    @Inject
+    protected UserVisitGroupFactory userVisitGroupFactory;
     
+    @Inject
+    protected UserVisitGroupDetailFactory userVisitGroupDetailFactory;
+
     public UserVisitGroup getActiveUserVisitGroup() {
         UserVisitGroup userVisitGroup = null;
-        var workflowStep = getWorkflowControl().getWorkflowStepUsingNames(Workflow_USER_VISIT_GROUP_STATUS, WorkflowStep_USER_VISIT_GROUP_STATUS_ACTIVE);
+        var workflowStep = workflowControl.getWorkflowStepUsingNames(Workflow_USER_VISIT_GROUP_STATUS, WorkflowStep_USER_VISIT_GROUP_STATUS_ACTIVE);
 
         if(workflowStep != null) {
             List<UserVisitGroup> userVisitGroups;
 
             try {
-                var ps = UserVisitGroupFactory.getInstance().prepareStatement(
+                var ps = userVisitGroupFactory.prepareStatement(
                         "SELECT _ALL_ " +
                         "FROM componentvendors, componentvendordetails, entitytypes, entitytypedetails, entityinstances, " +
                         "uservisitgroups, uservisitgroupdetails, workflowentitystatuses, entitytimes " +
@@ -408,7 +467,7 @@ public class UserControl
                 ps.setLong(3, workflowStep.getPrimaryKey().getEntityId());
                 ps.setLong(4, Session.MAX_TIME);
 
-                userVisitGroups = UserVisitGroupFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+                userVisitGroups = userVisitGroupFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
             } catch (SQLException se) {
                 throw new PersistenceDatabaseException(se);
             }
@@ -424,8 +483,6 @@ public class UserControl
     }
     
     public UserVisitGroup createUserVisitGroup(BasePK createdBy) {
-        var sequenceControl = Session.getModelController(SequenceControl.class);
-        var workflowControl = getWorkflowControl();
         UserVisitGroup userVisitGroup = null;
         var workflow = workflowControl.getWorkflowByName(Workflow_USER_VISIT_GROUP_STATUS);
         
@@ -434,12 +491,12 @@ public class UserControl
             
             if(workflowEntrance != null && (workflowControl.countWorkflowEntranceStepsByWorkflowEntrance(workflowEntrance) > 0)) {
                 var sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.USER_VISIT_GROUP.name());
-                var userVisitGroupName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
+                var userVisitGroupName = sequenceGeneratorLogic.getNextSequenceValue(sequence);
                 
                 userVisitGroup = createUserVisitGroup(userVisitGroupName, createdBy);
 
                 var entityInstance = getEntityInstanceByBaseEntity(userVisitGroup);
-                getWorkflowControl().addEntityToWorkflow(workflowEntrance, entityInstance, null, null, createdBy);
+                workflowControl.addEntityToWorkflow(workflowEntrance, entityInstance, null, null, createdBy);
             }
         }
         
@@ -447,12 +504,12 @@ public class UserControl
     }
     
     public UserVisitGroup createUserVisitGroup(String userVisitGroupName, BasePK createdBy) {
-        var userVisitGroup = UserVisitGroupFactory.getInstance().create();
-        var userVisitGroupDetail = UserVisitGroupDetailFactory.getInstance().create(userVisitGroup, userVisitGroupName,
+        var userVisitGroup = userVisitGroupFactory.create();
+        var userVisitGroupDetail = userVisitGroupDetailFactory.create(userVisitGroup, userVisitGroupName,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
-        userVisitGroup = UserVisitGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        userVisitGroup = userVisitGroupFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 userVisitGroup.getPrimaryKey());
         userVisitGroup.setActiveDetail(userVisitGroupDetail);
         userVisitGroup.setLastDetail(userVisitGroupDetail);
@@ -475,7 +532,7 @@ public class UserControl
     public UserVisitGroup getUserVisitGroupByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new UserVisitGroupPK(entityInstance.getEntityUniqueId());
 
-        return UserVisitGroupFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return userVisitGroupFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public UserVisitGroup getUserVisitGroupByEntityInstance(EntityInstance entityInstance) {
@@ -507,11 +564,11 @@ public class UserControl
                         "FOR UPDATE";
             }
 
-            var ps = UserVisitGroupFactory.getInstance().prepareStatement(query);
+            var ps = userVisitGroupFactory.prepareStatement(query);
             
             ps.setString(1, userVisitGroupName);
             
-            userVisitGroup = UserVisitGroupFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            userVisitGroup = userVisitGroupFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -546,9 +603,9 @@ public class UserControl
                     "FOR UPDATE";
         }
 
-        var ps = UserVisitGroupFactory.getInstance().prepareStatement(query);
+        var ps = userVisitGroupFactory.prepareStatement(query);
         
-        return UserVisitGroupFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        return userVisitGroupFactory.getEntitiesFromQuery(entityPermission, ps);
     }
     
     public List<UserVisitGroup> getUserVisitGroups() {
@@ -560,15 +617,14 @@ public class UserControl
     }
     
     public UserVisitGroupTransfer getUserVisitGroupTransfer(UserVisit userVisit, UserVisitGroup userVisitGroup) {
-        return getUserTransferCaches(userVisit).getUserVisitGroupTransferCache().getUserVisitGroupTransfer(userVisitGroup);
+        return userVisitGroupTransferCache.getUserVisitGroupTransfer(userVisit, userVisitGroup);
     }
     
     public List<UserVisitGroupTransfer> getUserVisitGroupTransfers(UserVisit userVisit, Collection<UserVisitGroup> userVisitGroups) {
         List<UserVisitGroupTransfer> userVisitGroupTransfers = new ArrayList<>(userVisitGroups.size());
-        var userVisitGroupTransferCache = getUserTransferCaches(userVisit).getUserVisitGroupTransferCache();
         
         userVisitGroups.forEach((userVisitGroup) ->
-                userVisitGroupTransfers.add(userVisitGroupTransferCache.getUserVisitGroupTransfer(userVisitGroup))
+                userVisitGroupTransfers.add(userVisitGroupTransferCache.getUserVisitGroupTransfer(userVisit, userVisitGroup))
         );
         
         return userVisitGroupTransfers;
@@ -580,14 +636,12 @@ public class UserControl
     
     public UserVisitGroupStatusChoicesBean getUserVisitGroupStatusChoices(String defaultUserVisitGroupStatusChoice, Language language, boolean allowNullChoice,
             UserVisitGroup userVisitGroup, PartyPK partyPK) {
-        var workflowControl = getWorkflowControl();
         var userVisitGroupStatusChoicesBean = new UserVisitGroupStatusChoicesBean();
         
         if(userVisitGroup == null) {
             workflowControl.getWorkflowEntranceChoices(userVisitGroupStatusChoicesBean, defaultUserVisitGroupStatusChoice, language, allowNullChoice,
                     workflowControl.getWorkflowByName(Workflow_USER_VISIT_GROUP_STATUS), partyPK);
         } else {
-            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(userVisitGroup.getPrimaryKey());
             var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(Workflow_USER_VISIT_GROUP_STATUS,
                     entityInstance);
@@ -600,7 +654,6 @@ public class UserControl
     }
     
     public void setUserVisitGroupStatus(ExecutionErrorAccumulator eea, UserVisitGroup userVisitGroup, String userVisitGroupStatusChoice, PartyPK modifiedBy) {
-        var workflowControl = getWorkflowControl();
         var entityInstance = getEntityInstanceByBaseEntity(userVisitGroup);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(Workflow_USER_VISIT_GROUP_STATUS, entityInstance);
         var workflowDestination = userVisitGroupStatusChoice == null? null:
@@ -617,29 +670,30 @@ public class UserControl
     //   User Visits
     // --------------------------------------------------------------------------------
     
+    @Inject
+    protected UserVisitFactory userVisitFactory;
+    
     public UserVisit createUserVisit(UserKey userKey, Language preferredLanguage, Currency preferredCurrency, TimeZone preferredTimeZone,
             DateTimeFormat preferredDateTimeFormat, OfferUse offerUse, AssociateReferral associateReferral, Long retainUntilTime) {
         var userVisitGroup = getActiveUserVisitGroup();
 
         if(preferredCurrency == null) {
-            var accountingControl = Session.getModelController(AccountingControl.class);
-
             preferredCurrency = accountingControl.getDefaultCurrency();
         }
 
         if(preferredLanguage == null) {
-            preferredLanguage = getPartyControl().getDefaultLanguage();
+            preferredLanguage = partyControl.getDefaultLanguage();
         }
 
         if(preferredTimeZone == null) {
-            preferredTimeZone = getPartyControl().getDefaultTimeZone();
+            preferredTimeZone = partyControl.getDefaultTimeZone();
         }
 
         if(preferredDateTimeFormat == null) {
-            preferredDateTimeFormat = getPartyControl().getDefaultDateTimeFormat();
+            preferredDateTimeFormat = partyControl.getDefaultDateTimeFormat();
         }
 
-        var userVisit = UserVisitFactory.getInstance().create(userVisitGroup, userKey, preferredLanguage, preferredCurrency,
+        var userVisit = userVisitFactory.create(userVisitGroup, userKey, preferredLanguage, preferredCurrency,
                 preferredTimeZone, preferredDateTimeFormat, session.START_TIME_LONG, offerUse, associateReferral, retainUntilTime,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
@@ -713,11 +767,11 @@ public class UserControl
     }
 
     public UserVisit getUserVisitByPK(UserVisitPK userVisitPK) {
-        return UserVisitFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, userVisitPK);
+        return userVisitFactory.getEntityFromPK(EntityPermission.READ_ONLY, userVisitPK);
     }
     
     public UserVisit getUserVisitByPKForUpdate(UserVisitPK userVisitPK) {
-        return UserVisitFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, userVisitPK);
+        return userVisitFactory.getEntityFromPK(EntityPermission.READ_WRITE, userVisitPK);
     }
 
     public void deleteUserVisit(UserVisit userVisit) {
@@ -743,10 +797,10 @@ public class UserControl
             var partyPK = userSession.getPartyPK();
             
             if(partyPK != null) {
-                var partyDetailValue = getPartyControl().getPartyDetailValueByPKForUpdate(userSession.getPartyPK());
+                var partyDetailValue = partyControl.getPartyDetailValueByPKForUpdate(userSession.getPartyPK());
                 
                 partyDetailValue.setPreferredLanguagePK(language.getIsDefault() ? null : language.getPrimaryKey());
-                getPartyControl().updatePartyFromValue(partyDetailValue, updatedBy);
+                partyControl.updatePartyFromValue(partyDetailValue, updatedBy);
             }
         }
     }
@@ -759,7 +813,7 @@ public class UserControl
         }
         
         if(language == null) {
-            language = getPartyControl().getDefaultLanguage();
+            language = partyControl.getDefaultLanguage();
         }
         
         return language;
@@ -773,7 +827,7 @@ public class UserControl
         }
         
         if(language == null) {
-            language = getPartyControl().getDefaultLanguage();
+            language = partyControl.getDefaultLanguage();
         }
         
         return language;
@@ -791,10 +845,10 @@ public class UserControl
             var partyPK = userSession.getPartyPK();
             
             if(partyPK != null) {
-                var partyDetailValue = getPartyControl().getPartyDetailValueByPKForUpdate(userSession.getPartyPK());
+                var partyDetailValue = partyControl.getPartyDetailValueByPKForUpdate(userSession.getPartyPK());
                 
                 partyDetailValue.setPreferredCurrencyPK(currency.getIsDefault() ? null : currency.getPrimaryKey());
-                getPartyControl().updatePartyFromValue(partyDetailValue, updatedBy);
+                partyControl.updatePartyFromValue(partyDetailValue, updatedBy);
             }
         }
     }
@@ -807,8 +861,6 @@ public class UserControl
         }
         
         if(currency == null) {
-            var accountingControl = Session.getModelController(AccountingControl.class);
-            
             currency = accountingControl.getDefaultCurrency();
         }
         
@@ -823,8 +875,6 @@ public class UserControl
         }
         
         if(currency == null) {
-            var accountingControl = Session.getModelController(AccountingControl.class);
-            
             currency = accountingControl.getDefaultCurrency();
         }
         
@@ -843,11 +893,11 @@ public class UserControl
             var partyPK = userSession.getPartyPK();
             
             if(partyPK != null) {
-                var partyDetailValue = getPartyControl().getPartyDetailValueByPKForUpdate(userSession.getPartyPK());
+                var partyDetailValue = partyControl.getPartyDetailValueByPKForUpdate(userSession.getPartyPK());
                 var timeZoneDetail = timeZone.getLastDetail();
 
                 partyDetailValue.setPreferredTimeZonePK(timeZoneDetail.getIsDefault() ? null : timeZone.getPrimaryKey());
-                getPartyControl().updatePartyFromValue(partyDetailValue, updatedBy);
+                partyControl.updatePartyFromValue(partyDetailValue, updatedBy);
             }
         }
     }
@@ -860,7 +910,7 @@ public class UserControl
         }
         
         if(timeZone == null) {
-            timeZone = getPartyControl().getDefaultTimeZone();
+            timeZone = partyControl.getDefaultTimeZone();
         }
         
         return timeZone;
@@ -874,7 +924,7 @@ public class UserControl
         }
         
         if(timeZone == null) {
-            timeZone = getPartyControl().getDefaultTimeZone();
+            timeZone = partyControl.getDefaultTimeZone();
         }
         
         return timeZone;
@@ -893,10 +943,10 @@ public class UserControl
             var partyPK = userSession.getPartyPK();
             
             if(partyPK != null) {
-                var partyDetailValue = getPartyControl().getPartyDetailValueByPKForUpdate(userSession.getPartyPK());
+                var partyDetailValue = partyControl.getPartyDetailValueByPKForUpdate(userSession.getPartyPK());
                 
                 partyDetailValue.setPreferredDateTimeFormatPK(dateTimeFormatDetail.getIsDefault() ? null : dateTimeFormat.getPrimaryKey());
-                getPartyControl().updatePartyFromValue(partyDetailValue, updatedBy);
+                partyControl.updatePartyFromValue(partyDetailValue, updatedBy);
             }
         }
     }
@@ -909,7 +959,7 @@ public class UserControl
         }
         
         if(dateTimeFormat == null) {
-            dateTimeFormat = getPartyControl().getDefaultDateTimeFormat();
+            dateTimeFormat = partyControl.getDefaultDateTimeFormat();
         }
         
         return dateTimeFormat;
@@ -923,7 +973,7 @@ public class UserControl
         }
         
         if(dateTimeFormat == null) {
-            dateTimeFormat = getPartyControl().getDefaultDateTimeFormat();
+            dateTimeFormat = partyControl.getDefaultDateTimeFormat();
         }
         
         return dateTimeFormat;
@@ -966,7 +1016,7 @@ public class UserControl
     }
     
     public UserVisitTransfer getUserVisitTransfer(UserVisit userVisit, UserVisit userVisitEntity) {
-        return getUserTransferCaches(userVisit).getUserVisitTransferCache().getUserVisitTransfer(userVisitEntity);
+        return userVisitTransferCache.getUserVisitTransfer(userVisit, userVisitEntity);
     }
 
     private static final Map<EntityPermission, String> getAbandonedUserVisitsQueries;
@@ -983,7 +1033,7 @@ public class UserControl
     }
 
     public List<UserVisit> getAbandonedUserVisits(Long abandonedTime) {
-        return UserVisitFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, getAbandonedUserVisitsQueries,
+        return userVisitFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, getAbandonedUserVisitsQueries,
                 Session.MAX_TIME, session.START_TIME, abandonedTime);
     }
 
@@ -1007,7 +1057,7 @@ public class UserControl
     }
 
     public List<UserVisit> getUserVisitsByUserVisitGroup(UserVisitGroup userVisitGroup, EntityPermission entityPermission) {
-        return UserVisitFactory.getInstance().getEntitiesFromQuery(entityPermission, getUserVisitsByUserVisitGroupQueries,
+        return userVisitFactory.getEntitiesFromQuery(entityPermission, getUserVisitsByUserVisitGroupQueries,
                 userVisitGroup, Session.MAX_TIME);
     }
 
@@ -1038,7 +1088,7 @@ public class UserControl
     }
 
     public List<UserVisit> getUserVisitsByUserKey(UserKey userKey, EntityPermission entityPermission) {
-        return UserVisitFactory.getInstance().getEntitiesFromQuery(entityPermission, getUserVisitsByUserKeyQueries,
+        return userVisitFactory.getEntitiesFromQuery(entityPermission, getUserVisitsByUserKeyQueries,
                 userKey);
     }
 
@@ -1064,7 +1114,7 @@ public class UserControl
     }
 
     public List<UserVisit> getInvalidatedUserVisits() {
-        return UserVisitFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, getInvalidatedUserVisitsQueries,
+        return userVisitFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, getInvalidatedUserVisitsQueries,
                 session.START_TIME, Session.MAX_TIME);
     }
 
@@ -1072,8 +1122,11 @@ public class UserControl
     //   User Visit Statuses
     // --------------------------------------------------------------------------------
     
+    @Inject
+    protected UserVisitStatusFactory userVisitStatusFactory;
+    
     public UserVisitStatus createUserVisitStatus(UserVisit userVisit) {
-        return UserVisitStatusFactory.getInstance().create(userVisit, 0, 0, 0, 0);
+        return userVisitStatusFactory.create(userVisit, 0, 0, 0, 0);
     }
     
     private static final Map<EntityPermission, String> getUserVisitStatusQueries;
@@ -1094,7 +1147,7 @@ public class UserControl
     }
 
     public UserVisitStatus getUserVisitStatus(UserVisit userVisit, EntityPermission entityPermission) {
-        return UserVisitStatusFactory.getInstance().getEntityFromQuery(entityPermission, getUserVisitStatusQueries,
+        return userVisitStatusFactory.getEntityFromQuery(entityPermission, getUserVisitStatusQueries,
                 userVisit);
     }
     
@@ -1118,9 +1171,12 @@ public class UserControl
     //   User Visit Commands
     // --------------------------------------------------------------------------------
     
+    @Inject
+    protected UserVisitCommandFactory userVisitCommandFactory;
+    
     public UserVisitCommand createUserVisitCommand(UserVisit userVisit, Integer userVisitCommandSequence, Party party, Command command, Long startTime,
             Long endTime, Boolean hadSecurityErrors, Boolean hadValidationErrors, Boolean hadExecutionErrors) {
-        return UserVisitCommandFactory.getInstance().create(userVisit, userVisitCommandSequence, party, command, startTime, endTime, hadSecurityErrors,
+        return userVisitCommandFactory.create(userVisit, userVisitCommandSequence, party, command, startTime, endTime, hadSecurityErrors,
                 hadValidationErrors, hadExecutionErrors);
     }
     
@@ -1128,12 +1184,15 @@ public class UserControl
     //   User Sessions
     // --------------------------------------------------------------------------------
     
+    @Inject
+    protected UserSessionFactory userSessionFactory;
+    
     /** Use associatePartyToUserVisit to associate a Party with a UserVisit, rather than using this
      * function directly.
      */
     public UserSession createUserSession(UserVisit userVisit, Party party, PartyRelationship partyRelationship, Long identityVerifiedTime) {
         var partyType = party.getLastDetail().getPartyType();
-        var partyTypeAuditPolicy = getPartyControl().getPartyTypeAuditPolicy(partyType);
+        var partyTypeAuditPolicy = partyControl.getPartyTypeAuditPolicy(partyType);
         var retainUserVisitsTime = partyTypeAuditPolicy == null? null: partyTypeAuditPolicy.getLastDetail().getRetainUserVisitsTime();
         
         if(retainUserVisitsTime != null) {
@@ -1145,7 +1204,7 @@ public class UserControl
             }
         }
         
-        return UserSessionFactory.getInstance().create(userVisit, party, partyRelationship, identityVerifiedTime, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        return userSessionFactory.create(userVisit, party, partyRelationship, identityVerifiedTime, session.START_TIME_LONG, Session.MAX_TIME_LONG);
     }
     
     private static final Map<EntityPermission, String> getUserSessionsByPartyQueries;
@@ -1166,7 +1225,7 @@ public class UserControl
     }
 
     private List<UserSession> getUserSessionsByParty(Party party, EntityPermission entityPermission) {
-        return UserSessionFactory.getInstance().getEntitiesFromQuery(entityPermission, getUserSessionsByPartyQueries,
+        return userSessionFactory.getEntitiesFromQuery(entityPermission, getUserSessionsByPartyQueries,
                 party, Session.MAX_TIME);
     }
 
@@ -1196,7 +1255,7 @@ public class UserControl
     }
 
     private List<UserSession> getUserSessionsByPartyRelationship(PartyRelationship partyRelationship, EntityPermission entityPermission) {
-        return UserSessionFactory.getInstance().getEntitiesFromQuery(entityPermission, getUserSessionsByPartyRelationshipQueries,
+        return userSessionFactory.getEntitiesFromQuery(entityPermission, getUserSessionsByPartyRelationshipQueries,
                 partyRelationship, Session.MAX_TIME);
     }
 
@@ -1212,7 +1271,7 @@ public class UserControl
         UserSession userSession;
         
         try {
-            var ps = UserSessionFactory.getInstance().prepareStatement(
+            var ps = userSessionFactory.prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM usersessions " +
                     "WHERE usess_uvis_uservisitid = ? AND usess_thrutime = ?");
@@ -1220,7 +1279,7 @@ public class UserControl
             ps.setLong(1, userVisit.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            userSession = UserSessionFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+            userSession = userSessionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1232,7 +1291,7 @@ public class UserControl
         UserSession userSession;
         
         try {
-            var ps = UserSessionFactory.getInstance().prepareStatement(
+            var ps = userSessionFactory.prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM usersessions " +
                     "WHERE usess_uvis_uservisitid = ? AND usess_thrutime = ? " +
@@ -1241,7 +1300,7 @@ public class UserControl
             ps.setLong(1, userVisit.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            userSession = UserSessionFactory.getInstance().getEntityFromQuery(EntityPermission.READ_WRITE, ps);
+            userSession = userSessionFactory.getEntityFromQuery(EntityPermission.READ_WRITE, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1250,7 +1309,7 @@ public class UserControl
     }
 
     public UserSessionTransfer getUserSessionTransfer(UserVisit userVisit, UserSession userSession) {
-        return getUserTransferCaches(userVisit).getUserSessionTransferCache().getUserSessionTransfer(userSession);
+        return userSessionTransferCache.getUserSessionTransfer(userVisit, userSession);
     }
     
     public void deleteUserSession(UserSession userSession) {
@@ -1270,6 +1329,12 @@ public class UserControl
     //   Recovery Questions
     // --------------------------------------------------------------------------------
     
+    @Inject
+    protected RecoveryQuestionFactory recoveryQuestionFactory;
+    
+    @Inject
+    protected RecoveryQuestionDetailFactory recoveryQuestionDetailFactory;
+    
     public RecoveryQuestion createRecoveryQuestion(String recoveryQuestionName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultRecoveryQuestion = getDefaultRecoveryQuestion();
         var defaultFound = defaultRecoveryQuestion != null;
@@ -1283,12 +1348,12 @@ public class UserControl
             isDefault = true;
         }
 
-        var recoveryQuestion = RecoveryQuestionFactory.getInstance().create();
-        var recoveryQuestionDetail = RecoveryQuestionDetailFactory.getInstance().create(recoveryQuestion,
+        var recoveryQuestion = recoveryQuestionFactory.create();
+        var recoveryQuestionDetail = recoveryQuestionDetailFactory.create(recoveryQuestion,
                 recoveryQuestionName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
-        recoveryQuestion = RecoveryQuestionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        recoveryQuestion = recoveryQuestionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 recoveryQuestion.getPrimaryKey());
         recoveryQuestion.setActiveDetail(recoveryQuestionDetail);
         recoveryQuestion.setLastDetail(recoveryQuestionDetail);
@@ -1310,7 +1375,7 @@ public class UserControl
     public RecoveryQuestion getRecoveryQuestionByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new RecoveryQuestionPK(entityInstance.getEntityUniqueId());
 
-        return RecoveryQuestionFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return recoveryQuestionFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public RecoveryQuestion getRecoveryQuestionByEntityInstance(EntityInstance entityInstance) {
@@ -1337,9 +1402,9 @@ public class UserControl
                     "FOR UPDATE";
         }
 
-        var ps = RecoveryQuestionFactory.getInstance().prepareStatement(query);
+        var ps = recoveryQuestionFactory.prepareStatement(query);
         
-        return RecoveryQuestionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        return recoveryQuestionFactory.getEntitiesFromQuery(entityPermission, ps);
     }
     
     public List<RecoveryQuestion> getRecoveryQuestions() {
@@ -1364,9 +1429,9 @@ public class UserControl
                     "FOR UPDATE";
         }
 
-        var ps = RecoveryQuestionFactory.getInstance().prepareStatement(query);
+        var ps = recoveryQuestionFactory.prepareStatement(query);
         
-        return RecoveryQuestionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        return recoveryQuestionFactory.getEntityFromQuery(entityPermission, ps);
     }
     
     public RecoveryQuestion getDefaultRecoveryQuestion() {
@@ -1398,11 +1463,11 @@ public class UserControl
                         "FOR UPDATE";
             }
 
-            var ps = RecoveryQuestionFactory.getInstance().prepareStatement(query);
+            var ps = recoveryQuestionFactory.prepareStatement(query);
             
             ps.setString(1, recoveryQuestionName);
             
-            recoveryQuestion = RecoveryQuestionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            recoveryQuestion = recoveryQuestionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1456,15 +1521,14 @@ public class UserControl
     }
     
     public RecoveryQuestionTransfer getRecoveryQuestionTransfer(UserVisit userVisit, RecoveryQuestion recoveryQuestion) {
-        return getUserTransferCaches(userVisit).getRecoveryQuestionTransferCache().getRecoveryQuestionTransfer(recoveryQuestion);
+        return recoveryQuestionTransferCache.getRecoveryQuestionTransfer(userVisit, recoveryQuestion);
     }
     
     public List<RecoveryQuestionTransfer> getRecoveryQuestionTransfers(UserVisit userVisit, Collection<RecoveryQuestion> recoveryQuestions) {
         List<RecoveryQuestionTransfer> recoveryQuestionTransfers = new ArrayList<>(recoveryQuestions.size());
-        var recoveryQuestionTransferCache = getUserTransferCaches(userVisit).getRecoveryQuestionTransferCache();
         
         recoveryQuestions.forEach((recoveryQuestion) ->
-                recoveryQuestionTransfers.add(recoveryQuestionTransferCache.getRecoveryQuestionTransfer(recoveryQuestion))
+                recoveryQuestionTransfers.add(recoveryQuestionTransferCache.getRecoveryQuestionTransfer(userVisit, recoveryQuestion))
         );
         
         return recoveryQuestionTransfers;
@@ -1477,7 +1541,7 @@ public class UserControl
     private void updateRecoveryQuestionFromValue(RecoveryQuestionDetailValue recoveryQuestionDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(recoveryQuestionDetailValue.hasBeenModified()) {
-            var recoveryQuestion = RecoveryQuestionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var recoveryQuestion = recoveryQuestionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      recoveryQuestionDetailValue.getRecoveryQuestionPK());
             var recoveryQuestionDetail = recoveryQuestion.getActiveDetailForUpdate();
             
@@ -1505,7 +1569,7 @@ public class UserControl
                 }
             }
             
-            recoveryQuestionDetail = RecoveryQuestionDetailFactory.getInstance().create(recoveryQuestionPK,
+            recoveryQuestionDetail = recoveryQuestionDetailFactory.create(recoveryQuestionPK,
                     recoveryQuestionName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
             recoveryQuestion.setActiveDetail(recoveryQuestionDetail);
@@ -1556,9 +1620,12 @@ public class UserControl
     //   Recovery Question Descriptions
     // --------------------------------------------------------------------------------
     
+    @Inject
+    protected RecoveryQuestionDescriptionFactory recoveryQuestionDescriptionFactory;
+    
     public RecoveryQuestionDescription createRecoveryQuestionDescription(RecoveryQuestion recoveryQuestion, Language language,
             String description, BasePK createdBy) {
-        var recoveryQuestionDescription = RecoveryQuestionDescriptionFactory.getInstance().create(session,
+        var recoveryQuestionDescription = recoveryQuestionDescriptionFactory.create(session,
                 recoveryQuestion, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(recoveryQuestion.getPrimaryKey(), EventTypes.MODIFY, recoveryQuestionDescription.getPrimaryKey(),
@@ -1585,13 +1652,13 @@ public class UserControl
                         "FOR UPDATE";
             }
 
-            var ps = RecoveryQuestionDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = recoveryQuestionDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, recoveryQuestion.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            recoveryQuestionDescription = RecoveryQuestionDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            recoveryQuestionDescription = recoveryQuestionDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1634,12 +1701,12 @@ public class UserControl
                         "FOR UPDATE";
             }
 
-            var ps = RecoveryQuestionDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = recoveryQuestionDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, recoveryQuestion.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            recoveryQuestionDescriptions = RecoveryQuestionDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            recoveryQuestionDescriptions = recoveryQuestionDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1660,7 +1727,7 @@ public class UserControl
         var recoveryQuestionDescription = getRecoveryQuestionDescription(recoveryQuestion, language);
         
         if(recoveryQuestionDescription == null && !language.getIsDefault()) {
-            recoveryQuestionDescription = getRecoveryQuestionDescription(recoveryQuestion, getPartyControl().getDefaultLanguage());
+            recoveryQuestionDescription = getRecoveryQuestionDescription(recoveryQuestion, partyControl.getDefaultLanguage());
         }
         
         if(recoveryQuestionDescription == null) {
@@ -1673,16 +1740,15 @@ public class UserControl
     }
     
     public RecoveryQuestionDescriptionTransfer getRecoveryQuestionDescriptionTransfer(UserVisit userVisit, RecoveryQuestionDescription recoveryQuestionDescription) {
-        return getUserTransferCaches(userVisit).getRecoveryQuestionDescriptionTransferCache().getRecoveryQuestionDescriptionTransfer(recoveryQuestionDescription);
+        return recoveryQuestionDescriptionTransferCache.getRecoveryQuestionDescriptionTransfer(userVisit, recoveryQuestionDescription);
     }
     
     public List<RecoveryQuestionDescriptionTransfer> getRecoveryQuestionDescriptionTransfers(UserVisit userVisit, RecoveryQuestion recoveryQuestion) {
         var recoveryQuestionDescriptions = getRecoveryQuestionDescriptionsByRecoveryQuestion(recoveryQuestion);
         List<RecoveryQuestionDescriptionTransfer> recoveryQuestionDescriptionTransfers = new ArrayList<>(recoveryQuestionDescriptions.size());
-        var recoveryQuestionDescriptionTransferCache = getUserTransferCaches(userVisit).getRecoveryQuestionDescriptionTransferCache();
         
         recoveryQuestionDescriptions.forEach((recoveryQuestionDescription) ->
-                recoveryQuestionDescriptionTransfers.add(recoveryQuestionDescriptionTransferCache.getRecoveryQuestionDescriptionTransfer(recoveryQuestionDescription))
+                recoveryQuestionDescriptionTransfers.add(recoveryQuestionDescriptionTransferCache.getRecoveryQuestionDescriptionTransfer(userVisit, recoveryQuestionDescription))
         );
         
         return recoveryQuestionDescriptionTransfers;
@@ -1690,7 +1756,7 @@ public class UserControl
     
     public void updateRecoveryQuestionDescriptionFromValue(RecoveryQuestionDescriptionValue recoveryQuestionDescriptionValue, BasePK updatedBy) {
         if(recoveryQuestionDescriptionValue.hasBeenModified()) {
-            var recoveryQuestionDescription = RecoveryQuestionDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var recoveryQuestionDescription = recoveryQuestionDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      recoveryQuestionDescriptionValue.getPrimaryKey());
             
             recoveryQuestionDescription.setThruTime(session.START_TIME_LONG);
@@ -1700,7 +1766,7 @@ public class UserControl
             var language = recoveryQuestionDescription.getLanguage();
             var description = recoveryQuestionDescriptionValue.getDescription();
             
-            recoveryQuestionDescription = RecoveryQuestionDescriptionFactory.getInstance().create(recoveryQuestion, language,
+            recoveryQuestionDescription = recoveryQuestionDescriptionFactory.create(recoveryQuestion, language,
                     description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
             sendEvent(recoveryQuestion.getPrimaryKey(), EventTypes.MODIFY, recoveryQuestionDescription.getPrimaryKey(),
@@ -1727,13 +1793,19 @@ public class UserControl
     //   Recovery Answers
     // --------------------------------------------------------------------------------
     
+    @Inject
+    protected RecoveryAnswerFactory recoveryAnswerFactory;
+    
+    @Inject
+    protected RecoveryAnswerDetailFactory recoveryAnswerDetailFactory;
+    
     public RecoveryAnswer createRecoveryAnswer(Party party, RecoveryQuestion recoveryQuestion, String answer, BasePK createdBy) {
-        var recoveryAnswer = RecoveryAnswerFactory.getInstance().create();
-        var recoveryAnswerDetail = RecoveryAnswerDetailFactory.getInstance().create(recoveryAnswer,
+        var recoveryAnswer = recoveryAnswerFactory.create();
+        var recoveryAnswerDetail = recoveryAnswerDetailFactory.create(recoveryAnswer,
                 party, recoveryQuestion, answer, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
-        recoveryAnswer = RecoveryAnswerFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, recoveryAnswer.getPrimaryKey());
+        recoveryAnswer = recoveryAnswerFactory.getEntityFromPK(EntityPermission.READ_WRITE, recoveryAnswer.getPrimaryKey());
         recoveryAnswer.setActiveDetail(recoveryAnswerDetail);
         recoveryAnswer.setLastDetail(recoveryAnswerDetail);
         recoveryAnswer.store();
@@ -1772,7 +1844,7 @@ public class UserControl
     }
 
     private RecoveryAnswer getRecoveryAnswer(Party party, EntityPermission entityPermission) {
-        return RecoveryAnswerFactory.getInstance().getEntityFromQuery(entityPermission, getRecoveryAnswerQueries,
+        return recoveryAnswerFactory.getEntityFromQuery(entityPermission, getRecoveryAnswerQueries,
                 party);
     }
 
@@ -1815,7 +1887,7 @@ public class UserControl
     }
 
     private List<RecoveryAnswer> getRecoveryAnswersByRecoveryQuestion(RecoveryQuestion recoveryQuestion, EntityPermission entityPermission) {
-        return RecoveryAnswerFactory.getInstance().getEntitiesFromQuery(entityPermission, getRecoveryAnswersByRecoveryQuestionQueries,
+        return recoveryAnswerFactory.getEntitiesFromQuery(entityPermission, getRecoveryAnswersByRecoveryQuestionQueries,
                 recoveryQuestion);
     }
     
@@ -1834,12 +1906,12 @@ public class UserControl
     }
     
     public RecoveryAnswerTransfer getRecoveryAnswerTransfer(UserVisit userVisit, RecoveryAnswer recoveryAnswer) {
-        return getUserTransferCaches(userVisit).getRecoveryAnswerTransferCache().getRecoveryAnswerTransfer(recoveryAnswer);
+        return recoveryAnswerTransferCache.getRecoveryAnswerTransfer(userVisit, recoveryAnswer);
     }
     
     public void updateRecoveryAnswerFromValue(RecoveryAnswerDetailValue recoveryAnswerDetailValue, BasePK updatedBy) {
         if(recoveryAnswerDetailValue.hasBeenModified()) {
-            var recoveryAnswer = RecoveryAnswerFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, recoveryAnswerDetailValue.getRecoveryAnswerPK());
+            var recoveryAnswer = recoveryAnswerFactory.getEntityFromPK(EntityPermission.READ_WRITE, recoveryAnswerDetailValue.getRecoveryAnswerPK());
             var recoveryAnswerDetail = recoveryAnswer.getActiveDetailForUpdate();
 
             recoveryAnswerDetail.setThruTime(session.START_TIME_LONG);
@@ -1850,7 +1922,7 @@ public class UserControl
             var recoveryQuestionPK = recoveryAnswerDetailValue.getRecoveryQuestionPK();
             var answer = recoveryAnswerDetailValue.getAnswer();
 
-            recoveryAnswerDetail = RecoveryAnswerDetailFactory.getInstance().create(recoveryAnswerPK, partyPK, recoveryQuestionPK, answer,
+            recoveryAnswerDetail = recoveryAnswerDetailFactory.create(recoveryAnswerPK, partyPK, recoveryQuestionPK, answer,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
             recoveryAnswer.setActiveDetail(recoveryAnswerDetail);
@@ -1891,31 +1963,34 @@ public class UserControl
     //   User Login Password Encoder Types
     // --------------------------------------------------------------------------------
     
+    @Inject
+    protected UserLoginPasswordEncoderTypeFactory userLoginPasswordEncoderTypeFactory;
+    
     public UserLoginPasswordEncoderType createUserLoginPasswordEncoderType(String sequenceEncoderTypeName) {
-        return UserLoginPasswordEncoderTypeFactory.getInstance().create(sequenceEncoderTypeName);
+        return userLoginPasswordEncoderTypeFactory.create(sequenceEncoderTypeName);
     }
     
     public List<UserLoginPasswordEncoderType> getUserLoginPasswordEncoderTypes() {
-        var ps = UserLoginPasswordEncoderTypeFactory.getInstance().prepareStatement(
+        var ps = userLoginPasswordEncoderTypeFactory.prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM userloginpasswordencodertypes " +
                 "ORDER BY ulogpet_userloginpasswordencodertypename");
         
-        return UserLoginPasswordEncoderTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        return userLoginPasswordEncoderTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
     
     public UserLoginPasswordEncoderType getUserLoginPasswordEncoderTypeByName(String sequenceEncoderTypeName) {
         UserLoginPasswordEncoderType sequenceEncoderType;
         
         try {
-            var ps = UserLoginPasswordEncoderTypeFactory.getInstance().prepareStatement(
+            var ps = userLoginPasswordEncoderTypeFactory.prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM userloginpasswordencodertypes " +
                     "WHERE ulogpet_userloginpasswordencodertypename = ?");
             
             ps.setString(1, sequenceEncoderTypeName);
             
-            sequenceEncoderType = UserLoginPasswordEncoderTypeFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+            sequenceEncoderType = userLoginPasswordEncoderTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1924,16 +1999,19 @@ public class UserControl
     }
     
     public UserLoginPasswordEncoderTypeTransfer getUserLoginPasswordEncoderTypeTransfer(UserVisit userVisit, UserLoginPasswordEncoderType userLoginPasswordEncoderType) {
-        return getUserTransferCaches(userVisit).getUserLoginPasswordEncoderTypeTransferCache().getUserLoginPasswordEncoderTypeTransfer(userLoginPasswordEncoderType);
+        return userLoginPasswordEncoderTypeTransferCache.getUserLoginPasswordEncoderTypeTransfer(userVisit, userLoginPasswordEncoderType);
     }
 
     // --------------------------------------------------------------------------------
     //   User Login Password Encoder Type Descriptions
     // --------------------------------------------------------------------------------
     
+    @Inject
+    protected UserLoginPasswordEncoderTypeDescriptionFactory userLoginPasswordEncoderTypeDescriptionFactory;
+    
     public UserLoginPasswordEncoderTypeDescription createUserLoginPasswordEncoderTypeDescription(UserLoginPasswordEncoderType sequenceEncoderType,
             Language language, String description) {
-        return UserLoginPasswordEncoderTypeDescriptionFactory.getInstance().create(sequenceEncoderType, language, description);
+        return userLoginPasswordEncoderTypeDescriptionFactory.create(sequenceEncoderType, language, description);
     }
     
     public UserLoginPasswordEncoderTypeDescription getUserLoginPasswordEncoderTypeDescription(UserLoginPasswordEncoderType sequenceEncoderType,
@@ -1941,7 +2019,7 @@ public class UserControl
         UserLoginPasswordEncoderTypeDescription sequenceEncoderTypeDescription;
         
         try {
-            var ps = UserLoginPasswordEncoderTypeDescriptionFactory.getInstance().prepareStatement(
+            var ps = userLoginPasswordEncoderTypeDescriptionFactory.prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM userloginpasswordencodertypedescriptions " +
                     "WHERE ulogpetd_ulogpet_userloginpasswordencodertypeid = ? AND ulogpetd_lang_languageid = ?");
@@ -1949,7 +2027,7 @@ public class UserControl
             ps.setLong(1, sequenceEncoderType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             
-            sequenceEncoderTypeDescription = UserLoginPasswordEncoderTypeDescriptionFactory.getInstance().getEntityFromQuery(session,
+            sequenceEncoderTypeDescription = userLoginPasswordEncoderTypeDescriptionFactory.getEntityFromQuery(session,
                     EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -1965,7 +2043,7 @@ public class UserControl
         
         if(userLoginPasswordEncoderTypeDescription == null && !language.getIsDefault()) {
             userLoginPasswordEncoderTypeDescription = getUserLoginPasswordEncoderTypeDescription(userLoginPasswordEncoderType,
-                    getPartyControl().getDefaultLanguage());
+                    partyControl.getDefaultLanguage());
         }
         
         if(userLoginPasswordEncoderTypeDescription == null) {
@@ -1981,23 +2059,26 @@ public class UserControl
     //   User Login Password Types
     // --------------------------------------------------------------------------------
     
+    @Inject
+    protected UserLoginPasswordTypeFactory userLoginPasswordTypeFactory;
+    
     public UserLoginPasswordType createUserLoginPasswordType(String userLoginPasswordTypeName,
             UserLoginPasswordEncoderType userLoginPasswordEncoderType) {
-        return UserLoginPasswordTypeFactory.getInstance().create(userLoginPasswordTypeName, userLoginPasswordEncoderType);
+        return userLoginPasswordTypeFactory.create(userLoginPasswordTypeName, userLoginPasswordEncoderType);
     }
     
     public UserLoginPasswordType getUserLoginPasswordTypeByName(String userLoginPasswordTypeName) {
         UserLoginPasswordType userLoginPasswordType;
         
         try {
-            var ps = UserLoginPasswordTypeFactory.getInstance().prepareStatement(
+            var ps = userLoginPasswordTypeFactory.prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM userloginpasswordtypes " +
                     "WHERE ulogpt_userloginpasswordtypename = ?");
             
             ps.setString(1, userLoginPasswordTypeName);
             
-            userLoginPasswordType = UserLoginPasswordTypeFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+            userLoginPasswordType = userLoginPasswordTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2006,22 +2087,25 @@ public class UserControl
     }
     
     public UserLoginPasswordTypeTransfer getUserLoginPasswordTypeTransfer(UserVisit userVisit, UserLoginPasswordType userLoginPasswordType) {
-        return getUserTransferCaches(userVisit).getUserLoginPasswordTypeTransferCache().getUserLoginPasswordTypeTransfer(userLoginPasswordType);
+        return userLoginPasswordTypeTransferCache.getUserLoginPasswordTypeTransfer(userVisit, userLoginPasswordType);
     }
 
     // --------------------------------------------------------------------------------
     //   User Login Password Type Descriptions
     // --------------------------------------------------------------------------------
     
+    @Inject
+    protected UserLoginPasswordTypeDescriptionFactory userLoginPasswordTypeDescriptionFactory;
+    
     public UserLoginPasswordTypeDescription createUserLoginPasswordTypeDescription(UserLoginPasswordType userLoginPasswordType, Language language, String description) {
-        return UserLoginPasswordTypeDescriptionFactory.getInstance().create(userLoginPasswordType, language, description);
+        return userLoginPasswordTypeDescriptionFactory.create(userLoginPasswordType, language, description);
     }
     
     public UserLoginPasswordTypeDescription getUserLoginPasswordTypeDescription(UserLoginPasswordType userLoginPasswordType, Language language) {
         UserLoginPasswordTypeDescription userLoginPasswordTypeDescription;
         
         try {
-            var ps = UserLoginPasswordTypeDescriptionFactory.getInstance().prepareStatement(
+            var ps = userLoginPasswordTypeDescriptionFactory.prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM userloginpasswordtypedescriptions " +
                     "WHERE ulogptd_ulogpt_userloginpasswordtypeid = ? AND ulogptd_lang_languageid = ?");
@@ -2029,7 +2113,7 @@ public class UserControl
             ps.setLong(1, userLoginPasswordType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             
-            userLoginPasswordTypeDescription = UserLoginPasswordTypeDescriptionFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+            userLoginPasswordTypeDescription = userLoginPasswordTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2044,7 +2128,7 @@ public class UserControl
 
         if(userLoginPasswordTypeDescription == null && !language.getIsDefault()) {
             userLoginPasswordTypeDescription = getUserLoginPasswordTypeDescription(userLoginPasswordType,
-                    getPartyControl().getDefaultLanguage());
+                    partyControl.getDefaultLanguage());
         }
 
         if(userLoginPasswordTypeDescription == null) {
@@ -2060,8 +2144,11 @@ public class UserControl
     //   User Login Passwords
     // --------------------------------------------------------------------------------
     
+    @Inject
+    protected UserLoginPasswordFactory userLoginPasswordFactory;
+    
     public UserLoginPassword createUserLoginPassword(Party party, UserLoginPasswordType userLoginPasswordType, BasePK createdBy) {
-        var userLoginPassword = UserLoginPasswordFactory.getInstance().create(party, userLoginPasswordType,
+        var userLoginPassword = userLoginPasswordFactory.create(party, userLoginPasswordType,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, userLoginPassword.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2095,7 +2182,7 @@ public class UserControl
     }
 
     private UserLoginPassword getUserLoginPassword(Party party, UserLoginPasswordType userLoginPasswordType, EntityPermission entityPermission) {
-        return UserLoginPasswordFactory.getInstance().getEntityFromQuery(entityPermission, getUserLoginPasswordQueries,
+        return userLoginPasswordFactory.getEntityFromQuery(entityPermission, getUserLoginPasswordQueries,
                 party, userLoginPasswordType, Session.MAX_TIME);
     }
 
@@ -2127,7 +2214,7 @@ public class UserControl
     }
 
     private List<UserLoginPassword> getUserLoginPasswordsByParty(Party party, EntityPermission entityPermission) {
-        return UserLoginPasswordFactory.getInstance().getEntitiesFromQuery(entityPermission, getUserLoginPasswordsByPartyQueries,
+        return userLoginPasswordFactory.getEntitiesFromQuery(entityPermission, getUserLoginPasswordsByPartyQueries,
                 party, Session.MAX_TIME);
     }
 
@@ -2140,15 +2227,14 @@ public class UserControl
     }
 
     public UserLoginPasswordTransfer getUserLoginPasswordTransfer(UserVisit userVisit, UserLoginPassword userLoginPassword) {
-        return getUserTransferCaches(userVisit).getUserLoginPasswordTransferCache().getUserLoginPasswordTransfer(userLoginPassword);
+        return userLoginPasswordTransferCache.getUserLoginPasswordTransfer(userVisit, userLoginPassword);
     }
 
     public List<UserLoginPasswordTransfer> getUserLoginPasswordTransfers(UserVisit userVisit, Collection<UserLoginPassword> userLoginPasswords) {
         List<UserLoginPasswordTransfer> userLoginPasswordTransfers = new ArrayList<>(userLoginPasswords.size());
-        var userLoginPasswordTransferCache = getUserTransferCaches(userVisit).getUserLoginPasswordTransferCache();
 
         userLoginPasswords.forEach((userLoginPassword) ->
-                userLoginPasswordTransfers.add(userLoginPasswordTransferCache.getUserLoginPasswordTransfer(userLoginPassword))
+                userLoginPasswordTransfers.add(userLoginPasswordTransferCache.getUserLoginPasswordTransfer(userVisit, userLoginPassword))
         );
 
         return userLoginPasswordTransfers;
@@ -2186,6 +2272,9 @@ public class UserControl
     //   User Login Password Strings
     // --------------------------------------------------------------------------------
     
+    @Inject
+    protected UserLoginPasswordStringFactory userLoginPasswordStringFactory;
+    
     public UserLoginPasswordString createUserLoginPasswordString(UserLoginPassword userLoginPassword, String password, Long changedTime, Boolean wasReset,
             BasePK createdBy) {
         var userLoginPasswordEncoderType = userLoginPassword.getUserLoginPasswordType().getUserLoginPasswordEncoderType();
@@ -2204,7 +2293,7 @@ public class UserControl
             // UserLoginPasswordEncoderType_TEXT requires no further action.
         }
 
-        var userLoginPasswordString = UserLoginPasswordStringFactory.getInstance().create(session,
+        var userLoginPasswordString = userLoginPasswordStringFactory.create(session,
                 userLoginPassword, salt, password, changedTime, wasReset, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(userLoginPassword.getPartyPK(), EventTypes.MODIFY, userLoginPasswordString.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2216,7 +2305,7 @@ public class UserControl
         UserLoginPasswordString userLoginPasswordString;
         
         try {
-            var ps = UserLoginPasswordStringFactory.getInstance().prepareStatement(
+            var ps = userLoginPasswordStringFactory.prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM userloginpasswordstrings " +
                     "WHERE ulogps_ulogp_userloginpasswordid = ? AND ulogps_thrutime = ?");
@@ -2224,7 +2313,7 @@ public class UserControl
             ps.setLong(1, userLoginPassword.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            userLoginPasswordString = UserLoginPasswordStringFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            userLoginPasswordString = userLoginPasswordStringFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2253,14 +2342,14 @@ public class UserControl
         List<UserLoginPasswordString> userLoginPasswordStrings;
         
         try {
-            var ps = UserLoginPasswordStringFactory.getInstance().prepareStatement(
+            var ps = userLoginPasswordStringFactory.prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM userloginpasswordstrings " +
                     "WHERE ulogps_ulogp_userloginpasswordid = ? ORDER BY ulogps_fromtime DESC LIMIT " + limit);
             
             ps.setLong(1, userLoginPassword.getPrimaryKey().getEntityId());
             
-            userLoginPasswordStrings = UserLoginPasswordStringFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            userLoginPasswordStrings = userLoginPasswordStringFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2278,7 +2367,7 @@ public class UserControl
     
     public void updateUserLoginPasswordStringFromValue(UserLoginPasswordStringValue userLoginPasswordStringValue, BasePK updatedBy) {
         if(userLoginPasswordStringValue.hasBeenModified()) {
-            var userLoginPasswordString = UserLoginPasswordStringFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var userLoginPasswordString = userLoginPasswordStringFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      userLoginPasswordStringValue.getPrimaryKey());
             
             userLoginPasswordString.setThruTime(session.START_TIME_LONG);
@@ -2308,7 +2397,7 @@ public class UserControl
                 }
             }
             
-            userLoginPasswordString = UserLoginPasswordStringFactory.getInstance().create(userLoginPasswordPK, salt, password, changedTime, wasReset,
+            userLoginPasswordString = userLoginPasswordStringFactory.create(userLoginPasswordPK, salt, password, changedTime, wasReset,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
             sendEvent(userLoginPasswordString.getUserLoginPassword().getPartyPK(), EventTypes.MODIFY, userLoginPasswordString.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -2326,8 +2415,11 @@ public class UserControl
     //   User Logins
     // --------------------------------------------------------------------------------
     
+    @Inject
+    protected UserLoginFactory userLoginFactory;
+    
     public UserLogin createUserLogin(Party party, String username, BasePK createdBy) {
-        var userLogin = UserLoginFactory.getInstance().create(party, username, session.START_TIME_LONG,
+        var userLogin = userLoginFactory.create(party, username, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, userLogin.getPrimaryKey(), null, createdBy);
@@ -2354,12 +2446,12 @@ public class UserControl
                         "FOR UPDATE";
             }
 
-            var ps = UserLoginFactory.getInstance().prepareStatement(query);
+            var ps = userLoginFactory.prepareStatement(query);
             
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            userLogin = UserLoginFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            userLogin = userLoginFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2400,12 +2492,12 @@ public class UserControl
                         "FOR UPDATE";
             }
 
-            var ps = UserLoginFactory.getInstance().prepareStatement(query);
+            var ps = userLoginFactory.prepareStatement(query);
             
             ps.setString(1, username);
             ps.setLong(2, Session.MAX_TIME);
             
-            userLogin = UserLoginFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            userLogin = userLoginFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2428,12 +2520,12 @@ public class UserControl
     }
     
     public UserLoginTransfer getUserLoginTransfer(UserVisit userVisit, UserLogin userLogin) {
-        return getUserTransferCaches(userVisit).getUserLoginTransferCache().getUserLoginTransfer(userLogin);
+        return userLoginTransferCache.getUserLoginTransfer(userVisit, userLogin);
     }
     
     public void updateUserLoginFromValue(UserLoginValue userLoginValue, BasePK updatedBy) {
         if(userLoginValue.hasBeenModified()) {
-            var userLogin = UserLoginFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var userLogin = userLoginFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     userLoginValue.getPrimaryKey());
             
             userLogin.setThruTime(session.START_TIME_LONG);
@@ -2442,7 +2534,7 @@ public class UserControl
             var partyPK = userLogin.getPartyPK(); // Not updated
             var username = userLoginValue.getUsername();
             
-            userLogin = UserLoginFactory.getInstance().create(partyPK, username, session.START_TIME_LONG,
+            userLogin = userLoginFactory.create(partyPK, username, session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
             
             sendEvent(partyPK, EventTypes.MODIFY, userLogin.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -2473,8 +2565,11 @@ public class UserControl
     //   User Login Statuses
     // --------------------------------------------------------------------------------
     
+    @Inject
+    protected UserLoginStatusFactory userLoginStatusFactory;
+    
     public UserLoginStatus createUserLoginStatus(Party party) {
-        return UserLoginStatusFactory.getInstance().create(party, null, 0, null, null, 0, false);
+        return userLoginStatusFactory.create(party, null, 0, null, null, 0, false);
     }
     
     private UserLoginStatus getUserLoginStatus(Party party, EntityPermission entityPermission) {
@@ -2494,11 +2589,11 @@ public class UserControl
                         "FOR UPDATE";
             }
 
-            var ps = UserLoginStatusFactory.getInstance().prepareStatement(query);
+            var ps = userLoginStatusFactory.prepareStatement(query);
             
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             
-            userLoginStatus = UserLoginStatusFactory.getInstance().getEntityFromQuery(session,entityPermission, ps);
+            userLoginStatus = userLoginStatusFactory.getEntityFromQuery(session,entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }

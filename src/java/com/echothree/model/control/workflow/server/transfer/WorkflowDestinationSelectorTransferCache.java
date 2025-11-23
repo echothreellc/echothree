@@ -22,20 +22,21 @@ import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workflow.server.entity.WorkflowDestinationSelector;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class WorkflowDestinationSelectorTransferCache
         extends BaseWorkflowTransferCache<WorkflowDestinationSelector, WorkflowDestinationSelectorTransfer> {
     
-    SelectorControl selectorControl;
-    
+    SelectorControl selectorControl = Session.getModelController(SelectorControl.class);
+    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
+
     /** Creates a new instance of WorkflowDestinationSelectorTransferCache */
-    public WorkflowDestinationSelectorTransferCache(UserVisit userVisit, WorkflowControl workflowControl) {
-        super(userVisit, workflowControl);
-        
-        selectorControl = Session.getModelController(SelectorControl.class);
+    protected WorkflowDestinationSelectorTransferCache() {
+        super();
     }
     
-    public WorkflowDestinationSelectorTransfer getWorkflowDestinationSelectorTransfer(WorkflowDestinationSelector workflowDestinationSelector) {
+    public WorkflowDestinationSelectorTransfer getWorkflowDestinationSelectorTransfer(UserVisit userVisit, WorkflowDestinationSelector workflowDestinationSelector) {
         var workflowDestinationSelectorTransfer = get(workflowDestinationSelector);
         
         if(workflowDestinationSelectorTransfer == null) {
@@ -43,7 +44,7 @@ public class WorkflowDestinationSelectorTransferCache
             var selector = selectorControl.getSelectorTransfer(userVisit, workflowDestinationSelector.getSelector());
             
             workflowDestinationSelectorTransfer = new WorkflowDestinationSelectorTransfer(workflowDestination, selector);
-            put(workflowDestinationSelector, workflowDestinationSelectorTransfer);
+            put(userVisit, workflowDestinationSelector, workflowDestinationSelectorTransfer);
         }
         
         return workflowDestinationSelectorTransfer;

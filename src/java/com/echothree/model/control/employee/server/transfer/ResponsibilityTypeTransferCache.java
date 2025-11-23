@@ -20,18 +20,23 @@ import com.echothree.model.control.employee.common.transfer.ResponsibilityTypeTr
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.data.employee.server.entity.ResponsibilityType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ResponsibilityTypeTransferCache
         extends BaseEmployeeTransferCache<ResponsibilityType, ResponsibilityTypeTransfer> {
-    
+
+    EmployeeControl employeeControl = Session.getModelController(EmployeeControl.class);
+
     /** Creates a new instance of ResponsibilityTypeTransferCache */
-    public ResponsibilityTypeTransferCache(UserVisit userVisit, EmployeeControl employeeControl) {
-        super(userVisit, employeeControl);
+    protected ResponsibilityTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public ResponsibilityTypeTransfer getResponsibilityTypeTransfer(ResponsibilityType responsibilityType) {
+    public ResponsibilityTypeTransfer getResponsibilityTypeTransfer(UserVisit userVisit, ResponsibilityType responsibilityType) {
         var responsibilityTypeTransfer = get(responsibilityType);
         
         if(responsibilityTypeTransfer == null) {
@@ -39,10 +44,10 @@ public class ResponsibilityTypeTransferCache
             var responsibilityTypeName = responsibilityTypeDetail.getResponsibilityTypeName();
             var isDefault = responsibilityTypeDetail.getIsDefault();
             var sortOrder = responsibilityTypeDetail.getSortOrder();
-            var description = employeeControl.getBestResponsibilityTypeDescription(responsibilityType, getLanguage());
+            var description = employeeControl.getBestResponsibilityTypeDescription(responsibilityType, getLanguage(userVisit));
             
             responsibilityTypeTransfer = new ResponsibilityTypeTransfer(responsibilityTypeName, isDefault, sortOrder, description);
-            put(responsibilityType, responsibilityTypeTransfer);
+            put(userVisit, responsibilityType, responsibilityTypeTransfer);
         }
         
         return responsibilityTypeTransfer;

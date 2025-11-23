@@ -21,20 +21,22 @@ import com.echothree.model.control.order.server.control.OrderAliasControl;
 import com.echothree.model.data.order.server.entity.OrderAlias;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class OrderAliasTransferCache
         extends BaseOrderTransferCache<OrderAlias, OrderAliasTransfer> {
 
     OrderAliasControl orderAliasControl = Session.getModelController(OrderAliasControl.class);
 
     /** Creates a new instance of OrderAliasTransferCache */
-    public OrderAliasTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected OrderAliasTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public OrderAliasTransfer getOrderAliasTransfer(OrderAlias orderAlias) {
+    public OrderAliasTransfer getOrderAliasTransfer(UserVisit userVisit, OrderAlias orderAlias) {
         var orderAliasTransfer = get(orderAlias);
         
         if(orderAliasTransfer == null) {
@@ -42,7 +44,7 @@ public class OrderAliasTransferCache
             var alias = orderAlias.getAlias();
             
             orderAliasTransfer = new OrderAliasTransfer(orderAliasType, alias);
-            put(orderAlias, orderAliasTransfer);
+            put(userVisit, orderAlias, orderAliasTransfer);
         }
         
         return orderAliasTransfer;

@@ -28,19 +28,18 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class BillingAccountLogic {
 
-    private BillingAccountLogic() {
+    protected BillingAccountLogic() {
         super();
     }
 
-    private static class BillingAccountLogicHolder {
-        static BillingAccountLogic instance = new BillingAccountLogic();
-    }
-
     public static BillingAccountLogic getInstance() {
-        return BillingAccountLogicHolder.instance;
+        return CDI.current().select(BillingAccountLogic.class).get();
     }
 
     public BillingAccount getBillingAccount(final ExecutionErrorAccumulator ema, final Party billFrom, PartyContactMechanism billFromPartyContactMechanism,

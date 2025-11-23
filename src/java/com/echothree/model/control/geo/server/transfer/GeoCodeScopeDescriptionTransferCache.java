@@ -20,16 +20,21 @@ import com.echothree.model.control.geo.common.transfer.GeoCodeScopeDescriptionTr
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.data.geo.server.entity.GeoCodeScopeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class GeoCodeScopeDescriptionTransferCache
         extends BaseGeoDescriptionTransferCache<GeoCodeScopeDescription, GeoCodeScopeDescriptionTransfer> {
-    
+
+    GeoControl geoControl = Session.getModelController(GeoControl.class);
+
     /** Creates a new instance of GeoCodeScopeDescriptionTransferCache */
-    public GeoCodeScopeDescriptionTransferCache(UserVisit userVisit, GeoControl geoControl) {
-        super(userVisit, geoControl);
+    protected GeoCodeScopeDescriptionTransferCache() {
+        super();
     }
     
-    public GeoCodeScopeDescriptionTransfer getGeoCodeScopeDescriptionTransfer(GeoCodeScopeDescription geoCodeScopeDescription) {
+    public GeoCodeScopeDescriptionTransfer getGeoCodeScopeDescriptionTransfer(UserVisit userVisit, GeoCodeScopeDescription geoCodeScopeDescription) {
         var geoCodeScopeDescriptionTransfer = get(geoCodeScopeDescription);
         
         if(geoCodeScopeDescriptionTransfer == null) {
@@ -37,7 +42,7 @@ public class GeoCodeScopeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, geoCodeScopeDescription.getLanguage());
             
             geoCodeScopeDescriptionTransfer = new GeoCodeScopeDescriptionTransfer(languageTransfer, geoCodeScopeTransfer, geoCodeScopeDescription.getDescription());
-            put(geoCodeScopeDescription, geoCodeScopeDescriptionTransfer);
+            put(userVisit, geoCodeScopeDescription, geoCodeScopeDescriptionTransfer);
         }
         
         return geoCodeScopeDescriptionTransfer;

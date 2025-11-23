@@ -20,16 +20,21 @@ import com.echothree.model.control.contact.common.transfer.PartyContactMechanism
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.data.contact.server.entity.PartyContactMechanismPurpose;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PartyContactMechanismPurposeTransferCache
         extends BaseContactTransferCache<PartyContactMechanismPurpose, PartyContactMechanismPurposeTransfer> {
-    
+
+    ContactControl contactControl = Session.getModelController(ContactControl.class);
+
     /** Creates a new instance of PartyContactMechanismPurposeTransferCache */
-    public PartyContactMechanismPurposeTransferCache(UserVisit userVisit, ContactControl contactControl) {
-        super(userVisit, contactControl);
+    protected PartyContactMechanismPurposeTransferCache() {
+        super();
     }
     
-    public PartyContactMechanismPurposeTransfer getPartyContactMechanismPurposeTransfer(PartyContactMechanismPurpose partyContactMechanismPurpose) {
+    public PartyContactMechanismPurposeTransfer getPartyContactMechanismPurposeTransfer(UserVisit userVisit, PartyContactMechanismPurpose partyContactMechanismPurpose) {
         var partyContactMechanismPurposeTransfer = get(partyContactMechanismPurpose);
         
         if(partyContactMechanismPurposeTransfer == null) {
@@ -38,7 +43,7 @@ public class PartyContactMechanismPurposeTransferCache
             var sortOrder = partyContactMechanismPurposeDetail.getSortOrder();
             
             partyContactMechanismPurposeTransfer = new PartyContactMechanismPurposeTransfer(isDefault, sortOrder);
-            put(partyContactMechanismPurpose, partyContactMechanismPurposeTransfer);
+            put(userVisit, partyContactMechanismPurpose, partyContactMechanismPurposeTransfer);
             
             partyContactMechanismPurposeTransfer.setPartyContactMechanism(contactControl.getPartyContactMechanismTransfer(userVisit, partyContactMechanismPurposeDetail.getPartyContactMechanism()));
             partyContactMechanismPurposeTransfer.setContactMechanismPurpose(contactControl.getContactMechanismPurposeTransfer(userVisit, partyContactMechanismPurposeDetail.getContactMechanismPurpose()));

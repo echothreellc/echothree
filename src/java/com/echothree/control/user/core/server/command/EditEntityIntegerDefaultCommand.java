@@ -35,7 +35,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EditEntityIntegerDefaultCommand
         extends BaseAbstractEditCommand<EntityIntegerDefaultSpec, EntityIntegerDefaultEdit, EditEntityIntegerDefaultResult, EntityIntegerDefault, EntityAttribute> {
     
@@ -83,7 +85,6 @@ public class EditEntityIntegerDefaultCommand
         EntityIntegerDefault entityIntegerDefault = null;
 
         if(!hasExecutionErrors()) {
-            var coreControl = getCoreControl();
 
             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                 entityIntegerDefault = coreControl.getEntityIntegerDefault(entityAttribute);
@@ -106,7 +107,6 @@ public class EditEntityIntegerDefaultCommand
 
     @Override
     public void fillInResult(EditEntityIntegerDefaultResult result, EntityIntegerDefault entityIntegerDefault) {
-        var coreControl = getCoreControl();
 
         result.setEntityIntegerDefault(coreControl.getEntityIntegerDefaultTransfer(getUserVisit(), entityIntegerDefault));
     }
@@ -118,7 +118,6 @@ public class EditEntityIntegerDefaultCommand
 
     @Override
     public void doUpdate(EntityIntegerDefault entityIntegerDefault) {
-        var coreControl = getCoreControl();
         var entityIntegerDefaultValue = coreControl.getEntityIntegerDefaultValueForUpdate(entityIntegerDefault);
 
         entityIntegerDefaultValue.setIntegerAttribute(Integer.valueOf(edit.getIntegerAttribute()));

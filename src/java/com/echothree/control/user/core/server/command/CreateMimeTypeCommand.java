@@ -28,7 +28,9 @@ import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CreateMimeTypeCommand
         extends BaseSimpleCommand<CreateMimeTypeForm> {
     
@@ -56,7 +58,6 @@ public class CreateMimeTypeCommand
        var mimeType = mimeTypeControl.getMimeTypeByName(mimeTypeName);
 
         if(mimeType == null) {
-            var coreControl = getCoreControl();
             var entityAttributeTypeName = form.getEntityAttributeTypeName();
             var entityAttributeType = coreControl.getEntityAttributeTypeByName(entityAttributeTypeName);
 

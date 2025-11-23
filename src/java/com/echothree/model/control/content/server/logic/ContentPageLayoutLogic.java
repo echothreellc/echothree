@@ -33,20 +33,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class ContentPageLayoutLogic
     extends BaseLogic {
-    
-    private ContentPageLayoutLogic() {
+
+    protected ContentPageLayoutLogic() {
         super();
     }
-    
-    private static class ContentPageLayoutLogicHolder {
-        static ContentPageLayoutLogic instance = new ContentPageLayoutLogic();
-    }
-    
+
     public static ContentPageLayoutLogic getInstance() {
-        return ContentPageLayoutLogicHolder.instance;
+        return CDI.current().select(ContentPageLayoutLogic.class).get();
     }
 
     public ContentPageLayout createContentPageLayout(final ExecutionErrorAccumulator eea, final String contentPageLayoutName,
@@ -96,7 +95,7 @@ public class ContentPageLayoutLogic
         var parameterCount = (contentPageLayoutName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
-            case 0:
+            case 0 -> {
                 if(allowDefault) {
                     contentPageLayout = contentControl.getDefaultContentPageLayout(entityPermission);
 
@@ -106,8 +105,8 @@ public class ContentPageLayoutLogic
                 } else {
                     handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                 }
-                break;
-            case 1:
+            }
+            case 1 -> {
                 if(contentPageLayoutName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.ContentPageLayout.name());
@@ -118,10 +117,9 @@ public class ContentPageLayoutLogic
                 } else {
                     contentPageLayout = getContentPageLayoutByName(eea, contentPageLayoutName, entityPermission);
                 }
-                break;
-            default:
-                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
-                break;
+            }
+            default ->
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
 
         return contentPageLayout;

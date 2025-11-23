@@ -22,18 +22,21 @@ import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyContr
 import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicyTranslation;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ReturnPolicyTranslationTransferCache
         extends BaseReturnPolicyDescriptionTransferCache<ReturnPolicyTranslation, ReturnPolicyTranslationTransfer> {
 
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
-    
+    ReturnPolicyControl returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
+
     /** Creates a new instance of ReturnPolicyTranslationTransferCache */
-    public ReturnPolicyTranslationTransferCache(UserVisit userVisit, ReturnPolicyControl returnPolicyControl) {
-        super(userVisit, returnPolicyControl);
+    protected ReturnPolicyTranslationTransferCache() {
+        super();
     }
     
-    public ReturnPolicyTranslationTransfer getReturnPolicyTranslationTransfer(ReturnPolicyTranslation returnPolicyTranslation) {
+    public ReturnPolicyTranslationTransfer getReturnPolicyTranslationTransfer(UserVisit userVisit, ReturnPolicyTranslation returnPolicyTranslation) {
         var returnPolicyTranslationTransfer = get(returnPolicyTranslation);
         
         if(returnPolicyTranslationTransfer == null) {
@@ -46,7 +49,7 @@ public class ReturnPolicyTranslationTransferCache
             
             returnPolicyTranslationTransfer = new ReturnPolicyTranslationTransfer(returnPolicyTransfer, languageTransfer, description,
                     policyMimeTypeTransfer, policy);
-            put(returnPolicyTranslation, returnPolicyTranslationTransfer);
+            put(userVisit, returnPolicyTranslation, returnPolicyTranslationTransfer);
         }
         
         return returnPolicyTranslationTransfer;

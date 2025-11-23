@@ -27,10 +27,13 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ContentCatalogTransferCache
         extends BaseContentTransferCache<ContentCatalog, ContentCatalogTransfer> {
 
+    ContentControl contentControl = Session.getModelController(ContentControl.class);
     OfferUseControl offerUseControl = Session.getModelController(OfferUseControl.class);
     
     boolean includeContentCatalogItems;
@@ -46,8 +49,8 @@ public class ContentCatalogTransferCache
     boolean filterEntityInstance;
     
     /** Creates a new instance of ContentCatalogTransferCache */
-    public ContentCatalogTransferCache(UserVisit userVisit, ContentControl contentControl) {
-        super(userVisit, contentControl);
+    protected ContentCatalogTransferCache() {
+        super();
     
         var options = session.getOptions();
         if(options != null) {
@@ -77,7 +80,7 @@ public class ContentCatalogTransferCache
         setIncludeEntityInstance(!filterEntityInstance);
     }
 
-    public ContentCatalogTransfer getContentCatalogTransfer(ContentCatalog contentCatalog) {
+    public ContentCatalogTransfer getContentCatalogTransfer(UserVisit userVisit, ContentCatalog contentCatalog) {
         var contentCatalogTransfer = get(contentCatalog);
         
         if(contentCatalogTransfer == null) {
@@ -88,11 +91,11 @@ public class ContentCatalogTransferCache
             var defaultOfferUseTransfer = defaultOfferUse == null ? null : offerUseControl.getOfferUseTransfer(userVisit, defaultOfferUse);
             var isDefault = filterIsDefault ? null : contentCatalogDetail.getIsDefault();
             var sortOrder = filterSortOrder ? null : contentCatalogDetail.getSortOrder();
-            var description = filterDescription ? null : contentControl.getBestContentCatalogDescription(contentCatalog, getLanguage());
+            var description = filterDescription ? null : contentControl.getBestContentCatalogDescription(contentCatalog, getLanguage(userVisit));
             
             contentCatalogTransfer = new ContentCatalogTransfer(contentCollectionTransfer, contentCatalogName, defaultOfferUseTransfer, isDefault, sortOrder,
                     description);
-            put(contentCatalog, contentCatalogTransfer);
+            put(userVisit, contentCatalog, contentCatalogTransfer);
             
             if(includeContentCatalogItems) {
                 contentCatalogTransfer.setContentCatalogItems(new ListWrapper<>(contentControl.getContentCatalogItemTransfers(userVisit, contentCatalog)));

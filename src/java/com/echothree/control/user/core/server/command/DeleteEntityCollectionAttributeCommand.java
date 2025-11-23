@@ -30,7 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class DeleteEntityCollectionAttributeCommand
         extends BaseSimpleCommand<DeleteEntityCollectionAttributeForm> {
 
@@ -70,7 +72,6 @@ public class DeleteEntityCollectionAttributeCommand
                 var entityInstanceAttribute = EntityAttributeLogic.getInstance().getEntityInstanceAttribute(this, form);
 
                 if(!hasExecutionErrors()) {
-                    var coreControl = getCoreControl();
                     var entityCollectionAttribute = coreControl.getEntityCollectionAttributeForUpdate(entityAttribute, entityInstance, entityInstanceAttribute);
                     
                     if(entityCollectionAttribute != null) {

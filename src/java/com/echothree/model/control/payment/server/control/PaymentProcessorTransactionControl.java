@@ -35,12 +35,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PaymentProcessorTransactionControl
         extends BasePaymentControl {
 
     /** Creates a new instance of PaymentProcessorTransactionControl */
-    public PaymentProcessorTransactionControl() {
+    protected PaymentProcessorTransactionControl() {
         super();
     }
 
@@ -231,16 +233,15 @@ public class PaymentProcessorTransactionControl
 
     public PaymentProcessorTransactionTransfer getPaymentProcessorTransactionTransfer(final UserVisit userVisit,
             final PaymentProcessorTransaction paymentProcessorTransaction) {
-        return getPaymentTransferCaches(userVisit).getPaymentProcessorTransactionTransferCache().getTransfer(paymentProcessorTransaction);
+        return paymentProcessorTransactionTransferCache.getTransfer(userVisit, paymentProcessorTransaction);
     }
 
     public List<PaymentProcessorTransactionTransfer> getPaymentProcessorTransactionTransfers(final UserVisit userVisit,
             final Collection<PaymentProcessorTransaction> paymentProcessorTransactions) {
         var paymentProcessorTransactionTransfers = new ArrayList<PaymentProcessorTransactionTransfer>(paymentProcessorTransactions.size());
-        var paymentProcessorTransactionTransferCache = getPaymentTransferCaches(userVisit).getPaymentProcessorTransactionTransferCache();
 
         paymentProcessorTransactions.forEach((paymentProcessorTransaction) ->
-                paymentProcessorTransactionTransfers.add(paymentProcessorTransactionTransferCache.getTransfer(paymentProcessorTransaction))
+                paymentProcessorTransactionTransfers.add(paymentProcessorTransactionTransferCache.getTransfer(userVisit, paymentProcessorTransaction))
         );
 
         return paymentProcessorTransactionTransfers;

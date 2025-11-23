@@ -23,15 +23,20 @@ import com.echothree.model.control.communication.common.transfer.CommunicationSo
 import com.echothree.model.control.communication.server.control.CommunicationControl;
 import com.echothree.model.data.communication.server.entity.CommunicationSource;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CommunicationSourceTransferCache
         extends BaseCommunicationTransferCache<CommunicationSource, CommunicationSourceTransfer> {
-    
+
+    CommunicationControl communicationControl = Session.getModelController(CommunicationControl.class);
+
     boolean includeRelated;
     
     /** Creates a new instance of CommunicationSourceTransferCache */
-    public CommunicationSourceTransferCache(UserVisit userVisit, CommunicationControl communicationControl) {
-        super(userVisit, communicationControl);
+    protected CommunicationSourceTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {
@@ -41,7 +46,7 @@ public class CommunicationSourceTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public CommunicationSourceTransfer getCommunicationSourceTransfer(CommunicationSource communicationSource) {
+    public CommunicationSourceTransfer getCommunicationSourceTransfer(UserVisit userVisit, CommunicationSource communicationSource) {
         var communicationSourceTransfer = get(communicationSource);
         
         if(communicationSourceTransfer == null) {
@@ -50,7 +55,7 @@ public class CommunicationSourceTransferCache
             var communicationSourceTypeTransfer = communicationControl.getCommunicationSourceTypeTransfer(userVisit,
                     communicationSourceDetail.getCommunicationSourceType());
             var sortOrder = communicationSourceDetail.getSortOrder();
-            var description = communicationControl.getBestCommunicationSourceDescription(communicationSource, getLanguage());
+            var description = communicationControl.getBestCommunicationSourceDescription(communicationSource, getLanguage(userVisit));
             CommunicationEmailSourceTransfer communicationEmailSourceTransfer = null;
             
             if(includeRelated) {
@@ -64,7 +69,7 @@ public class CommunicationSourceTransferCache
             
             communicationSourceTransfer = new CommunicationSourceTransfer(communicationSourceName, communicationSourceTypeTransfer, 
                     sortOrder, description, communicationEmailSourceTransfer);
-            put(communicationSource, communicationSourceTransfer);
+            put(userVisit, communicationSource, communicationSourceTransfer);
         }
         
         return communicationSourceTransfer;

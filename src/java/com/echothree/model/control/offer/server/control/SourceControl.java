@@ -37,12 +37,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class SourceControl
         extends BaseOfferControl {
 
     /** Creates a new instance of UseControl */
-    public SourceControl() {
+    protected SourceControl() {
         super();
     }
 
@@ -284,14 +286,14 @@ public class SourceControl
     }
 
     public SourceTransfer getSourceTransfer(UserVisit userVisit, Source source) {
-        return getOfferTransferCaches(userVisit).getSourceTransferCache().getSourceTransfer(source);
+        return sourceTransferCache.getSourceTransfer(userVisit, source);
     }
 
     public List<SourceTransfer> getSourceTransfers(UserVisit userVisit, Collection<Source> sources) {
         List<SourceTransfer> sourceTransfers = new ArrayList<>(sources.size());
 
         sources.forEach((source) -> {
-            sourceTransfers.add(getOfferTransferCaches(userVisit).getSourceTransferCache().getSourceTransfer(source));
+            sourceTransfers.add(sourceTransferCache.getSourceTransfer(userVisit, source));
         });
 
         return sourceTransfers;

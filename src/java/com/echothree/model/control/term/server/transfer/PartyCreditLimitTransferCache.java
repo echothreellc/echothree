@@ -19,27 +19,25 @@ package com.echothree.model.control.term.server.transfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.term.common.transfer.PartyCreditLimitTransfer;
-import com.echothree.model.control.term.server.control.TermControl;
 import com.echothree.model.data.term.server.entity.PartyCreditLimit;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.AmountUtils;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PartyCreditLimitTransferCache
         extends BaseTermTransferCache<PartyCreditLimit, PartyCreditLimitTransfer> {
     
-    AccountingControl accountingControl;
-    PartyControl partyControl;
-    
+    AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
+
     /** Creates a new instance of PartyCreditLimitTransferCache */
-    public PartyCreditLimitTransferCache(UserVisit userVisit, TermControl termControl) {
-        super(userVisit, termControl);
-        
-        accountingControl = Session.getModelController(AccountingControl.class);
-        partyControl = Session.getModelController(PartyControl.class);
+    protected PartyCreditLimitTransferCache() {
+        super();
     }
     
-    public PartyCreditLimitTransfer getPartyCreditLimitTransfer(PartyCreditLimit partyCreditLimit) {
+    public PartyCreditLimitTransfer getPartyCreditLimitTransfer(UserVisit userVisit, PartyCreditLimit partyCreditLimit) {
         var partyCreditLimitTransfer = get(partyCreditLimit);
         
         if(partyCreditLimitTransfer == null) {
@@ -51,7 +49,7 @@ public class PartyCreditLimitTransferCache
             
             partyCreditLimitTransfer = new PartyCreditLimitTransfer(partyTransfer, currencyTransfer, creditLimit,
                     potentialCreditLimit);
-            put(partyCreditLimit, partyCreditLimitTransfer);
+            put(userVisit, partyCreditLimit, partyCreditLimitTransfer);
         }
         
         return partyCreditLimitTransfer;

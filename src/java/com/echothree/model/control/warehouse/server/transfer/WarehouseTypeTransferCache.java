@@ -21,13 +21,18 @@ import com.echothree.model.control.warehouse.common.transfer.WarehouseTypeTransf
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.warehouse.server.entity.WarehouseType;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class WarehouseTypeTransferCache
         extends BaseWarehouseTransferCache<WarehouseType, WarehouseTypeTransfer> {
 
+    WarehouseControl warehouseControl = Session.getModelController(WarehouseControl.class);
+
     /** Creates a new instance of WarehouseTypeTransferCache */
-    public WarehouseTypeTransferCache(UserVisit userVisit, WarehouseControl warehouseControl) {
-        super(userVisit, warehouseControl);
+    protected WarehouseTypeTransferCache() {
+        super();
 
         var options = session.getOptions();
         if(options != null) {
@@ -39,7 +44,7 @@ public class WarehouseTypeTransferCache
         setIncludeEntityInstance(true);
     }
 
-    public WarehouseTypeTransfer getTransfer(WarehouseType warehouseType) {
+    public WarehouseTypeTransfer getTransfer(UserVisit userVisit, WarehouseType warehouseType) {
         var warehouseTypeTransfer = get(warehouseType);
         
         if(warehouseTypeTransfer == null) {
@@ -48,11 +53,11 @@ public class WarehouseTypeTransferCache
             var priority = warehouseTypeDetail.getPriority();
             var isDefault = warehouseTypeDetail.getIsDefault();
             var sortOrder = warehouseTypeDetail.getSortOrder();
-            var description = warehouseControl.getBestWarehouseTypeDescription(warehouseType, getLanguage());
+            var description = warehouseControl.getBestWarehouseTypeDescription(warehouseType, getLanguage(userVisit));
             
             warehouseTypeTransfer = new WarehouseTypeTransfer(warehouseTypeName, priority, isDefault, sortOrder,
                     description);
-            put(warehouseType, warehouseTypeTransfer);
+            put(userVisit, warehouseType, warehouseTypeTransfer);
         }
         
         return warehouseTypeTransfer;

@@ -19,37 +19,37 @@ package com.echothree.model.control.sales.server.transfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.batch.server.control.BatchControl;
 import com.echothree.model.control.batch.server.transfer.GenericBatchTransferCache;
-import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.order.server.control.OrderBatchControl;
-import com.echothree.model.control.order.server.control.OrderControl;
 import com.echothree.model.control.payment.server.control.PaymentMethodControl;
 import com.echothree.model.control.sales.common.transfer.SalesOrderBatchTransfer;
 import com.echothree.model.control.sales.server.control.SalesOrderBatchControl;
-import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.batch.server.entity.Batch;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.AmountUtils;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class SalesOrderBatchTransferCache
         extends GenericBatchTransferCache<SalesOrderBatchTransfer> {
     
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
+    BatchControl batchControl = Session.getModelController(BatchControl.class);
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     PaymentMethodControl paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
     OrderBatchControl orderBatchControl = Session.getModelController(OrderBatchControl.class);
     SalesOrderBatchControl salesOrderBatchControl = Session.getModelController(SalesOrderBatchControl.class);
 
     /** Creates a new instance of SalesOrderBatchTransferCache */
-    public SalesOrderBatchTransferCache(UserVisit userVisit) {
-        super(userVisit, (BatchControl)Session.getModelController(BatchControl.class));
+    protected SalesOrderBatchTransferCache() {
+        super();
 
         setIncludeEntityInstance(true);
     }
     
     @Override
-    public SalesOrderBatchTransfer getTransfer(Batch batch) {
+    public SalesOrderBatchTransfer getTransfer(UserVisit userVisit, Batch batch) {
         var salesOrderBatchTransfer = get(batch);
         
         if(salesOrderBatchTransfer == null) {
@@ -66,10 +66,10 @@ public class SalesOrderBatchTransferCache
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(batch.getPrimaryKey());
             
             salesOrderBatchTransfer = new SalesOrderBatchTransfer(batchTypeTransfer, batchName, currencyTransfer, paymentMethodTransfer, count, amount,
-                    getBatchStatus(batch, entityInstance));
-            put(batch, salesOrderBatchTransfer, entityInstance);
+                    getBatchStatus(userVisit, batch, entityInstance));
+            put(userVisit, batch, salesOrderBatchTransfer, entityInstance);
             
-            handleOptions(batch, salesOrderBatchTransfer);
+            handleOptions(userVisit, batch, salesOrderBatchTransfer);
         }
         
         return salesOrderBatchTransfer;

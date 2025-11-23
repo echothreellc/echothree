@@ -35,7 +35,9 @@ import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class GetCurrencyCommand
         extends BaseSingleEntityCommand<Currency, GetCurrencyForm> {
     
@@ -63,24 +65,20 @@ public class GetCurrencyCommand
         var parameterCount = (currencyIsoName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         switch(parameterCount) {
-            case 0:
-                currency = accountingControl.getDefaultCurrency();
-                break;
-            case 1:
+            case 0 -> currency = accountingControl.getDefaultCurrency();
+            case 1 -> {
                 if(currencyIsoName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.Currency.name());
-                    
+
                     if(!hasExecutionErrors()) {
                         currency = accountingControl.getCurrencyByEntityInstance(entityInstance);
                     }
                 } else {
                     currency = CurrencyLogic.getInstance().getCurrencyByName(this, currencyIsoName);
                 }
-                break;
-            default:
-                addExecutionError(ExecutionErrors.InvalidParameterCount.name());
-                break;
+            }
+            default -> addExecutionError(ExecutionErrors.InvalidParameterCount.name());
         }
         
         if(currency != null) {

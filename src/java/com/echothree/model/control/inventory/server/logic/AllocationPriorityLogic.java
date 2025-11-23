@@ -34,7 +34,10 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class AllocationPriorityLogic
         extends BaseLogic {
 
@@ -42,12 +45,8 @@ public class AllocationPriorityLogic
         super();
     }
 
-    private static class AllocationPriorityLogicHolder {
-        static AllocationPriorityLogic instance = new AllocationPriorityLogic();
-    }
-
     public static AllocationPriorityLogic getInstance() {
-        return AllocationPriorityLogicHolder.instance;
+        return CDI.current().select(AllocationPriorityLogic.class).get();
     }
 
     public AllocationPriority createAllocationPriority(final ExecutionErrorAccumulator eea, final String allocationPriorityName,
@@ -97,7 +96,7 @@ public class AllocationPriorityLogic
         var parameterCount = (allocationPriorityName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
-            case 0:
+            case 0 -> {
                 if(allowDefault) {
                     allocationPriority = inventoryControl.getDefaultAllocationPriority(entityPermission);
 
@@ -107,8 +106,8 @@ public class AllocationPriorityLogic
                 } else {
                     handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                 }
-                break;
-            case 1:
+            }
+            case 1 -> {
                 if(allocationPriorityName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.AllocationPriority.name());
@@ -119,10 +118,9 @@ public class AllocationPriorityLogic
                 } else {
                     allocationPriority = getAllocationPriorityByName(eea, allocationPriorityName, entityPermission);
                 }
-                break;
-            default:
-                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
-                break;
+            }
+            default ->
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
 
         return allocationPriority;

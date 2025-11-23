@@ -22,18 +22,21 @@ import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.data.training.server.entity.TrainingClassSectionTranslation;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class TrainingClassSectionTranslationTransferCache
         extends BaseTrainingDescriptionTransferCache<TrainingClassSectionTranslation, TrainingClassSectionTranslationTransfer> {
 
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
-    
+    TrainingControl trainingControl = Session.getModelController(TrainingControl.class);
+
     /** Creates a new instance of TrainingClassSectionTranslationTransferCache */
-    public TrainingClassSectionTranslationTransferCache(UserVisit userVisit, TrainingControl trainingControl) {
-        super(userVisit, trainingControl);
+    protected TrainingClassSectionTranslationTransferCache() {
+        super();
     }
     
-    public TrainingClassSectionTranslationTransfer getTrainingClassSectionTranslationTransfer(TrainingClassSectionTranslation trainingClassSectionTranslation) {
+    public TrainingClassSectionTranslationTransfer getTrainingClassSectionTranslationTransfer(UserVisit userVisit, TrainingClassSectionTranslation trainingClassSectionTranslation) {
         var trainingClassSectionTranslationTransfer = get(trainingClassSectionTranslation);
         
         if(trainingClassSectionTranslationTransfer == null) {
@@ -49,7 +52,7 @@ public class TrainingClassSectionTranslationTransferCache
             
             trainingClassSectionTranslationTransfer = new TrainingClassSectionTranslationTransfer(trainingClassSectionTransfer, languageTransfer, description,
                     overviewMimeTypeTransfer, overview, introductionMimeTypeTransfer, introduction);
-            put(trainingClassSectionTranslation, trainingClassSectionTranslationTransfer);
+            put(userVisit, trainingClassSectionTranslation, trainingClassSectionTranslationTransfer);
         }
         
         return trainingClassSectionTranslationTransfer;

@@ -21,29 +21,31 @@ import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.data.filter.server.entity.FilterAdjustmentType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class FilterAdjustmentTypeTransferCache
         extends BaseFilterTransferCache<FilterAdjustmentType, FilterAdjustmentTypeTransfer> {
 
     FilterControl filterControl = Session.getModelController(FilterControl.class);
 
     /** Creates a new instance of FilterAdjustmentTypeTransferCache */
-    public FilterAdjustmentTypeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected FilterAdjustmentTypeTransferCache() {
+        super();
     }
 
     @Override
-    public FilterAdjustmentTypeTransfer getTransfer(FilterAdjustmentType filterAdjustmentType) {
+    public FilterAdjustmentTypeTransfer getTransfer(UserVisit userVisit, FilterAdjustmentType filterAdjustmentType) {
         var filterAdjustmentTypeTransfer = get(filterAdjustmentType);
         
         if(filterAdjustmentTypeTransfer == null) {
             var filterAdjustmentTypeName = filterAdjustmentType.getFilterAdjustmentTypeName();
             var isDefault = filterAdjustmentType.getIsDefault();
             var sortOrder = filterAdjustmentType.getSortOrder();
-            var description = filterControl.getBestFilterAdjustmentTypeDescription(filterAdjustmentType, getLanguage());
+            var description = filterControl.getBestFilterAdjustmentTypeDescription(filterAdjustmentType, getLanguage(userVisit));
             
             filterAdjustmentTypeTransfer = new FilterAdjustmentTypeTransfer(filterAdjustmentTypeName, isDefault, sortOrder, description);
-            put(filterAdjustmentType, filterAdjustmentTypeTransfer);
+            put(userVisit, filterAdjustmentType, filterAdjustmentTypeTransfer);
         }
         return filterAdjustmentTypeTransfer;
     }

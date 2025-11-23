@@ -20,25 +20,29 @@ import com.echothree.model.control.sequence.common.transfer.SequenceTypeDescript
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.data.sequence.server.entity.SequenceTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class SequenceTypeDescriptionTransferCache
         extends BaseSequenceDescriptionTransferCache<SequenceTypeDescription, SequenceTypeDescriptionTransfer> {
-    
+
+    SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
+
     /** Creates a new instance of SequenceTypeDescriptionTransferCache */
-    public SequenceTypeDescriptionTransferCache(UserVisit userVisit, SequenceControl sequenceControl) {
-        super(userVisit, sequenceControl);
+    protected SequenceTypeDescriptionTransferCache() {
+        super();
     }
     
-    public SequenceTypeDescriptionTransfer getSequenceTypeDescriptionTransfer(SequenceTypeDescription sequenceTypeDescription) {
+    public SequenceTypeDescriptionTransfer getSequenceTypeDescriptionTransfer(UserVisit userVisit, SequenceTypeDescription sequenceTypeDescription) {
         var sequenceTypeDescriptionTransfer = get(sequenceTypeDescription);
         
         if(sequenceTypeDescriptionTransfer == null) {
-            var sequenceTypeTransferCache = sequenceControl.getSequenceTransferCaches(userVisit).getSequenceTypeTransferCache();
-            var sequenceTypeTransfer = sequenceTypeTransferCache.getSequenceTypeTransfer(sequenceTypeDescription.getSequenceType());
+            var sequenceTypeTransfer = sequenceControl.getSequenceTypeTransfer(userVisit, sequenceTypeDescription.getSequenceType());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, sequenceTypeDescription.getLanguage());
             
             sequenceTypeDescriptionTransfer = new SequenceTypeDescriptionTransfer(languageTransfer, sequenceTypeTransfer, sequenceTypeDescription.getDescription());
-            put(sequenceTypeDescription, sequenceTypeDescriptionTransfer);
+            put(userVisit, sequenceTypeDescription, sequenceTypeDescriptionTransfer);
         }
         
         return sequenceTypeDescriptionTransfer;

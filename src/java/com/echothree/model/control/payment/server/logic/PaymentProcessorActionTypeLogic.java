@@ -17,36 +17,35 @@
 package com.echothree.model.control.payment.server.logic;
 
 import com.echothree.control.user.payment.common.spec.PaymentProcessorActionTypeUniversalSpec;
-import com.echothree.model.control.payment.common.exception.DuplicatePaymentProcessorActionTypeNameException;
-import com.echothree.model.control.payment.common.exception.UnknownPaymentProcessorActionTypeNameException;
-import com.echothree.model.control.payment.common.exception.UnknownDefaultPaymentProcessorActionTypeException;
-import com.echothree.model.control.payment.server.control.PaymentProcessorActionTypeControl;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
-import com.echothree.model.data.payment.server.entity.PaymentProcessorActionType;
+import com.echothree.model.control.payment.common.exception.DuplicatePaymentProcessorActionTypeNameException;
+import com.echothree.model.control.payment.common.exception.UnknownDefaultPaymentProcessorActionTypeException;
+import com.echothree.model.control.payment.common.exception.UnknownPaymentProcessorActionTypeNameException;
+import com.echothree.model.control.payment.server.control.PaymentProcessorActionTypeControl;
 import com.echothree.model.data.party.server.entity.Language;
+import com.echothree.model.data.payment.server.entity.PaymentProcessorActionType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class PaymentProcessorActionTypeLogic
     extends BaseLogic {
-    
-    private PaymentProcessorActionTypeLogic() {
+
+    protected PaymentProcessorActionTypeLogic() {
         super();
     }
-    
-    private static class PaymentProcessorActionTypeLogicHolder {
-        static PaymentProcessorActionTypeLogic instance = new PaymentProcessorActionTypeLogic();
-    }
-    
+
     public static PaymentProcessorActionTypeLogic getInstance() {
-        return PaymentProcessorActionTypeLogicHolder.instance;
+        return CDI.current().select(PaymentProcessorActionTypeLogic.class).get();
     }
 
     public PaymentProcessorActionType createPaymentProcessorActionType(final ExecutionErrorAccumulator eea, final String paymentProcessorActionTypeName,
@@ -95,33 +94,29 @@ public class PaymentProcessorActionTypeLogic
         var paymentProcessorActionTypeName = universalSpec.getPaymentProcessorActionTypeName();
         var parameterCount = (paymentProcessorActionTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
-        switch(parameterCount) {
-            case 0:
-                if(allowDefault) {
-                    paymentProcessorActionType = paymentProcessorActionTypeControl.getDefaultPaymentProcessorActionType(entityPermission);
+        if(parameterCount == 0) {
+            if(allowDefault) {
+                paymentProcessorActionType = paymentProcessorActionTypeControl.getDefaultPaymentProcessorActionType(entityPermission);
 
-                    if(paymentProcessorActionType == null) {
-                        handleExecutionError(UnknownDefaultPaymentProcessorActionTypeException.class, eea, ExecutionErrors.UnknownDefaultPaymentProcessorActionType.name());
-                    }
-                } else {
-                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+                if(paymentProcessorActionType == null) {
+                    handleExecutionError(UnknownDefaultPaymentProcessorActionTypeException.class, eea, ExecutionErrors.UnknownDefaultPaymentProcessorActionType.name());
                 }
-                break;
-            case 1:
-                if(paymentProcessorActionTypeName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
-                            ComponentVendors.ECHO_THREE.name(), EntityTypes.PaymentProcessorActionType.name());
-
-                    if(!eea.hasExecutionErrors()) {
-                        paymentProcessorActionType = paymentProcessorActionTypeControl.getPaymentProcessorActionTypeByEntityInstance(entityInstance, entityPermission);
-                    }
-                } else {
-                    paymentProcessorActionType = getPaymentProcessorActionTypeByName(eea, paymentProcessorActionTypeName, entityPermission);
-                }
-                break;
-            default:
+            } else {
                 handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
-                break;
+            }
+        } else if(parameterCount == 1) {
+            if(paymentProcessorActionTypeName == null) {
+                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                        ComponentVendors.ECHO_THREE.name(), EntityTypes.PaymentProcessorActionType.name());
+
+                if(!eea.hasExecutionErrors()) {
+                    paymentProcessorActionType = paymentProcessorActionTypeControl.getPaymentProcessorActionTypeByEntityInstance(entityInstance, entityPermission);
+                }
+            } else {
+                paymentProcessorActionType = getPaymentProcessorActionTypeByName(eea, paymentProcessorActionTypeName, entityPermission);
+            }
+        } else {
+            handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
 
         return paymentProcessorActionType;

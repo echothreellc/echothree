@@ -34,20 +34,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class ReturnKindLogic
         extends BaseLogic {
 
-    private ReturnKindLogic() {
+    protected ReturnKindLogic() {
         super();
     }
 
-    private static class ReturnKindLogicHolder {
-        static ReturnKindLogic instance = new ReturnKindLogic();
-    }
-
     public static ReturnKindLogic getInstance() {
-        return ReturnKindLogic.ReturnKindLogicHolder.instance;
+        return CDI.current().select(ReturnKindLogic.class).get();
     }
 
     public ReturnKind createReturnKind(final ExecutionErrorAccumulator eea, final String returnKindName,
@@ -98,7 +97,7 @@ public class ReturnKindLogic
         var parameterCount = (returnKindName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
-            case 0:
+            case 0 -> {
                 if(allowDefault) {
                     returnKind = returnControl.getDefaultReturnKind(entityPermission);
 
@@ -108,8 +107,8 @@ public class ReturnKindLogic
                 } else {
                     handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                 }
-                break;
-            case 1:
+            }
+            case 1 -> {
                 if(returnKindName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.ReturnKind.name());
@@ -120,10 +119,9 @@ public class ReturnKindLogic
                 } else {
                     returnKind = getReturnKindByName(eea, returnKindName, entityPermission);
                 }
-                break;
-            default:
-                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
-                break;
+            }
+            default ->
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
 
         return returnKind;

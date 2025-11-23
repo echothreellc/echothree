@@ -20,16 +20,21 @@ import com.echothree.model.control.financial.common.transfer.FinancialAccountAli
 import com.echothree.model.control.financial.server.control.FinancialControl;
 import com.echothree.model.data.financial.server.entity.FinancialAccountAlias;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class FinancialAccountAliasTransferCache
         extends BaseFinancialTransferCache<FinancialAccountAlias, FinancialAccountAliasTransfer> {
-    
+
+    FinancialControl financialControl = Session.getModelController(FinancialControl.class);
+
     /** Creates a new instance of FinancialAccountAliasTransferCache */
-    public FinancialAccountAliasTransferCache(UserVisit userVisit, FinancialControl financialControl) {
-        super(userVisit, financialControl);
+    protected FinancialAccountAliasTransferCache() {
+        super();
     }
     
-    public FinancialAccountAliasTransfer getFinancialAccountAliasTransfer(FinancialAccountAlias financialAccountAlias) {
+    public FinancialAccountAliasTransfer getFinancialAccountAliasTransfer(UserVisit userVisit, FinancialAccountAlias financialAccountAlias) {
         var financialAccountAliasTransfer = get(financialAccountAlias);
         
         if(financialAccountAliasTransfer == null) {
@@ -38,7 +43,7 @@ public class FinancialAccountAliasTransferCache
             var alias = financialAccountAlias.getAlias();
             
             financialAccountAliasTransfer = new FinancialAccountAliasTransfer(financial, financialAccountAliasType, alias);
-            put(financialAccountAlias, financialAccountAliasTransfer);
+            put(userVisit, financialAccountAlias, financialAccountAliasTransfer);
         }
         
         return financialAccountAliasTransfer;

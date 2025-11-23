@@ -16,19 +16,19 @@
 
 package com.echothree.model.control.sequence.server.logic.encoder;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
+
+@ApplicationScoped
 public class ReverseSwapSequenceEncoder
         implements SequenceEncoder {
 
-    private ReverseSwapSequenceEncoder() {
+    protected ReverseSwapSequenceEncoder() {
         super();
     }
 
-    private static class SequenceEncoderHolder {
-        static SequenceEncoder instance = new ReverseSwapSequenceEncoder();
-    }
-
-    public static SequenceEncoder getInstance() {
-        return SequenceEncoderHolder.instance;
+    public static ReverseSwapSequenceEncoder getInstance() {
+        return CDI.current().select(ReverseSwapSequenceEncoder.class).get();
     }
 
     @Override

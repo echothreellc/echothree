@@ -20,19 +20,24 @@ import com.echothree.model.control.inventory.common.transfer.AllocationPriorityT
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.data.inventory.server.entity.AllocationPriority;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class AllocationPriorityTransferCache
         extends BaseInventoryTransferCache<AllocationPriority, AllocationPriorityTransfer> {
-    
+
+    InventoryControl inventoryControl = Session.getModelController(InventoryControl.class);
+
     /** Creates a new instance of AllocationPriorityTransferCache */
-    public AllocationPriorityTransferCache(UserVisit userVisit, InventoryControl inventoryControl) {
-        super(userVisit, inventoryControl);
+    protected AllocationPriorityTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
     @Override
-    public AllocationPriorityTransfer getTransfer(AllocationPriority allocationPriority) {
+    public AllocationPriorityTransfer getTransfer(UserVisit userVisit, AllocationPriority allocationPriority) {
         var allocationPriorityTransfer = get(allocationPriority);
         
         if(allocationPriorityTransfer == null) {
@@ -41,10 +46,10 @@ public class AllocationPriorityTransferCache
             var priority = allocationPriorityDetail.getPriority();
             var isDefault = allocationPriorityDetail.getIsDefault();
             var sortOrder = allocationPriorityDetail.getSortOrder();
-            var description = inventoryControl.getBestAllocationPriorityDescription(allocationPriority, getLanguage());
+            var description = inventoryControl.getBestAllocationPriorityDescription(allocationPriority, getLanguage(userVisit));
             
             allocationPriorityTransfer = new AllocationPriorityTransfer(allocationPriorityName, priority, isDefault, sortOrder, description);
-            put(allocationPriority, allocationPriorityTransfer);
+            put(userVisit, allocationPriority, allocationPriorityTransfer);
         }
         
         return allocationPriorityTransfer;

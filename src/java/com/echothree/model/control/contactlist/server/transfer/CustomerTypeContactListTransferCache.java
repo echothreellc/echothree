@@ -22,18 +22,21 @@ import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.data.contactlist.server.entity.CustomerTypeContactList;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CustomerTypeContactListTransferCache
         extends BaseContactListTransferCache<CustomerTypeContactList, CustomerTypeContactListTransfer> {
-    
+
+    ContactListControl contactListControl = Session.getModelController(ContactListControl.class);
     CustomerControl customerControl = Session.getModelController(CustomerControl.class);
     
     /** Creates a new instance of CustomerTypeContactListTransferCache */
-    public CustomerTypeContactListTransferCache(UserVisit userVisit, ContactListControl contactListControl) {
-        super(userVisit, contactListControl);
+    protected CustomerTypeContactListTransferCache() {
+        super();
     }
     
-    public CustomerTypeContactListTransfer getCustomerTypeContactListTransfer(CustomerTypeContactList customerTypeContactList) {
+    public CustomerTypeContactListTransfer getCustomerTypeContactListTransfer(UserVisit userVisit, CustomerTypeContactList customerTypeContactList) {
         var customerTypeContactListTransfer = get(customerTypeContactList);
         
         if(customerTypeContactListTransfer == null) {
@@ -42,7 +45,7 @@ public class CustomerTypeContactListTransferCache
             var addWhenCreated = customerTypeContactList.getAddWhenCreated();
             
             customerTypeContactListTransfer = new CustomerTypeContactListTransfer(customerTypeTransfer, contactListTransfer, addWhenCreated);
-            put(customerTypeContactList, customerTypeContactListTransfer);
+            put(userVisit, customerTypeContactList, customerTypeContactListTransfer);
         }
         
         return customerTypeContactListTransfer;

@@ -24,25 +24,26 @@ import com.echothree.model.data.core.server.entity.TextTransformation;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
+@ApplicationScoped
 public class TextLogic
         extends BaseLogic {
 
-    private TextLogic() {
+    @Inject
+    protected TextControl textControl;
+
+    protected TextLogic() {
         super();
     }
-    
-    private static class TextLogicHolder {
-        static TextLogic instance = new TextLogic();
-    }
-    
+
     public static TextLogic getInstance() {
-        return TextLogicHolder.instance;
+        return CDI.current().select(TextLogic.class).get();
     }
 
     public TextDecoration getTextDecorationByName(final ExecutionErrorAccumulator eea, final String textDecorationName) {
-        var textControl = Session.getModelController(TextControl.class);
         var textDecoration = textControl.getTextDecorationByName(textDecorationName);
 
         if(textDecoration == null) {
@@ -53,7 +54,6 @@ public class TextLogic
     }
     
     public TextTransformation getTextTransformationByName(final ExecutionErrorAccumulator eea, final String textTransformationName) {
-        var textControl = Session.getModelController(TextControl.class);
         var textTransformation = textControl.getTextTransformationByName(textTransformationName);
 
         if(textTransformation == null) {

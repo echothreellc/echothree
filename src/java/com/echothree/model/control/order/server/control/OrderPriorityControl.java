@@ -42,12 +42,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class OrderPriorityControl
         extends BaseOrderControl {
 
     /** Creates a new instance of OrderControl */
-    public OrderPriorityControl() {
+    protected OrderPriorityControl() {
         super();
     }
 
@@ -224,15 +226,14 @@ public class OrderPriorityControl
     }
 
     public OrderPriorityTransfer getOrderPriorityTransfer(UserVisit userVisit, OrderPriority orderPriority) {
-        return getOrderTransferCaches(userVisit).getOrderPriorityTransferCache().getOrderPriorityTransfer(orderPriority);
+        return orderPriorityTransferCache.getOrderPriorityTransfer(userVisit, orderPriority);
     }
 
     public List<OrderPriorityTransfer> getOrderPriorityTransfers(UserVisit userVisit, Collection<OrderPriority> orderPriorities) {
         List<OrderPriorityTransfer> orderPriorityTransfers = new ArrayList<>(orderPriorities.size());
-        var orderPriorityTransferCache = getOrderTransferCaches(userVisit).getOrderPriorityTransferCache();
 
         orderPriorities.forEach((orderPriority) ->
-                orderPriorityTransfers.add(orderPriorityTransferCache.getOrderPriorityTransfer(orderPriority))
+                orderPriorityTransfers.add(orderPriorityTransferCache.getOrderPriorityTransfer(userVisit, orderPriority))
         );
 
         return orderPriorityTransfers;
@@ -441,7 +442,7 @@ public class OrderPriorityControl
         var orderPriorityDescription = getOrderPriorityDescription(orderPriority, language);
 
         if(orderPriorityDescription == null && !language.getIsDefault()) {
-            orderPriorityDescription = getOrderPriorityDescription(orderPriority, getPartyControl().getDefaultLanguage());
+            orderPriorityDescription = getOrderPriorityDescription(orderPriority, partyControl.getDefaultLanguage());
         }
 
         if(orderPriorityDescription == null) {
@@ -454,16 +455,15 @@ public class OrderPriorityControl
     }
 
     public OrderPriorityDescriptionTransfer getOrderPriorityDescriptionTransfer(UserVisit userVisit, OrderPriorityDescription orderPriorityDescription) {
-        return getOrderTransferCaches(userVisit).getOrderPriorityDescriptionTransferCache().getOrderPriorityDescriptionTransfer(orderPriorityDescription);
+        return orderPriorityDescriptionTransferCache.getOrderPriorityDescriptionTransfer(userVisit, orderPriorityDescription);
     }
 
     public List<OrderPriorityDescriptionTransfer> getOrderPriorityDescriptionTransfersByOrderPriority(UserVisit userVisit, OrderPriority orderPriority) {
         var orderPriorityDescriptions = getOrderPriorityDescriptionsByOrderPriority(orderPriority);
         List<OrderPriorityDescriptionTransfer> orderPriorityDescriptionTransfers = new ArrayList<>(orderPriorityDescriptions.size());
-        var orderPriorityDescriptionTransferCache = getOrderTransferCaches(userVisit).getOrderPriorityDescriptionTransferCache();
 
         orderPriorityDescriptions.forEach((orderPriorityDescription) ->
-                orderPriorityDescriptionTransfers.add(orderPriorityDescriptionTransferCache.getOrderPriorityDescriptionTransfer(orderPriorityDescription))
+                orderPriorityDescriptionTransfers.add(orderPriorityDescriptionTransferCache.getOrderPriorityDescriptionTransfer(userVisit, orderPriorityDescription))
         );
 
         return orderPriorityDescriptionTransfers;

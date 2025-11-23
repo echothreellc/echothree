@@ -29,7 +29,9 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.common.transfer.MapWrapper;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class TransactionTransferCache
         extends BaseAccountingTransferCache<Transaction, TransactionTransfer> {
 
@@ -44,8 +46,8 @@ public class TransactionTransferCache
     boolean includeTransactionTimes;
 
     /** Creates a new instance of TransactionTransferCache */
-    public TransactionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected TransactionTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {
@@ -58,7 +60,7 @@ public class TransactionTransferCache
     }
 
     @Override
-    public TransactionTransfer getTransfer(Transaction transaction) {
+    public TransactionTransfer getTransfer(UserVisit userVisit, Transaction transaction) {
         var transactionTransfer = get(transaction);
 
         if(transactionTransfer == null) {
@@ -75,7 +77,7 @@ public class TransactionTransferCache
 
             transactionTransfer = new TransactionTransfer(transactionName, groupPartyTransfer, transactionGroupTransfer,
                     transactionTypeTransfer, transactionStatusTransfer);
-            put(transaction, transactionTransfer);
+            put(userVisit, transaction, transactionTransfer);
             
             if(includeTransactionGlEntries) {
                 transactionTransfer.setTransactionGlEntries(new ListWrapper<>(accountingControl.getTransactionGlEntryTransfersByTransaction(userVisit, transaction)));

@@ -22,17 +22,22 @@ import com.echothree.model.control.message.server.control.MessageControl;
 import com.echothree.model.data.message.server.entity.Message;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class MessageTransferCache
         extends BaseMessageTransferCache<Message, MessageTransfer> {
-    
+
+    MessageControl messageControl = Session.getModelController(MessageControl.class);
+
     boolean includeString;
     boolean includeBlob;
     boolean includeClob;
     
     /** Creates a new instance of MessageTransferCache */
-    public MessageTransferCache(UserVisit userVisit, MessageControl messageControl) {
-        super(userVisit, messageControl);
+    protected MessageTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {
@@ -44,7 +49,7 @@ public class MessageTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public MessageTransfer getMessageTransfer(Message message) {
+    public MessageTransfer getMessageTransfer(UserVisit userVisit, Message message) {
         var messageTransfer = get(message);
         
         if(messageTransfer == null) {
@@ -54,10 +59,10 @@ public class MessageTransferCache
             var includeByDefault = messageDetail.getIncludeByDefault();
             var isDefault = messageDetail.getIsDefault();
             var sortOrder = messageDetail.getSortOrder();
-            var description = messageControl.getBestMessageDescription(message, getLanguage());
+            var description = messageControl.getBestMessageDescription(message, getLanguage(userVisit));
             
             messageTransfer = new MessageTransfer(messageTypeTransfer, messageName, includeByDefault, isDefault, sortOrder, description);
-            put(message, messageTransfer);
+            put(userVisit, message, messageTransfer);
             
             if(includeString) {
                 messageTransfer.setMessageStrings(new ListWrapper<>(messageControl.getMessageStringTransfersByMessage(userVisit, message)));

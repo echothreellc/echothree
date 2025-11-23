@@ -24,18 +24,21 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.carrier.server.entity.PartyCarrierAccount;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PartyCarrierAccountTransferCache
         extends BaseCarrierTransferCache<PartyCarrierAccount, PartyCarrierAccountTransfer> {
-    
+
+    CarrierControl carrierControl = Session.getModelController(CarrierControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of PartyCarrierAccountTransferCache */
-    public PartyCarrierAccountTransferCache(UserVisit userVisit, CarrierControl carrierControl) {
-        super(userVisit, carrierControl);
+    protected PartyCarrierAccountTransferCache() {
+        super();
     }
     
-    public PartyCarrierAccountTransfer getPartyCarrierAccountTransfer(PartyCarrierAccount partyCarrierAccount) {
+    public PartyCarrierAccountTransfer getPartyCarrierAccountTransfer(UserVisit userVisit, PartyCarrierAccount partyCarrierAccount) {
         var partyCarrierAccountTransfer = get(partyCarrierAccount);
         
         if(partyCarrierAccountTransfer == null) {
@@ -46,7 +49,7 @@ public class PartyCarrierAccountTransferCache
             var alwaysUseThirdPartyBilling = partyCarrierAccountDetail.getAlwaysUseThirdPartyBilling();
             
             partyCarrierAccountTransfer = new PartyCarrierAccountTransfer(party, carrier, account, alwaysUseThirdPartyBilling);
-            put(partyCarrierAccount, partyCarrierAccountTransfer);
+            put(userVisit, partyCarrierAccount, partyCarrierAccountTransfer);
         }
         
         return partyCarrierAccountTransfer;

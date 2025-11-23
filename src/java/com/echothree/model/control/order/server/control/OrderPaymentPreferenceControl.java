@@ -34,12 +34,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class OrderPaymentPreferenceControl
         extends BaseOrderControl {
 
     /** Creates a new instance of OrderControl */
-    public OrderPaymentPreferenceControl() {
+    protected OrderPaymentPreferenceControl() {
         super();
     }
 
@@ -251,15 +253,14 @@ public class OrderPaymentPreferenceControl
     }
 
     public OrderPaymentPreferenceTransfer getOrderPaymentPreferenceTransfer(UserVisit userVisit, OrderPaymentPreference orderPaymentPreference) {
-        return getOrderTransferCaches(userVisit).getOrderPaymentPreferenceTransferCache().getOrderPaymentPreferenceTransfer(orderPaymentPreference);
+        return orderPaymentPreferenceTransferCache.getOrderPaymentPreferenceTransfer(userVisit, orderPaymentPreference);
     }
 
     public List<OrderPaymentPreferenceTransfer> getOrderPaymentPreferenceTransfers(UserVisit userVisit, Collection<OrderPaymentPreference> orderPaymentPreferences) {
         List<OrderPaymentPreferenceTransfer> orderPaymentPreferenceTransfers = new ArrayList<>(orderPaymentPreferences.size());
-        var orderPaymentPreferenceTransferCache = getOrderTransferCaches(userVisit).getOrderPaymentPreferenceTransferCache();
 
         orderPaymentPreferences.forEach((orderPaymentPreference) ->
-                orderPaymentPreferenceTransfers.add(orderPaymentPreferenceTransferCache.getOrderPaymentPreferenceTransfer(orderPaymentPreference))
+                orderPaymentPreferenceTransfers.add(orderPaymentPreferenceTransferCache.getOrderPaymentPreferenceTransfer(userVisit, orderPaymentPreference))
         );
 
         return orderPaymentPreferenceTransfers;

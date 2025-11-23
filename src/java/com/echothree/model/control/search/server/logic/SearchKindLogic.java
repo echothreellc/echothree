@@ -33,20 +33,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class SearchKindLogic
         extends BaseLogic {
 
-    private SearchKindLogic() {
+    protected SearchKindLogic() {
         super();
     }
 
-    private static class SearchKindLogicHolder {
-        static SearchKindLogic instance = new SearchKindLogic();
-    }
-
     public static SearchKindLogic getInstance() {
-        return SearchKindLogic.SearchKindLogicHolder.instance;
+        return CDI.current().select(SearchKindLogic.class).get();
     }
 
     public SearchKind createSearchKind(final ExecutionErrorAccumulator eea, final String searchKindName,
@@ -96,7 +95,7 @@ public class SearchKindLogic
         var parameterCount = (searchKindName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
-            case 0:
+            case 0 -> {
                 if(allowDefault) {
                     searchKind = searchControl.getDefaultSearchKind(entityPermission);
 
@@ -106,8 +105,8 @@ public class SearchKindLogic
                 } else {
                     handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                 }
-                break;
-            case 1:
+            }
+            case 1 -> {
                 if(searchKindName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.SearchKind.name());
@@ -118,10 +117,9 @@ public class SearchKindLogic
                 } else {
                     searchKind = getSearchKindByName(eea, searchKindName, entityPermission);
                 }
-                break;
-            default:
-                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
-                break;
+            }
+            default ->
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
 
         return searchKind;

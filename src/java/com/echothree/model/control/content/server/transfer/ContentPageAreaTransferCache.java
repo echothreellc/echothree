@@ -27,10 +27,13 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.common.persistence.type.ByteArray;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ContentPageAreaTransferCache
         extends BaseContentTransferCache<ContentPageArea, ContentPageAreaTransfer> {
 
+    ContentControl contentControl = Session.getModelController(ContentControl.class);
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     
@@ -47,8 +50,8 @@ public class ContentPageAreaTransferCache
     boolean filterEntityInstance;
     
     /** Creates a new instance of ContentPageAreaTransferCache */
-    public ContentPageAreaTransferCache(UserVisit userVisit, ContentControl contentControl) {
-        super(userVisit, contentControl);
+    protected ContentPageAreaTransferCache() {
+        super();
 
         var options = session.getOptions();
         if(options != null) {
@@ -74,7 +77,7 @@ public class ContentPageAreaTransferCache
         setIncludeEntityInstance(!filterEntityInstance);
     }
 
-    public ContentPageAreaTransfer getContentPageAreaTransfer(ContentPageArea contentPageArea) {
+    public ContentPageAreaTransfer getContentPageAreaTransfer(UserVisit userVisit, ContentPageArea contentPageArea) {
         var contentPageAreaTransfer = get(contentPageArea);
         
         if(contentPageAreaTransfer == null) {
@@ -125,7 +128,7 @@ public class ContentPageAreaTransferCache
 
             contentPageAreaTransfer = new ContentPageAreaTransfer(contentPageTransfer, contentPageLayoutAreaTransfer, languageTransfer, mimeTypeTransfer,
                     blob, clob, string, url);
-            put(contentPageArea, contentPageAreaTransfer);
+            put(userVisit, contentPageArea, contentPageAreaTransfer);
         }
         
         return contentPageAreaTransfer;

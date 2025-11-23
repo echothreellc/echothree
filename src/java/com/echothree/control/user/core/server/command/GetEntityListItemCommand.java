@@ -30,7 +30,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class GetEntityListItemCommand
         extends BaseSingleEntityCommand<EntityListItem, GetEntityListItemForm> {
 
@@ -63,7 +65,6 @@ public class GetEntityListItemCommand
 
             if(entityAttributeTypeName.equals(EntityAttributeTypes.LISTITEM.name())
                     || entityAttributeTypeName.equals(EntityAttributeTypes.MULTIPLELISTITEM.name())) {
-                var coreControl = getCoreControl();
                 var entityListItemName = form.getEntityListItemName();
                 
                 entityListItem = coreControl.getEntityListItemByName(entityAttribute, entityListItemName);
@@ -95,7 +96,7 @@ public class GetEntityListItemCommand
         var result = CoreResultFactory.getGetEntityListItemResult();
 
         if(entityListItem != null) {
-            result.setEntityListItem(getCoreControl().getEntityListItemTransfer(getUserVisit(), entityListItem, null));
+            result.setEntityListItem(coreControl.getEntityListItemTransfer(getUserVisit(), entityListItem, null));
         }
         
         return result;

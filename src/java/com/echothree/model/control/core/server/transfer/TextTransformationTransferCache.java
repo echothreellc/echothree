@@ -21,20 +21,22 @@ import com.echothree.model.control.core.server.control.TextControl;
 import com.echothree.model.data.core.server.entity.TextTransformation;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class TextTransformationTransferCache
         extends BaseCoreTransferCache<TextTransformation, TextTransformationTransfer> {
 
     TextControl textControl = Session.getModelController(TextControl.class);
 
     /** Creates a new instance of TextTransformationTransferCache */
-    public TextTransformationTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected TextTransformationTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
 
-    public TextTransformationTransfer getTextTransformationTransfer(TextTransformation textTransformation) {
+    public TextTransformationTransfer getTextTransformationTransfer(UserVisit userVisit, TextTransformation textTransformation) {
         var textTransformationTransfer = get(textTransformation);
 
         if(textTransformationTransfer == null) {
@@ -42,10 +44,10 @@ public class TextTransformationTransferCache
             var textTransformationName = textTransformationDetail.getTextTransformationName();
             var isDefault = textTransformationDetail.getIsDefault();
             var sortOrder = textTransformationDetail.getSortOrder();
-            var description = textControl.getBestTextTransformationDescription(textTransformation, getLanguage());
+            var description = textControl.getBestTextTransformationDescription(textTransformation, getLanguage(userVisit));
 
             textTransformationTransfer = new TextTransformationTransfer(textTransformationName, isDefault, sortOrder, description);
-            put(textTransformation, textTransformationTransfer);
+            put(userVisit, textTransformation, textTransformationTransfer);
         }
 
         return textTransformationTransfer;

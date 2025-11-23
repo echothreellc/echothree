@@ -16,30 +16,83 @@
 
 package com.echothree.model.control.offer.server.control;
 
-import com.echothree.model.control.offer.server.transfer.OfferTransferCaches;
-import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.model.control.offer.server.transfer.OfferChainTypeTransferCache;
+import com.echothree.model.control.offer.server.transfer.OfferCustomerTypeTransferCache;
+import com.echothree.model.control.offer.server.transfer.OfferDescriptionTransferCache;
+import com.echothree.model.control.offer.server.transfer.OfferItemPriceTransferCache;
+import com.echothree.model.control.offer.server.transfer.OfferItemTransferCache;
+import com.echothree.model.control.offer.server.transfer.OfferNameElementDescriptionTransferCache;
+import com.echothree.model.control.offer.server.transfer.OfferNameElementTransferCache;
+import com.echothree.model.control.offer.server.transfer.OfferTransferCache;
+import com.echothree.model.control.offer.server.transfer.OfferUseTransferCache;
+import com.echothree.model.control.offer.server.transfer.SourceTransferCache;
+import com.echothree.model.control.offer.server.transfer.UseDescriptionTransferCache;
+import com.echothree.model.control.offer.server.transfer.UseNameElementDescriptionTransferCache;
+import com.echothree.model.control.offer.server.transfer.UseNameElementTransferCache;
+import com.echothree.model.control.offer.server.transfer.UseTransferCache;
+import com.echothree.model.control.offer.server.transfer.UseTypeDescriptionTransferCache;
+import com.echothree.model.control.offer.server.transfer.UseTypeTransferCache;
 import com.echothree.util.server.control.BaseModelControl;
+import javax.inject.Inject;
 
 public class BaseOfferControl
         extends BaseModelControl {
 
     /** Creates a new instance of BaseOfferControl */
-    public BaseOfferControl() {
+    protected BaseOfferControl() {
         super();
     }
     
     // --------------------------------------------------------------------------------
     //   Offer Transfer Caches
     // --------------------------------------------------------------------------------
-    
-    private OfferTransferCaches offerTransferCaches;
-    
-    public OfferTransferCaches getOfferTransferCaches(UserVisit userVisit) {
-        if(offerTransferCaches == null) {
-            offerTransferCaches = new OfferTransferCaches(userVisit);
-        }
-        
-        return offerTransferCaches;
-    }
-    
+
+    @Inject
+    OfferTransferCache offerTransferCache;
+
+    @Inject
+    OfferDescriptionTransferCache offerDescriptionTransferCache;
+
+    @Inject
+    OfferUseTransferCache offerUseTransferCache;
+
+    @Inject
+    SourceTransferCache sourceTransferCache;
+
+    @Inject
+    OfferItemPriceTransferCache offerItemPriceTransferCache;
+
+    @Inject
+    OfferItemTransferCache offerItemTransferCache;
+
+    @Inject
+    OfferNameElementDescriptionTransferCache offerNameElementDescriptionTransferCache;
+
+    @Inject
+    OfferNameElementTransferCache offerNameElementTransferCache;
+
+    @Inject
+    UseNameElementDescriptionTransferCache useNameElementDescriptionTransferCache;
+
+    @Inject
+    UseNameElementTransferCache useNameElementTransferCache;
+
+    @Inject
+    UseDescriptionTransferCache useDescriptionTransferCache;
+
+    @Inject
+    UseTransferCache useTransferCache;
+
+    @Inject
+    UseTypeDescriptionTransferCache useTypeDescriptionTransferCache;
+
+    @Inject
+    UseTypeTransferCache useTypeTransferCache;
+
+    @Inject
+    OfferCustomerTypeTransferCache offerCustomerTypeTransferCache;
+
+    @Inject
+    OfferChainTypeTransferCache offerChainTypeTransferCache;
+
 }

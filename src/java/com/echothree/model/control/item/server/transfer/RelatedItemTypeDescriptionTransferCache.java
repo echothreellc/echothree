@@ -20,17 +20,22 @@ import com.echothree.model.control.item.common.transfer.RelatedItemTypeDescripti
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.item.server.entity.RelatedItemTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class RelatedItemTypeDescriptionTransferCache
         extends BaseItemDescriptionTransferCache<RelatedItemTypeDescription, RelatedItemTypeDescriptionTransfer> {
-    
+
+    ItemControl itemControl = Session.getModelController(ItemControl.class);
+
     /** Creates a new instance of RelatedItemTypeDescriptionTransferCache */
-    public RelatedItemTypeDescriptionTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    protected RelatedItemTypeDescriptionTransferCache() {
+        super();
     }
     
     @Override
-    public RelatedItemTypeDescriptionTransfer getTransfer(RelatedItemTypeDescription relatedItemTypeDescription) {
+    public RelatedItemTypeDescriptionTransfer getTransfer(UserVisit userVisit, RelatedItemTypeDescription relatedItemTypeDescription) {
         var relatedItemTypeDescriptionTransfer = get(relatedItemTypeDescription);
         
         if(relatedItemTypeDescriptionTransfer == null) {
@@ -38,7 +43,7 @@ public class RelatedItemTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, relatedItemTypeDescription.getLanguage());
             
             relatedItemTypeDescriptionTransfer = new RelatedItemTypeDescriptionTransfer(languageTransfer, relatedItemTypeTransfer, relatedItemTypeDescription.getDescription());
-            put(relatedItemTypeDescription, relatedItemTypeDescriptionTransfer);
+            put(userVisit, relatedItemTypeDescription, relatedItemTypeDescriptionTransfer);
         }
         
         return relatedItemTypeDescriptionTransfer;

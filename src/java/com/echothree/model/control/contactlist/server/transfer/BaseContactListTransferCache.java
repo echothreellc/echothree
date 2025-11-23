@@ -16,8 +16,6 @@
 
 package com.echothree.model.control.contactlist.server.transfer;
 
-import com.echothree.model.control.contactlist.server.control.ContactListControl;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.BaseTransfer;
 import com.echothree.util.server.persistence.BaseEntity;
 import com.echothree.util.server.transfer.BaseTransferCache;
@@ -25,13 +23,9 @@ import com.echothree.util.server.transfer.BaseTransferCache;
 public abstract class BaseContactListTransferCache<K extends BaseEntity, V extends BaseTransfer>
         extends BaseTransferCache<K, V> {
     
-    ContactListControl contactListControl;
-    
     /** Creates a new instance of BaseContactListTransferCache */
-    protected BaseContactListTransferCache(UserVisit userVisit, ContactListControl contactListControl) {
-        super(userVisit);
-        
-        this.contactListControl = contactListControl;
+    protected BaseContactListTransferCache() {
+        super();
     }
     
 }

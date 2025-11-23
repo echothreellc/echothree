@@ -34,12 +34,14 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PartyApplicationEditorUseControl
         extends BasePartyControl {
 
     /** Creates a new instance of PartyApplicationEditorUseControl */
-    public PartyApplicationEditorUseControl() {
+    protected PartyApplicationEditorUseControl() {
         super();
     }
 
@@ -207,15 +209,14 @@ public class PartyApplicationEditorUseControl
     }
 
     public PartyApplicationEditorUseTransfer getPartyApplicationEditorUseTransfer(UserVisit userVisit, PartyApplicationEditorUse partyApplicationEditorUse) {
-        return getPartyTransferCaches(userVisit).getPartyApplicationEditorUseTransferCache().getPartyApplicationEditorUseTransfer(partyApplicationEditorUse);
+        return partyApplicationEditorUseTransferCache.getPartyApplicationEditorUseTransfer(userVisit, partyApplicationEditorUse);
     }
 
     public List<PartyApplicationEditorUseTransfer> getPartyApplicationEditorUseTransfers(List<PartyApplicationEditorUse> partyApplicationEditorUses, UserVisit userVisit) {
         List<PartyApplicationEditorUseTransfer> partyApplicationEditorUseTransfers = new ArrayList<>(partyApplicationEditorUses.size());
-        var partyApplicationEditorUseTransferCache = getPartyTransferCaches(userVisit).getPartyApplicationEditorUseTransferCache();
 
         partyApplicationEditorUses.forEach((partyApplicationEditorUse) ->
-                partyApplicationEditorUseTransfers.add(partyApplicationEditorUseTransferCache.getPartyApplicationEditorUseTransfer(partyApplicationEditorUse))
+                partyApplicationEditorUseTransfers.add(partyApplicationEditorUseTransferCache.getPartyApplicationEditorUseTransfer(userVisit, partyApplicationEditorUse))
         );
 
         return partyApplicationEditorUseTransfers;

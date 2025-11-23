@@ -40,12 +40,14 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PaymentProcessorTypeCodeControl
         extends BasePaymentControl {
 
     /** Creates a new instance of PaymentProcessorTypeCodeControl */
-    public PaymentProcessorTypeCodeControl() {
+    protected PaymentProcessorTypeCodeControl() {
         super();
     }
 
@@ -193,16 +195,15 @@ public class PaymentProcessorTypeCodeControl
 
     public PaymentProcessorTypeCodeTransfer getPaymentProcessorTypeCodeTransfer(final UserVisit userVisit,
             final PaymentProcessorTypeCode paymentProcessorTypeCode) {
-        return getPaymentTransferCaches(userVisit).getPaymentProcessorTypeCodeTransferCache().getTransfer(paymentProcessorTypeCode);
+        return paymentProcessorTypeCodeTransferCache.getTransfer(userVisit, paymentProcessorTypeCode);
     }
 
     public List<PaymentProcessorTypeCodeTransfer> getPaymentProcessorTypeCodeTransfers(final UserVisit userVisit,
             final Collection<PaymentProcessorTypeCode> paymentProcessorTypeCodes) {
         var paymentProcessorTypeCodeTransfers = new ArrayList<PaymentProcessorTypeCodeTransfer>(paymentProcessorTypeCodes.size());
-        var paymentProcessorTypeCodeTransferCache = getPaymentTransferCaches(userVisit).getPaymentProcessorTypeCodeTransferCache();
 
         paymentProcessorTypeCodes.forEach((paymentProcessorTypeCode) ->
-                paymentProcessorTypeCodeTransfers.add(paymentProcessorTypeCodeTransferCache.getTransfer(paymentProcessorTypeCode))
+                paymentProcessorTypeCodeTransfers.add(paymentProcessorTypeCodeTransferCache.getTransfer(userVisit, paymentProcessorTypeCode))
         );
 
         return paymentProcessorTypeCodeTransfers;
@@ -417,7 +418,7 @@ public class PaymentProcessorTypeCodeControl
         String description;
 
         if(paymentProcessorTypeCodeDescription == null && !language.getIsDefault()) {
-            paymentProcessorTypeCodeDescription = getPaymentProcessorTypeCodeDescription(paymentProcessorTypeCode, getPartyControl().getDefaultLanguage());
+            paymentProcessorTypeCodeDescription = getPaymentProcessorTypeCodeDescription(paymentProcessorTypeCode, partyControl.getDefaultLanguage());
         }
 
         if(paymentProcessorTypeCodeDescription == null) {
@@ -431,17 +432,16 @@ public class PaymentProcessorTypeCodeControl
 
     public PaymentProcessorTypeCodeDescriptionTransfer getPaymentProcessorTypeCodeDescriptionTransfer(final UserVisit userVisit,
             final PaymentProcessorTypeCodeDescription paymentProcessorTypeCodeDescription) {
-        return getPaymentTransferCaches(userVisit).getPaymentProcessorTypeCodeDescriptionTransferCache().getTransfer(paymentProcessorTypeCodeDescription);
+        return paymentProcessorTypeCodeDescriptionTransferCache.getTransfer(userVisit, paymentProcessorTypeCodeDescription);
     }
 
     public List<PaymentProcessorTypeCodeDescriptionTransfer> getPaymentProcessorTypeCodeDescriptionTransfersByPaymentProcessorTypeCode(final UserVisit userVisit,
             final PaymentProcessorTypeCode paymentProcessorTypeCode) {
         var paymentProcessorTypeCodeDescriptions = getPaymentProcessorTypeCodeDescriptionsByPaymentProcessorTypeCode(paymentProcessorTypeCode);
         var paymentProcessorTypeCodeDescriptionTransfers = new ArrayList<PaymentProcessorTypeCodeDescriptionTransfer>(paymentProcessorTypeCodeDescriptions.size());
-        var paymentProcessorTypeCodeDescriptionTransferCache = getPaymentTransferCaches(userVisit).getPaymentProcessorTypeCodeDescriptionTransferCache();
 
         paymentProcessorTypeCodeDescriptions.forEach((paymentProcessorTypeCodeDescription) ->
-                paymentProcessorTypeCodeDescriptionTransfers.add(paymentProcessorTypeCodeDescriptionTransferCache.getTransfer(paymentProcessorTypeCodeDescription))
+                paymentProcessorTypeCodeDescriptionTransfers.add(paymentProcessorTypeCodeDescriptionTransferCache.getTransfer(userVisit, paymentProcessorTypeCodeDescription))
         );
 
         return paymentProcessorTypeCodeDescriptionTransfers;

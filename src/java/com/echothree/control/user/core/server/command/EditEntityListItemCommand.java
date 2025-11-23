@@ -38,7 +38,9 @@ import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EditEntityListItemCommand
         extends BaseAbstractEditCommand<EntityListItemUniversalSpec, EntityListItemEdit, EditEntityListItemResult, EntityListItem, EntityListItem> {
     
@@ -103,14 +105,12 @@ public class EditEntityListItemCommand
 
     @Override
     public void fillInResult(EditEntityListItemResult result, EntityListItem entityListItem) {
-        var coreControl = getCoreControl();
 
         result.setEntityListItem(coreControl.getEntityListItemTransfer(getUserVisit(), entityListItem, null));
     }
 
     @Override
     public void doLock(EntityListItemEdit edit, EntityListItem entityListItem) {
-        var coreControl = getCoreControl();
         var entityListItemDescription = coreControl.getEntityListItemDescription(entityListItem, getPreferredLanguage());
         var entityListItemDetail = entityListItem.getLastDetail();
 
@@ -125,7 +125,6 @@ public class EditEntityListItemCommand
 
     @Override
     public void canUpdate(EntityListItem entityListItem) {
-        var coreControl = getCoreControl();
         var entityListItemName = edit.getEntityListItemName();
         var duplicateEntityListItem = coreControl.getEntityListItemByName(entityListItem.getLastDetail().getEntityAttribute(),
                 entityListItemName);
@@ -137,7 +136,6 @@ public class EditEntityListItemCommand
 
     @Override
     public void doUpdate(EntityListItem entityListItem) {
-        var coreControl = getCoreControl();
         var partyPK = getPartyPK();
         var entityListItemDetailValue = coreControl.getEntityListItemDetailValueForUpdate(entityListItem);
         var entityListItemDescription = coreControl.getEntityListItemDescriptionForUpdate(entityListItem, getPreferredLanguage());

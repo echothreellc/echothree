@@ -17,26 +17,27 @@
 package com.echothree.model.control.inventory.server.transfer;
 
 import com.echothree.model.control.inventory.common.transfer.LotAliasTypeTransfer;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.inventory.server.control.LotAliasControl;
 import com.echothree.model.data.inventory.server.entity.LotAliasType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class LotAliasTypeTransferCache
         extends BaseInventoryTransferCache<LotAliasType, LotAliasTypeTransfer> {
 
     LotAliasControl lotAliasControl = Session.getModelController(LotAliasControl.class);
 
     /** Creates a new instance of LotAliasTypeTransferCache */
-    public LotAliasTypeTransferCache(UserVisit userVisit, InventoryControl inventoryControl) {
-        super(userVisit, inventoryControl);
+    protected LotAliasTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
     @Override
-    public LotAliasTypeTransfer getTransfer(LotAliasType lotAliasType) {
+    public LotAliasTypeTransfer getTransfer(UserVisit userVisit, LotAliasType lotAliasType) {
         var lotAliasTypeTransfer = get(lotAliasType);
         
         if(lotAliasTypeTransfer == null) {
@@ -45,10 +46,10 @@ public class LotAliasTypeTransferCache
             var validationPattern = lotAliasTypeDetail.getValidationPattern();
             var isDefault = lotAliasTypeDetail.getIsDefault();
             var sortOrder = lotAliasTypeDetail.getSortOrder();
-            var description = lotAliasControl.getBestLotAliasTypeDescription(lotAliasType, getLanguage());
+            var description = lotAliasControl.getBestLotAliasTypeDescription(lotAliasType, getLanguage(userVisit));
             
             lotAliasTypeTransfer = new LotAliasTypeTransfer(lotAliasTypeName, validationPattern, isDefault, sortOrder, description);
-            put(lotAliasType, lotAliasTypeTransfer);
+            put(userVisit, lotAliasType, lotAliasTypeTransfer);
         }
         
         return lotAliasTypeTransfer;

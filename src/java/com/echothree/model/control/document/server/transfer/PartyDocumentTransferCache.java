@@ -22,18 +22,21 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.document.server.entity.PartyDocument;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PartyDocumentTransferCache
         extends BaseDocumentTransferCache<PartyDocument, PartyDocumentTransfer> {
 
+    DocumentControl documentControl = Session.getModelController(DocumentControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
 
     /** Creates a new instance of PartyDocumentTransferCache */
-    public PartyDocumentTransferCache(UserVisit userVisit, DocumentControl documentControl) {
-        super(userVisit, documentControl);
+    protected PartyDocumentTransferCache() {
+        super();
     }
     
-    public PartyDocumentTransfer getPartyDocumentTransfer(PartyDocument partyDocument) {
+    public PartyDocumentTransfer getPartyDocumentTransfer(UserVisit userVisit, PartyDocument partyDocument) {
         var partyDocumentTransfer = get(partyDocument);
         
         if(partyDocumentTransfer == null) {
@@ -43,7 +46,7 @@ public class PartyDocumentTransferCache
             var sortOrder = partyDocument.getSortOrder();
             
             partyDocumentTransfer = new PartyDocumentTransfer(partyTransfer, documentTransfer, isDefault, sortOrder);
-            put(partyDocument, partyDocumentTransfer);
+            put(userVisit, partyDocument, partyDocumentTransfer);
         }
         
         return partyDocumentTransfer;

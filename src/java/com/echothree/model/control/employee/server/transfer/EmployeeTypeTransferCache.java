@@ -20,18 +20,23 @@ import com.echothree.model.control.employee.common.transfer.EmployeeTypeTransfer
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.data.employee.server.entity.EmployeeType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EmployeeTypeTransferCache
         extends BaseEmployeeTransferCache<EmployeeType, EmployeeTypeTransfer> {
-    
+
+    EmployeeControl employeeControl = Session.getModelController(EmployeeControl.class);
+
     /** Creates a new instance of EmployeeTypeTransferCache */
-    public EmployeeTypeTransferCache(UserVisit userVisit, EmployeeControl employeeControl) {
-        super(userVisit, employeeControl);
+    protected EmployeeTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public EmployeeTypeTransfer getEmployeeTypeTransfer(EmployeeType employeeType) {
+    public EmployeeTypeTransfer getEmployeeTypeTransfer(UserVisit userVisit, EmployeeType employeeType) {
         var employeeTypeTransfer = get(employeeType);
         
         if(employeeTypeTransfer == null) {
@@ -39,10 +44,10 @@ public class EmployeeTypeTransferCache
             var employeeTypeName = employeeTypeDetail.getEmployeeTypeName();
             var isDefault = employeeTypeDetail.getIsDefault();
             var sortOrder = employeeTypeDetail.getSortOrder();
-            var description = employeeControl.getBestEmployeeTypeDescription(employeeType, getLanguage());
+            var description = employeeControl.getBestEmployeeTypeDescription(employeeType, getLanguage(userVisit));
             
             employeeTypeTransfer = new EmployeeTypeTransfer(employeeTypeName, isDefault, sortOrder, description);
-            put(employeeType, employeeTypeTransfer);
+            put(userVisit, employeeType, employeeTypeTransfer);
         }
         
         return employeeTypeTransfer;

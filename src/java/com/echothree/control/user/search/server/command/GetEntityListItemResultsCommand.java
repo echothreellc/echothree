@@ -30,7 +30,9 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class GetEntityListItemResultsCommand
         extends BaseSimpleCommand<GetEntityListItemResultsForm> {
 

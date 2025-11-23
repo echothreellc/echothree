@@ -20,17 +20,22 @@ import com.echothree.model.control.item.common.transfer.ItemImageTypeDescription
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.item.server.entity.ItemImageTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ItemImageTypeDescriptionTransferCache
         extends BaseItemDescriptionTransferCache<ItemImageTypeDescription, ItemImageTypeDescriptionTransfer> {
-    
+
+    ItemControl itemControl = Session.getModelController(ItemControl.class);
+
     /** Creates a new instance of ItemImageTypeDescriptionTransferCache */
-    public ItemImageTypeDescriptionTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    protected ItemImageTypeDescriptionTransferCache() {
+        super();
     }
     
     @Override
-    public ItemImageTypeDescriptionTransfer getTransfer(ItemImageTypeDescription itemImageTypeDescription) {
+    public ItemImageTypeDescriptionTransfer getTransfer(UserVisit userVisit, ItemImageTypeDescription itemImageTypeDescription) {
         var itemImageTypeDescriptionTransfer = get(itemImageTypeDescription);
         
         if(itemImageTypeDescriptionTransfer == null) {
@@ -38,7 +43,7 @@ public class ItemImageTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, itemImageTypeDescription.getLanguage());
             
             itemImageTypeDescriptionTransfer = new ItemImageTypeDescriptionTransfer(languageTransfer, itemImageTypeTransfer, itemImageTypeDescription.getDescription());
-            put(itemImageTypeDescription, itemImageTypeDescriptionTransfer);
+            put(userVisit, itemImageTypeDescription, itemImageTypeDescriptionTransfer);
         }
         
         return itemImageTypeDescriptionTransfer;

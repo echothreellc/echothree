@@ -25,16 +25,19 @@ import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.campaign.server.entity.Campaign;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CampaignTransferCache
         extends BaseCampaignTransferCache<Campaign, CampaignTransfer> {
 
+    CampaignControl campaignControl = Session.getModelController(CampaignControl.class);
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of CampaignTransferCache */
-    public CampaignTransferCache(UserVisit userVisit, CampaignControl campaignControl) {
-        super(userVisit, campaignControl);
+    protected CampaignTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {
@@ -44,7 +47,7 @@ public class CampaignTransferCache
         setIncludeEntityInstance(true);
     }
 
-    public CampaignTransfer getCampaignTransfer(Campaign campaign) {
+    public CampaignTransfer getCampaignTransfer(UserVisit userVisit, Campaign campaign) {
         var campaignTransfer = get(campaign);
 
         if(campaignTransfer == null) {
@@ -54,7 +57,7 @@ public class CampaignTransferCache
             var value = campaignDetail.getValue();
             var isDefault = campaignDetail.getIsDefault();
             var sortOrder = campaignDetail.getSortOrder();
-            var description = campaignControl.getBestCampaignDescription(campaign, getLanguage());
+            var description = campaignControl.getBestCampaignDescription(campaign, getLanguage(userVisit));
 
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(campaign.getPrimaryKey());
             var campaignStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
@@ -62,7 +65,7 @@ public class CampaignTransferCache
             
             campaignTransfer = new CampaignTransfer(campaignName, valueSha1Hash, value, isDefault, sortOrder, description,
                     campaignStatusTransfer);
-            put(campaign, campaignTransfer);
+            put(userVisit, campaign, campaignTransfer);
         }
 
         return campaignTransfer;

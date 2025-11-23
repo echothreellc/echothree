@@ -38,12 +38,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class OfferNameElementControl
         extends BaseOfferControl {
 
     /** Creates a new instance of OfferNameElementControl */
-    public OfferNameElementControl() {
+    protected OfferNameElementControl() {
         super();
     }
     
@@ -167,15 +169,14 @@ public class OfferNameElementControl
     }
     
     public OfferNameElementTransfer getOfferNameElementTransfer(UserVisit userVisit, OfferNameElement offerNameElement) {
-        return getOfferTransferCaches(userVisit).getOfferNameElementTransferCache().getOfferNameElementTransfer(offerNameElement);
+        return offerNameElementTransferCache.getOfferNameElementTransfer(userVisit, offerNameElement);
     }
     
     public List<OfferNameElementTransfer> getOfferNameElementTransfers(UserVisit userVisit, Collection<OfferNameElement> offerNameElements) {
         List<OfferNameElementTransfer> offerNameElementTransfers = new ArrayList<>(offerNameElements.size());
-        var offerNameElementTransferCache = getOfferTransferCaches(userVisit).getOfferNameElementTransferCache();
         
         for(var offerNameElement : offerNameElements) {
-            offerNameElementTransfers.add(offerNameElementTransferCache.getOfferNameElementTransfer(offerNameElement));
+            offerNameElementTransfers.add(offerNameElementTransferCache.getOfferNameElementTransfer(userVisit, offerNameElement));
         }
         
         return offerNameElementTransfers;
@@ -329,7 +330,7 @@ public class OfferNameElementControl
         var offerNameElementDescription = getOfferNameElementDescription(offerNameElement, language);
         
         if(offerNameElementDescription == null && !language.getIsDefault()) {
-            offerNameElementDescription = getOfferNameElementDescription(offerNameElement, getPartyControl().getDefaultLanguage());
+            offerNameElementDescription = getOfferNameElementDescription(offerNameElement, partyControl.getDefaultLanguage());
         }
         
         if(offerNameElementDescription == null) {
@@ -343,16 +344,15 @@ public class OfferNameElementControl
     
     public OfferNameElementDescriptionTransfer getOfferNameElementDescriptionTransfer(UserVisit userVisit,
             OfferNameElementDescription offerNameElementDescription) {
-        return getOfferTransferCaches(userVisit).getOfferNameElementDescriptionTransferCache().getOfferNameElementDescriptionTransfer(offerNameElementDescription);
+        return offerNameElementDescriptionTransferCache.getOfferNameElementDescriptionTransfer(userVisit, offerNameElementDescription);
     }
     
     public List<OfferNameElementDescriptionTransfer> getOfferNameElementDescriptionTransfersByOfferNameElement(UserVisit userVisit, OfferNameElement offerNameElement) {
         var offerNameElementDescriptions = getOfferNameElementDescriptionsByOfferNameElement(offerNameElement);
         List<OfferNameElementDescriptionTransfer> offerNameElementDescriptionTransfers = new ArrayList<>(offerNameElementDescriptions.size());
-        var offerNameElementDescriptionTransferCache = getOfferTransferCaches(userVisit).getOfferNameElementDescriptionTransferCache();
         
         offerNameElementDescriptions.forEach((offerNameElementDescription) ->
-                offerNameElementDescriptionTransfers.add(offerNameElementDescriptionTransferCache.getOfferNameElementDescriptionTransfer(offerNameElementDescription))
+                offerNameElementDescriptionTransfers.add(offerNameElementDescriptionTransferCache.getOfferNameElementDescriptionTransfer(userVisit, offerNameElementDescription))
         );
         
         return offerNameElementDescriptionTransfers;

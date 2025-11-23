@@ -21,20 +21,22 @@ import com.echothree.model.control.offer.server.control.UseTypeControl;
 import com.echothree.model.data.offer.server.entity.UseType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class UseTypeTransferCache
         extends BaseOfferTransferCache<UseType, UseTypeTransfer> {
 
     UseTypeControl useTypeControl = Session.getModelController(UseTypeControl.class);
 
     /** Creates a new instance of UseTypeTransferCache */
-    public UseTypeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected UseTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public UseTypeTransfer getUseTypeTransfer(UseType useType) {
+    public UseTypeTransfer getUseTypeTransfer(UserVisit userVisit, UseType useType) {
         var useTypeTransfer = get(useType);
         
         if(useTypeTransfer == null) {
@@ -42,10 +44,10 @@ public class UseTypeTransferCache
             var useTypeName = useTypeDetail.getUseTypeName();
             var isDefault = useTypeDetail.getIsDefault();
             var sortOrder = useTypeDetail.getSortOrder();
-            var description = useTypeControl.getBestUseTypeDescription(useType, getLanguage());
+            var description = useTypeControl.getBestUseTypeDescription(useType, getLanguage(userVisit));
             
             useTypeTransfer = new UseTypeTransfer(useTypeName, isDefault, sortOrder, description);
-            put(useType, useTypeTransfer);
+            put(userVisit, useType, useTypeTransfer);
         }
         
         return useTypeTransfer;

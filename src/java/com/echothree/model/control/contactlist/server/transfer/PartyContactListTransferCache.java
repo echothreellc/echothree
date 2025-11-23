@@ -26,10 +26,13 @@ import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.contactlist.server.entity.PartyContactList;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PartyContactListTransferCache
         extends BaseContactListTransferCache<PartyContactList, PartyContactListTransfer> {
-    
+
+    ContactListControl contactListControl = Session.getModelController(ContactListControl.class);
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
@@ -38,8 +41,8 @@ public class PartyContactListTransferCache
     boolean includeComments;
     
     /** Creates a new instance of PartyContactListTransferCache */
-    public PartyContactListTransferCache(UserVisit userVisit, ContactListControl contactListControl) {
-        super(userVisit, contactListControl);
+    protected PartyContactListTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {
@@ -51,7 +54,7 @@ public class PartyContactListTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public PartyContactListTransfer getPartyContactListTransfer(PartyContactList partyContactList) {
+    public PartyContactListTransfer getPartyContactListTransfer(UserVisit userVisit, PartyContactList partyContactList) {
         var partyContactListTransfer = get(partyContactList);
         
         if(partyContactListTransfer == null) {
@@ -64,7 +67,7 @@ public class PartyContactListTransferCache
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(partyContactList.getPrimaryKey());
             
             partyContactListTransfer = new PartyContactListTransfer(partyTransfer, contactListTransfer, preferredContactListContactMechanismPurposeTransfer);
-            put(partyContactList, partyContactListTransfer, entityInstance);
+            put(userVisit, partyContactList, partyContactListTransfer, entityInstance);
             
             if(includeStatus) {
                 var workflow = contactList.getLastDetail().getDefaultPartyContactListStatus().getLastDetail().getWorkflow();
@@ -76,7 +79,7 @@ public class PartyContactListTransferCache
             }
 
             if(includeComments) {
-                setupComments(partyContactList, entityInstance, partyContactListTransfer, CommentConstants.CommentType_PARTY_CONTACT_LIST);
+                setupComments(userVisit, partyContactList, entityInstance, partyContactListTransfer, CommentConstants.CommentType_PARTY_CONTACT_LIST);
             }
         }
         

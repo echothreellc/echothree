@@ -26,7 +26,9 @@ import com.echothree.model.control.payment.server.control.PaymentProcessorContro
 import com.echothree.model.data.payment.server.entity.PaymentMethod;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PaymentMethodTransferCache
         extends BasePaymentTransferCache<PaymentMethod, PaymentMethodTransfer> {
 
@@ -37,8 +39,8 @@ public class PaymentMethodTransferCache
     boolean includeComments;
 
     /** Creates a new instance of PaymentMethodTransferCache */
-    public PaymentMethodTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected PaymentMethodTransferCache() {
+        super();
 
         var options = session.getOptions();
         if(options != null) {
@@ -51,7 +53,7 @@ public class PaymentMethodTransferCache
     }
 
     @Override
-    public PaymentMethodTransfer getTransfer(PaymentMethod paymentMethod) {
+    public PaymentMethodTransfer getTransfer(UserVisit userVisit, PaymentMethod paymentMethod) {
         var paymentMethodTransfer = get(paymentMethod);
         
         if(paymentMethodTransfer == null) {
@@ -63,7 +65,7 @@ public class PaymentMethodTransferCache
             var paymentProcessorTransfer = paymentProcessor == null ? null : paymentProcessorControl.getPaymentProcessorTransfer(userVisit, paymentProcessor);
             var isDefault = paymentMethodDetail.getIsDefault();
             var sortOrder = paymentMethodDetail.getSortOrder();
-            var description = paymentMethodControl.getBestPaymentMethodDescription(paymentMethod, getLanguage());
+            var description = paymentMethodControl.getBestPaymentMethodDescription(paymentMethod, getLanguage(userVisit));
             Boolean requestNameOnCard = null;
             Boolean requireNameOnCard = null;
             Boolean checkCardNumber = null;
@@ -111,10 +113,10 @@ public class PaymentMethodTransferCache
                     isDefault, sortOrder, description, requestNameOnCard, requireNameOnCard, checkCardNumber,
                     requestExpirationDate, requireExpirationDate, checkExpirationDate, requestSecurityCode, requireSecurityCode, cardNumberValidationPattern,
                     securityCodeValidationPattern, retainCreditCard, retainSecurityCode, requestBilling, requireBilling, requestIssuer, requireIssuer, holdDays);
-            put(paymentMethod, paymentMethodTransfer);
+            put(userVisit, paymentMethod, paymentMethodTransfer);
 
             if(includeComments) {
-                setupComments(paymentMethod, null, paymentMethodTransfer, CommentConstants.CommentType_PAYMENT_METHOD);
+                setupComments(userVisit, paymentMethod, null, paymentMethodTransfer, CommentConstants.CommentType_PAYMENT_METHOD);
             }
         }
 

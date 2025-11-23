@@ -21,19 +21,21 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.party.server.entity.Person;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PersonTransferCache
         extends BasePartyTransferCache<Person, PersonTransfer> {
 
     PartyControl partyControl = Session.getModelController(PartyControl.class);
 
     /** Creates a new instance of PersonTransferCache */
-    public PersonTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected PersonTransferCache() {
+        super();
     }
 
     @Override
-    public PersonTransfer getTransfer(Person person) {
+    public PersonTransfer getTransfer(UserVisit userVisit, Person person) {
         var personTransfer = get(person);
         
         if(personTransfer == null) {
@@ -46,7 +48,7 @@ public class PersonTransferCache
             var nameSuffixTransfer = nameSuffix == null? null: partyControl.getNameSuffixTransfer(userVisit, nameSuffix);
             
             personTransfer = new PersonTransfer(personalTitleTransfer, firstName, middleName, lastName, nameSuffixTransfer);
-            put(person, personTransfer);
+            put(userVisit, person, personTransfer);
         }
         
         return personTransfer;

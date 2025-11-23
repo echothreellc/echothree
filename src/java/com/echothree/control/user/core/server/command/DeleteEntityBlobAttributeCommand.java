@@ -32,7 +32,9 @@ import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class DeleteEntityBlobAttributeCommand
         extends BaseSimpleCommand<DeleteEntityBlobAttributeForm> {
 
@@ -64,7 +66,6 @@ public class DeleteEntityBlobAttributeCommand
         var entityInstance = entityInstanceControl.getEntityInstanceByEntityRef(entityRef);
         
         if(entityInstance != null) {
-            var coreControl = getCoreControl();
             var entityAttributeName = form.getEntityAttributeName();
             var entityAttribute = coreControl.getEntityAttributeByName(entityInstance.getEntityType(), entityAttributeName);
             

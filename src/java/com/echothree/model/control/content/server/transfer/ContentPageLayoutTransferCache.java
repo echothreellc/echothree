@@ -20,18 +20,23 @@ import com.echothree.model.control.content.common.transfer.ContentPageLayoutTran
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.data.content.server.entity.ContentPageLayout;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ContentPageLayoutTransferCache
         extends BaseContentTransferCache<ContentPageLayout, ContentPageLayoutTransfer> {
-    
+
+    ContentControl contentControl = Session.getModelController(ContentControl.class);
+
     /** Creates a new instance of ContentPageLayoutTransferCache */
-    public ContentPageLayoutTransferCache(UserVisit userVisit, ContentControl contentControl) {
-        super(userVisit, contentControl);
+    protected ContentPageLayoutTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public ContentPageLayoutTransfer getTransfer(ContentPageLayout contentPageLayout) {
+    public ContentPageLayoutTransfer getTransfer(UserVisit userVisit, ContentPageLayout contentPageLayout) {
         var contentPageLayoutTransfer = get(contentPageLayout);
         
         if(contentPageLayoutTransfer == null) {
@@ -39,10 +44,10 @@ public class ContentPageLayoutTransferCache
             var contentPageLayoutName = contentPageLayoutDetail.getContentPageLayoutName();
             var isDefault = contentPageLayoutDetail.getIsDefault();
             var sortOrder = contentPageLayoutDetail.getSortOrder();
-            var description = contentControl.getBestContentPageLayoutDescription(contentPageLayout, getLanguage());
+            var description = contentControl.getBestContentPageLayoutDescription(contentPageLayout, getLanguage(userVisit));
             
             contentPageLayoutTransfer = new ContentPageLayoutTransfer(contentPageLayoutName, isDefault, sortOrder, description);
-            put(contentPageLayout, contentPageLayoutTransfer);
+            put(userVisit, contentPageLayout, contentPageLayoutTransfer);
         }
         
         return contentPageLayoutTransfer;

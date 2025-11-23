@@ -37,20 +37,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class PaymentProcessorTypeCodeTypeLogic
     extends BaseLogic {
-    
-    private PaymentProcessorTypeCodeTypeLogic() {
+
+    protected PaymentProcessorTypeCodeTypeLogic() {
         super();
     }
-    
-    private static class PaymentProcessorTypeCodeTypeLogicHolder {
-        static PaymentProcessorTypeCodeTypeLogic instance = new PaymentProcessorTypeCodeTypeLogic();
-    }
-    
+
     public static PaymentProcessorTypeCodeTypeLogic getInstance() {
-        return PaymentProcessorTypeCodeTypeLogicHolder.instance;
+        return CDI.current().select(PaymentProcessorTypeCodeTypeLogic.class).get();
     }
 
     public PaymentProcessorTypeCodeType createPaymentProcessorTypeCodeType(final ExecutionErrorAccumulator eea,
@@ -144,7 +143,7 @@ public class PaymentProcessorTypeCodeTypeLogic
         var parameterCount = (paymentProcessorTypeName != null && paymentProcessorTypeCodeTypeName != null ? 1 : 0) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
-            case 0:
+            case 0 -> {
                 if(allowDefault) {
                     if(paymentProcessorTypeName != null) {
                         var paymentProcessorType = PaymentProcessorTypeLogic.getInstance().getPaymentProcessorTypeByName(eea, universalSpec.getPaymentProcessorTypeName());
@@ -162,8 +161,8 @@ public class PaymentProcessorTypeCodeTypeLogic
                 } else {
                     handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                 }
-                break;
-            case 1:
+            }
+            case 1 -> {
                 if(paymentProcessorTypeName != null && paymentProcessorTypeCodeTypeName != null) {
                     var paymentProcessorType = PaymentProcessorTypeLogic.getInstance().getPaymentProcessorTypeByName(eea, universalSpec.getPaymentProcessorTypeName());
 
@@ -179,10 +178,9 @@ public class PaymentProcessorTypeCodeTypeLogic
                         paymentProcessorTypeCodeType = paymentProcessorTypeCodeTypeControl.getPaymentProcessorTypeCodeTypeByEntityInstance(entityInstance, entityPermission);
                     }
                 }
-                break;
-            default:
-                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
-                break;
+            }
+            default ->
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
 
         return paymentProcessorTypeCodeType;

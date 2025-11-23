@@ -21,13 +21,18 @@ import com.echothree.model.control.content.common.transfer.ContentWebAddressTran
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.data.content.server.entity.ContentWebAddress;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ContentWebAddressTransferCache
         extends BaseContentTransferCache<ContentWebAddress, ContentWebAddressTransfer> {
-    
+
+    ContentControl contentControl = Session.getModelController(ContentControl.class);
+
     /** Creates a new instance of ContentWebAddressTransferCache */
-    public ContentWebAddressTransferCache(UserVisit userVisit, ContentControl contentControl) {
-        super(userVisit, contentControl);
+    protected ContentWebAddressTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {
@@ -39,17 +44,17 @@ public class ContentWebAddressTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public ContentWebAddressTransfer getContentWebAddressTransfer(ContentWebAddress contentWebAddress) {
+    public ContentWebAddressTransfer getContentWebAddressTransfer(UserVisit userVisit, ContentWebAddress contentWebAddress) {
         var contentWebAddressTransfer = get(contentWebAddress);
         
         if(contentWebAddressTransfer == null) {
             var contentWebAddressDetail = contentWebAddress.getLastDetail();
             var contentWebAddressName = contentWebAddressDetail.getContentWebAddressName();
             var contentCollectionTransfer = contentControl.getContentCollectionTransfer(userVisit, contentWebAddressDetail.getContentCollection());
-            var description = contentControl.getBestContentWebAddressDescription(contentWebAddress, getLanguage());
+            var description = contentControl.getBestContentWebAddressDescription(contentWebAddress, getLanguage(userVisit));
             
             contentWebAddressTransfer = new ContentWebAddressTransfer(contentWebAddressName, contentCollectionTransfer, description);
-            put(contentWebAddress, contentWebAddressTransfer);
+            put(userVisit, contentWebAddress, contentWebAddressTransfer);
         }
         
         return contentWebAddressTransfer;

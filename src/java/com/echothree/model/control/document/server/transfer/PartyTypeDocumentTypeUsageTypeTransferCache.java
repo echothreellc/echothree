@@ -22,18 +22,21 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.document.server.entity.PartyTypeDocumentTypeUsageType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PartyTypeDocumentTypeUsageTypeTransferCache
         extends BaseDocumentTransferCache<PartyTypeDocumentTypeUsageType, PartyTypeDocumentTypeUsageTypeTransfer> {
 
+    DocumentControl documentControl = Session.getModelController(DocumentControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
 
     /** Creates a new instance of PartyTypeDocumentTypeUsageTypeTransferCache */
-    public PartyTypeDocumentTypeUsageTypeTransferCache(UserVisit userVisit, DocumentControl documentControl) {
-        super(userVisit, documentControl);
+    protected PartyTypeDocumentTypeUsageTypeTransferCache() {
+        super();
     }
     
-    public PartyTypeDocumentTypeUsageTypeTransfer getPartyTypeDocumentTypeUsageTypeTransfer(PartyTypeDocumentTypeUsageType partyTypeDocumentTypeUsageType) {
+    public PartyTypeDocumentTypeUsageTypeTransfer getPartyTypeDocumentTypeUsageTypeTransfer(UserVisit userVisit, PartyTypeDocumentTypeUsageType partyTypeDocumentTypeUsageType) {
         var partyTypeDocumentTypeUsageTypeTransfer = get(partyTypeDocumentTypeUsageType);
         
         if(partyTypeDocumentTypeUsageTypeTransfer == null) {
@@ -43,7 +46,7 @@ public class PartyTypeDocumentTypeUsageTypeTransferCache
             var sortOrder = partyTypeDocumentTypeUsageType.getSortOrder();
             
             partyTypeDocumentTypeUsageTypeTransfer = new PartyTypeDocumentTypeUsageTypeTransfer(partyTypeTransfer, documentTypeUsageTypeTransfer, isDefault, sortOrder);
-            put(partyTypeDocumentTypeUsageType, partyTypeDocumentTypeUsageTypeTransfer);
+            put(userVisit, partyTypeDocumentTypeUsageType, partyTypeDocumentTypeUsageTypeTransfer);
         }
         
         return partyTypeDocumentTypeUsageTypeTransfer;

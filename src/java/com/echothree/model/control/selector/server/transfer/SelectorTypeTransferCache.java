@@ -20,18 +20,23 @@ import com.echothree.model.control.selector.common.transfer.SelectorTypeTransfer
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.selector.server.entity.SelectorType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class SelectorTypeTransferCache
         extends BaseSelectorTransferCache<SelectorType, SelectorTypeTransfer> {
-    
+
+    SelectorControl selectorControl = Session.getModelController(SelectorControl.class);
+
     /** Creates a new instance of SelectorTypeTransferCache */
-    public SelectorTypeTransferCache(UserVisit userVisit, SelectorControl selectorControl) {
-        super(userVisit, selectorControl);
+    protected SelectorTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public SelectorTypeTransfer getSelectorTypeTransfer(SelectorType selectorType) {
+    public SelectorTypeTransfer getSelectorTypeTransfer(UserVisit userVisit, SelectorType selectorType) {
         var selectorTypeTransfer = get(selectorType);
         
         if(selectorTypeTransfer == null) {
@@ -40,10 +45,10 @@ public class SelectorTypeTransferCache
             var selectorTypeName = selectorTypeDetail.getSelectorTypeName();
             var isDefault = selectorTypeDetail.getIsDefault();
             var sortOrder = selectorTypeDetail.getSortOrder();
-            var description = selectorControl.getBestSelectorTypeDescription(selectorType, getLanguage());
+            var description = selectorControl.getBestSelectorTypeDescription(selectorType, getLanguage(userVisit));
             
             selectorTypeTransfer = new SelectorTypeTransfer(selectorKindTransfer, selectorTypeName, isDefault, sortOrder, description);
-            put(selectorType, selectorTypeTransfer);
+            put(userVisit, selectorType, selectorTypeTransfer);
         }
         
         return selectorTypeTransfer;

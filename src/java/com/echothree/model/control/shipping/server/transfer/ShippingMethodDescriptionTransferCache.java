@@ -21,18 +21,20 @@ import com.echothree.model.control.shipping.server.control.ShippingControl;
 import com.echothree.model.data.shipping.server.entity.ShippingMethodDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ShippingMethodDescriptionTransferCache
         extends BaseShippingDescriptionTransferCache<ShippingMethodDescription, ShippingMethodDescriptionTransfer> {
 
     ShippingControl shippingControl = Session.getModelController(ShippingControl.class);
 
     /** Creates a new instance of ShippingMethodDescriptionTransferCache */
-    public ShippingMethodDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected ShippingMethodDescriptionTransferCache() {
+        super();
     }
     
-    public ShippingMethodDescriptionTransfer getShippingMethodDescriptionTransfer(ShippingMethodDescription shippingMethodDescription) {
+    public ShippingMethodDescriptionTransfer getShippingMethodDescriptionTransfer(UserVisit userVisit, ShippingMethodDescription shippingMethodDescription) {
         var shippingMethodDescriptionTransfer = get(shippingMethodDescription);
         
         if(shippingMethodDescriptionTransfer == null) {
@@ -42,7 +44,7 @@ public class ShippingMethodDescriptionTransferCache
             
             shippingMethodDescriptionTransfer = new ShippingMethodDescriptionTransfer(languageTransfer, shippingMethodTransfer,
                     description);
-            put(shippingMethodDescription, shippingMethodDescriptionTransfer);
+            put(userVisit, shippingMethodDescription, shippingMethodDescriptionTransfer);
         }
         
         return shippingMethodDescriptionTransfer;

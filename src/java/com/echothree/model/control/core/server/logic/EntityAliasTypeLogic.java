@@ -52,20 +52,38 @@ import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
+@ApplicationScoped
 public class EntityAliasTypeLogic
         extends BaseLogic {
-    
-    private EntityAliasTypeLogic() {
+
+    @Inject
+    protected EntityAliasControl entityAliasControl;
+
+    @Inject
+    protected IndexControl indexControl;
+
+    @Inject
+    protected QueueControl queueControl;
+
+    @Inject
+    protected EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    protected EntityTypeLogic entityTypeLogic;
+
+    @Inject
+    protected QueueTypeLogic queueTypeLogic;
+
+    protected EntityAliasTypeLogic() {
         super();
     }
-    
-    private static class EntityAliasTypeLogicHolder {
-        static EntityAliasTypeLogic instance = new EntityAliasTypeLogic();
-    }
-    
+
     public static EntityAliasTypeLogic getInstance() {
-        return EntityAliasTypeLogicHolder.instance;
+        return CDI.current().select(EntityAliasTypeLogic.class).get();
     }
 
     public EntityAliasType createEntityAliasType(final ExecutionErrorAccumulator eea, final EntityType entityType,
@@ -75,8 +93,6 @@ public class EntityAliasTypeLogic
         var entityTypeDetail = entityType.getLastDetail();
 
         if(entityTypeDetail.getIsExtensible()) {
-            var entityAliasControl = Session.getModelController(EntityAliasControl.class);
-
             entityAliasType = entityAliasControl.getEntityAliasTypeByName(entityType, entityAliasTypeName);
 
             if(entityAliasType == null) {
@@ -100,7 +116,6 @@ public class EntityAliasTypeLogic
     
     public EntityAliasType getEntityAliasTypeByName(final ExecutionErrorAccumulator eea, final EntityType entityType,
             final String entityAliasTypeName, EntityPermission entityPermission) {
-        var entityAliasControl = Session.getModelController(EntityAliasControl.class);
         var entityAliasType = entityAliasControl.getEntityAliasTypeByName(entityType, entityAliasTypeName, entityPermission);
 
         if(entityAliasType == null) {
@@ -125,7 +140,7 @@ public class EntityAliasTypeLogic
     
     public EntityAliasType getEntityAliasTypeByName(final ExecutionErrorAccumulator eea, final ComponentVendor componentVendor,
             final String entityTypeName, final String entityAliasTypeName, EntityPermission entityPermission) {
-        var entityType = EntityTypeLogic.getInstance().getEntityTypeByName(eea, componentVendor, entityTypeName);
+        var entityType = entityTypeLogic.getEntityTypeByName(eea, componentVendor, entityTypeName);
         EntityAliasType entityAliasType = null;
         
         if(eea == null || !eea.hasExecutionErrors()) {
@@ -147,7 +162,7 @@ public class EntityAliasTypeLogic
     
     public EntityAliasType getEntityAliasTypeByName(final ExecutionErrorAccumulator eea, final String componentVendorName,
             final String entityTypeName, final String entityAliasTypeName, EntityPermission entityPermission) {
-        var entityType = EntityTypeLogic.getInstance().getEntityTypeByName(eea, componentVendorName, entityTypeName);
+        var entityType = entityTypeLogic.getEntityTypeByName(eea, componentVendorName, entityTypeName);
         EntityAliasType entityAliasType = null;
         
         if(eea == null || !eea.hasExecutionErrors()) {
@@ -171,12 +186,10 @@ public class EntityAliasTypeLogic
             final EntityPermission entityPermission) {
         EntityAliasType entityAliasType = null;
         
-        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, (String)null, uuid,
+        var entityInstance = entityInstanceLogic.getEntityInstance(eea, (String)null, uuid,
                 ComponentVendors.ECHO_THREE.name(), EntityTypes.EntityAliasType.name());
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            var entityAliasControl = Session.getModelController(EntityAliasControl.class);
-            
             entityAliasType = entityAliasControl.getEntityAliasTypeByEntityInstance(entityInstance, entityPermission);
         }
 
@@ -198,19 +211,17 @@ public class EntityAliasTypeLogic
         var componentVendorName = universalSpec.getComponentVendorName();
         var entityTypeName = universalSpec.getEntityTypeName();
         var entityAliasTypeName = universalSpec.getEntityAliasTypeName();
-        var universalSpecCount = EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var universalSpecCount = entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
         var parameterCount = (componentVendorName == null && entityTypeName == null && entityAliasTypeName == null ? 0 : 1)
                 + universalSpecCount;
 
         switch(parameterCount) {
             case 1 -> {
                 if(universalSpecCount == 1) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.EntityAliasType.name());
 
                     if(!eea.hasExecutionErrors()) {
-                        var entityAliasControl = Session.getModelController(EntityAliasControl.class);
-
                         entityAliasType = entityAliasControl.getEntityAliasTypeByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {
@@ -278,15 +289,11 @@ public class EntityAliasTypeLogic
     
     public void updateEntityAliasTypeFromValue(final Session session, final EntityAliasTypeDetailValue entityAliasTypeDetailValue,
             final BasePK updatedBy) {
-        var entityAliasControl = Session.getModelController(EntityAliasControl.class);
-
         if(entityAliasTypeDetailValue.getEntityAliasTypeNameHasBeenModified()) {
-            final var indexControl = Session.getModelController(IndexControl.class);
             final var entityAliasType = entityAliasControl.getEntityAliasTypeByPK(entityAliasTypeDetailValue.getEntityAliasTypePK());
 
             if(indexControl.countIndexTypesByEntityType(entityAliasType.getLastDetail().getEntityType()) > 0) {
-                final var queueControl = Session.getModelController(QueueControl.class);
-                final var queueTypePK = QueueTypeLogic.getInstance().getQueueTypeByName(null, QueueTypes.INDEXING.name()).getPrimaryKey();
+                final var queueTypePK = queueTypeLogic.getQueueTypeByName(null, QueueTypes.INDEXING.name()).getPrimaryKey();
                 final var entityAliases = entityAliasControl.getEntityAliasesByEntityAliasType(entityAliasType);
                 final var queuedEntities = new ArrayList<QueuedEntityValue>(entityAliases.size());
 
@@ -303,8 +310,6 @@ public class EntityAliasTypeLogic
     
     public void deleteEntityAliasType(final ExecutionErrorAccumulator eea, final EntityAliasType entityAliasType,
             final PartyPK deletedByPK) {
-        var entityAliasControl = Session.getModelController(EntityAliasControl.class);
-
         entityAliasControl.deleteEntityAliasType(entityAliasType, deletedByPK);
     }
 
@@ -319,14 +324,12 @@ public class EntityAliasTypeLogic
 
             if(!matcher.matches()) {
                 handleExecutionError(InvalidAliasException.class, eea, ExecutionErrors.InvalidAlias.name(),
-                        EntityInstanceLogic.getInstance().getEntityRefFromEntityInstance(entityInstance),
+                        entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance),
                         entityAliasType.getLastDetail().getEntityAliasTypeName(), alias);
             }
         }
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            var entityAliasControl = Session.getModelController(EntityAliasControl.class);
-
             entityAlias = entityAliasControl.getEntityAlias(entityInstance, entityAliasType);
 
             if(entityAlias == null) {
@@ -336,12 +339,12 @@ public class EntityAliasTypeLogic
                     entityAlias = entityAliasControl.createEntityAlias(entityInstance, entityAliasType, alias, createdBy);
                 } else {
                     handleExecutionError(DuplicateEntityAliasTypeAliasException.class, eea, ExecutionErrors.DuplicateEntityAliasTypeAlias.name(),
-                            EntityInstanceLogic.getInstance().getEntityRefFromEntityInstance(entityInstance),
+                            entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance),
                             entityAliasType.getLastDetail().getEntityAliasTypeName(), alias);
                 }
             } else {
                 handleExecutionError(DuplicateEntityAliasException.class, eea, ExecutionErrors.DuplicateEntityAlias.name(),
-                        EntityInstanceLogic.getInstance().getEntityRefFromEntityInstance(entityInstance),
+                        entityInstanceLogic.getEntityRefFromEntityInstance(entityInstance),
                         entityAliasType.getLastDetail().getEntityAliasTypeName());
             }
         }
@@ -351,7 +354,6 @@ public class EntityAliasTypeLogic
 
     public EntityAlias getEntityAliasByAlias(final ExecutionErrorAccumulator eea, final EntityAliasType entityAliasType,
             final String alias) {
-        var entityAliasControl = Session.getModelController(EntityAliasControl.class);
         var entityAlias = entityAliasControl.getEntityAliasByEntityAliasTypeAndAlias(entityAliasType, alias);
 
         if(entityAlias == null) {

@@ -22,20 +22,21 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.employee.server.entity.PartyResponsibility;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PartyResponsibilityTransferCache
         extends BaseEmployeeTransferCache<PartyResponsibility, PartyResponsibilityTransfer> {
-    
-    PartyControl partyControl;
+
+    EmployeeControl employeeControl = Session.getModelController(EmployeeControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of PartyResponsibilityTransferCache */
-    public PartyResponsibilityTransferCache(UserVisit userVisit, EmployeeControl employeeControl) {
-        super(userVisit, employeeControl);
-        
-        partyControl = Session.getModelController(PartyControl.class);
+    protected PartyResponsibilityTransferCache() {
+        super();
     }
     
-    public PartyResponsibilityTransfer getPartyResponsibilityTransfer(PartyResponsibility partyResponsibility) {
+    public PartyResponsibilityTransfer getPartyResponsibilityTransfer(UserVisit userVisit, PartyResponsibility partyResponsibility) {
         var partyResponsibilityTransfer = get(partyResponsibility);
         
         if(partyResponsibilityTransfer == null) {
@@ -43,7 +44,7 @@ public class PartyResponsibilityTransferCache
             var responsibilityType = employeeControl.getResponsibilityTypeTransfer(userVisit, partyResponsibility.getResponsibilityType());
             
             partyResponsibilityTransfer = new PartyResponsibilityTransfer(party, responsibilityType);
-            put(partyResponsibility, partyResponsibilityTransfer);
+            put(userVisit, partyResponsibility, partyResponsibilityTransfer);
         }
         
         return partyResponsibilityTransfer;

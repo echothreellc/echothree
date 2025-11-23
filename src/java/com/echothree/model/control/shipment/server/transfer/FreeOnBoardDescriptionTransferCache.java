@@ -21,19 +21,21 @@ import com.echothree.model.control.shipment.server.control.FreeOnBoardControl;
 import com.echothree.model.data.shipment.server.entity.FreeOnBoardDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class FreeOnBoardDescriptionTransferCache
         extends BaseShipmentDescriptionTransferCache<FreeOnBoardDescription, FreeOnBoardDescriptionTransfer> {
 
     FreeOnBoardControl freeOnBoardControl = Session.getModelController(FreeOnBoardControl.class);
 
     /** Creates a new instance of FreeOnBoardDescriptionTransferCache */
-    public FreeOnBoardDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected FreeOnBoardDescriptionTransferCache() {
+        super();
     }
     
     @Override
-    public FreeOnBoardDescriptionTransfer getTransfer(FreeOnBoardDescription freeOnBoardDescription) {
+    public FreeOnBoardDescriptionTransfer getTransfer(UserVisit userVisit, FreeOnBoardDescription freeOnBoardDescription) {
         var freeOnBoardDescriptionTransfer = get(freeOnBoardDescription);
         
         if(freeOnBoardDescriptionTransfer == null) {
@@ -41,7 +43,7 @@ public class FreeOnBoardDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, freeOnBoardDescription.getLanguage());
             
             freeOnBoardDescriptionTransfer = new FreeOnBoardDescriptionTransfer(languageTransfer, freeOnBoardTransfer, freeOnBoardDescription.getDescription());
-            put(freeOnBoardDescription, freeOnBoardDescriptionTransfer);
+            put(userVisit, freeOnBoardDescription, freeOnBoardDescriptionTransfer);
         }
         
         return freeOnBoardDescriptionTransfer;

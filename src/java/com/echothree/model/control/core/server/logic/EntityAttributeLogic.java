@@ -71,7 +71,6 @@ import com.echothree.model.control.core.common.exception.UnknownEntityMultipleLi
 import com.echothree.model.control.core.common.exception.UnknownEntityStringDefaultException;
 import com.echothree.model.control.core.common.exception.UnknownEntityTimeDefaultException;
 import com.echothree.model.control.core.common.exception.UpperRangeExceededException;
-import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.database.EntityInstancePKResult;
 import com.echothree.model.control.core.server.database.EntityInstancePKsByBlobEntityAttributeQuery;
 import com.echothree.model.control.core.server.database.EntityInstancePKsByBooleanEntityAttributeQuery;
@@ -151,24 +150,22 @@ import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class EntityAttributeLogic
         extends BaseLogic {
-    
-    private EntityAttributeLogic() {
+
+    protected EntityAttributeLogic() {
         super();
     }
-    
-    private static class EntityAttributeLogicHolder {
-        static EntityAttributeLogic instance = new EntityAttributeLogic();
-    }
-    
+
     public static EntityAttributeLogic getInstance() {
-        return EntityAttributeLogicHolder.instance;
+        return CDI.current().select(EntityAttributeLogic.class).get();
     }
     
     public EntityAttributeType getEntityAttributeTypeByName(final ExecutionErrorAccumulator eea, final String entityAttributeTypeName) {
-        var coreControl = Session.getModelController(CoreControl.class);
         var entityAttributeType = coreControl.getEntityAttributeTypeByName(entityAttributeTypeName);
 
         if(entityAttributeType == null) {
@@ -185,8 +182,6 @@ public class EntityAttributeLogic
                 ComponentVendors.ECHO_THREE.name(), EntityTypes.EntityAttributeType.name());
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            var coreControl = Session.getModelController(CoreControl.class);
-            
             entityAttributeType = coreControl.getEntityAttributeTypeByEntityInstance(entityInstance, entityPermission);
         }
 
@@ -202,7 +197,6 @@ public class EntityAttributeLogic
     }
     
     public EntityAttributeGroup getEntityAttributeGroupByName(final ExecutionErrorAccumulator eea, final String entityAttributeGroupName) {
-        var coreControl = Session.getModelController(CoreControl.class);
         var entityAttributeGroup = coreControl.getEntityAttributeGroupByName(entityAttributeGroupName);
 
         if(entityAttributeGroup == null) {
@@ -220,8 +214,6 @@ public class EntityAttributeLogic
                 ComponentVendors.ECHO_THREE.name(), EntityTypes.EntityAttributeGroup.name());
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            var coreControl = Session.getModelController(CoreControl.class);
-            
             entityAttributeGroup = coreControl.getEntityAttributeGroupByEntityInstance(entityInstance, entityPermission);
         }
 
@@ -248,8 +240,6 @@ public class EntityAttributeLogic
         var entityTypeDetail = entityType.getLastDetail();
 
         if(entityTypeDetail.getIsExtensible()) {
-            var coreControl = Session.getModelController(CoreControl.class);
-
             if(entityAttributeName == null) {
                 var sequenceControl = Session.getModelController(SequenceControl.class);
                 var sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.ENTITY_ATTRIBUTE.name());
@@ -347,7 +337,6 @@ public class EntityAttributeLogic
     
     public EntityAttribute getEntityAttributeByName(final ExecutionErrorAccumulator eea, final EntityType entityType,
             final String entityAttributeName, EntityPermission entityPermission) {
-        var coreControl = Session.getModelController(CoreControl.class);
         var entityAttribute = coreControl.getEntityAttributeByName(entityType, entityAttributeName, entityPermission);
 
         if(entityAttribute == null) {
@@ -422,8 +411,6 @@ public class EntityAttributeLogic
                 ComponentVendors.ECHO_THREE.name(), EntityTypes.EntityAttribute.name());
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            var coreControl = Session.getModelController(CoreControl.class);
-            
             entityAttribute = coreControl.getEntityAttributeByEntityInstance(entityInstance, entityPermission);
         }
 
@@ -456,8 +443,6 @@ public class EntityAttributeLogic
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.EntityAttribute.name());
 
                     if(!eea.hasExecutionErrors()) {
-                        var coreControl = Session.getModelController(CoreControl.class);
-
                         entityAttribute = coreControl.getEntityAttributeByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {
@@ -590,8 +575,6 @@ public class EntityAttributeLogic
     
     public void updateEntityAttributeFromValue(final Session session, final EntityAttributeDetailValue entityAttributeDetailValue,
             final BasePK updatedBy) {
-        final var coreControl = Session.getModelController(CoreControl.class);
-
         if(entityAttributeDetailValue.getEntityAttributeNameHasBeenModified()) {
             final var indexControl = Session.getModelController(IndexControl.class);
             final var entityAttribute = coreControl.getEntityAttributeByPK(entityAttributeDetailValue.getEntityAttributePK());
@@ -615,8 +598,6 @@ public class EntityAttributeLogic
     
     public void deleteEntityAttribute(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
             final PartyPK deletedByPK) {
-        var coreControl = Session.getModelController(CoreControl.class);
-
         coreControl.deleteEntityAttribute(entityAttribute, deletedByPK);
     }
 
@@ -628,8 +609,6 @@ public class EntityAttributeLogic
 
         if(entityAttributeTypeName.equals(EntityAttributeTypes.LISTITEM.name())
                 || entityAttributeTypeName.equals(EntityAttributeTypes.MULTIPLELISTITEM.name())) {
-            var coreControl = Session.getModelController(CoreControl.class);
-            
             if(entityListItemName == null) {
                 var entityAttributeListItem = coreControl.getEntityAttributeListItem(entityAttribute);
                 var entityListItemSequence = entityAttributeListItem == null ? null : entityAttributeListItem.getEntityListItemSequence();
@@ -681,7 +660,6 @@ public class EntityAttributeLogic
     
     public EntityListItem getEntityListItemByName(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
             final String entityListItemName, final EntityPermission entityPermission) {
-        var coreControl = Session.getModelController(CoreControl.class);
         var entityListItem = coreControl.getEntityListItemByName(entityAttribute, entityListItemName, entityPermission);
 
         if(entityListItem == null) {
@@ -739,8 +717,6 @@ public class EntityAttributeLogic
                 ComponentVendors.ECHO_THREE.name(), EntityTypes.EntityListItem.name());
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            var coreControl = Session.getModelController(CoreControl.class);
-            
             entityListItem = coreControl.getEntityListItemByEntityInstance(entityInstance, entityPermission);
         }
 
@@ -773,8 +749,6 @@ public class EntityAttributeLogic
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.EntityListItem.name());
 
                     if(!eea.hasExecutionErrors()) {
-                        var coreControl = Session.getModelController(CoreControl.class);
-
                         entityListItem = coreControl.getEntityListItemByEntityInstance(entityInstance, entityPermission);
                     }
                 } else {
@@ -842,8 +816,6 @@ public class EntityAttributeLogic
     }
     
     public void updateEntityListItemFromValue(final Session session, EntityListItemDetailValue entityListItemDetailValue, BasePK updatedBy) {
-        var coreControl = Session.getModelController(CoreControl.class);
-        
         if(entityListItemDetailValue.getEntityListItemNameHasBeenModified()) {
             var indexControl = Session.getModelController(IndexControl.class);
             var entityListItem = coreControl.getEntityListItemByPK(entityListItemDetailValue.getEntityListItemPK());
@@ -880,8 +852,6 @@ public class EntityAttributeLogic
     }
     
     public void deleteEntityListItem(final ExecutionErrorAccumulator eea, EntityListItem entityListItem, BasePK deletedBy) {
-        var coreControl = Session.getModelController(CoreControl.class);
-
         coreControl.deleteEntityListItem(entityListItem, deletedBy);
     }
 
@@ -920,8 +890,6 @@ public class EntityAttributeLogic
         checkEntityType(eea, entityAttribute, EntityAttributeTypes.BOOLEAN);
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            var coreControl = Session.getModelController(CoreControl.class);
-
             entityBooleanDefault = coreControl.getEntityBooleanDefault(entityAttribute);
 
             if(entityBooleanDefault == null) {
@@ -946,8 +914,6 @@ public class EntityAttributeLogic
         checkEntityType(eea, entityAttribute, EntityAttributeTypes.BOOLEAN);
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            var coreControl = Session.getModelController(CoreControl.class);
-
             var entityBooleanDefault = coreControl.getEntityBooleanDefaultForUpdate(entityAttribute);
 
             if(entityBooleanDefault == null) {
@@ -966,8 +932,6 @@ public class EntityAttributeLogic
         checkEntityType(eea, entityAttribute, entityInstance);
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            var coreControl = Session.getModelController(CoreControl.class);
-
             entityBooleanAttribute = coreControl.getEntityBooleanAttribute(entityAttribute, entityInstance);
 
             if(entityBooleanAttribute == null) {
@@ -989,7 +953,6 @@ public class EntityAttributeLogic
         checkEntityType(eea, entityAttribute, EntityAttributeTypes.INTEGER);
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            var coreControl = Session.getModelController(CoreControl.class);
             var entityAttributeInteger = coreControl.getEntityAttributeInteger(entityAttribute);
 
             if(entityAttributeInteger != null) {
@@ -1033,8 +996,6 @@ public class EntityAttributeLogic
         checkEntityType(eea, entityAttribute, EntityAttributeTypes.INTEGER);
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            var coreControl = Session.getModelController(CoreControl.class);
-
             var entityIntegerDefault = coreControl.getEntityIntegerDefaultForUpdate(entityAttribute);
 
             if(entityIntegerDefault == null) {
@@ -1053,7 +1014,6 @@ public class EntityAttributeLogic
         checkEntityType(eea, entityAttribute, entityInstance);
         
         if(eea == null || !eea.hasExecutionErrors()) {
-            var coreControl = Session.getModelController(CoreControl.class);
             var entityAttributeInteger = coreControl.getEntityAttributeInteger(entityAttribute);
             
             if(entityAttributeInteger != null) {
@@ -1094,7 +1054,6 @@ public class EntityAttributeLogic
         checkEntityType(eea, entityAttribute, EntityAttributeTypes.LONG);
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            var coreControl = Session.getModelController(CoreControl.class);
             var entityAttributeLong = coreControl.getEntityAttributeLong(entityAttribute);
 
             if(entityAttributeLong != null) {
@@ -1138,8 +1097,6 @@ public class EntityAttributeLogic
         checkEntityType(eea, entityAttribute, EntityAttributeTypes.LONG);
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            var coreControl = Session.getModelController(CoreControl.class);
-
             var entityLongDefault = coreControl.getEntityLongDefaultForUpdate(entityAttribute);
 
             if(entityLongDefault == null) {
@@ -1158,7 +1115,6 @@ public class EntityAttributeLogic
         checkEntityType(eea, entityAttribute, entityInstance);
         
         if(eea == null || !eea.hasExecutionErrors()) {
-            var coreControl = Session.getModelController(CoreControl.class);
             var entityAttributeLong = coreControl.getEntityAttributeLong(entityAttribute);
             
             if(entityAttributeLong != null) {
@@ -1199,8 +1155,6 @@ public class EntityAttributeLogic
         checkEntityType(eea, entityAttribute, EntityAttributeTypes.STRING);
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            var coreControl = Session.getModelController(CoreControl.class);
-
             entityStringDefault = coreControl.getEntityStringDefault(entityAttribute, language);
 
             if(entityStringDefault == null) {
@@ -1225,8 +1179,6 @@ public class EntityAttributeLogic
         checkEntityType(eea, entityAttribute, EntityAttributeTypes.STRING);
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            var coreControl = Session.getModelController(CoreControl.class);
-
             var entityStringDefault = coreControl.getEntityStringDefaultForUpdate(entityAttribute, language);
 
             if(entityStringDefault == null) {
@@ -1246,7 +1198,6 @@ public class EntityAttributeLogic
         checkEntityType(eea, entityAttribute, entityInstance);
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            var coreControl = Session.getModelController(CoreControl.class);
             var entityAttributeString = coreControl.getEntityAttributeString(entityAttribute);
             var validationPattern = entityAttributeString == null ? null : entityAttributeString.getValidationPattern();
 
@@ -1285,8 +1236,6 @@ public class EntityAttributeLogic
         checkEntityType(eea, entityAttribute, entityInstance);
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            var coreControl = Session.getModelController(CoreControl.class);
-
             entityClobAttribute = coreControl.getEntityClobAttribute(entityAttribute, entityInstance, language);
 
             if(entityClobAttribute == null) {
@@ -1309,8 +1258,6 @@ public class EntityAttributeLogic
         checkEntityType(eea, entityAttribute, entityInstance);
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            var coreControl = Session.getModelController(CoreControl.class);
-
             entityNameAttribute = coreControl.getEntityNameAttribute(entityAttribute, entityInstance);
 
             if(entityNameAttribute == null) {
@@ -1332,8 +1279,6 @@ public class EntityAttributeLogic
         checkEntityType(eea, entityAttribute, EntityAttributeTypes.DATE);
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            var coreControl = Session.getModelController(CoreControl.class);
-
             entityDateDefault = coreControl.getEntityDateDefault(entityAttribute);
 
             if(entityDateDefault == null) {
@@ -1358,8 +1303,6 @@ public class EntityAttributeLogic
         checkEntityType(eea, entityAttribute, EntityAttributeTypes.DATE);
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            var coreControl = Session.getModelController(CoreControl.class);
-
             var entityDateDefault = coreControl.getEntityDateDefaultForUpdate(entityAttribute);
 
             if(entityDateDefault == null) {
@@ -1378,8 +1321,6 @@ public class EntityAttributeLogic
         checkEntityType(eea, entityAttribute, entityInstance);
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            var coreControl = Session.getModelController(CoreControl.class);
-
             entityDateAttribute = coreControl.getEntityDateAttribute(entityAttribute, entityInstance);
 
             if(entityDateAttribute == null) {
@@ -1401,8 +1342,6 @@ public class EntityAttributeLogic
         checkEntityType(eea, entityAttribute, EntityAttributeTypes.TIME);
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            var coreControl = Session.getModelController(CoreControl.class);
-
             entityTimeDefault = coreControl.getEntityTimeDefault(entityAttribute);
 
             if(entityTimeDefault == null) {
@@ -1427,8 +1366,6 @@ public class EntityAttributeLogic
         checkEntityType(eea, entityAttribute, EntityAttributeTypes.TIME);
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            var coreControl = Session.getModelController(CoreControl.class);
-
             var entityTimeDefault = coreControl.getEntityTimeDefaultForUpdate(entityAttribute);
 
             if(entityTimeDefault == null) {
@@ -1447,8 +1384,6 @@ public class EntityAttributeLogic
         checkEntityType(eea, entityAttribute, entityInstance);
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            var coreControl = Session.getModelController(CoreControl.class);
-
             entityTimeAttribute = coreControl.getEntityTimeAttribute(entityAttribute, entityInstance);
 
             if(entityTimeAttribute == null) {
@@ -1470,8 +1405,6 @@ public class EntityAttributeLogic
         checkEntityType(eea, entityAttribute, EntityAttributeTypes.GEOPOINT);
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            var coreControl = Session.getModelController(CoreControl.class);
-
             entityGeoPointDefault = coreControl.getEntityGeoPointDefault(entityAttribute);
 
             if(entityGeoPointDefault == null) {
@@ -1496,8 +1429,6 @@ public class EntityAttributeLogic
         checkEntityType(eea, entityAttribute, EntityAttributeTypes.GEOPOINT);
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            var coreControl = Session.getModelController(CoreControl.class);
-
             var entityGeoPointDefault = coreControl.getEntityGeoPointDefaultForUpdate(entityAttribute);
 
             if(entityGeoPointDefault == null) {
@@ -1516,8 +1447,6 @@ public class EntityAttributeLogic
         checkEntityType(eea, entityAttribute, entityInstance);
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            var coreControl = Session.getModelController(CoreControl.class);
-
             entityGeoPointAttribute = coreControl.getEntityGeoPointAttribute(entityAttribute, entityInstance);
 
             if(entityGeoPointAttribute == null) {
@@ -1539,8 +1468,6 @@ public class EntityAttributeLogic
         checkEntityType(eea, entityAttribute, EntityAttributeTypes.LISTITEM);
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            var coreControl = Session.getModelController(CoreControl.class);
-
             entityListItemDefault = coreControl.getEntityListItemDefault(entityAttribute);
 
             if(entityListItemDefault == null) {
@@ -1565,8 +1492,6 @@ public class EntityAttributeLogic
         checkEntityType(eea, entityAttribute, EntityAttributeTypes.LISTITEM);
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            var coreControl = Session.getModelController(CoreControl.class);
-
             var entityListItemDefault = coreControl.getEntityListItemDefaultForUpdate(entityAttribute);
 
             if(entityListItemDefault == null) {
@@ -1585,8 +1510,6 @@ public class EntityAttributeLogic
         checkEntityType(eea, entityAttribute, entityInstance);
         
         if(eea == null || !eea.hasExecutionErrors()) {
-            var coreControl = Session.getModelController(CoreControl.class);
-            
             entityListItemAttribute = coreControl.getEntityListItemAttribute(entityAttribute, entityInstance);
 
             if(entityListItemAttribute == null) {
@@ -1608,8 +1531,6 @@ public class EntityAttributeLogic
         checkEntityType(eea, entityAttribute, EntityAttributeTypes.MULTIPLELISTITEM);
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            var coreControl = Session.getModelController(CoreControl.class);
-
             entityListItemDefault = coreControl.getEntityMultipleListItemDefault(entityAttribute, entityListItem);
 
             if(entityListItemDefault == null) {
@@ -1634,8 +1555,6 @@ public class EntityAttributeLogic
         checkEntityType(eea, entityAttribute, EntityAttributeTypes.MULTIPLELISTITEM);
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            var coreControl = Session.getModelController(CoreControl.class);
-
             var entityListItemDefault = coreControl.getEntityMultipleListItemDefaultForUpdate(entityAttribute, entityListItem);
 
             if(entityListItemDefault == null) {
@@ -1654,8 +1573,6 @@ public class EntityAttributeLogic
         checkEntityType(eea, entityAttribute, entityInstance);
         
         if(eea == null || !eea.hasExecutionErrors()) {
-            var coreControl = Session.getModelController(CoreControl.class);
-            
             entityMultipleListItemAttribute = coreControl.getEntityMultipleListItemAttribute(entityAttribute, entityInstance, entityListItem);
 
             if(entityMultipleListItemAttribute == null) {

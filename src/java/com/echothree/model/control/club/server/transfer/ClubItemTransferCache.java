@@ -25,20 +25,23 @@ import com.echothree.model.data.club.server.entity.ClubItem;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ClubItemTransferCache
         extends BaseClubTransferCache<ClubItem, ClubItemTransfer> {
 
+    ClubControl clubControl = Session.getModelController(ClubControl.class);
     ItemControl itemControl = Session.getModelController(ItemControl.class);
     UomControl uomControl = Session.getModelController(UomControl.class);
     UnitOfMeasureKind timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
     
     /** Creates a new instance of ClubItemTransferCache */
-    public ClubItemTransferCache(UserVisit userVisit, ClubControl clubControl) {
-        super(userVisit, clubControl);
+    protected ClubItemTransferCache() {
+        super();
     }
     
-    public ClubItemTransfer getClubItemTransfer(ClubItem clubItem) {
+    public ClubItemTransfer getClubItemTransfer(UserVisit userVisit, ClubItem clubItem) {
         var clubItemTransfer = get(clubItem);
         
         if(clubItemTransfer == null) {
@@ -46,10 +49,10 @@ public class ClubItemTransferCache
             var clubItemType = clubControl.getClubItemTypeTransfer(userVisit, clubItem.getClubItemType());
             var item = itemControl.getItemTransfer(userVisit, clubItem.getItem());
             var unformattedSubscriptionTime = clubItem.getSubscriptionTime();
-            var subscriptionTime = formatUnitOfMeasure(timeUnitOfMeasureKind, unformattedSubscriptionTime);
+            var subscriptionTime = formatUnitOfMeasure(userVisit, timeUnitOfMeasureKind, unformattedSubscriptionTime);
             
             clubItemTransfer = new ClubItemTransfer(club, clubItemType, item, unformattedSubscriptionTime, subscriptionTime);
-            put(clubItem, clubItemTransfer);
+            put(userVisit, clubItem, clubItemTransfer);
         }
         return clubItemTransfer;
     }

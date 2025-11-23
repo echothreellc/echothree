@@ -42,7 +42,17 @@ import com.echothree.model.control.campaign.common.workflow.CampaignMediumStatus
 import com.echothree.model.control.campaign.common.workflow.CampaignSourceStatusConstants;
 import com.echothree.model.control.campaign.common.workflow.CampaignStatusConstants;
 import com.echothree.model.control.campaign.common.workflow.CampaignTermStatusConstants;
-import com.echothree.model.control.campaign.server.transfer.CampaignTransferCaches;
+import com.echothree.model.control.campaign.server.transfer.CampaignContentDescriptionTransferCache;
+import com.echothree.model.control.campaign.server.transfer.CampaignContentTransferCache;
+import com.echothree.model.control.campaign.server.transfer.CampaignDescriptionTransferCache;
+import com.echothree.model.control.campaign.server.transfer.CampaignMediumDescriptionTransferCache;
+import com.echothree.model.control.campaign.server.transfer.CampaignMediumTransferCache;
+import com.echothree.model.control.campaign.server.transfer.CampaignSourceDescriptionTransferCache;
+import com.echothree.model.control.campaign.server.transfer.CampaignSourceTransferCache;
+import com.echothree.model.control.campaign.server.transfer.CampaignTermDescriptionTransferCache;
+import com.echothree.model.control.campaign.server.transfer.CampaignTermTransferCache;
+import com.echothree.model.control.campaign.server.transfer.CampaignTransferCache;
+import com.echothree.model.control.campaign.server.transfer.UserVisitCampaignTransferCache;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.sequence.common.SequenceTypes;
@@ -111,29 +121,55 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
+@RequestScoped
 public class CampaignControl
         extends BaseModelControl {
     
     /** Creates a new instance of CampaignControl */
-    public CampaignControl() {
+    protected CampaignControl() {
         super();
     }
     
     // --------------------------------------------------------------------------------
     //   Campaign Transfer Caches
     // --------------------------------------------------------------------------------
-    
-    private CampaignTransferCaches campaignTransferCaches;
-    
-    public CampaignTransferCaches getCampaignTransferCaches(UserVisit userVisit) {
-        if(campaignTransferCaches == null) {
-            campaignTransferCaches = new CampaignTransferCaches(userVisit, this);
-        }
-        
-        return campaignTransferCaches;
-    }
-    
+
+    @Inject
+    CampaignTransferCache campaignTransferCache;
+
+    @Inject
+    CampaignDescriptionTransferCache campaignDescriptionTransferCache;
+
+    @Inject
+    CampaignSourceTransferCache campaignSourceTransferCache;
+
+    @Inject
+    CampaignSourceDescriptionTransferCache campaignSourceDescriptionTransferCache;
+
+    @Inject
+    CampaignMediumTransferCache campaignMediumTransferCache;
+
+    @Inject
+    CampaignMediumDescriptionTransferCache campaignMediumDescriptionTransferCache;
+
+    @Inject
+    CampaignTermTransferCache campaignTermTransferCache;
+
+    @Inject
+    CampaignTermDescriptionTransferCache campaignTermDescriptionTransferCache;
+
+    @Inject
+    CampaignContentTransferCache campaignContentTransferCache;
+
+    @Inject
+    CampaignContentDescriptionTransferCache campaignContentDescriptionTransferCache;
+
+    @Inject
+    UserVisitCampaignTransferCache userVisitCampaignTransferCache;
+
     // --------------------------------------------------------------------------------
     //   Campaigns
     // --------------------------------------------------------------------------------
@@ -175,7 +211,7 @@ public class CampaignControl
 
         var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(campaignPK);
-        getWorkflowControl().addEntityToWorkflowUsingNames(null, CampaignStatusConstants.Workflow_CAMPAIGN_STATUS,
+        workflowControl.addEntityToWorkflowUsingNames(null, CampaignStatusConstants.Workflow_CAMPAIGN_STATUS,
                 CampaignStatusConstants.WorkflowEntrance_NEW_ACTIVE, entityInstance, null, null, createdBy);
         
         return campaign;
@@ -328,7 +364,6 @@ public class CampaignControl
 
     public CampaignStatusChoicesBean getCampaignStatusChoices(String defaultCampaignStatusChoice, Language language,
             boolean allowNullChoice, Campaign campaign, PartyPK partyPK) {
-        var workflowControl = getWorkflowControl();
         var employeeStatusChoicesBean = new CampaignStatusChoicesBean();
         
         if(campaign == null) {
@@ -348,7 +383,6 @@ public class CampaignControl
     }
     
     public void setCampaignStatus(ExecutionErrorAccumulator eea, Party party, String employeeStatusChoice, PartyPK modifiedBy) {
-        var workflowControl = getWorkflowControl();
         var entityInstance = getEntityInstanceByBaseEntity(party);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(CampaignStatusConstants.Workflow_CAMPAIGN_STATUS,
                 entityInstance);
@@ -363,16 +397,15 @@ public class CampaignControl
     }
     
    public CampaignTransfer getCampaignTransfer(UserVisit userVisit, Campaign campaign) {
-        return getCampaignTransferCaches(userVisit).getCampaignTransferCache().getCampaignTransfer(campaign);
+        return campaignTransferCache.getCampaignTransfer(userVisit, campaign);
     }
 
     public List<CampaignTransfer> getCampaignTransfers(UserVisit userVisit) {
         var campaigns = getCampaigns();
         List<CampaignTransfer> campaignTransfers = new ArrayList<>(campaigns.size());
-        var campaignTransferCache = getCampaignTransferCaches(userVisit).getCampaignTransferCache();
 
         campaigns.forEach((campaign) ->
-                campaignTransfers.add(campaignTransferCache.getCampaignTransfer(campaign))
+                campaignTransfers.add(campaignTransferCache.getCampaignTransfer(userVisit, campaign))
         );
 
         return campaignTransfers;
@@ -590,7 +623,7 @@ public class CampaignControl
         var campaignDescription = getCampaignDescription(campaign, language);
 
         if(campaignDescription == null && !language.getIsDefault()) {
-            campaignDescription = getCampaignDescription(campaign, getPartyControl().getDefaultLanguage());
+            campaignDescription = getCampaignDescription(campaign, partyControl.getDefaultLanguage());
         }
 
         if(campaignDescription == null) {
@@ -603,16 +636,15 @@ public class CampaignControl
     }
 
     public CampaignDescriptionTransfer getCampaignDescriptionTransfer(UserVisit userVisit, CampaignDescription campaignDescription) {
-        return getCampaignTransferCaches(userVisit).getCampaignDescriptionTransferCache().getCampaignDescriptionTransfer(campaignDescription);
+        return campaignDescriptionTransferCache.getCampaignDescriptionTransfer(userVisit, campaignDescription);
     }
 
     public List<CampaignDescriptionTransfer> getCampaignDescriptionTransfersByCampaign(UserVisit userVisit, Campaign campaign) {
         var campaignDescriptions = getCampaignDescriptionsByCampaign(campaign);
         List<CampaignDescriptionTransfer> campaignDescriptionTransfers = new ArrayList<>(campaignDescriptions.size());
-        var campaignDescriptionTransferCache = getCampaignTransferCaches(userVisit).getCampaignDescriptionTransferCache();
 
         campaignDescriptions.forEach((campaignDescription) ->
-                campaignDescriptionTransfers.add(campaignDescriptionTransferCache.getCampaignDescriptionTransfer(campaignDescription))
+                campaignDescriptionTransfers.add(campaignDescriptionTransferCache.getCampaignDescriptionTransfer(userVisit, campaignDescription))
         );
 
         return campaignDescriptionTransfers;
@@ -693,7 +725,7 @@ public class CampaignControl
 
         var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(campaignSourcePK);
-        getWorkflowControl().addEntityToWorkflowUsingNames(null, CampaignSourceStatusConstants.Workflow_CAMPAIGN_SOURCE_STATUS,
+        workflowControl.addEntityToWorkflowUsingNames(null, CampaignSourceStatusConstants.Workflow_CAMPAIGN_SOURCE_STATUS,
                 CampaignSourceStatusConstants.WorkflowEntrance_NEW_ACTIVE, entityInstance, null, null, createdBy);
 
         return campaignSource;
@@ -846,7 +878,6 @@ public class CampaignControl
 
     public CampaignSourceStatusChoicesBean getCampaignSourceStatusChoices(String defaultCampaignSourceStatusChoice, Language language,
             boolean allowNullChoice, CampaignSource campaignSource, PartyPK partyPK) {
-        var workflowControl = getWorkflowControl();
         var employeeStatusChoicesBean = new CampaignSourceStatusChoicesBean();
         
         if(campaignSource == null) {
@@ -866,7 +897,6 @@ public class CampaignControl
     }
     
     public void setCampaignSourceStatus(ExecutionErrorAccumulator eea, Party party, String employeeStatusChoice, PartyPK modifiedBy) {
-        var workflowControl = getWorkflowControl();
         var entityInstance = getEntityInstanceByBaseEntity(party);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(CampaignSourceStatusConstants.Workflow_CAMPAIGN_SOURCE_STATUS,
                 entityInstance);
@@ -881,16 +911,15 @@ public class CampaignControl
     }
     
    public CampaignSourceTransfer getCampaignSourceTransfer(UserVisit userVisit, CampaignSource campaignSource) {
-        return getCampaignTransferCaches(userVisit).getCampaignSourceTransferCache().getCampaignSourceTransfer(campaignSource);
+        return campaignSourceTransferCache.getCampaignSourceTransfer(userVisit, campaignSource);
     }
 
     public List<CampaignSourceTransfer> getCampaignSourceTransfers(UserVisit userVisit) {
         var campaignSources = getCampaignSources();
         List<CampaignSourceTransfer> campaignSourceTransfers = new ArrayList<>(campaignSources.size());
-        var campaignSourceTransferCache = getCampaignTransferCaches(userVisit).getCampaignSourceTransferCache();
 
         campaignSources.forEach((campaignSource) ->
-                campaignSourceTransfers.add(campaignSourceTransferCache.getCampaignSourceTransfer(campaignSource))
+                campaignSourceTransfers.add(campaignSourceTransferCache.getCampaignSourceTransfer(userVisit, campaignSource))
         );
 
         return campaignSourceTransfers;
@@ -1108,7 +1137,7 @@ public class CampaignControl
         var campaignSourceDescription = getCampaignSourceDescription(campaignSource, language);
 
         if(campaignSourceDescription == null && !language.getIsDefault()) {
-            campaignSourceDescription = getCampaignSourceDescription(campaignSource, getPartyControl().getDefaultLanguage());
+            campaignSourceDescription = getCampaignSourceDescription(campaignSource, partyControl.getDefaultLanguage());
         }
 
         if(campaignSourceDescription == null) {
@@ -1121,16 +1150,15 @@ public class CampaignControl
     }
 
     public CampaignSourceDescriptionTransfer getCampaignSourceDescriptionTransfer(UserVisit userVisit, CampaignSourceDescription campaignSourceDescription) {
-        return getCampaignTransferCaches(userVisit).getCampaignSourceDescriptionTransferCache().getCampaignSourceDescriptionTransfer(campaignSourceDescription);
+        return campaignSourceDescriptionTransferCache.getCampaignSourceDescriptionTransfer(userVisit, campaignSourceDescription);
     }
 
     public List<CampaignSourceDescriptionTransfer> getCampaignSourceDescriptionTransfersByCampaignSource(UserVisit userVisit, CampaignSource campaignSource) {
         var campaignSourceDescriptions = getCampaignSourceDescriptionsByCampaignSource(campaignSource);
         List<CampaignSourceDescriptionTransfer> campaignSourceDescriptionTransfers = new ArrayList<>(campaignSourceDescriptions.size());
-        var campaignSourceDescriptionTransferCache = getCampaignTransferCaches(userVisit).getCampaignSourceDescriptionTransferCache();
 
         campaignSourceDescriptions.forEach((campaignSourceDescription) ->
-                campaignSourceDescriptionTransfers.add(campaignSourceDescriptionTransferCache.getCampaignSourceDescriptionTransfer(campaignSourceDescription))
+                campaignSourceDescriptionTransfers.add(campaignSourceDescriptionTransferCache.getCampaignSourceDescriptionTransfer(userVisit, campaignSourceDescription))
         );
 
         return campaignSourceDescriptionTransfers;
@@ -1211,7 +1239,7 @@ public class CampaignControl
 
         var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(campaignMediumPK);
-        getWorkflowControl().addEntityToWorkflowUsingNames(null, CampaignMediumStatusConstants.Workflow_CAMPAIGN_MEDIUM_STATUS,
+        workflowControl.addEntityToWorkflowUsingNames(null, CampaignMediumStatusConstants.Workflow_CAMPAIGN_MEDIUM_STATUS,
                 CampaignMediumStatusConstants.WorkflowEntrance_NEW_ACTIVE, entityInstance, null, null, createdBy);
 
         return campaignMedium;
@@ -1364,7 +1392,6 @@ public class CampaignControl
 
     public CampaignMediumStatusChoicesBean getCampaignMediumStatusChoices(String defaultCampaignMediumStatusChoice, Language language,
             boolean allowNullChoice, CampaignMedium campaignMedium, PartyPK partyPK) {
-        var workflowControl = getWorkflowControl();
         var employeeStatusChoicesBean = new CampaignMediumStatusChoicesBean();
         
         if(campaignMedium == null) {
@@ -1384,7 +1411,6 @@ public class CampaignControl
     }
     
     public void setCampaignMediumStatus(ExecutionErrorAccumulator eea, Party party, String employeeStatusChoice, PartyPK modifiedBy) {
-        var workflowControl = getWorkflowControl();
         var entityInstance = getEntityInstanceByBaseEntity(party);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(CampaignMediumStatusConstants.Workflow_CAMPAIGN_MEDIUM_STATUS,
                 entityInstance);
@@ -1399,16 +1425,15 @@ public class CampaignControl
     }
     
    public CampaignMediumTransfer getCampaignMediumTransfer(UserVisit userVisit, CampaignMedium campaignMedium) {
-        return getCampaignTransferCaches(userVisit).getCampaignMediumTransferCache().getCampaignMediumTransfer(campaignMedium);
+        return campaignMediumTransferCache.getCampaignMediumTransfer(userVisit, campaignMedium);
     }
 
     public List<CampaignMediumTransfer> getCampaignMediumTransfers(UserVisit userVisit) {
         var campaignMediums = getCampaignMediums();
         List<CampaignMediumTransfer> campaignMediumTransfers = new ArrayList<>(campaignMediums.size());
-        var campaignMediumTransferCache = getCampaignTransferCaches(userVisit).getCampaignMediumTransferCache();
 
         campaignMediums.forEach((campaignMedium) ->
-                campaignMediumTransfers.add(campaignMediumTransferCache.getCampaignMediumTransfer(campaignMedium))
+                campaignMediumTransfers.add(campaignMediumTransferCache.getCampaignMediumTransfer(userVisit, campaignMedium))
         );
 
         return campaignMediumTransfers;
@@ -1626,7 +1651,7 @@ public class CampaignControl
         var campaignMediumDescription = getCampaignMediumDescription(campaignMedium, language);
 
         if(campaignMediumDescription == null && !language.getIsDefault()) {
-            campaignMediumDescription = getCampaignMediumDescription(campaignMedium, getPartyControl().getDefaultLanguage());
+            campaignMediumDescription = getCampaignMediumDescription(campaignMedium, partyControl.getDefaultLanguage());
         }
 
         if(campaignMediumDescription == null) {
@@ -1639,16 +1664,15 @@ public class CampaignControl
     }
 
     public CampaignMediumDescriptionTransfer getCampaignMediumDescriptionTransfer(UserVisit userVisit, CampaignMediumDescription campaignMediumDescription) {
-        return getCampaignTransferCaches(userVisit).getCampaignMediumDescriptionTransferCache().getCampaignMediumDescriptionTransfer(campaignMediumDescription);
+        return campaignMediumDescriptionTransferCache.getCampaignMediumDescriptionTransfer(userVisit, campaignMediumDescription);
     }
 
     public List<CampaignMediumDescriptionTransfer> getCampaignMediumDescriptionTransfersByCampaignMedium(UserVisit userVisit, CampaignMedium campaignMedium) {
         var campaignMediumDescriptions = getCampaignMediumDescriptionsByCampaignMedium(campaignMedium);
         List<CampaignMediumDescriptionTransfer> campaignMediumDescriptionTransfers = new ArrayList<>(campaignMediumDescriptions.size());
-        var campaignMediumDescriptionTransferCache = getCampaignTransferCaches(userVisit).getCampaignMediumDescriptionTransferCache();
 
         campaignMediumDescriptions.forEach((campaignMediumDescription) ->
-                campaignMediumDescriptionTransfers.add(campaignMediumDescriptionTransferCache.getCampaignMediumDescriptionTransfer(campaignMediumDescription))
+                campaignMediumDescriptionTransfers.add(campaignMediumDescriptionTransferCache.getCampaignMediumDescriptionTransfer(userVisit, campaignMediumDescription))
         );
 
         return campaignMediumDescriptionTransfers;
@@ -1729,7 +1753,7 @@ public class CampaignControl
 
         var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(campaignTermPK);
-        getWorkflowControl().addEntityToWorkflowUsingNames(null, CampaignTermStatusConstants.Workflow_CAMPAIGN_TERM_STATUS,
+        workflowControl.addEntityToWorkflowUsingNames(null, CampaignTermStatusConstants.Workflow_CAMPAIGN_TERM_STATUS,
                 CampaignTermStatusConstants.WorkflowEntrance_NEW_ACTIVE, entityInstance, null, null, createdBy);
 
         return campaignTerm;
@@ -1882,7 +1906,6 @@ public class CampaignControl
 
     public CampaignTermStatusChoicesBean getCampaignTermStatusChoices(String defaultCampaignTermStatusChoice, Language language,
             boolean allowNullChoice, CampaignTerm campaignTerm, PartyPK partyPK) {
-        var workflowControl = getWorkflowControl();
         var employeeStatusChoicesBean = new CampaignTermStatusChoicesBean();
         
         if(campaignTerm == null) {
@@ -1902,7 +1925,6 @@ public class CampaignControl
     }
     
     public void setCampaignTermStatus(ExecutionErrorAccumulator eea, Party party, String employeeStatusChoice, PartyPK modifiedBy) {
-        var workflowControl = getWorkflowControl();
         var entityInstance = getEntityInstanceByBaseEntity(party);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(CampaignTermStatusConstants.Workflow_CAMPAIGN_TERM_STATUS,
                 entityInstance);
@@ -1917,16 +1939,15 @@ public class CampaignControl
     }
     
    public CampaignTermTransfer getCampaignTermTransfer(UserVisit userVisit, CampaignTerm campaignTerm) {
-        return getCampaignTransferCaches(userVisit).getCampaignTermTransferCache().getCampaignTermTransfer(campaignTerm);
+        return campaignTermTransferCache.getCampaignTermTransfer(userVisit, campaignTerm);
     }
 
     public List<CampaignTermTransfer> getCampaignTermTransfers(UserVisit userVisit) {
         var campaignTerms = getCampaignTerms();
         List<CampaignTermTransfer> campaignTermTransfers = new ArrayList<>(campaignTerms.size());
-        var campaignTermTransferCache = getCampaignTransferCaches(userVisit).getCampaignTermTransferCache();
 
         campaignTerms.forEach((campaignTerm) ->
-                campaignTermTransfers.add(campaignTermTransferCache.getCampaignTermTransfer(campaignTerm))
+                campaignTermTransfers.add(campaignTermTransferCache.getCampaignTermTransfer(userVisit, campaignTerm))
         );
 
         return campaignTermTransfers;
@@ -2144,7 +2165,7 @@ public class CampaignControl
         var campaignTermDescription = getCampaignTermDescription(campaignTerm, language);
 
         if(campaignTermDescription == null && !language.getIsDefault()) {
-            campaignTermDescription = getCampaignTermDescription(campaignTerm, getPartyControl().getDefaultLanguage());
+            campaignTermDescription = getCampaignTermDescription(campaignTerm, partyControl.getDefaultLanguage());
         }
 
         if(campaignTermDescription == null) {
@@ -2157,16 +2178,15 @@ public class CampaignControl
     }
 
     public CampaignTermDescriptionTransfer getCampaignTermDescriptionTransfer(UserVisit userVisit, CampaignTermDescription campaignTermDescription) {
-        return getCampaignTransferCaches(userVisit).getCampaignTermDescriptionTransferCache().getCampaignTermDescriptionTransfer(campaignTermDescription);
+        return campaignTermDescriptionTransferCache.getCampaignTermDescriptionTransfer(userVisit, campaignTermDescription);
     }
 
     public List<CampaignTermDescriptionTransfer> getCampaignTermDescriptionTransfersByCampaignTerm(UserVisit userVisit, CampaignTerm campaignTerm) {
         var campaignTermDescriptions = getCampaignTermDescriptionsByCampaignTerm(campaignTerm);
         List<CampaignTermDescriptionTransfer> campaignTermDescriptionTransfers = new ArrayList<>(campaignTermDescriptions.size());
-        var campaignTermDescriptionTransferCache = getCampaignTransferCaches(userVisit).getCampaignTermDescriptionTransferCache();
 
         campaignTermDescriptions.forEach((campaignTermDescription) ->
-                campaignTermDescriptionTransfers.add(campaignTermDescriptionTransferCache.getCampaignTermDescriptionTransfer(campaignTermDescription))
+                campaignTermDescriptionTransfers.add(campaignTermDescriptionTransferCache.getCampaignTermDescriptionTransfer(userVisit, campaignTermDescription))
         );
 
         return campaignTermDescriptionTransfers;
@@ -2247,7 +2267,7 @@ public class CampaignControl
 
         var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(campaignContentPK);
-        getWorkflowControl().addEntityToWorkflowUsingNames(null, CampaignContentStatusConstants.Workflow_CAMPAIGN_CONTENT_STATUS,
+        workflowControl.addEntityToWorkflowUsingNames(null, CampaignContentStatusConstants.Workflow_CAMPAIGN_CONTENT_STATUS,
                 CampaignContentStatusConstants.WorkflowEntrance_NEW_ACTIVE, entityInstance, null, null, createdBy);
 
         return campaignContent;
@@ -2400,7 +2420,6 @@ public class CampaignControl
 
     public CampaignContentStatusChoicesBean getCampaignContentStatusChoices(String defaultCampaignContentStatusChoice, Language language,
             boolean allowNullChoice, CampaignContent campaignContent, PartyPK partyPK) {
-        var workflowControl = getWorkflowControl();
         var employeeStatusChoicesBean = new CampaignContentStatusChoicesBean();
         
         if(campaignContent == null) {
@@ -2420,7 +2439,6 @@ public class CampaignControl
     }
     
     public void setCampaignContentStatus(ExecutionErrorAccumulator eea, Party party, String employeeStatusChoice, PartyPK modifiedBy) {
-        var workflowControl = getWorkflowControl();
         var entityInstance = getEntityInstanceByBaseEntity(party);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(CampaignContentStatusConstants.Workflow_CAMPAIGN_CONTENT_STATUS,
                 entityInstance);
@@ -2435,16 +2453,15 @@ public class CampaignControl
     }
     
    public CampaignContentTransfer getCampaignContentTransfer(UserVisit userVisit, CampaignContent campaignContent) {
-        return getCampaignTransferCaches(userVisit).getCampaignContentTransferCache().getCampaignContentTransfer(campaignContent);
+        return campaignContentTransferCache.getCampaignContentTransfer(userVisit, campaignContent);
     }
 
     public List<CampaignContentTransfer> getCampaignContentTransfers(UserVisit userVisit) {
         var campaignContents = getCampaignContents();
         List<CampaignContentTransfer> campaignContentTransfers = new ArrayList<>(campaignContents.size());
-        var campaignContentTransferCache = getCampaignTransferCaches(userVisit).getCampaignContentTransferCache();
 
         campaignContents.forEach((campaignContent) ->
-                campaignContentTransfers.add(campaignContentTransferCache.getCampaignContentTransfer(campaignContent))
+                campaignContentTransfers.add(campaignContentTransferCache.getCampaignContentTransfer(userVisit, campaignContent))
         );
 
         return campaignContentTransfers;
@@ -2662,7 +2679,7 @@ public class CampaignControl
         var campaignContentDescription = getCampaignContentDescription(campaignContent, language);
 
         if(campaignContentDescription == null && !language.getIsDefault()) {
-            campaignContentDescription = getCampaignContentDescription(campaignContent, getPartyControl().getDefaultLanguage());
+            campaignContentDescription = getCampaignContentDescription(campaignContent, partyControl.getDefaultLanguage());
         }
 
         if(campaignContentDescription == null) {
@@ -2675,16 +2692,15 @@ public class CampaignControl
     }
 
     public CampaignContentDescriptionTransfer getCampaignContentDescriptionTransfer(UserVisit userVisit, CampaignContentDescription campaignContentDescription) {
-        return getCampaignTransferCaches(userVisit).getCampaignContentDescriptionTransferCache().getCampaignContentDescriptionTransfer(campaignContentDescription);
+        return campaignContentDescriptionTransferCache.getCampaignContentDescriptionTransfer(userVisit, campaignContentDescription);
     }
 
     public List<CampaignContentDescriptionTransfer> getCampaignContentDescriptionTransfersByCampaignContent(UserVisit userVisit, CampaignContent campaignContent) {
         var campaignContentDescriptions = getCampaignContentDescriptionsByCampaignContent(campaignContent);
         List<CampaignContentDescriptionTransfer> campaignContentDescriptionTransfers = new ArrayList<>(campaignContentDescriptions.size());
-        var campaignContentDescriptionTransferCache = getCampaignTransferCaches(userVisit).getCampaignContentDescriptionTransferCache();
 
         campaignContentDescriptions.forEach((campaignContentDescription) ->
-                campaignContentDescriptionTransfers.add(campaignContentDescriptionTransferCache.getCampaignContentDescriptionTransfer(campaignContentDescription))
+                campaignContentDescriptionTransfers.add(campaignContentDescriptionTransferCache.getCampaignContentDescriptionTransfer(userVisit, campaignContentDescription))
         );
 
         return campaignContentDescriptionTransfers;
@@ -2927,15 +2943,14 @@ public class CampaignControl
     }
 
     public UserVisitCampaignTransfer getUserVisitCampaignTransfer(UserVisit userVisit, UserVisitCampaign userVisitCampaign) {
-        return getCampaignTransferCaches(userVisit).getUserVisitCampaignTransferCache().getUserVisitCampaignTransfer(userVisitCampaign);
+        return userVisitCampaignTransferCache.getUserVisitCampaignTransfer(userVisit, userVisitCampaign);
     }
 
     public List<UserVisitCampaignTransfer> getUserVisitCampaignTransfers(UserVisit userVisit, Collection<UserVisitCampaign> userVisitCampaigns) {
         List<UserVisitCampaignTransfer> userVisitCampaignTransfers = new ArrayList<>(userVisitCampaigns.size());
-        var userVisitCampaignTransferCache = getCampaignTransferCaches(userVisit).getUserVisitCampaignTransferCache();
 
         userVisitCampaigns.forEach((userVisitCampaign) ->
-                userVisitCampaignTransfers.add(userVisitCampaignTransferCache.getUserVisitCampaignTransfer(userVisitCampaign))
+                userVisitCampaignTransfers.add(userVisitCampaignTransferCache.getUserVisitCampaignTransfer(userVisit, userVisitCampaign))
         );
 
         return userVisitCampaignTransfers;

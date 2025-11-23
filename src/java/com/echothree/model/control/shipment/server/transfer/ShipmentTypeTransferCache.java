@@ -18,12 +18,14 @@ package com.echothree.model.control.shipment.server.transfer;
 
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.shipment.common.transfer.ShipmentTypeTransfer;
-import com.echothree.model.control.shipment.server.ShipmentControl;
+import com.echothree.model.control.shipment.server.control.ShipmentControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.shipment.server.entity.ShipmentType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ShipmentTypeTransferCache
         extends BaseShipmentTransferCache<ShipmentType, ShipmentTypeTransfer> {
 
@@ -32,21 +34,21 @@ public class ShipmentTypeTransferCache
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of ShipmentTypeTransferCache */
-    public ShipmentTypeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected ShipmentTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
 
     @Override
-    public ShipmentTypeTransfer getTransfer(ShipmentType shipmentType) {
+    public ShipmentTypeTransfer getTransfer(UserVisit userVisit, ShipmentType shipmentType) {
         var shipmentTypeTransfer = get(shipmentType);
         
         if(shipmentTypeTransfer == null) {
             var shipmentTypeDetail = shipmentType.getLastDetail();
             var shipmentTypeName = shipmentTypeDetail.getShipmentTypeName();
             var parentShipmentType = shipmentTypeDetail.getParentShipmentType();
-            var parentShipmentTypeTransfer = parentShipmentType == null? null: getTransfer(parentShipmentType);
+            var parentShipmentTypeTransfer = parentShipmentType == null ? null : getTransfer(userVisit, parentShipmentType);
             var shipmentSequenceType = shipmentTypeDetail.getShipmentSequenceType();
             var shipmentSequenceTypeTransfer = shipmentSequenceType == null? null: sequenceControl.getSequenceTypeTransfer(userVisit, shipmentSequenceType);
             var shipmentWorkflow = shipmentTypeDetail.getShipmentWorkflow();
@@ -55,11 +57,11 @@ public class ShipmentTypeTransferCache
             var shipmentWorkflowEntranceTransfer = shipmentWorkflowEntrance == null? null: workflowControl.getWorkflowEntranceTransfer(userVisit, shipmentWorkflowEntrance);
             var isDefault = shipmentTypeDetail.getIsDefault();
             var sortOrder = shipmentTypeDetail.getSortOrder();
-            var description = shipmentControl.getBestShipmentTypeDescription(shipmentType, getLanguage());
+            var description = shipmentControl.getBestShipmentTypeDescription(shipmentType, getLanguage(userVisit));
             
             shipmentTypeTransfer = new ShipmentTypeTransfer(shipmentTypeName, parentShipmentTypeTransfer, shipmentSequenceTypeTransfer, shipmentWorkflowTransfer,
                     shipmentWorkflowEntranceTransfer, isDefault, sortOrder, description);
-            put(shipmentType, shipmentTypeTransfer);
+            put(userVisit, shipmentType, shipmentTypeTransfer);
         }
         
         return shipmentTypeTransfer;

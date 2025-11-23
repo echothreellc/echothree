@@ -21,21 +21,23 @@ import com.echothree.model.control.accounting.server.control.TransactionTimeCont
 import com.echothree.model.data.accounting.server.entity.TransactionTimeType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class TransactionTimeTypeTransferCache
         extends BaseAccountingTransferCache<TransactionTimeType, TransactionTimeTypeTransfer> {
 
     TransactionTimeControl transactionTimeControl = Session.getModelController(TransactionTimeControl.class);
 
     /** Creates a new instance of TransactionTimeTypeTransferCache */
-    public TransactionTimeTypeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected TransactionTimeTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
 
     @Override
-    public TransactionTimeTypeTransfer getTransfer(TransactionTimeType transactionTimeType) {
+    public TransactionTimeTypeTransfer getTransfer(UserVisit userVisit, TransactionTimeType transactionTimeType) {
         var transactionTimeTypeTransfer = get(transactionTimeType);
         
         if(transactionTimeTypeTransfer == null) {
@@ -43,10 +45,10 @@ public class TransactionTimeTypeTransferCache
             var transactionTimeTypeName = transactionTimeTypeDetail.getTransactionTimeTypeName();
             var isDefault = transactionTimeTypeDetail.getIsDefault();
             var sortOrder = transactionTimeTypeDetail.getSortOrder();
-            var description = transactionTimeControl.getBestTransactionTimeTypeDescription(transactionTimeType, getLanguage());
+            var description = transactionTimeControl.getBestTransactionTimeTypeDescription(transactionTimeType, getLanguage(userVisit));
             
             transactionTimeTypeTransfer = new TransactionTimeTypeTransfer(transactionTimeTypeName, isDefault, sortOrder, description);
-            put(transactionTimeType, transactionTimeTypeTransfer);
+            put(userVisit, transactionTimeType, transactionTimeTypeTransfer);
         }
         
         return transactionTimeTypeTransfer;

@@ -23,18 +23,21 @@ import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.user.server.entity.UserLoginPassword;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class UserLoginPasswordTransferCache
         extends BaseUserTransferCache<UserLoginPassword, UserLoginPasswordTransfer> {
     
     PartyControl partyControl = Session.getModelController(PartyControl.class);
+    UserControl userControl = Session.getModelController(UserControl.class);
 
     /** Creates a new instance of UserLoginPasswordTransferCache */
-    public UserLoginPasswordTransferCache(UserVisit userVisit, UserControl userControl) {
-        super(userVisit, userControl);
+    protected UserLoginPasswordTransferCache() {
+        super();
     }
     
-    public UserLoginPasswordTransfer getUserLoginPasswordTransfer(UserLoginPassword userLoginPassword) {
+    public UserLoginPasswordTransfer getUserLoginPasswordTransfer(UserVisit userVisit, UserLoginPassword userLoginPassword) {
         var userLoginPasswordTransfer = get(userLoginPassword);
         
         if(userLoginPasswordTransfer == null) {
@@ -59,12 +62,12 @@ public class UserLoginPasswordTransferCache
                 }
 
                 unformattedChangedTime = userLoginPasswordString.getChangedTime();
-                changedTime = formatTypicalDateTime(unformattedChangedTime);
+                changedTime = formatTypicalDateTime(userVisit, unformattedChangedTime);
                 wasReset = userLoginPasswordString.getWasReset();
             }
 
             userLoginPasswordTransfer = new UserLoginPasswordTransfer(party, userLoginPasswordType, password, unformattedChangedTime, changedTime, wasReset);
-            put(userLoginPassword, userLoginPasswordTransfer);
+            put(userVisit, userLoginPassword, userLoginPasswordTransfer);
         }
         
         return userLoginPasswordTransfer;

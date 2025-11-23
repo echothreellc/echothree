@@ -24,20 +24,23 @@ import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.item.server.entity.ItemKitMember;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ItemKitMemberTransferCache
         extends BaseItemTransferCache<ItemKitMember, ItemKitMemberTransfer> {
     
     InventoryControl inventoryControl = Session.getModelController(InventoryControl.class);
+    ItemControl itemControl = Session.getModelController(ItemControl.class);
     UomControl uomControl = Session.getModelController(UomControl.class);
     
     /** Creates a new instance of ItemKitMemberTransferCache */
-    public ItemKitMemberTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    protected ItemKitMemberTransferCache() {
+        super();
     }
     
     @Override
-    public ItemKitMemberTransfer getTransfer(ItemKitMember itemKitMember) {
+    public ItemKitMemberTransfer getTransfer(UserVisit userVisit, ItemKitMember itemKitMember) {
         var itemKitMemberTransfer = get(itemKitMember);
         
         if(itemKitMemberTransfer == null) {
@@ -51,7 +54,7 @@ public class ItemKitMemberTransferCache
             
             itemKitMemberTransfer = new ItemKitMemberTransfer(item, inventoryCondition, unitOfMeasureType, memberItem, memberInventoryCondition,
                     memberUnitOfMeasureType, quantity);
-            put(itemKitMember, itemKitMemberTransfer);
+            put(userVisit, itemKitMember, itemKitMemberTransfer);
         }
         
         return itemKitMemberTransfer;

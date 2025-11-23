@@ -24,19 +24,22 @@ import com.echothree.model.control.returnpolicy.server.logic.PartyReturnPolicyLo
 import com.echothree.model.data.returnpolicy.server.entity.PartyReturnPolicy;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PartyReturnPolicyTransferCache
         extends BaseReturnPolicyTransferCache<PartyReturnPolicy, PartyReturnPolicyTransfer> {
 
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
+    ReturnPolicyControl returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
 
     /** Creates a new instance of PartyReturnPolicyTransferCache */
-    public PartyReturnPolicyTransferCache(UserVisit userVisit, ReturnPolicyControl returnPolicyControl) {
-        super(userVisit, returnPolicyControl);
+    protected PartyReturnPolicyTransferCache() {
+        super();
     }
 
-    public PartyReturnPolicyTransfer getPartyReturnPolicyTransfer(PartyReturnPolicy partyReturnPolicy) {
+    public PartyReturnPolicyTransfer getPartyReturnPolicyTransfer(UserVisit userVisit, PartyReturnPolicy partyReturnPolicy) {
         var partyReturnPolicyTransfer = get(partyReturnPolicy);
 
         if(partyReturnPolicyTransfer == null) {
@@ -44,11 +47,11 @@ public class PartyReturnPolicyTransferCache
             var returnPolicy = returnPolicyControl.getReturnPolicyTransfer(userVisit, partyReturnPolicy.getReturnPolicy());
 
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(partyReturnPolicy.getPrimaryKey());
-            var createdBy = getPartyPK();
+            var createdBy = getPartyPK(userVisit);
             var partyReturnPolicyStatusTransfer = PartyReturnPolicyLogic.getInstance().getPartyReturnPolicyStatusTransfer(userVisit, entityInstance, createdBy);
 
             partyReturnPolicyTransfer = new PartyReturnPolicyTransfer(party, returnPolicy, partyReturnPolicyStatusTransfer);
-            put(partyReturnPolicy, partyReturnPolicyTransfer, entityInstance);
+            put(userVisit, partyReturnPolicy, partyReturnPolicyTransfer, entityInstance);
         }
 
         return partyReturnPolicyTransfer;

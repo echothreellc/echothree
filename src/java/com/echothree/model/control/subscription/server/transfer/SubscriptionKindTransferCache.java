@@ -20,18 +20,23 @@ import com.echothree.model.control.subscription.common.transfer.SubscriptionKind
 import com.echothree.model.control.subscription.server.control.SubscriptionControl;
 import com.echothree.model.data.subscription.server.entity.SubscriptionKind;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class SubscriptionKindTransferCache
         extends BaseSubscriptionTransferCache<SubscriptionKind, SubscriptionKindTransfer> {
-    
+
+    SubscriptionControl subscriptionControl = Session.getModelController(SubscriptionControl.class);
+
     /** Creates a new instance of SubscriptionKindTransferCache */
-    public SubscriptionKindTransferCache(UserVisit userVisit, SubscriptionControl subscriptionControl) {
-        super(userVisit, subscriptionControl);
+    protected SubscriptionKindTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public SubscriptionKindTransfer getSubscriptionKindTransfer(SubscriptionKind subscriptionKind) {
+    public SubscriptionKindTransfer getSubscriptionKindTransfer(UserVisit userVisit, SubscriptionKind subscriptionKind) {
         var subscriptionKindTransfer = get(subscriptionKind);
         
         if(subscriptionKindTransfer == null) {
@@ -39,10 +44,10 @@ public class SubscriptionKindTransferCache
             var subscriptionKindName = subscriptionKindDetail.getSubscriptionKindName();
             var isDefault = subscriptionKindDetail.getIsDefault();
             var sortOrder = subscriptionKindDetail.getSortOrder();
-            var description = subscriptionControl.getBestSubscriptionKindDescription(subscriptionKind, getLanguage());
+            var description = subscriptionControl.getBestSubscriptionKindDescription(subscriptionKind, getLanguage(userVisit));
             
             subscriptionKindTransfer = new SubscriptionKindTransfer(subscriptionKindName, isDefault, sortOrder, description);
-            put(subscriptionKind, subscriptionKindTransfer);
+            put(userVisit, subscriptionKind, subscriptionKindTransfer);
         }
         
         return subscriptionKindTransfer;

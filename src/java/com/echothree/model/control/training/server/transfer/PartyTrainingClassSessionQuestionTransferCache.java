@@ -22,15 +22,20 @@ import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.data.training.server.entity.PartyTrainingClassSessionQuestion;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PartyTrainingClassSessionQuestionTransferCache
         extends BaseTrainingTransferCache<PartyTrainingClassSessionQuestion, PartyTrainingClassSessionQuestionTransfer> {
-    
+
+    TrainingControl trainingControl = Session.getModelController(TrainingControl.class);
+
     boolean includePartyTrainingClassSessionAnswers;
     
     /** Creates a new instance of PartyTrainingClassSessionQuestionTransferCache */
-    public PartyTrainingClassSessionQuestionTransferCache(UserVisit userVisit, TrainingControl trainingControl) {
-        super(userVisit, trainingControl);
+    protected PartyTrainingClassSessionQuestionTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {
@@ -40,7 +45,7 @@ public class PartyTrainingClassSessionQuestionTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public PartyTrainingClassSessionQuestionTransfer getPartyTrainingClassSessionQuestionTransfer(PartyTrainingClassSessionQuestion partyTrainingClassSessionQuestion) {
+    public PartyTrainingClassSessionQuestionTransfer getPartyTrainingClassSessionQuestionTransfer(UserVisit userVisit, PartyTrainingClassSessionQuestion partyTrainingClassSessionQuestion) {
         var partyTrainingClassSessionQuestionTransfer = get(partyTrainingClassSessionQuestion);
         
         if(partyTrainingClassSessionQuestionTransfer == null) {
@@ -51,7 +56,7 @@ public class PartyTrainingClassSessionQuestionTransferCache
 
             partyTrainingClassSessionQuestionTransfer = new PartyTrainingClassSessionQuestionTransfer(partyTrainingClassSessionTransfer,
                     trainingClassQuestionTransfer, sortOrder);
-            put(partyTrainingClassSessionQuestion, partyTrainingClassSessionQuestionTransfer);
+            put(userVisit, partyTrainingClassSessionQuestion, partyTrainingClassSessionQuestionTransfer);
             
             if(includePartyTrainingClassSessionAnswers) {
                 partyTrainingClassSessionQuestionTransfer.setPartyTrainingClassSessionAnswers(new ListWrapper<>(trainingControl.getPartyTrainingClassSessionAnswerTransfersByPartyTrainingClassSessionQuestion(userVisit, partyTrainingClassSessionQuestion)));

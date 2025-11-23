@@ -21,13 +21,18 @@ import com.echothree.model.control.search.common.transfer.SearchCheckSpellingAct
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.data.search.server.entity.SearchCheckSpellingActionType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class SearchCheckSpellingActionTypeTransferCache
         extends BaseSearchTransferCache<SearchCheckSpellingActionType, SearchCheckSpellingActionTypeTransfer> {
 
+    SearchControl searchControl = Session.getModelController(SearchControl.class);
+
     /** Creates a new instance of SearchCheckSpellingActionTypeTransferCache */
-    public SearchCheckSpellingActionTypeTransferCache(UserVisit userVisit, SearchControl searchControl) {
-        super(userVisit, searchControl);
+    protected SearchCheckSpellingActionTypeTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {
@@ -37,7 +42,7 @@ public class SearchCheckSpellingActionTypeTransferCache
         setIncludeEntityInstance(true);
     }
 
-    public SearchCheckSpellingActionTypeTransfer getSearchCheckSpellingActionTypeTransfer(SearchCheckSpellingActionType searchCheckSpellingActionType) {
+    public SearchCheckSpellingActionTypeTransfer getSearchCheckSpellingActionTypeTransfer(UserVisit userVisit, SearchCheckSpellingActionType searchCheckSpellingActionType) {
         var searchCheckSpellingActionTypeTransfer = get(searchCheckSpellingActionType);
 
         if(searchCheckSpellingActionTypeTransfer == null) {
@@ -45,10 +50,10 @@ public class SearchCheckSpellingActionTypeTransferCache
             var searchCheckSpellingActionTypeName = searchCheckSpellingActionTypeDetail.getSearchCheckSpellingActionTypeName();
             var isDefault = searchCheckSpellingActionTypeDetail.getIsDefault();
             var sortOrder = searchCheckSpellingActionTypeDetail.getSortOrder();
-            var description = searchControl.getBestSearchCheckSpellingActionTypeDescription(searchCheckSpellingActionType, getLanguage());
+            var description = searchControl.getBestSearchCheckSpellingActionTypeDescription(searchCheckSpellingActionType, getLanguage(userVisit));
 
             searchCheckSpellingActionTypeTransfer = new SearchCheckSpellingActionTypeTransfer(searchCheckSpellingActionTypeName, isDefault, sortOrder, description);
-            put(searchCheckSpellingActionType, searchCheckSpellingActionTypeTransfer);
+            put(userVisit, searchCheckSpellingActionType, searchCheckSpellingActionTypeTransfer);
         }
 
         return searchCheckSpellingActionTypeTransfer;

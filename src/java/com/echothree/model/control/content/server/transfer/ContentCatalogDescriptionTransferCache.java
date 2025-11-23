@@ -20,16 +20,21 @@ import com.echothree.model.control.content.common.transfer.ContentCatalogDescrip
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.data.content.server.entity.ContentCatalogDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ContentCatalogDescriptionTransferCache
         extends BaseContentDescriptionTransferCache<ContentCatalogDescription, ContentCatalogDescriptionTransfer> {
-    
+
+    ContentControl contentControl = Session.getModelController(ContentControl.class);
+
     /** Creates a new instance of ContentCatalogDescriptionTransferCache */
-    public ContentCatalogDescriptionTransferCache(UserVisit userVisit, ContentControl contentControl) {
-        super(userVisit, contentControl);
+    protected ContentCatalogDescriptionTransferCache() {
+        super();
     }
     
-    public ContentCatalogDescriptionTransfer getContentCatalogDescriptionTransfer(ContentCatalogDescription contentCatalogDescription) {
+    public ContentCatalogDescriptionTransfer getContentCatalogDescriptionTransfer(UserVisit userVisit, ContentCatalogDescription contentCatalogDescription) {
         var contentCatalogDescriptionTransfer = get(contentCatalogDescription);
         
         if(contentCatalogDescriptionTransfer == null) {
@@ -37,7 +42,7 @@ public class ContentCatalogDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, contentCatalogDescription.getLanguage());
             
             contentCatalogDescriptionTransfer = new ContentCatalogDescriptionTransfer(languageTransfer, contentCatalogTransfer, contentCatalogDescription.getDescription());
-            put(contentCatalogDescription, contentCatalogDescriptionTransfer);
+            put(userVisit, contentCatalogDescription, contentCatalogDescriptionTransfer);
         }
         
         return contentCatalogDescriptionTransfer;

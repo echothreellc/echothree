@@ -34,7 +34,9 @@ import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class GetEntityTypeCommand
         extends BaseSingleEntityCommand<EntityType, GetEntityTypeForm> {
     
@@ -74,7 +76,7 @@ public class GetEntityTypeCommand
         var result = CoreResultFactory.getGetEntityTypeResult();
 
         if(entityType != null) {
-            result.setEntityType(getEntityTypeControl().getEntityTypeTransfer(getUserVisit(), entityType));
+            result.setEntityType(entityTypeControl.getEntityTypeTransfer(getUserVisit(), entityType));
         }
 
         return result;

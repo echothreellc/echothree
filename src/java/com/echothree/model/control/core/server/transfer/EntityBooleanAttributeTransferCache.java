@@ -23,7 +23,9 @@ import com.echothree.model.data.core.server.entity.EntityBooleanAttribute;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EntityBooleanAttributeTransferCache
         extends BaseCoreTransferCache<EntityBooleanAttribute, EntityBooleanAttributeTransfer> {
 
@@ -31,11 +33,11 @@ public class EntityBooleanAttributeTransferCache
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
     /** Creates a new instance of EntityBooleanAttributeTransferCache */
-    public EntityBooleanAttributeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected EntityBooleanAttributeTransferCache() {
+        super();
     }
     
-    public EntityBooleanAttributeTransfer getEntityBooleanAttributeTransfer(EntityBooleanAttribute entityBooleanAttribute, EntityInstance entityInstance) {
+    public EntityBooleanAttributeTransfer getEntityBooleanAttributeTransfer(final UserVisit userVisit, final EntityBooleanAttribute entityBooleanAttribute, final EntityInstance entityInstance) {
         var entityBooleanAttributeTransfer = get(entityBooleanAttribute);
         
         if(entityBooleanAttributeTransfer == null) {
@@ -44,7 +46,7 @@ public class EntityBooleanAttributeTransferCache
             var booleanAttribute = entityBooleanAttribute.getBooleanAttribute();
             
             entityBooleanAttributeTransfer = new EntityBooleanAttributeTransfer(entityAttribute, entityInstanceTransfer, booleanAttribute);
-            put(entityBooleanAttribute, entityBooleanAttributeTransfer);
+            put(userVisit, entityBooleanAttribute, entityBooleanAttributeTransfer);
         }
         
         return entityBooleanAttributeTransfer;

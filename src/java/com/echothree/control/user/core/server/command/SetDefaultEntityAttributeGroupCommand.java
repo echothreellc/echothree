@@ -32,7 +32,9 @@ import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class SetDefaultEntityAttributeGroupCommand
         extends BaseSimpleCommand<SetDefaultEntityAttributeGroupForm> {
     
@@ -58,7 +60,6 @@ public class SetDefaultEntityAttributeGroupCommand
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
         var entityAttributeGroupName = form.getEntityAttributeGroupName();
         var entityAttributeGroupDetailValue = coreControl.getEntityAttributeGroupDetailValueByNameForUpdate(entityAttributeGroupName);
         

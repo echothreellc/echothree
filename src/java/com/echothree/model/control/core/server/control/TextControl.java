@@ -52,12 +52,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class TextControl
         extends BaseCoreControl {
 
     /** Creates a new instance of TextControl */
-    public TextControl() {
+    protected TextControl() {
         super();
     }
 
@@ -222,15 +224,14 @@ public class TextControl
     }
 
     public TextDecorationTransfer getTextDecorationTransfer(UserVisit userVisit, TextDecoration textDecoration) {
-        return getCoreTransferCaches(userVisit).getTextDecorationTransferCache().getTextDecorationTransfer(textDecoration);
+        return textDecorationTransferCache.getTextDecorationTransfer(userVisit, textDecoration);
     }
 
     public List<TextDecorationTransfer> getTextDecorationTransfers(UserVisit userVisit, Collection<TextDecoration> entities) {
         List<TextDecorationTransfer> transfers = new ArrayList<>(entities.size());
-        var transferCache = getCoreTransferCaches(userVisit).getTextDecorationTransferCache();
 
         entities.forEach((entity) ->
-                transfers.add(transferCache.getTextDecorationTransfer(entity))
+                transfers.add(textDecorationTransferCache.getTextDecorationTransfer(userVisit, entity))
         );
 
         return transfers;
@@ -451,7 +452,7 @@ public class TextControl
         var textDecorationDescription = getTextDecorationDescription(textDecoration, language);
 
         if(textDecorationDescription == null && !language.getIsDefault()) {
-            textDecorationDescription = getTextDecorationDescription(textDecoration, getPartyControl().getDefaultLanguage());
+            textDecorationDescription = getTextDecorationDescription(textDecoration, partyControl.getDefaultLanguage());
         }
 
         if(textDecorationDescription == null) {
@@ -464,16 +465,15 @@ public class TextControl
     }
 
     public TextDecorationDescriptionTransfer getTextDecorationDescriptionTransfer(UserVisit userVisit, TextDecorationDescription textDecorationDescription) {
-        return getCoreTransferCaches(userVisit).getTextDecorationDescriptionTransferCache().getTextDecorationDescriptionTransfer(textDecorationDescription);
+        return textDecorationDescriptionTransferCache.getTextDecorationDescriptionTransfer(userVisit, textDecorationDescription);
     }
 
     public List<TextDecorationDescriptionTransfer> getTextDecorationDescriptionTransfersByTextDecoration(UserVisit userVisit, TextDecoration textDecoration) {
         var textDecorationDescriptions = getTextDecorationDescriptionsByTextDecoration(textDecoration);
         List<TextDecorationDescriptionTransfer> textDecorationDescriptionTransfers = new ArrayList<>(textDecorationDescriptions.size());
-        var textDecorationDescriptionTransferCache = getCoreTransferCaches(userVisit).getTextDecorationDescriptionTransferCache();
 
         textDecorationDescriptions.forEach((textDecorationDescription) ->
-                textDecorationDescriptionTransfers.add(textDecorationDescriptionTransferCache.getTextDecorationDescriptionTransfer(textDecorationDescription))
+                textDecorationDescriptionTransfers.add(textDecorationDescriptionTransferCache.getTextDecorationDescriptionTransfer(userVisit, textDecorationDescription))
         );
 
         return textDecorationDescriptionTransfers;
@@ -674,15 +674,14 @@ public class TextControl
     }
 
     public TextTransformationTransfer getTextTransformationTransfer(UserVisit userVisit, TextTransformation textTransformation) {
-        return getCoreTransferCaches(userVisit).getTextTransformationTransferCache().getTextTransformationTransfer(textTransformation);
+        return textTransformationTransferCache.getTextTransformationTransfer(userVisit, textTransformation);
     }
 
     public List<TextTransformationTransfer> getTextTransformationTransfers(UserVisit userVisit, Collection<TextTransformation> entities) {
         List<TextTransformationTransfer> transfers = new ArrayList<>(entities.size());
-        var transferCache = getCoreTransferCaches(userVisit).getTextTransformationTransferCache();
 
         entities.forEach((entity) ->
-                transfers.add(transferCache.getTextTransformationTransfer(entity))
+                transfers.add(textTransformationTransferCache.getTextTransformationTransfer(userVisit, entity))
         );
 
         return transfers;
@@ -903,7 +902,7 @@ public class TextControl
         var textTransformationDescription = getTextTransformationDescription(textTransformation, language);
 
         if(textTransformationDescription == null && !language.getIsDefault()) {
-            textTransformationDescription = getTextTransformationDescription(textTransformation, getPartyControl().getDefaultLanguage());
+            textTransformationDescription = getTextTransformationDescription(textTransformation, partyControl.getDefaultLanguage());
         }
 
         if(textTransformationDescription == null) {
@@ -916,16 +915,15 @@ public class TextControl
     }
 
     public TextTransformationDescriptionTransfer getTextTransformationDescriptionTransfer(UserVisit userVisit, TextTransformationDescription textTransformationDescription) {
-        return getCoreTransferCaches(userVisit).getTextTransformationDescriptionTransferCache().getTextTransformationDescriptionTransfer(textTransformationDescription);
+        return textTransformationDescriptionTransferCache.getTextTransformationDescriptionTransfer(userVisit, textTransformationDescription);
     }
 
     public List<TextTransformationDescriptionTransfer> getTextTransformationDescriptionTransfersByTextTransformation(UserVisit userVisit, TextTransformation textTransformation) {
         var textTransformationDescriptions = getTextTransformationDescriptionsByTextTransformation(textTransformation);
         List<TextTransformationDescriptionTransfer> textTransformationDescriptionTransfers = new ArrayList<>(textTransformationDescriptions.size());
-        var textTransformationDescriptionTransferCache = getCoreTransferCaches(userVisit).getTextTransformationDescriptionTransferCache();
 
         textTransformationDescriptions.forEach((textTransformationDescription) ->
-                textTransformationDescriptionTransfers.add(textTransformationDescriptionTransferCache.getTextTransformationDescriptionTransfer(textTransformationDescription))
+                textTransformationDescriptionTransfers.add(textTransformationDescriptionTransferCache.getTextTransformationDescriptionTransfer(userVisit, textTransformationDescription))
         );
 
         return textTransformationDescriptionTransfers;

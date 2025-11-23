@@ -23,10 +23,15 @@ import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workflow.server.entity.WorkflowDestination;
 import com.echothree.util.common.form.TransferProperties;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class WorkflowDestinationTransferCache
         extends BaseWorkflowTransferCache<WorkflowDestination, WorkflowDestinationTransfer> {
-    
+
+    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
+
     TransferProperties transferProperties;
     boolean filterWorkflowStep;
     boolean filterWorkflowDestinationName;
@@ -36,8 +41,8 @@ public class WorkflowDestinationTransferCache
     boolean filterEntityInstance;
     
     /** Creates a new instance of WorkflowDestinationTransferCache */
-    public WorkflowDestinationTransferCache(UserVisit userVisit, WorkflowControl workflowControl) {
-        super(userVisit, workflowControl);
+    protected WorkflowDestinationTransferCache() {
+        super();
         
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
@@ -56,7 +61,7 @@ public class WorkflowDestinationTransferCache
         setIncludeEntityInstance(!filterEntityInstance);
     }
     
-    public WorkflowDestinationTransfer getWorkflowDestinationTransfer(WorkflowDestination workflowDestination) {
+    public WorkflowDestinationTransfer getWorkflowDestinationTransfer(UserVisit userVisit, WorkflowDestination workflowDestination) {
         var workflowDestinationTransfer = get(workflowDestination);
         
         if(workflowDestinationTransfer == null) {
@@ -65,11 +70,11 @@ public class WorkflowDestinationTransferCache
             var workflowDestinationName = filterWorkflowDestinationName ? null : workflowDestinationDetail.getWorkflowDestinationName();
             var isDefault = filterIsDefault ? null : workflowDestinationDetail.getIsDefault();
             var sortOrder = filterSortOrder ? null : workflowDestinationDetail.getSortOrder();
-            var description = filterDescription ? null : workflowControl.getBestWorkflowDestinationDescription(workflowDestination, getLanguage());
+            var description = filterDescription ? null : workflowControl.getBestWorkflowDestinationDescription(workflowDestination, getLanguage(userVisit));
             
             workflowDestinationTransfer = new WorkflowDestinationTransfer(workflowStep, workflowDestinationName, isDefault,
                     sortOrder, description);
-            put(workflowDestination, workflowDestinationTransfer);
+            put(userVisit, workflowDestination, workflowDestinationTransfer);
         }
         
         return workflowDestinationTransfer;

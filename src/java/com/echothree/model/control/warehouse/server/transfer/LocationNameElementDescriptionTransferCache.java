@@ -20,25 +20,29 @@ import com.echothree.model.control.warehouse.common.transfer.LocationNameElement
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.warehouse.server.entity.LocationNameElementDescription;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class LocationNameElementDescriptionTransferCache
         extends BaseWarehouseDescriptionTransferCache<LocationNameElementDescription, LocationNameElementDescriptionTransfer> {
-    
+
+    WarehouseControl warehouseControl = Session.getModelController(WarehouseControl.class);
+
     /** Creates a new instance of LocationNameElementDescriptionTransferCache */
-    public LocationNameElementDescriptionTransferCache(UserVisit userVisit, WarehouseControl warehouseControl) {
-        super(userVisit, warehouseControl);
+    protected LocationNameElementDescriptionTransferCache() {
+        super();
     }
     
-    public LocationNameElementDescriptionTransfer getLocationNameElementDescriptionTransfer(LocationNameElementDescription locationNameElementDescription) {
+    public LocationNameElementDescriptionTransfer getLocationNameElementDescriptionTransfer(UserVisit userVisit, LocationNameElementDescription locationNameElementDescription) {
         var locationNameElementDescriptionTransfer = get(locationNameElementDescription);
         
         if(locationNameElementDescriptionTransfer == null) {
-            var locationNameElementTransferCache = warehouseControl.getWarehouseTransferCaches(userVisit).getLocationNameElementTransferCache();
-            var locationNameElementTransfer = locationNameElementTransferCache.getLocationNameElementTransfer(locationNameElementDescription.getLocationNameElement());
+            var locationNameElementTransfer = warehouseControl.getLocationNameElementTransfer(userVisit, locationNameElementDescription.getLocationNameElement());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, locationNameElementDescription.getLanguage());
             
             locationNameElementDescriptionTransfer = new LocationNameElementDescriptionTransfer(languageTransfer, locationNameElementTransfer, locationNameElementDescription.getDescription());
-            put(locationNameElementDescription, locationNameElementDescriptionTransfer);
+            put(userVisit, locationNameElementDescription, locationNameElementDescriptionTransfer);
         }
         
         return locationNameElementDescriptionTransfer;

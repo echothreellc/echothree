@@ -16,8 +16,6 @@
 
 package com.echothree.model.control.index.server.transfer;
 
-import com.echothree.model.control.index.server.control.IndexControl;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.BaseTransfer;
 import com.echothree.util.server.persistence.BaseEntity;
 import com.echothree.util.server.transfer.BaseTransferCache;
@@ -25,13 +23,9 @@ import com.echothree.util.server.transfer.BaseTransferCache;
 public abstract class BaseIndexTransferCache<K extends BaseEntity, V extends BaseTransfer>
         extends BaseTransferCache<K, V> {
     
-    IndexControl indexControl;
-    
     /** Creates a new instance of BaseIndexTransferCache */
-    protected BaseIndexTransferCache(UserVisit userVisit, IndexControl indexControl) {
-        super(userVisit);
-        
-        this.indexControl = indexControl;
+    protected BaseIndexTransferCache() {
+        super();
     }
     
 }

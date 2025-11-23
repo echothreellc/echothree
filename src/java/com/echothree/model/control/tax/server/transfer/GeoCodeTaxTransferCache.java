@@ -22,17 +22,21 @@ import com.echothree.model.control.tax.server.control.TaxControl;
 import com.echothree.model.data.tax.server.entity.GeoCodeTax;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class GeoCodeTaxTransferCache
         extends BaseTaxTransferCache<GeoCodeTax, GeoCodeTaxTransfer> {
-    
+
+    TaxControl taxControl = Session.getModelController(TaxControl.class);
+
     /** Creates a new instance of GeoCodeTaxTransferCache */
-    public GeoCodeTaxTransferCache(UserVisit userVisit, TaxControl taxControl) {
-        super(userVisit, taxControl);
+    protected GeoCodeTaxTransferCache() {
+        super();
     }
     
     @Override
-    public GeoCodeTaxTransfer getTransfer(GeoCodeTax geoCodeTax) {
+    public GeoCodeTaxTransfer getTransfer(UserVisit userVisit, GeoCodeTax geoCodeTax) {
         var geoCodeTaxTransfer = get(geoCodeTax);
         
         if(geoCodeTaxTransfer == null) {
@@ -41,7 +45,7 @@ public class GeoCodeTaxTransferCache
             var tax = taxControl.getTaxTransfer(userVisit, geoCodeTax.getTax());
             
             geoCodeTaxTransfer = new GeoCodeTaxTransfer(geoCode, tax);
-            put(geoCodeTax, geoCodeTaxTransfer);
+            put(userVisit, geoCodeTax, geoCodeTaxTransfer);
         }
         return geoCodeTaxTransfer;
     }

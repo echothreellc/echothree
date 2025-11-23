@@ -25,7 +25,9 @@ import com.echothree.model.data.filter.server.entity.FilterAdjustmentFixedAmount
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.AmountUtils;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class FilterAdjustmentFixedAmountTransferCache
         extends BaseFilterTransferCache<FilterAdjustmentFixedAmount, FilterAdjustmentFixedAmountTransfer> {
 
@@ -34,12 +36,12 @@ public class FilterAdjustmentFixedAmountTransferCache
     UomControl uomControl = Session.getModelController(UomControl.class);
 
     /** Creates a new instance of FilterAdjustmentFixedAmountTransferCache */
-    public FilterAdjustmentFixedAmountTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected FilterAdjustmentFixedAmountTransferCache() {
+        super();
     }
 
     @Override
-    public FilterAdjustmentFixedAmountTransfer getTransfer(FilterAdjustmentFixedAmount filterAdjustmentFixedAmount) {
+    public FilterAdjustmentFixedAmountTransfer getTransfer(UserVisit userVisit, FilterAdjustmentFixedAmount filterAdjustmentFixedAmount) {
         var filterAdjustmentFixedAmountTransfer = get(filterAdjustmentFixedAmount);
         
         if(filterAdjustmentFixedAmountTransfer == null) {
@@ -60,7 +62,7 @@ public class FilterAdjustmentFixedAmountTransferCache
             filterAdjustmentFixedAmountTransfer = new FilterAdjustmentFixedAmountTransfer(filterAdjustmentTransfer, unitOfMeasureTypeTransfer, currencyTransfer,
                     unformattedUnitAmount, unitAmount);
             
-            put(filterAdjustmentFixedAmount, filterAdjustmentFixedAmountTransfer);
+            put(userVisit, filterAdjustmentFixedAmount, filterAdjustmentFixedAmountTransfer);
         }
         
         return filterAdjustmentFixedAmountTransfer;

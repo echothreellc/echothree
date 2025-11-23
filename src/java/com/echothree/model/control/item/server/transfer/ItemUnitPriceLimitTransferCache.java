@@ -25,21 +25,24 @@ import com.echothree.model.data.item.server.entity.ItemUnitPriceLimit;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.AmountUtils;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ItemUnitPriceLimitTransferCache
         extends BaseItemTransferCache<ItemUnitPriceLimit, ItemUnitPriceLimitTransfer> {
     
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
     InventoryControl inventoryControl = Session.getModelController(InventoryControl.class);
+    ItemControl itemControl = Session.getModelController(ItemControl.class);
     UomControl uomControl = Session.getModelController(UomControl.class);
     
     /** Creates a new instance of ItemUnitPriceLimitTransferCache */
-    public ItemUnitPriceLimitTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    protected ItemUnitPriceLimitTransferCache() {
+        super();
     }
     
     @Override
-    public ItemUnitPriceLimitTransfer getTransfer(ItemUnitPriceLimit itemUnitPriceLimit) {
+    public ItemUnitPriceLimitTransfer getTransfer(UserVisit userVisit, ItemUnitPriceLimit itemUnitPriceLimit) {
         var itemUnitPriceLimitTransfer = get(itemUnitPriceLimit);
         
         if(itemUnitPriceLimitTransfer == null) {
@@ -55,7 +58,7 @@ public class ItemUnitPriceLimitTransferCache
             
             itemUnitPriceLimitTransfer = new ItemUnitPriceLimitTransfer(item, inventoryCondition, unitOfMeasureType, currencyTransfer,
                     unformattedMinimumUnitPrice, minimumUnitPrice, unformattedMaximumUnitPrice, maximumUnitPrice);
-            put(itemUnitPriceLimit, itemUnitPriceLimitTransfer);
+            put(userVisit, itemUnitPriceLimit, itemUnitPriceLimitTransfer);
         }
         
         return itemUnitPriceLimitTransfer;

@@ -23,26 +23,32 @@ import com.echothree.model.control.item.server.logic.ItemLogic;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.item.server.entity.ItemPrice;
 import com.echothree.model.data.item.server.factory.ItemPriceFactory;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
-import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
+@RequestScoped
 public class GetItemPricesCommand
-        extends BaseMultipleEntitiesCommand<ItemPrice, GetItemPricesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<ItemPrice, GetItemPricesForm> {
 
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    ItemLogic itemLogic;
+
+    // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null)
-                ));
+        );
     }
     
     /** Creates a new instance of GetItemPricesCommand */
@@ -53,17 +59,30 @@ public class GetItemPricesCommand
     Item item;
 
     @Override
-    protected Collection<ItemPrice> getEntities() {
-        var itemControl = Session.getModelController(ItemControl.class);
-        Collection<ItemPrice> itemPrices = null;
+    protected void handleForm() {
+        item = itemLogic.getItemByName(this, form.getItemName());
+    }
 
-        item = ItemLogic.getInstance().getItemByName(this, form.getItemName());
+    @Override
+    protected Long getTotalEntities() {
+        Long totalEntities = null;
 
         if(!hasExecutionErrors()) {
-            itemPrices = itemControl.getItemPricesByItem(item);
+            totalEntities = itemControl.countItemPricesByItem(item);
         }
 
-        return itemPrices;
+        return totalEntities;
+    }
+
+    @Override
+    protected Collection<ItemPrice> getEntities() {
+        Collection<ItemPrice> entities = null;
+
+        if(!hasExecutionErrors()) {
+            entities = itemControl.getItemPricesByItem(item);
+        }
+
+        return entities;
     }
 
     @Override
@@ -71,11 +90,10 @@ public class GetItemPricesCommand
         var result = ItemResultFactory.getGetItemPricesResult();
 
         if(entities != null) {
-            var itemControl = Session.getModelController(ItemControl.class);
             var userVisit = getUserVisit();
 
             if(session.hasLimit(ItemPriceFactory.class)) {
-                result.setItemPriceCount(itemControl.countItemPricesByItem(item));
+                result.setItemPriceCount(getTotalEntities());
             }
 
             result.setItem(itemControl.getItemTransfer(userVisit, item));

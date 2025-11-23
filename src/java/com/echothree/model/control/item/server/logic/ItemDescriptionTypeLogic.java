@@ -34,20 +34,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class ItemDescriptionTypeLogic
     extends BaseLogic {
 
-    private ItemDescriptionTypeLogic() {
+    protected ItemDescriptionTypeLogic() {
         super();
     }
 
-    private static class ItemDescriptionTypeLogicHolder {
-        static ItemDescriptionTypeLogic instance = new ItemDescriptionTypeLogic();
-    }
-
     public static ItemDescriptionTypeLogic getInstance() {
-        return ItemDescriptionTypeLogicHolder.instance;
+        return CDI.current().select(ItemDescriptionTypeLogic.class).get();
     }
 
     public ItemDescriptionType createItemDescriptionType(final ExecutionErrorAccumulator eea, final String itemDescriptionTypeName,
@@ -100,7 +99,7 @@ public class ItemDescriptionTypeLogic
         var parameterCount = (itemDescriptionTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
-            case 0:
+            case 0 -> {
                 if(allowDefault) {
                     itemDescriptionType = itemControl.getDefaultItemDescriptionType(entityPermission);
 
@@ -110,8 +109,8 @@ public class ItemDescriptionTypeLogic
                 } else {
                     handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                 }
-                break;
-            case 1:
+            }
+            case 1 -> {
                 if(itemDescriptionTypeName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.ItemDescriptionType.name());
@@ -122,10 +121,9 @@ public class ItemDescriptionTypeLogic
                 } else {
                     itemDescriptionType = getItemDescriptionTypeByName(eea, itemDescriptionTypeName, entityPermission);
                 }
-                break;
-            default:
-                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
-                break;
+            }
+            default ->
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
 
         return itemDescriptionType;

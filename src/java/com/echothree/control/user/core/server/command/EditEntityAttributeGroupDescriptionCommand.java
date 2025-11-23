@@ -41,7 +41,9 @@ import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EditEntityAttributeGroupDescriptionCommand
         extends BaseAbstractEditCommand<EntityAttributeGroupDescriptionSpec, EntityAttributeGroupDescriptionEdit, EditEntityAttributeGroupDescriptionResult, EntityAttributeGroupDescription, EntityAttributeGroup> {
     
@@ -84,7 +86,6 @@ public class EditEntityAttributeGroupDescriptionCommand
 
     @Override
     public EntityAttributeGroupDescription getEntity(EditEntityAttributeGroupDescriptionResult result) {
-        var coreControl = getCoreControl();
         EntityAttributeGroupDescription entityAttributeGroupDescription = null;
         var entityAttributeGroupName = spec.getEntityAttributeGroupName();
         var entityAttributeGroup = coreControl.getEntityAttributeGroupByName(entityAttributeGroupName);
@@ -121,7 +122,6 @@ public class EditEntityAttributeGroupDescriptionCommand
 
     @Override
     public void fillInResult(EditEntityAttributeGroupDescriptionResult result, EntityAttributeGroupDescription entityAttributeGroupDescription) {
-        var coreControl = getCoreControl();
 
         result.setEntityAttributeGroupDescription(coreControl.getEntityAttributeGroupDescriptionTransfer(getUserVisit(), entityAttributeGroupDescription, null));
     }
@@ -133,7 +133,6 @@ public class EditEntityAttributeGroupDescriptionCommand
 
     @Override
     public void doUpdate(EntityAttributeGroupDescription entityAttributeGroupDescription) {
-        var coreControl = getCoreControl();
         var entityAttributeGroupDescriptionValue = coreControl.getEntityAttributeGroupDescriptionValue(entityAttributeGroupDescription);
         
         entityAttributeGroupDescriptionValue.setDescription(edit.getDescription());

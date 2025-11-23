@@ -20,26 +20,31 @@ import com.echothree.model.control.communication.common.transfer.CommunicationSo
 import com.echothree.model.control.communication.server.control.CommunicationControl;
 import com.echothree.model.data.communication.server.entity.CommunicationSourceType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CommunicationSourceTypeTransferCache
         extends BaseCommunicationTransferCache<CommunicationSourceType, CommunicationSourceTypeTransfer> {
-    
+
+    CommunicationControl communicationControl = Session.getModelController(CommunicationControl.class);
+
     /** Creates a new instance of CommunicationSourceTypeTransferCache */
-    public CommunicationSourceTypeTransferCache(UserVisit userVisit, CommunicationControl communicationControl) {
-        super(userVisit, communicationControl);
+    protected CommunicationSourceTypeTransferCache() {
+        super();
     }
     
-    public CommunicationSourceTypeTransfer getCommunicationSourceTypeTransfer(CommunicationSourceType communicationSourceType) {
+    public CommunicationSourceTypeTransfer getCommunicationSourceTypeTransfer(UserVisit userVisit, CommunicationSourceType communicationSourceType) {
         var communicationSourceTypeTransfer = get(communicationSourceType);
         
         if(communicationSourceTypeTransfer == null) {
             var communicationSourceTypeName = communicationSourceType.getCommunicationSourceTypeName();
             var isDefault = communicationSourceType.getIsDefault();
             var sortOrder = communicationSourceType.getSortOrder();
-            var description = communicationControl.getBestCommunicationSourceTypeDescription(communicationSourceType, getLanguage());
+            var description = communicationControl.getBestCommunicationSourceTypeDescription(communicationSourceType, getLanguage(userVisit));
             
             communicationSourceTypeTransfer = new CommunicationSourceTypeTransfer(communicationSourceTypeName, isDefault, sortOrder, description);
-            put(communicationSourceType, communicationSourceTypeTransfer);
+            put(userVisit, communicationSourceType, communicationSourceTypeTransfer);
         }
         
         return communicationSourceTypeTransfer;

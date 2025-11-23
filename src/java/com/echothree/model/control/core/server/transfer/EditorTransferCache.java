@@ -21,20 +21,22 @@ import com.echothree.model.control.core.server.control.EditorControl;
 import com.echothree.model.data.core.server.entity.Editor;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EditorTransferCache
         extends BaseCoreTransferCache<Editor, EditorTransfer> {
 
     EditorControl editorControl = Session.getModelController(EditorControl.class);
 
     /** Creates a new instance of EditorTransferCache */
-    public EditorTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected EditorTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
 
-    public EditorTransfer getEditorTransfer(Editor editor) {
+    public EditorTransfer getEditorTransfer(UserVisit userVisit, Editor editor) {
         var editorTransfer = get(editor);
 
         if(editorTransfer == null) {
@@ -49,11 +51,11 @@ public class EditorTransferCache
             var defaultWidth = editorDetail.getDefaultWidth();
             var isDefault = editorDetail.getIsDefault();
             var sortOrder = editorDetail.getSortOrder();
-            var description = editorControl.getBestEditorDescription(editor, getLanguage());
+            var description = editorControl.getBestEditorDescription(editor, getLanguage(userVisit));
 
             editorTransfer = new EditorTransfer(editorName, hasDimensions, minimumHeight, minimumWidth, maximumHeight, maximumWidth, defaultHeight,
                     defaultWidth, isDefault, sortOrder, description);
-            put(editor, editorTransfer);
+            put(userVisit, editor, editorTransfer);
         }
 
         return editorTransfer;

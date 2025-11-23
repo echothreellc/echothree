@@ -20,16 +20,21 @@ import com.echothree.model.control.chain.common.transfer.ChainActionTypeDescript
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.data.chain.server.entity.ChainActionTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ChainActionTypeDescriptionTransferCache
         extends BaseChainDescriptionTransferCache<ChainActionTypeDescription, ChainActionTypeDescriptionTransfer> {
-    
+
+    ChainControl chainControl = Session.getModelController(ChainControl.class);
+
     /** Creates a new instance of ChainActionTypeDescriptionTransferCache */
-    public ChainActionTypeDescriptionTransferCache(UserVisit userVisit, ChainControl chainControl) {
-        super(userVisit, chainControl);
+    protected ChainActionTypeDescriptionTransferCache() {
+        super();
     }
     
-    public ChainActionTypeDescriptionTransfer getChainActionTypeDescriptionTransfer(ChainActionTypeDescription chainActionTypeDescription) {
+    public ChainActionTypeDescriptionTransfer getChainActionTypeDescriptionTransfer(UserVisit userVisit, ChainActionTypeDescription chainActionTypeDescription) {
         var chainActionTypeDescriptionTransfer = get(chainActionTypeDescription);
         
         if(chainActionTypeDescriptionTransfer == null) {
@@ -37,7 +42,7 @@ public class ChainActionTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, chainActionTypeDescription.getLanguage());
             
             chainActionTypeDescriptionTransfer = new ChainActionTypeDescriptionTransfer(languageTransfer, chainActionTypeTransfer, chainActionTypeDescription.getDescription());
-            put(chainActionTypeDescription, chainActionTypeDescriptionTransfer);
+            put(userVisit, chainActionTypeDescription, chainActionTypeDescriptionTransfer);
         }
         
         return chainActionTypeDescriptionTransfer;

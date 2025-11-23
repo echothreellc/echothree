@@ -22,20 +22,21 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.contact.server.entity.PartyContactMechanismAlias;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PartyContactMechanismAliasTransferCache
         extends BaseContactTransferCache<PartyContactMechanismAlias, PartyContactMechanismAliasTransfer> {
-    
-    PartyControl partyControl;
+
+    ContactControl contactControl = Session.getModelController(ContactControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of PartyContactMechanismAliasTransferCache */
-    public PartyContactMechanismAliasTransferCache(UserVisit userVisit, ContactControl contactControl) {
-        super(userVisit, contactControl);
-        
-        partyControl = Session.getModelController(PartyControl.class);
+    protected PartyContactMechanismAliasTransferCache() {
+        super();
     }
     
-    public PartyContactMechanismAliasTransfer getPartyContactMechanismAliasTransfer(PartyContactMechanismAlias partyContactMechanismAlias) {
+    public PartyContactMechanismAliasTransfer getPartyContactMechanismAliasTransfer(UserVisit userVisit, PartyContactMechanismAlias partyContactMechanismAlias) {
         var partyContactMechanismAliasTransfer = get(partyContactMechanismAlias);
         
         if(partyContactMechanismAliasTransfer == null) {
@@ -48,7 +49,7 @@ public class PartyContactMechanismAliasTransferCache
             
             partyContactMechanismAliasTransfer = new PartyContactMechanismAliasTransfer(party, contactMechanism,
                     contactMechanismAliasType, alias);
-            put(partyContactMechanismAlias, partyContactMechanismAliasTransfer);
+            put(userVisit, partyContactMechanismAlias, partyContactMechanismAliasTransfer);
         }
         
         return partyContactMechanismAliasTransfer;

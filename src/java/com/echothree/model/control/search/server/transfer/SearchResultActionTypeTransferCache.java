@@ -21,13 +21,18 @@ import com.echothree.model.control.search.common.transfer.SearchResultActionType
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.data.search.server.entity.SearchResultActionType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class SearchResultActionTypeTransferCache
         extends BaseSearchTransferCache<SearchResultActionType, SearchResultActionTypeTransfer> {
 
+    SearchControl searchControl = Session.getModelController(SearchControl.class);
+
     /** Creates a new instance of SearchResultActionTypeTransferCache */
-    public SearchResultActionTypeTransferCache(UserVisit userVisit, SearchControl searchControl) {
-        super(userVisit, searchControl);
+    protected SearchResultActionTypeTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {
@@ -37,7 +42,7 @@ public class SearchResultActionTypeTransferCache
         setIncludeEntityInstance(true);
     }
 
-    public SearchResultActionTypeTransfer getSearchResultActionTypeTransfer(SearchResultActionType searchResultActionType) {
+    public SearchResultActionTypeTransfer getSearchResultActionTypeTransfer(UserVisit userVisit, SearchResultActionType searchResultActionType) {
         var searchResultActionTypeTransfer = get(searchResultActionType);
 
         if(searchResultActionTypeTransfer == null) {
@@ -45,10 +50,10 @@ public class SearchResultActionTypeTransferCache
             var searchResultActionTypeName = searchResultActionTypeDetail.getSearchResultActionTypeName();
             var isDefault = searchResultActionTypeDetail.getIsDefault();
             var sortOrder = searchResultActionTypeDetail.getSortOrder();
-            var description = searchControl.getBestSearchResultActionTypeDescription(searchResultActionType, getLanguage());
+            var description = searchControl.getBestSearchResultActionTypeDescription(searchResultActionType, getLanguage(userVisit));
 
             searchResultActionTypeTransfer = new SearchResultActionTypeTransfer(searchResultActionTypeName, isDefault, sortOrder, description);
-            put(searchResultActionType, searchResultActionTypeTransfer);
+            put(userVisit, searchResultActionType, searchResultActionTypeTransfer);
         }
 
         return searchResultActionTypeTransfer;

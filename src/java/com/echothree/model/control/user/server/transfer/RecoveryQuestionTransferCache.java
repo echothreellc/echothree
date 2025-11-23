@@ -20,18 +20,23 @@ import com.echothree.model.control.user.common.transfer.RecoveryQuestionTransfer
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.user.server.entity.RecoveryQuestion;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class RecoveryQuestionTransferCache
         extends BaseUserTransferCache<RecoveryQuestion, RecoveryQuestionTransfer> {
-    
+
+    UserControl userControl = Session.getModelController(UserControl.class);
+
     /** Creates a new instance of RecoveryQuestionTransferCache */
-    public RecoveryQuestionTransferCache(UserVisit userVisit, UserControl userControl) {
-        super(userVisit, userControl);
+    protected RecoveryQuestionTransferCache() {
+        super();
 
         setIncludeEntityInstance(true);
     }
     
-    public RecoveryQuestionTransfer getRecoveryQuestionTransfer(RecoveryQuestion recoveryQuestion) {
+    public RecoveryQuestionTransfer getRecoveryQuestionTransfer(UserVisit userVisit, RecoveryQuestion recoveryQuestion) {
         var recoveryQuestionTransfer = get(recoveryQuestion);
         
         if(recoveryQuestionTransfer == null) {
@@ -39,10 +44,10 @@ public class RecoveryQuestionTransferCache
             var recoveryQuestionName = recoveryQuestionDetail.getRecoveryQuestionName();
             var isDefault = recoveryQuestionDetail.getIsDefault();
             var sortOrder = recoveryQuestionDetail.getSortOrder();
-            var description = userControl.getBestRecoveryQuestionDescription(recoveryQuestion, getLanguage());
+            var description = userControl.getBestRecoveryQuestionDescription(recoveryQuestion, getLanguage(userVisit));
             
             recoveryQuestionTransfer = new RecoveryQuestionTransfer(recoveryQuestionName, isDefault, sortOrder, description);
-            put(recoveryQuestion, recoveryQuestionTransfer);
+            put(userVisit, recoveryQuestion, recoveryQuestionTransfer);
         }
         
         return recoveryQuestionTransfer;

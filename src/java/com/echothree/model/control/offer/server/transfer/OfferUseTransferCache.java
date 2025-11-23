@@ -23,7 +23,9 @@ import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.data.offer.server.entity.OfferUse;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class OfferUseTransferCache
         extends BaseOfferTransferCache<OfferUse, OfferUseTransfer> {
 
@@ -32,13 +34,13 @@ public class OfferUseTransferCache
     UseControl useControl = Session.getModelController(UseControl.class);
 
     /** Creates a new instance of OfferUseTransferCache */
-    public OfferUseTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected OfferUseTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public OfferUseTransfer getOfferUseTransfer(OfferUse offerUse) {
+    public OfferUseTransfer getOfferUseTransfer(UserVisit userVisit, OfferUse offerUse) {
         var offerUseTransfer = get(offerUse);
         
         if(offerUseTransfer == null) {
@@ -49,7 +51,7 @@ public class OfferUseTransferCache
             var salesOrderSequenceTransfer = salesOrderSequence == null? null:sequenceControl.getSequenceTransfer(userVisit, salesOrderSequence);
             
             offerUseTransfer = new OfferUseTransfer(offerTransfer, useTransfer, salesOrderSequenceTransfer);
-            put(offerUse, offerUseTransfer);
+            put(userVisit, offerUse, offerUseTransfer);
         }
         
         return offerUseTransfer;

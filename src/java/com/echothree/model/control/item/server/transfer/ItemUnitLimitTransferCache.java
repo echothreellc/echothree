@@ -24,20 +24,23 @@ import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.item.server.entity.ItemUnitLimit;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ItemUnitLimitTransferCache
         extends BaseItemTransferCache<ItemUnitLimit, ItemUnitLimitTransfer> {
     
     InventoryControl inventoryControl = Session.getModelController(InventoryControl.class);
+    ItemControl itemControl = Session.getModelController(ItemControl.class);
     UomControl uomControl = Session.getModelController(UomControl.class);
     
     /** Creates a new instance of ItemUnitLimitTransferCache */
-    public ItemUnitLimitTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    protected ItemUnitLimitTransferCache() {
+        super();
     }
     
     @Override
-    public ItemUnitLimitTransfer getTransfer(ItemUnitLimit itemUnitLimit) {
+    public ItemUnitLimitTransfer getTransfer(UserVisit userVisit, ItemUnitLimit itemUnitLimit) {
         var itemUnitLimitTransfer = get(itemUnitLimit);
         
         if(itemUnitLimitTransfer == null) {
@@ -50,7 +53,7 @@ public class ItemUnitLimitTransferCache
             var maximumQuantity = longMaximumQuantity == null ? null : longMaximumQuantity.toString();
 
             itemUnitLimitTransfer = new ItemUnitLimitTransfer(item, inventoryCondition, unitOfMeasureType, minimumQuantity, maximumQuantity);
-            put(itemUnitLimit, itemUnitLimitTransfer);
+            put(userVisit, itemUnitLimit, itemUnitLimitTransfer);
         }
         
         return itemUnitLimitTransfer;

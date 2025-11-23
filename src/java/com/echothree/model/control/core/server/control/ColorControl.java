@@ -41,12 +41,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ColorControl
         extends BaseCoreControl {
 
     /** Creates a new instance of ColorControl */
-    public ColorControl() {
+    protected ColorControl() {
         super();
     }
 
@@ -211,15 +213,14 @@ public class ColorControl
     }
 
     public ColorTransfer getColorTransfer(UserVisit userVisit, Color color) {
-        return getCoreTransferCaches(userVisit).getColorTransferCache().getColorTransfer(color);
+        return colorTransferCache.getColorTransfer(userVisit, color);
     }
 
     public List<ColorTransfer> getColorTransfers(UserVisit userVisit, Collection<Color> entities) {
         List<ColorTransfer> transfers = new ArrayList<>(entities.size());
-        var transferCache = getCoreTransferCaches(userVisit).getColorTransferCache();
 
         entities.forEach((entity) ->
-                transfers.add(transferCache.getColorTransfer(entity))
+                transfers.add(colorTransferCache.getColorTransfer(userVisit, entity))
         );
 
         return transfers;
@@ -443,7 +444,7 @@ public class ColorControl
         var colorDescription = getColorDescription(color, language);
 
         if(colorDescription == null && !language.getIsDefault()) {
-            colorDescription = getColorDescription(color, getPartyControl().getDefaultLanguage());
+            colorDescription = getColorDescription(color, partyControl.getDefaultLanguage());
         }
 
         if(colorDescription == null) {
@@ -456,16 +457,15 @@ public class ColorControl
     }
 
     public ColorDescriptionTransfer getColorDescriptionTransfer(UserVisit userVisit, ColorDescription colorDescription) {
-        return getCoreTransferCaches(userVisit).getColorDescriptionTransferCache().getColorDescriptionTransfer(colorDescription);
+        return colorDescriptionTransferCache.getColorDescriptionTransfer(userVisit, colorDescription);
     }
 
     public List<ColorDescriptionTransfer> getColorDescriptionTransfersByColor(UserVisit userVisit, Color color) {
         var colorDescriptions = getColorDescriptionsByColor(color);
         List<ColorDescriptionTransfer> colorDescriptionTransfers = new ArrayList<>(colorDescriptions.size());
-        var colorDescriptionTransferCache = getCoreTransferCaches(userVisit).getColorDescriptionTransferCache();
 
         colorDescriptions.forEach((colorDescription) ->
-                colorDescriptionTransfers.add(colorDescriptionTransferCache.getColorDescriptionTransfer(colorDescription))
+                colorDescriptionTransfers.add(colorDescriptionTransferCache.getColorDescriptionTransfer(userVisit, colorDescription))
         );
 
         return colorDescriptionTransfers;

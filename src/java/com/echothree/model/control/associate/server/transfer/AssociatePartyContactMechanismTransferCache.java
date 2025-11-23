@@ -22,21 +22,24 @@ import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.data.associate.server.entity.AssociatePartyContactMechanism;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class AssociatePartyContactMechanismTransferCache
         extends BaseAssociateTransferCache<AssociatePartyContactMechanism, AssociatePartyContactMechanismTransfer> {
-    
+
+    AssociateControl associateControl = Session.getModelController(AssociateControl.class);
     ContactControl contactControl = Session.getModelController(ContactControl.class);
     
     /** Creates a new instance of AssociatePartyContactMechanismTransferCache */
-    public AssociatePartyContactMechanismTransferCache(UserVisit userVisit, AssociateControl associateControl) {
-        super(userVisit, associateControl);
+    protected AssociatePartyContactMechanismTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
     @Override
-    public AssociatePartyContactMechanismTransfer getTransfer(AssociatePartyContactMechanism associatePartyContactMechanism) {
+    public AssociatePartyContactMechanismTransfer getTransfer(UserVisit userVisit, AssociatePartyContactMechanism associatePartyContactMechanism) {
         var associatePartyContactMechanismTransfer = get(associatePartyContactMechanism);
         
         if(associatePartyContactMechanismTransfer == null) {
@@ -49,7 +52,7 @@ public class AssociatePartyContactMechanismTransferCache
             
             associatePartyContactMechanismTransfer = new AssociatePartyContactMechanismTransfer(associate, associatePartyContactMechanismName,
                     partyContactMechanism, isDefault, sortOrder);
-            put(associatePartyContactMechanism, associatePartyContactMechanismTransfer);
+            put(userVisit, associatePartyContactMechanism, associatePartyContactMechanismTransfer);
         }
         return associatePartyContactMechanismTransfer;
     }

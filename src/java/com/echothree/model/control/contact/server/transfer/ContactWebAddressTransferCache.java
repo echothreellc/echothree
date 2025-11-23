@@ -18,13 +18,14 @@ package com.echothree.model.control.contact.server.transfer;
 
 import com.echothree.model.control.contact.common.transfer.ContactWebAddressTransfer;
 import com.echothree.model.control.contact.common.workflow.WebAddressStatusConstants;
-import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.contact.server.entity.ContactWebAddress;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ContactWebAddressTransferCache
         extends BaseContactTransferCache<ContactWebAddress, ContactWebAddressTransfer> {
 
@@ -32,11 +33,11 @@ public class ContactWebAddressTransferCache
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
 
     /** Creates a new instance of ContactWebAddressTransferCache */
-    public ContactWebAddressTransferCache(UserVisit userVisit, ContactControl contactControl) {
-        super(userVisit, contactControl);
+    protected ContactWebAddressTransferCache() {
+        super();
     }
     
-    public ContactWebAddressTransfer getContactWebAddressTransfer(ContactWebAddress contactWebAddress) {
+    public ContactWebAddressTransfer getContactWebAddressTransfer(UserVisit userVisit, ContactWebAddress contactWebAddress) {
         var contactWebAddressTransfer = get(contactWebAddress);
         
         if(contactWebAddressTransfer == null) {
@@ -47,7 +48,7 @@ public class ContactWebAddressTransferCache
                     WebAddressStatusConstants.Workflow_WEB_ADDRESS_STATUS, entityInstance);
             
             contactWebAddressTransfer = new ContactWebAddressTransfer(url, webAddressStatusTransfer);
-            put(contactWebAddress, contactWebAddressTransfer);
+            put(userVisit, contactWebAddress, contactWebAddressTransfer);
         }
         
         return contactWebAddressTransfer;

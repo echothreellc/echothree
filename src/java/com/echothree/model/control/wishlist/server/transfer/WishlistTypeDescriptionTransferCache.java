@@ -20,16 +20,21 @@ import com.echothree.model.control.wishlist.common.transfer.WishlistTypeDescript
 import com.echothree.model.control.wishlist.server.control.WishlistControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.wishlist.server.entity.WishlistTypeDescription;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class WishlistTypeDescriptionTransferCache
         extends BaseWishlistDescriptionTransferCache<WishlistTypeDescription, WishlistTypeDescriptionTransfer> {
-    
+
+    WishlistControl wishlistControl = Session.getModelController(WishlistControl.class);
+
     /** Creates a new instance of WishlistTypeDescriptionTransferCache */
-    public WishlistTypeDescriptionTransferCache(UserVisit userVisit, WishlistControl wishlistControl) {
-        super(userVisit, wishlistControl);
+    protected WishlistTypeDescriptionTransferCache() {
+        super();
     }
     
-    public WishlistTypeDescriptionTransfer getWishlistTypeDescriptionTransfer(WishlistTypeDescription wishlistTypeDescription) {
+    public WishlistTypeDescriptionTransfer getWishlistTypeDescriptionTransfer(UserVisit userVisit, WishlistTypeDescription wishlistTypeDescription) {
         var wishlistTypeDescriptionTransfer = get(wishlistTypeDescription);
         
         if(wishlistTypeDescriptionTransfer == null) {
@@ -37,7 +42,7 @@ public class WishlistTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, wishlistTypeDescription.getLanguage());
             
             wishlistTypeDescriptionTransfer = new WishlistTypeDescriptionTransfer(languageTransfer, wishlistTypeTransfer, wishlistTypeDescription.getDescription());
-            put(wishlistTypeDescription, wishlistTypeDescriptionTransfer);
+            put(userVisit, wishlistTypeDescription, wishlistTypeDescriptionTransfer);
         }
         
         return wishlistTypeDescriptionTransfer;

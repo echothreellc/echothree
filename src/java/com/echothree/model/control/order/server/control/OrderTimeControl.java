@@ -52,12 +52,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class OrderTimeControl
         extends BaseOrderControl {
 
     /** Creates a new instance of OrderControl */
-    public OrderTimeControl() {
+    protected OrderTimeControl() {
         super();
     }
     
@@ -233,15 +235,14 @@ public class OrderTimeControl
     }
 
     public OrderTimeTypeTransfer getOrderTimeTypeTransfer(UserVisit userVisit, OrderTimeType orderTimeType) {
-        return getOrderTransferCaches(userVisit).getOrderTimeTypeTransferCache().getOrderTimeTypeTransfer(orderTimeType);
+        return orderTimeTypeTransferCache.getOrderTimeTypeTransfer(userVisit, orderTimeType);
     }
 
     public List<OrderTimeTypeTransfer> getOrderTimeTypeTransfers(UserVisit userVisit, Collection<OrderTimeType> orderTimeTypes) {
         List<OrderTimeTypeTransfer> orderTimeTypeTransfers = new ArrayList<>(orderTimeTypes.size());
-        var orderTimeTypeTransferCache = getOrderTransferCaches(userVisit).getOrderTimeTypeTransferCache();
 
         orderTimeTypes.forEach((orderTimeType) ->
-                orderTimeTypeTransfers.add(orderTimeTypeTransferCache.getOrderTimeTypeTransfer(orderTimeType))
+                orderTimeTypeTransfers.add(orderTimeTypeTransferCache.getOrderTimeTypeTransfer(userVisit, orderTimeType))
         );
 
         return orderTimeTypeTransfers;
@@ -450,7 +451,7 @@ public class OrderTimeControl
         var orderTimeTypeDescription = getOrderTimeTypeDescription(orderTimeType, language);
 
         if(orderTimeTypeDescription == null && !language.getIsDefault()) {
-            orderTimeTypeDescription = getOrderTimeTypeDescription(orderTimeType, getPartyControl().getDefaultLanguage());
+            orderTimeTypeDescription = getOrderTimeTypeDescription(orderTimeType, partyControl.getDefaultLanguage());
         }
 
         if(orderTimeTypeDescription == null) {
@@ -463,16 +464,15 @@ public class OrderTimeControl
     }
 
     public OrderTimeTypeDescriptionTransfer getOrderTimeTypeDescriptionTransfer(UserVisit userVisit, OrderTimeTypeDescription orderTimeTypeDescription) {
-        return getOrderTransferCaches(userVisit).getOrderTimeTypeDescriptionTransferCache().getOrderTimeTypeDescriptionTransfer(orderTimeTypeDescription);
+        return orderTimeTypeDescriptionTransferCache.getOrderTimeTypeDescriptionTransfer(userVisit, orderTimeTypeDescription);
     }
 
     public List<OrderTimeTypeDescriptionTransfer> getOrderTimeTypeDescriptionTransfersByOrderTimeType(UserVisit userVisit, OrderTimeType orderTimeType) {
         var orderTimeTypeDescriptions = getOrderTimeTypeDescriptionsByOrderTimeType(orderTimeType);
         List<OrderTimeTypeDescriptionTransfer> orderTimeTypeDescriptionTransfers = new ArrayList<>(orderTimeTypeDescriptions.size());
-        var orderTimeTypeDescriptionTransferCache = getOrderTransferCaches(userVisit).getOrderTimeTypeDescriptionTransferCache();
 
         orderTimeTypeDescriptions.forEach((orderTimeTypeDescription) ->
-                orderTimeTypeDescriptionTransfers.add(orderTimeTypeDescriptionTransferCache.getOrderTimeTypeDescriptionTransfer(orderTimeTypeDescription))
+                orderTimeTypeDescriptionTransfers.add(orderTimeTypeDescriptionTransferCache.getOrderTimeTypeDescriptionTransfer(userVisit, orderTimeTypeDescription))
         );
 
         return orderTimeTypeDescriptionTransfers;
@@ -648,15 +648,14 @@ public class OrderTimeControl
     }
 
     public OrderTimeTransfer getOrderTimeTransfer(UserVisit userVisit, OrderTime orderTime) {
-        return getOrderTransferCaches(userVisit).getOrderTimeTransferCache().getOrderTimeTransfer(orderTime);
+        return orderTimeTransferCache.getOrderTimeTransfer(userVisit, orderTime);
     }
 
     public List<OrderTimeTransfer> getOrderTimeTransfers(UserVisit userVisit, Collection<OrderTime> orderTimes) {
         List<OrderTimeTransfer> orderTimeTransfers = new ArrayList<>(orderTimes.size());
-        var orderTimeTransferCache = getOrderTransferCaches(userVisit).getOrderTimeTransferCache();
 
         orderTimes.forEach((orderTime) ->
-                orderTimeTransfers.add(orderTimeTransferCache.getOrderTimeTransfer(orderTime))
+                orderTimeTransfers.add(orderTimeTransferCache.getOrderTimeTransfer(userVisit, orderTime))
         );
 
         return orderTimeTransfers;
@@ -848,15 +847,14 @@ public class OrderTimeControl
     }
 
     public OrderLineTimeTransfer getOrderLineTimeTransfer(UserVisit userVisit, OrderLineTime orderLineTime) {
-        return getOrderTransferCaches(userVisit).getOrderLineTimeTransferCache().getOrderLineTimeTransfer(orderLineTime);
+        return orderLineTimeTransferCache.getOrderLineTimeTransfer(userVisit, orderLineTime);
     }
 
     public List<OrderLineTimeTransfer> getOrderLineTimeTransfers(UserVisit userVisit, Collection<OrderLineTime> orderLineTimes) {
         List<OrderLineTimeTransfer> orderLineTimeTransfers = new ArrayList<>(orderLineTimes.size());
-        var orderLineTimeTransferCache = getOrderTransferCaches(userVisit).getOrderLineTimeTransferCache();
 
         orderLineTimes.forEach((orderLineTime) ->
-                orderLineTimeTransfers.add(orderLineTimeTransferCache.getOrderLineTimeTransfer(orderLineTime))
+                orderLineTimeTransfers.add(orderLineTimeTransferCache.getOrderLineTimeTransfer(userVisit, orderLineTime))
         );
 
         return orderLineTimeTransfers;

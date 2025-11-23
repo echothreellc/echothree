@@ -22,18 +22,21 @@ import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.data.training.server.entity.TrainingClassQuestionTranslation;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class TrainingClassQuestionTranslationTransferCache
         extends BaseTrainingDescriptionTransferCache<TrainingClassQuestionTranslation, TrainingClassQuestionTranslationTransfer> {
 
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
-    
+    TrainingControl trainingControl = Session.getModelController(TrainingControl.class);
+
     /** Creates a new instance of TrainingClassQuestionTranslationTransferCache */
-    public TrainingClassQuestionTranslationTransferCache(UserVisit userVisit, TrainingControl trainingControl) {
-        super(userVisit, trainingControl);
+    protected TrainingClassQuestionTranslationTransferCache() {
+        super();
     }
     
-    public TrainingClassQuestionTranslationTransfer getTrainingClassQuestionTranslationTransfer(TrainingClassQuestionTranslation trainingClassQuestionTranslation) {
+    public TrainingClassQuestionTranslationTransfer getTrainingClassQuestionTranslationTransfer(UserVisit userVisit, TrainingClassQuestionTranslation trainingClassQuestionTranslation) {
         var trainingClassQuestionTranslationTransfer = get(trainingClassQuestionTranslation);
         
         if(trainingClassQuestionTranslationTransfer == null) {
@@ -44,7 +47,7 @@ public class TrainingClassQuestionTranslationTransferCache
             
             trainingClassQuestionTranslationTransfer = new TrainingClassQuestionTranslationTransfer(trainingClassQuestionTransfer, languageTransfer,
                     questionMimeTypeTransfer, question);
-            put(trainingClassQuestionTranslation, trainingClassQuestionTranslationTransfer);
+            put(userVisit, trainingClassQuestionTranslation, trainingClassQuestionTranslationTransfer);
         }
         
         return trainingClassQuestionTranslationTransfer;

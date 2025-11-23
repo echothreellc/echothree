@@ -33,7 +33,9 @@ import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CreateEntityAttributeEntityAttributeGroupCommand
         extends BaseSimpleCommand<CreateEntityAttributeEntityAttributeGroupForm> {
     
@@ -70,7 +72,6 @@ public class CreateEntityAttributeEntityAttributeGroupCommand
             var entityAttributeGroup = EntityAttributeLogic.getInstance().getEntityAttributeGroupByName(this, form.getEntityAttributeGroupName());
             
             if(!hasExecutionErrors()) {
-                var coreControl = getCoreControl();
                 var entityAttributeEntityAttributeGroup = coreControl.getEntityAttributeEntityAttributeGroup(entityAttribute, entityAttributeGroup);
 
                 if(entityAttributeEntityAttributeGroup == null) {

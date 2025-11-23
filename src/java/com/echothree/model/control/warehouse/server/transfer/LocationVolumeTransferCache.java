@@ -23,33 +23,34 @@ import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.warehouse.server.entity.LocationVolume;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class LocationVolumeTransferCache
         extends BaseWarehouseTransferCache<LocationVolume, LocationVolumeTransfer> {
     
-    UomControl uomControl;
-    
+    UomControl uomControl = Session.getModelController(UomControl.class);
+    WarehouseControl warehouseControl = Session.getModelController(WarehouseControl.class);
+
     /** Creates a new instance of LocationVolumeTransferCache */
-    public LocationVolumeTransferCache(UserVisit userVisit, WarehouseControl warehouseControl) {
-        super(userVisit, warehouseControl);
-        
-        uomControl = Session.getModelController(UomControl.class);
+    protected LocationVolumeTransferCache() {
+        super();
     }
     
-    public LocationVolumeTransfer getLocationVolumeTransfer(LocationVolume locationVolume) {
+    public LocationVolumeTransfer getLocationVolumeTransfer(UserVisit userVisit, LocationVolume locationVolume) {
         var locationVolumeTransfer = get(locationVolume);
         
         if(locationVolumeTransfer == null) {
             var locationTransfer = warehouseControl.getLocationTransfer(userVisit, locationVolume.getLocation());
             var volumeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_VOLUME);
-            var height = formatUnitOfMeasure(volumeUnitOfMeasureKind, locationVolume.getHeight());
-            var width = formatUnitOfMeasure(volumeUnitOfMeasureKind, locationVolume.getWidth());
-            var depth = formatUnitOfMeasure(volumeUnitOfMeasureKind, locationVolume.getDepth());
+            var height = formatUnitOfMeasure(userVisit, volumeUnitOfMeasureKind, locationVolume.getHeight());
+            var width = formatUnitOfMeasure(userVisit, volumeUnitOfMeasureKind, locationVolume.getWidth());
+            var depth = formatUnitOfMeasure(userVisit, volumeUnitOfMeasureKind, locationVolume.getDepth());
             Long cubicVolume = locationVolume.getHeight() * locationVolume.getWidth()
                     * locationVolume.getDepth();
             
             locationVolumeTransfer = new LocationVolumeTransfer(locationTransfer, height, width, depth, cubicVolume);
-            put(locationVolume, locationVolumeTransfer);
+            put(userVisit, locationVolume, locationVolumeTransfer);
         }
         
         return locationVolumeTransfer;

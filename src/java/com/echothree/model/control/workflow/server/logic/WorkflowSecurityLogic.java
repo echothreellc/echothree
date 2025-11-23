@@ -26,19 +26,18 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class WorkflowSecurityLogic {
-    
-    private WorkflowSecurityLogic() {
+
+    protected WorkflowSecurityLogic() {
         super();
     }
-    
-    private static class WorkflowSecurityLogicHolder {
-        static WorkflowSecurityLogic instance = new WorkflowSecurityLogic();
-    }
-    
+
     public static WorkflowSecurityLogic getInstance() {
-        return WorkflowSecurityLogicHolder.instance;
+        return CDI.current().select(WorkflowSecurityLogic.class).get();
     }
     
     public boolean checkWorkflowEntranceAvailable(final WorkflowEntrance workflowEntrance, final PartyPK partyPK) {

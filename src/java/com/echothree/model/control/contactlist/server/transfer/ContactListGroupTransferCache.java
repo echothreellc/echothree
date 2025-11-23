@@ -20,18 +20,23 @@ import com.echothree.model.control.contactlist.common.transfer.ContactListGroupT
 import com.echothree.model.control.contactlist.server.control.ContactListControl;
 import com.echothree.model.data.contactlist.server.entity.ContactListGroup;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ContactListGroupTransferCache
         extends BaseContactListTransferCache<ContactListGroup, ContactListGroupTransfer> {
-    
+
+    ContactListControl contactListControl = Session.getModelController(ContactListControl.class);
+
     /** Creates a new instance of ContactListGroupTransferCache */
-    public ContactListGroupTransferCache(UserVisit userVisit, ContactListControl contactListControl) {
-        super(userVisit, contactListControl);
+    protected ContactListGroupTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public ContactListGroupTransfer getContactListGroupTransfer(ContactListGroup contactListGroup) {
+    public ContactListGroupTransfer getContactListGroupTransfer(UserVisit userVisit, ContactListGroup contactListGroup) {
         var contactListGroupTransfer = get(contactListGroup);
         
         if(contactListGroupTransfer == null) {
@@ -39,10 +44,10 @@ public class ContactListGroupTransferCache
             var contactListGroupName = contactListGroupDetail.getContactListGroupName();
             var isDefault = contactListGroupDetail.getIsDefault();
             var sortOrder = contactListGroupDetail.getSortOrder();
-            var description = contactListControl.getBestContactListGroupDescription(contactListGroup, getLanguage());
+            var description = contactListControl.getBestContactListGroupDescription(contactListGroup, getLanguage(userVisit));
             
             contactListGroupTransfer = new ContactListGroupTransfer(contactListGroupName, isDefault, sortOrder, description);
-            put(contactListGroup, contactListGroupTransfer);
+            put(userVisit, contactListGroup, contactListGroupTransfer);
         }
         
         return contactListGroupTransfer;

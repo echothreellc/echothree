@@ -21,28 +21,30 @@ import com.echothree.model.control.accounting.server.control.TransactionTimeCont
 import com.echothree.model.data.accounting.server.entity.TransactionTime;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class TransactionTimeTransferCache
         extends BaseAccountingTransferCache<TransactionTime, TransactionTimeTransfer> {
 
     TransactionTimeControl transactionTimeControl = Session.getModelController(TransactionTimeControl.class);
 
     /** Creates a new instance of TransactionTimeTransferCache */
-    public TransactionTimeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected TransactionTimeTransferCache() {
+        super();
     }
 
     @Override
-    public TransactionTimeTransfer getTransfer(TransactionTime transactionTime) {
+    public TransactionTimeTransfer getTransfer(UserVisit userVisit, TransactionTime transactionTime) {
         var transactionTimeTransfer = get(transactionTime);
         
         if(transactionTimeTransfer == null) {
             var transactionTimeType = transactionTimeControl.getTransactionTimeTypeTransfer(userVisit, transactionTime.getTransactionTimeType());
             var unformattedTime = transactionTime.getTime();
-            var time = formatTypicalDateTime(unformattedTime);
+            var time = formatTypicalDateTime(userVisit, unformattedTime);
             
             transactionTimeTransfer = new TransactionTimeTransfer(transactionTimeType, unformattedTime, time);
-            put(transactionTime, transactionTimeTransfer);
+            put(userVisit, transactionTime, transactionTimeTransfer);
         }
         
         return transactionTimeTransfer;

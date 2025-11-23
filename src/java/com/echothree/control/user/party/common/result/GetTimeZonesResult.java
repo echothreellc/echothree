@@ -22,7 +22,10 @@ import java.util.List;
 
 public interface GetTimeZonesResult
         extends BaseResult {
-    
+
+    Long getTimeZoneCount();
+    void setTimeZoneCount(Long timeZoneCount);
+
     List<TimeZoneTransfer> getTimeZones();
     void setTimeZones(List<TimeZoneTransfer> timeZones);
     

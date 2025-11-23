@@ -20,28 +20,33 @@ import com.echothree.model.control.inventory.common.transfer.InventoryConditionU
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.data.inventory.server.entity.InventoryConditionUseType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class InventoryConditionUseTypeTransferCache
         extends BaseInventoryTransferCache<InventoryConditionUseType, InventoryConditionUseTypeTransfer> {
-    
+
+    InventoryControl inventoryControl = Session.getModelController(InventoryControl.class);
+
     /** Creates a new instance of InventoryConditionUseTypeTransferCache */
-    public InventoryConditionUseTypeTransferCache(UserVisit userVisit, InventoryControl inventoryControl) {
-        super(userVisit, inventoryControl);
+    protected InventoryConditionUseTypeTransferCache() {
+        super();
     }
     
     @Override
-    public InventoryConditionUseTypeTransfer getTransfer(InventoryConditionUseType inventoryConditionUseType) {
+    public InventoryConditionUseTypeTransfer getTransfer(UserVisit userVisit, InventoryConditionUseType inventoryConditionUseType) {
         var inventoryConditionUseTypeTransfer = get(inventoryConditionUseType);
         
         if(inventoryConditionUseTypeTransfer == null) {
             var inventoryConditionUseTypeName = inventoryConditionUseType.getInventoryConditionUseTypeName();
             var isDefault = inventoryConditionUseType.getIsDefault();
             var sortOrder = inventoryConditionUseType.getSortOrder();
-            var description = inventoryControl.getBestInventoryConditionUseTypeDescription(inventoryConditionUseType, getLanguage());
+            var description = inventoryControl.getBestInventoryConditionUseTypeDescription(inventoryConditionUseType, getLanguage(userVisit));
             
             inventoryConditionUseTypeTransfer = new InventoryConditionUseTypeTransfer(inventoryConditionUseTypeName, isDefault,
                     sortOrder, description);
-            put(inventoryConditionUseType, inventoryConditionUseTypeTransfer);
+            put(userVisit, inventoryConditionUseType, inventoryConditionUseTypeTransfer);
         }
         
         return inventoryConditionUseTypeTransfer;

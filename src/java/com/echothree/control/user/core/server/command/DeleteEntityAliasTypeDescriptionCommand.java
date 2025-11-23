@@ -35,7 +35,9 @@ import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class DeleteEntityAliasTypeDescriptionCommand
         extends BaseSimpleCommand<DeleteEntityAliasTypeDescriptionForm> {
     
@@ -66,11 +68,11 @@ public class DeleteEntityAliasTypeDescriptionCommand
     @Override
     protected BaseResult execute() {
         var componentVendorName = form.getComponentVendorName();
-        var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
+        var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
             var entityTypeName = form.getEntityTypeName();
-            var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
+            var entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
                 var entityAliasControl = Session.getModelController(EntityAliasControl.class);

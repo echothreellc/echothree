@@ -29,7 +29,9 @@ import com.echothree.model.data.party.server.entity.PartyDepartment;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class DepartmentTransferCache
         extends BasePartyTransferCache<Party, DepartmentTransfer> {
     
@@ -45,8 +47,8 @@ public class DepartmentTransferCache
     boolean includePartyScaleUses;
     
     /** Creates a new instance of DepartmentTransferCache */
-    public DepartmentTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected DepartmentTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {
@@ -62,12 +64,12 @@ public class DepartmentTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public DepartmentTransfer getTransfer(PartyDepartment partyDepartment) {
-        return getTransfer(partyDepartment.getParty());
+    public DepartmentTransfer getTransfer(UserVisit userVisit, PartyDepartment partyDepartment) {
+        return getTransfer(userVisit, partyDepartment.getParty());
     }
 
     @Override
-    public DepartmentTransfer getTransfer(Party party) {
+    public DepartmentTransfer getTransfer(UserVisit userVisit, Party party) {
         var departmentTransfer = get(party);
         
         if(departmentTransfer == null) {
@@ -95,7 +97,7 @@ public class DepartmentTransferCache
             
             departmentTransfer = new DepartmentTransfer(partyName, partyTypeTransfer, preferredLanguageTransfer, preferredCurrencyTransfer, preferredTimeZoneTransfer, preferredDateTimeFormatTransfer,
                     personTransfer, partyGroupTransfer, division, departmentName, isDefault, sortOrder);
-            put(party, departmentTransfer);
+            put(userVisit, party, departmentTransfer);
             
             if(includePartyContactMechanisms) {
                 departmentTransfer.setPartyContactMechanisms(new ListWrapper<>(contactControl.getPartyContactMechanismTransfersByParty(userVisit, party)));

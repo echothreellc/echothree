@@ -16,18 +16,18 @@
 
 package com.echothree.model.control.invoice.server.logic;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
+
+@ApplicationScoped
 public class SalesInvoiceLogic {
 
-    private SalesInvoiceLogic() {
+    protected SalesInvoiceLogic() {
         super();
     }
 
-    private static class SalesInvoiceLogicHolder {
-        static SalesInvoiceLogic instance = new SalesInvoiceLogic();
-    }
-
     public static SalesInvoiceLogic getInstance() {
-        return SalesInvoiceLogicHolder.instance;
+        return CDI.current().select(SalesInvoiceLogic.class).get();
     }
     
 }

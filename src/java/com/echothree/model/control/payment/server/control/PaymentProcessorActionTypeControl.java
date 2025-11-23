@@ -39,12 +39,14 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PaymentProcessorActionTypeControl
         extends BasePaymentControl {
 
     /** Creates a new instance of PaymentProcessorActionTypeControl */
-    public PaymentProcessorActionTypeControl() {
+    protected PaymentProcessorActionTypeControl() {
         super();
     }
 
@@ -179,16 +181,15 @@ public class PaymentProcessorActionTypeControl
 
     public PaymentProcessorActionTypeTransfer getPaymentProcessorActionTypeTransfer(final UserVisit userVisit,
             final PaymentProcessorActionType paymentProcessorActionType) {
-        return getPaymentTransferCaches(userVisit).getPaymentProcessorActionTypeTransferCache().getTransfer(paymentProcessorActionType);
+        return paymentProcessorActionTypeTransferCache.getTransfer(userVisit, paymentProcessorActionType);
     }
 
     public List<PaymentProcessorActionTypeTransfer> getPaymentProcessorActionTypeTransfers(final UserVisit userVisit,
             final Collection<PaymentProcessorActionType> paymentProcessorActionTypes) {
         var paymentProcessorActionTypeTransfers = new ArrayList<PaymentProcessorActionTypeTransfer>(paymentProcessorActionTypes.size());
-        var paymentProcessorActionTypeTransferCache = getPaymentTransferCaches(userVisit).getPaymentProcessorActionTypeTransferCache();
 
         paymentProcessorActionTypes.forEach((paymentProcessorActionType) ->
-                paymentProcessorActionTypeTransfers.add(paymentProcessorActionTypeTransferCache.getTransfer(paymentProcessorActionType))
+                paymentProcessorActionTypeTransfers.add(paymentProcessorActionTypeTransferCache.getTransfer(userVisit, paymentProcessorActionType))
         );
 
         return paymentProcessorActionTypeTransfers;
@@ -394,7 +395,7 @@ public class PaymentProcessorActionTypeControl
         String description;
 
         if(paymentProcessorActionTypeDescription == null && !language.getIsDefault()) {
-            paymentProcessorActionTypeDescription = getPaymentProcessorActionTypeDescription(paymentProcessorActionType, getPartyControl().getDefaultLanguage());
+            paymentProcessorActionTypeDescription = getPaymentProcessorActionTypeDescription(paymentProcessorActionType, partyControl.getDefaultLanguage());
         }
 
         if(paymentProcessorActionTypeDescription == null) {
@@ -408,17 +409,16 @@ public class PaymentProcessorActionTypeControl
 
     public PaymentProcessorActionTypeDescriptionTransfer getPaymentProcessorActionTypeDescriptionTransfer(final UserVisit userVisit,
             final PaymentProcessorActionTypeDescription paymentProcessorActionTypeDescription) {
-        return getPaymentTransferCaches(userVisit).getPaymentProcessorActionTypeDescriptionTransferCache().getTransfer(paymentProcessorActionTypeDescription);
+        return paymentProcessorActionTypeDescriptionTransferCache.getTransfer(userVisit, paymentProcessorActionTypeDescription);
     }
 
     public List<PaymentProcessorActionTypeDescriptionTransfer> getPaymentProcessorActionTypeDescriptionTransfersByPaymentProcessorActionType(final UserVisit userVisit,
             final PaymentProcessorActionType paymentProcessorActionType) {
         var paymentProcessorActionTypeDescriptions = getPaymentProcessorActionTypeDescriptionsByPaymentProcessorActionType(paymentProcessorActionType);
         var paymentProcessorActionTypeDescriptionTransfers = new ArrayList<PaymentProcessorActionTypeDescriptionTransfer>(paymentProcessorActionTypeDescriptions.size());
-        var paymentProcessorActionTypeDescriptionTransferCache = getPaymentTransferCaches(userVisit).getPaymentProcessorActionTypeDescriptionTransferCache();
 
         paymentProcessorActionTypeDescriptions.forEach((paymentProcessorActionTypeDescription) ->
-                paymentProcessorActionTypeDescriptionTransfers.add(paymentProcessorActionTypeDescriptionTransferCache.getTransfer(paymentProcessorActionTypeDescription))
+                paymentProcessorActionTypeDescriptionTransfers.add(paymentProcessorActionTypeDescriptionTransferCache.getTransfer(userVisit, paymentProcessorActionTypeDescription))
         );
 
         return paymentProcessorActionTypeDescriptionTransfers;

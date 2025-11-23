@@ -23,19 +23,22 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.message.server.entity.MessageBlob;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class MessageBlobTransferCache
         extends BaseMessageTransferCache<MessageBlob, MessageBlobTransfer> {
 
+    MessageControl messageControl = Session.getModelController(MessageControl.class);
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of MessageBlobTransferCache */
-    public MessageBlobTransferCache(UserVisit userVisit, MessageControl messageControl) {
-        super(userVisit, messageControl);
+    protected MessageBlobTransferCache() {
+        super();
     }
     
-    public MessageBlobTransfer getMessageBlobTransfer(MessageBlob messageBlob) {
+    public MessageBlobTransfer getMessageBlobTransfer(UserVisit userVisit, MessageBlob messageBlob) {
         var messageBlobTransfer = get(messageBlob);
         
         if(messageBlobTransfer == null) {
@@ -45,7 +48,7 @@ public class MessageBlobTransferCache
             var blob = messageBlob.getBlob();
             
             messageBlobTransfer = new MessageBlobTransfer(message, language, mimeType, blob);
-            put(messageBlob, messageBlobTransfer);
+            put(userVisit, messageBlob, messageBlobTransfer);
         }
         
         return messageBlobTransfer;

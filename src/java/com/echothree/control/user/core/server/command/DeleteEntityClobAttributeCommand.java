@@ -33,7 +33,9 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class DeleteEntityClobAttributeCommand
         extends BaseSimpleCommand<DeleteEntityClobAttributeForm> {
 
@@ -69,7 +71,6 @@ public class DeleteEntityClobAttributeCommand
                 EntityAttributeTypes.CLOB);
 
         if(!hasExecutionErrors()) {
-            var coreControl = getCoreControl();
             var entityClobAttribute = coreControl.getEntityClobAttributeForUpdate(entityAttribute, entityInstance, language);
 
             if(entityClobAttribute != null) {

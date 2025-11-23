@@ -35,7 +35,9 @@ import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EditCommandCommand
         extends BaseAbstractEditCommand<CommandSpec, CommandEdit, EditCommandResult, Command, Command> {
     
@@ -78,7 +80,7 @@ public class EditCommandCommand
         Command command = null;
         var componentVendorName = spec.getComponentVendorName();
         
-        componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
+        componentVendor = componentControl.getComponentVendorByName(componentVendorName);
 
         if(componentVendor != null) {
             var commandName = spec.getCommandName();

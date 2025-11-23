@@ -33,27 +33,28 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
+@ApplicationScoped
 public class SecurityRoleGroupLogic
         extends BaseLogic {
 
-    private SecurityRoleGroupLogic() {
+    @Inject
+    protected SecurityControl securityControl;
+
+    protected SecurityRoleGroupLogic() {
         super();
     }
 
-    private static class SecurityRoleGroupLogicHolder {
-        static SecurityRoleGroupLogic instance = new SecurityRoleGroupLogic();
-    }
-
     public static SecurityRoleGroupLogic getInstance() {
-        return SecurityRoleGroupLogicHolder.instance;
+        return CDI.current().select(SecurityRoleGroupLogic.class).get();
     }
 
     public SecurityRoleGroup createSecurityRoleGroup(final ExecutionErrorAccumulator eea, final String securityRoleGroupName,
             final SecurityRoleGroup parentSecurityRoleGroup, final Boolean isDefault, final Integer sortOrder,
             final Language language, final String description, final BasePK createdBy) {
-        var securityControl = Session.getModelController(SecurityControl.class);
         var securityRoleGroup = securityControl.getSecurityRoleGroupByName(securityRoleGroupName);
 
         if(securityRoleGroup == null) {
@@ -72,7 +73,6 @@ public class SecurityRoleGroupLogic
 
     public SecurityRoleGroup getSecurityRoleGroupByName(final Class<? extends BaseException> unknownException, final ExecutionErrors unknownExecutionError,
             final ExecutionErrorAccumulator eea, final String securityRoleGroupName, final EntityPermission entityPermission) {
-        var securityControl = Session.getModelController(SecurityControl.class);
         var securityRoleGroup = securityControl.getSecurityRoleGroupByName(securityRoleGroupName, entityPermission);
 
         if(securityRoleGroup == null) {
@@ -99,12 +99,11 @@ public class SecurityRoleGroupLogic
     public SecurityRoleGroup getSecurityRoleGroupByUniversalSpec(final ExecutionErrorAccumulator eea,
             final SecurityRoleGroupUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         SecurityRoleGroup securityRoleGroup = null;
-        var securityControl = Session.getModelController(SecurityControl.class);
         var securityRoleGroupName = universalSpec.getSecurityRoleGroupName();
         var parameterCount = (securityRoleGroupName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
-            case 0:
+            case 0 -> {
                 if(allowDefault) {
                     securityRoleGroup = securityControl.getDefaultSecurityRoleGroup(entityPermission);
 
@@ -114,8 +113,8 @@ public class SecurityRoleGroupLogic
                 } else {
                     handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                 }
-                break;
-            case 1:
+            }
+            case 1 -> {
                 if(securityRoleGroupName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.SecurityRoleGroup.name());
@@ -126,10 +125,9 @@ public class SecurityRoleGroupLogic
                 } else {
                     securityRoleGroup = getSecurityRoleGroupByName(eea, securityRoleGroupName, entityPermission);
                 }
-                break;
-            default:
-                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
-                break;
+            }
+            default ->
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
 
         return securityRoleGroup;
@@ -147,8 +145,6 @@ public class SecurityRoleGroupLogic
 
     public void deleteSecurityRoleGroup(final ExecutionErrorAccumulator eea, final SecurityRoleGroup securityRoleGroup,
             final BasePK deletedBy) {
-        var securityControl = Session.getModelController(SecurityControl.class);
-
         securityControl.deleteSecurityRoleGroup(securityRoleGroup, deletedBy);
     }
 

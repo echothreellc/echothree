@@ -22,20 +22,23 @@ import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.user.server.entity.RecoveryAnswer;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class RecoveryAnswerTransferCache
         extends BaseUserTransferCache<RecoveryAnswer, RecoveryAnswerTransfer> {
     
     PartyControl partyControl = Session.getModelController(PartyControl.class);
+    UserControl userControl = Session.getModelController(UserControl.class);
     
     /** Creates a new instance of RecoveryAnswerTransferCache */
-    public RecoveryAnswerTransferCache(UserVisit userVisit, UserControl userControl) {
-        super(userVisit, userControl);
+    protected RecoveryAnswerTransferCache() {
+        super();
 
         setIncludeEntityInstance(true);
     }
     
-    public RecoveryAnswerTransfer getRecoveryAnswerTransfer(RecoveryAnswer recoveryAnswer) {
+    public RecoveryAnswerTransfer getRecoveryAnswerTransfer(UserVisit userVisit, RecoveryAnswer recoveryAnswer) {
         var recoveryAnswerTransfer = get(recoveryAnswer);
         
         if(recoveryAnswerTransfer == null) {
@@ -45,7 +48,7 @@ public class RecoveryAnswerTransferCache
             var answer = recoveryAnswerDetail.getAnswer();
             
             recoveryAnswerTransfer = new RecoveryAnswerTransfer(party, recoveryQuestion, answer);
-            put(recoveryAnswer, recoveryAnswerTransfer);
+            put(userVisit, recoveryAnswer, recoveryAnswerTransfer);
         }
         
         return recoveryAnswerTransfer;

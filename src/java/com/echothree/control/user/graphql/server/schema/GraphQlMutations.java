@@ -87,9 +87,11 @@ import com.echothree.control.user.filter.common.result.EditFilterResult;
 import com.echothree.control.user.filter.common.result.EditFilterStepResult;
 import com.echothree.control.user.inventory.common.InventoryUtil;
 import com.echothree.control.user.inventory.common.result.CreateAllocationPriorityResult;
+import com.echothree.control.user.inventory.common.result.CreateInventoryAdjustmentTypeResult;
 import com.echothree.control.user.inventory.common.result.CreateInventoryConditionResult;
 import com.echothree.control.user.inventory.common.result.CreateInventoryTransactionTypeResult;
 import com.echothree.control.user.inventory.common.result.EditAllocationPriorityResult;
+import com.echothree.control.user.inventory.common.result.EditInventoryAdjustmentTypeResult;
 import com.echothree.control.user.inventory.common.result.EditInventoryConditionResult;
 import com.echothree.control.user.inventory.common.result.EditInventoryTransactionTypeResult;
 import com.echothree.control.user.item.common.ItemUtil;
@@ -3718,6 +3720,114 @@ public interface GraphQlMutations {
             }
 
             mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultWithIdObject createInventoryAdjustmentType(final DataFetchingEnvironment env,
+            @GraphQLName("inventoryAdjustmentTypeName") @GraphQLNonNull final String inventoryAdjustmentTypeName,
+            @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
+            @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var commandForm = InventoryUtil.getHome().getCreateInventoryAdjustmentTypeForm();
+
+            commandForm.setInventoryAdjustmentTypeName(inventoryAdjustmentTypeName);
+            commandForm.setIsDefault(isDefault);
+            commandForm.setSortOrder(sortOrder);
+            commandForm.setDescription(description);
+
+            var commandResult = InventoryUtil.getHome().createInventoryAdjustmentType(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                var result = (CreateInventoryAdjustmentTypeResult)commandResult.getExecutionResult().getResult();
+
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultWithIdObject editInventoryAdjustmentType(final DataFetchingEnvironment env,
+            @GraphQLName("originalInventoryAdjustmentTypeName") final String originalInventoryAdjustmentTypeName,
+            @GraphQLName("id") @GraphQLID final String id,
+            @GraphQLName("inventoryAdjustmentTypeName") final String inventoryAdjustmentTypeName,
+            @GraphQLName("isDefault") final String isDefault,
+            @GraphQLName("sortOrder") final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var spec = InventoryUtil.getHome().getInventoryAdjustmentTypeUniversalSpec();
+
+            spec.setInventoryAdjustmentTypeName(originalInventoryAdjustmentTypeName);
+            spec.setUuid(id);
+
+            var commandForm = InventoryUtil.getHome().getEditInventoryAdjustmentTypeForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = InventoryUtil.getHome().editInventoryAdjustmentType(BaseGraphQl.getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditInventoryAdjustmentTypeResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                mutationResultObject.setEntityInstance(result.getInventoryAdjustmentType().getEntityInstance());
+
+                if(arguments.containsKey("inventoryAdjustmentTypeName"))
+                    edit.setInventoryAdjustmentTypeName(inventoryAdjustmentTypeName);
+                if(arguments.containsKey("isDefault"))
+                    edit.setIsDefault(isDefault);
+                if(arguments.containsKey("sortOrder"))
+                    edit.setSortOrder(sortOrder);
+                if(arguments.containsKey("description"))
+                    edit.setDescription(description);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = InventoryUtil.getHome().editInventoryAdjustmentType(BaseGraphQl.getUserVisitPK(env), commandForm);
+            }
+
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject deleteInventoryAdjustmentType(final DataFetchingEnvironment env,
+            @GraphQLName("inventoryAdjustmentTypeName") final String inventoryAdjustmentTypeName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = InventoryUtil.getHome().getDeleteInventoryAdjustmentTypeForm();
+
+            commandForm.setInventoryAdjustmentTypeName(inventoryAdjustmentTypeName);
+            commandForm.setUuid(id);
+
+            mutationResultObject.setCommandResult(InventoryUtil.getHome().deleteInventoryAdjustmentType(BaseGraphQl.getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }

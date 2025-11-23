@@ -16,19 +16,19 @@
 
 package com.echothree.model.control.sequence.server.logic.encoder;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
+
+@ApplicationScoped
 public class NoneSequenceEncoder
         implements SequenceEncoder {
 
-    private NoneSequenceEncoder() {
+    protected NoneSequenceEncoder() {
         super();
     }
 
-    private static class SequenceEncoderHolder {
-        static SequenceEncoder instance = new NoneSequenceEncoder();
-    }
-
-    public static SequenceEncoder getInstance() {
-        return SequenceEncoderHolder.instance;
+    public static NoneSequenceEncoder getInstance() {
+        return CDI.current().select(NoneSequenceEncoder.class).get();
     }
 
     @Override

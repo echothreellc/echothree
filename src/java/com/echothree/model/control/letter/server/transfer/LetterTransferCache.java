@@ -23,21 +23,24 @@ import com.echothree.model.control.letter.server.control.LetterControl;
 import com.echothree.model.data.letter.server.entity.Letter;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class LetterTransferCache
         extends BaseLetterTransferCache<Letter, LetterTransfer> {
     
     ChainControl chainControl = Session.getModelController(ChainControl.class);
     ContactListControl contactListControl = Session.getModelController(ContactListControl.class);
-    
+    LetterControl letterControl = Session.getModelController(LetterControl.class);
+
     /** Creates a new instance of LetterTransferCache */
-    public LetterTransferCache(UserVisit userVisit, LetterControl letterControl) {
-        super(userVisit, letterControl);
+    protected LetterTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public LetterTransfer getLetterTransfer(Letter letter) {
+    public LetterTransfer getLetterTransfer(UserVisit userVisit, Letter letter) {
         var letterTransfer = get(letter);
         
         if(letterTransfer == null) {
@@ -49,11 +52,11 @@ public class LetterTransferCache
             var contactListTransfer = contactList == null? null: contactListControl.getContactListTransfer(userVisit, contactList);
             var isDefault = letterDetail.getIsDefault();
             var sortOrder = letterDetail.getSortOrder();
-            var description = letterControl.getBestLetterDescription(letter, getLanguage());
+            var description = letterControl.getBestLetterDescription(letter, getLanguage(userVisit));
             
             letterTransfer = new LetterTransfer(chainTypeTransfer, letterName, letterSourceTransfer, contactListTransfer, isDefault,
                     sortOrder, description);
-            put(letter, letterTransfer);
+            put(userVisit, letter, letterTransfer);
         }
         
         return letterTransfer;

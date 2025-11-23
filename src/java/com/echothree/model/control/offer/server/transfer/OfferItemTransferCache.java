@@ -27,7 +27,9 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.transfer.ListWrapperBuilder;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class OfferItemTransferCache
         extends BaseOfferTransferCache<OfferItem, OfferItemTransfer> {
     
@@ -44,8 +46,8 @@ public class OfferItemTransferCache
     boolean filterEntityInstance;
 
     /** Creates a new instance of OfferItemTransferCache */
-    public OfferItemTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected OfferItemTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {
@@ -67,7 +69,7 @@ public class OfferItemTransferCache
         setIncludeEntityInstance(!filterEntityInstance);
     }
     
-    public OfferItemTransfer getOfferItemTransfer(OfferItem offerItem) {
+    public OfferItemTransfer getOfferItemTransfer(UserVisit userVisit, OfferItem offerItem) {
         var offerItemTransfer = get(offerItem);
         
         if(offerItemTransfer == null) {
@@ -75,7 +77,7 @@ public class OfferItemTransferCache
             var item = filterItem ? null : itemControl.getItemTransfer(userVisit, offerItem.getItem());
             
             offerItemTransfer = new OfferItemTransfer(offer, item);
-            put(offerItem, offerItemTransfer);
+            put(userVisit, offerItem, offerItemTransfer);
 
             if(includeOfferItemPrices) {
                 offerItemTransfer.setOfferItemPrices(ListWrapperBuilder.getInstance().filter(transferProperties,

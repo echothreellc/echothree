@@ -20,25 +20,27 @@ import com.echothree.control.user.party.common.form.GetTimeZonesForm;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.party.server.entity.TimeZone;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.party.server.factory.TimeZoneFactory;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
-import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
+@RequestScoped
 public class GetTimeZonesCommand
-        extends BaseMultipleEntitiesCommand<TimeZone, GetTimeZonesForm> {
-    
+        extends BasePaginatedMultipleEntitiesCommand<TimeZone, GetTimeZonesForm> {
+
+    @Inject
+    PartyControl partyControl;
+
     // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                ));
+        FORM_FIELD_DEFINITIONS = List.of();
     }
     
     /** Creates a new instance of GetTimeZonesCommand */
@@ -47,18 +49,31 @@ public class GetTimeZonesCommand
     }
     
     @Override
+    protected void handleForm() {
+        // No form fields.
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return partyControl.countTimeZones();
+    }
+
+    @Override
     protected Collection<TimeZone> getEntities() {
-        var partyControl = Session.getModelController(PartyControl.class);
-        
         return partyControl.getTimeZones();
     }
     
     @Override
     protected BaseResult getResult(Collection<TimeZone> entities) {
         var result = PartyResultFactory.getGetTimeZonesResult();
-        var partyControl = Session.getModelController(PartyControl.class);
         
-        result.setTimeZones(partyControl.getTimeZoneTransfers(getUserVisit(), entities));
+        if(entities != null) {
+            if(session.hasLimit(TimeZoneFactory.class)) {
+                result.setTimeZoneCount(getTotalEntities());
+            }
+
+            result.setTimeZones(partyControl.getTimeZoneTransfers(getUserVisit(), entities));
+        }
         
         return result;
     }

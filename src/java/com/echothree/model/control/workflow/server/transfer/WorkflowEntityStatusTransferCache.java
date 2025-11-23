@@ -24,18 +24,20 @@ import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntityStatus;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class WorkflowEntityStatusTransferCache
         extends BaseWorkflowTransferCache<WorkflowEntityStatus, WorkflowEntityStatusTransfer> {
 
-    WorkEffortControl workEffortControl;
+    WorkEffortControl workEffortControl = Session.getModelController(WorkEffortControl.class);
+    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
+
     boolean includeTriggerTime;
 
     /** Creates a new instance of WorkflowEntityStatusTransferCache */
-    public WorkflowEntityStatusTransferCache(UserVisit userVisit, WorkflowControl workflowControl) {
-        super(userVisit, workflowControl);
-
-        workEffortControl = Session.getModelController(WorkEffortControl.class);
+    protected WorkflowEntityStatusTransferCache() {
+        super();
 
         var options = session.getOptions();
         if(options != null) {
@@ -43,7 +45,7 @@ public class WorkflowEntityStatusTransferCache
         }
     }
 
-    public WorkflowEntityStatusTransfer getWorkflowEntityStatusTransfer(WorkflowEntityStatus workflowEntityStatus) {
+    public WorkflowEntityStatusTransfer getWorkflowEntityStatusTransfer(UserVisit userVisit, WorkflowEntityStatus workflowEntityStatus) {
         var workflowEntityStatusTransfer = get(workflowEntityStatus);
 
         if(workflowEntityStatusTransfer == null) {
@@ -53,9 +55,9 @@ public class WorkflowEntityStatusTransferCache
             var workEffortScope = workflowEntityStatus.getWorkEffortScope();
             var workEffortScopeTransfer = workEffortScope == null ? null : workEffortControl.getWorkEffortScopeTransfer(userVisit, workEffortScope);
             var unformattedFromTime = workflowEntityStatus.getFromTime();
-            var fromTime = formatTypicalDateTime(unformattedFromTime);
+            var fromTime = formatTypicalDateTime(userVisit, unformattedFromTime);
             var unformattedThruTime = workflowEntityStatus.getThruTime();
-            var thruTime = formatTypicalDateTime(unformattedThruTime);
+            var thruTime = formatTypicalDateTime(userVisit, unformattedThruTime);
             Long unformattedTriggerTime;
             String triggerTime = null;
 
@@ -63,12 +65,12 @@ public class WorkflowEntityStatusTransferCache
                 var workflowTrigger = workflowControl.getWorkflowTrigger(workflowEntityStatus);
 
                 unformattedTriggerTime = workflowTrigger == null ? null : workflowTrigger.getTriggerTime();
-                triggerTime = unformattedTriggerTime == null ? null : formatTypicalDateTime(unformattedTriggerTime);
+                triggerTime = unformattedTriggerTime == null ? null : formatTypicalDateTime(userVisit, unformattedTriggerTime);
             }
 
             workflowEntityStatusTransfer = new WorkflowEntityStatusTransfer(entityInstanceTransfer, workflowStepTransfer, workEffortScopeTransfer,
                     unformattedFromTime, fromTime, unformattedThruTime, thruTime, unformattedThruTime, triggerTime);
-            put(workflowEntityStatus, workflowEntityStatusTransfer);
+            put(userVisit, workflowEntityStatus, workflowEntityStatusTransfer);
         }
 
         return workflowEntityStatusTransfer;

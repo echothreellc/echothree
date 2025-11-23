@@ -23,7 +23,9 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.party.server.entity.PartyApplicationEditorUse;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PartyApplicationEditorUseTransferCache
         extends BaseCoreTransferCache<PartyApplicationEditorUse, PartyApplicationEditorUseTransfer> {
 
@@ -31,13 +33,13 @@ public class PartyApplicationEditorUseTransferCache
     ApplicationControl applicationControl = Session.getModelController(ApplicationControl.class);
 
     /** Creates a new instance of PartyApplicationEditorUseTransferCache */
-    public PartyApplicationEditorUseTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected PartyApplicationEditorUseTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
 
-    public PartyApplicationEditorUseTransfer getPartyApplicationEditorUseTransfer(PartyApplicationEditorUse partyApplicationEditorUse) {
+    public PartyApplicationEditorUseTransfer getPartyApplicationEditorUseTransfer(UserVisit userVisit, PartyApplicationEditorUse partyApplicationEditorUse) {
         var partyApplicationEditorUseTransfer = get(partyApplicationEditorUse);
 
         if(partyApplicationEditorUseTransfer == null) {
@@ -51,7 +53,7 @@ public class PartyApplicationEditorUseTransferCache
 
             partyApplicationEditorUseTransfer = new PartyApplicationEditorUseTransfer(partyTransfer, applicationEditorUseTransfer, applicationEditorTransfer,
                     preferredHeight, preferredWidth);
-            put(partyApplicationEditorUse, partyApplicationEditorUseTransfer);
+            put(userVisit, partyApplicationEditorUse, partyApplicationEditorUseTransfer);
         }
 
         return partyApplicationEditorUseTransfer;

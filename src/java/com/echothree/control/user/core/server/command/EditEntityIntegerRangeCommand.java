@@ -39,7 +39,9 @@ import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EditEntityIntegerRangeCommand
         extends BaseAbstractEditCommand<EntityIntegerRangeSpec, EntityIntegerRangeEdit, EditEntityIntegerRangeResult, EntityIntegerRange, EntityIntegerRange> {
     
@@ -91,14 +93,13 @@ public class EditEntityIntegerRangeCommand
     
     @Override
     public EntityIntegerRange getEntity(EditEntityIntegerRangeResult result) {
-        var coreControl = getCoreControl();
         EntityIntegerRange entityIntegerRange = null;
         var componentVendorName = spec.getComponentVendorName();
-        var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
+        var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
 
         if(componentVendor != null) {
             var entityTypeName = spec.getEntityTypeName();
-            var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
+            var entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
 
             if(entityType != null) {
                 var entityAttributeName = spec.getEntityAttributeName();
@@ -137,14 +138,12 @@ public class EditEntityIntegerRangeCommand
 
     @Override
     public void fillInResult(EditEntityIntegerRangeResult result, EntityIntegerRange entityIntegerRange) {
-        var coreControl = getCoreControl();
 
         result.setEntityIntegerRange(coreControl.getEntityIntegerRangeTransfer(getUserVisit(), entityIntegerRange, null));
     }
 
     @Override
     public void doLock(EntityIntegerRangeEdit edit, EntityIntegerRange entityIntegerRange) {
-        var coreControl = getCoreControl();
         var entityIntegerRangeDescription = coreControl.getEntityIntegerRangeDescription(entityIntegerRange, getPreferredLanguage());
         var entityIntegerRangeDetail = entityIntegerRange.getLastDetail();
         var minimumIntegerValue = entityIntegerRangeDetail.getMinimumIntegerValue();
@@ -169,7 +168,6 @@ public class EditEntityIntegerRangeCommand
         var maximumIntegerValue = strMaximumIntegerValue == null ? null : Integer.valueOf(strMaximumIntegerValue);
 
         if(minimumIntegerValue == null || maximumIntegerValue == null || maximumIntegerValue >= minimumIntegerValue) {
-            var coreControl = getCoreControl();
             var entityIntegerRangeName = edit.getEntityIntegerRangeName();
             var duplicateEntityIntegerRange = coreControl.getEntityIntegerRangeByName(entityAttribute, entityIntegerRangeName);
 
@@ -183,7 +181,6 @@ public class EditEntityIntegerRangeCommand
 
     @Override
     public void doUpdate(EntityIntegerRange entityIntegerRange) {
-        var coreControl = getCoreControl();
         var partyPK = getPartyPK();
         var entityIntegerRangeDetailValue = coreControl.getEntityIntegerRangeDetailValueForUpdate(entityIntegerRange);
         var entityIntegerRangeDescription = coreControl.getEntityIntegerRangeDescriptionForUpdate(entityIntegerRange, getPreferredLanguage());

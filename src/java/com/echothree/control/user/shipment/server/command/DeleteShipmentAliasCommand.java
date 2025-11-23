@@ -20,7 +20,7 @@ import com.echothree.control.user.shipment.common.form.DeleteShipmentAliasForm;
 import com.echothree.control.user.shipment.server.command.util.ShipmentAliasUtil;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.shipment.server.ShipmentControl;
+import com.echothree.model.control.shipment.server.control.ShipmentControl;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -33,7 +33,9 @@ import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class DeleteShipmentAliasCommand
         extends BaseSimpleCommand<DeleteShipmentAliasForm> {
     

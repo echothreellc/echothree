@@ -26,7 +26,9 @@ import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EntityAliasTypeTransferCache
         extends BaseCoreTransferCache<EntityAliasType, EntityAliasTypeTransfer> {
 
@@ -45,8 +47,8 @@ public class EntityAliasTypeTransferCache
     boolean filterEntityInstance;
 
     /** Creates a new instance of EntityAliasTypeTransferCache */
-    public EntityAliasTypeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected EntityAliasTypeTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {
@@ -71,7 +73,7 @@ public class EntityAliasTypeTransferCache
         setIncludeEntityInstance(!filterEntityInstance);
     }
     
-    public EntityAliasTypeTransfer getEntityAliasTypeTransfer(EntityAliasType entityAliasType, EntityInstance entityInstance) {
+    public EntityAliasTypeTransfer getEntityAliasTypeTransfer(final UserVisit userVisit, final EntityAliasType entityAliasType, final EntityInstance entityInstance) {
         var entityAliasTypeTransfer = get(entityAliasType);
         
         if(entityAliasTypeTransfer == null) {
@@ -81,15 +83,15 @@ public class EntityAliasTypeTransferCache
             var validationPattern = filterValidationPattern ? null : entityAliasTypeDetail.getValidationPattern();
             var isDefault = filterIsDefault ? null : entityAliasTypeDetail.getIsDefault();
             var sortOrder = filterSortOrder ? null : entityAliasTypeDetail.getSortOrder();
-            var description = filterDescription ? null : entityAliasControl.getBestEntityAliasTypeDescription(entityAliasType, getLanguage());
+            var description = filterDescription ? null : entityAliasControl.getBestEntityAliasTypeDescription(entityAliasType, getLanguage(userVisit));
             
             entityAliasTypeTransfer = new EntityAliasTypeTransfer(entityTypeTransfer, entityAliasTypeName,
                     validationPattern, isDefault, sortOrder, description);
 
             if(entityInstance == null) {
-                put(entityAliasType, entityAliasTypeTransfer);
+                put(userVisit, entityAliasType, entityAliasTypeTransfer);
             } else {
-                setupEntityInstance(entityAliasType, null, entityAliasTypeTransfer);
+                setupEntityInstance(userVisit, entityAliasType, null, entityAliasTypeTransfer);
             }
         }
         return entityAliasTypeTransfer;

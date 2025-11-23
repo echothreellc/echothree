@@ -16,7 +16,6 @@
 
 package com.echothree.model.control.batch.server.transfer;
 
-import com.echothree.model.control.batch.server.control.BatchControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.BaseTransfer;
 import com.echothree.util.server.persistence.BaseEntity;
@@ -25,15 +24,11 @@ import com.echothree.util.server.transfer.BaseTransferCache;
 public abstract class BaseBatchTransferCache<K extends BaseEntity, V extends BaseTransfer>
         extends BaseTransferCache<K, V> {
     
-    protected BatchControl batchControl;
-    
     /** Creates a new instance of BaseBatchTransferCache */
-    protected BaseBatchTransferCache(UserVisit userVisit, BatchControl batchControl) {
-        super(userVisit);
-        
-        this.batchControl = batchControl;
+    protected BaseBatchTransferCache() {
+        super();
     }
     
-    protected abstract V getTransfer(K key);
+    protected abstract V getTransfer(UserVisit userVisit, K key);
 
 }

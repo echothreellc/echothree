@@ -24,7 +24,9 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import java.util.Arrays;
 import java.util.Collections;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ProcessWorkflowTriggersCommand
         extends BaseSimpleCommand {
 

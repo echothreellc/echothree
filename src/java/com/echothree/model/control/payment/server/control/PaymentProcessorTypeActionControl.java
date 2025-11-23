@@ -37,12 +37,14 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PaymentProcessorTypeActionControl
         extends BasePaymentControl {
 
     /** Creates a new instance of PaymentProcessorTypeActionControl */
-    public PaymentProcessorTypeActionControl() {
+    protected PaymentProcessorTypeActionControl() {
         super();
     }
 
@@ -222,16 +224,15 @@ public class PaymentProcessorTypeActionControl
 
     public PaymentProcessorTypeActionTransfer getPaymentProcessorTypeActionTransfer(final UserVisit userVisit,
             final PaymentProcessorTypeAction paymentProcessorTypeAction) {
-        return getPaymentTransferCaches(userVisit).getPaymentProcessorTypeActionTransferCache().getTransfer(paymentProcessorTypeAction);
+        return paymentProcessorTypeActionTransferCache.getTransfer(userVisit, paymentProcessorTypeAction);
     }
 
     public List<PaymentProcessorTypeActionTransfer> getPaymentProcessorTypeActionTransfers(final UserVisit userVisit,
             final Collection<PaymentProcessorTypeAction> paymentProcessorTypeActions) {
         var paymentProcessorTypeActionTransfers = new ArrayList<PaymentProcessorTypeActionTransfer>(paymentProcessorTypeActions.size());
-        var paymentProcessorTypeActionTransferCache = getPaymentTransferCaches(userVisit).getPaymentProcessorTypeActionTransferCache();
 
         paymentProcessorTypeActions.forEach((paymentProcessorTypeAction) ->
-                paymentProcessorTypeActionTransfers.add(paymentProcessorTypeActionTransferCache.getTransfer(paymentProcessorTypeAction))
+                paymentProcessorTypeActionTransfers.add(paymentProcessorTypeActionTransferCache.getTransfer(userVisit, paymentProcessorTypeAction))
         );
 
         return paymentProcessorTypeActionTransfers;

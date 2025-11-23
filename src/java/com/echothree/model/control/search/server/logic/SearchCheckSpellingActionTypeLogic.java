@@ -32,20 +32,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class SearchCheckSpellingActionTypeLogic
         extends BaseLogic {
-    
-    private SearchCheckSpellingActionTypeLogic() {
+
+    protected SearchCheckSpellingActionTypeLogic() {
         super();
     }
-    
-    private static class SearchCheckSpellingActionTypeLogicHolder {
-        static SearchCheckSpellingActionTypeLogic instance = new SearchCheckSpellingActionTypeLogic();
-    }
-    
+
     public static SearchCheckSpellingActionTypeLogic getInstance() {
-        return SearchCheckSpellingActionTypeLogicHolder.instance;
+        return CDI.current().select(SearchCheckSpellingActionTypeLogic.class).get();
     }
 
     public SearchCheckSpellingActionType getSearchCheckSpellingActionTypeByName(final Class<? extends BaseException> unknownException, final ExecutionErrors unknownExecutionError,
@@ -82,7 +81,7 @@ public class SearchCheckSpellingActionTypeLogic
         var parameterCount = (searchCheckSpellingActionTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
-            case 1:
+            case 1 -> {
                 if(searchCheckSpellingActionTypeName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.SearchCheckSpellingActionType.name());
@@ -93,10 +92,9 @@ public class SearchCheckSpellingActionTypeLogic
                 } else {
                     searchCheckSpellingActionType = getSearchCheckSpellingActionTypeByName(eea, searchCheckSpellingActionTypeName, entityPermission);
                 }
-                break;
-            default:
-                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
-                break;
+            }
+            default ->
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
 
         return searchCheckSpellingActionType;

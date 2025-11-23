@@ -21,29 +21,33 @@ import com.echothree.model.control.term.common.transfer.TermTransfer;
 import com.echothree.model.control.term.server.control.TermControl;
 import com.echothree.model.data.term.server.entity.Term;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.PercentUtils;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class TermTransferCache
         extends BaseTermTransferCache<Term, TermTransfer> {
-    
+
+    TermControl termControl = Session.getModelController(TermControl.class);
+
     /** Creates a new instance of TermTransferCache */
-    public TermTransferCache(UserVisit userVisit, TermControl termControl) {
-        super(userVisit, termControl);
+    protected TermTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public TermTransfer getTermTransfer(Term term) {
+    public TermTransfer getTermTransfer(UserVisit userVisit, Term term) {
         var termTransfer = get(term);
         
         if(termTransfer == null) {
             var termDetail = term.getLastDetail();
             var termName = termDetail.getTermName();
-            var termTypeTransferCache = termControl.getTermTransferCaches(userVisit).getTermTypeTransferCache();
-            var termType = termTypeTransferCache.getTermTypeTransfer(termDetail.getTermType());
+            var termType = termControl.getTermTypeTransfer(userVisit, termDetail.getTermType());
             var isDefault = termDetail.getIsDefault();
             var sortOrder = termDetail.getSortOrder();
-            var description = termControl.getBestTermDescription(term, getLanguage());
+            var description = termControl.getBestTermDescription(term, getLanguage(userVisit));
             String netDueDays = null;
             String discountPercentage = null;
             String discountDays = null;
@@ -69,7 +73,7 @@ public class TermTransferCache
             
             termTransfer = new TermTransfer(termName, termType, isDefault, sortOrder, description,
                     discountPercentage, netDueDays, discountDays, netDueDayOfMonth, dueNextMonthDays, discountBeforeDayOfMonth);
-            put(term, termTransfer);
+            put(userVisit, term, termTransfer);
         }
         return termTransfer;
     }

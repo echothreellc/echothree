@@ -30,7 +30,9 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.transfer.ListWrapperBuilder;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class OfferTransferCache
         extends BaseOfferTransferCache<Offer, OfferTransfer> {
     
@@ -56,8 +58,8 @@ public class OfferTransferCache
     boolean filterEntityInstance;
     
     /** Creates a new instance of OfferTransferCache */
-    public OfferTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected OfferTransferCache() {
+        super();
 
         var options = session.getOptions();
         if(options != null) {
@@ -87,7 +89,7 @@ public class OfferTransferCache
         setIncludeEntityInstance(!filterEntityInstance);
     }
     
-    public OfferTransfer getOfferTransfer(Offer offer) {
+    public OfferTransfer getOfferTransfer(UserVisit userVisit, Offer offer) {
         var offerTransfer = get(offer);
         
         if(offerTransfer == null) {
@@ -103,11 +105,11 @@ public class OfferTransferCache
             var offerItemPriceFilterTransfer = offerItemPriceFilter == null ? null : filterControl.getFilterTransfer(userVisit, offerItemPriceFilter);
             var isDefault = filterIsDefault ? null : offerDetail.getIsDefault();
             var sortOrder = filterSortOrder ? null : offerDetail.getSortOrder();
-            var description = filterDescription ? null : offerControl.getBestOfferDescription(offer, getLanguage());
+            var description = filterDescription ? null : offerControl.getBestOfferDescription(offer, getLanguage(userVisit));
             
             offerTransfer = new OfferTransfer(offerName, salesOrderSequenceTransfer, departmentTransfer, offerItemSelectorTransfer,
                     offerItemPriceFilterTransfer, isDefault, sortOrder, description);
-            put(offer, offerTransfer);
+            put(userVisit, offer, offerTransfer);
 
             if(includeOfferCustomerTypes) {
                 offerTransfer.setOfferCustomerTypes(ListWrapperBuilder.getInstance().filter(transferProperties, offerControl.getOfferCustomerTypeTransfersByOffer(userVisit, offer)));

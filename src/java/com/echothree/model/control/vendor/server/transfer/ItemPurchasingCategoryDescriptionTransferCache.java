@@ -20,25 +20,29 @@ import com.echothree.model.control.vendor.common.transfer.ItemPurchasingCategory
 import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.vendor.server.entity.ItemPurchasingCategoryDescription;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ItemPurchasingCategoryDescriptionTransferCache
         extends BaseVendorDescriptionTransferCache<ItemPurchasingCategoryDescription, ItemPurchasingCategoryDescriptionTransfer> {
-    
+
+    VendorControl vendorControl = Session.getModelController(VendorControl.class);
+
     /** Creates a new instance of ItemPurchasingCategoryDescriptionTransferCache */
-    public ItemPurchasingCategoryDescriptionTransferCache(UserVisit userVisit, VendorControl vendorControl) {
-        super(userVisit, vendorControl);
+    protected ItemPurchasingCategoryDescriptionTransferCache() {
+        super();
     }
     
-    public ItemPurchasingCategoryDescriptionTransfer getItemPurchasingCategoryDescriptionTransfer(ItemPurchasingCategoryDescription itemPurchasingCategoryDescription) {
+    public ItemPurchasingCategoryDescriptionTransfer getItemPurchasingCategoryDescriptionTransfer(UserVisit userVisit, ItemPurchasingCategoryDescription itemPurchasingCategoryDescription) {
         var itemPurchasingCategoryDescriptionTransfer = get(itemPurchasingCategoryDescription);
         
         if(itemPurchasingCategoryDescriptionTransfer == null) {
-            var itemPurchasingCategoryTransferCache = vendorControl.getVendorTransferCaches(userVisit).getItemPurchasingCategoryTransferCache();
-            var itemPurchasingCategoryTransfer = itemPurchasingCategoryTransferCache.getItemPurchasingCategoryTransfer(itemPurchasingCategoryDescription.getItemPurchasingCategory());
+            var itemPurchasingCategoryTransfer = vendorControl.getItemPurchasingCategoryTransfer(userVisit, itemPurchasingCategoryDescription.getItemPurchasingCategory());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, itemPurchasingCategoryDescription.getLanguage());
             
             itemPurchasingCategoryDescriptionTransfer = new ItemPurchasingCategoryDescriptionTransfer(languageTransfer, itemPurchasingCategoryTransfer, itemPurchasingCategoryDescription.getDescription());
-            put(itemPurchasingCategoryDescription, itemPurchasingCategoryDescriptionTransfer);
+            put(userVisit, itemPurchasingCategoryDescription, itemPurchasingCategoryDescriptionTransfer);
         }
         
         return itemPurchasingCategoryDescriptionTransfer;

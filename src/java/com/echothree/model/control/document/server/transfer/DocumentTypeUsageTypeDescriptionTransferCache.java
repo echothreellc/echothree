@@ -20,16 +20,21 @@ import com.echothree.model.control.document.common.transfer.DocumentTypeUsageTyp
 import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.data.document.server.entity.DocumentTypeUsageTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class DocumentTypeUsageTypeDescriptionTransferCache
         extends BaseDocumentDescriptionTransferCache<DocumentTypeUsageTypeDescription, DocumentTypeUsageTypeDescriptionTransfer> {
-    
+
+    DocumentControl documentControl = Session.getModelController(DocumentControl.class);
+
     /** Creates a new instance of DocumentTypeUsageTypeDescriptionTransferCache */
-    public DocumentTypeUsageTypeDescriptionTransferCache(UserVisit userVisit, DocumentControl documentControl) {
-        super(userVisit, documentControl);
+    protected DocumentTypeUsageTypeDescriptionTransferCache() {
+        super();
     }
     
-    public DocumentTypeUsageTypeDescriptionTransfer getDocumentTypeUsageTypeDescriptionTransfer(DocumentTypeUsageTypeDescription documentTypeUsageTypeDescription) {
+    public DocumentTypeUsageTypeDescriptionTransfer getDocumentTypeUsageTypeDescriptionTransfer(UserVisit userVisit, DocumentTypeUsageTypeDescription documentTypeUsageTypeDescription) {
         var documentTypeUsageTypeDescriptionTransfer = get(documentTypeUsageTypeDescription);
         
         if(documentTypeUsageTypeDescriptionTransfer == null) {
@@ -37,7 +42,7 @@ public class DocumentTypeUsageTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, documentTypeUsageTypeDescription.getLanguage());
             
             documentTypeUsageTypeDescriptionTransfer = new DocumentTypeUsageTypeDescriptionTransfer(languageTransfer, documentTypeUsageTypeTransfer, documentTypeUsageTypeDescription.getDescription());
-            put(documentTypeUsageTypeDescription, documentTypeUsageTypeDescriptionTransfer);
+            put(userVisit, documentTypeUsageTypeDescription, documentTypeUsageTypeDescriptionTransfer);
         }
         
         return documentTypeUsageTypeDescriptionTransfer;

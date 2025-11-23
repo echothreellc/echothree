@@ -22,20 +22,23 @@ import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ReturnTypeTransferCache
         extends BaseReturnPolicyTransferCache<ReturnType, ReturnTypeTransfer> {
-    
+
+    ReturnPolicyControl returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
     SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
     
     /** Creates a new instance of ReturnTypeTransferCache */
-    public ReturnTypeTransferCache(UserVisit userVisit, ReturnPolicyControl returnPolicyControl) {
-        super(userVisit, returnPolicyControl);
+    protected ReturnTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public ReturnTypeTransfer getReturnTypeTransfer(ReturnType returnType) {
+    public ReturnTypeTransfer getReturnTypeTransfer(UserVisit userVisit, ReturnType returnType) {
         var returnTypeTransfer = get(returnType);
         
         if(returnTypeTransfer == null) {
@@ -46,10 +49,10 @@ public class ReturnTypeTransferCache
             var returnSequenceTransfer = returnSequence == null? null: sequenceControl.getSequenceTransfer(userVisit, returnSequence);
             var isDefault = returnTypeDetail.getIsDefault();
             var sortOrder = returnTypeDetail.getSortOrder();
-            var description = returnPolicyControl.getBestReturnTypeDescription(returnType, getLanguage());
+            var description = returnPolicyControl.getBestReturnTypeDescription(returnType, getLanguage(userVisit));
             
             returnTypeTransfer = new ReturnTypeTransfer(returnKindTransfer, returnTypeName, returnSequenceTransfer, isDefault, sortOrder, description);
-            put(returnType, returnTypeTransfer);
+            put(userVisit, returnType, returnTypeTransfer);
         }
         
         return returnTypeTransfer;

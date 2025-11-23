@@ -21,21 +21,23 @@ import com.echothree.model.control.payment.server.control.PaymentProcessorResult
 import com.echothree.model.data.payment.server.entity.PaymentProcessorResultCode;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PaymentProcessorResultCodeTransferCache
         extends BasePaymentTransferCache<PaymentProcessorResultCode, PaymentProcessorResultCodeTransfer> {
 
     PaymentProcessorResultCodeControl paymentProcessorResultCodeControl = Session.getModelController(PaymentProcessorResultCodeControl.class);
 
     /** Creates a new instance of PaymentProcessorResultCodeTransferCache */
-    public PaymentProcessorResultCodeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected PaymentProcessorResultCodeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
     @Override
-    public PaymentProcessorResultCodeTransfer getTransfer(PaymentProcessorResultCode paymentProcessorResultCode) {
+    public PaymentProcessorResultCodeTransfer getTransfer(UserVisit userVisit, PaymentProcessorResultCode paymentProcessorResultCode) {
         var paymentProcessorResultCodeTransfer = get(paymentProcessorResultCode);
         
         if(paymentProcessorResultCodeTransfer == null) {
@@ -43,10 +45,10 @@ public class PaymentProcessorResultCodeTransferCache
             var paymentProcessorResultCodeName = paymentProcessorResultCodeDetail.getPaymentProcessorResultCodeName();
             var isDefault = paymentProcessorResultCodeDetail.getIsDefault();
             var sortOrder = paymentProcessorResultCodeDetail.getSortOrder();
-            var description = paymentProcessorResultCodeControl.getBestPaymentProcessorResultCodeDescription(paymentProcessorResultCode, getLanguage());
+            var description = paymentProcessorResultCodeControl.getBestPaymentProcessorResultCodeDescription(paymentProcessorResultCode, getLanguage(userVisit));
             
             paymentProcessorResultCodeTransfer = new PaymentProcessorResultCodeTransfer(paymentProcessorResultCodeName, isDefault, sortOrder, description);
-            put(paymentProcessorResultCode, paymentProcessorResultCodeTransfer);
+            put(userVisit, paymentProcessorResultCode, paymentProcessorResultCodeTransfer);
         }
         
         return paymentProcessorResultCodeTransfer;

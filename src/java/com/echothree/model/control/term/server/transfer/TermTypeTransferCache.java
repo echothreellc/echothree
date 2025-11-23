@@ -20,26 +20,31 @@ import com.echothree.model.control.term.common.transfer.TermTypeTransfer;
 import com.echothree.model.control.term.server.control.TermControl;
 import com.echothree.model.data.term.server.entity.TermType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class TermTypeTransferCache
         extends BaseTermTransferCache<TermType, TermTypeTransfer> {
-    
+
+    TermControl termControl = Session.getModelController(TermControl.class);
+
     /** Creates a new instance of TermTypeTransferCache */
-    public TermTypeTransferCache(UserVisit userVisit, TermControl termControl) {
-        super(userVisit, termControl);
+    protected TermTypeTransferCache() {
+        super();
     }
     
-    public TermTypeTransfer getTermTypeTransfer(TermType termType) {
+    public TermTypeTransfer getTermTypeTransfer(UserVisit userVisit, TermType termType) {
         var termTypeTransfer = get(termType);
         
         if(termTypeTransfer == null) {
             var termTypeName = termType.getTermTypeName();
             var isDefault = termType.getIsDefault();
             var sortOrder = termType.getSortOrder();
-            var description = termControl.getBestTermTypeDescription(termType, getLanguage());
+            var description = termControl.getBestTermTypeDescription(termType, getLanguage(userVisit));
             
             termTypeTransfer = new TermTypeTransfer(termTypeName, isDefault, sortOrder, description);
-            put(termType, termTypeTransfer);
+            put(userVisit, termType, termTypeTransfer);
         }
         
         return termTypeTransfer;

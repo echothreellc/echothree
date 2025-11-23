@@ -21,19 +21,21 @@ import com.echothree.model.control.payment.server.control.PaymentMethodControl;
 import com.echothree.model.data.payment.server.entity.PaymentMethodDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PaymentMethodDescriptionTransferCache
         extends BasePaymentDescriptionTransferCache<PaymentMethodDescription, PaymentMethodDescriptionTransfer> {
 
     PaymentMethodControl paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
 
     /** Creates a new instance of PaymentMethodDescriptionTransferCache */
-    public PaymentMethodDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected PaymentMethodDescriptionTransferCache() {
+        super();
     }
 
     @Override
-    public PaymentMethodDescriptionTransfer getTransfer(PaymentMethodDescription paymentMethodDescription) {
+    public PaymentMethodDescriptionTransfer getTransfer(UserVisit userVisit, PaymentMethodDescription paymentMethodDescription) {
         var paymentMethodDescriptionTransfer = get(paymentMethodDescription);
         
         if(paymentMethodDescriptionTransfer == null) {
@@ -41,7 +43,7 @@ public class PaymentMethodDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, paymentMethodDescription.getLanguage());
             
             paymentMethodDescriptionTransfer = new PaymentMethodDescriptionTransfer(languageTransfer, paymentMethodTransfer, paymentMethodDescription.getDescription());
-            put(paymentMethodDescription, paymentMethodDescriptionTransfer);
+            put(userVisit, paymentMethodDescription, paymentMethodDescriptionTransfer);
         }
         
         return paymentMethodDescriptionTransfer;

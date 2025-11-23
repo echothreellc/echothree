@@ -22,19 +22,21 @@ import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.data.printer.server.entity.PartyPrinterGroupUse;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PartyPrinterGroupUseTransferCache
         extends BasePrinterTransferCache<PartyPrinterGroupUse, PartyPrinterGroupUseTransfer> {
     
-    PartyControl partyControl;
-    
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
+    PrinterControl printerControl = Session.getModelController(PrinterControl.class);
+
     /** Creates a new instance of PartyPrinterGroupUseTransferCache */
-    public PartyPrinterGroupUseTransferCache(UserVisit userVisit, PrinterControl printerControl) {
-        super(userVisit, printerControl);
-        partyControl = Session.getModelController(PartyControl.class);
+    protected PartyPrinterGroupUseTransferCache() {
+        super();
     }
     
-    public PartyPrinterGroupUseTransfer getPartyPrinterGroupUseTransfer(PartyPrinterGroupUse partyPrinterGroupUse) {
+    public PartyPrinterGroupUseTransfer getPartyPrinterGroupUseTransfer(UserVisit userVisit, PartyPrinterGroupUse partyPrinterGroupUse) {
         var partyPrinterGroupUseTransfer = get(partyPrinterGroupUse);
         
         if(partyPrinterGroupUseTransfer == null) {
@@ -45,7 +47,7 @@ public class PartyPrinterGroupUseTransferCache
                     partyPrinterGroupUse.getPrinterGroup());
             
             partyPrinterGroupUseTransfer = new PartyPrinterGroupUseTransfer(party, printerGroupUseType, printerGroup);
-            put(partyPrinterGroupUse, partyPrinterGroupUseTransfer);
+            put(userVisit, partyPrinterGroupUse, partyPrinterGroupUseTransfer);
         }
         
         return partyPrinterGroupUseTransfer;

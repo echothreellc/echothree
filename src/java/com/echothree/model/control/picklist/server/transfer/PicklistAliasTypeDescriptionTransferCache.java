@@ -20,16 +20,21 @@ import com.echothree.model.control.picklist.common.transfer.PicklistAliasTypeDes
 import com.echothree.model.control.picklist.server.control.PicklistControl;
 import com.echothree.model.data.picklist.server.entity.PicklistAliasTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PicklistAliasTypeDescriptionTransferCache
         extends BasePicklistDescriptionTransferCache<PicklistAliasTypeDescription, PicklistAliasTypeDescriptionTransfer> {
-    
+
+    PicklistControl picklistControl = Session.getModelController(PicklistControl.class);
+
     /** Creates a new instance of PicklistAliasTypeDescriptionTransferCache */
-    public PicklistAliasTypeDescriptionTransferCache(UserVisit userVisit, PicklistControl picklistControl) {
-        super(userVisit, picklistControl);
+    protected PicklistAliasTypeDescriptionTransferCache() {
+        super();
     }
     
-    public PicklistAliasTypeDescriptionTransfer getPicklistAliasTypeDescriptionTransfer(PicklistAliasTypeDescription picklistAliasTypeDescription) {
+    public PicklistAliasTypeDescriptionTransfer getPicklistAliasTypeDescriptionTransfer(UserVisit userVisit, PicklistAliasTypeDescription picklistAliasTypeDescription) {
         var picklistAliasTypeDescriptionTransfer = get(picklistAliasTypeDescription);
         
         if(picklistAliasTypeDescriptionTransfer == null) {
@@ -37,7 +42,7 @@ public class PicklistAliasTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, picklistAliasTypeDescription.getLanguage());
             
             picklistAliasTypeDescriptionTransfer = new PicklistAliasTypeDescriptionTransfer(languageTransfer, picklistAliasTypeTransfer, picklistAliasTypeDescription.getDescription());
-            put(picklistAliasTypeDescription, picklistAliasTypeDescriptionTransfer);
+            put(userVisit, picklistAliasTypeDescription, picklistAliasTypeDescriptionTransfer);
         }
         
         return picklistAliasTypeDescriptionTransfer;

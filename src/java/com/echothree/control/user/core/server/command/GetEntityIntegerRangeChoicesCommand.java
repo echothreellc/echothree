@@ -37,7 +37,9 @@ import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class GetEntityIntegerRangeChoicesCommand
         extends BaseSimpleCommand<GetEntityIntegerRangeChoicesForm> {
     
@@ -77,10 +79,10 @@ public class GetEntityIntegerRangeChoicesCommand
             EntityType entityType = null;
             
             if(entityRef == null) {
-                var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
+                var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
                 
                 if(componentVendor != null) {
-                    entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
+                    entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
                     
                     if(entityType == null) {
                         addExecutionError(ExecutionErrors.UnknownEntityTypeName.name(), componentVendorName, entityTypeName);
@@ -100,7 +102,6 @@ public class GetEntityIntegerRangeChoicesCommand
             }
             
             if(!hasExecutionErrors()) {
-                var coreControl = getCoreControl();
                 var entityAttributeName = form.getEntityAttributeName();
                 var entityAttribute = coreControl.getEntityAttributeByName(entityType, entityAttributeName);
                 

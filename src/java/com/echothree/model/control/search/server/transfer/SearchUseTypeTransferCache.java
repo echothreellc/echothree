@@ -21,13 +21,18 @@ import com.echothree.model.control.search.common.transfer.SearchUseTypeTransfer;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.data.search.server.entity.SearchUseType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class SearchUseTypeTransferCache
         extends BaseSearchTransferCache<SearchUseType, SearchUseTypeTransfer> {
 
+    SearchControl searchControl = Session.getModelController(SearchControl.class);
+
     /** Creates a new instance of SearchUseTypeTransferCache */
-    public SearchUseTypeTransferCache(UserVisit userVisit, SearchControl searchControl) {
-        super(userVisit, searchControl);
+    protected SearchUseTypeTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {
@@ -37,7 +42,7 @@ public class SearchUseTypeTransferCache
         setIncludeEntityInstance(true);
     }
 
-    public SearchUseTypeTransfer getSearchUseTypeTransfer(SearchUseType searchUseType) {
+    public SearchUseTypeTransfer getSearchUseTypeTransfer(UserVisit userVisit, SearchUseType searchUseType) {
         var searchUseTypeTransfer = get(searchUseType);
 
         if(searchUseTypeTransfer == null) {
@@ -45,10 +50,10 @@ public class SearchUseTypeTransferCache
             var searchUseTypeName = searchUseTypeDetail.getSearchUseTypeName();
             var isDefault = searchUseTypeDetail.getIsDefault();
             var sortOrder = searchUseTypeDetail.getSortOrder();
-            var description = searchControl.getBestSearchUseTypeDescription(searchUseType, getLanguage());
+            var description = searchControl.getBestSearchUseTypeDescription(searchUseType, getLanguage(userVisit));
 
             searchUseTypeTransfer = new SearchUseTypeTransfer(searchUseTypeName, isDefault, sortOrder, description);
-            put(searchUseType, searchUseTypeTransfer);
+            put(userVisit, searchUseType, searchUseTypeTransfer);
         }
 
         return searchUseTypeTransfer;

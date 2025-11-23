@@ -42,20 +42,19 @@ import com.echothree.util.server.validation.ParameterUtils;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class WorkflowStepLogic
         extends BaseLogic {
 
-    private WorkflowStepLogic() {
+    protected WorkflowStepLogic() {
         super();
     }
-    
-    private static class WorkflowStepLogicHolder {
-        static WorkflowStepLogic instance = new WorkflowStepLogic();
-    }
-    
+
     public static WorkflowStepLogic getInstance() {
-        return WorkflowStepLogicHolder.instance;
+        return CDI.current().select(WorkflowStepLogic.class).get();
     }
 
     public WorkflowStep getWorkflowStepByName(final Class<? extends BaseException> unknownWorkflowException, final ExecutionErrors unknownWorkflowExecutionError,

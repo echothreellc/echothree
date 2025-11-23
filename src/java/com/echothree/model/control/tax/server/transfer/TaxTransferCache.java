@@ -23,22 +23,25 @@ import com.echothree.model.control.tax.server.control.TaxControl;
 import com.echothree.model.data.tax.server.entity.Tax;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class TaxTransferCache
         extends BaseTaxTransferCache<Tax, TaxTransfer> {
     
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
     ContactControl contactControl = Session.getModelController(ContactControl.class);
-    
+    TaxControl taxControl = Session.getModelController(TaxControl.class);
+
     /** Creates a new instance of TaxTransferCache */
-    public TaxTransferCache(UserVisit userVisit, TaxControl taxControl) {
-        super(userVisit, taxControl);
+    protected TaxTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
     @Override
-    public TaxTransfer getTransfer(Tax tax) {
+    public TaxTransfer getTransfer(UserVisit userVisit, Tax tax) {
         var taxTransfer = get(tax);
         
         if(taxTransfer == null) {
@@ -49,10 +52,10 @@ public class TaxTransferCache
             var percent = formatFractionalPercent(taxDetail.getPercent());
             var isDefault = taxDetail.getIsDefault();
             var sortOrder = taxDetail.getSortOrder();
-            var description = taxControl.getBestTaxDescription(tax, getLanguage());
+            var description = taxControl.getBestTaxDescription(tax, getLanguage(userVisit));
             
             taxTransfer = new TaxTransfer(taxName, contactMechanismPurpose, glAccount, percent, isDefault, sortOrder, description);
-            put(tax, taxTransfer);
+            put(userVisit, tax, taxTransfer);
         }
         
         return taxTransfer;

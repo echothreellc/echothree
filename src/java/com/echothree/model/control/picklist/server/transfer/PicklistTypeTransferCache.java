@@ -23,28 +23,31 @@ import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.picklist.server.entity.PicklistType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PicklistTypeTransferCache
         extends BasePicklistTransferCache<PicklistType, PicklistTypeTransfer> {
-    
+
+    PicklistControl picklistControl = Session.getModelController(PicklistControl.class);
     SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of PicklistTypeTransferCache */
-    public PicklistTypeTransferCache(UserVisit userVisit, PicklistControl picklistControl) {
-        super(userVisit, picklistControl);
+    protected PicklistTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public PicklistTypeTransfer getPicklistTypeTransfer(PicklistType picklistType) {
+    public PicklistTypeTransfer getPicklistTypeTransfer(UserVisit userVisit, PicklistType picklistType) {
         var picklistTypeTransfer = get(picklistType);
         
         if(picklistTypeTransfer == null) {
             var picklistTypeDetail = picklistType.getLastDetail();
             var picklistTypeName = picklistTypeDetail.getPicklistTypeName();
             var parentPicklistType = picklistTypeDetail.getParentPicklistType();
-            var parentPicklistTypeTransfer = parentPicklistType == null? null: getPicklistTypeTransfer(parentPicklistType);
+            var parentPicklistTypeTransfer = parentPicklistType == null ? null : getPicklistTypeTransfer(userVisit, parentPicklistType);
             var picklistSequenceType = picklistTypeDetail.getPicklistSequenceType();
             var picklistSequenceTypeTransfer = picklistSequenceType == null? null: sequenceControl.getSequenceTypeTransfer(userVisit, picklistSequenceType);
             var picklistWorkflow = picklistTypeDetail.getPicklistWorkflow();
@@ -53,11 +56,11 @@ public class PicklistTypeTransferCache
             var picklistWorkflowEntranceTransfer = picklistWorkflowEntrance == null? null: workflowControl.getWorkflowEntranceTransfer(userVisit, picklistWorkflowEntrance);
             var isDefault = picklistTypeDetail.getIsDefault();
             var sortOrder = picklistTypeDetail.getSortOrder();
-            var description = picklistControl.getBestPicklistTypeDescription(picklistType, getLanguage());
+            var description = picklistControl.getBestPicklistTypeDescription(picklistType, getLanguage(userVisit));
             
             picklistTypeTransfer = new PicklistTypeTransfer(picklistTypeName, parentPicklistTypeTransfer, picklistSequenceTypeTransfer, picklistWorkflowTransfer,
                     picklistWorkflowEntranceTransfer, isDefault, sortOrder, description);
-            put(picklistType, picklistTypeTransfer);
+            put(userVisit, picklistType, picklistTypeTransfer);
         }
         
         return picklistTypeTransfer;

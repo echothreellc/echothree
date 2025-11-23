@@ -22,20 +22,21 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.geo.server.entity.GeoCodeTimeZone;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class GeoCodeTimeZoneTransferCache
         extends BaseGeoTransferCache<GeoCodeTimeZone, GeoCodeTimeZoneTransfer> {
-    
-    PartyControl partyControl;
+
+    GeoControl geoControl = Session.getModelController(GeoControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of GeoCodeTimeZoneTransferCache */
-    public GeoCodeTimeZoneTransferCache(UserVisit userVisit, GeoControl geoControl) {
-        super(userVisit, geoControl);
-        
-        partyControl = Session.getModelController(PartyControl.class);
+    protected GeoCodeTimeZoneTransferCache() {
+        super();
     }
     
-    public GeoCodeTimeZoneTransfer getGeoCodeTimeZoneTransfer(GeoCodeTimeZone geoCodeTimeZone) {
+    public GeoCodeTimeZoneTransfer getGeoCodeTimeZoneTransfer(UserVisit userVisit, GeoCodeTimeZone geoCodeTimeZone) {
         var geoCodeTimeZoneTransfer = get(geoCodeTimeZone);
         
         if(geoCodeTimeZoneTransfer == null) {
@@ -45,7 +46,7 @@ public class GeoCodeTimeZoneTransferCache
             var sortOrder = geoCodeTimeZone.getSortOrder();
             
             geoCodeTimeZoneTransfer = new GeoCodeTimeZoneTransfer(geoCode, timeZone, isDefault, sortOrder);
-            put(geoCodeTimeZone, geoCodeTimeZoneTransfer);
+            put(userVisit, geoCodeTimeZone, geoCodeTimeZoneTransfer);
         }
         
         return geoCodeTimeZoneTransfer;

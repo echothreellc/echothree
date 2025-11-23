@@ -23,20 +23,19 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class RecoveryQuestionLogic
         extends BaseLogic {
 
-    private RecoveryQuestionLogic() {
+    protected RecoveryQuestionLogic() {
         super();
     }
 
-    private static class RecoveryQuestionLogicHolder {
-        static RecoveryQuestionLogic instance = new RecoveryQuestionLogic();
-    }
-
     public static RecoveryQuestionLogic getInstance() {
-        return RecoveryQuestionLogicHolder.instance;
+        return CDI.current().select(RecoveryQuestionLogic.class).get();
     }
     
     public RecoveryQuestion getRecoveryQuestionByName(final ExecutionErrorAccumulator eea, final String recoveryQuestionName) {

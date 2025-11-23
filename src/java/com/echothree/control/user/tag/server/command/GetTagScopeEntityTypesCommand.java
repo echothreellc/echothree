@@ -41,7 +41,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class GetTagScopeEntityTypesCommand
         extends BaseMultipleEntitiesCommand<TagScopeEntityType, GetTagScopeEntityTypesForm> {
 
@@ -113,7 +115,7 @@ public class GetTagScopeEntityTypesCommand
             if(tagScope != null) {
                 result.setTagScope(tagControl.getTagScopeTransfer(userVisit, tagScope));
             } else {
-                result.setEntityType(getEntityTypeControl().getEntityTypeTransfer(userVisit, entityType));
+                result.setEntityType(entityTypeControl.getEntityTypeTransfer(userVisit, entityType));
             }
 
             result.setTagScopeEntityTypes(tagControl.getTagScopeEntityTypeTransfers(userVisit, entities));

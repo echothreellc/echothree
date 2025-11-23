@@ -39,12 +39,14 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PaymentMethodTypeControl
         extends BasePaymentControl {
 
     /** Creates a new instance of PaymentMethodTypeControl */
-    public PaymentMethodTypeControl() {
+    protected PaymentMethodTypeControl() {
         super();
     }
 
@@ -181,16 +183,15 @@ public class PaymentMethodTypeControl
 
     public PaymentMethodTypeTransfer getPaymentMethodTypeTransfer(final UserVisit userVisit,
             final PaymentMethodType paymentMethodType) {
-        return getPaymentTransferCaches(userVisit).getPaymentMethodTypeTransferCache().getTransfer(paymentMethodType);
+        return paymentMethodTypeTransferCache.getTransfer(userVisit, paymentMethodType);
     }
 
     public List<PaymentMethodTypeTransfer> getPaymentMethodTypeTransfers(final UserVisit userVisit,
             final Collection<PaymentMethodType> paymentMethodTypes) {
         var paymentMethodTypeTransfers = new ArrayList<PaymentMethodTypeTransfer>(paymentMethodTypes.size());
-        var paymentMethodTypeTransferCache = getPaymentTransferCaches(userVisit).getPaymentMethodTypeTransferCache();
 
         paymentMethodTypes.forEach((paymentMethodType) ->
-                paymentMethodTypeTransfers.add(paymentMethodTypeTransferCache.getTransfer(paymentMethodType))
+                paymentMethodTypeTransfers.add(paymentMethodTypeTransferCache.getTransfer(userVisit, paymentMethodType))
         );
 
         return paymentMethodTypeTransfers;
@@ -394,7 +395,7 @@ public class PaymentMethodTypeControl
         String description;
 
         if(paymentMethodTypeDescription == null && !language.getIsDefault()) {
-            paymentMethodTypeDescription = getPaymentMethodTypeDescription(paymentMethodType, getPartyControl().getDefaultLanguage());
+            paymentMethodTypeDescription = getPaymentMethodTypeDescription(paymentMethodType, partyControl.getDefaultLanguage());
         }
 
         if(paymentMethodTypeDescription == null) {
@@ -408,17 +409,16 @@ public class PaymentMethodTypeControl
 
     public PaymentMethodTypeDescriptionTransfer getPaymentMethodTypeDescriptionTransfer(final UserVisit userVisit,
             final PaymentMethodTypeDescription paymentMethodTypeDescription) {
-        return getPaymentTransferCaches(userVisit).getPaymentMethodTypeDescriptionTransferCache().getTransfer(paymentMethodTypeDescription);
+        return paymentMethodTypeDescriptionTransferCache.getTransfer(userVisit, paymentMethodTypeDescription);
     }
 
     public List<PaymentMethodTypeDescriptionTransfer> getPaymentMethodTypeDescriptionTransfersByPaymentMethodType(final UserVisit userVisit,
             final PaymentMethodType paymentMethodType) {
         var paymentMethodTypeDescriptions = getPaymentMethodTypeDescriptionsByPaymentMethodType(paymentMethodType);
         var paymentMethodTypeDescriptionTransfers = new ArrayList<PaymentMethodTypeDescriptionTransfer>(paymentMethodTypeDescriptions.size());
-        var paymentMethodTypeDescriptionTransferCache = getPaymentTransferCaches(userVisit).getPaymentMethodTypeDescriptionTransferCache();
 
         paymentMethodTypeDescriptions.forEach((paymentMethodTypeDescription) ->
-                paymentMethodTypeDescriptionTransfers.add(paymentMethodTypeDescriptionTransferCache.getTransfer(paymentMethodTypeDescription))
+                paymentMethodTypeDescriptionTransfers.add(paymentMethodTypeDescriptionTransferCache.getTransfer(userVisit, paymentMethodTypeDescription))
         );
 
         return paymentMethodTypeDescriptionTransfers;

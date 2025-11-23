@@ -20,21 +20,26 @@ import com.echothree.model.control.comment.common.transfer.CommentUsageTransfer;
 import com.echothree.model.control.comment.server.control.CommentControl;
 import com.echothree.model.data.comment.server.entity.CommentUsage;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CommentUsageTransferCache
         extends BaseCommentTransferCache<CommentUsage, CommentUsageTransfer> {
-    
+
+    CommentControl commentControl = Session.getModelController(CommentControl.class);
+
     /** Creates a new instance of CommentUsageTransferCache */
-    public CommentUsageTransferCache(UserVisit userVisit, CommentControl commentControl) {
-        super(userVisit, commentControl);
+    protected CommentUsageTransferCache() {
+        super();
     }
     
-    public CommentUsageTransfer getCommentUsageTransfer(CommentUsage commentUsage) {
+    public CommentUsageTransfer getCommentUsageTransfer(UserVisit userVisit, CommentUsage commentUsage) {
         var commentUsageTransfer = get(commentUsage);
         
         if(commentUsageTransfer == null) {
             commentUsageTransfer = new CommentUsageTransfer();
-            put(commentUsage, commentUsageTransfer);
+            put(userVisit, commentUsage, commentUsageTransfer);
             
             commentUsageTransfer.setComment(commentControl.getCommentTransfer(userVisit, commentUsage.getComment()));
             commentUsageTransfer.setCommentUsageType(commentControl.getCommentUsageTypeTransfer(userVisit,

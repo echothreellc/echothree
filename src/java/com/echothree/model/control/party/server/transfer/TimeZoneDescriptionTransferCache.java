@@ -19,17 +19,19 @@ package com.echothree.model.control.party.server.transfer;
 import com.echothree.model.control.party.common.transfer.TimeZoneDescriptionTransfer;
 import com.echothree.model.data.party.server.entity.TimeZoneDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class TimeZoneDescriptionTransferCache
         extends BasePartyDescriptionTransferCache<TimeZoneDescription, TimeZoneDescriptionTransfer> {
 
     /** Creates a new instance of TimeZoneDescriptionTransferCache */
-    public TimeZoneDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected TimeZoneDescriptionTransferCache() {
+        super();
     }
 
     @Override
-    public TimeZoneDescriptionTransfer getTransfer(TimeZoneDescription timeZoneDescription) {
+    public TimeZoneDescriptionTransfer getTransfer(UserVisit userVisit, TimeZoneDescription timeZoneDescription) {
         var timeZoneDescriptionTransfer = get(timeZoneDescription);
         
         if(timeZoneDescriptionTransfer == null) {
@@ -37,7 +39,7 @@ public class TimeZoneDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, timeZoneDescription.getLanguage());
             
             timeZoneDescriptionTransfer = new TimeZoneDescriptionTransfer(languageTransfer, timeZoneTransfer, timeZoneDescription.getDescription());
-            put(timeZoneDescription, timeZoneDescriptionTransfer);
+            put(userVisit, timeZoneDescription, timeZoneDescriptionTransfer);
         }
         
         return timeZoneDescriptionTransfer;

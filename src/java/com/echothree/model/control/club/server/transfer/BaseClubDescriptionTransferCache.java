@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.club.server.transfer;
 
-import com.echothree.model.control.club.server.control.ClubControl;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.BaseTransfer;
 import com.echothree.util.server.persistence.BaseEntity;
 import com.echothree.util.server.persistence.Session;
@@ -29,8 +27,8 @@ public abstract class BaseClubDescriptionTransferCache<K extends BaseEntity, V e
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of BaseClubDescriptionTransferCache */
-    protected BaseClubDescriptionTransferCache(UserVisit userVisit, ClubControl clubControl) {
-        super(userVisit, clubControl);
+    protected BaseClubDescriptionTransferCache() {
+        super();
     }
     
 }

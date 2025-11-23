@@ -17,25 +17,27 @@
 package com.echothree.model.control.shipment.server.transfer;
 
 import com.echothree.model.control.shipment.common.transfer.ShipmentAliasTypeTransfer;
-import com.echothree.model.control.shipment.server.ShipmentControl;
+import com.echothree.model.control.shipment.server.control.ShipmentControl;
 import com.echothree.model.data.shipment.server.entity.ShipmentAliasType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ShipmentAliasTypeTransferCache
         extends BaseShipmentTransferCache<ShipmentAliasType, ShipmentAliasTypeTransfer> {
 
     ShipmentControl shipmentControl = Session.getModelController(ShipmentControl.class);
 
     /** Creates a new instance of ShipmentAliasTypeTransferCache */
-    public ShipmentAliasTypeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected ShipmentAliasTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
 
     @Override
-    public ShipmentAliasTypeTransfer getTransfer(ShipmentAliasType shipmentAliasType) {
+    public ShipmentAliasTypeTransfer getTransfer(UserVisit userVisit, ShipmentAliasType shipmentAliasType) {
         var shipmentAliasTypeTransfer = get(shipmentAliasType);
         
         if(shipmentAliasTypeTransfer == null) {
@@ -45,10 +47,10 @@ public class ShipmentAliasTypeTransferCache
             var validationPattern = shipmentAliasTypeDetail.getValidationPattern();
             var isDefault = shipmentAliasTypeDetail.getIsDefault();
             var sortOrder = shipmentAliasTypeDetail.getSortOrder();
-            var description = shipmentControl.getBestShipmentAliasTypeDescription(shipmentAliasType, getLanguage());
+            var description = shipmentControl.getBestShipmentAliasTypeDescription(shipmentAliasType, getLanguage(userVisit));
             
             shipmentAliasTypeTransfer = new ShipmentAliasTypeTransfer(shipmentType, shipmentAliasTypeName, validationPattern, isDefault, sortOrder, description);
-            put(shipmentAliasType, shipmentAliasTypeTransfer);
+            put(userVisit, shipmentAliasType, shipmentAliasTypeTransfer);
         }
         
         return shipmentAliasTypeTransfer;

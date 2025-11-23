@@ -22,21 +22,24 @@ import com.echothree.model.control.tax.server.control.TaxControl;
 import com.echothree.model.data.tax.server.entity.TaxClassification;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class TaxClassificationTransferCache
         extends BaseTaxTransferCache<TaxClassification, TaxClassificationTransfer> {
     
     GeoControl geoControl = Session.getModelController(GeoControl.class);
+    TaxControl taxControl = Session.getModelController(TaxControl.class);
     
     /** Creates a new instance of TaxClassificationTransferCache */
-    public TaxClassificationTransferCache(UserVisit userVisit, TaxControl taxControl) {
-        super(userVisit, taxControl);
+    protected TaxClassificationTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
     @Override
-    public TaxClassificationTransfer getTransfer(TaxClassification taxClassification) {
+    public TaxClassificationTransfer getTransfer(UserVisit userVisit, TaxClassification taxClassification) {
         var taxClassificationTransfer = get(taxClassification);
         
         if(taxClassificationTransfer == null) {
@@ -45,11 +48,11 @@ public class TaxClassificationTransferCache
             var taxClassificationName = taxClassificationDetail.getTaxClassificationName();
             var isDefault = taxClassificationDetail.getIsDefault();
             var sortOrder = taxClassificationDetail.getSortOrder();
-            var taxClassificationTranslation = taxControl.getBestTaxClassificationTranslation(taxClassification, getLanguage());
+            var taxClassificationTranslation = taxControl.getBestTaxClassificationTranslation(taxClassification, getLanguage(userVisit));
             var description = taxClassificationTranslation == null ? taxClassificationName : taxClassificationTranslation.getDescription();
             
             taxClassificationTransfer = new TaxClassificationTransfer(countryTransfer, taxClassificationName, isDefault, sortOrder, description);
-            put(taxClassification, taxClassificationTransfer);
+            put(userVisit, taxClassification, taxClassificationTransfer);
         }
         
         return taxClassificationTransfer;

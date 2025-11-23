@@ -20,18 +20,23 @@ import com.echothree.model.control.document.common.transfer.DocumentTypeUsageTyp
 import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.data.document.server.entity.DocumentTypeUsageType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class DocumentTypeUsageTypeTransferCache
         extends BaseDocumentTransferCache<DocumentTypeUsageType, DocumentTypeUsageTypeTransfer> {
-    
+
+    DocumentControl documentControl = Session.getModelController(DocumentControl.class);
+
     /** Creates a new instance of DocumentTypeUsageTypeTransferCache */
-    public DocumentTypeUsageTypeTransferCache(UserVisit userVisit, DocumentControl documentControl) {
-        super(userVisit, documentControl);
+    protected DocumentTypeUsageTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public DocumentTypeUsageTypeTransfer getDocumentTypeUsageTypeTransfer(DocumentTypeUsageType documentTypeUsageType) {
+    public DocumentTypeUsageTypeTransfer getDocumentTypeUsageTypeTransfer(UserVisit userVisit, DocumentTypeUsageType documentTypeUsageType) {
         var documentTypeUsageTypeTransfer = get(documentTypeUsageType);
         
         if(documentTypeUsageTypeTransfer == null) {
@@ -39,10 +44,10 @@ public class DocumentTypeUsageTypeTransferCache
             var documentTypeUsageTypeName = documentTypeUsageTypeDetail.getDocumentTypeUsageTypeName();
             var isDefault = documentTypeUsageTypeDetail.getIsDefault();
             var sortOrder = documentTypeUsageTypeDetail.getSortOrder();
-            var description = documentControl.getBestDocumentTypeUsageTypeDescription(documentTypeUsageType, getLanguage());
+            var description = documentControl.getBestDocumentTypeUsageTypeDescription(documentTypeUsageType, getLanguage(userVisit));
             
             documentTypeUsageTypeTransfer = new DocumentTypeUsageTypeTransfer(documentTypeUsageTypeName, isDefault, sortOrder, description);
-            put(documentTypeUsageType, documentTypeUsageTypeTransfer);
+            put(userVisit, documentTypeUsageType, documentTypeUsageTypeTransfer);
         }
         return documentTypeUsageTypeTransfer;
     }

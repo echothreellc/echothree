@@ -22,7 +22,9 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.order.server.entity.OrderRole;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class OrderRoleTransferCache
         extends BaseOrderTransferCache<OrderRole, OrderRoleTransfer> {
 
@@ -30,13 +32,13 @@ public class OrderRoleTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
 
     /** Creates a new instance of OrderRoleTransferCache */
-    public OrderRoleTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected OrderRoleTransferCache() {
+        super();
 
         setIncludeEntityInstance(true);
     }
     
-    public OrderRoleTransfer getOrderRoleTransfer(OrderRole orderRole) {
+    public OrderRoleTransfer getOrderRoleTransfer(UserVisit userVisit, OrderRole orderRole) {
         var orderRoleTransfer = get(orderRole);
         
         if(orderRoleTransfer == null) {
@@ -44,7 +46,7 @@ public class OrderRoleTransferCache
             var orderRoleType = orderRoleControl.getOrderRoleTypeTransfer(userVisit, orderRole.getOrderRoleType());
 
             orderRoleTransfer = new OrderRoleTransfer(party, orderRoleType);
-            put(orderRole, orderRoleTransfer);
+            put(userVisit, orderRole, orderRoleTransfer);
         }
         
         return orderRoleTransfer;

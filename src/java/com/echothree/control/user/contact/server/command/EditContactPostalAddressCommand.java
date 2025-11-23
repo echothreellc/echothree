@@ -48,7 +48,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import org.apache.commons.codec.language.Soundex;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EditContactPostalAddressCommand
         extends BaseAbstractEditCommand<PartyContactMechanismSpec, ContactPostalAddressEdit, EditContactPostalAddressResult, PartyContactMechanism, ContactMechanism> {
     

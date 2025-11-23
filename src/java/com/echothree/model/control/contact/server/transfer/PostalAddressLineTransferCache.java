@@ -22,15 +22,20 @@ import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.data.contact.server.entity.PostalAddressLine;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PostalAddressLineTransferCache
         extends BaseContactTransferCache<PostalAddressLine, PostalAddressLineTransfer> {
-    
+
+    ContactControl contactControl = Session.getModelController(ContactControl.class);
+
     boolean includeElements;
     
     /** Creates a new instance of PostalAddressLineTransferCache */
-    public PostalAddressLineTransferCache(UserVisit userVisit, ContactControl contactControl) {
-        super(userVisit, contactControl);
+    protected PostalAddressLineTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {
@@ -38,7 +43,7 @@ public class PostalAddressLineTransferCache
         }
     }
     
-    public PostalAddressLineTransfer getPostalAddressLineTransfer(PostalAddressLine postalAddressLine) {
+    public PostalAddressLineTransfer getPostalAddressLineTransfer(UserVisit userVisit, PostalAddressLine postalAddressLine) {
         var postalAddressLineTransfer = get(postalAddressLine);
         
         if(postalAddressLineTransfer == null) {
@@ -53,7 +58,7 @@ public class PostalAddressLineTransferCache
             
             postalAddressLineTransfer = new PostalAddressLineTransfer(postalAddressFormat, postalAddressLineSortOrder, prefix,
                     alwaysIncludePrefix, suffix, alwaysIncludeSuffix, collapseIfEmpty);
-            put(postalAddressLine, postalAddressLineTransfer);
+            put(userVisit, postalAddressLine, postalAddressLineTransfer);
             
             if(includeElements) {
                 postalAddressLineTransfer.setPostalAddressLineElements(new ListWrapper<>(contactControl.getPostalAddressLineElementTransfersByPostalAddressLine(userVisit, postalAddressLine)));

@@ -22,25 +22,28 @@ import com.echothree.model.control.rating.server.control.RatingControl;
 import com.echothree.model.data.rating.server.entity.Rating;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class RatingTransferCache
         extends BaseRatingTransferCache<Rating, RatingTransfer> {
 
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-    
+    RatingControl ratingControl = Session.getModelController(RatingControl.class);
+
     /** Creates a new instance of RatingTransferCache */
-    public RatingTransferCache(UserVisit userVisit, RatingControl ratingControl) {
-        super(userVisit, ratingControl);
+    protected RatingTransferCache() {
+        super();
     }
     
-    public RatingTransfer getRatingTransfer(Rating rating) {
+    public RatingTransfer getRatingTransfer(UserVisit userVisit, Rating rating) {
         var ratingTransfer = get(rating);
         
         if(ratingTransfer == null) {
             var ratingDetail = rating.getLastDetail();
             
             ratingTransfer = new RatingTransfer();
-            put(rating, ratingTransfer);
+            put(userVisit, rating, ratingTransfer);
             
             ratingTransfer.setRatingName(ratingDetail.getRatingName());
             ratingTransfer.setRatingTypeListItem(ratingControl.getRatingTypeListItemTransfer(userVisit, ratingDetail.getRatingTypeListItem()));

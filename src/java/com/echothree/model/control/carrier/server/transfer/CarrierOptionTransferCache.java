@@ -22,20 +22,23 @@ import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.carrier.server.entity.CarrierOption;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CarrierOptionTransferCache
         extends BaseCarrierTransferCache<CarrierOption, CarrierOptionTransfer> {
 
+    CarrierControl carrierControl = Session.getModelController(CarrierControl.class);
     SelectorControl selectorControl = Session.getModelController(SelectorControl.class);
 
     /** Creates a new instance of CarrierOptionTransferCache */
-    public CarrierOptionTransferCache(UserVisit userVisit, CarrierControl carrierControl) {
-        super(userVisit, carrierControl);
+    protected CarrierOptionTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public CarrierOptionTransfer getCarrierOptionTransfer(CarrierOption carrierOption) {
+    public CarrierOptionTransfer getCarrierOptionTransfer(UserVisit userVisit, CarrierOption carrierOption) {
         var carrierOptionTransfer = get(carrierOption);
         
         if(carrierOptionTransfer == null) {
@@ -62,12 +65,12 @@ public class CarrierOptionTransferCache
             var requiredShipmentSelectorTransfer = requiredShipmentSelector == null? null: selectorControl.getSelectorTransfer(userVisit, requiredShipmentSelector);
             var isDefault = carrierOptionDetail.getIsDefault();
             var sortOrder = carrierOptionDetail.getSortOrder();
-            var description = carrierControl.getBestCarrierOptionDescription(carrierOption, getLanguage());
+            var description = carrierControl.getBestCarrierOptionDescription(carrierOption, getLanguage(userVisit));
             
             carrierOptionTransfer = new CarrierOptionTransfer(carrier, carrierOptionName, isRecommended, isRequired, recommendedGeoCodeSelectorTransfer,
                     requiredGeoCodeSelectorTransfer, recommendedItemSelectorTransfer, requiredItemSelectorTransfer, recommendedOrderSelectorTransfer,
                     requiredOrderSelectorTransfer, recommendedShipmentSelectorTransfer, requiredShipmentSelectorTransfer, isDefault, sortOrder, description);
-            put(carrierOption, carrierOptionTransfer);
+            put(userVisit, carrierOption, carrierOptionTransfer);
         }
         
         return carrierOptionTransfer;

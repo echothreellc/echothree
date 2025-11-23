@@ -20,26 +20,31 @@ import com.echothree.model.control.forum.common.transfer.ForumRoleTypeTransfer;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.data.forum.server.entity.ForumRoleType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ForumRoleTypeTransferCache
         extends BaseForumTransferCache<ForumRoleType, ForumRoleTypeTransfer> {
-    
+
+    ForumControl forumControl = Session.getModelController(ForumControl.class);
+
     /** Creates a new instance of ForumRoleTypeTransferCache */
-    public ForumRoleTypeTransferCache(UserVisit userVisit, ForumControl forumControl) {
-        super(userVisit, forumControl);
+    protected ForumRoleTypeTransferCache() {
+        super();
     }
     
-    public ForumRoleTypeTransfer getForumRoleTypeTransfer(ForumRoleType forumRoleType) {
+    public ForumRoleTypeTransfer getForumRoleTypeTransfer(UserVisit userVisit, ForumRoleType forumRoleType) {
         var forumRoleTypeTransfer = get(forumRoleType);
         
         if(forumRoleTypeTransfer == null) {
             var forumRoleTypeName = forumRoleType.getForumRoleTypeName();
             var isDefault = forumRoleType.getIsDefault();
             var sortOrder = forumRoleType.getSortOrder();
-            var description = forumControl.getBestForumRoleTypeDescription(forumRoleType, getLanguage());
+            var description = forumControl.getBestForumRoleTypeDescription(forumRoleType, getLanguage(userVisit));
             
             forumRoleTypeTransfer = new ForumRoleTypeTransfer(forumRoleTypeName, isDefault, sortOrder, description);
-            put(forumRoleType, forumRoleTypeTransfer);
+            put(userVisit, forumRoleType, forumRoleTypeTransfer);
         }
         
         return forumRoleTypeTransfer;

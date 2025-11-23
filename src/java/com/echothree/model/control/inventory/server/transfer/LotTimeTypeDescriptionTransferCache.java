@@ -17,24 +17,25 @@
 package com.echothree.model.control.inventory.server.transfer;
 
 import com.echothree.model.control.inventory.common.transfer.LotTimeTypeDescriptionTransfer;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.inventory.server.control.LotTimeControl;
 import com.echothree.model.data.inventory.server.entity.LotTimeTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class LotTimeTypeDescriptionTransferCache
         extends BaseInventoryDescriptionTransferCache<LotTimeTypeDescription, LotTimeTypeDescriptionTransfer> {
 
     LotTimeControl lotTimeControl = Session.getModelController(LotTimeControl.class);
 
     /** Creates a new instance of LotTimeTypeDescriptionTransferCache */
-    public LotTimeTypeDescriptionTransferCache(UserVisit userVisit, InventoryControl inventoryControl) {
-        super(userVisit, inventoryControl);
+    protected LotTimeTypeDescriptionTransferCache() {
+        super();
     }
     
     @Override
-    public LotTimeTypeDescriptionTransfer getTransfer(LotTimeTypeDescription lotTimeTypeDescription) {
+    public LotTimeTypeDescriptionTransfer getTransfer(UserVisit userVisit, LotTimeTypeDescription lotTimeTypeDescription) {
         var lotTimeTypeDescriptionTransfer = get(lotTimeTypeDescription);
         
         if(lotTimeTypeDescriptionTransfer == null) {
@@ -42,7 +43,7 @@ public class LotTimeTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, lotTimeTypeDescription.getLanguage());
             
             lotTimeTypeDescriptionTransfer = new LotTimeTypeDescriptionTransfer(languageTransfer, lotTimeTypeTransfer, lotTimeTypeDescription.getDescription());
-            put(lotTimeTypeDescription, lotTimeTypeDescriptionTransfer);
+            put(userVisit, lotTimeTypeDescription, lotTimeTypeDescriptionTransfer);
         }
         
         return lotTimeTypeDescriptionTransfer;

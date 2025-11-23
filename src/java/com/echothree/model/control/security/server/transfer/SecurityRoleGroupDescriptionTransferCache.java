@@ -20,25 +20,29 @@ import com.echothree.model.control.security.common.transfer.SecurityRoleGroupDes
 import com.echothree.model.control.security.server.control.SecurityControl;
 import com.echothree.model.data.security.server.entity.SecurityRoleGroupDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class SecurityRoleGroupDescriptionTransferCache
         extends BaseSecurityDescriptionTransferCache<SecurityRoleGroupDescription, SecurityRoleGroupDescriptionTransfer> {
-    
+
+    SecurityControl securityControl = Session.getModelController(SecurityControl.class);
+
     /** Creates a new instance of SecurityRoleGroupDescriptionTransferCache */
-    public SecurityRoleGroupDescriptionTransferCache(UserVisit userVisit, SecurityControl securityControl) {
-        super(userVisit, securityControl);
+    protected SecurityRoleGroupDescriptionTransferCache() {
+        super();
     }
     
-    public SecurityRoleGroupDescriptionTransfer getSecurityRoleGroupDescriptionTransfer(SecurityRoleGroupDescription securityRoleGroupDescription) {
+    public SecurityRoleGroupDescriptionTransfer getSecurityRoleGroupDescriptionTransfer(UserVisit userVisit, SecurityRoleGroupDescription securityRoleGroupDescription) {
         var securityRoleGroupDescriptionTransfer = get(securityRoleGroupDescription);
         
         if(securityRoleGroupDescriptionTransfer == null) {
-            var securityRoleGroupTransferCache = securityControl.getSecurityTransferCaches(userVisit).getSecurityRoleGroupTransferCache();
-            var securityRoleGroupTransfer = securityRoleGroupTransferCache.getSecurityRoleGroupTransfer(securityRoleGroupDescription.getSecurityRoleGroup());
+            var securityRoleGroupTransfer = securityControl.getSecurityRoleGroupTransfer(userVisit, securityRoleGroupDescription.getSecurityRoleGroup());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, securityRoleGroupDescription.getLanguage());
             
             securityRoleGroupDescriptionTransfer = new SecurityRoleGroupDescriptionTransfer(languageTransfer, securityRoleGroupTransfer, securityRoleGroupDescription.getDescription());
-            put(securityRoleGroupDescription, securityRoleGroupDescriptionTransfer);
+            put(userVisit, securityRoleGroupDescription, securityRoleGroupDescriptionTransfer);
         }
         
         return securityRoleGroupDescriptionTransfer;

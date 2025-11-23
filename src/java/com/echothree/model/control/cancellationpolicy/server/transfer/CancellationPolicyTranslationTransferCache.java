@@ -22,18 +22,21 @@ import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicyTranslation;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CancellationPolicyTranslationTransferCache
         extends BaseCancellationPolicyDescriptionTransferCache<CancellationPolicyTranslation, CancellationPolicyTranslationTransfer> {
 
+    CancellationPolicyControl cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
     
     /** Creates a new instance of CancellationPolicyTranslationTransferCache */
-    public CancellationPolicyTranslationTransferCache(UserVisit userVisit, CancellationPolicyControl cancellationPolicyControl) {
-        super(userVisit, cancellationPolicyControl);
+    protected CancellationPolicyTranslationTransferCache() {
+        super();
     }
     
-    public CancellationPolicyTranslationTransfer getCancellationPolicyTranslationTransfer(CancellationPolicyTranslation cancellationPolicyTranslation) {
+    public CancellationPolicyTranslationTransfer getCancellationPolicyTranslationTransfer(UserVisit userVisit, CancellationPolicyTranslation cancellationPolicyTranslation) {
         var cancellationPolicyTranslationTransfer = get(cancellationPolicyTranslation);
         
         if(cancellationPolicyTranslationTransfer == null) {
@@ -46,7 +49,7 @@ public class CancellationPolicyTranslationTransferCache
             
             cancellationPolicyTranslationTransfer = new CancellationPolicyTranslationTransfer(cancellationPolicyTransfer, languageTransfer, description,
                     policyMimeTypeTransfer, policy);
-            put(cancellationPolicyTranslation, cancellationPolicyTranslationTransfer);
+            put(userVisit, cancellationPolicyTranslation, cancellationPolicyTranslationTransfer);
         }
         
         return cancellationPolicyTranslationTransfer;

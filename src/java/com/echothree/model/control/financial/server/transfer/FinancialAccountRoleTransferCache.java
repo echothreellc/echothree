@@ -22,20 +22,21 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.financial.server.entity.FinancialAccountRole;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class FinancialAccountRoleTransferCache
         extends BaseFinancialTransferCache<FinancialAccountRole, FinancialAccountRoleTransfer> {
 
-    PartyControl partyControl;
+    FinancialControl financialControl = Session.getModelController(FinancialControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
 
     /** Creates a new instance of FinancialAccountRoleTransferCache */
-    public FinancialAccountRoleTransferCache(UserVisit userVisit, FinancialControl financialControl) {
-        super(userVisit, financialControl);
-
-        partyControl = Session.getModelController(PartyControl.class);
+    protected FinancialAccountRoleTransferCache() {
+        super();
     }
 
-    public FinancialAccountRoleTransfer getFinancialAccountRoleTransfer(FinancialAccountRole financialAccountRole) {
+    public FinancialAccountRoleTransfer getFinancialAccountRoleTransfer(UserVisit userVisit, FinancialAccountRole financialAccountRole) {
         var financialAccountRoleTransfer = get(financialAccountRole);
 
         if(financialAccountRoleTransfer == null) {
@@ -44,7 +45,7 @@ public class FinancialAccountRoleTransferCache
             var financialAccountRoleType = financialControl.getFinancialAccountRoleTypeTransfer(userVisit, financialAccountRole.getFinancialAccountRoleType());
 
             financialAccountRoleTransfer = new FinancialAccountRoleTransfer(financialAccount, party, financialAccountRoleType);
-            put(financialAccountRole, financialAccountRoleTransfer);
+            put(userVisit, financialAccountRole, financialAccountRoleTransfer);
         }
 
         return financialAccountRoleTransfer;

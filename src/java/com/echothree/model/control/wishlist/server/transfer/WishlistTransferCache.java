@@ -24,22 +24,25 @@ import com.echothree.model.control.wishlist.server.control.WishlistControl;
 import com.echothree.model.data.order.server.entity.Order;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class WishlistTransferCache
         extends BaseWishlistTransferCache<Order, WishlistTransfer> {
     
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
     OfferUseControl offerUseControl = Session.getModelController(OfferUseControl.class);
     OrderTypeControl orderTypeControl = Session.getModelController(OrderTypeControl.class);
-    
+    WishlistControl wishlistControl = Session.getModelController(WishlistControl.class);
+
     /** Creates a new instance of WishlistTransferCache */
-    public WishlistTransferCache(UserVisit userVisit, WishlistControl wishlistControl) {
-        super(userVisit, wishlistControl);
+    protected WishlistTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public WishlistTransfer getWishlistTransfer(Order order) {
+    public WishlistTransfer getWishlistTransfer(UserVisit userVisit, Order order) {
         var wishlistTransfer = get(order);
         
         if(wishlistTransfer == null) {
@@ -52,7 +55,7 @@ public class WishlistTransferCache
             var wishlistType = wishlistControl.getWishlistTypeTransfer(userVisit, wishlist.getWishlistType());
             
             wishlistTransfer = new WishlistTransfer(orderType, orderName, currency, offerUse, wishlistType);
-            put(order, wishlistTransfer);
+            put(userVisit, order, wishlistTransfer);
         }
         
         return wishlistTransfer;

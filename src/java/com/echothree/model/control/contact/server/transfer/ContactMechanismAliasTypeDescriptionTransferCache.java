@@ -20,16 +20,21 @@ import com.echothree.model.control.contact.common.transfer.ContactMechanismAlias
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.data.contact.server.entity.ContactMechanismAliasTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ContactMechanismAliasTypeDescriptionTransferCache
         extends BaseContactDescriptionTransferCache<ContactMechanismAliasTypeDescription, ContactMechanismAliasTypeDescriptionTransfer> {
-    
+
+    ContactControl contactControl = Session.getModelController(ContactControl.class);
+
     /** Creates a new instance of ContactMechanismAliasTypeDescriptionTransferCache */
-    public ContactMechanismAliasTypeDescriptionTransferCache(UserVisit userVisit, ContactControl contactControl) {
-        super(userVisit, contactControl);
+    protected ContactMechanismAliasTypeDescriptionTransferCache() {
+        super();
     }
     
-    public ContactMechanismAliasTypeDescriptionTransfer getContactMechanismAliasTypeDescriptionTransfer(ContactMechanismAliasTypeDescription contactMechanismAliasTypeDescription) {
+    public ContactMechanismAliasTypeDescriptionTransfer getContactMechanismAliasTypeDescriptionTransfer(UserVisit userVisit, ContactMechanismAliasTypeDescription contactMechanismAliasTypeDescription) {
         var contactMechanismAliasTypeDescriptionTransfer = get(contactMechanismAliasTypeDescription);
         
         if(contactMechanismAliasTypeDescriptionTransfer == null) {
@@ -37,7 +42,7 @@ public class ContactMechanismAliasTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, contactMechanismAliasTypeDescription.getLanguage());
             
             contactMechanismAliasTypeDescriptionTransfer = new ContactMechanismAliasTypeDescriptionTransfer(languageTransfer, contactMechanismAliasTypeTransfer, contactMechanismAliasTypeDescription.getDescription());
-            put(contactMechanismAliasTypeDescription, contactMechanismAliasTypeDescriptionTransfer);
+            put(userVisit, contactMechanismAliasTypeDescription, contactMechanismAliasTypeDescriptionTransfer);
         }
         
         return contactMechanismAliasTypeDescriptionTransfer;

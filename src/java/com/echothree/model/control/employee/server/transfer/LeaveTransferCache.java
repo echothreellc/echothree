@@ -29,10 +29,13 @@ import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.UnitOfMeasureUtils;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class LeaveTransferCache
         extends BaseEmployeeTransferCache<Leave, LeaveTransfer> {
-    
+
+    EmployeeControl employeeControl = Session.getModelController(EmployeeControl.class);
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     UomControl uomControl = Session.getModelController(UomControl.class);
@@ -42,8 +45,8 @@ public class LeaveTransferCache
     UnitOfMeasureUtils unitOfMeasureUtils;
 
     /** Creates a new instance of LeaveTransferCache */
-    public LeaveTransferCache(UserVisit userVisit, EmployeeControl employeeControl) {
-        super(userVisit, employeeControl);
+    protected LeaveTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
         
@@ -51,7 +54,7 @@ public class LeaveTransferCache
         unitOfMeasureUtils = UnitOfMeasureUtils.getInstance();
     }
     
-    public LeaveTransfer getLeaveTransfer(Leave leave) {
+    public LeaveTransfer getLeaveTransfer(UserVisit userVisit, Leave leave) {
         var leaveTransfer = get(leave);
         
         if(leaveTransfer == null) {
@@ -64,9 +67,9 @@ public class LeaveTransferCache
             var leaveReason = leaveDetail.getLeaveReason();
             var leaveReasonTransfer = leaveReason == null ? null : employeeControl.getLeaveReasonTransfer(userVisit, leaveReason);
             var unformattedStartTime = leaveDetail.getStartTime();
-            var startTime = formatTypicalDateTime(unformattedStartTime);
+            var startTime = formatTypicalDateTime(userVisit, unformattedStartTime);
             var unformattedEndTime = leaveDetail.getEndTime();
-            var endTime = formatTypicalDateTime(unformattedEndTime);
+            var endTime = formatTypicalDateTime(userVisit, unformattedEndTime);
             var unformattedTotalTime = leaveDetail.getTotalTime();
             var totalTime = unformattedTotalTime == null ? null : unitOfMeasureUtils.formatUnitOfMeasure(userVisit, timeUnitOfMeasureKind, unformattedTotalTime);
 
@@ -76,7 +79,7 @@ public class LeaveTransferCache
 
             leaveTransfer = new LeaveTransfer(leaveName, partyTransfer, companyTransfer, leaveTypeTransfer, leaveReasonTransfer, unformattedStartTime,
                     startTime, unformattedEndTime, endTime, unformattedTotalTime, totalTime, leaveStatus);
-            put(leave, leaveTransfer);
+            put(userVisit, leave, leaveTransfer);
         }
         
         return leaveTransfer;

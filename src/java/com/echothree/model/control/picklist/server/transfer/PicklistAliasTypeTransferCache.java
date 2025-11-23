@@ -20,18 +20,23 @@ import com.echothree.model.control.picklist.common.transfer.PicklistAliasTypeTra
 import com.echothree.model.control.picklist.server.control.PicklistControl;
 import com.echothree.model.data.picklist.server.entity.PicklistAliasType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PicklistAliasTypeTransferCache
         extends BasePicklistTransferCache<PicklistAliasType, PicklistAliasTypeTransfer> {
-    
+
+    PicklistControl picklistControl = Session.getModelController(PicklistControl.class);
+
     /** Creates a new instance of PicklistAliasTypeTransferCache */
-    public PicklistAliasTypeTransferCache(UserVisit userVisit, PicklistControl picklistControl) {
-        super(userVisit, picklistControl);
+    protected PicklistAliasTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public PicklistAliasTypeTransfer getPicklistAliasTypeTransfer(PicklistAliasType picklistAliasType) {
+    public PicklistAliasTypeTransfer getPicklistAliasTypeTransfer(UserVisit userVisit, PicklistAliasType picklistAliasType) {
         var picklistAliasTypeTransfer = get(picklistAliasType);
         
         if(picklistAliasTypeTransfer == null) {
@@ -41,10 +46,10 @@ public class PicklistAliasTypeTransferCache
             var validationPattern = picklistAliasTypeDetail.getValidationPattern();
             var isDefault = picklistAliasTypeDetail.getIsDefault();
             var sortOrder = picklistAliasTypeDetail.getSortOrder();
-            var description = picklistControl.getBestPicklistAliasTypeDescription(picklistAliasType, getLanguage());
+            var description = picklistControl.getBestPicklistAliasTypeDescription(picklistAliasType, getLanguage(userVisit));
             
             picklistAliasTypeTransfer = new PicklistAliasTypeTransfer(picklistType, picklistAliasTypeName, validationPattern, isDefault, sortOrder, description);
-            put(picklistAliasType, picklistAliasTypeTransfer);
+            put(userVisit, picklistAliasType, picklistAliasTypeTransfer);
         }
         
         return picklistAliasTypeTransfer;

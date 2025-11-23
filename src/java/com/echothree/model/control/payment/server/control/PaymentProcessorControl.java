@@ -41,12 +41,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PaymentProcessorControl
         extends BasePaymentControl {
 
     /** Creates a new instance of PaymentProcessorControl */
-    public PaymentProcessorControl() {
+    protected PaymentProcessorControl() {
         super();
     }
 
@@ -235,15 +237,14 @@ public class PaymentProcessorControl
     }
     
     public PaymentProcessorTransfer getPaymentProcessorTransfer(UserVisit userVisit, PaymentProcessor paymentProcessor) {
-        return getPaymentTransferCaches(userVisit).getPaymentProcessorTransferCache().getTransfer(paymentProcessor);
+        return paymentProcessorTransferCache.getTransfer(userVisit, paymentProcessor);
     }
 
     public List<PaymentProcessorTransfer> getPaymentProcessorTransfers(UserVisit userVisit, Collection<PaymentProcessor> paymentProcessors) {
         List<PaymentProcessorTransfer> paymentProcessorTransfers = new ArrayList<>(paymentProcessors.size());
-        var paymentProcessorTransferCache = getPaymentTransferCaches(userVisit).getPaymentProcessorTransferCache();
 
         paymentProcessors.forEach((paymentProcessor) ->
-                paymentProcessorTransfers.add(paymentProcessorTransferCache.getTransfer(paymentProcessor))
+                paymentProcessorTransfers.add(paymentProcessorTransferCache.getTransfer(userVisit, paymentProcessor))
         );
 
         return paymentProcessorTransfers;
@@ -442,7 +443,7 @@ public class PaymentProcessorControl
         var paymentProcessorDescription = getPaymentProcessorDescription(paymentProcessor, language);
         
         if(paymentProcessorDescription == null && !language.getIsDefault()) {
-            paymentProcessorDescription = getPaymentProcessorDescription(paymentProcessor, getPartyControl().getDefaultLanguage());
+            paymentProcessorDescription = getPaymentProcessorDescription(paymentProcessor, partyControl.getDefaultLanguage());
         }
         
         if(paymentProcessorDescription == null) {
@@ -455,16 +456,15 @@ public class PaymentProcessorControl
     }
     
     public PaymentProcessorDescriptionTransfer getPaymentProcessorDescriptionTransfer(UserVisit userVisit, PaymentProcessorDescription paymentProcessorDescription) {
-        return getPaymentTransferCaches(userVisit).getPaymentProcessorDescriptionTransferCache().getTransfer(paymentProcessorDescription);
+        return paymentProcessorDescriptionTransferCache.getTransfer(userVisit, paymentProcessorDescription);
     }
     
     public List<PaymentProcessorDescriptionTransfer> getPaymentProcessorDescriptionTransfers(UserVisit userVisit, PaymentProcessor paymentProcessor) {
         var paymentProcessorDescriptions = getPaymentProcessorDescriptions(paymentProcessor);
         List<PaymentProcessorDescriptionTransfer> paymentProcessorDescriptionTransfers = new ArrayList<>(paymentProcessorDescriptions.size());
-        var paymentProcessorDescriptionTransferCache = getPaymentTransferCaches(userVisit).getPaymentProcessorDescriptionTransferCache();
         
         paymentProcessorDescriptions.forEach((paymentProcessorDescription) ->
-                paymentProcessorDescriptionTransfers.add(paymentProcessorDescriptionTransferCache.getTransfer(paymentProcessorDescription))
+                paymentProcessorDescriptionTransfers.add(paymentProcessorDescriptionTransferCache.getTransfer(userVisit, paymentProcessorDescription))
         );
         
         return paymentProcessorDescriptionTransfers;

@@ -23,19 +23,22 @@ import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.item.server.entity.ItemWeight;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ItemWeightTransferCache
         extends BaseItemTransferCache<ItemWeight, ItemWeightTransfer> {
-    
+
+    ItemControl itemControl = Session.getModelController(ItemControl.class);
     UomControl uomControl = Session.getModelController(UomControl.class);
     
     /** Creates a new instance of ItemWeightTransferCache */
-    public ItemWeightTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    protected ItemWeightTransferCache() {
+        super();
     }
     
     @Override
-    public ItemWeightTransfer getTransfer(ItemWeight itemWeight) {
+    public ItemWeightTransfer getTransfer(UserVisit userVisit, ItemWeight itemWeight) {
         var itemWeightTransfer = get(itemWeight);
         
         if(itemWeightTransfer == null) {
@@ -43,10 +46,10 @@ public class ItemWeightTransferCache
             var unitOfMeasureTypeTransfer = uomControl.getUnitOfMeasureTypeTransfer(userVisit, itemWeight.getUnitOfMeasureType());
             var itemWeightType = itemControl.getItemWeightTypeTransfer(userVisit, itemWeight.getItemWeightType());
             var weightUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_WEIGHT);
-            var weight = formatUnitOfMeasure(weightUnitOfMeasureKind, itemWeight.getWeight());
+            var weight = formatUnitOfMeasure(userVisit, weightUnitOfMeasureKind, itemWeight.getWeight());
             
             itemWeightTransfer = new ItemWeightTransfer(itemTransfer, unitOfMeasureTypeTransfer, itemWeightType, weight);
-            put(itemWeight, itemWeightTransfer);
+            put(userVisit, itemWeight, itemWeightTransfer);
         }
         
         return itemWeightTransfer;

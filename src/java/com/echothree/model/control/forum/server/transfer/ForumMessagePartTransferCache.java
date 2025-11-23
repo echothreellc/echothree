@@ -27,19 +27,23 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.persistence.type.ByteArray;
 import com.echothree.util.common.string.StringUtils;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ForumMessagePartTransferCache
         extends BaseForumTransferCache<ForumMessagePart, ForumMessagePartTransfer> {
 
+    ForumControl forumControl = Session.getModelController(ForumControl.class);
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
+
     boolean includeBlob;
     boolean includeClob;
     boolean includeString;
     
     /** Creates a new instance of ForumMessagePartTransferCache */
-    public ForumMessagePartTransferCache(UserVisit userVisit, ForumControl forumControl) {
-        super(userVisit, forumControl);
+    protected ForumMessagePartTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {
@@ -49,7 +53,7 @@ public class ForumMessagePartTransferCache
         }
     }
     
-    public ForumMessagePartTransfer getForumMessagePartTransfer(ForumMessagePart forumMessagePart) {
+    public ForumMessagePartTransfer getForumMessagePartTransfer(UserVisit userVisit, ForumMessagePart forumMessagePart) {
         var forumMessagePartTransfer = get(forumMessagePart);
         
         if(forumMessagePartTransfer == null) {
@@ -101,7 +105,7 @@ public class ForumMessagePartTransferCache
             
             forumMessagePartTransfer = new ForumMessagePartTransfer(forumMessageTransfer, forumMessagePartTypeTransfer,
                     languageTransfer, mimeTypeTransfer, blobMessagePart, clobMessagePart, stringMessagePart);
-            put(forumMessagePart, forumMessagePartTransfer);
+            put(userVisit, forumMessagePart, forumMessagePartTransfer);
         }
         
         return forumMessagePartTransfer;

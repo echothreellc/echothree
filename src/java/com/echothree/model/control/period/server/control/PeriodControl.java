@@ -28,7 +28,12 @@ import com.echothree.model.control.period.common.transfer.PeriodKindTransfer;
 import com.echothree.model.control.period.common.transfer.PeriodTransfer;
 import com.echothree.model.control.period.common.transfer.PeriodTypeDescriptionTransfer;
 import com.echothree.model.control.period.common.transfer.PeriodTypeTransfer;
-import com.echothree.model.control.period.server.transfer.PeriodTransferCaches;
+import com.echothree.model.control.period.server.transfer.PeriodDescriptionTransferCache;
+import com.echothree.model.control.period.server.transfer.PeriodKindDescriptionTransferCache;
+import com.echothree.model.control.period.server.transfer.PeriodKindTransferCache;
+import com.echothree.model.control.period.server.transfer.PeriodTransferCache;
+import com.echothree.model.control.period.server.transfer.PeriodTypeDescriptionTransferCache;
+import com.echothree.model.control.period.server.transfer.PeriodTypeTransferCache;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.period.server.entity.Period;
@@ -67,29 +72,40 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
+@RequestScoped
 public class PeriodControl
         extends BaseModelControl {
     
     /** Creates a new instance of PeriodControl */
-    public PeriodControl() {
+    protected PeriodControl() {
         super();
     }
     
     // --------------------------------------------------------------------------------
     //   Period Transfer Caches
     // --------------------------------------------------------------------------------
-    
-    private PeriodTransferCaches periodTransferCaches;
-    
-    public PeriodTransferCaches getPeriodTransferCaches(UserVisit userVisit) {
-        if(periodTransferCaches == null) {
-            periodTransferCaches = new PeriodTransferCaches(userVisit, this);
-        }
-        
-        return periodTransferCaches;
-    }
-    
+
+    @Inject
+    PeriodKindTransferCache periodKindTransferCache;
+
+    @Inject
+    PeriodKindDescriptionTransferCache periodKindDescriptionTransferCache;
+
+    @Inject
+    PeriodTypeTransferCache periodTypeTransferCache;
+
+    @Inject
+    PeriodTypeDescriptionTransferCache periodTypeDescriptionTransferCache;
+
+    @Inject
+    PeriodTransferCache periodTransferCache;
+
+    @Inject
+    PeriodDescriptionTransferCache periodDescriptionTransferCache;
+
     // --------------------------------------------------------------------------------
     //   Period Kinds
     // --------------------------------------------------------------------------------
@@ -262,16 +278,15 @@ public class PeriodControl
     }
     
     public PeriodKindTransfer getPeriodKindTransfer(UserVisit userVisit, PeriodKind periodKind) {
-        return getPeriodTransferCaches(userVisit).getPeriodKindTransferCache().getPeriodKindTransfer(periodKind);
+        return periodKindTransferCache.getPeriodKindTransfer(userVisit, periodKind);
     }
     
     public List<PeriodKindTransfer> getPeriodKindTransfers(UserVisit userVisit) {
         var periodKinds = getPeriodKinds();
         List<PeriodKindTransfer> periodKindTransfers = new ArrayList<>(periodKinds.size());
-        var periodKindTransferCache = getPeriodTransferCaches(userVisit).getPeriodKindTransferCache();
         
         periodKinds.forEach((periodKind) ->
-                periodKindTransfers.add(periodKindTransferCache.getPeriodKindTransfer(periodKind))
+                periodKindTransfers.add(periodKindTransferCache.getPeriodKindTransfer(userVisit, periodKind))
         );
         
         return periodKindTransfers;
@@ -454,7 +469,7 @@ public class PeriodControl
         var periodKindDescription = getPeriodKindDescription(periodKind, language);
         
         if(periodKindDescription == null && !language.getIsDefault()) {
-            periodKindDescription = getPeriodKindDescription(periodKind, getPartyControl().getDefaultLanguage());
+            periodKindDescription = getPeriodKindDescription(periodKind, partyControl.getDefaultLanguage());
         }
         
         if(periodKindDescription == null) {
@@ -467,7 +482,7 @@ public class PeriodControl
     }
     
     public PeriodKindDescriptionTransfer getPeriodKindDescriptionTransfer(UserVisit userVisit, PeriodKindDescription periodKindDescription) {
-        return getPeriodTransferCaches(userVisit).getPeriodKindDescriptionTransferCache().getPeriodKindDescriptionTransfer(periodKindDescription);
+        return periodKindDescriptionTransferCache.getPeriodKindDescriptionTransfer(userVisit, periodKindDescription);
     }
     
     public List<PeriodKindDescriptionTransfer> getPeriodKindDescriptionTransfersByPeriodKind(UserVisit userVisit, PeriodKind periodKind) {
@@ -475,7 +490,7 @@ public class PeriodControl
         List<PeriodKindDescriptionTransfer> periodKindDescriptionTransfers = new ArrayList<>(periodKindDescriptions.size());
         
         periodKindDescriptions.forEach((periodKindDescription) -> {
-            periodKindDescriptionTransfers.add(getPeriodTransferCaches(userVisit).getPeriodKindDescriptionTransferCache().getPeriodKindDescriptionTransfer(periodKindDescription));
+            periodKindDescriptionTransfers.add(periodKindDescriptionTransferCache.getPeriodKindDescriptionTransfer(userVisit, periodKindDescription));
         });
         
         return periodKindDescriptionTransfers;
@@ -734,16 +749,15 @@ public class PeriodControl
     }
     
     public PeriodTypeTransfer getPeriodTypeTransfer(UserVisit userVisit, PeriodType periodType) {
-        return getPeriodTransferCaches(userVisit).getPeriodTypeTransferCache().getPeriodTypeTransfer(periodType);
+        return periodTypeTransferCache.getPeriodTypeTransfer(userVisit, periodType);
     }
     
     public List<PeriodTypeTransfer> getPeriodTypeTransfersByPeriodKind(UserVisit userVisit, PeriodKind periodKind) {
         var periodTypes = getPeriodTypes(periodKind);
         List<PeriodTypeTransfer> periodTypeTransfers = new ArrayList<>(periodTypes.size());
-        var periodTypeTransferCache = getPeriodTransferCaches(userVisit).getPeriodTypeTransferCache();
         
         periodTypes.forEach((periodType) ->
-                periodTypeTransfers.add(periodTypeTransferCache.getPeriodTypeTransfer(periodType))
+                periodTypeTransfers.add(periodTypeTransferCache.getPeriodTypeTransfer(userVisit, periodType))
         );
         
         return periodTypeTransfers;
@@ -940,7 +954,7 @@ public class PeriodControl
         var periodTypeDescription = getPeriodTypeDescription(periodType, language);
         
         if(periodTypeDescription == null && !language.getIsDefault()) {
-            periodTypeDescription = getPeriodTypeDescription(periodType, getPartyControl().getDefaultLanguage());
+            periodTypeDescription = getPeriodTypeDescription(periodType, partyControl.getDefaultLanguage());
         }
         
         if(periodTypeDescription == null) {
@@ -953,7 +967,7 @@ public class PeriodControl
     }
     
     public PeriodTypeDescriptionTransfer getPeriodTypeDescriptionTransfer(UserVisit userVisit, PeriodTypeDescription periodTypeDescription) {
-        return getPeriodTransferCaches(userVisit).getPeriodTypeDescriptionTransferCache().getPeriodTypeDescriptionTransfer(periodTypeDescription);
+        return periodTypeDescriptionTransferCache.getPeriodTypeDescriptionTransfer(userVisit, periodTypeDescription);
     }
     
     public List<PeriodTypeDescriptionTransfer> getPeriodTypeDescriptionTransfersByPeriodType(UserVisit userVisit, PeriodType periodType) {
@@ -961,7 +975,7 @@ public class PeriodControl
         List<PeriodTypeDescriptionTransfer> periodTypeDescriptionTransfers = new ArrayList<>(periodTypeDescriptions.size());
         
         periodTypeDescriptions.forEach((periodTypeDescription) -> {
-            periodTypeDescriptionTransfers.add(getPeriodTransferCaches(userVisit).getPeriodTypeDescriptionTransferCache().getPeriodTypeDescriptionTransfer(periodTypeDescription));
+            periodTypeDescriptionTransfers.add(periodTypeDescriptionTransferCache.getPeriodTypeDescriptionTransfer(userVisit, periodTypeDescription));
         });
         
         return periodTypeDescriptionTransfers;
@@ -1222,16 +1236,15 @@ public class PeriodControl
     }
     
     public PeriodTransfer getPeriodTransfer(UserVisit userVisit, Period period) {
-        return getPeriodTransferCaches(userVisit).getPeriodTransferCache().getPeriodTransfer(period);
+        return periodTransferCache.getPeriodTransfer(userVisit, period);
     }
     
     public List<PeriodTransfer> getPeriodTransfersByPeriodType(UserVisit userVisit, PeriodType periodType) {
         var periods = getPeriods(periodType);
         List<PeriodTransfer> periodTransfers = new ArrayList<>(periods.size());
-        var periodTransferCache = getPeriodTransferCaches(userVisit).getPeriodTransferCache();
         
         periods.forEach((period) ->
-                periodTransfers.add(periodTransferCache.getPeriodTransfer(period))
+                periodTransfers.add(periodTransferCache.getPeriodTransfer(userVisit, period))
         );
         
         return periodTransfers;
@@ -1398,7 +1411,7 @@ public class PeriodControl
         var periodDescription = getPeriodDescription(period, language);
         
         if(periodDescription == null && !language.getIsDefault()) {
-            periodDescription = getPeriodDescription(period, getPartyControl().getDefaultLanguage());
+            periodDescription = getPeriodDescription(period, partyControl.getDefaultLanguage());
         }
         
         if(periodDescription == null) {
@@ -1411,7 +1424,7 @@ public class PeriodControl
     }
     
     public PeriodDescriptionTransfer getPeriodDescriptionTransfer(UserVisit userVisit, PeriodDescription periodDescription) {
-        return getPeriodTransferCaches(userVisit).getPeriodDescriptionTransferCache().getPeriodDescriptionTransfer(periodDescription);
+        return periodDescriptionTransferCache.getPeriodDescriptionTransfer(userVisit, periodDescription);
     }
     
     public List<PeriodDescriptionTransfer> getPeriodDescriptionTransfersByPeriod(UserVisit userVisit, Period period) {
@@ -1419,7 +1432,7 @@ public class PeriodControl
         List<PeriodDescriptionTransfer> periodDescriptionTransfers = new ArrayList<>(periodDescriptions.size());
         
         periodDescriptions.forEach((periodDescription) -> {
-            periodDescriptionTransfers.add(getPeriodTransferCaches(userVisit).getPeriodDescriptionTransferCache().getPeriodDescriptionTransfer(periodDescription));
+            periodDescriptionTransfers.add(periodDescriptionTransferCache.getPeriodDescriptionTransfer(userVisit, periodDescription));
         });
         
         return periodDescriptionTransfers;
@@ -1464,7 +1477,6 @@ public class PeriodControl
     
     public FiscalPeriodStatusChoicesBean getFiscalPeriodStatusChoices(String defaultFiscalPeriodStatusChoice, Language language, boolean allowNullChoice,
             Period period, PartyPK partyPK) {
-        var workflowControl = getWorkflowControl();
         var fiscalPeriodStatusChoicesBean = new FiscalPeriodStatusChoicesBean();
         
         if(period == null) {
@@ -1484,7 +1496,6 @@ public class PeriodControl
     }
     
     public void setFiscalPeriodStatus(ExecutionErrorAccumulator eea, Period period, String fiscalPeriodStatusChoice, PartyPK modifiedBy) {
-        var workflowControl = getWorkflowControl();
         var entityInstance = getEntityInstanceByBaseEntity(period);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(FiscalPeriodStatusConstants.Workflow_FISCAL_PERIOD_STATUS,
                 entityInstance);

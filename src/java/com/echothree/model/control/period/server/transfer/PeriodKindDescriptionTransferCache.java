@@ -20,16 +20,21 @@ import com.echothree.model.control.period.common.transfer.PeriodKindDescriptionT
 import com.echothree.model.control.period.server.control.PeriodControl;
 import com.echothree.model.data.period.server.entity.PeriodKindDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PeriodKindDescriptionTransferCache
         extends BasePeriodDescriptionTransferCache<PeriodKindDescription, PeriodKindDescriptionTransfer> {
-    
+
+    PeriodControl periodControl = Session.getModelController(PeriodControl.class);
+
     /** Creates a new instance of PeriodKindDescriptionTransferCache */
-    public PeriodKindDescriptionTransferCache(UserVisit userVisit, PeriodControl periodControl) {
-        super(userVisit, periodControl);
+    protected PeriodKindDescriptionTransferCache() {
+        super();
     }
     
-    public PeriodKindDescriptionTransfer getPeriodKindDescriptionTransfer(PeriodKindDescription periodKindDescription) {
+    public PeriodKindDescriptionTransfer getPeriodKindDescriptionTransfer(UserVisit userVisit, PeriodKindDescription periodKindDescription) {
         var periodKindDescriptionTransfer = get(periodKindDescription);
         
         if(periodKindDescriptionTransfer == null) {
@@ -37,7 +42,7 @@ public class PeriodKindDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, periodKindDescription.getLanguage());
             
             periodKindDescriptionTransfer = new PeriodKindDescriptionTransfer(languageTransfer, periodKindTransfer, periodKindDescription.getDescription());
-            put(periodKindDescription, periodKindDescriptionTransfer);
+            put(userVisit, periodKindDescription, periodKindDescriptionTransfer);
         }
         
         return periodKindDescriptionTransfer;

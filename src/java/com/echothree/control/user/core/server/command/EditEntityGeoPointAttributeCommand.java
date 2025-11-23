@@ -41,7 +41,9 @@ import com.echothree.util.server.persistence.PersistenceUtils;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EditEntityGeoPointAttributeCommand
         extends BaseEditCommand<EntityGeoPointAttributeSpec, EntityGeoPointAttributeEdit> {
 
@@ -99,7 +101,6 @@ public class EditEntityGeoPointAttributeCommand
 
                     if(!hasExecutionErrors()) {
                         if(entityInstance.getEntityType().equals(entityAttribute.getLastDetail().getEntityType())) {
-                            var coreControl = getCoreControl();
                             EntityGeoPointAttribute entityGeoPointAttribute = null;
                             var basePK = PersistenceUtils.getInstance().getBasePKFromEntityInstance(entityInstance);
 

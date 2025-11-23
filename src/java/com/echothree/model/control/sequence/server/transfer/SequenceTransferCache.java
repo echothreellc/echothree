@@ -20,34 +20,38 @@ import com.echothree.model.control.sequence.common.transfer.SequenceTransfer;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class SequenceTransferCache
         extends BaseSequenceTransferCache<Sequence, SequenceTransfer> {
-    
+
+    SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
+
     /** Creates a new instance of SequenceTransferCache */
-    public SequenceTransferCache(UserVisit userVisit, SequenceControl sequenceControl) {
-        super(userVisit, sequenceControl);
+    protected SequenceTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public SequenceTransfer getSequenceTransfer(Sequence sequence) {
+    public SequenceTransfer getSequenceTransfer(UserVisit userVisit, Sequence sequence) {
         var sequenceTransfer = get(sequence);
         
         if(sequenceTransfer == null) {
             var sequenceDetail = sequence.getLastDetail();
-            var sequenceTypeTransferCache = sequenceControl.getSequenceTransferCaches(userVisit).getSequenceTypeTransferCache();
-            var sequenceType = sequenceTypeTransferCache.getSequenceTypeTransfer(sequenceDetail.getSequenceType());
+            var sequenceType = sequenceControl.getSequenceTypeTransfer(userVisit, sequenceDetail.getSequenceType());
             var sequenceName = sequenceDetail.getSequenceName();
             var mask = sequenceDetail.getMask();
             var chunkSize = sequenceDetail.getChunkSize();
             var isDefault = sequenceDetail.getIsDefault();
             var sortOrder = sequenceDetail.getSortOrder();
             var value = sequenceControl.getSequenceValue(sequence).getValue();
-            var description = sequenceControl.getBestSequenceDescription(sequence, getLanguage());
+            var description = sequenceControl.getBestSequenceDescription(sequence, getLanguage(userVisit));
             
             sequenceTransfer = new SequenceTransfer(sequenceType, sequenceName, mask, chunkSize, isDefault, sortOrder, value, description);
-            put(sequence, sequenceTransfer);
+            put(userVisit, sequence, sequenceTransfer);
         }
         return sequenceTransfer;
     }

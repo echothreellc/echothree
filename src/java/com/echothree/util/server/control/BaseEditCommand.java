@@ -35,11 +35,14 @@ import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.Validator;
 import java.util.List;
 import java.util.concurrent.Future;
+import javax.inject.Inject;
 
 public abstract class BaseEditCommand<S extends BaseSpec, E extends BaseEdit>
         extends BaseCommand {
-    
-    private EntityLockControl entityLockControl = null;
+
+    @Inject
+    EntityLockControl entityLockControl;
+
     private List<FieldDefinition> specFieldDefinitions;
     private List<FieldDefinition> editFieldDefinitions;
     protected EditMode editMode = null;
@@ -54,7 +57,7 @@ public abstract class BaseEditCommand<S extends BaseSpec, E extends BaseEdit>
         this.editFieldDefinitions = editFieldDefinitions;
     }
 
-    private void  initForRun(BaseEditForm<S, E> editForm) {
+    private void initForRun(BaseEditForm<S, E> editForm) {
         if(editForm != null) {
             editMode = editForm.getEditMode();
             spec = editForm.getSpec();
@@ -68,7 +71,7 @@ public abstract class BaseEditCommand<S extends BaseSpec, E extends BaseEdit>
         return super.runAsync(userVisitPK);
     }
 
-    public final CommandResult run(UserVisitPK userVisitPK, BaseEditForm<S, E> editForm) {
+    public CommandResult run(UserVisitPK userVisitPK, BaseEditForm<S, E> editForm) {
         initForRun(editForm);
 
         return super.run(userVisitPK);
@@ -151,87 +154,79 @@ public abstract class BaseEditCommand<S extends BaseSpec, E extends BaseEdit>
         this.editFieldDefinitions = editFieldDefinitions;
     }
     
-    public EntityLockControl getEntityLockControl() {
-        if(entityLockControl == null) {
-            entityLockControl = Session.getModelController(EntityLockControl.class);
-        }
-        
-        return entityLockControl;
-    }
-    
     public EntityLockTransfer getEntityLockTransfer(BaseEntity lockTarget)
             throws EntityLockException {
-        return getEntityLockControl().getEntityLockTransfer(getUserVisit(), lockTarget);
+        return entityLockControl.getEntityLockTransfer(getUserVisit(), lockTarget);
     }
 
     public EntityLockTransfer getEntityLockTransfer(BasePK lockTarget)
             throws EntityLockException {
-        return getEntityLockControl().getEntityLockTransfer(getUserVisit(), lockTarget);
+        return entityLockControl.getEntityLockTransfer(getUserVisit(), lockTarget);
     }
 
     public EntityLockTransfer getEntityLockTransfer(BaseValue lockTarget)
             throws EntityLockException {
-        return getEntityLockControl().getEntityLockTransfer(getUserVisit(), lockTarget);
+        return entityLockControl.getEntityLockTransfer(getUserVisit(), lockTarget);
     }
 
     public boolean lockEntity(BaseEntity lockTarget)
             throws EntityLockException {
-        return getEntityLockControl().lockEntity(lockTarget, getPartyPK()) != 0;
+        return entityLockControl.lockEntity(lockTarget, getPartyPK()) != 0;
     }
 
     public boolean lockEntity(BasePK lockTarget)
             throws EntityLockException {
-        return getEntityLockControl().lockEntity(lockTarget, getPartyPK()) != 0;
+        return entityLockControl.lockEntity(lockTarget, getPartyPK()) != 0;
     }
 
     public boolean lockEntity(BaseValue lockTarget)
             throws EntityLockException {
-        return getEntityLockControl().lockEntity(lockTarget, getPartyPK()) != 0;
+        return entityLockControl.lockEntity(lockTarget, getPartyPK()) != 0;
     }
 
     public boolean lockEntityForUpdate(BaseEntity lockTarget)
             throws EntityLockException {
-        return getEntityLockControl().lockEntityForUpdate(lockTarget, getPartyPK());
+        return entityLockControl.lockEntityForUpdate(lockTarget, getPartyPK());
     }
 
     public boolean lockEntityForUpdate(BasePK lockTarget)
             throws EntityLockException {
-        return getEntityLockControl().lockEntityForUpdate(lockTarget, getPartyPK());
+        return entityLockControl.lockEntityForUpdate(lockTarget, getPartyPK());
     }
 
     public boolean lockEntityForUpdate(BaseValue lockTarget)
             throws EntityLockException {
-        return getEntityLockControl().lockEntityForUpdate(lockTarget, getPartyPK());
+        return entityLockControl.lockEntityForUpdate(lockTarget, getPartyPK());
     }
 
     public boolean unlockEntity(BaseEntity lockTarget)
             throws EntityLockException {
-        return getEntityLockControl().unlockEntity(lockTarget, getPartyPK());
+        return entityLockControl.unlockEntity(lockTarget, getPartyPK());
     }
 
     public boolean unlockEntity(BasePK lockTarget)
             throws EntityLockException {
-        return getEntityLockControl().unlockEntity(lockTarget, getPartyPK());
+        return entityLockControl.unlockEntity(lockTarget, getPartyPK());
     }
 
     public boolean unlockEntity(BaseValue lockTarget)
             throws EntityLockException {
-        return getEntityLockControl().unlockEntity(lockTarget, getPartyPK());
+        return entityLockControl.unlockEntity(lockTarget, getPartyPK());
     }
 
     public boolean isEntityLocked(BaseEntity lockTarget)
             throws EntityLockException {
-        return getEntityLockControl().isEntityLocked(lockTarget, getPartyPK());
+        return entityLockControl.isEntityLocked(lockTarget, getPartyPK());
     }
 
     public boolean isEntityLocked(BasePK lockTarget)
             throws EntityLockException {
-        return getEntityLockControl().isEntityLocked(lockTarget, getPartyPK());
+        return entityLockControl.isEntityLocked(lockTarget, getPartyPK());
     }
 
     public boolean isEntityLocked(BaseValue lockTarget)
             throws EntityLockException {
-        return getEntityLockControl().isEntityLocked(lockTarget, getPartyPK());
+        return entityLockControl.isEntityLocked(lockTarget, getPartyPK());
     }
     
 }

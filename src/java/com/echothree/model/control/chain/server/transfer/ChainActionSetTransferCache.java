@@ -20,18 +20,23 @@ import com.echothree.model.control.chain.common.transfer.ChainActionSetTransfer;
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.data.chain.server.entity.ChainActionSet;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ChainActionSetTransferCache
         extends BaseChainTransferCache<ChainActionSet, ChainActionSetTransfer> {
 
+    ChainControl chainControl = Session.getModelController(ChainControl.class);
+
     /** Creates a new instance of ChainActionSetTransferCache */
-    public ChainActionSetTransferCache(UserVisit userVisit, ChainControl chainControl) {
-        super(userVisit, chainControl);
+    protected ChainActionSetTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
 
-    public ChainActionSetTransfer getChainActionSetTransfer(ChainActionSet chainActionSet) {
+    public ChainActionSetTransfer getChainActionSetTransfer(UserVisit userVisit, ChainActionSet chainActionSet) {
         var chainActionSetTransfer = get(chainActionSet);
 
         if(chainActionSetTransfer == null) {
@@ -40,10 +45,10 @@ public class ChainActionSetTransferCache
             var chainActionSetName = chainActionSetDetail.getChainActionSetName();
             var isDefault = chainActionSetDetail.getIsDefault();
             var sortOrder = chainActionSetDetail.getSortOrder();
-            var description = chainControl.getBestChainActionSetDescription(chainActionSet, getLanguage());
+            var description = chainControl.getBestChainActionSetDescription(chainActionSet, getLanguage(userVisit));
 
             chainActionSetTransfer = new ChainActionSetTransfer(chainTransfer, chainActionSetName, isDefault, sortOrder, description);
-            put(chainActionSet, chainActionSetTransfer);
+            put(userVisit, chainActionSet, chainActionSetTransfer);
         }
 
         return chainActionSetTransfer;

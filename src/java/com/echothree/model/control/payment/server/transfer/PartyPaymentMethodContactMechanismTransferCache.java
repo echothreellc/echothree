@@ -27,7 +27,9 @@ import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.payment.server.entity.PartyPaymentMethodContactMechanism;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PartyPaymentMethodContactMechanismTransferCache
         extends BasePaymentTransferCache<PartyPaymentMethodContactMechanism, PartyPaymentMethodContactMechanismTransfer> {
 
@@ -37,12 +39,12 @@ public class PartyPaymentMethodContactMechanismTransferCache
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of PartyPaymentMethodContactMechanismTransferCache */
-    public PartyPaymentMethodContactMechanismTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected PartyPaymentMethodContactMechanismTransferCache() {
+        super();
     }
 
     @Override
-    public PartyPaymentMethodContactMechanismTransfer getTransfer(PartyPaymentMethodContactMechanism partyPaymentMethodContactMechanism) {
+    public PartyPaymentMethodContactMechanismTransfer getTransfer(UserVisit userVisit, PartyPaymentMethodContactMechanism partyPaymentMethodContactMechanism) {
         var partyPaymentMethodContactMechanismTransfer = get(partyPaymentMethodContactMechanism);
         
         if(partyPaymentMethodContactMechanismTransfer == null) {
@@ -60,7 +62,7 @@ public class PartyPaymentMethodContactMechanismTransferCache
             
             partyPaymentMethodContactMechanismTransfer = new PartyPaymentMethodContactMechanismTransfer(partyPaymentMethodTransfer,
                     partyContactMechanismPurposeTransfer, partyPaymentMethodContactMechanismStatusTransfer);
-            put(partyPaymentMethodContactMechanism, partyPaymentMethodContactMechanismTransfer);
+            put(userVisit, partyPaymentMethodContactMechanism, partyPaymentMethodContactMechanismTransfer);
         }
         return partyPaymentMethodContactMechanismTransfer;
     }

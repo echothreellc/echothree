@@ -43,20 +43,19 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class PartyTrainingClassSessionLogic
         extends BaseLogic {
-    
-    private PartyTrainingClassSessionLogic() {
+
+    protected PartyTrainingClassSessionLogic() {
         super();
     }
-    
-    private static class PartyTrainingClassSessionLogicHolder {
-        static PartyTrainingClassSessionLogic instance = new PartyTrainingClassSessionLogic();
-    }
-    
+
     public static PartyTrainingClassSessionLogic getInstance() {
-        return PartyTrainingClassSessionLogicHolder.instance;
+        return CDI.current().select(PartyTrainingClassSessionLogic.class).get();
     }
 
     private PartyTrainingClassSession getPartyTrainingClassSession(final ExecutionErrorAccumulator eea, final PartyTrainingClass partyTrainingClass,

@@ -23,21 +23,24 @@ import com.echothree.model.data.associate.server.entity.AssociateProgram;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.PercentUtils;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class AssociateProgramTransferCache
         extends BaseAssociateTransferCache<AssociateProgram, AssociateProgramTransfer> {
-    
+
+    AssociateControl associateControl = Session.getModelController(AssociateControl.class);
     SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
     
     /** Creates a new instance of AssociateProgramTransferCache */
-    public AssociateProgramTransferCache(UserVisit userVisit, AssociateControl associateControl) {
-        super(userVisit, associateControl);
+    protected AssociateProgramTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
     @Override
-    public AssociateProgramTransfer getTransfer(AssociateProgram associateProgram) {
+    public AssociateProgramTransfer getTransfer(UserVisit userVisit, AssociateProgram associateProgram) {
         var associateProgramTransfer = get(associateProgram);
         
         if(associateProgramTransfer == null) {
@@ -53,12 +56,12 @@ public class AssociateProgramTransferCache
             var itemDirectSalePercent = PercentUtils.getInstance().formatFractionalPercent(associateProgramDetail.getItemDirectSalePercent());
             var isDefault = associateProgramDetail.getIsDefault();
             var sortOrder = associateProgramDetail.getSortOrder();
-            var description = associateControl.getBestAssociateProgramDescription(associateProgram, getLanguage());
+            var description = associateControl.getBestAssociateProgramDescription(associateProgram, getLanguage(userVisit));
             
             associateProgramTransfer = new AssociateProgramTransfer(associateProgramName, associateSequenceTransfer,
                     associatePartyContactMechanismSequenceTransfer, associateReferralSequenceTransfer, itemIndirectSalePercent,
                     itemDirectSalePercent, isDefault, sortOrder, description);
-            put(associateProgram, associateProgramTransfer);
+            put(userVisit, associateProgram, associateProgramTransfer);
         }
         return associateProgramTransfer;
     }

@@ -21,18 +21,20 @@ import com.echothree.model.control.core.server.control.EditorControl;
 import com.echothree.model.data.core.server.entity.EditorDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EditorDescriptionTransferCache
         extends BaseCoreDescriptionTransferCache<EditorDescription, EditorDescriptionTransfer> {
 
     EditorControl editorControl = Session.getModelController(EditorControl.class);
 
     /** Creates a new instance of EditorDescriptionTransferCache */
-    public EditorDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected EditorDescriptionTransferCache() {
+        super();
     }
     
-    public EditorDescriptionTransfer getEditorDescriptionTransfer(EditorDescription editorDescription) {
+    public EditorDescriptionTransfer getEditorDescriptionTransfer(UserVisit userVisit, EditorDescription editorDescription) {
         var editorDescriptionTransfer = get(editorDescription);
         
         if(editorDescriptionTransfer == null) {
@@ -40,7 +42,7 @@ public class EditorDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, editorDescription.getLanguage());
             
             editorDescriptionTransfer = new EditorDescriptionTransfer(languageTransfer, editorTransfer, editorDescription.getDescription());
-            put(editorDescription, editorDescriptionTransfer);
+            put(userVisit, editorDescription, editorDescriptionTransfer);
         }
         return editorDescriptionTransfer;
     }

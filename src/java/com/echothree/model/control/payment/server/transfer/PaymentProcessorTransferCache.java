@@ -26,7 +26,9 @@ import com.echothree.model.data.payment.server.entity.PaymentProcessor;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PaymentProcessorTransferCache
         extends BasePaymentTransferCache<PaymentProcessor, PaymentProcessorTransfer> {
 
@@ -38,8 +40,8 @@ public class PaymentProcessorTransferCache
     boolean includePaymentProcessorTransactions;
 
     /** Creates a new instance of PaymentProcessorTransferCache */
-    public PaymentProcessorTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected PaymentProcessorTransferCache() {
+        super();
 
         var options = session.getOptions();
         if(options != null) {
@@ -52,7 +54,7 @@ public class PaymentProcessorTransferCache
     }
 
     @Override
-    public PaymentProcessorTransfer getTransfer(PaymentProcessor paymentProcessor) {
+    public PaymentProcessorTransfer getTransfer(UserVisit userVisit, PaymentProcessor paymentProcessor) {
         var paymentProcessorTransfer = get(paymentProcessor);
         
         if(paymentProcessorTransfer == null) {
@@ -61,13 +63,13 @@ public class PaymentProcessorTransferCache
             var paymentProcessorType = paymentProcessorTypeControl.getPaymentProcessorTypeTransfer(userVisit, paymentProcessorDetail.getPaymentProcessorType());
             var isDefault = paymentProcessorDetail.getIsDefault();
             var sortOrder = paymentProcessorDetail.getSortOrder();
-            var description = paymentProcessorControl.getBestPaymentProcessorDescription(paymentProcessor, getLanguage());
+            var description = paymentProcessorControl.getBestPaymentProcessorDescription(paymentProcessor, getLanguage(userVisit));
             
             paymentProcessorTransfer = new PaymentProcessorTransfer(paymentProcessorName, paymentProcessorType, isDefault, sortOrder, description);
-            put(paymentProcessor, paymentProcessorTransfer);
+            put(userVisit, paymentProcessor, paymentProcessorTransfer);
 
             if(includeComments) {
-                setupComments(paymentProcessor, null, paymentProcessorTransfer, CommentConstants.CommentType_PAYMENT_PROCESSOR);
+                setupComments(userVisit, paymentProcessor, null, paymentProcessorTransfer, CommentConstants.CommentType_PAYMENT_PROCESSOR);
             }
             
             if(includePaymentProcessorTransactions) {

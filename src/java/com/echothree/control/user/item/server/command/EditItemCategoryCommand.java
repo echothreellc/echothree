@@ -43,7 +43,9 @@ import java.util.Collections;
 import java.util.List;
 import com.echothree.control.user.item.common.spec.ItemCategoryUniversalSpec;
 import com.echothree.model.control.core.common.ComponentVendors;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EditItemCategoryCommand
         extends BaseAbstractEditCommand<ItemCategoryUniversalSpec, ItemCategoryEdit, EditItemCategoryResult, ItemCategory, ItemCategory> {
     

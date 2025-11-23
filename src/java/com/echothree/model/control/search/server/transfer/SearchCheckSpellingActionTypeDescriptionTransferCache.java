@@ -20,16 +20,21 @@ import com.echothree.model.control.search.common.transfer.SearchCheckSpellingAct
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.data.search.server.entity.SearchCheckSpellingActionTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class SearchCheckSpellingActionTypeDescriptionTransferCache
         extends BaseSearchDescriptionTransferCache<SearchCheckSpellingActionTypeDescription, SearchCheckSpellingActionTypeDescriptionTransfer> {
-    
+
+    SearchControl searchControl = Session.getModelController(SearchControl.class);
+
     /** Creates a new instance of SearchCheckSpellingActionTypeDescriptionTransferCache */
-    public SearchCheckSpellingActionTypeDescriptionTransferCache(UserVisit userVisit, SearchControl searchControl) {
-        super(userVisit, searchControl);
+    protected SearchCheckSpellingActionTypeDescriptionTransferCache() {
+        super();
     }
     
-    public SearchCheckSpellingActionTypeDescriptionTransfer getSearchCheckSpellingActionTypeDescriptionTransfer(SearchCheckSpellingActionTypeDescription searchCheckSpellingActionTypeDescription) {
+    public SearchCheckSpellingActionTypeDescriptionTransfer getSearchCheckSpellingActionTypeDescriptionTransfer(UserVisit userVisit, SearchCheckSpellingActionTypeDescription searchCheckSpellingActionTypeDescription) {
         var searchCheckSpellingActionTypeDescriptionTransfer = get(searchCheckSpellingActionTypeDescription);
         
         if(searchCheckSpellingActionTypeDescriptionTransfer == null) {
@@ -37,7 +42,7 @@ public class SearchCheckSpellingActionTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, searchCheckSpellingActionTypeDescription.getLanguage());
             
             searchCheckSpellingActionTypeDescriptionTransfer = new SearchCheckSpellingActionTypeDescriptionTransfer(languageTransfer, searchCheckSpellingActionTypeTransfer, searchCheckSpellingActionTypeDescription.getDescription());
-            put(searchCheckSpellingActionTypeDescription, searchCheckSpellingActionTypeDescriptionTransfer);
+            put(userVisit, searchCheckSpellingActionTypeDescription, searchCheckSpellingActionTypeDescriptionTransfer);
         }
         return searchCheckSpellingActionTypeDescriptionTransfer;
     }

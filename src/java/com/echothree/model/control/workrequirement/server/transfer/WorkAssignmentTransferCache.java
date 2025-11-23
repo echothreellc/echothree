@@ -16,32 +16,34 @@
 
 package com.echothree.model.control.workrequirement.server.transfer;
 
-import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.control.workrequirement.common.workflow.WorkAssignmentStatusConstants;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.control.workrequirement.common.transfer.WorkAssignmentTransfer;
+import com.echothree.model.control.workrequirement.common.workflow.WorkAssignmentStatusConstants;
 import com.echothree.model.control.workrequirement.server.control.WorkRequirementControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workrequirement.server.entity.WorkAssignment;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class WorkAssignmentTransferCache
         extends BaseWorkRequirementTransferCache<WorkAssignment, WorkAssignmentTransfer> {
 
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
-    
+    WorkRequirementControl workRequirementControl = Session.getModelController(WorkRequirementControl.class);
+
     /** Creates a new instance of WorkAssignmentTransferCache */
-    public WorkAssignmentTransferCache(UserVisit userVisit, WorkRequirementControl workRequirementControl) {
-        super(userVisit, workRequirementControl);
+    protected WorkAssignmentTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public WorkAssignmentTransfer getWorkAssignmentTransfer(WorkAssignment workAssignment) {
+    public WorkAssignmentTransfer getWorkAssignmentTransfer(UserVisit userVisit, WorkAssignment workAssignment) {
         var workAssignmentTransfer = get(workAssignment);
         
         if(workAssignmentTransfer == null) {
@@ -50,9 +52,9 @@ public class WorkAssignmentTransferCache
             var workAssignmentSequence = workAssignmentDetail.getWorkAssignmentSequence();
             var party = partyControl.getPartyTransfer(userVisit, workAssignmentDetail.getParty());
             var unformattedStartTime = workAssignmentDetail.getStartTime();
-            var startTime = formatTypicalDateTime(unformattedStartTime);
+            var startTime = formatTypicalDateTime(userVisit, unformattedStartTime);
             var unformattedEndTime = workAssignmentDetail.getEndTime();
-            var endTime = formatTypicalDateTime(unformattedEndTime);
+            var endTime = formatTypicalDateTime(userVisit, unformattedEndTime);
 
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(workAssignment.getPrimaryKey());
             var workAssignmentStatus = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
@@ -60,7 +62,7 @@ public class WorkAssignmentTransferCache
 
             workAssignmentTransfer = new WorkAssignmentTransfer(workRequirement, workAssignmentSequence, party, unformattedStartTime, startTime,
                     unformattedEndTime, endTime, workAssignmentStatus);
-            put(workAssignment, workAssignmentTransfer);
+            put(userVisit, workAssignment, workAssignmentTransfer);
         }
         
         return workAssignmentTransfer;

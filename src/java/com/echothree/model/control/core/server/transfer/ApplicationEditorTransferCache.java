@@ -22,7 +22,9 @@ import com.echothree.model.control.core.server.control.EditorControl;
 import com.echothree.model.data.core.server.entity.ApplicationEditor;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ApplicationEditorTransferCache
         extends BaseCoreTransferCache<ApplicationEditor, ApplicationEditorTransfer> {
 
@@ -30,13 +32,13 @@ public class ApplicationEditorTransferCache
     EditorControl editorControl = Session.getModelController(EditorControl.class);
 
     /** Creates a new instance of ApplicationEditorTransferCache */
-    public ApplicationEditorTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected ApplicationEditorTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
 
-    public ApplicationEditorTransfer getApplicationEditorTransfer(ApplicationEditor applicationEditor) {
+    public ApplicationEditorTransfer getApplicationEditorTransfer(UserVisit userVisit, ApplicationEditor applicationEditor) {
         var applicationEditorTransfer = get(applicationEditor);
 
         if(applicationEditorTransfer == null) {
@@ -47,7 +49,7 @@ public class ApplicationEditorTransferCache
             var sortOrder = applicationEditorDetail.getSortOrder();
 
             applicationEditorTransfer = new ApplicationEditorTransfer(application, editor, isDefault, sortOrder);
-            put(applicationEditor, applicationEditorTransfer);
+            put(userVisit, applicationEditor, applicationEditorTransfer);
         }
 
         return applicationEditorTransfer;

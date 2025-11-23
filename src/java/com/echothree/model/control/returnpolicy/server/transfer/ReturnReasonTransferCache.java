@@ -20,18 +20,23 @@ import com.echothree.model.control.returnpolicy.common.transfer.ReturnReasonTran
 import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnReason;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ReturnReasonTransferCache
         extends BaseReturnPolicyTransferCache<ReturnReason, ReturnReasonTransfer> {
-    
+
+    ReturnPolicyControl returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
+
     /** Creates a new instance of ReturnReasonTransferCache */
-    public ReturnReasonTransferCache(UserVisit userVisit, ReturnPolicyControl returnPolicyControl) {
-        super(userVisit, returnPolicyControl);
+    protected ReturnReasonTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public ReturnReasonTransfer getReturnReasonTransfer(ReturnReason returnReason) {
+    public ReturnReasonTransfer getReturnReasonTransfer(UserVisit userVisit, ReturnReason returnReason) {
         var returnReasonTransfer = get(returnReason);
         
         if(returnReasonTransfer == null) {
@@ -40,10 +45,10 @@ public class ReturnReasonTransferCache
             var returnReasonName = returnReasonDetail.getReturnReasonName();
             var isDefault = returnReasonDetail.getIsDefault();
             var sortOrder = returnReasonDetail.getSortOrder();
-            var description = returnPolicyControl.getBestReturnReasonDescription(returnReason, getLanguage());
+            var description = returnPolicyControl.getBestReturnReasonDescription(returnReason, getLanguage(userVisit));
             
             returnReasonTransfer = new ReturnReasonTransfer(returnKind, returnReasonName, isDefault, sortOrder, description);
-            put(returnReason, returnReasonTransfer);
+            put(userVisit, returnReason, returnReasonTransfer);
         }
         
         return returnReasonTransfer;

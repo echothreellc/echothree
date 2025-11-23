@@ -44,7 +44,9 @@ import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EditPartyContactListCommand
         extends BaseAbstractEditCommand<PartyContactListSpec, PartyContactListEdit, EditPartyContactListResult, PartyContactList, PartyContactList> {
 

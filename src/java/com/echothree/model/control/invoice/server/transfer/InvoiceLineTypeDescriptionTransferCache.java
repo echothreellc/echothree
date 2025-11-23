@@ -20,16 +20,21 @@ import com.echothree.model.control.invoice.common.transfer.InvoiceLineTypeDescri
 import com.echothree.model.control.invoice.server.control.InvoiceControl;
 import com.echothree.model.data.invoice.server.entity.InvoiceLineTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class InvoiceLineTypeDescriptionTransferCache
         extends BaseInvoiceDescriptionTransferCache<InvoiceLineTypeDescription, InvoiceLineTypeDescriptionTransfer> {
-    
+
+    InvoiceControl invoiceControl = Session.getModelController(InvoiceControl.class);
+
     /** Creates a new instance of InvoiceLineTypeDescriptionTransferCache */
-    public InvoiceLineTypeDescriptionTransferCache(UserVisit userVisit, InvoiceControl invoiceControl) {
-        super(userVisit, invoiceControl);
+    protected InvoiceLineTypeDescriptionTransferCache() {
+        super();
     }
     
-    public InvoiceLineTypeDescriptionTransfer getInvoiceLineTypeDescriptionTransfer(InvoiceLineTypeDescription invoiceLineTypeDescription) {
+    public InvoiceLineTypeDescriptionTransfer getInvoiceLineTypeDescriptionTransfer(UserVisit userVisit, InvoiceLineTypeDescription invoiceLineTypeDescription) {
         var invoiceLineTypeDescriptionTransfer = get(invoiceLineTypeDescription);
         
         if(invoiceLineTypeDescriptionTransfer == null) {
@@ -37,7 +42,7 @@ public class InvoiceLineTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, invoiceLineTypeDescription.getLanguage());
             
             invoiceLineTypeDescriptionTransfer = new InvoiceLineTypeDescriptionTransfer(languageTransfer, invoiceLineTypeTransfer, invoiceLineTypeDescription.getDescription());
-            put(invoiceLineTypeDescription, invoiceLineTypeDescriptionTransfer);
+            put(userVisit, invoiceLineTypeDescription, invoiceLineTypeDescriptionTransfer);
         }
         
         return invoiceLineTypeDescriptionTransfer;

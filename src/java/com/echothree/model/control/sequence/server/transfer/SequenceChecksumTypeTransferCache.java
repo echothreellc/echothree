@@ -20,26 +20,31 @@ import com.echothree.model.control.sequence.common.transfer.SequenceChecksumType
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.data.sequence.server.entity.SequenceChecksumType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class SequenceChecksumTypeTransferCache
         extends BaseSequenceTransferCache<SequenceChecksumType, SequenceChecksumTypeTransfer> {
-    
+
+    SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
+
     /** Creates a new instance of SequenceChecksumTypeTransferCache */
-    public SequenceChecksumTypeTransferCache(UserVisit userVisit, SequenceControl sequenceControl) {
-        super(userVisit, sequenceControl);
+    protected SequenceChecksumTypeTransferCache() {
+        super();
     }
     
-    public SequenceChecksumTypeTransfer getSequenceChecksumTypeTransfer(SequenceChecksumType sequenceChecksumType) {
+    public SequenceChecksumTypeTransfer getSequenceChecksumTypeTransfer(UserVisit userVisit, SequenceChecksumType sequenceChecksumType) {
         var sequenceChecksumTypeTransfer = get(sequenceChecksumType);
         
         if(sequenceChecksumTypeTransfer == null) {
             var sequenceChecksumTypeName = sequenceChecksumType.getSequenceChecksumTypeName();
             var isDefault = sequenceChecksumType.getIsDefault();
             var sortOrder = sequenceChecksumType.getSortOrder();
-            var description = sequenceControl.getBestSequenceChecksumTypeDescription(sequenceChecksumType, getLanguage());
+            var description = sequenceControl.getBestSequenceChecksumTypeDescription(sequenceChecksumType, getLanguage(userVisit));
             
             sequenceChecksumTypeTransfer = new SequenceChecksumTypeTransfer(sequenceChecksumTypeName, isDefault, sortOrder, description);
-            put(sequenceChecksumType, sequenceChecksumTypeTransfer);
+            put(userVisit, sequenceChecksumType, sequenceChecksumTypeTransfer);
         }
         return sequenceChecksumTypeTransfer;
     }

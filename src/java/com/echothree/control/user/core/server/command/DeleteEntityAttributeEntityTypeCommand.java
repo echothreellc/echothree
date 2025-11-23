@@ -32,7 +32,9 @@ import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class DeleteEntityAttributeEntityTypeCommand
         extends BaseSimpleCommand<DeleteEntityAttributeEntityTypeForm> {
     
@@ -63,13 +65,12 @@ public class DeleteEntityAttributeEntityTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
         var componentVendorName = form.getComponentVendorName();
-        var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
+        var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
 
         if(componentVendor != null) {
             var entityTypeName = form.getEntityTypeName();
-            var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
+            var entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
 
             if(entityType != null) {
                 var entityAttributeName = form.getEntityAttributeName();
@@ -77,11 +78,11 @@ public class DeleteEntityAttributeEntityTypeCommand
 
                 if(entityAttribute != null) {
                     var allowedComponentVendorName = form.getAllowedComponentVendorName();
-                    var allowedComponentVendor = getComponentControl().getComponentVendorByName(allowedComponentVendorName);
+                    var allowedComponentVendor = componentControl.getComponentVendorByName(allowedComponentVendorName);
 
                     if(allowedComponentVendor != null) {
                         var allowedEntityTypeName = form.getAllowedEntityTypeName();
-                        var allowedEntityType = getEntityTypeControl().getEntityTypeByName(allowedComponentVendor, allowedEntityTypeName);
+                        var allowedEntityType = entityTypeControl.getEntityTypeByName(allowedComponentVendor, allowedEntityTypeName);
 
                         if(allowedEntityType != null) {
                             var entityAttributeEntityType = coreControl.getEntityAttributeEntityTypeForUpdate(entityAttribute, allowedEntityType);

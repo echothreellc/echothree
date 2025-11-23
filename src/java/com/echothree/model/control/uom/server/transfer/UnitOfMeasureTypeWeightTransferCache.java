@@ -21,25 +21,30 @@ import com.echothree.model.control.uom.common.transfer.UnitOfMeasureTypeWeightTr
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureTypeWeight;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class UnitOfMeasureTypeWeightTransferCache
         extends BaseUomTransferCache<UnitOfMeasureTypeWeight, UnitOfMeasureTypeWeightTransfer> {
-    
+
+    UomControl uomControl = Session.getModelController(UomControl.class);
+
     /** Creates a new instance of UnitOfMeasureTypeWeightTransferCache */
-    public UnitOfMeasureTypeWeightTransferCache(UserVisit userVisit, UomControl uomControl) {
-        super(userVisit, uomControl);
+    protected UnitOfMeasureTypeWeightTransferCache() {
+        super();
     }
     
-    public UnitOfMeasureTypeWeightTransfer getUnitOfMeasureTypeWeightTransfer(UnitOfMeasureTypeWeight unitOfMeasureTypeWeight) {
+    public UnitOfMeasureTypeWeightTransfer getUnitOfMeasureTypeWeightTransfer(UserVisit userVisit, UnitOfMeasureTypeWeight unitOfMeasureTypeWeight) {
         var unitOfMeasureTypeWeightTransfer = get(unitOfMeasureTypeWeight);
         
         if(unitOfMeasureTypeWeightTransfer == null) {
             var unitOfMeasureTypeTransfer = uomControl.getUnitOfMeasureTypeTransfer(userVisit, unitOfMeasureTypeWeight.getUnitOfMeasureType());
             var volumeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_WEIGHT);
-            var weight = formatUnitOfMeasure(volumeUnitOfMeasureKind, unitOfMeasureTypeWeight.getWeight());
+            var weight = formatUnitOfMeasure(userVisit, volumeUnitOfMeasureKind, unitOfMeasureTypeWeight.getWeight());
             
             unitOfMeasureTypeWeightTransfer = new UnitOfMeasureTypeWeightTransfer(unitOfMeasureTypeTransfer, weight);
-            put(unitOfMeasureTypeWeight, unitOfMeasureTypeWeightTransfer);
+            put(userVisit, unitOfMeasureTypeWeight, unitOfMeasureTypeWeightTransfer);
         }
         
         return unitOfMeasureTypeWeightTransfer;

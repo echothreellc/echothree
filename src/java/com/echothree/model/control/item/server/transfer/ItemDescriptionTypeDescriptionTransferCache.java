@@ -20,17 +20,22 @@ import com.echothree.model.control.item.common.transfer.ItemDescriptionTypeDescr
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.item.server.entity.ItemDescriptionTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ItemDescriptionTypeDescriptionTransferCache
         extends BaseItemDescriptionTransferCache<ItemDescriptionTypeDescription, ItemDescriptionTypeDescriptionTransfer> {
-    
+
+    ItemControl itemControl = Session.getModelController(ItemControl.class);
+
     /** Creates a new instance of ItemDescriptionTypeDescriptionTransferCache */
-    public ItemDescriptionTypeDescriptionTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    protected ItemDescriptionTypeDescriptionTransferCache() {
+        super();
     }
     
     @Override
-    public ItemDescriptionTypeDescriptionTransfer getTransfer(ItemDescriptionTypeDescription itemDescriptionTypeDescription) {
+    public ItemDescriptionTypeDescriptionTransfer getTransfer(UserVisit userVisit, ItemDescriptionTypeDescription itemDescriptionTypeDescription) {
         var itemDescriptionTypeDescriptionTransfer = get(itemDescriptionTypeDescription);
         
         if(itemDescriptionTypeDescriptionTransfer == null) {
@@ -38,7 +43,7 @@ public class ItemDescriptionTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, itemDescriptionTypeDescription.getLanguage());
             
             itemDescriptionTypeDescriptionTransfer = new ItemDescriptionTypeDescriptionTransfer(languageTransfer, itemDescriptionTypeTransfer, itemDescriptionTypeDescription.getDescription());
-            put(itemDescriptionTypeDescription, itemDescriptionTypeDescriptionTransfer);
+            put(userVisit, itemDescriptionTypeDescription, itemDescriptionTypeDescriptionTransfer);
         }
         
         return itemDescriptionTypeDescriptionTransfer;

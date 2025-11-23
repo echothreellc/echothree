@@ -20,18 +20,23 @@ import com.echothree.model.control.training.common.transfer.TrainingClassPageTra
 import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.data.training.server.entity.TrainingClassPage;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class TrainingClassPageTransferCache
         extends BaseTrainingTransferCache<TrainingClassPage, TrainingClassPageTransfer> {
-    
+
+    TrainingControl trainingControl = Session.getModelController(TrainingControl.class);
+
     /** Creates a new instance of TrainingClassPageTransferCache */
-    public TrainingClassPageTransferCache(UserVisit userVisit, TrainingControl trainingControl) {
-        super(userVisit, trainingControl);
+    protected TrainingClassPageTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public TrainingClassPageTransfer getTrainingClassPageTransfer(TrainingClassPage trainingClassPage) {
+    public TrainingClassPageTransfer getTrainingClassPageTransfer(UserVisit userVisit, TrainingClassPage trainingClassPage) {
         var trainingClassPageTransfer = get(trainingClassPage);
         
         if(trainingClassPageTransfer == null) {
@@ -39,11 +44,11 @@ public class TrainingClassPageTransferCache
             var trainingClassSection = trainingControl.getTrainingClassSectionTransfer(userVisit, trainingClassPageDetail.getTrainingClassSection());
             var trainingClassPageName = trainingClassPageDetail.getTrainingClassPageName();
             var sortOrder = trainingClassPageDetail.getSortOrder();
-            var trainingClassPageTranslation = trainingControl.getBestTrainingClassPageTranslation(trainingClassPage, getLanguage());
+            var trainingClassPageTranslation = trainingControl.getBestTrainingClassPageTranslation(trainingClassPage, getLanguage(userVisit));
             var description = trainingClassPageTranslation == null ? trainingClassPageName : trainingClassPageTranslation.getDescription();
             
             trainingClassPageTransfer = new TrainingClassPageTransfer(trainingClassSection, trainingClassPageName, sortOrder, description);
-            put(trainingClassPage, trainingClassPageTransfer);
+            put(userVisit, trainingClassPage, trainingClassPageTransfer);
         }
         
         return trainingClassPageTransfer;

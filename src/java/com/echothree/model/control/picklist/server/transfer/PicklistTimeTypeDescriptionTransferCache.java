@@ -20,16 +20,21 @@ import com.echothree.model.control.picklist.common.transfer.PicklistTimeTypeDesc
 import com.echothree.model.control.picklist.server.control.PicklistControl;
 import com.echothree.model.data.picklist.server.entity.PicklistTimeTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PicklistTimeTypeDescriptionTransferCache
         extends BasePicklistDescriptionTransferCache<PicklistTimeTypeDescription, PicklistTimeTypeDescriptionTransfer> {
-    
+
+    PicklistControl picklistControl = Session.getModelController(PicklistControl.class);
+
     /** Creates a new instance of PicklistTimeTypeDescriptionTransferCache */
-    public PicklistTimeTypeDescriptionTransferCache(UserVisit userVisit, PicklistControl picklistControl) {
-        super(userVisit, picklistControl);
+    protected PicklistTimeTypeDescriptionTransferCache() {
+        super();
     }
     
-    public PicklistTimeTypeDescriptionTransfer getPicklistTimeTypeDescriptionTransfer(PicklistTimeTypeDescription picklistTimeTypeDescription) {
+    public PicklistTimeTypeDescriptionTransfer getPicklistTimeTypeDescriptionTransfer(UserVisit userVisit, PicklistTimeTypeDescription picklistTimeTypeDescription) {
         var picklistTimeTypeDescriptionTransfer = get(picklistTimeTypeDescription);
         
         if(picklistTimeTypeDescriptionTransfer == null) {
@@ -37,7 +42,7 @@ public class PicklistTimeTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, picklistTimeTypeDescription.getLanguage());
             
             picklistTimeTypeDescriptionTransfer = new PicklistTimeTypeDescriptionTransfer(languageTransfer, picklistTimeTypeTransfer, picklistTimeTypeDescription.getDescription());
-            put(picklistTimeTypeDescription, picklistTimeTypeDescriptionTransfer);
+            put(userVisit, picklistTimeTypeDescription, picklistTimeTypeDescriptionTransfer);
         }
         
         return picklistTimeTypeDescriptionTransfer;

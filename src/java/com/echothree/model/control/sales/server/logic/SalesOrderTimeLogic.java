@@ -24,20 +24,19 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import java.util.List;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class SalesOrderTimeLogic
         extends BaseLogic {
 
-    private SalesOrderTimeLogic() {
+    protected SalesOrderTimeLogic() {
         super();
     }
 
-    private static class SalesOrderTimeLogicHolder {
-        static SalesOrderTimeLogic instance = new SalesOrderTimeLogic();
-    }
-
     public static SalesOrderTimeLogic getInstance() {
-        return SalesOrderTimeLogicHolder.instance;
+        return CDI.current().select(SalesOrderTimeLogic.class).get();
     }
     
     public void createOrderTime(final ExecutionErrorAccumulator eea, final String orderName, final String orderTimeTypeName, final Long time, final BasePK createdBy) {

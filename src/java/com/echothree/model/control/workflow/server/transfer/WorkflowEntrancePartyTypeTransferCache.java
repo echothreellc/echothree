@@ -22,20 +22,21 @@ import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntrancePartyType;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class WorkflowEntrancePartyTypeTransferCache
         extends BaseWorkflowTransferCache<WorkflowEntrancePartyType, WorkflowEntrancePartyTypeTransfer> {
     
-    PartyControl partyControl;
-    
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
+    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
+
     /** Creates a new instance of WorkflowEntrancePartyTypeTransferCache */
-    public WorkflowEntrancePartyTypeTransferCache(UserVisit userVisit, WorkflowControl workflowControl) {
-        super(userVisit, workflowControl);
-        
-        partyControl = Session.getModelController(PartyControl.class);
+    protected WorkflowEntrancePartyTypeTransferCache() {
+        super();
     }
     
-    public WorkflowEntrancePartyTypeTransfer getWorkflowEntrancePartyTypeTransfer(WorkflowEntrancePartyType workflowEntrancePartyType) {
+    public WorkflowEntrancePartyTypeTransfer getWorkflowEntrancePartyTypeTransfer(UserVisit userVisit, WorkflowEntrancePartyType workflowEntrancePartyType) {
         var workflowEntrancePartyTypeTransfer = get(workflowEntrancePartyType);
         
         if(workflowEntrancePartyTypeTransfer == null) {
@@ -43,7 +44,7 @@ public class WorkflowEntrancePartyTypeTransferCache
             var partyType = partyControl.getPartyTypeTransfer(userVisit, workflowEntrancePartyType.getPartyType());
             
             workflowEntrancePartyTypeTransfer = new WorkflowEntrancePartyTypeTransfer(workflowEntrance, partyType);
-            put(workflowEntrancePartyType, workflowEntrancePartyTypeTransfer);
+            put(userVisit, workflowEntrancePartyType, workflowEntrancePartyTypeTransfer);
         }
         
         return workflowEntrancePartyTypeTransfer;

@@ -22,20 +22,21 @@ import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workflow.server.entity.WorkflowDestinationPartyType;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class WorkflowDestinationPartyTypeTransferCache
         extends BaseWorkflowTransferCache<WorkflowDestinationPartyType, WorkflowDestinationPartyTypeTransfer> {
     
-    PartyControl partyControl;
-    
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
+    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
+
     /** Creates a new instance of WorkflowDestinationPartyTypeTransferCache */
-    public WorkflowDestinationPartyTypeTransferCache(UserVisit userVisit, WorkflowControl workflowControl) {
-        super(userVisit, workflowControl);
-        
-        partyControl = Session.getModelController(PartyControl.class);
+    protected WorkflowDestinationPartyTypeTransferCache() {
+        super();
     }
     
-    public WorkflowDestinationPartyTypeTransfer getWorkflowDestinationPartyTypeTransfer(WorkflowDestinationPartyType workflowDestinationPartyType) {
+    public WorkflowDestinationPartyTypeTransfer getWorkflowDestinationPartyTypeTransfer(UserVisit userVisit, WorkflowDestinationPartyType workflowDestinationPartyType) {
         var workflowDestinationPartyTypeTransfer = get(workflowDestinationPartyType);
         
         if(workflowDestinationPartyTypeTransfer == null) {
@@ -43,7 +44,7 @@ public class WorkflowDestinationPartyTypeTransferCache
             var partyType = partyControl.getPartyTypeTransfer(userVisit, workflowDestinationPartyType.getPartyType());
             
             workflowDestinationPartyTypeTransfer = new WorkflowDestinationPartyTypeTransfer(workflowDestination, partyType);
-            put(workflowDestinationPartyType, workflowDestinationPartyTypeTransfer);
+            put(userVisit, workflowDestinationPartyType, workflowDestinationPartyTypeTransfer);
         }
         
         return workflowDestinationPartyTypeTransfer;

@@ -27,7 +27,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class GetEntityLongRangeCommand
         extends BaseSingleEntityCommand<EntityLongRange, GetEntityLongRangeForm> {
 
@@ -51,14 +53,13 @@ public class GetEntityLongRangeCommand
 
     @Override
     protected EntityLongRange getEntity() {
-        var coreControl = getCoreControl();
         EntityLongRange entityLongRange = null;
         var componentVendorName = form.getComponentVendorName();
-        var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
+        var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
 
         if(componentVendor != null) {
             var entityTypeName = form.getEntityTypeName();
-            var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
+            var entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
 
             if(entityType != null) {
                 var entityAttributeName = form.getEntityAttributeName();
@@ -97,7 +98,6 @@ public class GetEntityLongRangeCommand
         var result = CoreResultFactory.getGetEntityLongRangeResult();
 
         if(entityLongRange != null) {
-            var coreControl = getCoreControl();
 
             result.setEntityLongRange(coreControl.getEntityLongRangeTransfer(getUserVisit(), entityLongRange, null));
         }

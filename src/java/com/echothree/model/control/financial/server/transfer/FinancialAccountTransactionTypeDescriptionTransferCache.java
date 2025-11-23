@@ -20,16 +20,21 @@ import com.echothree.model.control.financial.common.transfer.FinancialAccountTra
 import com.echothree.model.control.financial.server.control.FinancialControl;
 import com.echothree.model.data.financial.server.entity.FinancialAccountTransactionTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class FinancialAccountTransactionTypeDescriptionTransferCache
         extends BaseFinancialDescriptionTransferCache<FinancialAccountTransactionTypeDescription, FinancialAccountTransactionTypeDescriptionTransfer> {
-    
+
+    FinancialControl financialControl = Session.getModelController(FinancialControl.class);
+
     /** Creates a new instance of FinancialAccountTransactionTypeDescriptionTransferCache */
-    public FinancialAccountTransactionTypeDescriptionTransferCache(UserVisit userVisit, FinancialControl financialControl) {
-        super(userVisit, financialControl);
+    protected FinancialAccountTransactionTypeDescriptionTransferCache() {
+        super();
     }
     
-    public FinancialAccountTransactionTypeDescriptionTransfer getFinancialAccountTransactionTypeDescriptionTransfer(FinancialAccountTransactionTypeDescription financialAccountTransactionTypeDescription) {
+    public FinancialAccountTransactionTypeDescriptionTransfer getFinancialAccountTransactionTypeDescriptionTransfer(UserVisit userVisit, FinancialAccountTransactionTypeDescription financialAccountTransactionTypeDescription) {
         var financialAccountTransactionTypeDescriptionTransfer = get(financialAccountTransactionTypeDescription);
         
         if(financialAccountTransactionTypeDescriptionTransfer == null) {
@@ -37,7 +42,7 @@ public class FinancialAccountTransactionTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, financialAccountTransactionTypeDescription.getLanguage());
             
             financialAccountTransactionTypeDescriptionTransfer = new FinancialAccountTransactionTypeDescriptionTransfer(languageTransfer, financialAccountTransactionTypeTransfer, financialAccountTransactionTypeDescription.getDescription());
-            put(financialAccountTransactionTypeDescription, financialAccountTransactionTypeDescriptionTransfer);
+            put(userVisit, financialAccountTransactionTypeDescription, financialAccountTransactionTypeDescriptionTransfer);
         }
         
         return financialAccountTransactionTypeDescriptionTransfer;

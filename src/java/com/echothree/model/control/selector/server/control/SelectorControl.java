@@ -36,7 +36,16 @@ import com.echothree.model.control.selector.common.transfer.SelectorPartyTransfe
 import com.echothree.model.control.selector.common.transfer.SelectorTransfer;
 import com.echothree.model.control.selector.common.transfer.SelectorTypeDescriptionTransfer;
 import com.echothree.model.control.selector.common.transfer.SelectorTypeTransfer;
-import com.echothree.model.control.selector.server.transfer.SelectorTransferCaches;
+import com.echothree.model.control.selector.server.transfer.SelectorDescriptionTransferCache;
+import com.echothree.model.control.selector.server.transfer.SelectorKindDescriptionTransferCache;
+import com.echothree.model.control.selector.server.transfer.SelectorKindTransferCache;
+import com.echothree.model.control.selector.server.transfer.SelectorNodeDescriptionTransferCache;
+import com.echothree.model.control.selector.server.transfer.SelectorNodeTransferCache;
+import com.echothree.model.control.selector.server.transfer.SelectorNodeTypeTransferCache;
+import com.echothree.model.control.selector.server.transfer.SelectorPartyTransferCache;
+import com.echothree.model.control.selector.server.transfer.SelectorTransferCache;
+import com.echothree.model.control.selector.server.transfer.SelectorTypeDescriptionTransferCache;
+import com.echothree.model.control.selector.server.transfer.SelectorTypeTransferCache;
 import com.echothree.model.data.accounting.server.entity.ItemAccountingCategory;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityListItem;
@@ -158,29 +167,52 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
+@RequestScoped
 public class SelectorControl
         extends BaseModelControl {
     
     /** Creates a new instance of SelectorControl */
-    public SelectorControl() {
+    protected SelectorControl() {
         super();
     }
     
     // --------------------------------------------------------------------------------
     //   Selector Transfer Caches
     // --------------------------------------------------------------------------------
-    
-    private SelectorTransferCaches selectorTransferCaches;
-    
-    public SelectorTransferCaches getSelectorTransferCaches(UserVisit userVisit) {
-        if(selectorTransferCaches == null) {
-            selectorTransferCaches = new SelectorTransferCaches(userVisit, this);
-        }
-        
-        return selectorTransferCaches;
-    }
-    
+
+    @Inject
+    SelectorKindTransferCache selectorKindTransferCache;
+
+    @Inject
+    SelectorKindDescriptionTransferCache selectorKindDescriptionTransferCache;
+
+    @Inject
+    SelectorTypeTransferCache selectorTypeTransferCache;
+
+    @Inject
+    SelectorTypeDescriptionTransferCache selectorTypeDescriptionTransferCache;
+
+    @Inject
+    SelectorTransferCache selectorTransferCache;
+
+    @Inject
+    SelectorDescriptionTransferCache selectorDescriptionTransferCache;
+
+    @Inject
+    SelectorNodeDescriptionTransferCache selectorNodeDescriptionTransferCache;
+
+    @Inject
+    SelectorNodeTransferCache selectorNodeTransferCache;
+
+    @Inject
+    SelectorNodeTypeTransferCache selectorNodeTypeTransferCache;
+
+    @Inject
+    SelectorPartyTransferCache selectorPartyTransferCache;
+
     // --------------------------------------------------------------------------------
     //   Selector Kinds
     // --------------------------------------------------------------------------------
@@ -373,15 +405,14 @@ public class SelectorControl
     }
 
     public SelectorKindTransfer getSelectorKindTransfer(UserVisit userVisit, SelectorKind selectorKind) {
-        return getSelectorTransferCaches(userVisit).getSelectorKindTransferCache().getSelectorKindTransfer(selectorKind);
+        return selectorKindTransferCache.getSelectorKindTransfer(userVisit, selectorKind);
     }
 
     public List<SelectorKindTransfer> getSelectorKindTransfers(UserVisit userVisit, Collection<SelectorKind> selectorKinds) {
         List<SelectorKindTransfer> selectorKindTransfers = new ArrayList<>(selectorKinds.size());
-        var selectorKindTransferCache = getSelectorTransferCaches(userVisit).getSelectorKindTransferCache();
 
         selectorKinds.forEach((selectorKind) ->
-                selectorKindTransfers.add(selectorKindTransferCache.getSelectorKindTransfer(selectorKind))
+                selectorKindTransfers.add(selectorKindTransferCache.getSelectorKindTransfer(userVisit, selectorKind))
         );
 
         return selectorKindTransfers;
@@ -550,7 +581,7 @@ public class SelectorControl
         var selectorKindDescription = getSelectorKindDescription(selectorKind, language);
 
         if(selectorKindDescription == null && !language.getIsDefault()) {
-            selectorKindDescription = getSelectorKindDescription(selectorKind, getPartyControl().getDefaultLanguage());
+            selectorKindDescription = getSelectorKindDescription(selectorKind, partyControl.getDefaultLanguage());
         }
 
         if(selectorKindDescription == null) {
@@ -563,7 +594,7 @@ public class SelectorControl
     }
 
     public SelectorKindDescriptionTransfer getSelectorKindDescriptionTransfer(UserVisit userVisit, SelectorKindDescription selectorKindDescription) {
-        return getSelectorTransferCaches(userVisit).getSelectorKindDescriptionTransferCache().getSelectorKindDescriptionTransfer(selectorKindDescription);
+        return selectorKindDescriptionTransferCache.getSelectorKindDescriptionTransfer(userVisit, selectorKindDescription);
     }
 
     public List<SelectorKindDescriptionTransfer> getSelectorKindDescriptionTransfersBySelectorKind(UserVisit userVisit, SelectorKind selectorKind) {
@@ -571,7 +602,7 @@ public class SelectorControl
         List<SelectorKindDescriptionTransfer> selectorKindDescriptionTransfers = new ArrayList<>(selectorKindDescriptions.size());
 
         selectorKindDescriptions.forEach((selectorKindDescription) -> {
-            selectorKindDescriptionTransfers.add(getSelectorTransferCaches(userVisit).getSelectorKindDescriptionTransferCache().getSelectorKindDescriptionTransfer(selectorKindDescription));
+            selectorKindDescriptionTransfers.add(selectorKindDescriptionTransferCache.getSelectorKindDescriptionTransfer(userVisit, selectorKindDescription));
         });
 
         return selectorKindDescriptionTransfers;
@@ -810,15 +841,14 @@ public class SelectorControl
     }
 
     public SelectorTypeTransfer getSelectorTypeTransfer(UserVisit userVisit, SelectorType selectorType) {
-        return getSelectorTransferCaches(userVisit).getSelectorTypeTransferCache().getSelectorTypeTransfer(selectorType);
+        return selectorTypeTransferCache.getSelectorTypeTransfer(userVisit, selectorType);
     }
 
     public List<SelectorTypeTransfer> getSelectorTypeTransfers(UserVisit userVisit, Collection<SelectorType> selectorTypes) {
         List<SelectorTypeTransfer> selectorTypeTransfers = new ArrayList<>(selectorTypes.size());
-        var selectorTypeTransferCache = getSelectorTransferCaches(userVisit).getSelectorTypeTransferCache();
 
         selectorTypes.forEach((selectorType) ->
-                selectorTypeTransfers.add(selectorTypeTransferCache.getSelectorTypeTransfer(selectorType))
+                selectorTypeTransfers.add(selectorTypeTransferCache.getSelectorTypeTransfer(userVisit, selectorType))
         );
 
         return selectorTypeTransfers;
@@ -1001,7 +1031,7 @@ public class SelectorControl
         var selectorTypeDescription = getSelectorTypeDescription(selectorType, language);
 
         if(selectorTypeDescription == null && !language.getIsDefault()) {
-            selectorTypeDescription = getSelectorTypeDescription(selectorType, getPartyControl().getDefaultLanguage());
+            selectorTypeDescription = getSelectorTypeDescription(selectorType, partyControl.getDefaultLanguage());
         }
 
         if(selectorTypeDescription == null) {
@@ -1014,7 +1044,7 @@ public class SelectorControl
     }
 
     public SelectorTypeDescriptionTransfer getSelectorTypeDescriptionTransfer(UserVisit userVisit, SelectorTypeDescription selectorTypeDescription) {
-        return getSelectorTransferCaches(userVisit).getSelectorTypeDescriptionTransferCache().getSelectorTypeDescriptionTransfer(selectorTypeDescription);
+        return selectorTypeDescriptionTransferCache.getSelectorTypeDescriptionTransfer(userVisit, selectorTypeDescription);
     }
 
     public List<SelectorTypeDescriptionTransfer> getSelectorTypeDescriptionTransfersBySelectorType(UserVisit userVisit, SelectorType selectorType) {
@@ -1022,7 +1052,7 @@ public class SelectorControl
         List<SelectorTypeDescriptionTransfer> selectorTypeDescriptionTransfers = new ArrayList<>(selectorTypeDescriptions.size());
 
         selectorTypeDescriptions.forEach((selectorTypeDescription) -> {
-            selectorTypeDescriptionTransfers.add(getSelectorTransferCaches(userVisit).getSelectorTypeDescriptionTransferCache().getSelectorTypeDescriptionTransfer(selectorTypeDescription));
+            selectorTypeDescriptionTransfers.add(selectorTypeDescriptionTransferCache.getSelectorTypeDescriptionTransfer(userVisit, selectorTypeDescription));
         });
 
         return selectorTypeDescriptionTransfers;
@@ -1174,7 +1204,7 @@ public class SelectorControl
         var selectorBooleanTypeDescription = getSelectorBooleanTypeDescription(selectorBooleanType, language);
         
         if(selectorBooleanTypeDescription == null && !language.getIsDefault()) {
-            selectorBooleanTypeDescription = getSelectorBooleanTypeDescription(selectorBooleanType, getPartyControl().getDefaultLanguage());
+            selectorBooleanTypeDescription = getSelectorBooleanTypeDescription(selectorBooleanType, partyControl.getDefaultLanguage());
         }
         
         if(selectorBooleanTypeDescription == null) {
@@ -1295,7 +1325,7 @@ public class SelectorControl
         var selectorComparisonTypeDescription = getSelectorComparisonTypeDescription(selectorComparisonType, language);
         
         if(selectorComparisonTypeDescription == null && !language.getIsDefault()) {
-            selectorComparisonTypeDescription = getSelectorComparisonTypeDescription(selectorComparisonType, getPartyControl().getDefaultLanguage());
+            selectorComparisonTypeDescription = getSelectorComparisonTypeDescription(selectorComparisonType, partyControl.getDefaultLanguage());
         }
         
         if(selectorComparisonTypeDescription == null) {
@@ -1379,15 +1409,14 @@ public class SelectorControl
     }
     
     public SelectorNodeTypeTransfer getSelectorNodeTypeTransfer(UserVisit userVisit, SelectorNodeType selectorNodeType) {
-        return getSelectorTransferCaches(userVisit).getSelectorNodeTypeTransferCache().getSelectorNodeTypeTransfer(selectorNodeType);
+        return selectorNodeTypeTransferCache.getSelectorNodeTypeTransfer(userVisit, selectorNodeType);
     }
     
     public List<SelectorNodeTypeTransfer> getSelectorNodeTypeTransfers(UserVisit userVisit, Collection<SelectorNodeType> selectorNodeTypes) {
         List<SelectorNodeTypeTransfer> selectorNodeTypeTransfers = new ArrayList<>(selectorNodeTypes.size());
-        var selectorNodeTypeTransferCache = getSelectorTransferCaches(userVisit).getSelectorNodeTypeTransferCache();
         
         selectorNodeTypes.forEach((selectorNodeType) ->
-                selectorNodeTypeTransfers.add(selectorNodeTypeTransferCache.getSelectorNodeTypeTransfer(selectorNodeType))
+                selectorNodeTypeTransfers.add(selectorNodeTypeTransferCache.getSelectorNodeTypeTransfer(userVisit, selectorNodeType))
         );
         
         return selectorNodeTypeTransfers;
@@ -1465,7 +1494,7 @@ public class SelectorControl
         var selectorNodeTypeDescription = getSelectorNodeTypeDescription(selectorNodeType, language);
         
         if(selectorNodeTypeDescription == null && !language.getIsDefault()) {
-            selectorNodeTypeDescription = getSelectorNodeTypeDescription(selectorNodeType, getPartyControl().getDefaultLanguage());
+            selectorNodeTypeDescription = getSelectorNodeTypeDescription(selectorNodeType, partyControl.getDefaultLanguage());
         }
         
         if(selectorNodeTypeDescription == null) {
@@ -1585,7 +1614,7 @@ public class SelectorControl
         var selectorTextSearchTypeDescription = getSelectorTextSearchTypeDescription(selectorTextSearchType, language);
         
         if(selectorTextSearchTypeDescription == null && !language.getIsDefault()) {
-            selectorTextSearchTypeDescription = getSelectorTextSearchTypeDescription(selectorTextSearchType, getPartyControl().getDefaultLanguage());
+            selectorTextSearchTypeDescription = getSelectorTextSearchTypeDescription(selectorTextSearchType, partyControl.getDefaultLanguage());
         }
         
         if(selectorTextSearchTypeDescription == null) {
@@ -1861,15 +1890,14 @@ public class SelectorControl
     }
     
     public SelectorTransfer getSelectorTransfer(UserVisit userVisit, Selector selector) {
-        return getSelectorTransferCaches(userVisit).getSelectorTransferCache().getSelectorTransfer(selector);
+        return selectorTransferCache.getSelectorTransfer(userVisit, selector);
     }
     
     public List<SelectorTransfer> getSelectorTransfers(UserVisit userVisit, Collection<Selector> selectors) {
         List<SelectorTransfer> selectorTransfers = new ArrayList<>(selectors.size());
-        var selectorTransferCache = getSelectorTransferCaches(userVisit).getSelectorTransferCache();
         
         selectors.forEach((selector) ->
-                selectorTransfers.add(selectorTransferCache.getSelectorTransfer(selector))
+                selectorTransfers.add(selectorTransferCache.getSelectorTransfer(userVisit, selector))
         );
         
         return selectorTransfers;
@@ -2073,7 +2101,7 @@ public class SelectorControl
         var selectorDescription = getSelectorDescription(selector, language);
         
         if(selectorDescription == null && !language.getIsDefault()) {
-            selectorDescription = getSelectorDescription(selector, getPartyControl().getDefaultLanguage());
+            selectorDescription = getSelectorDescription(selector, partyControl.getDefaultLanguage());
         }
         
         if(selectorDescription == null) {
@@ -2086,7 +2114,7 @@ public class SelectorControl
     }
     
     public SelectorDescriptionTransfer getSelectorDescriptionTransfer(UserVisit userVisit, SelectorDescription selectorDescription) {
-        return getSelectorTransferCaches(userVisit).getSelectorDescriptionTransferCache().getSelectorDescriptionTransfer(selectorDescription);
+        return selectorDescriptionTransferCache.getSelectorDescriptionTransfer(userVisit, selectorDescription);
     }
     
     public List<SelectorDescriptionTransfer> getSelectorDescriptionTransfers(UserVisit userVisit, Selector selector) {
@@ -2094,7 +2122,7 @@ public class SelectorControl
         List<SelectorDescriptionTransfer> selectorDescriptionTransfers = new ArrayList<>(selectorDescriptions.size());
         
         selectorDescriptions.forEach((selectorDescription) -> {
-            selectorDescriptionTransfers.add(getSelectorTransferCaches(userVisit).getSelectorDescriptionTransferCache().getSelectorDescriptionTransfer(selectorDescription));
+            selectorDescriptionTransfers.add(selectorDescriptionTransferCache.getSelectorDescriptionTransfer(userVisit, selectorDescription));
         });
         
         return selectorDescriptionTransfers;
@@ -2368,7 +2396,7 @@ public class SelectorControl
     }
     
     public SelectorNodeTransfer getSelectorNodeTransfer(UserVisit userVisit, SelectorNode selectorNode) {
-        return getSelectorTransferCaches(userVisit).getSelectorNodeTransferCache().getSelectorNodeTransfer(selectorNode);
+        return selectorNodeTransferCache.getSelectorNodeTransfer(userVisit, selectorNode);
     }
     
     public List<SelectorNodeTransfer> getSelectorNodeTransfersBySelector(UserVisit userVisit, Selector selector) {
@@ -2376,7 +2404,7 @@ public class SelectorControl
         List<SelectorNodeTransfer> selectorNodeTransfers = new ArrayList<>(selectorNodes.size());
         
         selectorNodes.forEach((selectorNode) -> {
-            selectorNodeTransfers.add(getSelectorTransferCaches(userVisit).getSelectorNodeTransferCache().getSelectorNodeTransfer(selectorNode));
+            selectorNodeTransfers.add(selectorNodeTransferCache.getSelectorNodeTransfer(userVisit, selectorNode));
         });
         
         return selectorNodeTransfers;
@@ -2606,7 +2634,7 @@ public class SelectorControl
         var selectorNodeDescription = getSelectorNodeDescription(selectorNode, language);
         
         if(selectorNodeDescription == null && !language.getIsDefault()) {
-            selectorNodeDescription = getSelectorNodeDescription(selectorNode, getPartyControl().getDefaultLanguage());
+            selectorNodeDescription = getSelectorNodeDescription(selectorNode, partyControl.getDefaultLanguage());
         }
         
         if(selectorNodeDescription == null) {
@@ -2619,7 +2647,7 @@ public class SelectorControl
     }
     
     public SelectorNodeDescriptionTransfer getSelectorNodeDescriptionTransfer(UserVisit userVisit, SelectorNodeDescription selectorNodeDescription) {
-        return getSelectorTransferCaches(userVisit).getSelectorNodeDescriptionTransferCache().getSelectorNodeDescriptionTransfer(selectorNodeDescription);
+        return selectorNodeDescriptionTransferCache.getSelectorNodeDescriptionTransfer(userVisit, selectorNodeDescription);
     }
     
     public List<SelectorNodeDescriptionTransfer> getSelectorNodeDescriptionTransfers(UserVisit userVisit, SelectorNode selectorNode) {
@@ -2630,7 +2658,7 @@ public class SelectorControl
             selectorNodeDescriptionTransfers = new ArrayList<>(selectorNodeDescriptions.size());
             
             for(var selectorNodeDescription : selectorNodeDescriptions) {
-                selectorNodeDescriptionTransfers.add(getSelectorTransferCaches(userVisit).getSelectorNodeDescriptionTransferCache().getSelectorNodeDescriptionTransfer(selectorNodeDescription));
+                selectorNodeDescriptionTransfers.add(selectorNodeDescriptionTransferCache.getSelectorNodeDescriptionTransfer(userVisit, selectorNodeDescription));
             }
         }
         
@@ -4330,16 +4358,15 @@ public class SelectorControl
     }
     
     public SelectorPartyTransfer getSelectorPartyTransfer(UserVisit userVisit, SelectorParty selectorParty) {
-        return getSelectorTransferCaches(userVisit).getSelectorPartyTransferCache().getSelectorPartyTransfer(selectorParty);
+        return selectorPartyTransferCache.getSelectorPartyTransfer(userVisit, selectorParty);
     }
     
     public List<SelectorPartyTransfer> getSelectorPartyTransfers(UserVisit userVisit, Selector selector) {
         var selectorParties = getSelectorPartiesBySelector(selector);
         List<SelectorPartyTransfer> selectorPartyTransfers = new ArrayList<>(selectorParties.size());
-        var selectorPartyTransferCache = getSelectorTransferCaches(userVisit).getSelectorPartyTransferCache();
         
         selectorParties.forEach((selectorParty) ->
-                selectorPartyTransfers.add(selectorPartyTransferCache.getSelectorPartyTransfer(selectorParty))
+                selectorPartyTransfers.add(selectorPartyTransferCache.getSelectorPartyTransfer(userVisit, selectorParty))
         );
         
         return selectorPartyTransfers;

@@ -33,7 +33,9 @@ import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CreateComponentVendorCommand
         extends BaseSimpleCommand<CreateComponentVendorForm> {
     
@@ -63,12 +65,12 @@ public class CreateComponentVendorCommand
     protected BaseResult execute() {
         var result = CoreResultFactory.getCreateComponentVendorResult();
         var componentVendorName = form.getComponentVendorName();
-        var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
+        var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
         
         if(componentVendor == null) {
             var description = form.getDescription();
 
-            componentVendor = getComponentControl().createComponentVendor(componentVendorName, description, getPartyPK());
+            componentVendor = componentControl.createComponentVendor(componentVendorName, description, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.DuplicateComponentVendorName.name(), componentVendorName);
         }

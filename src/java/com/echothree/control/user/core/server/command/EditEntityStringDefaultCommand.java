@@ -36,7 +36,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EditEntityStringDefaultCommand
         extends BaseAbstractEditCommand<EntityStringDefaultSpec, EntityStringDefaultEdit, EditEntityStringDefaultResult, EntityStringDefault, EntityAttribute> {
     
@@ -87,7 +89,6 @@ public class EditEntityStringDefaultCommand
         EntityStringDefault entityStringDefault = null;
 
         if(!hasExecutionErrors()) {
-            var coreControl = getCoreControl();
 
             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                 entityStringDefault = coreControl.getEntityStringDefault(entityAttribute, language);
@@ -110,7 +111,6 @@ public class EditEntityStringDefaultCommand
 
     @Override
     public void fillInResult(EditEntityStringDefaultResult result, EntityStringDefault entityStringDefault) {
-        var coreControl = getCoreControl();
 
         result.setEntityStringDefault(coreControl.getEntityStringDefaultTransfer(getUserVisit(), entityStringDefault));
     }
@@ -122,7 +122,6 @@ public class EditEntityStringDefaultCommand
 
     @Override
     public void doUpdate(EntityStringDefault entityStringDefault) {
-        var coreControl = getCoreControl();
         var entityStringDefaultValue = coreControl.getEntityStringDefaultValueForUpdate(entityStringDefault);
 
         entityStringDefaultValue.setStringAttribute(String.valueOf(edit.getStringAttribute()));

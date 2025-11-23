@@ -20,25 +20,29 @@ import com.echothree.model.control.content.common.transfer.ContentPageLayoutDesc
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.data.content.server.entity.ContentPageLayoutDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ContentPageLayoutDescriptionTransferCache
         extends BaseContentDescriptionTransferCache<ContentPageLayoutDescription, ContentPageLayoutDescriptionTransfer> {
-    
+
+    ContentControl contentControl = Session.getModelController(ContentControl.class);
+
     /** Creates a new instance of ContentPageLayoutDescriptionTransferCache */
-    public ContentPageLayoutDescriptionTransferCache(UserVisit userVisit, ContentControl contentControl) {
-        super(userVisit, contentControl);
+    protected ContentPageLayoutDescriptionTransferCache() {
+        super();
     }
     
-    public ContentPageLayoutDescriptionTransfer getTransfer(ContentPageLayoutDescription contentPageLayoutDescription) {
+    public ContentPageLayoutDescriptionTransfer getTransfer(UserVisit userVisit, ContentPageLayoutDescription contentPageLayoutDescription) {
         var contentPageLayoutDescriptionTransfer = get(contentPageLayoutDescription);
         
         if(contentPageLayoutDescriptionTransfer == null) {
-            var contentPageLayoutTransferCache = contentControl.getContentTransferCaches(userVisit).getContentPageLayoutTransferCache();
-            var contentPageLayoutTransfer = contentPageLayoutTransferCache.getTransfer(contentPageLayoutDescription.getContentPageLayout());
+            var contentPageLayoutTransfer = contentControl.getContentPageLayoutTransfer(userVisit, contentPageLayoutDescription.getContentPageLayout());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, contentPageLayoutDescription.getLanguage());
             
             contentPageLayoutDescriptionTransfer = new ContentPageLayoutDescriptionTransfer(languageTransfer, contentPageLayoutTransfer, contentPageLayoutDescription.getDescription());
-            put(contentPageLayoutDescription, contentPageLayoutDescriptionTransfer);
+            put(userVisit, contentPageLayoutDescription, contentPageLayoutDescriptionTransfer);
         }
         
         return contentPageLayoutDescriptionTransfer;

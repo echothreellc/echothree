@@ -26,25 +26,26 @@ import com.echothree.model.data.core.server.entity.MimeTypeUsageType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
+@ApplicationScoped
 public class MimeTypeLogic
         extends BaseLogic {
-    
-    private MimeTypeLogic() {
+
+    @Inject
+    protected MimeTypeControl mimeTypeControl;
+
+    protected MimeTypeLogic() {
         super();
     }
-    
-    private static class MimeTypeLogicHolder {
-        static MimeTypeLogic instance = new MimeTypeLogic();
-    }
-    
+
     public static MimeTypeLogic getInstance() {
-        return MimeTypeLogicHolder.instance;
+        return CDI.current().select(MimeTypeLogic.class).get();
     }
     
     public MimeType getMimeTypeByName(final ExecutionErrorAccumulator eea, final String mimeTypeName) {
-        var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
         var mimeType = mimeTypeControl.getMimeTypeByName(mimeTypeName);
 
         if(mimeType == null) {
@@ -55,7 +56,6 @@ public class MimeTypeLogic
     }
     
     public MimeTypeUsageType getMimeTypeUsageTypeByName(final ExecutionErrorAccumulator eea, final String mimeTypeUsageTypeName) {
-        var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
         var mimeTypeUsageType = mimeTypeControl.getMimeTypeUsageTypeByName(mimeTypeUsageTypeName);
 
         if(mimeTypeUsageType == null) {
@@ -66,7 +66,6 @@ public class MimeTypeLogic
     }
     
     public MimeTypeUsage getMimeTypeUsage(final ExecutionErrorAccumulator eea, final MimeType mimeType, final MimeTypeUsageType mimeTypeUsageType) {
-        var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
         var mimeTypeUsage = mimeTypeControl.getMimeTypeUsage(mimeType, mimeTypeUsageType);
 
         if(mimeTypeUsage == null) {
@@ -83,8 +82,6 @@ public class MimeTypeLogic
         var parameterCount = (mimeTypeName == null ? 0 : 1) + (value == null ? 0 : 1);
         
         if(parameterCount == 2) {
-            var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
-            
             mimeType = mimeTypeName == null? null: mimeTypeControl.getMimeTypeByName(mimeTypeName);
             
             if(mimeTypeName == null || mimeType != null) {

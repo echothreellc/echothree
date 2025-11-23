@@ -18,7 +18,6 @@ package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.transfer.EntityLockTransfer;
 import com.echothree.model.control.core.server.CoreDebugFlags;
-import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.data.core.common.pk.EntityInstancePK;
 import com.echothree.model.data.core.server.entity.EntityInstance;
@@ -31,35 +30,37 @@ import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.PersistenceUtils;
 import com.echothree.util.server.persistence.Session;
 import java.sql.SQLException;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EntityLockTransferCache
         extends BaseCoreTransferCache {
 
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
     /** Creates a new instance of EntityLockTransferCache */
-    public EntityLockTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected EntityLockTransferCache() {
+        super();
     }
     
     @SuppressWarnings("Finally")
-    public EntityLockTransfer getEntityLockTransfer(BasePK lockTarget) {
+    public EntityLockTransfer getEntityLockTransfer(final UserVisit userVisit, BasePK lockTarget) {
         var entityLockTransfer = (EntityLockTransfer)get(lockTarget);
         
         if(entityLockTransfer == null) {
             var lockTargetEntityInstance = entityInstanceControl.getEntityInstanceByBasePK(lockTarget);
             
-            entityLockTransfer = getEntityLockTransferByEntityInstance(lockTargetEntityInstance, true);
+            entityLockTransfer = getEntityLockTransferByEntityInstance(userVisit, lockTargetEntityInstance, true);
         }
         
         return entityLockTransfer;
     }
     
-    public EntityLockTransfer getEntityLockTransferByEntityInstance(EntityInstance lockTargetEntityInstance) {
-        return getEntityLockTransferByEntityInstance(lockTargetEntityInstance, false);
+    public EntityLockTransfer getEntityLockTransferByEntityInstance(final UserVisit userVisit, EntityInstance lockTargetEntityInstance) {
+        return getEntityLockTransferByEntityInstance(userVisit, lockTargetEntityInstance, false);
     }
     
-    private EntityLockTransfer getEntityLockTransferByEntityInstance(EntityInstance lockTargetEntityInstance, boolean putInCache) {
+    private EntityLockTransfer getEntityLockTransferByEntityInstance(final UserVisit userVisit, EntityInstance lockTargetEntityInstance, boolean putInCache) {
         EntityLockTransfer entityLockTransfer = null;
         
         try (var conn = DslContextFactory.getInstance().getNTDslContext().parsingConnection()) {
@@ -108,8 +109,8 @@ public class EntityLockTransferCache
                     getLog().info("--- lockTargetEntityInstanceTransfer = " + lockTargetEntityInstanceTransfer.getEntityRef());
                 }
 
-                var lockedTimeString = formatTypicalDateTime(lockedTime);
-                var expirationTimeString = formatTypicalDateTime(expirationTime);
+                var lockedTimeString = formatTypicalDateTime(userVisit, lockedTime);
+                var expirationTimeString = formatTypicalDateTime(userVisit, expirationTime);
 
                 entityLockTransfer = new EntityLockTransfer(lockTargetEntityInstanceTransfer, lockedByEntityInstanceTransfer, lockedTime, lockedTimeString, expirationTime, expirationTimeString);
             }

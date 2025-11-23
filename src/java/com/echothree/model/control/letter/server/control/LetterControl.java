@@ -26,7 +26,12 @@ import com.echothree.model.control.letter.common.transfer.LetterSourceDescriptio
 import com.echothree.model.control.letter.common.transfer.LetterSourceTransfer;
 import com.echothree.model.control.letter.common.transfer.LetterTransfer;
 import com.echothree.model.control.letter.common.transfer.QueuedLetterTransfer;
-import com.echothree.model.control.letter.server.transfer.LetterTransferCaches;
+import com.echothree.model.control.letter.server.transfer.LetterContactMechanismPurposeTransferCache;
+import com.echothree.model.control.letter.server.transfer.LetterDescriptionTransferCache;
+import com.echothree.model.control.letter.server.transfer.LetterSourceDescriptionTransferCache;
+import com.echothree.model.control.letter.server.transfer.LetterSourceTransferCache;
+import com.echothree.model.control.letter.server.transfer.LetterTransferCache;
+import com.echothree.model.control.letter.server.transfer.QueuedLetterTransferCache;
 import com.echothree.model.data.chain.server.entity.ChainInstance;
 import com.echothree.model.data.chain.server.entity.ChainType;
 import com.echothree.model.data.contact.server.entity.ContactMechanismPurpose;
@@ -69,29 +74,40 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
+@RequestScoped
 public class LetterControl
         extends BaseModelControl {
     
     /** Creates a new instance of LetterControl */
-    public LetterControl() {
+    protected LetterControl() {
         super();
     }
     
     // --------------------------------------------------------------------------------
     //   Letter Transfer Caches
     // --------------------------------------------------------------------------------
-    
-    private LetterTransferCaches letterTransferCaches;
-    
-    public LetterTransferCaches getLetterTransferCaches(UserVisit userVisit) {
-        if(letterTransferCaches == null) {
-            letterTransferCaches = new LetterTransferCaches(userVisit, this);
-        }
-        
-        return letterTransferCaches;
-    }
-    
+
+    @Inject
+    LetterTransferCache letterTransferCache;
+
+    @Inject
+    LetterDescriptionTransferCache letterDescriptionTransferCache;
+
+    @Inject
+    LetterSourceTransferCache letterSourceTransferCache;
+
+    @Inject
+    LetterSourceDescriptionTransferCache letterSourceDescriptionTransferCache;
+
+    @Inject
+    QueuedLetterTransferCache queuedLetterTransferCache;
+
+    @Inject
+    LetterContactMechanismPurposeTransferCache letterContactMechanismPurposeTransferCache;
+
     // --------------------------------------------------------------------------------
     //   Letter Sources
     // --------------------------------------------------------------------------------
@@ -349,16 +365,15 @@ public class LetterControl
     }
     
     public LetterSourceTransfer getLetterSourceTransfer(UserVisit userVisit, LetterSource letterSource) {
-        return getLetterTransferCaches(userVisit).getLetterSourceTransferCache().getLetterSourceTransfer(letterSource);
+        return letterSourceTransferCache.getLetterSourceTransfer(userVisit, letterSource);
     }
     
     public List<LetterSourceTransfer> getLetterSourceTransfers(UserVisit userVisit) {
         var letterSources = getLetterSources();
         List<LetterSourceTransfer> letterSourceTransfers = new ArrayList<>(letterSources.size());
-        var letterSourceTransferCache = getLetterTransferCaches(userVisit).getLetterSourceTransferCache();
         
         letterSources.forEach((letterSource) ->
-                letterSourceTransfers.add(letterSourceTransferCache.getLetterSourceTransfer(letterSource))
+                letterSourceTransfers.add(letterSourceTransferCache.getLetterSourceTransfer(userVisit, letterSource))
         );
         
         return letterSourceTransfers;
@@ -605,7 +620,7 @@ public class LetterControl
         var letterSourceDescription = getLetterSourceDescription(letterSource, language);
         
         if(letterSourceDescription == null && !language.getIsDefault()) {
-            letterSourceDescription = getLetterSourceDescription(letterSource, getPartyControl().getDefaultLanguage());
+            letterSourceDescription = getLetterSourceDescription(letterSource, partyControl.getDefaultLanguage());
         }
         
         if(letterSourceDescription == null) {
@@ -618,7 +633,7 @@ public class LetterControl
     }
     
     public LetterSourceDescriptionTransfer getLetterSourceDescriptionTransfer(UserVisit userVisit, LetterSourceDescription letterSourceDescription) {
-        return getLetterTransferCaches(userVisit).getLetterSourceDescriptionTransferCache().getLetterSourceDescriptionTransfer(letterSourceDescription);
+        return letterSourceDescriptionTransferCache.getLetterSourceDescriptionTransfer(userVisit, letterSourceDescription);
     }
     
     public List<LetterSourceDescriptionTransfer> getLetterSourceDescriptionTransfersByLetterSource(UserVisit userVisit, LetterSource letterSource) {
@@ -626,12 +641,11 @@ public class LetterControl
         List<LetterSourceDescriptionTransfer> letterSourceDescriptionTransfers = null;
         
         if(letterSourceDescriptions != null) {
-            var letterSourceDescriptionTransferCache = getLetterTransferCaches(userVisit).getLetterSourceDescriptionTransferCache();
             
             letterSourceDescriptionTransfers = new ArrayList<>(letterSourceDescriptions.size());
             
             for(var letterSourceDescription : letterSourceDescriptions) {
-                letterSourceDescriptionTransfers.add(letterSourceDescriptionTransferCache.getLetterSourceDescriptionTransfer(letterSourceDescription));
+                letterSourceDescriptionTransfers.add(letterSourceDescriptionTransferCache.getLetterSourceDescriptionTransfer(userVisit, letterSourceDescription));
             }
         }
         
@@ -906,15 +920,14 @@ public class LetterControl
     }
     
     public LetterTransfer getLetterTransfer(UserVisit userVisit, Letter letter) {
-        return getLetterTransferCaches(userVisit).getLetterTransferCache().getLetterTransfer(letter);
+        return letterTransferCache.getLetterTransfer(userVisit, letter);
     }
     
     public List<LetterTransfer> getLetterTransfers(UserVisit userVisit, Collection<Letter> letters) {
         List<LetterTransfer> letterTransfers = new ArrayList<>(letters.size());
-        var letterTransferCache = getLetterTransferCaches(userVisit).getLetterTransferCache();
         
         letters.forEach((letter) ->
-                letterTransfers.add(letterTransferCache.getLetterTransfer(letter))
+                letterTransfers.add(letterTransferCache.getLetterTransfer(userVisit, letter))
         );
         
         return letterTransfers;
@@ -1159,7 +1172,7 @@ public class LetterControl
         var letterDescription = getLetterDescription(letter, language);
         
         if(letterDescription == null && !language.getIsDefault()) {
-            letterDescription = getLetterDescription(letter, getPartyControl().getDefaultLanguage());
+            letterDescription = getLetterDescription(letter, partyControl.getDefaultLanguage());
         }
         
         if(letterDescription == null) {
@@ -1172,7 +1185,7 @@ public class LetterControl
     }
     
     public LetterDescriptionTransfer getLetterDescriptionTransfer(UserVisit userVisit, LetterDescription letterDescription) {
-        return getLetterTransferCaches(userVisit).getLetterDescriptionTransferCache().getLetterDescriptionTransfer(letterDescription);
+        return letterDescriptionTransferCache.getLetterDescriptionTransfer(userVisit, letterDescription);
     }
     
     public List<LetterDescriptionTransfer> getLetterDescriptionTransfersByLetter(UserVisit userVisit, Letter letter) {
@@ -1180,12 +1193,11 @@ public class LetterControl
         List<LetterDescriptionTransfer> letterDescriptionTransfers = null;
         
         if(letterDescriptions != null) {
-            var letterDescriptionTransferCache = getLetterTransferCaches(userVisit).getLetterDescriptionTransferCache();
             
             letterDescriptionTransfers = new ArrayList<>(letterDescriptions.size());
             
             for(var letterDescription : letterDescriptions) {
-                letterDescriptionTransfers.add(letterDescriptionTransferCache.getLetterDescriptionTransfer(letterDescription));
+                letterDescriptionTransfers.add(letterDescriptionTransferCache.getLetterDescriptionTransfer(userVisit, letterDescription));
             }
         }
         
@@ -1339,16 +1351,15 @@ public class LetterControl
     }
     
     public LetterContactMechanismPurposeTransfer getLetterContactMechanismPurposeTransfer(UserVisit userVisit, LetterContactMechanismPurpose letterContactMechanismPurpose) {
-        return getLetterTransferCaches(userVisit).getLetterContactMechanismPurposeTransferCache().getLetterContactMechanismPurposeTransfer(letterContactMechanismPurpose);
+        return letterContactMechanismPurposeTransferCache.getLetterContactMechanismPurposeTransfer(userVisit, letterContactMechanismPurpose);
     }
     
     public List<LetterContactMechanismPurposeTransfer> getLetterContactMechanismPurposeTransfersByLetter(UserVisit userVisit, Letter letter) {
         var letterContactMechanismPurposes = getLetterContactMechanismPurposesByLetter(letter);
         List<LetterContactMechanismPurposeTransfer> letterContactMechanismPurposeTransfers = new ArrayList<>(letterContactMechanismPurposes.size());
-        var letterContactMechanismPurposeTransferCache = getLetterTransferCaches(userVisit).getLetterContactMechanismPurposeTransferCache();
         
         letterContactMechanismPurposes.forEach((letterContactMechanismPurpose) ->
-                letterContactMechanismPurposeTransfers.add(letterContactMechanismPurposeTransferCache.getLetterContactMechanismPurposeTransfer(letterContactMechanismPurpose))
+                letterContactMechanismPurposeTransfers.add(letterContactMechanismPurposeTransferCache.getLetterContactMechanismPurposeTransfer(userVisit, letterContactMechanismPurpose))
         );
         
         return letterContactMechanismPurposeTransfers;
@@ -1562,15 +1573,14 @@ public class LetterControl
     }
     
     public QueuedLetterTransfer getQueuedLetterTransfer(UserVisit userVisit, QueuedLetter queuedLetter) {
-        return getLetterTransferCaches(userVisit).getQueuedLetterTransferCache().getQueuedLetterTransfer(queuedLetter);
+        return queuedLetterTransferCache.getQueuedLetterTransfer(userVisit, queuedLetter);
     }
     
     public List<QueuedLetterTransfer> getQueuedLetterTransfers(UserVisit userVisit, Collection<QueuedLetter> queuedLetters) {
         List<QueuedLetterTransfer> queuedLetterTransfers = new ArrayList<>(queuedLetters.size());
-        var queuedLetterTransferCache = getLetterTransferCaches(userVisit).getQueuedLetterTransferCache();
 
         queuedLetters.forEach((queuedLetter) ->
-                queuedLetterTransfers.add(queuedLetterTransferCache.getQueuedLetterTransfer(queuedLetter))
+                queuedLetterTransfers.add(queuedLetterTransferCache.getQueuedLetterTransfer(userVisit, queuedLetter))
         );
 
         return queuedLetterTransfers;

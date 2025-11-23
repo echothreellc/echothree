@@ -20,31 +20,35 @@ import com.echothree.model.control.selector.common.transfer.SelectorTransfer;
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class SelectorTransferCache
         extends BaseSelectorTransferCache<Selector, SelectorTransfer> {
-    
+
+    SelectorControl selectorControl = Session.getModelController(SelectorControl.class);
+
     /** Creates a new instance of SelectorTransferCache */
-    public SelectorTransferCache(UserVisit userVisit, SelectorControl selectorControl) {
-        super(userVisit, selectorControl);
+    protected SelectorTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public SelectorTransfer getSelectorTransfer(Selector selector) {
+    public SelectorTransfer getSelectorTransfer(UserVisit userVisit, Selector selector) {
         var selectorTransfer = get(selector);
         
         if(selectorTransfer == null) {
             var selectorDetail = selector.getLastDetail();
-            var selectorTypeTransferCache = selectorControl.getSelectorTransferCaches(userVisit).getSelectorTypeTransferCache();
-            var selectorType = selectorTypeTransferCache.getSelectorTypeTransfer(selectorDetail.getSelectorType());
+            var selectorType = selectorControl.getSelectorTypeTransfer(userVisit, selectorDetail.getSelectorType());
             var selectorName = selectorDetail.getSelectorName();
             var isDefault = selectorDetail.getIsDefault();
             var sortOrder = selectorDetail.getSortOrder();
-            var description = selectorControl.getBestSelectorDescription(selector, getLanguage());
+            var description = selectorControl.getBestSelectorDescription(selector, getLanguage(userVisit));
             
             selectorTransfer = new SelectorTransfer(selectorType, selectorName, isDefault, sortOrder, description);
-            put(selector, selectorTransfer);
+            put(userVisit, selector, selectorTransfer);
         }
         return selectorTransfer;
     }

@@ -20,16 +20,21 @@ import com.echothree.model.control.contactlist.common.transfer.ContactListTypeDe
 import com.echothree.model.control.contactlist.server.control.ContactListControl;
 import com.echothree.model.data.contactlist.server.entity.ContactListTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ContactListTypeDescriptionTransferCache
         extends BaseContactListDescriptionTransferCache<ContactListTypeDescription, ContactListTypeDescriptionTransfer> {
-    
+
+    ContactListControl contactListControl = Session.getModelController(ContactListControl.class);
+
     /** Creates a new instance of ContactListTypeDescriptionTransferCache */
-    public ContactListTypeDescriptionTransferCache(UserVisit userVisit, ContactListControl contactListControl) {
-        super(userVisit, contactListControl);
+    protected ContactListTypeDescriptionTransferCache() {
+        super();
     }
     
-    public ContactListTypeDescriptionTransfer getContactListTypeDescriptionTransfer(ContactListTypeDescription contactListTypeDescription) {
+    public ContactListTypeDescriptionTransfer getContactListTypeDescriptionTransfer(UserVisit userVisit, ContactListTypeDescription contactListTypeDescription) {
         var contactListTypeDescriptionTransfer = get(contactListTypeDescription);
         
         if(contactListTypeDescriptionTransfer == null) {
@@ -37,7 +42,7 @@ public class ContactListTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, contactListTypeDescription.getLanguage());
             
             contactListTypeDescriptionTransfer = new ContactListTypeDescriptionTransfer(languageTransfer, contactListTypeTransfer, contactListTypeDescription.getDescription());
-            put(contactListTypeDescription, contactListTypeDescriptionTransfer);
+            put(userVisit, contactListTypeDescription, contactListTypeDescriptionTransfer);
         }
         
         return contactListTypeDescriptionTransfer;

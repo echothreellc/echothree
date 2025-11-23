@@ -22,18 +22,20 @@ import com.echothree.model.data.core.server.entity.EntityListItemDefault;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EntityListItemDefaultTransferCache
         extends BaseCoreTransferCache<EntityListItemDefault, EntityListItemDefaultTransfer> {
 
     CoreControl coreControl = Session.getModelController(CoreControl.class);
 
     /** Creates a new instance of EntityListItemDefaultTransferCache */
-    public EntityListItemDefaultTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected EntityListItemDefaultTransferCache() {
+        super();
     }
     
-    public EntityListItemDefaultTransfer getEntityListItemDefaultTransfer(EntityListItemDefault entityListItemDefault) {
+    public EntityListItemDefaultTransfer getEntityListItemDefaultTransfer(UserVisit userVisit, EntityListItemDefault entityListItemDefault) {
         var entityListItemDefaultTransfer = get(entityListItemDefault);
         
         if(entityListItemDefaultTransfer == null) {
@@ -41,7 +43,7 @@ public class EntityListItemDefaultTransferCache
             var entityListItem = coreControl.getEntityListItemTransfer(userVisit, entityListItemDefault.getEntityListItem(), null);
             
             entityListItemDefaultTransfer = new EntityListItemDefaultTransfer(entityAttribute, entityListItem);
-            put(entityListItemDefault, entityListItemDefaultTransfer);
+            put(userVisit, entityListItemDefault, entityListItemDefaultTransfer);
         }
         
         return entityListItemDefaultTransfer;

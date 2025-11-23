@@ -20,17 +20,22 @@ import com.echothree.model.control.item.common.transfer.HarmonizedTariffSchedule
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.item.server.entity.HarmonizedTariffScheduleCodeUseTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class HarmonizedTariffScheduleCodeUseTypeDescriptionTransferCache
         extends BaseItemDescriptionTransferCache<HarmonizedTariffScheduleCodeUseTypeDescription, HarmonizedTariffScheduleCodeUseTypeDescriptionTransfer> {
-    
+
+    ItemControl itemControl = Session.getModelController(ItemControl.class);
+
     /** Creates a new instance of HarmonizedTariffScheduleCodeUseTypeDescriptionTransferCache */
-    public HarmonizedTariffScheduleCodeUseTypeDescriptionTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    protected HarmonizedTariffScheduleCodeUseTypeDescriptionTransferCache() {
+        super();
     }
     
     @Override
-    public HarmonizedTariffScheduleCodeUseTypeDescriptionTransfer getTransfer(HarmonizedTariffScheduleCodeUseTypeDescription harmonizedTariffScheduleCodeUseTypeDescription) {
+    public HarmonizedTariffScheduleCodeUseTypeDescriptionTransfer getTransfer(UserVisit userVisit, HarmonizedTariffScheduleCodeUseTypeDescription harmonizedTariffScheduleCodeUseTypeDescription) {
         var harmonizedTariffScheduleCodeUseTypeDescriptionTransfer = get(harmonizedTariffScheduleCodeUseTypeDescription);
         
         if(harmonizedTariffScheduleCodeUseTypeDescriptionTransfer == null) {
@@ -38,7 +43,7 @@ public class HarmonizedTariffScheduleCodeUseTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, harmonizedTariffScheduleCodeUseTypeDescription.getLanguage());
             
             harmonizedTariffScheduleCodeUseTypeDescriptionTransfer = new HarmonizedTariffScheduleCodeUseTypeDescriptionTransfer(languageTransfer, harmonizedTariffScheduleCodeUseTypeTransfer, harmonizedTariffScheduleCodeUseTypeDescription.getDescription());
-            put(harmonizedTariffScheduleCodeUseTypeDescription, harmonizedTariffScheduleCodeUseTypeDescriptionTransfer);
+            put(userVisit, harmonizedTariffScheduleCodeUseTypeDescription, harmonizedTariffScheduleCodeUseTypeDescriptionTransfer);
         }
         
         return harmonizedTariffScheduleCodeUseTypeDescriptionTransfer;

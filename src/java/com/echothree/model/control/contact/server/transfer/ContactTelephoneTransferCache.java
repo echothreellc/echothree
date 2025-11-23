@@ -18,14 +18,15 @@ package com.echothree.model.control.contact.server.transfer;
 
 import com.echothree.model.control.contact.common.transfer.ContactTelephoneTransfer;
 import com.echothree.model.control.contact.common.workflow.TelephoneStatusConstants;
-import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.contact.server.entity.ContactTelephone;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ContactTelephoneTransferCache
         extends BaseContactTransferCache<ContactTelephone, ContactTelephoneTransfer> {
     
@@ -33,11 +34,11 @@ public class ContactTelephoneTransferCache
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
 
     /** Creates a new instance of ContactTelephoneTransferCache */
-    public ContactTelephoneTransferCache(UserVisit userVisit, ContactControl contactControl) {
-        super(userVisit, contactControl);
+    protected ContactTelephoneTransferCache() {
+        super();
     }
     
-    public ContactTelephoneTransfer getContactTelephoneTransfer(ContactTelephone contactTelephone) {
+    public ContactTelephoneTransfer getContactTelephoneTransfer(UserVisit userVisit, ContactTelephone contactTelephone) {
         var contactTelephoneTransfer = get(contactTelephone);
         
         if(contactTelephoneTransfer == null) {
@@ -53,7 +54,7 @@ public class ContactTelephoneTransferCache
             
             contactTelephoneTransfer = new ContactTelephoneTransfer(countryGeoCode, areaCode, telephoneNumber, telephoneExtension,
                     telephoneStatusTransfer);
-            put(contactTelephone, contactTelephoneTransfer);
+            put(userVisit, contactTelephone, contactTelephoneTransfer);
         }
         
         return contactTelephoneTransfer;

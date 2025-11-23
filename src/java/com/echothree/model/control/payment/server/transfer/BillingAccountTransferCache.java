@@ -25,7 +25,9 @@ import com.echothree.model.data.payment.server.entity.BillingAccount;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.MapWrapper;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class BillingAccountTransferCache
         extends BasePaymentTransferCache<BillingAccount, BillingAccountTransfer> {
 
@@ -34,8 +36,8 @@ public class BillingAccountTransferCache
     boolean includeRoles;
 
     /** Creates a new instance of BillingAccountTransferCache */
-    public BillingAccountTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected BillingAccountTransferCache() {
+        super();
 
         var options = session.getOptions();
         if(options != null) {
@@ -46,7 +48,7 @@ public class BillingAccountTransferCache
     }
 
     @Override
-    public BillingAccountTransfer getTransfer(BillingAccount billingAccount) {
+    public BillingAccountTransfer getTransfer(UserVisit userVisit, BillingAccount billingAccount) {
         var billingAccountTransfer = get(billingAccount);
 
         if(billingAccountTransfer == null) {
@@ -72,7 +74,7 @@ public class BillingAccountTransferCache
 //            }
             
             billingAccountTransfer = new BillingAccountTransfer(billingAccountName, currencyTransfer, reference, description, creditLimit, potentialCreditLimit);
-            put(billingAccount, billingAccountTransfer);
+            put(userVisit, billingAccount, billingAccountTransfer);
             
             if(includeRoles) {
                 var billingAccountRoleTransfers = billingControl.getBillingAccountRoleTransfersByBillingAccount(userVisit, billingAccount);

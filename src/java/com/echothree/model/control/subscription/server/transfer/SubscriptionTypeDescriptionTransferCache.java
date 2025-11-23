@@ -20,16 +20,21 @@ import com.echothree.model.control.subscription.common.transfer.SubscriptionType
 import com.echothree.model.control.subscription.server.control.SubscriptionControl;
 import com.echothree.model.data.subscription.server.entity.SubscriptionTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class SubscriptionTypeDescriptionTransferCache
         extends BaseSubscriptionDescriptionTransferCache<SubscriptionTypeDescription, SubscriptionTypeDescriptionTransfer> {
-    
+
+    SubscriptionControl subscriptionControl = Session.getModelController(SubscriptionControl.class);
+
     /** Creates a new instance of SubscriptionTypeDescriptionTransferCache */
-    public SubscriptionTypeDescriptionTransferCache(UserVisit userVisit, SubscriptionControl subscriptionControl) {
-        super(userVisit, subscriptionControl);
+    protected SubscriptionTypeDescriptionTransferCache() {
+        super();
     }
     
-    public SubscriptionTypeDescriptionTransfer getSubscriptionTypeDescriptionTransfer(SubscriptionTypeDescription subscriptionTypeDescription) {
+    public SubscriptionTypeDescriptionTransfer getSubscriptionTypeDescriptionTransfer(UserVisit userVisit, SubscriptionTypeDescription subscriptionTypeDescription) {
         var subscriptionTypeDescriptionTransfer = get(subscriptionTypeDescription);
         
         if(subscriptionTypeDescriptionTransfer == null) {
@@ -37,7 +42,7 @@ public class SubscriptionTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, subscriptionTypeDescription.getLanguage());
             
             subscriptionTypeDescriptionTransfer = new SubscriptionTypeDescriptionTransfer(languageTransfer, subscriptionTypeTransfer, subscriptionTypeDescription.getDescription());
-            put(subscriptionTypeDescription, subscriptionTypeDescriptionTransfer);
+            put(userVisit, subscriptionTypeDescription, subscriptionTypeDescriptionTransfer);
         }
         
         return subscriptionTypeDescriptionTransfer;

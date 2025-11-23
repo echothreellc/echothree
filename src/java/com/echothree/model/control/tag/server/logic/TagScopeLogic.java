@@ -33,20 +33,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class TagScopeLogic
     extends BaseLogic {
-    
-    private TagScopeLogic() {
+
+    protected TagScopeLogic() {
         super();
     }
-    
-    private static class TagScopeLogicHolder {
-        static TagScopeLogic instance = new TagScopeLogic();
-    }
-    
+
     public static TagScopeLogic getInstance() {
-        return TagScopeLogicHolder.instance;
+        return CDI.current().select(TagScopeLogic.class).get();
     }
 
     public TagScope createTagScope(final ExecutionErrorAccumulator eea, final String tagScopeName,
@@ -97,7 +96,7 @@ public class TagScopeLogic
         var parameterCount = (tagScopeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
-            case 0:
+            case 0 -> {
                 if(allowDefault) {
                     tagScope = tagControl.getDefaultTagScope(entityPermission);
 
@@ -107,8 +106,8 @@ public class TagScopeLogic
                 } else {
                     handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                 }
-                break;
-            case 1:
+            }
+            case 1 -> {
                 if(tagScopeName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.TagScope.name());
@@ -119,10 +118,9 @@ public class TagScopeLogic
                 } else {
                     tagScope = getTagScopeByName(eea, tagScopeName, entityPermission);
                 }
-                break;
-            default:
-                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
-                break;
+            }
+            default ->
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
 
         return tagScope;

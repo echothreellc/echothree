@@ -25,16 +25,20 @@ import com.echothree.model.data.user.server.entity.UserLogin;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.MapWrapper;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class UserLoginTransferCache
         extends BaseUserTransferCache<UserLogin, UserLoginTransfer> {
     
     PartyControl partyControl = Session.getModelController(PartyControl.class);
+    UserControl userControl = Session.getModelController(UserControl.class);
+
     boolean includeUserLoginPasswords;
 
     /** Creates a new instance of UserLoginTransferCache */
-    public UserLoginTransferCache(UserVisit userVisit, UserControl userControl) {
-        super(userVisit, userControl);
+    protected UserLoginTransferCache() {
+        super();
 
         var options = session.getOptions();
         if(options != null) {
@@ -42,7 +46,7 @@ public class UserLoginTransferCache
         }
     }
     
-    public UserLoginTransfer getUserLoginTransfer(UserLogin userLogin) {
+    public UserLoginTransfer getUserLoginTransfer(UserVisit userVisit, UserLogin userLogin) {
         var userLoginTransfer = get(userLogin);
         
         if(userLoginTransfer == null) {
@@ -51,18 +55,18 @@ public class UserLoginTransferCache
             var userLoginStatus = userControl.getUserLoginStatus(party);
             var username = userLogin.getUsername();
             var unformattedLastLoginTime = userLoginStatus.getLastLoginTime();
-            var lastLoginTime = formatTypicalDateTime(unformattedLastLoginTime);
+            var lastLoginTime = formatTypicalDateTime(userVisit, unformattedLastLoginTime);
             var failureCount = userLoginStatus.getFailureCount();
             var unformattedFirstFailureTime = userLoginStatus.getFirstFailureTime();
-            var firstFailureTime = formatTypicalDateTime(unformattedFirstFailureTime);
+            var firstFailureTime = formatTypicalDateTime(userVisit, unformattedFirstFailureTime);
             var unformattedLastFailureTime = userLoginStatus.getLastFailureTime();
-            var lastFailureTime = formatTypicalDateTime(unformattedLastFailureTime);
+            var lastFailureTime = formatTypicalDateTime(userVisit, unformattedLastFailureTime);
             var expiredCount = userLoginStatus.getExpiredCount();
             var forceChange = userLoginStatus.getForceChange();
             
             userLoginTransfer = new UserLoginTransfer(partyTransfer, username, unformattedLastLoginTime, lastLoginTime, failureCount,
                     unformattedFirstFailureTime, firstFailureTime, unformattedLastFailureTime, lastFailureTime, expiredCount, forceChange);
-            put(userLogin, userLoginTransfer);
+            put(userVisit, userLogin, userLoginTransfer);
 
             if(includeUserLoginPasswords) {
                 var userLoginPasswordTransfers = userControl.getUserLoginPasswordTransfersByParty(userVisit, userLogin.getParty());

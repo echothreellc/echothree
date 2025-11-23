@@ -22,20 +22,21 @@ import com.echothree.model.control.letter.server.control.LetterControl;
 import com.echothree.model.data.letter.server.entity.LetterContactMechanismPurpose;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class LetterContactMechanismPurposeTransferCache
         extends BaseLetterTransferCache<LetterContactMechanismPurpose, LetterContactMechanismPurposeTransfer> {
     
-    ContactControl contactControl;
+    ContactControl contactControl = Session.getModelController(ContactControl.class);
+    LetterControl letterControl = Session.getModelController(LetterControl.class);
     
     /** Creates a new instance of LetterContactMechanismPurposeTransferCache */
-    public LetterContactMechanismPurposeTransferCache(UserVisit userVisit, LetterControl letterControl) {
-        super(userVisit, letterControl);
-        
-        contactControl = Session.getModelController(ContactControl.class);
+    protected LetterContactMechanismPurposeTransferCache() {
+        super();
     }
     
-    public LetterContactMechanismPurposeTransfer getLetterContactMechanismPurposeTransfer(LetterContactMechanismPurpose letterContactMechanismPurpose) {
+    public LetterContactMechanismPurposeTransfer getLetterContactMechanismPurposeTransfer(UserVisit userVisit, LetterContactMechanismPurpose letterContactMechanismPurpose) {
         var letterContactMechanismPurposeTransfer = get(letterContactMechanismPurpose);
         
         if(letterContactMechanismPurposeTransfer == null) {
@@ -46,7 +47,7 @@ public class LetterContactMechanismPurposeTransferCache
             
             letterContactMechanismPurposeTransfer = new LetterContactMechanismPurposeTransfer(letter, contactMechanismPurpose,
                     priority);
-            put(letterContactMechanismPurpose, letterContactMechanismPurposeTransfer);
+            put(userVisit, letterContactMechanismPurpose, letterContactMechanismPurposeTransfer);
         }
         
         return letterContactMechanismPurposeTransfer;

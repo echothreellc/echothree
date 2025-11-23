@@ -21,18 +21,20 @@ import com.echothree.model.control.core.server.control.CommandControl;
 import com.echothree.model.data.core.server.entity.CommandDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CommandDescriptionTransferCache
         extends BaseCoreDescriptionTransferCache<CommandDescription, CommandDescriptionTransfer> {
 
     CommandControl commandControl = Session.getModelController(CommandControl.class);
 
     /** Creates a new instance of CommandDescriptionTransferCache */
-    public CommandDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected CommandDescriptionTransferCache() {
+        super();
     }
     
-    public CommandDescriptionTransfer getCommandDescriptionTransfer(CommandDescription commandDescription) {
+    public CommandDescriptionTransfer getCommandDescriptionTransfer(UserVisit userVisit, CommandDescription commandDescription) {
         var commandDescriptionTransfer = get(commandDescription);
         
         if(commandDescriptionTransfer == null) {
@@ -41,7 +43,7 @@ public class CommandDescriptionTransferCache
             
             commandDescriptionTransfer = new CommandDescriptionTransfer(languageTransfer, commandTransfer,
                     commandDescription.getDescription());
-            put(commandDescription, commandDescriptionTransfer);
+            put(userVisit, commandDescription, commandDescriptionTransfer);
         }
         return commandDescriptionTransfer;
     }

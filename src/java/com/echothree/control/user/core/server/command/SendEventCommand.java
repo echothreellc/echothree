@@ -37,7 +37,9 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class SendEventCommand
         extends BaseSimpleCommand<SendEventForm> {
 
@@ -77,17 +79,12 @@ public class SendEventCommand
                 var eventTypeEnum = EventTypes.valueOf(eventTypeName);
 
                 switch(eventTypeEnum) {
-                    case READ:
-                    case MODIFY:
-                    case TOUCH: {
+                    case READ, MODIFY, TOUCH -> {
                         var coreControl = Session.getModelController(CoreControl.class);
 
                         coreControl.sendEvent(entityInstance, eventTypeEnum, (EntityInstance)null, null, getPartyPK());
                     }
-                    break;
-                    default:
-                        addExecutionError(ExecutionErrors.InvalidEventType.name(), eventTypeName);
-                        break;
+                    default -> addExecutionError(ExecutionErrors.InvalidEventType.name(), eventTypeName);
                 }
             } else {
                 addExecutionError(ExecutionErrors.InvalidComponentVendor.name(), componentVendorName);

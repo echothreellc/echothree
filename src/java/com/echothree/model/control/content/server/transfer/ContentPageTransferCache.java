@@ -24,12 +24,17 @@ import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.data.content.server.entity.ContentPage;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
+import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.transfer.MapWrapperBuilder;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ContentPageTransferCache
         extends BaseContentTransferCache<ContentPage, ContentPageTransfer> {
+
+    ContentControl contentControl = Session.getModelController(ContentControl.class);
 
     boolean includeContentPageAreas;
 
@@ -43,8 +48,8 @@ public class ContentPageTransferCache
     boolean filterEntityInstance;
     
     /** Creates a new instance of ContentPageTransferCache */
-    public ContentPageTransferCache(UserVisit userVisit, ContentControl contentControl) {
-        super(userVisit, contentControl);
+    protected ContentPageTransferCache() {
+        super();
 
         var options = session.getOptions();
         if(options != null) {
@@ -72,7 +77,7 @@ public class ContentPageTransferCache
         setIncludeEntityInstance(!filterEntityInstance);
     }
 
-    public ContentPageTransfer getContentPageTransfer(ContentPage contentPage) {
+    public ContentPageTransfer getContentPageTransfer(UserVisit userVisit, ContentPage contentPage) {
         var contentPageTransfer = get(contentPage);
         
         if(contentPageTransfer == null) {
@@ -82,13 +87,13 @@ public class ContentPageTransferCache
             var contentPageLayout = filterContentPageLayout ? null : contentControl.getContentPageLayoutTransfer(userVisit, contentPageDetail.getContentPageLayout());
             var isDefault = filterIsDefault ? null : contentPageDetail.getIsDefault();
             var sortOrder = filterSortOrder ? null : contentPageDetail.getSortOrder();
-            var description = filterDescription ? null : contentControl.getBestContentPageDescription(contentPage, getLanguage());
+            var description = filterDescription ? null : contentControl.getBestContentPageDescription(contentPage, getLanguage(userVisit));
             
             contentPageTransfer = new ContentPageTransfer(contentSection, contentPageName, contentPageLayout, isDefault, sortOrder, description);
-            put(contentPage, contentPageTransfer);
+            put(userVisit, contentPage, contentPageTransfer);
 
             if(includeContentPageAreas) {
-                var contentPageAreaTransfers = contentControl.getContentPageAreaTransfersByContentPage(userVisit, contentPage, getLanguage());
+                var contentPageAreaTransfers = contentControl.getContentPageAreaTransfersByContentPage(userVisit, contentPage, getLanguage(userVisit));
                 Map<String, ContentPageAreaTransfer> contentPageAreas = new LinkedHashMap<>(contentPageAreaTransfers.size());
 
                 contentPageAreaTransfers.forEach((contentPageAreaTransfer) -> {

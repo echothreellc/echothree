@@ -25,20 +25,22 @@ import com.echothree.model.data.forum.server.factory.ForumMessageFactory;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ForumThreadTransferCache
         extends BaseForumTransferCache<ForumThread, ForumThreadTransfer> {
-    
-    IconControl iconControl;
+
+    ForumControl forumControl = Session.getModelController(ForumControl.class);
+    IconControl iconControl = Session.getModelController(IconControl.class);
+
     boolean includeForumMessages;
     boolean includeForumForumThreads;
     boolean hasForumMessageLimits;
     
     /** Creates a new instance of ForumThreadTransferCache */
-    public ForumThreadTransferCache(UserVisit userVisit, ForumControl forumControl) {
-        super(userVisit, forumControl);
-        
-        iconControl = Session.getModelController(IconControl.class);
+    protected ForumThreadTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {
@@ -54,7 +56,7 @@ public class ForumThreadTransferCache
         hasForumMessageLimits = session.hasLimit(ForumMessageFactory.class);
     }
     
-    public ForumThreadTransfer getForumThreadTransfer(ForumThread forumThread) {
+    public ForumThreadTransfer getForumThreadTransfer(UserVisit userVisit, ForumThread forumThread) {
         var forumThreadTransfer = get(forumThread);
         
         if(forumThreadTransfer == null) {
@@ -63,11 +65,11 @@ public class ForumThreadTransferCache
             var icon = forumThreadDetail.getIcon();
             var iconTransfer = icon == null? null: iconControl.getIconTransfer(userVisit, icon);
             var unformattedPostedTime = forumThreadDetail.getPostedTime();
-            var postedTime = formatTypicalDateTime(unformattedPostedTime);
+            var postedTime = formatTypicalDateTime(userVisit, unformattedPostedTime);
             var sortOrder = forumThreadDetail.getSortOrder();
                     
             forumThreadTransfer = new ForumThreadTransfer(forumThreadName, iconTransfer, unformattedPostedTime, postedTime, sortOrder);
-            put(forumThread, forumThreadTransfer);
+            put(userVisit, forumThread, forumThreadTransfer);
             
             if(includeForumMessages) {
                 if(hasForumMessageLimits) {

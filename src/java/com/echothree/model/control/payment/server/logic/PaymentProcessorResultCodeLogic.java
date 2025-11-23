@@ -17,36 +17,35 @@
 package com.echothree.model.control.payment.server.logic;
 
 import com.echothree.control.user.payment.common.spec.PaymentProcessorResultCodeUniversalSpec;
-import com.echothree.model.control.payment.common.exception.DuplicatePaymentProcessorResultCodeNameException;
-import com.echothree.model.control.payment.common.exception.UnknownPaymentProcessorResultCodeNameException;
-import com.echothree.model.control.payment.common.exception.UnknownDefaultPaymentProcessorResultCodeException;
-import com.echothree.model.control.payment.server.control.PaymentProcessorResultCodeControl;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
-import com.echothree.model.data.payment.server.entity.PaymentProcessorResultCode;
+import com.echothree.model.control.payment.common.exception.DuplicatePaymentProcessorResultCodeNameException;
+import com.echothree.model.control.payment.common.exception.UnknownDefaultPaymentProcessorResultCodeException;
+import com.echothree.model.control.payment.common.exception.UnknownPaymentProcessorResultCodeNameException;
+import com.echothree.model.control.payment.server.control.PaymentProcessorResultCodeControl;
 import com.echothree.model.data.party.server.entity.Language;
+import com.echothree.model.data.payment.server.entity.PaymentProcessorResultCode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class PaymentProcessorResultCodeLogic
     extends BaseLogic {
-    
-    private PaymentProcessorResultCodeLogic() {
+
+    protected PaymentProcessorResultCodeLogic() {
         super();
     }
-    
-    private static class PaymentProcessorResultCodeLogicHolder {
-        static PaymentProcessorResultCodeLogic instance = new PaymentProcessorResultCodeLogic();
-    }
-    
+
     public static PaymentProcessorResultCodeLogic getInstance() {
-        return PaymentProcessorResultCodeLogicHolder.instance;
+        return CDI.current().select(PaymentProcessorResultCodeLogic.class).get();
     }
 
     public PaymentProcessorResultCode createPaymentProcessorResultCode(final ExecutionErrorAccumulator eea, final String paymentProcessorResultCodeName,
@@ -96,7 +95,7 @@ public class PaymentProcessorResultCodeLogic
         var parameterCount = (paymentProcessorResultCodeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
-            case 0:
+            case 0 -> {
                 if(allowDefault) {
                     paymentProcessorResultCode = paymentProcessorResultCodeControl.getDefaultPaymentProcessorResultCode(entityPermission);
 
@@ -106,8 +105,8 @@ public class PaymentProcessorResultCodeLogic
                 } else {
                     handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                 }
-                break;
-            case 1:
+            }
+            case 1 -> {
                 if(paymentProcessorResultCodeName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.PaymentProcessorResultCode.name());
@@ -118,10 +117,9 @@ public class PaymentProcessorResultCodeLogic
                 } else {
                     paymentProcessorResultCode = getPaymentProcessorResultCodeByName(eea, paymentProcessorResultCodeName, entityPermission);
                 }
-                break;
-            default:
-                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
-                break;
+            }
+            default ->
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
 
         return paymentProcessorResultCode;

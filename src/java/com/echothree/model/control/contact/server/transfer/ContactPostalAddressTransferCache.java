@@ -18,7 +18,6 @@ package com.echothree.model.control.contact.server.transfer;
 
 import com.echothree.model.control.contact.common.transfer.ContactPostalAddressTransfer;
 import com.echothree.model.control.contact.common.workflow.PostalAddressStatusConstants;
-import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.party.server.control.PartyControl;
@@ -26,7 +25,9 @@ import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.contact.server.entity.ContactPostalAddress;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ContactPostalAddressTransferCache
         extends BaseContactTransferCache<ContactPostalAddress, ContactPostalAddressTransfer> {
 
@@ -34,11 +35,11 @@ public class ContactPostalAddressTransferCache
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of ContactPostalAddressTransferCache */
-    public ContactPostalAddressTransferCache(UserVisit userVisit, ContactControl contactControl) {
-        super(userVisit, contactControl);
+    protected ContactPostalAddressTransferCache() {
+        super();
     }
     
-    public ContactPostalAddressTransfer getContactPostalAddressTransfer(ContactPostalAddress contactPostalAddress) {
+    public ContactPostalAddressTransfer getContactPostalAddressTransfer(UserVisit userVisit, ContactPostalAddress contactPostalAddress) {
         var contactPostalAddressTransfer = get(contactPostalAddress);
         
         if(contactPostalAddressTransfer == null) {
@@ -66,7 +67,7 @@ public class ContactPostalAddressTransferCache
             var cityGeoCodeTransfer = cityGeoCode == null? null: geoControl.getCityTransfer(userVisit, cityGeoCode);
             
             if(city == null && cityGeoCode != null) {
-                city = geoControl.getBestGeoCodeDescription(cityGeoCode, getLanguage());
+                city = geoControl.getBestGeoCodeDescription(cityGeoCode, getLanguage(userVisit));
                 
                 if(city == null) {
                     city = geoControl.getAliasForCity(cityGeoCode);
@@ -78,7 +79,7 @@ public class ContactPostalAddressTransferCache
             var stateGeoCodeTransfer = stateGeoCode == null? null: geoControl.getStateTransfer(userVisit, stateGeoCode);
             
             if(state == null && stateGeoCode != null) {
-                state = geoControl.getBestGeoCodeDescription(stateGeoCode, getLanguage());
+                state = geoControl.getBestGeoCodeDescription(stateGeoCode, getLanguage(userVisit));
                 
                 if(state == null) {
                     state = geoControl.getAliasForState(stateGeoCode);
@@ -90,7 +91,7 @@ public class ContactPostalAddressTransferCache
             var postalCodeGeoCodeTransfer = postalCodeGeoCode == null? null: geoControl.getPostalCodeTransfer(userVisit, postalCodeGeoCode);
             
             if(postalCode == null && postalCodeGeoCode != null) {
-                postalCode = geoControl.getBestGeoCodeDescription(postalCodeGeoCode, getLanguage());
+                postalCode = geoControl.getBestGeoCodeDescription(postalCodeGeoCode, getLanguage(userVisit));
                 
                 if(postalCode == null) {
                     postalCode = geoControl.getAliasForPostalCode(postalCodeGeoCode);
@@ -105,7 +106,7 @@ public class ContactPostalAddressTransferCache
                     nameSuffixTransfer, companyName, attention, address1, address2, address3, city, cityGeoCodeTransfer, countyGeoCodeTransfer,
                     state, stateGeoCodeTransfer, postalCode, postalCodeGeoCodeTransfer, countryGeoCodeTransfer, isCommercial,
                     postalAddressStatusTransfer);
-            put(contactPostalAddress, contactPostalAddressTransfer);
+            put(userVisit, contactPostalAddress, contactPostalAddressTransfer);
         }
         
         return contactPostalAddressTransfer;

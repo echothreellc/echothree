@@ -39,12 +39,14 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PaymentMethodTypePartyTypeControl
         extends BasePaymentControl {
 
     /** Creates a new instance of PaymentMethodTypePartyTypeControl */
-    public PaymentMethodTypePartyTypeControl() {
+    protected PaymentMethodTypePartyTypeControl() {
         super();
     }
 
@@ -225,16 +227,15 @@ public class PaymentMethodTypePartyTypeControl
 
     public PaymentMethodTypePartyTypeTransfer getPaymentMethodTypePartyTypeTransfer(final UserVisit userVisit,
             final PaymentMethodTypePartyType paymentMethodTypePartyType) {
-        return getPaymentTransferCaches(userVisit).getPaymentMethodTypePartyTypeTransferCache().getTransfer(paymentMethodTypePartyType);
+        return paymentMethodTypePartyTypeTransferCache.getTransfer(userVisit, paymentMethodTypePartyType);
     }
 
     public List<PaymentMethodTypePartyTypeTransfer> getPaymentMethodTypePartyTypeTransfers(final UserVisit userVisit,
             final Collection<PaymentMethodTypePartyType> paymentMethodTypePartyTypes) {
         var paymentMethodTypePartyTypeTransfers = new ArrayList<PaymentMethodTypePartyTypeTransfer>(paymentMethodTypePartyTypes.size());
-        var paymentMethodTypePartyTypeTransferCache = getPaymentTransferCaches(userVisit).getPaymentMethodTypePartyTypeTransferCache();
 
         paymentMethodTypePartyTypes.forEach((paymentMethodTypePartyType) ->
-                paymentMethodTypePartyTypeTransfers.add(paymentMethodTypePartyTypeTransferCache.getTransfer(paymentMethodTypePartyType))
+                paymentMethodTypePartyTypeTransfers.add(paymentMethodTypePartyTypeTransferCache.getTransfer(userVisit, paymentMethodTypePartyType))
         );
 
         return paymentMethodTypePartyTypeTransfers;

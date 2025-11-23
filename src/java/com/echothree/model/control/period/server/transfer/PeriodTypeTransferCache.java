@@ -20,18 +20,23 @@ import com.echothree.model.control.period.common.transfer.PeriodTypeTransfer;
 import com.echothree.model.control.period.server.control.PeriodControl;
 import com.echothree.model.data.period.server.entity.PeriodType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PeriodTypeTransferCache
         extends BasePeriodTransferCache<PeriodType, PeriodTypeTransfer> {
-    
+
+    PeriodControl periodControl = Session.getModelController(PeriodControl.class);
+
     /** Creates a new instance of PeriodTypeTransferCache */
-    public PeriodTypeTransferCache(UserVisit userVisit, PeriodControl periodControl) {
-        super(userVisit, periodControl);
+    protected PeriodTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public PeriodTypeTransfer getPeriodTypeTransfer(PeriodType periodType) {
+    public PeriodTypeTransfer getPeriodTypeTransfer(UserVisit userVisit, PeriodType periodType) {
         var periodTypeTransfer = get(periodType);
         
         if(periodTypeTransfer == null) {
@@ -40,10 +45,10 @@ public class PeriodTypeTransferCache
             var periodTypeName = periodTypeDetail.getPeriodTypeName();
             var isDefault = periodTypeDetail.getIsDefault();
             var sortOrder = periodTypeDetail.getSortOrder();
-            var description = periodControl.getBestPeriodTypeDescription(periodType, getLanguage());
+            var description = periodControl.getBestPeriodTypeDescription(periodType, getLanguage(userVisit));
             
             periodTypeTransfer = new PeriodTypeTransfer(periodKindTransfer, periodTypeName, isDefault, sortOrder, description);
-            put(periodType, periodTypeTransfer);
+            put(userVisit, periodType, periodTypeTransfer);
         }
         
         return periodTypeTransfer;

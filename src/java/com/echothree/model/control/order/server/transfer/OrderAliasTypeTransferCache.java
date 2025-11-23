@@ -22,7 +22,9 @@ import com.echothree.model.control.order.server.control.OrderTypeControl;
 import com.echothree.model.data.order.server.entity.OrderAliasType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class OrderAliasTypeTransferCache
         extends BaseOrderTransferCache<OrderAliasType, OrderAliasTypeTransfer> {
 
@@ -30,13 +32,13 @@ public class OrderAliasTypeTransferCache
     OrderAliasControl orderAliasControl = Session.getModelController(OrderAliasControl.class);
 
     /** Creates a new instance of OrderAliasTypeTransferCache */
-    public OrderAliasTypeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected OrderAliasTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public OrderAliasTypeTransfer getOrderAliasTypeTransfer(OrderAliasType orderAliasType) {
+    public OrderAliasTypeTransfer getOrderAliasTypeTransfer(UserVisit userVisit, OrderAliasType orderAliasType) {
         var orderAliasTypeTransfer = get(orderAliasType);
         
         if(orderAliasTypeTransfer == null) {
@@ -46,10 +48,10 @@ public class OrderAliasTypeTransferCache
             var validationPattern = orderAliasTypeDetail.getValidationPattern();
             var isDefault = orderAliasTypeDetail.getIsDefault();
             var sortOrder = orderAliasTypeDetail.getSortOrder();
-            var description = orderAliasControl.getBestOrderAliasTypeDescription(orderAliasType, getLanguage());
+            var description = orderAliasControl.getBestOrderAliasTypeDescription(orderAliasType, getLanguage(userVisit));
             
             orderAliasTypeTransfer = new OrderAliasTypeTransfer(orderType, orderAliasTypeName, validationPattern, isDefault, sortOrder, description);
-            put(orderAliasType, orderAliasTypeTransfer);
+            put(userVisit, orderAliasType, orderAliasTypeTransfer);
         }
         
         return orderAliasTypeTransfer;

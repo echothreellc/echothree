@@ -20,25 +20,30 @@ import com.echothree.model.control.user.common.transfer.UserLoginPasswordTypeTra
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.user.server.entity.UserLoginPasswordType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class UserLoginPasswordTypeTransferCache
         extends BaseUserTransferCache<UserLoginPasswordType, UserLoginPasswordTypeTransfer> {
-    
+
+    UserControl userControl = Session.getModelController(UserControl.class);
+
     /** Creates a new instance of UserLoginPasswordTypeTransferCache */
-    public UserLoginPasswordTypeTransferCache(UserVisit userVisit, UserControl userControl) {
-        super(userVisit, userControl);
+    protected UserLoginPasswordTypeTransferCache() {
+        super();
     }
     
-    public UserLoginPasswordTypeTransfer getUserLoginPasswordTypeTransfer(UserLoginPasswordType userLoginPasswordType) {
+    public UserLoginPasswordTypeTransfer getUserLoginPasswordTypeTransfer(UserVisit userVisit, UserLoginPasswordType userLoginPasswordType) {
         var userLoginPasswordTypeTransfer = get(userLoginPasswordType);
         
         if(userLoginPasswordTypeTransfer == null) {
             var userLoginPasswordTypeName = userLoginPasswordType.getUserLoginPasswordTypeName();
             var userLoginPasswordEncoderType = userControl.getUserLoginPasswordEncoderTypeTransfer(userVisit, userLoginPasswordType.getUserLoginPasswordEncoderType());
-            var description = userControl.getBestUserLoginPasswordTypeDescription(userLoginPasswordType, getLanguage());
+            var description = userControl.getBestUserLoginPasswordTypeDescription(userLoginPasswordType, getLanguage(userVisit));
             
             userLoginPasswordTypeTransfer = new UserLoginPasswordTypeTransfer(userLoginPasswordTypeName, userLoginPasswordEncoderType, description);
-            put(userLoginPasswordType, userLoginPasswordTypeTransfer);
+            put(userVisit, userLoginPasswordType, userLoginPasswordTypeTransfer);
         }
         
         return userLoginPasswordTypeTransfer;

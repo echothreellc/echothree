@@ -21,13 +21,18 @@ import com.echothree.model.control.license.common.transfer.LicenseTypeTransfer;
 import com.echothree.model.control.license.server.control.LicenseControl;
 import com.echothree.model.data.license.server.entity.LicenseType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class LicenseTypeTransferCache
         extends BaseLicenseTransferCache<LicenseType, LicenseTypeTransfer> {
 
+    LicenseControl licenseControl = Session.getModelController(LicenseControl.class);
+
     /** Creates a new instance of LicenseTypeTransferCache */
-    public LicenseTypeTransferCache(UserVisit userVisit, LicenseControl licenseControl) {
-        super(userVisit, licenseControl);
+    protected LicenseTypeTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {
@@ -37,7 +42,7 @@ public class LicenseTypeTransferCache
         setIncludeEntityInstance(true);
     }
 
-    public LicenseTypeTransfer getLicenseTypeTransfer(LicenseType licenseType) {
+    public LicenseTypeTransfer getLicenseTypeTransfer(UserVisit userVisit, LicenseType licenseType) {
         var licenseTypeTransfer = get(licenseType);
 
         if(licenseTypeTransfer == null) {
@@ -45,10 +50,10 @@ public class LicenseTypeTransferCache
             var licenseTypeName = licenseTypeDetail.getLicenseTypeName();
             var isDefault = licenseTypeDetail.getIsDefault();
             var sortOrder = licenseTypeDetail.getSortOrder();
-            var description = licenseControl.getBestLicenseTypeDescription(licenseType, getLanguage());
+            var description = licenseControl.getBestLicenseTypeDescription(licenseType, getLanguage(userVisit));
 
             licenseTypeTransfer = new LicenseTypeTransfer(licenseTypeName, isDefault, sortOrder, description);
-            put(licenseType, licenseTypeTransfer);
+            put(userVisit, licenseType, licenseTypeTransfer);
         }
 
         return licenseTypeTransfer;

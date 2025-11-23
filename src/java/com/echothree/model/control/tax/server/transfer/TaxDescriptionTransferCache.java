@@ -20,26 +20,30 @@ import com.echothree.model.control.tax.common.transfer.TaxDescriptionTransfer;
 import com.echothree.model.control.tax.server.control.TaxControl;
 import com.echothree.model.data.tax.server.entity.TaxDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class TaxDescriptionTransferCache
         extends BaseTaxDescriptionTransferCache<TaxDescription, TaxDescriptionTransfer> {
-    
+
+    TaxControl taxControl = Session.getModelController(TaxControl.class);
+
     /** Creates a new instance of TaxDescriptionTransferCache */
-    public TaxDescriptionTransferCache(UserVisit userVisit, TaxControl taxControl) {
-        super(userVisit, taxControl);
+    protected TaxDescriptionTransferCache() {
+        super();
     }
     
     @Override
-    public TaxDescriptionTransfer getTransfer(TaxDescription taxDescription) {
+    public TaxDescriptionTransfer getTransfer(UserVisit userVisit, TaxDescription taxDescription) {
         var taxDescriptionTransfer = get(taxDescription);
         
         if(taxDescriptionTransfer == null) {
-            var taxTransferCache = taxControl.getTaxTransferCaches(userVisit).getTaxTransferCache();
-            var taxTransfer = taxTransferCache.getTransfer(taxDescription.getTax());
+            var taxTransfer = taxControl.getTaxTransfer(userVisit, taxDescription.getTax());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, taxDescription.getLanguage());
             
             taxDescriptionTransfer = new TaxDescriptionTransfer(languageTransfer, taxTransfer, taxDescription.getDescription());
-            put(taxDescription, taxDescriptionTransfer);
+            put(userVisit, taxDescription, taxDescriptionTransfer);
         }
         
         return taxDescriptionTransfer;

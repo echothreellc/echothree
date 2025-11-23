@@ -44,12 +44,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class UseTypeControl
         extends BaseOfferControl {
 
     /** Creates a new instance of UseTypeControl */
-    public UseTypeControl() {
+    protected UseTypeControl() {
         super();
     }
     
@@ -218,7 +220,7 @@ public class UseTypeControl
         List<UseTypeTransfer> useTypeTransfers = new ArrayList<>(useTypes.size());
         
         useTypes.forEach((useType) -> {
-            useTypeTransfers.add(getOfferTransferCaches(userVisit).getUseTypeTransferCache().getUseTypeTransfer(useType));
+            useTypeTransfers.add(useTypeTransferCache.getUseTypeTransfer(userVisit, useType));
         });
         
         return useTypeTransfers;
@@ -229,7 +231,7 @@ public class UseTypeControl
     }
     
     public UseTypeTransfer getUseTypeTransfer(UserVisit userVisit, UseType useType) {
-        return getOfferTransferCaches(userVisit).getUseTypeTransferCache().getUseTypeTransfer(useType);
+        return useTypeTransferCache.getUseTypeTransfer(userVisit, useType);
     }
     
     public UseTypeChoicesBean getUseTypeChoices(String defaultUseTypeChoice, Language language, boolean allowNullChoice) {
@@ -447,7 +449,7 @@ public class UseTypeControl
         var useTypeDescription = getUseTypeDescription(useType, language);
         
         if(useTypeDescription == null && !language.getIsDefault()) {
-            useTypeDescription = getUseTypeDescription(useType, getPartyControl().getDefaultLanguage());
+            useTypeDescription = getUseTypeDescription(useType, partyControl.getDefaultLanguage());
         }
         
         if(useTypeDescription == null) {
@@ -460,7 +462,7 @@ public class UseTypeControl
     }
     
     public UseTypeDescriptionTransfer getUseTypeDescriptionTransfer(UserVisit userVisit, UseTypeDescription useTypeDescription) {
-        return getOfferTransferCaches(userVisit).getUseTypeDescriptionTransferCache().getUseTypeDescriptionTransfer(useTypeDescription);
+        return useTypeDescriptionTransferCache.getUseTypeDescriptionTransfer(userVisit, useTypeDescription);
     }
     
     public List<UseTypeDescriptionTransfer> getUseTypeDescriptionTransfersByUseType(UserVisit userVisit, UseType useType) {
@@ -468,7 +470,7 @@ public class UseTypeControl
         List<UseTypeDescriptionTransfer> useTypeDescriptionTransfers = new ArrayList<>(useTypeDescriptions.size());
         
         useTypeDescriptions.forEach((useTypeDescription) -> {
-            useTypeDescriptionTransfers.add(getOfferTransferCaches(userVisit).getUseTypeDescriptionTransferCache().getUseTypeDescriptionTransfer(useTypeDescription));
+            useTypeDescriptionTransfers.add(useTypeDescriptionTransferCache.getUseTypeDescriptionTransfer(userVisit, useTypeDescription));
         });
         
         return useTypeDescriptionTransfers;

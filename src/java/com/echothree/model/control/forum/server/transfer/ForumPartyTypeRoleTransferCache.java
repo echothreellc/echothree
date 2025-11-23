@@ -22,20 +22,21 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.forum.server.entity.ForumPartyTypeRole;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ForumPartyTypeRoleTransferCache
         extends BaseForumTransferCache<ForumPartyTypeRole, ForumPartyTypeRoleTransfer> {
-    
-    PartyControl partyControl;
+
+    ForumControl forumControl = Session.getModelController(ForumControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of ForumPartyTypeRoleTransferCache */
-    public ForumPartyTypeRoleTransferCache(UserVisit userVisit, ForumControl forumControl) {
-        super(userVisit, forumControl);
-        
-        partyControl = Session.getModelController(PartyControl.class);
+    protected ForumPartyTypeRoleTransferCache() {
+        super();
     }
     
-    public ForumPartyTypeRoleTransfer getForumPartyTypeRoleTransfer(ForumPartyTypeRole forumPartyTypeRole) {
+    public ForumPartyTypeRoleTransfer getForumPartyTypeRoleTransfer(UserVisit userVisit, ForumPartyTypeRole forumPartyTypeRole) {
         var forumPartyTypeRoleTransfer = get(forumPartyTypeRole);
         
         if(forumPartyTypeRoleTransfer == null) {
@@ -44,7 +45,7 @@ public class ForumPartyTypeRoleTransferCache
             var forumRoleType = forumControl.getForumRoleTypeTransfer(userVisit, forumPartyTypeRole.getForumRoleType());
             
             forumPartyTypeRoleTransfer = new ForumPartyTypeRoleTransfer(forum, partyType, forumRoleType);
-            put(forumPartyTypeRole, forumPartyTypeRoleTransfer);
+            put(userVisit, forumPartyTypeRole, forumPartyTypeRoleTransfer);
         }
         
         return forumPartyTypeRoleTransfer;

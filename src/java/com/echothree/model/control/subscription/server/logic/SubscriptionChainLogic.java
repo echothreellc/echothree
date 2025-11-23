@@ -26,20 +26,19 @@ import com.echothree.model.data.subscription.server.entity.Subscription;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class SubscriptionChainLogic
         extends BaseChainLogic {
-    
-    private SubscriptionChainLogic() {
+
+    protected SubscriptionChainLogic() {
         super();
     }
-    
-    private static class SubscriptionChainLogicHolder {
-        static SubscriptionChainLogic instance = new SubscriptionChainLogic();
-    }
-    
+
     public static SubscriptionChainLogic getInstance() {
-        return SubscriptionChainLogicHolder.instance;
+        return CDI.current().select(SubscriptionChainLogic.class).get();
     }
     
     /** createChainInstance is different than the version in BaseChainLogic, it requires a Subscription parameter. Subscriptions

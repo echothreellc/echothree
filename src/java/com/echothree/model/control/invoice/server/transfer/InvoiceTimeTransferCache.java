@@ -20,25 +20,30 @@ import com.echothree.model.control.invoice.common.transfer.InvoiceTimeTransfer;
 import com.echothree.model.control.invoice.server.control.InvoiceControl;
 import com.echothree.model.data.invoice.server.entity.InvoiceTime;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class InvoiceTimeTransferCache
         extends BaseInvoiceTransferCache<InvoiceTime, InvoiceTimeTransfer> {
-    
+
+    InvoiceControl invoiceControl = Session.getModelController(InvoiceControl.class);
+
     /** Creates a new instance of InvoiceTimeTransferCache */
-    public InvoiceTimeTransferCache(UserVisit userVisit, InvoiceControl invoiceControl) {
-        super(userVisit, invoiceControl);
+    protected InvoiceTimeTransferCache() {
+        super();
     }
     
-    public InvoiceTimeTransfer getInvoiceTimeTransfer(InvoiceTime invoiceTime) {
+    public InvoiceTimeTransfer getInvoiceTimeTransfer(UserVisit userVisit, InvoiceTime invoiceTime) {
         var invoiceTimeTransfer = get(invoiceTime);
         
         if(invoiceTimeTransfer == null) {
             var invoiceTimeType = invoiceControl.getInvoiceTimeTypeTransfer(userVisit, invoiceTime.getInvoiceTimeType());
             var unformattedTime = invoiceTime.getTime();
-            var time = formatTypicalDateTime(unformattedTime);
+            var time = formatTypicalDateTime(userVisit, unformattedTime);
             
             invoiceTimeTransfer = new InvoiceTimeTransfer(invoiceTimeType, unformattedTime, time);
-            put(invoiceTime, invoiceTimeTransfer);
+            put(userVisit, invoiceTime, invoiceTimeTransfer);
         }
         
         return invoiceTimeTransfer;

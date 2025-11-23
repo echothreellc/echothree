@@ -22,19 +22,22 @@ import com.echothree.model.control.tax.server.control.TaxControl;
 import com.echothree.model.data.tax.server.entity.TaxClassificationTranslation;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class TaxClassificationTranslationTransferCache
         extends BaseTaxDescriptionTransferCache<TaxClassificationTranslation, TaxClassificationTranslationTransfer> {
 
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
-    
+    TaxControl taxControl = Session.getModelController(TaxControl.class);
+
     /** Creates a new instance of TaxClassificationTranslationTransferCache */
-    public TaxClassificationTranslationTransferCache(UserVisit userVisit, TaxControl taxControl) {
-        super(userVisit, taxControl);
+    protected TaxClassificationTranslationTransferCache() {
+        super();
     }
     
     @Override
-    public TaxClassificationTranslationTransfer getTransfer(TaxClassificationTranslation taxClassificationTranslation) {
+    public TaxClassificationTranslationTransfer getTransfer(UserVisit userVisit, TaxClassificationTranslation taxClassificationTranslation) {
         var taxClassificationTranslationTransfer = get(taxClassificationTranslation);
         
         if(taxClassificationTranslationTransfer == null) {
@@ -47,7 +50,7 @@ public class TaxClassificationTranslationTransferCache
             
             taxClassificationTranslationTransfer = new TaxClassificationTranslationTransfer(languageTransfer,
                     taxClassificationTransfer, description, overviewMimeTypeTransfer, overview);
-            put(taxClassificationTranslation, taxClassificationTranslationTransfer);
+            put(userVisit, taxClassificationTranslation, taxClassificationTranslationTransfer);
         }
         
         return taxClassificationTranslationTransfer;

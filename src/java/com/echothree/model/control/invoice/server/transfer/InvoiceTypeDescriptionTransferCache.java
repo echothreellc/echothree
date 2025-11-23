@@ -20,16 +20,21 @@ import com.echothree.model.control.invoice.common.transfer.InvoiceTypeDescriptio
 import com.echothree.model.control.invoice.server.control.InvoiceControl;
 import com.echothree.model.data.invoice.server.entity.InvoiceTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class InvoiceTypeDescriptionTransferCache
         extends BaseInvoiceDescriptionTransferCache<InvoiceTypeDescription, InvoiceTypeDescriptionTransfer> {
-    
+
+    InvoiceControl invoiceControl = Session.getModelController(InvoiceControl.class);
+
     /** Creates a new instance of InvoiceTypeDescriptionTransferCache */
-    public InvoiceTypeDescriptionTransferCache(UserVisit userVisit, InvoiceControl invoiceControl) {
-        super(userVisit, invoiceControl);
+    protected InvoiceTypeDescriptionTransferCache() {
+        super();
     }
     
-    public InvoiceTypeDescriptionTransfer getInvoiceTypeDescriptionTransfer(InvoiceTypeDescription invoiceTypeDescription) {
+    public InvoiceTypeDescriptionTransfer getInvoiceTypeDescriptionTransfer(UserVisit userVisit, InvoiceTypeDescription invoiceTypeDescription) {
         var invoiceTypeDescriptionTransfer = get(invoiceTypeDescription);
         
         if(invoiceTypeDescriptionTransfer == null) {
@@ -37,7 +42,7 @@ public class InvoiceTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, invoiceTypeDescription.getLanguage());
             
             invoiceTypeDescriptionTransfer = new InvoiceTypeDescriptionTransfer(languageTransfer, invoiceTypeTransfer, invoiceTypeDescription.getDescription());
-            put(invoiceTypeDescription, invoiceTypeDescriptionTransfer);
+            put(userVisit, invoiceTypeDescription, invoiceTypeDescriptionTransfer);
         }
         
         return invoiceTypeDescriptionTransfer;

@@ -22,20 +22,21 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.geo.server.entity.GeoCodeDateTimeFormat;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class GeoCodeDateTimeFormatTransferCache
         extends BaseGeoTransferCache<GeoCodeDateTimeFormat, GeoCodeDateTimeFormatTransfer> {
-    
-    PartyControl partyControl;
+
+    GeoControl geoControl = Session.getModelController(GeoControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of GeoCodeDateTimeFormatTransferCache */
-    public GeoCodeDateTimeFormatTransferCache(UserVisit userVisit, GeoControl geoControl) {
-        super(userVisit, geoControl);
-        
-        partyControl = Session.getModelController(PartyControl.class);
+    protected GeoCodeDateTimeFormatTransferCache() {
+        super();
     }
     
-    public GeoCodeDateTimeFormatTransfer getGeoCodeDateTimeFormatTransfer(GeoCodeDateTimeFormat geoCodeDateTimeFormat) {
+    public GeoCodeDateTimeFormatTransfer getGeoCodeDateTimeFormatTransfer(UserVisit userVisit, GeoCodeDateTimeFormat geoCodeDateTimeFormat) {
         var geoCodeDateTimeFormatTransfer = get(geoCodeDateTimeFormat);
         
         if(geoCodeDateTimeFormatTransfer == null) {
@@ -45,7 +46,7 @@ public class GeoCodeDateTimeFormatTransferCache
             var sortOrder = geoCodeDateTimeFormat.getSortOrder();
             
             geoCodeDateTimeFormatTransfer = new GeoCodeDateTimeFormatTransfer(geoCode, dateTimeFormat, isDefault, sortOrder);
-            put(geoCodeDateTimeFormat, geoCodeDateTimeFormatTransfer);
+            put(userVisit, geoCodeDateTimeFormat, geoCodeDateTimeFormatTransfer);
         }
         
         return geoCodeDateTimeFormatTransfer;

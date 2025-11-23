@@ -22,20 +22,21 @@ import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.data.geo.server.entity.GeoCodeCurrency;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class GeoCodeCurrencyTransferCache
         extends BaseGeoTransferCache<GeoCodeCurrency, GeoCodeCurrencyTransfer> {
     
-    AccountingControl accountingControl;
-    
+    AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
+    GeoControl geoControl = Session.getModelController(GeoControl.class);
+
     /** Creates a new instance of GeoCodeCurrencyTransferCache */
-    public GeoCodeCurrencyTransferCache(UserVisit userVisit, GeoControl geoControl) {
-        super(userVisit, geoControl);
-        
-        accountingControl = Session.getModelController(AccountingControl.class);
+    protected GeoCodeCurrencyTransferCache() {
+        super();
     }
     
-    public GeoCodeCurrencyTransfer getGeoCodeCurrencyTransfer(GeoCodeCurrency geoCodeCurrency) {
+    public GeoCodeCurrencyTransfer getGeoCodeCurrencyTransfer(UserVisit userVisit, GeoCodeCurrency geoCodeCurrency) {
         var geoCodeCurrencyTransfer = get(geoCodeCurrency);
         
         if(geoCodeCurrencyTransfer == null) {
@@ -45,7 +46,7 @@ public class GeoCodeCurrencyTransferCache
             var sortOrder = geoCodeCurrency.getSortOrder();
             
             geoCodeCurrencyTransfer = new GeoCodeCurrencyTransfer(geoCode, currency, isDefault, sortOrder);
-            put(geoCodeCurrency, geoCodeCurrencyTransfer);
+            put(userVisit, geoCodeCurrency, geoCodeCurrencyTransfer);
         }
         
         return geoCodeCurrencyTransfer;

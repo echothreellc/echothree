@@ -26,7 +26,12 @@ import com.echothree.model.control.index.common.transfer.IndexFieldTransfer;
 import com.echothree.model.control.index.common.transfer.IndexTransfer;
 import com.echothree.model.control.index.common.transfer.IndexTypeDescriptionTransfer;
 import com.echothree.model.control.index.common.transfer.IndexTypeTransfer;
-import com.echothree.model.control.index.server.transfer.IndexTransferCaches;
+import com.echothree.model.control.index.server.transfer.IndexDescriptionTransferCache;
+import com.echothree.model.control.index.server.transfer.IndexFieldDescriptionTransferCache;
+import com.echothree.model.control.index.server.transfer.IndexFieldTransferCache;
+import com.echothree.model.control.index.server.transfer.IndexTransferCache;
+import com.echothree.model.control.index.server.transfer.IndexTypeDescriptionTransferCache;
+import com.echothree.model.control.index.server.transfer.IndexTypeTransferCache;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityType;
@@ -68,29 +73,40 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
+@RequestScoped
 public class IndexControl
         extends BaseModelControl {
     
     /** Creates a new instance of IndexControl */
-    public IndexControl() {
+    protected IndexControl() {
         super();
     }
     
     // --------------------------------------------------------------------------------
     //   Index Transfer Caches
     // --------------------------------------------------------------------------------
-    
-    private IndexTransferCaches indexTransferCaches;
-    
-    public IndexTransferCaches getIndexTransferCaches(UserVisit userVisit) {
-        if(indexTransferCaches == null) {
-            indexTransferCaches = new IndexTransferCaches(userVisit, this);
-        }
-        
-        return indexTransferCaches;
-    }
-    
+
+    @Inject
+    IndexTypeTransferCache indexTypeTransferCache;
+
+    @Inject
+    IndexTypeDescriptionTransferCache indexTypeDescriptionTransferCache;
+
+    @Inject
+    IndexFieldTransferCache indexFieldTransferCache;
+
+    @Inject
+    IndexFieldDescriptionTransferCache indexFieldDescriptionTransferCache;
+
+    @Inject
+    IndexTransferCache indexTransferCache;
+
+    @Inject
+    IndexDescriptionTransferCache indexDescriptionTransferCache;
+
     // --------------------------------------------------------------------------------
     //   Index Types
     // --------------------------------------------------------------------------------
@@ -281,15 +297,14 @@ public class IndexControl
     }
 
    public IndexTypeTransfer getIndexTypeTransfer(UserVisit userVisit, IndexType indexType) {
-        return getIndexTransferCaches(userVisit).getIndexTypeTransferCache().getIndexTypeTransfer(indexType);
+        return indexTypeTransferCache.getIndexTypeTransfer(userVisit, indexType);
     }
 
     public List<IndexTypeTransfer> getIndexTypeTransfers(UserVisit userVisit, Collection<IndexType> indexTypes) {
         List<IndexTypeTransfer> indexTypeTransfers = new ArrayList<>(indexTypes.size());
-        var indexTypeTransferCache = getIndexTransferCaches(userVisit).getIndexTypeTransferCache();
 
         indexTypes.forEach((indexType) ->
-                indexTypeTransfers.add(indexTypeTransferCache.getIndexTypeTransfer(indexType))
+                indexTypeTransfers.add(indexTypeTransferCache.getIndexTypeTransfer(userVisit, indexType))
         );
 
         return indexTypeTransfers;
@@ -519,7 +534,7 @@ public class IndexControl
         var indexTypeDescription = getIndexTypeDescription(indexType, language);
 
         if(indexTypeDescription == null && !language.getIsDefault()) {
-            indexTypeDescription = getIndexTypeDescription(indexType, getPartyControl().getDefaultLanguage());
+            indexTypeDescription = getIndexTypeDescription(indexType, partyControl.getDefaultLanguage());
         }
 
         if(indexTypeDescription == null) {
@@ -532,16 +547,15 @@ public class IndexControl
     }
 
     public IndexTypeDescriptionTransfer getIndexTypeDescriptionTransfer(UserVisit userVisit, IndexTypeDescription indexTypeDescription) {
-        return getIndexTransferCaches(userVisit).getIndexTypeDescriptionTransferCache().getIndexTypeDescriptionTransfer(indexTypeDescription);
+        return indexTypeDescriptionTransferCache.getIndexTypeDescriptionTransfer(userVisit, indexTypeDescription);
     }
 
     public List<IndexTypeDescriptionTransfer> getIndexTypeDescriptionTransfersByIndexType(UserVisit userVisit, IndexType indexType) {
         var indexTypeDescriptions = getIndexTypeDescriptionsByIndexType(indexType);
         List<IndexTypeDescriptionTransfer> indexTypeDescriptionTransfers = new ArrayList<>(indexTypeDescriptions.size());
-        var indexTypeDescriptionTransferCache = getIndexTransferCaches(userVisit).getIndexTypeDescriptionTransferCache();
 
         indexTypeDescriptions.forEach((indexTypeDescription) ->
-                indexTypeDescriptionTransfers.add(indexTypeDescriptionTransferCache.getIndexTypeDescriptionTransfer(indexTypeDescription))
+                indexTypeDescriptionTransfers.add(indexTypeDescriptionTransferCache.getIndexTypeDescriptionTransfer(userVisit, indexTypeDescription))
         );
 
         return indexTypeDescriptionTransfers;
@@ -755,16 +769,15 @@ public class IndexControl
     }
 
     public IndexFieldTransfer getIndexFieldTransfer(UserVisit userVisit, IndexField indexField) {
-        return getIndexTransferCaches(userVisit).getIndexFieldTransferCache().getIndexFieldTransfer(indexField);
+        return indexFieldTransferCache.getIndexFieldTransfer(userVisit, indexField);
     }
 
     public List<IndexFieldTransfer> getIndexFieldTransfersByIndexType(UserVisit userVisit, IndexType indexType) {
         var indexFields = getIndexFields(indexType);
         List<IndexFieldTransfer> indexFieldTransfers = new ArrayList<>(indexFields.size());
-        var indexFieldTransferCache = getIndexTransferCaches(userVisit).getIndexFieldTransferCache();
 
         indexFields.forEach((indexField) ->
-                indexFieldTransfers.add(indexFieldTransferCache.getIndexFieldTransfer(indexField))
+                indexFieldTransfers.add(indexFieldTransferCache.getIndexFieldTransfer(userVisit, indexField))
         );
 
         return indexFieldTransfers;
@@ -945,7 +958,7 @@ public class IndexControl
         var indexFieldDescription = getIndexFieldDescription(indexField, language);
 
         if(indexFieldDescription == null && !language.getIsDefault()) {
-            indexFieldDescription = getIndexFieldDescription(indexField, getPartyControl().getDefaultLanguage());
+            indexFieldDescription = getIndexFieldDescription(indexField, partyControl.getDefaultLanguage());
         }
 
         if(indexFieldDescription == null) {
@@ -958,7 +971,7 @@ public class IndexControl
     }
 
     public IndexFieldDescriptionTransfer getIndexFieldDescriptionTransfer(UserVisit userVisit, IndexFieldDescription indexFieldDescription) {
-        return getIndexTransferCaches(userVisit).getIndexFieldDescriptionTransferCache().getIndexFieldDescriptionTransfer(indexFieldDescription);
+        return indexFieldDescriptionTransferCache.getIndexFieldDescriptionTransfer(userVisit, indexFieldDescription);
     }
 
     public List<IndexFieldDescriptionTransfer> getIndexFieldDescriptionTransfersByIndexField(UserVisit userVisit, IndexField indexField) {
@@ -966,7 +979,7 @@ public class IndexControl
         List<IndexFieldDescriptionTransfer> indexFieldDescriptionTransfers = new ArrayList<>(indexFieldDescriptions.size());
 
         indexFieldDescriptions.forEach((indexFieldDescription) -> {
-            indexFieldDescriptionTransfers.add(getIndexTransferCaches(userVisit).getIndexFieldDescriptionTransferCache().getIndexFieldDescriptionTransfer(indexFieldDescription));
+            indexFieldDescriptionTransfers.add(indexFieldDescriptionTransferCache.getIndexFieldDescriptionTransfer(userVisit, indexFieldDescription));
         });
 
         return indexFieldDescriptionTransfers;
@@ -1267,23 +1280,22 @@ public class IndexControl
         var index = getIndex(indexType, language);
 
         if(index == null && !language.getIsDefault()) {
-            index = getIndex(indexType, getPartyControl().getDefaultLanguage());
+            index = getIndex(indexType, partyControl.getDefaultLanguage());
         }
 
         return index;
     }
 
    public IndexTransfer getIndexTransfer(UserVisit userVisit, Index index) {
-        return getIndexTransferCaches(userVisit).getIndexTransferCache().getIndexTransfer(index);
+        return indexTransferCache.getIndexTransfer(userVisit, index);
     }
 
     public List<IndexTransfer> getIndexTransfers(UserVisit userVisit) {
         var indexes = getIndexes();
         List<IndexTransfer> indexTransfers = new ArrayList<>(indexes.size());
-        var indexTransferCache = getIndexTransferCaches(userVisit).getIndexTransferCache();
 
         indexes.forEach((index) ->
-                indexTransfers.add(indexTransferCache.getIndexTransfer(index))
+                indexTransfers.add(indexTransferCache.getIndexTransfer(userVisit, index))
         );
 
         return indexTransfers;
@@ -1508,7 +1520,7 @@ public class IndexControl
         var indexDescription = getIndexDescription(index, language);
 
         if(indexDescription == null && !language.getIsDefault()) {
-            indexDescription = getIndexDescription(index, getPartyControl().getDefaultLanguage());
+            indexDescription = getIndexDescription(index, partyControl.getDefaultLanguage());
         }
 
         if(indexDescription == null) {
@@ -1521,16 +1533,15 @@ public class IndexControl
     }
 
     public IndexDescriptionTransfer getIndexDescriptionTransfer(UserVisit userVisit, IndexDescription indexDescription) {
-        return getIndexTransferCaches(userVisit).getIndexDescriptionTransferCache().getIndexDescriptionTransfer(indexDescription);
+        return indexDescriptionTransferCache.getIndexDescriptionTransfer(userVisit, indexDescription);
     }
 
     public List<IndexDescriptionTransfer> getIndexDescriptionTransfersByIndex(UserVisit userVisit, Index index) {
         var indexDescriptions = getIndexDescriptionsByIndex(index);
         List<IndexDescriptionTransfer> indexDescriptionTransfers = new ArrayList<>(indexDescriptions.size());
-        var indexDescriptionTransferCache = getIndexTransferCaches(userVisit).getIndexDescriptionTransferCache();
 
         indexDescriptions.forEach((indexDescription) ->
-                indexDescriptionTransfers.add(indexDescriptionTransferCache.getIndexDescriptionTransfer(indexDescription))
+                indexDescriptionTransfers.add(indexDescriptionTransferCache.getIndexDescriptionTransfer(userVisit, indexDescription))
         );
 
         return indexDescriptionTransfers;

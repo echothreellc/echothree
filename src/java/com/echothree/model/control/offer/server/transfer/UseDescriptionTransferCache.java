@@ -21,18 +21,20 @@ import com.echothree.model.control.offer.server.control.UseControl;
 import com.echothree.model.data.offer.server.entity.UseDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class UseDescriptionTransferCache
         extends BaseOfferDescriptionTransferCache<UseDescription, UseDescriptionTransfer> {
 
     UseControl useControl = Session.getModelController(UseControl.class);
 
     /** Creates a new instance of UseDescriptionTransferCache */
-    public UseDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected UseDescriptionTransferCache() {
+        super();
     }
     
-    public UseDescriptionTransfer getUseDescriptionTransfer(UseDescription useDescription) {
+    public UseDescriptionTransfer getUseDescriptionTransfer(UserVisit userVisit, UseDescription useDescription) {
         var useDescriptionTransfer = get(useDescription);
         
         if(useDescriptionTransfer == null) {
@@ -40,7 +42,7 @@ public class UseDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, useDescription.getLanguage());
             
             useDescriptionTransfer = new UseDescriptionTransfer(languageTransfer, useTransfer, useDescription.getDescription());
-            put(useDescription, useDescriptionTransfer);
+            put(userVisit, useDescription, useDescriptionTransfer);
         }
         
         return useDescriptionTransfer;

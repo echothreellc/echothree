@@ -20,16 +20,21 @@ import com.echothree.model.control.selector.common.transfer.SelectorKindDescript
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.selector.server.entity.SelectorKindDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class SelectorKindDescriptionTransferCache
         extends BaseSelectorDescriptionTransferCache<SelectorKindDescription, SelectorKindDescriptionTransfer> {
-    
+
+    SelectorControl selectorControl = Session.getModelController(SelectorControl.class);
+
     /** Creates a new instance of SelectorKindDescriptionTransferCache */
-    public SelectorKindDescriptionTransferCache(UserVisit userVisit, SelectorControl selectorControl) {
-        super(userVisit, selectorControl);
+    protected SelectorKindDescriptionTransferCache() {
+        super();
     }
     
-    public SelectorKindDescriptionTransfer getSelectorKindDescriptionTransfer(SelectorKindDescription selectorKindDescription) {
+    public SelectorKindDescriptionTransfer getSelectorKindDescriptionTransfer(UserVisit userVisit, SelectorKindDescription selectorKindDescription) {
         var selectorKindDescriptionTransfer = get(selectorKindDescription);
         
         if(selectorKindDescriptionTransfer == null) {
@@ -37,7 +42,7 @@ public class SelectorKindDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, selectorKindDescription.getLanguage());
             
             selectorKindDescriptionTransfer = new SelectorKindDescriptionTransfer(languageTransfer, selectorKindTransfer, selectorKindDescription.getDescription());
-            put(selectorKindDescription, selectorKindDescriptionTransfer);
+            put(userVisit, selectorKindDescription, selectorKindDescriptionTransfer);
         }
         
         return selectorKindDescriptionTransfer;

@@ -20,16 +20,21 @@ import com.echothree.model.control.geo.common.transfer.GeoCodeRelationshipTransf
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.data.geo.server.entity.GeoCodeRelationship;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class GeoCodeRelationshipTransferCache
         extends BaseGeoTransferCache<GeoCodeRelationship, GeoCodeRelationshipTransfer> {
-    
+
+    GeoControl geoControl = Session.getModelController(GeoControl.class);
+
     /** Creates a new instance of GeoCodeRelationshipTransferCache */
-    public GeoCodeRelationshipTransferCache(UserVisit userVisit, GeoControl geoControl) {
-        super(userVisit, geoControl);
+    protected GeoCodeRelationshipTransferCache() {
+        super();
     }
     
-    public GeoCodeRelationshipTransfer getGeoCodeRelationshipTransfer(GeoCodeRelationship geoCodeRelationship) {
+    public GeoCodeRelationshipTransfer getGeoCodeRelationshipTransfer(UserVisit userVisit, GeoCodeRelationship geoCodeRelationship) {
         var geoCodeRelationshipTransfer = get(geoCodeRelationship);
         
         if(geoCodeRelationshipTransfer == null) {
@@ -37,7 +42,7 @@ public class GeoCodeRelationshipTransferCache
             var toGeoCode = geoControl.getGeoCodeTransfer(userVisit, geoCodeRelationship.getToGeoCode());
             
             geoCodeRelationshipTransfer = new GeoCodeRelationshipTransfer(fromGeoCode, toGeoCode);
-            put(geoCodeRelationship, geoCodeRelationshipTransfer);
+            put(userVisit, geoCodeRelationship, geoCodeRelationshipTransfer);
         }
         
         return geoCodeRelationshipTransfer;

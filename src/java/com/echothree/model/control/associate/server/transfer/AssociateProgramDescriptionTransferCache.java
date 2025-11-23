@@ -20,17 +20,22 @@ import com.echothree.model.control.associate.common.transfer.AssociateProgramDes
 import com.echothree.model.control.associate.server.control.AssociateControl;
 import com.echothree.model.data.associate.server.entity.AssociateProgramDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class AssociateProgramDescriptionTransferCache
         extends BaseAssociateDescriptionTransferCache<AssociateProgramDescription, AssociateProgramDescriptionTransfer> {
-    
+
+    AssociateControl associateControl = Session.getModelController(AssociateControl.class);
+
     /** Creates a new instance of AssociateProgramDescriptionTransferCache */
-    public AssociateProgramDescriptionTransferCache(UserVisit userVisit, AssociateControl associateControl) {
-        super(userVisit, associateControl);
+    protected AssociateProgramDescriptionTransferCache() {
+        super();
     }
     
     @Override
-    public AssociateProgramDescriptionTransfer getTransfer(AssociateProgramDescription associateProgramDescription) {
+    public AssociateProgramDescriptionTransfer getTransfer(UserVisit userVisit, AssociateProgramDescription associateProgramDescription) {
         var associateProgramDescriptionTransfer = get(associateProgramDescription);
         
         if(associateProgramDescriptionTransfer == null) {
@@ -38,7 +43,7 @@ public class AssociateProgramDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, associateProgramDescription.getLanguage());
             
             associateProgramDescriptionTransfer = new AssociateProgramDescriptionTransfer(languageTransfer, associateProgramTransfer, associateProgramDescription.getDescription());
-            put(associateProgramDescription, associateProgramDescriptionTransfer);
+            put(userVisit, associateProgramDescription, associateProgramDescriptionTransfer);
         }
         
         return associateProgramDescriptionTransfer;

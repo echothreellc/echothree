@@ -21,19 +21,21 @@ import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.data.accounting.server.entity.TransactionGlAccount;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class TransactionGlAccountTransferCache
         extends BaseAccountingTransferCache<TransactionGlAccount, TransactionGlAccountTransfer> {
 
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
 
     /** Creates a new instance of TransactionGlAccountTransferCache */
-    public TransactionGlAccountTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected TransactionGlAccountTransferCache() {
+        super();
     }
     
     @Override
-    public TransactionGlAccountTransfer getTransfer(TransactionGlAccount transactionGlAccount) {
+    public TransactionGlAccountTransfer getTransfer(UserVisit userVisit, TransactionGlAccount transactionGlAccount) {
         var transactionGlAccountTransfer = get(transactionGlAccount);
         
         if(transactionGlAccountTransfer == null) {
@@ -43,7 +45,7 @@ public class TransactionGlAccountTransferCache
                     transactionGlAccount.getGlAccount());
             
             transactionGlAccountTransfer = new TransactionGlAccountTransfer(transactionGlAccountCategory, glAccount);
-            put(transactionGlAccount, transactionGlAccountTransfer);
+            put(userVisit, transactionGlAccount, transactionGlAccountTransfer);
         }
         
         return transactionGlAccountTransfer;

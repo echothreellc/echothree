@@ -34,7 +34,9 @@ import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class DeleteEntityAttributeGroupDescriptionCommand
         extends BaseSimpleCommand<DeleteEntityAttributeGroupDescriptionForm> {
     
@@ -62,7 +64,6 @@ public class DeleteEntityAttributeGroupDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
         var entityAttributeGroupName = form.getEntityAttributeGroupName();
         var entityAttributeGroup = coreControl.getEntityAttributeGroupByName(entityAttributeGroupName);
         

@@ -104,12 +104,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class InventoryControl
         extends BaseInventoryControl {
     
     /** Creates a new instance of InventoryControl */
-    public InventoryControl() {
+    protected InventoryControl() {
         super();
     }
     
@@ -285,7 +287,7 @@ public class InventoryControl
     }
     
     public InventoryLocationGroupTransfer getInventoryLocationGroupTransfer(UserVisit userVisit, InventoryLocationGroup inventoryLocationGroup) {
-        return getInventoryTransferCaches(userVisit).getInventoryLocationGroupTransferCache().getTransfer(inventoryLocationGroup);
+        return inventoryLocationGroupTransferCache.getTransfer(userVisit, inventoryLocationGroup);
     }
     
     public List<InventoryLocationGroupTransfer> getInventoryLocationGroupTransfersByWarehouseParty(UserVisit userVisit, Party warehouseParty) {
@@ -296,7 +298,7 @@ public class InventoryControl
             inventoryLocationGroupTransfers = new ArrayList<>(inventoryLocationGroups.size());
             
             for(var inventoryLocationGroup : inventoryLocationGroups) {
-                inventoryLocationGroupTransfers.add(getInventoryTransferCaches(userVisit).getInventoryLocationGroupTransferCache().getTransfer(inventoryLocationGroup));
+                inventoryLocationGroupTransfers.add(inventoryLocationGroupTransferCache.getTransfer(userVisit, inventoryLocationGroup));
             }
         }
         
@@ -387,7 +389,6 @@ public class InventoryControl
     
     public InventoryLocationGroupStatusChoicesBean getInventoryLocationGroupStatusChoices(String defaultInventoryLocationGroupStatusChoice, Language language,
             InventoryLocationGroup inventoryLocationGroup, PartyPK partyPK) {
-        var workflowControl = getWorkflowControl();
         var inventoryLocationGroupStatusChoicesBean = new InventoryLocationGroupStatusChoicesBean();
         var entityInstance = getEntityInstanceByBaseEntity(inventoryLocationGroup);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(InventoryLocationGroupStatusConstants.Workflow_INVENTORY_LOCATION_GROUP_STATUS,
@@ -401,7 +402,6 @@ public class InventoryControl
     
     public void setInventoryLocationGroupStatus(ExecutionErrorAccumulator eea, InventoryLocationGroup inventoryLocationGroup,
             String inventoryLocationGroupStatusChoice, PartyPK modifiedBy) {
-        var workflowControl = getWorkflowControl();
         var entityInstance = getEntityInstanceByBaseEntity(inventoryLocationGroup);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(InventoryLocationGroupStatusConstants.Workflow_INVENTORY_LOCATION_GROUP_STATUS,
                 entityInstance);
@@ -568,7 +568,7 @@ public class InventoryControl
         var inventoryLocationGroupDescription = getInventoryLocationGroupDescription(inventoryLocationGroup, language);
         
         if(inventoryLocationGroupDescription == null && !language.getIsDefault()) {
-            inventoryLocationGroupDescription = getInventoryLocationGroupDescription(inventoryLocationGroup, getPartyControl().getDefaultLanguage());
+            inventoryLocationGroupDescription = getInventoryLocationGroupDescription(inventoryLocationGroup, partyControl.getDefaultLanguage());
         }
         
         if(inventoryLocationGroupDescription == null) {
@@ -581,7 +581,7 @@ public class InventoryControl
     }
     
     public InventoryLocationGroupDescriptionTransfer getInventoryLocationGroupDescriptionTransfer(UserVisit userVisit, InventoryLocationGroupDescription inventoryLocationGroupDescription) {
-        return getInventoryTransferCaches(userVisit).getInventoryLocationGroupDescriptionTransferCache().getTransfer(inventoryLocationGroupDescription);
+        return inventoryLocationGroupDescriptionTransferCache.getTransfer(userVisit, inventoryLocationGroupDescription);
     }
     
     public List<InventoryLocationGroupDescriptionTransfer> getInventoryLocationGroupDescriptionTransfersByInventoryLocationGroup(UserVisit userVisit, InventoryLocationGroup inventoryLocationGroup) {
@@ -592,7 +592,7 @@ public class InventoryControl
             inventoryLocationGroupDescriptionTransfers = new ArrayList<>(inventoryLocationGroupDescriptions.size());
             
             for(var inventoryLocationGroupDescription : inventoryLocationGroupDescriptions) {
-                inventoryLocationGroupDescriptionTransfers.add(getInventoryTransferCaches(userVisit).getInventoryLocationGroupDescriptionTransferCache().getTransfer(inventoryLocationGroupDescription));
+                inventoryLocationGroupDescriptionTransfers.add(inventoryLocationGroupDescriptionTransferCache.getTransfer(userVisit, inventoryLocationGroupDescription));
             }
         }
         
@@ -689,13 +689,13 @@ public class InventoryControl
     }
 
     public InventoryLocationGroupVolumeTransfer getInventoryLocationGroupVolumeTransfer(UserVisit userVisit, InventoryLocationGroupVolume inventoryInventoryLocationGroupGroupVolume) {
-        return inventoryInventoryLocationGroupGroupVolume == null? null: getInventoryTransferCaches(userVisit).getInventoryLocationGroupVolumeTransferCache().getTransfer(inventoryInventoryLocationGroupGroupVolume);
+        return inventoryInventoryLocationGroupGroupVolume == null? null: inventoryLocationGroupVolumeTransferCache.getTransfer(userVisit, inventoryInventoryLocationGroupGroupVolume);
     }
     
     public InventoryLocationGroupVolumeTransfer getInventoryLocationGroupVolumeTransfer(UserVisit userVisit, InventoryLocationGroup inventoryInventoryLocationGroupGroup) {
         var inventoryInventoryLocationGroupGroupVolume = getInventoryLocationGroupVolume(inventoryInventoryLocationGroupGroup);
         
-        return inventoryInventoryLocationGroupGroupVolume == null? null: getInventoryTransferCaches(userVisit).getInventoryLocationGroupVolumeTransferCache().getTransfer(inventoryInventoryLocationGroupGroupVolume);
+        return inventoryInventoryLocationGroupGroupVolume == null? null: inventoryLocationGroupVolumeTransferCache.getTransfer(userVisit, inventoryInventoryLocationGroupGroupVolume);
     }
     
     public void updateInventoryLocationGroupVolumeFromValue(InventoryLocationGroupVolumeValue inventoryInventoryLocationGroupGroupVolumeValue, BasePK updatedBy) {
@@ -859,16 +859,15 @@ public class InventoryControl
     }
     
     public InventoryLocationGroupCapacityTransfer getInventoryLocationGroupCapacityTransfer(UserVisit userVisit, InventoryLocationGroupCapacity inventoryLocationGroupCapacity) {
-        return getInventoryTransferCaches(userVisit).getInventoryLocationGroupCapacityTransferCache().getTransfer(inventoryLocationGroupCapacity);
+        return inventoryLocationGroupCapacityTransferCache.getTransfer(userVisit, inventoryLocationGroupCapacity);
     }
     
     public List<InventoryLocationGroupCapacityTransfer> getInventoryLocationGroupCapacityTransfersByInventoryLocationGroup(UserVisit userVisit, InventoryLocationGroup inventoryLocationGroup) {
         var inventoryLocationGroupCapacities = getInventoryLocationGroupCapacitiesByInventoryLocationGroup(inventoryLocationGroup);
         List<InventoryLocationGroupCapacityTransfer> inventoryLocationGroupCapacityTransfers = new ArrayList<>(inventoryLocationGroupCapacities.size());
-        var inventoryLocationGroupCapacityTransferCache = getInventoryTransferCaches(userVisit).getInventoryLocationGroupCapacityTransferCache();
         
         inventoryLocationGroupCapacities.forEach((inventoryLocationGroupCapacity) ->
-                inventoryLocationGroupCapacityTransfers.add(inventoryLocationGroupCapacityTransferCache.getTransfer(inventoryLocationGroupCapacity))
+                inventoryLocationGroupCapacityTransfers.add(inventoryLocationGroupCapacityTransferCache.getTransfer(userVisit, inventoryLocationGroupCapacity))
         );
         
         return inventoryLocationGroupCapacityTransfers;
@@ -1029,16 +1028,15 @@ public class InventoryControl
     
     public InventoryConditionTransfer getInventoryConditionTransfer(final UserVisit userVisit,
             final InventoryCondition inventoryCondition) {
-        return getInventoryTransferCaches(userVisit).getInventoryConditionTransferCache().getTransfer(inventoryCondition);
+        return inventoryConditionTransferCache.getTransfer(userVisit, inventoryCondition);
     }
     
     public List<InventoryConditionTransfer> getInventoryConditionTransfers(final UserVisit userVisit,
             final Collection<InventoryCondition> inventoryConditions) {
         var inventoryConditionTransfers = new ArrayList<InventoryConditionTransfer>(inventoryConditions.size());
-        var inventoryConditionTransferCache = getInventoryTransferCaches(userVisit).getInventoryConditionTransferCache();
         
         inventoryConditions.forEach((inventoryCondition) ->
-                inventoryConditionTransfers.add(inventoryConditionTransferCache.getTransfer(inventoryCondition))
+                inventoryConditionTransfers.add(inventoryConditionTransferCache.getTransfer(userVisit, inventoryCondition))
         );
         
         return inventoryConditionTransfers;
@@ -1288,7 +1286,7 @@ public class InventoryControl
         String description;
 
         if(inventoryConditionDescription == null && !language.getIsDefault()) {
-            inventoryConditionDescription = getInventoryConditionDescription(inventoryCondition, getPartyControl().getDefaultLanguage());
+            inventoryConditionDescription = getInventoryConditionDescription(inventoryCondition, partyControl.getDefaultLanguage());
         }
         
         if(inventoryConditionDescription == null) {
@@ -1302,17 +1300,16 @@ public class InventoryControl
     
     public InventoryConditionDescriptionTransfer getInventoryConditionDescriptionTransfer(final UserVisit userVisit,
             final InventoryConditionDescription inventoryConditionDescription) {
-        return getInventoryTransferCaches(userVisit).getInventoryConditionDescriptionTransferCache().getTransfer(inventoryConditionDescription);
+        return inventoryConditionDescriptionTransferCache.getTransfer(userVisit, inventoryConditionDescription);
     }
     
     public List<InventoryConditionDescriptionTransfer> getInventoryConditionDescriptionTransfersByInventoryCondition(final UserVisit userVisit,
             final InventoryCondition inventoryCondition) {
         var inventoryConditionDescriptions = getInventoryConditionDescriptionsByInventoryCondition(inventoryCondition);
         var inventoryConditionDescriptionTransfers = new ArrayList<InventoryConditionDescriptionTransfer>(inventoryConditionDescriptions.size());
-        var inventoryConditionDescriptionTransferCache = getInventoryTransferCaches(userVisit).getInventoryConditionDescriptionTransferCache();
         
         inventoryConditionDescriptions.forEach((inventoryConditionDescription) ->
-                inventoryConditionDescriptionTransfers.add(inventoryConditionDescriptionTransferCache.getTransfer(inventoryConditionDescription))
+                inventoryConditionDescriptionTransfers.add(inventoryConditionDescriptionTransferCache.getTransfer(userVisit, inventoryConditionDescription))
         );
         
         return inventoryConditionDescriptionTransfers;
@@ -1418,7 +1415,7 @@ public class InventoryControl
     
     public InventoryConditionUseTypeTransfer getInventoryConditionUseTypeTransfer(UserVisit userVisit,
             InventoryConditionUseType inventoryConditionUseType) {
-        return getInventoryTransferCaches(userVisit).getInventoryConditionUseTypeTransferCache().getTransfer(inventoryConditionUseType);
+        return inventoryConditionUseTypeTransferCache.getTransfer(userVisit, inventoryConditionUseType);
     }
     
     private List<InventoryConditionUseTypeTransfer> getInventoryConditionUseTypeTransfers(final UserVisit userVisit,
@@ -1426,12 +1423,11 @@ public class InventoryControl
         List<InventoryConditionUseTypeTransfer> inventoryConditionUseTypeTransfers = null;
         
         if(inventoryConditionUseTypes != null) {
-            var inventoryConditionUseTypeTransferCache = getInventoryTransferCaches(userVisit).getInventoryConditionUseTypeTransferCache();
             
             inventoryConditionUseTypeTransfers = new ArrayList<>(inventoryConditionUseTypes.size());
             
             for(var inventoryConditionUseType : inventoryConditionUseTypes) {
-                inventoryConditionUseTypeTransfers.add(inventoryConditionUseTypeTransferCache.getTransfer(inventoryConditionUseType));
+                inventoryConditionUseTypeTransfers.add(inventoryConditionUseTypeTransferCache.getTransfer(userVisit, inventoryConditionUseType));
             }
         }
         return inventoryConditionUseTypeTransfers;
@@ -1474,7 +1470,7 @@ public class InventoryControl
         var inventoryConditionUseTypeDescription = getInventoryConditionUseTypeDescription(inventoryConditionUseType, language);
         
         if(inventoryConditionUseTypeDescription == null && !language.getIsDefault()) {
-            inventoryConditionUseTypeDescription = getInventoryConditionUseTypeDescription(inventoryConditionUseType, getPartyControl().getDefaultLanguage());
+            inventoryConditionUseTypeDescription = getInventoryConditionUseTypeDescription(inventoryConditionUseType, partyControl.getDefaultLanguage());
         }
         
         if(inventoryConditionUseTypeDescription == null) {
@@ -1695,12 +1691,11 @@ public class InventoryControl
         List<InventoryConditionUseTransfer> inventoryConditionUseTransfers = null;
         
         if(inventoryConditionUses != null) {
-            var inventoryConditionUseTransferCache = getInventoryTransferCaches(userVisit).getInventoryConditionUseTransferCache();
             
             inventoryConditionUseTransfers = new ArrayList<>(inventoryConditionUses.size());
             
             for(var inventoryConditionUse : inventoryConditionUses) {
-                inventoryConditionUseTransfers.add(inventoryConditionUseTransferCache.getTransfer(inventoryConditionUse));
+                inventoryConditionUseTransfers.add(inventoryConditionUseTransferCache.getTransfer(userVisit, inventoryConditionUse));
             }
         }
         return inventoryConditionUseTransfers;
@@ -1976,7 +1971,7 @@ public class InventoryControl
     }
     
     public InventoryConditionGlAccountTransfer getInventoryConditionGlAccountTransfer(UserVisit userVisit, InventoryConditionGlAccount inventoryConditionGlAccount) {
-        return inventoryConditionGlAccount == null? null: getInventoryTransferCaches(userVisit).getInventoryConditionGlAccountTransferCache().getTransfer(inventoryConditionGlAccount);
+        return inventoryConditionGlAccount == null? null: inventoryConditionGlAccountTransferCache.getTransfer(userVisit, inventoryConditionGlAccount);
     }
     
     public InventoryConditionGlAccountTransfer getInventoryConditionGlAccountTransfer(UserVisit userVisit, InventoryCondition inventoryCondition, ItemAccountingCategory itemAccountingCategory) {
@@ -1986,10 +1981,9 @@ public class InventoryControl
     public List<InventoryConditionGlAccountTransfer> getInventoryConditionGlAccountTransfersByInventoryCondition(UserVisit userVisit, InventoryCondition inventoryCondition) {
         var inventoryConditionGlAccounts = getInventoryConditionGlAccountsByInventoryCondition(inventoryCondition);
         List<InventoryConditionGlAccountTransfer> inventoryConditionGlAccountTransfers = new ArrayList<>(inventoryConditionGlAccounts.size());
-        var inventoryConditionGlAccountTransferCache = getInventoryTransferCaches(userVisit).getInventoryConditionGlAccountTransferCache();
         
         inventoryConditionGlAccounts.forEach((inventoryConditionGlAccount) ->
-                inventoryConditionGlAccountTransfers.add(inventoryConditionGlAccountTransferCache.getTransfer(inventoryConditionGlAccount))
+                inventoryConditionGlAccountTransfers.add(inventoryConditionGlAccountTransferCache.getTransfer(userVisit, inventoryConditionGlAccount))
         );
         
         return inventoryConditionGlAccountTransfers;
@@ -2217,15 +2211,14 @@ public class InventoryControl
     }
     
     public PartyInventoryLevelTransfer getPartyInventoryLevelTransfer(UserVisit userVisit, PartyInventoryLevel partyInventoryLevel) {
-        return getInventoryTransferCaches(userVisit).getPartyInventoryLevelTransferCache().getTransfer(partyInventoryLevel);
+        return partyInventoryLevelTransferCache.getTransfer(userVisit, partyInventoryLevel);
     }
     
     public List<PartyInventoryLevelTransfer> getPartyInventoryLevelTransfers(UserVisit userVisit, Collection<PartyInventoryLevel> partyInventoryLevels) {
         List<PartyInventoryLevelTransfer> partyInventoryLevelTransfers = new ArrayList<>(partyInventoryLevels.size());
-        var partyInventoryLevelTransferCache = getInventoryTransferCaches(userVisit).getPartyInventoryLevelTransferCache();
         
         partyInventoryLevels.forEach((partyInventoryLevel) ->
-                partyInventoryLevelTransfers.add(partyInventoryLevelTransferCache.getTransfer(partyInventoryLevel))
+                partyInventoryLevelTransfers.add(partyInventoryLevelTransferCache.getTransfer(userVisit, partyInventoryLevel))
         );
         
         return partyInventoryLevelTransfers;
@@ -2454,15 +2447,14 @@ public class InventoryControl
     }
 
     public AllocationPriorityTransfer getAllocationPriorityTransfer(UserVisit userVisit, AllocationPriority allocationPriority) {
-        return getInventoryTransferCaches(userVisit).getAllocationPriorityTransferCache().getTransfer(allocationPriority);
+        return allocationPriorityTransferCache.getTransfer(userVisit, allocationPriority);
     }
 
     public List<AllocationPriorityTransfer> getAllocationPriorityTransfers(UserVisit userVisit, Collection<AllocationPriority> allocationPriorities) {
         var allocationPriorityTransfers = new ArrayList<AllocationPriorityTransfer>(allocationPriorities.size());
-        var allocationPriorityTransferCache = getInventoryTransferCaches(userVisit).getAllocationPriorityTransferCache();
 
         allocationPriorities.forEach((allocationPriority) ->
-                allocationPriorityTransfers.add(allocationPriorityTransferCache.getTransfer(allocationPriority))
+                allocationPriorityTransfers.add(allocationPriorityTransferCache.getTransfer(userVisit, allocationPriority))
         );
 
         return allocationPriorityTransfers;
@@ -2668,7 +2660,7 @@ public class InventoryControl
         var allocationPriorityDescription = getAllocationPriorityDescription(allocationPriority, language);
 
         if(allocationPriorityDescription == null && !language.getIsDefault()) {
-            allocationPriorityDescription = getAllocationPriorityDescription(allocationPriority, getPartyControl().getDefaultLanguage());
+            allocationPriorityDescription = getAllocationPriorityDescription(allocationPriority, partyControl.getDefaultLanguage());
         }
 
         if(allocationPriorityDescription == null) {
@@ -2681,16 +2673,15 @@ public class InventoryControl
     }
 
     public AllocationPriorityDescriptionTransfer getAllocationPriorityDescriptionTransfer(UserVisit userVisit, AllocationPriorityDescription allocationPriorityDescription) {
-        return getInventoryTransferCaches(userVisit).getAllocationPriorityDescriptionTransferCache().getTransfer(allocationPriorityDescription);
+        return allocationPriorityDescriptionTransferCache.getTransfer(userVisit, allocationPriorityDescription);
     }
 
     public List<AllocationPriorityDescriptionTransfer> getAllocationPriorityDescriptionTransfersByAllocationPriority(UserVisit userVisit, AllocationPriority allocationPriority) {
         var allocationPriorityDescriptions = getAllocationPriorityDescriptionsByAllocationPriority(allocationPriority);
         List<AllocationPriorityDescriptionTransfer> allocationPriorityDescriptionTransfers = new ArrayList<>(allocationPriorityDescriptions.size());
-        var allocationPriorityDescriptionTransferCache = getInventoryTransferCaches(userVisit).getAllocationPriorityDescriptionTransferCache();
 
         allocationPriorityDescriptions.forEach((allocationPriorityDescription) ->
-                allocationPriorityDescriptionTransfers.add(allocationPriorityDescriptionTransferCache.getTransfer(allocationPriorityDescription))
+                allocationPriorityDescriptionTransfers.add(allocationPriorityDescriptionTransferCache.getTransfer(userVisit, allocationPriorityDescription))
         );
 
         return allocationPriorityDescriptionTransfers;

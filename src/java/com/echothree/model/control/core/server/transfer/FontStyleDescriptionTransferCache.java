@@ -17,23 +17,24 @@
 package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.transfer.FontStyleDescriptionTransfer;
-import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.control.FontControl;
 import com.echothree.model.data.core.server.entity.FontStyleDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class FontStyleDescriptionTransferCache
         extends BaseCoreDescriptionTransferCache<FontStyleDescription, FontStyleDescriptionTransfer> {
 
     FontControl fontControl = Session.getModelController(FontControl.class);
 
     /** Creates a new instance of FontStyleDescriptionTransferCache */
-    public FontStyleDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected FontStyleDescriptionTransferCache() {
+        super();
     }
     
-    public FontStyleDescriptionTransfer getFontStyleDescriptionTransfer(FontStyleDescription fontStyleDescription) {
+    public FontStyleDescriptionTransfer getFontStyleDescriptionTransfer(UserVisit userVisit, FontStyleDescription fontStyleDescription) {
         var fontStyleDescriptionTransfer = get(fontStyleDescription);
         
         if(fontStyleDescriptionTransfer == null) {
@@ -41,7 +42,7 @@ public class FontStyleDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, fontStyleDescription.getLanguage());
             
             fontStyleDescriptionTransfer = new FontStyleDescriptionTransfer(languageTransfer, fontStyleTransfer, fontStyleDescription.getDescription());
-            put(fontStyleDescription, fontStyleDescriptionTransfer);
+            put(userVisit, fontStyleDescription, fontStyleDescriptionTransfer);
         }
         return fontStyleDescriptionTransfer;
     }

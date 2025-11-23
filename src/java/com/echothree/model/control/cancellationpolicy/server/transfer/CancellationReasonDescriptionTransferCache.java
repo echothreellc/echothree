@@ -20,16 +20,21 @@ import com.echothree.model.control.cancellationpolicy.common.transfer.Cancellati
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationReasonDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CancellationReasonDescriptionTransferCache
         extends BaseCancellationPolicyDescriptionTransferCache<CancellationReasonDescription, CancellationReasonDescriptionTransfer> {
-    
+
+    CancellationPolicyControl cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
+
     /** Creates a new instance of CancellationReasonDescriptionTransferCache */
-    public CancellationReasonDescriptionTransferCache(UserVisit userVisit, CancellationPolicyControl cancellationPolicyControl) {
-        super(userVisit, cancellationPolicyControl);
+    protected CancellationReasonDescriptionTransferCache() {
+        super();
     }
     
-    public CancellationReasonDescriptionTransfer getCancellationReasonDescriptionTransfer(CancellationReasonDescription cancellationReasonDescription) {
+    public CancellationReasonDescriptionTransfer getCancellationReasonDescriptionTransfer(UserVisit userVisit, CancellationReasonDescription cancellationReasonDescription) {
         var cancellationReasonDescriptionTransfer = get(cancellationReasonDescription);
         
         if(cancellationReasonDescriptionTransfer == null) {
@@ -37,7 +42,7 @@ public class CancellationReasonDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, cancellationReasonDescription.getLanguage());
             
             cancellationReasonDescriptionTransfer = new CancellationReasonDescriptionTransfer(languageTransfer, cancellationReasonTransfer, cancellationReasonDescription.getDescription());
-            put(cancellationReasonDescription, cancellationReasonDescriptionTransfer);
+            put(userVisit, cancellationReasonDescription, cancellationReasonDescriptionTransfer);
         }
         
         return cancellationReasonDescriptionTransfer;

@@ -20,18 +20,23 @@ import com.echothree.model.control.chain.common.transfer.ChainActionTypeTransfer
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.data.chain.server.entity.ChainActionType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ChainActionTypeTransferCache
         extends BaseChainTransferCache<ChainActionType, ChainActionTypeTransfer> {
-    
+
+    ChainControl chainControl = Session.getModelController(ChainControl.class);
+
     /** Creates a new instance of ChainActionTypeTransferCache */
-    public ChainActionTypeTransferCache(UserVisit userVisit, ChainControl chainControl) {
-        super(userVisit, chainControl);
+    protected ChainActionTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public ChainActionTypeTransfer getChainActionTypeTransfer(ChainActionType chainActionType) {
+    public ChainActionTypeTransfer getChainActionTypeTransfer(UserVisit userVisit, ChainActionType chainActionType) {
         var chainActionTypeTransfer = get(chainActionType);
         
         if(chainActionTypeTransfer == null) {
@@ -40,10 +45,10 @@ public class ChainActionTypeTransferCache
             var allowMultiple = chainActionTypeDetail.getAllowMultiple();
             var isDefault = chainActionTypeDetail.getIsDefault();
             var sortOrder = chainActionTypeDetail.getSortOrder();
-            var description = chainControl.getBestChainActionTypeDescription(chainActionType, getLanguage());
+            var description = chainControl.getBestChainActionTypeDescription(chainActionType, getLanguage(userVisit));
             
             chainActionTypeTransfer = new ChainActionTypeTransfer(chainActionTypeName, allowMultiple, isDefault, sortOrder, description);
-            put(chainActionType, chainActionTypeTransfer);
+            put(userVisit, chainActionType, chainActionTypeTransfer);
         }
         
         return chainActionTypeTransfer;

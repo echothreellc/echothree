@@ -22,30 +22,33 @@ import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.track.server.entity.UserVisitTrack;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class UserVisitTrackTransferCache
         extends BaseTrackTransferCache<UserVisitTrack, UserVisitTrackTransfer> {
 
+    TrackControl trackControl = Session.getModelController(TrackControl.class);
     UserControl userControl = Session.getModelController(UserControl.class);
     
     /** Creates a new instance of UserVisitTrackTransferCache */
-    public UserVisitTrackTransferCache(UserVisit userVisit, TrackControl trackControl) {
-        super(userVisit, trackControl);
+    protected UserVisitTrackTransferCache() {
+        super();
     }
 
-    public UserVisitTrackTransfer getUserVisitTrackTransfer(UserVisitTrack userVisitTrack) {
+    public UserVisitTrackTransfer getUserVisitTrackTransfer(UserVisit userVisit, UserVisitTrack userVisitTrack) {
         var userVisitTrackTransfer = get(userVisitTrack);
 
         if(userVisitTrackTransfer == null) {
             var userVisitTransfer = userControl.getUserVisitTransfer(userVisit, userVisit);
             var userVisitTrackSequence = userVisitTrack.getUserVisitTrackSequence();
             var unformattedTime = userVisitTrack.getTime();
-            var time = formatTypicalDateTime(unformattedTime);
+            var time = formatTypicalDateTime(userVisit, unformattedTime);
             var track = userVisitTrack.getTrack();
             var trackTransfer = track == null ? null : trackControl.getTrackTransfer(userVisit, track);
 
             userVisitTrackTransfer = new UserVisitTrackTransfer(userVisitTransfer, userVisitTrackSequence, unformattedTime, time, trackTransfer);
-            put(userVisitTrack, userVisitTrackTransfer);
+            put(userVisit, userVisitTrack, userVisitTrackTransfer);
         }
 
         return userVisitTrackTransfer;

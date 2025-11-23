@@ -23,7 +23,9 @@ import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityIntegerAttribute;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EntityIntegerAttributeTransferCache
         extends BaseCoreTransferCache<EntityIntegerAttribute, EntityIntegerAttributeTransfer> {
 
@@ -31,11 +33,11 @@ public class EntityIntegerAttributeTransferCache
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
     /** Creates a new instance of EntityIntegerAttributeTransferCache */
-    public EntityIntegerAttributeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected EntityIntegerAttributeTransferCache() {
+        super();
     }
     
-    public EntityIntegerAttributeTransfer getEntityIntegerAttributeTransfer(EntityIntegerAttribute entityIntegerAttribute, EntityInstance entityInstance) {
+    public EntityIntegerAttributeTransfer getEntityIntegerAttributeTransfer(final UserVisit userVisit, final EntityIntegerAttribute entityIntegerAttribute, final EntityInstance entityInstance) {
         var entityIntegerAttributeTransfer = get(entityIntegerAttribute);
         
         if(entityIntegerAttributeTransfer == null) {
@@ -44,7 +46,7 @@ public class EntityIntegerAttributeTransferCache
             var integerAttribute = entityIntegerAttribute.getIntegerAttribute();
             
             entityIntegerAttributeTransfer = new EntityIntegerAttributeTransfer(entityAttribute, entityInstanceTransfer, integerAttribute);
-            put(entityIntegerAttribute, entityIntegerAttributeTransfer);
+            put(userVisit, entityIntegerAttribute, entityIntegerAttributeTransfer);
         }
         
         return entityIntegerAttributeTransfer;

@@ -24,7 +24,9 @@ import com.echothree.model.data.filter.server.entity.Filter;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class FilterTransferCache
         extends BaseFilterTransferCache<Filter, FilterTransfer> {
 
@@ -35,8 +37,8 @@ public class FilterTransferCache
     boolean includeFilterSteps;
     
     /** Creates a new instance of FilterTransferCache */
-    public FilterTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected FilterTransferCache() {
+        super();
 
         var options = session.getOptions();
         if(options != null) {
@@ -48,7 +50,7 @@ public class FilterTransferCache
     }
 
     @Override
-    public FilterTransfer getTransfer(Filter filter) {
+    public FilterTransfer getTransfer(UserVisit userVisit, Filter filter) {
         var filterTransfer = get(filter);
         
         if(filterTransfer == null) {
@@ -60,11 +62,11 @@ public class FilterTransferCache
             var filterItemSelectorTransfer = filterItemSelector == null? null: selectorControl.getSelectorTransfer(userVisit, filterItemSelector);
             var isDefault = filterDetail.getIsDefault();
             var sortOrder = filterDetail.getSortOrder();
-            var description = filterControl.getBestFilterDescription(filter, getLanguage());
+            var description = filterControl.getBestFilterDescription(filter, getLanguage(userVisit));
             
             filterTransfer = new FilterTransfer(filterTypeTransfer, filterName, initialFilterAdjustmentTransfer,
                     filterItemSelectorTransfer, isDefault, sortOrder, description);
-            put(filter, filterTransfer);
+            put(userVisit, filter, filterTransfer);
             
             if(includeFilterEntranceSteps) {
                 filterTransfer.setFilterEntranceSteps(new ListWrapper<>(filterControl.getFilterEntranceStepTransfersByFilter(userVisit, filter)));

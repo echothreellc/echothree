@@ -16,26 +16,27 @@
 
 package com.echothree.model.control.contactlist.server.transfer;
 
-import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.contactlist.common.transfer.CustomerTypeContactListGroupTransfer;
 import com.echothree.model.control.contactlist.server.control.ContactListControl;
 import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.data.contactlist.server.entity.CustomerTypeContactListGroup;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CustomerTypeContactListGroupTransferCache
         extends BaseContactListTransferCache<CustomerTypeContactListGroup, CustomerTypeContactListGroupTransfer> {
-    
-    ChainControl chainControl = Session.getModelController(ChainControl.class);
+
+    ContactListControl contactListControl = Session.getModelController(ContactListControl.class);
     CustomerControl customerControl = Session.getModelController(CustomerControl.class);
     
     /** Creates a new instance of CustomerTypeContactListGroupTransferCache */
-    public CustomerTypeContactListGroupTransferCache(UserVisit userVisit, ContactListControl contactListControl) {
-        super(userVisit, contactListControl);
+    protected CustomerTypeContactListGroupTransferCache() {
+        super();
     }
     
-    public CustomerTypeContactListGroupTransfer getCustomerTypeContactListGroupTransfer(CustomerTypeContactListGroup customerTypeContactListGroup) {
+    public CustomerTypeContactListGroupTransfer getCustomerTypeContactListGroupTransfer(UserVisit userVisit, CustomerTypeContactListGroup customerTypeContactListGroup) {
         var customerTypeContactListGroupTransfer = get(customerTypeContactListGroup);
         
         if(customerTypeContactListGroupTransfer == null) {
@@ -44,7 +45,7 @@ public class CustomerTypeContactListGroupTransferCache
             var addWhenCreated = customerTypeContactListGroup.getAddWhenCreated();
             
             customerTypeContactListGroupTransfer = new CustomerTypeContactListGroupTransfer(customerTypeTransfer, contactListGroupTransfer, addWhenCreated);
-            put(customerTypeContactListGroup, customerTypeContactListGroupTransfer);
+            put(userVisit, customerTypeContactListGroup, customerTypeContactListGroupTransfer);
         }
         
         return customerTypeContactListGroupTransfer;

@@ -22,17 +22,22 @@ import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.data.training.server.entity.TrainingClassSection;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
+import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.PercentUtils;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class TrainingClassSectionTransferCache
         extends BaseTrainingTransferCache<TrainingClassSection, TrainingClassSectionTransfer> {
-    
+
+    TrainingControl trainingControl = Session.getModelController(TrainingControl.class);
+
     boolean includeTrainingClassPages;
     boolean includeTrainingClassQuestions;
     
     /** Creates a new instance of TrainingClassSectionTransferCache */
-    public TrainingClassSectionTransferCache(UserVisit userVisit, TrainingControl trainingControl) {
-        super(userVisit, trainingControl);
+    protected TrainingClassSectionTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {
@@ -43,7 +48,7 @@ public class TrainingClassSectionTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public TrainingClassSectionTransfer getTrainingClassSectionTransfer(TrainingClassSection trainingClassSection) {
+    public TrainingClassSectionTransfer getTrainingClassSectionTransfer(UserVisit userVisit, TrainingClassSection trainingClassSection) {
         var trainingClassSectionTransfer = get(trainingClassSection);
         
         if(trainingClassSectionTransfer == null) {
@@ -54,12 +59,12 @@ public class TrainingClassSectionTransferCache
             var percentageToPass = PercentUtils.getInstance().formatFractionalPercent(unformattedPercentageToPass);
             var questionCount = trainingClassSectionDetail.getQuestionCount();
             var sortOrder = trainingClassSectionDetail.getSortOrder();
-            var trainingClassSectionTranslation = trainingControl.getBestTrainingClassSectionTranslation(trainingClassSection, getLanguage());
+            var trainingClassSectionTranslation = trainingControl.getBestTrainingClassSectionTranslation(trainingClassSection, getLanguage(userVisit));
             var description = trainingClassSectionTranslation == null ? trainingClassSectionName : trainingClassSectionTranslation.getDescription();
             
             trainingClassSectionTransfer = new TrainingClassSectionTransfer(trainingClass, trainingClassSectionName, unformattedPercentageToPass,
                     percentageToPass, questionCount, sortOrder, description);
-            put(trainingClassSection, trainingClassSectionTransfer);
+            put(userVisit, trainingClassSection, trainingClassSectionTransfer);
             
             if(includeTrainingClassPages) {
                 trainingClassSectionTransfer.setTrainingClassPages(new ListWrapper<>(trainingControl.getTrainingClassPageTransfers(userVisit, trainingClassSection)));

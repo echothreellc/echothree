@@ -20,27 +20,31 @@ import com.echothree.model.control.uom.common.transfer.UnitOfMeasureTypeDescript
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class UnitOfMeasureTypeDescriptionTransferCache
         extends BaseUomDescriptionTransferCache<UnitOfMeasureTypeDescription, UnitOfMeasureTypeDescriptionTransfer> {
-    
+
+    UomControl uomControl = Session.getModelController(UomControl.class);
+
     /** Creates a new instance of UnitOfMeasureTypeDescriptionTransferCache */
-    public UnitOfMeasureTypeDescriptionTransferCache(UserVisit userVisit, UomControl uomControl) {
-        super(userVisit, uomControl);
+    protected UnitOfMeasureTypeDescriptionTransferCache() {
+        super();
     }
     
-    public UnitOfMeasureTypeDescriptionTransfer getUnitOfMeasureTypeDescriptionTransfer(UnitOfMeasureTypeDescription unitOfMeasureTypeDescription) {
+    public UnitOfMeasureTypeDescriptionTransfer getUnitOfMeasureTypeDescriptionTransfer(UserVisit userVisit, UnitOfMeasureTypeDescription unitOfMeasureTypeDescription) {
         var unitOfMeasureTypeDescriptionTransfer = get(unitOfMeasureTypeDescription);
         
         if(unitOfMeasureTypeDescriptionTransfer == null) {
-            var unitOfMeasureTypeTransferCache = uomControl.getUomTransferCaches(userVisit).getUnitOfMeasureTypeTransferCache();
-            var unitOfMeasureTypeTransfer = unitOfMeasureTypeTransferCache.getUnitOfMeasureTypeTransfer(unitOfMeasureTypeDescription.getUnitOfMeasureType());
+            var unitOfMeasureTypeTransfer = uomControl.getUnitOfMeasureTypeTransfer(userVisit, unitOfMeasureTypeDescription.getUnitOfMeasureType());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, unitOfMeasureTypeDescription.getLanguage());
             
             unitOfMeasureTypeDescriptionTransfer = new UnitOfMeasureTypeDescriptionTransfer(languageTransfer,
                     unitOfMeasureTypeTransfer, unitOfMeasureTypeDescription.getSingularDescription(),
                     unitOfMeasureTypeDescription.getPluralDescription(), unitOfMeasureTypeDescription.getSymbol());
-            put(unitOfMeasureTypeDescription, unitOfMeasureTypeDescriptionTransfer);
+            put(userVisit, unitOfMeasureTypeDescription, unitOfMeasureTypeDescriptionTransfer);
         }
         
         return unitOfMeasureTypeDescriptionTransfer;

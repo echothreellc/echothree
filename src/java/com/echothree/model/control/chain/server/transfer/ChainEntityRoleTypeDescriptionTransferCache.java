@@ -20,16 +20,21 @@ import com.echothree.model.control.chain.common.transfer.ChainEntityRoleTypeDesc
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.data.chain.server.entity.ChainEntityRoleTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ChainEntityRoleTypeDescriptionTransferCache
         extends BaseChainDescriptionTransferCache<ChainEntityRoleTypeDescription, ChainEntityRoleTypeDescriptionTransfer> {
-    
+
+    ChainControl chainControl = Session.getModelController(ChainControl.class);
+
     /** Creates a new instance of ChainEntityRoleTypeDescriptionTransferCache */
-    public ChainEntityRoleTypeDescriptionTransferCache(UserVisit userVisit, ChainControl chainControl) {
-        super(userVisit, chainControl);
+    protected ChainEntityRoleTypeDescriptionTransferCache() {
+        super();
     }
     
-    public ChainEntityRoleTypeDescriptionTransfer getChainEntityRoleTypeDescriptionTransfer(ChainEntityRoleTypeDescription chainEntityRoleTypeDescription) {
+    public ChainEntityRoleTypeDescriptionTransfer getChainEntityRoleTypeDescriptionTransfer(UserVisit userVisit, ChainEntityRoleTypeDescription chainEntityRoleTypeDescription) {
         var chainEntityRoleTypeDescriptionTransfer = get(chainEntityRoleTypeDescription);
         
         if(chainEntityRoleTypeDescriptionTransfer == null) {
@@ -37,7 +42,7 @@ public class ChainEntityRoleTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, chainEntityRoleTypeDescription.getLanguage());
             
             chainEntityRoleTypeDescriptionTransfer = new ChainEntityRoleTypeDescriptionTransfer(languageTransfer, chainEntityRoleTypeTransfer, chainEntityRoleTypeDescription.getDescription());
-            put(chainEntityRoleTypeDescription, chainEntityRoleTypeDescriptionTransfer);
+            put(userVisit, chainEntityRoleTypeDescription, chainEntityRoleTypeDescriptionTransfer);
         }
         
         return chainEntityRoleTypeDescriptionTransfer;

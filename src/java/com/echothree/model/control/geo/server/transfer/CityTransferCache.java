@@ -19,18 +19,19 @@ package com.echothree.model.control.geo.server.transfer;
 import com.echothree.model.control.geo.common.GeoCodeTypes;
 import com.echothree.model.control.geo.common.GeoOptions;
 import com.echothree.model.control.geo.common.transfer.CityTransfer;
-import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CityTransferCache
         extends BaseGeoCodeTransferCache<GeoCode, CityTransfer> {
-    
+
     boolean includeAliases;
     
     /** Creates a new instance of CityTransferCache */
-    public CityTransferCache(UserVisit userVisit, GeoControl geoControl) {
-        super(userVisit, geoControl);
+    protected CityTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {
@@ -40,7 +41,7 @@ public class CityTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public CityTransfer getCityTransfer(GeoCode geoCode) {
+    public CityTransfer getCityTransfer(UserVisit userVisit, GeoCode geoCode) {
         var cityTransfer = get(geoCode);
         
         if(cityTransfer == null) {
@@ -50,7 +51,7 @@ public class CityTransferCache
             var geoCodeScope = geoControl.getGeoCodeScopeTransfer(userVisit, geoCodeDetail.getGeoCodeScope());
             var isDefault = geoCodeDetail.getIsDefault();
             var sortOrder = geoCodeDetail.getSortOrder();
-            var description = geoControl.getBestGeoCodeDescription(geoCode, getLanguage());
+            var description = geoControl.getBestGeoCodeDescription(geoCode, getLanguage(userVisit));
 
             var stateGeoCodeType = geoControl.getGeoCodeTypeByName(GeoCodeTypes.STATE.name());
             var geoCodeRelationships = geoControl.getGeoCodeRelationshipsByFromGeoCodeAndGeoCodeType(geoCode, stateGeoCodeType);
@@ -60,10 +61,10 @@ public class CityTransferCache
             var state = geoControl.getStateTransfer(userVisit, geoCodeRelationships.getFirst().getToGeoCode());
             
             cityTransfer = new CityTransfer(state, geoCodeName, geoCodeType, geoCodeScope, isDefault, sortOrder, description);
-            put(geoCode, cityTransfer);
+            put(userVisit, geoCode, cityTransfer);
             
             if(includeAliases) {
-                setupGeoCodeAliasTransfers(geoCode, cityTransfer);
+                setupGeoCodeAliasTransfers(userVisit, geoCode, cityTransfer);
             }
         }
         

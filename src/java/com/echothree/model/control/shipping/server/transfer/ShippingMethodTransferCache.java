@@ -24,7 +24,9 @@ import com.echothree.model.control.shipping.server.control.ShippingControl;
 import com.echothree.model.data.shipping.server.entity.ShippingMethod;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ShippingMethodTransferCache
         extends BaseShippingTransferCache<ShippingMethod, ShippingMethodTransfer> {
     
@@ -34,8 +36,8 @@ public class ShippingMethodTransferCache
     boolean includeComments;
     
     /** Creates a new instance of ShippingMethodTransferCache */
-    public ShippingMethodTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected ShippingMethodTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {
@@ -47,7 +49,7 @@ public class ShippingMethodTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public ShippingMethodTransfer getShippingMethodTransfer(ShippingMethod shippingMethod) {
+    public ShippingMethodTransfer getShippingMethodTransfer(UserVisit userVisit, ShippingMethod shippingMethod) {
         var shippingMethodTransfer = get(shippingMethod);
 
         if(shippingMethodTransfer == null) {
@@ -58,13 +60,13 @@ public class ShippingMethodTransferCache
             var itemSelector = shippingMethodDetail.getItemSelector();
             var itemSelectorTransfer = itemSelector == null ? null : selectorControl.getSelectorTransfer(userVisit, itemSelector);
             var sortOrder = shippingMethodDetail.getSortOrder();
-            var description = shippingControl.getBestShippingMethodDescription(shippingMethod, getLanguage());
+            var description = shippingControl.getBestShippingMethodDescription(shippingMethod, getLanguage(userVisit));
 
             shippingMethodTransfer = new ShippingMethodTransfer(shippingMethodName, geoCodeSelectorTransfer, itemSelectorTransfer, sortOrder, description);
-            put(shippingMethod, shippingMethodTransfer);
+            put(userVisit, shippingMethod, shippingMethodTransfer);
 
             if(includeComments) {
-                setupComments(shippingMethod, null, shippingMethodTransfer, CommentConstants.CommentType_SHIPPING_METHOD);
+                setupComments(userVisit, shippingMethod, null, shippingMethodTransfer, CommentConstants.CommentType_SHIPPING_METHOD);
             }
         }
 

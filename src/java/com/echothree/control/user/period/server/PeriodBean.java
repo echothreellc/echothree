@@ -22,6 +22,7 @@ import com.echothree.control.user.period.server.command.*;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.CommandResult;
 import javax.ejb.Stateless;
+import javax.enterprise.inject.spi.CDI;
 
 @Stateless
 public class PeriodBean
@@ -43,37 +44,37 @@ public class PeriodBean
     
     @Override
     public CommandResult createPeriodKind(UserVisitPK userVisitPK, CreatePeriodKindForm form) {
-        return new CreatePeriodKindCommand().run(userVisitPK, form);
+        return CDI.current().select(CreatePeriodKindCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getPeriodKinds(UserVisitPK userVisitPK, GetPeriodKindsForm form) {
-        return new GetPeriodKindsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetPeriodKindsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getPeriodKind(UserVisitPK userVisitPK, GetPeriodKindForm form) {
-        return new GetPeriodKindCommand().run(userVisitPK, form);
+        return CDI.current().select(GetPeriodKindCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getPeriodKindChoices(UserVisitPK userVisitPK, GetPeriodKindChoicesForm form) {
-        return new GetPeriodKindChoicesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetPeriodKindChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultPeriodKind(UserVisitPK userVisitPK, SetDefaultPeriodKindForm form) {
-        return new SetDefaultPeriodKindCommand().run(userVisitPK, form);
+        return CDI.current().select(SetDefaultPeriodKindCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editPeriodKind(UserVisitPK userVisitPK, EditPeriodKindForm form) {
-        return new EditPeriodKindCommand().run(userVisitPK, form);
+        return CDI.current().select(EditPeriodKindCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deletePeriodKind(UserVisitPK userVisitPK, DeletePeriodKindForm form) {
-        return new DeletePeriodKindCommand().run(userVisitPK, form);
+        return CDI.current().select(DeletePeriodKindCommand.class).get().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -82,22 +83,22 @@ public class PeriodBean
     
     @Override
     public CommandResult createPeriodKindDescription(UserVisitPK userVisitPK, CreatePeriodKindDescriptionForm form) {
-        return new CreatePeriodKindDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(CreatePeriodKindDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getPeriodKindDescriptions(UserVisitPK userVisitPK, GetPeriodKindDescriptionsForm form) {
-        return new GetPeriodKindDescriptionsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetPeriodKindDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editPeriodKindDescription(UserVisitPK userVisitPK, EditPeriodKindDescriptionForm form) {
-        return new EditPeriodKindDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(EditPeriodKindDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deletePeriodKindDescription(UserVisitPK userVisitPK, DeletePeriodKindDescriptionForm form) {
-        return new DeletePeriodKindDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(DeletePeriodKindDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -106,37 +107,37 @@ public class PeriodBean
     
     @Override
     public CommandResult createPeriodType(UserVisitPK userVisitPK, CreatePeriodTypeForm form) {
-        return new CreatePeriodTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(CreatePeriodTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getPeriodTypes(UserVisitPK userVisitPK, GetPeriodTypesForm form) {
-        return new GetPeriodTypesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetPeriodTypesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getPeriodType(UserVisitPK userVisitPK, GetPeriodTypeForm form) {
-        return new GetPeriodTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(GetPeriodTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getPeriodTypeChoices(UserVisitPK userVisitPK, GetPeriodTypeChoicesForm form) {
-        return new GetPeriodTypeChoicesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetPeriodTypeChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setDefaultPeriodType(UserVisitPK userVisitPK, SetDefaultPeriodTypeForm form) {
-        return new SetDefaultPeriodTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(SetDefaultPeriodTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editPeriodType(UserVisitPK userVisitPK, EditPeriodTypeForm form) {
-        return new EditPeriodTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(EditPeriodTypeCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deletePeriodType(UserVisitPK userVisitPK, DeletePeriodTypeForm form) {
-        return new DeletePeriodTypeCommand().run(userVisitPK, form);
+        return CDI.current().select(DeletePeriodTypeCommand.class).get().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -145,22 +146,22 @@ public class PeriodBean
     
     @Override
     public CommandResult createPeriodTypeDescription(UserVisitPK userVisitPK, CreatePeriodTypeDescriptionForm form) {
-        return new CreatePeriodTypeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(CreatePeriodTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getPeriodTypeDescriptions(UserVisitPK userVisitPK, GetPeriodTypeDescriptionsForm form) {
-        return new GetPeriodTypeDescriptionsCommand().run(userVisitPK, form);
+        return CDI.current().select(GetPeriodTypeDescriptionsCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult editPeriodTypeDescription(UserVisitPK userVisitPK, EditPeriodTypeDescriptionForm form) {
-        return new EditPeriodTypeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(EditPeriodTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult deletePeriodTypeDescription(UserVisitPK userVisitPK, DeletePeriodTypeDescriptionForm form) {
-        return new DeletePeriodTypeDescriptionCommand().run(userVisitPK, form);
+        return CDI.current().select(DeletePeriodTypeDescriptionCommand.class).get().run(userVisitPK, form);
     }
     
     // -------------------------------------------------------------------------
@@ -169,17 +170,17 @@ public class PeriodBean
     
     @Override
     public CommandResult createFiscalYear(UserVisitPK userVisitPK, CreateFiscalYearForm form) {
-        return new CreateFiscalYearCommand().run(userVisitPK, form);
+        return CDI.current().select(CreateFiscalYearCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult getFiscalPeriodStatusChoices(UserVisitPK userVisitPK, GetFiscalPeriodStatusChoicesForm form) {
-        return new GetFiscalPeriodStatusChoicesCommand().run(userVisitPK, form);
+        return CDI.current().select(GetFiscalPeriodStatusChoicesCommand.class).get().run(userVisitPK, form);
     }
     
     @Override
     public CommandResult setFiscalPeriodStatus(UserVisitPK userVisitPK, SetFiscalPeriodStatusForm form) {
-        return new SetFiscalPeriodStatusCommand().run(userVisitPK, form);
+        return CDI.current().select(SetFiscalPeriodStatusCommand.class).get().run(userVisitPK, form);
     }
     
 }

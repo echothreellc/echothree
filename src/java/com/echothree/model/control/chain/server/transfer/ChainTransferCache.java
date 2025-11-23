@@ -22,20 +22,23 @@ import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.data.chain.server.entity.Chain;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ChainTransferCache
         extends BaseChainTransferCache<Chain, ChainTransfer> {
-    
+
+    ChainControl chainControl = Session.getModelController(ChainControl.class);
     SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
     
     /** Creates a new instance of ChainTransferCache */
-    public ChainTransferCache(UserVisit userVisit, ChainControl chainControl) {
-        super(userVisit, chainControl);
+    protected ChainTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public ChainTransfer getChainTransfer(Chain chain) {
+    public ChainTransfer getChainTransfer(UserVisit userVisit, Chain chain) {
         var chainTransfer = get(chain);
         
         if(chainTransfer == null) {
@@ -46,10 +49,10 @@ public class ChainTransferCache
             var chainInstanceSequenceTransfer = chainInstanceSequence == null? null: sequenceControl.getSequenceTransfer(userVisit, chainInstanceSequence);
             var isDefault = chainDetail.getIsDefault();
             var sortOrder = chainDetail.getSortOrder();
-            var description = chainControl.getBestChainDescription(chain, getLanguage());
+            var description = chainControl.getBestChainDescription(chain, getLanguage(userVisit));
             
             chainTransfer = new ChainTransfer(chainTypeTransfer, chainName, chainInstanceSequenceTransfer, isDefault, sortOrder, description);
-            put(chain, chainTransfer);
+            put(userVisit, chain, chainTransfer);
         }
         
         return chainTransfer;

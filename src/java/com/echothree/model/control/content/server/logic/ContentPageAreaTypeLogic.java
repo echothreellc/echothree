@@ -32,20 +32,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class ContentPageAreaTypeLogic
     extends BaseLogic {
-    
-    private ContentPageAreaTypeLogic() {
+
+    protected ContentPageAreaTypeLogic() {
         super();
     }
-    
-    private static class ContentPageAreaTypeLogicHolder {
-        static ContentPageAreaTypeLogic instance = new ContentPageAreaTypeLogic();
-    }
-    
+
     public static ContentPageAreaTypeLogic getInstance() {
-        return ContentPageAreaTypeLogicHolder.instance;
+        return CDI.current().select(ContentPageAreaTypeLogic.class).get();
     }
 
     public ContentPageAreaType createContentPageAreaType(final ExecutionErrorAccumulator eea, final String contentPageAreaTypeName,
@@ -94,7 +93,7 @@ public class ContentPageAreaTypeLogic
         var parameterCount = (contentPageAreaTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
-            case 1:
+            case 1 -> {
                 if(contentPageAreaTypeName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.ContentPageAreaType.name());
@@ -105,10 +104,9 @@ public class ContentPageAreaTypeLogic
                 } else {
                     contentPageAreaType = getContentPageAreaTypeByName(eea, contentPageAreaTypeName, entityPermission);
                 }
-                break;
-            default:
-                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
-                break;
+            }
+            default ->
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
 
         return contentPageAreaType;

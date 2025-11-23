@@ -20,16 +20,21 @@ import com.echothree.model.control.printer.common.transfer.PrinterGroupUseTypeDe
 import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.data.printer.server.entity.PrinterGroupUseTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PrinterGroupUseTypeDescriptionTransferCache
         extends BasePrinterDescriptionTransferCache<PrinterGroupUseTypeDescription, PrinterGroupUseTypeDescriptionTransfer> {
-    
+
+    PrinterControl printerControl = Session.getModelController(PrinterControl.class);
+
     /** Creates a new instance of PrinterGroupUseTypeDescriptionTransferCache */
-    public PrinterGroupUseTypeDescriptionTransferCache(UserVisit userVisit, PrinterControl printerControl) {
-        super(userVisit, printerControl);
+    protected PrinterGroupUseTypeDescriptionTransferCache() {
+        super();
     }
     
-    public PrinterGroupUseTypeDescriptionTransfer getPrinterGroupUseTypeDescriptionTransfer(PrinterGroupUseTypeDescription printerGroupUseTypeDescription) {
+    public PrinterGroupUseTypeDescriptionTransfer getPrinterGroupUseTypeDescriptionTransfer(UserVisit userVisit, PrinterGroupUseTypeDescription printerGroupUseTypeDescription) {
         var printerGroupUseTypeDescriptionTransfer = get(printerGroupUseTypeDescription);
         
         if(printerGroupUseTypeDescriptionTransfer == null) {
@@ -37,7 +42,7 @@ public class PrinterGroupUseTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, printerGroupUseTypeDescription.getLanguage());
             
             printerGroupUseTypeDescriptionTransfer = new PrinterGroupUseTypeDescriptionTransfer(languageTransfer, printerGroupUseTypeTransfer, printerGroupUseTypeDescription.getDescription());
-            put(printerGroupUseTypeDescription, printerGroupUseTypeDescriptionTransfer);
+            put(userVisit, printerGroupUseTypeDescription, printerGroupUseTypeDescriptionTransfer);
         }
         
         return printerGroupUseTypeDescriptionTransfer;

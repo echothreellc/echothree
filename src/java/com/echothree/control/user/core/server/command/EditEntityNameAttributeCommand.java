@@ -39,7 +39,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EditEntityNameAttributeCommand
         extends BaseEditCommand<EntityNameAttributeSpec, EntityNameAttributeEdit> {
 
@@ -91,7 +93,6 @@ public class EditEntityNameAttributeCommand
 
                     if(!hasExecutionErrors()) {
                         if(entityInstance.getEntityType().equals(entityAttribute.getLastDetail().getEntityType())) {
-                            var coreControl = getCoreControl();
                             EntityNameAttribute entityNameAttribute = null;
                             var basePK = PersistenceUtils.getInstance().getBasePKFromEntityInstance(entityInstance);
 

@@ -39,12 +39,14 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class FreeOnBoardControl
         extends BaseShipmentControl {
 
     /** Creates a new instance of FreeOnBoardControl */
-    public FreeOnBoardControl() {
+    protected FreeOnBoardControl() {
         super();
     }
 
@@ -188,16 +190,15 @@ public class FreeOnBoardControl
 
     public FreeOnBoardTransfer getFreeOnBoardTransfer(final UserVisit userVisit,
             final FreeOnBoard freeOnBoard) {
-        return getShipmentTransferCaches(userVisit).getFreeOnBoardTransferCache().getTransfer(freeOnBoard);
+        return freeOnBoardTransferCache.getTransfer(userVisit, freeOnBoard);
     }
 
     public List<FreeOnBoardTransfer> getFreeOnBoardTransfers(final UserVisit userVisit,
             final Collection<FreeOnBoard> freeOnBoards) {
         var freeOnBoardTransfers = new ArrayList<FreeOnBoardTransfer>(freeOnBoards.size());
-        var freeOnBoardTransferCache = getShipmentTransferCaches(userVisit).getFreeOnBoardTransferCache();
 
         freeOnBoards.forEach((freeOnBoard) ->
-                freeOnBoardTransfers.add(freeOnBoardTransferCache.getTransfer(freeOnBoard))
+                freeOnBoardTransfers.add(freeOnBoardTransferCache.getTransfer(userVisit, freeOnBoard))
         );
 
         return freeOnBoardTransfers;
@@ -401,7 +402,7 @@ public class FreeOnBoardControl
         String description;
 
         if(freeOnBoardDescription == null && !language.getIsDefault()) {
-            freeOnBoardDescription = getFreeOnBoardDescription(freeOnBoard, getPartyControl().getDefaultLanguage());
+            freeOnBoardDescription = getFreeOnBoardDescription(freeOnBoard, partyControl.getDefaultLanguage());
         }
 
         if(freeOnBoardDescription == null) {
@@ -415,17 +416,16 @@ public class FreeOnBoardControl
 
     public FreeOnBoardDescriptionTransfer getFreeOnBoardDescriptionTransfer(final UserVisit userVisit,
             final FreeOnBoardDescription freeOnBoardDescription) {
-        return getShipmentTransferCaches(userVisit).getFreeOnBoardDescriptionTransferCache().getTransfer(freeOnBoardDescription);
+        return freeOnBoardDescriptionTransferCache.getTransfer(userVisit, freeOnBoardDescription);
     }
 
     public List<FreeOnBoardDescriptionTransfer> getFreeOnBoardDescriptionTransfersByFreeOnBoard(final UserVisit userVisit,
             final FreeOnBoard freeOnBoard) {
         var freeOnBoardDescriptions = getFreeOnBoardDescriptionsByFreeOnBoard(freeOnBoard);
         var freeOnBoardDescriptionTransfers = new ArrayList<FreeOnBoardDescriptionTransfer>(freeOnBoardDescriptions.size());
-        var freeOnBoardDescriptionTransferCache = getShipmentTransferCaches(userVisit).getFreeOnBoardDescriptionTransferCache();
 
         freeOnBoardDescriptions.forEach((freeOnBoardDescription) ->
-                freeOnBoardDescriptionTransfers.add(freeOnBoardDescriptionTransferCache.getTransfer(freeOnBoardDescription))
+                freeOnBoardDescriptionTransfers.add(freeOnBoardDescriptionTransferCache.getTransfer(userVisit, freeOnBoardDescription))
         );
 
         return freeOnBoardDescriptionTransfers;

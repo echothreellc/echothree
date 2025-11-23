@@ -20,26 +20,31 @@ import com.echothree.model.control.forum.common.transfer.ForumMessageTypeTransfe
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.data.forum.server.entity.ForumMessageType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ForumMessageTypeTransferCache
         extends BaseForumTransferCache<ForumMessageType, ForumMessageTypeTransfer> {
-    
+
+    ForumControl forumControl = Session.getModelController(ForumControl.class);
+
     /** Creates a new instance of ForumMessageTypeTransferCache */
-    public ForumMessageTypeTransferCache(UserVisit userVisit, ForumControl forumControl) {
-        super(userVisit, forumControl);
+    protected ForumMessageTypeTransferCache() {
+        super();
     }
     
-    public ForumMessageTypeTransfer getForumMessageTypeTransfer(ForumMessageType forumMessageType) {
+    public ForumMessageTypeTransfer getForumMessageTypeTransfer(UserVisit userVisit, ForumMessageType forumMessageType) {
         var forumMessageTypeTransfer = get(forumMessageType);
         
         if(forumMessageTypeTransfer == null) {
             var forumMessageTypeName = forumMessageType.getForumMessageTypeName();
             var isDefault = forumMessageType.getIsDefault();
             var sortOrder = forumMessageType.getSortOrder();
-            var description = forumControl.getBestForumMessageTypeDescription(forumMessageType, getLanguage());
+            var description = forumControl.getBestForumMessageTypeDescription(forumMessageType, getLanguage(userVisit));
             
             forumMessageTypeTransfer = new ForumMessageTypeTransfer(forumMessageTypeName, isDefault, sortOrder, description);
-            put(forumMessageType, forumMessageTypeTransfer);
+            put(userVisit, forumMessageType, forumMessageTypeTransfer);
         }
         
         return forumMessageTypeTransfer;

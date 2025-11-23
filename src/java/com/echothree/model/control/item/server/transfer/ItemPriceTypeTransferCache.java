@@ -22,9 +22,14 @@ import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.item.server.entity.ItemPriceType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ItemPriceTypeTransferCache
         extends BaseItemTransferCache<ItemPriceType, ItemPriceTypeTransfer> {
+
+    ItemControl itemControl = Session.getModelController(ItemControl.class);
 
     TransferProperties transferProperties;
     boolean filterItemPriceTypeName;
@@ -35,8 +40,8 @@ public class ItemPriceTypeTransferCache
     /**
      * Creates a new instance of ItemPriceTypeTransferCache
      */
-    public ItemPriceTypeTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    protected ItemPriceTypeTransferCache() {
+        super();
 
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
@@ -53,17 +58,17 @@ public class ItemPriceTypeTransferCache
     }
 
     @Override
-    public ItemPriceTypeTransfer getTransfer(ItemPriceType itemPriceType) {
+    public ItemPriceTypeTransfer getTransfer(UserVisit userVisit, ItemPriceType itemPriceType) {
         var itemPriceTypeTransfer = get(itemPriceType);
 
         if(itemPriceTypeTransfer == null) {
             var itemPriceTypeName = filterItemPriceTypeName ? null : itemPriceType.getItemPriceTypeName();
             var isDefault = filterIsDefault ? null : itemPriceType.getIsDefault();
             var sortOrder = filterSortOrder ? null : itemPriceType.getSortOrder();
-            var description = filterDescription ? null : itemControl.getBestItemPriceTypeDescription(itemPriceType, getLanguage());
+            var description = filterDescription ? null : itemControl.getBestItemPriceTypeDescription(itemPriceType, getLanguage(userVisit));
 
             itemPriceTypeTransfer = new ItemPriceTypeTransfer(itemPriceTypeName, isDefault, sortOrder, description);
-            put(itemPriceType, itemPriceTypeTransfer);
+            put(userVisit, itemPriceType, itemPriceTypeTransfer);
         }
 
         return itemPriceTypeTransfer;

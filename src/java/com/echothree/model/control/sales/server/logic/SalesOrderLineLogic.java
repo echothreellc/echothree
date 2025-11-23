@@ -32,7 +32,7 @@ import com.echothree.model.control.offer.server.control.OfferItemControl;
 import com.echothree.model.control.offer.server.logic.OfferItemLogic;
 import com.echothree.model.control.offer.server.logic.SourceLogic;
 import com.echothree.model.control.order.common.OrderTypes;
-import com.echothree.model.control.order.server.logic.OrderLineLogic;
+import com.echothree.model.control.order.server.logic.BaseOrderLineLogic;
 import com.echothree.model.control.returnpolicy.common.ReturnKinds;
 import com.echothree.model.control.returnpolicy.server.logic.ReturnPolicyLogic;
 import com.echothree.model.control.sales.common.exception.CurrentTimeAfterSalesOrderEndTimeException;
@@ -70,20 +70,19 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.message.DummyExecutionErrorAccumulator;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class SalesOrderLineLogic
-        extends OrderLineLogic {
+        extends BaseOrderLineLogic {
 
-    private SalesOrderLineLogic() {
+    protected SalesOrderLineLogic() {
         super();
     }
 
-    private static class LogicHolder {
-        static SalesOrderLineLogic instance = new SalesOrderLineLogic();
-    }
-
     public static SalesOrderLineLogic getInstance() {
-        return LogicHolder.instance;
+        return CDI.current().select(SalesOrderLineLogic.class).get();
     }
 
     /**

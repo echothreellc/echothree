@@ -21,20 +21,22 @@ import com.echothree.model.control.offer.server.control.UseNameElementControl;
 import com.echothree.model.data.offer.server.entity.UseNameElement;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class UseNameElementTransferCache
         extends BaseOfferTransferCache<UseNameElement, UseNameElementTransfer> {
 
     UseNameElementControl useNameElementControl = Session.getModelController(UseNameElementControl.class);
 
     /** Creates a new instance of UseNameElementTransferCache */
-    public UseNameElementTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected UseNameElementTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public UseNameElementTransfer getUseNameElementTransfer(UseNameElement useNameElement) {
+    public UseNameElementTransfer getUseNameElementTransfer(UserVisit userVisit, UseNameElement useNameElement) {
         var useNameElementTransfer = get(useNameElement);
         
         if(useNameElementTransfer == null) {
@@ -43,10 +45,10 @@ public class UseNameElementTransferCache
             var offset = useNameElementDetail.getOffset();
             var length = useNameElementDetail.getLength();
             var validationPattern = useNameElementDetail.getValidationPattern();
-            var description = useNameElementControl.getBestUseNameElementDescription(useNameElement, getLanguage());
+            var description = useNameElementControl.getBestUseNameElementDescription(useNameElement, getLanguage(userVisit));
             
             useNameElementTransfer = new UseNameElementTransfer(useNameElementName, offset, length, validationPattern, description);
-            put(useNameElement, useNameElementTransfer);
+            put(userVisit, useNameElement, useNameElementTransfer);
         }
         
         return useNameElementTransfer;

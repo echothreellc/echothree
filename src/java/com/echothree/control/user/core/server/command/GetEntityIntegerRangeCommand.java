@@ -27,7 +27,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class GetEntityIntegerRangeCommand
         extends BaseSingleEntityCommand<EntityIntegerRange, GetEntityIntegerRangeForm> {
 
@@ -50,14 +52,13 @@ public class GetEntityIntegerRangeCommand
 
     @Override
     protected EntityIntegerRange getEntity() {
-        var coreControl = getCoreControl();
         EntityIntegerRange entityIntegerRange = null;
         var componentVendorName = form.getComponentVendorName();
-        var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
+        var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
 
         if(componentVendor != null) {
             var entityTypeName = form.getEntityTypeName();
-            var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
+            var entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
 
             if(entityType != null) {
                 var entityAttributeName = form.getEntityAttributeName();
@@ -96,7 +97,6 @@ public class GetEntityIntegerRangeCommand
         var result = CoreResultFactory.getGetEntityIntegerRangeResult();
 
         if(entityIntegerRange != null) {
-            var coreControl = getCoreControl();
 
             result.setEntityIntegerRange(coreControl.getEntityIntegerRangeTransfer(getUserVisit(), entityIntegerRange, null));
         }

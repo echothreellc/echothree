@@ -22,25 +22,28 @@ import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.campaign.server.entity.UserVisitCampaign;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class UserVisitCampaignTransferCache
         extends BaseCampaignTransferCache<UserVisitCampaign, UserVisitCampaignTransfer> {
 
+    CampaignControl campaignControl = Session.getModelController(CampaignControl.class);
     UserControl userControl = Session.getModelController(UserControl.class);
     
     /** Creates a new instance of UserVisitCampaignTransferCache */
-    public UserVisitCampaignTransferCache(UserVisit userVisit, CampaignControl campaignControl) {
-        super(userVisit, campaignControl);
+    protected UserVisitCampaignTransferCache() {
+        super();
     }
 
-    public UserVisitCampaignTransfer getUserVisitCampaignTransfer(UserVisitCampaign userVisitCampaign) {
+    public UserVisitCampaignTransfer getUserVisitCampaignTransfer(UserVisit userVisit, UserVisitCampaign userVisitCampaign) {
         var userVisitCampaignTransfer = get(userVisitCampaign);
 
         if(userVisitCampaignTransfer == null) {
             var userVisitTransfer = userControl.getUserVisitTransfer(userVisit, userVisit);
             var userVisitCampaignSequence = userVisitCampaign.getUserVisitCampaignSequence();
             var unformattedTime = userVisitCampaign.getTime();
-            var time = formatTypicalDateTime(unformattedTime);
+            var time = formatTypicalDateTime(userVisit, unformattedTime);
             var campaign = userVisitCampaign.getCampaign();
             var campaignTransfer = campaign == null ? null : campaignControl.getCampaignTransfer(userVisit, campaign);
             var campaignSource = userVisitCampaign.getCampaignSource();
@@ -54,7 +57,7 @@ public class UserVisitCampaignTransferCache
 
             userVisitCampaignTransfer = new UserVisitCampaignTransfer(userVisitTransfer, userVisitCampaignSequence, unformattedTime, time, campaignTransfer,
                     campaignSourceTransfer, campaignMediumTransfer, campaignTermTransfer, campaignContentTransfer);
-            put(userVisitCampaign, userVisitCampaignTransfer);
+            put(userVisit, userVisitCampaign, userVisitCampaignTransfer);
         }
 
         return userVisitCampaignTransfer;

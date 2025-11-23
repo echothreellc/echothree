@@ -21,18 +21,20 @@ import com.echothree.model.control.offer.server.control.OfferUseControl;
 import com.echothree.model.data.offer.server.entity.Source;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class SourceTransferCache
         extends BaseOfferTransferCache<Source, SourceTransfer> {
 
     OfferUseControl offerUseControl = Session.getModelController(OfferUseControl.class);
 
     /** Creates a new instance of SourceTransferCache */
-    public SourceTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected SourceTransferCache() {
+        super();
     }
     
-    public SourceTransfer getSourceTransfer(Source source) {
+    public SourceTransfer getSourceTransfer(UserVisit userVisit, Source source) {
         var sourceTransfer = get(source);
         
         if(sourceTransfer == null) {
@@ -43,7 +45,7 @@ public class SourceTransferCache
             var sortOrder = sourceDetail.getSortOrder();
             
             sourceTransfer = new SourceTransfer(sourceName, offerUseTransfer, isDefault, sortOrder);
-            put(source, sourceTransfer);
+            put(userVisit, source, sourceTransfer);
         }
         
         return sourceTransfer;

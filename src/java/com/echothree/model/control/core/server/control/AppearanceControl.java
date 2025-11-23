@@ -60,12 +60,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class AppearanceControl
         extends BaseCoreControl {
 
     /** Creates a new instance of AppearanceControl */
-    public AppearanceControl() {
+    protected AppearanceControl() {
         super();
     }
 
@@ -360,15 +362,14 @@ public class AppearanceControl
     }
 
     public AppearanceTransfer getAppearanceTransfer(UserVisit userVisit, Appearance appearance) {
-        return getCoreTransferCaches(userVisit).getAppearanceTransferCache().getAppearanceTransfer(appearance);
+        return appearanceTransferCache.getAppearanceTransfer(userVisit, appearance);
     }
 
     public List<AppearanceTransfer> getAppearanceTransfers(UserVisit userVisit, Collection<Appearance> appearances) {
         List<AppearanceTransfer> appearanceTransfers = new ArrayList<>(appearances.size());
-        var appearanceTransferCache = getCoreTransferCaches(userVisit).getAppearanceTransferCache();
 
         appearances.forEach((appearance) ->
-                appearanceTransfers.add(appearanceTransferCache.getAppearanceTransfer(appearance))
+                appearanceTransfers.add(appearanceTransferCache.getAppearanceTransfer(userVisit, appearance))
         );
 
         return appearanceTransfers;
@@ -615,7 +616,7 @@ public class AppearanceControl
         var appearanceDescription = getAppearanceDescription(appearance, language);
 
         if(appearanceDescription == null && !language.getIsDefault()) {
-            appearanceDescription = getAppearanceDescription(appearance, getPartyControl().getDefaultLanguage());
+            appearanceDescription = getAppearanceDescription(appearance, partyControl.getDefaultLanguage());
         }
 
         if(appearanceDescription == null) {
@@ -628,16 +629,15 @@ public class AppearanceControl
     }
 
     public AppearanceDescriptionTransfer getAppearanceDescriptionTransfer(UserVisit userVisit, AppearanceDescription appearanceDescription) {
-        return getCoreTransferCaches(userVisit).getAppearanceDescriptionTransferCache().getAppearanceDescriptionTransfer(appearanceDescription);
+        return appearanceDescriptionTransferCache.getAppearanceDescriptionTransfer(userVisit, appearanceDescription);
     }
 
     public List<AppearanceDescriptionTransfer> getAppearanceDescriptionTransfersByAppearance(UserVisit userVisit, Appearance appearance) {
         var appearanceDescriptions = getAppearanceDescriptionsByAppearance(appearance);
         List<AppearanceDescriptionTransfer> appearanceDescriptionTransfers = new ArrayList<>(appearanceDescriptions.size());
-        var appearanceDescriptionTransferCache = getCoreTransferCaches(userVisit).getAppearanceDescriptionTransferCache();
 
         appearanceDescriptions.forEach((appearanceDescription) ->
-                appearanceDescriptionTransfers.add(appearanceDescriptionTransferCache.getAppearanceDescriptionTransfer(appearanceDescription))
+                appearanceDescriptionTransfers.add(appearanceDescriptionTransferCache.getAppearanceDescriptionTransfer(userVisit, appearanceDescription))
         );
 
         return appearanceDescriptionTransfers;
@@ -793,15 +793,14 @@ public class AppearanceControl
     }
 
     public AppearanceTextDecorationTransfer getAppearanceTextDecorationTransfer(UserVisit userVisit, AppearanceTextDecoration appearanceTextDecoration) {
-        return getCoreTransferCaches(userVisit).getAppearanceTextDecorationTransferCache().getAppearanceTextDecorationTransfer(appearanceTextDecoration);
+        return appearanceTextDecorationTransferCache.getAppearanceTextDecorationTransfer(userVisit, appearanceTextDecoration);
     }
 
     public List<AppearanceTextDecorationTransfer> getAppearanceTextDecorationTransfers(UserVisit userVisit, Collection<AppearanceTextDecoration> appearanceTextDecorations) {
         List<AppearanceTextDecorationTransfer> appearanceTextDecorationTransfers = new ArrayList<>(appearanceTextDecorations.size());
-        var appearanceTextDecorationTransferCache = getCoreTransferCaches(userVisit).getAppearanceTextDecorationTransferCache();
 
         appearanceTextDecorations.forEach((appearanceTextDecoration) ->
-                appearanceTextDecorationTransfers.add(appearanceTextDecorationTransferCache.getAppearanceTextDecorationTransfer(appearanceTextDecoration))
+                appearanceTextDecorationTransfers.add(appearanceTextDecorationTransferCache.getAppearanceTextDecorationTransfer(userVisit, appearanceTextDecoration))
         );
 
         return appearanceTextDecorationTransfers;
@@ -951,15 +950,14 @@ public class AppearanceControl
     }
 
     public AppearanceTextTransformationTransfer getAppearanceTextTransformationTransfer(UserVisit userVisit, AppearanceTextTransformation appearanceTextTransformation) {
-        return getCoreTransferCaches(userVisit).getAppearanceTextTransformationTransferCache().getAppearanceTextTransformationTransfer(appearanceTextTransformation);
+        return appearanceTextTransformationTransferCache.getAppearanceTextTransformationTransfer(userVisit, appearanceTextTransformation);
     }
 
     public List<AppearanceTextTransformationTransfer> getAppearanceTextTransformationTransfers(UserVisit userVisit, Collection<AppearanceTextTransformation> appearanceTextTransformations) {
         List<AppearanceTextTransformationTransfer> appearanceTextTransformationTransfers = new ArrayList<>(appearanceTextTransformations.size());
-        var appearanceTextTransformationTransferCache = getCoreTransferCaches(userVisit).getAppearanceTextTransformationTransferCache();
 
         appearanceTextTransformations.forEach((appearanceTextTransformation) ->
-                appearanceTextTransformationTransfers.add(appearanceTextTransformationTransferCache.getAppearanceTextTransformationTransfer(appearanceTextTransformation))
+                appearanceTextTransformationTransfers.add(appearanceTextTransformationTransferCache.getAppearanceTextTransformationTransfer(userVisit, appearanceTextTransformation))
         );
 
         return appearanceTextTransformationTransfers;
@@ -1100,16 +1098,15 @@ public class AppearanceControl
     }
 
     public EntityAppearanceTransfer getEntityAppearanceTransfer(UserVisit userVisit, EntityAppearance entityAppearance) {
-        return getCoreTransferCaches(userVisit).getEntityAppearanceTransferCache().getEntityAppearanceTransfer(entityAppearance);
+        return entityAppearanceTransferCache.getEntityAppearanceTransfer(userVisit, entityAppearance);
     }
 
     public List<EntityAppearanceTransfer> getEntityAppearanceTransfersByAppearance(UserVisit userVisit, Appearance appearance) {
         var entityAppearances = getEntityAppearancesByAppearance(appearance);
         List<EntityAppearanceTransfer> entityAppearanceTransfers = new ArrayList<>(entityAppearances.size());
-        var entityAppearanceTransferCache = getCoreTransferCaches(userVisit).getEntityAppearanceTransferCache();
 
         entityAppearances.forEach((entityAppearance) ->
-                entityAppearanceTransfers.add(entityAppearanceTransferCache.getEntityAppearanceTransfer(entityAppearance))
+                entityAppearanceTransfers.add(entityAppearanceTransferCache.getEntityAppearanceTransfer(userVisit, entityAppearance))
         );
 
         return entityAppearanceTransfers;

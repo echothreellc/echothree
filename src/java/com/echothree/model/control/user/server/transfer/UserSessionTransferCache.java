@@ -22,20 +22,21 @@ import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.user.server.entity.UserSession;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class UserSessionTransferCache
         extends BaseUserTransferCache<UserSession, UserSessionTransfer> {
     
-    PartyControl partyControl;
-    
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
+    UserControl userControl = Session.getModelController(UserControl.class);
+
     /** Creates a new instance of UserSessionTransferCache */
-    public UserSessionTransferCache(UserVisit userVisit, UserControl userControl) {
-        super(userVisit, userControl);
-        
-        partyControl = Session.getModelController(PartyControl.class);
+    protected UserSessionTransferCache() {
+        super();
     }
     
-    public UserSessionTransfer getUserSessionTransfer(UserSession userSession) {
+    public UserSessionTransfer getUserSessionTransfer(UserVisit userVisit, UserSession userSession) {
         var userSessionTransfer = get(userSession);
         
         if(userSessionTransfer == null) {
@@ -44,11 +45,11 @@ public class UserSessionTransferCache
             var partyRelationship = userSession.getPartyRelationship();
             var partyRelationshipTransfer = partyRelationship == null ? null : partyControl.getPartyRelationshipTransfer(userVisit, partyRelationship);
             var unformattedIdentityVerifiedTime = userSession.getIdentityVerifiedTime();
-            var identityVerifiedTime = unformattedIdentityVerifiedTime == null ? null : formatTypicalDateTime(unformattedIdentityVerifiedTime);
+            var identityVerifiedTime = unformattedIdentityVerifiedTime == null ? null : formatTypicalDateTime(userVisit, unformattedIdentityVerifiedTime);
             
             userSessionTransfer = new UserSessionTransfer(userVisitTransfer, partyTransfer, partyRelationshipTransfer, unformattedIdentityVerifiedTime,
                     identityVerifiedTime);
-            put(userSession, userSessionTransfer);
+            put(userVisit, userSession, userSessionTransfer);
         }
         
         return userSessionTransfer;

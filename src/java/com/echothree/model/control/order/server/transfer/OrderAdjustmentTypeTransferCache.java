@@ -21,20 +21,22 @@ import com.echothree.model.control.order.server.control.OrderAdjustmentControl;
 import com.echothree.model.data.order.server.entity.OrderAdjustmentType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class OrderAdjustmentTypeTransferCache
         extends BaseOrderTransferCache<OrderAdjustmentType, OrderAdjustmentTypeTransfer> {
 
     OrderAdjustmentControl orderAdjustmentControl = Session.getModelController(OrderAdjustmentControl.class);
 
     /** Creates a new instance of OrderAdjustmentTypeTransferCache */
-    public OrderAdjustmentTypeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected OrderAdjustmentTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public OrderAdjustmentTypeTransfer getOrderAdjustmentTypeTransfer(OrderAdjustmentType orderAdjustmentType) {
+    public OrderAdjustmentTypeTransfer getOrderAdjustmentTypeTransfer(UserVisit userVisit, OrderAdjustmentType orderAdjustmentType) {
         var orderAdjustmentTypeTransfer = get(orderAdjustmentType);
         
         if(orderAdjustmentTypeTransfer == null) {
@@ -42,10 +44,10 @@ public class OrderAdjustmentTypeTransferCache
             var orderAdjustmentTypeName = orderAdjustmentTypeDetail.getOrderAdjustmentTypeName();
             var isDefault = orderAdjustmentTypeDetail.getIsDefault();
             var sortOrder = orderAdjustmentTypeDetail.getSortOrder();
-            var description = orderAdjustmentControl.getBestOrderAdjustmentTypeDescription(orderAdjustmentType, getLanguage());
+            var description = orderAdjustmentControl.getBestOrderAdjustmentTypeDescription(orderAdjustmentType, getLanguage(userVisit));
             
             orderAdjustmentTypeTransfer = new OrderAdjustmentTypeTransfer(orderAdjustmentTypeName, isDefault, sortOrder, description);
-            put(orderAdjustmentType, orderAdjustmentTypeTransfer);
+            put(userVisit, orderAdjustmentType, orderAdjustmentTypeTransfer);
         }
         
         return orderAdjustmentTypeTransfer;

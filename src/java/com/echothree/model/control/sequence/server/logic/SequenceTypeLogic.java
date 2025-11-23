@@ -35,20 +35,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class SequenceTypeLogic
         extends BaseLogic {
-    
-    private SequenceTypeLogic() {
+
+    protected SequenceTypeLogic() {
         super();
     }
-    
-    private static class SequenceLogicHolder {
-        static SequenceTypeLogic instance = new SequenceTypeLogic();
-    }
-    
+
     public static SequenceTypeLogic getInstance() {
-        return SequenceLogicHolder.instance;
+        return CDI.current().select(SequenceTypeLogic.class).get();
     }
 
     public SequenceType createSequenceType(final ExecutionErrorAccumulator eea, final String sequenceTypeName,
@@ -100,7 +99,7 @@ public class SequenceTypeLogic
         var parameterCount = (sequenceTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
-            case 0:
+            case 0 -> {
                 if(allowDefault) {
                     sequenceType = sequenceControl.getDefaultSequenceType(entityPermission);
 
@@ -110,8 +109,8 @@ public class SequenceTypeLogic
                 } else {
                     handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                 }
-                break;
-            case 1:
+            }
+            case 1 -> {
                 if(sequenceTypeName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.SequenceType.name());
@@ -122,10 +121,9 @@ public class SequenceTypeLogic
                 } else {
                     sequenceType = getSequenceTypeByName(eea, sequenceTypeName, entityPermission);
                 }
-                break;
-            default:
-                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
-                break;
+            }
+            default ->
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
 
         return sequenceType;

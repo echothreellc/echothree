@@ -23,7 +23,9 @@ import com.echothree.model.data.tag.server.entity.TagScope;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class TagScopeTransferCache
         extends BaseTagTransferCache<TagScope, TagScopeTransfer> {
 
@@ -32,8 +34,8 @@ public class TagScopeTransferCache
     boolean includeTags;
     
     /** Creates a new instance of TagScopeTransferCache */
-    public TagScopeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected TagScopeTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {
@@ -43,7 +45,7 @@ public class TagScopeTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public TagScopeTransfer getTagScopeTransfer(TagScope tagScope) {
+    public TagScopeTransfer getTagScopeTransfer(UserVisit userVisit, TagScope tagScope) {
         var tagScopeTransfer = get(tagScope);
         
         if(tagScopeTransfer == null) {
@@ -51,10 +53,10 @@ public class TagScopeTransferCache
             var tagScopeName = tagScopeDetail.getTagScopeName();
             var isDefault = tagScopeDetail.getIsDefault();
             var sortOrder = tagScopeDetail.getSortOrder();
-            var description = tagControl.getBestTagScopeDescription(tagScope, getLanguage());
+            var description = tagControl.getBestTagScopeDescription(tagScope, getLanguage(userVisit));
             
             tagScopeTransfer = new TagScopeTransfer(tagScopeName, isDefault, sortOrder, description);
-            put(tagScope, tagScopeTransfer);
+            put(userVisit, tagScope, tagScopeTransfer);
             
             if(includeTags) {
                 tagScopeTransfer.setTags(new ListWrapper<>(tagControl.getTagTransfersByTagScope(userVisit, tagScope)));

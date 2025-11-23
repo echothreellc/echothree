@@ -21,26 +21,28 @@ import com.echothree.model.control.core.server.control.EventControl;
 import com.echothree.model.data.core.server.entity.EventType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EventTypeTransferCache
         extends BaseCoreTransferCache<EventType, EventTypeTransfer> {
 
     EventControl eventControl = Session.getModelController(EventControl.class);
 
     /** Creates a new instance of EventTypeTransferCache */
-    public EventTypeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected EventTypeTransferCache() {
+        super();
     }
     
-    public EventTypeTransfer getEventTypeTransfer(EventType eventType) {
+    public EventTypeTransfer getEventTypeTransfer(UserVisit userVisit, EventType eventType) {
         var eventTypeTransfer = get(eventType);
         
         if(eventTypeTransfer == null) {
             var eventTypeName = eventType.getEventTypeName();
-            var description = eventControl.getBestEventTypeDescription(eventType, getLanguage());
+            var description = eventControl.getBestEventTypeDescription(eventType, getLanguage(userVisit));
             
             eventTypeTransfer = new EventTypeTransfer(eventTypeName, description);
-            put(eventType, eventTypeTransfer);
+            put(userVisit, eventType, eventTypeTransfer);
         }
         return eventTypeTransfer;
     }

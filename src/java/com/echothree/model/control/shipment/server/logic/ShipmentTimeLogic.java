@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.shipment.server.logic;
 
-import com.echothree.model.control.shipment.server.ShipmentControl;
+import com.echothree.model.control.shipment.server.control.ShipmentControl;
 import com.echothree.model.data.shipment.server.entity.Shipment;
 import com.echothree.model.data.shipment.server.entity.ShipmentType;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -24,20 +24,19 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class ShipmentTimeLogic
         extends BaseLogic {
 
-    private ShipmentTimeLogic() {
+    protected ShipmentTimeLogic() {
         super();
     }
 
-    private static class ShipmentTimeLogicHolder {
-        static ShipmentTimeLogic instance = new ShipmentTimeLogic();
-    }
-
     public static ShipmentTimeLogic getInstance() {
-        return ShipmentTimeLogicHolder.instance;
+        return CDI.current().select(ShipmentTimeLogic.class).get();
     }
 
     private String getShipmentTypeName(ShipmentType shipmentType) {

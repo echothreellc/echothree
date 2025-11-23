@@ -20,16 +20,21 @@ import com.echothree.model.control.search.common.transfer.SearchUseTypeDescripti
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.data.search.server.entity.SearchUseTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class SearchUseTypeDescriptionTransferCache
         extends BaseSearchDescriptionTransferCache<SearchUseTypeDescription, SearchUseTypeDescriptionTransfer> {
-    
+
+    SearchControl searchControl = Session.getModelController(SearchControl.class);
+
     /** Creates a new instance of SearchUseTypeDescriptionTransferCache */
-    public SearchUseTypeDescriptionTransferCache(UserVisit userVisit, SearchControl searchControl) {
-        super(userVisit, searchControl);
+    protected SearchUseTypeDescriptionTransferCache() {
+        super();
     }
     
-    public SearchUseTypeDescriptionTransfer getSearchUseTypeDescriptionTransfer(SearchUseTypeDescription searchUseTypeDescription) {
+    public SearchUseTypeDescriptionTransfer getSearchUseTypeDescriptionTransfer(UserVisit userVisit, SearchUseTypeDescription searchUseTypeDescription) {
         var searchUseTypeDescriptionTransfer = get(searchUseTypeDescription);
         
         if(searchUseTypeDescriptionTransfer == null) {
@@ -37,7 +42,7 @@ public class SearchUseTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, searchUseTypeDescription.getLanguage());
             
             searchUseTypeDescriptionTransfer = new SearchUseTypeDescriptionTransfer(languageTransfer, searchUseTypeTransfer, searchUseTypeDescription.getDescription());
-            put(searchUseTypeDescription, searchUseTypeDescriptionTransfer);
+            put(userVisit, searchUseTypeDescription, searchUseTypeDescriptionTransfer);
         }
         return searchUseTypeDescriptionTransfer;
     }

@@ -24,19 +24,20 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.item.server.factory.ItemFactory;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class GetItemsCommand
-        extends BaseMultipleEntitiesCommand<Item, GetItemsForm> {
+        extends BasePaginatedMultipleEntitiesCommand<Item, GetItemsForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -58,6 +59,18 @@ public class GetItemsCommand
     }
 
     @Override
+    protected void handleForm() {
+        // No additional form fields to handle.
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        var itemControl = Session.getModelController(ItemControl.class);
+
+        return itemControl.countItems();
+    }
+
+    @Override
     protected Collection<Item> getEntities() {
         var itemControl = Session.getModelController(ItemControl.class);
 
@@ -72,7 +85,7 @@ public class GetItemsCommand
             var itemControl = Session.getModelController(ItemControl.class);
 
             if(session.hasLimit(ItemFactory.class)) {
-                result.setItemCount(itemControl.countItems());
+                result.setItemCount(getTotalEntities());
             }
 
             result.setItems(itemControl.getItemTransfers(getUserVisit(), entities));

@@ -31,20 +31,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class RoleTypeLogic
         extends BaseLogic {
 
-    private RoleTypeLogic() {
+    protected RoleTypeLogic() {
         super();
     }
 
-    private static class RoleTypeLogicHolder {
-        static RoleTypeLogic instance = new RoleTypeLogic();
-    }
-
     public static RoleTypeLogic getInstance() {
-        return RoleTypeLogic.RoleTypeLogicHolder.instance;
+        return CDI.current().select(RoleTypeLogic.class).get();
     }
 
     public RoleType createRoleType(final ExecutionErrorAccumulator eea, final String roleTypeName, final RoleType parentRoleType,
@@ -92,22 +91,19 @@ public class RoleTypeLogic
         var roleTypeName = universalSpec.getRoleTypeName();
         var parameterCount = (roleTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
-        switch(parameterCount) {
-            case 1:
-                if(roleTypeName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
-                            ComponentVendors.ECHO_THREE.name(), EntityTypes.RoleType.name());
+        if(parameterCount == 1) {
+            if(roleTypeName == null) {
+                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                        ComponentVendors.ECHO_THREE.name(), EntityTypes.RoleType.name());
 
-                    if(!eea.hasExecutionErrors()) {
-                        roleType = partyControl.getRoleTypeByEntityInstance(entityInstance, entityPermission);
-                    }
-                } else {
-                    roleType = getRoleTypeByName(eea, roleTypeName, entityPermission);
+                if(!eea.hasExecutionErrors()) {
+                    roleType = partyControl.getRoleTypeByEntityInstance(entityInstance, entityPermission);
                 }
-                break;
-            default:
-                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
-                break;
+            } else {
+                roleType = getRoleTypeByName(eea, roleTypeName, entityPermission);
+            }
+        } else {
+            handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
 
         return roleType;

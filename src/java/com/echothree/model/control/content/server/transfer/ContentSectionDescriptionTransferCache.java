@@ -20,16 +20,21 @@ import com.echothree.model.control.content.common.transfer.ContentSectionDescrip
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.data.content.server.entity.ContentSectionDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ContentSectionDescriptionTransferCache
         extends BaseContentDescriptionTransferCache<ContentSectionDescription, ContentSectionDescriptionTransfer> {
-    
+
+    ContentControl contentControl = Session.getModelController(ContentControl.class);
+
     /** Creates a new instance of ContentSectionDescriptionTransferCache */
-    public ContentSectionDescriptionTransferCache(UserVisit userVisit, ContentControl contentControl) {
-        super(userVisit, contentControl);
+    protected ContentSectionDescriptionTransferCache() {
+        super();
     }
     
-    public ContentSectionDescriptionTransfer getContentSectionDescriptionTransfer(ContentSectionDescription contentSectionDescription) {
+    public ContentSectionDescriptionTransfer getContentSectionDescriptionTransfer(UserVisit userVisit, ContentSectionDescription contentSectionDescription) {
         var contentSectionDescriptionTransfer = get(contentSectionDescription);
         
         if(contentSectionDescriptionTransfer == null) {
@@ -37,7 +42,7 @@ public class ContentSectionDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, contentSectionDescription.getLanguage());
             
             contentSectionDescriptionTransfer = new ContentSectionDescriptionTransfer(languageTransfer, contentSectionTransfer, contentSectionDescription.getDescription());
-            put(contentSectionDescription, contentSectionDescriptionTransfer);
+            put(userVisit, contentSectionDescription, contentSectionDescriptionTransfer);
         }
         
         return contentSectionDescriptionTransfer;

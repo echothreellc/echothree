@@ -21,21 +21,23 @@ import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.data.filter.server.entity.FilterType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class FilterTypeTransferCache
         extends BaseFilterTransferCache<FilterType, FilterTypeTransfer> {
 
     FilterControl filterControl = Session.getModelController(FilterControl.class);
 
     /** Creates a new instance of FilterTypeTransferCache */
-    public FilterTypeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected FilterTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
 
     @Override
-    public FilterTypeTransfer getTransfer(FilterType filterType) {
+    public FilterTypeTransfer getTransfer(UserVisit userVisit, FilterType filterType) {
         var filterTypeTransfer = get(filterType);
         
         if(filterTypeTransfer == null) {
@@ -44,10 +46,10 @@ public class FilterTypeTransferCache
             var filterTypeName = filterTypeDetail.getFilterTypeName();
             var isDefault = filterTypeDetail.getIsDefault();
             var sortOrder = filterTypeDetail.getSortOrder();
-            var description = filterControl.getBestFilterTypeDescription(filterType, getLanguage());
+            var description = filterControl.getBestFilterTypeDescription(filterType, getLanguage(userVisit));
             
             filterTypeTransfer = new FilterTypeTransfer(filterKindTransfer, filterTypeName, isDefault, sortOrder, description);
-            put(filterType, filterTypeTransfer);
+            put(userVisit, filterType, filterTypeTransfer);
         }
         
         return filterTypeTransfer;

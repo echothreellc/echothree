@@ -22,19 +22,22 @@ import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.item.server.entity.HarmonizedTariffScheduleCodeTranslation;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class HarmonizedTariffScheduleCodeTranslationTransferCache
         extends BaseItemDescriptionTransferCache<HarmonizedTariffScheduleCodeTranslation, HarmonizedTariffScheduleCodeTranslationTransfer> {
 
+    ItemControl itemControl = Session.getModelController(ItemControl.class);
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
     
     /** Creates a new instance of HarmonizedTariffScheduleCodeTranslationTransferCache */
-    public HarmonizedTariffScheduleCodeTranslationTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    protected HarmonizedTariffScheduleCodeTranslationTransferCache() {
+        super();
     }
     
     @Override
-    public HarmonizedTariffScheduleCodeTranslationTransfer getTransfer(HarmonizedTariffScheduleCodeTranslation harmonizedTariffScheduleCodeTranslation) {
+    public HarmonizedTariffScheduleCodeTranslationTransfer getTransfer(UserVisit userVisit, HarmonizedTariffScheduleCodeTranslation harmonizedTariffScheduleCodeTranslation) {
         var harmonizedTariffScheduleCodeTranslationTransfer = get(harmonizedTariffScheduleCodeTranslation);
         
         if(harmonizedTariffScheduleCodeTranslationTransfer == null) {
@@ -47,7 +50,7 @@ public class HarmonizedTariffScheduleCodeTranslationTransferCache
             
             harmonizedTariffScheduleCodeTranslationTransfer = new HarmonizedTariffScheduleCodeTranslationTransfer(languageTransfer,
                     harmonizedTariffScheduleCodeTransfer, description, overviewMimeTypeTransfer, overview);
-            put(harmonizedTariffScheduleCodeTranslation, harmonizedTariffScheduleCodeTranslationTransfer);
+            put(userVisit, harmonizedTariffScheduleCodeTranslation, harmonizedTariffScheduleCodeTranslationTransfer);
         }
         
         return harmonizedTariffScheduleCodeTranslationTransfer;

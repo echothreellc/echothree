@@ -20,32 +20,29 @@ import com.echothree.control.user.item.common.form.GetItemUnitOfMeasureTypesForm
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.item.server.logic.ItemLogic;
-import com.echothree.model.control.uom.server.control.UomControl;
-import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.item.server.entity.ItemUnitOfMeasureType;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.item.server.factory.ItemUnitOfMeasureTypeFactory;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class GetItemUnitOfMeasureTypesCommand
-        extends BaseMultipleEntitiesCommand<ItemUnitOfMeasureType, GetItemUnitOfMeasureTypesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<ItemUnitOfMeasureType, GetItemUnitOfMeasureTypesForm> {
 
+    // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("UnitOfMeasureTypeName", FieldType.ENTITY_NAME, false, null, null)
-                ));
+        FORM_FIELD_DEFINITIONS = List.of(
+                new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null)
+        );
     }
     
     /** Creates a new instance of GetItemUnitOfMeasureTypesCommand */
@@ -54,28 +51,30 @@ public class GetItemUnitOfMeasureTypesCommand
     }
 
     Item item;
-    UnitOfMeasureType unitOfMeasureType;
+
+    @Override
+    protected void handleForm() {
+        var itemName = form.getItemName();
+
+        item = ItemLogic.getInstance().getItemByName(this, itemName);
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        var itemControl = Session.getModelController(ItemControl.class);
+
+        return hasExecutionErrors() ? null :
+                itemControl.countItemUnitOfMeasureTypesByItem(item);
+    }
 
     @Override
     protected Collection<ItemUnitOfMeasureType> getEntities() {
         Collection<ItemUnitOfMeasureType> entities = null;
 
-        item = ItemLogic.getInstance().getItemByName(this, form.getItemName());
-
         if(!hasExecutionErrors()) {
             var itemControl = Session.getModelController(ItemControl.class);
-            var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
 
-            if(unitOfMeasureTypeName == null) {
-                entities = itemControl.getItemUnitOfMeasureTypesByItem(item);
-            } else {
-                unitOfMeasureType = UnitOfMeasureTypeLogic.getInstance().getUnitOfMeasureTypeByName(this,
-                        item.getLastDetail().getUnitOfMeasureKind(), unitOfMeasureTypeName);
-
-                if(!hasExecutionErrors()) {
-                    entities = itemControl.getItemUnitOfMeasureTypesByUnitOfMeasureType(unitOfMeasureType);
-                }
-            }
+            entities = itemControl.getItemUnitOfMeasureTypesByItem(item);
         }
 
         return entities;
@@ -89,18 +88,12 @@ public class GetItemUnitOfMeasureTypesCommand
             var itemControl = Session.getModelController(ItemControl.class);
             var userVisit = getUserVisit();
 
-            if(item != null) {
-                result.setItem(itemControl.getItemTransfer(userVisit, item));
+            if(session.hasLimit(ItemUnitOfMeasureTypeFactory.class)) {
+                result.setItemUnitOfMeasureTypeCount(getTotalEntities());
             }
 
-            if(unitOfMeasureType != null) {
-                var uomControl = Session.getModelController(UomControl.class);
-
-                result.setUnitOfMeasureType(uomControl.getUnitOfMeasureTypeTransfer(userVisit, unitOfMeasureType));
-            }
-
-            result.setItemUnitOfMeasureTypes(itemControl.getItemUnitOfMeasureTypeTransfers(userVisit,
-                    entities));
+            result.setItem(itemControl.getItemTransfer(userVisit, item));
+            result.setItemUnitOfMeasureTypes(itemControl.getItemUnitOfMeasureTypeTransfers(userVisit, entities));
         }
 
         return result;

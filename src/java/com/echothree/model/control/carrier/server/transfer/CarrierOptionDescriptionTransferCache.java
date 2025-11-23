@@ -20,16 +20,21 @@ import com.echothree.model.control.carrier.common.transfer.CarrierOptionDescript
 import com.echothree.model.control.carrier.server.control.CarrierControl;
 import com.echothree.model.data.carrier.server.entity.CarrierOptionDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CarrierOptionDescriptionTransferCache
         extends BaseCarrierDescriptionTransferCache<CarrierOptionDescription, CarrierOptionDescriptionTransfer> {
-    
+
+    CarrierControl carrierControl = Session.getModelController(CarrierControl.class);
+
     /** Creates a new instance of CarrierOptionDescriptionTransferCache */
-    public CarrierOptionDescriptionTransferCache(UserVisit userVisit, CarrierControl carrierControl) {
-        super(userVisit, carrierControl);
+    protected CarrierOptionDescriptionTransferCache() {
+        super();
     }
     
-    public CarrierOptionDescriptionTransfer getCarrierOptionDescriptionTransfer(CarrierOptionDescription carrierOptionDescription) {
+    public CarrierOptionDescriptionTransfer getCarrierOptionDescriptionTransfer(UserVisit userVisit, CarrierOptionDescription carrierOptionDescription) {
         var carrierOptionDescriptionTransfer = get(carrierOptionDescription);
         
         if(carrierOptionDescriptionTransfer == null) {
@@ -39,7 +44,7 @@ public class CarrierOptionDescriptionTransferCache
             
             carrierOptionDescriptionTransfer = new CarrierOptionDescriptionTransfer(languageTransfer, carrierOptionTransfer,
                     description);
-            put(carrierOptionDescription, carrierOptionDescriptionTransfer);
+            put(userVisit, carrierOptionDescription, carrierOptionDescriptionTransfer);
         }
         
         return carrierOptionDescriptionTransfer;

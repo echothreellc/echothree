@@ -20,26 +20,31 @@ import com.echothree.model.control.contact.common.transfer.PostalAddressElementT
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.data.contact.server.entity.PostalAddressElementType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PostalAddressElementTypeTransferCache
         extends BaseContactTransferCache<PostalAddressElementType, PostalAddressElementTypeTransfer> {
-    
+
+    ContactControl contactControl = Session.getModelController(ContactControl.class);
+
     /** Creates a new instance of PostalAddressElementTypeTransferCache */
-    public PostalAddressElementTypeTransferCache(UserVisit userVisit, ContactControl contactControl) {
-        super(userVisit, contactControl);
+    protected PostalAddressElementTypeTransferCache() {
+        super();
     }
     
-    public PostalAddressElementTypeTransfer getPostalAddressElementTypeTransfer(PostalAddressElementType postalAddressElementType) {
+    public PostalAddressElementTypeTransfer getPostalAddressElementTypeTransfer(UserVisit userVisit, PostalAddressElementType postalAddressElementType) {
         var postalAddressElementTypeTransfer = get(postalAddressElementType);
         
         if(postalAddressElementTypeTransfer == null) {
             var postalAddressElementTypeName = postalAddressElementType.getPostalAddressElementTypeName();
             var isDefault = postalAddressElementType.getIsDefault();
             var sortOrder = postalAddressElementType.getSortOrder();
-            var description = contactControl.getBestPostalAddressElementTypeDescription(postalAddressElementType, getLanguage());
+            var description = contactControl.getBestPostalAddressElementTypeDescription(postalAddressElementType, getLanguage(userVisit));
             
             postalAddressElementTypeTransfer = new PostalAddressElementTypeTransfer(postalAddressElementTypeName, isDefault, sortOrder, description);
-            put(postalAddressElementType, postalAddressElementTypeTransfer);
+            put(userVisit, postalAddressElementType, postalAddressElementTypeTransfer);
         }
         
         return postalAddressElementTypeTransfer;

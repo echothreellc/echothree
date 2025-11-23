@@ -21,18 +21,20 @@ import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.data.core.server.entity.MimeTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class MimeTypeDescriptionTransferCache
         extends BaseCoreDescriptionTransferCache<MimeTypeDescription, MimeTypeDescriptionTransfer> {
 
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
 
     /** Creates a new instance of MimeTypeDescriptionTransferCache */
-    public MimeTypeDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected MimeTypeDescriptionTransferCache() {
+        super();
     }
     
-    public MimeTypeDescriptionTransfer getMimeTypeDescriptionTransfer(MimeTypeDescription mimeTypeDescription) {
+    public MimeTypeDescriptionTransfer getMimeTypeDescriptionTransfer(UserVisit userVisit, MimeTypeDescription mimeTypeDescription) {
         var mimeTypeDescriptionTransfer = get(mimeTypeDescription);
         
         if(mimeTypeDescriptionTransfer == null) {
@@ -41,7 +43,7 @@ public class MimeTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, mimeTypeDescription.getLanguage());
             
             mimeTypeDescriptionTransfer = new MimeTypeDescriptionTransfer(languageTransfer, mimeTypeTransfer, mimeTypeDescription.getDescription());
-            put(mimeTypeDescription, mimeTypeDescriptionTransfer);
+            put(userVisit, mimeTypeDescription, mimeTypeDescriptionTransfer);
         }
         
         return mimeTypeDescriptionTransfer;

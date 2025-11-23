@@ -17,23 +17,25 @@
 package com.echothree.model.control.shipment.server.transfer;
 
 import com.echothree.model.control.shipment.common.transfer.ShipmentAliasTransfer;
-import com.echothree.model.control.shipment.server.ShipmentControl;
+import com.echothree.model.control.shipment.server.control.ShipmentControl;
 import com.echothree.model.data.shipment.server.entity.ShipmentAlias;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ShipmentAliasTransferCache
         extends BaseShipmentTransferCache<ShipmentAlias, ShipmentAliasTransfer> {
 
     ShipmentControl shipmentControl = Session.getModelController(ShipmentControl.class);
 
     /** Creates a new instance of ShipmentAliasTransferCache */
-    public ShipmentAliasTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected ShipmentAliasTransferCache() {
+        super();
     }
 
     @Override
-    public ShipmentAliasTransfer getTransfer(ShipmentAlias shipmentAlias) {
+    public ShipmentAliasTransfer getTransfer(UserVisit userVisit, ShipmentAlias shipmentAlias) {
         var shipmentAliasTransfer = get(shipmentAlias);
         
         if(shipmentAliasTransfer == null) {
@@ -42,7 +44,7 @@ public class ShipmentAliasTransferCache
             var alias = shipmentAlias.getAlias();
             
             shipmentAliasTransfer = new ShipmentAliasTransfer(/*shipment,*/ shipmentAliasType, alias);
-            put(shipmentAlias, shipmentAliasTransfer);
+            put(userVisit, shipmentAlias, shipmentAliasTransfer);
         }
         
         return shipmentAliasTransfer;

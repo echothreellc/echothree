@@ -23,7 +23,9 @@ import com.echothree.model.data.order.server.entity.OrderPaymentPreference;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.AmountUtils;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class OrderPaymentPreferenceTransferCache
         extends BaseOrderTransferCache<OrderPaymentPreference, OrderPaymentPreferenceTransfer> {
 
@@ -31,13 +33,13 @@ public class OrderPaymentPreferenceTransferCache
     PaymentMethodControl paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
 
     /** Creates a new instance of OrderPaymentPreferenceTransferCache */
-    public OrderPaymentPreferenceTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected OrderPaymentPreferenceTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public OrderPaymentPreferenceTransfer getOrderPaymentPreferenceTransfer(OrderPaymentPreference orderPaymentPreference) {
+    public OrderPaymentPreferenceTransfer getOrderPaymentPreferenceTransfer(UserVisit userVisit, OrderPaymentPreference orderPaymentPreference) {
         var orderPaymentPreferenceTransfer = get(orderPaymentPreference);
         
         if(orderPaymentPreferenceTransfer == null) {
@@ -53,7 +55,7 @@ public class OrderPaymentPreferenceTransferCache
             
             orderPaymentPreferenceTransfer = new OrderPaymentPreferenceTransfer(orderPaymentPreferenceSequence, paymentMethodTransfer,
                     partyPaymentMethodTransfer, wasPresent, unformattedMaximumAmount, maximumAmount,sortOrder);
-            put(orderPaymentPreference, orderPaymentPreferenceTransfer);
+            put(userVisit, orderPaymentPreference, orderPaymentPreferenceTransfer);
         }
         
         return orderPaymentPreferenceTransfer;

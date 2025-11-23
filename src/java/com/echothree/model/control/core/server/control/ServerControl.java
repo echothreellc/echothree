@@ -63,12 +63,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ServerControl
         extends BaseCoreControl {
 
     /** Creates a new instance of ServerControl */
-    public ServerControl() {
+    protected ServerControl() {
         super();
     }
 
@@ -211,16 +213,15 @@ public class ServerControl
     }
 
     public ProtocolTransfer getProtocolTransfer(UserVisit userVisit, Protocol protocol) {
-        return getCoreTransferCaches(userVisit).getProtocolTransferCache().getProtocolTransfer(protocol);
+        return protocolTransferCache.getProtocolTransfer(userVisit, protocol);
     }
 
     public List<ProtocolTransfer> getProtocolTransfers(UserVisit userVisit) {
         var protocols = getProtocols();
         List<ProtocolTransfer> protocolTransfers = new ArrayList<>(protocols.size());
-        var protocolTransferCache = getCoreTransferCaches(userVisit).getProtocolTransferCache();
 
         protocols.forEach((protocol) ->
-                protocolTransfers.add(protocolTransferCache.getProtocolTransfer(protocol))
+                protocolTransfers.add(protocolTransferCache.getProtocolTransfer(userVisit, protocol))
         );
 
         return protocolTransfers;
@@ -436,7 +437,7 @@ public class ServerControl
         var protocolDescription = getProtocolDescription(protocol, language);
 
         if(protocolDescription == null && !language.getIsDefault()) {
-            protocolDescription = getProtocolDescription(protocol, getPartyControl().getDefaultLanguage());
+            protocolDescription = getProtocolDescription(protocol, partyControl.getDefaultLanguage());
         }
 
         if(protocolDescription == null) {
@@ -449,16 +450,15 @@ public class ServerControl
     }
 
     public ProtocolDescriptionTransfer getProtocolDescriptionTransfer(UserVisit userVisit, ProtocolDescription protocolDescription) {
-        return getCoreTransferCaches(userVisit).getProtocolDescriptionTransferCache().getProtocolDescriptionTransfer(protocolDescription);
+        return protocolDescriptionTransferCache.getProtocolDescriptionTransfer(userVisit, protocolDescription);
     }
 
     public List<ProtocolDescriptionTransfer> getProtocolDescriptionTransfersByProtocol(UserVisit userVisit, Protocol protocol) {
         var protocolDescriptions = getProtocolDescriptionsByProtocol(protocol);
         List<ProtocolDescriptionTransfer> protocolDescriptionTransfers = new ArrayList<>(protocolDescriptions.size());
-        var protocolDescriptionTransferCache = getCoreTransferCaches(userVisit).getProtocolDescriptionTransferCache();
 
         protocolDescriptions.forEach((protocolDescription) ->
-                protocolDescriptionTransfers.add(protocolDescriptionTransferCache.getProtocolDescriptionTransfer(protocolDescription))
+                protocolDescriptionTransfers.add(protocolDescriptionTransferCache.getProtocolDescriptionTransfer(userVisit, protocolDescription))
         );
 
         return protocolDescriptionTransfers;
@@ -670,16 +670,15 @@ public class ServerControl
     }
 
     public ServiceTransfer getServiceTransfer(UserVisit userVisit, Service service) {
-        return getCoreTransferCaches(userVisit).getServiceTransferCache().getServiceTransfer(service);
+        return serviceTransferCache.getServiceTransfer(userVisit, service);
     }
 
     public List<ServiceTransfer> getServiceTransfers(UserVisit userVisit) {
         var services = getServices();
         List<ServiceTransfer> serviceTransfers = new ArrayList<>(services.size());
-        var serviceTransferCache = getCoreTransferCaches(userVisit).getServiceTransferCache();
 
         services.forEach((service) ->
-                serviceTransfers.add(serviceTransferCache.getServiceTransfer(service))
+                serviceTransfers.add(serviceTransferCache.getServiceTransfer(userVisit, service))
         );
 
         return serviceTransfers;
@@ -901,7 +900,7 @@ public class ServerControl
         var serviceDescription = getServiceDescription(service, language);
 
         if(serviceDescription == null && !language.getIsDefault()) {
-            serviceDescription = getServiceDescription(service, getPartyControl().getDefaultLanguage());
+            serviceDescription = getServiceDescription(service, partyControl.getDefaultLanguage());
         }
 
         if(serviceDescription == null) {
@@ -914,16 +913,15 @@ public class ServerControl
     }
 
     public ServiceDescriptionTransfer getServiceDescriptionTransfer(UserVisit userVisit, ServiceDescription serviceDescription) {
-        return getCoreTransferCaches(userVisit).getServiceDescriptionTransferCache().getServiceDescriptionTransfer(serviceDescription);
+        return serviceDescriptionTransferCache.getServiceDescriptionTransfer(userVisit, serviceDescription);
     }
 
     public List<ServiceDescriptionTransfer> getServiceDescriptionTransfersByService(UserVisit userVisit, Service service) {
         var serviceDescriptions = getServiceDescriptionsByService(service);
         List<ServiceDescriptionTransfer> serviceDescriptionTransfers = new ArrayList<>(serviceDescriptions.size());
-        var serviceDescriptionTransferCache = getCoreTransferCaches(userVisit).getServiceDescriptionTransferCache();
 
         serviceDescriptions.forEach((serviceDescription) ->
-                serviceDescriptionTransfers.add(serviceDescriptionTransferCache.getServiceDescriptionTransfer(serviceDescription))
+                serviceDescriptionTransfers.add(serviceDescriptionTransferCache.getServiceDescriptionTransfer(userVisit, serviceDescription))
         );
 
         return serviceDescriptionTransfers;
@@ -1101,16 +1099,15 @@ public class ServerControl
     }
 
     public ServerTransfer getServerTransfer(UserVisit userVisit, Server server) {
-        return getCoreTransferCaches(userVisit).getServerTransferCache().getServerTransfer(server);
+        return serverTransferCache.getServerTransfer(userVisit, server);
     }
 
     public List<ServerTransfer> getServerTransfers(UserVisit userVisit) {
         var servers = getServers();
         List<ServerTransfer> serverTransfers = new ArrayList<>(servers.size());
-        var serverTransferCache = getCoreTransferCaches(userVisit).getServerTransferCache();
 
         servers.forEach((server) ->
-                serverTransfers.add(serverTransferCache.getServerTransfer(server))
+                serverTransfers.add(serverTransferCache.getServerTransfer(userVisit, server))
         );
 
         return serverTransfers;
@@ -1326,7 +1323,7 @@ public class ServerControl
         var serverDescription = getServerDescription(server, language);
 
         if(serverDescription == null && !language.getIsDefault()) {
-            serverDescription = getServerDescription(server, getPartyControl().getDefaultLanguage());
+            serverDescription = getServerDescription(server, partyControl.getDefaultLanguage());
         }
 
         if(serverDescription == null) {
@@ -1339,16 +1336,15 @@ public class ServerControl
     }
 
     public ServerDescriptionTransfer getServerDescriptionTransfer(UserVisit userVisit, ServerDescription serverDescription) {
-        return getCoreTransferCaches(userVisit).getServerDescriptionTransferCache().getServerDescriptionTransfer(serverDescription);
+        return serverDescriptionTransferCache.getServerDescriptionTransfer(userVisit, serverDescription);
     }
 
     public List<ServerDescriptionTransfer> getServerDescriptionTransfersByServer(UserVisit userVisit, Server server) {
         var serverDescriptions = getServerDescriptionsByServer(server);
         List<ServerDescriptionTransfer> serverDescriptionTransfers = new ArrayList<>(serverDescriptions.size());
-        var serverDescriptionTransferCache = getCoreTransferCaches(userVisit).getServerDescriptionTransferCache();
 
         serverDescriptions.forEach((serverDescription) ->
-                serverDescriptionTransfers.add(serverDescriptionTransferCache.getServerDescriptionTransfer(serverDescription))
+                serverDescriptionTransfers.add(serverDescriptionTransferCache.getServerDescriptionTransfer(userVisit, serverDescription))
         );
 
         return serverDescriptionTransfers;
@@ -1503,16 +1499,15 @@ public class ServerControl
     }
 
     public ServerServiceTransfer getServerServiceTransfer(UserVisit userVisit, ServerService serverService) {
-        return getCoreTransferCaches(userVisit).getServerServiceTransferCache().getServerServiceTransfer(serverService);
+        return serverServiceTransferCache.getServerServiceTransfer(userVisit, serverService);
     }
 
     public List<ServerServiceTransfer> getServerServiceTransfersByServer(UserVisit userVisit, Server server) {
         var serverServices = getServerServicesByServer(server);
         List<ServerServiceTransfer> serverServiceTransfers = new ArrayList<>(serverServices.size());
-        var serverServiceTransferCache = getCoreTransferCaches(userVisit).getServerServiceTransferCache();
 
         serverServices.forEach((serverService) ->
-                serverServiceTransfers.add(serverServiceTransferCache.getServerServiceTransfer(serverService))
+                serverServiceTransfers.add(serverServiceTransferCache.getServerServiceTransfer(userVisit, serverService))
         );
 
         return serverServiceTransfers;

@@ -21,20 +21,22 @@ import com.echothree.model.control.order.server.control.OrderTimeControl;
 import com.echothree.model.data.order.server.entity.OrderTimeType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class OrderTimeTypeTransferCache
         extends BaseOrderTransferCache<OrderTimeType, OrderTimeTypeTransfer> {
 
     OrderTimeControl orderTimeControl = Session.getModelController(OrderTimeControl.class);
 
     /** Creates a new instance of OrderTimeTypeTransferCache */
-    public OrderTimeTypeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected OrderTimeTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public OrderTimeTypeTransfer getOrderTimeTypeTransfer(OrderTimeType orderTimeType) {
+    public OrderTimeTypeTransfer getOrderTimeTypeTransfer(UserVisit userVisit, OrderTimeType orderTimeType) {
         var orderTimeTypeTransfer = get(orderTimeType);
         
         if(orderTimeTypeTransfer == null) {
@@ -42,10 +44,10 @@ public class OrderTimeTypeTransferCache
             var orderTimeTypeName = orderTimeTypeDetail.getOrderTimeTypeName();
             var isDefault = orderTimeTypeDetail.getIsDefault();
             var sortOrder = orderTimeTypeDetail.getSortOrder();
-            var description = orderTimeControl.getBestOrderTimeTypeDescription(orderTimeType, getLanguage());
+            var description = orderTimeControl.getBestOrderTimeTypeDescription(orderTimeType, getLanguage(userVisit));
             
             orderTimeTypeTransfer = new OrderTimeTypeTransfer(orderTimeTypeName, isDefault, sortOrder, description);
-            put(orderTimeType, orderTimeTypeTransfer);
+            put(userVisit, orderTimeType, orderTimeTypeTransfer);
         }
         
         return orderTimeTypeTransfer;

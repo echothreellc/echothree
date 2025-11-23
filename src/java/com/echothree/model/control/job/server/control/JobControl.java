@@ -22,7 +22,8 @@ import com.echothree.model.control.job.common.choice.JobStatusChoicesBean;
 import com.echothree.model.control.job.common.transfer.JobDescriptionTransfer;
 import com.echothree.model.control.job.common.transfer.JobTransfer;
 import com.echothree.model.control.job.common.workflow.JobStatusConstants;
-import com.echothree.model.control.job.server.transfer.JobTransferCaches;
+import com.echothree.model.control.job.server.transfer.JobDescriptionTransferCache;
+import com.echothree.model.control.job.server.transfer.JobTransferCache;
 import com.echothree.model.data.job.server.entity.Job;
 import com.echothree.model.data.job.server.entity.JobDescription;
 import com.echothree.model.data.job.server.entity.JobStatus;
@@ -46,29 +47,28 @@ import com.echothree.util.server.persistence.Session;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
+@RequestScoped
 public class JobControl
         extends BaseModelControl {
     
     /** Creates a new instance of JobControl */
-    public JobControl() {
+    protected JobControl() {
         super();
     }
     
     // --------------------------------------------------------------------------------
     //   Contact List Transfer Caches
     // --------------------------------------------------------------------------------
-    
-    private JobTransferCaches jobTransferCaches;
-    
-    public JobTransferCaches getJobTransferCaches(UserVisit userVisit) {
-        if(jobTransferCaches == null) {
-            jobTransferCaches = new JobTransferCaches(userVisit, this);
-        }
-        
-        return jobTransferCaches;
-    }
-    
+
+    @Inject
+    JobDescriptionTransferCache jobDescriptionTransferCache;
+
+    @Inject
+    JobTransferCache jobTransferCache;
+
     // --------------------------------------------------------------------------------
     //   Jobs
     // --------------------------------------------------------------------------------
@@ -165,16 +165,15 @@ public class JobControl
     }
     
     public JobTransfer getJobTransfer(UserVisit userVisit, Job job) {
-        return getJobTransferCaches(userVisit).getJobTransferCache().getJobTransfer(job);
+        return jobTransferCache.getJobTransfer(userVisit, job);
     }
     
     public List<JobTransfer> getJobTransfers(UserVisit userVisit) {
         var jobs = getJobs();
         List<JobTransfer> jobTransfers = new ArrayList<>(jobs.size());
-        var jobTransferCache = getJobTransferCaches(userVisit).getJobTransferCache();
         
         jobs.forEach((job) ->
-                jobTransfers.add(jobTransferCache.getJobTransfer(job))
+                jobTransfers.add(jobTransferCache.getJobTransfer(userVisit, job))
         );
         
         return jobTransfers;
@@ -182,7 +181,6 @@ public class JobControl
     
     public JobStatusChoicesBean getJobStatusChoices(String defaultJobStatusChoice, Language language, boolean allowNullChoice,
             Job job, PartyPK partyPK) {
-        var workflowControl = getWorkflowControl();
         var jobStatusChoicesBean = new JobStatusChoicesBean();
         
         if(job == null) {
@@ -202,7 +200,6 @@ public class JobControl
     }
     
     public void setJobStatus(ExecutionErrorAccumulator eea, Job job, String jobStatusChoice, PartyPK modifiedBy) {
-        var workflowControl = getWorkflowControl();
         var entityInstance = getEntityInstanceByBaseEntity(job);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(JobStatusConstants.Workflow_JOB_STATUS,
                 entityInstance);
@@ -356,7 +353,7 @@ public class JobControl
         var jobDescription = getJobDescription(job, language);
         
         if(jobDescription == null && !language.getIsDefault()) {
-            jobDescription = getJobDescription(job, getPartyControl().getDefaultLanguage());
+            jobDescription = getJobDescription(job, partyControl.getDefaultLanguage());
         }
         
         if(jobDescription == null) {
@@ -369,7 +366,7 @@ public class JobControl
     }
     
     public JobDescriptionTransfer getJobDescriptionTransfer(UserVisit userVisit, JobDescription jobDescription) {
-        return getJobTransferCaches(userVisit).getJobDescriptionTransferCache().getJobDescriptionTransfer(jobDescription);
+        return jobDescriptionTransferCache.getJobDescriptionTransfer(userVisit, jobDescription);
     }
     
     public List<JobDescriptionTransfer> getJobDescriptionTransfersByJob(UserVisit userVisit, Job job) {
@@ -377,7 +374,7 @@ public class JobControl
         List<JobDescriptionTransfer> jobDescriptionTransfers = new ArrayList<>(jobDescriptions.size());
         
         jobDescriptions.forEach((jobDescription) -> {
-            jobDescriptionTransfers.add(getJobTransferCaches(userVisit).getJobDescriptionTransferCache().getJobDescriptionTransfer(jobDescription));
+            jobDescriptionTransfers.add(jobDescriptionTransferCache.getJobDescriptionTransfer(userVisit, jobDescription));
         });
         
         return jobDescriptionTransfers;

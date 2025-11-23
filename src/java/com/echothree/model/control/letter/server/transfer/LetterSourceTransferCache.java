@@ -23,21 +23,24 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.letter.server.entity.LetterSource;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class LetterSourceTransferCache
         extends BaseLetterTransferCache<LetterSource, LetterSourceTransfer> {
     
     ContactControl contactControl = Session.getModelController(ContactControl.class);
+    LetterControl letterControl = Session.getModelController(LetterControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of LetterSourceTransferCache */
-    public LetterSourceTransferCache(UserVisit userVisit, LetterControl letterControl) {
-        super(userVisit, letterControl);
+    protected LetterSourceTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public LetterSourceTransfer getLetterSourceTransfer(LetterSource letterSource) {
+    public LetterSourceTransfer getLetterSourceTransfer(UserVisit userVisit, LetterSource letterSource) {
         var letterSourceTransfer = get(letterSource);
         
         if(letterSourceTransfer == null) {
@@ -49,12 +52,12 @@ public class LetterSourceTransferCache
             var letterSourcePartyContactMechanismTransfer = contactControl.getPartyContactMechanismTransfer(userVisit, letterSourceDetail.getLetterSourcePartyContactMechanism());
             var isDefault = letterSourceDetail.getIsDefault();
             var sortOrder = letterSourceDetail.getSortOrder();
-            var description = letterControl.getBestLetterSourceDescription(letterSource, getLanguage());
+            var description = letterControl.getBestLetterSourceDescription(letterSource, getLanguage(userVisit));
             
             letterSourceTransfer = new LetterSourceTransfer(letterSourceName, companyTransfer,
                     emailAddressPartyContactMechanismTransfer, postalAddressPartyContactMechanismTransfer,
                     letterSourcePartyContactMechanismTransfer, isDefault, sortOrder, description);
-            put(letterSource, letterSourceTransfer);
+            put(userVisit, letterSource, letterSourceTransfer);
         }
         
         return letterSourceTransfer;

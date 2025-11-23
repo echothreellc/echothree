@@ -20,19 +20,24 @@ import com.echothree.model.control.batch.common.transfer.BatchAliasTypeTransfer;
 import com.echothree.model.control.batch.server.control.BatchControl;
 import com.echothree.model.data.batch.server.entity.BatchAliasType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class BatchAliasTypeTransferCache
         extends BaseBatchTransferCache<BatchAliasType, BatchAliasTypeTransfer> {
-    
+
+    BatchControl batchControl = Session.getModelController(BatchControl.class);
+
     /** Creates a new instance of BatchAliasTypeTransferCache */
-    public BatchAliasTypeTransferCache(UserVisit userVisit, BatchControl batchControl) {
-        super(userVisit, batchControl);
+    protected BatchAliasTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
     @Override
-    public BatchAliasTypeTransfer getTransfer(BatchAliasType batchAliasType) {
+    public BatchAliasTypeTransfer getTransfer(UserVisit userVisit, BatchAliasType batchAliasType) {
         var batchAliasTypeTransfer = get(batchAliasType);
         
         if(batchAliasTypeTransfer == null) {
@@ -42,10 +47,10 @@ public class BatchAliasTypeTransferCache
             var validationPattern = batchAliasTypeDetail.getValidationPattern();
             var isDefault = batchAliasTypeDetail.getIsDefault();
             var sortOrder = batchAliasTypeDetail.getSortOrder();
-            var description = batchControl.getBestBatchAliasTypeDescription(batchAliasType, getLanguage());
+            var description = batchControl.getBestBatchAliasTypeDescription(batchAliasType, getLanguage(userVisit));
             
             batchAliasTypeTransfer = new BatchAliasTypeTransfer(batchType, batchAliasTypeName, validationPattern, isDefault, sortOrder, description);
-            put(batchAliasType, batchAliasTypeTransfer);
+            put(userVisit, batchAliasType, batchAliasTypeTransfer);
         }
         
         return batchAliasTypeTransfer;

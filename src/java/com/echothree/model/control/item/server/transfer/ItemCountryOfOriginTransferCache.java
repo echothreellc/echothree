@@ -23,19 +23,22 @@ import com.echothree.model.data.item.server.entity.ItemCountryOfOrigin;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.PercentUtils;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ItemCountryOfOriginTransferCache
         extends BaseItemTransferCache<ItemCountryOfOrigin, ItemCountryOfOriginTransfer> {
     
     GeoControl geoControl = Session.getModelController(GeoControl.class);
-    
+    ItemControl itemControl = Session.getModelController(ItemControl.class);
+
     /** Creates a new instance of ItemCountryOfOriginTransferCache */
-    public ItemCountryOfOriginTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    protected ItemCountryOfOriginTransferCache() {
+        super();
     }
     
     @Override
-    public ItemCountryOfOriginTransfer getTransfer(ItemCountryOfOrigin itemCountryOfOrigin) {
+    public ItemCountryOfOriginTransfer getTransfer(UserVisit userVisit, ItemCountryOfOrigin itemCountryOfOrigin) {
         var itemCountryOfOriginTransfer = get(itemCountryOfOrigin);
         
         if(itemCountryOfOriginTransfer == null) {
@@ -45,7 +48,7 @@ public class ItemCountryOfOriginTransferCache
             var percent = PercentUtils.getInstance().formatFractionalPercent(unformattedPercent);
             
             itemCountryOfOriginTransfer = new ItemCountryOfOriginTransfer(item, countryGeoCode, unformattedPercent, percent);
-            put(itemCountryOfOrigin, itemCountryOfOriginTransfer);
+            put(userVisit, itemCountryOfOrigin, itemCountryOfOriginTransfer);
         }
         
         return itemCountryOfOriginTransfer;

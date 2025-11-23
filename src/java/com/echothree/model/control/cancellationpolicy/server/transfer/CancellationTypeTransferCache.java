@@ -22,20 +22,23 @@ import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CancellationTypeTransferCache
         extends BaseCancellationPolicyTransferCache<CancellationType, CancellationTypeTransfer> {
-    
+
+    CancellationPolicyControl cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
     SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
     
     /** Creates a new instance of CancellationTypeTransferCache */
-    public CancellationTypeTransferCache(UserVisit userVisit, CancellationPolicyControl cancellationPolicyControl) {
-        super(userVisit, cancellationPolicyControl);
+    protected CancellationTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public CancellationTypeTransfer getCancellationTypeTransfer(CancellationType cancellationType) {
+    public CancellationTypeTransfer getCancellationTypeTransfer(UserVisit userVisit, CancellationType cancellationType) {
         var cancellationTypeTransfer = get(cancellationType);
         
         if(cancellationTypeTransfer == null) {
@@ -46,11 +49,11 @@ public class CancellationTypeTransferCache
             var cancellationSequenceTransfer = cancellationSequence == null? null: sequenceControl.getSequenceTransfer(userVisit, cancellationSequence);
             var isDefault = cancellationTypeDetail.getIsDefault();
             var sortOrder = cancellationTypeDetail.getSortOrder();
-            var description = cancellationPolicyControl.getBestCancellationTypeDescription(cancellationType, getLanguage());
+            var description = cancellationPolicyControl.getBestCancellationTypeDescription(cancellationType, getLanguage(userVisit));
             
             cancellationTypeTransfer = new CancellationTypeTransfer(cancellationKindTransfer, cancellationTypeName, cancellationSequenceTransfer, isDefault,
                     sortOrder, description);
-            put(cancellationType, cancellationTypeTransfer);
+            put(userVisit, cancellationType, cancellationTypeTransfer);
         }
         
         return cancellationTypeTransfer;

@@ -22,18 +22,21 @@ import com.echothree.model.control.payment.server.control.PaymentMethodControl;
 import com.echothree.model.data.customer.server.entity.CustomerTypePaymentMethod;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CustomerTypePaymentMethodTransferCache
         extends BaseCustomerTransferCache<CustomerTypePaymentMethod, CustomerTypePaymentMethodTransfer> {
 
+    CustomerControl customerControl = Session.getModelController(CustomerControl.class);
     PaymentMethodControl paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
 
     /** Creates a new instance of CustomerTypePaymentMethodTransferCache */
-    public CustomerTypePaymentMethodTransferCache(UserVisit userVisit, CustomerControl customerControl) {
-        super(userVisit, customerControl);
+    protected CustomerTypePaymentMethodTransferCache() {
+        super();
     }
     
-    public CustomerTypePaymentMethodTransfer getCustomerTypePaymentMethodTransfer(CustomerTypePaymentMethod customerTypePaymentMethod) {
+    public CustomerTypePaymentMethodTransfer getCustomerTypePaymentMethodTransfer(UserVisit userVisit, CustomerTypePaymentMethod customerTypePaymentMethod) {
         var customerTypePaymentMethodTransfer = get(customerTypePaymentMethod);
         
         if(customerTypePaymentMethodTransfer == null) {
@@ -45,7 +48,7 @@ public class CustomerTypePaymentMethodTransferCache
             
             customerTypePaymentMethodTransfer = new CustomerTypePaymentMethodTransfer(customerType, paymentMethod, defaultSelectionPriority, isDefault,
                     sortOrder);
-            put(customerTypePaymentMethod, customerTypePaymentMethodTransfer);
+            put(userVisit, customerTypePaymentMethod, customerTypePaymentMethodTransfer);
         }
         
         return customerTypePaymentMethodTransfer;

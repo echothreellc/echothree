@@ -23,7 +23,9 @@ import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityMultipleListItemAttribute;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EntityMultipleListItemAttributeTransferCache
         extends BaseCoreTransferCache<EntityMultipleListItemAttribute, EntityMultipleListItemAttributeTransfer> {
 
@@ -31,11 +33,11 @@ public class EntityMultipleListItemAttributeTransferCache
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
     /** Creates a new instance of EntityMultipleListItemAttributeTransferCache */
-    public EntityMultipleListItemAttributeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected EntityMultipleListItemAttributeTransferCache() {
+        super();
     }
     
-    public EntityMultipleListItemAttributeTransfer getEntityMultipleListItemAttributeTransfer(EntityMultipleListItemAttribute entityMultipleListItemAttribute, EntityInstance entityInstance) {
+    public EntityMultipleListItemAttributeTransfer getEntityMultipleListItemAttributeTransfer(final UserVisit userVisit, final EntityMultipleListItemAttribute entityMultipleListItemAttribute, final EntityInstance entityInstance) {
         var entityMultipleListItemAttributeTransfer = get(entityMultipleListItemAttribute);
         
         if(entityMultipleListItemAttributeTransfer == null) {
@@ -44,7 +46,7 @@ public class EntityMultipleListItemAttributeTransferCache
             var entityListItem = coreControl.getEntityListItemTransfer(userVisit, entityMultipleListItemAttribute.getEntityListItem(), entityInstance);
             
             entityMultipleListItemAttributeTransfer = new EntityMultipleListItemAttributeTransfer(entityAttribute, entityInstanceTransfer, entityListItem);
-            put(entityMultipleListItemAttribute, entityMultipleListItemAttributeTransfer);
+            put(userVisit, entityMultipleListItemAttribute, entityMultipleListItemAttributeTransfer);
         }
         
         return entityMultipleListItemAttributeTransfer;

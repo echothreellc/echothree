@@ -44,12 +44,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class LotTimeControl
         extends BaseInventoryControl {
 
     /** Creates a new instance of LotTimeControl */
-    public LotTimeControl() {
+    protected LotTimeControl() {
         super();
     }
     
@@ -192,16 +194,15 @@ public class LotTimeControl
     }
 
     public LotTimeTypeTransfer getLotTimeTypeTransfer(UserVisit userVisit, LotTimeType lotTimeType) {
-        return getInventoryTransferCaches(userVisit).getLotTimeTypeTransferCache().getTransfer(lotTimeType);
+        return lotTimeTypeTransferCache.getTransfer(userVisit, lotTimeType);
     }
 
     public List<LotTimeTypeTransfer> getLotTimeTypeTransfers(UserVisit userVisit) {
         var lotTimeTypes = getLotTimeTypes();
         List<LotTimeTypeTransfer> lotTimeTypeTransfers = new ArrayList<>(lotTimeTypes.size());
-        var lotTimeTypeTransferCache = getInventoryTransferCaches(userVisit).getLotTimeTypeTransferCache();
 
         lotTimeTypes.forEach((lotTimeType) ->
-                lotTimeTypeTransfers.add(lotTimeTypeTransferCache.getTransfer(lotTimeType))
+                lotTimeTypeTransfers.add(lotTimeTypeTransferCache.getTransfer(userVisit, lotTimeType))
         );
 
         return lotTimeTypeTransfers;
@@ -402,7 +403,7 @@ public class LotTimeControl
         var lotTimeTypeDescription = getLotTimeTypeDescription(lotTimeType, language);
 
         if(lotTimeTypeDescription == null && !language.getIsDefault()) {
-            lotTimeTypeDescription = getLotTimeTypeDescription(lotTimeType, getPartyControl().getDefaultLanguage());
+            lotTimeTypeDescription = getLotTimeTypeDescription(lotTimeType, partyControl.getDefaultLanguage());
         }
 
         if(lotTimeTypeDescription == null) {
@@ -415,16 +416,15 @@ public class LotTimeControl
     }
 
     public LotTimeTypeDescriptionTransfer getLotTimeTypeDescriptionTransfer(UserVisit userVisit, LotTimeTypeDescription lotTimeTypeDescription) {
-        return getInventoryTransferCaches(userVisit).getLotTimeTypeDescriptionTransferCache().getTransfer(lotTimeTypeDescription);
+        return lotTimeTypeDescriptionTransferCache.getTransfer(userVisit, lotTimeTypeDescription);
     }
 
     public List<LotTimeTypeDescriptionTransfer> getLotTimeTypeDescriptionTransfersByLotTimeType(UserVisit userVisit, LotTimeType lotTimeType) {
         var lotTimeTypeDescriptions = getLotTimeTypeDescriptionsByLotTimeType(lotTimeType);
         List<LotTimeTypeDescriptionTransfer> lotTimeTypeDescriptionTransfers = new ArrayList<>(lotTimeTypeDescriptions.size());
-        var lotTimeTypeDescriptionTransferCache = getInventoryTransferCaches(userVisit).getLotTimeTypeDescriptionTransferCache();
 
         lotTimeTypeDescriptions.forEach((lotTimeTypeDescription) ->
-                lotTimeTypeDescriptionTransfers.add(lotTimeTypeDescriptionTransferCache.getTransfer(lotTimeTypeDescription))
+                lotTimeTypeDescriptionTransfers.add(lotTimeTypeDescriptionTransferCache.getTransfer(userVisit, lotTimeTypeDescription))
         );
 
         return lotTimeTypeDescriptionTransfers;
@@ -592,15 +592,14 @@ public class LotTimeControl
     }
 
     public LotTimeTransfer getLotTimeTransfer(UserVisit userVisit, LotTime lotTime) {
-        return getInventoryTransferCaches(userVisit).getLotTimeTransferCache().getTransfer(lotTime);
+        return lotTimeTransferCache.getTransfer(userVisit, lotTime);
     }
 
     public List<LotTimeTransfer> getLotTimeTransfers(UserVisit userVisit, Collection<LotTime> lotTimes) {
         List<LotTimeTransfer> lotTimeTransfers = new ArrayList<>(lotTimes.size());
-        var lotTimeTransferCache = getInventoryTransferCaches(userVisit).getLotTimeTransferCache();
 
         lotTimes.forEach((lotTime) ->
-                lotTimeTransfers.add(lotTimeTransferCache.getTransfer(lotTime))
+                lotTimeTransfers.add(lotTimeTransferCache.getTransfer(userVisit, lotTime))
         );
 
         return lotTimeTransfers;

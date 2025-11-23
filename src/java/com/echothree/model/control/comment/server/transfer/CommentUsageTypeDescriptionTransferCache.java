@@ -20,25 +20,29 @@ import com.echothree.model.control.comment.common.transfer.CommentUsageTypeDescr
 import com.echothree.model.control.comment.server.control.CommentControl;
 import com.echothree.model.data.comment.server.entity.CommentUsageTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CommentUsageTypeDescriptionTransferCache
         extends BaseCommentDescriptionTransferCache<CommentUsageTypeDescription, CommentUsageTypeDescriptionTransfer> {
-    
+
+    CommentControl commentControl = Session.getModelController(CommentControl.class);
+
     /** Creates a new instance of CommentUsageTypeDescriptionTransferCache */
-    public CommentUsageTypeDescriptionTransferCache(UserVisit userVisit, CommentControl commentControl) {
-        super(userVisit, commentControl);
+    protected CommentUsageTypeDescriptionTransferCache() {
+        super();
     }
     
-    public CommentUsageTypeDescriptionTransfer getCommentUsageTypeDescriptionTransfer(CommentUsageTypeDescription commentUsageTypeDescription) {
+    public CommentUsageTypeDescriptionTransfer getCommentUsageTypeDescriptionTransfer(UserVisit userVisit, CommentUsageTypeDescription commentUsageTypeDescription) {
         var commentUsageTypeDescriptionTransfer = get(commentUsageTypeDescription);
         
         if(commentUsageTypeDescriptionTransfer == null) {
-            var commentUsageTypeTransferCache = commentControl.getCommentTransferCaches(userVisit).getCommentUsageTypeTransferCache();
-            var commentUsageTypeTransfer = commentUsageTypeTransferCache.getCommentUsageTypeTransfer(commentUsageTypeDescription.getCommentUsageType());
+            var commentUsageTypeTransfer = commentControl.getCommentUsageTypeTransfer(userVisit, commentUsageTypeDescription.getCommentUsageType());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, commentUsageTypeDescription.getLanguage());
             
             commentUsageTypeDescriptionTransfer = new CommentUsageTypeDescriptionTransfer(languageTransfer, commentUsageTypeTransfer, commentUsageTypeDescription.getDescription());
-            put(commentUsageTypeDescription, commentUsageTypeDescriptionTransfer);
+            put(userVisit, commentUsageTypeDescription, commentUsageTypeDescriptionTransfer);
         }
         
         return commentUsageTypeDescriptionTransfer;

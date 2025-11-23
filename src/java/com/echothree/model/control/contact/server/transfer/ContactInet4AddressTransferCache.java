@@ -17,26 +17,27 @@
 package com.echothree.model.control.contact.server.transfer;
 
 import com.echothree.model.control.contact.common.transfer.ContactInet4AddressTransfer;
-import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.data.contact.server.entity.ContactInet4Address;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ContactInet4AddressTransferCache
         extends BaseContactTransferCache<ContactInet4Address, ContactInet4AddressTransfer> {
     
     /** Creates a new instance of ContactInet4AddressTransferCache */
-    public ContactInet4AddressTransferCache(UserVisit userVisit, ContactControl contactControl) {
-        super(userVisit, contactControl);
+    public ContactInet4AddressTransferCache() {
+        super();
     }
     
-    public ContactInet4AddressTransfer getContactInet4AddressTransfer(ContactInet4Address contactInet4Address) {
+    public ContactInet4AddressTransfer getContactInet4AddressTransfer(UserVisit userVisit, ContactInet4Address contactInet4Address) {
         var contactInet4AddressTransfer = get(contactInet4Address);
         
         if(contactInet4AddressTransfer == null) {
             var inet4Address = formatInet4Address(contactInet4Address.getInet4Address());
             
             contactInet4AddressTransfer = new ContactInet4AddressTransfer(inet4Address);
-            put(contactInet4Address, contactInet4AddressTransfer);
+            put(userVisit, contactInet4Address, contactInet4AddressTransfer);
         }
         
         return contactInet4AddressTransfer;

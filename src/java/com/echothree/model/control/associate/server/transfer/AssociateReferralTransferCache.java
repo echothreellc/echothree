@@ -22,21 +22,24 @@ import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.data.associate.server.entity.AssociateReferral;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class AssociateReferralTransferCache
         extends BaseAssociateTransferCache<AssociateReferral, AssociateReferralTransfer> {
 
+    AssociateControl associateControl = Session.getModelController(AssociateControl.class);
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     
     /** Creates a new instance of AssociateReferralTransferCache */
-    public AssociateReferralTransferCache(UserVisit userVisit, AssociateControl associateControl) {
-        super(userVisit, associateControl);
+    protected AssociateReferralTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
     @Override
-    public AssociateReferralTransfer getTransfer(AssociateReferral associateReferral) {
+    public AssociateReferralTransfer getTransfer(UserVisit userVisit, AssociateReferral associateReferral) {
         var associateReferralTransfer = get(associateReferral);
         
         if(associateReferralTransfer == null) {
@@ -48,11 +51,11 @@ public class AssociateReferralTransferCache
             var targetEntityInstance = associateReferralDetail.getTargetEntityInstance();
             var targetEntityInstanceTransfer = targetEntityInstance == null ? null : entityInstanceControl.getEntityInstanceTransfer(userVisit, targetEntityInstance, false, false, false, false);
             var unformattedAssociateReferralTime = associateReferralDetail.getAssociateReferralTime();
-            var associateReferralTime = formatTypicalDateTime(unformattedAssociateReferralTime);
+            var associateReferralTime = formatTypicalDateTime(userVisit, unformattedAssociateReferralTime);
 
             associateReferralTransfer = new AssociateReferralTransfer(associateReferralName, associateTransfer, associatePartyContactMechanismTransfer,
                     targetEntityInstanceTransfer, unformattedAssociateReferralTime, associateReferralTime);
-            put(associateReferral, associateReferralTransfer);
+            put(userVisit, associateReferral, associateReferralTransfer);
         }
         
         return associateReferralTransfer;

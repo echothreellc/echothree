@@ -20,26 +20,31 @@ import com.echothree.model.control.forum.common.transfer.ForumTypeTransfer;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.data.forum.server.entity.ForumType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ForumTypeTransferCache
         extends BaseForumTransferCache<ForumType, ForumTypeTransfer> {
-    
+
+    ForumControl forumControl = Session.getModelController(ForumControl.class);
+
     /** Creates a new instance of ForumTypeTransferCache */
-    public ForumTypeTransferCache(UserVisit userVisit, ForumControl forumControl) {
-        super(userVisit, forumControl);
+    protected ForumTypeTransferCache() {
+        super();
     }
     
-    public ForumTypeTransfer getForumTypeTransfer(ForumType forumType) {
+    public ForumTypeTransfer getForumTypeTransfer(UserVisit userVisit, ForumType forumType) {
         var forumTypeTransfer = get(forumType);
         
         if(forumTypeTransfer == null) {
             var forumTypeName = forumType.getForumTypeName();
             var isDefault = forumType.getIsDefault();
             var sortOrder = forumType.getSortOrder();
-            var description = forumControl.getBestForumTypeDescription(forumType, getLanguage());
+            var description = forumControl.getBestForumTypeDescription(forumType, getLanguage(userVisit));
             
             forumTypeTransfer = new ForumTypeTransfer(forumTypeName, isDefault, sortOrder, description);
-            put(forumType, forumTypeTransfer);
+            put(userVisit, forumType, forumTypeTransfer);
         }
         
         return forumTypeTransfer;

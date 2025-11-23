@@ -25,22 +25,25 @@ import com.echothree.model.control.workrequirement.server.control.WorkRequiremen
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workrequirement.server.entity.WorkTime;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class WorkTimeTransferCache
         extends BaseWorkRequirementTransferCache<WorkTime, WorkTimeTransfer> {
     
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
-    
+    WorkRequirementControl workRequirementControl = Session.getModelController(WorkRequirementControl.class);
+
     /** Creates a new instance of WorkTimeTransferCache */
-    public WorkTimeTransferCache(UserVisit userVisit, WorkRequirementControl workRequirementControl) {
-        super(userVisit, workRequirementControl);
+    protected WorkTimeTransferCache() {
+        super();
 
         setIncludeEntityInstance(true);
     }
     
-    public WorkTimeTransfer getWorkTimeTransfer(WorkTime workTime) {
+    public WorkTimeTransfer getWorkTimeTransfer(UserVisit userVisit, WorkTime workTime) {
         var workTimeTransfer = get(workTime);
         
         if(workTimeTransfer == null) {
@@ -49,9 +52,9 @@ public class WorkTimeTransferCache
             var workTimeSequence = workTimeDetail.getWorkTimeSequence();
             var party = partyControl.getPartyTransfer(userVisit, workTimeDetail.getParty());
             var unformattedStartTime = workTimeDetail.getStartTime();
-            var startTime = formatTypicalDateTime(unformattedStartTime);
+            var startTime = formatTypicalDateTime(userVisit, unformattedStartTime);
             var unformattedEndTime = workTimeDetail.getEndTime();
-            var endTime = formatTypicalDateTime(unformattedEndTime);
+            var endTime = formatTypicalDateTime(userVisit, unformattedEndTime);
 
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(workTime.getPrimaryKey());
             var workTimeStatus = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
@@ -59,7 +62,7 @@ public class WorkTimeTransferCache
 
             workTimeTransfer = new WorkTimeTransfer(workRequirement, workTimeSequence, party, unformattedStartTime, startTime, unformattedEndTime, endTime,
                     workTimeStatus);
-            put(workTime, workTimeTransfer);
+            put(userVisit, workTime, workTimeTransfer);
         }
         
         return workTimeTransfer;

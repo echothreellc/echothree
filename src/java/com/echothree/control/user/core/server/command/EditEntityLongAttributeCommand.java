@@ -38,7 +38,9 @@ import com.echothree.util.server.persistence.PersistenceUtils;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EditEntityLongAttributeCommand
         extends BaseEditCommand<EntityLongAttributeSpec, EntityLongAttributeEdit> {
 
@@ -90,7 +92,6 @@ public class EditEntityLongAttributeCommand
 
                     if(!hasExecutionErrors()) {
                         if(entityInstance.getEntityType().equals(entityAttribute.getLastDetail().getEntityType())) {
-                            var coreControl = getCoreControl();
                             EntityLongAttribute entityLongAttribute = null;
                             var basePK = PersistenceUtils.getInstance().getBasePKFromEntityInstance(entityInstance);
 

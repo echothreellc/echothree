@@ -34,12 +34,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class OfferUseControl
         extends BaseOfferControl {
 
     /** Creates a new instance of OfferUseControl */
-    public OfferUseControl() {
+    protected OfferUseControl() {
         super();
     }
 
@@ -274,10 +276,9 @@ public class OfferUseControl
 
     public List<OfferUseTransfer> getOfferUseTransfers(UserVisit userVisit, Collection<OfferUse> offerUses) {
         List<OfferUseTransfer> offerUseTransfers = new ArrayList<>(offerUses.size());
-        var offerUseTransferCache = getOfferTransferCaches(userVisit).getOfferUseTransferCache();
 
         offerUses.forEach((offerUse) ->
-                offerUseTransfers.add(offerUseTransferCache.getOfferUseTransfer(offerUse))
+                offerUseTransfers.add(offerUseTransferCache.getOfferUseTransfer(userVisit, offerUse))
         );
 
         return offerUseTransfers;
@@ -288,7 +289,7 @@ public class OfferUseControl
     }
 
     public OfferUseTransfer getOfferUseTransfer(UserVisit userVisit, OfferUse offerUse) {
-        return getOfferTransferCaches(userVisit).getOfferUseTransferCache().getOfferUseTransfer(offerUse);
+        return offerUseTransferCache.getOfferUseTransfer(userVisit, offerUse);
     }
 
     public void updateOfferUseFromValue(OfferUseDetailValue offerUseDetailValue, BasePK updatedBy) {

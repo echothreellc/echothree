@@ -31,7 +31,9 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.persistence.PersistenceUtils;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class DeleteEntityEntityAttributeCommand
         extends BaseSimpleCommand<DeleteEntityEntityAttributeForm> {
 
@@ -59,7 +61,6 @@ public class DeleteEntityEntityAttributeCommand
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
         var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form);
 
         if(!hasExecutionErrors()) {

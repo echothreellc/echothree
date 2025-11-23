@@ -28,19 +28,24 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workeffort.server.entity.WorkEffort;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class WorkEffortTransferCache
         extends BaseWorkEffortTransferCache<WorkEffort, WorkEffortTransfer> {
     
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     UomControl uomControl = Session.getModelController(UomControl.class);
+    WorkEffortControl workEffortControl = Session.getModelController(WorkEffortControl.class);
     WorkRequirementControl workRequirementControl = Session.getModelController(WorkRequirementControl.class);
+
     UnitOfMeasureKind timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
+
     boolean includeWorkRequirements;
     
     /** Creates a new instance of WorkEffortTransferCache */
-    public WorkEffortTransferCache(UserVisit userVisit, WorkEffortControl workEffortControl) {
-        super(userVisit, workEffortControl);
+    protected WorkEffortTransferCache() {
+        super();
 
         var options = session.getOptions();
         if(options != null) {
@@ -50,7 +55,7 @@ public class WorkEffortTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public WorkEffortTransfer getWorkEffortTransfer(WorkEffort workEffort) {
+    public WorkEffortTransfer getWorkEffortTransfer(UserVisit userVisit, WorkEffort workEffort) {
         var workEffortTransfer = get(workEffort);
         
         if(workEffortTransfer == null) {
@@ -59,20 +64,20 @@ public class WorkEffortTransferCache
             var owningEntityInstance = entityInstanceControl.getEntityInstanceTransfer(userVisit, workEffortDetail.getOwningEntityInstance(), false, false, false, false);
             var workEffortScope = workEffortControl.getWorkEffortScopeTransfer(userVisit, workEffortDetail.getWorkEffortScope());
             var unformattedScheduledTime = workEffortDetail.getScheduledTime();
-            var scheduledTime = formatUnitOfMeasure(timeUnitOfMeasureKind, unformattedScheduledTime);
+            var scheduledTime = formatUnitOfMeasure(userVisit, timeUnitOfMeasureKind, unformattedScheduledTime);
             var unformattedScheduledStartTime = workEffortDetail.getScheduledStartTime();
-            var scheduledStartTime = formatTypicalDateTime(unformattedScheduledStartTime);
+            var scheduledStartTime = formatTypicalDateTime(userVisit, unformattedScheduledStartTime);
             var unformattedScheduledEndTime = workEffortDetail.getScheduledEndTime();
-            var scheduledEndTime = formatTypicalDateTime(unformattedScheduledEndTime);
+            var scheduledEndTime = formatTypicalDateTime(userVisit, unformattedScheduledEndTime);
             var unformattedEstimatedTimeAllowed = workEffortDetail.getEstimatedTimeAllowed();
-            var estimatedTimeAllowed = formatUnitOfMeasure(timeUnitOfMeasureKind, unformattedEstimatedTimeAllowed);
+            var estimatedTimeAllowed = formatUnitOfMeasure(userVisit, timeUnitOfMeasureKind, unformattedEstimatedTimeAllowed);
             var unformattedMaximumTimeAllowed = workEffortDetail.getMaximumTimeAllowed();
-            var maximumTimeAllowed = formatUnitOfMeasure(timeUnitOfMeasureKind, unformattedMaximumTimeAllowed);
+            var maximumTimeAllowed = formatUnitOfMeasure(userVisit, timeUnitOfMeasureKind, unformattedMaximumTimeAllowed);
 
             workEffortTransfer = new WorkEffortTransfer(workEffortName, owningEntityInstance, workEffortScope, unformattedScheduledTime, scheduledTime,
                     unformattedScheduledStartTime, scheduledStartTime, unformattedScheduledEndTime, scheduledEndTime, unformattedEstimatedTimeAllowed,
                     estimatedTimeAllowed, unformattedMaximumTimeAllowed, maximumTimeAllowed);
-            put(workEffort, workEffortTransfer);
+            put(userVisit, workEffort, workEffortTransfer);
 
             if(includeWorkRequirements) {
                 workEffortTransfer.setWorkRequirements(new ListWrapper<>(workRequirementControl.getWorkRequirementTransfersByWorkEffort(userVisit, workEffort)));

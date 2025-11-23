@@ -38,12 +38,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class LotControl
         extends BaseInventoryControl {
 
     /** Creates a new instance of LotControl */
-    public LotControl() {
+    protected LotControl() {
         super();
     }
 
@@ -165,15 +167,14 @@ public class LotControl
 
     public LotTransfer getLotTransfer(final UserVisit userVisit,
             final Lot lot) {
-        return getInventoryTransferCaches(userVisit).getLotTransferCache().getTransfer(lot);
+        return lotTransferCache.getTransfer(userVisit, lot);
     }
 
     public List<LotTransfer> getLotTransfers(final UserVisit userVisit, final Collection<Lot> lots) {
         var lotTransfers = new ArrayList<LotTransfer>(lots.size());
-        var lotTransferCache = getInventoryTransferCaches(userVisit).getLotTransferCache();
 
         lots.forEach((lot) ->
-                lotTransfers.add(lotTransferCache.getTransfer(lot))
+                lotTransfers.add(lotTransferCache.getTransfer(userVisit, lot))
         );
 
         return lotTransfers;

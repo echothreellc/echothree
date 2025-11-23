@@ -31,13 +31,13 @@ public class BaseEncryptionKeyTransferCache
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of BaseEncryptionKeyTransferCache */
-    protected BaseEncryptionKeyTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected BaseEncryptionKeyTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public BaseEncryptionKeyTransfer getBaseEncryptionKeyTransfer(BaseEncryptionKey baseEncryptionKey) {
+    public BaseEncryptionKeyTransfer getBaseEncryptionKeyTransfer(UserVisit userVisit, BaseEncryptionKey baseEncryptionKey) {
         var baseEncryptionKeyTransfer = get(baseEncryptionKey);
         
         if(baseEncryptionKeyTransfer == null) {
@@ -48,7 +48,7 @@ public class BaseEncryptionKeyTransferCache
                     BaseEncryptionKeyStatusConstants.Workflow_BASE_ENCRYPTION_KEY_STATUS, entityInstance);
             
             baseEncryptionKeyTransfer = new BaseEncryptionKeyTransfer(baseEncryptionKeyName, baseEncryptionKeyStatus);
-            put(baseEncryptionKey, baseEncryptionKeyTransfer);
+            put(userVisit, baseEncryptionKey, baseEncryptionKeyTransfer);
         }
         
         return baseEncryptionKeyTransfer;

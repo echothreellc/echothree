@@ -18,7 +18,6 @@ package com.echothree.control.user.shipment.server.command;
 
 import com.echothree.control.user.shipment.common.edit.ShipmentEditFactory;
 import com.echothree.control.user.shipment.common.edit.ShipmentTypeEdit;
-import com.echothree.control.user.shipment.common.form.EditShipmentTypeForm;
 import com.echothree.control.user.shipment.common.result.EditShipmentTypeResult;
 import com.echothree.control.user.shipment.common.result.ShipmentResultFactory;
 import com.echothree.control.user.shipment.common.spec.ShipmentTypeSpec;
@@ -26,11 +25,10 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
-import com.echothree.model.control.shipment.server.ShipmentControl;
+import com.echothree.model.control.shipment.server.control.ShipmentControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.shipment.server.entity.ShipmentType;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -45,7 +43,9 @@ import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EditShipmentTypeCommand
         extends BaseAbstractEditCommand<ShipmentTypeSpec, ShipmentTypeEdit, EditShipmentTypeResult, ShipmentType, ShipmentType> {
     

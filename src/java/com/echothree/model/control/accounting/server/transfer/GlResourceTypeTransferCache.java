@@ -21,21 +21,23 @@ import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.data.accounting.server.entity.GlResourceType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class GlResourceTypeTransferCache
         extends BaseAccountingTransferCache<GlResourceType, GlResourceTypeTransfer> {
 
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
 
     /** Creates a new instance of GlResourceTypeTransferCache */
-    public GlResourceTypeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected GlResourceTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
     @Override
-    public GlResourceTypeTransfer getTransfer(GlResourceType glResourceType) {
+    public GlResourceTypeTransfer getTransfer(UserVisit userVisit, GlResourceType glResourceType) {
         var glResourceTypeTransfer = get(glResourceType);
         
         if(glResourceTypeTransfer == null) {
@@ -43,10 +45,10 @@ public class GlResourceTypeTransferCache
             var glResourceTypeName = glResourceTypeDetail.getGlResourceTypeName();
             var isDefault = glResourceTypeDetail.getIsDefault();
             var sortOrder = glResourceTypeDetail.getSortOrder();
-            var description = accountingControl.getBestGlResourceTypeDescription(glResourceType, getLanguage());
+            var description = accountingControl.getBestGlResourceTypeDescription(glResourceType, getLanguage(userVisit));
             
             glResourceTypeTransfer = new GlResourceTypeTransfer(glResourceTypeName, isDefault, sortOrder, description);
-            put(glResourceType, glResourceTypeTransfer);
+            put(userVisit, glResourceType, glResourceTypeTransfer);
         }
         
         return glResourceTypeTransfer;

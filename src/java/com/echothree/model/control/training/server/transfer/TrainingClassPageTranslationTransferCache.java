@@ -22,18 +22,21 @@ import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.data.training.server.entity.TrainingClassPageTranslation;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class TrainingClassPageTranslationTransferCache
         extends BaseTrainingDescriptionTransferCache<TrainingClassPageTranslation, TrainingClassPageTranslationTransfer> {
 
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
-    
+    TrainingControl trainingControl = Session.getModelController(TrainingControl.class);
+
     /** Creates a new instance of TrainingClassPageTranslationTransferCache */
-    public TrainingClassPageTranslationTransferCache(UserVisit userVisit, TrainingControl trainingControl) {
-        super(userVisit, trainingControl);
+    protected TrainingClassPageTranslationTransferCache() {
+        super();
     }
     
-    public TrainingClassPageTranslationTransfer getTrainingClassPageTranslationTransfer(TrainingClassPageTranslation trainingClassPageTranslation) {
+    public TrainingClassPageTranslationTransfer getTrainingClassPageTranslationTransfer(UserVisit userVisit, TrainingClassPageTranslation trainingClassPageTranslation) {
         var trainingClassPageTranslationTransfer = get(trainingClassPageTranslation);
         
         if(trainingClassPageTranslationTransfer == null) {
@@ -45,7 +48,7 @@ public class TrainingClassPageTranslationTransferCache
             
             trainingClassPageTranslationTransfer = new TrainingClassPageTranslationTransfer(trainingClassPageTransfer, languageTransfer, description,
                     pageMimeTypeTransfer, page);
-            put(trainingClassPageTranslation, trainingClassPageTranslationTransfer);
+            put(userVisit, trainingClassPageTranslation, trainingClassPageTranslationTransfer);
         }
         
         return trainingClassPageTranslationTransfer;

@@ -55,7 +55,26 @@ import com.echothree.model.control.contact.common.workflow.EmailAddressVerificat
 import com.echothree.model.control.contact.common.workflow.PostalAddressStatusConstants;
 import com.echothree.model.control.contact.common.workflow.TelephoneStatusConstants;
 import com.echothree.model.control.contact.common.workflow.WebAddressStatusConstants;
-import com.echothree.model.control.contact.server.transfer.ContactTransferCaches;
+import com.echothree.model.control.contact.server.transfer.ContactEmailAddressTransferCache;
+import com.echothree.model.control.contact.server.transfer.ContactInet4AddressTransferCache;
+import com.echothree.model.control.contact.server.transfer.ContactMechanismAliasTransferCache;
+import com.echothree.model.control.contact.server.transfer.ContactMechanismAliasTypeDescriptionTransferCache;
+import com.echothree.model.control.contact.server.transfer.ContactMechanismAliasTypeTransferCache;
+import com.echothree.model.control.contact.server.transfer.ContactMechanismPurposeTransferCache;
+import com.echothree.model.control.contact.server.transfer.ContactMechanismTransferCache;
+import com.echothree.model.control.contact.server.transfer.ContactMechanismTypeTransferCache;
+import com.echothree.model.control.contact.server.transfer.ContactPostalAddressTransferCache;
+import com.echothree.model.control.contact.server.transfer.ContactTelephoneTransferCache;
+import com.echothree.model.control.contact.server.transfer.ContactWebAddressTransferCache;
+import com.echothree.model.control.contact.server.transfer.PartyContactMechanismAliasTransferCache;
+import com.echothree.model.control.contact.server.transfer.PartyContactMechanismPurposeTransferCache;
+import com.echothree.model.control.contact.server.transfer.PartyContactMechanismRelationshipTransferCache;
+import com.echothree.model.control.contact.server.transfer.PartyContactMechanismTransferCache;
+import com.echothree.model.control.contact.server.transfer.PostalAddressElementTypeTransferCache;
+import com.echothree.model.control.contact.server.transfer.PostalAddressFormatDescriptionTransferCache;
+import com.echothree.model.control.contact.server.transfer.PostalAddressFormatTransferCache;
+import com.echothree.model.control.contact.server.transfer.PostalAddressLineElementTransferCache;
+import com.echothree.model.control.contact.server.transfer.PostalAddressLineTransferCache;
 import com.echothree.model.control.contactlist.server.control.ContactListControl;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.invoice.server.control.InvoiceControl;
@@ -63,7 +82,7 @@ import com.echothree.model.control.letter.server.control.LetterControl;
 import com.echothree.model.control.order.server.control.OrderShipmentGroupControl;
 import com.echothree.model.control.payment.server.control.BillingControl;
 import com.echothree.model.control.payment.server.control.PartyPaymentMethodControl;
-import com.echothree.model.control.shipment.server.ShipmentControl;
+import com.echothree.model.control.shipment.server.control.ShipmentControl;
 import com.echothree.model.data.contact.common.pk.ContactMechanismPK;
 import com.echothree.model.data.contact.common.pk.ContactMechanismPurposePK;
 import com.echothree.model.data.contact.server.entity.ContactEmailAddress;
@@ -140,10 +159,7 @@ import com.echothree.model.data.contact.server.value.PostalAddressFormatDetailVa
 import com.echothree.model.data.contact.server.value.PostalAddressLineDetailValue;
 import com.echothree.model.data.contact.server.value.PostalAddressLineElementValue;
 import com.echothree.model.data.contactlist.server.entity.ContactList;
-import com.echothree.model.data.core.common.pk.AppearancePK;
-import com.echothree.model.data.core.server.entity.Appearance;
 import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.model.data.core.server.factory.AppearanceFactory;
 import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
@@ -166,29 +182,82 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
+@RequestScoped
 public class ContactControl
         extends BaseModelControl {
     
     /** Creates a new instance of ContactControl */
-    public ContactControl() {
+    protected ContactControl() {
         super();
     }
     
     // --------------------------------------------------------------------------------
     //   Contact Transfer Caches
     // --------------------------------------------------------------------------------
-    
-    private ContactTransferCaches contactTransferCaches;
-    
-    public ContactTransferCaches getContactTransferCaches(UserVisit userVisit) {
-        if(contactTransferCaches == null) {
-            contactTransferCaches = new ContactTransferCaches(userVisit, this);
-        }
-        
-        return contactTransferCaches;
-    }
-    
+
+    @Inject
+    PostalAddressFormatTransferCache postalAddressFormatTransferCache;
+
+    @Inject
+    PostalAddressElementTypeTransferCache postalAddressElementTypeTransferCache;
+
+    @Inject
+    ContactMechanismAliasTypeTransferCache contactMechanismAliasTypeTransferCache;
+
+    @Inject
+    ContactMechanismAliasTypeDescriptionTransferCache contactMechanismAliasTypeDescriptionTransferCache;
+
+    @Inject
+    ContactMechanismPurposeTransferCache contactMechanismPurposeTransferCache;
+
+    @Inject
+    ContactMechanismTypeTransferCache contactMechanismTypeTransferCache;
+
+    @Inject
+    ContactMechanismTransferCache contactMechanismTransferCache;
+
+    @Inject
+    ContactEmailAddressTransferCache contactEmailAddressTransferCache;
+
+    @Inject
+    ContactPostalAddressTransferCache contactPostalAddressTransferCache;
+
+    @Inject
+    ContactTelephoneTransferCache contactTelephoneTransferCache;
+
+    @Inject
+    PostalAddressFormatDescriptionTransferCache postalAddressFormatDescriptionTransferCache;
+
+    @Inject
+    PostalAddressLineTransferCache postalAddressLineTransferCache;
+
+    @Inject
+    PostalAddressLineElementTransferCache postalAddressLineElementTransferCache;
+
+    @Inject
+    ContactWebAddressTransferCache contactWebAddressTransferCache;
+
+    @Inject
+    ContactMechanismAliasTransferCache contactMechanismAliasTransferCache;
+
+    @Inject
+    PartyContactMechanismAliasTransferCache partyContactMechanismAliasTransferCache;
+
+    @Inject
+    PartyContactMechanismPurposeTransferCache partyContactMechanismPurposeTransferCache;
+
+    @Inject
+    PartyContactMechanismRelationshipTransferCache partyContactMechanismRelationshipTransferCache;
+
+    @Inject
+    PartyContactMechanismTransferCache partyContactMechanismTransferCache;
+
+    @Inject
+    ContactInet4AddressTransferCache contactInet4AddressTransferCache;
+
     // --------------------------------------------------------------------------------
     //   Contact Mechanism Types
     // --------------------------------------------------------------------------------
@@ -256,16 +325,15 @@ public class ContactControl
     }
     
     public ContactMechanismTypeTransfer getContactMechanismTypeTransfer(UserVisit userVisit, ContactMechanismType contactMechanismType) {
-        return getContactTransferCaches(userVisit).getContactMechanismTypeTransferCache().getContactMechanismTypeTransfer(contactMechanismType);
+        return contactMechanismTypeTransferCache.getContactMechanismTypeTransfer(userVisit, contactMechanismType);
     }
     
     public List<ContactMechanismTypeTransfer> getContactMechanismTypeTransfers(UserVisit userVisit) {
         var entities = getContactMechanismTypes();
         List<ContactMechanismTypeTransfer> transfers = new ArrayList<>(entities.size());
-        var cache = getContactTransferCaches(userVisit).getContactMechanismTypeTransferCache();
-        
+
         entities.forEach((entity) ->
-                transfers.add(cache.getContactMechanismTypeTransfer(entity))
+                transfers.add(contactMechanismTypeTransferCache.getContactMechanismTypeTransfer(userVisit, entity))
         );
         
         return transfers;
@@ -306,7 +374,7 @@ public class ContactControl
         var contactMechanismTypeDescription = getContactMechanismTypeDescription(contactMechanismType, language);
         
         if(contactMechanismTypeDescription == null && !language.getIsDefault()) {
-            contactMechanismTypeDescription = getContactMechanismTypeDescription(contactMechanismType, getPartyControl().getDefaultLanguage());
+            contactMechanismTypeDescription = getContactMechanismTypeDescription(contactMechanismType, partyControl.getDefaultLanguage());
         }
         
         if(contactMechanismTypeDescription == null) {
@@ -497,15 +565,14 @@ public class ContactControl
     }
 
     public ContactMechanismAliasTypeTransfer getContactMechanismAliasTypeTransfer(UserVisit userVisit, ContactMechanismAliasType contactMechanismAliasType) {
-        return getContactTransferCaches(userVisit).getContactMechanismAliasTypeTransferCache().getContactMechanismAliasTypeTransfer(contactMechanismAliasType);
+        return contactMechanismAliasTypeTransferCache.getContactMechanismAliasTypeTransfer(userVisit, contactMechanismAliasType);
     }
 
     public List<ContactMechanismAliasTypeTransfer> getContactMechanismAliasTypeTransfers(UserVisit userVisit, Collection<ContactMechanismAliasType> contactMechanismAliasTypes) {
         List<ContactMechanismAliasTypeTransfer> contactMechanismAliasTypeTransfers = new ArrayList<>(contactMechanismAliasTypes.size());
-        var contactMechanismAliasTypeTransferCache = getContactTransferCaches(userVisit).getContactMechanismAliasTypeTransferCache();
 
         contactMechanismAliasTypes.forEach((contactMechanismAliasType) ->
-                contactMechanismAliasTypeTransfers.add(contactMechanismAliasTypeTransferCache.getContactMechanismAliasTypeTransfer(contactMechanismAliasType))
+                contactMechanismAliasTypeTransfers.add(contactMechanismAliasTypeTransferCache.getContactMechanismAliasTypeTransfer(userVisit, contactMechanismAliasType))
         );
 
         return contactMechanismAliasTypeTransfers;
@@ -720,7 +787,7 @@ public class ContactControl
         var contactMechanismAliasTypeDescription = getContactMechanismAliasTypeDescription(contactMechanismAliasType, language);
 
         if(contactMechanismAliasTypeDescription == null && !language.getIsDefault()) {
-            contactMechanismAliasTypeDescription = getContactMechanismAliasTypeDescription(contactMechanismAliasType, getPartyControl().getDefaultLanguage());
+            contactMechanismAliasTypeDescription = getContactMechanismAliasTypeDescription(contactMechanismAliasType, partyControl.getDefaultLanguage());
         }
 
         if(contactMechanismAliasTypeDescription == null) {
@@ -733,16 +800,15 @@ public class ContactControl
     }
 
     public ContactMechanismAliasTypeDescriptionTransfer getContactMechanismAliasTypeDescriptionTransfer(UserVisit userVisit, ContactMechanismAliasTypeDescription contactMechanismAliasTypeDescription) {
-        return getContactTransferCaches(userVisit).getContactMechanismAliasTypeDescriptionTransferCache().getContactMechanismAliasTypeDescriptionTransfer(contactMechanismAliasTypeDescription);
+        return contactMechanismAliasTypeDescriptionTransferCache.getContactMechanismAliasTypeDescriptionTransfer(userVisit, contactMechanismAliasTypeDescription);
     }
 
     public List<ContactMechanismAliasTypeDescriptionTransfer> getContactMechanismAliasTypeDescriptionTransfersByContactMechanismAliasType(UserVisit userVisit, ContactMechanismAliasType contactMechanismAliasType) {
         var contactMechanismAliasTypeDescriptions = getContactMechanismAliasTypeDescriptionsByContactMechanismAliasType(contactMechanismAliasType);
         List<ContactMechanismAliasTypeDescriptionTransfer> contactMechanismAliasTypeDescriptionTransfers = new ArrayList<>(contactMechanismAliasTypeDescriptions.size());
-        var contactMechanismAliasTypeDescriptionTransferCache = getContactTransferCaches(userVisit).getContactMechanismAliasTypeDescriptionTransferCache();
 
         contactMechanismAliasTypeDescriptions.forEach((contactMechanismAliasTypeDescription) ->
-                contactMechanismAliasTypeDescriptionTransfers.add(contactMechanismAliasTypeDescriptionTransferCache.getContactMechanismAliasTypeDescriptionTransfer(contactMechanismAliasTypeDescription))
+                contactMechanismAliasTypeDescriptionTransfers.add(contactMechanismAliasTypeDescriptionTransferCache.getContactMechanismAliasTypeDescriptionTransfer(userVisit, contactMechanismAliasTypeDescription))
         );
 
         return contactMechanismAliasTypeDescriptionTransfers;
@@ -963,15 +1029,14 @@ public class ContactControl
     }
     
     public ContactMechanismPurposeTransfer getContactMechanismPurposeTransfer(UserVisit userVisit, ContactMechanismPurpose contactMechanismPurpose) {
-        return getContactTransferCaches(userVisit).getContactMechanismPurposeTransferCache().getContactMechanismPurposeTransfer(contactMechanismPurpose);
+        return contactMechanismPurposeTransferCache.getContactMechanismPurposeTransfer(userVisit, contactMechanismPurpose);
     }
     
     public List<ContactMechanismPurposeTransfer> getContactMechanismPurposeTransfers(UserVisit userVisit, Collection<ContactMechanismPurpose> entities) {
         List<ContactMechanismPurposeTransfer> transfers = new ArrayList<>(entities.size());
-        var cache = getContactTransferCaches(userVisit).getContactMechanismPurposeTransferCache();
-        
+
         entities.forEach((entity) ->
-                transfers.add(cache.getContactMechanismPurposeTransfer(entity))
+                transfers.add(contactMechanismPurposeTransferCache.getContactMechanismPurposeTransfer(userVisit, entity))
         );
         
         return transfers;
@@ -1020,7 +1085,7 @@ public class ContactControl
         var contactMechanismPurposeDescription = getContactMechanismPurposeDescription(contactMechanismPurpose, language);
         
         if(contactMechanismPurposeDescription == null && !language.getIsDefault()) {
-            contactMechanismPurposeDescription = getContactMechanismPurposeDescription(contactMechanismPurpose, getPartyControl().getDefaultLanguage());
+            contactMechanismPurposeDescription = getContactMechanismPurposeDescription(contactMechanismPurpose, partyControl.getDefaultLanguage());
         }
         
         if(contactMechanismPurposeDescription == null) {
@@ -1117,16 +1182,15 @@ public class ContactControl
     }
     
     public ContactMechanismTransfer getContactMechanismTransfer(UserVisit userVisit, ContactMechanism contactMechanism) {
-        return getContactTransferCaches(userVisit).getContactMechanismTransferCache().getContactMechanismTransfer(contactMechanism);
+        return contactMechanismTransferCache.getContactMechanismTransfer(userVisit, contactMechanism);
     }
     
     public List<ContactMechanismTransfer> getContactMechanismTransfersByParty(UserVisit userVisit, Party party) {
         var partyContactMechanisms = getPartyContactMechanismsByParty(party);
         List<ContactMechanismTransfer> contactMechanismTransfers = new ArrayList<>(partyContactMechanisms.size());
-        var contactMechanismTransferCache = getContactTransferCaches(userVisit).getContactMechanismTransferCache();
         
         partyContactMechanisms.forEach((partyContactMechanism) -> {
-            contactMechanismTransfers.add(contactMechanismTransferCache.getContactMechanismTransfer(partyContactMechanism.getLastDetail().getContactMechanism()));
+            contactMechanismTransfers.add(contactMechanismTransferCache.getContactMechanismTransfer(userVisit, partyContactMechanism.getLastDetail().getContactMechanism()));
         });
         
         return contactMechanismTransfers;
@@ -1134,7 +1198,6 @@ public class ContactControl
     
     public EmailAddressStatusChoicesBean getEmailAddressStatusChoices(String defaultEmailAddressStatusChoice, Language language, boolean allowNullChoice, ContactMechanism contactMechanism,
             PartyPK partyPK) {
-        var workflowControl = getWorkflowControl();
         var emailAddressStatusChoicesBean = new EmailAddressStatusChoicesBean();
         var entityInstance = getEntityInstanceByBaseEntity(contactMechanism);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(EmailAddressStatusConstants.Workflow_EMAIL_ADDRESS_STATUS,
@@ -1146,7 +1209,6 @@ public class ContactControl
     }
     
     public void setEmailAddressStatus(ExecutionErrorAccumulator eea,  ContactMechanism contactMechanism, String emailAddressStatusChoice, PartyPK modifiedBy) {
-        var workflowControl = getWorkflowControl();
         var entityInstance = getEntityInstanceByBaseEntity(contactMechanism);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(EmailAddressStatusConstants.Workflow_EMAIL_ADDRESS_STATUS,
                 entityInstance);
@@ -1162,7 +1224,6 @@ public class ContactControl
     
     public EmailAddressVerificationChoicesBean getEmailAddressVerificationChoices(String defaultEmailAddressVerificationChoice, Language language, boolean allowNullChoice, ContactMechanism contactMechanism,
             PartyPK partyPK) {
-        var workflowControl = getWorkflowControl();
         var emailAddressVerificationChoicesBean = new EmailAddressVerificationChoicesBean();
         var entityInstance = getEntityInstanceByBaseEntity(contactMechanism);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(EmailAddressVerificationConstants.Workflow_EMAIL_ADDRESS_VERIFICATION,
@@ -1174,7 +1235,6 @@ public class ContactControl
     }
     
     public void setEmailAddressVerification(ExecutionErrorAccumulator eea,  ContactMechanism contactMechanism, String emailAddressVerificationChoice, PartyPK modifiedBy) {
-        var workflowControl = getWorkflowControl();
         var entityInstance = getEntityInstanceByBaseEntity(contactMechanism);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(EmailAddressVerificationConstants.Workflow_EMAIL_ADDRESS_VERIFICATION,
                 entityInstance);
@@ -1190,7 +1250,6 @@ public class ContactControl
     
     public PostalAddressStatusChoicesBean getPostalAddressStatusChoices(String defaultPostalAddressStatusChoice, Language language, boolean allowNullChoice, ContactMechanism contactMechanism,
             PartyPK partyPK) {
-        var workflowControl = getWorkflowControl();
         var postalAddressStatusChoicesBean = new PostalAddressStatusChoicesBean();
         var entityInstance = getEntityInstanceByBaseEntity(contactMechanism);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(PostalAddressStatusConstants.Workflow_POSTAL_ADDRESS_STATUS,
@@ -1202,7 +1261,6 @@ public class ContactControl
     }
     
     public void setPostalAddressStatus(ExecutionErrorAccumulator eea,  ContactMechanism contactMechanism, String postalAddressStatusChoice, PartyPK modifiedBy) {
-        var workflowControl = getWorkflowControl();
         var entityInstance = getEntityInstanceByBaseEntity(contactMechanism);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(PostalAddressStatusConstants.Workflow_POSTAL_ADDRESS_STATUS,
                 entityInstance);
@@ -1218,7 +1276,6 @@ public class ContactControl
     
     public TelephoneStatusChoicesBean getTelephoneStatusChoices(String defaultTelephoneStatusChoice, Language language, boolean allowNullChoice, ContactMechanism contactMechanism,
             PartyPK partyPK) {
-        var workflowControl = getWorkflowControl();
         var telephoneStatusChoicesBean = new TelephoneStatusChoicesBean();
         var entityInstance = getEntityInstanceByBaseEntity(contactMechanism);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(TelephoneStatusConstants.Workflow_TELEPHONE_STATUS,
@@ -1230,7 +1287,6 @@ public class ContactControl
     }
     
     public void setTelephoneStatus(ExecutionErrorAccumulator eea,  ContactMechanism contactMechanism, String telephoneStatusChoice, PartyPK modifiedBy) {
-        var workflowControl = getWorkflowControl();
         var entityInstance = getEntityInstanceByBaseEntity(contactMechanism);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(TelephoneStatusConstants.Workflow_TELEPHONE_STATUS,
                 entityInstance);
@@ -1246,7 +1302,6 @@ public class ContactControl
     
     public WebAddressStatusChoicesBean getWebAddressStatusChoices(String defaultWebAddressStatusChoice, Language language, boolean allowNullChoice, ContactMechanism contactMechanism,
             PartyPK partyPK) {
-        var workflowControl = getWorkflowControl();
         var webAddressStatusChoicesBean = new WebAddressStatusChoicesBean();
         var entityInstance = getEntityInstanceByBaseEntity(contactMechanism);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(WebAddressStatusConstants.Workflow_WEB_ADDRESS_STATUS,
@@ -1258,7 +1313,6 @@ public class ContactControl
     }
     
     public void setWebAddressStatus(ExecutionErrorAccumulator eea,  ContactMechanism contactMechanism, String webAddressStatusChoice, PartyPK modifiedBy) {
-        var workflowControl = getWorkflowControl();
         var entityInstance = getEntityInstanceByBaseEntity(contactMechanism);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(WebAddressStatusConstants.Workflow_WEB_ADDRESS_STATUS,
                 entityInstance);
@@ -1462,16 +1516,15 @@ public class ContactControl
     }
     
     public ContactMechanismAliasTransfer getContactMechanismAliasTransfer(UserVisit userVisit, ContactMechanismAlias contactMechanismAlias) {
-        return getContactTransferCaches(userVisit).getContactMechanismAliasTransferCache().getContactMechanismAliasTransfer(contactMechanismAlias);
+        return contactMechanismAliasTransferCache.getContactMechanismAliasTransfer(userVisit, contactMechanismAlias);
     }
     
     public List<ContactMechanismAliasTransfer> getContactMechanismAliasTransfersByContactMechanism(UserVisit userVisit, ContactMechanism contactMechanism) {
         var entities = getContactMechanismAliasesByContactMechanism(contactMechanism);
         List<ContactMechanismAliasTransfer> transfers = new ArrayList<>(entities.size());
-        var cache = getContactTransferCaches(userVisit).getContactMechanismAliasTransferCache();
-        
+
         entities.forEach((entity) ->
-                transfers.add(cache.getContactMechanismAliasTransfer(entity))
+                transfers.add(contactMechanismAliasTransferCache.getContactMechanismAliasTransfer(userVisit, entity))
         );
         
         return transfers;
@@ -1553,7 +1606,7 @@ public class ContactControl
     }
     
     public ContactEmailAddressTransfer getContactEmailAddressTransfer(UserVisit userVisit, ContactEmailAddress contactEmailAddress) {
-        return getContactTransferCaches(userVisit).getContactEmailAddressTransferCache().getContactEmailAddressTransfer(contactEmailAddress);
+        return contactEmailAddressTransferCache.getContactEmailAddressTransfer(userVisit, contactEmailAddress);
     }
     
     public void updateContactEmailAddressFromValue(ContactEmailAddressValue contactEmailAddressValue, BasePK updatedBy) {
@@ -1639,7 +1692,7 @@ public class ContactControl
     }
     
     public ContactInet4AddressTransfer getContactInet4AddressTransfer(UserVisit userVisit, ContactInet4Address contactInet4Address) {
-        return getContactTransferCaches(userVisit).getContactInet4AddressTransferCache().getContactInet4AddressTransfer(contactInet4Address);
+        return contactInet4AddressTransferCache.getContactInet4AddressTransfer(userVisit, contactInet4Address);
     }
     
     public void updateContactInet4AddressFromValue(ContactInet4AddressValue contactInet4AddressValue, BasePK updatedBy) {
@@ -1871,7 +1924,7 @@ public class ContactControl
     }
     
     public ContactPostalAddressTransfer getContactPostalAddressTransfer(UserVisit userVisit, ContactPostalAddress contactPostalAddress) {
-        return getContactTransferCaches(userVisit).getContactPostalAddressTransferCache().getContactPostalAddressTransfer(contactPostalAddress);
+        return contactPostalAddressTransferCache.getContactPostalAddressTransfer(userVisit, contactPostalAddress);
     }
     
     public void updateContactPostalAddressFromValue(ContactPostalAddressValue contactPostalAddressValue, BasePK updatedBy) {
@@ -2129,7 +2182,7 @@ public class ContactControl
     }
     
     public ContactTelephoneTransfer getContactTelephoneTransfer(UserVisit userVisit, ContactTelephone contactTelephone) {
-        return getContactTransferCaches(userVisit).getContactTelephoneTransferCache().getContactTelephoneTransfer(contactTelephone);
+        return contactTelephoneTransferCache.getContactTelephoneTransfer(userVisit, contactTelephone);
     }
     
     public void updateContactTelephoneFromValue(ContactTelephoneValue contactTelephoneValue, BasePK updatedBy) {
@@ -2218,7 +2271,7 @@ public class ContactControl
     }
     
     public ContactWebAddressTransfer getContactWebAddressTransfer(UserVisit userVisit, ContactWebAddress contactWebAddress) {
-        return getContactTransferCaches(userVisit).getContactWebAddressTransferCache().getContactWebAddressTransfer(contactWebAddress);
+        return contactWebAddressTransferCache.getContactWebAddressTransfer(userVisit, contactWebAddress);
     }
     
     public void updateContactWebAddressFromValue(ContactWebAddressValue contactWebAddressValue, BasePK updatedBy) {
@@ -2584,16 +2637,15 @@ public class ContactControl
     }
     
     public PartyContactMechanismTransfer getPartyContactMechanismTransfer(UserVisit userVisit, PartyContactMechanism partyContactMechanism) {
-        return getContactTransferCaches(userVisit).getPartyContactMechanismTransferCache().getPartyContactMechanismTransfer(partyContactMechanism);
+        return partyContactMechanismTransferCache.getPartyContactMechanismTransfer(userVisit, partyContactMechanism);
     }
     
     public List<PartyContactMechanismTransfer> getPartyContactMechanismTransfersByParty(UserVisit userVisit, Party party) {
         var entities = getPartyContactMechanismsByParty(party);
         List<PartyContactMechanismTransfer> transfers = new ArrayList<>(entities.size());
-        var cache = getContactTransferCaches(userVisit).getPartyContactMechanismTransferCache();
-        
+
         entities.forEach((entity) ->
-                transfers.add(cache.getPartyContactMechanismTransfer(entity))
+                transfers.add(partyContactMechanismTransferCache.getPartyContactMechanismTransfer(userVisit, entity))
         );
         
         return transfers;
@@ -2931,7 +2983,7 @@ public class ContactControl
     }
     
     public PartyContactMechanismAliasTransfer getPartyContactMechanismAliasTransfer(UserVisit userVisit, PartyContactMechanismAlias partyContactMechanismAlias) {
-        return getContactTransferCaches(userVisit).getPartyContactMechanismAliasTransferCache().getPartyContactMechanismAliasTransfer(partyContactMechanismAlias);
+        return partyContactMechanismAliasTransferCache.getPartyContactMechanismAliasTransfer(userVisit, partyContactMechanismAlias);
     }
     
     public void deletePartyContactMechanismAlias(PartyContactMechanismAlias partyContactMechanismAlias, BasePK deletedBy) {
@@ -3193,17 +3245,16 @@ public class ContactControl
     }
     
     public PartyContactMechanismPurposeTransfer getPartyContactMechanismPurposeTransfer(UserVisit userVisit, PartyContactMechanismPurpose partyContactMechanismPurpose) {
-        return getContactTransferCaches(userVisit).getPartyContactMechanismPurposeTransferCache().getPartyContactMechanismPurposeTransfer(partyContactMechanismPurpose);
+        return partyContactMechanismPurposeTransferCache.getPartyContactMechanismPurposeTransfer(userVisit, partyContactMechanismPurpose);
     }
     
     public List<PartyContactMechanismPurposeTransfer> getPartyContactMechanismPurposeTransfersByPartyContactMechanism(UserVisit userVisit,
             PartyContactMechanism partyContactMechanism) {
         var entities = getPartyContactMechanismPurposesByPartyContactMechanism(partyContactMechanism);
         List<PartyContactMechanismPurposeTransfer> transfers = new ArrayList<>(entities.size());
-        var cache = getContactTransferCaches(userVisit).getPartyContactMechanismPurposeTransferCache();
-        
+
         entities.forEach((entity) ->
-                transfers.add(cache.getPartyContactMechanismPurposeTransfer(entity))
+                transfers.add(partyContactMechanismPurposeTransferCache.getPartyContactMechanismPurposeTransfer(userVisit, entity))
         );
         
         return transfers;
@@ -3432,15 +3483,14 @@ public class ContactControl
     }
 
     public PartyContactMechanismRelationshipTransfer getPartyContactMechanismRelationshipTransfer(UserVisit userVisit, PartyContactMechanismRelationship partyContactMechanismRelationship) {
-        return getContactTransferCaches(userVisit).getPartyContactMechanismRelationshipTransferCache().getPartyContactMechanismRelationshipTransfer(partyContactMechanismRelationship);
+        return partyContactMechanismRelationshipTransferCache.getPartyContactMechanismRelationshipTransfer(userVisit, partyContactMechanismRelationship);
     }
 
     public List<PartyContactMechanismRelationshipTransfer> getPartyContactMechanismRelationshipTransfers(UserVisit userVisit, Collection<PartyContactMechanismRelationship> partyContactMechanismRelationships) {
         List<PartyContactMechanismRelationshipTransfer> partyContactMechanismRelationshipTransfers = new ArrayList<>(partyContactMechanismRelationships.size());
-        var partyContactMechanismRelationshipTransferCache = getContactTransferCaches(userVisit).getPartyContactMechanismRelationshipTransferCache();
         
         partyContactMechanismRelationships.forEach((partyContactMechanismRelationship) ->
-                partyContactMechanismRelationshipTransfers.add(partyContactMechanismRelationshipTransferCache.getPartyContactMechanismRelationshipTransfer(partyContactMechanismRelationship))
+                partyContactMechanismRelationshipTransfers.add(partyContactMechanismRelationshipTransferCache.getPartyContactMechanismRelationshipTransfer(userVisit, partyContactMechanismRelationship))
         );
         
         return partyContactMechanismRelationshipTransfers;
@@ -3547,7 +3597,7 @@ public class ContactControl
     }
     
     public PostalAddressElementTypeTransfer getPostalAddressElementTypeTransfer(UserVisit userVisit, PostalAddressElementType postalAddressElementType) {
-        return getContactTransferCaches(userVisit).getPostalAddressElementTypeTransferCache().getPostalAddressElementTypeTransfer(postalAddressElementType);
+        return postalAddressElementTypeTransferCache.getPostalAddressElementTypeTransfer(userVisit, postalAddressElementType);
     }
     
     // --------------------------------------------------------------------------------
@@ -3585,7 +3635,7 @@ public class ContactControl
         var postalAddressElementTypeDescription = getPostalAddressElementTypeDescription(postalAddressElementType, language);
         
         if(postalAddressElementTypeDescription == null && !language.getIsDefault()) {
-            postalAddressElementTypeDescription = getPostalAddressElementTypeDescription(postalAddressElementType, getPartyControl().getDefaultLanguage());
+            postalAddressElementTypeDescription = getPostalAddressElementTypeDescription(postalAddressElementType, partyControl.getDefaultLanguage());
         }
         
         if(postalAddressElementTypeDescription == null) {
@@ -3770,16 +3820,15 @@ public class ContactControl
     }
     
     public PostalAddressFormatTransfer getPostalAddressFormatTransfer(UserVisit userVisit, PostalAddressFormat postalAddressFormat) {
-        return getContactTransferCaches(userVisit).getPostalAddressFormatTransferCache().getPostalAddressFormatTransfer(postalAddressFormat);
+        return postalAddressFormatTransferCache.getPostalAddressFormatTransfer(userVisit, postalAddressFormat);
     }
     
     public List<PostalAddressFormatTransfer> getPostalAddressFormatTransfers(UserVisit userVisit) {
         var postalAddressFormats = getPostalAddressFormats();
         List<PostalAddressFormatTransfer> postalAddressFormatTransfers = new ArrayList<>(postalAddressFormats.size());
-        var postalAddressFormatTransferCache = getContactTransferCaches(userVisit).getPostalAddressFormatTransferCache();
         
         postalAddressFormats.forEach((postalAddressFormat) ->
-                postalAddressFormatTransfers.add(postalAddressFormatTransferCache.getPostalAddressFormatTransfer(postalAddressFormat))
+                postalAddressFormatTransfers.add(postalAddressFormatTransferCache.getPostalAddressFormatTransfer(userVisit, postalAddressFormat))
         );
         
         return postalAddressFormatTransfers;
@@ -3964,7 +4013,7 @@ public class ContactControl
         var postalAddressFormatDescription = getPostalAddressFormatDescription(postalAddressFormat, language);
         
         if(postalAddressFormatDescription == null && !language.getIsDefault()) {
-            postalAddressFormatDescription = getPostalAddressFormatDescription(postalAddressFormat, getPartyControl().getDefaultLanguage());
+            postalAddressFormatDescription = getPostalAddressFormatDescription(postalAddressFormat, partyControl.getDefaultLanguage());
         }
         
         if(postalAddressFormatDescription == null) {
@@ -3977,16 +4026,15 @@ public class ContactControl
     }
     
     public PostalAddressFormatDescriptionTransfer getPostalAddressFormatDescriptionTransfer(UserVisit userVisit, PostalAddressFormatDescription postalAddressFormatDescription) {
-        return getContactTransferCaches(userVisit).getPostalAddressFormatDescriptionTransferCache().getPostalAddressFormatDescriptionTransfer(postalAddressFormatDescription);
+        return postalAddressFormatDescriptionTransferCache.getPostalAddressFormatDescriptionTransfer(userVisit, postalAddressFormatDescription);
     }
     
     public List<PostalAddressFormatDescriptionTransfer> getPostalAddressFormatDescriptionTransfersByPostalAddressFormat(UserVisit userVisit, PostalAddressFormat postalAddressFormat) {
         var postalAddressFormatDescriptions = getPostalAddressFormatDescriptionsByPostalAddressFormat(postalAddressFormat);
         List<PostalAddressFormatDescriptionTransfer> postalAddressFormatDescriptionTransfers = new ArrayList<>(postalAddressFormatDescriptions.size());
-        var postalAddressFormatDescriptionTransferCache = getContactTransferCaches(userVisit).getPostalAddressFormatDescriptionTransferCache();
         
         postalAddressFormatDescriptions.forEach((postalAddressFormatDescription) ->
-                postalAddressFormatDescriptionTransfers.add(postalAddressFormatDescriptionTransferCache.getPostalAddressFormatDescriptionTransfer(postalAddressFormatDescription))
+                postalAddressFormatDescriptionTransfers.add(postalAddressFormatDescriptionTransferCache.getPostalAddressFormatDescriptionTransfer(userVisit, postalAddressFormatDescription))
         );
         
         return postalAddressFormatDescriptionTransfers;
@@ -4140,16 +4188,15 @@ public class ContactControl
     }
     
     public PostalAddressLineTransfer getPostalAddressLineTransfer(UserVisit userVisit, PostalAddressLine postalAddressLine) {
-        return getContactTransferCaches(userVisit).getPostalAddressLineTransferCache().getPostalAddressLineTransfer(postalAddressLine);
+        return postalAddressLineTransferCache.getPostalAddressLineTransfer(userVisit, postalAddressLine);
     }
     
     public List<PostalAddressLineTransfer> getPostalAddressLineTransfersByPostalAddressFormat(UserVisit userVisit, PostalAddressFormat postalAddressFormat) {
         var postalAddressLines = getPostalAddressLinesByPostalAddressFormat(postalAddressFormat);
         List<PostalAddressLineTransfer> postalAddressLineTransfers = new ArrayList<>(postalAddressLines.size());
-        var postalAddressLineTransferCache = getContactTransferCaches(userVisit).getPostalAddressLineTransferCache();
         
         postalAddressLines.forEach((postalAddressLine) ->
-                postalAddressLineTransfers.add(postalAddressLineTransferCache.getPostalAddressLineTransfer(postalAddressLine))
+                postalAddressLineTransfers.add(postalAddressLineTransferCache.getPostalAddressLineTransfer(userVisit, postalAddressLine))
         );
         
         return postalAddressLineTransfers;
@@ -4295,16 +4342,15 @@ public class ContactControl
     }
     
     public PostalAddressLineElementTransfer getPostalAddressLineElementTransfer(UserVisit userVisit, PostalAddressLineElement postalAddressLineElement) {
-        return getContactTransferCaches(userVisit).getPostalAddressLineElementTransferCache().getPostalAddressLineElementTransfer(postalAddressLineElement);
+        return postalAddressLineElementTransferCache.getPostalAddressLineElementTransfer(userVisit, postalAddressLineElement);
     }
     
     public List<PostalAddressLineElementTransfer> getPostalAddressLineElementTransfersByPostalAddressLine(UserVisit userVisit, PostalAddressLine postalAddressLine) {
         var postalAddressLineElements = getPostalAddressLineElementsByPostalAddressLine(postalAddressLine);
         List<PostalAddressLineElementTransfer> postalAddressLineElementTransfers = new ArrayList<>(postalAddressLineElements.size());
-        var postalAddressLineElementTransferCache = getContactTransferCaches(userVisit).getPostalAddressLineElementTransferCache();
         
         postalAddressLineElements.forEach((postalAddressLineElement) ->
-                postalAddressLineElementTransfers.add(postalAddressLineElementTransferCache.getPostalAddressLineElementTransfer(postalAddressLineElement))
+                postalAddressLineElementTransfers.add(postalAddressLineElementTransferCache.getPostalAddressLineElementTransfer(userVisit, postalAddressLineElement))
         );
         
         return postalAddressLineElementTransfers;

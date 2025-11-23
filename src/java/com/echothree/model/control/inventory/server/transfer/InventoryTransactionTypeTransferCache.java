@@ -17,14 +17,15 @@
 package com.echothree.model.control.inventory.server.transfer;
 
 import com.echothree.model.control.inventory.common.transfer.InventoryTransactionTypeTransfer;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.inventory.server.control.InventoryTransactionTypeControl;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.inventory.server.entity.InventoryTransactionType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class InventoryTransactionTypeTransferCache
         extends BaseInventoryTransferCache<InventoryTransactionType, InventoryTransactionTypeTransfer> {
 
@@ -33,13 +34,14 @@ public class InventoryTransactionTypeTransferCache
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of InventoryTransactionTypeTransferCache */
-    public InventoryTransactionTypeTransferCache(UserVisit userVisit, InventoryControl inventoryControl) {
-        super(userVisit, inventoryControl);
+    protected InventoryTransactionTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
-    
-    public InventoryTransactionTypeTransfer getTransfer(InventoryTransactionType inventoryTransactionType) {
+
+    @Override
+    public InventoryTransactionTypeTransfer getTransfer(UserVisit userVisit, InventoryTransactionType inventoryTransactionType) {
         var inventoryTransactionTypeTransfer = get(inventoryTransactionType);
         
         if(inventoryTransactionTypeTransfer == null) {
@@ -53,11 +55,11 @@ public class InventoryTransactionTypeTransferCache
             var inventoryTransactionWorkflowEntranceTransfer = inventoryTransactionWorkflowEntrance == null? null: workflowControl.getWorkflowEntranceTransfer(userVisit, inventoryTransactionWorkflowEntrance);
             var isDefault = inventoryTransactionTypeDetail.getIsDefault();
             var sortOrder = inventoryTransactionTypeDetail.getSortOrder();
-            var description = inventoryTransactionTypeControl.getBestInventoryTransactionTypeDescription(inventoryTransactionType, getLanguage());
+            var description = inventoryTransactionTypeControl.getBestInventoryTransactionTypeDescription(inventoryTransactionType, getLanguage(userVisit));
             
             inventoryTransactionTypeTransfer = new InventoryTransactionTypeTransfer(inventoryTransactionTypeName, inventoryTransactionSequenceTypeTransfer, inventoryTransactionWorkflowTransfer,
                     inventoryTransactionWorkflowEntranceTransfer, isDefault, sortOrder, description);
-            put(inventoryTransactionType, inventoryTransactionTypeTransfer);
+            put(userVisit, inventoryTransactionType, inventoryTransactionTypeTransfer);
         }
         
         return inventoryTransactionTypeTransfer;

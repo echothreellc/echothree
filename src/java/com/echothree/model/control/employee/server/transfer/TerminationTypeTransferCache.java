@@ -20,18 +20,23 @@ import com.echothree.model.control.employee.common.transfer.TerminationTypeTrans
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.data.employee.server.entity.TerminationType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class TerminationTypeTransferCache
         extends BaseEmployeeTransferCache<TerminationType, TerminationTypeTransfer> {
-    
+
+    EmployeeControl employeeControl = Session.getModelController(EmployeeControl.class);
+
     /** Creates a new instance of TerminationTypeTransferCache */
-    public TerminationTypeTransferCache(UserVisit userVisit, EmployeeControl employeeControl) {
-        super(userVisit, employeeControl);
+    protected TerminationTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public TerminationTypeTransfer getTerminationTypeTransfer(TerminationType terminationType) {
+    public TerminationTypeTransfer getTerminationTypeTransfer(UserVisit userVisit, TerminationType terminationType) {
         var terminationTypeTransfer = get(terminationType);
         
         if(terminationTypeTransfer == null) {
@@ -39,10 +44,10 @@ public class TerminationTypeTransferCache
             var terminationTypeName = terminationTypeDetail.getTerminationTypeName();
             var isDefault = terminationTypeDetail.getIsDefault();
             var sortOrder = terminationTypeDetail.getSortOrder();
-            var description = employeeControl.getBestTerminationTypeDescription(terminationType, getLanguage());
+            var description = employeeControl.getBestTerminationTypeDescription(terminationType, getLanguage(userVisit));
             
             terminationTypeTransfer = new TerminationTypeTransfer(terminationTypeName, isDefault, sortOrder, description);
-            put(terminationType, terminationTypeTransfer);
+            put(userVisit, terminationType, terminationTypeTransfer);
         }
         
         return terminationTypeTransfer;

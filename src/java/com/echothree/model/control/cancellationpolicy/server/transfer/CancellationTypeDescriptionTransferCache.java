@@ -20,16 +20,21 @@ import com.echothree.model.control.cancellationpolicy.common.transfer.Cancellati
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CancellationTypeDescriptionTransferCache
         extends BaseCancellationPolicyDescriptionTransferCache<CancellationTypeDescription, CancellationTypeDescriptionTransfer> {
-    
+
+    CancellationPolicyControl cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
+
     /** Creates a new instance of CancellationTypeDescriptionTransferCache */
-    public CancellationTypeDescriptionTransferCache(UserVisit userVisit, CancellationPolicyControl cancellationPolicyControl) {
-        super(userVisit, cancellationPolicyControl);
+    protected CancellationTypeDescriptionTransferCache() {
+        super();
     }
     
-    public CancellationTypeDescriptionTransfer getCancellationTypeDescriptionTransfer(CancellationTypeDescription cancellationTypeDescription) {
+    public CancellationTypeDescriptionTransfer getCancellationTypeDescriptionTransfer(UserVisit userVisit, CancellationTypeDescription cancellationTypeDescription) {
         var cancellationTypeDescriptionTransfer = get(cancellationTypeDescription);
         
         if(cancellationTypeDescriptionTransfer == null) {
@@ -37,7 +42,7 @@ public class CancellationTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, cancellationTypeDescription.getLanguage());
             
             cancellationTypeDescriptionTransfer = new CancellationTypeDescriptionTransfer(languageTransfer, cancellationTypeTransfer, cancellationTypeDescription.getDescription());
-            put(cancellationTypeDescription, cancellationTypeDescriptionTransfer);
+            put(userVisit, cancellationTypeDescription, cancellationTypeDescriptionTransfer);
         }
         
         return cancellationTypeDescriptionTransfer;

@@ -22,20 +22,23 @@ import com.echothree.model.control.subscription.server.control.SubscriptionContr
 import com.echothree.model.data.subscription.server.entity.SubscriptionType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class SubscriptionTypeTransferCache
         extends BaseSubscriptionTransferCache<SubscriptionType, SubscriptionTypeTransfer> {
     
     SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
-    
+    SubscriptionControl subscriptionControl = Session.getModelController(SubscriptionControl.class);
+
     /** Creates a new instance of SubscriptionTypeTransferCache */
-    public SubscriptionTypeTransferCache(UserVisit userVisit, SubscriptionControl subscriptionControl) {
-        super(userVisit, subscriptionControl);
+    protected SubscriptionTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public SubscriptionTypeTransfer getSubscriptionTypeTransfer(SubscriptionType subscriptionType) {
+    public SubscriptionTypeTransfer getSubscriptionTypeTransfer(UserVisit userVisit, SubscriptionType subscriptionType) {
         var subscriptionTypeTransfer = get(subscriptionType);
         
         if(subscriptionTypeTransfer == null) {
@@ -47,11 +50,11 @@ public class SubscriptionTypeTransferCache
             var subscriptionSequenceTransfer = subscriptionSequence == null? null: sequenceControl.getSequenceTransfer(userVisit, subscriptionSequence);
             var isDefault = subscriptionTypeDetail.getIsDefault();
             var sortOrder = subscriptionTypeDetail.getSortOrder();
-            var description = subscriptionControl.getBestSubscriptionTypeDescription(subscriptionType, getLanguage());
+            var description = subscriptionControl.getBestSubscriptionTypeDescription(subscriptionType, getLanguage(userVisit));
             
             subscriptionTypeTransfer = new SubscriptionTypeTransfer(subscriptionKindTransfer, subscriptionTypeName,
                     subscriptionSequenceTransfer, isDefault, sortOrder, description);
-            put(subscriptionType, subscriptionTypeTransfer);
+            put(userVisit, subscriptionType, subscriptionTypeTransfer);
         }
         
         return subscriptionTypeTransfer;

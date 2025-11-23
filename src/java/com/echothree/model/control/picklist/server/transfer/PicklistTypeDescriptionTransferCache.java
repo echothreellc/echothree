@@ -20,16 +20,21 @@ import com.echothree.model.control.picklist.common.transfer.PicklistTypeDescript
 import com.echothree.model.control.picklist.server.control.PicklistControl;
 import com.echothree.model.data.picklist.server.entity.PicklistTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PicklistTypeDescriptionTransferCache
         extends BasePicklistDescriptionTransferCache<PicklistTypeDescription, PicklistTypeDescriptionTransfer> {
-    
+
+    PicklistControl picklistControl = Session.getModelController(PicklistControl.class);
+
     /** Creates a new instance of PicklistTypeDescriptionTransferCache */
-    public PicklistTypeDescriptionTransferCache(UserVisit userVisit, PicklistControl picklistControl) {
-        super(userVisit, picklistControl);
+    protected PicklistTypeDescriptionTransferCache() {
+        super();
     }
     
-    public PicklistTypeDescriptionTransfer getPicklistTypeDescriptionTransfer(PicklistTypeDescription picklistTypeDescription) {
+    public PicklistTypeDescriptionTransfer getPicklistTypeDescriptionTransfer(UserVisit userVisit, PicklistTypeDescription picklistTypeDescription) {
         var picklistTypeDescriptionTransfer = get(picklistTypeDescription);
         
         if(picklistTypeDescriptionTransfer == null) {
@@ -37,7 +42,7 @@ public class PicklistTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, picklistTypeDescription.getLanguage());
             
             picklistTypeDescriptionTransfer = new PicklistTypeDescriptionTransfer(languageTransfer, picklistTypeTransfer, picklistTypeDescription.getDescription());
-            put(picklistTypeDescription, picklistTypeDescriptionTransfer);
+            put(userVisit, picklistTypeDescription, picklistTypeDescriptionTransfer);
         }
         
         return picklistTypeDescriptionTransfer;

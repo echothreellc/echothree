@@ -42,20 +42,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class ItemAliasChecksumTypeLogic
         extends BaseLogic {
-    
-    private ItemAliasChecksumTypeLogic() {
+
+    protected ItemAliasChecksumTypeLogic() {
         super();
     }
-    
-    private static class ItemAliasChecksumTypeLogicHolder {
-        static ItemAliasChecksumTypeLogic instance = new ItemAliasChecksumTypeLogic();
-    }
-    
+
     public static ItemAliasChecksumTypeLogic getInstance() {
-        return ItemAliasChecksumTypeLogicHolder.instance;
+        return CDI.current().select(ItemAliasChecksumTypeLogic.class).get();
     }
 
     public ItemAliasChecksumType getItemAliasChecksumTypeByName(final ExecutionErrorAccumulator eea, final String itemAliasChecksumTypeName,

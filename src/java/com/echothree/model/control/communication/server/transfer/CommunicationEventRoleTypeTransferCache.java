@@ -20,26 +20,31 @@ import com.echothree.model.control.communication.common.transfer.CommunicationEv
 import com.echothree.model.control.communication.server.control.CommunicationControl;
 import com.echothree.model.data.communication.server.entity.CommunicationEventRoleType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CommunicationEventRoleTypeTransferCache
         extends BaseCommunicationTransferCache<CommunicationEventRoleType, CommunicationEventRoleTypeTransfer> {
-    
+
+    CommunicationControl communicationControl = Session.getModelController(CommunicationControl.class);
+
     /** Creates a new instance of CommunicationEventRoleTypeTransferCache */
-    public CommunicationEventRoleTypeTransferCache(UserVisit userVisit, CommunicationControl communicationControl) {
-        super(userVisit, communicationControl);
+    protected CommunicationEventRoleTypeTransferCache() {
+        super();
     }
     
-    public CommunicationEventRoleTypeTransfer getCommunicationEventRoleTypeTransfer(CommunicationEventRoleType communicationEventRoleType) {
+    public CommunicationEventRoleTypeTransfer getCommunicationEventRoleTypeTransfer(UserVisit userVisit, CommunicationEventRoleType communicationEventRoleType) {
         var communicationEventRoleTypeTransfer = get(communicationEventRoleType);
         
         if(communicationEventRoleTypeTransfer == null) {
             var communicationEventRoleTypeName = communicationEventRoleType.getCommunicationEventRoleTypeName();
             var sortOrder = communicationEventRoleType.getSortOrder();
-            var description = communicationControl.getBestCommunicationEventRoleTypeDescription(communicationEventRoleType, getLanguage());
+            var description = communicationControl.getBestCommunicationEventRoleTypeDescription(communicationEventRoleType, getLanguage(userVisit));
             
             communicationEventRoleTypeTransfer = new CommunicationEventRoleTypeTransfer(communicationEventRoleTypeName, sortOrder,
                     description);
-            put(communicationEventRoleType, communicationEventRoleTypeTransfer);
+            put(userVisit, communicationEventRoleType, communicationEventRoleTypeTransfer);
         }
         
         return communicationEventRoleTypeTransfer;

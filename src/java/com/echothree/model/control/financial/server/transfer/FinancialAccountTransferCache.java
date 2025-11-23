@@ -27,19 +27,21 @@ import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.common.transfer.MapWrapper;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.AmountUtils;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class FinancialAccountTransferCache
         extends BaseFinancialTransferCache<FinancialAccount, FinancialAccountTransfer> {
     
-    AccountingControl accountingControl;
+    AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
+    FinancialControl financialControl = Session.getModelController(FinancialControl.class);
+
     boolean includeRoles;
     boolean includeTransactions;
     
     /** Creates a new instance of FinancialAccountTransferCache */
-    public FinancialAccountTransferCache(UserVisit userVisit, FinancialControl financialControl) {
-        super(userVisit, financialControl);
-        
-        accountingControl = Session.getModelController(AccountingControl.class);
+    protected FinancialAccountTransferCache() {
+        super();
 
         var options = session.getOptions();
         if(options != null) {
@@ -50,7 +52,7 @@ public class FinancialAccountTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public FinancialAccountTransfer getFinancialAccountTransfer(FinancialAccount financialAccount) {
+    public FinancialAccountTransfer getFinancialAccountTransfer(UserVisit userVisit, FinancialAccount financialAccount) {
         var financialAccountTransfer = get(financialAccount);
         
         if(financialAccountTransfer == null) {
@@ -71,7 +73,7 @@ public class FinancialAccountTransferCache
             
             financialAccountTransfer = new FinancialAccountTransfer(financialAccountType, financialAccountName, currencyTransfer, glAccountTransfer, reference,
                     description, unformattedActualBalance, actualBalance, unformattedAvailableBalance, availableBalance);
-            put(financialAccount, financialAccountTransfer);
+            put(userVisit, financialAccount, financialAccountTransfer);
             
             if(includeRoles) {
                 var financialAccountRoleTransfers = financialControl.getFinancialAccountRoleTransfersByFinancialAccount(userVisit, financialAccount);

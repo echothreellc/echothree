@@ -21,18 +21,20 @@ import com.echothree.model.control.order.server.control.OrderTypeControl;
 import com.echothree.model.data.order.server.entity.OrderTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class OrderTypeDescriptionTransferCache
         extends BaseOrderDescriptionTransferCache<OrderTypeDescription, OrderTypeDescriptionTransfer> {
 
     OrderTypeControl orderTypeControl = Session.getModelController(OrderTypeControl.class);
 
     /** Creates a new instance of OrderTypeDescriptionTransferCache */
-    public OrderTypeDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected OrderTypeDescriptionTransferCache() {
+        super();
     }
     
-    public OrderTypeDescriptionTransfer getOrderTypeDescriptionTransfer(OrderTypeDescription orderTypeDescription) {
+    public OrderTypeDescriptionTransfer getOrderTypeDescriptionTransfer(UserVisit userVisit, OrderTypeDescription orderTypeDescription) {
         var orderTypeDescriptionTransfer = get(orderTypeDescription);
         
         if(orderTypeDescriptionTransfer == null) {
@@ -40,7 +42,7 @@ public class OrderTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, orderTypeDescription.getLanguage());
             
             orderTypeDescriptionTransfer = new OrderTypeDescriptionTransfer(languageTransfer, orderTypeTransfer, orderTypeDescription.getDescription());
-            put(orderTypeDescription, orderTypeDescriptionTransfer);
+            put(userVisit, orderTypeDescription, orderTypeDescriptionTransfer);
         }
         
         return orderTypeDescriptionTransfer;

@@ -36,7 +36,9 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class SetEntityWorkflowAttributeStatusCommand
         extends BaseSimpleCommand<SetEntityWorkflowAttributeStatusForm> {
 
@@ -71,7 +73,7 @@ public class SetEntityWorkflowAttributeStatusCommand
         if(!hasExecutionErrors()) {
             var entityAttribute = EntityAttributeLogic.getInstance().getEntityAttribute(this, entityInstance, form, form,
                     EntityAttributeTypes.WORKFLOW);
-            var entityAttributeWorkflow = getCoreControl().getEntityAttributeWorkflow(entityAttribute);
+            var entityAttributeWorkflow = coreControl.getEntityAttributeWorkflow(entityAttribute);
             var workflow = entityAttributeWorkflow.getWorkflow();
             var workflowStepName = form.getWorkflowStepName();
             var workflowStep = WorkflowStepLogic.getInstance().getWorkflowStepByName(this, workflow, workflowStepName);

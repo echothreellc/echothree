@@ -21,19 +21,21 @@ import com.echothree.model.control.accounting.server.control.TransactionTimeCont
 import com.echothree.model.data.accounting.server.entity.TransactionTimeTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class TransactionTimeTypeDescriptionTransferCache
         extends BaseAccountingDescriptionTransferCache<TransactionTimeTypeDescription, TransactionTimeTypeDescriptionTransfer> {
 
     TransactionTimeControl transactionTimeControl = Session.getModelController(TransactionTimeControl.class);
 
     /** Creates a new instance of TransactionTimeTypeDescriptionTransferCache */
-    public TransactionTimeTypeDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected TransactionTimeTypeDescriptionTransferCache() {
+        super();
     }
 
     @Override
-    public TransactionTimeTypeDescriptionTransfer getTransfer(TransactionTimeTypeDescription transactionTimeTypeDescription) {
+    public TransactionTimeTypeDescriptionTransfer getTransfer(UserVisit userVisit, TransactionTimeTypeDescription transactionTimeTypeDescription) {
         var transactionTimeTypeDescriptionTransfer = get(transactionTimeTypeDescription);
         
         if(transactionTimeTypeDescriptionTransfer == null) {
@@ -41,7 +43,7 @@ public class TransactionTimeTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, transactionTimeTypeDescription.getLanguage());
             
             transactionTimeTypeDescriptionTransfer = new TransactionTimeTypeDescriptionTransfer(languageTransfer, transactionTimeTypeTransfer, transactionTimeTypeDescription.getDescription());
-            put(transactionTimeTypeDescription, transactionTimeTypeDescriptionTransfer);
+            put(userVisit, transactionTimeTypeDescription, transactionTimeTypeDescriptionTransfer);
         }
         
         return transactionTimeTypeDescriptionTransfer;

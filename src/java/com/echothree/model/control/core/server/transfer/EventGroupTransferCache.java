@@ -23,7 +23,9 @@ import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.core.server.entity.EventGroup;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EventGroupTransferCache
         extends BaseCoreTransferCache<EventGroup, EventGroupTransfer> {
 
@@ -31,13 +33,13 @@ public class EventGroupTransferCache
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of EventGroupTransferCache */
-    public EventGroupTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected EventGroupTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public EventGroupTransfer getEventGroupTransfer(EventGroup eventGroup) {
+    public EventGroupTransfer getEventGroupTransfer(UserVisit userVisit, EventGroup eventGroup) {
         var eventGroupTransfer = get(eventGroup);
         
         if(eventGroupTransfer == null) {
@@ -49,7 +51,7 @@ public class EventGroupTransferCache
                     EventGroupStatusConstants.Workflow_EVENT_GROUP_STATUS, entityInstance);
             
             eventGroupTransfer = new EventGroupTransfer(eventGroupName, eventGroupStatusTransfer);
-            put(eventGroup, eventGroupTransfer);
+            put(userVisit, eventGroup, eventGroupTransfer);
         }
         
         return eventGroupTransfer;

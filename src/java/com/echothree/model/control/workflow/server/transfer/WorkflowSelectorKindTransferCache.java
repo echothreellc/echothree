@@ -22,20 +22,21 @@ import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workflow.server.entity.WorkflowSelectorKind;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class WorkflowSelectorKindTransferCache
         extends BaseWorkflowTransferCache<WorkflowSelectorKind, WorkflowSelectorKindTransfer> {
     
-    SelectorControl selectorControl;
-    
+    SelectorControl selectorControl = Session.getModelController(SelectorControl.class);
+    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
+
     /** Creates a new instance of WorkflowSelectorKindTransferCache */
-    public WorkflowSelectorKindTransferCache(UserVisit userVisit, WorkflowControl workflowControl) {
-        super(userVisit, workflowControl);
-        
-        selectorControl = Session.getModelController(SelectorControl.class);
+    protected WorkflowSelectorKindTransferCache() {
+        super();
     }
     
-    public WorkflowSelectorKindTransfer getWorkflowSelectorKindTransfer(WorkflowSelectorKind workflowSelectorKind) {
+    public WorkflowSelectorKindTransfer getWorkflowSelectorKindTransfer(UserVisit userVisit, WorkflowSelectorKind workflowSelectorKind) {
         var workflowSelectorKindTransfer = get(workflowSelectorKind);
         
         if(workflowSelectorKindTransfer == null) {
@@ -43,7 +44,7 @@ public class WorkflowSelectorKindTransferCache
             var selectorKind = selectorControl.getSelectorKindTransfer(userVisit, workflowSelectorKind.getSelectorKind());
             
             workflowSelectorKindTransfer = new WorkflowSelectorKindTransfer(workflow, selectorKind);
-            put(workflowSelectorKind, workflowSelectorKindTransfer);
+            put(userVisit, workflowSelectorKind, workflowSelectorKindTransfer);
         }
         
         return workflowSelectorKindTransfer;

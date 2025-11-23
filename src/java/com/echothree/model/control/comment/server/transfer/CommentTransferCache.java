@@ -27,10 +27,13 @@ import com.echothree.model.data.comment.server.entity.Comment;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CommentTransferCache
         extends BaseCommentTransferCache<Comment, CommentTransfer> {
 
+    CommentControl commentControl = Session.getModelController(CommentControl.class);
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
@@ -43,8 +46,8 @@ public class CommentTransferCache
     boolean includeWorkflowStep;
     
     /** Creates a new instance of CommentTransferCache */
-    public CommentTransferCache(UserVisit userVisit, CommentControl commentControl) {
-        super(userVisit, commentControl);
+    protected CommentTransferCache() {
+        super();
 
         var options = session.getOptions();
         if(options != null) {
@@ -58,7 +61,7 @@ public class CommentTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public CommentTransfer getCommentTransfer(Comment comment) {
+    public CommentTransfer getCommentTransfer(UserVisit userVisit, Comment comment) {
         var commentTransfer = get(comment);
         
         if(commentTransfer == null) {
@@ -67,7 +70,7 @@ public class CommentTransferCache
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(comment.getPrimaryKey());
             
             commentTransfer = new CommentTransfer();
-            put(comment, commentTransfer, entityInstance);
+            put(userVisit, comment, commentTransfer, entityInstance);
             
             commentTransfer.setCommentName(commentDetail.getCommentName());
             commentTransfer.setCommentType(commentControl.getCommentTypeTransfer(userVisit, commentType));

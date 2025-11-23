@@ -20,17 +20,22 @@ import com.echothree.model.control.batch.common.transfer.BatchTypeDescriptionTra
 import com.echothree.model.control.batch.server.control.BatchControl;
 import com.echothree.model.data.batch.server.entity.BatchTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class BatchTypeDescriptionTransferCache
         extends BaseBatchDescriptionTransferCache<BatchTypeDescription, BatchTypeDescriptionTransfer> {
-    
+
+    BatchControl batchControl = Session.getModelController(BatchControl.class);
+
     /** Creates a new instance of BatchTypeDescriptionTransferCache */
-    public BatchTypeDescriptionTransferCache(UserVisit userVisit, BatchControl batchControl) {
-        super(userVisit, batchControl);
+    protected BatchTypeDescriptionTransferCache() {
+        super();
     }
     
     @Override
-    public BatchTypeDescriptionTransfer getTransfer(BatchTypeDescription batchTypeDescription) {
+    public BatchTypeDescriptionTransfer getTransfer(UserVisit userVisit, BatchTypeDescription batchTypeDescription) {
         var batchTypeDescriptionTransfer = get(batchTypeDescription);
         
         if(batchTypeDescriptionTransfer == null) {
@@ -38,7 +43,7 @@ public class BatchTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, batchTypeDescription.getLanguage());
             
             batchTypeDescriptionTransfer = new BatchTypeDescriptionTransfer(languageTransfer, batchTypeTransfer, batchTypeDescription.getDescription());
-            put(batchTypeDescription, batchTypeDescriptionTransfer);
+            put(userVisit, batchTypeDescription, batchTypeDescriptionTransfer);
         }
         
         return batchTypeDescriptionTransfer;

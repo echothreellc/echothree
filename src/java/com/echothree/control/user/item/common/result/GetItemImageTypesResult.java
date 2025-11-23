@@ -22,7 +22,10 @@ import java.util.List;
 
 public interface GetItemImageTypesResult
         extends BaseResult {
-    
+
+    Long getItemImageTypeCount();
+    void setItemImageTypeCount(Long itemImageTypeCount);
+
     List<ItemImageTypeTransfer> getItemImageTypes();
     void setItemImageTypes(List<ItemImageTypeTransfer> itemImageTypes);
     

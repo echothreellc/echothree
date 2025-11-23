@@ -20,27 +20,32 @@ import com.echothree.model.control.item.common.transfer.ItemInventoryTypeTransfe
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.item.server.entity.ItemInventoryType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ItemInventoryTypeTransferCache
         extends BaseItemTransferCache<ItemInventoryType, ItemInventoryTypeTransfer> {
-    
+
+    ItemControl itemControl = Session.getModelController(ItemControl.class);
+
     /** Creates a new instance of ItemInventoryTypeTransferCache */
-    public ItemInventoryTypeTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    protected ItemInventoryTypeTransferCache() {
+        super();
     }
     
     @Override
-    public ItemInventoryTypeTransfer getTransfer(ItemInventoryType itemInventoryType) {
+    public ItemInventoryTypeTransfer getTransfer(UserVisit userVisit, ItemInventoryType itemInventoryType) {
         var itemInventoryTypeTransfer = get(itemInventoryType);
         
         if(itemInventoryTypeTransfer == null) {
             var itemInventoryTypeName = itemInventoryType.getItemInventoryTypeName();
             var isDefault = itemInventoryType.getIsDefault();
             var sortOrder = itemInventoryType.getSortOrder();
-            var description = itemControl.getBestItemInventoryTypeDescription(itemInventoryType, getLanguage());
+            var description = itemControl.getBestItemInventoryTypeDescription(itemInventoryType, getLanguage(userVisit));
             
             itemInventoryTypeTransfer = new ItemInventoryTypeTransfer(itemInventoryTypeName, isDefault, sortOrder, description);
-            put(itemInventoryType, itemInventoryTypeTransfer);
+            put(userVisit, itemInventoryType, itemInventoryTypeTransfer);
         }
         
         return itemInventoryTypeTransfer;

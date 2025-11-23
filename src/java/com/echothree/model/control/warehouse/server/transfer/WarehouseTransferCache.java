@@ -31,7 +31,9 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.warehouse.server.entity.Warehouse;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class WarehouseTransferCache
         extends BaseWarehouseTransferCache<Party, WarehouseTransfer> {
     
@@ -41,6 +43,7 @@ public class WarehouseTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     PrinterControl printerControl = Session.getModelController(PrinterControl.class);
     ScaleControl scaleControl = Session.getModelController(ScaleControl.class);
+    WarehouseControl warehouseControl = Session.getModelController(WarehouseControl.class);
 
     boolean includeLocationsCount;
     boolean includeLocations;
@@ -51,8 +54,8 @@ public class WarehouseTransferCache
     boolean includePartyScaleUses;
     
     /** Creates a new instance of WarehouseTransferCache */
-    public WarehouseTransferCache(UserVisit userVisit, WarehouseControl warehouseControl) {
-        super(userVisit, warehouseControl);
+    protected WarehouseTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {
@@ -71,11 +74,11 @@ public class WarehouseTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public WarehouseTransfer getWarehouseTransfer(Warehouse warehouse) {
-        return getWarehouseTransfer(warehouse.getParty());
+    public WarehouseTransfer getWarehouseTransfer(UserVisit userVisit, Warehouse warehouse) {
+        return getWarehouseTransfer(userVisit, warehouse.getParty());
     }
     
-    public WarehouseTransfer getWarehouseTransfer(Party party) {
+    public WarehouseTransfer getWarehouseTransfer(UserVisit userVisit, Party party) {
         var warehouseTransfer = get(party);
         
         if(warehouseTransfer == null) {
@@ -103,7 +106,7 @@ public class WarehouseTransferCache
             warehouseTransfer = new WarehouseTransfer(partyName, partyTypeTransfer, preferredLanguageTransfer, preferredCurrencyTransfer,
                     preferredTimeZoneTransfer, preferredDateTimeFormatTransfer, personTransfer, partyGroupTransfer, warehouseName,
                     warehouseTypeTransfer, isDefault, sortOrder);
-            put(party, warehouseTransfer);
+            put(userVisit, party, warehouseTransfer);
 
             if(includeLocationsCount) {
                 warehouseTransfer.setLocationsCount(warehouseControl.countLocationsByWarehouseParty(party));

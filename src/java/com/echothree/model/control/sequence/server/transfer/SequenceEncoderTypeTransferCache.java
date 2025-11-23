@@ -20,26 +20,31 @@ import com.echothree.model.control.sequence.common.transfer.SequenceEncoderTypeT
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.data.sequence.server.entity.SequenceEncoderType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class SequenceEncoderTypeTransferCache
         extends BaseSequenceTransferCache<SequenceEncoderType, SequenceEncoderTypeTransfer> {
-    
+
+    SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
+
     /** Creates a new instance of SequenceEncoderTypeTransferCache */
-    public SequenceEncoderTypeTransferCache(UserVisit userVisit, SequenceControl sequenceControl) {
-        super(userVisit, sequenceControl);
+    protected SequenceEncoderTypeTransferCache() {
+        super();
     }
     
-    public SequenceEncoderTypeTransfer getSequenceEncoderTypeTransfer(SequenceEncoderType sequenceEncoderType) {
+    public SequenceEncoderTypeTransfer getSequenceEncoderTypeTransfer(UserVisit userVisit, SequenceEncoderType sequenceEncoderType) {
         var sequenceEncoderTypeTransfer = get(sequenceEncoderType);
         
         if(sequenceEncoderTypeTransfer == null) {
             var sequenceEncoderTypeName = sequenceEncoderType.getSequenceEncoderTypeName();
             var isDefault = sequenceEncoderType.getIsDefault();
             var sortOrder = sequenceEncoderType.getSortOrder();
-            var description = sequenceControl.getBestSequenceEncoderTypeDescription(sequenceEncoderType, getLanguage());
+            var description = sequenceControl.getBestSequenceEncoderTypeDescription(sequenceEncoderType, getLanguage(userVisit));
             
             sequenceEncoderTypeTransfer = new SequenceEncoderTypeTransfer(sequenceEncoderTypeName, isDefault, sortOrder, description);
-            put(sequenceEncoderType, sequenceEncoderTypeTransfer);
+            put(userVisit, sequenceEncoderType, sequenceEncoderTypeTransfer);
         }
         return sequenceEncoderTypeTransfer;
     }

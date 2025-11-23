@@ -20,25 +20,30 @@ import com.echothree.model.control.financial.common.transfer.FinancialAccountRol
 import com.echothree.model.control.financial.server.control.FinancialControl;
 import com.echothree.model.data.financial.server.entity.FinancialAccountRoleType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class FinancialAccountRoleTypeTransferCache
         extends BaseFinancialTransferCache<FinancialAccountRoleType, FinancialAccountRoleTypeTransfer> {
-    
+
+    FinancialControl financialControl = Session.getModelController(FinancialControl.class);
+
     /** Creates a new instance of FinancialAccountRoleTypeTransferCache */
-    public FinancialAccountRoleTypeTransferCache(UserVisit userVisit, FinancialControl financialControl) {
-        super(userVisit, financialControl);
+    protected FinancialAccountRoleTypeTransferCache() {
+        super();
     }
     
-    public FinancialAccountRoleTypeTransfer getFinancialAccountRoleTypeTransfer(FinancialAccountRoleType financialAccountRoleType) {
+    public FinancialAccountRoleTypeTransfer getFinancialAccountRoleTypeTransfer(UserVisit userVisit, FinancialAccountRoleType financialAccountRoleType) {
         var financialAccountRoleTypeTransfer = get(financialAccountRoleType);
         
         if(financialAccountRoleTypeTransfer == null) {
             var financialAccountRoleTypeName = financialAccountRoleType.getFinancialAccountRoleTypeName();
             var sortOrder = financialAccountRoleType.getSortOrder();
-            var description = financialControl.getBestFinancialAccountRoleTypeDescription(financialAccountRoleType, getLanguage());
+            var description = financialControl.getBestFinancialAccountRoleTypeDescription(financialAccountRoleType, getLanguage(userVisit));
             
             financialAccountRoleTypeTransfer = new FinancialAccountRoleTypeTransfer(financialAccountRoleTypeName, sortOrder, description);
-            put(financialAccountRoleType, financialAccountRoleTypeTransfer);
+            put(userVisit, financialAccountRoleType, financialAccountRoleTypeTransfer);
         }
         
         return financialAccountRoleTypeTransfer;

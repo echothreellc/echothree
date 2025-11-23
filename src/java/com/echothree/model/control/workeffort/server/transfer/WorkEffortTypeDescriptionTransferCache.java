@@ -20,16 +20,21 @@ import com.echothree.model.control.workeffort.common.transfer.WorkEffortTypeDesc
 import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workeffort.server.entity.WorkEffortTypeDescription;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class WorkEffortTypeDescriptionTransferCache
         extends BaseWorkEffortDescriptionTransferCache<WorkEffortTypeDescription, WorkEffortTypeDescriptionTransfer> {
-    
+
+    WorkEffortControl workEffortControl = Session.getModelController(WorkEffortControl.class);
+
     /** Creates a new instance of WorkEffortTypeDescriptionTransferCache */
-    public WorkEffortTypeDescriptionTransferCache(UserVisit userVisit, WorkEffortControl workEffortControl) {
-        super(userVisit, workEffortControl);
+    protected WorkEffortTypeDescriptionTransferCache() {
+        super();
     }
     
-    public WorkEffortTypeDescriptionTransfer getWorkEffortTypeDescriptionTransfer(WorkEffortTypeDescription workEffortTypeDescription) {
+    public WorkEffortTypeDescriptionTransfer getWorkEffortTypeDescriptionTransfer(UserVisit userVisit, WorkEffortTypeDescription workEffortTypeDescription) {
         var workEffortTypeDescriptionTransfer = get(workEffortTypeDescription);
         
         if(workEffortTypeDescriptionTransfer == null) {
@@ -39,7 +44,7 @@ public class WorkEffortTypeDescriptionTransferCache
             
             workEffortTypeDescriptionTransfer = new WorkEffortTypeDescriptionTransfer(languageTransfer, workEffortTypeTransfer,
                     description);
-            put(workEffortTypeDescription, workEffortTypeDescriptionTransfer);
+            put(userVisit, workEffortTypeDescription, workEffortTypeDescriptionTransfer);
         }
         
         return workEffortTypeDescriptionTransfer;

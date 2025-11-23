@@ -38,12 +38,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class UseNameElementControl
         extends BaseOfferControl {
 
     /** Creates a new instance of UseNameElementControl */
-    public UseNameElementControl() {
+    protected UseNameElementControl() {
         super();
     }
 
@@ -167,15 +169,14 @@ public class UseNameElementControl
     }
 
     public UseNameElementTransfer getUseNameElementTransfer(UserVisit userVisit, UseNameElement useNameElement) {
-        return getOfferTransferCaches(userVisit).getUseNameElementTransferCache().getUseNameElementTransfer(useNameElement);
+        return useNameElementTransferCache.getUseNameElementTransfer(userVisit, useNameElement);
     }
 
     public List<UseNameElementTransfer> getUseNameElementTransfers(UserVisit userVisit, Collection<UseNameElement> useNameElements) {
         List<UseNameElementTransfer> useNameElementTransfers = new ArrayList<>(useNameElements.size());
-        var useNameElementTransferCache = getOfferTransferCaches(userVisit).getUseNameElementTransferCache();
 
         useNameElements.forEach((useNameElement) ->
-                useNameElementTransfers.add(useNameElementTransferCache.getUseNameElementTransfer(useNameElement))
+                useNameElementTransfers.add(useNameElementTransferCache.getUseNameElementTransfer(userVisit, useNameElement))
         );
 
         return useNameElementTransfers;
@@ -329,7 +330,7 @@ public class UseNameElementControl
         var useNameElementDescription = getUseNameElementDescription(useNameElement, language);
 
         if(useNameElementDescription == null && !language.getIsDefault()) {
-            useNameElementDescription = getUseNameElementDescription(useNameElement, getPartyControl().getDefaultLanguage());
+            useNameElementDescription = getUseNameElementDescription(useNameElement, partyControl.getDefaultLanguage());
         }
 
         if(useNameElementDescription == null) {
@@ -343,16 +344,15 @@ public class UseNameElementControl
 
     public UseNameElementDescriptionTransfer getUseNameElementDescriptionTransfer(UserVisit userVisit,
             UseNameElementDescription useNameElementDescription) {
-        return getOfferTransferCaches(userVisit).getUseNameElementDescriptionTransferCache().getUseNameElementDescriptionTransfer(useNameElementDescription);
+        return useNameElementDescriptionTransferCache.getUseNameElementDescriptionTransfer(userVisit, useNameElementDescription);
     }
 
     public List<UseNameElementDescriptionTransfer> getUseNameElementDescriptionTransfersByUseNameElement(UserVisit userVisit, UseNameElement useNameElement) {
         var useNameElementDescriptions = getUseNameElementDescriptionsByUseNameElement(useNameElement);
         List<UseNameElementDescriptionTransfer> useNameElementDescriptionTransfers = new ArrayList<>(useNameElementDescriptions.size());
-        var useNameElementDescriptionTransferCache = getOfferTransferCaches(userVisit).getUseNameElementDescriptionTransferCache();
 
         useNameElementDescriptions.forEach((useNameElementDescription) ->
-                useNameElementDescriptionTransfers.add(useNameElementDescriptionTransferCache.getUseNameElementDescriptionTransfer(useNameElementDescription))
+                useNameElementDescriptionTransfers.add(useNameElementDescriptionTransferCache.getUseNameElementDescriptionTransfer(userVisit, useNameElementDescription))
         );
 
         return useNameElementDescriptionTransfers;

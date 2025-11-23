@@ -26,7 +26,14 @@ import com.echothree.model.control.batch.common.transfer.BatchTransfer;
 import com.echothree.model.control.batch.common.transfer.BatchTypeDescriptionTransfer;
 import com.echothree.model.control.batch.common.transfer.BatchTypeEntityTypeTransfer;
 import com.echothree.model.control.batch.common.transfer.BatchTypeTransfer;
-import com.echothree.model.control.batch.server.transfer.BatchTransferCaches;
+import com.echothree.model.control.batch.server.transfer.BatchAliasTransferCache;
+import com.echothree.model.control.batch.server.transfer.BatchAliasTypeDescriptionTransferCache;
+import com.echothree.model.control.batch.server.transfer.BatchAliasTypeTransferCache;
+import com.echothree.model.control.batch.server.transfer.BatchEntityTransferCache;
+import com.echothree.model.control.batch.server.transfer.BatchTransferCache;
+import com.echothree.model.control.batch.server.transfer.BatchTypeDescriptionTransferCache;
+import com.echothree.model.control.batch.server.transfer.BatchTypeEntityTypeTransferCache;
+import com.echothree.model.control.batch.server.transfer.BatchTypeTransferCache;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.data.batch.common.pk.BatchPK;
 import com.echothree.model.data.batch.server.entity.Batch;
@@ -74,29 +81,46 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
+@RequestScoped
 public class BatchControl
         extends BaseModelControl {
     
     /** Creates a new instance of BatchControl */
-    public BatchControl() {
+    protected BatchControl() {
         super();
     }
     
     // --------------------------------------------------------------------------------
     //   Batch Transfer Caches
     // --------------------------------------------------------------------------------
-    
-    private BatchTransferCaches batchTransferCaches;
-    
-    public BatchTransferCaches getBatchTransferCaches(UserVisit userVisit) {
-        if(batchTransferCaches == null) {
-            batchTransferCaches = new BatchTransferCaches(userVisit, this);
-        }
-        
-        return batchTransferCaches;
-    }
-    
+
+    @Inject
+    BatchTypeTransferCache batchTypeTransferCache;
+
+    @Inject
+    BatchTypeDescriptionTransferCache batchTypeDescriptionTransferCache;
+
+    @Inject
+    BatchTypeEntityTypeTransferCache batchTypeEntityTypeTransferCache;
+
+    @Inject
+    BatchAliasTypeTransferCache batchAliasTypeTransferCache;
+
+    @Inject
+    BatchAliasTypeDescriptionTransferCache batchAliasTypeDescriptionTransferCache;
+
+    @Inject
+    BatchTransferCache batchTransferCache;
+
+    @Inject
+    BatchAliasTransferCache batchAliasTransferCache;
+
+    @Inject
+    BatchEntityTransferCache batchEntityTransferCache;
+
     // --------------------------------------------------------------------------------
     //   Batch Types
     // --------------------------------------------------------------------------------
@@ -271,16 +295,15 @@ public class BatchControl
     }
 
     public BatchTypeTransfer getBatchTypeTransfer(UserVisit userVisit, BatchType batchType) {
-        return getBatchTransferCaches(userVisit).getBatchTypeTransferCache().getTransfer(batchType);
+        return batchTypeTransferCache.getTransfer(userVisit, batchType);
     }
     
     public List<BatchTypeTransfer> getBatchTypeTransfers(UserVisit userVisit) {
         var batchTypes = getBatchTypes();
         List<BatchTypeTransfer> batchTypeTransfers = new ArrayList<>(batchTypes.size());
-        var batchTypeTransferCache = getBatchTransferCaches(userVisit).getBatchTypeTransferCache();
         
         batchTypes.forEach((batchType) ->
-                batchTypeTransfers.add(batchTypeTransferCache.getTransfer(batchType))
+                batchTypeTransfers.add(batchTypeTransferCache.getTransfer(userVisit, batchType))
         );
         
         return batchTypeTransfers;
@@ -531,7 +554,7 @@ public class BatchControl
         var batchTypeDescription = getBatchTypeDescription(batchType, language);
         
         if(batchTypeDescription == null && !language.getIsDefault()) {
-            batchTypeDescription = getBatchTypeDescription(batchType, getPartyControl().getDefaultLanguage());
+            batchTypeDescription = getBatchTypeDescription(batchType, partyControl.getDefaultLanguage());
         }
         
         if(batchTypeDescription == null) {
@@ -544,16 +567,15 @@ public class BatchControl
     }
     
     public BatchTypeDescriptionTransfer getBatchTypeDescriptionTransfer(UserVisit userVisit, BatchTypeDescription batchTypeDescription) {
-        return getBatchTransferCaches(userVisit).getBatchTypeDescriptionTransferCache().getTransfer(batchTypeDescription);
+        return batchTypeDescriptionTransferCache.getTransfer(userVisit, batchTypeDescription);
     }
     
     public List<BatchTypeDescriptionTransfer> getBatchTypeDescriptionTransfersByBatchType(UserVisit userVisit, BatchType batchType) {
         var batchTypeDescriptions = getBatchTypeDescriptionsByBatchType(batchType);
         List<BatchTypeDescriptionTransfer> batchTypeDescriptionTransfers = new ArrayList<>(batchTypeDescriptions.size());
-        var batchTypeDescriptionTransferCache = getBatchTransferCaches(userVisit).getBatchTypeDescriptionTransferCache();
         
         batchTypeDescriptions.forEach((batchTypeDescription) ->
-                batchTypeDescriptionTransfers.add(batchTypeDescriptionTransferCache.getTransfer(batchTypeDescription))
+                batchTypeDescriptionTransfers.add(batchTypeDescriptionTransferCache.getTransfer(userVisit, batchTypeDescription))
         );
         
         return batchTypeDescriptionTransfers;
@@ -717,15 +739,14 @@ public class BatchControl
     }
 
     public BatchTypeEntityTypeTransfer getBatchTypeEntityTypeTransfer(UserVisit userVisit, BatchTypeEntityType batchTypeEntityType) {
-        return getBatchTransferCaches(userVisit).getBatchTypeEntityTypeTransferCache().getTransfer(batchTypeEntityType);
+        return batchTypeEntityTypeTransferCache.getTransfer(userVisit, batchTypeEntityType);
     }
 
     public List<BatchTypeEntityTypeTransfer> getBatchTypeEntityTypeTransfers(UserVisit userVisit, Collection<BatchTypeEntityType> batchTypeEntityTypes) {
         List<BatchTypeEntityTypeTransfer> batchTypeEntityTypeTransfers = new ArrayList<>(batchTypeEntityTypes.size());
-        var batchTypeEntityTypeTransferCache = getBatchTransferCaches(userVisit).getBatchTypeEntityTypeTransferCache();
 
         batchTypeEntityTypes.forEach((batchTypeEntityType) ->
-                batchTypeEntityTypeTransfers.add(batchTypeEntityTypeTransferCache.getTransfer(batchTypeEntityType))
+                batchTypeEntityTypeTransfers.add(batchTypeEntityTypeTransferCache.getTransfer(userVisit, batchTypeEntityType))
         );
 
         return batchTypeEntityTypeTransfers;
@@ -899,16 +920,15 @@ public class BatchControl
     }
     
     public BatchAliasTypeTransfer getBatchAliasTypeTransfer(UserVisit userVisit, BatchAliasType batchAliasType) {
-        return getBatchTransferCaches(userVisit).getBatchAliasTypeTransferCache().getTransfer(batchAliasType);
+        return batchAliasTypeTransferCache.getTransfer(userVisit, batchAliasType);
     }
     
     public List<BatchAliasTypeTransfer> getBatchAliasTypeTransfers(UserVisit userVisit, BatchType batchType) {
         var batchAliasTypes = getBatchAliasTypes(batchType);
         List<BatchAliasTypeTransfer> batchAliasTypeTransfers = new ArrayList<>(batchAliasTypes.size());
-        var batchAliasTypeTransferCache = getBatchTransferCaches(userVisit).getBatchAliasTypeTransferCache();
         
         batchAliasTypes.forEach((batchAliasType) ->
-                batchAliasTypeTransfers.add(batchAliasTypeTransferCache.getTransfer(batchAliasType))
+                batchAliasTypeTransfers.add(batchAliasTypeTransferCache.getTransfer(userVisit, batchAliasType))
         );
         
         return batchAliasTypeTransfers;
@@ -1124,7 +1144,7 @@ public class BatchControl
         var batchAliasTypeDescription = getBatchAliasTypeDescription(batchAliasType, language);
         
         if(batchAliasTypeDescription == null && !language.getIsDefault()) {
-            batchAliasTypeDescription = getBatchAliasTypeDescription(batchAliasType, getPartyControl().getDefaultLanguage());
+            batchAliasTypeDescription = getBatchAliasTypeDescription(batchAliasType, partyControl.getDefaultLanguage());
         }
         
         if(batchAliasTypeDescription == null) {
@@ -1137,16 +1157,15 @@ public class BatchControl
     }
     
     public BatchAliasTypeDescriptionTransfer getBatchAliasTypeDescriptionTransfer(UserVisit userVisit, BatchAliasTypeDescription batchAliasTypeDescription) {
-        return getBatchTransferCaches(userVisit).getBatchAliasTypeDescriptionTransferCache().getTransfer(batchAliasTypeDescription);
+        return batchAliasTypeDescriptionTransferCache.getTransfer(userVisit, batchAliasTypeDescription);
     }
     
     public List<BatchAliasTypeDescriptionTransfer> getBatchAliasTypeDescriptionTransfersByBatchAliasType(UserVisit userVisit, BatchAliasType batchAliasType) {
         var batchAliasTypeDescriptions = getBatchAliasTypeDescriptionsByBatchAliasType(batchAliasType);
         List<BatchAliasTypeDescriptionTransfer> batchAliasTypeDescriptionTransfers = new ArrayList<>(batchAliasTypeDescriptions.size());
-        var batchAliasTypeDescriptionTransferCache = getBatchTransferCaches(userVisit).getBatchAliasTypeDescriptionTransferCache();
         
         batchAliasTypeDescriptions.forEach((batchAliasTypeDescription) ->
-                batchAliasTypeDescriptionTransfers.add(batchAliasTypeDescriptionTransferCache.getTransfer(batchAliasTypeDescription))
+                batchAliasTypeDescriptionTransfers.add(batchAliasTypeDescriptionTransferCache.getTransfer(userVisit, batchAliasTypeDescription))
         );
         
         return batchAliasTypeDescriptionTransfers;
@@ -1322,16 +1341,15 @@ public class BatchControl
     }
 
     public BatchTransfer getBatchTransfer(UserVisit userVisit, Batch batch) {
-        return getBatchTransferCaches(userVisit).getBatchTransferCache().getTransfer(batch);
+        return batchTransferCache.getTransfer(userVisit, batch);
     }
     
     public List<BatchTransfer> getBatchTransfers(UserVisit userVisit, BatchType batchType) {
         var batches = getBatches(batchType);
         List<BatchTransfer> batchTransfers = new ArrayList<>(batches.size());
-        var batchTransferCache = getBatchTransferCaches(userVisit).getBatchTransferCache();
         
         batches.forEach((batch) ->
-                batchTransfers.add(batchTransferCache.getTransfer(batch))
+                batchTransfers.add(batchTransferCache.getTransfer(userVisit, batch))
         );
         
         return batchTransfers;
@@ -1526,16 +1544,15 @@ public class BatchControl
     }
     
     public BatchAliasTransfer getBatchAliasTransfer(UserVisit userVisit, BatchAlias batchAlias) {
-        return getBatchTransferCaches(userVisit).getBatchAliasTransferCache().getTransfer(batchAlias);
+        return batchAliasTransferCache.getTransfer(userVisit, batchAlias);
     }
     
     public List<BatchAliasTransfer> getBatchAliasTransfersByBatch(UserVisit userVisit, Batch batch) {
         var batchaliases = getBatchAliasesByBatch(batch);
         List<BatchAliasTransfer> batchAliasTransfers = new ArrayList<>(batchaliases.size());
-        var batchAliasTransferCache = getBatchTransferCaches(userVisit).getBatchAliasTransferCache();
         
         batchaliases.forEach((batchAlias) ->
-                batchAliasTransfers.add(batchAliasTransferCache.getTransfer(batchAlias))
+                batchAliasTransfers.add(batchAliasTransferCache.getTransfer(userVisit, batchAlias))
         );
         
         return batchAliasTransfers;
@@ -1703,15 +1720,14 @@ public class BatchControl
     }
 
     public BatchEntityTransfer getBatchEntityTransfer(UserVisit userVisit, BatchEntity batchEntity) {
-        return getBatchTransferCaches(userVisit).getBatchEntityTransferCache().getTransfer(batchEntity);
+        return batchEntityTransferCache.getTransfer(userVisit, batchEntity);
     }
 
     public List<BatchEntityTransfer> getBatchEntityTransfers(UserVisit userVisit, Collection<BatchEntity> batchEntities) {
         List<BatchEntityTransfer> batchEntityTransfers = new ArrayList<>(batchEntities.size());
-        var batchEntityTransferCache = getBatchTransferCaches(userVisit).getBatchEntityTransferCache();
 
         batchEntities.forEach((batchEntity) ->
-                batchEntityTransfers.add(batchEntityTransferCache.getTransfer(batchEntity))
+                batchEntityTransfers.add(batchEntityTransferCache.getTransfer(userVisit, batchEntity))
         );
 
         return batchEntityTransfers;

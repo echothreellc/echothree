@@ -21,28 +21,30 @@ import com.echothree.model.control.payment.server.control.BillingControl;
 import com.echothree.model.data.payment.server.entity.BillingAccountRoleType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class BillingAccountRoleTypeTransferCache
         extends BasePaymentTransferCache<BillingAccountRoleType, BillingAccountRoleTypeTransfer> {
 
     BillingControl billingControl = Session.getModelController(BillingControl.class);
 
     /** Creates a new instance of BillingAccountRoleTypeTransferCache */
-    public BillingAccountRoleTypeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected BillingAccountRoleTypeTransferCache() {
+        super();
     }
 
     @Override
-    public BillingAccountRoleTypeTransfer getTransfer(BillingAccountRoleType billingAccountRoleType) {
+    public BillingAccountRoleTypeTransfer getTransfer(UserVisit userVisit, BillingAccountRoleType billingAccountRoleType) {
         var billingAccountRoleTypeTransfer = get(billingAccountRoleType);
         
         if(billingAccountRoleTypeTransfer == null) {
             var billingAccountRoleTypeName = billingAccountRoleType.getBillingAccountRoleTypeName();
             var sortOrder = billingAccountRoleType.getSortOrder();
-            var description = billingControl.getBestBillingAccountRoleTypeDescription(billingAccountRoleType, getLanguage());
+            var description = billingControl.getBestBillingAccountRoleTypeDescription(billingAccountRoleType, getLanguage(userVisit));
             
             billingAccountRoleTypeTransfer = new BillingAccountRoleTypeTransfer(billingAccountRoleTypeName, sortOrder, description);
-            put(billingAccountRoleType, billingAccountRoleTypeTransfer);
+            put(userVisit, billingAccountRoleType, billingAccountRoleTypeTransfer);
         }
         
         return billingAccountRoleTypeTransfer;

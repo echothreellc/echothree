@@ -39,7 +39,9 @@ import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EditTransactionEntityRoleTypeCommand
         extends BaseEditCommand<TransactionEntityRoleTypeSpec, TransactionEntityRoleTypeEdit> {
     
@@ -127,11 +129,11 @@ public class EditTransactionEntityRoleTypeCommand
 
                     if(duplicateTransactionEntityRoleType == null || transactionEntityRoleType.equals(duplicateTransactionEntityRoleType)) {
                         var componentVendorName = edit.getComponentVendorName();
-                        var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
+                        var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
 
                         if(componentVendor != null) {
                             var entityTypeName = edit.getEntityTypeName();
-                            var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
+                            var entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
 
                             if(entityType != null) {
                                 if(lockEntityForUpdate(transactionEntityRoleType)) {

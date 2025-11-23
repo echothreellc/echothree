@@ -28,7 +28,9 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workrequirement.server.entity.WorkRequirementScope;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class WorkRequirementScopeTransferCache
         extends BaseWorkRequirementTransferCache<WorkRequirementScope, WorkRequirementScopeTransfer> {
     
@@ -36,12 +38,12 @@ public class WorkRequirementScopeTransferCache
     SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
     UomControl uomControl = Session.getModelController(UomControl.class);
     WorkEffortControl workEffortControl = Session.getModelController(WorkEffortControl.class);
+    WorkRequirementControl workRequirementControl = Session.getModelController(WorkRequirementControl.class);
+
     boolean includeWorkRequirements;
     
     /** Creates a new instance of WorkRequirementScopeTransferCache */
-    public WorkRequirementScopeTransferCache(UserVisit userVisit, WorkRequirementControl workRequirementControl) {
-        super(userVisit, workRequirementControl);
-
+    protected WorkRequirementScopeTransferCache() {
         var options = session.getOptions();
         if(options != null) {
             includeWorkRequirements = options.contains(WorkRequirementOptions.WorkRequirementScopeIncludeWorkRequirements);
@@ -50,7 +52,7 @@ public class WorkRequirementScopeTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public WorkRequirementScopeTransfer getWorkRequirementScopeTransfer(WorkRequirementScope workRequirementScope) {
+    public WorkRequirementScopeTransfer getWorkRequirementScopeTransfer(UserVisit userVisit, WorkRequirementScope workRequirementScope) {
         var workRequirementScopeTransfer = get(workRequirementScope);
         
         if(workRequirementScopeTransfer == null) {
@@ -64,13 +66,13 @@ public class WorkRequirementScopeTransferCache
             var workAssignmentSelector = workRequirementScopeDetail.getWorkAssignmentSelector();
             var workAssignmentSelectorTransfer = workAssignmentSelector == null? null: selectorControl.getSelectorTransfer(userVisit, workAssignmentSelector);
             var timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
-            var estimatedTimeAllowed = formatUnitOfMeasure(timeUnitOfMeasureKind, workRequirementScopeDetail.getEstimatedTimeAllowed());
-            var maximumTimeAllowed = formatUnitOfMeasure(timeUnitOfMeasureKind, workRequirementScopeDetail.getMaximumTimeAllowed());
+            var estimatedTimeAllowed = formatUnitOfMeasure(userVisit, timeUnitOfMeasureKind, workRequirementScopeDetail.getEstimatedTimeAllowed());
+            var maximumTimeAllowed = formatUnitOfMeasure(userVisit, timeUnitOfMeasureKind, workRequirementScopeDetail.getMaximumTimeAllowed());
             
             workRequirementScopeTransfer = new WorkRequirementScopeTransfer(workEffortScopeTransfer, workRequirementTypeTransfer,
                     workRequirementSequenceTransfer, workTimeSequenceTransfer, workAssignmentSelectorTransfer, estimatedTimeAllowed,
                     maximumTimeAllowed);
-            put(workRequirementScope, workRequirementScopeTransfer);
+            put(userVisit, workRequirementScope, workRequirementScopeTransfer);
 
             if(includeWorkRequirements) {
                 workRequirementScopeTransfer.setWorkRequirements(new ListWrapper<>(workRequirementControl.getWorkRequirementTransfersByWorkRequirementScope(userVisit, workRequirementScope)));

@@ -20,18 +20,23 @@ import com.echothree.model.control.carrier.common.transfer.CarrierTypeTransfer;
 import com.echothree.model.control.carrier.server.control.CarrierControl;
 import com.echothree.model.data.carrier.server.entity.CarrierType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CarrierTypeTransferCache
         extends BaseCarrierTransferCache<CarrierType, CarrierTypeTransfer> {
 
+    CarrierControl carrierControl = Session.getModelController(CarrierControl.class);
+
     /** Creates a new instance of CarrierTypeTransferCache */
-    public CarrierTypeTransferCache(UserVisit userVisit, CarrierControl carrierControl) {
-        super(userVisit, carrierControl);
+    protected CarrierTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
 
-    public CarrierTypeTransfer getCarrierTypeTransfer(CarrierType carrierType) {
+    public CarrierTypeTransfer getCarrierTypeTransfer(UserVisit userVisit, CarrierType carrierType) {
         var carrierTypeTransfer = get(carrierType);
 
         if(carrierTypeTransfer == null) {
@@ -39,10 +44,10 @@ public class CarrierTypeTransferCache
             var carrierTypeName = carrierTypeDetail.getCarrierTypeName();
             var isDefault = carrierTypeDetail.getIsDefault();
             var sortOrder = carrierTypeDetail.getSortOrder();
-            var description = carrierControl.getBestCarrierTypeDescription(carrierType, getLanguage());
+            var description = carrierControl.getBestCarrierTypeDescription(carrierType, getLanguage(userVisit));
 
             carrierTypeTransfer = new CarrierTypeTransfer(carrierTypeName, isDefault, sortOrder, description);
-            put(carrierType, carrierTypeTransfer);
+            put(userVisit, carrierType, carrierTypeTransfer);
         }
 
         return carrierTypeTransfer;

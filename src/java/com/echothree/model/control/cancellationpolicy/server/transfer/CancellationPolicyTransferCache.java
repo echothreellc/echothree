@@ -20,18 +20,23 @@ import com.echothree.model.control.cancellationpolicy.common.transfer.Cancellati
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CancellationPolicyTransferCache
         extends BaseCancellationPolicyTransferCache<CancellationPolicy, CancellationPolicyTransfer> {
-    
+
+    CancellationPolicyControl cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
+
     /** Creates a new instance of CancellationPolicyTransferCache */
-    public CancellationPolicyTransferCache(UserVisit userVisit, CancellationPolicyControl cancellationPolicyControl) {
-        super(userVisit, cancellationPolicyControl);
+    protected CancellationPolicyTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public CancellationPolicyTransfer getCancellationPolicyTransfer(CancellationPolicy cancellationPolicy) {
+    public CancellationPolicyTransfer getCancellationPolicyTransfer(UserVisit userVisit, CancellationPolicy cancellationPolicy) {
         var cancellationPolicyTransfer = get(cancellationPolicy);
         
         if(cancellationPolicyTransfer == null) {
@@ -40,11 +45,11 @@ public class CancellationPolicyTransferCache
             var cancellationPolicyName = cancellationPolicyDetail.getCancellationPolicyName();
             var isDefault = cancellationPolicyDetail.getIsDefault();
             var sortOrder = cancellationPolicyDetail.getSortOrder();
-            var cancellationPolicyTranslation = cancellationPolicyControl.getBestCancellationPolicyTranslation(cancellationPolicy, getLanguage());
+            var cancellationPolicyTranslation = cancellationPolicyControl.getBestCancellationPolicyTranslation(cancellationPolicy, getLanguage(userVisit));
             var description = cancellationPolicyTranslation == null ? cancellationPolicyName : cancellationPolicyTranslation.getDescription();
             
             cancellationPolicyTransfer = new CancellationPolicyTransfer(cancellationKind, cancellationPolicyName, isDefault, sortOrder, description);
-            put(cancellationPolicy, cancellationPolicyTransfer);
+            put(userVisit, cancellationPolicy, cancellationPolicyTransfer);
         }
         return cancellationPolicyTransfer;
     }

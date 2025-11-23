@@ -20,18 +20,23 @@ import com.echothree.model.control.security.common.transfer.SecurityRoleTransfer
 import com.echothree.model.control.security.server.control.SecurityControl;
 import com.echothree.model.data.security.server.entity.SecurityRole;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class SecurityRoleTransferCache
         extends BaseSecurityTransferCache<SecurityRole, SecurityRoleTransfer> {
-    
+
+    SecurityControl securityControl = Session.getModelController(SecurityControl.class);
+
     /** Creates a new instance of SecurityRoleTransferCache */
-    public SecurityRoleTransferCache(UserVisit userVisit, SecurityControl securityControl) {
-        super(userVisit, securityControl);
+    protected SecurityRoleTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public SecurityRoleTransfer getSecurityRoleTransfer(SecurityRole securityRole) {
+    public SecurityRoleTransfer getSecurityRoleTransfer(UserVisit userVisit, SecurityRole securityRole) {
         var securityRoleTransfer = get(securityRole);
         
         if(securityRoleTransfer == null) {
@@ -40,10 +45,10 @@ public class SecurityRoleTransferCache
             var securityRoleGroupTransfer = securityControl.getSecurityRoleGroupTransfer(userVisit, securityRoleDetail.getSecurityRoleGroup());
             var isDefault = securityRoleDetail.getIsDefault();
             var sortOrder = securityRoleDetail.getSortOrder();
-            var description = securityControl.getBestSecurityRoleDescription(securityRole, getLanguage());
+            var description = securityControl.getBestSecurityRoleDescription(securityRole, getLanguage(userVisit));
             
             securityRoleTransfer = new SecurityRoleTransfer(securityRoleGroupTransfer, securityRoleName, isDefault, sortOrder, description);
-            put(securityRole, securityRoleTransfer);
+            put(userVisit, securityRole, securityRoleTransfer);
         }
         return securityRoleTransfer;
     }

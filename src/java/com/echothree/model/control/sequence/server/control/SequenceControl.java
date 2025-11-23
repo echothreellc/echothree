@@ -29,7 +29,12 @@ import com.echothree.model.control.sequence.common.transfer.SequenceEncoderTypeT
 import com.echothree.model.control.sequence.common.transfer.SequenceTransfer;
 import com.echothree.model.control.sequence.common.transfer.SequenceTypeDescriptionTransfer;
 import com.echothree.model.control.sequence.common.transfer.SequenceTypeTransfer;
-import com.echothree.model.control.sequence.server.transfer.SequenceTransferCaches;
+import com.echothree.model.control.sequence.server.transfer.SequenceChecksumTypeTransferCache;
+import com.echothree.model.control.sequence.server.transfer.SequenceDescriptionTransferCache;
+import com.echothree.model.control.sequence.server.transfer.SequenceEncoderTypeTransferCache;
+import com.echothree.model.control.sequence.server.transfer.SequenceTransferCache;
+import com.echothree.model.control.sequence.server.transfer.SequenceTypeDescriptionTransferCache;
+import com.echothree.model.control.sequence.server.transfer.SequenceTypeTransferCache;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.sequence.common.pk.SequencePK;
@@ -69,29 +74,40 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
+@RequestScoped
 public class SequenceControl
         extends BaseModelControl {
     
     /** Creates a new instance of SequenceControl */
-    public SequenceControl() {
+    protected SequenceControl() {
         super();
     }
     
     // --------------------------------------------------------------------------------
     //   Sequence Transfer Caches
     // --------------------------------------------------------------------------------
-    
-    private SequenceTransferCaches sequenceTransferCaches;
-    
-    public SequenceTransferCaches getSequenceTransferCaches(UserVisit userVisit) {
-        if(sequenceTransferCaches == null) {
-            sequenceTransferCaches = new SequenceTransferCaches(userVisit, this);
-        }
-        
-        return sequenceTransferCaches;
-    }
-    
+
+    @Inject
+    SequenceEncoderTypeTransferCache sequenceEncoderTypeTransferCache;
+
+    @Inject
+    SequenceChecksumTypeTransferCache sequenceChecksumTypeTransferCache;
+
+    @Inject
+    SequenceTypeTransferCache sequenceTypeTransferCache;
+
+    @Inject
+    SequenceTypeDescriptionTransferCache sequenceTypeDescriptionTransferCache;
+
+    @Inject
+    SequenceTransferCache sequenceTransferCache;
+
+    @Inject
+    SequenceDescriptionTransferCache sequenceDescriptionTransferCache;
+
     // --------------------------------------------------------------------------------
     //   Sequence Types
     // --------------------------------------------------------------------------------
@@ -363,15 +379,14 @@ public class SequenceControl
     }
     
     public SequenceTypeTransfer getSequenceTypeTransfer(UserVisit userVisit, SequenceType sequenceType) {
-        return getSequenceTransferCaches(userVisit).getSequenceTypeTransferCache().getSequenceTypeTransfer(sequenceType);
+        return sequenceTypeTransferCache.getSequenceTypeTransfer(userVisit, sequenceType);
     }
 
     public List<SequenceTypeTransfer> getSequenceTypeTransfers(UserVisit userVisit, Collection<SequenceType> sequenceTypes) {
         List<SequenceTypeTransfer> sequenceTypeTransfers = new ArrayList<>(sequenceTypes.size());
-        var sequenceTypeTransferCache = getSequenceTransferCaches(userVisit).getSequenceTypeTransferCache();
 
         sequenceTypes.forEach((sequenceType) ->
-                sequenceTypeTransfers.add(sequenceTypeTransferCache.getSequenceTypeTransfer(sequenceType))
+                sequenceTypeTransfers.add(sequenceTypeTransferCache.getSequenceTypeTransfer(userVisit, sequenceType))
         );
 
         return sequenceTypeTransfers;
@@ -564,7 +579,7 @@ public class SequenceControl
         var sequenceTypeDescription = getSequenceTypeDescription(sequenceType, language);
         
         if(sequenceTypeDescription == null && !language.getIsDefault()) {
-            sequenceTypeDescription = getSequenceTypeDescription(sequenceType, getPartyControl().getDefaultLanguage());
+            sequenceTypeDescription = getSequenceTypeDescription(sequenceType, partyControl.getDefaultLanguage());
         }
         
         if(sequenceTypeDescription == null) {
@@ -577,16 +592,15 @@ public class SequenceControl
     }
     
     public SequenceTypeDescriptionTransfer getSequenceTypeDescriptionTransfer(UserVisit userVisit, SequenceTypeDescription sequenceTypeDescription) {
-        return getSequenceTransferCaches(userVisit).getSequenceTypeDescriptionTransferCache().getSequenceTypeDescriptionTransfer(sequenceTypeDescription);
+        return sequenceTypeDescriptionTransferCache.getSequenceTypeDescriptionTransfer(userVisit, sequenceTypeDescription);
     }
     
     public List<SequenceTypeDescriptionTransfer> getSequenceTypeDescriptionTransfers(UserVisit userVisit, SequenceType sequenceType) {
         var sequenceTypeDescriptions = getSequenceTypeDescriptionsBySequenceType(sequenceType);
         List<SequenceTypeDescriptionTransfer> sequenceTypeDescriptionTransfers = new ArrayList<>(sequenceTypeDescriptions.size());
-        var sequenceTypeDescriptionTransferCache = getSequenceTransferCaches(userVisit).getSequenceTypeDescriptionTransferCache();
         
         sequenceTypeDescriptions.forEach((sequenceTypeDescription) ->
-                sequenceTypeDescriptionTransfers.add(sequenceTypeDescriptionTransferCache.getSequenceTypeDescriptionTransfer(sequenceTypeDescription))
+                sequenceTypeDescriptionTransfers.add(sequenceTypeDescriptionTransferCache.getSequenceTypeDescriptionTransfer(userVisit, sequenceTypeDescription))
         );
         
         return sequenceTypeDescriptionTransfers;
@@ -666,15 +680,14 @@ public class SequenceControl
     }
 
     public SequenceChecksumTypeTransfer getSequenceChecksumTypeTransfer(UserVisit userVisit, SequenceChecksumType sequenceChecksumType) {
-        return getSequenceTransferCaches(userVisit).getSequenceChecksumTypeTransferCache().getSequenceChecksumTypeTransfer(sequenceChecksumType);
+        return sequenceChecksumTypeTransferCache.getSequenceChecksumTypeTransfer(userVisit, sequenceChecksumType);
     }
 
     public List<SequenceChecksumTypeTransfer> getSequenceChecksumTypeTransfers(UserVisit userVisit, Collection<SequenceChecksumType> sequenceChecksumTypes) {
         List<SequenceChecksumTypeTransfer> sequenceChecksumTypeTransfers = new ArrayList<>(sequenceChecksumTypes.size());
-        var sequenceChecksumTypeTransferCache = getSequenceTransferCaches(userVisit).getSequenceChecksumTypeTransferCache();
 
         sequenceChecksumTypes.forEach((sequenceChecksumType) ->
-                sequenceChecksumTypeTransfers.add(sequenceChecksumTypeTransferCache.getSequenceChecksumTypeTransfer(sequenceChecksumType))
+                sequenceChecksumTypeTransfers.add(sequenceChecksumTypeTransferCache.getSequenceChecksumTypeTransfer(userVisit, sequenceChecksumType))
         );
 
         return sequenceChecksumTypeTransfers;
@@ -750,7 +763,7 @@ public class SequenceControl
         var sequenceChecksumTypeDescription = getSequenceChecksumTypeDescription(sequenceChecksumType, language);
         
         if(sequenceChecksumTypeDescription == null && !language.getIsDefault()) {
-            sequenceChecksumTypeDescription = getSequenceChecksumTypeDescription(sequenceChecksumType, getPartyControl().getDefaultLanguage());
+            sequenceChecksumTypeDescription = getSequenceChecksumTypeDescription(sequenceChecksumType, partyControl.getDefaultLanguage());
         }
         
         if(sequenceChecksumTypeDescription == null) {
@@ -804,15 +817,14 @@ public class SequenceControl
     }
 
     public SequenceEncoderTypeTransfer getSequenceEncoderTypeTransfer(UserVisit userVisit, SequenceEncoderType sequenceEncoderType) {
-        return getSequenceTransferCaches(userVisit).getSequenceEncoderTypeTransferCache().getSequenceEncoderTypeTransfer(sequenceEncoderType);
+        return sequenceEncoderTypeTransferCache.getSequenceEncoderTypeTransfer(userVisit, sequenceEncoderType);
     }
 
     public List<SequenceEncoderTypeTransfer> getSequenceEncoderTypeTransfers(UserVisit userVisit, Collection<SequenceEncoderType> sequenceEncoderTypes) {
         List<SequenceEncoderTypeTransfer> sequenceEncoderTypeTransfers = new ArrayList<>(sequenceEncoderTypes.size());
-        var sequenceEncoderTypeTransferCache = getSequenceTransferCaches(userVisit).getSequenceEncoderTypeTransferCache();
 
         sequenceEncoderTypes.forEach((sequenceEncoderType) ->
-                sequenceEncoderTypeTransfers.add(sequenceEncoderTypeTransferCache.getSequenceEncoderTypeTransfer(sequenceEncoderType))
+                sequenceEncoderTypeTransfers.add(sequenceEncoderTypeTransferCache.getSequenceEncoderTypeTransfer(userVisit, sequenceEncoderType))
         );
 
         return sequenceEncoderTypeTransfers;
@@ -887,7 +899,7 @@ public class SequenceControl
         var sequenceEncoderTypeDescription = getSequenceEncoderTypeDescription(sequenceEncoderType, language);
         
         if(sequenceEncoderTypeDescription == null && !language.getIsDefault()) {
-            sequenceEncoderTypeDescription = getSequenceEncoderTypeDescription(sequenceEncoderType, getPartyControl().getDefaultLanguage());
+            sequenceEncoderTypeDescription = getSequenceEncoderTypeDescription(sequenceEncoderType, partyControl.getDefaultLanguage());
         }
         
         if(sequenceEncoderTypeDescription == null) {
@@ -1136,15 +1148,14 @@ public class SequenceControl
     }
     
     public SequenceTransfer getSequenceTransfer(UserVisit userVisit, Sequence sequence) {
-        return getSequenceTransferCaches(userVisit).getSequenceTransferCache().getSequenceTransfer(sequence);
+        return sequenceTransferCache.getSequenceTransfer(userVisit, sequence);
     }
 
     public List<SequenceTransfer> getSequenceTransfers(UserVisit userVisit, Collection<Sequence> sequences) {
         var sequenceTransfers = new ArrayList<SequenceTransfer>(sequences.size());
-        var sequenceTransferCache = getSequenceTransferCaches(userVisit).getSequenceTransferCache();
 
         sequences.forEach((sequence) ->
-            sequenceTransfers.add(sequenceTransferCache.getSequenceTransfer(sequence))
+            sequenceTransfers.add(sequenceTransferCache.getSequenceTransfer(userVisit, sequence))
         );
 
         return sequenceTransfers;
@@ -1351,7 +1362,7 @@ public class SequenceControl
         var sequenceDescription = getSequenceDescription(sequence, language);
         
         if(sequenceDescription == null && !language.getIsDefault()) {
-            sequenceDescription = getSequenceDescription(sequence, getPartyControl().getDefaultLanguage());
+            sequenceDescription = getSequenceDescription(sequence, partyControl.getDefaultLanguage());
         }
         
         if(sequenceDescription == null) {
@@ -1364,16 +1375,15 @@ public class SequenceControl
     }
     
     public SequenceDescriptionTransfer getSequenceDescriptionTransfer(UserVisit userVisit, SequenceDescription sequenceDescription) {
-        return getSequenceTransferCaches(userVisit).getSequenceDescriptionTransferCache().getSequenceDescriptionTransfer(sequenceDescription);
+        return sequenceDescriptionTransferCache.getSequenceDescriptionTransfer(userVisit, sequenceDescription);
     }
     
     public List<SequenceDescriptionTransfer> getSequenceDescriptionTransfers(UserVisit userVisit, Sequence sequence) {
         var sequenceDescriptions = getSequenceDescriptionsBySequence(sequence);
         List<SequenceDescriptionTransfer> sequenceDescriptionTransfers = new ArrayList<>(sequenceDescriptions.size());
-        var sequenceDescriptionTransferCache = getSequenceTransferCaches(userVisit).getSequenceDescriptionTransferCache();
         
         sequenceDescriptions.forEach((sequenceDescription) ->
-                sequenceDescriptionTransfers.add(sequenceDescriptionTransferCache.getSequenceDescriptionTransfer(sequenceDescription))
+                sequenceDescriptionTransfers.add(sequenceDescriptionTransferCache.getSequenceDescriptionTransfer(userVisit, sequenceDescription))
         );
         
         return sequenceDescriptionTransfers;

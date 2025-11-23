@@ -18,24 +18,26 @@ package com.echothree.model.control.campaign.server.transfer;
 
 import com.echothree.model.control.campaign.common.CampaignOptions;
 import com.echothree.model.control.campaign.common.transfer.CampaignTermTransfer;
-import com.echothree.model.control.campaign.server.control.CampaignControl;
-import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.campaign.common.workflow.CampaignTermStatusConstants;
+import com.echothree.model.control.campaign.server.control.CampaignControl;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.campaign.server.entity.CampaignTerm;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CampaignTermTransferCache
         extends BaseCampaignTransferCache<CampaignTerm, CampaignTermTransfer> {
 
+    CampaignControl campaignControl = Session.getModelController(CampaignControl.class);
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of CampaignTermTransferCache */
-    public CampaignTermTransferCache(UserVisit userVisit, CampaignControl campaignControl) {
-        super(userVisit, campaignControl);
+    protected CampaignTermTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {
@@ -45,7 +47,7 @@ public class CampaignTermTransferCache
         setIncludeEntityInstance(true);
     }
 
-    public CampaignTermTransfer getCampaignTermTransfer(CampaignTerm campaignTerm) {
+    public CampaignTermTransfer getCampaignTermTransfer(UserVisit userVisit, CampaignTerm campaignTerm) {
         var campaignTermTransfer = get(campaignTerm);
 
         if(campaignTermTransfer == null) {
@@ -55,7 +57,7 @@ public class CampaignTermTransferCache
             var value = campaignTermDetail.getValue();
             var isDefault = campaignTermDetail.getIsDefault();
             var sortOrder = campaignTermDetail.getSortOrder();
-            var description = campaignControl.getBestCampaignTermDescription(campaignTerm, getLanguage());
+            var description = campaignControl.getBestCampaignTermDescription(campaignTerm, getLanguage(userVisit));
 
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(campaignTerm.getPrimaryKey());
             var campaignTermStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
@@ -63,7 +65,7 @@ public class CampaignTermTransferCache
             
             campaignTermTransfer = new CampaignTermTransfer(campaignTermName, valueSha1Hash, value, isDefault, sortOrder, description,
                     campaignTermStatusTransfer);
-            put(campaignTerm, campaignTermTransfer);
+            put(userVisit, campaignTerm, campaignTermTransfer);
         }
 
         return campaignTermTransfer;

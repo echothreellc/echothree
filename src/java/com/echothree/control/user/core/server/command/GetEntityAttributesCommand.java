@@ -38,7 +38,9 @@ import com.google.common.base.Splitter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class GetEntityAttributesCommand
         extends BasePaginatedMultipleEntitiesCommand<EntityAttribute, GetEntityAttributesForm> {
 
@@ -77,7 +79,6 @@ public class GetEntityAttributesCommand
         entityType = EntityTypeLogic.getInstance().getEntityTypeByUniversalSpec(this, form);
 
         if(!hasExecutionErrors() && entityAttributeTypeNames != null) {
-            var coreControl = getCoreControl();
             var entityAttributeTypeNamesToCheck = Splitter.on(':').trimResults().omitEmptyStrings().splitToList(entityAttributeTypeNames).toArray(new String[0]);
             var entityAttributeTypeNamesToCheckLength = entityAttributeTypeNamesToCheck.length;
 
@@ -102,9 +103,8 @@ public class GetEntityAttributesCommand
 
         if(!hasExecutionErrors()) {
             if(entityAttributeTypes == null) {
-                totalEntities = getCoreControl().countEntityAttributesByEntityType(entityType);
+                totalEntities = coreControl.countEntityAttributesByEntityType(entityType);
             } else {
-                var coreControl = getCoreControl();
                 var totalEntitiesTally = 0L;
 
                 for(var entityAttributeType : entityAttributeTypes) {
@@ -125,9 +125,8 @@ public class GetEntityAttributesCommand
 
         if(!hasExecutionErrors()) {
             if(entityAttributeTypes == null) {
-                entityAttributes = getCoreControl().getEntityAttributesByEntityType(entityType);
+                entityAttributes = coreControl.getEntityAttributesByEntityType(entityType);
             } else {
-                var coreControl = getCoreControl();
 
                 entityAttributes = new ArrayList<>();
 
@@ -147,7 +146,6 @@ public class GetEntityAttributesCommand
         var result = CoreResultFactory.getGetEntityAttributesResult();
 
         if(entities != null) {
-            var coreControl = getCoreControl();
 
             result.setEntityAttributes(coreControl.getEntityAttributeTransfers(getUserVisit(), entities, null));
         }

@@ -21,18 +21,20 @@ import com.echothree.model.control.core.server.control.ApplicationControl;
 import com.echothree.model.data.core.server.entity.ApplicationEditorUseDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ApplicationEditorUseDescriptionTransferCache
         extends BaseCoreDescriptionTransferCache<ApplicationEditorUseDescription, ApplicationEditorUseDescriptionTransfer> {
 
     ApplicationControl applicationControl = Session.getModelController(ApplicationControl.class);
 
     /** Creates a new instance of ApplicationEditorUseDescriptionTransferCache */
-    public ApplicationEditorUseDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected ApplicationEditorUseDescriptionTransferCache() {
+        super();
     }
     
-    public ApplicationEditorUseDescriptionTransfer getApplicationEditorUseDescriptionTransfer(ApplicationEditorUseDescription applicationEditorUseDescription) {
+    public ApplicationEditorUseDescriptionTransfer getApplicationEditorUseDescriptionTransfer(UserVisit userVisit, ApplicationEditorUseDescription applicationEditorUseDescription) {
         var applicationEditorUseDescriptionTransfer = get(applicationEditorUseDescription);
         
         if(applicationEditorUseDescriptionTransfer == null) {
@@ -40,7 +42,7 @@ public class ApplicationEditorUseDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, applicationEditorUseDescription.getLanguage());
             
             applicationEditorUseDescriptionTransfer = new ApplicationEditorUseDescriptionTransfer(languageTransfer, applicationEditorUseTransfer, applicationEditorUseDescription.getDescription());
-            put(applicationEditorUseDescription, applicationEditorUseDescriptionTransfer);
+            put(userVisit, applicationEditorUseDescription, applicationEditorUseDescriptionTransfer);
         }
         return applicationEditorUseDescriptionTransfer;
     }

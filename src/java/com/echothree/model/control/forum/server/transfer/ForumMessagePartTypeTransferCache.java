@@ -18,22 +18,23 @@ package com.echothree.model.control.forum.server.transfer;
 
 import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.forum.common.transfer.ForumMessagePartTypeTransfer;
-import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.data.forum.server.entity.ForumMessagePartType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ForumMessagePartTypeTransferCache
         extends BaseForumTransferCache<ForumMessagePartType, ForumMessagePartTypeTransfer> {
 
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
 
     /** Creates a new instance of ForumMessagePartTypeTransferCache */
-    public ForumMessagePartTypeTransferCache(UserVisit userVisit, ForumControl forumControl) {
-        super(userVisit, forumControl);
+    protected ForumMessagePartTypeTransferCache() {
+        super();
     }
     
-    public ForumMessagePartTypeTransfer getForumMessagePartTypeTransfer(ForumMessagePartType forumMessagePartType) {
+    public ForumMessagePartTypeTransfer getForumMessagePartTypeTransfer(UserVisit userVisit, ForumMessagePartType forumMessagePartType) {
         var forumMessagePartTypeTransfer = get(forumMessagePartType);
         
         if(forumMessagePartTypeTransfer == null) {
@@ -44,7 +45,7 @@ public class ForumMessagePartTypeTransferCache
             
             forumMessagePartTypeTransfer = new ForumMessagePartTypeTransfer(forumMessagePartTypeName, mimeTypeUsageTypeTransfer,
                     sortOrder);
-            put(forumMessagePartType, forumMessagePartTypeTransfer);
+            put(userVisit, forumMessagePartType, forumMessagePartTypeTransfer);
         }
         
         return forumMessagePartTypeTransfer;

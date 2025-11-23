@@ -20,16 +20,21 @@ import com.echothree.model.control.workflow.common.transfer.WorkflowEntranceStep
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntranceStep;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class WorkflowEntranceStepTransferCache
         extends BaseWorkflowTransferCache<WorkflowEntranceStep, WorkflowEntranceStepTransfer> {
-    
+
+    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
+
     /** Creates a new instance of WorkflowEntranceStepTransferCache */
-    public WorkflowEntranceStepTransferCache(UserVisit userVisit, WorkflowControl workflowControl) {
-        super(userVisit, workflowControl);
+    protected WorkflowEntranceStepTransferCache() {
+        super();
     }
     
-    public WorkflowEntranceStepTransfer getWorkflowEntranceStepTransfer(WorkflowEntranceStep workflowEntranceStep) {
+    public WorkflowEntranceStepTransfer getWorkflowEntranceStepTransfer(UserVisit userVisit, WorkflowEntranceStep workflowEntranceStep) {
         var workflowEntranceStepTransfer = get(workflowEntranceStep);
         
         if(workflowEntranceStepTransfer == null) {
@@ -37,7 +42,7 @@ public class WorkflowEntranceStepTransferCache
             var workflowStep = workflowControl.getWorkflowStepTransfer(userVisit, workflowEntranceStep.getWorkflowStep());
             
             workflowEntranceStepTransfer = new WorkflowEntranceStepTransfer(workflowEntrance, workflowStep);
-            put(workflowEntranceStep, workflowEntranceStepTransfer);
+            put(userVisit, workflowEntranceStep, workflowEntranceStepTransfer);
         }
         
         return workflowEntranceStepTransfer;

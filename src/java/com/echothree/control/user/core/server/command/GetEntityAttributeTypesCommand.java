@@ -31,7 +31,9 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.Collection;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class GetEntityAttributeTypesCommand
         extends BasePaginatedMultipleEntitiesCommand<EntityAttributeType, GetEntityAttributeTypesForm> {
 
@@ -61,12 +63,11 @@ public class GetEntityAttributeTypesCommand
 
     @Override
     protected Long getTotalEntities() {
-        return getCoreControl().countEntityAttributeTypes();
+        return coreControl.countEntityAttributeTypes();
     }
 
     @Override
     protected Collection<EntityAttributeType> getEntities() {
-        var coreControl = getCoreControl();
         
         return coreControl.getEntityAttributeTypes();
     }
@@ -74,7 +75,6 @@ public class GetEntityAttributeTypesCommand
     @Override
     protected BaseResult getResult(Collection<EntityAttributeType> entities) {
         var result = CoreResultFactory.getGetEntityAttributeTypesResult();
-        var coreControl = getCoreControl();
         
         result.setEntityAttributeTypes(coreControl.getEntityAttributeTypeTransfers(getUserVisit(), entities));
         

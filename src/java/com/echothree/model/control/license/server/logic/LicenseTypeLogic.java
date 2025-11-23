@@ -23,20 +23,19 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class LicenseTypeLogic
         extends BaseLogic {
 
-    private LicenseTypeLogic() {
+    protected LicenseTypeLogic() {
         super();
     }
 
-    private static class LicenseTypeLogicHolder {
-        static LicenseTypeLogic instance = new LicenseTypeLogic();
-    }
-
     public static LicenseTypeLogic getInstance() {
-        return LicenseTypeLogicHolder.instance;
+        return CDI.current().select(LicenseTypeLogic.class).get();
     }
     
     public LicenseType getLicenseTypeByName(final ExecutionErrorAccumulator eea, final String licenseTypeName) {

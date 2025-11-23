@@ -20,16 +20,21 @@ import com.echothree.model.control.returnpolicy.common.transfer.ReturnTypeDescri
 import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ReturnTypeDescriptionTransferCache
         extends BaseReturnPolicyDescriptionTransferCache<ReturnTypeDescription, ReturnTypeDescriptionTransfer> {
-    
+
+    ReturnPolicyControl returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
+
     /** Creates a new instance of ReturnTypeDescriptionTransferCache */
-    public ReturnTypeDescriptionTransferCache(UserVisit userVisit, ReturnPolicyControl returnPolicyControl) {
-        super(userVisit, returnPolicyControl);
+    protected ReturnTypeDescriptionTransferCache() {
+        super();
     }
     
-    public ReturnTypeDescriptionTransfer getReturnTypeDescriptionTransfer(ReturnTypeDescription returnTypeDescription) {
+    public ReturnTypeDescriptionTransfer getReturnTypeDescriptionTransfer(UserVisit userVisit, ReturnTypeDescription returnTypeDescription) {
         var returnTypeDescriptionTransfer = get(returnTypeDescription);
         
         if(returnTypeDescriptionTransfer == null) {
@@ -37,7 +42,7 @@ public class ReturnTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, returnTypeDescription.getLanguage());
             
             returnTypeDescriptionTransfer = new ReturnTypeDescriptionTransfer(languageTransfer, returnTypeTransfer, returnTypeDescription.getDescription());
-            put(returnTypeDescription, returnTypeDescriptionTransfer);
+            put(userVisit, returnTypeDescription, returnTypeDescriptionTransfer);
         }
         
         return returnTypeDescriptionTransfer;

@@ -20,18 +20,23 @@ import com.echothree.model.control.employee.common.transfer.LeaveReasonTransfer;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.data.employee.server.entity.LeaveReason;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class LeaveReasonTransferCache
         extends BaseEmployeeTransferCache<LeaveReason, LeaveReasonTransfer> {
-    
+
+    EmployeeControl employeeControl = Session.getModelController(EmployeeControl.class);
+
     /** Creates a new instance of LeaveReasonTransferCache */
-    public LeaveReasonTransferCache(UserVisit userVisit, EmployeeControl employeeControl) {
-        super(userVisit, employeeControl);
+    protected LeaveReasonTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public LeaveReasonTransfer getLeaveReasonTransfer(LeaveReason leaveReason) {
+    public LeaveReasonTransfer getLeaveReasonTransfer(UserVisit userVisit, LeaveReason leaveReason) {
         var leaveReasonTransfer = get(leaveReason);
         
         if(leaveReasonTransfer == null) {
@@ -39,10 +44,10 @@ public class LeaveReasonTransferCache
             var leaveReasonName = leaveReasonDetail.getLeaveReasonName();
             var isDefault = leaveReasonDetail.getIsDefault();
             var sortOrder = leaveReasonDetail.getSortOrder();
-            var description = employeeControl.getBestLeaveReasonDescription(leaveReason, getLanguage());
+            var description = employeeControl.getBestLeaveReasonDescription(leaveReason, getLanguage(userVisit));
             
             leaveReasonTransfer = new LeaveReasonTransfer(leaveReasonName, isDefault, sortOrder, description);
-            put(leaveReason, leaveReasonTransfer);
+            put(userVisit, leaveReason, leaveReasonTransfer);
         }
         
         return leaveReasonTransfer;

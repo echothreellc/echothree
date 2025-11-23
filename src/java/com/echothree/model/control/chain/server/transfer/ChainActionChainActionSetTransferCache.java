@@ -23,18 +23,21 @@ import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.chain.server.entity.ChainActionChainActionSet;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ChainActionChainActionSetTransferCache
         extends BaseChainTransferCache<ChainActionChainActionSet, ChainActionChainActionSetTransfer> {
-    
+
+    ChainControl chainControl = Session.getModelController(ChainControl.class);
     UomControl uomControl = Session.getModelController(UomControl.class);
     
     /** Creates a new instance of ChainActionChainActionSetTransferCache */
-    public ChainActionChainActionSetTransferCache(UserVisit userVisit, ChainControl chainControl) {
-        super(userVisit, chainControl);
+    protected ChainActionChainActionSetTransferCache() {
+        super();
     }
     
-    public ChainActionChainActionSetTransfer getChainActionChainActionSetTransfer(ChainActionChainActionSet chainActionChainActionSet) {
+    public ChainActionChainActionSetTransfer getChainActionChainActionSetTransfer(UserVisit userVisit, ChainActionChainActionSet chainActionChainActionSet) {
         var chainActionChainActionSetTransfer = get(chainActionChainActionSet);
         
         if(chainActionChainActionSetTransfer == null) {
@@ -42,10 +45,10 @@ public class ChainActionChainActionSetTransferCache
             var nextChainActionSet = chainControl.getChainActionSetTransfer(userVisit, chainActionChainActionSet.getNextChainActionSet());
             var unformattedDelayTime = chainActionChainActionSet.getDelayTime();
             var timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
-            var delayTime = formatUnitOfMeasure(timeUnitOfMeasureKind, unformattedDelayTime);
+            var delayTime = formatUnitOfMeasure(userVisit, timeUnitOfMeasureKind, unformattedDelayTime);
             
             chainActionChainActionSetTransfer = new ChainActionChainActionSetTransfer(chainAction, nextChainActionSet, unformattedDelayTime, delayTime);
-            put(chainActionChainActionSet, chainActionChainActionSetTransfer);
+            put(userVisit, chainActionChainActionSet, chainActionChainActionSetTransfer);
         }
         
         return chainActionChainActionSetTransfer;

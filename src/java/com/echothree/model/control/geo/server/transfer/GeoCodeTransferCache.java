@@ -18,18 +18,19 @@ package com.echothree.model.control.geo.server.transfer;
 
 import com.echothree.model.control.geo.common.GeoOptions;
 import com.echothree.model.control.geo.common.transfer.GeoCodeTransfer;
-import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class GeoCodeTransferCache
         extends BaseGeoCodeTransferCache<GeoCode, GeoCodeTransfer> {
-    
+
     boolean includeAliases;
     
     /** Creates a new instance of GeoCodeTransferCache */
-    public GeoCodeTransferCache(UserVisit userVisit, GeoControl geoControl) {
-        super(userVisit, geoControl);
+    protected GeoCodeTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {
@@ -39,7 +40,7 @@ public class GeoCodeTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public GeoCodeTransfer getGeoCodeTransfer(GeoCode geoCode) {
+    public GeoCodeTransfer getGeoCodeTransfer(UserVisit userVisit, GeoCode geoCode) {
         var geoCodeTransfer = get(geoCode);
         
         if(geoCodeTransfer == null) {
@@ -49,13 +50,13 @@ public class GeoCodeTransferCache
             var geoCodeScope = geoControl.getGeoCodeScopeTransfer(userVisit, geoCodeDetail.getGeoCodeScope());
             var isDefault = geoCodeDetail.getIsDefault();
             var sortOrder = geoCodeDetail.getSortOrder();
-            var description = geoControl.getBestGeoCodeDescription(geoCode, getLanguage());
+            var description = geoControl.getBestGeoCodeDescription(geoCode, getLanguage(userVisit));
             
             geoCodeTransfer = new GeoCodeTransfer(geoCodeName, geoCodeType, geoCodeScope, isDefault, sortOrder, description);
-            put(geoCode, geoCodeTransfer);
+            put(userVisit, geoCode, geoCodeTransfer);
             
             if(includeAliases) {
-                setupGeoCodeAliasTransfers(geoCode, geoCodeTransfer);
+                setupGeoCodeAliasTransfers(userVisit, geoCode, geoCodeTransfer);
             }
         }
         

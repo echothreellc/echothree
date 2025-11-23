@@ -34,7 +34,9 @@ import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class GetEntityLongRangeDescriptionsCommand
         extends BaseSimpleCommand<GetEntityLongRangeDescriptionsForm> {
     
@@ -64,14 +66,13 @@ public class GetEntityLongRangeDescriptionsCommand
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
         var result = CoreResultFactory.getGetEntityLongRangeDescriptionsResult();
         var componentVendorName = form.getComponentVendorName();
-        var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
+        var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
             var entityTypeName = form.getEntityTypeName();
-            var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
+            var entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
                 var entityAttributeName = form.getEntityAttributeName();

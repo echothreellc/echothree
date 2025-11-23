@@ -36,7 +36,9 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.Collection;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class GetEntityLongRangesCommand
         extends BaseMultipleEntitiesCommand<EntityLongRange, GetEntityLongRangesForm> {
 
@@ -67,14 +69,13 @@ public class GetEntityLongRangesCommand
 
     @Override
     protected Collection<EntityLongRange> getEntities() {
-        var coreControl = getCoreControl();
         var componentVendorName = form.getComponentVendorName();
-        var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
+        var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
         Collection<EntityLongRange> entityLongRanges = null;
 
         if(componentVendor != null) {
             var entityTypeName = form.getEntityTypeName();
-            var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
+            var entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
 
             if(entityType != null) {
                 var entityAttributeName = form.getEntityAttributeName();
@@ -109,7 +110,6 @@ public class GetEntityLongRangesCommand
         var result = CoreResultFactory.getGetEntityLongRangesResult();
 
         if(entities != null) {
-            var coreControl = getCoreControl();
             var userVisit = getUserVisit();
 
             if(session.hasLimit(EntityLongRangeFactory.class)) {

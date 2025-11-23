@@ -16,9 +16,13 @@
 
 package com.echothree.model.control.tag.server.control;
 
-import com.echothree.model.control.tag.server.transfer.TagTransferCaches;
-import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.model.control.tag.server.transfer.EntityTagTransferCache;
+import com.echothree.model.control.tag.server.transfer.TagScopeDescriptionTransferCache;
+import com.echothree.model.control.tag.server.transfer.TagScopeEntityTypeTransferCache;
+import com.echothree.model.control.tag.server.transfer.TagScopeTransferCache;
+import com.echothree.model.control.tag.server.transfer.TagTransferCache;
 import com.echothree.util.server.control.BaseModelControl;
+import javax.inject.Inject;
 
 public abstract class BaseTagControl
         extends BaseModelControl {
@@ -32,14 +36,19 @@ public abstract class BaseTagControl
     //   Tag Transfer Caches
     // --------------------------------------------------------------------------------
 
-    private TagTransferCaches tagTransferCaches;
+    @Inject
+    TagScopeTransferCache tagScopeTransferCache;
 
-    public TagTransferCaches getTagTransferCaches(UserVisit userVisit) {
-        if(tagTransferCaches == null) {
-            tagTransferCaches = new TagTransferCaches(userVisit);
-        }
+    @Inject
+    TagScopeDescriptionTransferCache tagScopeDescriptionTransferCache;
 
-        return tagTransferCaches;
-    }
+    @Inject
+    TagScopeEntityTypeTransferCache tagScopeEntityTypeTransferCache;
+
+    @Inject
+    TagTransferCache tagTransferCache;
+
+    @Inject
+    EntityTagTransferCache entityTagTransferCache;
 
 }

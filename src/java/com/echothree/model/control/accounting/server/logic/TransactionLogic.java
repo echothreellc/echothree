@@ -47,20 +47,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class TransactionLogic
         extends BaseLogic {
 
-    private TransactionLogic() {
+    protected TransactionLogic() {
         super();
     }
 
-    private static class TransactionLogicHolder {
-        static TransactionLogic instance = new TransactionLogic();
-    }
-
     public static TransactionLogic getInstance() {
-        return TransactionLogicHolder.instance;
+        return CDI.current().select(TransactionLogic.class).get();
     }
     
     public Transaction createTransactionUsingNames(final Session session, final Party groupParty, final String transactionTypeName,
@@ -110,7 +109,7 @@ public class TransactionLogic
         var parameterCount = (transactionName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
-            case 1:
+            case 1 -> {
                 if(transactionName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.Transaction.name());
@@ -121,10 +120,9 @@ public class TransactionLogic
                 } else {
                     transaction = getTransactionByName(eea, transactionName, entityPermission);
                 }
-                break;
-            default:
-                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
-                break;
+            }
+            default ->
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
 
         return transaction;

@@ -38,18 +38,30 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
+@RequestScoped
 public class EditorControl
         extends BaseCoreControl {
 
+    @Inject
+    protected ApplicationControl applicationControl;
+
     /** Creates a new instance of EditorControl */
-    public EditorControl() {
+    protected EditorControl() {
         super();
     }
 
     // --------------------------------------------------------------------------------
     //   Editors
     // --------------------------------------------------------------------------------
+
+    @Inject
+    protected EditorFactory editorFactory;
+
+    @Inject
+    protected EditorDetailFactory editorDetailFactory;
 
     public Editor createEditor(String editorName, Boolean hasDimensions, Integer minimumHeight, Integer minimumWidth, Integer maximumHeight,
             Integer maximumWidth, Integer defaultHeight, Integer defaultWidth, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
@@ -65,12 +77,12 @@ public class EditorControl
             isDefault = true;
         }
 
-        var editor = EditorFactory.getInstance().create();
-        var editorDetail = EditorDetailFactory.getInstance().create(editor, editorName, hasDimensions, minimumHeight, minimumWidth, maximumHeight,
+        var editor = editorFactory.create();
+        var editorDetail = editorDetailFactory.create(editor, editorName, hasDimensions, minimumHeight, minimumWidth, maximumHeight,
                 maximumWidth, defaultHeight, defaultWidth, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         // Convert to R/W
-        editor = EditorFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, editor.getPrimaryKey());
+        editor = editorFactory.getEntityFromPK(EntityPermission.READ_WRITE, editor.getPrimaryKey());
         editor.setActiveDetail(editorDetail);
         editor.setLastDetail(editorDetail);
         editor.store();
@@ -100,7 +112,7 @@ public class EditorControl
     }
 
     private Editor getEditorByName(String editorName, EntityPermission entityPermission) {
-        return EditorFactory.getInstance().getEntityFromQuery(entityPermission, getEditorByNameQueries, editorName);
+        return editorFactory.getEntityFromQuery(entityPermission, getEditorByNameQueries, editorName);
     }
 
     public Editor getEditorByName(String editorName) {
@@ -139,7 +151,7 @@ public class EditorControl
     }
 
     private Editor getDefaultEditor(EntityPermission entityPermission) {
-        return EditorFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultEditorQueries);
+        return editorFactory.getEntityFromQuery(entityPermission, getDefaultEditorQueries);
     }
 
     public Editor getDefaultEditor() {
@@ -174,7 +186,7 @@ public class EditorControl
     }
 
     private List<Editor> getEditors(EntityPermission entityPermission) {
-        return EditorFactory.getInstance().getEntitiesFromQuery(entityPermission, getEditorsQueries);
+        return editorFactory.getEntitiesFromQuery(entityPermission, getEditorsQueries);
     }
 
     public List<Editor> getEditors() {
@@ -186,16 +198,15 @@ public class EditorControl
     }
 
     public EditorTransfer getEditorTransfer(UserVisit userVisit, Editor editor) {
-        return getCoreTransferCaches(userVisit).getEditorTransferCache().getEditorTransfer(editor);
+        return editorTransferCache.getEditorTransfer(userVisit, editor);
     }
 
     public List<EditorTransfer> getEditorTransfers(UserVisit userVisit) {
         var editors = getEditors();
         List<EditorTransfer> editorTransfers = new ArrayList<>(editors.size());
-        var editorTransferCache = getCoreTransferCaches(userVisit).getEditorTransferCache();
 
         editors.forEach((editor) ->
-                editorTransfers.add(editorTransferCache.getEditorTransfer(editor))
+                editorTransfers.add(editorTransferCache.getEditorTransfer(userVisit, editor))
         );
 
         return editorTransfers;
@@ -237,7 +248,7 @@ public class EditorControl
 
     private void updateEditorFromValue(EditorDetailValue editorDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(editorDetailValue.hasBeenModified()) {
-            var editor = EditorFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var editor = editorFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     editorDetailValue.getEditorPK());
             var editorDetail = editor.getActiveDetailForUpdate();
 
@@ -272,7 +283,7 @@ public class EditorControl
                 }
             }
 
-            editorDetail = EditorDetailFactory.getInstance().create(editorPK, editorName, hasDimensions, minimumHeight, minimumWidth, maximumHeight,
+            editorDetail = editorDetailFactory.create(editorPK, editorName, hasDimensions, minimumHeight, minimumWidth, maximumHeight,
                     maximumWidth, defaultHeight, defaultWidth, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
             editor.setActiveDetail(editorDetail);
@@ -287,7 +298,6 @@ public class EditorControl
     }
 
     private void deleteEditor(Editor editor, boolean checkDefault, BasePK deletedBy) {
-        var applicationControl = Session.getModelController(ApplicationControl.class);
         var editorDetail = editor.getLastDetailForUpdate();
 
         deleteEditorDescriptionsByEditor(editor, deletedBy);
@@ -336,8 +346,11 @@ public class EditorControl
     //   Editor Descriptions
     // --------------------------------------------------------------------------------
 
-    public EditorDescription createEditorDescription(Editor editor, Language language, String description, BasePK createdBy) {
-        var editorDescription = EditorDescriptionFactory.getInstance().create(editor, language, description,
+        @Inject
+        protected EditorDescriptionFactory editorDescriptionFactory;
+
+        public EditorDescription createEditorDescription(Editor editor, Language language, String description, BasePK createdBy) {
+        var editorDescription = editorDescriptionFactory.create(editor, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(editor.getPrimaryKey(), EventTypes.MODIFY, editorDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -363,7 +376,7 @@ public class EditorControl
     }
 
     private EditorDescription getEditorDescription(Editor editor, Language language, EntityPermission entityPermission) {
-        return EditorDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getEditorDescriptionQueries,
+        return editorDescriptionFactory.getEntityFromQuery(entityPermission, getEditorDescriptionQueries,
                 editor, language, Session.MAX_TIME);
     }
 
@@ -402,7 +415,7 @@ public class EditorControl
     }
 
     private List<EditorDescription> getEditorDescriptionsByEditor(Editor editor, EntityPermission entityPermission) {
-        return EditorDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getEditorDescriptionsByEditorQueries,
+        return editorDescriptionFactory.getEntitiesFromQuery(entityPermission, getEditorDescriptionsByEditorQueries,
                 editor, Session.MAX_TIME);
     }
 
@@ -419,7 +432,7 @@ public class EditorControl
         var editorDescription = getEditorDescription(editor, language);
 
         if(editorDescription == null && !language.getIsDefault()) {
-            editorDescription = getEditorDescription(editor, getPartyControl().getDefaultLanguage());
+            editorDescription = getEditorDescription(editor, partyControl.getDefaultLanguage());
         }
 
         if(editorDescription == null) {
@@ -432,16 +445,15 @@ public class EditorControl
     }
 
     public EditorDescriptionTransfer getEditorDescriptionTransfer(UserVisit userVisit, EditorDescription editorDescription) {
-        return getCoreTransferCaches(userVisit).getEditorDescriptionTransferCache().getEditorDescriptionTransfer(editorDescription);
+        return editorDescriptionTransferCache.getEditorDescriptionTransfer(userVisit, editorDescription);
     }
 
     public List<EditorDescriptionTransfer> getEditorDescriptionTransfersByEditor(UserVisit userVisit, Editor editor) {
         var editorDescriptions = getEditorDescriptionsByEditor(editor);
         List<EditorDescriptionTransfer> editorDescriptionTransfers = new ArrayList<>(editorDescriptions.size());
-        var editorDescriptionTransferCache = getCoreTransferCaches(userVisit).getEditorDescriptionTransferCache();
 
         editorDescriptions.forEach((editorDescription) ->
-                editorDescriptionTransfers.add(editorDescriptionTransferCache.getEditorDescriptionTransfer(editorDescription))
+                editorDescriptionTransfers.add(editorDescriptionTransferCache.getEditorDescriptionTransfer(userVisit, editorDescription))
         );
 
         return editorDescriptionTransfers;
@@ -449,7 +461,7 @@ public class EditorControl
 
     public void updateEditorDescriptionFromValue(EditorDescriptionValue editorDescriptionValue, BasePK updatedBy) {
         if(editorDescriptionValue.hasBeenModified()) {
-            var editorDescription = EditorDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var editorDescription = editorDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     editorDescriptionValue.getPrimaryKey());
 
             editorDescription.setThruTime(session.START_TIME_LONG);
@@ -459,7 +471,7 @@ public class EditorControl
             var language = editorDescription.getLanguage();
             var description = editorDescriptionValue.getDescription();
 
-            editorDescription = EditorDescriptionFactory.getInstance().create(editor, language, description,
+            editorDescription = editorDescriptionFactory.create(editor, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
             sendEvent(editor.getPrimaryKey(), EventTypes.MODIFY, editorDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);

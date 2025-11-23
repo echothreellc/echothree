@@ -27,7 +27,9 @@ import com.echothree.model.data.order.server.entity.OrderLine;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.AmountUtils;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class WishlistLineTransferCache
         extends BaseWishlistTransferCache<OrderLine, WishlistLineTransfer> {
     
@@ -35,15 +37,16 @@ public class WishlistLineTransferCache
     ItemControl itemControl = Session.getModelController(ItemControl.class);
     OfferUseControl offerUseControl = Session.getModelController(OfferUseControl.class);
     UomControl uomControl = Session.getModelController(UomControl.class);
+    WishlistControl wishlistControl = Session.getModelController(WishlistControl.class);
     
     /** Creates a new instance of WishlistLineTransferCache */
-    public WishlistLineTransferCache(UserVisit userVisit, WishlistControl wishlistControl) {
-        super(userVisit, wishlistControl);
+    protected WishlistLineTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public WishlistLineTransfer getWishlistLineTransfer(OrderLine orderLine) {
+    public WishlistLineTransfer getWishlistLineTransfer(UserVisit userVisit, OrderLine orderLine) {
         var wishlistLineTransfer = get(orderLine);
         
         if(wishlistLineTransfer == null) {
@@ -66,7 +69,7 @@ public class WishlistLineTransferCache
             
             wishlistLineTransfer = new WishlistLineTransfer(wishlist, orderLineSequence, item, inventoryCondition, unitOfMeasureType, quantity,
                     unformattedUnitAmount, unitAmount, description, offerUse, wishlistPriority, associateReferral, comment);
-            put(orderLine, wishlistLineTransfer);
+            put(userVisit, orderLine, wishlistLineTransfer);
         }
         
         return wishlistLineTransfer;

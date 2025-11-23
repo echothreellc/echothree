@@ -22,10 +22,15 @@ import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.data.content.server.entity.ContentCategoryItem;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ContentCategoryItemTransferCache
         extends BaseContentTransferCache<ContentCategoryItem, ContentCategoryItemTransfer> {
-    
+
+    ContentControl contentControl = Session.getModelController(ContentControl.class);
+
     TransferProperties transferProperties;
     boolean filterContentCategory;
     boolean filterContentCatalogItem;
@@ -33,8 +38,8 @@ public class ContentCategoryItemTransferCache
     boolean filterSortOrder;
 
     /** Creates a new instance of ContentCategoryItemTransferCache */
-    public ContentCategoryItemTransferCache(UserVisit userVisit, ContentControl contentControl) {
-        super(userVisit, contentControl);
+    protected ContentCategoryItemTransferCache() {
+        super();
         
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
@@ -49,7 +54,7 @@ public class ContentCategoryItemTransferCache
         }
     }
     
-    public ContentCategoryItemTransfer getContentCategoryItemTransfer(ContentCategoryItem contentCategoryItem) {
+    public ContentCategoryItemTransfer getContentCategoryItemTransfer(UserVisit userVisit, ContentCategoryItem contentCategoryItem) {
         var contentCategoryItemTransfer = get(contentCategoryItem);
         
         if(contentCategoryItemTransfer == null) {
@@ -59,7 +64,7 @@ public class ContentCategoryItemTransferCache
             var sortOrder = filterSortOrder ? null : contentCategoryItem.getSortOrder();
             
             contentCategoryItemTransfer = new ContentCategoryItemTransfer(contentCategory, contentCatalogItem, isDefault, sortOrder);
-            put(contentCategoryItem, contentCategoryItemTransfer);
+            put(userVisit, contentCategoryItem, contentCategoryItemTransfer);
         }
         
         return contentCategoryItemTransfer;

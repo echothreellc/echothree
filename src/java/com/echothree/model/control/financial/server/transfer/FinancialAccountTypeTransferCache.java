@@ -24,29 +24,32 @@ import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.financial.server.entity.FinancialAccountType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class FinancialAccountTypeTransferCache
         extends BaseFinancialTransferCache<FinancialAccountType, FinancialAccountTypeTransfer> {
     
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
+    FinancialControl financialControl = Session.getModelController(FinancialControl.class);
     SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of FinancialAccountTypeTransferCache */
-    public FinancialAccountTypeTransferCache(UserVisit userVisit, FinancialControl financialControl) {
-        super(userVisit, financialControl);
+    protected FinancialAccountTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public FinancialAccountTypeTransfer getFinancialAccountTypeTransfer(FinancialAccountType financialAccountType) {
+    public FinancialAccountTypeTransfer getFinancialAccountTypeTransfer(UserVisit userVisit, FinancialAccountType financialAccountType) {
         var financialAccountTypeTransfer = get(financialAccountType);
         
         if(financialAccountTypeTransfer == null) {
             var financialAccountTypeDetail = financialAccountType.getLastDetail();
             var financialAccountTypeName = financialAccountTypeDetail.getFinancialAccountTypeName();
             var parentFinancialAccountType = financialAccountTypeDetail.getParentFinancialAccountType();
-            var parentFinancialAccountTypeTransfer = parentFinancialAccountType == null? null: getFinancialAccountTypeTransfer(parentFinancialAccountType);
+            var parentFinancialAccountTypeTransfer = parentFinancialAccountType == null ? null : getFinancialAccountTypeTransfer(userVisit, parentFinancialAccountType);
             var defaultGlAccountTransfer = accountingControl.getGlAccountTransfer(userVisit, financialAccountTypeDetail.getDefaultGlAccount());
             var financialAccountSequenceType = financialAccountTypeDetail.getFinancialAccountSequenceType();
             var financialAccountSequenceTypeTransfer = financialAccountSequenceType == null? null: sequenceControl.getSequenceTypeTransfer(userVisit, financialAccountSequenceType);
@@ -58,13 +61,13 @@ public class FinancialAccountTypeTransferCache
             var financialAccountWorkflowEntranceTransfer = financialAccountWorkflowEntrance == null? null: workflowControl.getWorkflowEntranceTransfer(userVisit, financialAccountWorkflowEntrance);
             var isDefault = financialAccountTypeDetail.getIsDefault();
             var sortOrder = financialAccountTypeDetail.getSortOrder();
-            var description = financialControl.getBestFinancialAccountTypeDescription(financialAccountType, getLanguage());
+            var description = financialControl.getBestFinancialAccountTypeDescription(financialAccountType, getLanguage(userVisit));
             
             financialAccountTypeTransfer = new FinancialAccountTypeTransfer(financialAccountTypeName, parentFinancialAccountTypeTransfer,
                     defaultGlAccountTransfer, financialAccountSequenceTypeTransfer, financialAccountTransactionSequenceTypeTransfer,
                     financialAccountWorkflowTransfer, financialAccountWorkflowEntranceTransfer, isDefault, sortOrder,
                     description);
-            put(financialAccountType, financialAccountTypeTransfer);
+            put(userVisit, financialAccountType, financialAccountTypeTransfer);
         }
         
         return financialAccountTypeTransfer;

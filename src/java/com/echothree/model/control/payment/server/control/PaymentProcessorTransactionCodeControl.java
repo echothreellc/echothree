@@ -31,12 +31,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PaymentProcessorTransactionCodeControl
         extends BasePaymentControl {
 
     /** Creates a new instance of PaymentProcessorTransactionCodeControl */
-    public PaymentProcessorTransactionCodeControl() {
+    protected PaymentProcessorTransactionCodeControl() {
         super();
     }
 
@@ -149,16 +151,15 @@ public class PaymentProcessorTransactionCodeControl
 
     public PaymentProcessorTransactionCodeTransfer getPaymentProcessorTransactionCodeTransfer(final UserVisit userVisit,
             final PaymentProcessorTransactionCode paymentProcessorTransactionCode) {
-        return getPaymentTransferCaches(userVisit).getPaymentProcessorTransactionCodeTransferCache().getTransfer(paymentProcessorTransactionCode);
+        return paymentProcessorTransactionCodeTransferCache.getTransfer(userVisit, paymentProcessorTransactionCode);
     }
 
     public List<PaymentProcessorTransactionCodeTransfer> getPaymentProcessorTransactionCodeTransfers(final UserVisit userVisit,
             final Collection<PaymentProcessorTransactionCode> paymentProcessorTransactionCodes) {
         var paymentProcessorTransactionCodeTransfers = new ArrayList<PaymentProcessorTransactionCodeTransfer>(paymentProcessorTransactionCodes.size());
-        var paymentProcessorTransactionCodeTransferCache = getPaymentTransferCaches(userVisit).getPaymentProcessorTransactionCodeTransferCache();
 
         paymentProcessorTransactionCodes.forEach((paymentProcessorTransactionCode) ->
-                paymentProcessorTransactionCodeTransfers.add(paymentProcessorTransactionCodeTransferCache.getTransfer(paymentProcessorTransactionCode))
+                paymentProcessorTransactionCodeTransfers.add(paymentProcessorTransactionCodeTransferCache.getTransfer(userVisit, paymentProcessorTransactionCode))
         );
 
         return paymentProcessorTransactionCodeTransfers;

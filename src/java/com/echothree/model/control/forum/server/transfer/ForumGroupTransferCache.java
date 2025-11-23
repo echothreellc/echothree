@@ -27,16 +27,20 @@ import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ForumGroupTransferCache
         extends BaseForumTransferCache<ForumGroup, ForumGroupTransfer> {
-    
+
+    ForumControl forumControl = Session.getModelController(ForumControl.class);
     IconControl iconControl = Session.getModelController(IconControl.class);
+
     boolean includeForums;
     
     /** Creates a new instance of ForumGroupTransferCache */
-    public ForumGroupTransferCache(UserVisit userVisit, ForumControl forumControl) {
-        super(userVisit, forumControl);
+    protected ForumGroupTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {
@@ -48,7 +52,7 @@ public class ForumGroupTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public ForumGroupTransfer getForumGroupTransfer(ForumGroup forumGroup) {
+    public ForumGroupTransfer getForumGroupTransfer(UserVisit userVisit, ForumGroup forumGroup) {
         var forumGroupTransfer = get(forumGroup);
         
         if(forumGroupTransfer == null) {
@@ -57,10 +61,10 @@ public class ForumGroupTransferCache
             var icon = forumGroupDetail.getIcon();
             var iconTransfer = icon == null? null: iconControl.getIconTransfer(userVisit, icon);
             var sortOrder = forumGroupDetail.getSortOrder();
-            var description = forumControl.getBestForumGroupDescription(forumGroup, getLanguage());
+            var description = forumControl.getBestForumGroupDescription(forumGroup, getLanguage(userVisit));
             
             forumGroupTransfer = new ForumGroupTransfer(forumGroupName, iconTransfer, sortOrder, description);
-            put(forumGroup, forumGroupTransfer);
+            put(userVisit, forumGroup, forumGroupTransfer);
             
             if(includeForums) {
                 var forumGroupForums = forumControl.getForumGroupForumsByForumGroup(forumGroup);

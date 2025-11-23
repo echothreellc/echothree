@@ -22,18 +22,20 @@ import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityListItemDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EntityListItemDescriptionTransferCache
         extends BaseCoreDescriptionTransferCache<EntityListItemDescription, EntityListItemDescriptionTransfer> {
 
     CoreControl coreControl = Session.getModelController(CoreControl.class);
 
     /** Creates a new instance of EntityListItemDescriptionTransferCache */
-    public EntityListItemDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected EntityListItemDescriptionTransferCache() {
+        super();
     }
     
-    public EntityListItemDescriptionTransfer getEntityListItemDescriptionTransfer(EntityListItemDescription entityListItemDescription, EntityInstance entityInstance) {
+    public EntityListItemDescriptionTransfer getEntityListItemDescriptionTransfer(final UserVisit userVisit, final EntityListItemDescription entityListItemDescription, final EntityInstance entityInstance) {
         var entityListItemDescriptionTransfer = get(entityListItemDescription);
         
         if(entityListItemDescriptionTransfer == null) {
@@ -42,7 +44,7 @@ public class EntityListItemDescriptionTransferCache
             
             entityListItemDescriptionTransfer = new EntityListItemDescriptionTransfer(languageTransfer, entityListItemTransfer,
                     entityListItemDescription.getDescription());
-            put(entityListItemDescription, entityListItemDescriptionTransfer);
+            put(userVisit, entityListItemDescription, entityListItemDescriptionTransfer);
         }
         return entityListItemDescriptionTransfer;
     }

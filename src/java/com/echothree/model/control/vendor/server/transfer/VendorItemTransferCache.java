@@ -32,7 +32,9 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.vendor.server.entity.VendorItem;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class VendorItemTransferCache
         extends BaseVendorTransferCache<VendorItem, VendorItemTransfer> {
     
@@ -41,14 +43,16 @@ public class VendorItemTransferCache
     ItemControl itemControl = Session.getModelController(ItemControl.class);
     ReturnPolicyControl returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
+    VendorControl vendorControl = Session.getModelController(VendorControl.class);
+
     ItemDescriptionLogic itemDescriptionLogic = ItemDescriptionLogic.getInstance();
-    
+
     boolean includeVendorItemCosts;
     boolean includePurchasingComments;
     
     /** Creates a new instance of VendorItemTransferCache */
-    public VendorItemTransferCache(UserVisit userVisit, VendorControl vendorControl) {
-        super(userVisit, vendorControl);
+    protected VendorItemTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {
@@ -61,7 +65,7 @@ public class VendorItemTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public VendorItemTransfer getVendorItemTransfer(VendorItem vendorItem) {
+    public VendorItemTransfer getVendorItemTransfer(UserVisit userVisit, VendorItem vendorItem) {
         var vendorItemTransfer = get(vendorItem);
         
         if(vendorItemTransfer == null) {
@@ -78,7 +82,7 @@ public class VendorItemTransferCache
             var returnPolicyTransfer = returnPolicy == null? null: returnPolicyControl.getReturnPolicyTransfer(userVisit, returnPolicy);
             
             if(description == null) {
-                description = itemDescriptionLogic.getBestStringUsingNames(null, ItemDescriptionTypes.PURCHASE_ORDER_DESCRIPTION.name(), item, getParty());
+                description = itemDescriptionLogic.getBestStringUsingNames(null, ItemDescriptionTypes.PURCHASE_ORDER_DESCRIPTION.name(), item, getParty(userVisit));
             }
 
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(vendorItem.getPrimaryKey());
@@ -87,14 +91,14 @@ public class VendorItemTransferCache
 
             vendorItemTransfer = new VendorItemTransfer(itemTransfer, vendor, vendorItemName, description, priority, cancellationPolicyTransfer,
                     returnPolicyTransfer, vendorItemStatusTransfer);
-            put(vendorItem, vendorItemTransfer);
+            put(userVisit, vendorItem, vendorItemTransfer);
 
             if(includeVendorItemCosts) {
                 vendorItemTransfer.setVendorItemCosts(new ListWrapper<>(vendorControl.getVendorItemCostTransfersByVendorItem(userVisit, vendorItem)));
             }
             
             if(includePurchasingComments) {
-                setupComments(null, entityInstance, vendorItemTransfer, CommentConstants.CommentType_VENDOR_ITEM_PURCHASING);
+                setupComments(userVisit, null, entityInstance, vendorItemTransfer, CommentConstants.CommentType_VENDOR_ITEM_PURCHASING);
             }
         }
         

@@ -25,30 +25,33 @@ import com.echothree.model.data.subscription.server.entity.SubscriptionTypeChain
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class SubscriptionTypeChainTransferCache
         extends BaseSubscriptionTransferCache<SubscriptionTypeChain, SubscriptionTypeChainTransfer> {
     
     ChainControl chainControl = Session.getModelController(ChainControl.class);
+    SubscriptionControl subscriptionControl = Session.getModelController(SubscriptionControl.class);
     UomControl uomControl = Session.getModelController(UomControl.class);
     UnitOfMeasureKind timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
     
     /** Creates a new instance of SubscriptionTypeChainTransferCache */
-    public SubscriptionTypeChainTransferCache(UserVisit userVisit, SubscriptionControl subscriptionControl) {
-        super(userVisit, subscriptionControl);
+    protected SubscriptionTypeChainTransferCache() {
+        super();
     }
     
-    public SubscriptionTypeChainTransfer getSubscriptionTypeChainTransfer(SubscriptionTypeChain subscriptionTypeChain) {
+    public SubscriptionTypeChainTransfer getSubscriptionTypeChainTransfer(UserVisit userVisit, SubscriptionTypeChain subscriptionTypeChain) {
         var subscriptionTypeChainTransfer = get(subscriptionTypeChain);
         
         if(subscriptionTypeChainTransfer == null) {
             var subscriptionType = subscriptionControl.getSubscriptionTypeTransfer(userVisit, subscriptionTypeChain.getSubscriptionType());
             var chain = chainControl.getChainTransfer(userVisit, subscriptionTypeChain.getChain());
             var unformattedRemainingTime = subscriptionTypeChain.getRemainingTime();
-            var remainingTime = formatUnitOfMeasure(timeUnitOfMeasureKind, unformattedRemainingTime);
+            var remainingTime = formatUnitOfMeasure(userVisit, timeUnitOfMeasureKind, unformattedRemainingTime);
             
             subscriptionTypeChainTransfer = new SubscriptionTypeChainTransfer(subscriptionType, chain, unformattedRemainingTime, remainingTime);
-            put(subscriptionTypeChain, subscriptionTypeChainTransfer);
+            put(userVisit, subscriptionTypeChain, subscriptionTypeChainTransfer);
         }
         
         return subscriptionTypeChainTransfer;

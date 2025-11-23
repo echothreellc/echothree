@@ -24,7 +24,9 @@ import com.echothree.model.data.core.server.entity.EntityLongRange;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EntityLongRangeTransferCache
         extends BaseCoreTransferCache<EntityLongRange, EntityLongRangeTransfer> {
 
@@ -41,8 +43,8 @@ public class EntityLongRangeTransferCache
     boolean filterEntityInstance;
 
     /** Creates a new instance of EntityLongRangeTransferCache */
-    public EntityLongRangeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected EntityLongRangeTransferCache() {
+        super();
         
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
@@ -63,7 +65,7 @@ public class EntityLongRangeTransferCache
         setIncludeEntityInstance(!filterEntityInstance);
     }
     
-    public EntityLongRangeTransfer getEntityLongRangeTransfer(EntityLongRange entityLongRange, EntityInstance entityInstance) {
+    public EntityLongRangeTransfer getEntityLongRangeTransfer(final UserVisit userVisit, final EntityLongRange entityLongRange, final EntityInstance entityInstance) {
         var entityLongRangeTransfer = get(entityLongRange);
         
         if(entityLongRangeTransfer == null) {
@@ -74,11 +76,11 @@ public class EntityLongRangeTransferCache
             var maximumLongValue = filterMaximumLongValue ? null : entityLongRangeDetail.getMaximumLongValue();
             var isDefault = filterIsDefault ? null : entityLongRangeDetail.getIsDefault();
             var sortOrder = filterSortOrder ? null : entityLongRangeDetail.getSortOrder();
-            var description = coreControl.getBestEntityLongRangeDescription(entityLongRange, getLanguage());
+            var description = coreControl.getBestEntityLongRangeDescription(entityLongRange, getLanguage(userVisit));
             
             entityLongRangeTransfer = new EntityLongRangeTransfer(entityAttributeTransfer, entityLongRangeName, minimumLongValue, maximumLongValue, isDefault,
                     sortOrder, description);
-            put(entityLongRange, entityLongRangeTransfer);
+            put(userVisit, entityLongRange, entityLongRangeTransfer);
         }
         return entityLongRangeTransfer;
     }

@@ -33,20 +33,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class PartyTypeLogic
         extends BaseLogic {
 
-    private PartyTypeLogic() {
+    protected PartyTypeLogic() {
         super();
     }
 
-    private static class PartyTypeLogicHolder {
-        static PartyTypeLogic instance = new PartyTypeLogic();
-    }
-
     public static PartyTypeLogic getInstance() {
-        return PartyTypeLogic.PartyTypeLogicHolder.instance;
+        return CDI.current().select(PartyTypeLogic.class).get();
     }
 
     public PartyType createPartyType(final ExecutionErrorAccumulator eea, final String partyTypeName,
@@ -98,7 +97,7 @@ public class PartyTypeLogic
         var parameterCount = (partyTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
-            case 0:
+            case 0 -> {
                 if(allowDefault) {
                     partyType = partyControl.getDefaultPartyType(entityPermission);
 
@@ -108,8 +107,8 @@ public class PartyTypeLogic
                 } else {
                     handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                 }
-                break;
-            case 1:
+            }
+            case 1 -> {
                 if(partyTypeName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.PartyType.name());
@@ -120,10 +119,9 @@ public class PartyTypeLogic
                 } else {
                     partyType = getPartyTypeByName(eea, partyTypeName, entityPermission);
                 }
-                break;
-            default:
-                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
-                break;
+            }
+            default ->
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
 
         return partyType;

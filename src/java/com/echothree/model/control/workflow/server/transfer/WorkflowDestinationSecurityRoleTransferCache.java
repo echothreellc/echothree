@@ -22,20 +22,21 @@ import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workflow.server.entity.WorkflowDestinationSecurityRole;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class WorkflowDestinationSecurityRoleTransferCache
         extends BaseWorkflowTransferCache<WorkflowDestinationSecurityRole, WorkflowDestinationSecurityRoleTransfer> {
     
-    SecurityControl securityControl;
-    
+    SecurityControl securityControl = Session.getModelController(SecurityControl.class);
+    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
+
     /** Creates a new instance of WorkflowDestinationSecurityRoleTransferCache */
-    public WorkflowDestinationSecurityRoleTransferCache(UserVisit userVisit, WorkflowControl workflowControl) {
-        super(userVisit, workflowControl);
-        
-        securityControl = Session.getModelController(SecurityControl.class);
+    protected WorkflowDestinationSecurityRoleTransferCache() {
+        super();
     }
     
-    public WorkflowDestinationSecurityRoleTransfer getWorkflowDestinationSecurityRoleTransfer(WorkflowDestinationSecurityRole workflowDestinationSecurityRole) {
+    public WorkflowDestinationSecurityRoleTransfer getWorkflowDestinationSecurityRoleTransfer(UserVisit userVisit, WorkflowDestinationSecurityRole workflowDestinationSecurityRole) {
         var workflowDestinationSecurityRoleTransfer = get(workflowDestinationSecurityRole);
         
         if(workflowDestinationSecurityRoleTransfer == null) {
@@ -43,7 +44,7 @@ public class WorkflowDestinationSecurityRoleTransferCache
             var securityRole = securityControl.getSecurityRoleTransfer(userVisit, workflowDestinationSecurityRole.getSecurityRole());
             
             workflowDestinationSecurityRoleTransfer = new WorkflowDestinationSecurityRoleTransfer(workflowDestinationPartyType, securityRole);
-            put(workflowDestinationSecurityRole, workflowDestinationSecurityRoleTransfer);
+            put(userVisit, workflowDestinationSecurityRole, workflowDestinationSecurityRoleTransfer);
         }
         
         return workflowDestinationSecurityRoleTransfer;

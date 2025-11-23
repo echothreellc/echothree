@@ -29,7 +29,9 @@ import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class GetRatingTypeListItemsCommand
         extends BaseSimpleCommand<GetRatingTypeListItemsForm> {
 
@@ -52,21 +54,21 @@ public class GetRatingTypeListItemsCommand
     protected BaseResult execute() {
         var result = RatingResultFactory.getGetRatingTypeListItemsResult();
         var componentVendorName = form.getComponentVendorName();
-        var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
+        var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
             var userVisit = getUserVisit();
             var entityTypeName = form.getEntityTypeName();
-            var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
+            var entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
             
-            result.setComponentVendor(getComponentControl().getComponentVendorTransfer(userVisit, componentVendor));
+            result.setComponentVendor(componentControl.getComponentVendorTransfer(userVisit, componentVendor));
             
             if(entityType != null) {
                 var ratingControl = Session.getModelController(RatingControl.class);
                 var ratingTypeName = form.getRatingTypeName();
                 var ratingType = ratingControl.getRatingTypeByName(entityType, ratingTypeName);
                 
-                result.setEntityType(getEntityTypeControl().getEntityTypeTransfer(userVisit, entityType));
+                result.setEntityType(entityTypeControl.getEntityTypeTransfer(userVisit, entityType));
                 
                 if(ratingType != null) {
                     result.setRatingType(ratingControl.getRatingTypeTransfer(userVisit, ratingType));

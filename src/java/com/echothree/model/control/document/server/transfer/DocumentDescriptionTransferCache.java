@@ -20,25 +20,29 @@ import com.echothree.model.control.document.common.transfer.DocumentDescriptionT
 import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.data.document.server.entity.DocumentDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class DocumentDescriptionTransferCache
         extends BaseDocumentDescriptionTransferCache<DocumentDescription, DocumentDescriptionTransfer> {
-    
+
+    DocumentControl documentControl = Session.getModelController(DocumentControl.class);
+
     /** Creates a new instance of DocumentDescriptionTransferCache */
-    public DocumentDescriptionTransferCache(UserVisit userVisit, DocumentControl documentControl) {
-        super(userVisit, documentControl);
+    protected DocumentDescriptionTransferCache() {
+        super();
     }
     
-    public DocumentDescriptionTransfer getDocumentDescriptionTransfer(DocumentDescription documentDescription) {
+    public DocumentDescriptionTransfer getDocumentDescriptionTransfer(UserVisit userVisit, DocumentDescription documentDescription) {
         var documentDescriptionTransfer = get(documentDescription);
         
         if(documentDescriptionTransfer == null) {
-            var documentTransferCache = documentControl.getDocumentTransferCaches(userVisit).getDocumentTransferCache();
-            var documentTransfer = documentTransferCache.getDocumentTransfer(documentDescription.getDocument());
+            var documentTransfer = documentControl.getDocumentTransfer(userVisit, documentDescription.getDocument());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, documentDescription.getLanguage());
             
             documentDescriptionTransfer = new DocumentDescriptionTransfer(languageTransfer, documentTransfer, documentDescription.getDescription());
-            put(documentDescription, documentDescriptionTransfer);
+            put(userVisit, documentDescription, documentDescriptionTransfer);
         }
         
         return documentDescriptionTransfer;

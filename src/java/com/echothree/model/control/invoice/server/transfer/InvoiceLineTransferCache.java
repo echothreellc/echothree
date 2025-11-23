@@ -21,19 +21,24 @@ import com.echothree.model.control.invoice.common.transfer.InvoiceLineTransfer;
 import com.echothree.model.control.invoice.server.control.InvoiceControl;
 import com.echothree.model.data.invoice.server.entity.InvoiceLine;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.AmountUtils;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class InvoiceLineTransferCache
         extends BaseInvoiceTransferCache<InvoiceLine, InvoiceLineTransfer> {
-    
+
+    InvoiceControl invoiceControl = Session.getModelController(InvoiceControl.class);
+
     /** Creates a new instance of InvoiceLineTransferCache */
-    public InvoiceLineTransferCache(UserVisit userVisit, InvoiceControl invoiceControl) {
-        super(userVisit, invoiceControl);
+    protected InvoiceLineTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public InvoiceLineTransfer getInvoiceLineTransfer(InvoiceLine invoiceLine) {
+    public InvoiceLineTransfer getInvoiceLineTransfer(UserVisit userVisit, InvoiceLine invoiceLine) {
         var invoiceLineTransfer = get(invoiceLine);
         
         if(invoiceLineTransfer == null) {
@@ -42,7 +47,7 @@ public class InvoiceLineTransferCache
             var invoiceTransfer = invoiceControl.getInvoiceTransfer(userVisit, invoice);
             var invoiceLineSequence = invoiceLineDetail.getInvoiceLineSequence();
             var parentInvoiceLine = invoiceLineDetail.getParentInvoiceLine();
-            var parentInvoiceLineTransfer = parentInvoiceLine == null? null: getInvoiceLineTransfer(parentInvoiceLine);
+            var parentInvoiceLineTransfer = parentInvoiceLine == null ? null : getInvoiceLineTransfer(userVisit, parentInvoiceLine);
             var invoiceLineTypeTransfer = invoiceControl.getInvoiceLineTypeTransfer(userVisit, invoiceLineDetail.getInvoiceLineType());
             var invoiceLineUseTypeTransfer = invoiceControl.getInvoiceLineUseTypeTransfer(userVisit, invoiceLineDetail.getInvoiceLineUseType());
             var description = invoiceLineDetail.getDescription();
@@ -53,7 +58,7 @@ public class InvoiceLineTransferCache
             
             invoiceLineTransfer = new InvoiceLineTransfer(invoiceTransfer, invoiceLineSequence, parentInvoiceLineTransfer, invoiceLineTypeTransfer, invoiceLineUseTypeTransfer, amount,
                     unformattedAmount, description);
-            put(invoiceLine, invoiceLineTransfer);
+            put(userVisit, invoiceLine, invoiceLineTransfer);
 
             var invoiceLineUseTypeName = invoiceLineUseTypeTransfer.getInvoiceLineUseTypeName();
             if(invoiceLineUseTypeName.equals(InvoiceLineUseTypes.ITEM.name())) {

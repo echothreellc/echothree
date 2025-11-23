@@ -23,7 +23,9 @@ import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CurrencyTransferCache
         extends BaseAccountingTransferCache<Currency, CurrencyTransfer> {
 
@@ -51,8 +53,8 @@ public class CurrencyTransferCache
     boolean filterDescription;
     
     /** Creates a new instance of CurrencyTransferCache */
-    public CurrencyTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected CurrencyTransferCache() {
+        super();
 
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
@@ -83,7 +85,7 @@ public class CurrencyTransferCache
     }
     
     @Override
-    public CurrencyTransfer getTransfer(Currency currency) {
+    public CurrencyTransfer getTransfer(UserVisit userVisit, Currency currency) {
         var currencyTransfer = get(currency);
         
         if(currencyTransfer == null) {
@@ -105,13 +107,13 @@ public class CurrencyTransferCache
             var minusSign = filterMinusSign ? null : currency.getMinusSign();
             var isDefault = filterisDefault ? null : currency.getIsDefault();
             var sortOrder = filterSortOrder ? null : currency.getSortOrder();
-            var description = filterDescription ? null : accountingControl.getBestCurrencyDescription(currency, getLanguage());
+            var description = filterDescription ? null : accountingControl.getBestCurrencyDescription(currency, getLanguage(userVisit));
             
             currencyTransfer = new CurrencyTransfer(currencyIsoName, symbol, symbolPosition, symbolOnListStart, symbolOnListMember,
                     symbolOnSubtotal, symbolOnTotal, groupingSeparator, groupingSize, fractionSeparator, defaultFractionDigits,
                     priceUnitFractionDigits, priceLineFractionDigits, costUnitFractionDigits, costLineFractionDigits, minusSign,
                     isDefault, sortOrder, description);
-            put(currency, currencyTransfer);
+            put(userVisit, currency, currencyTransfer);
         }
         return currencyTransfer;
     }

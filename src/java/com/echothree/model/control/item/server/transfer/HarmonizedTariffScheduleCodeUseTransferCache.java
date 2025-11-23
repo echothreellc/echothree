@@ -20,19 +20,24 @@ import com.echothree.model.control.item.common.transfer.HarmonizedTariffSchedule
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.item.server.entity.HarmonizedTariffScheduleCodeUse;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class HarmonizedTariffScheduleCodeUseTransferCache
         extends BaseItemTransferCache<HarmonizedTariffScheduleCodeUse, HarmonizedTariffScheduleCodeUseTransfer> {
-    
+
+    ItemControl itemControl = Session.getModelController(ItemControl.class);
+
     /** Creates a new instance of HarmonizedTariffScheduleCodeUseTransferCache */
-    public HarmonizedTariffScheduleCodeUseTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    protected HarmonizedTariffScheduleCodeUseTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
     @Override
-    public HarmonizedTariffScheduleCodeUseTransfer getTransfer(HarmonizedTariffScheduleCodeUse harmonizedTariffScheduleCodeUse) {
+    public HarmonizedTariffScheduleCodeUseTransfer getTransfer(UserVisit userVisit, HarmonizedTariffScheduleCodeUse harmonizedTariffScheduleCodeUse) {
         var harmonizedTariffScheduleCodeUseTransfer = get(harmonizedTariffScheduleCodeUse);
         
         if(harmonizedTariffScheduleCodeUseTransfer == null) {
@@ -40,7 +45,7 @@ public class HarmonizedTariffScheduleCodeUseTransferCache
             var harmonizedTariffScheduleCodeUseType = itemControl.getHarmonizedTariffScheduleCodeUseTypeTransfer(userVisit, harmonizedTariffScheduleCodeUse.getHarmonizedTariffScheduleCodeUseType());
             
             harmonizedTariffScheduleCodeUseTransfer = new HarmonizedTariffScheduleCodeUseTransfer(harmonizedTariffScheduleCode, harmonizedTariffScheduleCodeUseType);
-            put(harmonizedTariffScheduleCodeUse, harmonizedTariffScheduleCodeUseTransfer);
+            put(userVisit, harmonizedTariffScheduleCodeUse, harmonizedTariffScheduleCodeUseTransfer);
         }
         
         return harmonizedTariffScheduleCodeUseTransfer;

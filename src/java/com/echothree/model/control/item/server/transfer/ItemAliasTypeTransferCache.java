@@ -20,19 +20,24 @@ import com.echothree.model.control.item.common.transfer.ItemAliasTypeTransfer;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.item.server.entity.ItemAliasType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ItemAliasTypeTransferCache
         extends BaseItemTransferCache<ItemAliasType, ItemAliasTypeTransfer> {
-    
+
+    ItemControl itemControl = Session.getModelController(ItemControl.class);
+
     /** Creates a new instance of ItemAliasTypeTransferCache */
-    public ItemAliasTypeTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    protected ItemAliasTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
     @Override
-    public ItemAliasTypeTransfer getTransfer(ItemAliasType itemAliasType) {
+    public ItemAliasTypeTransfer getTransfer(UserVisit userVisit, ItemAliasType itemAliasType) {
         var itemAliasTypeTransfer = get(itemAliasType);
         
         if(itemAliasTypeTransfer == null) {
@@ -43,11 +48,11 @@ public class ItemAliasTypeTransferCache
             var allowMultiple = itemAliasTypeDetail.getAllowMultiple();
             var isDefault = itemAliasTypeDetail.getIsDefault();
             var sortOrder = itemAliasTypeDetail.getSortOrder();
-            var description = itemControl.getBestItemAliasTypeDescription(itemAliasType, getLanguage());
+            var description = itemControl.getBestItemAliasTypeDescription(itemAliasType, getLanguage(userVisit));
             
             itemAliasTypeTransfer = new ItemAliasTypeTransfer(itemAliasTypeName, validationPattern, itemAliasChecksumType, allowMultiple, isDefault, sortOrder,
                     description);
-            put(itemAliasType, itemAliasTypeTransfer);
+            put(userVisit, itemAliasType, itemAliasTypeTransfer);
         }
         
         return itemAliasTypeTransfer;

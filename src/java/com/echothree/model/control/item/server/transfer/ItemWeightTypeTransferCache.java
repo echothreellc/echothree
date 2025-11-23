@@ -20,19 +20,24 @@ import com.echothree.model.control.item.common.transfer.ItemWeightTypeTransfer;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.item.server.entity.ItemWeightType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ItemWeightTypeTransferCache
         extends BaseItemTransferCache<ItemWeightType, ItemWeightTypeTransfer> {
-    
+
+    ItemControl itemControl = Session.getModelController(ItemControl.class);
+
     /** Creates a new instance of ItemWeightTypeTransferCache */
-    public ItemWeightTypeTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    protected ItemWeightTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
     @Override
-    public ItemWeightTypeTransfer getTransfer(ItemWeightType itemWeightType) {
+    public ItemWeightTypeTransfer getTransfer(UserVisit userVisit, ItemWeightType itemWeightType) {
         var itemWeightTypeTransfer = get(itemWeightType);
         
         if(itemWeightTypeTransfer == null) {
@@ -40,11 +45,11 @@ public class ItemWeightTypeTransferCache
             var itemWeightTypeName = itemWeightTypeDetail.getItemWeightTypeName();
             var isDefault = itemWeightTypeDetail.getIsDefault();
             var sortOrder = itemWeightTypeDetail.getSortOrder();
-            var description = itemControl.getBestItemWeightTypeDescription(itemWeightType, getLanguage());
+            var description = itemControl.getBestItemWeightTypeDescription(itemWeightType, getLanguage(userVisit));
             
             itemWeightTypeTransfer = new ItemWeightTypeTransfer(itemWeightTypeName, isDefault, sortOrder,
                     description);
-            put(itemWeightType, itemWeightTypeTransfer);
+            put(userVisit, itemWeightType, itemWeightTypeTransfer);
         }
         
         return itemWeightTypeTransfer;

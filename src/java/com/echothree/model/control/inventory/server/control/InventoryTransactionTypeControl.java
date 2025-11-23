@@ -44,12 +44,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class InventoryTransactionTypeControl
         extends BaseInventoryControl {
 
     /** Creates a new instance of InventoryControl */
-    public InventoryTransactionTypeControl() {
+    protected InventoryTransactionTypeControl() {
         super();
     }
     
@@ -221,15 +223,14 @@ public class InventoryTransactionTypeControl
     }
 
     public InventoryTransactionTypeTransfer getInventoryTransactionTypeTransfer(UserVisit userVisit, InventoryTransactionType inventoryTransactionType) {
-        return getInventoryTransferCaches(userVisit).getInventoryTransactionTypeTransferCache().getTransfer(inventoryTransactionType);
+        return inventoryTransactionTypeTransferCache.getTransfer(userVisit, inventoryTransactionType);
     }
 
     public List<InventoryTransactionTypeTransfer> getInventoryTransactionTypeTransfers(UserVisit userVisit, Collection<InventoryTransactionType> inventoryTransactionTypes) {
         List<InventoryTransactionTypeTransfer> inventoryTransactionTypeTransfers = new ArrayList<>(inventoryTransactionTypes.size());
-        var inventoryTransactionTypeTransferCache = getInventoryTransferCaches(userVisit).getInventoryTransactionTypeTransferCache();
 
         inventoryTransactionTypes.forEach((inventoryTransactionType) ->
-                inventoryTransactionTypeTransfers.add(inventoryTransactionTypeTransferCache.getTransfer(inventoryTransactionType))
+                inventoryTransactionTypeTransfers.add(inventoryTransactionTypeTransferCache.getTransfer(userVisit, inventoryTransactionType))
         );
 
         return inventoryTransactionTypeTransfers;
@@ -453,7 +454,7 @@ public class InventoryTransactionTypeControl
         var inventoryTransactionTypeDescription = getInventoryTransactionTypeDescription(inventoryTransactionType, language);
 
         if(inventoryTransactionTypeDescription == null && !language.getIsDefault()) {
-            inventoryTransactionTypeDescription = getInventoryTransactionTypeDescription(inventoryTransactionType, getPartyControl().getDefaultLanguage());
+            inventoryTransactionTypeDescription = getInventoryTransactionTypeDescription(inventoryTransactionType, partyControl.getDefaultLanguage());
         }
 
         if(inventoryTransactionTypeDescription == null) {
@@ -466,16 +467,15 @@ public class InventoryTransactionTypeControl
     }
 
     public InventoryTransactionTypeDescriptionTransfer getInventoryTransactionTypeDescriptionTransfer(UserVisit userVisit, InventoryTransactionTypeDescription inventoryTransactionTypeDescription) {
-        return getInventoryTransferCaches(userVisit).getInventoryTransactionTypeDescriptionTransferCache().getTransfer(inventoryTransactionTypeDescription);
+        return inventoryTransactionTypeDescriptionTransferCache.getTransfer(userVisit, inventoryTransactionTypeDescription);
     }
 
     public List<InventoryTransactionTypeDescriptionTransfer> getInventoryTransactionTypeDescriptionTransfersByInventoryTransactionType(UserVisit userVisit, InventoryTransactionType inventoryTransactionType) {
         var inventoryTransactionTypeDescriptions = getInventoryTransactionTypeDescriptionsByInventoryTransactionType(inventoryTransactionType);
         List<InventoryTransactionTypeDescriptionTransfer> inventoryTransactionTypeDescriptionTransfers = new ArrayList<>(inventoryTransactionTypeDescriptions.size());
-        var inventoryTransactionTypeDescriptionTransferCache = getInventoryTransferCaches(userVisit).getInventoryTransactionTypeDescriptionTransferCache();
 
         inventoryTransactionTypeDescriptions.forEach((inventoryTransactionTypeDescription) ->
-                inventoryTransactionTypeDescriptionTransfers.add(inventoryTransactionTypeDescriptionTransferCache.getTransfer(inventoryTransactionTypeDescription))
+                inventoryTransactionTypeDescriptionTransfers.add(inventoryTransactionTypeDescriptionTransferCache.getTransfer(userVisit, inventoryTransactionTypeDescription))
         );
 
         return inventoryTransactionTypeDescriptionTransfers;

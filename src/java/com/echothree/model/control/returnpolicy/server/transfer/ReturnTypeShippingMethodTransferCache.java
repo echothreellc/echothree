@@ -22,20 +22,21 @@ import com.echothree.model.control.shipping.server.control.ShippingControl;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnTypeShippingMethod;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ReturnTypeShippingMethodTransferCache
         extends BaseReturnPolicyTransferCache<ReturnTypeShippingMethod, ReturnTypeShippingMethodTransfer> {
-    
-    ShippingControl shippingControl;
+
+    ReturnPolicyControl returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
+    ShippingControl shippingControl = Session.getModelController(ShippingControl.class);
     
     /** Creates a new instance of ReturnTypeShippingMethodTransferCache */
-    public ReturnTypeShippingMethodTransferCache(UserVisit userVisit, ReturnPolicyControl returnPolicyControl) {
-        super(userVisit, returnPolicyControl);
-        
-        shippingControl = Session.getModelController(ShippingControl.class);
+    protected ReturnTypeShippingMethodTransferCache() {
+        super();
     }
     
-    public ReturnTypeShippingMethodTransfer getReturnTypeShippingMethodTransfer(ReturnTypeShippingMethod returnTypeShippingMethod) {
+    public ReturnTypeShippingMethodTransfer getReturnTypeShippingMethodTransfer(UserVisit userVisit, ReturnTypeShippingMethod returnTypeShippingMethod) {
         var returnTypeShippingMethodTransfer = get(returnTypeShippingMethod);
         
         if(returnTypeShippingMethodTransfer == null) {
@@ -46,7 +47,7 @@ public class ReturnTypeShippingMethodTransferCache
             
             returnTypeShippingMethodTransfer = new ReturnTypeShippingMethodTransfer(returnType, shippingMethod, isDefault,
                     sortOrder);
-            put(returnTypeShippingMethod, returnTypeShippingMethodTransfer);
+            put(userVisit, returnTypeShippingMethod, returnTypeShippingMethodTransfer);
         }
         
         return returnTypeShippingMethodTransfer;

@@ -20,16 +20,21 @@ import com.echothree.model.control.returnpolicy.common.transfer.ReturnReasonDesc
 import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnReasonDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ReturnReasonDescriptionTransferCache
         extends BaseReturnPolicyDescriptionTransferCache<ReturnReasonDescription, ReturnReasonDescriptionTransfer> {
-    
+
+    ReturnPolicyControl returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
+
     /** Creates a new instance of ReturnReasonDescriptionTransferCache */
-    public ReturnReasonDescriptionTransferCache(UserVisit userVisit, ReturnPolicyControl returnPolicyControl) {
-        super(userVisit, returnPolicyControl);
+    protected ReturnReasonDescriptionTransferCache() {
+        super();
     }
     
-    public ReturnReasonDescriptionTransfer getReturnReasonDescriptionTransfer(ReturnReasonDescription returnReasonDescription) {
+    public ReturnReasonDescriptionTransfer getReturnReasonDescriptionTransfer(UserVisit userVisit, ReturnReasonDescription returnReasonDescription) {
         var returnReasonDescriptionTransfer = get(returnReasonDescription);
         
         if(returnReasonDescriptionTransfer == null) {
@@ -37,7 +42,7 @@ public class ReturnReasonDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, returnReasonDescription.getLanguage());
             
             returnReasonDescriptionTransfer = new ReturnReasonDescriptionTransfer(languageTransfer, returnReasonTransfer, returnReasonDescription.getDescription());
-            put(returnReasonDescription, returnReasonDescriptionTransfer);
+            put(userVisit, returnReasonDescription, returnReasonDescriptionTransfer);
         }
         
         return returnReasonDescriptionTransfer;

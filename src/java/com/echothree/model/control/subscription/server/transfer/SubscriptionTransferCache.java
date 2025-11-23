@@ -22,20 +22,23 @@ import com.echothree.model.control.subscription.server.control.SubscriptionContr
 import com.echothree.model.data.subscription.server.entity.Subscription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class SubscriptionTransferCache
         extends BaseSubscriptionTransferCache<Subscription, SubscriptionTransfer> {
     
     PartyControl partyControl = Session.getModelController(PartyControl.class);
-    
+    SubscriptionControl subscriptionControl = Session.getModelController(SubscriptionControl.class);
+
     /** Creates a new instance of SubscriptionTransferCache */
-    public SubscriptionTransferCache(UserVisit userVisit, SubscriptionControl subscriptionControl) {
-        super(userVisit, subscriptionControl);
+    protected SubscriptionTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public SubscriptionTransfer getSubscriptionTransfer(Subscription subscription) {
+    public SubscriptionTransfer getSubscriptionTransfer(UserVisit userVisit, Subscription subscription) {
         var subscriptionTransfer = get(subscription);
 
         if(subscriptionTransfer == null) {
@@ -44,13 +47,13 @@ public class SubscriptionTransferCache
             var subscriptionType = subscriptionControl.getSubscriptionTypeTransfer(userVisit, subscriptionDetail.getSubscriptionType());
             var party = partyControl.getPartyTransfer(userVisit, subscriptionDetail.getParty());
             var unformattedStartTime = subscriptionDetail.getStartTime();
-            var startTime = formatTypicalDateTime(unformattedStartTime);
+            var startTime = formatTypicalDateTime(userVisit, unformattedStartTime);
             var unformattedEndTime = subscriptionDetail.getEndTime();
-            var endTime = formatTypicalDateTime(unformattedEndTime);
+            var endTime = formatTypicalDateTime(userVisit, unformattedEndTime);
 
             subscriptionTransfer = new SubscriptionTransfer(subscriptionName, subscriptionType, party, unformattedStartTime, startTime, unformattedEndTime,
                     endTime);
-            put(subscription, subscriptionTransfer);
+            put(userVisit, subscription, subscriptionTransfer);
         }
 
         return subscriptionTransfer;

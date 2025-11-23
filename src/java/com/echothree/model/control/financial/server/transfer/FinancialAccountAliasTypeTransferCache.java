@@ -20,18 +20,23 @@ import com.echothree.model.control.financial.common.transfer.FinancialAccountAli
 import com.echothree.model.control.financial.server.control.FinancialControl;
 import com.echothree.model.data.financial.server.entity.FinancialAccountAliasType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class FinancialAccountAliasTypeTransferCache
         extends BaseFinancialTransferCache<FinancialAccountAliasType, FinancialAccountAliasTypeTransfer> {
-    
+
+    FinancialControl financialControl = Session.getModelController(FinancialControl.class);
+
     /** Creates a new instance of FinancialAccountAliasTypeTransferCache */
-    public FinancialAccountAliasTypeTransferCache(UserVisit userVisit, FinancialControl financialControl) {
-        super(userVisit, financialControl);
+    protected FinancialAccountAliasTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public FinancialAccountAliasTypeTransfer getFinancialAccountAliasTypeTransfer(FinancialAccountAliasType financialAccountAliasType) {
+    public FinancialAccountAliasTypeTransfer getFinancialAccountAliasTypeTransfer(UserVisit userVisit, FinancialAccountAliasType financialAccountAliasType) {
         var financialAccountAliasTypeTransfer = get(financialAccountAliasType);
         
         if(financialAccountAliasTypeTransfer == null) {
@@ -41,10 +46,10 @@ public class FinancialAccountAliasTypeTransferCache
             var validationPattern = financialAccountAliasTypeDetail.getValidationPattern();
             var isDefault = financialAccountAliasTypeDetail.getIsDefault();
             var sortOrder = financialAccountAliasTypeDetail.getSortOrder();
-            var description = financialControl.getBestFinancialAccountAliasTypeDescription(financialAccountAliasType, getLanguage());
+            var description = financialControl.getBestFinancialAccountAliasTypeDescription(financialAccountAliasType, getLanguage(userVisit));
             
             financialAccountAliasTypeTransfer = new FinancialAccountAliasTypeTransfer(financialAccountType, financialAccountAliasTypeName, validationPattern, isDefault, sortOrder, description);
-            put(financialAccountAliasType, financialAccountAliasTypeTransfer);
+            put(userVisit, financialAccountAliasType, financialAccountAliasTypeTransfer);
         }
         
         return financialAccountAliasTypeTransfer;

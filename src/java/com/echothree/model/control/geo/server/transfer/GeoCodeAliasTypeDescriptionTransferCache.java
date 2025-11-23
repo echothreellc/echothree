@@ -20,16 +20,21 @@ import com.echothree.model.control.geo.common.transfer.GeoCodeAliasTypeDescripti
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.data.geo.server.entity.GeoCodeAliasTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class GeoCodeAliasTypeDescriptionTransferCache
         extends BaseGeoDescriptionTransferCache<GeoCodeAliasTypeDescription, GeoCodeAliasTypeDescriptionTransfer> {
-    
+
+    GeoControl geoControl = Session.getModelController(GeoControl.class);
+
     /** Creates a new instance of GeoCodeAliasTypeDescriptionTransferCache */
-    public GeoCodeAliasTypeDescriptionTransferCache(UserVisit userVisit, GeoControl geoControl) {
-        super(userVisit, geoControl);
+    protected GeoCodeAliasTypeDescriptionTransferCache() {
+        super();
     }
     
-    public GeoCodeAliasTypeDescriptionTransfer getGeoCodeAliasTypeDescriptionTransfer(GeoCodeAliasTypeDescription geoCodeAliasTypeDescription) {
+    public GeoCodeAliasTypeDescriptionTransfer getGeoCodeAliasTypeDescriptionTransfer(UserVisit userVisit, GeoCodeAliasTypeDescription geoCodeAliasTypeDescription) {
         var geoCodeAliasTypeDescriptionTransfer = get(geoCodeAliasTypeDescription);
         
         if(geoCodeAliasTypeDescriptionTransfer == null) {
@@ -37,7 +42,7 @@ public class GeoCodeAliasTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, geoCodeAliasTypeDescription.getLanguage());
             
             geoCodeAliasTypeDescriptionTransfer = new GeoCodeAliasTypeDescriptionTransfer(languageTransfer, geoCodeAliasTypeTransfer, geoCodeAliasTypeDescription.getDescription());
-            put(geoCodeAliasTypeDescription, geoCodeAliasTypeDescriptionTransfer);
+            put(userVisit, geoCodeAliasTypeDescription, geoCodeAliasTypeDescriptionTransfer);
         }
         
         return geoCodeAliasTypeDescriptionTransfer;

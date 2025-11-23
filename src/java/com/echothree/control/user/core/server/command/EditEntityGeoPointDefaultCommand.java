@@ -38,7 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EditEntityGeoPointDefaultCommand
         extends BaseAbstractEditCommand<EntityGeoPointDefaultSpec, EntityGeoPointDefaultEdit, EditEntityGeoPointDefaultResult, EntityGeoPointDefault, EntityAttribute> {
 
@@ -91,7 +93,6 @@ public class EditEntityGeoPointDefaultCommand
         EntityGeoPointDefault entityGeoPointDefault = null;
 
         if(!hasExecutionErrors()) {
-            var coreControl = getCoreControl();
 
             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                 entityGeoPointDefault = coreControl.getEntityGeoPointDefault(entityAttribute);
@@ -114,7 +115,6 @@ public class EditEntityGeoPointDefaultCommand
 
     @Override
     public void fillInResult(EditEntityGeoPointDefaultResult result, EntityGeoPointDefault entityGeoPointDefault) {
-        var coreControl = getCoreControl();
 
         result.setEntityGeoPointDefault(coreControl.getEntityGeoPointDefaultTransfer(getUserVisit(), entityGeoPointDefault));
     }
@@ -155,7 +155,6 @@ public class EditEntityGeoPointDefaultCommand
 
     @Override
     public void doUpdate(EntityGeoPointDefault entityGeoPointDefault) {
-        var coreControl = getCoreControl();
         var entityGeoPointDefaultValue = coreControl.getEntityGeoPointDefaultValueForUpdate(entityGeoPointDefault);
 
         entityGeoPointDefaultValue.setLatitude(Integer.valueOf(edit.getLatitude()));

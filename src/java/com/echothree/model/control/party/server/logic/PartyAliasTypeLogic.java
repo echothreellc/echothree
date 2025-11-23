@@ -37,20 +37,19 @@ import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.ParameterUtils;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class PartyAliasTypeLogic
         extends BaseLogic {
 
-    private PartyAliasTypeLogic() {
+    protected PartyAliasTypeLogic() {
         super();
     }
 
-    private static class PartyAliasTypeLogicHolder {
-        static PartyAliasTypeLogic instance = new PartyAliasTypeLogic();
-    }
-
     public static PartyAliasTypeLogic getInstance() {
-        return PartyAliasTypeLogic.PartyAliasTypeLogicHolder.instance;
+        return CDI.current().select(PartyAliasTypeLogic.class).get();
     }
 
     public PartyAliasType createPartyAliasType(final ExecutionErrorAccumulator eea, final String partyTypeName, final String partyAliasTypeName,

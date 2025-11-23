@@ -21,19 +21,21 @@ import com.echothree.model.control.payment.server.control.PaymentProcessorAction
 import com.echothree.model.data.payment.server.entity.PaymentProcessorActionTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PaymentProcessorActionTypeDescriptionTransferCache
         extends BasePaymentDescriptionTransferCache<PaymentProcessorActionTypeDescription, PaymentProcessorActionTypeDescriptionTransfer> {
 
     PaymentProcessorActionTypeControl paymentProcessorActionTypeControl = Session.getModelController(PaymentProcessorActionTypeControl.class);
 
     /** Creates a new instance of PaymentProcessorActionTypeDescriptionTransferCache */
-    public PaymentProcessorActionTypeDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected PaymentProcessorActionTypeDescriptionTransferCache() {
+        super();
     }
     
     @Override
-    public PaymentProcessorActionTypeDescriptionTransfer getTransfer(PaymentProcessorActionTypeDescription paymentProcessorActionTypeDescription) {
+    public PaymentProcessorActionTypeDescriptionTransfer getTransfer(UserVisit userVisit, PaymentProcessorActionTypeDescription paymentProcessorActionTypeDescription) {
         var paymentProcessorActionTypeDescriptionTransfer = get(paymentProcessorActionTypeDescription);
         
         if(paymentProcessorActionTypeDescriptionTransfer == null) {
@@ -41,7 +43,7 @@ public class PaymentProcessorActionTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, paymentProcessorActionTypeDescription.getLanguage());
             
             paymentProcessorActionTypeDescriptionTransfer = new PaymentProcessorActionTypeDescriptionTransfer(languageTransfer, paymentProcessorActionTypeTransfer, paymentProcessorActionTypeDescription.getDescription());
-            put(paymentProcessorActionTypeDescription, paymentProcessorActionTypeDescriptionTransfer);
+            put(userVisit, paymentProcessorActionTypeDescription, paymentProcessorActionTypeDescriptionTransfer);
         }
         
         return paymentProcessorActionTypeDescriptionTransfer;

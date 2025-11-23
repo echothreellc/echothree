@@ -20,16 +20,21 @@ import com.echothree.model.control.chain.common.transfer.ChainActionDescriptionT
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.data.chain.server.entity.ChainActionDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ChainActionDescriptionTransferCache
         extends BaseChainDescriptionTransferCache<ChainActionDescription, ChainActionDescriptionTransfer> {
-    
+
+    ChainControl chainControl = Session.getModelController(ChainControl.class);
+
     /** Creates a new instance of ChainActionDescriptionTransferCache */
-    public ChainActionDescriptionTransferCache(UserVisit userVisit, ChainControl chainControl) {
-        super(userVisit, chainControl);
+    protected ChainActionDescriptionTransferCache() {
+        super();
     }
     
-    public ChainActionDescriptionTransfer getChainActionDescriptionTransfer(ChainActionDescription chainActionDescription) {
+    public ChainActionDescriptionTransfer getChainActionDescriptionTransfer(UserVisit userVisit, ChainActionDescription chainActionDescription) {
         var chainActionDescriptionTransfer = get(chainActionDescription);
         
         if(chainActionDescriptionTransfer == null) {
@@ -37,7 +42,7 @@ public class ChainActionDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, chainActionDescription.getLanguage());
             
             chainActionDescriptionTransfer = new ChainActionDescriptionTransfer(languageTransfer, chainActionTransfer, chainActionDescription.getDescription());
-            put(chainActionDescription, chainActionDescriptionTransfer);
+            put(userVisit, chainActionDescription, chainActionDescriptionTransfer);
         }
         
         return chainActionDescriptionTransfer;

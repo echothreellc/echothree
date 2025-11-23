@@ -26,7 +26,9 @@ import com.echothree.model.data.accounting.server.entity.TransactionGroup;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class TransactionGroupTransferCache
         extends BaseAccountingTransferCache<TransactionGroup, TransactionGroupTransfer> {
 
@@ -36,8 +38,8 @@ public class TransactionGroupTransferCache
     boolean includeTransactions;
     
     /** Creates a new instance of TransactionGroupTransferCache */
-    public TransactionGroupTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected TransactionGroupTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {
@@ -48,7 +50,7 @@ public class TransactionGroupTransferCache
     }
     
     @Override
-    public TransactionGroupTransfer getTransfer(TransactionGroup transactionGroup) {
+    public TransactionGroupTransfer getTransfer(UserVisit userVisit, TransactionGroup transactionGroup) {
         var transactionGroupTransfer = get(transactionGroup);
         
         if(transactionGroupTransfer == null) {
@@ -60,7 +62,7 @@ public class TransactionGroupTransferCache
                     TransactionGroupStatusConstants.Workflow_TRANSACTION_GROUP_STATUS, entityInstance);
             
             transactionGroupTransfer = new TransactionGroupTransfer(transactionGroupName, transactionGroupStatusTransfer);
-            put(transactionGroup, transactionGroupTransfer, entityInstance);
+            put(userVisit, transactionGroup, transactionGroupTransfer, entityInstance);
             
             if(includeTransactions) {
                 transactionGroupTransfer.setTransactions(new ListWrapper<>(accountingControl.getTransactionTransfersByTransactionGroup(userVisit, transactionGroup)));

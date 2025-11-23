@@ -44,12 +44,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class OrderTypeControl
         extends BaseOrderControl {
 
     /** Creates a new instance of OrderControl */
-    public OrderTypeControl() {
+    protected OrderTypeControl() {
         super();
     }
     
@@ -221,15 +223,14 @@ public class OrderTypeControl
     }
 
     public OrderTypeTransfer getOrderTypeTransfer(UserVisit userVisit, OrderType orderType) {
-        return getOrderTransferCaches(userVisit).getOrderTypeTransferCache().getOrderTypeTransfer(orderType);
+        return orderTypeTransferCache.getOrderTypeTransfer(userVisit, orderType);
     }
 
     public List<OrderTypeTransfer> getOrderTypeTransfers(UserVisit userVisit, Collection<OrderType> orderTypes) {
         List<OrderTypeTransfer> orderTypeTransfers = new ArrayList<>(orderTypes.size());
-        var orderTypeTransferCache = getOrderTransferCaches(userVisit).getOrderTypeTransferCache();
 
         orderTypes.forEach((orderType) ->
-                orderTypeTransfers.add(orderTypeTransferCache.getOrderTypeTransfer(orderType))
+                orderTypeTransfers.add(orderTypeTransferCache.getOrderTypeTransfer(userVisit, orderType))
         );
 
         return orderTypeTransfers;
@@ -455,7 +456,7 @@ public class OrderTypeControl
         var orderTypeDescription = getOrderTypeDescription(orderType, language);
 
         if(orderTypeDescription == null && !language.getIsDefault()) {
-            orderTypeDescription = getOrderTypeDescription(orderType, getPartyControl().getDefaultLanguage());
+            orderTypeDescription = getOrderTypeDescription(orderType, partyControl.getDefaultLanguage());
         }
 
         if(orderTypeDescription == null) {
@@ -468,16 +469,15 @@ public class OrderTypeControl
     }
 
     public OrderTypeDescriptionTransfer getOrderTypeDescriptionTransfer(UserVisit userVisit, OrderTypeDescription orderTypeDescription) {
-        return getOrderTransferCaches(userVisit).getOrderTypeDescriptionTransferCache().getOrderTypeDescriptionTransfer(orderTypeDescription);
+        return orderTypeDescriptionTransferCache.getOrderTypeDescriptionTransfer(userVisit, orderTypeDescription);
     }
 
     public List<OrderTypeDescriptionTransfer> getOrderTypeDescriptionTransfersByOrderType(UserVisit userVisit, OrderType orderType) {
         var orderTypeDescriptions = getOrderTypeDescriptionsByOrderType(orderType);
         List<OrderTypeDescriptionTransfer> orderTypeDescriptionTransfers = new ArrayList<>(orderTypeDescriptions.size());
-        var orderTypeDescriptionTransferCache = getOrderTransferCaches(userVisit).getOrderTypeDescriptionTransferCache();
 
         orderTypeDescriptions.forEach((orderTypeDescription) ->
-                orderTypeDescriptionTransfers.add(orderTypeDescriptionTransferCache.getOrderTypeDescriptionTransfer(orderTypeDescription))
+                orderTypeDescriptionTransfers.add(orderTypeDescriptionTransferCache.getOrderTypeDescriptionTransfer(userVisit, orderTypeDescription))
         );
 
         return orderTypeDescriptionTransfers;

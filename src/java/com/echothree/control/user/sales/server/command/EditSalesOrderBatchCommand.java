@@ -47,7 +47,9 @@ import com.echothree.util.server.string.AmountUtils;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EditSalesOrderBatchCommand
         extends BaseAbstractEditCommand<SalesOrderBatchSpec, SalesOrderBatchEdit, EditSalesOrderBatchResult, Batch, Batch> {
 

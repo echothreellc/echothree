@@ -189,12 +189,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class AccountingControl
         extends BaseAccountingControl {
     
     /** Creates a new instance of AccountingControl */
-    public AccountingControl() {
+    protected AccountingControl() {
         super();
     }
     
@@ -352,7 +354,7 @@ public class AccountingControl
     }
     
     public CurrencyTransfer getCurrencyTransfer(UserVisit userVisit, Currency currency) {
-        return getAccountingTransferCaches(userVisit).getCurrencyTransferCache().getTransfer(currency);
+        return currencyTransferCache.getTransfer(userVisit, currency);
     }
     
     public List<CurrencyTransfer> getCurrencyTransfers(UserVisit userVisit, Collection<Currency> currencies) {
@@ -362,7 +364,7 @@ public class AccountingControl
             currencyTransfers = new ArrayList<>(currencies.size());
             
             for(var currency : currencies) {
-                currencyTransfers.add(getAccountingTransferCaches(userVisit).getCurrencyTransferCache().getTransfer(currency));
+                currencyTransfers.add(currencyTransferCache.getTransfer(userVisit, currency));
             }
         }
         
@@ -449,7 +451,7 @@ public class AccountingControl
         var currencyDescription = getCurrencyDescription(currency, language);
         
         if(currencyDescription == null && !language.getIsDefault()) {
-            currencyDescription = getCurrencyDescription(currency, getPartyControl().getDefaultLanguage());
+            currencyDescription = getCurrencyDescription(currency, partyControl.getDefaultLanguage());
         }
         
         if(currencyDescription == null) {
@@ -464,10 +466,9 @@ public class AccountingControl
     public List<CurrencyDescriptionTransfer> getCurrencyDescriptionTransfers(UserVisit userVisit, Currency currency) {
         var currencyDescriptions = getCurrencyDescriptionsByCurrency(currency);
         List<CurrencyDescriptionTransfer> currencyDescriptionTransfers = new ArrayList<>(currencyDescriptions.size());
-        var currencyDescriptionTransferCache = getAccountingTransferCaches(userVisit).getCurrencyDescriptionTransferCache();
         
         currencyDescriptions.forEach((currencyDescription) ->
-                currencyDescriptionTransfers.add(currencyDescriptionTransferCache.getTransfer(currencyDescription))
+                currencyDescriptionTransfers.add(currencyDescriptionTransferCache.getTransfer(userVisit, currencyDescription))
         );
         
         return currencyDescriptionTransfers;
@@ -673,15 +674,14 @@ public class AccountingControl
     }
 
     public ItemAccountingCategoryTransfer getItemAccountingCategoryTransfer(UserVisit userVisit, ItemAccountingCategory itemAccountingCategory) {
-        return getAccountingTransferCaches(userVisit).getItemAccountingCategoryTransferCache().getTransfer(itemAccountingCategory);
+        return itemAccountingCategoryTransferCache.getTransfer(userVisit, itemAccountingCategory);
     }
 
     public List<ItemAccountingCategoryTransfer> getItemAccountingCategoryTransfers(UserVisit userVisit, Collection<ItemAccountingCategory> itemAccountingCategories) {
         var itemAccountingCategoryTransfers = new ArrayList<ItemAccountingCategoryTransfer>(itemAccountingCategories.size());
-        var itemAccountingCategoryTransferCache = getAccountingTransferCaches(userVisit).getItemAccountingCategoryTransferCache();
 
         itemAccountingCategories.forEach((itemAccountingCategory) ->
-                itemAccountingCategoryTransfers.add(itemAccountingCategoryTransferCache.getTransfer(itemAccountingCategory))
+                itemAccountingCategoryTransfers.add(itemAccountingCategoryTransferCache.getTransfer(userVisit, itemAccountingCategory))
         );
 
         return itemAccountingCategoryTransfers;
@@ -961,7 +961,7 @@ public class AccountingControl
         var itemAccountingCategoryDescription = getItemAccountingCategoryDescription(itemAccountingCategory, language);
         
         if(itemAccountingCategoryDescription == null && !language.getIsDefault()) {
-            itemAccountingCategoryDescription = getItemAccountingCategoryDescription(itemAccountingCategory, getPartyControl().getDefaultLanguage());
+            itemAccountingCategoryDescription = getItemAccountingCategoryDescription(itemAccountingCategory, partyControl.getDefaultLanguage());
         }
         
         if(itemAccountingCategoryDescription == null) {
@@ -975,17 +975,16 @@ public class AccountingControl
     
     public ItemAccountingCategoryDescriptionTransfer getItemAccountingCategoryDescriptionTransfer(UserVisit userVisit,
             ItemAccountingCategoryDescription itemAccountingCategoryDescription) {
-        return getAccountingTransferCaches(userVisit).getItemAccountingCategoryDescriptionTransferCache().getTransfer(itemAccountingCategoryDescription);
+        return itemAccountingCategoryDescriptionTransferCache.getTransfer(userVisit, itemAccountingCategoryDescription);
     }
     
     public List<ItemAccountingCategoryDescriptionTransfer> getItemAccountingCategoryDescriptionTransfersByItemAccountingCategory(UserVisit userVisit,
             ItemAccountingCategory itemAccountingCategory) {
         var itemAccountingCategoryDescriptions = getItemAccountingCategoryDescriptionsByItemAccountingCategory(itemAccountingCategory);
         List<ItemAccountingCategoryDescriptionTransfer> itemAccountingCategoryDescriptionTransfers = new ArrayList<>(itemAccountingCategoryDescriptions.size());
-        var itemAccountingCategoryDescriptionTransferCache = getAccountingTransferCaches(userVisit).getItemAccountingCategoryDescriptionTransferCache();
         
         itemAccountingCategoryDescriptions.forEach((itemAccountingCategoryDescription) ->
-                itemAccountingCategoryDescriptionTransfers.add(itemAccountingCategoryDescriptionTransferCache.getTransfer(itemAccountingCategoryDescription))
+                itemAccountingCategoryDescriptionTransfers.add(itemAccountingCategoryDescriptionTransferCache.getTransfer(userVisit, itemAccountingCategoryDescription))
         );
         
         return itemAccountingCategoryDescriptionTransfers;
@@ -1127,15 +1126,14 @@ public class AccountingControl
     }
     
     public GlAccountTypeTransfer getGlAccountTypeTransfer(UserVisit userVisit, GlAccountType glAccountType) {
-        return getAccountingTransferCaches(userVisit).getGlAccountTypeTransferCache().getTransfer(glAccountType);
+        return glAccountTypeTransferCache.getTransfer(userVisit, glAccountType);
     }
 
     public List<GlAccountTypeTransfer> getGlAccountTypeTransfers(UserVisit userVisit, Collection<GlAccountType> glAccountTypes) {
         List<GlAccountTypeTransfer> glAccountTypeTransfers = new ArrayList<>(glAccountTypes.size());
-        var glAccountTypeTransferCache = getAccountingTransferCaches(userVisit).getGlAccountTypeTransferCache();
 
         glAccountTypes.forEach((glAccountType) ->
-                glAccountTypeTransfers.add(glAccountTypeTransferCache.getTransfer(glAccountType))
+                glAccountTypeTransfers.add(glAccountTypeTransferCache.getTransfer(userVisit, glAccountType))
         );
 
         return glAccountTypeTransfers;
@@ -1178,7 +1176,7 @@ public class AccountingControl
         var glAccountTypeDescription = getGlAccountTypeDescription(glAccountType, language);
         
         if(glAccountTypeDescription == null && !language.getIsDefault()) {
-            glAccountTypeDescription = getGlAccountTypeDescription(glAccountType, getPartyControl().getDefaultLanguage());
+            glAccountTypeDescription = getGlAccountTypeDescription(glAccountType, partyControl.getDefaultLanguage());
         }
         
         if(glAccountTypeDescription == null) {
@@ -1386,15 +1384,14 @@ public class AccountingControl
     }
 
     public GlAccountClassTransfer getGlAccountClassTransfer(UserVisit userVisit, GlAccountClass glAccountClass) {
-        return getAccountingTransferCaches(userVisit).getGlAccountClassTransferCache().getTransfer(glAccountClass);
+        return glAccountClassTransferCache.getTransfer(userVisit, glAccountClass);
     }
 
     public List<GlAccountClassTransfer> getGlAccountClassTransfers(UserVisit userVisit, Collection<GlAccountClass> glAccountClasses) {
         List<GlAccountClassTransfer> glAccountClassTransfers = new ArrayList<>(glAccountClasses.size());
-        var glAccountClassTransferCache = getAccountingTransferCaches(userVisit).getGlAccountClassTransferCache();
 
         glAccountClasses.forEach((glAccountClass) ->
-                glAccountClassTransfers.add(glAccountClassTransferCache.getTransfer(glAccountClass))
+                glAccountClassTransfers.add(glAccountClassTransferCache.getTransfer(userVisit, glAccountClass))
         );
 
         return glAccountClassTransfers;
@@ -1660,7 +1657,7 @@ public class AccountingControl
         var glAccountClassDescription = getGlAccountClassDescription(glAccountClass, language);
         
         if(glAccountClassDescription == null && !language.getIsDefault()) {
-            glAccountClassDescription = getGlAccountClassDescription(glAccountClass, getPartyControl().getDefaultLanguage());
+            glAccountClassDescription = getGlAccountClassDescription(glAccountClass, partyControl.getDefaultLanguage());
         }
         
         if(glAccountClassDescription == null) {
@@ -1673,16 +1670,15 @@ public class AccountingControl
     }
     
     public GlAccountClassDescriptionTransfer getGlAccountClassDescriptionTransfer(UserVisit userVisit, GlAccountClassDescription glAccountClassDescription) {
-        return getAccountingTransferCaches(userVisit).getGlAccountClassDescriptionTransferCache().getTransfer(glAccountClassDescription);
+        return glAccountClassDescriptionTransferCache.getTransfer(userVisit, glAccountClassDescription);
     }
     
     public List<GlAccountClassDescriptionTransfer> getGlAccountClassDescriptionTransfersByGlAccountClass(UserVisit userVisit, GlAccountClass glAccountClass) {
         var glAccountClassDescriptions = getGlAccountClassDescriptionsByGlAccountClass(glAccountClass);
         List<GlAccountClassDescriptionTransfer> glAccountClassDescriptionTransfers = new ArrayList<>(glAccountClassDescriptions.size());
-        var glAccountClassDescriptionTransferCache = getAccountingTransferCaches(userVisit).getGlAccountClassDescriptionTransferCache();
         
         glAccountClassDescriptions.forEach((glAccountClassDescription) ->
-                glAccountClassDescriptionTransfers.add(glAccountClassDescriptionTransferCache.getTransfer(glAccountClassDescription))
+                glAccountClassDescriptionTransfers.add(glAccountClassDescriptionTransferCache.getTransfer(userVisit, glAccountClassDescription))
         );
         
         return glAccountClassDescriptionTransfers;
@@ -1918,15 +1914,14 @@ public class AccountingControl
     }
 
     public GlAccountCategoryTransfer getGlAccountCategoryTransfer(UserVisit userVisit, GlAccountCategory glAccountCategory) {
-        return getAccountingTransferCaches(userVisit).getGlAccountCategoryTransferCache().getTransfer(glAccountCategory);
+        return glAccountCategoryTransferCache.getTransfer(userVisit, glAccountCategory);
     }
 
     public List<GlAccountCategoryTransfer> getGlAccountCategoryTransfers(UserVisit userVisit, Collection<GlAccountCategory> glAccountCategories) {
         List<GlAccountCategoryTransfer> glAccountCategoryTransfers = new ArrayList<>(glAccountCategories.size());
-        var glAccountCategoryTransferCache = getAccountingTransferCaches(userVisit).getGlAccountCategoryTransferCache();
 
         glAccountCategories.forEach((glAccountCategory) ->
-                glAccountCategoryTransfers.add(glAccountCategoryTransferCache.getTransfer(glAccountCategory))
+                glAccountCategoryTransfers.add(glAccountCategoryTransferCache.getTransfer(userVisit, glAccountCategory))
         );
 
         return glAccountCategoryTransfers;
@@ -2193,7 +2188,7 @@ public class AccountingControl
         var glAccountCategoryDescription = getGlAccountCategoryDescription(glAccountCategory, language);
         
         if(glAccountCategoryDescription == null && !language.getIsDefault()) {
-            glAccountCategoryDescription = getGlAccountCategoryDescription(glAccountCategory, getPartyControl().getDefaultLanguage());
+            glAccountCategoryDescription = getGlAccountCategoryDescription(glAccountCategory, partyControl.getDefaultLanguage());
         }
         
         if(glAccountCategoryDescription == null) {
@@ -2206,16 +2201,15 @@ public class AccountingControl
     }
     
     public GlAccountCategoryDescriptionTransfer getGlAccountCategoryDescriptionTransfer(UserVisit userVisit, GlAccountCategoryDescription glAccountCategoryDescription) {
-        return getAccountingTransferCaches(userVisit).getGlAccountCategoryDescriptionTransferCache().getTransfer(glAccountCategoryDescription);
+        return glAccountCategoryDescriptionTransferCache.getTransfer(userVisit, glAccountCategoryDescription);
     }
     
     public List<GlAccountCategoryDescriptionTransfer> getGlAccountCategoryDescriptionTransfersByGlAccountCategory(UserVisit userVisit, GlAccountCategory glAccountCategory) {
         var glAccountCategoryDescriptions = getGlAccountCategoryDescriptionsByGlAccountCategory(glAccountCategory);
         List<GlAccountCategoryDescriptionTransfer> glAccountCategoryDescriptionTransfers = new ArrayList<>(glAccountCategoryDescriptions.size());
-        var glAccountCategoryDescriptionTransferCache = getAccountingTransferCaches(userVisit).getGlAccountCategoryDescriptionTransferCache();
         
         glAccountCategoryDescriptions.forEach((glAccountCategoryDescription) ->
-                glAccountCategoryDescriptionTransfers.add(glAccountCategoryDescriptionTransferCache.getTransfer(glAccountCategoryDescription))
+                glAccountCategoryDescriptionTransfers.add(glAccountCategoryDescriptionTransferCache.getTransfer(userVisit, glAccountCategoryDescription))
         );
         
         return glAccountCategoryDescriptionTransfers;
@@ -2435,15 +2429,14 @@ public class AccountingControl
     }
     
     public GlResourceTypeTransfer getGlResourceTypeTransfer(UserVisit userVisit, GlResourceType glResourceType) {
-        return getAccountingTransferCaches(userVisit).getGlResourceTypeTransferCache().getTransfer(glResourceType);
+        return glResourceTypeTransferCache.getTransfer(userVisit, glResourceType);
     }
 
     public List<GlResourceTypeTransfer> getGlResourceTypeTransfers(UserVisit userVisit, Collection<GlResourceType> glResourceTypes) {
         List<GlResourceTypeTransfer> glResourceTypeTransfers = new ArrayList<>(glResourceTypes.size());
-        var glResourceTypeTransferCache = getAccountingTransferCaches(userVisit).getGlResourceTypeTransferCache();
 
         glResourceTypes.forEach((glResourceType) ->
-                glResourceTypeTransfers.add(glResourceTypeTransferCache.getTransfer(glResourceType))
+                glResourceTypeTransfers.add(glResourceTypeTransferCache.getTransfer(userVisit, glResourceType))
         );
 
         return glResourceTypeTransfers;
@@ -2666,7 +2659,7 @@ public class AccountingControl
         var glResourceTypeDescription = getGlResourceTypeDescription(glResourceType, language);
         
         if(glResourceTypeDescription == null && !language.getIsDefault()) {
-            glResourceTypeDescription = getGlResourceTypeDescription(glResourceType, getPartyControl().getDefaultLanguage());
+            glResourceTypeDescription = getGlResourceTypeDescription(glResourceType, partyControl.getDefaultLanguage());
         }
         
         if(glResourceTypeDescription == null) {
@@ -2679,16 +2672,15 @@ public class AccountingControl
     }
     
     public GlResourceTypeDescriptionTransfer getGlResourceTypeDescriptionTransfer(UserVisit userVisit, GlResourceTypeDescription glResourceTypeDescription) {
-        return getAccountingTransferCaches(userVisit).getGlResourceTypeDescriptionTransferCache().getTransfer(glResourceTypeDescription);
+        return glResourceTypeDescriptionTransferCache.getTransfer(userVisit, glResourceTypeDescription);
     }
     
     public List<GlResourceTypeDescriptionTransfer> getGlResourceTypeDescriptionTransfersByGlResourceType(UserVisit userVisit, GlResourceType glResourceType) {
         var glResourceTypeDescriptions = getGlResourceTypeDescriptionsByGlResourceType(glResourceType);
         List<GlResourceTypeDescriptionTransfer> glResourceTypeDescriptionTransfers = new ArrayList<>(glResourceTypeDescriptions.size());
-        var glResourceTypeDescriptionTransferCache = getAccountingTransferCaches(userVisit).getGlResourceTypeDescriptionTransferCache();
         
         glResourceTypeDescriptions.forEach((glResourceTypeDescription) ->
-                glResourceTypeDescriptionTransfers.add(glResourceTypeDescriptionTransferCache.getTransfer(glResourceTypeDescription))
+                glResourceTypeDescriptionTransfers.add(glResourceTypeDescriptionTransferCache.getTransfer(userVisit, glResourceTypeDescription))
         );
         
         return glResourceTypeDescriptionTransfers;
@@ -3155,15 +3147,14 @@ public class AccountingControl
     }
 
     public GlAccountTransfer getGlAccountTransfer(UserVisit userVisit, GlAccount glAccount) {
-        return getAccountingTransferCaches(userVisit).getGlAccountTransferCache().getTransfer(glAccount);
+        return glAccountTransferCache.getTransfer(userVisit, glAccount);
     }
     
     public List<GlAccountTransfer> getGlAccountTransfers(UserVisit userVisit, Collection<GlAccount> glAccounts) {
         List<GlAccountTransfer> glAccountTransfers = new ArrayList<>(glAccounts.size());
-        var glAccountTransferCache = getAccountingTransferCaches(userVisit).getGlAccountTransferCache();
         
         glAccounts.forEach((glAccount) ->
-                glAccountTransfers.add(glAccountTransferCache.getTransfer(glAccount))
+                glAccountTransfers.add(glAccountTransferCache.getTransfer(userVisit, glAccount))
         );
         
         return glAccountTransfers;
@@ -3513,7 +3504,7 @@ public class AccountingControl
         var glAccountDescription = getGlAccountDescription(glAccount, language);
         
         if(glAccountDescription == null && !language.getIsDefault()) {
-            glAccountDescription = getGlAccountDescription(glAccount, getPartyControl().getDefaultLanguage());
+            glAccountDescription = getGlAccountDescription(glAccount, partyControl.getDefaultLanguage());
         }
         
         if(glAccountDescription == null) {
@@ -3526,16 +3517,15 @@ public class AccountingControl
     }
     
     public GlAccountDescriptionTransfer getGlAccountDescriptionTransfer(UserVisit userVisit, GlAccountDescription glAccountDescription) {
-        return getAccountingTransferCaches(userVisit).getGlAccountDescriptionTransferCache().getTransfer(glAccountDescription);
+        return glAccountDescriptionTransferCache.getTransfer(userVisit, glAccountDescription);
     }
     
     public List<GlAccountDescriptionTransfer> getGlAccountDescriptionTransfersByGlAccount(UserVisit userVisit, GlAccount glAccount) {
         var glAccountDescriptions = getGlAccountDescriptionsByGlAccount(glAccount);
         List<GlAccountDescriptionTransfer> glAccountDescriptionTransfers = new ArrayList<>(glAccountDescriptions.size());
-        var glAccountDescriptionTransferCache = getAccountingTransferCaches(userVisit).getGlAccountDescriptionTransferCache();
         
         glAccountDescriptions.forEach((glAccountDescription) ->
-                glAccountDescriptionTransfers.add(glAccountDescriptionTransferCache.getTransfer(glAccountDescription))
+                glAccountDescriptionTransfers.add(glAccountDescriptionTransferCache.getTransfer(userVisit, glAccountDescription))
         );
         
         return glAccountDescriptionTransfers;
@@ -3739,15 +3729,14 @@ public class AccountingControl
     }
     
     public TransactionTypeTransfer getTransactionTypeTransfer(UserVisit userVisit, TransactionType transactionType) {
-        return getAccountingTransferCaches(userVisit).getTransactionTypeTransferCache().getTransfer(transactionType);
+        return transactionTypeTransferCache.getTransfer(userVisit, transactionType);
     }
     
     public List<TransactionTypeTransfer> getTransactionTypeTransfers(UserVisit userVisit, Collection<TransactionType> transactionTypes) {
         List<TransactionTypeTransfer> transactionTypeTransfers = new ArrayList<>(transactionTypes.size());
-        var transactionTypeTransferCache = getAccountingTransferCaches(userVisit).getTransactionTypeTransferCache();
         
         transactionTypes.forEach((transactionType) ->
-                transactionTypeTransfers.add(transactionTypeTransferCache.getTransfer(transactionType))
+                transactionTypeTransfers.add(transactionTypeTransferCache.getTransfer(userVisit, transactionType))
         );
         
         return transactionTypeTransfers;
@@ -3900,7 +3889,7 @@ public class AccountingControl
         var transactionTypeDescription = getTransactionTypeDescription(transactionType, language);
         
         if(transactionTypeDescription == null && !language.getIsDefault()) {
-            transactionTypeDescription = getTransactionTypeDescription(transactionType, getPartyControl().getDefaultLanguage());
+            transactionTypeDescription = getTransactionTypeDescription(transactionType, partyControl.getDefaultLanguage());
         }
         
         if(transactionTypeDescription == null) {
@@ -3913,16 +3902,15 @@ public class AccountingControl
     }
     
     public TransactionTypeDescriptionTransfer getTransactionTypeDescriptionTransfer(UserVisit userVisit, TransactionTypeDescription transactionTypeDescription) {
-        return getAccountingTransferCaches(userVisit).getTransactionTypeDescriptionTransferCache().getTransfer(transactionTypeDescription);
+        return transactionTypeDescriptionTransferCache.getTransfer(userVisit, transactionTypeDescription);
     }
     
     public List<TransactionTypeDescriptionTransfer> getTransactionTypeDescriptionTransfersByTransactionType(UserVisit userVisit, TransactionType transactionType) {
         var transactionTypeDescriptions = getTransactionTypeDescriptionsByTransactionType(transactionType);
         List<TransactionTypeDescriptionTransfer> transactionTypeDescriptionTransfers = new ArrayList<>(transactionTypeDescriptions.size());
-        var transactionTypeDescriptionTransferCache = getAccountingTransferCaches(userVisit).getTransactionTypeDescriptionTransferCache();
         
         transactionTypeDescriptions.forEach((transactionTypeDescription) ->
-                transactionTypeDescriptionTransfers.add(transactionTypeDescriptionTransferCache.getTransfer(transactionTypeDescription))
+                transactionTypeDescriptionTransfers.add(transactionTypeDescriptionTransferCache.getTransfer(userVisit, transactionTypeDescription))
         );
         
         return transactionTypeDescriptionTransfers;
@@ -4091,15 +4079,14 @@ public class AccountingControl
     }
     
     public TransactionGlAccountCategoryTransfer getTransactionGlAccountCategoryTransfer(UserVisit userVisit, TransactionGlAccountCategory transactionGlAccountCategory) {
-        return getAccountingTransferCaches(userVisit).getTransactionGlAccountCategoryTransferCache().getTransfer(transactionGlAccountCategory);
+        return transactionGlAccountCategoryTransferCache.getTransfer(userVisit, transactionGlAccountCategory);
     }
     
     public List<TransactionGlAccountCategoryTransfer> getTransactionGlAccountCategoryTransfers(UserVisit userVisit, Collection<TransactionGlAccountCategory> transactionGlAccountCategories) {
         List<TransactionGlAccountCategoryTransfer> transactionGlAccountCategoryTransfers = new ArrayList<>(transactionGlAccountCategories.size());
-        var transactionGlAccountCategoryTransferCache = getAccountingTransferCaches(userVisit).getTransactionGlAccountCategoryTransferCache();
         
         transactionGlAccountCategories.forEach((transactionGlAccountCategory) ->
-                transactionGlAccountCategoryTransfers.add(transactionGlAccountCategoryTransferCache.getTransfer(transactionGlAccountCategory))
+                transactionGlAccountCategoryTransfers.add(transactionGlAccountCategoryTransferCache.getTransfer(userVisit, transactionGlAccountCategory))
         );
         
         return transactionGlAccountCategoryTransfers;
@@ -4259,7 +4246,7 @@ public class AccountingControl
         var transactionGlAccountCategoryDescription = getTransactionGlAccountCategoryDescription(transactionGlAccountCategory, language);
         
         if(transactionGlAccountCategoryDescription == null && !language.getIsDefault()) {
-            transactionGlAccountCategoryDescription = getTransactionGlAccountCategoryDescription(transactionGlAccountCategory, getPartyControl().getDefaultLanguage());
+            transactionGlAccountCategoryDescription = getTransactionGlAccountCategoryDescription(transactionGlAccountCategory, partyControl.getDefaultLanguage());
         }
         
         if(transactionGlAccountCategoryDescription == null) {
@@ -4272,16 +4259,15 @@ public class AccountingControl
     }
     
     public TransactionGlAccountCategoryDescriptionTransfer getTransactionGlAccountCategoryDescriptionTransfer(UserVisit userVisit, TransactionGlAccountCategoryDescription transactionGlAccountCategoryDescription) {
-        return getAccountingTransferCaches(userVisit).getTransactionGlAccountCategoryDescriptionTransferCache().getTransfer(transactionGlAccountCategoryDescription);
+        return transactionGlAccountCategoryDescriptionTransferCache.getTransfer(userVisit, transactionGlAccountCategoryDescription);
     }
     
     public List<TransactionGlAccountCategoryDescriptionTransfer> getTransactionGlAccountCategoryDescriptionTransfersByTransactionGlAccountCategory(UserVisit userVisit, TransactionGlAccountCategory transactionGlAccountCategory) {
         var transactionGlAccountCategoryDescriptions = getTransactionGlAccountCategoryDescriptionsByTransactionGlAccountCategory(transactionGlAccountCategory);
         List<TransactionGlAccountCategoryDescriptionTransfer> transactionGlAccountCategoryDescriptionTransfers = new ArrayList<>(transactionGlAccountCategoryDescriptions.size());
-        var transactionGlAccountCategoryDescriptionTransferCache = getAccountingTransferCaches(userVisit).getTransactionGlAccountCategoryDescriptionTransferCache();
         
         transactionGlAccountCategoryDescriptions.forEach((transactionGlAccountCategoryDescription) ->
-                transactionGlAccountCategoryDescriptionTransfers.add(transactionGlAccountCategoryDescriptionTransferCache.getTransfer(transactionGlAccountCategoryDescription))
+                transactionGlAccountCategoryDescriptionTransfers.add(transactionGlAccountCategoryDescriptionTransferCache.getTransfer(userVisit, transactionGlAccountCategoryDescription))
         );
         
         return transactionGlAccountCategoryDescriptionTransfers;
@@ -4490,15 +4476,14 @@ public class AccountingControl
     }
     
     public TransactionEntityRoleTypeTransfer getTransactionEntityRoleTypeTransfer(UserVisit userVisit, TransactionEntityRoleType transactionEntityRoleType) {
-        return getAccountingTransferCaches(userVisit).getTransactionEntityRoleTypeTransferCache().getTransfer(transactionEntityRoleType);
+        return transactionEntityRoleTypeTransferCache.getTransfer(userVisit, transactionEntityRoleType);
     }
     
     public List<TransactionEntityRoleTypeTransfer> getTransactionEntityRoleTypeTransfers(UserVisit userVisit, Collection<TransactionEntityRoleType> transactionEntityRoleTypes) {
         var transactionEntityRoleTypeTransfers = new ArrayList<TransactionEntityRoleTypeTransfer>(transactionEntityRoleTypes.size());
-        var transactionEntityRoleTypeTransferCache = getAccountingTransferCaches(userVisit).getTransactionEntityRoleTypeTransferCache();
         
         transactionEntityRoleTypes.forEach((transactionEntityRoleType) ->
-                transactionEntityRoleTypeTransfers.add(transactionEntityRoleTypeTransferCache.getTransfer(transactionEntityRoleType))
+                transactionEntityRoleTypeTransfers.add(transactionEntityRoleTypeTransferCache.getTransfer(userVisit, transactionEntityRoleType))
         );
         
         return transactionEntityRoleTypeTransfers;
@@ -4664,7 +4649,7 @@ public class AccountingControl
         var transactionEntityRoleTypeDescription = getTransactionEntityRoleTypeDescription(transactionEntityRoleType, language);
         
         if(transactionEntityRoleTypeDescription == null && !language.getIsDefault()) {
-            transactionEntityRoleTypeDescription = getTransactionEntityRoleTypeDescription(transactionEntityRoleType, getPartyControl().getDefaultLanguage());
+            transactionEntityRoleTypeDescription = getTransactionEntityRoleTypeDescription(transactionEntityRoleType, partyControl.getDefaultLanguage());
         }
         
         if(transactionEntityRoleTypeDescription == null) {
@@ -4677,16 +4662,15 @@ public class AccountingControl
     }
     
     public TransactionEntityRoleTypeDescriptionTransfer getTransactionEntityRoleTypeDescriptionTransfer(UserVisit userVisit, TransactionEntityRoleTypeDescription transactionEntityRoleTypeDescription) {
-        return getAccountingTransferCaches(userVisit).getTransactionEntityRoleTypeDescriptionTransferCache().getTransfer(transactionEntityRoleTypeDescription);
+        return transactionEntityRoleTypeDescriptionTransferCache.getTransfer(userVisit, transactionEntityRoleTypeDescription);
     }
     
     public List<TransactionEntityRoleTypeDescriptionTransfer> getTransactionEntityRoleTypeDescriptionTransfersByTransactionEntityRoleType(UserVisit userVisit, TransactionEntityRoleType transactionEntityRoleType) {
         var transactionEntityRoleTypeDescriptions = getTransactionEntityRoleTypeDescriptionsByTransactionEntityRoleType(transactionEntityRoleType);
         List<TransactionEntityRoleTypeDescriptionTransfer> transactionEntityRoleTypeDescriptionTransfers = new ArrayList<>(transactionEntityRoleTypeDescriptions.size());
-        var transactionEntityRoleTypeDescriptionTransferCache = getAccountingTransferCaches(userVisit).getTransactionEntityRoleTypeDescriptionTransferCache();
         
         transactionEntityRoleTypeDescriptions.forEach((transactionEntityRoleTypeDescription) ->
-                transactionEntityRoleTypeDescriptionTransfers.add(transactionEntityRoleTypeDescriptionTransferCache.getTransfer(transactionEntityRoleTypeDescription))
+                transactionEntityRoleTypeDescriptionTransfers.add(transactionEntityRoleTypeDescriptionTransferCache.getTransfer(userVisit, transactionEntityRoleTypeDescription))
         );
         
         return transactionEntityRoleTypeDescriptionTransfers;
@@ -4825,7 +4809,7 @@ public class AccountingControl
     }
     
     public TransactionGlAccountTransfer getTransactionGlAccountTransfer(UserVisit userVisit, TransactionGlAccount transactionGlAccount) {
-        return getAccountingTransferCaches(userVisit).getTransactionGlAccountTransferCache().getTransfer(transactionGlAccount);
+        return transactionGlAccountTransferCache.getTransfer(userVisit, transactionGlAccount);
     }
     
     public void updateTransactionGlAccountFromValue(TransactionGlAccountValue transactionGlAccountValue, BasePK updatedBy) {
@@ -4873,7 +4857,7 @@ public class AccountingControl
     // --------------------------------------------------------------------------------
     
     public TransactionGroup getActiveTransactionGroup(BasePK createdBy) {
-        var workflowStep = getWorkflowControl().getWorkflowStepUsingNames(Workflow_TRANSACTION_GROUP_STATUS,
+        var workflowStep = workflowControl.getWorkflowStepUsingNames(Workflow_TRANSACTION_GROUP_STATUS,
                 WorkflowStep_TRANSACTION_GROUP_STATUS_ACTIVE);
         TransactionGroup transactionGroup = null;
         
@@ -4923,7 +4907,7 @@ public class AccountingControl
         var transactionGroup = createTransactionGroup(transactionGroupName, createdBy);
 
         var entityInstance = getEntityInstanceByBaseEntity(transactionGroup);
-        getWorkflowControl().addEntityToWorkflowUsingNames(null, Workflow_TRANSACTION_GROUP_STATUS, entityInstance, null, null,createdBy);
+        workflowControl.addEntityToWorkflowUsingNames(null, Workflow_TRANSACTION_GROUP_STATUS, entityInstance, null, null,createdBy);
         
         return transactionGroup;
     }
@@ -5043,15 +5027,14 @@ public class AccountingControl
     }
     
     public TransactionGroupTransfer getTransactionGroupTransfer(UserVisit userVisit, TransactionGroup transactionGroup) {
-        return getAccountingTransferCaches(userVisit).getTransactionGroupTransferCache().getTransfer(transactionGroup);
+        return transactionGroupTransferCache.getTransfer(userVisit, transactionGroup);
     }
     
     public List<TransactionGroupTransfer> getTransactionGroupTransfers(UserVisit userVisit, Collection<TransactionGroup> transactionGroups) {
         List<TransactionGroupTransfer> transactionGroupTransfers = new ArrayList<>(transactionGroups.size());
-        var transactionGroupTransferCache = getAccountingTransferCaches(userVisit).getTransactionGroupTransferCache();
         
         transactionGroups.forEach((transactionGroup) ->
-                transactionGroupTransfers.add(transactionGroupTransferCache.getTransfer(transactionGroup))
+                transactionGroupTransfers.add(transactionGroupTransferCache.getTransfer(userVisit, transactionGroup))
         );
         
         return transactionGroupTransfers;
@@ -5063,7 +5046,6 @@ public class AccountingControl
     
     public TransactionGroupStatusChoicesBean getTransactionGroupStatusChoices(String defaultTransactionGroupStatusChoice, Language language, boolean allowNullChoice,
             TransactionGroup transactionGroup, PartyPK partyPK) {
-        var workflowControl = getWorkflowControl();
         var transactionGroupStatusChoicesBean = new TransactionGroupStatusChoicesBean();
         
         if(transactionGroup == null) {
@@ -5083,7 +5065,6 @@ public class AccountingControl
     }
     
     public void setTransactionGroupStatus(ExecutionErrorAccumulator eea, TransactionGroup transactionGroup, String transactionGroupStatusChoice, PartyPK modifiedBy) {
-        var workflowControl = getWorkflowControl();
         var entityInstance = getEntityInstanceByBaseEntity(transactionGroup);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(Workflow_TRANSACTION_GROUP_STATUS, entityInstance);
         var workflowDestination = transactionGroupStatusChoice == null? null:
@@ -5284,15 +5265,14 @@ public class AccountingControl
     }
     
     public TransactionTransfer getTransactionTransfer(UserVisit userVisit, Transaction transaction) {
-        return getAccountingTransferCaches(userVisit).getTransactionTransferCache().getTransfer(transaction);
+        return transactionTransferCache.getTransfer(userVisit, transaction);
     }
     
     public List<TransactionTransfer> getTransactionTransfers(UserVisit userVisit, Collection<Transaction> transactions) {
         List<TransactionTransfer> transactionTransfers = new ArrayList<>(transactions.size());
-        var transactionTransferCache = getAccountingTransferCaches(userVisit).getTransactionTransferCache();
         
         transactions.forEach((transaction) ->
-                transactionTransfers.add(transactionTransferCache.getTransfer(transaction))
+                transactionTransfers.add(transactionTransferCache.getTransfer(userVisit, transaction))
         );
         
         return transactionTransfers;
@@ -5440,15 +5420,14 @@ public class AccountingControl
     }
     
     public TransactionGlEntryTransfer getTransactionGlEntryTransfer(UserVisit userVisit, TransactionGlEntry transactionGlEntry) {
-        return getAccountingTransferCaches(userVisit).getTransactionGlEntryTransferCache().getTransfer(transactionGlEntry);
+        return transactionGlEntryTransferCache.getTransfer(userVisit, transactionGlEntry);
     }
     
     public List<TransactionGlEntryTransfer> getTransactionGlEntryTransfers(UserVisit userVisit, Collection<TransactionGlEntry> transactionGlEntries) {
         List<TransactionGlEntryTransfer> transactionGlEntryTransfers = new ArrayList<>(transactionGlEntries.size());
-        var transactionGlEntryTransferCache = getAccountingTransferCaches(userVisit).getTransactionGlEntryTransferCache();
         
         transactionGlEntries.forEach((transactionGlEntry) ->
-                transactionGlEntryTransfers.add(transactionGlEntryTransferCache.getTransfer(transactionGlEntry))
+                transactionGlEntryTransfers.add(transactionGlEntryTransferCache.getTransfer(userVisit, transactionGlEntry))
         );
         
         return transactionGlEntryTransfers;
@@ -5582,15 +5561,14 @@ public class AccountingControl
     }
     
     public TransactionEntityRoleTransfer getTransactionEntityRoleTransfer(UserVisit userVisit, TransactionEntityRole transactionEntityRole) {
-        return getAccountingTransferCaches(userVisit).getTransactionEntityRoleTransferCache().getTransfer(transactionEntityRole);
+        return transactionEntityRoleTransferCache.getTransfer(userVisit, transactionEntityRole);
     }
     
     public List<TransactionEntityRoleTransfer> getTransactionEntityRoleTransfers(UserVisit userVisit, Collection<TransactionEntityRole> transactionEntityRoles) {
         List<TransactionEntityRoleTransfer> transactionEntityRoleTransfers = new ArrayList<>(transactionEntityRoles.size());
-        var transactionEntityRoleTransferCache = getAccountingTransferCaches(userVisit).getTransactionEntityRoleTransferCache();
         
         transactionEntityRoles.forEach((transactionEntityRole) ->
-                transactionEntityRoleTransfers.add(transactionEntityRoleTransferCache.getTransfer(transactionEntityRole))
+                transactionEntityRoleTransfers.add(transactionEntityRoleTransferCache.getTransfer(userVisit, transactionEntityRole))
         );
         
         return transactionEntityRoleTransfers;
@@ -5801,15 +5779,14 @@ public class AccountingControl
     }
     
     public SymbolPositionTransfer getSymbolPositionTransfer(UserVisit userVisit, SymbolPosition symbolPosition) {
-        return getAccountingTransferCaches(userVisit).getSymbolPositionTransferCache().getTransfer(symbolPosition);
+        return symbolPositionTransferCache.getTransfer(userVisit, symbolPosition);
     }
     
     public List<SymbolPositionTransfer> getSymbolPositionTransfers(UserVisit userVisit, Collection<SymbolPosition> symbolPositions) {
         List<SymbolPositionTransfer> symbolPositionTransfers = new ArrayList<>(symbolPositions.size());
-        var symbolPositionTransferCache = getAccountingTransferCaches(userVisit).getSymbolPositionTransferCache();
         
         symbolPositions.forEach((symbolPosition) ->
-                symbolPositionTransfers.add(symbolPositionTransferCache.getTransfer(symbolPosition))
+                symbolPositionTransfers.add(symbolPositionTransferCache.getTransfer(userVisit, symbolPosition))
         );
         
         return symbolPositionTransfers;
@@ -6031,7 +6008,7 @@ public class AccountingControl
         var symbolPositionDescription = getSymbolPositionDescription(symbolPosition, language);
         
         if(symbolPositionDescription == null && !language.getIsDefault()) {
-            symbolPositionDescription = getSymbolPositionDescription(symbolPosition, getPartyControl().getDefaultLanguage());
+            symbolPositionDescription = getSymbolPositionDescription(symbolPosition, partyControl.getDefaultLanguage());
         }
         
         if(symbolPositionDescription == null) {
@@ -6044,16 +6021,15 @@ public class AccountingControl
     }
     
     public SymbolPositionDescriptionTransfer getSymbolPositionDescriptionTransfer(UserVisit userVisit, SymbolPositionDescription symbolPositionDescription) {
-        return getAccountingTransferCaches(userVisit).getSymbolPositionDescriptionTransferCache().getTransfer(symbolPositionDescription);
+        return symbolPositionDescriptionTransferCache.getTransfer(userVisit, symbolPositionDescription);
     }
     
     public List<SymbolPositionDescriptionTransfer> getSymbolPositionDescriptionTransfersBySymbolPosition(UserVisit userVisit, SymbolPosition symbolPosition) {
         var symbolPositionDescriptions = getSymbolPositionDescriptionsBySymbolPosition(symbolPosition);
         List<SymbolPositionDescriptionTransfer> symbolPositionDescriptionTransfers = new ArrayList<>(symbolPositionDescriptions.size());
-        var symbolPositionDescriptionTransferCache = getAccountingTransferCaches(userVisit).getSymbolPositionDescriptionTransferCache();
         
         symbolPositionDescriptions.forEach((symbolPositionDescription) ->
-                symbolPositionDescriptionTransfers.add(symbolPositionDescriptionTransferCache.getTransfer(symbolPositionDescription))
+                symbolPositionDescriptionTransfers.add(symbolPositionDescriptionTransferCache.getTransfer(userVisit, symbolPositionDescription))
         );
         
         return symbolPositionDescriptionTransfers;

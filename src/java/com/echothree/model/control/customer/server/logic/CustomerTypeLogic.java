@@ -43,20 +43,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class CustomerTypeLogic
         extends BaseLogic {
-    
-    private CustomerTypeLogic() {
+
+    protected CustomerTypeLogic() {
         super();
     }
-    
-    private static class CustomerTypeLogicHolder {
-        static CustomerTypeLogic instance = new CustomerTypeLogic();
-    }
-    
+
     public static CustomerTypeLogic getInstance() {
-        return CustomerTypeLogicHolder.instance;
+        return CDI.current().select(CustomerTypeLogic.class).get();
     }
 
     public CustomerType createCustomerType(final ExecutionErrorAccumulator eea, final String customerTypeName, final Sequence customerSequence,
@@ -116,7 +115,7 @@ public class CustomerTypeLogic
         var parameterCount = (customerTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
-            case 0:
+            case 0 -> {
                 if(allowDefault) {
                     customerType = customerControl.getDefaultCustomerType(entityPermission);
 
@@ -126,8 +125,8 @@ public class CustomerTypeLogic
                 } else {
                     handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                 }
-                break;
-            case 1:
+            }
+            case 1 -> {
                 if(customerTypeName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.CustomerType.name());
@@ -138,10 +137,9 @@ public class CustomerTypeLogic
                 } else {
                     customerType = getCustomerTypeByName(eea, customerTypeName, entityPermission);
                 }
-                break;
-            default:
-                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
-                break;
+            }
+            default ->
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
 
         return customerType;

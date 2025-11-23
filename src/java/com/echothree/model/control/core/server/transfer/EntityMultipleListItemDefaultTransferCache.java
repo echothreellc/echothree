@@ -18,22 +18,23 @@ package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.transfer.EntityMultipleListItemDefaultTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityMultipleListItemDefault;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EntityMultipleListItemDefaultTransferCache
         extends BaseCoreTransferCache<EntityMultipleListItemDefault, EntityMultipleListItemDefaultTransfer> {
 
     CoreControl coreControl = Session.getModelController(CoreControl.class);
 
     /** Creates a new instance of EntityMultipleListItemDefaultTransferCache */
-    public EntityMultipleListItemDefaultTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected EntityMultipleListItemDefaultTransferCache() {
+        super();
     }
     
-    public EntityMultipleListItemDefaultTransfer getEntityMultipleListItemDefaultTransfer(EntityMultipleListItemDefault entityMultipleListItemDefault) {
+    public EntityMultipleListItemDefaultTransfer getEntityMultipleListItemDefaultTransfer(UserVisit userVisit, EntityMultipleListItemDefault entityMultipleListItemDefault) {
         var entityMultipleListItemDefaultTransfer = get(entityMultipleListItemDefault);
         
         if(entityMultipleListItemDefaultTransfer == null) {
@@ -41,7 +42,7 @@ public class EntityMultipleListItemDefaultTransferCache
             var entityListItem = coreControl.getEntityListItemTransfer(userVisit, entityMultipleListItemDefault.getEntityListItem(), null);
             
             entityMultipleListItemDefaultTransfer = new EntityMultipleListItemDefaultTransfer(entityAttribute, entityListItem);
-            put(entityMultipleListItemDefault, entityMultipleListItemDefaultTransfer);
+            put(userVisit, entityMultipleListItemDefault, entityMultipleListItemDefaultTransfer);
         }
         
         return entityMultipleListItemDefaultTransfer;

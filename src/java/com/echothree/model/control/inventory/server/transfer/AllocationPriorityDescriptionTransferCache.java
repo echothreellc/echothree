@@ -20,17 +20,22 @@ import com.echothree.model.control.inventory.common.transfer.AllocationPriorityD
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.data.inventory.server.entity.AllocationPriorityDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class AllocationPriorityDescriptionTransferCache
         extends BaseInventoryDescriptionTransferCache<AllocationPriorityDescription, AllocationPriorityDescriptionTransfer> {
-    
+
+    InventoryControl inventoryControl = Session.getModelController(InventoryControl.class);
+
     /** Creates a new instance of AllocationPriorityDescriptionTransferCache */
-    public AllocationPriorityDescriptionTransferCache(UserVisit userVisit, InventoryControl inventoryControl) {
-        super(userVisit, inventoryControl);
+    protected AllocationPriorityDescriptionTransferCache() {
+        super();
     }
     
     @Override
-    public AllocationPriorityDescriptionTransfer getTransfer(AllocationPriorityDescription allocationPriorityDescription) {
+    public AllocationPriorityDescriptionTransfer getTransfer(UserVisit userVisit, AllocationPriorityDescription allocationPriorityDescription) {
         var allocationPriorityDescriptionTransfer = get(allocationPriorityDescription);
         
         if(allocationPriorityDescriptionTransfer == null) {
@@ -38,7 +43,7 @@ public class AllocationPriorityDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, allocationPriorityDescription.getLanguage());
             
             allocationPriorityDescriptionTransfer = new AllocationPriorityDescriptionTransfer(languageTransfer, allocationPriorityTransfer, allocationPriorityDescription.getDescription());
-            put(allocationPriorityDescription, allocationPriorityDescriptionTransfer);
+            put(userVisit, allocationPriorityDescription, allocationPriorityDescriptionTransfer);
         }
         
         return allocationPriorityDescriptionTransfer;

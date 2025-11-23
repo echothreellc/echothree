@@ -20,16 +20,21 @@ import com.echothree.model.control.customer.common.transfer.CustomerTypeDescript
 import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.data.customer.server.entity.CustomerTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CustomerTypeDescriptionTransferCache
         extends BaseCustomerDescriptionTransferCache<CustomerTypeDescription, CustomerTypeDescriptionTransfer> {
-    
+
+    CustomerControl customerControl = Session.getModelController(CustomerControl.class);
+
     /** Creates a new instance of CustomerTypeDescriptionTransferCache */
-    public CustomerTypeDescriptionTransferCache(UserVisit userVisit, CustomerControl customerControl) {
-        super(userVisit, customerControl);
+    protected CustomerTypeDescriptionTransferCache() {
+        super();
     }
     
-    public CustomerTypeDescriptionTransfer getCustomerTypeDescriptionTransfer(CustomerTypeDescription customerTypeDescription) {
+    public CustomerTypeDescriptionTransfer getCustomerTypeDescriptionTransfer(UserVisit userVisit, CustomerTypeDescription customerTypeDescription) {
         var customerTypeDescriptionTransfer = get(customerTypeDescription);
         
         if(customerTypeDescriptionTransfer == null) {
@@ -37,7 +42,7 @@ public class CustomerTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, customerTypeDescription.getLanguage());
             
             customerTypeDescriptionTransfer = new CustomerTypeDescriptionTransfer(languageTransfer, customerTypeTransfer, customerTypeDescription.getDescription());
-            put(customerTypeDescription, customerTypeDescriptionTransfer);
+            put(userVisit, customerTypeDescription, customerTypeDescriptionTransfer);
         }
         
         return customerTypeDescriptionTransfer;

@@ -20,19 +20,24 @@ import com.echothree.model.control.inventory.common.transfer.InventoryConditionT
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class InventoryConditionTransferCache
         extends BaseInventoryTransferCache<InventoryCondition, InventoryConditionTransfer> {
-    
+
+    InventoryControl inventoryControl = Session.getModelController(InventoryControl.class);
+
     /** Creates a new instance of InventoryConditionTransferCache */
-    public InventoryConditionTransferCache(UserVisit userVisit, InventoryControl inventoryControl) {
-        super(userVisit, inventoryControl);
+    protected InventoryConditionTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
     @Override
-    public InventoryConditionTransfer getTransfer(InventoryCondition inventoryCondition) {
+    public InventoryConditionTransfer getTransfer(UserVisit userVisit, InventoryCondition inventoryCondition) {
         var inventoryConditionTransfer = get(inventoryCondition);
         
         if(inventoryConditionTransfer == null) {
@@ -40,10 +45,10 @@ public class InventoryConditionTransferCache
             var inventoryConditionName = inventoryConditionDetail.getInventoryConditionName();
             var isDefault = inventoryConditionDetail.getIsDefault();
             var sortOrder = inventoryConditionDetail.getSortOrder();
-            var description = inventoryControl.getBestInventoryConditionDescription(inventoryCondition, getLanguage());
+            var description = inventoryControl.getBestInventoryConditionDescription(inventoryCondition, getLanguage(userVisit));
             
             inventoryConditionTransfer = new InventoryConditionTransfer(inventoryConditionName, isDefault, sortOrder, description);
-            put(inventoryCondition, inventoryConditionTransfer);
+            put(userVisit, inventoryCondition, inventoryConditionTransfer);
         }
         
         return inventoryConditionTransfer;

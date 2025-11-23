@@ -20,18 +20,23 @@ import com.echothree.model.control.picklist.common.transfer.PicklistTimeTypeTran
 import com.echothree.model.control.picklist.server.control.PicklistControl;
 import com.echothree.model.data.picklist.server.entity.PicklistTimeType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PicklistTimeTypeTransferCache
         extends BasePicklistTransferCache<PicklistTimeType, PicklistTimeTypeTransfer> {
-    
+
+    PicklistControl picklistControl = Session.getModelController(PicklistControl.class);
+
     /** Creates a new instance of PicklistTimeTypeTransferCache */
-    public PicklistTimeTypeTransferCache(UserVisit userVisit, PicklistControl picklistControl) {
-        super(userVisit, picklistControl);
+    protected PicklistTimeTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public PicklistTimeTypeTransfer getPicklistTimeTypeTransfer(PicklistTimeType picklistTimeType) {
+    public PicklistTimeTypeTransfer getPicklistTimeTypeTransfer(UserVisit userVisit, PicklistTimeType picklistTimeType) {
         var picklistTimeTypeTransfer = get(picklistTimeType);
         
         if(picklistTimeTypeTransfer == null) {
@@ -39,10 +44,10 @@ public class PicklistTimeTypeTransferCache
             var picklistTimeTypeName = picklistTimeTypeDetail.getPicklistTimeTypeName();
             var isDefault = picklistTimeTypeDetail.getIsDefault();
             var sortOrder = picklistTimeTypeDetail.getSortOrder();
-            var description = picklistControl.getBestPicklistTimeTypeDescription(picklistTimeType, getLanguage());
+            var description = picklistControl.getBestPicklistTimeTypeDescription(picklistTimeType, getLanguage(userVisit));
             
             picklistTimeTypeTransfer = new PicklistTimeTypeTransfer(picklistTimeTypeName, isDefault, sortOrder, description);
-            put(picklistTimeType, picklistTimeTypeTransfer);
+            put(userVisit, picklistTimeType, picklistTimeTypeTransfer);
         }
         
         return picklistTimeTypeTransfer;

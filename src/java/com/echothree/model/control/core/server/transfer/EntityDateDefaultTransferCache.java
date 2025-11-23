@@ -22,18 +22,20 @@ import com.echothree.model.data.core.server.entity.EntityDateDefault;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.DateUtils;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EntityDateDefaultTransferCache
         extends BaseCoreTransferCache<EntityDateDefault, EntityDateDefaultTransfer> {
 
     CoreControl coreControl = Session.getModelController(CoreControl.class);
 
     /** Creates a new instance of EntityDateDefaultTransferCache */
-    public EntityDateDefaultTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected EntityDateDefaultTransferCache() {
+        super();
     }
     
-    public EntityDateDefaultTransfer getEntityDateDefaultTransfer(EntityDateDefault entityDateDefault) {
+    public EntityDateDefaultTransfer getEntityDateDefaultTransfer(UserVisit userVisit, EntityDateDefault entityDateDefault) {
         var entityDateDefaultTransfer = get(entityDateDefault);
         
         if(entityDateDefaultTransfer == null) {
@@ -42,7 +44,7 @@ public class EntityDateDefaultTransferCache
             var dateAttribute = DateUtils.getInstance().formatDate(userVisit, unformattedDateAttribute);
             
             entityDateDefaultTransfer = new EntityDateDefaultTransfer(entityAttribute, dateAttribute, unformattedDateAttribute);
-            put(entityDateDefault, entityDateDefaultTransfer);
+            put(userVisit, entityDateDefault, entityDateDefaultTransfer);
         }
         
         return entityDateDefaultTransfer;

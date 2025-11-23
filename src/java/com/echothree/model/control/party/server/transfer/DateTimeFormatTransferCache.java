@@ -23,7 +23,9 @@ import com.echothree.model.data.party.server.entity.DateTimeFormat;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class DateTimeFormatTransferCache
         extends BasePartyTransferCache<DateTimeFormat, DateTimeFormatTransfer> {
 
@@ -53,8 +55,8 @@ public class DateTimeFormatTransferCache
     boolean filterEntityInstance;
     
     /** Creates a new instance of DateTimeFormatTransferCache */
-    public DateTimeFormatTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected DateTimeFormatTransferCache() {
+        super();
 
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
@@ -89,7 +91,7 @@ public class DateTimeFormatTransferCache
     }
 
     @Override
-    public DateTimeFormatTransfer getTransfer(DateTimeFormat dateTimeFormat) {
+    public DateTimeFormatTransfer getTransfer(UserVisit userVisit, DateTimeFormat dateTimeFormat) {
         var dateTimeFormatTransfer = get(dateTimeFormat);
         
         if(dateTimeFormatTransfer == null) {
@@ -113,14 +115,14 @@ public class DateTimeFormatTransferCache
             var timeSeparator = filterTimeSeparator ? null : dateTimeFormatDetail.getTimeSeparator();
             var isDefault = filterIsDefault ? null : dateTimeFormatDetail.getIsDefault();
             var sortOrder = filterSortOrder ? null : dateTimeFormatDetail.getSortOrder();
-            var description = filterDescription ? null : partyControl.getBestDateTimeFormatDescription(dateTimeFormat, getLanguage());
+            var description = filterDescription ? null : partyControl.getBestDateTimeFormatDescription(dateTimeFormat, getLanguage(userVisit));
             
             dateTimeFormatTransfer = new DateTimeFormatTransfer(dateTimeFormatName, javaShortDateFormat, javaAbbrevDateFormat,
                     javaAbbrevDateFormatWeekday, javaLongDateFormat, javaLongDateFormatWeekday, javaTimeFormat,
                     javaTimeFormatSeconds, unixShortDateFormat, unixAbbrevDateFormat, unixAbbrevDateFormatWeekday,
                     unixLongDateFormat, unixLongDateFormatWeekday, unixTimeFormat, unixTimeFormatSeconds, shortDateSeparator,
                     timeSeparator, isDefault, sortOrder, description);
-            put(dateTimeFormat, dateTimeFormatTransfer);
+            put(userVisit, dateTimeFormat, dateTimeFormatTransfer);
         }
         
         return dateTimeFormatTransfer;

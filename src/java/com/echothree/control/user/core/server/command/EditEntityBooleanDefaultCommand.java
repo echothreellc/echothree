@@ -35,7 +35,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EditEntityBooleanDefaultCommand
         extends BaseAbstractEditCommand<EntityBooleanDefaultSpec, EntityBooleanDefaultEdit, EditEntityBooleanDefaultResult, EntityBooleanDefault, EntityAttribute> {
     
@@ -83,7 +85,6 @@ public class EditEntityBooleanDefaultCommand
         EntityBooleanDefault entityBooleanDefault = null;
 
         if(!hasExecutionErrors()) {
-            var coreControl = getCoreControl();
 
             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                 entityBooleanDefault = coreControl.getEntityBooleanDefault(entityAttribute);
@@ -106,7 +107,6 @@ public class EditEntityBooleanDefaultCommand
 
     @Override
     public void fillInResult(EditEntityBooleanDefaultResult result, EntityBooleanDefault entityBooleanDefault) {
-        var coreControl = getCoreControl();
 
         result.setEntityBooleanDefault(coreControl.getEntityBooleanDefaultTransfer(getUserVisit(), entityBooleanDefault));
     }
@@ -118,7 +118,6 @@ public class EditEntityBooleanDefaultCommand
 
     @Override
     public void doUpdate(EntityBooleanDefault entityBooleanDefault) {
-        var coreControl = getCoreControl();
         var entityBooleanDefaultValue = coreControl.getEntityBooleanDefaultValueForUpdate(entityBooleanDefault);
 
         entityBooleanDefaultValue.setBooleanAttribute(Boolean.valueOf(edit.getBooleanAttribute()));

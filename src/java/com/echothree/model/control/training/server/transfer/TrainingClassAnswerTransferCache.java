@@ -20,18 +20,23 @@ import com.echothree.model.control.training.common.transfer.TrainingClassAnswerT
 import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.data.training.server.entity.TrainingClassAnswer;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class TrainingClassAnswerTransferCache
         extends BaseTrainingTransferCache<TrainingClassAnswer, TrainingClassAnswerTransfer> {
-    
+
+    TrainingControl trainingControl = Session.getModelController(TrainingControl.class);
+
     /** Creates a new instance of TrainingClassAnswerTransferCache */
-    public TrainingClassAnswerTransferCache(UserVisit userVisit, TrainingControl trainingControl) {
-        super(userVisit, trainingControl);
+    protected TrainingClassAnswerTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public TrainingClassAnswerTransfer getTrainingClassAnswerTransfer(TrainingClassAnswer trainingClassAnswer) {
+    public TrainingClassAnswerTransfer getTrainingClassAnswerTransfer(UserVisit userVisit, TrainingClassAnswer trainingClassAnswer) {
         var trainingClassAnswerTransfer = get(trainingClassAnswer);
         
         if(trainingClassAnswerTransfer == null) {
@@ -42,7 +47,7 @@ public class TrainingClassAnswerTransferCache
             var sortOrder = trainingClassAnswerDetail.getSortOrder();
             
             trainingClassAnswerTransfer = new TrainingClassAnswerTransfer(trainingClassQuestion, trainingClassAnswerName, isCorrect, sortOrder);
-            put(trainingClassAnswer, trainingClassAnswerTransfer);
+            put(userVisit, trainingClassAnswer, trainingClassAnswerTransfer);
         }
         
         return trainingClassAnswerTransfer;

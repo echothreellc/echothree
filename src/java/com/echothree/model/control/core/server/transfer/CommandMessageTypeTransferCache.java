@@ -21,20 +21,22 @@ import com.echothree.model.control.core.server.control.CommandControl;
 import com.echothree.model.data.core.server.entity.CommandMessageType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CommandMessageTypeTransferCache
         extends BaseCoreTransferCache<CommandMessageType, CommandMessageTypeTransfer> {
 
     CommandControl commandControl = Session.getModelController(CommandControl.class);
 
     /** Creates a new instance of CommandMessageTypeTransferCache */
-    public CommandMessageTypeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected CommandMessageTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public CommandMessageTypeTransfer getCommandMessageTypeTransfer(CommandMessageType commandMessageType) {
+    public CommandMessageTypeTransfer getCommandMessageTypeTransfer(UserVisit userVisit, CommandMessageType commandMessageType) {
         var commandMessageTypeTransfer = get(commandMessageType);
         
         if(commandMessageTypeTransfer == null) {
@@ -42,10 +44,10 @@ public class CommandMessageTypeTransferCache
             var commandMessageTypeName = commandMessageTypeDetail.getCommandMessageTypeName();
             var isDefault = commandMessageTypeDetail.getIsDefault();
             var sortOrder = commandMessageTypeDetail.getSortOrder();
-            var description = commandControl.getBestCommandMessageTypeDescription(commandMessageType, getLanguage());
+            var description = commandControl.getBestCommandMessageTypeDescription(commandMessageType, getLanguage(userVisit));
             
             commandMessageTypeTransfer = new CommandMessageTypeTransfer(commandMessageTypeName, isDefault, sortOrder, description);
-            put(commandMessageType, commandMessageTypeTransfer);
+            put(userVisit, commandMessageType, commandMessageTypeTransfer);
         }
         
         return commandMessageTypeTransfer;

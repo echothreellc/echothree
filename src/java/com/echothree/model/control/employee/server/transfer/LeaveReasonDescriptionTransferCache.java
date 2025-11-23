@@ -20,16 +20,21 @@ import com.echothree.model.control.employee.common.transfer.LeaveReasonDescripti
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.data.employee.server.entity.LeaveReasonDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class LeaveReasonDescriptionTransferCache
         extends BaseEmployeeDescriptionTransferCache<LeaveReasonDescription, LeaveReasonDescriptionTransfer> {
-    
+
+    EmployeeControl employeeControl = Session.getModelController(EmployeeControl.class);
+
     /** Creates a new instance of LeaveReasonDescriptionTransferCache */
-    public LeaveReasonDescriptionTransferCache(UserVisit userVisit, EmployeeControl employeeControl) {
-        super(userVisit, employeeControl);
+    protected LeaveReasonDescriptionTransferCache() {
+        super();
     }
     
-    public LeaveReasonDescriptionTransfer getLeaveReasonDescriptionTransfer(LeaveReasonDescription leaveReasonDescription) {
+    public LeaveReasonDescriptionTransfer getLeaveReasonDescriptionTransfer(UserVisit userVisit, LeaveReasonDescription leaveReasonDescription) {
         var leaveReasonDescriptionTransfer = get(leaveReasonDescription);
         
         if(leaveReasonDescriptionTransfer == null) {
@@ -38,7 +43,7 @@ public class LeaveReasonDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, leaveReasonDescription.getLanguage());
             
             leaveReasonDescriptionTransfer = new LeaveReasonDescriptionTransfer(languageTransfer, leaveReasonTransfer, leaveReasonDescription.getDescription());
-            put(leaveReasonDescription, leaveReasonDescriptionTransfer);
+            put(userVisit, leaveReasonDescription, leaveReasonDescriptionTransfer);
         }
         
         return leaveReasonDescriptionTransfer;

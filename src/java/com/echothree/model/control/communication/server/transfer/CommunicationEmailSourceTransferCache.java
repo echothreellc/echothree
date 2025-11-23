@@ -24,20 +24,23 @@ import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
 import com.echothree.model.data.communication.server.entity.CommunicationEmailSource;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CommunicationEmailSourceTransferCache
         extends BaseCommunicationTransferCache<CommunicationEmailSource, CommunicationEmailSourceTransfer> {
 
+    CommunicationControl communicationControl = Session.getModelController(CommunicationControl.class);
     ServerControl serverControl = Session.getModelController(ServerControl.class);
     SelectorControl selectorControl = Session.getModelController(SelectorControl.class);
     WorkEffortControl workEffortControl = Session.getModelController(WorkEffortControl.class);
     
     /** Creates a new instance of CommunicationEmailSourceTransferCache */
-    public CommunicationEmailSourceTransferCache(UserVisit userVisit, CommunicationControl communicationControl) {
-        super(userVisit, communicationControl);
+    protected CommunicationEmailSourceTransferCache() {
+        super();
     }
     
-    public CommunicationEmailSourceTransfer getCommunicationEmailSourceTransfer(CommunicationEmailSource communicationEmailSource) {
+    public CommunicationEmailSourceTransfer getCommunicationEmailSourceTransfer(UserVisit userVisit, CommunicationEmailSource communicationEmailSource) {
         var communicationEmailSourceTransfer = get(communicationEmailSource);
         
         if(communicationEmailSourceTransfer == null) {
@@ -51,7 +54,7 @@ public class CommunicationEmailSourceTransferCache
             
             communicationEmailSourceTransfer = new CommunicationEmailSourceTransfer(serverTransfer, username, password,
                     receiveWorkEffortScopeTransfer, sendWorkEffortScopeTransfer, reviewEmployeeSelectorTransfer);
-            put(communicationEmailSource, communicationEmailSourceTransfer);
+            put(userVisit, communicationEmailSource, communicationEmailSourceTransfer);
         }
         
         return communicationEmailSourceTransfer;

@@ -20,25 +20,29 @@ import com.echothree.model.control.warehouse.common.transfer.LocationDescription
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.warehouse.server.entity.LocationDescription;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class LocationDescriptionTransferCache
         extends BaseWarehouseDescriptionTransferCache<LocationDescription, LocationDescriptionTransfer> {
-    
+
+    WarehouseControl warehouseControl = Session.getModelController(WarehouseControl.class);
+
     /** Creates a new instance of LocationDescriptionTransferCache */
-    public LocationDescriptionTransferCache(UserVisit userVisit, WarehouseControl warehouseControl) {
-        super(userVisit, warehouseControl);
+    protected LocationDescriptionTransferCache() {
+        super();
     }
     
-    public LocationDescriptionTransfer getLocationDescriptionTransfer(LocationDescription locationDescription) {
+    public LocationDescriptionTransfer getLocationDescriptionTransfer(UserVisit userVisit, LocationDescription locationDescription) {
         var locationDescriptionTransfer = get(locationDescription);
         
         if(locationDescriptionTransfer == null) {
-            var locationTransferCache = warehouseControl.getWarehouseTransferCaches(userVisit).getLocationTransferCache();
-            var locationTransfer = locationTransferCache.getLocationTransfer(locationDescription.getLocation());
+            var locationTransfer = warehouseControl.getLocationTransfer(userVisit, locationDescription.getLocation());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, locationDescription.getLanguage());
             
             locationDescriptionTransfer = new LocationDescriptionTransfer(languageTransfer, locationTransfer, locationDescription.getDescription());
-            put(locationDescription, locationDescriptionTransfer);
+            put(userVisit, locationDescription, locationDescriptionTransfer);
         }
         
         return locationDescriptionTransfer;

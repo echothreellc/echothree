@@ -46,13 +46,16 @@ import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.common.transfer.MapWrapper;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.transfer.ListWrapperBuilder;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ItemTransferCache
         extends BaseItemTransferCache<Item, ItemTransfer> {
     
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
     CancellationPolicyControl cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+    ItemControl itemControl = Session.getModelController(ItemControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     ReturnPolicyControl returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
     SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
@@ -121,8 +124,8 @@ public class ItemTransferCache
     boolean filterEntityInstance;
     
     /** Creates a new instance of ItemTransferCache */
-    public ItemTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    protected ItemTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {
@@ -205,7 +208,7 @@ public class ItemTransferCache
     }
     
     @Override
-    public ItemTransfer getTransfer(Item item) {
+    public ItemTransfer getTransfer(UserVisit userVisit, Item item) {
         var itemTransfer = get(item);
         
         if(itemTransfer == null) {
@@ -228,17 +231,17 @@ public class ItemTransferCache
             var serialNumberSequenceTransfer = serialNumberSequence == null ? null : sequenceControl.getSequenceTransfer(userVisit, serialNumberSequence);
             var shippingChargeExempt = filterShippingChargeExempt ? null : itemDetail.getShippingChargeExempt();
             var unformattedShippingStartTime = filterUnformattedShippingStartTime ? null : itemDetail.getShippingStartTime();
-            var shippingStartTime = filterShippingStartTime ? null : formatTypicalDateTime(unformattedShippingStartTime);
+            var shippingStartTime = filterShippingStartTime ? null : formatTypicalDateTime(userVisit, unformattedShippingStartTime);
             var unformattedShippingEndTime = filterUnformattedShippingEndTime ? null : itemDetail.getShippingEndTime();
-            var shippingEndTime = filterShippingEndTime ? null : formatTypicalDateTime(unformattedShippingEndTime);
+            var shippingEndTime = filterShippingEndTime ? null : formatTypicalDateTime(userVisit, unformattedShippingEndTime);
             var unformattedSalesOrderStartTime = filterUnformattedSalesOrderStartTime ? null : itemDetail.getSalesOrderStartTime();
-            var salesOrderStartTime = filterSalesOrderStartTime ? null : formatTypicalDateTime(unformattedSalesOrderStartTime);
+            var salesOrderStartTime = filterSalesOrderStartTime ? null : formatTypicalDateTime(userVisit, unformattedSalesOrderStartTime);
             var unformattedSalesOrderEndTime = filterUnformattedSalesOrderEndTime ? null : itemDetail.getSalesOrderEndTime();
-            var salesOrderEndTime = filterSalesOrderEndTime ? null : formatTypicalDateTime(unformattedSalesOrderEndTime);
+            var salesOrderEndTime = filterSalesOrderEndTime ? null : formatTypicalDateTime(userVisit, unformattedSalesOrderEndTime);
             var unformattedPurchaseOrderStartTime = filterUnformattedPurchaseOrderStartTime ? null : itemDetail.getPurchaseOrderStartTime();
-            var purchaseOrderStartTime = filterPurchaseOrderStartTime ? null : formatTypicalDateTime(unformattedPurchaseOrderStartTime);
+            var purchaseOrderStartTime = filterPurchaseOrderStartTime ? null : formatTypicalDateTime(userVisit, unformattedPurchaseOrderStartTime);
             var unformattedPurchaseOrderEndTime = filterUnformattedPurchaseOrderEndTime ? null : itemDetail.getPurchaseOrderEndTime();
-            var purchaseOrderEndTime = filterPurchaseOrderEndTime ? null : formatTypicalDateTime(unformattedPurchaseOrderEndTime);
+            var purchaseOrderEndTime = filterPurchaseOrderEndTime ? null : formatTypicalDateTime(userVisit, unformattedPurchaseOrderEndTime);
             var allowClubDiscounts = filterAllowClubDiscounts ? null : itemDetail.getAllowClubDiscounts();
             var allowCouponDiscounts = filterAllowCouponDiscounts ? null : itemDetail.getAllowCouponDiscounts();
             var allowAssociatePayments = filterAllowAssociatePayments ? null : itemDetail.getAllowAssociatePayments();
@@ -249,7 +252,7 @@ public class ItemTransferCache
             var returnPolicy = filterReturnPolicy ? null : itemDetail.getReturnPolicy();
             var returnPolicyTransfer = returnPolicy == null ? null : returnPolicyControl.getReturnPolicyTransfer(userVisit, returnPolicy);
             var itemDescriptionType = filterDescription ? null : itemControl.getItemDescriptionTypeByName(ItemDescriptionTypes.DEFAULT_DESCRIPTION.name());
-            var description = itemDescriptionType == null ? null : itemControl.getBestItemStringDescription(itemDescriptionType, item, getLanguage());
+            var description = itemDescriptionType == null ? null : itemControl.getBestItemStringDescription(itemDescriptionType, item, getLanguage(userVisit));
 
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(item.getPrimaryKey());
             var itemStatusTransfer = filterItemStatus ? null : workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
@@ -262,7 +265,7 @@ public class ItemTransferCache
                     salesOrderEndTime, unformattedPurchaseOrderStartTime, purchaseOrderStartTime, unformattedPurchaseOrderEndTime, purchaseOrderEndTime,
                     allowClubDiscounts, allowCouponDiscounts, allowAssociatePayments, unitOfMeasureKindTransfer, itemPriceTypeTransfer,
                     cancellationPolicyTransfer, returnPolicyTransfer, description, itemStatusTransfer);
-            put(item, itemTransfer, entityInstance);
+            put(userVisit, item, itemTransfer, entityInstance);
 
             if(includeItemShippingTimes) {
                 itemTransfer.setItemShippingTimes(ListWrapperBuilder.getInstance().filter(transferProperties, itemControl.getItemShippingTimeTransfersByItem(userVisit, item)));
@@ -353,19 +356,19 @@ public class ItemTransferCache
             }
 
             if(includeCustomerComments) {
-                setupComments(null, entityInstance, itemTransfer, CommentConstants.CommentType_ITEM_CUSTOMER);
+                setupComments(userVisit, null, entityInstance, itemTransfer, CommentConstants.CommentType_ITEM_CUSTOMER);
             }
 
             if(includeCustomerServiceComments) {
-                setupComments(null, entityInstance, itemTransfer, CommentConstants.CommentType_ITEM_CUSTOMER_SERVICE);
+                setupComments(userVisit, null, entityInstance, itemTransfer, CommentConstants.CommentType_ITEM_CUSTOMER_SERVICE);
             }
 
             if(includePurchasingComments) {
-                setupComments(null, entityInstance, itemTransfer, CommentConstants.CommentType_ITEM_PURCHASING);
+                setupComments(userVisit, null, entityInstance, itemTransfer, CommentConstants.CommentType_ITEM_PURCHASING);
             }
 
             if(includeCustomerRatings) {
-                setupRatings(null, entityInstance, itemTransfer, RatingConstants.RatingType_ITEM_CUSTOMER);
+                setupRatings(userVisit, null, entityInstance, itemTransfer, RatingConstants.RatingType_ITEM_CUSTOMER);
             }
         }
         

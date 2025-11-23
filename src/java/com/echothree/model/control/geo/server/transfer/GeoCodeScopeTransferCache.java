@@ -20,18 +20,23 @@ import com.echothree.model.control.geo.common.transfer.GeoCodeScopeTransfer;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.data.geo.server.entity.GeoCodeScope;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class GeoCodeScopeTransferCache
         extends BaseGeoTransferCache<GeoCodeScope, GeoCodeScopeTransfer> {
-    
+
+    GeoControl geoControl = Session.getModelController(GeoControl.class);
+
     /** Creates a new instance of GeoCodeScopeTransferCache */
-    public GeoCodeScopeTransferCache(UserVisit userVisit, GeoControl geoControl) {
-        super(userVisit, geoControl);
+    protected GeoCodeScopeTransferCache() {
+        super();
 
         setIncludeEntityInstance(true);
     }
     
-    public GeoCodeScopeTransfer getGeoCodeScopeTransfer(GeoCodeScope geoCodeScope) {
+    public GeoCodeScopeTransfer getGeoCodeScopeTransfer(UserVisit userVisit, GeoCodeScope geoCodeScope) {
         var geoCodeScopeTransfer = get(geoCodeScope);
         
         if(geoCodeScopeTransfer == null) {
@@ -39,10 +44,10 @@ public class GeoCodeScopeTransferCache
             var geoCodeScopeName = geoCodeScopeDetail.getGeoCodeScopeName();
             var isDefault = geoCodeScopeDetail.getIsDefault();
             var sortOrder = geoCodeScopeDetail.getSortOrder();
-            var description = geoControl.getBestGeoCodeScopeDescription(geoCodeScope, getLanguage());
+            var description = geoControl.getBestGeoCodeScopeDescription(geoCodeScope, getLanguage(userVisit));
             
             geoCodeScopeTransfer = new GeoCodeScopeTransfer(geoCodeScopeName, isDefault, sortOrder, description);
-            put(geoCodeScope, geoCodeScopeTransfer);
+            put(userVisit, geoCodeScope, geoCodeScopeTransfer);
         }
         
         return geoCodeScopeTransfer;

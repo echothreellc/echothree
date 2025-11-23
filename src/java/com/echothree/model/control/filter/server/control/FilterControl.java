@@ -43,7 +43,25 @@ import com.echothree.model.control.filter.common.transfer.FilterStepTransfer;
 import com.echothree.model.control.filter.common.transfer.FilterTransfer;
 import com.echothree.model.control.filter.common.transfer.FilterTypeDescriptionTransfer;
 import com.echothree.model.control.filter.common.transfer.FilterTypeTransfer;
-import com.echothree.model.control.filter.server.transfer.FilterTransferCaches;
+import com.echothree.model.control.filter.server.transfer.FilterAdjustmentAmountTransferCache;
+import com.echothree.model.control.filter.server.transfer.FilterAdjustmentDescriptionTransferCache;
+import com.echothree.model.control.filter.server.transfer.FilterAdjustmentFixedAmountTransferCache;
+import com.echothree.model.control.filter.server.transfer.FilterAdjustmentPercentTransferCache;
+import com.echothree.model.control.filter.server.transfer.FilterAdjustmentSourceTransferCache;
+import com.echothree.model.control.filter.server.transfer.FilterAdjustmentTransferCache;
+import com.echothree.model.control.filter.server.transfer.FilterAdjustmentTypeTransferCache;
+import com.echothree.model.control.filter.server.transfer.FilterDescriptionTransferCache;
+import com.echothree.model.control.filter.server.transfer.FilterEntranceStepTransferCache;
+import com.echothree.model.control.filter.server.transfer.FilterKindDescriptionTransferCache;
+import com.echothree.model.control.filter.server.transfer.FilterKindTransferCache;
+import com.echothree.model.control.filter.server.transfer.FilterStepDescriptionTransferCache;
+import com.echothree.model.control.filter.server.transfer.FilterStepDestinationTransferCache;
+import com.echothree.model.control.filter.server.transfer.FilterStepElementDescriptionTransferCache;
+import com.echothree.model.control.filter.server.transfer.FilterStepElementTransferCache;
+import com.echothree.model.control.filter.server.transfer.FilterStepTransferCache;
+import com.echothree.model.control.filter.server.transfer.FilterTransferCache;
+import com.echothree.model.control.filter.server.transfer.FilterTypeDescriptionTransferCache;
+import com.echothree.model.control.filter.server.transfer.FilterTypeTransferCache;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.filter.common.pk.FilterAdjustmentPK;
@@ -131,29 +149,79 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
+@RequestScoped
 public class FilterControl
         extends BaseModelControl {
     
     /** Creates a new instance of FilterControl */
-    public FilterControl() {
+    protected FilterControl() {
         super();
     }
     
     // --------------------------------------------------------------------------------
     //   Filter Transfer Caches
     // --------------------------------------------------------------------------------
-    
-    private FilterTransferCaches filterTransferCaches;
-    
-    public FilterTransferCaches getFilterTransferCaches(UserVisit userVisit) {
-        if(filterTransferCaches == null) {
-            filterTransferCaches = new FilterTransferCaches(userVisit);
-        }
-        
-        return filterTransferCaches;
-    }
-    
+
+    @Inject
+    FilterKindTransferCache filterKindTransferCache;
+
+    @Inject
+    FilterKindDescriptionTransferCache filterKindDescriptionTransferCache;
+
+    @Inject
+    FilterTypeTransferCache filterTypeTransferCache;
+
+    @Inject
+    FilterTypeDescriptionTransferCache filterTypeDescriptionTransferCache;
+
+    @Inject
+    FilterAdjustmentDescriptionTransferCache filterAdjustmentDescriptionTransferCache;
+
+    @Inject
+    FilterAdjustmentTypeTransferCache filterAdjustmentTypeTransferCache;
+
+    @Inject
+    FilterAdjustmentSourceTransferCache filterAdjustmentSourceTransferCache;
+
+    @Inject
+    FilterAdjustmentTransferCache filterAdjustmentTransferCache;
+
+    @Inject
+    FilterTransferCache filterTransferCache;
+
+    @Inject
+    FilterDescriptionTransferCache filterDescriptionTransferCache;
+
+    @Inject
+    FilterAdjustmentAmountTransferCache filterAdjustmentAmountTransferCache;
+
+    @Inject
+    FilterAdjustmentFixedAmountTransferCache filterAdjustmentFixedAmountTransferCache;
+
+    @Inject
+    FilterAdjustmentPercentTransferCache filterAdjustmentPercentTransferCache;
+
+    @Inject
+    FilterStepTransferCache filterStepTransferCache;
+
+    @Inject
+    FilterStepDescriptionTransferCache filterStepDescriptionTransferCache;
+
+    @Inject
+    FilterEntranceStepTransferCache filterEntranceStepTransferCache;
+
+    @Inject
+    FilterStepDestinationTransferCache filterStepDestinationTransferCache;
+
+    @Inject
+    FilterStepElementTransferCache filterStepElementTransferCache;
+
+    @Inject
+    FilterStepElementDescriptionTransferCache filterStepElementDescriptionTransferCache;
+
     // --------------------------------------------------------------------------------
     //   Filter Kinds
     // --------------------------------------------------------------------------------
@@ -346,15 +414,14 @@ public class FilterControl
     }
 
     public FilterKindTransfer getFilterKindTransfer(UserVisit userVisit, FilterKind filterKind) {
-        return getFilterTransferCaches(userVisit).getFilterKindTransferCache().getTransfer(filterKind);
+        return filterKindTransferCache.getTransfer(userVisit, filterKind);
     }
 
     public List<FilterKindTransfer> getFilterKindTransfers(UserVisit userVisit, Collection<FilterKind> filterKinds) {
         List<FilterKindTransfer> filterKindTransfers = new ArrayList<>(filterKinds.size());
-        var filterKindTransferCache = getFilterTransferCaches(userVisit).getFilterKindTransferCache();
 
         filterKinds.forEach((filterKind) ->
-                filterKindTransfers.add(filterKindTransferCache.getTransfer(filterKind))
+                filterKindTransfers.add(filterKindTransferCache.getTransfer(userVisit, filterKind))
         );
 
         return filterKindTransfers;
@@ -523,7 +590,7 @@ public class FilterControl
         var filterKindDescription = getFilterKindDescription(filterKind, language);
 
         if(filterKindDescription == null && !language.getIsDefault()) {
-            filterKindDescription = getFilterKindDescription(filterKind, getPartyControl().getDefaultLanguage());
+            filterKindDescription = getFilterKindDescription(filterKind, partyControl.getDefaultLanguage());
         }
 
         if(filterKindDescription == null) {
@@ -536,7 +603,7 @@ public class FilterControl
     }
 
     public FilterKindDescriptionTransfer getFilterKindDescriptionTransfer(UserVisit userVisit, FilterKindDescription filterKindDescription) {
-        return getFilterTransferCaches(userVisit).getFilterKindDescriptionTransferCache().getTransfer(filterKindDescription);
+        return filterKindDescriptionTransferCache.getTransfer(userVisit, filterKindDescription);
     }
 
     public List<FilterKindDescriptionTransfer> getFilterKindDescriptionTransfersByFilterKind(UserVisit userVisit, FilterKind filterKind) {
@@ -544,7 +611,7 @@ public class FilterControl
         List<FilterKindDescriptionTransfer> filterKindDescriptionTransfers = new ArrayList<>(filterKindDescriptions.size());
 
         filterKindDescriptions.forEach((filterKindDescription) ->
-                filterKindDescriptionTransfers.add(getFilterTransferCaches(userVisit).getFilterKindDescriptionTransferCache().getTransfer(filterKindDescription))
+                filterKindDescriptionTransfers.add(filterKindDescriptionTransferCache.getTransfer(userVisit, filterKindDescription))
         );
 
         return filterKindDescriptionTransfers;
@@ -783,15 +850,14 @@ public class FilterControl
     }
 
     public FilterTypeTransfer getFilterTypeTransfer(UserVisit userVisit, FilterType filterType) {
-        return getFilterTransferCaches(userVisit).getFilterTypeTransferCache().getTransfer(filterType);
+        return filterTypeTransferCache.getTransfer(userVisit, filterType);
     }
 
     public List<FilterTypeTransfer> getFilterTypeTransfers(UserVisit userVisit, Collection<FilterType> filterTypes) {
         var filterTypeTransfers = new ArrayList<FilterTypeTransfer>(filterTypes.size());
-        var filterTypeTransferCache = getFilterTransferCaches(userVisit).getFilterTypeTransferCache();
 
         filterTypes.forEach((filterType) ->
-            filterTypeTransfers.add(filterTypeTransferCache.getTransfer(filterType))
+            filterTypeTransfers.add(filterTypeTransferCache.getTransfer(userVisit, filterType))
         );
 
         return filterTypeTransfers;
@@ -973,7 +1039,7 @@ public class FilterControl
         var filterTypeDescription = getFilterTypeDescription(filterType, language);
 
         if(filterTypeDescription == null && !language.getIsDefault()) {
-            filterTypeDescription = getFilterTypeDescription(filterType, getPartyControl().getDefaultLanguage());
+            filterTypeDescription = getFilterTypeDescription(filterType, partyControl.getDefaultLanguage());
         }
 
         if(filterTypeDescription == null) {
@@ -986,7 +1052,7 @@ public class FilterControl
     }
 
     public FilterTypeDescriptionTransfer getFilterTypeDescriptionTransfer(UserVisit userVisit, FilterTypeDescription filterTypeDescription) {
-        return getFilterTransferCaches(userVisit).getFilterTypeDescriptionTransferCache().getTransfer(filterTypeDescription);
+        return filterTypeDescriptionTransferCache.getTransfer(userVisit, filterTypeDescription);
     }
 
     public List<FilterTypeDescriptionTransfer> getFilterTypeDescriptionTransfersByFilterType(UserVisit userVisit, FilterType filterType) {
@@ -994,7 +1060,7 @@ public class FilterControl
         List<FilterTypeDescriptionTransfer> filterTypeDescriptionTransfers = new ArrayList<>(filterTypeDescriptions.size());
 
         filterTypeDescriptions.forEach((filterTypeDescription) -> {
-            filterTypeDescriptionTransfers.add(getFilterTransferCaches(userVisit).getFilterTypeDescriptionTransferCache().getTransfer(filterTypeDescription));
+            filterTypeDescriptionTransfers.add(filterTypeDescriptionTransferCache.getTransfer(userVisit, filterTypeDescription));
         });
 
         return filterTypeDescriptionTransfers;
@@ -1054,7 +1120,8 @@ public class FilterControl
         var ps = FilterAdjustmentSourceFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM filteradjustmentsources " +
-                "ORDER BY fltas_sortorder, fltas_filteradjustmentsourcename");
+                "ORDER BY fltas_sortorder, fltas_filteradjustmentsourcename " +
+                "_LIMIT_");
         
         return FilterAdjustmentSourceFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
@@ -1104,15 +1171,14 @@ public class FilterControl
     }
 
     public FilterAdjustmentSourceTransfer getFilterAdjustmentSourceTransfer(UserVisit userVisit, FilterAdjustmentSource filterAdjustmentSource) {
-        return getFilterTransferCaches(userVisit).getFilterAdjustmentSourceTransferCache().getTransfer(filterAdjustmentSource);
+        return filterAdjustmentSourceTransferCache.getTransfer(userVisit, filterAdjustmentSource);
     }
 
     public List<FilterAdjustmentSourceTransfer> getFilterAdjustmentSourceTransfers(UserVisit userVisit, Collection<FilterAdjustmentSource> filterAdjustmentSources) {
         var filterAdjustmentSourceTransfers = new ArrayList<FilterAdjustmentSourceTransfer>(filterAdjustmentSources.size());
-        var filterAdjustmentSourceTransferCache = getFilterTransferCaches(userVisit).getFilterAdjustmentSourceTransferCache();
 
         filterAdjustmentSources.forEach((filterAdjustmentSource) ->
-                filterAdjustmentSourceTransfers.add(filterAdjustmentSourceTransferCache.getTransfer(filterAdjustmentSource))
+                filterAdjustmentSourceTransfers.add(filterAdjustmentSourceTransferCache.getTransfer(userVisit, filterAdjustmentSource))
         );
 
         return filterAdjustmentSourceTransfers;
@@ -1160,7 +1226,7 @@ public class FilterControl
         
         if(filterAdjustmentSourceDescription == null && !language.getIsDefault()) {
             filterAdjustmentSourceDescription = getFilterAdjustmentSourceDescription(filterAdjustmentSource,
-                    getPartyControl().getDefaultLanguage());
+                    partyControl.getDefaultLanguage());
         }
         
         if(filterAdjustmentSourceDescription == null) {
@@ -1190,7 +1256,8 @@ public class FilterControl
         var ps = FilterAdjustmentTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM filteradjustmenttypes " +
-                "ORDER BY fltat_sortorder, fltat_filteradjustmenttypename");
+                "ORDER BY fltat_sortorder, fltat_filteradjustmenttypename " +
+                "_LIMIT_");
         
         return FilterAdjustmentTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
@@ -1242,15 +1309,14 @@ public class FilterControl
     }
 
     public FilterAdjustmentTypeTransfer getFilterAdjustmentTypeTransfer(UserVisit userVisit, FilterAdjustmentType filterAdjustmentType) {
-        return getFilterTransferCaches(userVisit).getFilterAdjustmentTypeTransferCache().getTransfer(filterAdjustmentType);
+        return filterAdjustmentTypeTransferCache.getTransfer(userVisit, filterAdjustmentType);
     }
 
     public List<FilterAdjustmentTypeTransfer> getFilterAdjustmentTypeTransfers(UserVisit userVisit, Collection<FilterAdjustmentType> filterAdjustmentTypes) {
         var filterAdjustmentTypeTransfers = new ArrayList<FilterAdjustmentTypeTransfer>(filterAdjustmentTypes.size());
-        var filterAdjustmentTypeTransferCache = getFilterTransferCaches(userVisit).getFilterAdjustmentTypeTransferCache();
 
         filterAdjustmentTypes.forEach((filterAdjustmentType) ->
-                filterAdjustmentTypeTransfers.add(filterAdjustmentTypeTransferCache.getTransfer(filterAdjustmentType))
+                filterAdjustmentTypeTransfers.add(filterAdjustmentTypeTransferCache.getTransfer(userVisit, filterAdjustmentType))
         );
 
         return filterAdjustmentTypeTransfers;
@@ -1297,7 +1363,7 @@ public class FilterControl
                 language);
         
         if(filterAdjustmentTypeDescription == null && !language.getIsDefault()) {
-            filterAdjustmentTypeDescription = getFilterAdjustmentTypeDescription(filterAdjustmentType, getPartyControl().getDefaultLanguage());
+            filterAdjustmentTypeDescription = getFilterAdjustmentTypeDescription(filterAdjustmentType, partyControl.getDefaultLanguage());
         }
         
         if(filterAdjustmentTypeDescription == null) {
@@ -1502,15 +1568,14 @@ public class FilterControl
     }
     
     public FilterAdjustmentTransfer getFilterAdjustmentTransfer(UserVisit userVisit, FilterAdjustment filterAdjustment) {
-        return getFilterTransferCaches(userVisit).getFilterAdjustmentTransferCache().getTransfer(filterAdjustment);
+        return filterAdjustmentTransferCache.getTransfer(userVisit, filterAdjustment);
     }
     
     public List<FilterAdjustmentTransfer> getFilterAdjustmentTransfers(UserVisit userVisit,  Collection<FilterAdjustment> filterAdjustments) {
         List<FilterAdjustmentTransfer> filterAdjustmentTransfers = new ArrayList<>(filterAdjustments.size());
-        var filterAdjustmentTransferCache = getFilterTransferCaches(userVisit).getFilterAdjustmentTransferCache();
         
         filterAdjustments.forEach((filterAdjustment) ->
-                filterAdjustmentTransfers.add(filterAdjustmentTransferCache.getTransfer(filterAdjustment))
+                filterAdjustmentTransfers.add(filterAdjustmentTransferCache.getTransfer(userVisit, filterAdjustment))
         );
         
         return filterAdjustmentTransfers;
@@ -1751,15 +1816,14 @@ public class FilterControl
     
     public FilterAdjustmentAmountTransfer getFilterAdjustmentAmountTransfer(UserVisit userVisit,
             FilterAdjustmentAmount filterAdjustmentAmount) {
-        return getFilterTransferCaches(userVisit).getFilterAdjustmentAmountTransferCache().getTransfer(filterAdjustmentAmount);
+        return filterAdjustmentAmountTransferCache.getTransfer(userVisit, filterAdjustmentAmount);
     }
 
     public List<FilterAdjustmentAmountTransfer> getFilterAdjustmentAmountTransfers(UserVisit userVisit, Collection<FilterAdjustmentAmount> filterAdjustmentAmounts) {
         List<FilterAdjustmentAmountTransfer> filterAdjustmentAmountTransfers = new ArrayList<>(filterAdjustmentAmounts.size());
-        var filterAdjustmentAmountTransferCache = getFilterTransferCaches(userVisit).getFilterAdjustmentAmountTransferCache();
 
         filterAdjustmentAmounts.forEach((filterAdjustmentAmount) ->
-                filterAdjustmentAmountTransfers.add(filterAdjustmentAmountTransferCache.getTransfer(filterAdjustmentAmount))
+                filterAdjustmentAmountTransfers.add(filterAdjustmentAmountTransferCache.getTransfer(userVisit, filterAdjustmentAmount))
         );
 
         return filterAdjustmentAmountTransfers;
@@ -1928,15 +1992,14 @@ public class FilterControl
     
     public FilterAdjustmentFixedAmountTransfer getFilterAdjustmentFixedAmountTransfer(UserVisit userVisit,
             FilterAdjustmentFixedAmount filterAdjustmentFixedAmount) {
-        return getFilterTransferCaches(userVisit).getFilterAdjustmentFixedAmountTransferCache().getTransfer(filterAdjustmentFixedAmount);
+        return filterAdjustmentFixedAmountTransferCache.getTransfer(userVisit, filterAdjustmentFixedAmount);
     }
 
     public List<FilterAdjustmentFixedAmountTransfer> getFilterAdjustmentFixedAmountTransfers(UserVisit userVisit, Collection<FilterAdjustmentFixedAmount> filterAdjustmentFixedAmounts) {
         var filterAdjustmentFixedAmountTransfers = new ArrayList<FilterAdjustmentFixedAmountTransfer>(filterAdjustmentFixedAmounts.size());
-        var filterAdjustmentFixedAmountTransferCache = getFilterTransferCaches(userVisit).getFilterAdjustmentFixedAmountTransferCache();
 
         filterAdjustmentFixedAmounts.forEach((filterAdjustmentFixedAmount) ->
-                filterAdjustmentFixedAmountTransfers.add(filterAdjustmentFixedAmountTransferCache.getTransfer(filterAdjustmentFixedAmount))
+                filterAdjustmentFixedAmountTransfers.add(filterAdjustmentFixedAmountTransferCache.getTransfer(userVisit, filterAdjustmentFixedAmount))
         );
 
         return filterAdjustmentFixedAmountTransfers;
@@ -2105,15 +2168,14 @@ public class FilterControl
     
     public FilterAdjustmentPercentTransfer getFilterAdjustmentPercentTransfer(UserVisit userVisit,
             FilterAdjustmentPercent filterAdjustmentPercent) {
-        return getFilterTransferCaches(userVisit).getFilterAdjustmentPercentTransferCache().getTransfer(filterAdjustmentPercent);
+        return filterAdjustmentPercentTransferCache.getTransfer(userVisit, filterAdjustmentPercent);
     }
 
     public List<FilterAdjustmentPercentTransfer> getFilterAdjustmentPercentTransfers(UserVisit userVisit, Collection<FilterAdjustmentPercent> filterAdjustmentPercents) {
         var filterAdjustmentPercentTransfers = new ArrayList<FilterAdjustmentPercentTransfer>(filterAdjustmentPercents.size());
-        var filterAdjustmentPercentTransferCache = getFilterTransferCaches(userVisit).getFilterAdjustmentPercentTransferCache();
 
         filterAdjustmentPercents.forEach((filterAdjustmentPercent) ->
-                filterAdjustmentPercentTransfers.add(filterAdjustmentPercentTransferCache.getTransfer(filterAdjustmentPercent))
+                filterAdjustmentPercentTransfers.add(filterAdjustmentPercentTransferCache.getTransfer(userVisit, filterAdjustmentPercent))
         );
 
         return filterAdjustmentPercentTransfers;
@@ -2275,7 +2337,7 @@ public class FilterControl
         var filterAdjustmentDescription = getFilterAdjustmentDescription(filterAdjustment, language);
         
         if(filterAdjustmentDescription == null && !language.getIsDefault()) {
-            filterAdjustmentDescription = getFilterAdjustmentDescription(filterAdjustment, getPartyControl().getDefaultLanguage());
+            filterAdjustmentDescription = getFilterAdjustmentDescription(filterAdjustment, partyControl.getDefaultLanguage());
         }
         
         if(filterAdjustmentDescription == null) {
@@ -2289,16 +2351,15 @@ public class FilterControl
     
     public FilterAdjustmentDescriptionTransfer getFilterAdjustmentDescriptionTransfer(UserVisit userVisit,
             FilterAdjustmentDescription filterAdjustmentDescription) {
-        return getFilterTransferCaches(userVisit).getFilterAdjustmentDescriptionTransferCache().getTransfer(filterAdjustmentDescription);
+        return filterAdjustmentDescriptionTransferCache.getTransfer(userVisit, filterAdjustmentDescription);
     }
     
     public List<FilterAdjustmentDescriptionTransfer> getFilterAdjustmentDescriptionTransfers(UserVisit userVisit, FilterAdjustment filterAdjustment) {
         var filterAdjustmentDescriptions = getFilterAdjustmentDescriptions(filterAdjustment);
         List<FilterAdjustmentDescriptionTransfer> filterAdjustmentDescriptionTransfers = new ArrayList<>(filterAdjustmentDescriptions.size());
-        var filterAdjustmentDescriptionTransferCache = getFilterTransferCaches(userVisit).getFilterAdjustmentDescriptionTransferCache();
         
         filterAdjustmentDescriptions.forEach((filterAdjustmentDescription) ->
-                filterAdjustmentDescriptionTransfers.add(filterAdjustmentDescriptionTransferCache.getTransfer(filterAdjustmentDescription))
+                filterAdjustmentDescriptionTransfers.add(filterAdjustmentDescriptionTransferCache.getTransfer(userVisit, filterAdjustmentDescription))
         );
         
         return filterAdjustmentDescriptionTransfers;
@@ -2573,15 +2634,14 @@ public class FilterControl
     }
     
     public FilterTransfer getFilterTransfer(UserVisit userVisit, Filter filter) {
-        return getFilterTransferCaches(userVisit).getFilterTransferCache().getTransfer(filter);
+        return filterTransferCache.getTransfer(userVisit, filter);
     }
     
     public List<FilterTransfer> getFilterTransfers(UserVisit userVisit, Collection<Filter> filters) {
         List<FilterTransfer> filterTransfers = new ArrayList<>(filters.size());
-        var filterTransferCache = getFilterTransferCaches(userVisit).getFilterTransferCache();
         
         filters.forEach((filter) ->
-                filterTransfers.add(filterTransferCache.getTransfer(filter))
+                filterTransfers.add(filterTransferCache.getTransfer(userVisit, filter))
         );
         
         return filterTransfers;
@@ -2775,7 +2835,7 @@ public class FilterControl
         var filterDescription = getFilterDescription(filter, language);
         
         if(filterDescription == null && !language.getIsDefault()) {
-            filterDescription = getFilterDescription(filter, getPartyControl().getDefaultLanguage());
+            filterDescription = getFilterDescription(filter, partyControl.getDefaultLanguage());
         }
         
         if(filterDescription == null) {
@@ -2788,16 +2848,15 @@ public class FilterControl
     }
     
     public FilterDescriptionTransfer getFilterDescriptionTransfer(UserVisit userVisit, FilterDescription filterDescription) {
-        return getFilterTransferCaches(userVisit).getFilterDescriptionTransferCache().getTransfer(filterDescription);
+        return filterDescriptionTransferCache.getTransfer(userVisit, filterDescription);
     }
     
     public List<FilterDescriptionTransfer> getFilterDescriptionTransfers(UserVisit userVisit, Filter filter) {
         var filterDescriptions = getFilterDescriptions(filter);
         List<FilterDescriptionTransfer> filterDescriptionTransfers = new ArrayList<>(filterDescriptions.size());
-        var filterDescriptionTransferCache = getFilterTransferCaches(userVisit).getFilterDescriptionTransferCache();
         
         filterDescriptions.forEach((filterDescription) ->
-                filterDescriptionTransfers.add(filterDescriptionTransferCache.getTransfer(filterDescription))
+                filterDescriptionTransfers.add(filterDescriptionTransferCache.getTransfer(userVisit, filterDescription))
         );
         
         return filterDescriptionTransfers;
@@ -3008,10 +3067,9 @@ public class FilterControl
     
     public List<FilterStepTransfer> getFilterStepTransfers(UserVisit userVisit, Collection<FilterStep> filterSteps) {
         List<FilterStepTransfer> filterStepTransfers = new ArrayList<>(filterSteps.size());
-        var filterStepTransferCache = getFilterTransferCaches(userVisit).getFilterStepTransferCache();
         
         filterSteps.forEach((filterStep) ->
-                filterStepTransfers.add(filterStepTransferCache.getTransfer(filterStep))
+                filterStepTransfers.add(filterStepTransferCache.getTransfer(userVisit, filterStep))
         );
         
         return filterStepTransfers;
@@ -3022,7 +3080,7 @@ public class FilterControl
     }
     
     public FilterStepTransfer getFilterStepTransfer(UserVisit userVisit, FilterStep filterStep) {
-        return getFilterTransferCaches(userVisit).getFilterStepTransferCache().getTransfer(filterStep);
+        return filterStepTransferCache.getTransfer(userVisit, filterStep);
     }
     
     public void updateFilterStepFromValue(FilterStepDetailValue filterStepDetailValue, BasePK updatedBy) {
@@ -3180,7 +3238,7 @@ public class FilterControl
         var filterStepDescription = getFilterStepDescription(filterStep, language);
         
         if(filterStepDescription == null && !language.getIsDefault()) {
-            filterStepDescription = getFilterStepDescription(filterStep, getPartyControl().getDefaultLanguage());
+            filterStepDescription = getFilterStepDescription(filterStep, partyControl.getDefaultLanguage());
         }
         
         if(filterStepDescription == null) {
@@ -3193,16 +3251,15 @@ public class FilterControl
     }
     
     public FilterStepDescriptionTransfer getFilterStepDescriptionTransfer(UserVisit userVisit, FilterStepDescription filterStepDescription) {
-        return getFilterTransferCaches(userVisit).getFilterStepDescriptionTransferCache().getTransfer(filterStepDescription);
+        return filterStepDescriptionTransferCache.getTransfer(userVisit, filterStepDescription);
     }
     
     public List<FilterStepDescriptionTransfer> getFilterStepDescriptionTransfers(UserVisit userVisit, FilterStep filterStep) {
         var filterStepDescriptions = getFilterStepDescriptions(filterStep);
         List<FilterStepDescriptionTransfer> filterStepDescriptionTransfers = new ArrayList<>(filterStepDescriptions.size());
-        var filterStepDescriptionTransferCache = getFilterTransferCaches(userVisit).getFilterStepDescriptionTransferCache();
         
         filterStepDescriptions.forEach((filterStepDescription) ->
-                filterStepDescriptionTransfers.add(filterStepDescriptionTransferCache.getTransfer(filterStepDescription))
+                filterStepDescriptionTransfers.add(filterStepDescriptionTransferCache.getTransfer(userVisit, filterStepDescription))
         );
         
         return filterStepDescriptionTransfers;
@@ -3384,10 +3441,9 @@ public class FilterControl
     
     public List<FilterEntranceStepTransfer> getFilterEntranceStepTransfers(UserVisit userVisit, Collection<FilterEntranceStep> filterEntranceSteps) {
         List<FilterEntranceStepTransfer> filterEntranceStepTransfers = new ArrayList<>(filterEntranceSteps.size());
-        var filterEntranceStepTransferCache = getFilterTransferCaches(userVisit).getFilterEntranceStepTransferCache();
         
         filterEntranceSteps.forEach((filterEntranceStep) ->
-                filterEntranceStepTransfers.add(filterEntranceStepTransferCache.getTransfer(filterEntranceStep))
+                filterEntranceStepTransfers.add(filterEntranceStepTransferCache.getTransfer(userVisit, filterEntranceStep))
         );
         
         return filterEntranceStepTransfers;
@@ -3398,7 +3454,7 @@ public class FilterControl
     }
     
     public FilterEntranceStepTransfer getFilterEntranceStepTransfer(UserVisit userVisit, FilterEntranceStep filterEntranceStep) {
-        return getFilterTransferCaches(userVisit).getFilterEntranceStepTransferCache().getTransfer(filterEntranceStep);
+        return filterEntranceStepTransferCache.getTransfer(userVisit, filterEntranceStep);
     }
     
     public void deleteFilterEntranceStep(FilterEntranceStep filterEntranceStep, BasePK deletedBy) {
@@ -3574,10 +3630,9 @@ public class FilterControl
     
     public List<FilterStepDestinationTransfer> getFilterStepDestinationTransfers(UserVisit userVisit, Collection<FilterStepDestination> filterStepDestinations) {
         List<FilterStepDestinationTransfer> filterStepDestinationTransfers = new ArrayList<>(filterStepDestinations.size());
-        var filterStepDestinationTransferCache = getFilterTransferCaches(userVisit).getFilterStepDestinationTransferCache();
         
         filterStepDestinations.forEach((filterStepDestination) ->
-                filterStepDestinationTransfers.add(filterStepDestinationTransferCache.getTransfer(filterStepDestination))
+                filterStepDestinationTransfers.add(filterStepDestinationTransferCache.getTransfer(userVisit, filterStepDestination))
         );
         
         return filterStepDestinationTransfers;
@@ -3594,7 +3649,7 @@ public class FilterControl
     }
     
     public FilterStepDestinationTransfer getFilterStepDestinationTransfer(UserVisit userVisit, FilterStepDestination filterStepDestination) {
-        return getFilterTransferCaches(userVisit).getFilterStepDestinationTransferCache().getTransfer(filterStepDestination);
+        return filterStepDestinationTransferCache.getTransfer(userVisit, filterStepDestination);
     }
     
     public void deleteFilterStepDestination(FilterStepDestination filterStepDestination, BasePK deletedBy) {
@@ -3736,10 +3791,9 @@ public class FilterControl
     
     public List<FilterStepElementTransfer> getFilterStepElementTransfers(UserVisit userVisit, Collection<FilterStepElement> filterStepElements) {
         List<FilterStepElementTransfer> filterStepElementTransfers = new ArrayList<>(filterStepElements.size());
-        var filterStepElementTransferCache = getFilterTransferCaches(userVisit).getFilterStepElementTransferCache();
         
         filterStepElements.forEach((filterStepElement) ->
-                filterStepElementTransfers.add(filterStepElementTransferCache.getTransfer(filterStepElement))
+                filterStepElementTransfers.add(filterStepElementTransferCache.getTransfer(userVisit, filterStepElement))
         );
         
         return filterStepElementTransfers;
@@ -3750,7 +3804,7 @@ public class FilterControl
     }
     
     public FilterStepElementTransfer getFilterStepElementTransfer(UserVisit userVisit, FilterStepElement filterStepElement) {
-        return getFilterTransferCaches(userVisit).getFilterStepElementTransferCache().getTransfer(filterStepElement);
+        return filterStepElementTransferCache.getTransfer(userVisit, filterStepElement);
     }
     
     public long countFilterStepElementsBySelector(Selector selector) {
@@ -3927,7 +3981,7 @@ public class FilterControl
         var filterStepElementDescription = getFilterStepElementDescription(filterStepElement, language);
         
         if(filterStepElementDescription == null && !language.getIsDefault()) {
-            filterStepElementDescription = getFilterStepElementDescription(filterStepElement, getPartyControl().getDefaultLanguage());
+            filterStepElementDescription = getFilterStepElementDescription(filterStepElement, partyControl.getDefaultLanguage());
         }
         
         if(filterStepElementDescription == null) {
@@ -3940,16 +3994,15 @@ public class FilterControl
     }
     
     public FilterStepElementDescriptionTransfer getFilterStepElementDescriptionTransfer(UserVisit userVisit, FilterStepElementDescription filterStepElementDescription) {
-        return getFilterTransferCaches(userVisit).getFilterStepElementDescriptionTransferCache().getTransfer(filterStepElementDescription);
+        return filterStepElementDescriptionTransferCache.getTransfer(userVisit, filterStepElementDescription);
     }
     
     public List<FilterStepElementDescriptionTransfer> getFilterStepElementDescriptionTransfers(UserVisit userVisit, FilterStepElement filterStepElement) {
         var filterStepElementDescriptions = getFilterStepElementDescriptions(filterStepElement);
         List<FilterStepElementDescriptionTransfer> filterStepElementDescriptionTransfers = new ArrayList<>(filterStepElementDescriptions.size());
-        var filterStepElementDescriptionTransferCache = getFilterTransferCaches(userVisit).getFilterStepElementDescriptionTransferCache();
         
         filterStepElementDescriptions.forEach((filterStepElementDescription) ->
-                filterStepElementDescriptionTransfers.add(filterStepElementDescriptionTransferCache.getTransfer(filterStepElementDescription))
+                filterStepElementDescriptionTransfers.add(filterStepElementDescriptionTransferCache.getTransfer(userVisit, filterStepElementDescription))
         );
         
         return filterStepElementDescriptionTransfers;

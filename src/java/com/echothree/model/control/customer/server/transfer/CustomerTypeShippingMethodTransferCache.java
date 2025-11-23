@@ -22,16 +22,20 @@ import com.echothree.model.control.shipping.server.control.ShippingControl;
 import com.echothree.model.data.customer.server.entity.CustomerTypeShippingMethod;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CustomerTypeShippingMethodTransferCache
         extends BaseCustomerTransferCache<CustomerTypeShippingMethod, CustomerTypeShippingMethodTransfer> {
-    
+
+    CustomerControl customerControl = Session.getModelController(CustomerControl.class);
+
     /** Creates a new instance of CustomerTypeShippingMethodTransferCache */
-    public CustomerTypeShippingMethodTransferCache(UserVisit userVisit, CustomerControl customerControl) {
-        super(userVisit, customerControl);
+    protected CustomerTypeShippingMethodTransferCache() {
+        super();
     }
     
-    public CustomerTypeShippingMethodTransfer getCustomerTypeShippingMethodTransfer(CustomerTypeShippingMethod customerTypeShippingMethod) {
+    public CustomerTypeShippingMethodTransfer getCustomerTypeShippingMethodTransfer(UserVisit userVisit, CustomerTypeShippingMethod customerTypeShippingMethod) {
         var customerTypeShippingMethodTransfer = get(customerTypeShippingMethod);
         
         if(customerTypeShippingMethodTransfer == null) {
@@ -44,7 +48,7 @@ public class CustomerTypeShippingMethodTransferCache
             
             customerTypeShippingMethodTransfer = new CustomerTypeShippingMethodTransfer(customerType, shippingMethod, defaultSelectionPriority, isDefault,
                     sortOrder);
-            put(customerTypeShippingMethod, customerTypeShippingMethodTransfer);
+            put(userVisit, customerTypeShippingMethod, customerTypeShippingMethodTransfer);
         }
         
         return customerTypeShippingMethodTransfer;

@@ -20,16 +20,21 @@ import com.echothree.model.control.contact.common.transfer.PostalAddressFormatDe
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.data.contact.server.entity.PostalAddressFormatDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PostalAddressFormatDescriptionTransferCache
         extends BaseContactDescriptionTransferCache<PostalAddressFormatDescription, PostalAddressFormatDescriptionTransfer> {
-    
+
+    ContactControl contactControl = Session.getModelController(ContactControl.class);
+
     /** Creates a new instance of PostalAddressFormatDescriptionTransferCache */
-    public PostalAddressFormatDescriptionTransferCache(UserVisit userVisit, ContactControl contactControl) {
-        super(userVisit, contactControl);
+    protected PostalAddressFormatDescriptionTransferCache() {
+        super();
     }
     
-    public PostalAddressFormatDescriptionTransfer getPostalAddressFormatDescriptionTransfer(PostalAddressFormatDescription postalAddressFormatDescription) {
+    public PostalAddressFormatDescriptionTransfer getPostalAddressFormatDescriptionTransfer(UserVisit userVisit, PostalAddressFormatDescription postalAddressFormatDescription) {
         var postalAddressFormatDescriptionTransfer = get(postalAddressFormatDescription);
         
         if(postalAddressFormatDescriptionTransfer == null) {
@@ -37,7 +42,7 @@ public class PostalAddressFormatDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, postalAddressFormatDescription.getLanguage());
             
             postalAddressFormatDescriptionTransfer = new PostalAddressFormatDescriptionTransfer(languageTransfer, postalAddressFormatTransfer, postalAddressFormatDescription.getDescription());
-            put(postalAddressFormatDescription, postalAddressFormatDescriptionTransfer);
+            put(userVisit, postalAddressFormatDescription, postalAddressFormatDescriptionTransfer);
         }
         
         return postalAddressFormatDescriptionTransfer;

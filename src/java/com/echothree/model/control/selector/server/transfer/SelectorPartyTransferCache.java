@@ -22,20 +22,21 @@ import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.selector.server.entity.SelectorParty;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class SelectorPartyTransferCache
         extends BaseSelectorTransferCache<SelectorParty, SelectorPartyTransfer> {
     
-    PartyControl partyControl;
-    
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
+    SelectorControl selectorControl = Session.getModelController(SelectorControl.class);
+
     /** Creates a new instance of SelectorPartyTransferCache */
-    public SelectorPartyTransferCache(UserVisit userVisit, SelectorControl selectorControl) {
-        super(userVisit, selectorControl);
-        
-        partyControl = Session.getModelController(PartyControl.class);
+    protected SelectorPartyTransferCache() {
+        super();
     }
     
-    public SelectorPartyTransfer getSelectorPartyTransfer(SelectorParty selectorParty) {
+    public SelectorPartyTransfer getSelectorPartyTransfer(UserVisit userVisit, SelectorParty selectorParty) {
         var selectorPartyTransfer = get(selectorParty);
         
         if(selectorPartyTransfer == null) {
@@ -43,7 +44,7 @@ public class SelectorPartyTransferCache
             var partyTransfer = partyControl.getPartyTransfer(userVisit, selectorParty.getParty());
             
             selectorPartyTransfer = new SelectorPartyTransfer(selectorTransfer, partyTransfer);
-            put(selectorParty, selectorPartyTransfer);
+            put(userVisit, selectorParty, selectorPartyTransfer);
         }
         
         return selectorPartyTransfer;

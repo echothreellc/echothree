@@ -20,16 +20,21 @@ import com.echothree.model.control.cancellationpolicy.common.transfer.Cancellati
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationReasonType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CancellationReasonTypeTransferCache
         extends BaseCancellationPolicyTransferCache<CancellationReasonType, CancellationReasonTypeTransfer> {
-    
+
+    CancellationPolicyControl cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
+
     /** Creates a new instance of CancellationReasonTypeTransferCache */
-    public CancellationReasonTypeTransferCache(UserVisit userVisit, CancellationPolicyControl cancellationPolicyControl) {
-        super(userVisit, cancellationPolicyControl);
+    protected CancellationReasonTypeTransferCache() {
+        super();
     }
     
-    public CancellationReasonTypeTransfer getCancellationReasonTypeTransfer(CancellationReasonType cancellationReasonType) {
+    public CancellationReasonTypeTransfer getCancellationReasonTypeTransfer(UserVisit userVisit, CancellationReasonType cancellationReasonType) {
         var cancellationReasonTypeTransfer = get(cancellationReasonType);
         
         if(cancellationReasonTypeTransfer == null) {
@@ -39,7 +44,7 @@ public class CancellationReasonTypeTransferCache
             var sortOrder = cancellationReasonType.getSortOrder();
             
             cancellationReasonTypeTransfer = new CancellationReasonTypeTransfer(cancellationReason, cancellationType, isDefault, sortOrder);
-            put(cancellationReasonType, cancellationReasonTypeTransfer);
+            put(userVisit, cancellationReasonType, cancellationReasonTypeTransfer);
         }
         
         return cancellationReasonTypeTransfer;

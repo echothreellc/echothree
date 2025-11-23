@@ -32,10 +32,13 @@ import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class GetItemUnitOfMeasureTypeCommand
         extends BaseSingleEntityCommand<ItemUnitOfMeasureType, GetItemUnitOfMeasureTypeForm> {
 
+    // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {

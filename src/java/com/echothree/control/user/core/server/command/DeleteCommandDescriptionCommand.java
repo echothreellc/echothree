@@ -29,7 +29,9 @@ import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class DeleteCommandDescriptionCommand
         extends BaseSimpleCommand<DeleteCommandDescriptionForm> {
     
@@ -52,7 +54,7 @@ public class DeleteCommandDescriptionCommand
     protected BaseResult execute() {
         var commandControl = Session.getModelController(CommandControl.class);
         var componentVendorName = form.getComponentVendorName();
-        var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
+        var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
             var commandName = form.getCommandName();

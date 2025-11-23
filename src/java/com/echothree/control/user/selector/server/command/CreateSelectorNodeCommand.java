@@ -58,7 +58,9 @@ import com.echothree.util.server.validation.Validator;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CreateSelectorNodeCommand
         extends BaseSimpleCommand<CreateSelectorNodeForm> {
     
@@ -162,46 +164,34 @@ public class CreateSelectorNodeCommand
             
             if(!hasExecutionErrors()) {
                 var selectorNodeTypeEnum = SelectorNodeTypes.valueOf(selectorNodeType.getSelectorNodeTypeName());
-                
-                switch (selectorNodeTypeEnum) {
-                    case BOOLEAN:
-                        validationResult = validator.validate(form, booleanFormFieldDefinitions);
-                        break;
-                    case ENTITY_LIST_ITEM:
-                        validationResult = validator.validate(form, entityListItemFormFieldDefinitions);
-                        break;
-                    case RESPONSIBILITY_TYPE:
-                        validationResult = validator.validate(form, responsibilityTypeFormFieldDefinitions);
-                        break;
-                    case SKILL_TYPE:
-                        validationResult = validator.validate(form, skillTypeFormFieldDefinitions);
-                        break;
-                    case TRAINING_CLASS:
-                        validationResult = validator.validate(form, trainingClassFormFieldDefinitions);
-                        break;
-                    case WORKFLOW_STEP:
-                        validationResult = validator.validate(form, workflowStepFormFieldDefinitions);
-                        break;
-                    case ITEM_CATEGORY:
-                        validationResult = validator.validate(form, itemCategoryFormFieldDefinitions);
-                        break;
-                    case ITEM_ACCOUNTING_CATEGORY:
-                        validationResult = validator.validate(form, itemAccountingCategoryFormFieldDefinitions);
-                        break;
-                    case ITEM_PURCHASING_CATEGORY:
-                        validationResult = validator.validate(form, itemPurchasingCategoryFormFieldDefinitions);
-                        break;
-                    case PAYMENT_METHOD:
-                        validationResult = validator.validate(form, paymentMethodFormFieldDefinitions);
-                        break;
-                    case PAYMENT_PROCESSOR:
-                        validationResult = validator.validate(form, paymentProcessorFormFieldDefinitions);
-                        break;
-                    case GEO_CODE:
-                        validationResult = validator.validate(form, geoCodeFormFieldDefinitions);
-                        break;
-                    default:
-                        break;
+
+                switch(selectorNodeTypeEnum) {
+                    case BOOLEAN ->
+                            validationResult = validator.validate(form, booleanFormFieldDefinitions);
+                    case ENTITY_LIST_ITEM ->
+                            validationResult = validator.validate(form, entityListItemFormFieldDefinitions);
+                    case RESPONSIBILITY_TYPE ->
+                            validationResult = validator.validate(form, responsibilityTypeFormFieldDefinitions);
+                    case SKILL_TYPE ->
+                            validationResult = validator.validate(form, skillTypeFormFieldDefinitions);
+                    case TRAINING_CLASS ->
+                            validationResult = validator.validate(form, trainingClassFormFieldDefinitions);
+                    case WORKFLOW_STEP ->
+                            validationResult = validator.validate(form, workflowStepFormFieldDefinitions);
+                    case ITEM_CATEGORY ->
+                            validationResult = validator.validate(form, itemCategoryFormFieldDefinitions);
+                    case ITEM_ACCOUNTING_CATEGORY ->
+                            validationResult = validator.validate(form, itemAccountingCategoryFormFieldDefinitions);
+                    case ITEM_PURCHASING_CATEGORY ->
+                            validationResult = validator.validate(form, itemPurchasingCategoryFormFieldDefinitions);
+                    case PAYMENT_METHOD ->
+                            validationResult = validator.validate(form, paymentMethodFormFieldDefinitions);
+                    case PAYMENT_PROCESSOR ->
+                            validationResult = validator.validate(form, paymentProcessorFormFieldDefinitions);
+                    case GEO_CODE ->
+                            validationResult = validator.validate(form, geoCodeFormFieldDefinitions);
+                    default -> {
+                    }
                 }
             }
         }
@@ -213,7 +203,7 @@ public class CreateSelectorNodeCommand
         SelectorControl selectorControl;
         SelectorNodeType selectorNodeType;
         
-        protected BaseSelectorNodeType(SelectorControl selectorControl, String selectorNodeTypeName) {
+        private BaseSelectorNodeType(SelectorControl selectorControl, String selectorNodeTypeName) {
             this.selectorControl = selectorControl;
             selectorNodeType = selectorControl.getSelectorNodeTypeByName(selectorNodeTypeName);
             
@@ -222,95 +212,93 @@ public class CreateSelectorNodeCommand
             }
         }
         
-        public abstract void execute(SelectorNode selectorNode, PartyPK partyPK);
+        abstract void execute(SelectorNode selectorNode, PartyPK partyPK);
     }
     
     private abstract class AccountingSelectorNodeType
         extends BaseSelectorNodeType {
-        protected AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
+        AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
 
-        protected AccountingSelectorNodeType(SelectorControl selectorControl, String selectorNodeTypeName) {
+        private AccountingSelectorNodeType(SelectorControl selectorControl, String selectorNodeTypeName) {
             super(selectorControl, selectorNodeTypeName);
         }
     }
     
     private abstract class CoreSelectorNodeType
         extends BaseSelectorNodeType {
-        protected CoreControl coreControl = getCoreControl();
-
-        protected CoreSelectorNodeType(SelectorControl selectorControl, String selectorNodeTypeName) {
+        private CoreSelectorNodeType(SelectorControl selectorControl, String selectorNodeTypeName) {
             super(selectorControl, selectorNodeTypeName);
         }
     }
     
     private abstract class EmployeeSelectorNodeType
         extends BaseSelectorNodeType {
-        protected EmployeeControl employeeControl = Session.getModelController(EmployeeControl.class);
+        EmployeeControl employeeControl = Session.getModelController(EmployeeControl.class);
 
-        protected EmployeeSelectorNodeType(SelectorControl selectorControl, String selectorNodeTypeName) {
+        private EmployeeSelectorNodeType(SelectorControl selectorControl, String selectorNodeTypeName) {
             super(selectorControl, selectorNodeTypeName);
         }
     }
     
     private abstract class GeoSelectorNodeType
         extends BaseSelectorNodeType {
-        protected GeoControl geoControl = Session.getModelController(GeoControl.class);
+        GeoControl geoControl = Session.getModelController(GeoControl.class);
 
-        protected GeoSelectorNodeType(SelectorControl selectorControl, String selectorNodeTypeName) {
+        private GeoSelectorNodeType(SelectorControl selectorControl, String selectorNodeTypeName) {
             super(selectorControl, selectorNodeTypeName);
         }
     }
     
     private abstract class ItemSelectorNodeType
         extends BaseSelectorNodeType {
-        protected ItemControl itemControl = Session.getModelController(ItemControl.class);
+        ItemControl itemControl = Session.getModelController(ItemControl.class);
 
-        protected ItemSelectorNodeType(SelectorControl selectorControl, String selectorNodeTypeName) {
+        private ItemSelectorNodeType(SelectorControl selectorControl, String selectorNodeTypeName) {
             super(selectorControl, selectorNodeTypeName);
         }
     }
 
     private abstract class PaymentProcessorSelectorNodeType
             extends BaseSelectorNodeType {
-        protected PaymentProcessorControl paymentProcessorControl = Session.getModelController(PaymentProcessorControl.class);
+        PaymentProcessorControl paymentProcessorControl = Session.getModelController(PaymentProcessorControl.class);
 
-        protected PaymentProcessorSelectorNodeType(SelectorControl selectorControl, String selectorNodeTypeName) {
+        private PaymentProcessorSelectorNodeType(SelectorControl selectorControl, String selectorNodeTypeName) {
             super(selectorControl, selectorNodeTypeName);
         }
     }
 
     private abstract class PaymentMethodSelectorNodeType
             extends BaseSelectorNodeType {
-        protected PaymentMethodControl paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
+        PaymentMethodControl paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
 
-        protected PaymentMethodSelectorNodeType(SelectorControl selectorControl, String selectorNodeTypeName) {
+        private PaymentMethodSelectorNodeType(SelectorControl selectorControl, String selectorNodeTypeName) {
             super(selectorControl, selectorNodeTypeName);
         }
     }
 
     private abstract class TrainingSelectorNodeType
         extends BaseSelectorNodeType {
-        protected TrainingControl trainingControl = Session.getModelController(TrainingControl.class);
+        TrainingControl trainingControl = Session.getModelController(TrainingControl.class);
 
-        protected TrainingSelectorNodeType(SelectorControl selectorControl, String selectorNodeTypeName) {
+        private TrainingSelectorNodeType(SelectorControl selectorControl, String selectorNodeTypeName) {
             super(selectorControl, selectorNodeTypeName);
         }
     }
     
     private abstract class VendorSelectorNodeType
         extends BaseSelectorNodeType {
-        protected VendorControl vendorControl = Session.getModelController(VendorControl.class);
+        VendorControl vendorControl = Session.getModelController(VendorControl.class);
 
-        protected VendorSelectorNodeType(SelectorControl selectorControl, String selectorNodeTypeName) {
+        private VendorSelectorNodeType(SelectorControl selectorControl, String selectorNodeTypeName) {
             super(selectorControl, selectorNodeTypeName);
         }
     }
     
     private abstract class WorkSelectorNodeType
         extends BaseSelectorNodeType {
-        protected WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
+        WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
 
-        protected WorkSelectorNodeType(SelectorControl selectorControl, String selectorNodeTypeName) {
+        private WorkSelectorNodeType(SelectorControl selectorControl, String selectorNodeTypeName) {
             super(selectorControl, selectorNodeTypeName);
         }
     }
@@ -321,7 +309,7 @@ public class CreateSelectorNodeCommand
         SelectorNode leftSelectorNode = null;
         SelectorNode rightSelectorNode = null;
         
-        public BooleanNodeType(SelectorControl selectorControl, Selector selector) {
+        private BooleanNodeType(SelectorControl selectorControl, Selector selector) {
             super(selectorControl, SelectorNodeTypes.BOOLEAN.name());
             
             if(!hasExecutionErrors()) {
@@ -366,16 +354,16 @@ public class CreateSelectorNodeCommand
         extends CoreSelectorNodeType {
         EntityListItem entityListItem = null;
         
-        public EntityListItemNodeType(SelectorControl selectorControl) {
+        private EntityListItemNodeType(SelectorControl selectorControl) {
             super(selectorControl, SelectorNodeTypes.ENTITY_LIST_ITEM.name());
             
             if(!hasExecutionErrors()) {
                 var componentVendorName = form.getComponentVendorName();
-                var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
+                var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
                 
                 if(componentVendor != null) {
                     var entityTypeName = form.getEntityTypeName();
-                    var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
+                    var entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
                     
                     if(entityType != null) {
                         var entityAttributeName = form.getEntityAttributeName();
@@ -409,8 +397,8 @@ public class CreateSelectorNodeCommand
     private class ResponsibilityNodeType
         extends EmployeeSelectorNodeType {
         private ResponsibilityType responsiblityType = null;
-        
-        public ResponsibilityNodeType(SelectorControl selectorControl) {
+
+        private ResponsibilityNodeType(SelectorControl selectorControl) {
             super(selectorControl, SelectorNodeTypes.RESPONSIBILITY_TYPE.name());
             
             if(!hasExecutionErrors()) {
@@ -434,7 +422,7 @@ public class CreateSelectorNodeCommand
         extends EmployeeSelectorNodeType {
         private SkillType skillType = null;
         
-        public SkillNodeType(SelectorControl selectorControl) {
+        private SkillNodeType(SelectorControl selectorControl) {
             super(selectorControl, SelectorNodeTypes.SKILL_TYPE.name());
             
             if(!hasExecutionErrors()) {
@@ -457,8 +445,8 @@ public class CreateSelectorNodeCommand
     private class TrainingClassNodeType
         extends TrainingSelectorNodeType {
         private TrainingClass trainingClass = null;
-        
-        public TrainingClassNodeType(SelectorControl selectorControl) {
+
+        private TrainingClassNodeType(SelectorControl selectorControl) {
             super(selectorControl, SelectorNodeTypes.TRAINING_CLASS.name());
             
             if(!hasExecutionErrors()) {
@@ -481,8 +469,8 @@ public class CreateSelectorNodeCommand
     private class WorkflowStepNodeType
         extends WorkSelectorNodeType {
         private WorkflowStep workflowStep = null;
-        
-        public WorkflowStepNodeType(SelectorControl selectorControl) {
+
+        private WorkflowStepNodeType(SelectorControl selectorControl) {
             super(selectorControl, SelectorNodeTypes.TRAINING_CLASS.name());
             
             if(!hasExecutionErrors()) {
@@ -512,8 +500,8 @@ public class CreateSelectorNodeCommand
     private class ItemCategoryNodeType
         extends ItemSelectorNodeType {
         private ItemCategory itemCategory = null;
-        
-        public ItemCategoryNodeType(SelectorControl selectorControl) {
+
+        private ItemCategoryNodeType(SelectorControl selectorControl) {
             super(selectorControl, SelectorNodeTypes.ITEM_CATEGORY.name());
             
             if(!hasExecutionErrors()) {
@@ -538,8 +526,8 @@ public class CreateSelectorNodeCommand
     private class ItemAccountingCategoryNodeType
         extends AccountingSelectorNodeType {
         private ItemAccountingCategory itemAccountingCategory = null;
-        
-        public ItemAccountingCategoryNodeType(SelectorControl selectorControl) {
+
+        private ItemAccountingCategoryNodeType(SelectorControl selectorControl) {
             super(selectorControl, SelectorNodeTypes.ITEM_ACCOUNTING_CATEGORY.name());
             
             if(!hasExecutionErrors()) {
@@ -565,7 +553,7 @@ public class CreateSelectorNodeCommand
         extends VendorSelectorNodeType {
         private ItemPurchasingCategory itemPurchasingCategory = null;
         
-        public ItemPurchasingCategoryNodeType(SelectorControl selectorControl) {
+        private ItemPurchasingCategoryNodeType(SelectorControl selectorControl) {
             super(selectorControl, SelectorNodeTypes.ITEM_PURCHASING_CATEGORY.name());
             
             if(!hasExecutionErrors()) {
@@ -590,8 +578,8 @@ public class CreateSelectorNodeCommand
     private class PaymentMethodNodeType
         extends PaymentMethodSelectorNodeType {
         private PaymentMethod paymentMethod = null;
-        
-        public PaymentMethodNodeType(SelectorControl selectorControl) {
+
+        private PaymentMethodNodeType(SelectorControl selectorControl) {
             super(selectorControl, SelectorNodeTypes.PAYMENT_METHOD.name());
             
             if(!hasExecutionErrors()) {
@@ -614,8 +602,8 @@ public class CreateSelectorNodeCommand
     private class PaymentProcessorNodeType
         extends PaymentProcessorSelectorNodeType {
         private PaymentProcessor paymentProcessor = null;
-        
-        public PaymentProcessorNodeType(SelectorControl selectorControl) {
+
+        private PaymentProcessorNodeType(SelectorControl selectorControl) {
             super(selectorControl, SelectorNodeTypes.PAYMENT_PROCESSOR.name());
             
             if(!hasExecutionErrors()) {
@@ -638,8 +626,8 @@ public class CreateSelectorNodeCommand
     private class GeoCodeNodeType
         extends GeoSelectorNodeType {
         private GeoCode geoCode = null;
-        
-        public GeoCodeNodeType(SelectorControl selectorControl) {
+
+        private GeoCodeNodeType(SelectorControl selectorControl) {
             super(selectorControl, SelectorNodeTypes.PAYMENT_PROCESSOR.name());
             
             if(!hasExecutionErrors()) {
@@ -703,45 +691,33 @@ public class CreateSelectorNodeCommand
                                     var selectorNodeTypeEnum = SelectorNodeTypes.valueOf(selectorNodeTypeName);
                                     BaseSelectorNodeType baseSelectorNodeType = null;
 
-                                    switch (selectorNodeTypeEnum) {
-                                        case BOOLEAN:
-                                            baseSelectorNodeType = new BooleanNodeType(selectorControl, selector);
-                                            break;
-                                        case ENTITY_LIST_ITEM:
-                                            baseSelectorNodeType = new EntityListItemNodeType(selectorControl);
-                                            break;
-                                        case RESPONSIBILITY_TYPE:
-                                            baseSelectorNodeType = new ResponsibilityNodeType(selectorControl);
-                                            break;
-                                        case SKILL_TYPE:
-                                            baseSelectorNodeType = new SkillNodeType(selectorControl);
-                                            break;
-                                        case TRAINING_CLASS:
-                                            baseSelectorNodeType = new TrainingClassNodeType(selectorControl);
-                                            break;
-                                        case WORKFLOW_STEP:
-                                            baseSelectorNodeType = new WorkflowStepNodeType(selectorControl);
-                                            break;
-                                        case ITEM_CATEGORY:
-                                            baseSelectorNodeType = new ItemCategoryNodeType(selectorControl);
-                                            break;
-                                        case ITEM_ACCOUNTING_CATEGORY:
-                                            baseSelectorNodeType = new ItemAccountingCategoryNodeType(selectorControl);
-                                            break;
-                                        case ITEM_PURCHASING_CATEGORY:
-                                            baseSelectorNodeType = new ItemPurchasingCategoryNodeType(selectorControl);
-                                            break;
-                                        case PAYMENT_METHOD:
-                                            baseSelectorNodeType = new PaymentMethodNodeType(selectorControl);
-                                            break;
-                                        case PAYMENT_PROCESSOR:
-                                            baseSelectorNodeType = new PaymentProcessorNodeType(selectorControl);
-                                            break;
-                                        case GEO_CODE:
-                                            baseSelectorNodeType = new GeoCodeNodeType(selectorControl);
-                                            break;
-                                        default:
-                                            break;
+                                    switch(selectorNodeTypeEnum) {
+                                        case BOOLEAN ->
+                                                baseSelectorNodeType = new BooleanNodeType(selectorControl, selector);
+                                        case ENTITY_LIST_ITEM ->
+                                                baseSelectorNodeType = new EntityListItemNodeType(selectorControl);
+                                        case RESPONSIBILITY_TYPE ->
+                                                baseSelectorNodeType = new ResponsibilityNodeType(selectorControl);
+                                        case SKILL_TYPE ->
+                                                baseSelectorNodeType = new SkillNodeType(selectorControl);
+                                        case TRAINING_CLASS ->
+                                                baseSelectorNodeType = new TrainingClassNodeType(selectorControl);
+                                        case WORKFLOW_STEP ->
+                                                baseSelectorNodeType = new WorkflowStepNodeType(selectorControl);
+                                        case ITEM_CATEGORY ->
+                                                baseSelectorNodeType = new ItemCategoryNodeType(selectorControl);
+                                        case ITEM_ACCOUNTING_CATEGORY ->
+                                                baseSelectorNodeType = new ItemAccountingCategoryNodeType(selectorControl);
+                                        case ITEM_PURCHASING_CATEGORY ->
+                                                baseSelectorNodeType = new ItemPurchasingCategoryNodeType(selectorControl);
+                                        case PAYMENT_METHOD ->
+                                                baseSelectorNodeType = new PaymentMethodNodeType(selectorControl);
+                                        case PAYMENT_PROCESSOR ->
+                                                baseSelectorNodeType = new PaymentProcessorNodeType(selectorControl);
+                                        case GEO_CODE ->
+                                                baseSelectorNodeType = new GeoCodeNodeType(selectorControl);
+                                        default -> {
+                                        }
                                     }
 
                                     if(!hasExecutionErrors()) {

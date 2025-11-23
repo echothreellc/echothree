@@ -42,12 +42,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CacheEntryControl
         extends BaseCoreControl {
 
     /** Creates a new instance of CacheEntryControl */
-    public CacheEntryControl() {
+    protected CacheEntryControl() {
         super();
     }
 
@@ -143,7 +145,7 @@ public class CacheEntryControl
     }
 
     public CacheEntryTransfer getCacheEntryTransfer(UserVisit userVisit, CacheEntry cacheEntry) {
-        return getCoreTransferCaches(userVisit).getCacheEntryTransferCache().getCacheEntryTransfer(cacheEntry);
+        return cacheEntryTransferCache.getCacheEntryTransfer(userVisit, cacheEntry);
     }
 
     public CacheEntryTransfer getCacheEntryTransferByCacheEntryKey(UserVisit userVisit, String cacheEntryKey) {
@@ -165,10 +167,9 @@ public class CacheEntryControl
 
     public List<CacheEntryTransfer> getCacheEntryTransfers(UserVisit userVisit, Collection<CacheEntry> cacheEntries) {
         List<CacheEntryTransfer> cacheEntryTransfers = new ArrayList<>(cacheEntries.size());
-        var cacheEntryTransferCache = getCoreTransferCaches(userVisit).getCacheEntryTransferCache();
 
         cacheEntries.forEach((cacheEntry) ->
-                cacheEntryTransfers.add(cacheEntryTransferCache.getCacheEntryTransfer(cacheEntry))
+                cacheEntryTransfers.add(cacheEntryTransferCache.getCacheEntryTransfer(userVisit, cacheEntry))
         );
 
         return cacheEntryTransfers;
@@ -372,15 +373,14 @@ public class CacheEntryControl
     }
 
     public CacheEntryDependencyTransfer getCacheEntryDependencyTransfer(UserVisit userVisit, CacheEntryDependency cacheEntryDependency) {
-        return getCoreTransferCaches(userVisit).getCacheEntryDependencyTransferCache().getCacheEntryDependencyTransfer(cacheEntryDependency);
+        return cacheEntryDependencyTransferCache.getCacheEntryDependencyTransfer(userVisit, cacheEntryDependency);
     }
 
     public List<CacheEntryDependencyTransfer> getCacheEntryDependencyTransfers(UserVisit userVisit, Collection<CacheEntryDependency> cacheEntries) {
         List<CacheEntryDependencyTransfer> cacheEntryDependencyTransfers = new ArrayList<>(cacheEntries.size());
-        var cacheEntryDependencyTransferCache = getCoreTransferCaches(userVisit).getCacheEntryDependencyTransferCache();
 
         cacheEntries.forEach((cacheEntryDependency) ->
-                cacheEntryDependencyTransfers.add(cacheEntryDependencyTransferCache.getCacheEntryDependencyTransfer(cacheEntryDependency))
+                cacheEntryDependencyTransfers.add(cacheEntryDependencyTransferCache.getCacheEntryDependencyTransfer(userVisit, cacheEntryDependency))
         );
 
         return cacheEntryDependencyTransfers;

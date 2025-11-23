@@ -31,7 +31,9 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class DeleteEntityIntegerAttributeCommand
         extends BaseSimpleCommand<DeleteEntityIntegerAttributeForm> {
 
@@ -77,7 +79,6 @@ public class DeleteEntityIntegerAttributeCommand
 
                     if(!hasExecutionErrors()) {
                         if(entityInstance.getEntityType().equals(entityAttribute.getLastDetail().getEntityType())) {
-                            var coreControl = getCoreControl();
                             var entityIntegerAttribute = coreControl.getEntityIntegerAttributeForUpdate(entityAttribute, entityInstance);
 
                             if(entityIntegerAttribute != null) {

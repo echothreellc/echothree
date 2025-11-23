@@ -22,21 +22,22 @@ import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.item.server.entity.ItemUnitOfMeasureType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ItemUnitOfMeasureTypeTransferCache
         extends BaseItemTransferCache<ItemUnitOfMeasureType, ItemUnitOfMeasureTypeTransfer> {
-    
-    UomControl uomControl;
+
+    ItemControl itemControl = Session.getModelController(ItemControl.class);
+    UomControl uomControl = Session.getModelController(UomControl.class);
     
     /** Creates a new instance of ItemUnitOfMeasureTypeTransferCache */
-    public ItemUnitOfMeasureTypeTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
-        
-        uomControl = Session.getModelController(UomControl.class);
+    protected ItemUnitOfMeasureTypeTransferCache() {
+        super();
     }
     
     @Override
-    public ItemUnitOfMeasureTypeTransfer getTransfer(ItemUnitOfMeasureType itemUnitOfMeasureType) {
+    public ItemUnitOfMeasureTypeTransfer getTransfer(UserVisit userVisit, ItemUnitOfMeasureType itemUnitOfMeasureType) {
         var itemUnitOfMeasureTypeTransfer = get(itemUnitOfMeasureType);
         
         if(itemUnitOfMeasureTypeTransfer == null) {
@@ -46,7 +47,7 @@ public class ItemUnitOfMeasureTypeTransferCache
             var sortOrder = itemUnitOfMeasureType.getSortOrder();
             
             itemUnitOfMeasureTypeTransfer = new ItemUnitOfMeasureTypeTransfer(item, unitOfMeasureType, isDefault, sortOrder);
-            put(itemUnitOfMeasureType, itemUnitOfMeasureTypeTransfer);
+            put(userVisit, itemUnitOfMeasureType, itemUnitOfMeasureTypeTransfer);
         }
         
         return itemUnitOfMeasureTypeTransfer;

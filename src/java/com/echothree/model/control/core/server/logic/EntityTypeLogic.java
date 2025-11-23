@@ -28,26 +28,33 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
+@ApplicationScoped
 public class EntityTypeLogic
         extends BaseLogic {
+    
+    @Inject
+    EntityTypeControl entityTypeControl;
+    
+    @Inject
+    ComponentVendorLogic componentVendorLogic;
+    
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
 
-    private EntityTypeLogic() {
+    protected EntityTypeLogic() {
         super();
     }
 
-    private static class EntityTypeLogicHolder {
-        static EntityTypeLogic instance = new EntityTypeLogic();
-    }
-
     public static EntityTypeLogic getInstance() {
-        return EntityTypeLogicHolder.instance;
+        return CDI.current().select(EntityTypeLogic.class).get();
     }
     
     public EntityType getEntityTypeByName(final ExecutionErrorAccumulator eea, final ComponentVendor componentVendor,
             final String entityTypeName, final EntityPermission entityPermission) {
-        var entityTypeControl = Session.getModelController(EntityTypeControl.class);
         var entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName, entityPermission);
 
         if(entityType == null) {
@@ -70,7 +77,7 @@ public class EntityTypeLogic
 
     public EntityType getEntityTypeByName(final ExecutionErrorAccumulator eea, final String componentVendorName,
             final String entityTypeName, final EntityPermission entityPermission) {
-        var componentVendor = ComponentVendorLogic.getInstance().getComponentVendorByName(eea, componentVendorName);
+        var componentVendor = componentVendorLogic.getComponentVendorByName(eea, componentVendorName);
         EntityType entityType = null;
         
         if(!hasExecutionErrors(eea)) {
@@ -96,29 +103,26 @@ public class EntityTypeLogic
         var componentVendorName = universalSpec.getComponentVendorName();
         var entityTypeName = universalSpec.getEntityTypeName();
         var parameterCount = (componentVendorName == null ? 0 : 1) + (entityTypeName == null ? 0 : 1)
-                + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+                + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
-            case 2:
+            case 2 -> {
                 if(componentVendorName != null && entityTypeName != null) {
                     entityType = getEntityTypeByName(eea, componentVendorName, entityTypeName, entityPermission);
                 } else {
                     handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                 }
-                break;
-            case 1:
-                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+            }
+            case 1 -> {
+                var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                         ComponentVendors.ECHO_THREE.name(), EntityTypes.EntityType.name());
 
                 if(!eea.hasExecutionErrors()) {
-                    var entityTypeControl = Session.getModelController(EntityTypeControl.class);
-
                     entityType = entityTypeControl.getEntityTypeByEntityInstance(entityInstance, entityPermission);
                 }
-                break;
-            default:
-                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
-                break;
+            }
+            default ->
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
 
         return entityType;

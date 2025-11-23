@@ -20,16 +20,21 @@ import com.echothree.model.control.icon.common.transfer.IconUsageTypeDescription
 import com.echothree.model.control.icon.server.control.IconControl;
 import com.echothree.model.data.icon.server.entity.IconUsageTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class IconUsageTypeDescriptionTransferCache
         extends BaseIconDescriptionTransferCache<IconUsageTypeDescription, IconUsageTypeDescriptionTransfer> {
-    
+
+    IconControl iconControl = Session.getModelController(IconControl.class);
+
     /** Creates a new instance of IconUsageTypeDescriptionTransferCache */
-    public IconUsageTypeDescriptionTransferCache(UserVisit userVisit, IconControl iconControl) {
-        super(userVisit, iconControl);
+    protected IconUsageTypeDescriptionTransferCache() {
+        super();
     }
     
-    public IconUsageTypeDescriptionTransfer getIconUsageTypeDescriptionTransfer(IconUsageTypeDescription iconUsageTypeDescription) {
+    public IconUsageTypeDescriptionTransfer getIconUsageTypeDescriptionTransfer(UserVisit userVisit, IconUsageTypeDescription iconUsageTypeDescription) {
         var iconUsageTypeDescriptionTransfer = get(iconUsageTypeDescription);
         
         if(iconUsageTypeDescriptionTransfer == null) {
@@ -37,7 +42,7 @@ public class IconUsageTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, iconUsageTypeDescription.getLanguage());
             
             iconUsageTypeDescriptionTransfer = new IconUsageTypeDescriptionTransfer(languageTransfer, iconUsageTypeTransfer, iconUsageTypeDescription.getDescription());
-            put(iconUsageTypeDescription, iconUsageTypeDescriptionTransfer);
+            put(userVisit, iconUsageTypeDescription, iconUsageTypeDescriptionTransfer);
         }
         
         return iconUsageTypeDescriptionTransfer;

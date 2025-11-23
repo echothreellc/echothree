@@ -36,7 +36,9 @@ import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CreateEntityTypeCommand
         extends BaseSimpleCommand<CreateEntityTypeForm> {
     
@@ -72,13 +74,13 @@ public class CreateEntityTypeCommand
     protected BaseResult execute() {
         var result = CoreResultFactory.getCreateEntityTypeResult();
         var componentVendorName = form.getComponentVendorName();
-        var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
+        var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
         EntityType entityType = null;
 
         if(componentVendor != null) {
             var entityTypeName = form.getEntityTypeName();
 
-            entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
+            entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
 
             if(entityType == null) {
                 var unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
@@ -94,11 +96,11 @@ public class CreateEntityTypeCommand
                     var sortOrder = Integer.valueOf(form.getSortOrder());
                     var description = form.getDescription();
 
-                    entityType = getEntityTypeControl().createEntityType(componentVendor, entityTypeName, keepAllHistory, lockTimeout,
+                    entityType = entityTypeControl.createEntityType(componentVendor, entityTypeName, keepAllHistory, lockTimeout,
                             isExtensible, sortOrder, partyPK);
 
                     if(description != null) {
-                        getEntityTypeControl().createEntityTypeDescription(entityType, getPreferredLanguage(), description, partyPK);
+                        entityTypeControl.createEntityTypeDescription(entityType, getPreferredLanguage(), description, partyPK);
                     }
                 }
             } else {

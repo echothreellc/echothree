@@ -22,20 +22,21 @@ import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntranceSelector;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class WorkflowEntranceSelectorTransferCache
         extends BaseWorkflowTransferCache<WorkflowEntranceSelector, WorkflowEntranceSelectorTransfer> {
     
-    SelectorControl selectorControl;
-    
+    SelectorControl selectorControl = Session.getModelController(SelectorControl.class);
+    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
+
     /** Creates a new instance of WorkflowEntranceSelectorTransferCache */
-    public WorkflowEntranceSelectorTransferCache(UserVisit userVisit, WorkflowControl workflowControl) {
-        super(userVisit, workflowControl);
-        
-        selectorControl = Session.getModelController(SelectorControl.class);
+    protected WorkflowEntranceSelectorTransferCache() {
+        super();
     }
     
-    public WorkflowEntranceSelectorTransfer getWorkflowEntranceSelectorTransfer(WorkflowEntranceSelector workflowEntranceSelector) {
+    public WorkflowEntranceSelectorTransfer getWorkflowEntranceSelectorTransfer(UserVisit userVisit, WorkflowEntranceSelector workflowEntranceSelector) {
         var workflowEntranceSelectorTransfer = get(workflowEntranceSelector);
         
         if(workflowEntranceSelectorTransfer == null) {
@@ -43,7 +44,7 @@ public class WorkflowEntranceSelectorTransferCache
             var selector = selectorControl.getSelectorTransfer(userVisit, workflowEntranceSelector.getSelector());
             
             workflowEntranceSelectorTransfer = new WorkflowEntranceSelectorTransfer(workflowEntrance, selector);
-            put(workflowEntranceSelector, workflowEntranceSelectorTransfer);
+            put(userVisit, workflowEntranceSelector, workflowEntranceSelectorTransfer);
         }
         
         return workflowEntranceSelectorTransfer;

@@ -20,16 +20,21 @@ import com.echothree.model.control.search.common.transfer.SearchSortDirectionDes
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.data.search.server.entity.SearchSortDirectionDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class SearchSortDirectionDescriptionTransferCache
         extends BaseSearchDescriptionTransferCache<SearchSortDirectionDescription, SearchSortDirectionDescriptionTransfer> {
-    
+
+    SearchControl searchControl = Session.getModelController(SearchControl.class);
+
     /** Creates a new instance of SearchSortDirectionDescriptionTransferCache */
-    public SearchSortDirectionDescriptionTransferCache(UserVisit userVisit, SearchControl searchControl) {
-        super(userVisit, searchControl);
+    protected SearchSortDirectionDescriptionTransferCache() {
+        super();
     }
     
-    public SearchSortDirectionDescriptionTransfer getSearchSortDirectionDescriptionTransfer(SearchSortDirectionDescription searchSortDirectionDescription) {
+    public SearchSortDirectionDescriptionTransfer getSearchSortDirectionDescriptionTransfer(UserVisit userVisit, SearchSortDirectionDescription searchSortDirectionDescription) {
         var searchSortDirectionDescriptionTransfer = get(searchSortDirectionDescription);
         
         if(searchSortDirectionDescriptionTransfer == null) {
@@ -37,7 +42,7 @@ public class SearchSortDirectionDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, searchSortDirectionDescription.getLanguage());
             
             searchSortDirectionDescriptionTransfer = new SearchSortDirectionDescriptionTransfer(languageTransfer, searchSortDirectionTransfer, searchSortDirectionDescription.getDescription());
-            put(searchSortDirectionDescription, searchSortDirectionDescriptionTransfer);
+            put(userVisit, searchSortDirectionDescription, searchSortDirectionDescriptionTransfer);
         }
         return searchSortDirectionDescriptionTransfer;
     }

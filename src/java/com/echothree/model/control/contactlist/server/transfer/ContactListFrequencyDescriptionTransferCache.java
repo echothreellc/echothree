@@ -20,16 +20,21 @@ import com.echothree.model.control.contactlist.common.transfer.ContactListFreque
 import com.echothree.model.control.contactlist.server.control.ContactListControl;
 import com.echothree.model.data.contactlist.server.entity.ContactListFrequencyDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ContactListFrequencyDescriptionTransferCache
         extends BaseContactListDescriptionTransferCache<ContactListFrequencyDescription, ContactListFrequencyDescriptionTransfer> {
-    
+
+    ContactListControl contactListControl = Session.getModelController(ContactListControl.class);
+
     /** Creates a new instance of ContactListFrequencyDescriptionTransferCache */
-    public ContactListFrequencyDescriptionTransferCache(UserVisit userVisit, ContactListControl contactListControl) {
-        super(userVisit, contactListControl);
+    protected ContactListFrequencyDescriptionTransferCache() {
+        super();
     }
     
-    public ContactListFrequencyDescriptionTransfer getContactListFrequencyDescriptionTransfer(ContactListFrequencyDescription contactListFrequencyDescription) {
+    public ContactListFrequencyDescriptionTransfer getContactListFrequencyDescriptionTransfer(UserVisit userVisit, ContactListFrequencyDescription contactListFrequencyDescription) {
         var contactListFrequencyDescriptionTransfer = get(contactListFrequencyDescription);
         
         if(contactListFrequencyDescriptionTransfer == null) {
@@ -37,7 +42,7 @@ public class ContactListFrequencyDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, contactListFrequencyDescription.getLanguage());
             
             contactListFrequencyDescriptionTransfer = new ContactListFrequencyDescriptionTransfer(languageTransfer, contactListFrequencyTransfer, contactListFrequencyDescription.getDescription());
-            put(contactListFrequencyDescription, contactListFrequencyDescriptionTransfer);
+            put(userVisit, contactListFrequencyDescription, contactListFrequencyDescriptionTransfer);
         }
         
         return contactListFrequencyDescriptionTransfer;

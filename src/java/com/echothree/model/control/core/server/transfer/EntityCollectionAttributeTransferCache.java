@@ -23,7 +23,9 @@ import com.echothree.model.data.core.server.entity.EntityCollectionAttribute;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EntityCollectionAttributeTransferCache
         extends BaseCoreTransferCache<EntityCollectionAttribute, EntityCollectionAttributeTransfer> {
 
@@ -31,11 +33,11 @@ public class EntityCollectionAttributeTransferCache
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
     /** Creates a new instance of EntityCollectionAttributeTransferCache */
-    public EntityCollectionAttributeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected EntityCollectionAttributeTransferCache() {
+        super();
     }
     
-    public EntityCollectionAttributeTransfer getEntityCollectionAttributeTransfer(EntityCollectionAttribute entityCollectionAttribute, EntityInstance entityInstance) {
+    public EntityCollectionAttributeTransfer getEntityCollectionAttributeTransfer(final UserVisit userVisit, final EntityCollectionAttribute entityCollectionAttribute, final EntityInstance entityInstance) {
         var entityCollectionAttributeTransfer = get(entityCollectionAttribute);
         
         if(entityCollectionAttributeTransfer == null) {
@@ -44,7 +46,7 @@ public class EntityCollectionAttributeTransferCache
             var entityInstanceAttribute = entityInstanceControl.getEntityInstanceTransfer(userVisit, entityCollectionAttribute.getEntityInstanceAttribute(), false, false, false, false);
             
             entityCollectionAttributeTransfer = new EntityCollectionAttributeTransfer(entityAttribute, entityInstanceTransfer, entityInstanceAttribute);
-            put(entityCollectionAttribute, entityCollectionAttributeTransfer);
+            put(userVisit, entityCollectionAttribute, entityCollectionAttributeTransfer);
         }
         
         return entityCollectionAttributeTransfer;

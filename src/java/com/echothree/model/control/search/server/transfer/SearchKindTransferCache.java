@@ -20,18 +20,23 @@ import com.echothree.model.control.search.common.transfer.SearchKindTransfer;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.data.search.server.entity.SearchKind;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class SearchKindTransferCache
         extends BaseSearchTransferCache<SearchKind, SearchKindTransfer> {
-    
+
+    SearchControl searchControl = Session.getModelController(SearchControl.class);
+
     /** Creates a new instance of SearchKindTransferCache */
-    public SearchKindTransferCache(UserVisit userVisit, SearchControl searchControl) {
-        super(userVisit, searchControl);
+    protected SearchKindTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public SearchKindTransfer getSearchKindTransfer(SearchKind searchKind) {
+    public SearchKindTransfer getSearchKindTransfer(UserVisit userVisit, SearchKind searchKind) {
         var searchKindTransfer = get(searchKind);
         
         if(searchKindTransfer == null) {
@@ -39,10 +44,10 @@ public class SearchKindTransferCache
             var searchKindName = searchKindDetail.getSearchKindName();
             var isDefault = searchKindDetail.getIsDefault();
             var sortOrder = searchKindDetail.getSortOrder();
-            var description = searchControl.getBestSearchKindDescription(searchKind, getLanguage());
+            var description = searchControl.getBestSearchKindDescription(searchKind, getLanguage(userVisit));
             
             searchKindTransfer = new SearchKindTransfer(searchKindName, isDefault, sortOrder, description);
-            put(searchKind, searchKindTransfer);
+            put(userVisit, searchKind, searchKindTransfer);
         }
         
         return searchKindTransfer;

@@ -25,13 +25,16 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class WorkflowTransferCache
         extends BaseWorkflowTransferCache<Workflow, WorkflowTransfer> {
     
     SecurityControl securityControl = Session.getModelController(SecurityControl.class);
     SelectorControl selectorControl = Session.getModelController(SelectorControl.class);
-    
+    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
+
     TransferProperties transferProperties;
     boolean filterWorkflowName;
     boolean filterSelectorType;
@@ -41,9 +44,7 @@ public class WorkflowTransferCache
     boolean filterEntityInstance;
 
     /** Creates a new instance of WorkflowTransferCache */
-    public WorkflowTransferCache(UserVisit userVisit, WorkflowControl workflowControl) {
-        super(userVisit, workflowControl);
-        
+    protected WorkflowTransferCache() {
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
             var properties = transferProperties.getProperties(WorkflowTransfer.class);
@@ -61,7 +62,7 @@ public class WorkflowTransferCache
         setIncludeEntityInstance(!filterEntityInstance);
     }
     
-    public WorkflowTransfer getWorkflowTransfer(Workflow workflow) {
+    public WorkflowTransfer getWorkflowTransfer(UserVisit userVisit, Workflow workflow) {
         var workflowTransfer = get(workflow);
         
         if(workflowTransfer == null) {
@@ -72,11 +73,11 @@ public class WorkflowTransferCache
             var securityRoleGroup = filterSecurityRoleGroup ? null : workflowDetail.getSecurityRoleGroup();
             var securityRoleGroupTransfer = securityRoleGroup == null? null: securityControl.getSecurityRoleGroupTransfer(userVisit, securityRoleGroup);
             var sortOrder = filterSortOrder ? null : workflowDetail.getSortOrder();
-            var description = filterDescription ? null : workflowControl.getBestWorkflowDescription(workflow, getLanguage());
+            var description = filterDescription ? null : workflowControl.getBestWorkflowDescription(workflow, getLanguage(userVisit));
             
             workflowTransfer = new WorkflowTransfer(workflowName, selectorTypeTransfer,
                     securityRoleGroupTransfer, sortOrder, description);
-            put(workflow, workflowTransfer);
+            put(userVisit, workflow, workflowTransfer);
         }
         
         return workflowTransfer;

@@ -17,33 +17,34 @@
 package com.echothree.model.control.inventory.server.transfer;
 
 import com.echothree.model.control.inventory.common.transfer.LotTimeTransfer;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.inventory.server.control.LotTimeControl;
 import com.echothree.model.data.inventory.server.entity.LotTime;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class LotTimeTransferCache
         extends BaseInventoryTransferCache<LotTime, LotTimeTransfer> {
 
     LotTimeControl lotTimeControl = Session.getModelController(LotTimeControl.class);
 
     /** Creates a new instance of LotTimeTransferCache */
-    public LotTimeTransferCache(UserVisit userVisit, InventoryControl inventoryControl) {
-        super(userVisit, inventoryControl);
+    protected LotTimeTransferCache() {
+        super();
     }
     
     @Override
-    public LotTimeTransfer getTransfer(LotTime lotTime) {
+    public LotTimeTransfer getTransfer(UserVisit userVisit, LotTime lotTime) {
         var lotTimeTransfer = get(lotTime);
         
         if(lotTimeTransfer == null) {
             var lotTimeType = lotTimeControl.getLotTimeTypeTransfer(userVisit, lotTime.getLotTimeType());
             var unformattedTime = lotTime.getTime();
-            var time = formatTypicalDateTime(unformattedTime);
+            var time = formatTypicalDateTime(userVisit, unformattedTime);
             
             lotTimeTransfer = new LotTimeTransfer(lotTimeType, unformattedTime, time);
-            put(lotTime, lotTimeTransfer);
+            put(userVisit, lotTime, lotTimeTransfer);
         }
         
         return lotTimeTransfer;

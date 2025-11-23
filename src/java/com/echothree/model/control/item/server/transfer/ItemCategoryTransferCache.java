@@ -20,32 +20,37 @@ import com.echothree.model.control.item.common.transfer.ItemCategoryTransfer;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.item.server.entity.ItemCategory;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ItemCategoryTransferCache
         extends BaseItemTransferCache<ItemCategory, ItemCategoryTransfer> {
-    
+
+    ItemControl itemControl = Session.getModelController(ItemControl.class);
+
     /** Creates a new instance of ItemCategoryTransferCache */
-    public ItemCategoryTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    protected ItemCategoryTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
     @Override
-    public ItemCategoryTransfer getTransfer(ItemCategory itemCategory) {
+    public ItemCategoryTransfer getTransfer(UserVisit userVisit, ItemCategory itemCategory) {
         var itemCategoryTransfer = get(itemCategory);
         
         if(itemCategoryTransfer == null) {
             var itemCategoryDetail = itemCategory.getLastDetail();
             var itemCategoryName = itemCategoryDetail.getItemCategoryName();
             var parentItemCategory = itemCategoryDetail.getParentItemCategory();
-            var parentItemCategoryTransfer = parentItemCategory == null ? null : getTransfer(parentItemCategory);
+            var parentItemCategoryTransfer = parentItemCategory == null ? null : getTransfer(userVisit, parentItemCategory);
             var isDefault = itemCategoryDetail.getIsDefault();
             var sortOrder = itemCategoryDetail.getSortOrder();
-            var description = itemControl.getBestItemCategoryDescription(itemCategory, getLanguage());
+            var description = itemControl.getBestItemCategoryDescription(itemCategory, getLanguage(userVisit));
             
             itemCategoryTransfer = new ItemCategoryTransfer(itemCategoryName, parentItemCategoryTransfer, isDefault, sortOrder, description);
-            put(itemCategory, itemCategoryTransfer);
+            put(userVisit, itemCategory, itemCategoryTransfer);
         }
         
         return itemCategoryTransfer;

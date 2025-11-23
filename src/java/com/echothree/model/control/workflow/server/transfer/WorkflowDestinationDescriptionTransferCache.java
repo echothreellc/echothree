@@ -20,16 +20,21 @@ import com.echothree.model.control.workflow.common.transfer.WorkflowDestinationD
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workflow.server.entity.WorkflowDestinationDescription;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class WorkflowDestinationDescriptionTransferCache
         extends BaseWorkflowDescriptionTransferCache<WorkflowDestinationDescription, WorkflowDestinationDescriptionTransfer> {
-    
+
+    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
+
     /** Creates a new instance of WorkflowDestinationDescriptionTransferCache */
-    public WorkflowDestinationDescriptionTransferCache(UserVisit userVisit, WorkflowControl workflowControl) {
-        super(userVisit, workflowControl);
+    protected WorkflowDestinationDescriptionTransferCache() {
+        super();
     }
     
-    public WorkflowDestinationDescriptionTransfer getWorkflowDestinationDescriptionTransfer(WorkflowDestinationDescription workflowDestinationDescription) {
+    public WorkflowDestinationDescriptionTransfer getWorkflowDestinationDescriptionTransfer(UserVisit userVisit, WorkflowDestinationDescription workflowDestinationDescription) {
         var workflowDestinationDescriptionTransfer = get(workflowDestinationDescription);
         
         if(workflowDestinationDescriptionTransfer == null) {
@@ -37,7 +42,7 @@ public class WorkflowDestinationDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, workflowDestinationDescription.getLanguage());
             
             workflowDestinationDescriptionTransfer = new WorkflowDestinationDescriptionTransfer(languageTransfer, workflowDestinationTransfer, workflowDestinationDescription.getDescription());
-            put(workflowDestinationDescription, workflowDestinationDescriptionTransfer);
+            put(userVisit, workflowDestinationDescription, workflowDestinationDescriptionTransfer);
         }
         
         return workflowDestinationDescriptionTransfer;

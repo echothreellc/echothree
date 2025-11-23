@@ -37,7 +37,9 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.persistence.PersistenceUtils;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EditEntityEntityAttributeCommand
         extends BaseEditCommand<EntityEntityAttributeSpec, EntityEntityAttributeEdit> {
 
@@ -71,7 +73,6 @@ public class EditEntityEntityAttributeCommand
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
         var result = CoreResultFactory.getEditEntityEntityAttributeResult();
         var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, spec);
 

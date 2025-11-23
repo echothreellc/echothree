@@ -27,7 +27,9 @@ import com.echothree.model.control.track.common.transfer.TrackDescriptionTransfe
 import com.echothree.model.control.track.common.transfer.TrackTransfer;
 import com.echothree.model.control.track.common.transfer.UserVisitTrackTransfer;
 import com.echothree.model.control.track.common.workflow.TrackStatusConstants;
-import com.echothree.model.control.track.server.transfer.TrackTransferCaches;
+import com.echothree.model.control.track.server.transfer.TrackDescriptionTransferCache;
+import com.echothree.model.control.track.server.transfer.TrackTransferCache;
+import com.echothree.model.control.track.server.transfer.UserVisitTrackTransferCache;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.common.pk.PartyPK;
@@ -59,29 +61,31 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
+@RequestScoped
 public class TrackControl
         extends BaseModelControl {
     
     /** Creates a new instance of TrackControl */
-    public TrackControl() {
+    protected TrackControl() {
         super();
     }
     
     // --------------------------------------------------------------------------------
     //   Track Transfer Caches
     // --------------------------------------------------------------------------------
-    
-    private TrackTransferCaches trackTransferCaches;
-    
-    public TrackTransferCaches getTrackTransferCaches(UserVisit userVisit) {
-        if(trackTransferCaches == null) {
-            trackTransferCaches = new TrackTransferCaches(userVisit, this);
-        }
-        
-        return trackTransferCaches;
-    }
-    
+
+    @Inject
+    TrackTransferCache trackTransferCache;
+
+    @Inject
+    TrackDescriptionTransferCache trackDescriptionTransferCache;
+
+    @Inject
+    UserVisitTrackTransferCache userVisitTrackTransferCache;
+
     // --------------------------------------------------------------------------------
     //   Tracks
     // --------------------------------------------------------------------------------
@@ -123,7 +127,7 @@ public class TrackControl
 
         var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
         var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(trackPK);
-        getWorkflowControl().addEntityToWorkflowUsingNames(null, TrackStatusConstants.Workflow_TRACK_STATUS,
+        workflowControl.addEntityToWorkflowUsingNames(null, TrackStatusConstants.Workflow_TRACK_STATUS,
                 TrackStatusConstants.WorkflowEntrance_NEW_ACTIVE, entityInstance, null, null, createdBy);
         
         return track;
@@ -276,7 +280,6 @@ public class TrackControl
 
     public TrackStatusChoicesBean getTrackStatusChoices(String defaultTrackStatusChoice, Language language,
             boolean allowNullChoice, Track track, PartyPK partyPK) {
-        var workflowControl = getWorkflowControl();
         var employeeStatusChoicesBean = new TrackStatusChoicesBean();
         
         if(track == null) {
@@ -296,7 +299,6 @@ public class TrackControl
     }
     
     public void setTrackStatus(ExecutionErrorAccumulator eea, Party party, String employeeStatusChoice, PartyPK modifiedBy) {
-        var workflowControl = getWorkflowControl();
         var entityInstance = getEntityInstanceByBaseEntity(party);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(TrackStatusConstants.Workflow_TRACK_STATUS,
                 entityInstance);
@@ -311,16 +313,15 @@ public class TrackControl
     }
     
    public TrackTransfer getTrackTransfer(UserVisit userVisit, Track track) {
-        return getTrackTransferCaches(userVisit).getTrackTransferCache().getTrackTransfer(track);
+        return trackTransferCache.getTrackTransfer(userVisit, track);
     }
 
     public List<TrackTransfer> getTrackTransfers(UserVisit userVisit) {
         var tracks = getTracks();
         List<TrackTransfer> trackTransfers = new ArrayList<>(tracks.size());
-        var trackTransferCache = getTrackTransferCaches(userVisit).getTrackTransferCache();
 
         tracks.forEach((track) ->
-                trackTransfers.add(trackTransferCache.getTrackTransfer(track))
+                trackTransfers.add(trackTransferCache.getTrackTransfer(userVisit, track))
         );
 
         return trackTransfers;
@@ -538,7 +539,7 @@ public class TrackControl
         var trackDescription = getTrackDescription(track, language);
 
         if(trackDescription == null && !language.getIsDefault()) {
-            trackDescription = getTrackDescription(track, getPartyControl().getDefaultLanguage());
+            trackDescription = getTrackDescription(track, partyControl.getDefaultLanguage());
         }
 
         if(trackDescription == null) {
@@ -551,16 +552,15 @@ public class TrackControl
     }
 
     public TrackDescriptionTransfer getTrackDescriptionTransfer(UserVisit userVisit, TrackDescription trackDescription) {
-        return getTrackTransferCaches(userVisit).getTrackDescriptionTransferCache().getTrackDescriptionTransfer(trackDescription);
+        return trackDescriptionTransferCache.getTrackDescriptionTransfer(userVisit, trackDescription);
     }
 
     public List<TrackDescriptionTransfer> getTrackDescriptionTransfersByTrack(UserVisit userVisit, Track track) {
         var trackDescriptions = getTrackDescriptionsByTrack(track);
         List<TrackDescriptionTransfer> trackDescriptionTransfers = new ArrayList<>(trackDescriptions.size());
-        var trackDescriptionTransferCache = getTrackTransferCaches(userVisit).getTrackDescriptionTransferCache();
 
         trackDescriptions.forEach((trackDescription) ->
-                trackDescriptionTransfers.add(trackDescriptionTransferCache.getTrackDescriptionTransfer(trackDescription))
+                trackDescriptionTransfers.add(trackDescriptionTransferCache.getTrackDescriptionTransfer(userVisit, trackDescription))
         );
 
         return trackDescriptionTransfers;
@@ -713,15 +713,14 @@ public class TrackControl
     }
 
     public UserVisitTrackTransfer getUserVisitTrackTransfer(UserVisit userVisit, UserVisitTrack userVisitTrack) {
-        return getTrackTransferCaches(userVisit).getUserVisitTrackTransferCache().getUserVisitTrackTransfer(userVisitTrack);
+        return userVisitTrackTransferCache.getUserVisitTrackTransfer(userVisit, userVisitTrack);
     }
 
     public List<UserVisitTrackTransfer> getUserVisitTrackTransfers(UserVisit userVisit, Collection<UserVisitTrack> userVisitTracks) {
         var userVisitTrackTransfers = new ArrayList<UserVisitTrackTransfer>(userVisitTracks.size());
-        var userVisitTrackTransferCache = getTrackTransferCaches(userVisit).getUserVisitTrackTransferCache();
 
         userVisitTracks.forEach((userVisitTrack) ->
-                userVisitTrackTransfers.add(userVisitTrackTransferCache.getUserVisitTrackTransfer(userVisitTrack))
+                userVisitTrackTransfers.add(userVisitTrackTransferCache.getUserVisitTrackTransfer(userVisit, userVisitTrack))
         );
 
         return userVisitTrackTransfers;

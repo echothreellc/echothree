@@ -20,32 +20,37 @@ import com.echothree.model.control.vendor.common.transfer.ItemPurchasingCategory
 import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.vendor.server.entity.ItemPurchasingCategory;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ItemPurchasingCategoryTransferCache
         extends BaseVendorTransferCache<ItemPurchasingCategory, ItemPurchasingCategoryTransfer> {
-    
+
+    VendorControl vendorControl = Session.getModelController(VendorControl.class);
+
     /** Creates a new instance of ItemPurchasingCategoryTransferCache */
-    public ItemPurchasingCategoryTransferCache(UserVisit userVisit, VendorControl vendorControl) {
-        super(userVisit, vendorControl);
+    protected ItemPurchasingCategoryTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public ItemPurchasingCategoryTransfer getItemPurchasingCategoryTransfer(ItemPurchasingCategory itemPurchasingCategory) {
+    public ItemPurchasingCategoryTransfer getItemPurchasingCategoryTransfer(UserVisit userVisit, ItemPurchasingCategory itemPurchasingCategory) {
         var itemPurchasingCategoryTransfer = get(itemPurchasingCategory);
         
         if(itemPurchasingCategoryTransfer == null) {
             var itemPurchasingCategoryDetail = itemPurchasingCategory.getLastDetail();
             var itemPurchasingCategoryName = itemPurchasingCategoryDetail.getItemPurchasingCategoryName();
             var parentItemPurchasingCategory = itemPurchasingCategoryDetail.getParentItemPurchasingCategory();
-            var parentItemPurchasingCategoryTransfer = parentItemPurchasingCategory == null? null: getItemPurchasingCategoryTransfer(parentItemPurchasingCategory);
+            var parentItemPurchasingCategoryTransfer = parentItemPurchasingCategory == null ? null : getItemPurchasingCategoryTransfer(userVisit, parentItemPurchasingCategory);
             var isDefault = itemPurchasingCategoryDetail.getIsDefault();
             var sortOrder = itemPurchasingCategoryDetail.getSortOrder();
-            var description = vendorControl.getBestItemPurchasingCategoryDescription(itemPurchasingCategory, getLanguage());
+            var description = vendorControl.getBestItemPurchasingCategoryDescription(itemPurchasingCategory, getLanguage(userVisit));
             
             itemPurchasingCategoryTransfer = new ItemPurchasingCategoryTransfer(itemPurchasingCategoryName,
                     parentItemPurchasingCategoryTransfer, isDefault, sortOrder, description);
-            put(itemPurchasingCategory, itemPurchasingCategoryTransfer);
+            put(userVisit, itemPurchasingCategory, itemPurchasingCategoryTransfer);
         }
         
         return itemPurchasingCategoryTransfer;

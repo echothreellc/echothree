@@ -31,12 +31,14 @@ import com.echothree.util.server.persistence.Session;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PartyEntityTypeControl
         extends BasePartyControl {
 
     /** Creates a new instance of PartyEntityTypeControl */
-    public PartyEntityTypeControl() {
+    protected PartyEntityTypeControl() {
         super();
     }
 
@@ -141,16 +143,15 @@ public class PartyEntityTypeControl
     }
 
     public PartyEntityTypeTransfer getPartyEntityTypeTransfer(UserVisit userVisit, PartyEntityType partyEntityType) {
-        return getPartyTransferCaches(userVisit).getPartyEntityTypeTransferCache().getPartyEntityTypeTransfer(partyEntityType);
+        return partyEntityTypeTransferCache.getPartyEntityTypeTransfer(userVisit, partyEntityType);
     }
 
     public List<PartyEntityTypeTransfer> getPartyEntityTypeTransfersByParty(UserVisit userVisit, Party party) {
         var partyEntityTypes = getPartyEntityTypesByParty(party);
         List<PartyEntityTypeTransfer> partyEntityTypeTransfers = new ArrayList<>(partyEntityTypes.size());
-        var partyEntityTypeTransferCache = getPartyTransferCaches(userVisit).getPartyEntityTypeTransferCache();
 
         partyEntityTypes.forEach((partyEntityType) ->
-                partyEntityTypeTransfers.add(partyEntityTypeTransferCache.getPartyEntityTypeTransfer(partyEntityType))
+                partyEntityTypeTransfers.add(partyEntityTypeTransferCache.getPartyEntityTypeTransfer(userVisit, partyEntityType))
         );
 
         return partyEntityTypeTransfers;

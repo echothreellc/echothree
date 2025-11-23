@@ -20,25 +20,29 @@ import com.echothree.model.control.message.common.transfer.MessageTypeDescriptio
 import com.echothree.model.control.message.server.control.MessageControl;
 import com.echothree.model.data.message.server.entity.MessageTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class MessageTypeDescriptionTransferCache
         extends BaseMessageDescriptionTransferCache<MessageTypeDescription, MessageTypeDescriptionTransfer> {
-    
+
+    MessageControl messageControl = Session.getModelController(MessageControl.class);
+
     /** Creates a new instance of MessageTypeDescriptionTransferCache */
-    public MessageTypeDescriptionTransferCache(UserVisit userVisit, MessageControl messageControl) {
-        super(userVisit, messageControl);
+    protected MessageTypeDescriptionTransferCache() {
+        super();
     }
     
-    public MessageTypeDescriptionTransfer getMessageTypeDescriptionTransfer(MessageTypeDescription messageTypeDescription) {
+    public MessageTypeDescriptionTransfer getMessageTypeDescriptionTransfer(UserVisit userVisit, MessageTypeDescription messageTypeDescription) {
         var messageTypeDescriptionTransfer = get(messageTypeDescription);
         
         if(messageTypeDescriptionTransfer == null) {
-            var messageTypeTransferCache = messageControl.getMessageTransferCaches(userVisit).getMessageTypeTransferCache();
-            var messageTypeTransfer = messageTypeTransferCache.getMessageTypeTransfer(messageTypeDescription.getMessageType());
+            var messageTypeTransfer = messageControl.getMessageTypeTransfer(userVisit, messageTypeDescription.getMessageType());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, messageTypeDescription.getLanguage());
             
             messageTypeDescriptionTransfer = new MessageTypeDescriptionTransfer(languageTransfer, messageTypeTransfer, messageTypeDescription.getDescription());
-            put(messageTypeDescription, messageTypeDescriptionTransfer);
+            put(userVisit, messageTypeDescription, messageTypeDescriptionTransfer);
         }
         
         return messageTypeDescriptionTransfer;

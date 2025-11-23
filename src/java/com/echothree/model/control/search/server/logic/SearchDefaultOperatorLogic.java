@@ -33,20 +33,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class SearchDefaultOperatorLogic
         extends BaseLogic {
 
-    private SearchDefaultOperatorLogic() {
+    protected SearchDefaultOperatorLogic() {
         super();
     }
 
-    private static class SearchDefaultOperatorLogicHolder {
-        static SearchDefaultOperatorLogic instance = new SearchDefaultOperatorLogic();
-    }
-
     public static SearchDefaultOperatorLogic getInstance() {
-        return SearchDefaultOperatorLogic.SearchDefaultOperatorLogicHolder.instance;
+        return CDI.current().select(SearchDefaultOperatorLogic.class).get();
     }
 
     public SearchDefaultOperator createSearchDefaultOperator(final ExecutionErrorAccumulator eea, final String searchDefaultOperatorName,
@@ -96,7 +95,7 @@ public class SearchDefaultOperatorLogic
         var parameterCount = (searchDefaultOperatorName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
-            case 0:
+            case 0 -> {
                 if(allowDefault) {
                     searchDefaultOperator = searchControl.getDefaultSearchDefaultOperator(entityPermission);
 
@@ -106,8 +105,8 @@ public class SearchDefaultOperatorLogic
                 } else {
                     handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                 }
-                break;
-            case 1:
+            }
+            case 1 -> {
                 if(searchDefaultOperatorName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.SearchDefaultOperator.name());
@@ -118,10 +117,9 @@ public class SearchDefaultOperatorLogic
                 } else {
                     searchDefaultOperator = getSearchDefaultOperatorByName(eea, searchDefaultOperatorName, entityPermission);
                 }
-                break;
-            default:
-                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
-                break;
+            }
+            default ->
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
 
         return searchDefaultOperator;

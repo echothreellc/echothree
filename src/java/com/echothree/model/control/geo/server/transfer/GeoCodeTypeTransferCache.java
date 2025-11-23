@@ -20,18 +20,23 @@ import com.echothree.model.control.geo.common.transfer.GeoCodeTypeTransfer;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.data.geo.server.entity.GeoCodeType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class GeoCodeTypeTransferCache
         extends BaseGeoTransferCache<GeoCodeType, GeoCodeTypeTransfer> {
-    
+
+    GeoControl geoControl = Session.getModelController(GeoControl.class);
+
     /** Creates a new instance of GeoCodeTypeTransferCache */
-    public GeoCodeTypeTransferCache(UserVisit userVisit, GeoControl geoControl) {
-        super(userVisit, geoControl);
+    protected GeoCodeTypeTransferCache() {
+        super();
 
         setIncludeEntityInstance(true);
     }
     
-    public GeoCodeTypeTransfer getGeoCodeTypeTransfer(GeoCodeType geoCodeType) {
+    public GeoCodeTypeTransfer getGeoCodeTypeTransfer(UserVisit userVisit, GeoCodeType geoCodeType) {
         var geoCodeTypeTransfer = get(geoCodeType);
         
         if(geoCodeTypeTransfer == null) {
@@ -42,11 +47,11 @@ public class GeoCodeTypeTransferCache
                     parentGeoCodeType);
             var isDefault = geoCodeTypeDetail.getIsDefault();
             var sortOrder = geoCodeTypeDetail.getSortOrder();
-            var description = geoControl.getBestGeoCodeTypeDescription(geoCodeType, getLanguage());
+            var description = geoControl.getBestGeoCodeTypeDescription(geoCodeType, getLanguage(userVisit));
             
             geoCodeTypeTransfer = new GeoCodeTypeTransfer(geoCodeTypeName, parentGeoCodeTypeTransfer, isDefault, sortOrder,
                     description);
-            put(geoCodeType, geoCodeTypeTransfer);
+            put(userVisit, geoCodeType, geoCodeTypeTransfer);
         }
         
         return geoCodeTypeTransfer;

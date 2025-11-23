@@ -21,18 +21,20 @@ import com.echothree.model.control.offer.server.control.UseNameElementControl;
 import com.echothree.model.data.offer.server.entity.UseNameElementDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class UseNameElementDescriptionTransferCache
         extends BaseOfferDescriptionTransferCache<UseNameElementDescription, UseNameElementDescriptionTransfer> {
 
     UseNameElementControl useNameElementControl = Session.getModelController(UseNameElementControl.class);
 
     /** Creates a new instance of UseNameElementDescriptionTransferCache */
-    public UseNameElementDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected UseNameElementDescriptionTransferCache() {
+        super();
     }
     
-    public UseNameElementDescriptionTransfer getUseNameElementDescriptionTransfer(UseNameElementDescription useNameElementDescription) {
+    public UseNameElementDescriptionTransfer getUseNameElementDescriptionTransfer(UserVisit userVisit, UseNameElementDescription useNameElementDescription) {
         var useNameElementDescriptionTransfer = get(useNameElementDescription);
         
         if(useNameElementDescriptionTransfer == null) {
@@ -41,7 +43,7 @@ public class UseNameElementDescriptionTransferCache
             
             useNameElementDescriptionTransfer = new UseNameElementDescriptionTransfer(languageTransfer, useNameElementTransfer,
                     useNameElementDescription.getDescription());
-            put(useNameElementDescription, useNameElementDescriptionTransfer);
+            put(userVisit, useNameElementDescription, useNameElementDescriptionTransfer);
         }
         
         return useNameElementDescriptionTransfer;

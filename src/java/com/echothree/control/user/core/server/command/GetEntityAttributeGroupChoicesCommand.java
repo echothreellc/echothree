@@ -32,7 +32,9 @@ import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class GetEntityAttributeGroupChoicesCommand
         extends BaseSimpleCommand<GetEntityAttributeGroupChoicesForm> {
     
@@ -59,7 +61,6 @@ public class GetEntityAttributeGroupChoicesCommand
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
         var result = CoreResultFactory.getGetEntityAttributeGroupChoicesResult();
         var defaultEntityAttributeGroupChoice = form.getDefaultEntityAttributeGroupChoice();
         var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());

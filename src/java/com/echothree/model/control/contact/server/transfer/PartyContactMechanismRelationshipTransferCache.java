@@ -20,16 +20,21 @@ import com.echothree.model.control.contact.common.transfer.PartyContactMechanism
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.data.contact.server.entity.PartyContactMechanismRelationship;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PartyContactMechanismRelationshipTransferCache
         extends BaseContactTransferCache<PartyContactMechanismRelationship, PartyContactMechanismRelationshipTransfer> {
-    
+
+    ContactControl contactControl = Session.getModelController(ContactControl.class);
+
     /** Creates a new instance of PartyContactMechanismRelationshipTransferCache */
-    public PartyContactMechanismRelationshipTransferCache(UserVisit userVisit, ContactControl contactControl) {
-        super(userVisit, contactControl);
+    protected PartyContactMechanismRelationshipTransferCache() {
+        super();
     }
     
-    public PartyContactMechanismRelationshipTransfer getPartyContactMechanismRelationshipTransfer(PartyContactMechanismRelationship partyContactMechanismRelationship) {
+    public PartyContactMechanismRelationshipTransfer getPartyContactMechanismRelationshipTransfer(UserVisit userVisit, PartyContactMechanismRelationship partyContactMechanismRelationship) {
         var partyContactMechanismRelationshipTransfer = get(partyContactMechanismRelationship);
         
         if(partyContactMechanismRelationshipTransfer == null) {
@@ -37,7 +42,7 @@ public class PartyContactMechanismRelationshipTransferCache
             var toPartyContactMechanism = contactControl.getPartyContactMechanismTransfer(userVisit, partyContactMechanismRelationship.getToPartyContactMechanism());
             
             partyContactMechanismRelationshipTransfer = new PartyContactMechanismRelationshipTransfer(fromPartyContactMechanism, toPartyContactMechanism);
-            put(partyContactMechanismRelationship, partyContactMechanismRelationshipTransfer);
+            put(userVisit, partyContactMechanismRelationship, partyContactMechanismRelationshipTransfer);
         }
         
         return partyContactMechanismRelationshipTransfer;

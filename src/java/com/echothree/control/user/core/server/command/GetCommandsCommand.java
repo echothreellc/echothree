@@ -29,7 +29,9 @@ import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class GetCommandsCommand
         extends BaseSimpleCommand<GetCommandsForm> {
     
@@ -55,7 +57,7 @@ public class GetCommandsCommand
         if(componentVendorName == null) {
             result.setCommands(commandControl.getCommandTransfers(getUserVisit()));
         } else {
-            var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
+            var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
             
             if(componentVendor != null) {
                 result.setCommands(commandControl.getCommandTransfersByComponentVendor(getUserVisit(), componentVendor));

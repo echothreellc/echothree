@@ -21,7 +21,10 @@ import com.echothree.model.control.club.common.transfer.ClubDescriptionTransfer;
 import com.echothree.model.control.club.common.transfer.ClubItemTransfer;
 import com.echothree.model.control.club.common.transfer.ClubItemTypeTransfer;
 import com.echothree.model.control.club.common.transfer.ClubTransfer;
-import com.echothree.model.control.club.server.transfer.ClubTransferCaches;
+import com.echothree.model.control.club.server.transfer.ClubDescriptionTransferCache;
+import com.echothree.model.control.club.server.transfer.ClubItemTransferCache;
+import com.echothree.model.control.club.server.transfer.ClubItemTypeTransferCache;
+import com.echothree.model.control.club.server.transfer.ClubTransferCache;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.club.server.entity.Club;
@@ -53,29 +56,34 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
+@RequestScoped
 public class ClubControl
         extends BaseModelControl {
     
     /** Creates a new instance of ClubControl */
-    public ClubControl() {
+    protected ClubControl() {
         super();
     }
     
     // --------------------------------------------------------------------------------
     //   Club Transfer Caches
     // --------------------------------------------------------------------------------
-    
-    private ClubTransferCaches clubTransferCaches;
-    
-    public ClubTransferCaches getClubTransferCaches(UserVisit userVisit) {
-        if(clubTransferCaches == null) {
-            clubTransferCaches = new ClubTransferCaches(userVisit, this);
-        }
-        
-        return clubTransferCaches;
-    }
-    
+
+    @Inject
+    ClubItemTransferCache clubItemTransferCache;
+
+    @Inject
+    ClubItemTypeTransferCache clubItemTypeTransferCache;
+
+    @Inject
+    ClubTransferCache clubTransferCache;
+
+    @Inject
+    ClubDescriptionTransferCache clubDescriptionTransferCache;
+
     // --------------------------------------------------------------------------------
     //   Clubs
     // --------------------------------------------------------------------------------
@@ -275,16 +283,15 @@ public class ClubControl
     }
     
     public ClubTransfer getClubTransfer(UserVisit userVisit, Club club) {
-        return getClubTransferCaches(userVisit).getClubTransferCache().getClubTransfer(club);
+        return clubTransferCache.getClubTransfer(userVisit, club);
     }
     
     public List<ClubTransfer> getClubTransfers(UserVisit userVisit) {
         var clubs = getClubs();
         List<ClubTransfer> clubTransfers = new ArrayList<>(clubs.size());
-        var clubTransferCache = getClubTransferCaches(userVisit).getClubTransferCache();
         
         clubs.forEach((club) ->
-                clubTransfers.add(clubTransferCache.getClubTransfer(club))
+                clubTransfers.add(clubTransferCache.getClubTransfer(userVisit, club))
         );
         
         return clubTransfers;
@@ -481,7 +488,7 @@ public class ClubControl
         var clubDescription = getClubDescription(club, language);
         
         if(clubDescription == null && !language.getIsDefault()) {
-            clubDescription = getClubDescription(club, getPartyControl().getDefaultLanguage());
+            clubDescription = getClubDescription(club, partyControl.getDefaultLanguage());
         }
         
         if(clubDescription == null) {
@@ -495,17 +502,16 @@ public class ClubControl
     
     public ClubDescriptionTransfer getClubDescriptionTransfer(UserVisit userVisit,
             ClubDescription clubDescription) {
-        return getClubTransferCaches(userVisit).getClubDescriptionTransferCache().getClubDescriptionTransfer(clubDescription);
+        return clubDescriptionTransferCache.getClubDescriptionTransfer(userVisit, clubDescription);
     }
     
     public List<ClubDescriptionTransfer> getClubDescriptionTransfersByClub(UserVisit userVisit,
             Club club) {
         var clubDescriptions = getClubDescriptionsByClub(club);
         List<ClubDescriptionTransfer> clubDescriptionTransfers = new ArrayList<>(clubDescriptions.size());
-        var clubDescriptionTransferCache = getClubTransferCaches(userVisit).getClubDescriptionTransferCache();
         
         clubDescriptions.forEach((clubDescription) ->
-                clubDescriptionTransfers.add(clubDescriptionTransferCache.getClubDescriptionTransfer(clubDescription))
+                clubDescriptionTransfers.add(clubDescriptionTransferCache.getClubDescriptionTransfer(userVisit, clubDescription))
         );
         
         return clubDescriptionTransfers;
@@ -610,16 +616,15 @@ public class ClubControl
     }
     
     public ClubItemTypeTransfer getClubItemTypeTransfer(UserVisit userVisit, ClubItemType clubItemType) {
-        return getClubTransferCaches(userVisit).getClubItemTypeTransferCache().getClubItemTypeTransfer(clubItemType);
+        return clubItemTypeTransferCache.getClubItemTypeTransfer(userVisit, clubItemType);
     }
     
     public List<ClubItemTypeTransfer> getClubItemTypeTransfers(UserVisit userVisit) {
         var clubItemTypes = getClubItemTypes();
         List<ClubItemTypeTransfer> clubItemTypeTransfers = new ArrayList<>(clubItemTypes.size());
-        var clubItemTypeTransferCache = getClubTransferCaches(userVisit).getClubItemTypeTransferCache();
         
         clubItemTypes.forEach((clubItemType) ->
-                clubItemTypeTransfers.add(clubItemTypeTransferCache.getClubItemTypeTransfer(clubItemType))
+                clubItemTypeTransfers.add(clubItemTypeTransferCache.getClubItemTypeTransfer(userVisit, clubItemType))
         );
         
         return clubItemTypeTransfers;
@@ -658,7 +663,7 @@ public class ClubControl
         var clubItemTypeDescription = getClubItemTypeDescription(clubItemType, language);
         
         if(clubItemTypeDescription == null && !language.getIsDefault()) {
-            clubItemTypeDescription = getClubItemTypeDescription(clubItemType, getPartyControl().getDefaultLanguage());
+            clubItemTypeDescription = getClubItemTypeDescription(clubItemType, partyControl.getDefaultLanguage());
         }
         
         if(clubItemTypeDescription == null) {
@@ -808,15 +813,14 @@ public class ClubControl
     }
     
     public ClubItemTransfer getClubItemTransfer(UserVisit userVisit, ClubItem clubItem) {
-        return getClubTransferCaches(userVisit).getClubItemTransferCache().getClubItemTransfer(clubItem);
+        return clubItemTransferCache.getClubItemTransfer(userVisit, clubItem);
     }
     
     private List<ClubItemTransfer> getClubItemTransfers(UserVisit userVisit, Collection<ClubItem> clubItems) {
         List<ClubItemTransfer> clubItemTransfers = new ArrayList<>(clubItems.size());
-        var clubItemTransferCache = getClubTransferCaches(userVisit).getClubItemTransferCache();
         
         clubItems.forEach((clubItem) ->
-                clubItemTransfers.add(clubItemTransferCache.getClubItemTransfer(clubItem))
+                clubItemTransfers.add(clubItemTransferCache.getClubItemTransfer(userVisit, clubItem))
         );
         
         return clubItemTransfers;

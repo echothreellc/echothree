@@ -20,16 +20,21 @@ import com.echothree.model.control.content.common.transfer.ContentCategoryDescri
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.data.content.server.entity.ContentCategoryDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ContentCategoryDescriptionTransferCache
         extends BaseContentDescriptionTransferCache<ContentCategoryDescription, ContentCategoryDescriptionTransfer> {
-    
+
+    ContentControl contentControl = Session.getModelController(ContentControl.class);
+
     /** Creates a new instance of ContentCategoryDescriptionTransferCache */
-    public ContentCategoryDescriptionTransferCache(UserVisit userVisit, ContentControl contentControl) {
-        super(userVisit, contentControl);
+    protected ContentCategoryDescriptionTransferCache() {
+        super();
     }
     
-    public ContentCategoryDescriptionTransfer getContentCategoryDescriptionTransfer(ContentCategoryDescription contentCategoryDescription) {
+    public ContentCategoryDescriptionTransfer getContentCategoryDescriptionTransfer(UserVisit userVisit, ContentCategoryDescription contentCategoryDescription) {
         var contentCategoryDescriptionTransfer = get(contentCategoryDescription);
         
         if(contentCategoryDescriptionTransfer == null) {
@@ -37,7 +42,7 @@ public class ContentCategoryDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, contentCategoryDescription.getLanguage());
             
             contentCategoryDescriptionTransfer = new ContentCategoryDescriptionTransfer(languageTransfer, contentCategoryTransfer, contentCategoryDescription.getDescription());
-            put(contentCategoryDescription, contentCategoryDescriptionTransfer);
+            put(userVisit, contentCategoryDescription, contentCategoryDescriptionTransfer);
         }
         
         return contentCategoryDescriptionTransfer;

@@ -34,20 +34,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class SearchResultActionTypeLogic
     extends BaseLogic {
 
-    private SearchResultActionTypeLogic() {
+    protected SearchResultActionTypeLogic() {
         super();
     }
 
-    private static class SearchResultActionTypeLogicHolder {
-        static SearchResultActionTypeLogic instance = new SearchResultActionTypeLogic();
-    }
-
     public static SearchResultActionTypeLogic getInstance() {
-        return SearchResultActionTypeLogicHolder.instance;
+        return CDI.current().select(SearchResultActionTypeLogic.class).get();
     }
 
     public SearchResultActionType createSearchResultActionType(final ExecutionErrorAccumulator eea, final String searchResultActionTypeName,
@@ -98,7 +97,7 @@ public class SearchResultActionTypeLogic
         var parameterCount = (searchResultActionTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
-            case 0:
+            case 0 -> {
                 if(allowDefault) {
                     searchResultActionType = searchControl.getDefaultSearchResultActionType(entityPermission);
 
@@ -108,8 +107,8 @@ public class SearchResultActionTypeLogic
                 } else {
                     handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                 }
-                break;
-            case 1:
+            }
+            case 1 -> {
                 if(searchResultActionTypeName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.SearchResultActionType.name());
@@ -120,10 +119,9 @@ public class SearchResultActionTypeLogic
                 } else {
                     searchResultActionType = getSearchResultActionTypeByName(eea, searchResultActionTypeName, entityPermission);
                 }
-                break;
-            default:
-                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
-                break;
+            }
+            default ->
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
 
         return searchResultActionType;

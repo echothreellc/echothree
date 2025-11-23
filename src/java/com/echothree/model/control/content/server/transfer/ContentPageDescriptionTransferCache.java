@@ -20,16 +20,21 @@ import com.echothree.model.control.content.common.transfer.ContentPageDescriptio
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.data.content.server.entity.ContentPageDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ContentPageDescriptionTransferCache
         extends BaseContentDescriptionTransferCache<ContentPageDescription, ContentPageDescriptionTransfer> {
-    
+
+    ContentControl contentControl = Session.getModelController(ContentControl.class);
+
     /** Creates a new instance of ContentPageDescriptionTransferCache */
-    public ContentPageDescriptionTransferCache(UserVisit userVisit, ContentControl contentControl) {
-        super(userVisit, contentControl);
+    protected ContentPageDescriptionTransferCache() {
+        super();
     }
     
-    public ContentPageDescriptionTransfer getContentPageDescriptionTransfer(ContentPageDescription contentPageDescription) {
+    public ContentPageDescriptionTransfer getContentPageDescriptionTransfer(UserVisit userVisit, ContentPageDescription contentPageDescription) {
         var contentPageDescriptionTransfer = get(contentPageDescription);
         
         if(contentPageDescriptionTransfer == null) {
@@ -37,7 +42,7 @@ public class ContentPageDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, contentPageDescription.getLanguage());
             
             contentPageDescriptionTransfer = new ContentPageDescriptionTransfer(languageTransfer, contentPageTransfer, contentPageDescription.getDescription());
-            put(contentPageDescription, contentPageDescriptionTransfer);
+            put(userVisit, contentPageDescription, contentPageDescriptionTransfer);
         }
         
         return contentPageDescriptionTransfer;

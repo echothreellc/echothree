@@ -36,26 +36,32 @@ import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.ParameterUtils;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
+@ApplicationScoped
 public class SecurityRoleLogic
         extends BaseLogic {
 
-    private SecurityRoleLogic() {
+    @Inject
+    protected SecurityControl securityControl;
+
+    @Inject
+    protected SecurityRoleGroupLogic securityRoleGroupLogic;
+    
+    protected SecurityRoleLogic() {
         super();
     }
 
-    private static class SecurityRoleLogicHolder {
-        static SecurityRoleLogic instance = new SecurityRoleLogic();
-    }
-
     public static SecurityRoleLogic getInstance() {
-        return SecurityRoleLogicHolder.instance;
+        return CDI.current().select(SecurityRoleLogic.class).get();
     }
 
     public SecurityRole getSecurityRoleByName(final Class<? extends BaseException> unknownSecurityRoleGroupException, final ExecutionErrors unknownSecurityRoleGroupExecutionError,
             final Class<? extends BaseException>  unknownSecurityRoleException, final ExecutionErrors unknownSecurityRoleExecutionError,
             final ExecutionErrorAccumulator eea, final String securityRoleGroupName, final String securityRoleName) {
-        var securityRoleGroup = SecurityRoleGroupLogic.getInstance().getSecurityRoleGroupByName(unknownSecurityRoleGroupException, unknownSecurityRoleGroupExecutionError,
+        var securityRoleGroup = securityRoleGroupLogic.getSecurityRoleGroupByName(unknownSecurityRoleGroupException, unknownSecurityRoleGroupExecutionError,
                 eea, securityRoleGroupName, EntityPermission.READ_ONLY);
         SecurityRole securityRole = null;
 
@@ -69,7 +75,6 @@ public class SecurityRoleLogic
 
     public SecurityRole getSecurityRoleByName(final Class<? extends BaseException> unknownException, final ExecutionErrors unknownExecutionError,
             final ExecutionErrorAccumulator eea, final SecurityRoleGroup securityRoleGroup, final String securityRoleName, EntityPermission entityPermission) {
-        var securityControl = Session.getModelController(SecurityControl.class);
         var securityRole = securityControl.getSecurityRoleByName(securityRoleGroup, securityRoleName, entityPermission);
 
         if(securityRole == null) {
@@ -108,7 +113,7 @@ public class SecurityRoleLogic
 
     public SecurityRole getSecurityRoleByName(final ExecutionErrorAccumulator eea, final String securityRoleGroupName, final String securityRoleName,
             final EntityPermission entityPermission) {
-        var securityRoleGroup = SecurityRoleGroupLogic.getInstance().getSecurityRoleGroupByName(eea, securityRoleGroupName);
+        var securityRoleGroup = securityRoleGroupLogic.getSecurityRoleGroupByName(eea, securityRoleGroupName);
         SecurityRole securityRole = null;
 
         if(eea == null || !eea.hasExecutionErrors()) {
@@ -129,7 +134,6 @@ public class SecurityRoleLogic
 
     public SecurityRole getSecurityRoleByUniversalSpec(final ExecutionErrorAccumulator eea, final SecurityRoleUniversalSpec universalSpec,
             final boolean allowDefault, final EntityPermission entityPermission) {
-        var securityControl = Session.getModelController(SecurityControl.class);
         var securityRoleGroupName = universalSpec.getSecurityRoleGroupName();
         var securityRoleName = universalSpec.getSecurityRoleName();
         var nameParameterCount= ParameterUtils.getInstance().countNonNullParameters(securityRoleGroupName, securityRoleName);
@@ -140,7 +144,7 @@ public class SecurityRoleLogic
             SecurityRoleGroup securityRoleGroup = null;
 
             if(securityRoleGroupName != null) {
-                securityRoleGroup = SecurityRoleGroupLogic.getInstance().getSecurityRoleGroupByName(eea, securityRoleGroupName);
+                securityRoleGroup = securityRoleGroupLogic.getSecurityRoleGroupByName(eea, securityRoleGroupName);
             } else {
                 handleExecutionError(MissingRequiredSecurityRoleGroupNameException.class, eea, ExecutionErrors.MissingRequiredSecurityRoleGroupName.name());
             }
@@ -188,7 +192,6 @@ public class SecurityRoleLogic
         var result = false;
 
         if(party != null) {
-            var securityControl = Session.getModelController(SecurityControl.class);
             var partySecurityRole = securityControl.getPartySecurityRole(party, securityRole);
 
             if(partySecurityRole != null) {

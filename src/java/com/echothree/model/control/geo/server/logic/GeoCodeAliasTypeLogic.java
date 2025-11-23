@@ -24,20 +24,19 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class GeoCodeAliasTypeLogic
         extends BaseLogic {
 
-    private GeoCodeAliasTypeLogic() {
+    protected GeoCodeAliasTypeLogic() {
         super();
     }
 
-    private static class GeoCodeAliasTypeLogicHolder {
-        static GeoCodeAliasTypeLogic instance = new GeoCodeAliasTypeLogic();
-    }
-
     public static GeoCodeAliasTypeLogic getInstance() {
-        return GeoCodeAliasTypeLogicHolder.instance;
+        return CDI.current().select(GeoCodeAliasTypeLogic.class).get();
     }
 
     public GeoCodeAliasType getGeoCodeAliasTypeByName(final ExecutionErrorAccumulator eea, final GeoCodeType geoCodeType,

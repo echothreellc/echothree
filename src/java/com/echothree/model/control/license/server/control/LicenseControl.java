@@ -20,7 +20,8 @@ import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.license.common.choice.LicenseTypeChoicesBean;
 import com.echothree.model.control.license.common.transfer.LicenseTypeDescriptionTransfer;
 import com.echothree.model.control.license.common.transfer.LicenseTypeTransfer;
-import com.echothree.model.control.license.server.transfer.LicenseTransferCaches;
+import com.echothree.model.control.license.server.transfer.LicenseTypeDescriptionTransferCache;
+import com.echothree.model.control.license.server.transfer.LicenseTypeTransferCache;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.license.common.pk.LicenseTypePK;
 import com.echothree.model.data.license.server.entity.LicenseType;
@@ -42,29 +43,28 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
+@RequestScoped
 public class LicenseControl
         extends BaseModelControl {
     
     /** Creates a new instance of LicenseControl */
-    public LicenseControl() {
+    protected LicenseControl() {
         super();
     }
     
     // --------------------------------------------------------------------------------
     //   License Transfer Caches
     // --------------------------------------------------------------------------------
-    
-    private LicenseTransferCaches licenseTransferCaches;
-    
-    public LicenseTransferCaches getLicenseTransferCaches(UserVisit userVisit) {
-        if(licenseTransferCaches == null) {
-            licenseTransferCaches = new LicenseTransferCaches(userVisit, this);
-        }
-        
-        return licenseTransferCaches;
-    }
-    
+
+    @Inject
+    LicenseTypeTransferCache licenseTypeTransferCache;
+
+    @Inject
+    LicenseTypeDescriptionTransferCache licenseTypeDescriptionTransferCache;
+
     // --------------------------------------------------------------------------------
     //   License Types
     // --------------------------------------------------------------------------------
@@ -211,16 +211,15 @@ public class LicenseControl
     }
 
    public LicenseTypeTransfer getLicenseTypeTransfer(UserVisit userVisit, LicenseType licenseType) {
-        return getLicenseTransferCaches(userVisit).getLicenseTypeTransferCache().getLicenseTypeTransfer(licenseType);
+        return licenseTypeTransferCache.getLicenseTypeTransfer(userVisit, licenseType);
     }
 
     public List<LicenseTypeTransfer> getLicenseTypeTransfers(UserVisit userVisit) {
         var licenseTypes = getLicenseTypes();
         List<LicenseTypeTransfer> licenseTypeTransfers = new ArrayList<>(licenseTypes.size());
-        var licenseTypeTransferCache = getLicenseTransferCaches(userVisit).getLicenseTypeTransferCache();
 
         licenseTypes.forEach((licenseType) ->
-                licenseTypeTransfers.add(licenseTypeTransferCache.getLicenseTypeTransfer(licenseType))
+                licenseTypeTransfers.add(licenseTypeTransferCache.getLicenseTypeTransfer(userVisit, licenseType))
         );
 
         return licenseTypeTransfers;
@@ -435,7 +434,7 @@ public class LicenseControl
         var licenseTypeDescription = getLicenseTypeDescription(licenseType, language);
 
         if(licenseTypeDescription == null && !language.getIsDefault()) {
-            licenseTypeDescription = getLicenseTypeDescription(licenseType, getPartyControl().getDefaultLanguage());
+            licenseTypeDescription = getLicenseTypeDescription(licenseType, partyControl.getDefaultLanguage());
         }
 
         if(licenseTypeDescription == null) {
@@ -448,16 +447,15 @@ public class LicenseControl
     }
 
     public LicenseTypeDescriptionTransfer getLicenseTypeDescriptionTransfer(UserVisit userVisit, LicenseTypeDescription licenseTypeDescription) {
-        return getLicenseTransferCaches(userVisit).getLicenseTypeDescriptionTransferCache().getLicenseTypeDescriptionTransfer(licenseTypeDescription);
+        return licenseTypeDescriptionTransferCache.getLicenseTypeDescriptionTransfer(userVisit, licenseTypeDescription);
     }
 
     public List<LicenseTypeDescriptionTransfer> getLicenseTypeDescriptionTransfersByLicenseType(UserVisit userVisit, LicenseType licenseType) {
         var licenseTypeDescriptions = getLicenseTypeDescriptionsByLicenseType(licenseType);
         List<LicenseTypeDescriptionTransfer> licenseTypeDescriptionTransfers = new ArrayList<>(licenseTypeDescriptions.size());
-        var licenseTypeDescriptionTransferCache = getLicenseTransferCaches(userVisit).getLicenseTypeDescriptionTransferCache();
 
         licenseTypeDescriptions.forEach((licenseTypeDescription) ->
-                licenseTypeDescriptionTransfers.add(licenseTypeDescriptionTransferCache.getLicenseTypeDescriptionTransfer(licenseTypeDescription))
+                licenseTypeDescriptionTransfers.add(licenseTypeDescriptionTransferCache.getLicenseTypeDescriptionTransfer(userVisit, licenseTypeDescription))
         );
 
         return licenseTypeDescriptionTransfers;

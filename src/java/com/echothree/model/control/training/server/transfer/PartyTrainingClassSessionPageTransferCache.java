@@ -20,16 +20,21 @@ import com.echothree.model.control.training.common.transfer.PartyTrainingClassSe
 import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.data.training.server.entity.PartyTrainingClassSessionPage;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PartyTrainingClassSessionPageTransferCache
         extends BaseTrainingTransferCache<PartyTrainingClassSessionPage, PartyTrainingClassSessionPageTransfer> {
-    
+
+    TrainingControl trainingControl = Session.getModelController(TrainingControl.class);
+
     /** Creates a new instance of PartyTrainingClassSessionPageTransferCache */
-    public PartyTrainingClassSessionPageTransferCache(UserVisit userVisit, TrainingControl trainingControl) {
-        super(userVisit, trainingControl);
+    protected PartyTrainingClassSessionPageTransferCache() {
+        super();
     }
     
-    public PartyTrainingClassSessionPageTransfer getPartyTrainingClassSessionPageTransfer(PartyTrainingClassSessionPage partyTrainingClassSessionPage) {
+    public PartyTrainingClassSessionPageTransfer getPartyTrainingClassSessionPageTransfer(UserVisit userVisit, PartyTrainingClassSessionPage partyTrainingClassSessionPage) {
         var partyTrainingClassSessionPageTransfer = get(partyTrainingClassSessionPage);
         
         if(partyTrainingClassSessionPageTransfer == null) {
@@ -37,14 +42,14 @@ public class PartyTrainingClassSessionPageTransferCache
             var partyTrainingClassSessionPageSequence = partyTrainingClassSessionPage.getPartyTrainingClassSessionPageSequence();
             var trainingClassPage = trainingControl.getTrainingClassPageTransfer(userVisit, partyTrainingClassSessionPage.getTrainingClassPage());
             var unformattedReadingStartTime = partyTrainingClassSessionPage.getReadingStartTime();
-            var readingStartTime = formatTypicalDateTime(unformattedReadingStartTime);
+            var readingStartTime = formatTypicalDateTime(userVisit, unformattedReadingStartTime);
             var unformattedReadingEndTime = partyTrainingClassSessionPage.getReadingEndTime();
-            var readingEndTime = formatTypicalDateTime(unformattedReadingEndTime);
+            var readingEndTime = formatTypicalDateTime(userVisit, unformattedReadingEndTime);
 
 
             partyTrainingClassSessionPageTransfer = new PartyTrainingClassSessionPageTransfer(partyTrainingClassSession, partyTrainingClassSessionPageSequence,
                     trainingClassPage, unformattedReadingStartTime, readingStartTime, unformattedReadingEndTime, readingEndTime);
-            put(partyTrainingClassSessionPage, partyTrainingClassSessionPageTransfer);
+            put(userVisit, partyTrainingClassSessionPage, partyTrainingClassSessionPageTransfer);
         }
         
         return partyTrainingClassSessionPageTransfer;

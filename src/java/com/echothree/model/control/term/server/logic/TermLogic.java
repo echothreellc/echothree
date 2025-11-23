@@ -38,20 +38,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class TermLogic
         extends BaseLogic {
 
-    private TermLogic() {
+    protected TermLogic() {
         super();
     }
 
-    private static class TermLogicHolder {
-        static TermLogic instance = new TermLogic();
-    }
-
     public static TermLogic getInstance() {
-        return TermLogicHolder.instance;
+        return CDI.current().select(TermLogic.class).get();
     }
 
     public Term createTerm(final ExecutionErrorAccumulator eea, final String termName, final TermType termType,

@@ -52,12 +52,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class FontControl
         extends BaseCoreControl {
 
     /** Creates a new instance of FontControl */
-    public FontControl() {
+    protected FontControl() {
         super();
     }
 
@@ -222,15 +224,14 @@ public class FontControl
     }
 
     public FontStyleTransfer getFontStyleTransfer(UserVisit userVisit, FontStyle fontStyle) {
-        return getCoreTransferCaches(userVisit).getFontStyleTransferCache().getFontStyleTransfer(fontStyle);
+        return fontStyleTransferCache.getFontStyleTransfer(userVisit, fontStyle);
     }
 
     public List<FontStyleTransfer> getFontStyleTransfers(UserVisit userVisit, Collection<FontStyle> entities) {
         List<FontStyleTransfer> transfers = new ArrayList<>(entities.size());
-        var transferCache = getCoreTransferCaches(userVisit).getFontStyleTransferCache();
 
         entities.forEach((entity) ->
-                transfers.add(transferCache.getFontStyleTransfer(entity))
+                transfers.add(fontStyleTransferCache.getFontStyleTransfer(userVisit, entity))
         );
 
         return transfers;
@@ -451,7 +452,7 @@ public class FontControl
         var fontStyleDescription = getFontStyleDescription(fontStyle, language);
 
         if(fontStyleDescription == null && !language.getIsDefault()) {
-            fontStyleDescription = getFontStyleDescription(fontStyle, getPartyControl().getDefaultLanguage());
+            fontStyleDescription = getFontStyleDescription(fontStyle, partyControl.getDefaultLanguage());
         }
 
         if(fontStyleDescription == null) {
@@ -464,16 +465,15 @@ public class FontControl
     }
 
     public FontStyleDescriptionTransfer getFontStyleDescriptionTransfer(UserVisit userVisit, FontStyleDescription fontStyleDescription) {
-        return getCoreTransferCaches(userVisit).getFontStyleDescriptionTransferCache().getFontStyleDescriptionTransfer(fontStyleDescription);
+        return fontStyleDescriptionTransferCache.getFontStyleDescriptionTransfer(userVisit, fontStyleDescription);
     }
 
     public List<FontStyleDescriptionTransfer> getFontStyleDescriptionTransfersByFontStyle(UserVisit userVisit, FontStyle fontStyle) {
         var fontStyleDescriptions = getFontStyleDescriptionsByFontStyle(fontStyle);
         List<FontStyleDescriptionTransfer> fontStyleDescriptionTransfers = new ArrayList<>(fontStyleDescriptions.size());
-        var fontStyleDescriptionTransferCache = getCoreTransferCaches(userVisit).getFontStyleDescriptionTransferCache();
 
         fontStyleDescriptions.forEach((fontStyleDescription) ->
-                fontStyleDescriptionTransfers.add(fontStyleDescriptionTransferCache.getFontStyleDescriptionTransfer(fontStyleDescription))
+                fontStyleDescriptionTransfers.add(fontStyleDescriptionTransferCache.getFontStyleDescriptionTransfer(userVisit, fontStyleDescription))
         );
 
         return fontStyleDescriptionTransfers;
@@ -674,15 +674,14 @@ public class FontControl
     }
 
     public FontWeightTransfer getFontWeightTransfer(UserVisit userVisit, FontWeight fontWeight) {
-        return getCoreTransferCaches(userVisit).getFontWeightTransferCache().getFontWeightTransfer(fontWeight);
+        return fontWeightTransferCache.getFontWeightTransfer(userVisit, fontWeight);
     }
 
     public List<FontWeightTransfer> getFontWeightTransfers(UserVisit userVisit, Collection<FontWeight> entities) {
         List<FontWeightTransfer> transfers = new ArrayList<>(entities.size());
-        var transferCache = getCoreTransferCaches(userVisit).getFontWeightTransferCache();
 
         entities.forEach((entity) ->
-                transfers.add(transferCache.getFontWeightTransfer(entity))
+                transfers.add(fontWeightTransferCache.getFontWeightTransfer(userVisit, entity))
         );
 
         return transfers;
@@ -903,7 +902,7 @@ public class FontControl
         var fontWeightDescription = getFontWeightDescription(fontWeight, language);
 
         if(fontWeightDescription == null && !language.getIsDefault()) {
-            fontWeightDescription = getFontWeightDescription(fontWeight, getPartyControl().getDefaultLanguage());
+            fontWeightDescription = getFontWeightDescription(fontWeight, partyControl.getDefaultLanguage());
         }
 
         if(fontWeightDescription == null) {
@@ -916,16 +915,15 @@ public class FontControl
     }
 
     public FontWeightDescriptionTransfer getFontWeightDescriptionTransfer(UserVisit userVisit, FontWeightDescription fontWeightDescription) {
-        return getCoreTransferCaches(userVisit).getFontWeightDescriptionTransferCache().getFontWeightDescriptionTransfer(fontWeightDescription);
+        return fontWeightDescriptionTransferCache.getFontWeightDescriptionTransfer(userVisit, fontWeightDescription);
     }
 
     public List<FontWeightDescriptionTransfer> getFontWeightDescriptionTransfersByFontWeight(UserVisit userVisit, FontWeight fontWeight) {
         var fontWeightDescriptions = getFontWeightDescriptionsByFontWeight(fontWeight);
         List<FontWeightDescriptionTransfer> fontWeightDescriptionTransfers = new ArrayList<>(fontWeightDescriptions.size());
-        var fontWeightDescriptionTransferCache = getCoreTransferCaches(userVisit).getFontWeightDescriptionTransferCache();
 
         fontWeightDescriptions.forEach((fontWeightDescription) ->
-                fontWeightDescriptionTransfers.add(fontWeightDescriptionTransferCache.getFontWeightDescriptionTransfer(fontWeightDescription))
+                fontWeightDescriptionTransfers.add(fontWeightDescriptionTransferCache.getFontWeightDescriptionTransfer(userVisit, fontWeightDescription))
         );
 
         return fontWeightDescriptionTransfers;

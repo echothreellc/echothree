@@ -26,18 +26,22 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.common.transfer.MapWrapper;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ForumMessageTransferCache
         extends BaseForumTransferCache<ForumMessage, ForumMessageTransfer> {
 
+    ForumControl forumControl = Session.getModelController(ForumControl.class);
     IconControl iconControl = Session.getModelController(IconControl.class);
+
     boolean includeForumMessageRoles;
     boolean includeForumMessageParts;
     boolean includeForumMessageAttachments;
 
     /** Creates a new instance of ForumMessageTransferCache */
-    public ForumMessageTransferCache(UserVisit userVisit, ForumControl forumControl) {
-        super(userVisit, forumControl);
+    protected ForumMessageTransferCache() {
+        super();
 
         var options = session.getOptions();
         if(options != null) {
@@ -52,7 +56,7 @@ public class ForumMessageTransferCache
         setIncludeEntityInstance(true);
     }
 
-    public ForumMessageTransfer getForumMessageTransfer(ForumMessage forumMessage) {
+    public ForumMessageTransfer getForumMessageTransfer(UserVisit userVisit, ForumMessage forumMessage) {
         var forumMessageTransfer = get(forumMessage);
 
         if(forumMessageTransfer == null) {
@@ -65,17 +69,17 @@ public class ForumMessageTransferCache
             var icon = forumMessageDetail.getIcon();
             var iconTransfer = icon == null ? null : iconControl.getIconTransfer(userVisit, icon);
             var unformattedPostedTime = forumMessageDetail.getPostedTime();
-            var postedTime = formatTypicalDateTime(unformattedPostedTime);
+            var postedTime = formatTypicalDateTime(userVisit, unformattedPostedTime);
 
             forumMessageTransfer = new ForumMessageTransfer(forumMessageName, forumThreadTransfer, forumMessageTypeTransfer, parentForumMessageTransfer, iconTransfer, unformattedPostedTime, postedTime);
-            put(forumMessage, forumMessageTransfer);
+            put(userVisit, forumMessage, forumMessageTransfer);
 
             if(includeForumMessageRoles) {
                 forumMessageTransfer.setForumMessageRoles(new ListWrapper<>(forumControl.getForumMessageRoleTransfersByForumMessage(userVisit, forumMessage)));
             }
 
             if(includeForumMessageParts) {
-                var forumMessagePartTransfers = forumControl.getForumMessagePartTransfersByForumMessageAndLanguage(userVisit, forumMessage, getLanguage());
+                var forumMessagePartTransfers = forumControl.getForumMessagePartTransfersByForumMessageAndLanguage(userVisit, forumMessage, getLanguage(userVisit));
                 var forumMessageParts = new MapWrapper<ForumMessagePartTransfer>(forumMessagePartTransfers.size());
 
                 forumMessagePartTransfers.forEach((forumMessagePartTransfer) -> {

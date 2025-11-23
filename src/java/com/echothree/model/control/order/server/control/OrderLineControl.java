@@ -38,12 +38,14 @@ import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.sql.SQLException;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class OrderLineControl
         extends BaseOrderControl {
 
     /** Creates a new instance of OrderControl */
-    public OrderLineControl() {
+    protected OrderLineControl() {
         super();
     }
 

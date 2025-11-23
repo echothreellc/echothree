@@ -30,12 +30,14 @@ import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.sql.SQLException;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PartyFreeOnBoardControl
         extends BaseShipmentControl {
 
     /** Creates a new instance of FreeOnBoardControl */
-    public PartyFreeOnBoardControl() {
+    protected PartyFreeOnBoardControl() {
         super();
     }
 
@@ -141,11 +143,11 @@ public class PartyFreeOnBoardControl
     public PartyFreeOnBoardTransfer getPartyFreeOnBoardTransfer(UserVisit userVisit, Party party) {
         var partyFreeOnBoard = getPartyFreeOnBoard(party);
 
-        return partyFreeOnBoard == null? null: getShipmentTransferCaches(userVisit).getPartyFreeOnBoardTransferCache().getTransfer(partyFreeOnBoard);
+        return partyFreeOnBoard == null? null: partyFreeOnBoardTransferCache.getTransfer(userVisit, partyFreeOnBoard);
     }
 
     public PartyFreeOnBoardTransfer getPartyFreeOnBoardTransfer(UserVisit userVisit, PartyFreeOnBoard partyFreeOnBoard) {
-        return getShipmentTransferCaches(userVisit).getPartyFreeOnBoardTransferCache().getTransfer(partyFreeOnBoard);
+        return partyFreeOnBoardTransferCache.getTransfer(userVisit, partyFreeOnBoard);
     }
 
     public void updatePartyFreeOnBoardFromValue(PartyFreeOnBoardValue partyFreeOnBoardValue, BasePK updatedBy) {

@@ -21,34 +21,36 @@ import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.data.accounting.server.entity.GlAccountCategory;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class GlAccountCategoryTransferCache
         extends BaseAccountingTransferCache<GlAccountCategory, GlAccountCategoryTransfer> {
 
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
 
     /** Creates a new instance of GlAccountCategoryTransferCache */
-    public GlAccountCategoryTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected GlAccountCategoryTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
 
     @Override
-    public GlAccountCategoryTransfer getTransfer(GlAccountCategory glAccountCategory) {
+    public GlAccountCategoryTransfer getTransfer(UserVisit userVisit, GlAccountCategory glAccountCategory) {
         var glAccountCategoryTransfer = get(glAccountCategory);
 
         if(glAccountCategoryTransfer == null) {
             var glAccountCategoryDetail = glAccountCategory.getLastDetail();
             var glAccountCategoryName = glAccountCategoryDetail.getGlAccountCategoryName();
             var parentGlAccountCategory = glAccountCategoryDetail.getParentGlAccountCategory();
-            var parentGlAccountCategoryTransfer = parentGlAccountCategory == null ? null : getTransfer(parentGlAccountCategory);
+            var parentGlAccountCategoryTransfer = parentGlAccountCategory == null ? null : getTransfer(userVisit, parentGlAccountCategory);
             var isDefault = glAccountCategoryDetail.getIsDefault();
             var sortOrder = glAccountCategoryDetail.getSortOrder();
-            var description = accountingControl.getBestGlAccountCategoryDescription(glAccountCategory, getLanguage());
+            var description = accountingControl.getBestGlAccountCategoryDescription(glAccountCategory, getLanguage(userVisit));
 
             glAccountCategoryTransfer = new GlAccountCategoryTransfer(glAccountCategoryName, parentGlAccountCategoryTransfer, isDefault, sortOrder, description);
-            put(glAccountCategory, glAccountCategoryTransfer);
+            put(userVisit, glAccountCategory, glAccountCategoryTransfer);
         }
 
         return glAccountCategoryTransfer;

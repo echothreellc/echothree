@@ -36,12 +36,14 @@ import static java.lang.Math.toIntExact;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ShippingMethodControl
         extends BaseShippingControl {
 
     /** Creates a new instance of ShippingMethodControl */
-    public ShippingMethodControl() {
+    protected ShippingMethodControl() {
         super();
     }
 

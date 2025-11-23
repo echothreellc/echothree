@@ -35,19 +35,18 @@ import com.echothree.util.server.persistence.Sha1Utils;
 import com.echothree.util.server.string.UnitOfMeasureUtils;
 import java.util.HashMap;
 import java.util.Map;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class PasswordStringPolicyLogic {
-    
-    private PasswordStringPolicyLogic() {
+
+    protected PasswordStringPolicyLogic() {
         super();
     }
-    
-    private static class PasswordStringPolicyLogicHolder {
-        static PasswordStringPolicyLogic instance = new PasswordStringPolicyLogic();
-    }
-    
+
     public static PasswordStringPolicyLogic getInstance() {
-        return PasswordStringPolicyLogicHolder.instance;
+        return CDI.current().select(PasswordStringPolicyLogic.class).get();
     }
     
     private void checkAllowChange(final ExecutionErrorAccumulator ema, final PartyTypePasswordStringPolicyDetail policyDetail) {

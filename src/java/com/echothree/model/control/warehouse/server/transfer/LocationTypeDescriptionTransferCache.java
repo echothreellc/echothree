@@ -20,25 +20,29 @@ import com.echothree.model.control.warehouse.common.transfer.LocationTypeDescrip
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.warehouse.server.entity.LocationTypeDescription;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class LocationTypeDescriptionTransferCache
         extends BaseWarehouseDescriptionTransferCache<LocationTypeDescription, LocationTypeDescriptionTransfer> {
-    
+
+    WarehouseControl warehouseControl = Session.getModelController(WarehouseControl.class);
+
     /** Creates a new instance of LocationTypeDescriptionTransferCache */
-    public LocationTypeDescriptionTransferCache(UserVisit userVisit, WarehouseControl warehouseControl) {
-        super(userVisit, warehouseControl);
+    protected LocationTypeDescriptionTransferCache() {
+        super();
     }
     
-    public LocationTypeDescriptionTransfer getLocationTypeDescriptionTransfer(LocationTypeDescription locationTypeDescription) {
+    public LocationTypeDescriptionTransfer getLocationTypeDescriptionTransfer(UserVisit userVisit, LocationTypeDescription locationTypeDescription) {
         var locationTypeDescriptionTransfer = get(locationTypeDescription);
         
         if(locationTypeDescriptionTransfer == null) {
-            var locationTypeTransferCache = warehouseControl.getWarehouseTransferCaches(userVisit).getLocationTypeTransferCache();
-            var locationTypeTransfer = locationTypeTransferCache.getLocationTypeTransfer(locationTypeDescription.getLocationType());
+            var locationTypeTransfer = warehouseControl.getLocationTypeTransfer(userVisit, locationTypeDescription.getLocationType());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, locationTypeDescription.getLanguage());
             
             locationTypeDescriptionTransfer = new LocationTypeDescriptionTransfer(languageTransfer, locationTypeTransfer, locationTypeDescription.getDescription());
-            put(locationTypeDescription, locationTypeDescriptionTransfer);
+            put(userVisit, locationTypeDescription, locationTypeDescriptionTransfer);
         }
         
         return locationTypeDescriptionTransfer;

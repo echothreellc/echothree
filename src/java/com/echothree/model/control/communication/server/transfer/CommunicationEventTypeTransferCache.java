@@ -20,26 +20,31 @@ import com.echothree.model.control.communication.common.transfer.CommunicationEv
 import com.echothree.model.control.communication.server.control.CommunicationControl;
 import com.echothree.model.data.communication.server.entity.CommunicationEventType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CommunicationEventTypeTransferCache
         extends BaseCommunicationTransferCache<CommunicationEventType, CommunicationEventTypeTransfer> {
-    
+
+    CommunicationControl communicationControl = Session.getModelController(CommunicationControl.class);
+
     /** Creates a new instance of CommunicationEventTypeTransferCache */
-    public CommunicationEventTypeTransferCache(UserVisit userVisit, CommunicationControl communicationControl) {
-        super(userVisit, communicationControl);
+    protected CommunicationEventTypeTransferCache() {
+        super();
     }
     
-    public CommunicationEventTypeTransfer getCommunicationEventTypeTransfer(CommunicationEventType communicationEventType) {
+    public CommunicationEventTypeTransfer getCommunicationEventTypeTransfer(UserVisit userVisit, CommunicationEventType communicationEventType) {
         var communicationEventTypeTransfer = get(communicationEventType);
         
         if(communicationEventTypeTransfer == null) {
             var communicationEventTypeName = communicationEventType.getCommunicationEventTypeName();
             var isDefault = communicationEventType.getIsDefault();
             var sortOrder = communicationEventType.getSortOrder();
-            var description = communicationControl.getBestCommunicationEventTypeDescription(communicationEventType, getLanguage());
+            var description = communicationControl.getBestCommunicationEventTypeDescription(communicationEventType, getLanguage(userVisit));
             
             communicationEventTypeTransfer = new CommunicationEventTypeTransfer(communicationEventTypeName, isDefault, sortOrder, description);
-            put(communicationEventType, communicationEventTypeTransfer);
+            put(userVisit, communicationEventType, communicationEventTypeTransfer);
         }
         
         return communicationEventTypeTransfer;

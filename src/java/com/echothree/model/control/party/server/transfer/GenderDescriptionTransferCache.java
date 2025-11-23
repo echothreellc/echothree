@@ -19,17 +19,19 @@ package com.echothree.model.control.party.server.transfer;
 import com.echothree.model.control.party.common.transfer.GenderDescriptionTransfer;
 import com.echothree.model.data.party.server.entity.GenderDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class GenderDescriptionTransferCache
         extends BasePartyDescriptionTransferCache<GenderDescription, GenderDescriptionTransfer> {
     
     /** Creates a new instance of GenderDescriptionTransferCache */
-    public GenderDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected GenderDescriptionTransferCache() {
+        super();
     }
 
     @Override
-    public GenderDescriptionTransfer getTransfer(GenderDescription genderDescription) {
+    public GenderDescriptionTransfer getTransfer(UserVisit userVisit, GenderDescription genderDescription) {
         var genderDescriptionTransfer = get(genderDescription);
         
         if(genderDescriptionTransfer == null) {
@@ -37,7 +39,7 @@ public class GenderDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, genderDescription.getLanguage());
             
             genderDescriptionTransfer = new GenderDescriptionTransfer(languageTransfer, genderTransfer, genderDescription.getDescription());
-            put(genderDescription, genderDescriptionTransfer);
+            put(userVisit, genderDescription, genderDescriptionTransfer);
         }
         
         return genderDescriptionTransfer;

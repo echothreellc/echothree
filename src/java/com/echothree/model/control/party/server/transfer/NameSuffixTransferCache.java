@@ -19,19 +19,21 @@ package com.echothree.model.control.party.server.transfer;
 import com.echothree.model.control.party.common.transfer.NameSuffixTransfer;
 import com.echothree.model.data.party.server.entity.NameSuffix;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class NameSuffixTransferCache
         extends BasePartyTransferCache<NameSuffix, NameSuffixTransfer> {
     
     /** Creates a new instance of NameSuffixTransferCache */
-    public NameSuffixTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected NameSuffixTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
 
     @Override
-    public NameSuffixTransfer getTransfer(NameSuffix nameSuffix) {
+    public NameSuffixTransfer getTransfer(UserVisit userVisit, NameSuffix nameSuffix) {
         var nameSuffixTransfer = get(nameSuffix);
         
         if(nameSuffixTransfer == null) {
@@ -43,7 +45,7 @@ public class NameSuffixTransferCache
             var sortOrder = nameSuffixDetail.getSortOrder();
             
             nameSuffixTransfer = new NameSuffixTransfer(nameSuffixId, description, isDefault, sortOrder);
-            put(nameSuffix, nameSuffixTransfer);
+            put(userVisit, nameSuffix, nameSuffixTransfer);
         }
         
         return nameSuffixTransfer;

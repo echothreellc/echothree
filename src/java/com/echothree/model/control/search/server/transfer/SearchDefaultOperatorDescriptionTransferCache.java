@@ -20,16 +20,21 @@ import com.echothree.model.control.search.common.transfer.SearchDefaultOperatorD
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.data.search.server.entity.SearchDefaultOperatorDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class SearchDefaultOperatorDescriptionTransferCache
         extends BaseSearchDescriptionTransferCache<SearchDefaultOperatorDescription, SearchDefaultOperatorDescriptionTransfer> {
-    
+
+    SearchControl searchControl = Session.getModelController(SearchControl.class);
+
     /** Creates a new instance of SearchDefaultOperatorDescriptionTransferCache */
-    public SearchDefaultOperatorDescriptionTransferCache(UserVisit userVisit, SearchControl searchControl) {
-        super(userVisit, searchControl);
+    protected SearchDefaultOperatorDescriptionTransferCache() {
+        super();
     }
     
-    public SearchDefaultOperatorDescriptionTransfer getSearchDefaultOperatorDescriptionTransfer(SearchDefaultOperatorDescription searchDefaultOperatorDescription) {
+    public SearchDefaultOperatorDescriptionTransfer getSearchDefaultOperatorDescriptionTransfer(UserVisit userVisit, SearchDefaultOperatorDescription searchDefaultOperatorDescription) {
         var searchDefaultOperatorDescriptionTransfer = get(searchDefaultOperatorDescription);
         
         if(searchDefaultOperatorDescriptionTransfer == null) {
@@ -37,7 +42,7 @@ public class SearchDefaultOperatorDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, searchDefaultOperatorDescription.getLanguage());
             
             searchDefaultOperatorDescriptionTransfer = new SearchDefaultOperatorDescriptionTransfer(languageTransfer, searchDefaultOperatorTransfer, searchDefaultOperatorDescription.getDescription());
-            put(searchDefaultOperatorDescription, searchDefaultOperatorDescriptionTransfer);
+            put(userVisit, searchDefaultOperatorDescription, searchDefaultOperatorDescriptionTransfer);
         }
         return searchDefaultOperatorDescriptionTransfer;
     }

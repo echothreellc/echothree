@@ -22,20 +22,24 @@ import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.data.document.server.entity.DocumentType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.print.Doc;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class DocumentTypeTransferCache
         extends BaseDocumentTransferCache<DocumentType, DocumentTypeTransfer> {
 
+    DocumentControl documentControl = Session.getModelController(DocumentControl.class);
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
 
     /** Creates a new instance of DocumentTypeTransferCache */
-    public DocumentTypeTransferCache(UserVisit userVisit, DocumentControl documentControl) {
-        super(userVisit, documentControl);
+    protected DocumentTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public DocumentTypeTransfer getDocumentTypeTransfer(DocumentType documentType) {
+    public DocumentTypeTransfer getDocumentTypeTransfer(UserVisit userVisit, DocumentType documentType) {
         var documentTypeTransfer = get(documentType);
         
         if(documentTypeTransfer == null) {
@@ -48,11 +52,11 @@ public class DocumentTypeTransferCache
             var maximumPages = documentTypeDetail.getMaximumPages();
             var isDefault = documentTypeDetail.getIsDefault();
             var sortOrder = documentTypeDetail.getSortOrder();
-            var description = documentControl.getBestDocumentTypeDescription(documentType, getLanguage());
+            var description = documentControl.getBestDocumentTypeDescription(documentType, getLanguage(userVisit));
             
             documentTypeTransfer = new DocumentTypeTransfer(documentTypeName, parentDocumentTypeTransfer, mimeTypeUsageTypeTransfer, maximumPages, isDefault,
                     sortOrder, description);
-            put(documentType, documentTypeTransfer);
+            put(userVisit, documentType, documentTypeTransfer);
         }
         return documentTypeTransfer;
     }

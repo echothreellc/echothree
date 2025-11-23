@@ -18,34 +18,35 @@ package com.echothree.model.control.chain.server.transfer;
 
 import com.echothree.model.control.chain.common.transfer.ChainInstanceStatusTransfer;
 import com.echothree.model.control.chain.server.control.ChainControl;
-import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.chain.server.entity.ChainInstanceStatus;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ChainInstanceStatusTransferCache
         extends BaseChainTransferCache<ChainInstanceStatus, ChainInstanceStatusTransfer> {
-    
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
-    
+
+    ChainControl chainControl = Session.getModelController(ChainControl.class);
+
     /** Creates a new instance of ChainInstanceStatusTransferCache */
-    public ChainInstanceStatusTransferCache(UserVisit userVisit, ChainControl chainControl) {
-        super(userVisit, chainControl);
+    protected ChainInstanceStatusTransferCache() {
+        super();
     }
     
-    public ChainInstanceStatusTransfer getChainInstanceStatusTransfer(ChainInstanceStatus chainInstanceStatus) {
+    public ChainInstanceStatusTransfer getChainInstanceStatusTransfer(UserVisit userVisit, ChainInstanceStatus chainInstanceStatus) {
         var chainInstanceStatusTransfer = get(chainInstanceStatus);
         
         if(chainInstanceStatusTransfer == null) {
             var chainInstance = chainControl.getChainInstanceTransfer(userVisit, chainInstanceStatus.getChainInstance());
             var nextChainActionSet = chainControl.getChainActionSetTransfer(userVisit, chainInstanceStatus.getNextChainActionSet());
             var unformattedNextChainActionSetTime = chainInstanceStatus.getNextChainActionSetTime();
-            var nextChainActionSetTime = formatTypicalDateTime(unformattedNextChainActionSetTime);
+            var nextChainActionSetTime = formatTypicalDateTime(userVisit, unformattedNextChainActionSetTime);
             var queuedLetterSequence = chainInstanceStatus.getQueuedLetterSequence();
             
             chainInstanceStatusTransfer = new ChainInstanceStatusTransfer(chainInstance, nextChainActionSet, unformattedNextChainActionSetTime,
                     nextChainActionSetTime, queuedLetterSequence);
-            put(chainInstanceStatus, chainInstanceStatusTransfer);
+            put(userVisit, chainInstanceStatus, chainInstanceStatusTransfer);
         }
         
         return chainInstanceStatusTransfer;

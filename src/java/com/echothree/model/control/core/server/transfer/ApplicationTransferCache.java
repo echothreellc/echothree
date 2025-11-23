@@ -22,15 +22,17 @@ import com.echothree.model.control.core.server.control.ApplicationControl;
 import com.echothree.model.data.core.server.entity.Application;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ApplicationTransferCache
         extends BaseCoreTransferCache<Application, ApplicationTransfer> {
 
     ApplicationControl applicationControl = Session.getModelController(ApplicationControl.class);
 
     /** Creates a new instance of ApplicationTransferCache */
-    public ApplicationTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected ApplicationTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {
@@ -40,7 +42,7 @@ public class ApplicationTransferCache
         setIncludeEntityInstance(true);
     }
 
-    public ApplicationTransfer getApplicationTransfer(Application application) {
+    public ApplicationTransfer getApplicationTransfer(UserVisit userVisit, Application application) {
         var applicationTransfer = get(application);
 
         if(applicationTransfer == null) {
@@ -48,10 +50,10 @@ public class ApplicationTransferCache
             var applicationName = applicationDetail.getApplicationName();
             var isDefault = applicationDetail.getIsDefault();
             var sortOrder = applicationDetail.getSortOrder();
-            var description = applicationControl.getBestApplicationDescription(application, getLanguage());
+            var description = applicationControl.getBestApplicationDescription(application, getLanguage(userVisit));
 
             applicationTransfer = new ApplicationTransfer(applicationName, isDefault, sortOrder, description);
-            put(application, applicationTransfer);
+            put(userVisit, application, applicationTransfer);
         }
 
         return applicationTransfer;

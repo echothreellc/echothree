@@ -26,7 +26,9 @@ import com.echothree.model.data.payment.server.entity.PaymentProcessorTransactio
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PaymentProcessorTransactionTransferCache
         extends BasePaymentTransferCache<PaymentProcessorTransaction, PaymentProcessorTransactionTransfer> {
 
@@ -38,8 +40,8 @@ public class PaymentProcessorTransactionTransferCache
     boolean includePaymentProcessorTransactionCodes;
     
     /** Creates a new instance of PaymentProcessorTransactionTransferCache */
-    public PaymentProcessorTransactionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected PaymentProcessorTransactionTransferCache() {
+        super();
 
         var options = session.getOptions();
         if(options != null) {
@@ -50,7 +52,7 @@ public class PaymentProcessorTransactionTransferCache
     }
     
     @Override
-    public PaymentProcessorTransactionTransfer getTransfer(PaymentProcessorTransaction paymentProcessorTransaction) {
+    public PaymentProcessorTransactionTransfer getTransfer(UserVisit userVisit, PaymentProcessorTransaction paymentProcessorTransaction) {
         var paymentProcessorTransactionTransfer = get(paymentProcessorTransaction);
         
         if(paymentProcessorTransactionTransfer == null) {
@@ -62,7 +64,7 @@ public class PaymentProcessorTransactionTransferCache
             
             paymentProcessorTransactionTransfer = new PaymentProcessorTransactionTransfer(paymentProcessorTransactionName,
                     paymentProcessor, paymentProcessorActionType, paymentProcessorResultCode);
-            put(paymentProcessorTransaction, paymentProcessorTransactionTransfer);
+            put(userVisit, paymentProcessorTransaction, paymentProcessorTransactionTransfer);
 
             if(includePaymentProcessorTransactionCodes) {
                 paymentProcessorTransactionTransfer.setPaymentProcessorTransactionCodes(new ListWrapper<>(paymentProcessorTransactionCodeControl.getPaymentProcessorTransactionCodeTransfersByPaymentProcessorTransaction(userVisit, paymentProcessorTransaction)));

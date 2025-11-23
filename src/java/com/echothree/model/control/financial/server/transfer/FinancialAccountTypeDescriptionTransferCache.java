@@ -20,16 +20,21 @@ import com.echothree.model.control.financial.common.transfer.FinancialAccountTyp
 import com.echothree.model.control.financial.server.control.FinancialControl;
 import com.echothree.model.data.financial.server.entity.FinancialAccountTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class FinancialAccountTypeDescriptionTransferCache
         extends BaseFinancialDescriptionTransferCache<FinancialAccountTypeDescription, FinancialAccountTypeDescriptionTransfer> {
-    
+
+    FinancialControl financialControl = Session.getModelController(FinancialControl.class);
+
     /** Creates a new instance of FinancialAccountTypeDescriptionTransferCache */
-    public FinancialAccountTypeDescriptionTransferCache(UserVisit userVisit, FinancialControl financialControl) {
-        super(userVisit, financialControl);
+    protected FinancialAccountTypeDescriptionTransferCache() {
+        super();
     }
     
-    public FinancialAccountTypeDescriptionTransfer getFinancialAccountTypeDescriptionTransfer(FinancialAccountTypeDescription financialAccountTypeDescription) {
+    public FinancialAccountTypeDescriptionTransfer getFinancialAccountTypeDescriptionTransfer(UserVisit userVisit, FinancialAccountTypeDescription financialAccountTypeDescription) {
         var financialAccountTypeDescriptionTransfer = get(financialAccountTypeDescription);
         
         if(financialAccountTypeDescriptionTransfer == null) {
@@ -37,7 +42,7 @@ public class FinancialAccountTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, financialAccountTypeDescription.getLanguage());
             
             financialAccountTypeDescriptionTransfer = new FinancialAccountTypeDescriptionTransfer(languageTransfer, financialAccountTypeTransfer, financialAccountTypeDescription.getDescription());
-            put(financialAccountTypeDescription, financialAccountTypeDescriptionTransfer);
+            put(userVisit, financialAccountTypeDescription, financialAccountTypeDescriptionTransfer);
         }
         
         return financialAccountTypeDescriptionTransfer;

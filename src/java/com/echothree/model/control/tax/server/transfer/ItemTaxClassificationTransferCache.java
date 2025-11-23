@@ -24,16 +24,19 @@ import com.echothree.model.control.tax.server.control.TaxControl;
 import com.echothree.model.data.tax.server.entity.ItemTaxClassification;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ItemTaxClassificationTransferCache
         extends BaseTaxTransferCache<ItemTaxClassification, ItemTaxClassificationTransfer> {
     
     GeoControl geoControl = Session.getModelController(GeoControl.class);
     ItemControl itemControl = Session.getModelController(ItemControl.class);
-    
+    TaxControl taxControl = Session.getModelController(TaxControl.class);
+
     /** Creates a new instance of ItemTaxClassificationTransferCache */
-    public ItemTaxClassificationTransferCache(UserVisit userVisit, TaxControl taxControl) {
-        super(userVisit, taxControl);
+    protected ItemTaxClassificationTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {
@@ -45,7 +48,7 @@ public class ItemTaxClassificationTransferCache
     }
     
     @Override
-    public ItemTaxClassificationTransfer getTransfer(ItemTaxClassification itemTaxClassification) {
+    public ItemTaxClassificationTransfer getTransfer(UserVisit userVisit, ItemTaxClassification itemTaxClassification) {
         var itemTaxClassificationTransfer = get(itemTaxClassification);
         
         if(itemTaxClassificationTransfer == null) {
@@ -55,7 +58,7 @@ public class ItemTaxClassificationTransferCache
             var taxClassification = taxControl.getTaxClassificationTransfer(userVisit, itemTaxClassificationDetail.getTaxClassification());
             
             itemTaxClassificationTransfer = new ItemTaxClassificationTransfer(item, countryGeoCode, taxClassification);
-            put(itemTaxClassification, itemTaxClassificationTransfer);
+            put(userVisit, itemTaxClassification, itemTaxClassificationTransfer);
         }
         
         return itemTaxClassificationTransfer;

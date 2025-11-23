@@ -59,7 +59,6 @@ import com.echothree.model.control.core.common.transfer.EntityStringAttributeTra
 import com.echothree.model.control.core.common.transfer.EntityStringDefaultTransfer;
 import com.echothree.model.control.core.common.transfer.EntityTimeAttributeTransfer;
 import com.echothree.model.control.core.common.transfer.EntityTimeDefaultTransfer;
-import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.core.common.pk.EntityAttributeGroupPK;
 import com.echothree.model.data.core.common.pk.EntityAttributePK;
 import com.echothree.model.data.core.common.pk.EntityAttributeTypePK;
@@ -218,12 +217,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
+@RequestScoped
 public class CoreControl
         extends BaseCoreControl {
     
     /** Creates a new instance of CoreControl */
-    public CoreControl() {
+    protected CoreControl() {
         super();
     }
     
@@ -231,8 +233,11 @@ public class CoreControl
     //   Entity Attribute Types
     // --------------------------------------------------------------------------------
     
+    @Inject
+    protected EntityAttributeTypeFactory entityAttributeTypeFactory;
+    
     public EntityAttributeType createEntityAttributeType(String entityAttributeTypeName) {
-        var entityAttributeType = EntityAttributeTypeFactory.getInstance().create(entityAttributeTypeName);
+        var entityAttributeType = entityAttributeTypeFactory.create(entityAttributeTypeName);
         
         return entityAttributeType;
     }
@@ -241,7 +246,7 @@ public class CoreControl
     public EntityAttributeType getEntityAttributeTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new EntityAttributeTypePK(entityInstance.getEntityUniqueId());
 
-        return EntityAttributeTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return entityAttributeTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public EntityAttributeType getEntityAttributeTypeByEntityInstance(EntityInstance entityInstance) {
@@ -262,14 +267,14 @@ public class CoreControl
         EntityAttributeType entityAttributeType;
         
         try {
-            var ps = EntityAttributeTypeFactory.getInstance().prepareStatement(
+            var ps = entityAttributeTypeFactory.prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM entityattributetypes " +
                     "WHERE enat_entityattributetypename = ?");
             
             ps.setString(1, entityAttributeTypeName);
             
-            entityAttributeType = EntityAttributeTypeFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+            entityAttributeType = entityAttributeTypeFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -278,17 +283,17 @@ public class CoreControl
     }
     
     public List<EntityAttributeType> getEntityAttributeTypes() {
-        var ps = EntityAttributeTypeFactory.getInstance().prepareStatement(
+        var ps = entityAttributeTypeFactory.prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM entityattributetypes " +
                 "ORDER BY enat_entityattributetypename " +
                 "_LIMIT_");
         
-        return EntityAttributeTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        return entityAttributeTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
     
     public EntityAttributeTypeTransfer getEntityAttributeTypeTransfer(UserVisit userVisit, EntityAttributeType entityAttributeType) {
-        return getCoreTransferCaches(userVisit).getEntityAttributeTypeTransferCache().getEntityAttributeTypeTransfer(entityAttributeType);
+        return entityAttributeTypeTransferCache.getEntityAttributeTypeTransfer(userVisit, entityAttributeType);
     }
     
     public List<EntityAttributeTypeTransfer> getEntityAttributeTypeTransfers(UserVisit userVisit, Collection<EntityAttributeType> entityAttributeTypes) {
@@ -298,7 +303,7 @@ public class CoreControl
             entityAttributeTypeTransfers = new ArrayList<>(entityAttributeTypes.size());
             
             for(var entityAttributeType : entityAttributeTypes) {
-                entityAttributeTypeTransfers.add(getCoreTransferCaches(userVisit).getEntityAttributeTypeTransferCache().getEntityAttributeTypeTransfer(entityAttributeType));
+                entityAttributeTypeTransfers.add(entityAttributeTypeTransferCache.getEntityAttributeTypeTransfer(userVisit, entityAttributeType));
             }
         }
         
@@ -336,8 +341,11 @@ public class CoreControl
     //   Entity Attribute Type Descriptions
     // --------------------------------------------------------------------------------
     
+    @Inject
+    protected EntityAttributeTypeDescriptionFactory entityAttributeTypeDescriptionFactory;
+    
     public EntityAttributeTypeDescription createEntityAttributeTypeDescription(EntityAttributeType entityAttributeType, Language language, String description) {
-        var entityAttributeTypeDescription = EntityAttributeTypeDescriptionFactory.getInstance().create(entityAttributeType, language, description);
+        var entityAttributeTypeDescription = entityAttributeTypeDescriptionFactory.create(entityAttributeType, language, description);
         
         return entityAttributeTypeDescription;
     }
@@ -346,7 +354,7 @@ public class CoreControl
         EntityAttributeTypeDescription entityAttributeTypeDescription;
         
         try {
-            var ps = EntityAttributeTypeDescriptionFactory.getInstance().prepareStatement(
+            var ps = entityAttributeTypeDescriptionFactory.prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM entityattributetypedescriptions " +
                     "WHERE enatd_enat_entityattributetypeid = ? AND enatd_lang_languageid = ?");
@@ -354,7 +362,7 @@ public class CoreControl
             ps.setLong(1, entityAttributeType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             
-            entityAttributeTypeDescription = EntityAttributeTypeDescriptionFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+            entityAttributeTypeDescription = entityAttributeTypeDescriptionFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -367,7 +375,7 @@ public class CoreControl
         var entityAttributeTypeDescription = getEntityAttributeTypeDescription(entityAttributeType, language);
         
         if(entityAttributeTypeDescription == null && !language.getIsDefault()) {
-            entityAttributeTypeDescription = getEntityAttributeTypeDescription(entityAttributeType, getPartyControl().getDefaultLanguage());
+            entityAttributeTypeDescription = getEntityAttributeTypeDescription(entityAttributeType, partyControl.getDefaultLanguage());
         }
         
         if(entityAttributeTypeDescription == null) {
@@ -383,6 +391,12 @@ public class CoreControl
     //   Entity Attribute Groups
     // --------------------------------------------------------------------------------
     
+    @Inject
+    protected EntityAttributeGroupFactory entityAttributeGroupFactory;
+    
+    @Inject
+    protected EntityAttributeGroupDetailFactory entityAttributeGroupDetailFactory;
+    
     public EntityAttributeGroup createEntityAttributeGroup(String entityAttributeGroupName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultEntityAttributeGroup = getDefaultEntityAttributeGroup();
         var defaultFound = defaultEntityAttributeGroup != null;
@@ -396,12 +410,12 @@ public class CoreControl
             isDefault = true;
         }
 
-        var entityAttributeGroup = EntityAttributeGroupFactory.getInstance().create();
-        var entityAttributeGroupDetail = EntityAttributeGroupDetailFactory.getInstance().create(entityAttributeGroup,
+        var entityAttributeGroup = entityAttributeGroupFactory.create();
+        var entityAttributeGroupDetail = entityAttributeGroupDetailFactory.create(entityAttributeGroup,
                 entityAttributeGroupName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
-        entityAttributeGroup = EntityAttributeGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        entityAttributeGroup = entityAttributeGroupFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 entityAttributeGroup.getPrimaryKey());
         entityAttributeGroup.setActiveDetail(entityAttributeGroupDetail);
         entityAttributeGroup.setLastDetail(entityAttributeGroupDetail);
@@ -416,7 +430,7 @@ public class CoreControl
     public EntityAttributeGroup getEntityAttributeGroupByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new EntityAttributeGroupPK(entityInstance.getEntityUniqueId());
 
-        return EntityAttributeGroupFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return entityAttributeGroupFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public EntityAttributeGroup getEntityAttributeGroupByEntityInstance(EntityInstance entityInstance) {
@@ -468,9 +482,9 @@ public class CoreControl
                     "FOR UPDATE";
         }
 
-        var ps = EntityAttributeGroupFactory.getInstance().prepareStatement(query);
+        var ps = entityAttributeGroupFactory.prepareStatement(query);
         
-        return EntityAttributeGroupFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        return entityAttributeGroupFactory.getEntitiesFromQuery(entityPermission, ps);
     }
     
     public List<EntityAttributeGroup> getEntityAttributeGroups() {
@@ -506,12 +520,12 @@ public class CoreControl
                         + "FOR UPDATE";
             }
 
-            var ps = EntityAttributeGroupFactory.getInstance().prepareStatement(query);
+            var ps = entityAttributeGroupFactory.prepareStatement(query);
             
             ps.setLong(1, Session.MAX_TIME);
             ps.setLong(2, entityType.getPrimaryKey().getEntityId());
             
-            entityAttributeGroups = EntityAttributeGroupFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            entityAttributeGroups = entityAttributeGroupFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -541,9 +555,9 @@ public class CoreControl
                     "FOR UPDATE";
         }
 
-        var ps = EntityAttributeGroupFactory.getInstance().prepareStatement(query);
+        var ps = entityAttributeGroupFactory.prepareStatement(query);
         
-        return EntityAttributeGroupFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        return entityAttributeGroupFactory.getEntityFromQuery(entityPermission, ps);
     }
     
     public EntityAttributeGroup getDefaultEntityAttributeGroup() {
@@ -575,11 +589,11 @@ public class CoreControl
                         "FOR UPDATE";
             }
 
-            var ps = EntityAttributeGroupFactory.getInstance().prepareStatement(query);
+            var ps = entityAttributeGroupFactory.prepareStatement(query);
             
             ps.setString(1, entityAttributeGroupName);
             
-            entityAttributeGroup = EntityAttributeGroupFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            entityAttributeGroup = entityAttributeGroupFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -638,15 +652,14 @@ public class CoreControl
     }
     
     public EntityAttributeGroupTransfer getEntityAttributeGroupTransfer(UserVisit userVisit, EntityAttributeGroup entityAttributeGroup, EntityInstance entityInstance) {
-        return getCoreTransferCaches(userVisit).getEntityAttributeGroupTransferCache().getEntityAttributeGroupTransfer(entityAttributeGroup, entityInstance);
+        return entityAttributeGroupTransferCache.getEntityAttributeGroupTransfer(userVisit, entityAttributeGroup, entityInstance);
     }
     
     public List<EntityAttributeGroupTransfer> getEntityAttributeGroupTransfers(UserVisit userVisit, Collection<EntityAttributeGroup> entityAttributeGroups, EntityInstance entityInstance) {
         List<EntityAttributeGroupTransfer> entityAttributeGroupTransfers = new ArrayList<>(entityAttributeGroups.size());
-        var entityAttributeGroupTransferCache = getCoreTransferCaches(userVisit).getEntityAttributeGroupTransferCache();
         
         entityAttributeGroups.forEach((entityAttributeGroup) ->
-                entityAttributeGroupTransfers.add(entityAttributeGroupTransferCache.getEntityAttributeGroupTransfer(entityAttributeGroup, entityInstance))
+                entityAttributeGroupTransfers.add(entityAttributeGroupTransferCache.getEntityAttributeGroupTransfer(userVisit, entityAttributeGroup, entityInstance))
         );
         
         return entityAttributeGroupTransfers;
@@ -663,7 +676,7 @@ public class CoreControl
     private void updateEntityAttributeGroupFromValue(EntityAttributeGroupDetailValue entityAttributeGroupDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(entityAttributeGroupDetailValue.hasBeenModified()) {
-            var entityAttributeGroup = EntityAttributeGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var entityAttributeGroup = entityAttributeGroupFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      entityAttributeGroupDetailValue.getEntityAttributeGroupPK());
             var entityAttributeGroupDetail = entityAttributeGroup.getActiveDetailForUpdate();
             
@@ -691,7 +704,7 @@ public class CoreControl
                 }
             }
             
-            entityAttributeGroupDetail = EntityAttributeGroupDetailFactory.getInstance().create(entityAttributeGroupPK, entityAttributeGroupName,
+            entityAttributeGroupDetail = entityAttributeGroupDetailFactory.create(entityAttributeGroupPK, entityAttributeGroupName,
                     isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
             entityAttributeGroup.setActiveDetail(entityAttributeGroupDetail);
@@ -706,7 +719,7 @@ public class CoreControl
     }
 
     public EntityAttributeGroup getEntityAttributeGroupByPK(EntityAttributeGroupPK pk) {
-        return EntityAttributeGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+        return entityAttributeGroupFactory.getEntityFromPK(EntityPermission.READ_ONLY, pk);
     }
 
     public void deleteEntityAttributeGroup(EntityAttributeGroup entityAttributeGroup, BasePK deletedBy) {
@@ -742,9 +755,12 @@ public class CoreControl
     //   Entity Attribute Group Descriptions
     // --------------------------------------------------------------------------------
     
+    @Inject
+    protected EntityAttributeGroupDescriptionFactory entityAttributeGroupDescriptionFactory;
+    
     public EntityAttributeGroupDescription createEntityAttributeGroupDescription(EntityAttributeGroup entityAttributeGroup, Language language, String description,
             BasePK createdBy) {
-        var entityAttributeGroupDescription = EntityAttributeGroupDescriptionFactory.getInstance().create(entityAttributeGroup,
+        var entityAttributeGroupDescription = entityAttributeGroupDescriptionFactory.create(entityAttributeGroup,
                 language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
@@ -770,13 +786,13 @@ public class CoreControl
                         "FOR UPDATE";
             }
 
-            var ps = EntityAttributeGroupDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = entityAttributeGroupDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, entityAttributeGroup.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            entityAttributeGroupDescription = EntityAttributeGroupDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            entityAttributeGroupDescription = entityAttributeGroupDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -819,12 +835,12 @@ public class CoreControl
                         "FOR UPDATE";
             }
 
-            var ps = EntityAttributeGroupDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = entityAttributeGroupDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, entityAttributeGroup.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            entityAttributeGroupDescriptions = EntityAttributeGroupDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            entityAttributeGroupDescriptions = entityAttributeGroupDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -845,7 +861,7 @@ public class CoreControl
         var entityAttributeGroupDescription = getEntityAttributeGroupDescription(entityAttributeGroup, language);
         
         if(entityAttributeGroupDescription == null && !language.getIsDefault()) {
-            entityAttributeGroupDescription = getEntityAttributeGroupDescription(entityAttributeGroup, getPartyControl().getDefaultLanguage());
+            entityAttributeGroupDescription = getEntityAttributeGroupDescription(entityAttributeGroup, partyControl.getDefaultLanguage());
         }
         
         if(entityAttributeGroupDescription == null) {
@@ -858,16 +874,15 @@ public class CoreControl
     }
     
     public EntityAttributeGroupDescriptionTransfer getEntityAttributeGroupDescriptionTransfer(UserVisit userVisit, EntityAttributeGroupDescription entityAttributeGroupDescription, EntityInstance entityInstance) {
-        return getCoreTransferCaches(userVisit).getEntityAttributeGroupDescriptionTransferCache().getEntityAttributeGroupDescriptionTransfer(entityAttributeGroupDescription, entityInstance);
+        return entityAttributeGroupDescriptionTransferCache.getEntityAttributeGroupDescriptionTransfer(userVisit, entityAttributeGroupDescription, entityInstance);
     }
     
     public List<EntityAttributeGroupDescriptionTransfer> getEntityAttributeGroupDescriptionTransfers(UserVisit userVisit, EntityAttributeGroup entityAttributeGroup, EntityInstance entityInstance) {
         var entityAttributeGroupDescriptions = getEntityAttributeGroupDescriptionsByEntityAttributeGroup(entityAttributeGroup);
         List<EntityAttributeGroupDescriptionTransfer> entityAttributeGroupDescriptionTransfers = new ArrayList<>(entityAttributeGroupDescriptions.size());
-        var entityAttributeGroupDescriptionTransferCache = getCoreTransferCaches(userVisit).getEntityAttributeGroupDescriptionTransferCache();
         
         entityAttributeGroupDescriptions.forEach((entityAttributeGroupDescription) ->
-                entityAttributeGroupDescriptionTransfers.add(entityAttributeGroupDescriptionTransferCache.getEntityAttributeGroupDescriptionTransfer(entityAttributeGroupDescription, entityInstance))
+                entityAttributeGroupDescriptionTransfers.add(entityAttributeGroupDescriptionTransferCache.getEntityAttributeGroupDescriptionTransfer(userVisit, entityAttributeGroupDescription, entityInstance))
         );
         
         return entityAttributeGroupDescriptionTransfers;
@@ -875,7 +890,7 @@ public class CoreControl
     
     public void updateEntityAttributeGroupDescriptionFromValue(EntityAttributeGroupDescriptionValue entityAttributeGroupDescriptionValue, BasePK updatedBy) {
         if(entityAttributeGroupDescriptionValue.hasBeenModified()) {
-            var entityAttributeGroupDescription = EntityAttributeGroupDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var entityAttributeGroupDescription = entityAttributeGroupDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      entityAttributeGroupDescriptionValue.getPrimaryKey());
             
             entityAttributeGroupDescription.setThruTime(session.START_TIME_LONG);
@@ -885,7 +900,7 @@ public class CoreControl
             var language = entityAttributeGroupDescription.getLanguage();
             var description = entityAttributeGroupDescriptionValue.getDescription();
             
-            entityAttributeGroupDescription = EntityAttributeGroupDescriptionFactory.getInstance().create(entityAttributeGroup, language,
+            entityAttributeGroupDescription = entityAttributeGroupDescriptionFactory.create(entityAttributeGroup, language,
                     description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
             sendEvent(entityAttributeGroup.getPrimaryKey(), EventTypes.MODIFY, entityAttributeGroupDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -910,14 +925,20 @@ public class CoreControl
     //   Entity Attributes
     // --------------------------------------------------------------------------------
     
+    @Inject
+    protected EntityAttributeFactory entityAttributeFactory;
+    
+    @Inject
+    protected EntityAttributeDetailFactory entityAttributeDetailFactory;
+    
     public EntityAttribute createEntityAttribute(EntityType entityType, String entityAttributeName,
             EntityAttributeType entityAttributeType, Boolean trackRevisions, Integer sortOrder, BasePK createdBy) {
-        var entityAttribute = EntityAttributeFactory.getInstance().create();
-        var entityAttributeDetail = EntityAttributeDetailFactory.getInstance().create(entityAttribute, entityType,
+        var entityAttribute = entityAttributeFactory.create();
+        var entityAttributeDetail = entityAttributeDetailFactory.create(entityAttribute, entityType,
                 entityAttributeName, entityAttributeType, trackRevisions, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
-        entityAttribute = EntityAttributeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        entityAttribute = entityAttributeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 entityAttribute.getPrimaryKey());
         entityAttribute.setActiveDetail(entityAttributeDetail);
         entityAttribute.setLastDetail(entityAttributeDetail);
@@ -932,7 +953,7 @@ public class CoreControl
     public EntityAttribute getEntityAttributeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new EntityAttributePK(entityInstance.getEntityUniqueId());
 
-        return EntityAttributeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return entityAttributeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public EntityAttribute getEntityAttributeByEntityInstance(EntityInstance entityInstance) {
@@ -944,7 +965,7 @@ public class CoreControl
     }
     
     public EntityAttribute getEntityAttributeByPK(EntityAttributePK pk) {
-        return EntityAttributeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+        return entityAttributeFactory.getEntityFromPK(EntityPermission.READ_ONLY, pk);
     }
 
     public long countEntityAttributesByEntityType(EntityType entityType) {
@@ -1004,12 +1025,12 @@ public class CoreControl
                         "FOR UPDATE";
             }
 
-            var ps = EntityAttributeFactory.getInstance().prepareStatement(query);
+            var ps = entityAttributeFactory.prepareStatement(query);
             
             ps.setLong(1, entityType.getPrimaryKey().getEntityId());
             ps.setString(2, entityAttributeName);
             
-            entityAttribute = EntityAttributeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            entityAttribute = entityAttributeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1054,11 +1075,11 @@ public class CoreControl
                         "FOR UPDATE";
             }
 
-            var ps = EntityAttributeFactory.getInstance().prepareStatement(query);
+            var ps = entityAttributeFactory.prepareStatement(query);
             
             ps.setLong(1, entityType.getPrimaryKey().getEntityId());
             
-            entityAttributes = EntityAttributeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            entityAttributes = entityAttributeFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1096,12 +1117,12 @@ public class CoreControl
                         "FOR UPDATE";
             }
 
-            var ps = EntityAttributeFactory.getInstance().prepareStatement(query);
+            var ps = entityAttributeFactory.prepareStatement(query);
             
             ps.setLong(1, entityType.getPrimaryKey().getEntityId());
             ps.setLong(2, entityAttributeType.getPrimaryKey().getEntityId());
             
-            entityAttributes = EntityAttributeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            entityAttributes = entityAttributeFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1143,13 +1164,13 @@ public class CoreControl
                         + "FOR UPDATE";
             }
 
-            var ps = EntityAttributeFactory.getInstance().prepareStatement(query);
+            var ps = entityAttributeFactory.prepareStatement(query);
             
             ps.setLong(1, entityAttributeGroup.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             ps.setLong(3, entityType.getPrimaryKey().getEntityId());
             
-            entityAttributes = EntityAttributeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            entityAttributes = entityAttributeFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1166,15 +1187,14 @@ public class CoreControl
     }
     
     public EntityAttributeTransfer getEntityAttributeTransfer(UserVisit userVisit, EntityAttribute entityAttribute, EntityInstance entityInstance) {
-        return getCoreTransferCaches(userVisit).getEntityAttributeTransferCache().getEntityAttributeTransfer(entityAttribute, entityInstance);
+        return entityAttributeTransferCache.getEntityAttributeTransfer(userVisit, entityAttribute, entityInstance);
     }
     
     public List<EntityAttributeTransfer> getEntityAttributeTransfers(UserVisit userVisit, Collection<EntityAttribute> entityAttributes, EntityInstance entityInstance) {
         List<EntityAttributeTransfer> entityAttributeTransfers = new ArrayList<>(entityAttributes.size());
-        var entityAttributeTransferCache = getCoreTransferCaches(userVisit).getEntityAttributeTransferCache();
         
         entityAttributes.forEach((entityAttribute) ->
-                entityAttributeTransfers.add(entityAttributeTransferCache.getEntityAttributeTransfer(entityAttribute, entityInstance))
+                entityAttributeTransfers.add(entityAttributeTransferCache.getEntityAttributeTransfer(userVisit, entityAttribute, entityInstance))
         );
         
         return entityAttributeTransfers;
@@ -1197,7 +1217,7 @@ public class CoreControl
     
     public void updateEntityAttributeFromValue(final EntityAttributeDetailValue entityAttributeDetailValue, final BasePK updatedBy) {
         if(entityAttributeDetailValue.hasBeenModified()) {
-            final var entityAttribute = EntityAttributeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            final var entityAttribute = entityAttributeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      entityAttributeDetailValue.getEntityAttributePK());
             var entityAttributeDetail = entityAttribute.getActiveDetailForUpdate();
             
@@ -1211,7 +1231,7 @@ public class CoreControl
             final var trackRevisions = entityAttributeDetailValue.getTrackRevisions();
             final var sortOrder = entityAttributeDetailValue.getSortOrder();
             
-            entityAttributeDetail = EntityAttributeDetailFactory.getInstance().create(entityAttributePK, entityTypePK,
+            entityAttributeDetail = entityAttributeDetailFactory.create(entityAttributePK, entityTypePK,
                     entityAttributeName, entityAttributeTypePK, trackRevisions, sortOrder, session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
             
@@ -1294,7 +1314,6 @@ public class CoreControl
                 }
             }
             case WORKFLOW -> {
-                var workflowControl = Session.getModelController(WorkflowControl.class);
                 var entityAttributeWorkflow = getEntityAttributeWorkflow(entityAttribute);
 
                 workflowControl.deleteWorkflowEntityStatusesByWorkflowAndEntityType(entityAttributeWorkflow.getWorkflow(),
@@ -1308,7 +1327,7 @@ public class CoreControl
         
         if(entityAttribute.getEntityPermission().equals(EntityPermission.READ_ONLY)) {
             // Convert to R/W
-            entityAttribute = EntityAttributeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, entityAttribute.getPrimaryKey());
+            entityAttribute = entityAttributeFactory.getEntityFromPK(EntityPermission.READ_WRITE, entityAttribute.getPrimaryKey());
         }
         
         entityAttributeDetail.setThruTime(session.START_TIME_LONG);
@@ -1368,9 +1387,12 @@ public class CoreControl
     //   Entity Attribute Descriptions
     // --------------------------------------------------------------------------------
     
+    @Inject
+    protected EntityAttributeDescriptionFactory entityAttributeDescriptionFactory;
+    
     public EntityAttributeDescription createEntityAttributeDescription(EntityAttribute entityAttribute, Language language,
             String description, BasePK createdBy) {
-        var entityAttributeDescription = EntityAttributeDescriptionFactory.getInstance().create(session,
+        var entityAttributeDescription = entityAttributeDescriptionFactory.create(session,
                 entityAttribute, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1396,13 +1418,13 @@ public class CoreControl
                         "FOR UPDATE";
             }
 
-            var ps = EntityAttributeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = entityAttributeDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            entityAttributeDescription = EntityAttributeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            entityAttributeDescription = entityAttributeDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1445,12 +1467,12 @@ public class CoreControl
                         "FOR UPDATE";
             }
 
-            var ps = EntityAttributeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = entityAttributeDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            entityAttributeDescriptions = EntityAttributeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            entityAttributeDescriptions = entityAttributeDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -1471,7 +1493,7 @@ public class CoreControl
         var entityAttributeDescription = getEntityAttributeDescription(entityAttribute, language);
         
         if(entityAttributeDescription == null && !language.getIsDefault()) {
-            entityAttributeDescription = getEntityAttributeDescription(entityAttribute, getPartyControl().getDefaultLanguage());
+            entityAttributeDescription = getEntityAttributeDescription(entityAttribute, partyControl.getDefaultLanguage());
         }
         
         if(entityAttributeDescription == null) {
@@ -1484,17 +1506,16 @@ public class CoreControl
     }
     
     public EntityAttributeDescriptionTransfer getEntityAttributeDescriptionTransfer(UserVisit userVisit, EntityAttributeDescription entityAttributeDescription, EntityInstance entityInstance) {
-        return getCoreTransferCaches(userVisit).getEntityAttributeDescriptionTransferCache().getEntityAttributeDescriptionTransfer(entityAttributeDescription, entityInstance);
+        return entityAttributeDescriptionTransferCache.getEntityAttributeDescriptionTransfer(userVisit, entityAttributeDescription, entityInstance);
     }
     
     public List<EntityAttributeDescriptionTransfer> getEntityAttributeDescriptionTransfersByEntityAttribute(UserVisit userVisit,
             EntityAttribute entityAttribute, EntityInstance entityInstance) {
         var entityAttributeDescriptions = getEntityAttributeDescriptionsByEntityAttribute(entityAttribute);
         List<EntityAttributeDescriptionTransfer> entityAttributeDescriptionTransfers = new ArrayList<>(entityAttributeDescriptions.size());
-        var entityAttributeDescriptionTransferCache = getCoreTransferCaches(userVisit).getEntityAttributeDescriptionTransferCache();
         
         entityAttributeDescriptions.forEach((entityAttributeDescription) ->
-                entityAttributeDescriptionTransfers.add(entityAttributeDescriptionTransferCache.getEntityAttributeDescriptionTransfer(entityAttributeDescription, entityInstance))
+                entityAttributeDescriptionTransfers.add(entityAttributeDescriptionTransferCache.getEntityAttributeDescriptionTransfer(userVisit, entityAttributeDescription, entityInstance))
         );
         
         return entityAttributeDescriptionTransfers;
@@ -1502,7 +1523,7 @@ public class CoreControl
     
     public void updateEntityAttributeDescriptionFromValue(EntityAttributeDescriptionValue entityAttributeDescriptionValue, BasePK updatedBy) {
         if(entityAttributeDescriptionValue.hasBeenModified()) {
-            var entityAttributeDescription = EntityAttributeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var entityAttributeDescription = entityAttributeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      entityAttributeDescriptionValue.getPrimaryKey());
             
             entityAttributeDescription.setThruTime(session.START_TIME_LONG);
@@ -1512,7 +1533,7 @@ public class CoreControl
             var language = entityAttributeDescription.getLanguage();
             var description = entityAttributeDescriptionValue.getDescription();
             
-            entityAttributeDescription = EntityAttributeDescriptionFactory.getInstance().create(entityAttribute, language,
+            entityAttributeDescription = entityAttributeDescriptionFactory.create(entityAttribute, language,
                     description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
             sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -1537,9 +1558,12 @@ public class CoreControl
     //   Entity Attribute Blobs
     // --------------------------------------------------------------------------------
     
+    @Inject
+    protected EntityAttributeBlobFactory entityAttributeBlobFactory;
+    
     public EntityAttributeBlob createEntityAttributeBlob(EntityAttribute entityAttribute, Boolean checkContentWebAddress,
             BasePK createdBy) {
-        var entityAttributeBlob = EntityAttributeBlobFactory.getInstance().create(session,
+        var entityAttributeBlob = entityAttributeBlobFactory.create(session,
                 entityAttribute, checkContentWebAddress, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeBlob.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1565,7 +1589,7 @@ public class CoreControl
     }
 
     private EntityAttributeBlob getEntityAttributeBlob(EntityAttribute entityAttribute, EntityPermission entityPermission) {
-        return EntityAttributeBlobFactory.getInstance().getEntityFromQuery(entityPermission, getEntityAttributeBlobQueries,
+        return entityAttributeBlobFactory.getEntityFromQuery(entityPermission, getEntityAttributeBlobQueries,
                 entityAttribute, Session.MAX_TIME_LONG);
     }
     
@@ -1587,7 +1611,7 @@ public class CoreControl
     
     public void updateEntityAttributeBlobFromValue(EntityAttributeBlobValue entityAttributeBlobValue, BasePK updatedBy) {
         if(entityAttributeBlobValue.hasBeenModified()) {
-            var entityAttributeBlob = EntityAttributeBlobFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var entityAttributeBlob = entityAttributeBlobFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      entityAttributeBlobValue.getPrimaryKey());
             
             entityAttributeBlob.setThruTime(session.START_TIME_LONG);
@@ -1596,7 +1620,7 @@ public class CoreControl
             var entityAttribute = entityAttributeBlob.getEntityAttribute();
             var checkContentWebAddress = entityAttributeBlobValue.getCheckContentWebAddress();
             
-            entityAttributeBlob = EntityAttributeBlobFactory.getInstance().create(entityAttribute, checkContentWebAddress,
+            entityAttributeBlob = entityAttributeBlobFactory.create(entityAttribute, checkContentWebAddress,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
             sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeBlob.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -1621,9 +1645,12 @@ public class CoreControl
     //   Entity Attribute Strings
     // --------------------------------------------------------------------------------
     
+    @Inject
+    protected EntityAttributeStringFactory entityAttributeStringFactory;
+    
     public EntityAttributeString createEntityAttributeString(EntityAttribute entityAttribute, String validationPattern,
             BasePK createdBy) {
-        var entityAttributeString = EntityAttributeStringFactory.getInstance().create(session,
+        var entityAttributeString = entityAttributeStringFactory.create(session,
                 entityAttribute, validationPattern, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeString.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1649,7 +1676,7 @@ public class CoreControl
     }
 
     private EntityAttributeString getEntityAttributeString(EntityAttribute entityAttribute, EntityPermission entityPermission) {
-        return EntityAttributeStringFactory.getInstance().getEntityFromQuery(entityPermission, getEntityAttributeStringQueries,
+        return entityAttributeStringFactory.getEntityFromQuery(entityPermission, getEntityAttributeStringQueries,
                 entityAttribute, Session.MAX_TIME_LONG);
     }
     
@@ -1671,7 +1698,7 @@ public class CoreControl
     
     public void updateEntityAttributeStringFromValue(EntityAttributeStringValue entityAttributeStringValue, BasePK updatedBy) {
         if(entityAttributeStringValue.hasBeenModified()) {
-            var entityAttributeString = EntityAttributeStringFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var entityAttributeString = entityAttributeStringFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      entityAttributeStringValue.getPrimaryKey());
             
             entityAttributeString.setThruTime(session.START_TIME_LONG);
@@ -1680,7 +1707,7 @@ public class CoreControl
             var entityAttribute = entityAttributeString.getEntityAttribute();
             var validationPattern = entityAttributeStringValue.getValidationPattern();
             
-            entityAttributeString = EntityAttributeStringFactory.getInstance().create(entityAttribute, validationPattern,
+            entityAttributeString = entityAttributeStringFactory.create(entityAttribute, validationPattern,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
             sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeString.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -1705,9 +1732,12 @@ public class CoreControl
     //   Entity Attribute Integers
     // --------------------------------------------------------------------------------
     
+    @Inject
+    protected EntityAttributeIntegerFactory entityAttributeIntegerFactory;
+    
     public EntityAttributeInteger createEntityAttributeInteger(EntityAttribute entityAttribute, Integer upperRangeIntegerValue,
             Integer upperLimitIntegerValue, Integer lowerLimitIntegerValue, Integer lowerRangeIntegerValue, BasePK createdBy) {
-        var entityAttributeInteger = EntityAttributeIntegerFactory.getInstance().create(session,
+        var entityAttributeInteger = entityAttributeIntegerFactory.create(session,
                 entityAttribute, upperRangeIntegerValue, upperLimitIntegerValue, lowerLimitIntegerValue, lowerRangeIntegerValue,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
@@ -1734,7 +1764,7 @@ public class CoreControl
     }
 
     private EntityAttributeInteger getEntityAttributeInteger(EntityAttribute entityAttribute, EntityPermission entityPermission) {
-        return EntityAttributeIntegerFactory.getInstance().getEntityFromQuery(entityPermission, getEntityAttributeIntegerQueries,
+        return entityAttributeIntegerFactory.getEntityFromQuery(entityPermission, getEntityAttributeIntegerQueries,
                 entityAttribute, Session.MAX_TIME_LONG);
     }
     
@@ -1756,7 +1786,7 @@ public class CoreControl
     
     public void updateEntityAttributeIntegerFromValue(EntityAttributeIntegerValue entityAttributeIntegerValue, BasePK updatedBy) {
         if(entityAttributeIntegerValue.hasBeenModified()) {
-            var entityAttributeInteger = EntityAttributeIntegerFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var entityAttributeInteger = entityAttributeIntegerFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      entityAttributeIntegerValue.getPrimaryKey());
             
             entityAttributeInteger.setThruTime(session.START_TIME_LONG);
@@ -1768,7 +1798,7 @@ public class CoreControl
             var lowerLimitIntegerValue = entityAttributeIntegerValue.getLowerLimitIntegerValue();
             var lowerRangeIntegerValue = entityAttributeIntegerValue.getLowerRangeIntegerValue();
             
-            entityAttributeInteger = EntityAttributeIntegerFactory.getInstance().create(entityAttribute, upperRangeIntegerValue,
+            entityAttributeInteger = entityAttributeIntegerFactory.create(entityAttribute, upperRangeIntegerValue,
                     upperLimitIntegerValue, lowerLimitIntegerValue, lowerRangeIntegerValue, session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
             
@@ -1794,9 +1824,12 @@ public class CoreControl
     //   Entity Attribute Longs
     // --------------------------------------------------------------------------------
     
+    @Inject
+    protected EntityAttributeLongFactory entityAttributeLongFactory;
+    
     public EntityAttributeLong createEntityAttributeLong(EntityAttribute entityAttribute, Long upperRangeLongValue,
             Long upperLimitLongValue, Long lowerLimitLongValue, Long lowerRangeLongValue, BasePK createdBy) {
-        var entityAttributeLong = EntityAttributeLongFactory.getInstance().create(session,
+        var entityAttributeLong = entityAttributeLongFactory.create(session,
                 entityAttribute, upperRangeLongValue, upperLimitLongValue, lowerLimitLongValue, lowerRangeLongValue,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
@@ -1823,7 +1856,7 @@ public class CoreControl
     }
 
     private EntityAttributeLong getEntityAttributeLong(EntityAttribute entityAttribute, EntityPermission entityPermission) {
-        return EntityAttributeLongFactory.getInstance().getEntityFromQuery(entityPermission, getEntityAttributeLongQueries,
+        return entityAttributeLongFactory.getEntityFromQuery(entityPermission, getEntityAttributeLongQueries,
                 entityAttribute, Session.MAX_TIME_LONG);
     }
     
@@ -1845,7 +1878,7 @@ public class CoreControl
     
     public void updateEntityAttributeLongFromValue(EntityAttributeLongValue entityAttributeLongValue, BasePK updatedBy) {
         if(entityAttributeLongValue.hasBeenModified()) {
-            var entityAttributeLong = EntityAttributeLongFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var entityAttributeLong = entityAttributeLongFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      entityAttributeLongValue.getPrimaryKey());
             
             entityAttributeLong.setThruTime(session.START_TIME_LONG);
@@ -1857,7 +1890,7 @@ public class CoreControl
             var lowerLimitLongValue = entityAttributeLongValue.getLowerLimitLongValue();
             var lowerRangeLongValue = entityAttributeLongValue.getLowerRangeLongValue();
             
-            entityAttributeLong = EntityAttributeLongFactory.getInstance().create(entityAttribute, upperRangeLongValue,
+            entityAttributeLong = entityAttributeLongFactory.create(entityAttribute, upperRangeLongValue,
                     upperLimitLongValue, lowerLimitLongValue, lowerRangeLongValue, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
             sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeLong.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -1882,9 +1915,12 @@ public class CoreControl
     //   Entity Attribute Numerics
     // --------------------------------------------------------------------------------
     
+    @Inject
+    protected EntityAttributeNumericFactory entityAttributeNumericFactory;
+    
     public EntityAttributeNumeric createEntityAttributeNumeric(EntityAttribute entityAttribute, UnitOfMeasureType unitOfMeasureType,
             BasePK createdBy) {
-        var entityAttributeNumeric = EntityAttributeNumericFactory.getInstance().create(session,
+        var entityAttributeNumeric = entityAttributeNumericFactory.create(session,
                 entityAttribute, unitOfMeasureType, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeNumeric.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1918,7 +1954,7 @@ public class CoreControl
     }
 
     private EntityAttributeNumeric getEntityAttributeNumeric(EntityAttribute entityAttribute, EntityPermission entityPermission) {
-        return EntityAttributeNumericFactory.getInstance().getEntityFromQuery(entityPermission, getEntityAttributeNumericQueries,
+        return entityAttributeNumericFactory.getEntityFromQuery(entityPermission, getEntityAttributeNumericQueries,
                 entityAttribute, Session.MAX_TIME_LONG);
     }
     
@@ -1940,7 +1976,7 @@ public class CoreControl
     
     public void updateEntityAttributeNumericFromValue(EntityAttributeNumericValue entityAttributeNumericValue, BasePK updatedBy) {
         if(entityAttributeNumericValue.hasBeenModified()) {
-            var entityAttributeNumeric = EntityAttributeNumericFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var entityAttributeNumeric = entityAttributeNumericFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      entityAttributeNumericValue.getPrimaryKey());
             
             entityAttributeNumeric.setThruTime(session.START_TIME_LONG);
@@ -1949,7 +1985,7 @@ public class CoreControl
             var entityAttributePK = entityAttributeNumeric.getEntityAttributePK();
             var unitOfMeasureTypePK = entityAttributeNumericValue.getUnitOfMeasureTypePK();
             
-            entityAttributeNumeric = EntityAttributeNumericFactory.getInstance().create(entityAttributePK, unitOfMeasureTypePK,
+            entityAttributeNumeric = entityAttributeNumericFactory.create(entityAttributePK, unitOfMeasureTypePK,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
             sendEvent(entityAttributePK, EventTypes.MODIFY, entityAttributeNumeric.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -1974,9 +2010,12 @@ public class CoreControl
     //   Entity Attribute List Items
     // --------------------------------------------------------------------------------
     
+    @Inject
+    protected EntityAttributeListItemFactory entityAttributeListItemFactory;
+    
     public EntityAttributeListItem createEntityAttributeListItem(EntityAttribute entityAttribute, Sequence entityListItemSequence,
             BasePK createdBy) {
-        var entityAttributeListItem = EntityAttributeListItemFactory.getInstance().create(session,
+        var entityAttributeListItem = entityAttributeListItemFactory.create(session,
                 entityAttribute, entityListItemSequence, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeListItem.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2010,7 +2049,7 @@ public class CoreControl
     }
 
     private EntityAttributeListItem getEntityAttributeListItem(EntityAttribute entityAttribute, EntityPermission entityPermission) {
-        return EntityAttributeListItemFactory.getInstance().getEntityFromQuery(entityPermission, getEntityAttributeListItemQueries,
+        return entityAttributeListItemFactory.getEntityFromQuery(entityPermission, getEntityAttributeListItemQueries,
                 entityAttribute, Session.MAX_TIME_LONG);
     }
     
@@ -2032,7 +2071,7 @@ public class CoreControl
     
     public void updateEntityAttributeListItemFromValue(EntityAttributeListItemValue entityAttributeListItemValue, BasePK updatedBy) {
         if(entityAttributeListItemValue.hasBeenModified()) {
-            var entityAttributeListItem = EntityAttributeListItemFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var entityAttributeListItem = entityAttributeListItemFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      entityAttributeListItemValue.getPrimaryKey());
             
             entityAttributeListItem.setThruTime(session.START_TIME_LONG);
@@ -2041,7 +2080,7 @@ public class CoreControl
             var entityAttributePK = entityAttributeListItem.getEntityAttributePK();
             var entityListItemSequencePK = entityAttributeListItemValue.getEntityListItemSequencePK();
             
-            entityAttributeListItem = EntityAttributeListItemFactory.getInstance().create(entityAttributePK, entityListItemSequencePK,
+            entityAttributeListItem = entityAttributeListItemFactory.create(entityAttributePK, entityListItemSequencePK,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
             sendEvent(entityAttributePK, EventTypes.MODIFY, entityAttributeListItem.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -2066,9 +2105,12 @@ public class CoreControl
     //   Entity Attribute Workflows
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected EntityAttributeWorkflowFactory entityAttributeWorkflowFactory;
+    
     public EntityAttributeWorkflow createEntityAttributeWorkflow(EntityAttribute entityAttribute, Workflow workflow,
             BasePK createdBy) {
-        var entityAttributeWorkflow = EntityAttributeWorkflowFactory.getInstance().create(session,
+        var entityAttributeWorkflow = entityAttributeWorkflowFactory.create(session,
                 entityAttribute, workflow, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeWorkflow.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2102,7 +2144,7 @@ public class CoreControl
     }
 
     private EntityAttributeWorkflow getEntityAttributeWorkflow(EntityAttribute entityAttribute, EntityPermission entityPermission) {
-        return EntityAttributeWorkflowFactory.getInstance().getEntityFromQuery(entityPermission, getEntityAttributeWorkflowQueries,
+        return entityAttributeWorkflowFactory.getEntityFromQuery(entityPermission, getEntityAttributeWorkflowQueries,
                 entityAttribute, Session.MAX_TIME_LONG);
     }
 
@@ -2124,7 +2166,7 @@ public class CoreControl
 
     public void updateEntityAttributeWorkflowFromValue(EntityAttributeWorkflowValue entityAttributeWorkflowValue, BasePK updatedBy) {
         if(entityAttributeWorkflowValue.hasBeenModified()) {
-            var entityAttributeWorkflow = EntityAttributeWorkflowFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var entityAttributeWorkflow = entityAttributeWorkflowFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     entityAttributeWorkflowValue.getPrimaryKey());
 
             entityAttributeWorkflow.setThruTime(session.START_TIME_LONG);
@@ -2133,7 +2175,7 @@ public class CoreControl
             var entityAttributePK = entityAttributeWorkflow.getEntityAttributePK();
             var workflowPK = entityAttributeWorkflowValue.getWorkflowPK();
 
-            entityAttributeWorkflow = EntityAttributeWorkflowFactory.getInstance().create(entityAttributePK, workflowPK,
+            entityAttributeWorkflow = entityAttributeWorkflowFactory.create(entityAttributePK, workflowPK,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
             sendEvent(entityAttributePK, EventTypes.MODIFY, entityAttributeWorkflow.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -2158,9 +2200,12 @@ public class CoreControl
     //   Entity Attribute Entity Attribute Groups
     // --------------------------------------------------------------------------------
     
+    @Inject
+    protected EntityAttributeEntityAttributeGroupFactory entityAttributeEntityAttributeGroupFactory;
+    
     public EntityAttributeEntityAttributeGroup createEntityAttributeEntityAttributeGroup(EntityAttribute entityAttribute,
             EntityAttributeGroup entityAttributeGroup, Integer sortOrder, BasePK createdBy) {
-        var entityAttributeEntityAttributeGroup = EntityAttributeEntityAttributeGroupFactory.getInstance().create(session,
+        var entityAttributeEntityAttributeGroup = entityAttributeEntityAttributeGroupFactory.create(session,
                 entityAttribute, entityAttributeGroup, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeEntityAttributeGroup.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2202,13 +2247,13 @@ public class CoreControl
                         "FOR UPDATE";
             }
 
-            var ps = EntityAttributeEntityAttributeGroupFactory.getInstance().prepareStatement(query);
+            var ps = entityAttributeEntityAttributeGroupFactory.prepareStatement(query);
             
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, entityAttributeGroup.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            entityAttributeEntityAttributeGroup = EntityAttributeEntityAttributeGroupFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            entityAttributeEntityAttributeGroup = entityAttributeEntityAttributeGroupFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2253,12 +2298,12 @@ public class CoreControl
                         + "FOR UPDATE";
             }
 
-            var ps = EntityAttributeEntityAttributeGroupFactory.getInstance().prepareStatement(query);
+            var ps = entityAttributeEntityAttributeGroupFactory.prepareStatement(query);
             
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            entityAttributeEntityAttributeGroups = EntityAttributeEntityAttributeGroupFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            entityAttributeEntityAttributeGroups = entityAttributeEntityAttributeGroupFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2295,12 +2340,12 @@ public class CoreControl
                         + "FOR UPDATE";
             }
 
-            var ps = EntityAttributeEntityAttributeGroupFactory.getInstance().prepareStatement(query);
+            var ps = entityAttributeEntityAttributeGroupFactory.prepareStatement(query);
             
             ps.setLong(1, entityAttributeGroup.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            entityAttributeEntityAttributeGroups = EntityAttributeEntityAttributeGroupFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            entityAttributeEntityAttributeGroups = entityAttributeEntityAttributeGroupFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2317,16 +2362,15 @@ public class CoreControl
     }
     
     public EntityAttributeEntityAttributeGroupTransfer getEntityAttributeEntityAttributeGroupTransfer(UserVisit userVisit, EntityAttributeEntityAttributeGroup entityAttributeEntityAttributeGroup, EntityInstance entityInstance) {
-        return getCoreTransferCaches(userVisit).getEntityAttributeEntityAttributeGroupTransferCache().getEntityAttributeEntityAttributeGroupTransfer(entityAttributeEntityAttributeGroup, entityInstance);
+        return entityAttributeEntityAttributeGroupTransferCache.getEntityAttributeEntityAttributeGroupTransfer(userVisit, entityAttributeEntityAttributeGroup, entityInstance);
     }
     
     public List<EntityAttributeEntityAttributeGroupTransfer> getEntityAttributeEntityAttributeGroupTransfers(UserVisit userVisit,
             Collection<EntityAttributeEntityAttributeGroup> entityAttributeEntityAttributeGroups, EntityInstance entityInstance) {
         List<EntityAttributeEntityAttributeGroupTransfer> entityAttributeEntityAttributeGroupTransfers = new ArrayList<>(entityAttributeEntityAttributeGroups.size());
-        var entityAttributeEntityAttributeGroupTransferCache = getCoreTransferCaches(userVisit).getEntityAttributeEntityAttributeGroupTransferCache();
         
         entityAttributeEntityAttributeGroups.forEach((entityAttributeEntityAttributeGroup) ->
-                entityAttributeEntityAttributeGroupTransfers.add(entityAttributeEntityAttributeGroupTransferCache.getEntityAttributeEntityAttributeGroupTransfer(entityAttributeEntityAttributeGroup, entityInstance))
+                entityAttributeEntityAttributeGroupTransfers.add(entityAttributeEntityAttributeGroupTransferCache.getEntityAttributeEntityAttributeGroupTransfer(userVisit, entityAttributeEntityAttributeGroup, entityInstance))
         );
         
         return entityAttributeEntityAttributeGroupTransfers;
@@ -2344,7 +2388,7 @@ public class CoreControl
     
     public void updateEntityAttributeEntityAttributeGroupFromValue(EntityAttributeEntityAttributeGroupValue entityAttributeEntityAttributeGroupValue, BasePK updatedBy) {
         if(entityAttributeEntityAttributeGroupValue.hasBeenModified()) {
-            var entityAttributeEntityAttributeGroup = EntityAttributeEntityAttributeGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var entityAttributeEntityAttributeGroup = entityAttributeEntityAttributeGroupFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      entityAttributeEntityAttributeGroupValue.getPrimaryKey());
             
             entityAttributeEntityAttributeGroup.setThruTime(session.START_TIME_LONG);
@@ -2354,7 +2398,7 @@ public class CoreControl
             var entityAttributeGroup = entityAttributeEntityAttributeGroup.getEntityAttributeGroup();
             var sortOrder = entityAttributeEntityAttributeGroupValue.getSortOrder();
             
-            entityAttributeEntityAttributeGroup = EntityAttributeEntityAttributeGroupFactory.getInstance().create(entityAttribute, entityAttributeGroup,
+            entityAttributeEntityAttributeGroup = entityAttributeEntityAttributeGroupFactory.create(entityAttribute, entityAttributeGroup,
                     sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
             sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeEntityAttributeGroup.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -2387,6 +2431,12 @@ public class CoreControl
     //   Entity List Items
     // --------------------------------------------------------------------------------
     
+    @Inject
+    protected EntityListItemFactory entityListItemFactory;
+    
+    @Inject
+    protected EntityListItemDetailFactory entityListItemDetailFactory;
+    
     public EntityListItem createEntityListItem(EntityAttribute entityAttribute, String entityListItemName, Boolean isDefault, Integer sortOrder,
             BasePK createdBy) {
         var defaultEntityListItem = getDefaultEntityListItem(entityAttribute);
@@ -2401,12 +2451,12 @@ public class CoreControl
             isDefault = true;
         }
 
-        var entityListItem = EntityListItemFactory.getInstance().create();
-        var entityListItemDetail = EntityListItemDetailFactory.getInstance().create(entityListItem,
+        var entityListItem = entityListItemFactory.create();
+        var entityListItemDetail = entityListItemDetailFactory.create(entityListItem,
                 entityAttribute, entityListItemName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
-        entityListItem = EntityListItemFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, entityListItem.getPrimaryKey());
+        entityListItem = entityListItemFactory.getEntityFromPK(EntityPermission.READ_WRITE, entityListItem.getPrimaryKey());
         entityListItem.setActiveDetail(entityListItemDetail);
         entityListItem.setLastDetail(entityListItemDetail);
         entityListItem.store();
@@ -2420,7 +2470,7 @@ public class CoreControl
     public EntityListItem getEntityListItemByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new EntityListItemPK(entityInstance.getEntityUniqueId());
 
-        return EntityListItemFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return entityListItemFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public EntityListItem getEntityListItemByEntityInstance(EntityInstance entityInstance) {
@@ -2432,7 +2482,7 @@ public class CoreControl
     }
     
     public EntityListItem getEntityListItemByPK(EntityListItemPK pk) {
-        return EntityListItemFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+        return entityListItemFactory.getEntityFromPK(EntityPermission.READ_ONLY, pk);
     }
     
     public long countEntityListItems() {
@@ -2461,11 +2511,11 @@ public class CoreControl
                         "FOR UPDATE";
             }
 
-            var ps = EntityListItemFactory.getInstance().prepareStatement(query);
+            var ps = entityListItemFactory.prepareStatement(query);
             
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             
-            entityListItem = EntityListItemFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            entityListItem = entityListItemFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2504,12 +2554,12 @@ public class CoreControl
                         "FOR UPDATE";
             }
 
-            var ps = EntityListItemFactory.getInstance().prepareStatement(query);
+            var ps = entityListItemFactory.prepareStatement(query);
             
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setString(2, entityListItemName);
             
-            entityListItem = EntityListItemFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            entityListItem = entityListItemFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2552,11 +2602,11 @@ public class CoreControl
                         "FOR UPDATE";
             }
 
-            var ps = EntityListItemFactory.getInstance().prepareStatement(query);
+            var ps = entityListItemFactory.prepareStatement(query);
             
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             
-            entityListItems = EntityListItemFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            entityListItems = entityListItemFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2581,15 +2631,14 @@ public class CoreControl
     }
 
     public EntityListItemTransfer getEntityListItemTransfer(UserVisit userVisit, EntityListItem entityListItem, EntityInstance entityInstance) {
-        return getCoreTransferCaches(userVisit).getEntityListItemTransferCache().getEntityListItemTransfer(entityListItem, entityInstance);
+        return entityListItemTransferCache.getEntityListItemTransfer(userVisit, entityListItem, entityInstance);
     }
     
     public List<EntityListItemTransfer> getEntityListItemTransfers(UserVisit userVisit, Collection<EntityListItem> entityListItems, EntityInstance entityInstance) {
         List<EntityListItemTransfer> entityListItemTransfers = new ArrayList<>(entityListItems.size());
-        var entityListItemTransferCache = getCoreTransferCaches(userVisit).getEntityListItemTransferCache();
 
         entityListItems.forEach((entityListItem) ->
-                entityListItemTransfers.add(entityListItemTransferCache.getEntityListItemTransfer(entityListItem, entityInstance))
+                entityListItemTransfers.add(entityListItemTransferCache.getEntityListItemTransfer(userVisit, entityListItem, entityInstance))
         );
 
         return entityListItemTransfers;
@@ -2602,7 +2651,7 @@ public class CoreControl
     private void updateEntityListItemFromValue(EntityListItemDetailValue entityListItemDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(entityListItemDetailValue.hasBeenModified()) {
-            var entityListItem = EntityListItemFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var entityListItem = entityListItemFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      entityListItemDetailValue.getEntityListItemPK());
             var entityListItemDetail = entityListItem.getActiveDetailForUpdate();
             
@@ -2631,7 +2680,7 @@ public class CoreControl
                 }
             }
             
-            entityListItemDetail = EntityListItemDetailFactory.getInstance().create(entityListItemPK,
+            entityListItemDetail = entityListItemDetailFactory.create(entityListItemPK,
                     entityAttribute.getPrimaryKey(), entityListItemName, isDefault, sortOrder, session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
             
@@ -2737,8 +2786,11 @@ public class CoreControl
     //   Entity List Item Descriptions
     // --------------------------------------------------------------------------------
     
+    @Inject
+    protected EntityListItemDescriptionFactory entityListItemDescriptionFactory;
+    
     public EntityListItemDescription createEntityListItemDescription(EntityListItem entityListItem, Language language, String description, BasePK createdBy) {
-        var entityListItemDescription = EntityListItemDescriptionFactory.getInstance().create(entityListItem, language, description, session.START_TIME_LONG,
+        var entityListItemDescription = entityListItemDescriptionFactory.create(entityListItem, language, description, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
         sendEvent(entityListItem.getPrimaryKey(), EventTypes.MODIFY, entityListItemDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2763,13 +2815,13 @@ public class CoreControl
                         "FOR UPDATE";
             }
 
-            var ps = EntityListItemDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = entityListItemDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, entityListItem.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            entityListItemDescription = EntityListItemDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            entityListItemDescription = entityListItemDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2811,12 +2863,12 @@ public class CoreControl
                         "FOR UPDATE";
             }
 
-            var ps = EntityListItemDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = entityListItemDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, entityListItem.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            entityListItemDescriptions = EntityListItemDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            entityListItemDescriptions = entityListItemDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2837,7 +2889,7 @@ public class CoreControl
         var entityListItemDescription = getEntityListItemDescription(entityListItem, language);
         
         if(entityListItemDescription == null && !language.getIsDefault()) {
-            entityListItemDescription = getEntityListItemDescription(entityListItem, getPartyControl().getDefaultLanguage());
+            entityListItemDescription = getEntityListItemDescription(entityListItem, partyControl.getDefaultLanguage());
         }
         
         if(entityListItemDescription == null) {
@@ -2850,16 +2902,15 @@ public class CoreControl
     }
     
     public EntityListItemDescriptionTransfer getEntityListItemDescriptionTransfer(UserVisit userVisit, EntityListItemDescription entityListItemDescription, EntityInstance entityInstance) {
-        return getCoreTransferCaches(userVisit).getEntityListItemDescriptionTransferCache().getEntityListItemDescriptionTransfer(entityListItemDescription, entityInstance);
+        return entityListItemDescriptionTransferCache.getEntityListItemDescriptionTransfer(userVisit, entityListItemDescription, entityInstance);
     }
     
     public List<EntityListItemDescriptionTransfer> getEntityListItemDescriptionTransfersByEntityListItem(UserVisit userVisit, EntityListItem entityListItem, EntityInstance entityInstance) {
         var entityListItemDescriptions = getEntityListItemDescriptionsByEntityListItem(entityListItem);
         List<EntityListItemDescriptionTransfer> entityListItemDescriptionTransfers = new ArrayList<>(entityListItemDescriptions.size());
-        var entityListItemDescriptionTransferCache = getCoreTransferCaches(userVisit).getEntityListItemDescriptionTransferCache();
         
         entityListItemDescriptions.forEach((entityListItemDescription) ->
-                entityListItemDescriptionTransfers.add(entityListItemDescriptionTransferCache.getEntityListItemDescriptionTransfer(entityListItemDescription, entityInstance))
+                entityListItemDescriptionTransfers.add(entityListItemDescriptionTransferCache.getEntityListItemDescriptionTransfer(userVisit, entityListItemDescription, entityInstance))
         );
         
         return entityListItemDescriptionTransfers;
@@ -2867,7 +2918,7 @@ public class CoreControl
     
     public void updateEntityListItemDescriptionFromValue(EntityListItemDescriptionValue entityListItemDescriptionValue, BasePK updatedBy) {
         if(entityListItemDescriptionValue.hasBeenModified()) {
-            var entityListItemDescription = EntityListItemDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, entityListItemDescriptionValue.getPrimaryKey());
+            var entityListItemDescription = entityListItemDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE, entityListItemDescriptionValue.getPrimaryKey());
             
             entityListItemDescription.setThruTime(session.START_TIME_LONG);
             entityListItemDescription.store();
@@ -2876,7 +2927,7 @@ public class CoreControl
             var language = entityListItemDescription.getLanguage();
             var description = entityListItemDescriptionValue.getDescription();
             
-            entityListItemDescription = EntityListItemDescriptionFactory.getInstance().create(entityListItem, language,
+            entityListItemDescription = entityListItemDescriptionFactory.create(entityListItem, language,
                     description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
             sendEvent(entityListItem.getPrimaryKey(), EventTypes.MODIFY, entityListItemDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -2901,6 +2952,12 @@ public class CoreControl
     //   Entity Integer Ranges
     // --------------------------------------------------------------------------------
     
+    @Inject
+    protected EntityIntegerRangeFactory entityIntegerRangeFactory;
+    
+    @Inject
+    protected EntityIntegerRangeDetailFactory entityIntegerRangeDetailFactory;
+    
     public EntityIntegerRange createEntityIntegerRange(EntityAttribute entityAttribute, String entityIntegerRangeName, Integer minimumIntegerValue,
             Integer maximumIntegerValue, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultEntityIntegerRange = getDefaultEntityIntegerRange(entityAttribute);
@@ -2915,12 +2972,12 @@ public class CoreControl
             isDefault = true;
         }
 
-        var entityIntegerRange = EntityIntegerRangeFactory.getInstance().create();
-        var entityIntegerRangeDetail = EntityIntegerRangeDetailFactory.getInstance().create(entityIntegerRange, entityAttribute,
+        var entityIntegerRange = entityIntegerRangeFactory.create();
+        var entityIntegerRangeDetail = entityIntegerRangeDetailFactory.create(entityIntegerRange, entityAttribute,
                 entityIntegerRangeName, minimumIntegerValue, maximumIntegerValue, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
-        entityIntegerRange = EntityIntegerRangeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, entityIntegerRange.getPrimaryKey());
+        entityIntegerRange = entityIntegerRangeFactory.getEntityFromPK(EntityPermission.READ_WRITE, entityIntegerRange.getPrimaryKey());
         entityIntegerRange.setActiveDetail(entityIntegerRangeDetail);
         entityIntegerRange.setLastDetail(entityIntegerRangeDetail);
         entityIntegerRange.store();
@@ -2933,7 +2990,7 @@ public class CoreControl
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.EntityIntegerRange */
     public EntityIntegerRange getEntityIntegerRangeByEntityInstance(EntityInstance entityInstance) {
         var pk = new EntityIntegerRangePK(entityInstance.getEntityUniqueId());
-        var entityIntegerRange = EntityIntegerRangeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+        var entityIntegerRange = entityIntegerRangeFactory.getEntityFromPK(EntityPermission.READ_ONLY, pk);
         
         return entityIntegerRange;
     }
@@ -2957,11 +3014,11 @@ public class CoreControl
                         "FOR UPDATE";
             }
 
-            var ps = EntityIntegerRangeFactory.getInstance().prepareStatement(query);
+            var ps = entityIntegerRangeFactory.prepareStatement(query);
             
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             
-            entityIntegerRange = EntityIntegerRangeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            entityIntegerRange = entityIntegerRangeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3000,12 +3057,12 @@ public class CoreControl
                         "FOR UPDATE";
             }
 
-            var ps = EntityIntegerRangeFactory.getInstance().prepareStatement(query);
+            var ps = entityIntegerRangeFactory.prepareStatement(query);
             
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setString(2, entityIntegerRangeName);
             
-            entityIntegerRange = EntityIntegerRangeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            entityIntegerRange = entityIntegerRangeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3048,11 +3105,11 @@ public class CoreControl
                         "FOR UPDATE";
             }
 
-            var ps = EntityIntegerRangeFactory.getInstance().prepareStatement(query);
+            var ps = entityIntegerRangeFactory.prepareStatement(query);
             
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             
-            entityIntegerRanges = EntityIntegerRangeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            entityIntegerRanges = entityIntegerRangeFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3077,15 +3134,14 @@ public class CoreControl
     }
 
     public EntityIntegerRangeTransfer getEntityIntegerRangeTransfer(UserVisit userVisit, EntityIntegerRange entityIntegerRange, EntityInstance entityInstance) {
-        return getCoreTransferCaches(userVisit).getEntityIntegerRangeTransferCache().getEntityIntegerRangeTransfer(entityIntegerRange, entityInstance);
+        return entityIntegerRangeTransferCache.getEntityIntegerRangeTransfer(userVisit, entityIntegerRange, entityInstance);
     }
     
     public List<EntityIntegerRangeTransfer> getEntityIntegerRangeTransfers(UserVisit userVisit, Collection<EntityIntegerRange> entityIntegerRanges, EntityInstance entityInstance) {
         List<EntityIntegerRangeTransfer> entityIntegerRangeTransfers = new ArrayList<>(entityIntegerRanges.size());
-        var entityIntegerRangeTransferCache = getCoreTransferCaches(userVisit).getEntityIntegerRangeTransferCache();
 
         entityIntegerRanges.forEach((entityIntegerRange) ->
-                entityIntegerRangeTransfers.add(entityIntegerRangeTransferCache.getEntityIntegerRangeTransfer(entityIntegerRange, entityInstance))
+                entityIntegerRangeTransfers.add(entityIntegerRangeTransferCache.getEntityIntegerRangeTransfer(userVisit, entityIntegerRange, entityInstance))
         );
 
         return entityIntegerRangeTransfers;
@@ -3098,7 +3154,7 @@ public class CoreControl
     private void updateEntityIntegerRangeFromValue(EntityIntegerRangeDetailValue entityIntegerRangeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(entityIntegerRangeDetailValue.hasBeenModified()) {
-            var entityIntegerRange = EntityIntegerRangeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var entityIntegerRange = entityIntegerRangeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      entityIntegerRangeDetailValue.getEntityIntegerRangePK());
             var entityIntegerRangeDetail = entityIntegerRange.getActiveDetailForUpdate();
             
@@ -3129,7 +3185,7 @@ public class CoreControl
                 }
             }
             
-            entityIntegerRangeDetail = EntityIntegerRangeDetailFactory.getInstance().create(entityIntegerRangePK, entityAttribute.getPrimaryKey(), entityIntegerRangeName,
+            entityIntegerRangeDetail = entityIntegerRangeDetailFactory.create(entityIntegerRangePK, entityAttribute.getPrimaryKey(), entityIntegerRangeName,
                     minimumIntegerValue, maximumIntegerValue, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
             entityIntegerRange.setActiveDetail(entityIntegerRangeDetail);
@@ -3225,8 +3281,11 @@ public class CoreControl
     //   Entity Integer Range Descriptions
     // --------------------------------------------------------------------------------
     
+    @Inject
+    protected EntityIntegerRangeDescriptionFactory entityIntegerRangeDescriptionFactory;
+    
     public EntityIntegerRangeDescription createEntityIntegerRangeDescription(EntityIntegerRange entityIntegerRange, Language language, String description, BasePK createdBy) {
-        var entityIntegerRangeDescription = EntityIntegerRangeDescriptionFactory.getInstance().create(entityIntegerRange, language, description, session.START_TIME_LONG,
+        var entityIntegerRangeDescription = entityIntegerRangeDescriptionFactory.create(entityIntegerRange, language, description, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
         sendEvent(entityIntegerRange.getPrimaryKey(), EventTypes.MODIFY, entityIntegerRangeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -3251,13 +3310,13 @@ public class CoreControl
                         "FOR UPDATE";
             }
 
-            var ps = EntityIntegerRangeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = entityIntegerRangeDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, entityIntegerRange.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            entityIntegerRangeDescription = EntityIntegerRangeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            entityIntegerRangeDescription = entityIntegerRangeDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3299,12 +3358,12 @@ public class CoreControl
                         "FOR UPDATE";
             }
 
-            var ps = EntityIntegerRangeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = entityIntegerRangeDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, entityIntegerRange.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            entityIntegerRangeDescriptions = EntityIntegerRangeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            entityIntegerRangeDescriptions = entityIntegerRangeDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3325,7 +3384,7 @@ public class CoreControl
         var entityIntegerRangeDescription = getEntityIntegerRangeDescription(entityIntegerRange, language);
         
         if(entityIntegerRangeDescription == null && !language.getIsDefault()) {
-            entityIntegerRangeDescription = getEntityIntegerRangeDescription(entityIntegerRange, getPartyControl().getDefaultLanguage());
+            entityIntegerRangeDescription = getEntityIntegerRangeDescription(entityIntegerRange, partyControl.getDefaultLanguage());
         }
         
         if(entityIntegerRangeDescription == null) {
@@ -3338,16 +3397,15 @@ public class CoreControl
     }
     
     public EntityIntegerRangeDescriptionTransfer getEntityIntegerRangeDescriptionTransfer(UserVisit userVisit, EntityIntegerRangeDescription entityIntegerRangeDescription, EntityInstance entityInstance) {
-        return getCoreTransferCaches(userVisit).getEntityIntegerRangeDescriptionTransferCache().getEntityIntegerRangeDescriptionTransfer(entityIntegerRangeDescription, entityInstance);
+        return entityIntegerRangeDescriptionTransferCache.getEntityIntegerRangeDescriptionTransfer(userVisit, entityIntegerRangeDescription, entityInstance);
     }
     
     public List<EntityIntegerRangeDescriptionTransfer> getEntityIntegerRangeDescriptionTransfersByEntityIntegerRange(UserVisit userVisit, EntityIntegerRange entityIntegerRange, EntityInstance entityInstance) {
         var entityIntegerRangeDescriptions = getEntityIntegerRangeDescriptionsByEntityIntegerRange(entityIntegerRange);
         List<EntityIntegerRangeDescriptionTransfer> entityIntegerRangeDescriptionTransfers = new ArrayList<>(entityIntegerRangeDescriptions.size());
-        var entityIntegerRangeDescriptionTransferCache = getCoreTransferCaches(userVisit).getEntityIntegerRangeDescriptionTransferCache();
         
         entityIntegerRangeDescriptions.forEach((entityIntegerRangeDescription) ->
-                entityIntegerRangeDescriptionTransfers.add(entityIntegerRangeDescriptionTransferCache.getEntityIntegerRangeDescriptionTransfer(entityIntegerRangeDescription, entityInstance))
+                entityIntegerRangeDescriptionTransfers.add(entityIntegerRangeDescriptionTransferCache.getEntityIntegerRangeDescriptionTransfer(userVisit, entityIntegerRangeDescription, entityInstance))
         );
         
         return entityIntegerRangeDescriptionTransfers;
@@ -3355,7 +3413,7 @@ public class CoreControl
     
     public void updateEntityIntegerRangeDescriptionFromValue(EntityIntegerRangeDescriptionValue entityIntegerRangeDescriptionValue, BasePK updatedBy) {
         if(entityIntegerRangeDescriptionValue.hasBeenModified()) {
-            var entityIntegerRangeDescription = EntityIntegerRangeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, entityIntegerRangeDescriptionValue.getPrimaryKey());
+            var entityIntegerRangeDescription = entityIntegerRangeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE, entityIntegerRangeDescriptionValue.getPrimaryKey());
             
             entityIntegerRangeDescription.setThruTime(session.START_TIME_LONG);
             entityIntegerRangeDescription.store();
@@ -3364,7 +3422,7 @@ public class CoreControl
             var language = entityIntegerRangeDescription.getLanguage();
             var description = entityIntegerRangeDescriptionValue.getDescription();
             
-            entityIntegerRangeDescription = EntityIntegerRangeDescriptionFactory.getInstance().create(entityIntegerRange, language,
+            entityIntegerRangeDescription = entityIntegerRangeDescriptionFactory.create(entityIntegerRange, language,
                     description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
             sendEvent(entityIntegerRange.getPrimaryKey(), EventTypes.MODIFY, entityIntegerRangeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -3389,6 +3447,12 @@ public class CoreControl
     //   Entity Long Ranges
     // --------------------------------------------------------------------------------
     
+    @Inject
+    protected EntityLongRangeFactory entityLongRangeFactory;
+    
+    @Inject
+    protected EntityLongRangeDetailFactory entityLongRangeDetailFactory;
+    
     public EntityLongRange createEntityLongRange(EntityAttribute entityAttribute, String entityLongRangeName, Long minimumLongValue, Long maximumLongValue,
             Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultEntityLongRange = getDefaultEntityLongRange(entityAttribute);
@@ -3403,12 +3467,12 @@ public class CoreControl
             isDefault = true;
         }
 
-        var entityLongRange = EntityLongRangeFactory.getInstance().create();
-        var entityLongRangeDetail = EntityLongRangeDetailFactory.getInstance().create(entityLongRange, entityAttribute, entityLongRangeName,
+        var entityLongRange = entityLongRangeFactory.create();
+        var entityLongRangeDetail = entityLongRangeDetailFactory.create(entityLongRange, entityAttribute, entityLongRangeName,
                 minimumLongValue, maximumLongValue, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
-        entityLongRange = EntityLongRangeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, entityLongRange.getPrimaryKey());
+        entityLongRange = entityLongRangeFactory.getEntityFromPK(EntityPermission.READ_WRITE, entityLongRange.getPrimaryKey());
         entityLongRange.setActiveDetail(entityLongRangeDetail);
         entityLongRange.setLastDetail(entityLongRangeDetail);
         entityLongRange.store();
@@ -3421,7 +3485,7 @@ public class CoreControl
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.EntityLongRange */
     public EntityLongRange getEntityLongRangeByEntityInstance(EntityInstance entityInstance) {
         var pk = new EntityLongRangePK(entityInstance.getEntityUniqueId());
-        var entityLongRange = EntityLongRangeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+        var entityLongRange = entityLongRangeFactory.getEntityFromPK(EntityPermission.READ_ONLY, pk);
         
         return entityLongRange;
     }
@@ -3445,11 +3509,11 @@ public class CoreControl
                         "FOR UPDATE";
             }
 
-            var ps = EntityLongRangeFactory.getInstance().prepareStatement(query);
+            var ps = entityLongRangeFactory.prepareStatement(query);
             
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             
-            entityLongRange = EntityLongRangeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            entityLongRange = entityLongRangeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3488,12 +3552,12 @@ public class CoreControl
                         "FOR UPDATE";
             }
 
-            var ps = EntityLongRangeFactory.getInstance().prepareStatement(query);
+            var ps = entityLongRangeFactory.prepareStatement(query);
             
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setString(2, entityLongRangeName);
             
-            entityLongRange = EntityLongRangeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            entityLongRange = entityLongRangeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3536,11 +3600,11 @@ public class CoreControl
                         "FOR UPDATE";
             }
 
-            var ps = EntityLongRangeFactory.getInstance().prepareStatement(query);
+            var ps = entityLongRangeFactory.prepareStatement(query);
             
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             
-            entityLongRanges = EntityLongRangeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            entityLongRanges = entityLongRangeFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3565,15 +3629,14 @@ public class CoreControl
     }
 
     public EntityLongRangeTransfer getEntityLongRangeTransfer(UserVisit userVisit, EntityLongRange entityLongRange, EntityInstance entityInstance) {
-        return getCoreTransferCaches(userVisit).getEntityLongRangeTransferCache().getEntityLongRangeTransfer(entityLongRange, entityInstance);
+        return entityLongRangeTransferCache.getEntityLongRangeTransfer(userVisit, entityLongRange, entityInstance);
     }
 
     public List<EntityLongRangeTransfer> getEntityLongRangeTransfers(UserVisit userVisit, Collection<EntityLongRange> entityLongRanges, EntityInstance entityInstance) {
         List<EntityLongRangeTransfer> entityLongRangeTransfers = new ArrayList<>(entityLongRanges.size());
-        var entityLongRangeTransferCache = getCoreTransferCaches(userVisit).getEntityLongRangeTransferCache();
 
         entityLongRanges.forEach((entityLongRange) ->
-                entityLongRangeTransfers.add(entityLongRangeTransferCache.getEntityLongRangeTransfer(entityLongRange, entityInstance))
+                entityLongRangeTransfers.add(entityLongRangeTransferCache.getEntityLongRangeTransfer(userVisit, entityLongRange, entityInstance))
         );
 
         return entityLongRangeTransfers;
@@ -3586,7 +3649,7 @@ public class CoreControl
     private void updateEntityLongRangeFromValue(EntityLongRangeDetailValue entityLongRangeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(entityLongRangeDetailValue.hasBeenModified()) {
-            var entityLongRange = EntityLongRangeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var entityLongRange = entityLongRangeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      entityLongRangeDetailValue.getEntityLongRangePK());
             var entityLongRangeDetail = entityLongRange.getActiveDetailForUpdate();
             
@@ -3617,7 +3680,7 @@ public class CoreControl
                 }
             }
             
-            entityLongRangeDetail = EntityLongRangeDetailFactory.getInstance().create(entityLongRangePK, entityAttribute.getPrimaryKey(), entityLongRangeName,
+            entityLongRangeDetail = entityLongRangeDetailFactory.create(entityLongRangePK, entityAttribute.getPrimaryKey(), entityLongRangeName,
                     minimumLongValue, maximumLongValue, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
             entityLongRange.setActiveDetail(entityLongRangeDetail);
@@ -3713,8 +3776,11 @@ public class CoreControl
     //   Entity Long Range Descriptions
     // --------------------------------------------------------------------------------
     
+    @Inject
+    protected EntityLongRangeDescriptionFactory entityLongRangeDescriptionFactory;
+    
     public EntityLongRangeDescription createEntityLongRangeDescription(EntityLongRange entityLongRange, Language language, String description, BasePK createdBy) {
-        var entityLongRangeDescription = EntityLongRangeDescriptionFactory.getInstance().create(entityLongRange, language, description, session.START_TIME_LONG,
+        var entityLongRangeDescription = entityLongRangeDescriptionFactory.create(entityLongRange, language, description, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
         sendEvent(entityLongRange.getPrimaryKey(), EventTypes.MODIFY, entityLongRangeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -3739,13 +3805,13 @@ public class CoreControl
                         "FOR UPDATE";
             }
 
-            var ps = EntityLongRangeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = entityLongRangeDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, entityLongRange.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            entityLongRangeDescription = EntityLongRangeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            entityLongRangeDescription = entityLongRangeDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3787,12 +3853,12 @@ public class CoreControl
                         "FOR UPDATE";
             }
 
-            var ps = EntityLongRangeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = entityLongRangeDescriptionFactory.prepareStatement(query);
             
             ps.setLong(1, entityLongRange.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            entityLongRangeDescriptions = EntityLongRangeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            entityLongRangeDescriptions = entityLongRangeDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3813,7 +3879,7 @@ public class CoreControl
         var entityLongRangeDescription = getEntityLongRangeDescription(entityLongRange, language);
         
         if(entityLongRangeDescription == null && !language.getIsDefault()) {
-            entityLongRangeDescription = getEntityLongRangeDescription(entityLongRange, getPartyControl().getDefaultLanguage());
+            entityLongRangeDescription = getEntityLongRangeDescription(entityLongRange, partyControl.getDefaultLanguage());
         }
         
         if(entityLongRangeDescription == null) {
@@ -3826,16 +3892,15 @@ public class CoreControl
     }
     
     public EntityLongRangeDescriptionTransfer getEntityLongRangeDescriptionTransfer(UserVisit userVisit, EntityLongRangeDescription entityLongRangeDescription, EntityInstance entityInstance) {
-        return getCoreTransferCaches(userVisit).getEntityLongRangeDescriptionTransferCache().getEntityLongRangeDescriptionTransfer(entityLongRangeDescription, entityInstance);
+        return entityLongRangeDescriptionTransferCache.getEntityLongRangeDescriptionTransfer(userVisit, entityLongRangeDescription, entityInstance);
     }
     
     public List<EntityLongRangeDescriptionTransfer> getEntityLongRangeDescriptionTransfersByEntityLongRange(UserVisit userVisit, EntityLongRange entityLongRange, EntityInstance entityInstance) {
         var entityLongRangeDescriptions = getEntityLongRangeDescriptionsByEntityLongRange(entityLongRange);
         List<EntityLongRangeDescriptionTransfer> entityLongRangeDescriptionTransfers = new ArrayList<>(entityLongRangeDescriptions.size());
-        var entityLongRangeDescriptionTransferCache = getCoreTransferCaches(userVisit).getEntityLongRangeDescriptionTransferCache();
         
         entityLongRangeDescriptions.forEach((entityLongRangeDescription) ->
-                entityLongRangeDescriptionTransfers.add(entityLongRangeDescriptionTransferCache.getEntityLongRangeDescriptionTransfer(entityLongRangeDescription, entityInstance))
+                entityLongRangeDescriptionTransfers.add(entityLongRangeDescriptionTransferCache.getEntityLongRangeDescriptionTransfer(userVisit, entityLongRangeDescription, entityInstance))
         );
         
         return entityLongRangeDescriptionTransfers;
@@ -3843,7 +3908,7 @@ public class CoreControl
     
     public void updateEntityLongRangeDescriptionFromValue(EntityLongRangeDescriptionValue entityLongRangeDescriptionValue, BasePK updatedBy) {
         if(entityLongRangeDescriptionValue.hasBeenModified()) {
-            var entityLongRangeDescription = EntityLongRangeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, entityLongRangeDescriptionValue.getPrimaryKey());
+            var entityLongRangeDescription = entityLongRangeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE, entityLongRangeDescriptionValue.getPrimaryKey());
             
             entityLongRangeDescription.setThruTime(session.START_TIME_LONG);
             entityLongRangeDescription.store();
@@ -3852,7 +3917,7 @@ public class CoreControl
             var language = entityLongRangeDescription.getLanguage();
             var description = entityLongRangeDescriptionValue.getDescription();
             
-            entityLongRangeDescription = EntityLongRangeDescriptionFactory.getInstance().create(entityLongRange, language,
+            entityLongRangeDescription = entityLongRangeDescriptionFactory.create(entityLongRange, language,
                     description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
             sendEvent(entityLongRange.getPrimaryKey(), EventTypes.MODIFY, entityLongRangeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -3877,9 +3942,12 @@ public class CoreControl
     //   Entity Boolean Defaults
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected EntityBooleanDefaultFactory entityBooleanDefaultFactory;
+    
     public EntityBooleanDefault createEntityBooleanDefault(EntityAttribute entityAttribute, Boolean booleanAttribute,
             BasePK createdBy) {
-        var entityBooleanDefault = EntityBooleanDefaultFactory.getInstance().create(entityAttribute,
+        var entityBooleanDefault = entityBooleanDefaultFactory.create(entityAttribute,
                 booleanAttribute, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityBooleanDefault.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -3909,7 +3977,7 @@ public class CoreControl
     }
 
     public List<EntityBooleanDefault> getEntityBooleanDefaultHistory(EntityAttribute entityAttribute) {
-        return EntityBooleanDefaultFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityBooleanDefaultHistoryQueries,
+        return entityBooleanDefaultFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityBooleanDefaultHistoryQueries,
                 entityAttribute);
     }
 
@@ -3930,12 +3998,12 @@ public class CoreControl
                         "FOR UPDATE";
             }
 
-            var ps = EntityBooleanDefaultFactory.getInstance().prepareStatement(query);
+            var ps = entityBooleanDefaultFactory.prepareStatement(query);
 
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
 
-            entityBooleanDefault = EntityBooleanDefaultFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            entityBooleanDefault = entityBooleanDefaultFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3960,12 +4028,12 @@ public class CoreControl
     }
 
     public EntityBooleanDefaultTransfer getEntityBooleanDefaultTransfer(UserVisit userVisit, EntityBooleanDefault entityBooleanDefault) {
-        return getCoreTransferCaches(userVisit).getEntityBooleanDefaultTransferCache().getEntityBooleanDefaultTransfer(entityBooleanDefault);
+        return entityBooleanDefaultTransferCache.getEntityBooleanDefaultTransfer(userVisit, entityBooleanDefault);
     }
 
     public void updateEntityBooleanDefaultFromValue(EntityBooleanDefaultValue entityBooleanDefaultValue, BasePK updatedBy) {
         if(entityBooleanDefaultValue.hasBeenModified()) {
-            var entityBooleanDefault = EntityBooleanDefaultFactory.getInstance().getEntityFromValue(session, EntityPermission.READ_WRITE, entityBooleanDefaultValue);
+            var entityBooleanDefault = entityBooleanDefaultFactory.getEntityFromValue(session, EntityPermission.READ_WRITE, entityBooleanDefaultValue);
             var entityAttribute = entityBooleanDefault.getEntityAttribute();
 
             if(entityAttribute.getLastDetail().getTrackRevisions()) {
@@ -3975,7 +4043,7 @@ public class CoreControl
                 entityBooleanDefault.remove();
             }
 
-            entityBooleanDefault = EntityBooleanDefaultFactory.getInstance().create(entityAttribute,
+            entityBooleanDefault = entityBooleanDefaultFactory.create(entityAttribute,
                     entityBooleanDefaultValue.getBooleanAttribute(), session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
 
@@ -4007,6 +4075,9 @@ public class CoreControl
     //   Entity Boolean Attributes
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected EntityBooleanAttributeFactory entityBooleanAttributeFactory;
+    
     public EntityBooleanAttribute createEntityBooleanAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             Boolean booleanAttribute, BasePK createdBy) {
         return createEntityBooleanAttribute(entityAttribute.getPrimaryKey(), entityInstance, booleanAttribute,
@@ -4015,7 +4086,7 @@ public class CoreControl
 
     public EntityBooleanAttribute createEntityBooleanAttribute(EntityAttributePK entityAttribute, EntityInstance entityInstance,
             Boolean booleanAttribute, BasePK createdBy) {
-        var entityBooleanAttribute = EntityBooleanAttributeFactory.getInstance().create(entityAttribute,
+        var entityBooleanAttribute = entityBooleanAttributeFactory.create(entityAttribute,
                 entityInstance.getPrimaryKey(), booleanAttribute, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute, EventTypes.CREATE, createdBy);
@@ -4034,7 +4105,7 @@ public class CoreControl
     private static final Map<EntityPermission, String> getEntityBooleanAttributeHistoryQueries;
 
     static {
-        var queryMap = Map.of(
+        getEntityBooleanAttributeHistoryQueries = Map.of(
                 EntityPermission.READ_ONLY, """
                 SELECT _ALL_
                 FROM entitybooleanattributes
@@ -4042,11 +4113,10 @@ public class CoreControl
                 ORDER BY enbla_thrutime
                 _LIMIT_
                 """);
-        getEntityBooleanAttributeHistoryQueries = Collections.unmodifiableMap(queryMap);
     }
 
     public List<EntityBooleanAttribute> getEntityBooleanAttributeHistory(EntityAttribute entityAttribute, EntityInstance entityInstance) {
-        return EntityBooleanAttributeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityBooleanAttributeHistoryQueries,
+        return entityBooleanAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityBooleanAttributeHistoryQueries,
                 entityAttribute, entityInstance);
     }
     
@@ -4068,13 +4138,13 @@ public class CoreControl
                         "FOR UPDATE";
             }
 
-            var ps = EntityBooleanAttributeFactory.getInstance().prepareStatement(query);
+            var ps = entityBooleanAttributeFactory.prepareStatement(query);
             
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            entityBooleanAttribute = EntityBooleanAttributeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            entityBooleanAttribute = entityBooleanAttributeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4102,7 +4172,7 @@ public class CoreControl
         List<EntityBooleanAttribute> entityBooleanAttributes;
         
         try {
-            var ps = EntityBooleanAttributeFactory.getInstance().prepareStatement(
+            var ps = entityBooleanAttributeFactory.prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM entitybooleanattributes " +
                     "WHERE enbla_ena_entityattributeid = ? AND enbla_thrutime = ? " +
@@ -4111,7 +4181,7 @@ public class CoreControl
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            entityBooleanAttributes = EntityBooleanAttributeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
+            entityBooleanAttributes = entityBooleanAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4123,7 +4193,7 @@ public class CoreControl
         List<EntityBooleanAttribute> entityBooleanAttributes;
         
         try {
-            var ps = EntityBooleanAttributeFactory.getInstance().prepareStatement(
+            var ps = entityBooleanAttributeFactory.prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM entitybooleanattributes " +
                     "WHERE enbla_eni_entityinstanceid = ? AND enbla_thrutime = ? " +
@@ -4132,7 +4202,7 @@ public class CoreControl
             ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            entityBooleanAttributes = EntityBooleanAttributeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
+            entityBooleanAttributes = entityBooleanAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4141,12 +4211,12 @@ public class CoreControl
     }
     
     public EntityBooleanAttributeTransfer getEntityBooleanAttributeTransfer(UserVisit userVisit, EntityBooleanAttribute entityBooleanAttribute, EntityInstance entityInstance) {
-        return getCoreTransferCaches(userVisit).getEntityBooleanAttributeTransferCache().getEntityBooleanAttributeTransfer(entityBooleanAttribute, entityInstance);
+        return entityBooleanAttributeTransferCache.getEntityBooleanAttributeTransfer(userVisit, entityBooleanAttribute, entityInstance);
     }
     
     public void updateEntityBooleanAttributeFromValue(EntityBooleanAttributeValue entityBooleanAttributeValue, BasePK updatedBy) {
         if(entityBooleanAttributeValue.hasBeenModified()) {
-            var entityBooleanAttribute = EntityBooleanAttributeFactory.getInstance().getEntityFromValue(session, EntityPermission.READ_WRITE, entityBooleanAttributeValue);
+            var entityBooleanAttribute = entityBooleanAttributeFactory.getEntityFromValue(session, EntityPermission.READ_WRITE, entityBooleanAttributeValue);
             var entityAttribute = entityBooleanAttribute.getEntityAttribute();
             var entityInstance = entityBooleanAttribute.getEntityInstance();
             
@@ -4157,7 +4227,7 @@ public class CoreControl
                 entityBooleanAttribute.remove();
             }
             
-            EntityBooleanAttributeFactory.getInstance().create(entityAttribute, entityInstance, entityBooleanAttributeValue.getBooleanAttribute(), session.START_TIME_LONG,
+            entityBooleanAttributeFactory.create(entityAttribute, entityInstance, entityBooleanAttributeValue.getBooleanAttribute(), session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
             
             sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -4195,9 +4265,12 @@ public class CoreControl
     //   Entity Date Defaults
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected EntityDateDefaultFactory entityDateDefaultFactory;
+    
     public EntityDateDefault createEntityDateDefault(EntityAttribute entityAttribute, Integer dateAttribute,
             BasePK createdBy) {
-        var entityDateDefault = EntityDateDefaultFactory.getInstance().create(entityAttribute,
+        var entityDateDefault = entityDateDefaultFactory.create(entityAttribute,
                 dateAttribute, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityDateDefault.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -4227,7 +4300,7 @@ public class CoreControl
     }
 
     public List<EntityDateDefault> getEntityDateDefaultHistory(EntityAttribute entityAttribute) {
-        return EntityDateDefaultFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityDateDefaultHistoryQueries,
+        return entityDateDefaultFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityDateDefaultHistoryQueries,
                 entityAttribute);
     }
 
@@ -4248,12 +4321,12 @@ public class CoreControl
                         "FOR UPDATE";
             }
 
-            var ps = EntityDateDefaultFactory.getInstance().prepareStatement(query);
+            var ps = entityDateDefaultFactory.prepareStatement(query);
 
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
 
-            entityDateDefault = EntityDateDefaultFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            entityDateDefault = entityDateDefaultFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4278,12 +4351,12 @@ public class CoreControl
     }
 
     public EntityDateDefaultTransfer getEntityDateDefaultTransfer(UserVisit userVisit, EntityDateDefault entityDateDefault) {
-        return getCoreTransferCaches(userVisit).getEntityDateDefaultTransferCache().getEntityDateDefaultTransfer(entityDateDefault);
+        return entityDateDefaultTransferCache.getEntityDateDefaultTransfer(userVisit, entityDateDefault);
     }
 
     public void updateEntityDateDefaultFromValue(EntityDateDefaultValue entityDateDefaultValue, BasePK updatedBy) {
         if(entityDateDefaultValue.hasBeenModified()) {
-            var entityDateDefault = EntityDateDefaultFactory.getInstance().getEntityFromValue(session, EntityPermission.READ_WRITE, entityDateDefaultValue);
+            var entityDateDefault = entityDateDefaultFactory.getEntityFromValue(session, EntityPermission.READ_WRITE, entityDateDefaultValue);
             var entityAttribute = entityDateDefault.getEntityAttribute();
 
             if(entityAttribute.getLastDetail().getTrackRevisions()) {
@@ -4293,7 +4366,7 @@ public class CoreControl
                 entityDateDefault.remove();
             }
 
-            entityDateDefault = EntityDateDefaultFactory.getInstance().create(entityAttribute,
+            entityDateDefault = entityDateDefaultFactory.create(entityAttribute,
                     entityDateDefaultValue.getDateAttribute(), session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
 
@@ -4325,6 +4398,9 @@ public class CoreControl
     //   Entity Date Attributes
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected EntityDateAttributeFactory entityDateAttributeFactory;
+    
     public EntityDateAttribute createEntityDateAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             Integer dateAttribute, BasePK createdBy) {
         return createEntityDateAttribute(entityAttribute.getPrimaryKey(), entityInstance, dateAttribute,
@@ -4333,7 +4409,7 @@ public class CoreControl
 
     public EntityDateAttribute createEntityDateAttribute(EntityAttributePK entityAttribute, EntityInstance entityInstance,
             Integer dateAttribute, BasePK createdBy) {
-        var entityDateAttribute = EntityDateAttributeFactory.getInstance().create(entityAttribute,
+        var entityDateAttribute = entityDateAttributeFactory.create(entityAttribute,
                 entityInstance.getPrimaryKey(), dateAttribute, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute, EventTypes.CREATE, createdBy);
@@ -4352,7 +4428,7 @@ public class CoreControl
     private static final Map<EntityPermission, String> getEntityDateAttributeHistoryQueries;
 
     static {
-        var queryMap = Map.of(
+        getEntityDateAttributeHistoryQueries = Map.of(
                 EntityPermission.READ_ONLY, """
                 SELECT _ALL_
                 FROM entitydateattributes
@@ -4360,11 +4436,10 @@ public class CoreControl
                 ORDER BY enda_thrutime
                 _LIMIT_
                 """);
-        getEntityDateAttributeHistoryQueries = Collections.unmodifiableMap(queryMap);
     }
 
     public List<EntityDateAttribute> getEntityDateAttributeHistory(EntityAttribute entityAttribute, EntityInstance entityInstance) {
-        return EntityDateAttributeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityDateAttributeHistoryQueries,
+        return entityDateAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityDateAttributeHistoryQueries,
                 entityAttribute, entityInstance);
     }
 
@@ -4385,13 +4460,13 @@ public class CoreControl
                         "FOR UPDATE";
             }
 
-            var ps = EntityDateAttributeFactory.getInstance().prepareStatement(query);
+            var ps = entityDateAttributeFactory.prepareStatement(query);
             
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            entityDateAttribute = EntityDateAttributeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            entityDateAttribute = entityDateAttributeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4419,7 +4494,7 @@ public class CoreControl
         List<EntityDateAttribute> entityDateAttributes;
         
         try {
-            var ps = EntityDateAttributeFactory.getInstance().prepareStatement(
+            var ps = entityDateAttributeFactory.prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM entitydateattributes " +
                     "WHERE enda_ena_entityattributeid = ? AND enda_thrutime = ? " +
@@ -4428,7 +4503,7 @@ public class CoreControl
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            entityDateAttributes = EntityDateAttributeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
+            entityDateAttributes = entityDateAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4440,7 +4515,7 @@ public class CoreControl
         List<EntityDateAttribute> entityDateAttributes;
         
         try {
-            var ps = EntityDateAttributeFactory.getInstance().prepareStatement(
+            var ps = entityDateAttributeFactory.prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM entitydateattributes " +
                     "WHERE enda_eni_entityinstanceid = ? AND enda_thrutime = ? " +
@@ -4449,7 +4524,7 @@ public class CoreControl
             ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            entityDateAttributes = EntityDateAttributeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
+            entityDateAttributes = entityDateAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4458,12 +4533,12 @@ public class CoreControl
     }
     
     public EntityDateAttributeTransfer getEntityDateAttributeTransfer(UserVisit userVisit, EntityDateAttribute entityDateAttribute, EntityInstance entityInstance) {
-        return getCoreTransferCaches(userVisit).getEntityDateAttributeTransferCache().getEntityDateAttributeTransfer(entityDateAttribute, entityInstance);
+        return entityDateAttributeTransferCache.getEntityDateAttributeTransfer(userVisit, entityDateAttribute, entityInstance);
     }
     
     public void updateEntityDateAttributeFromValue(EntityDateAttributeValue entityDateAttributeValue, BasePK updatedBy) {
         if(entityDateAttributeValue.hasBeenModified()) {
-            var entityDateAttribute = EntityDateAttributeFactory.getInstance().getEntityFromValue(session, EntityPermission.READ_WRITE, entityDateAttributeValue);
+            var entityDateAttribute = entityDateAttributeFactory.getEntityFromValue(session, EntityPermission.READ_WRITE, entityDateAttributeValue);
             var entityAttribute = entityDateAttribute.getEntityAttribute();
             var entityInstance = entityDateAttribute.getEntityInstance();
             
@@ -4474,7 +4549,7 @@ public class CoreControl
                 entityDateAttribute.remove();
             }
             
-            EntityDateAttributeFactory.getInstance().create(entityAttribute, entityInstance, entityDateAttributeValue.getDateAttribute(), session.START_TIME_LONG,
+            entityDateAttributeFactory.create(entityAttribute, entityInstance, entityDateAttributeValue.getDateAttribute(), session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
             
             sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -4512,9 +4587,12 @@ public class CoreControl
     //   Entity Integer Defaults
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected EntityIntegerDefaultFactory entityIntegerDefaultFactory;
+    
     public EntityIntegerDefault createEntityIntegerDefault(EntityAttribute entityAttribute, Integer integerAttribute,
             BasePK createdBy) {
-        var entityIntegerDefault = EntityIntegerDefaultFactory.getInstance().create(entityAttribute,
+        var entityIntegerDefault = entityIntegerDefaultFactory.create(entityAttribute,
                 integerAttribute, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityIntegerDefault.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -4544,7 +4622,7 @@ public class CoreControl
     }
 
     public List<EntityIntegerDefault> getEntityIntegerDefaultHistory(EntityAttribute entityAttribute) {
-        return EntityIntegerDefaultFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityIntegerDefaultHistoryQueries,
+        return entityIntegerDefaultFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityIntegerDefaultHistoryQueries,
                 entityAttribute);
     }
 
@@ -4565,12 +4643,12 @@ public class CoreControl
                         "FOR UPDATE";
             }
 
-            var ps = EntityIntegerDefaultFactory.getInstance().prepareStatement(query);
+            var ps = entityIntegerDefaultFactory.prepareStatement(query);
 
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
 
-            entityIntegerDefault = EntityIntegerDefaultFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            entityIntegerDefault = entityIntegerDefaultFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4595,12 +4673,12 @@ public class CoreControl
     }
 
     public EntityIntegerDefaultTransfer getEntityIntegerDefaultTransfer(UserVisit userVisit, EntityIntegerDefault entityIntegerDefault) {
-        return getCoreTransferCaches(userVisit).getEntityIntegerDefaultTransferCache().getEntityIntegerDefaultTransfer(entityIntegerDefault);
+        return entityIntegerDefaultTransferCache.getEntityIntegerDefaultTransfer(userVisit, entityIntegerDefault);
     }
 
     public void updateEntityIntegerDefaultFromValue(EntityIntegerDefaultValue entityIntegerDefaultValue, BasePK updatedBy) {
         if(entityIntegerDefaultValue.hasBeenModified()) {
-            var entityIntegerDefault = EntityIntegerDefaultFactory.getInstance().getEntityFromValue(session, EntityPermission.READ_WRITE, entityIntegerDefaultValue);
+            var entityIntegerDefault = entityIntegerDefaultFactory.getEntityFromValue(session, EntityPermission.READ_WRITE, entityIntegerDefaultValue);
             var entityAttribute = entityIntegerDefault.getEntityAttribute();
 
             if(entityAttribute.getLastDetail().getTrackRevisions()) {
@@ -4610,7 +4688,7 @@ public class CoreControl
                 entityIntegerDefault.remove();
             }
 
-            entityIntegerDefault = EntityIntegerDefaultFactory.getInstance().create(entityAttribute,
+            entityIntegerDefault = entityIntegerDefaultFactory.create(entityAttribute,
                     entityIntegerDefaultValue.getIntegerAttribute(), session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
 
@@ -4642,6 +4720,9 @@ public class CoreControl
     //   Entity Integer Attributes
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected EntityIntegerAttributeFactory entityIntegerAttributeFactory;
+    
     public EntityIntegerAttribute createEntityIntegerAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             Integer integerAttribute, BasePK createdBy) {
         return createEntityIntegerAttribute(entityAttribute.getPrimaryKey(), entityInstance, integerAttribute,
@@ -4650,7 +4731,7 @@ public class CoreControl
 
     public EntityIntegerAttribute createEntityIntegerAttribute(EntityAttributePK entityAttribute, EntityInstance entityInstance,
             Integer integerAttribute, BasePK createdBy) {
-        var entityIntegerAttribute = EntityIntegerAttributeFactory.getInstance().create(entityAttribute,
+        var entityIntegerAttribute = entityIntegerAttributeFactory.create(entityAttribute,
                 entityInstance.getPrimaryKey(), integerAttribute, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute, EventTypes.CREATE, createdBy);
@@ -4669,7 +4750,7 @@ public class CoreControl
     private static final Map<EntityPermission, String> getEntityIntegerAttributeHistoryQueries;
 
     static {
-        var queryMap = Map.of(
+        getEntityIntegerAttributeHistoryQueries = Map.of(
                 EntityPermission.READ_ONLY, """
                 SELECT _ALL_
                 FROM entityintegerattributes
@@ -4677,11 +4758,10 @@ public class CoreControl
                 ORDER BY enia_thrutime
                 _LIMIT_
                 """);
-        getEntityIntegerAttributeHistoryQueries = Collections.unmodifiableMap(queryMap);
     }
 
     public List<EntityIntegerAttribute> getEntityIntegerAttributeHistory(EntityAttribute entityAttribute, EntityInstance entityInstance) {
-        return EntityIntegerAttributeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityIntegerAttributeHistoryQueries,
+        return entityIntegerAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityIntegerAttributeHistoryQueries,
                 entityAttribute, entityInstance);
     }
 
@@ -4703,13 +4783,13 @@ public class CoreControl
                         "FOR UPDATE";
             }
 
-            var ps = EntityIntegerAttributeFactory.getInstance().prepareStatement(query);
+            var ps = entityIntegerAttributeFactory.prepareStatement(query);
             
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            entityIntegerAttribute = EntityIntegerAttributeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            entityIntegerAttribute = entityIntegerAttributeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4737,7 +4817,7 @@ public class CoreControl
         List<EntityIntegerAttribute> entityIntegerAttributes;
         
         try {
-            var ps = EntityIntegerAttributeFactory.getInstance().prepareStatement(
+            var ps = entityIntegerAttributeFactory.prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM entityintegerattributes " +
                     "WHERE enia_ena_entityattributeid = ? AND enia_thrutime = ? " +
@@ -4746,7 +4826,7 @@ public class CoreControl
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            entityIntegerAttributes = EntityIntegerAttributeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
+            entityIntegerAttributes = entityIntegerAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4758,7 +4838,7 @@ public class CoreControl
         List<EntityIntegerAttribute> entityIntegerAttributes;
         
         try {
-            var ps = EntityIntegerAttributeFactory.getInstance().prepareStatement(
+            var ps = entityIntegerAttributeFactory.prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM entityintegerattributes " +
                     "WHERE enia_eni_entityinstanceid = ? AND enia_thrutime = ? " +
@@ -4767,7 +4847,7 @@ public class CoreControl
             ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            entityIntegerAttributes = EntityIntegerAttributeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
+            entityIntegerAttributes = entityIntegerAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4776,12 +4856,12 @@ public class CoreControl
     }
     
     public EntityIntegerAttributeTransfer getEntityIntegerAttributeTransfer(UserVisit userVisit, EntityIntegerAttribute entityIntegerAttribute, EntityInstance entityInstance) {
-        return getCoreTransferCaches(userVisit).getEntityIntegerAttributeTransferCache().getEntityIntegerAttributeTransfer(entityIntegerAttribute, entityInstance);
+        return entityIntegerAttributeTransferCache.getEntityIntegerAttributeTransfer(userVisit, entityIntegerAttribute, entityInstance);
     }
     
     public void updateEntityIntegerAttributeFromValue(EntityIntegerAttributeValue entityIntegerAttributeValue, BasePK updatedBy) {
         if(entityIntegerAttributeValue.hasBeenModified()) {
-            var entityIntegerAttribute = EntityIntegerAttributeFactory.getInstance().getEntityFromValue(session, EntityPermission.READ_WRITE, entityIntegerAttributeValue);
+            var entityIntegerAttribute = entityIntegerAttributeFactory.getEntityFromValue(session, EntityPermission.READ_WRITE, entityIntegerAttributeValue);
             var entityAttribute = entityIntegerAttribute.getEntityAttribute();
             var entityInstance = entityIntegerAttribute.getEntityInstance();
             
@@ -4792,7 +4872,7 @@ public class CoreControl
                 entityIntegerAttribute.remove();
             }
             
-            EntityIntegerAttributeFactory.getInstance().create(entityAttribute, entityInstance, entityIntegerAttributeValue.getIntegerAttribute(), session.START_TIME_LONG,
+            entityIntegerAttributeFactory.create(entityAttribute, entityInstance, entityIntegerAttributeValue.getIntegerAttribute(), session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
             
             sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -4829,9 +4909,12 @@ public class CoreControl
     //   Entity List Item Defaults
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected EntityListItemDefaultFactory entityListItemDefaultFactory;
+    
     public EntityListItemDefault createEntityListItemDefault(EntityAttribute entityAttribute,
             EntityListItem entityListItem, BasePK createdBy) {
-        var entityListItemDefault = EntityListItemDefaultFactory.getInstance().create(session,
+        var entityListItemDefault = entityListItemDefaultFactory.create(session,
                 entityAttribute, entityListItem, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityListItemDefault.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -4861,7 +4944,7 @@ public class CoreControl
     }
 
     public List<EntityListItemDefault> getEntityListItemDefaultHistory(EntityAttribute entityAttribute) {
-        return EntityListItemDefaultFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityListItemDefaultHistoryQueries,
+        return entityListItemDefaultFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityListItemDefaultHistoryQueries,
                 entityAttribute);
     }
 
@@ -4883,12 +4966,12 @@ public class CoreControl
                         "FOR UPDATE";
             }
 
-            var ps = EntityListItemDefaultFactory.getInstance().prepareStatement(query);
+            var ps = entityListItemDefaultFactory.prepareStatement(query);
 
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
 
-            entityListItemDefault = EntityListItemDefaultFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            entityListItemDefault = entityListItemDefaultFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4929,12 +5012,12 @@ public class CoreControl
                         + "FOR UPDATE";
             }
 
-            var ps = EntityListItemDefaultFactory.getInstance().prepareStatement(query);
+            var ps = entityListItemDefaultFactory.prepareStatement(query);
 
             ps.setLong(1, entityListItem.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
 
-            entityListItemDefault = EntityListItemDefaultFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            entityListItemDefault = entityListItemDefaultFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4951,12 +5034,12 @@ public class CoreControl
     }
 
     public EntityListItemDefaultTransfer getEntityListItemDefaultTransfer(UserVisit userVisit, EntityListItemDefault entityListItemDefault) {
-        return getCoreTransferCaches(userVisit).getEntityListItemDefaultTransferCache().getEntityListItemDefaultTransfer(entityListItemDefault);
+        return entityListItemDefaultTransferCache.getEntityListItemDefaultTransfer(userVisit, entityListItemDefault);
     }
 
     public void updateEntityListItemDefaultFromValue(EntityListItemDefaultValue entityListItemDefaultValue, BasePK updatedBy) {
         if(entityListItemDefaultValue.hasBeenModified()) {
-            var entityListItemDefault = EntityListItemDefaultFactory.getInstance().getEntityFromValue(session, EntityPermission.READ_WRITE, entityListItemDefaultValue);
+            var entityListItemDefault = entityListItemDefaultFactory.getEntityFromValue(session, EntityPermission.READ_WRITE, entityListItemDefaultValue);
             var entityAttribute = entityListItemDefault.getEntityAttribute();
 
             if(entityAttribute.getLastDetail().getTrackRevisions()) {
@@ -4966,7 +5049,7 @@ public class CoreControl
                 entityListItemDefault.remove();
             }
 
-            entityListItemDefault = EntityListItemDefaultFactory.getInstance().create(entityAttribute.getPrimaryKey(),
+            entityListItemDefault = entityListItemDefaultFactory.create(entityAttribute.getPrimaryKey(),
                     entityListItemDefaultValue.getEntityListItemPK(), session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
             sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityListItemDefault.getPrimaryKey(), EventTypes.DELETE, updatedBy);
@@ -4997,6 +5080,9 @@ public class CoreControl
     //   Entity List Item Attributes
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected EntityListItemAttributeFactory entityListItemAttributeFactory;
+    
     public EntityListItemAttribute createEntityListItemAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             EntityListItem entityListItem, BasePK createdBy) {
         return createEntityListItemAttribute(entityAttribute.getPrimaryKey(), entityInstance, entityListItem, createdBy);
@@ -5004,7 +5090,7 @@ public class CoreControl
 
     public EntityListItemAttribute createEntityListItemAttribute(EntityAttributePK entityAttribute, EntityInstance entityInstance,
             EntityListItem entityListItem, BasePK createdBy) {
-        var entityListItemAttribute = EntityListItemAttributeFactory.getInstance().create(entityAttribute,
+        var entityListItemAttribute = entityListItemAttributeFactory.create(entityAttribute,
                 entityInstance.getPrimaryKey(), entityListItem.getPrimaryKey(), session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
 
@@ -5024,7 +5110,7 @@ public class CoreControl
     private static final Map<EntityPermission, String> getEntityListItemAttributeHistoryQueries;
 
     static {
-        var queryMap = Map.of(
+        getEntityListItemAttributeHistoryQueries = Map.of(
                 EntityPermission.READ_ONLY, """
                 SELECT _ALL_
                 FROM entitylistitemattributes
@@ -5032,11 +5118,10 @@ public class CoreControl
                 ORDER BY ela_thrutime
                 _LIMIT_
                 """);
-        getEntityListItemAttributeHistoryQueries = Collections.unmodifiableMap(queryMap);
     }
 
     public List<EntityListItemAttribute> getEntityListItemAttributeHistory(EntityAttribute entityAttribute, EntityInstance entityInstance) {
-        return EntityListItemAttributeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityListItemAttributeHistoryQueries,
+        return entityListItemAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityListItemAttributeHistoryQueries,
                 entityAttribute, entityInstance);
     }
 
@@ -5058,13 +5143,13 @@ public class CoreControl
                         "FOR UPDATE";
             }
 
-            var ps = EntityListItemAttributeFactory.getInstance().prepareStatement(query);
+            var ps = entityListItemAttributeFactory.prepareStatement(query);
             
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            entityListItemAttribute = EntityListItemAttributeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            entityListItemAttribute = entityListItemAttributeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -5107,12 +5192,12 @@ public class CoreControl
                         + "FOR UPDATE";
             }
 
-            var ps = EntityListItemAttributeFactory.getInstance().prepareStatement(query);
+            var ps = entityListItemAttributeFactory.prepareStatement(query);
             
             ps.setLong(1, entityListItem.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            entityListItemAttributes = EntityListItemAttributeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            entityListItemAttributes = entityListItemAttributeFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -5132,7 +5217,7 @@ public class CoreControl
         List<EntityListItemAttribute> entityListItemAttributes;
         
         try {
-            var ps = EntityListItemAttributeFactory.getInstance().prepareStatement(
+            var ps = entityListItemAttributeFactory.prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM entitylistitemattributes " +
                     "WHERE ela_eni_entityinstanceid = ? AND ela_thrutime = ? " +
@@ -5141,7 +5226,7 @@ public class CoreControl
             ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            entityListItemAttributes = EntityListItemAttributeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
+            entityListItemAttributes = entityListItemAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -5150,12 +5235,12 @@ public class CoreControl
     }
     
     public EntityListItemAttributeTransfer getEntityListItemAttributeTransfer(UserVisit userVisit, EntityListItemAttribute entityListItemAttribute, EntityInstance entityInstance) {
-        return getCoreTransferCaches(userVisit).getEntityListItemAttributeTransferCache().getEntityListItemAttributeTransfer(entityListItemAttribute, entityInstance);
+        return entityListItemAttributeTransferCache.getEntityListItemAttributeTransfer(userVisit, entityListItemAttribute, entityInstance);
     }
     
     public void updateEntityListItemAttributeFromValue(EntityListItemAttributeValue entityListItemAttributeValue, BasePK updatedBy) {
         if(entityListItemAttributeValue.hasBeenModified()) {
-            var entityListItemAttribute = EntityListItemAttributeFactory.getInstance().getEntityFromValue(session, EntityPermission.READ_WRITE, entityListItemAttributeValue);
+            var entityListItemAttribute = entityListItemAttributeFactory.getEntityFromValue(session, EntityPermission.READ_WRITE, entityListItemAttributeValue);
             var entityAttribute = entityListItemAttribute.getEntityAttribute();
             var entityInstance = entityListItemAttribute.getEntityInstance();
             
@@ -5166,7 +5251,7 @@ public class CoreControl
                 entityListItemAttribute.remove();
             }
             
-            EntityListItemAttributeFactory.getInstance().create(entityAttribute.getPrimaryKey(), entityInstance.getPrimaryKey(), entityListItemAttributeValue.getEntityListItemPK(),
+            entityListItemAttributeFactory.create(entityAttribute.getPrimaryKey(), entityInstance.getPrimaryKey(), entityListItemAttributeValue.getEntityListItemPK(),
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
             sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -5204,9 +5289,12 @@ public class CoreControl
     //   Entity Long Defaults
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected EntityLongDefaultFactory entityLongDefaultFactory;
+    
     public EntityLongDefault createEntityLongDefault(EntityAttribute entityAttribute, Long longAttribute,
             BasePK createdBy) {
-        var entityLongDefault = EntityLongDefaultFactory.getInstance().create(entityAttribute,
+        var entityLongDefault = entityLongDefaultFactory.create(entityAttribute,
                 longAttribute, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityLongDefault.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -5236,7 +5324,7 @@ public class CoreControl
     }
 
     public List<EntityLongDefault> getEntityLongDefaultHistory(EntityAttribute entityAttribute) {
-        return EntityLongDefaultFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityLongDefaultHistoryQueries,
+        return entityLongDefaultFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityLongDefaultHistoryQueries,
                 entityAttribute);
     }
 
@@ -5257,12 +5345,12 @@ public class CoreControl
                         "FOR UPDATE";
             }
 
-            var ps = EntityLongDefaultFactory.getInstance().prepareStatement(query);
+            var ps = entityLongDefaultFactory.prepareStatement(query);
 
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
 
-            entityLongDefault = EntityLongDefaultFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            entityLongDefault = entityLongDefaultFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -5287,12 +5375,12 @@ public class CoreControl
     }
 
     public EntityLongDefaultTransfer getEntityLongDefaultTransfer(UserVisit userVisit, EntityLongDefault entityLongDefault) {
-        return getCoreTransferCaches(userVisit).getEntityLongDefaultTransferCache().getEntityLongDefaultTransfer(entityLongDefault);
+        return entityLongDefaultTransferCache.getEntityLongDefaultTransfer(userVisit, entityLongDefault);
     }
 
     public void updateEntityLongDefaultFromValue(EntityLongDefaultValue entityLongDefaultValue, BasePK updatedBy) {
         if(entityLongDefaultValue.hasBeenModified()) {
-            var entityLongDefault = EntityLongDefaultFactory.getInstance().getEntityFromValue(session, EntityPermission.READ_WRITE, entityLongDefaultValue);
+            var entityLongDefault = entityLongDefaultFactory.getEntityFromValue(session, EntityPermission.READ_WRITE, entityLongDefaultValue);
             var entityAttribute = entityLongDefault.getEntityAttribute();
 
             if(entityAttribute.getLastDetail().getTrackRevisions()) {
@@ -5302,7 +5390,7 @@ public class CoreControl
                 entityLongDefault.remove();
             }
 
-            entityLongDefault = EntityLongDefaultFactory.getInstance().create(entityAttribute,
+            entityLongDefault = entityLongDefaultFactory.create(entityAttribute,
                     entityLongDefaultValue.getLongAttribute(), session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
 
@@ -5334,6 +5422,9 @@ public class CoreControl
     //   Entity Long Attributes
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected EntityLongAttributeFactory entityLongAttributeFactory;
+    
     public EntityLongAttribute createEntityLongAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             Long longAttribute, BasePK createdBy) {
         return createEntityLongAttribute(entityAttribute.getPrimaryKey(), entityInstance, longAttribute,
@@ -5342,7 +5433,7 @@ public class CoreControl
 
     public EntityLongAttribute createEntityLongAttribute(EntityAttributePK entityAttribute, EntityInstance entityInstance,
             Long longAttribute, BasePK createdBy) {
-        var entityLongAttribute = EntityLongAttributeFactory.getInstance().create(entityAttribute,
+        var entityLongAttribute = entityLongAttributeFactory.create(entityAttribute,
                 entityInstance.getPrimaryKey(), longAttribute, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute, EventTypes.CREATE, createdBy);
@@ -5361,7 +5452,7 @@ public class CoreControl
     private static final Map<EntityPermission, String> getEntityLongAttributeHistoryQueries;
 
     static {
-        var queryMap = Map.of(
+        getEntityLongAttributeHistoryQueries = Map.of(
                 EntityPermission.READ_ONLY, """
                 SELECT _ALL_
                 FROM entitylongattributes
@@ -5369,11 +5460,10 @@ public class CoreControl
                 ORDER BY enla_thrutime
                 _LIMIT_
                 """);
-        getEntityLongAttributeHistoryQueries = Collections.unmodifiableMap(queryMap);
     }
 
     public List<EntityLongAttribute> getEntityLongAttributeHistory(EntityAttribute entityAttribute, EntityInstance entityInstance) {
-        return EntityLongAttributeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityLongAttributeHistoryQueries,
+        return entityLongAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityLongAttributeHistoryQueries,
                 entityAttribute, entityInstance);
     }
 
@@ -5395,13 +5485,13 @@ public class CoreControl
                         "FOR UPDATE";
             }
 
-            var ps = EntityLongAttributeFactory.getInstance().prepareStatement(query);
+            var ps = entityLongAttributeFactory.prepareStatement(query);
             
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            entityLongAttribute = EntityLongAttributeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            entityLongAttribute = entityLongAttributeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -5429,7 +5519,7 @@ public class CoreControl
         List<EntityLongAttribute> entityLongAttributes;
         
         try {
-            var ps = EntityLongAttributeFactory.getInstance().prepareStatement(
+            var ps = entityLongAttributeFactory.prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM entitylongattributes " +
                     "WHERE enla_ena_entityattributeid = ? AND enla_thrutime = ? " +
@@ -5438,7 +5528,7 @@ public class CoreControl
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            entityLongAttributes = EntityLongAttributeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
+            entityLongAttributes = entityLongAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -5450,7 +5540,7 @@ public class CoreControl
         List<EntityLongAttribute> entityLongAttributes;
         
         try {
-            var ps = EntityLongAttributeFactory.getInstance().prepareStatement(
+            var ps = entityLongAttributeFactory.prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM entitylongattributes " +
                     "WHERE enla_eni_entityinstanceid = ? AND enla_thrutime = ? " +
@@ -5459,7 +5549,7 @@ public class CoreControl
             ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            entityLongAttributes = EntityLongAttributeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
+            entityLongAttributes = entityLongAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -5468,12 +5558,12 @@ public class CoreControl
     }
     
     public EntityLongAttributeTransfer getEntityLongAttributeTransfer(UserVisit userVisit, EntityLongAttribute entityLongAttribute, EntityInstance entityInstance) {
-        return getCoreTransferCaches(userVisit).getEntityLongAttributeTransferCache().getEntityLongAttributeTransfer(entityLongAttribute, entityInstance);
+        return entityLongAttributeTransferCache.getEntityLongAttributeTransfer(userVisit, entityLongAttribute, entityInstance);
     }
     
     public void updateEntityLongAttributeFromValue(EntityLongAttributeValue entityLongAttributeValue, BasePK updatedBy) {
         if(entityLongAttributeValue.hasBeenModified()) {
-            var entityLongAttribute = EntityLongAttributeFactory.getInstance().getEntityFromValue(session, EntityPermission.READ_WRITE, entityLongAttributeValue);
+            var entityLongAttribute = entityLongAttributeFactory.getEntityFromValue(session, EntityPermission.READ_WRITE, entityLongAttributeValue);
             var entityAttribute = entityLongAttribute.getEntityAttribute();
             var entityInstance = entityLongAttribute.getEntityInstance();
             
@@ -5484,7 +5574,7 @@ public class CoreControl
                 entityLongAttribute.remove();
             }
             
-            EntityLongAttributeFactory.getInstance().create(entityAttribute, entityInstance, entityLongAttributeValue.getLongAttribute(), session.START_TIME_LONG,
+            entityLongAttributeFactory.create(entityAttribute, entityInstance, entityLongAttributeValue.getLongAttribute(), session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
             
             sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -5522,9 +5612,12 @@ public class CoreControl
     //   Entity Multiple List Item Defaults
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected EntityMultipleListItemDefaultFactory entityMultipleListItemDefaultFactory;
+    
     public EntityMultipleListItemDefault createEntityMultipleListItemDefault(EntityAttribute entityAttribute,
             EntityListItem entityListItem, BasePK createdBy) {
-        var entityMultipleListItemDefault = EntityMultipleListItemDefaultFactory.getInstance().create(session,
+        var entityMultipleListItemDefault = entityMultipleListItemDefaultFactory.create(session,
                 entityAttribute, entityListItem, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -5562,7 +5655,7 @@ public class CoreControl
     }
 
     public List<EntityMultipleListItemDefault> getEntityMultipleListItemDefaultHistory(EntityAttribute entityAttribute) {
-        return EntityMultipleListItemDefaultFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityMultipleListItemDefaultHistoryQueries,
+        return entityMultipleListItemDefaultFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityMultipleListItemDefaultHistoryQueries,
                 entityAttribute);
     }
 
@@ -5570,7 +5663,7 @@ public class CoreControl
         List<EntityMultipleListItemDefault> entityMultipleListItemDefaults;
 
         try {
-            var ps = EntityMultipleListItemDefaultFactory.getInstance().prepareStatement(
+            var ps = entityMultipleListItemDefaultFactory.prepareStatement(
                     "SELECT _ALL_ "
                             + "FROM entitymultiplelistitemdefaults, entitylistitems, entitylistitemdetails "
                             + "WHERE emlidef_ena_entityattributeid = ? AND emlidef_thrutime = ? "
@@ -5580,7 +5673,7 @@ public class CoreControl
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
 
-            entityMultipleListItemDefaults = EntityMultipleListItemDefaultFactory.getInstance().getEntitiesFromQuery(session,
+            entityMultipleListItemDefaults = entityMultipleListItemDefaultFactory.getEntitiesFromQuery(session,
                     EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -5609,13 +5702,13 @@ public class CoreControl
                         "FOR UPDATE";
             }
 
-            var ps = EntityMultipleListItemDefaultFactory.getInstance().prepareStatement(query);
+            var ps = entityMultipleListItemDefaultFactory.prepareStatement(query);
 
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, entityListItem.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
 
-            entityMultipleListItemDefault = EntityMultipleListItemDefaultFactory.getInstance().getEntityFromQuery(session,
+            entityMultipleListItemDefault = entityMultipleListItemDefaultFactory.getEntityFromQuery(session,
                     entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -5651,12 +5744,12 @@ public class CoreControl
                         + "FOR UPDATE";
             }
 
-            var ps = EntityMultipleListItemDefaultFactory.getInstance().prepareStatement(query);
+            var ps = entityMultipleListItemDefaultFactory.prepareStatement(query);
 
             ps.setLong(1, entityListItem.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
 
-            entityMultipleListItemDefaults = EntityMultipleListItemDefaultFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            entityMultipleListItemDefaults = entityMultipleListItemDefaultFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -5673,15 +5766,14 @@ public class CoreControl
     }
 
     public EntityMultipleListItemDefaultTransfer getEntityMultipleListItemDefaultTransfer(UserVisit userVisit, EntityMultipleListItemDefault entityMultipleListItemDefault) {
-        return getCoreTransferCaches(userVisit).getEntityMultipleListItemDefaultTransferCache().getEntityMultipleListItemDefaultTransfer(entityMultipleListItemDefault);
+        return entityMultipleListItemDefaultTransferCache.getEntityMultipleListItemDefaultTransfer(userVisit, entityMultipleListItemDefault);
     }
 
     public List<EntityMultipleListItemDefaultTransfer> getEntityMultipleListItemDefaultTransfers(UserVisit userVisit, Collection<EntityMultipleListItemDefault> entityMultipleListItemDefaults) {
         List<EntityMultipleListItemDefaultTransfer> entityMultipleListItemDefaultTransfers = new ArrayList<>(entityMultipleListItemDefaults.size());
-        var entityMultipleListItemDefaultTransferCache = getCoreTransferCaches(userVisit).getEntityMultipleListItemDefaultTransferCache();
 
         entityMultipleListItemDefaults.forEach((entityMultipleListItemDefault) ->
-                entityMultipleListItemDefaultTransfers.add(entityMultipleListItemDefaultTransferCache.getEntityMultipleListItemDefaultTransfer(entityMultipleListItemDefault))
+                entityMultipleListItemDefaultTransfers.add(entityMultipleListItemDefaultTransferCache.getEntityMultipleListItemDefaultTransfer(userVisit, entityMultipleListItemDefault))
         );
 
         return entityMultipleListItemDefaultTransfers;
@@ -5717,6 +5809,9 @@ public class CoreControl
     //   Entity Multiple List Item Attributes
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected EntityMultipleListItemAttributeFactory entityMultipleListItemAttributeFactory;
+    
     public EntityMultipleListItemAttribute createEntityMultipleListItemAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             EntityListItem entityListItem, BasePK createdBy) {
         return createEntityMultipleListItemAttribute(entityAttribute.getPrimaryKey(), entityInstance, entityListItem, createdBy);
@@ -5724,7 +5819,7 @@ public class CoreControl
 
     public EntityMultipleListItemAttribute createEntityMultipleListItemAttribute(EntityAttributePK entityAttribute, EntityInstance entityInstance,
             EntityListItem entityListItem, BasePK createdBy) {
-        var entityListItemAttribute = EntityMultipleListItemAttributeFactory.getInstance().create(entityAttribute,
+        var entityListItemAttribute = entityMultipleListItemAttributeFactory.create(entityAttribute,
                 entityInstance.getPrimaryKey(), entityListItem.getPrimaryKey(), session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
 
@@ -5745,7 +5840,7 @@ public class CoreControl
         List<EntityMultipleListItemAttribute> entityMultipleListItemAttributes;
         
         try {
-            var ps = EntityMultipleListItemAttributeFactory.getInstance().prepareStatement(
+            var ps = entityMultipleListItemAttributeFactory.prepareStatement(
                     "SELECT _ALL_ "
                     + "FROM entitymultiplelistitemattributes, entitylistitems, entitylistitemdetails "
                     + "WHERE emlia_ena_entityattributeid = ? AND emlia_eni_entityinstanceid = ? AND emlia_thrutime = ? "
@@ -5756,7 +5851,7 @@ public class CoreControl
             ps.setLong(2, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            entityMultipleListItemAttributes = EntityMultipleListItemAttributeFactory.getInstance().getEntitiesFromQuery(session,
+            entityMultipleListItemAttributes = entityMultipleListItemAttributeFactory.getEntitiesFromQuery(session,
                     EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -5785,14 +5880,14 @@ public class CoreControl
                         "FOR UPDATE";
             }
 
-            var ps = EntityMultipleListItemAttributeFactory.getInstance().prepareStatement(query);
+            var ps = entityMultipleListItemAttributeFactory.prepareStatement(query);
             
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(3, entityListItem.getPrimaryKey().getEntityId());
             ps.setLong(4, Session.MAX_TIME);
             
-            entityMultipleListItemAttribute = EntityMultipleListItemAttributeFactory.getInstance().getEntityFromQuery(session,
+            entityMultipleListItemAttribute = entityMultipleListItemAttributeFactory.getEntityFromQuery(session,
                     entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -5830,12 +5925,12 @@ public class CoreControl
                         + "FOR UPDATE";
             }
 
-            var ps = EntityMultipleListItemAttributeFactory.getInstance().prepareStatement(query);
+            var ps = entityMultipleListItemAttributeFactory.prepareStatement(query);
             
             ps.setLong(1, entityListItem.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            entityMultipleListItemAttributes = EntityMultipleListItemAttributeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            entityMultipleListItemAttributes = entityMultipleListItemAttributeFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -5855,7 +5950,7 @@ public class CoreControl
         List<EntityMultipleListItemAttribute> entityMultipleListItemAttributes;
         
         try {
-            var ps = EntityMultipleListItemAttributeFactory.getInstance().prepareStatement(
+            var ps = entityMultipleListItemAttributeFactory.prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM entitymultiplelistitemattributes " +
                     "WHERE emlia_eni_entityinstanceid = ? AND emlia_thrutime = ? " +
@@ -5864,7 +5959,7 @@ public class CoreControl
             ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            entityMultipleListItemAttributes = EntityMultipleListItemAttributeFactory.getInstance().getEntitiesFromQuery(session,
+            entityMultipleListItemAttributes = entityMultipleListItemAttributeFactory.getEntitiesFromQuery(session,
                     EntityPermission.READ_WRITE, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -5874,15 +5969,14 @@ public class CoreControl
     }
     
     public EntityMultipleListItemAttributeTransfer getEntityMultipleListItemAttributeTransfer(UserVisit userVisit, EntityMultipleListItemAttribute entityMultipleListItemAttribute, EntityInstance entityInstance) {
-        return getCoreTransferCaches(userVisit).getEntityMultipleListItemAttributeTransferCache().getEntityMultipleListItemAttributeTransfer(entityMultipleListItemAttribute, entityInstance);
+        return entityMultipleListItemAttributeTransferCache.getEntityMultipleListItemAttributeTransfer(userVisit, entityMultipleListItemAttribute, entityInstance);
     }
     
     public List<EntityMultipleListItemAttributeTransfer> getEntityMultipleListItemAttributeTransfers(UserVisit userVisit, Collection<EntityMultipleListItemAttribute> entityMultipleListItemAttributes, EntityInstance entityInstance) {
         List<EntityMultipleListItemAttributeTransfer> entityMultipleListItemAttributeTransfers = new ArrayList<>(entityMultipleListItemAttributes.size());
-        var entityMultipleListItemAttributeTransferCache = getCoreTransferCaches(userVisit).getEntityMultipleListItemAttributeTransferCache();
         
         entityMultipleListItemAttributes.forEach((entityMultipleListItemAttribute) ->
-                entityMultipleListItemAttributeTransfers.add(entityMultipleListItemAttributeTransferCache.getEntityMultipleListItemAttributeTransfer(entityMultipleListItemAttribute, entityInstance))
+                entityMultipleListItemAttributeTransfers.add(entityMultipleListItemAttributeTransferCache.getEntityMultipleListItemAttributeTransfer(userVisit, entityMultipleListItemAttribute, entityInstance))
         );
         
         return entityMultipleListItemAttributeTransfers;
@@ -5924,9 +6018,12 @@ public class CoreControl
     //   Entity Name Attributes
     // --------------------------------------------------------------------------------
     
+    @Inject
+    protected EntityNameAttributeFactory entityNameAttributeFactory;
+    
     public EntityNameAttribute createEntityNameAttribute(EntityAttribute entityAttribute, String nameAttribute,
             EntityInstance entityInstance, BasePK createdBy) {
-        var entityNameAttribute = EntityNameAttributeFactory.getInstance().create(entityAttribute,
+        var entityNameAttribute = entityNameAttributeFactory.create(entityAttribute,
                 nameAttribute, entityInstance, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -5945,7 +6042,7 @@ public class CoreControl
     private static final Map<EntityPermission, String> getEntityNameAttributeHistoryQueries;
 
     static {
-        var queryMap = Map.of(
+        getEntityNameAttributeHistoryQueries = Map.of(
                 EntityPermission.READ_ONLY, """
                 SELECT _ALL_
                 FROM entitynameattributes
@@ -5953,11 +6050,10 @@ public class CoreControl
                 ORDER BY enna_thrutime
                 _LIMIT_
                 """);
-        getEntityNameAttributeHistoryQueries = Collections.unmodifiableMap(queryMap);
     }
 
     public List<EntityNameAttribute> getEntityNameAttributeHistory(EntityAttribute entityAttribute, EntityInstance entityInstance) {
-        return EntityNameAttributeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityNameAttributeHistoryQueries,
+        return entityNameAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityNameAttributeHistoryQueries,
                 entityAttribute, entityInstance);
     }
 
@@ -5979,13 +6075,13 @@ public class CoreControl
                         "FOR UPDATE";
             }
 
-            var ps = EntityNameAttributeFactory.getInstance().prepareStatement(query);
+            var ps = entityNameAttributeFactory.prepareStatement(query);
             
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            entityNameAttribute = EntityNameAttributeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            entityNameAttribute = entityNameAttributeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -6013,7 +6109,7 @@ public class CoreControl
         List<EntityNameAttribute> entityNameAttributes;
         
         try {
-            var ps = EntityNameAttributeFactory.getInstance().prepareStatement(
+            var ps = entityNameAttributeFactory.prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM entitynameattributes " +
                     "WHERE enna_ena_entityattributeid = ? AND enna_thrutime = ? " +
@@ -6022,7 +6118,7 @@ public class CoreControl
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            entityNameAttributes = EntityNameAttributeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
+            entityNameAttributes = entityNameAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -6034,7 +6130,7 @@ public class CoreControl
         List<EntityNameAttribute> entityNameAttributes;
         
         try {
-            var ps = EntityNameAttributeFactory.getInstance().prepareStatement(
+            var ps = entityNameAttributeFactory.prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM entitynameattributes " +
                     "WHERE enna_eni_entityinstanceid = ? AND enna_thrutime = ? " +
@@ -6043,7 +6139,7 @@ public class CoreControl
             ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            entityNameAttributes = EntityNameAttributeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
+            entityNameAttributes = entityNameAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -6052,12 +6148,12 @@ public class CoreControl
     }
     
     public EntityNameAttributeTransfer getEntityNameAttributeTransfer(UserVisit userVisit, EntityNameAttribute entityNameAttribute, EntityInstance entityInstance) {
-        return getCoreTransferCaches(userVisit).getEntityNameAttributeTransferCache().getEntityNameAttributeTransfer(entityNameAttribute, entityInstance);
+        return entityNameAttributeTransferCache.getEntityNameAttributeTransfer(userVisit, entityNameAttribute, entityInstance);
     }
     
     public void updateEntityNameAttributeFromValue(EntityNameAttributeValue entityNameAttributeValue, BasePK updatedBy) {
         if(entityNameAttributeValue.hasBeenModified()) {
-            var entityNameAttribute = EntityNameAttributeFactory.getInstance().getEntityFromValue(session, EntityPermission.READ_WRITE, entityNameAttributeValue);
+            var entityNameAttribute = entityNameAttributeFactory.getEntityFromValue(session, EntityPermission.READ_WRITE, entityNameAttributeValue);
             var entityAttribute = entityNameAttribute.getEntityAttribute();
             var entityInstance = entityNameAttribute.getEntityInstance();
             
@@ -6068,7 +6164,7 @@ public class CoreControl
                 entityNameAttribute.remove();
             }
             
-            EntityNameAttributeFactory.getInstance().create(entityAttribute, entityNameAttributeValue.getNameAttribute(), entityInstance, session.START_TIME_LONG,
+            entityNameAttributeFactory.create(entityAttribute, entityNameAttributeValue.getNameAttribute(), entityInstance, session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
             
             sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -6106,7 +6202,7 @@ public class CoreControl
         List<EntityNameAttribute> entityNameAttributes;
         
         try {
-            var ps = EntityNameAttributeFactory.getInstance().prepareStatement(
+            var ps = entityNameAttributeFactory.prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM entitynameattributes " +
                     "WHERE enna_ena_entityattributeid = ? AND enna_nameattribute = ? AND enna_thrutime = ?");
@@ -6115,7 +6211,7 @@ public class CoreControl
             ps.setString(2, nameAttribute);
             ps.setLong(3, Session.MAX_TIME);
             
-            entityNameAttributes = EntityNameAttributeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+            entityNameAttributes = entityNameAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -6127,9 +6223,12 @@ public class CoreControl
     //   Entity String Defaults
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected EntityStringDefaultFactory entityStringDefaultFactory;
+    
     public EntityStringDefault createEntityStringDefault(EntityAttribute entityAttribute, Language language,
             String stringAttribute, BasePK createdBy) {
-        var entityStringDefault = EntityStringDefaultFactory.getInstance().create(entityAttribute, language,
+        var entityStringDefault = entityStringDefaultFactory.create(entityAttribute, language,
                 stringAttribute, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityStringDefault.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -6159,7 +6258,7 @@ public class CoreControl
     }
 
     public List<EntityStringDefault> getEntityStringDefaultHistory(EntityAttribute entityAttribute, Language language) {
-        return EntityStringDefaultFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityStringDefaultHistoryQueries,
+        return entityStringDefaultFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityStringDefaultHistoryQueries,
                 entityAttribute, language);
     }
 
@@ -6180,13 +6279,13 @@ public class CoreControl
                         "FOR UPDATE";
             }
 
-            var ps = EntityStringDefaultFactory.getInstance().prepareStatement(query);
+            var ps = entityStringDefaultFactory.prepareStatement(query);
 
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
 
-            entityStringDefault = EntityStringDefaultFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            entityStringDefault = entityStringDefaultFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -6229,12 +6328,12 @@ public class CoreControl
                         "FOR UPDATE";
             }
 
-            var ps = EntityStringDefaultFactory.getInstance().prepareStatement(query);
+            var ps = entityStringDefaultFactory.prepareStatement(query);
 
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
 
-            entityStringDefaults = EntityStringDefaultFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
+            entityStringDefaults = entityStringDefaultFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -6252,12 +6351,12 @@ public class CoreControl
 
 
     public EntityStringDefaultTransfer getEntityStringDefaultTransfer(UserVisit userVisit, EntityStringDefault entityStringDefault) {
-        return getCoreTransferCaches(userVisit).getEntityStringDefaultTransferCache().getEntityStringDefaultTransfer(entityStringDefault);
+        return entityStringDefaultTransferCache.getEntityStringDefaultTransfer(userVisit, entityStringDefault);
     }
 
     public void updateEntityStringDefaultFromValue(EntityStringDefaultValue entityStringDefaultValue, BasePK updatedBy) {
         if(entityStringDefaultValue.hasBeenModified()) {
-            var entityStringDefault = EntityStringDefaultFactory.getInstance().getEntityFromValue(session, EntityPermission.READ_WRITE, entityStringDefaultValue);
+            var entityStringDefault = entityStringDefaultFactory.getEntityFromValue(session, EntityPermission.READ_WRITE, entityStringDefaultValue);
             var entityAttribute = entityStringDefault.getEntityAttribute();
             var language = entityStringDefault.getLanguage();
 
@@ -6268,7 +6367,7 @@ public class CoreControl
                 entityStringDefault.remove();
             }
 
-            entityStringDefault = EntityStringDefaultFactory.getInstance().create(entityAttribute, language,
+            entityStringDefault = entityStringDefaultFactory.create(entityAttribute, language,
                     entityStringDefaultValue.getStringAttribute(), session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
 
@@ -6301,6 +6400,9 @@ public class CoreControl
     //   Entity String Attributes
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected EntityStringAttributeFactory entityStringAttributeFactory;
+    
     public EntityStringAttribute createEntityStringAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             Language language, String stringAttribute, BasePK createdBy) {
         return createEntityStringAttribute(entityAttribute.getPrimaryKey(), entityInstance, language, stringAttribute,
@@ -6309,7 +6411,7 @@ public class CoreControl
 
     public EntityStringAttribute createEntityStringAttribute(EntityAttributePK entityAttribute, EntityInstance entityInstance,
             Language language, String stringAttribute, BasePK createdBy) {
-        var entityStringAttribute = EntityStringAttributeFactory.getInstance().create(entityAttribute,
+        var entityStringAttribute = entityStringAttributeFactory.create(entityAttribute,
                 entityInstance.getPrimaryKey(), language.getPrimaryKey(), stringAttribute, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute, EventTypes.CREATE, createdBy);
@@ -6341,7 +6443,7 @@ public class CoreControl
 
     public List<EntityStringAttribute> getEntityStringAttributeHistory(EntityAttribute entityAttribute, EntityInstance entityInstance,
             Language language) {
-        return EntityStringAttributeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityStringAttributeHistoryQueries,
+        return entityStringAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityStringAttributeHistoryQueries,
                 entityAttribute, entityInstance, language);
     }
 
@@ -6363,14 +6465,14 @@ public class CoreControl
                         "FOR UPDATE";
             }
 
-            var ps = EntityStringAttributeFactory.getInstance().prepareStatement(query);
+            var ps = entityStringAttributeFactory.prepareStatement(query);
             
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(3, language.getPrimaryKey().getEntityId());
             ps.setLong(4, Session.MAX_TIME);
             
-            entityStringAttribute = EntityStringAttributeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            entityStringAttribute = entityStringAttributeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -6390,7 +6492,7 @@ public class CoreControl
         var entityStringAttribute = getEntityStringAttribute(entityAttribute, entityInstance, language);
         
         if(entityStringAttribute == null && !language.getIsDefault()) {
-            entityStringAttribute = getEntityStringAttribute(entityAttribute, entityInstance, getPartyControl().getDefaultLanguage());
+            entityStringAttribute = getEntityStringAttribute(entityAttribute, entityInstance, partyControl.getDefaultLanguage());
         }
         
         return entityStringAttribute;
@@ -6408,7 +6510,7 @@ public class CoreControl
         List<EntityStringAttribute> entityStringAttributes;
         
         try {
-            var ps = EntityStringAttributeFactory.getInstance().prepareStatement(
+            var ps = entityStringAttributeFactory.prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM entitystringattributes " +
                     "WHERE ensa_ena_entityattributeid = ? AND ensa_thrutime = ? " +
@@ -6417,7 +6519,7 @@ public class CoreControl
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            entityStringAttributes = EntityStringAttributeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
+            entityStringAttributes = entityStringAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -6429,7 +6531,7 @@ public class CoreControl
         List<EntityStringAttribute> entityStringAttributes;
         
         try {
-            var ps = EntityStringAttributeFactory.getInstance().prepareStatement(
+            var ps = entityStringAttributeFactory.prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM entitystringattributes " +
                     "WHERE ensa_eni_entityinstanceid = ? AND ensa_thrutime = ? " +
@@ -6438,7 +6540,7 @@ public class CoreControl
             ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            entityStringAttributes = EntityStringAttributeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
+            entityStringAttributes = entityStringAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -6447,12 +6549,12 @@ public class CoreControl
     }
     
     public EntityStringAttributeTransfer getEntityStringAttributeTransfer(UserVisit userVisit, EntityStringAttribute entityStringAttribute, EntityInstance entityInstance) {
-        return getCoreTransferCaches(userVisit).getEntityStringAttributeTransferCache().getEntityStringAttributeTransfer(entityStringAttribute, entityInstance);
+        return entityStringAttributeTransferCache.getEntityStringAttributeTransfer(userVisit, entityStringAttribute, entityInstance);
     }
     
     public void updateEntityStringAttributeFromValue(EntityStringAttributeValue entityStringAttributeValue, BasePK updatedBy) {
         if(entityStringAttributeValue.hasBeenModified()) {
-            var entityStringAttribute = EntityStringAttributeFactory.getInstance().getEntityFromValue(session, EntityPermission.READ_WRITE, entityStringAttributeValue);
+            var entityStringAttribute = entityStringAttributeFactory.getEntityFromValue(session, EntityPermission.READ_WRITE, entityStringAttributeValue);
             var entityAttribute = entityStringAttribute.getEntityAttribute();
             var entityInstance = entityStringAttribute.getEntityInstance();
             var language = entityStringAttribute.getLanguage();
@@ -6464,7 +6566,7 @@ public class CoreControl
                 entityStringAttribute.remove();
             }
             
-            EntityStringAttributeFactory.getInstance().create(entityAttribute, entityInstance, language, entityStringAttributeValue.getStringAttribute(), session.START_TIME_LONG,
+            entityStringAttributeFactory.create(entityAttribute, entityInstance, language, entityStringAttributeValue.getStringAttribute(), session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
             
             sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -6502,9 +6604,12 @@ public class CoreControl
     //   Entity Geo Point Defaults
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected EntityGeoPointDefaultFactory entityGeoPointDefaultFactory;
+    
     public EntityGeoPointDefault createEntityGeoPointDefault(EntityAttribute entityAttribute, Integer latitude,
             Integer longitude, Long elevation, Long altitude, BasePK createdBy) {
-        var entityGeoPointDefault = EntityGeoPointDefaultFactory.getInstance().create(entityAttribute,
+        var entityGeoPointDefault = entityGeoPointDefaultFactory.create(entityAttribute,
                 latitude, longitude, elevation, altitude, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityGeoPointDefault.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -6534,7 +6639,7 @@ public class CoreControl
     }
 
     public List<EntityGeoPointDefault> getEntityGeoPointDefaultHistory(EntityAttribute entityAttribute) {
-        return EntityGeoPointDefaultFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityGeoPointDefaultHistoryQueries,
+        return entityGeoPointDefaultFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityGeoPointDefaultHistoryQueries,
                 entityAttribute);
     }
 
@@ -6555,12 +6660,12 @@ public class CoreControl
                         "FOR UPDATE";
             }
 
-            var ps = EntityGeoPointDefaultFactory.getInstance().prepareStatement(query);
+            var ps = entityGeoPointDefaultFactory.prepareStatement(query);
 
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
 
-            entityGeoPointDefault = EntityGeoPointDefaultFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            entityGeoPointDefault = entityGeoPointDefaultFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -6585,12 +6690,12 @@ public class CoreControl
     }
 
     public EntityGeoPointDefaultTransfer getEntityGeoPointDefaultTransfer(UserVisit userVisit, EntityGeoPointDefault entityGeoPointDefault) {
-        return getCoreTransferCaches(userVisit).getEntityGeoPointDefaultTransferCache().getEntityGeoPointDefaultTransfer(entityGeoPointDefault);
+        return entityGeoPointDefaultTransferCache.getEntityGeoPointDefaultTransfer(userVisit, entityGeoPointDefault);
     }
 
     public void updateEntityGeoPointDefaultFromValue(EntityGeoPointDefaultValue entityGeoPointDefaultValue, BasePK updatedBy) {
         if(entityGeoPointDefaultValue.hasBeenModified()) {
-            var entityGeoPointDefault = EntityGeoPointDefaultFactory.getInstance().getEntityFromValue(session, EntityPermission.READ_WRITE, entityGeoPointDefaultValue);
+            var entityGeoPointDefault = entityGeoPointDefaultFactory.getEntityFromValue(session, EntityPermission.READ_WRITE, entityGeoPointDefaultValue);
             var entityAttribute = entityGeoPointDefault.getEntityAttribute();
 
             if(entityAttribute.getLastDetail().getTrackRevisions()) {
@@ -6600,7 +6705,7 @@ public class CoreControl
                 entityGeoPointDefault.remove();
             }
 
-            entityGeoPointDefault = EntityGeoPointDefaultFactory.getInstance().create(entityAttribute,
+            entityGeoPointDefault = entityGeoPointDefaultFactory.create(entityAttribute,
                     entityGeoPointDefaultValue.getLatitude(), entityGeoPointDefaultValue.getLongitude(),
                     entityGeoPointDefaultValue.getElevation(), entityGeoPointDefaultValue.getAltitude(),
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
@@ -6632,6 +6737,9 @@ public class CoreControl
     // --------------------------------------------------------------------------------
     //   Entity Geo Point Attributes
     // --------------------------------------------------------------------------------
+    
+    @Inject
+    protected EntityGeoPointAttributeFactory entityGeoPointAttributeFactory;
 
     public EntityGeoPointAttribute createEntityGeoPointAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             Integer latitude, Integer longitude, Long elevation, Long altitude, BasePK createdBy) {
@@ -6641,7 +6749,7 @@ public class CoreControl
 
     public EntityGeoPointAttribute createEntityGeoPointAttribute(EntityAttributePK entityAttribute, EntityInstance entityInstance,
             Integer latitude, Integer longitude, Long elevation, Long altitude, BasePK createdBy) {
-        var entityGeoPointAttribute = EntityGeoPointAttributeFactory.getInstance().create(entityAttribute,
+        var entityGeoPointAttribute = entityGeoPointAttributeFactory.create(entityAttribute,
                 entityInstance.getPrimaryKey(), latitude, longitude, elevation, altitude, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
 
@@ -6661,7 +6769,7 @@ public class CoreControl
     private static final Map<EntityPermission, String> getEntityGeoPointAttributeHistoryQueries;
 
     static {
-        var queryMap = Map.of(
+        getEntityGeoPointAttributeHistoryQueries = Map.of(
                 EntityPermission.READ_ONLY, """
                 SELECT _ALL_
                 FROM entitygeopointattributes
@@ -6669,11 +6777,10 @@ public class CoreControl
                 ORDER BY engeopnta_thrutime
                 _LIMIT_
                 """);
-        getEntityGeoPointAttributeHistoryQueries = Collections.unmodifiableMap(queryMap);
     }
 
     public List<EntityGeoPointAttribute> getEntityGeoPointAttributeHistory(EntityAttribute entityAttribute, EntityInstance entityInstance) {
-        return EntityGeoPointAttributeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityGeoPointAttributeHistoryQueries,
+        return entityGeoPointAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityGeoPointAttributeHistoryQueries,
                 entityAttribute, entityInstance);
     }
 
@@ -6695,13 +6802,13 @@ public class CoreControl
                         "FOR UPDATE";
             }
 
-            var ps = EntityGeoPointAttributeFactory.getInstance().prepareStatement(query);
+            var ps = entityGeoPointAttributeFactory.prepareStatement(query);
             
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            entityGeoPointAttribute = EntityGeoPointAttributeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            entityGeoPointAttribute = entityGeoPointAttributeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -6729,7 +6836,7 @@ public class CoreControl
         List<EntityGeoPointAttribute> entityGeoPointAttributes;
         
         try {
-            var ps = EntityGeoPointAttributeFactory.getInstance().prepareStatement(
+            var ps = entityGeoPointAttributeFactory.prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM entitygeopointattributes " +
                     "WHERE engeopnta_ena_entityattributeid = ? AND engeopnta_thrutime = ? " +
@@ -6738,7 +6845,7 @@ public class CoreControl
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            entityGeoPointAttributes = EntityGeoPointAttributeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
+            entityGeoPointAttributes = entityGeoPointAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -6750,7 +6857,7 @@ public class CoreControl
         List<EntityGeoPointAttribute> entityGeoPointAttributes;
         
         try {
-            var ps = EntityGeoPointAttributeFactory.getInstance().prepareStatement(
+            var ps = entityGeoPointAttributeFactory.prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM entitygeopointattributes " +
                     "WHERE engeopnta_eni_entityinstanceid = ? AND engeopnta_thrutime = ? " +
@@ -6759,7 +6866,7 @@ public class CoreControl
             ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            entityGeoPointAttributes = EntityGeoPointAttributeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
+            entityGeoPointAttributes = entityGeoPointAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -6768,12 +6875,12 @@ public class CoreControl
     }
     
     public EntityGeoPointAttributeTransfer getEntityGeoPointAttributeTransfer(UserVisit userVisit, EntityGeoPointAttribute entityGeoPointAttribute, EntityInstance entityInstance) {
-        return getCoreTransferCaches(userVisit).getEntityGeoPointAttributeTransferCache().getEntityGeoPointAttributeTransfer(entityGeoPointAttribute, entityInstance);
+        return entityGeoPointAttributeTransferCache.getEntityGeoPointAttributeTransfer(userVisit, entityGeoPointAttribute, entityInstance);
     }
     
     public void updateEntityGeoPointAttributeFromValue(EntityGeoPointAttributeValue entityGeoPointAttributeValue, BasePK updatedBy) {
         if(entityGeoPointAttributeValue.hasBeenModified()) {
-            var entityGeoPointAttribute = EntityGeoPointAttributeFactory.getInstance().getEntityFromValue(session, EntityPermission.READ_WRITE, entityGeoPointAttributeValue);
+            var entityGeoPointAttribute = entityGeoPointAttributeFactory.getEntityFromValue(session, EntityPermission.READ_WRITE, entityGeoPointAttributeValue);
             var entityAttribute = entityGeoPointAttribute.getEntityAttribute();
             var entityInstance = entityGeoPointAttribute.getEntityInstance();
             
@@ -6784,7 +6891,7 @@ public class CoreControl
                 entityGeoPointAttribute.remove();
             }
             
-            EntityGeoPointAttributeFactory.getInstance().create(entityAttribute, entityInstance, entityGeoPointAttributeValue.getLatitude(),
+            entityGeoPointAttributeFactory.create(entityAttribute, entityInstance, entityGeoPointAttributeValue.getLatitude(),
                     entityGeoPointAttributeValue.getLongitude(), entityGeoPointAttributeValue.getElevation(), entityGeoPointAttributeValue.getAltitude(),
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
@@ -6823,9 +6930,12 @@ public class CoreControl
     //   Entity Time Defaults
     // --------------------------------------------------------------------------------
 
+    @Inject
+    protected EntityTimeDefaultFactory entityTimeDefaultFactory;
+    
     public EntityTimeDefault createEntityTimeDefault(EntityAttribute entityAttribute, Long timeAttribute,
             BasePK createdBy) {
-        var entityTimeDefault = EntityTimeDefaultFactory.getInstance().create(entityAttribute,
+        var entityTimeDefault = entityTimeDefaultFactory.create(entityAttribute,
                 timeAttribute, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityTimeDefault.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -6855,7 +6965,7 @@ public class CoreControl
     }
 
     public List<EntityTimeDefault> getEntityTimeDefaultHistory(EntityAttribute entityAttribute) {
-        return EntityTimeDefaultFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityTimeDefaultHistoryQueries,
+        return entityTimeDefaultFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityTimeDefaultHistoryQueries,
                 entityAttribute);
     }
 
@@ -6876,12 +6986,12 @@ public class CoreControl
                         "FOR UPDATE";
             }
 
-            var ps = EntityTimeDefaultFactory.getInstance().prepareStatement(query);
+            var ps = entityTimeDefaultFactory.prepareStatement(query);
 
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
 
-            entityTimeDefault = EntityTimeDefaultFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            entityTimeDefault = entityTimeDefaultFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -6906,12 +7016,12 @@ public class CoreControl
     }
 
     public EntityTimeDefaultTransfer getEntityTimeDefaultTransfer(UserVisit userVisit, EntityTimeDefault entityTimeDefault) {
-        return getCoreTransferCaches(userVisit).getEntityTimeDefaultTransferCache().getEntityTimeDefaultTransfer(entityTimeDefault);
+        return entityTimeDefaultTransferCache.getEntityTimeDefaultTransfer(userVisit, entityTimeDefault);
     }
 
     public void updateEntityTimeDefaultFromValue(EntityTimeDefaultValue entityTimeDefaultValue, BasePK updatedBy) {
         if(entityTimeDefaultValue.hasBeenModified()) {
-            var entityTimeDefault = EntityTimeDefaultFactory.getInstance().getEntityFromValue(session, EntityPermission.READ_WRITE, entityTimeDefaultValue);
+            var entityTimeDefault = entityTimeDefaultFactory.getEntityFromValue(session, EntityPermission.READ_WRITE, entityTimeDefaultValue);
             var entityAttribute = entityTimeDefault.getEntityAttribute();
 
             if(entityAttribute.getLastDetail().getTrackRevisions()) {
@@ -6921,7 +7031,7 @@ public class CoreControl
                 entityTimeDefault.remove();
             }
 
-            entityTimeDefault = EntityTimeDefaultFactory.getInstance().create(entityAttribute,
+            entityTimeDefault = entityTimeDefaultFactory.create(entityAttribute,
                     entityTimeDefaultValue.getTimeAttribute(), session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
 
@@ -6952,6 +7062,9 @@ public class CoreControl
     // --------------------------------------------------------------------------------
     //   Entity Time Attributes
     // --------------------------------------------------------------------------------
+    
+    @Inject
+    protected EntityTimeAttributeFactory entityTimeAttributeFactory;
 
     public EntityTimeAttribute createEntityTimeAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             Long timeAttribute, BasePK createdBy) {
@@ -6961,7 +7074,7 @@ public class CoreControl
 
     public EntityTimeAttribute createEntityTimeAttribute(EntityAttributePK entityAttribute, EntityInstance entityInstance,
             Long timeAttribute, BasePK createdBy) {
-        var entityTimeAttribute = EntityTimeAttributeFactory.getInstance().create(entityAttribute,
+        var entityTimeAttribute = entityTimeAttributeFactory.create(entityAttribute,
                 entityInstance.getPrimaryKey(), timeAttribute, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
         sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute, EventTypes.CREATE, createdBy);
@@ -6980,7 +7093,7 @@ public class CoreControl
     private static final Map<EntityPermission, String> getEntityTimeAttributeHistoryQueries;
 
     static {
-        var queryMap = Map.of(
+        getEntityTimeAttributeHistoryQueries = Map.of(
                 EntityPermission.READ_ONLY, """
                 SELECT _ALL_
                 FROM entitytimeattributes
@@ -6988,11 +7101,10 @@ public class CoreControl
                 ORDER BY enta_thrutime
                 _LIMIT_
                 """);
-        getEntityTimeAttributeHistoryQueries = Collections.unmodifiableMap(queryMap);
     }
 
     public List<EntityTimeAttribute> getEntityTimeAttributeHistory(EntityAttribute entityAttribute, EntityInstance entityInstance) {
-        return EntityTimeAttributeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityTimeAttributeHistoryQueries,
+        return entityTimeAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityTimeAttributeHistoryQueries,
                 entityAttribute, entityInstance);
     }
 
@@ -7013,13 +7125,13 @@ public class CoreControl
                         "FOR UPDATE";
             }
 
-            var ps = EntityTimeAttributeFactory.getInstance().prepareStatement(query);
+            var ps = entityTimeAttributeFactory.prepareStatement(query);
             
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            entityTimeAttribute = EntityTimeAttributeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            entityTimeAttribute = entityTimeAttributeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -7047,7 +7159,7 @@ public class CoreControl
         List<EntityTimeAttribute> entityTimeAttributes;
         
         try {
-            var ps = EntityTimeAttributeFactory.getInstance().prepareStatement(
+            var ps = entityTimeAttributeFactory.prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM entitytimeattributes " +
                     "WHERE enta_ena_entityattributeid = ? AND enta_thrutime = ? " +
@@ -7056,7 +7168,7 @@ public class CoreControl
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            entityTimeAttributes = EntityTimeAttributeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
+            entityTimeAttributes = entityTimeAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -7068,7 +7180,7 @@ public class CoreControl
         List<EntityTimeAttribute> entityTimeAttributes;
         
         try {
-            var ps = EntityTimeAttributeFactory.getInstance().prepareStatement(
+            var ps = entityTimeAttributeFactory.prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM entitytimeattributes " +
                     "WHERE enta_eni_entityinstanceid = ? AND enta_thrutime = ? " +
@@ -7077,7 +7189,7 @@ public class CoreControl
             ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            entityTimeAttributes = EntityTimeAttributeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
+            entityTimeAttributes = entityTimeAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -7086,12 +7198,12 @@ public class CoreControl
     }
     
     public EntityTimeAttributeTransfer getEntityTimeAttributeTransfer(UserVisit userVisit, EntityTimeAttribute entityTimeAttribute, EntityInstance entityInstance) {
-        return getCoreTransferCaches(userVisit).getEntityTimeAttributeTransferCache().getEntityTimeAttributeTransfer(entityTimeAttribute, entityInstance);
+        return entityTimeAttributeTransferCache.getEntityTimeAttributeTransfer(userVisit, entityTimeAttribute, entityInstance);
     }
     
     public void updateEntityTimeAttributeFromValue(EntityTimeAttributeValue entityTimeAttributeValue, BasePK updatedBy) {
         if(entityTimeAttributeValue.hasBeenModified()) {
-            var entityTimeAttribute = EntityTimeAttributeFactory.getInstance().getEntityFromValue(session, EntityPermission.READ_WRITE, entityTimeAttributeValue);
+            var entityTimeAttribute = entityTimeAttributeFactory.getEntityFromValue(session, EntityPermission.READ_WRITE, entityTimeAttributeValue);
             var entityAttribute = entityTimeAttribute.getEntityAttribute();
             var entityInstance = entityTimeAttribute.getEntityInstance();
             
@@ -7102,7 +7214,7 @@ public class CoreControl
                 entityTimeAttribute.remove();
             }
             
-            EntityTimeAttributeFactory.getInstance().create(entityAttribute, entityInstance, entityTimeAttributeValue.getTimeAttribute(), session.START_TIME_LONG,
+            entityTimeAttributeFactory.create(entityAttribute, entityInstance, entityTimeAttributeValue.getTimeAttribute(), session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
             
             sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -7140,9 +7252,12 @@ public class CoreControl
     //   Entity Blob Attributes
     // --------------------------------------------------------------------------------
     
+    @Inject
+    protected EntityBlobAttributeFactory entityBlobAttributeFactory;
+    
     public EntityBlobAttribute createEntityBlobAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             Language language, ByteArray blobAttribute, MimeType mimeType, BasePK createdBy) {
-        var entityBlobAttribute = EntityBlobAttributeFactory.getInstance().create(entityAttribute,
+        var entityBlobAttribute = entityBlobAttributeFactory.create(entityAttribute,
                 entityInstance, language, blobAttribute, mimeType, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -7170,14 +7285,14 @@ public class CoreControl
                         "FOR UPDATE";
             }
 
-            var ps = EntityBlobAttributeFactory.getInstance().prepareStatement(query);
+            var ps = entityBlobAttributeFactory.prepareStatement(query);
             
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(3, language.getPrimaryKey().getEntityId());
             ps.setLong(4, Session.MAX_TIME);
             
-            entityBlobAttribute = EntityBlobAttributeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            entityBlobAttribute = entityBlobAttributeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -7197,7 +7312,7 @@ public class CoreControl
         var entityBlobAttribute = getEntityBlobAttribute(entityAttribute, entityInstance, language);
         
         if(entityBlobAttribute == null && !language.getIsDefault()) {
-            entityBlobAttribute = getEntityBlobAttribute(entityAttribute, entityInstance, getPartyControl().getDefaultLanguage());
+            entityBlobAttribute = getEntityBlobAttribute(entityAttribute, entityInstance, partyControl.getDefaultLanguage());
         }
         
         return entityBlobAttribute;
@@ -7215,7 +7330,7 @@ public class CoreControl
         List<EntityBlobAttribute> entityBlobAttributes;
         
         try {
-            var ps = EntityBlobAttributeFactory.getInstance().prepareStatement(
+            var ps = entityBlobAttributeFactory.prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM entityblobattributes " +
                     "WHERE enba_ena_entityattributeid = ? AND enba_thrutime = ? " +
@@ -7224,7 +7339,7 @@ public class CoreControl
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            entityBlobAttributes = EntityBlobAttributeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
+            entityBlobAttributes = entityBlobAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -7236,7 +7351,7 @@ public class CoreControl
         List<EntityBlobAttribute> entityBlobAttributes;
         
         try {
-            var ps = EntityBlobAttributeFactory.getInstance().prepareStatement(
+            var ps = entityBlobAttributeFactory.prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM entityblobattributes " +
                     "WHERE enba_eni_entityinstanceid = ? AND enba_thrutime = ? " +
@@ -7245,7 +7360,7 @@ public class CoreControl
             ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            entityBlobAttributes = EntityBlobAttributeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
+            entityBlobAttributes = entityBlobAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -7254,12 +7369,12 @@ public class CoreControl
     }
     
     public EntityBlobAttributeTransfer getEntityBlobAttributeTransfer(UserVisit userVisit, EntityBlobAttribute entityBlobAttribute, EntityInstance entityInstance) {
-        return getCoreTransferCaches(userVisit).getEntityBlobAttributeTransferCache().getEntityBlobAttributeTransfer(entityBlobAttribute, entityInstance);
+        return entityBlobAttributeTransferCache.getEntityBlobAttributeTransfer(userVisit, entityBlobAttribute, entityInstance);
     }
     
     public void updateEntityBlobAttributeFromValue(EntityBlobAttributeValue entityBlobAttributeValue, BasePK updatedBy) {
         if(entityBlobAttributeValue.hasBeenModified()) {
-            var entityBlobAttribute = EntityBlobAttributeFactory.getInstance().getEntityFromValue(session, EntityPermission.READ_WRITE, entityBlobAttributeValue);
+            var entityBlobAttribute = entityBlobAttributeFactory.getEntityFromValue(session, EntityPermission.READ_WRITE, entityBlobAttributeValue);
             var entityAttribute = entityBlobAttribute.getEntityAttribute();
             var entityInstance = entityBlobAttribute.getEntityInstance();
             var language = entityBlobAttribute.getLanguage();
@@ -7271,7 +7386,7 @@ public class CoreControl
                 entityBlobAttribute.remove();
             }
             
-            EntityBlobAttributeFactory.getInstance().create(entityAttribute.getPrimaryKey(), entityInstance.getPrimaryKey(), language.getPrimaryKey(),
+            entityBlobAttributeFactory.create(entityAttribute.getPrimaryKey(), entityInstance.getPrimaryKey(), language.getPrimaryKey(),
                     entityBlobAttributeValue.getBlobAttribute(), entityBlobAttributeValue.getMimeTypePK(), session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
             sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -7309,9 +7424,12 @@ public class CoreControl
     //   Entity Clob Attributes
     // --------------------------------------------------------------------------------
     
+    @Inject
+    protected EntityClobAttributeFactory entityClobAttributeFactory;
+    
     public EntityClobAttribute createEntityClobAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             Language language, String clobAttribute, MimeType mimeType, BasePK createdBy) {
-        var entityClobAttribute = EntityClobAttributeFactory.getInstance().create(entityAttribute,
+        var entityClobAttribute = entityClobAttributeFactory.create(entityAttribute,
                 entityInstance, language, clobAttribute, mimeType, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -7330,7 +7448,7 @@ public class CoreControl
     private static final Map<EntityPermission, String> getEntityClobAttributeHistoryQueries;
 
     static {
-        var queryMap = Map.of(
+        getEntityClobAttributeHistoryQueries = Map.of(
                 EntityPermission.READ_ONLY, """
                 SELECT _ALL_
                 FROM entityclobattributes
@@ -7338,11 +7456,10 @@ public class CoreControl
                 ORDER BY enca_thrutime
                 _LIMIT_
                 """);
-        getEntityClobAttributeHistoryQueries = Collections.unmodifiableMap(queryMap);
     }
 
     public List<EntityClobAttribute> getEntityClobAttributeHistory(EntityAttribute entityAttribute, EntityInstance entityInstance) {
-        return EntityClobAttributeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityClobAttributeHistoryQueries,
+        return entityClobAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityClobAttributeHistoryQueries,
                 entityAttribute, entityInstance);
     }
 
@@ -7366,14 +7483,14 @@ public class CoreControl
                         "FOR UPDATE";
             }
 
-            var ps = EntityClobAttributeFactory.getInstance().prepareStatement(query);
+            var ps = entityClobAttributeFactory.prepareStatement(query);
             
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(3, language.getPrimaryKey().getEntityId());
             ps.setLong(4, Session.MAX_TIME);
             
-            entityClobAttribute = EntityClobAttributeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            entityClobAttribute = entityClobAttributeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -7393,7 +7510,7 @@ public class CoreControl
         var entityClobAttribute = getEntityClobAttribute(entityAttribute, entityInstance, language);
         
         if(entityClobAttribute == null && !language.getIsDefault()) {
-            entityClobAttribute = getEntityClobAttribute(entityAttribute, entityInstance, getPartyControl().getDefaultLanguage());
+            entityClobAttribute = getEntityClobAttribute(entityAttribute, entityInstance, partyControl.getDefaultLanguage());
         }
         
         return entityClobAttribute;
@@ -7411,7 +7528,7 @@ public class CoreControl
         List<EntityClobAttribute> entityClobAttributes;
         
         try {
-            var ps = EntityClobAttributeFactory.getInstance().prepareStatement(
+            var ps = entityClobAttributeFactory.prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM entityclobattributes " +
                     "WHERE enca_ena_entityattributeid = ? AND enca_thrutime = ? " +
@@ -7420,7 +7537,7 @@ public class CoreControl
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            entityClobAttributes = EntityClobAttributeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
+            entityClobAttributes = entityClobAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -7432,7 +7549,7 @@ public class CoreControl
         List<EntityClobAttribute> entityClobAttributes;
         
         try {
-            var ps = EntityClobAttributeFactory.getInstance().prepareStatement(
+            var ps = entityClobAttributeFactory.prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM entityclobattributes " +
                     "WHERE enca_eni_entityinstanceid = ? AND enca_thrutime = ? " +
@@ -7441,7 +7558,7 @@ public class CoreControl
             ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            entityClobAttributes = EntityClobAttributeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
+            entityClobAttributes = entityClobAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -7450,12 +7567,12 @@ public class CoreControl
     }
     
     public EntityClobAttributeTransfer getEntityClobAttributeTransfer(UserVisit userVisit, EntityClobAttribute entityClobAttribute, EntityInstance entityInstance) {
-        return getCoreTransferCaches(userVisit).getEntityClobAttributeTransferCache().getEntityClobAttributeTransfer(entityClobAttribute, entityInstance);
+        return entityClobAttributeTransferCache.getEntityClobAttributeTransfer(userVisit, entityClobAttribute, entityInstance);
     }
     
     public void updateEntityClobAttributeFromValue(EntityClobAttributeValue entityClobAttributeValue, BasePK updatedBy) {
         if(entityClobAttributeValue.hasBeenModified()) {
-            var entityClobAttribute = EntityClobAttributeFactory.getInstance().getEntityFromValue(session, EntityPermission.READ_WRITE, entityClobAttributeValue);
+            var entityClobAttribute = entityClobAttributeFactory.getEntityFromValue(session, EntityPermission.READ_WRITE, entityClobAttributeValue);
             var entityAttribute = entityClobAttribute.getEntityAttribute();
             var entityInstance = entityClobAttribute.getEntityInstance();
             var language = entityClobAttribute.getLanguage();
@@ -7467,7 +7584,7 @@ public class CoreControl
                 entityClobAttribute.remove();
             }
             
-            EntityClobAttributeFactory.getInstance().create(entityAttribute.getPrimaryKey(), entityInstance.getPrimaryKey(), language.getPrimaryKey(),
+            entityClobAttributeFactory.create(entityAttribute.getPrimaryKey(), entityInstance.getPrimaryKey(), language.getPrimaryKey(),
                     entityClobAttributeValue.getClobAttribute(), entityClobAttributeValue.getMimeTypePK(), session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
             sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -7505,8 +7622,11 @@ public class CoreControl
     //   Entity Attribute Entity Types
     // --------------------------------------------------------------------------------
     
+    @Inject
+    protected EntityAttributeEntityTypeFactory entityAttributeEntityTypeFactory;
+    
     public EntityAttributeEntityType createEntityAttributeEntityType(EntityAttribute entityAttribute, EntityType allowedEntityType, BasePK createdBy) {
-        var entityAttributeEntityType = EntityAttributeEntityTypeFactory.getInstance().create(entityAttribute, allowedEntityType,
+        var entityAttributeEntityType = entityAttributeEntityTypeFactory.create(entityAttribute, allowedEntityType,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeEntityType.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -7556,7 +7676,7 @@ public class CoreControl
     }
 
     private EntityAttributeEntityType getEntityAttributeEntityType(EntityAttribute entityAttribute, EntityType allowedEntityType, EntityPermission entityPermission) {
-        return EntityAttributeEntityTypeFactory.getInstance().getEntityFromQuery(entityPermission, getEntityAttributeEntityTypeQueries,
+        return entityAttributeEntityTypeFactory.getEntityFromQuery(entityPermission, getEntityAttributeEntityTypeQueries,
                 entityAttribute, allowedEntityType, Session.MAX_TIME_LONG);
     }
 
@@ -7590,7 +7710,7 @@ public class CoreControl
     }
     
     private List<EntityAttributeEntityType> getEntityAttributeEntityTypesByEntityAttribute(EntityAttribute entityAttribute, EntityPermission entityPermission) {
-        return EntityAttributeEntityTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getEntityAttributeEntityTypesByEntityAttributeQueries,
+        return entityAttributeEntityTypeFactory.getEntitiesFromQuery(entityPermission, getEntityAttributeEntityTypesByEntityAttributeQueries,
                 entityAttribute, Session.MAX_TIME_LONG);
     }
     
@@ -7622,7 +7742,7 @@ public class CoreControl
     }
 
     private List<EntityAttributeEntityType> getEntityAttributeEntityTypesByAllowedEntityType(EntityType allowedEntityType, EntityPermission entityPermission) {
-        return EntityAttributeEntityTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getEntityAttributeEntityTypesByAllowedEntityTypeQueries,
+        return entityAttributeEntityTypeFactory.getEntitiesFromQuery(entityPermission, getEntityAttributeEntityTypesByAllowedEntityTypeQueries,
                 allowedEntityType, Session.MAX_TIME_LONG);
     }
 
@@ -7635,15 +7755,14 @@ public class CoreControl
     }
 
     public EntityAttributeEntityTypeTransfer getEntityAttributeEntityTypeTransfer(UserVisit userVisit, EntityAttributeEntityType entityAttributeEntityType, EntityInstance entityInstance) {
-        return getCoreTransferCaches(userVisit).getEntityAttributeEntityTypeTransferCache().getEntityAttributeEntityTypeTransfer(entityAttributeEntityType, entityInstance);
+        return entityAttributeEntityTypeTransferCache.getEntityAttributeEntityTypeTransfer(userVisit, entityAttributeEntityType, entityInstance);
     }
     
     public List<EntityAttributeEntityTypeTransfer> getEntityAttributeEntityTypeTransfers(UserVisit userVisit, Collection<EntityAttributeEntityType> entityAttributeEntityTypes, EntityInstance entityInstance) {
         List<EntityAttributeEntityTypeTransfer> entityAttributeEntityTypeTransfers = new ArrayList<>(entityAttributeEntityTypes.size());
-        var entityAttributeEntityTypeTransferCache = getCoreTransferCaches(userVisit).getEntityAttributeEntityTypeTransferCache();
 
         entityAttributeEntityTypes.forEach((entityAttributeEntityType) ->
-                entityAttributeEntityTypeTransfers.add(entityAttributeEntityTypeTransferCache.getEntityAttributeEntityTypeTransfer(entityAttributeEntityType, entityInstance))
+                entityAttributeEntityTypeTransfers.add(entityAttributeEntityTypeTransferCache.getEntityAttributeEntityTypeTransfer(userVisit, entityAttributeEntityType, entityInstance))
         );
 
         return entityAttributeEntityTypeTransfers;
@@ -7681,9 +7800,12 @@ public class CoreControl
     //   Entity Entity Attributes
     // --------------------------------------------------------------------------------
     
+    @Inject
+    protected EntityEntityAttributeFactory entityEntityAttributeFactory;
+    
     public EntityEntityAttribute createEntityEntityAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             EntityInstance entityInstanceAttribute, BasePK createdBy) {
-        var entityEntityAttribute = EntityEntityAttributeFactory.getInstance().create(entityAttribute, entityInstance,
+        var entityEntityAttribute = entityEntityAttributeFactory.create(entityAttribute, entityInstance,
                 entityInstanceAttribute, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -7702,7 +7824,7 @@ public class CoreControl
     private static final Map<EntityPermission, String> getEntityEntityAttributeHistoryQueries;
 
     static {
-        var queryMap = Map.of(
+        getEntityEntityAttributeHistoryQueries = Map.of(
                 EntityPermission.READ_ONLY, """
                 SELECT _ALL_
                 FROM entityentityattributes
@@ -7710,11 +7832,10 @@ public class CoreControl
                 ORDER BY eea_thrutime
                 _LIMIT_
                 """);
-        getEntityEntityAttributeHistoryQueries = Collections.unmodifiableMap(queryMap);
     }
 
     public List<EntityEntityAttribute> getEntityEntityAttributeHistory(EntityAttribute entityAttribute, EntityInstance entityInstance) {
-        return EntityEntityAttributeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityEntityAttributeHistoryQueries,
+        return entityEntityAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityEntityAttributeHistoryQueries,
                 entityAttribute, entityInstance);
     }
 
@@ -7737,13 +7858,13 @@ public class CoreControl
                         "FOR UPDATE";
             }
 
-            var ps = EntityEntityAttributeFactory.getInstance().prepareStatement(query);
+            var ps = entityEntityAttributeFactory.prepareStatement(query);
             
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            entityEntityAttribute = EntityEntityAttributeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            entityEntityAttribute = entityEntityAttributeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -7771,7 +7892,7 @@ public class CoreControl
         List<EntityEntityAttribute> entityEntityAttributes;
         
         try {
-            var ps = EntityEntityAttributeFactory.getInstance().prepareStatement(
+            var ps = entityEntityAttributeFactory.prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM entityentityattributes " +
                     "WHERE eea_eni_entityinstanceid = ? AND eea_thrutime = ? " +
@@ -7780,7 +7901,7 @@ public class CoreControl
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            entityEntityAttributes = EntityEntityAttributeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
+            entityEntityAttributes = entityEntityAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -7792,7 +7913,7 @@ public class CoreControl
         List<EntityEntityAttribute> entityEntityAttributes;
         
         try {
-            var ps = EntityEntityAttributeFactory.getInstance().prepareStatement(
+            var ps = entityEntityAttributeFactory.prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM entityentityattributes " +
                     "WHERE eea_eni_entityinstanceid = ? AND eea_thrutime = ? " +
@@ -7801,7 +7922,7 @@ public class CoreControl
             ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            entityEntityAttributes = EntityEntityAttributeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
+            entityEntityAttributes = entityEntityAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -7813,7 +7934,7 @@ public class CoreControl
         List<EntityEntityAttribute> entityEntityAttributes;
         
         try {
-            var ps = EntityEntityAttributeFactory.getInstance().prepareStatement(
+            var ps = entityEntityAttributeFactory.prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM entityentityattributes " +
                     "WHERE eea_entityinstanceattributeid = ? AND eea_thrutime = ? " +
@@ -7822,7 +7943,7 @@ public class CoreControl
             ps.setLong(1, entityInstanceAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            entityEntityAttributes = EntityEntityAttributeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
+            entityEntityAttributes = entityEntityAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -7831,12 +7952,12 @@ public class CoreControl
     }
     
     public EntityEntityAttributeTransfer getEntityEntityAttributeTransfer(UserVisit userVisit, EntityEntityAttribute entityEntityAttribute, EntityInstance entityInstance) {
-        return getCoreTransferCaches(userVisit).getEntityEntityAttributeTransferCache().getEntityEntityAttributeTransfer(entityEntityAttribute, entityInstance);
+        return entityEntityAttributeTransferCache.getEntityEntityAttributeTransfer(userVisit, entityEntityAttribute, entityInstance);
     }
     
     public void updateEntityEntityAttributeFromValue(EntityEntityAttributeValue entityEntityAttributeValue, BasePK updatedBy) {
         if(entityEntityAttributeValue.hasBeenModified()) {
-            var entityEntityAttribute = EntityEntityAttributeFactory.getInstance().getEntityFromValue(session, EntityPermission.READ_WRITE, entityEntityAttributeValue);
+            var entityEntityAttribute = entityEntityAttributeFactory.getEntityFromValue(session, EntityPermission.READ_WRITE, entityEntityAttributeValue);
             var entityAttribute = entityEntityAttribute.getEntityAttribute();
             var entityInstance = entityEntityAttribute.getEntityInstance();
             
@@ -7847,7 +7968,7 @@ public class CoreControl
                 entityEntityAttribute.remove();
             }
             
-            EntityEntityAttributeFactory.getInstance().create(entityAttribute.getPrimaryKey(), entityInstance.getPrimaryKey(),
+            entityEntityAttributeFactory.create(entityAttribute.getPrimaryKey(), entityInstance.getPrimaryKey(),
                     entityEntityAttributeValue.getEntityInstanceAttributePK(), session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
             sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -7886,9 +8007,12 @@ public class CoreControl
     //   Entity Collection Attributes
     // --------------------------------------------------------------------------------
     
+    @Inject
+    protected EntityCollectionAttributeFactory entityCollectionAttributeFactory;
+    
     public EntityCollectionAttribute createEntityCollectionAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             EntityInstance entityInstanceAttribute, BasePK createdBy) {
-        var entityCollectionAttribute = EntityCollectionAttributeFactory.getInstance().create(entityAttribute, entityInstance,
+        var entityCollectionAttribute = entityCollectionAttributeFactory.create(entityAttribute, entityInstance,
                 entityInstanceAttribute, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -7900,7 +8024,7 @@ public class CoreControl
         List<EntityCollectionAttribute> entityCollectionAttributes;
         
         try {
-            var ps = EntityCollectionAttributeFactory.getInstance().prepareStatement(
+            var ps = entityCollectionAttributeFactory.prepareStatement(
                     "SELECT _ALL_ "
                     + "FROM entitycollectionattributes, entityinstances, entitytypes, entitytypedetails, componentvendors, componentvendordetails "
                     + "WHERE eca_ena_entityattributeid = ? AND eca_eni_entityinstanceid = ? AND eca_thrutime = ? "
@@ -7913,7 +8037,7 @@ public class CoreControl
             ps.setLong(2, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            entityCollectionAttributes = EntityCollectionAttributeFactory.getInstance().getEntitiesFromQuery(session,
+            entityCollectionAttributes = entityCollectionAttributeFactory.getEntitiesFromQuery(session,
                     EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -7942,14 +8066,14 @@ public class CoreControl
                         "FOR UPDATE";
             }
 
-            var ps = EntityCollectionAttributeFactory.getInstance().prepareStatement(query);
+            var ps = entityCollectionAttributeFactory.prepareStatement(query);
             
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(3, entityInstanceAttribute.getPrimaryKey().getEntityId());
             ps.setLong(4, Session.MAX_TIME);
             
-            entityCollectionAttribute = EntityCollectionAttributeFactory.getInstance().getEntityFromQuery(session,
+            entityCollectionAttribute = entityCollectionAttributeFactory.getEntityFromQuery(session,
                     entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -7972,7 +8096,7 @@ public class CoreControl
         List<EntityCollectionAttribute> entityCollectionAttributes;
         
         try {
-            var ps = EntityCollectionAttributeFactory.getInstance().prepareStatement(
+            var ps = entityCollectionAttributeFactory.prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM entitycollectionattributes " +
                     "WHERE eca_eni_entityinstanceid = ? AND eca_thrutime = ? " +
@@ -7981,7 +8105,7 @@ public class CoreControl
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            entityCollectionAttributes = EntityCollectionAttributeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
+            entityCollectionAttributes = entityCollectionAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -7993,7 +8117,7 @@ public class CoreControl
         List<EntityCollectionAttribute> entityCollectionAttributes;
         
         try {
-            var ps = EntityCollectionAttributeFactory.getInstance().prepareStatement(
+            var ps = entityCollectionAttributeFactory.prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM entitycollectionattributes " +
                     "WHERE eca_eni_entityinstanceid = ? AND eca_thrutime = ? " +
@@ -8002,7 +8126,7 @@ public class CoreControl
             ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            entityCollectionAttributes = EntityCollectionAttributeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
+            entityCollectionAttributes = entityCollectionAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -8014,7 +8138,7 @@ public class CoreControl
         List<EntityCollectionAttribute> entityCollectionAttributes;
         
         try {
-            var ps = EntityCollectionAttributeFactory.getInstance().prepareStatement(
+            var ps = entityCollectionAttributeFactory.prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM entitycollectionattributes " +
                     "WHERE eca_entityinstanceattributeid = ? AND eca_thrutime = ? " +
@@ -8023,7 +8147,7 @@ public class CoreControl
             ps.setLong(1, entityInstanceAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            entityCollectionAttributes = EntityCollectionAttributeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
+            entityCollectionAttributes = entityCollectionAttributeFactory.getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -8032,15 +8156,14 @@ public class CoreControl
     }
     
     public EntityCollectionAttributeTransfer getEntityCollectionAttributeTransfer(UserVisit userVisit, EntityCollectionAttribute entityCollectionAttribute, EntityInstance entityInstance) {
-        return getCoreTransferCaches(userVisit).getEntityCollectionAttributeTransferCache().getEntityCollectionAttributeTransfer(entityCollectionAttribute, entityInstance);
+        return entityCollectionAttributeTransferCache.getEntityCollectionAttributeTransfer(userVisit, entityCollectionAttribute, entityInstance);
     }
     
     public List<EntityCollectionAttributeTransfer> getEntityCollectionAttributeTransfers(UserVisit userVisit, Collection<EntityCollectionAttribute> entityCollectionAttributes, EntityInstance entityInstance) {
         List<EntityCollectionAttributeTransfer> entityCollectionAttributeTransfers = new ArrayList<>(entityCollectionAttributes.size());
-        var entityCollectionAttributeTransferCache = getCoreTransferCaches(userVisit).getEntityCollectionAttributeTransferCache();
         
         entityCollectionAttributes.forEach((entityCollectionAttribute) ->
-                entityCollectionAttributeTransfers.add(entityCollectionAttributeTransferCache.getEntityCollectionAttributeTransfer(entityCollectionAttribute, entityInstance))
+                entityCollectionAttributeTransfers.add(entityCollectionAttributeTransferCache.getEntityCollectionAttributeTransfer(userVisit, entityCollectionAttribute, entityInstance))
         );
         
         return entityCollectionAttributeTransfers;

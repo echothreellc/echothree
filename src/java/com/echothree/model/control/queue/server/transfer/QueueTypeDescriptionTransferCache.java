@@ -20,16 +20,21 @@ import com.echothree.model.control.queue.common.transfer.QueueTypeDescriptionTra
 import com.echothree.model.control.queue.server.control.QueueControl;
 import com.echothree.model.data.queue.server.entity.QueueTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class QueueTypeDescriptionTransferCache
         extends BaseQueueDescriptionTransferCache<QueueTypeDescription, QueueTypeDescriptionTransfer> {
-    
+
+    QueueControl queueControl = Session.getModelController(QueueControl.class);
+
     /** Creates a new instance of QueueTypeDescriptionTransferCache */
-    public QueueTypeDescriptionTransferCache(UserVisit userVisit, QueueControl queueControl) {
-        super(userVisit, queueControl);
+    protected QueueTypeDescriptionTransferCache() {
+        super();
     }
     
-    public QueueTypeDescriptionTransfer getQueueTypeDescriptionTransfer(QueueTypeDescription queueTypeDescription) {
+    public QueueTypeDescriptionTransfer getQueueTypeDescriptionTransfer(UserVisit userVisit, QueueTypeDescription queueTypeDescription) {
         var queueTypeDescriptionTransfer = get(queueTypeDescription);
         
         if(queueTypeDescriptionTransfer == null) {
@@ -37,7 +42,7 @@ public class QueueTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, queueTypeDescription.getLanguage());
             
             queueTypeDescriptionTransfer = new QueueTypeDescriptionTransfer(languageTransfer, queueTypeTransfer, queueTypeDescription.getDescription());
-            put(queueTypeDescription, queueTypeDescriptionTransfer);
+            put(userVisit, queueTypeDescription, queueTypeDescriptionTransfer);
         }
         return queueTypeDescriptionTransfer;
     }

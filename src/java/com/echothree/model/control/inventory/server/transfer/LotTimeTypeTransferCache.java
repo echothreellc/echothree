@@ -17,26 +17,27 @@
 package com.echothree.model.control.inventory.server.transfer;
 
 import com.echothree.model.control.inventory.common.transfer.LotTimeTypeTransfer;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.inventory.server.control.LotTimeControl;
 import com.echothree.model.data.inventory.server.entity.LotTimeType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class LotTimeTypeTransferCache
         extends BaseInventoryTransferCache<LotTimeType, LotTimeTypeTransfer> {
 
     LotTimeControl lotTimeControl = Session.getModelController(LotTimeControl.class);
 
     /** Creates a new instance of LotTimeTypeTransferCache */
-    public LotTimeTypeTransferCache(UserVisit userVisit, InventoryControl inventoryControl) {
-        super(userVisit, inventoryControl);
+    protected LotTimeTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
     @Override
-    public LotTimeTypeTransfer getTransfer(LotTimeType lotTimeType) {
+    public LotTimeTypeTransfer getTransfer(UserVisit userVisit, LotTimeType lotTimeType) {
         var lotTimeTypeTransfer = get(lotTimeType);
         
         if(lotTimeTypeTransfer == null) {
@@ -44,10 +45,10 @@ public class LotTimeTypeTransferCache
             var lotTimeTypeName = lotTimeTypeDetail.getLotTimeTypeName();
             var isDefault = lotTimeTypeDetail.getIsDefault();
             var sortOrder = lotTimeTypeDetail.getSortOrder();
-            var description = lotTimeControl.getBestLotTimeTypeDescription(lotTimeType, getLanguage());
+            var description = lotTimeControl.getBestLotTimeTypeDescription(lotTimeType, getLanguage(userVisit));
             
             lotTimeTypeTransfer = new LotTimeTypeTransfer(lotTimeTypeName, isDefault, sortOrder, description);
-            put(lotTimeType, lotTimeTypeTransfer);
+            put(userVisit, lotTimeType, lotTimeTypeTransfer);
         }
         
         return lotTimeTypeTransfer;

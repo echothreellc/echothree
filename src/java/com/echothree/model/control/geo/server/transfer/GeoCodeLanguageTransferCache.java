@@ -22,20 +22,21 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.geo.server.entity.GeoCodeLanguage;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class GeoCodeLanguageTransferCache
         extends BaseGeoTransferCache<GeoCodeLanguage, GeoCodeLanguageTransfer> {
-    
-    PartyControl partyControl;
+
+    GeoControl geoControl = Session.getModelController(GeoControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of GeoCodeLanguageTransferCache */
-    public GeoCodeLanguageTransferCache(UserVisit userVisit, GeoControl geoControl) {
-        super(userVisit, geoControl);
-        
-        partyControl = Session.getModelController(PartyControl.class);
+    protected GeoCodeLanguageTransferCache() {
+        super();
     }
     
-    public GeoCodeLanguageTransfer getGeoCodeLanguageTransfer(GeoCodeLanguage geoCodeLanguage) {
+    public GeoCodeLanguageTransfer getGeoCodeLanguageTransfer(UserVisit userVisit, GeoCodeLanguage geoCodeLanguage) {
         var geoCodeLanguageTransfer = get(geoCodeLanguage);
         
         if(geoCodeLanguageTransfer == null) {
@@ -45,7 +46,7 @@ public class GeoCodeLanguageTransferCache
             var sortOrder = geoCodeLanguage.getSortOrder();
             
             geoCodeLanguageTransfer = new GeoCodeLanguageTransfer(geoCode, language, isDefault, sortOrder);
-            put(geoCodeLanguage, geoCodeLanguageTransfer);
+            put(userVisit, geoCodeLanguage, geoCodeLanguageTransfer);
         }
         
         return geoCodeLanguageTransfer;

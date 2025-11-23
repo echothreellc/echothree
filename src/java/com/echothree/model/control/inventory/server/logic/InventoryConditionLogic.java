@@ -17,14 +17,14 @@
 package com.echothree.model.control.inventory.server.logic;
 
 import com.echothree.control.user.inventory.common.spec.InventoryConditionUniversalSpec;
-import com.echothree.model.control.inventory.common.exception.DuplicateInventoryConditionNameException;
-import com.echothree.model.control.inventory.common.exception.UnknownInventoryConditionNameException;
-import com.echothree.model.control.inventory.common.exception.UnknownDefaultInventoryConditionException;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
+import com.echothree.model.control.inventory.common.exception.DuplicateInventoryConditionNameException;
+import com.echothree.model.control.inventory.common.exception.UnknownDefaultInventoryConditionException;
+import com.echothree.model.control.inventory.common.exception.UnknownInventoryConditionNameException;
+import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -33,20 +33,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class InventoryConditionLogic
     extends BaseLogic {
-    
-    private InventoryConditionLogic() {
+
+    protected InventoryConditionLogic() {
         super();
     }
-    
-    private static class InventoryConditionLogicHolder {
-        static InventoryConditionLogic instance = new InventoryConditionLogic();
-    }
-    
+
     public static InventoryConditionLogic getInstance() {
-        return InventoryConditionLogicHolder.instance;
+        return CDI.current().select(InventoryConditionLogic.class).get();
     }
 
     public InventoryCondition createInventoryCondition(final ExecutionErrorAccumulator eea, final String inventoryConditionName,
@@ -96,7 +95,7 @@ public class InventoryConditionLogic
         var parameterCount = (inventoryConditionName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
-            case 0:
+            case 0 -> {
                 if(allowDefault) {
                     inventoryCondition = inventoryControl.getDefaultInventoryCondition(entityPermission);
 
@@ -106,8 +105,8 @@ public class InventoryConditionLogic
                 } else {
                     handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                 }
-                break;
-            case 1:
+            }
+            case 1 -> {
                 if(inventoryConditionName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.InventoryCondition.name());
@@ -118,10 +117,9 @@ public class InventoryConditionLogic
                 } else {
                     inventoryCondition = getInventoryConditionByName(eea, inventoryConditionName, entityPermission);
                 }
-                break;
-            default:
-                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
-                break;
+            }
+            default ->
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
 
         return inventoryCondition;

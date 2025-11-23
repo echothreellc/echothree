@@ -22,18 +22,21 @@ import com.echothree.model.control.letter.server.control.LetterControl;
 import com.echothree.model.data.chain.server.entity.ChainActionLetter;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ChainActionLetterTransferCache
         extends BaseChainTransferCache<ChainActionLetter, ChainActionLetterTransfer> {
-    
+
+    ChainControl chainControl = Session.getModelController(ChainControl.class);
     LetterControl letterControl = Session.getModelController(LetterControl.class);
     
     /** Creates a new instance of ChainActionLetterTransferCache */
-    public ChainActionLetterTransferCache(UserVisit userVisit, ChainControl chainControl) {
-        super(userVisit, chainControl);
+    protected ChainActionLetterTransferCache() {
+        super();
     }
     
-    public ChainActionLetterTransfer getChainActionLetterTransfer(ChainActionLetter chainActionLetter) {
+    public ChainActionLetterTransfer getChainActionLetterTransfer(UserVisit userVisit, ChainActionLetter chainActionLetter) {
         var chainActionLetterTransfer = get(chainActionLetter);
         
         if(chainActionLetterTransfer == null) {
@@ -41,7 +44,7 @@ public class ChainActionLetterTransferCache
             var letter = letterControl.getLetterTransfer(userVisit, chainActionLetter.getLetter());
             
             chainActionLetterTransfer = new ChainActionLetterTransfer(chainAction, letter);
-            put(chainActionLetter, chainActionLetterTransfer);
+            put(userVisit, chainActionLetter, chainActionLetterTransfer);
         }
         
         return chainActionLetterTransfer;

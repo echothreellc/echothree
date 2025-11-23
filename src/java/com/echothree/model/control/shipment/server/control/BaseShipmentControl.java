@@ -16,9 +16,20 @@
 
 package com.echothree.model.control.shipment.server.control;
 
-import com.echothree.model.control.shipment.server.transfer.ShipmentTransferCaches;
-import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.model.control.shipment.server.transfer.FreeOnBoardDescriptionTransferCache;
+import com.echothree.model.control.shipment.server.transfer.FreeOnBoardTransferCache;
+import com.echothree.model.control.shipment.server.transfer.PartyFreeOnBoardTransferCache;
+import com.echothree.model.control.shipment.server.transfer.ShipmentAliasTransferCache;
+import com.echothree.model.control.shipment.server.transfer.ShipmentAliasTypeDescriptionTransferCache;
+import com.echothree.model.control.shipment.server.transfer.ShipmentAliasTypeTransferCache;
+import com.echothree.model.control.shipment.server.transfer.ShipmentTimeTransferCache;
+import com.echothree.model.control.shipment.server.transfer.ShipmentTimeTypeDescriptionTransferCache;
+import com.echothree.model.control.shipment.server.transfer.ShipmentTimeTypeTransferCache;
+import com.echothree.model.control.shipment.server.transfer.ShipmentTypeDescriptionTransferCache;
+import com.echothree.model.control.shipment.server.transfer.ShipmentTypeShippingMethodTransferCache;
+import com.echothree.model.control.shipment.server.transfer.ShipmentTypeTransferCache;
 import com.echothree.util.server.control.BaseModelControl;
+import javax.inject.Inject;
 
 public abstract class BaseShipmentControl
         extends BaseModelControl {
@@ -31,15 +42,41 @@ public abstract class BaseShipmentControl
     // --------------------------------------------------------------------------------
     //   Shipment Transfer Caches
     // --------------------------------------------------------------------------------
-    
-    private ShipmentTransferCaches shipmentTransferCaches;
-    
-    public ShipmentTransferCaches getShipmentTransferCaches(UserVisit userVisit) {
-        if(shipmentTransferCaches == null) {
-            shipmentTransferCaches = new ShipmentTransferCaches(userVisit);
-        }
-        
-        return shipmentTransferCaches;
-    }
-    
+
+    @Inject
+    ShipmentTypeTransferCache shipmentTypeTransferCache;
+
+    @Inject
+    ShipmentTypeDescriptionTransferCache shipmentTypeDescriptionTransferCache;
+
+    @Inject
+    ShipmentTypeShippingMethodTransferCache shipmentTypeShippingMethodTransferCache;
+
+    @Inject
+    ShipmentAliasTypeTransferCache shipmentAliasTypeTransferCache;
+
+    @Inject
+    ShipmentAliasTypeDescriptionTransferCache shipmentAliasTypeDescriptionTransferCache;
+
+    @Inject
+    ShipmentAliasTransferCache shipmentAliasTransferCache;
+
+    @Inject
+    ShipmentTimeTypeTransferCache shipmentTimeTypeTransferCache;
+
+    @Inject
+    ShipmentTimeTypeDescriptionTransferCache shipmentTimeTypeDescriptionTransferCache;
+
+    @Inject
+    ShipmentTimeTransferCache shipmentTimeTransferCache;
+
+    @Inject
+    FreeOnBoardTransferCache freeOnBoardTransferCache;
+
+    @Inject
+    FreeOnBoardDescriptionTransferCache freeOnBoardDescriptionTransferCache;
+
+    @Inject
+    PartyFreeOnBoardTransferCache partyFreeOnBoardTransferCache;
+
 }

@@ -21,18 +21,20 @@ import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.EntityIntegerDefault;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EntityIntegerDefaultTransferCache
         extends BaseCoreTransferCache<EntityIntegerDefault, EntityIntegerDefaultTransfer> {
 
     CoreControl coreControl = Session.getModelController(CoreControl.class);
 
     /** Creates a new instance of EntityIntegerDefaultTransferCache */
-    public EntityIntegerDefaultTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected EntityIntegerDefaultTransferCache() {
+        super();
     }
     
-    public EntityIntegerDefaultTransfer getEntityIntegerDefaultTransfer(EntityIntegerDefault entityIntegerDefault) {
+    public EntityIntegerDefaultTransfer getEntityIntegerDefaultTransfer(UserVisit userVisit, EntityIntegerDefault entityIntegerDefault) {
         var entityIntegerDefaultTransfer = get(entityIntegerDefault);
         
         if(entityIntegerDefaultTransfer == null) {
@@ -40,7 +42,7 @@ public class EntityIntegerDefaultTransferCache
             var integerAttribute = entityIntegerDefault.getIntegerAttribute();
             
             entityIntegerDefaultTransfer = new EntityIntegerDefaultTransfer(entityAttribute, integerAttribute);
-            put(entityIntegerDefault, entityIntegerDefaultTransfer);
+            put(userVisit, entityIntegerDefault, entityIntegerDefaultTransfer);
         }
         
         return entityIntegerDefaultTransfer;

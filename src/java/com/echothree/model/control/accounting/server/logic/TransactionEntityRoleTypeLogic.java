@@ -35,20 +35,19 @@ import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.ParameterUtils;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class TransactionEntityRoleTypeLogic
         extends BaseLogic {
 
-    private TransactionEntityRoleTypeLogic() {
+    protected TransactionEntityRoleTypeLogic() {
         super();
     }
 
-    private static class TransactionEntityRoleTypeLogicHolder {
-        static TransactionEntityRoleTypeLogic instance = new TransactionEntityRoleTypeLogic();
-    }
-
     public static TransactionEntityRoleTypeLogic getInstance() {
-        return TransactionEntityRoleTypeLogic.TransactionEntityRoleTypeLogicHolder.instance;
+        return CDI.current().select(TransactionEntityRoleTypeLogic.class).get();
     }
 
     public TransactionEntityRoleType createTransactionEntityRoleType(final ExecutionErrorAccumulator eea, final String transactionTypeName,

@@ -23,15 +23,18 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.index.server.entity.Index;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class IndexTransferCache
         extends BaseIndexTransferCache<Index, IndexTransfer> {
 
+    IndexControl indexControl = Session.getModelController(IndexControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of IndexTransferCache */
-    public IndexTransferCache(UserVisit userVisit, IndexControl indexControl) {
-        super(userVisit, indexControl);
+    protected IndexTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {
@@ -41,7 +44,7 @@ public class IndexTransferCache
         setIncludeEntityInstance(true);
     }
 
-    public IndexTransfer getIndexTransfer(Index index) {
+    public IndexTransfer getIndexTransfer(UserVisit userVisit, Index index) {
         var indexTransfer = get(index);
 
         if(indexTransfer == null) {
@@ -54,13 +57,13 @@ public class IndexTransferCache
             var directory = indexDetail.getDirectory();
             var isDefault = indexDetail.getIsDefault();
             var sortOrder = indexDetail.getSortOrder();
-            var description = indexControl.getBestIndexDescription(index, getLanguage());
+            var description = indexControl.getBestIndexDescription(index, getLanguage(userVisit));
             var unformattedCreatedTime = indexStatus.getCreatedTime();
-            var createdTime = formatTypicalDateTime(unformattedCreatedTime);
+            var createdTime = formatTypicalDateTime(userVisit, unformattedCreatedTime);
 
             indexTransfer = new IndexTransfer(indexName, indexTypeTransfer, languageTransfer, directory, isDefault, sortOrder, description,
                     unformattedCreatedTime, createdTime);
-            put(index, indexTransfer);
+            put(userVisit, index, indexTransfer);
         }
 
         return indexTransfer;

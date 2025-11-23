@@ -24,18 +24,22 @@ import com.echothree.model.data.content.server.entity.ContentCollection;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ContentCollectionTransferCache
         extends BaseContentTransferCache<ContentCollection, ContentCollectionTransfer> {
 
+    ContentControl contentControl = Session.getModelController(ContentControl.class);
     OfferUseControl offerUseControl = Session.getModelController(OfferUseControl.class);
+
     boolean includeContentCatalogs;
     boolean includeContentForums;
     boolean includeContentSections;
 
     /** Creates a new instance of ContentCollectionTransferCache */
-    public ContentCollectionTransferCache(UserVisit userVisit, ContentControl contentControl) {
-        super(userVisit, contentControl);
+    protected ContentCollectionTransferCache() {
+        super();
 
         var options = session.getOptions();
         if(options != null) {
@@ -50,17 +54,17 @@ public class ContentCollectionTransferCache
         setIncludeEntityInstance(true);
     }
 
-    public ContentCollectionTransfer getContentCollectionTransfer(ContentCollection contentCollection) {
+    public ContentCollectionTransfer getContentCollectionTransfer(UserVisit userVisit, ContentCollection contentCollection) {
         var contentCollectionTransfer = get(contentCollection);
         
         if(contentCollectionTransfer == null) {
             var contentCollectionDetail = contentCollection.getLastDetail();
             var contentCollectionName = contentCollectionDetail.getContentCollectionName();
             var defaultOfferUse = offerUseControl.getOfferUseTransfer(userVisit, contentCollectionDetail.getDefaultOfferUse());
-            var description = contentControl.getBestContentCollectionDescription(contentCollection, getLanguage());
+            var description = contentControl.getBestContentCollectionDescription(contentCollection, getLanguage(userVisit));
             
             contentCollectionTransfer = new ContentCollectionTransfer(contentCollectionName, defaultOfferUse, description);
-            put(contentCollection, contentCollectionTransfer);
+            put(userVisit, contentCollection, contentCollectionTransfer);
             
             if(includeContentCatalogs) {
                 contentCollectionTransfer.setContentCatalogs(new ListWrapper<>(contentControl.getContentCatalogTransfers(userVisit, contentCollection)));

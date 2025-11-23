@@ -24,19 +24,22 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.cancellationpolicy.server.entity.PartyCancellationPolicy;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PartyCancellationPolicyTransferCache
         extends BaseCancellationPolicyTransferCache<PartyCancellationPolicy, PartyCancellationPolicyTransfer> {
 
+    CancellationPolicyControl cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of PartyCancellationPolicyTransferCache */
-    public PartyCancellationPolicyTransferCache(UserVisit userVisit, CancellationPolicyControl cancellationPolicyControl) {
-        super(userVisit, cancellationPolicyControl);
+    protected PartyCancellationPolicyTransferCache() {
+        super();
     }
 
-    public PartyCancellationPolicyTransfer getPartyCancellationPolicyTransfer(PartyCancellationPolicy partyCancellationPolicy) {
+    public PartyCancellationPolicyTransfer getPartyCancellationPolicyTransfer(UserVisit userVisit, PartyCancellationPolicy partyCancellationPolicy) {
         var partyCancellationPolicyTransfer = get(partyCancellationPolicy);
         
         if(partyCancellationPolicyTransfer == null) {
@@ -44,11 +47,11 @@ public class PartyCancellationPolicyTransferCache
             var cancellationPolicy = cancellationPolicyControl.getCancellationPolicyTransfer(userVisit, partyCancellationPolicy.getCancellationPolicy());
 
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(partyCancellationPolicy.getPrimaryKey());
-            var createdBy = getPartyPK();
+            var createdBy = getPartyPK(userVisit);
             var partyCancellationPolicyStatusTransfer = PartyCancellationPolicyLogic.getInstance().getPartyCancellationPolicyStatusTransfer(userVisit, entityInstance, createdBy);
 
             partyCancellationPolicyTransfer = new PartyCancellationPolicyTransfer(party, cancellationPolicy, partyCancellationPolicyStatusTransfer);
-            put(partyCancellationPolicy, partyCancellationPolicyTransfer, entityInstance);
+            put(userVisit, partyCancellationPolicy, partyCancellationPolicyTransfer, entityInstance);
         }
         
         return partyCancellationPolicyTransfer;

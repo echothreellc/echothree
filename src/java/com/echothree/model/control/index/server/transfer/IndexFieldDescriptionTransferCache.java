@@ -20,16 +20,21 @@ import com.echothree.model.control.index.common.transfer.IndexFieldDescriptionTr
 import com.echothree.model.control.index.server.control.IndexControl;
 import com.echothree.model.data.index.server.entity.IndexFieldDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class IndexFieldDescriptionTransferCache
         extends BaseIndexDescriptionTransferCache<IndexFieldDescription, IndexFieldDescriptionTransfer> {
-    
+
+    IndexControl indexControl = Session.getModelController(IndexControl.class);
+
     /** Creates a new instance of IndexFieldDescriptionTransferCache */
-    public IndexFieldDescriptionTransferCache(UserVisit userVisit, IndexControl indexControl) {
-        super(userVisit, indexControl);
+    protected IndexFieldDescriptionTransferCache() {
+        super();
     }
     
-    public IndexFieldDescriptionTransfer getIndexFieldDescriptionTransfer(IndexFieldDescription indexFieldDescription) {
+    public IndexFieldDescriptionTransfer getIndexFieldDescriptionTransfer(UserVisit userVisit, IndexFieldDescription indexFieldDescription) {
         var indexFieldDescriptionTransfer = get(indexFieldDescription);
         
         if(indexFieldDescriptionTransfer == null) {
@@ -37,7 +42,7 @@ public class IndexFieldDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, indexFieldDescription.getLanguage());
             
             indexFieldDescriptionTransfer = new IndexFieldDescriptionTransfer(languageTransfer, indexFieldTransfer, indexFieldDescription.getDescription());
-            put(indexFieldDescription, indexFieldDescriptionTransfer);
+            put(userVisit, indexFieldDescription, indexFieldDescriptionTransfer);
         }
         
         return indexFieldDescriptionTransfer;

@@ -20,16 +20,21 @@ import com.echothree.model.control.workflow.common.transfer.WorkflowDescriptionT
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workflow.server.entity.WorkflowDescription;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class WorkflowDescriptionTransferCache
         extends BaseWorkflowDescriptionTransferCache<WorkflowDescription, WorkflowDescriptionTransfer> {
-    
+
+    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
+
     /** Creates a new instance of WorkflowDescriptionTransferCache */
-    public WorkflowDescriptionTransferCache(UserVisit userVisit, WorkflowControl workflowControl) {
-        super(userVisit, workflowControl);
+    protected WorkflowDescriptionTransferCache() {
+        super();
     }
     
-    public WorkflowDescriptionTransfer getWorkflowDescriptionTransfer(WorkflowDescription workflowDescription) {
+    public WorkflowDescriptionTransfer getWorkflowDescriptionTransfer(UserVisit userVisit, WorkflowDescription workflowDescription) {
         var workflowDescriptionTransfer = get(workflowDescription);
         
         if(workflowDescriptionTransfer == null) {
@@ -37,7 +42,7 @@ public class WorkflowDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, workflowDescription.getLanguage());
             
             workflowDescriptionTransfer = new WorkflowDescriptionTransfer(languageTransfer, workflowTransfer, workflowDescription.getDescription());
-            put(workflowDescription, workflowDescriptionTransfer);
+            put(userVisit, workflowDescription, workflowDescriptionTransfer);
         }
         
         return workflowDescriptionTransfer;

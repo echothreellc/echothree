@@ -22,20 +22,21 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.employee.server.entity.PartySkill;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PartySkillTransferCache
         extends BaseEmployeeTransferCache<PartySkill, PartySkillTransfer> {
-    
-    PartyControl partyControl;
+
+    EmployeeControl employeeControl = Session.getModelController(EmployeeControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of PartySkillTransferCache */
-    public PartySkillTransferCache(UserVisit userVisit, EmployeeControl employeeControl) {
-        super(userVisit, employeeControl);
-        
-        partyControl = Session.getModelController(PartyControl.class);
+    protected PartySkillTransferCache() {
+        super();
     }
     
-    public PartySkillTransfer getPartySkillTransfer(PartySkill partySkill) {
+    public PartySkillTransfer getPartySkillTransfer(UserVisit userVisit, PartySkill partySkill) {
         var partySkillTransfer = get(partySkill);
         
         if(partySkillTransfer == null) {
@@ -43,7 +44,7 @@ public class PartySkillTransferCache
             var skillType = employeeControl.getSkillTypeTransfer(userVisit, partySkill.getSkillType());
             
             partySkillTransfer = new PartySkillTransfer(party, skillType);
-            put(partySkill, partySkillTransfer);
+            put(userVisit, partySkill, partySkillTransfer);
         }
         
         return partySkillTransfer;

@@ -35,7 +35,9 @@ import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class GetDateTimeFormatCommand
         extends BaseSingleEntityCommand<DateTimeFormat, GetDateTimeFormatForm> {
     
@@ -63,24 +65,20 @@ public class GetDateTimeFormatCommand
         var parameterCount = (dateTimeFormatName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         switch(parameterCount) {
-            case 0:
-                dateTimeFormat = partyControl.getDefaultDateTimeFormat();
-                break;
-            case 1:
+            case 0 -> dateTimeFormat = partyControl.getDefaultDateTimeFormat();
+            case 1 -> {
                 if(dateTimeFormatName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.DateTimeFormat.name());
-                    
+
                     if(!hasExecutionErrors()) {
                         dateTimeFormat = partyControl.getDateTimeFormatByEntityInstance(entityInstance);
                     }
                 } else {
                     dateTimeFormat = DateTimeFormatLogic.getInstance().getDateTimeFormatByName(this, dateTimeFormatName);
                 }
-                break;
-            default:
-                addExecutionError(ExecutionErrors.InvalidParameterCount.name());
-                break;
+            }
+            default -> addExecutionError(ExecutionErrors.InvalidParameterCount.name());
         }
         
         if(dateTimeFormat != null) {

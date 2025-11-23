@@ -20,18 +20,23 @@ import com.echothree.model.control.employee.common.transfer.TerminationReasonTra
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.data.employee.server.entity.TerminationReason;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class TerminationReasonTransferCache
         extends BaseEmployeeTransferCache<TerminationReason, TerminationReasonTransfer> {
-    
+
+    EmployeeControl employeeControl = Session.getModelController(EmployeeControl.class);
+
     /** Creates a new instance of TerminationReasonTransferCache */
-    public TerminationReasonTransferCache(UserVisit userVisit, EmployeeControl employeeControl) {
-        super(userVisit, employeeControl);
+    protected TerminationReasonTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public TerminationReasonTransfer getTerminationReasonTransfer(TerminationReason terminationReason) {
+    public TerminationReasonTransfer getTerminationReasonTransfer(UserVisit userVisit, TerminationReason terminationReason) {
         var terminationReasonTransfer = get(terminationReason);
         
         if(terminationReasonTransfer == null) {
@@ -39,10 +44,10 @@ public class TerminationReasonTransferCache
             var terminationReasonName = terminationReasonDetail.getTerminationReasonName();
             var isDefault = terminationReasonDetail.getIsDefault();
             var sortOrder = terminationReasonDetail.getSortOrder();
-            var description = employeeControl.getBestTerminationReasonDescription(terminationReason, getLanguage());
+            var description = employeeControl.getBestTerminationReasonDescription(terminationReason, getLanguage(userVisit));
             
             terminationReasonTransfer = new TerminationReasonTransfer(terminationReasonName, isDefault, sortOrder, description);
-            put(terminationReason, terminationReasonTransfer);
+            put(userVisit, terminationReason, terminationReasonTransfer);
         }
         
         return terminationReasonTransfer;

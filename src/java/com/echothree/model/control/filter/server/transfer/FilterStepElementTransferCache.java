@@ -22,19 +22,21 @@ import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.filter.server.entity.FilterStepElement;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class FilterStepElementTransferCache
         extends BaseFilterTransferCache<FilterStepElement, FilterStepElementTransfer> {
 
     FilterControl filterControl = Session.getModelController(FilterControl.class);
 
     /** Creates a new instance of FilterStepElementTransferCache */
-    public FilterStepElementTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected FilterStepElementTransferCache() {
+        super();
     }
 
     @Override
-    public FilterStepElementTransfer getTransfer(FilterStepElement filterStepElement) {
+    public FilterStepElementTransfer getTransfer(UserVisit userVisit, FilterStepElement filterStepElement) {
         var filterStepElementTransfer = get(filterStepElement);
         
         if(filterStepElementTransfer == null) {
@@ -45,11 +47,11 @@ public class FilterStepElementTransferCache
             var filterItemSelector = filterStepElementDetail.getFilterItemSelector();
             var filterItemSelectorTransfer = filterItemSelector == null? null: selectorControl.getSelectorTransfer(userVisit, filterItemSelector);
             var filterAdjustmentTransfer = filterControl.getFilterAdjustmentTransfer(userVisit, filterStepElementDetail.getFilterAdjustment());
-            var description = filterControl.getBestFilterStepElementDescription(filterStepElement, getLanguage());
+            var description = filterControl.getBestFilterStepElementDescription(filterStepElement, getLanguage(userVisit));
             
             filterStepElementTransfer = new FilterStepElementTransfer(filterStepTransfer, filterStepElementName,
                     filterItemSelectorTransfer, filterAdjustmentTransfer, description);
-            put(filterStepElement, filterStepElementTransfer);
+            put(userVisit, filterStepElement, filterStepElementTransfer);
         }
         
         return filterStepElementTransfer;

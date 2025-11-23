@@ -16,8 +16,6 @@
 
 package com.echothree.model.control.returnpolicy.server.transfer;
 
-import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.BaseTransfer;
 import com.echothree.util.server.persistence.BaseEntity;
 import com.echothree.util.server.transfer.BaseTransferCache;
@@ -25,13 +23,9 @@ import com.echothree.util.server.transfer.BaseTransferCache;
 public abstract class BaseReturnPolicyTransferCache<K extends BaseEntity, V extends BaseTransfer>
         extends BaseTransferCache<K, V> {
     
-    ReturnPolicyControl returnPolicyControl;
-    
     /** Creates a new instance of BaseReturnPolicyTransferCache */
-    protected BaseReturnPolicyTransferCache(UserVisit userVisit, ReturnPolicyControl returnPolicyControl) {
-        super(userVisit);
-        
-        this.returnPolicyControl = returnPolicyControl;
+    protected BaseReturnPolicyTransferCache() {
+        super();
     }
     
 }

@@ -32,7 +32,9 @@ import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class DeleteComponentVendorCommand
         extends BaseSimpleCommand<DeleteComponentVendorForm> {
     
@@ -60,10 +62,10 @@ public class DeleteComponentVendorCommand
     @Override
     protected BaseResult execute() {
         var componentVendorName = form.getComponentVendorName();
-        var componentVendor = getComponentControl().getComponentVendorByNameForUpdate(componentVendorName);
+        var componentVendor = componentControl.getComponentVendorByNameForUpdate(componentVendorName);
         
         if(componentVendor != null) {
-            getComponentControl().deleteComponentVendor(componentVendor, getPartyPK());
+            componentControl.deleteComponentVendor(componentVendor, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownComponentVendorName.name(), componentVendorName);
         }

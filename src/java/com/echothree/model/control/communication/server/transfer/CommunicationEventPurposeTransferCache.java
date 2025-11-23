@@ -20,18 +20,23 @@ import com.echothree.model.control.communication.common.transfer.CommunicationEv
 import com.echothree.model.control.communication.server.control.CommunicationControl;
 import com.echothree.model.data.communication.server.entity.CommunicationEventPurpose;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CommunicationEventPurposeTransferCache
         extends BaseCommunicationTransferCache<CommunicationEventPurpose, CommunicationEventPurposeTransfer> {
-    
+
+    CommunicationControl communicationControl = Session.getModelController(CommunicationControl.class);
+
     /** Creates a new instance of CommunicationEventPurposeTransferCache */
-    public CommunicationEventPurposeTransferCache(UserVisit userVisit, CommunicationControl communicationControl) {
-        super(userVisit, communicationControl);
+    protected CommunicationEventPurposeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public CommunicationEventPurposeTransfer getCommunicationEventPurposeTransfer(CommunicationEventPurpose communicationEventPurpose) {
+    public CommunicationEventPurposeTransfer getCommunicationEventPurposeTransfer(UserVisit userVisit, CommunicationEventPurpose communicationEventPurpose) {
         var communicationEventPurposeTransfer = get(communicationEventPurpose);
         
         if(communicationEventPurposeTransfer == null) {
@@ -39,10 +44,10 @@ public class CommunicationEventPurposeTransferCache
             var communicationEventPurposeName = communicationEventPurposeDetail.getCommunicationEventPurposeName();
             var isDefault = communicationEventPurposeDetail.getIsDefault();
             var sortOrder = communicationEventPurposeDetail.getSortOrder();
-            var description = communicationControl.getBestCommunicationEventPurposeDescription(communicationEventPurpose, getLanguage());
+            var description = communicationControl.getBestCommunicationEventPurposeDescription(communicationEventPurpose, getLanguage(userVisit));
             
             communicationEventPurposeTransfer = new CommunicationEventPurposeTransfer(communicationEventPurposeName, isDefault, sortOrder, description);
-            put(communicationEventPurpose, communicationEventPurposeTransfer);
+            put(userVisit, communicationEventPurpose, communicationEventPurposeTransfer);
         }
         
         return communicationEventPurposeTransfer;

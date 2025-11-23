@@ -37,20 +37,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class PaymentMethodTypePartyTypeLogic
     extends BaseLogic {
-    
-    private PaymentMethodTypePartyTypeLogic() {
+
+    protected PaymentMethodTypePartyTypeLogic() {
         super();
     }
-    
-    private static class PaymentMethodTypePartyLogicHolder {
-        static PaymentMethodTypePartyTypeLogic instance = new PaymentMethodTypePartyTypeLogic();
-    }
-    
+
     public static PaymentMethodTypePartyTypeLogic getInstance() {
-        return PaymentMethodTypePartyLogicHolder.instance;
+        return CDI.current().select(PaymentMethodTypePartyTypeLogic.class).get();
     }
 
     public PaymentMethodTypePartyType createPaymentMethodTypePartyType(final ExecutionErrorAccumulator eea,
@@ -147,47 +146,43 @@ public class PaymentMethodTypePartyTypeLogic
         var fullySpecifiedName = paymentMethodTypeName != null && partyTypeName != null;
         var parameterCount = (fullySpecifiedName ? 1 : 0) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
-        switch(parameterCount) {
-            case 0:
-                if(allowDefault) {
-                    if(paymentMethodTypeName != null) {
-                        var paymentMethodType = PaymentMethodTypeLogic.getInstance().getPaymentMethodTypeByName(eea,
-                                paymentMethodTypeName);
+        if(parameterCount == 0) {
+            if(allowDefault) {
+                if(paymentMethodTypeName != null) {
+                    var paymentMethodType = PaymentMethodTypeLogic.getInstance().getPaymentMethodTypeByName(eea,
+                            paymentMethodTypeName);
 
-                        if(!eea.hasExecutionErrors()) {
-                            paymentMethodTypePartyType = paymentMethodTypePartyTypeControl.getDefaultPaymentMethodTypePartyType(paymentMethodType, entityPermission);
+                    if(!eea.hasExecutionErrors()) {
+                        paymentMethodTypePartyType = paymentMethodTypePartyTypeControl.getDefaultPaymentMethodTypePartyType(paymentMethodType, entityPermission);
 
-                            if(paymentMethodTypePartyType == null) {
-                                handleExecutionError(UnknownDefaultPaymentMethodTypePartyTypeException.class, eea, ExecutionErrors.UnknownDefaultPaymentMethodTypePartyType.name());
-                            }
+                        if(paymentMethodTypePartyType == null) {
+                            handleExecutionError(UnknownDefaultPaymentMethodTypePartyTypeException.class, eea, ExecutionErrors.UnknownDefaultPaymentMethodTypePartyType.name());
                         }
-                    } else {
-                        handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                     }
                 } else {
                     handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                 }
-                break;
-            case 1:
-                if(fullySpecifiedName) {
-                    var paymentMethodType = PaymentMethodTypeLogic.getInstance().getPaymentMethodTypeByName(eea, paymentMethodTypeName);
-                    var partyType = PartyLogic.getInstance().getPartyTypeByName(eea, partyTypeName);
-
-                    if(!eea.hasExecutionErrors()) {
-                        paymentMethodTypePartyType = getPaymentMethodTypePartyType(eea, paymentMethodType, partyType, entityPermission);
-                    }
-                } else {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
-                            ComponentVendors.ECHO_THREE.name(), EntityTypes.PaymentMethodTypePartyType.name());
-
-                    if(!eea.hasExecutionErrors()) {
-                        paymentMethodTypePartyType = paymentMethodTypePartyTypeControl.getPaymentMethodTypePartyTypeByEntityInstance(entityInstance, entityPermission);
-                    }
-                }
-                break;
-            default:
+            } else {
                 handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
-                break;
+            }
+        } else if(parameterCount == 1) {
+            if(fullySpecifiedName) {
+                var paymentMethodType = PaymentMethodTypeLogic.getInstance().getPaymentMethodTypeByName(eea, paymentMethodTypeName);
+                var partyType = PartyLogic.getInstance().getPartyTypeByName(eea, partyTypeName);
+
+                if(!eea.hasExecutionErrors()) {
+                    paymentMethodTypePartyType = getPaymentMethodTypePartyType(eea, paymentMethodType, partyType, entityPermission);
+                }
+            } else {
+                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                        ComponentVendors.ECHO_THREE.name(), EntityTypes.PaymentMethodTypePartyType.name());
+
+                if(!eea.hasExecutionErrors()) {
+                    paymentMethodTypePartyType = paymentMethodTypePartyTypeControl.getPaymentMethodTypePartyTypeByEntityInstance(entityInstance, entityPermission);
+                }
+            }
+        } else {
+            handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
 
         return paymentMethodTypePartyType;

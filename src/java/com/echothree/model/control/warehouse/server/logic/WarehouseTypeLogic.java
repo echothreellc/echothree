@@ -33,20 +33,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class WarehouseTypeLogic
         extends BaseLogic {
 
-    private WarehouseTypeLogic() {
+    protected WarehouseTypeLogic() {
         super();
     }
 
-    private static class WarehouseTypeLogicHolder {
-        static WarehouseTypeLogic instance = new WarehouseTypeLogic();
-    }
-
     public static WarehouseTypeLogic getInstance() {
-        return WarehouseTypeLogic.WarehouseTypeLogicHolder.instance;
+        return CDI.current().select(WarehouseTypeLogic.class).get();
     }
 
     public WarehouseType createWarehouseType(final ExecutionErrorAccumulator eea, final String warehouseTypeName,
@@ -96,7 +95,7 @@ public class WarehouseTypeLogic
         var parameterCount = (warehouseTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
-            case 0:
+            case 0 -> {
                 if(allowDefault) {
                     warehouseType = warehouseControl.getDefaultWarehouseType(entityPermission);
 
@@ -106,8 +105,8 @@ public class WarehouseTypeLogic
                 } else {
                     handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                 }
-                break;
-            case 1:
+            }
+            case 1 -> {
                 if(warehouseTypeName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.WarehouseType.name());
@@ -118,10 +117,9 @@ public class WarehouseTypeLogic
                 } else {
                     warehouseType = getWarehouseTypeByName(eea, warehouseTypeName, entityPermission);
                 }
-                break;
-            default:
-                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
-                break;
+            }
+            default ->
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
 
         return warehouseType;

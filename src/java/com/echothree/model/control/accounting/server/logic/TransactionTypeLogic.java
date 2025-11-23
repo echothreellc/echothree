@@ -29,20 +29,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class TransactionTypeLogic
         extends BaseLogic {
 
-    private TransactionTypeLogic() {
+    protected TransactionTypeLogic() {
         super();
     }
 
-    private static class TransactionTypeLogicHolder {
-        static TransactionTypeLogic instance = new TransactionTypeLogic();
-    }
-
     public static TransactionTypeLogic getInstance() {
-        return TransactionTypeLogic.TransactionTypeLogicHolder.instance;
+        return CDI.current().select(TransactionTypeLogic.class).get();
     }
 
     public TransactionType getTransactionTypeByName(final ExecutionErrorAccumulator eea, final String transactionTypeName,
@@ -73,7 +72,7 @@ public class TransactionTypeLogic
         var parameterCount = (transactionTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
-            case 1:
+            case 1 -> {
                 if(transactionTypeName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.TransactionType.name());
@@ -84,10 +83,9 @@ public class TransactionTypeLogic
                 } else {
                     transactionType = getTransactionTypeByName(eea, transactionTypeName, entityPermission);
                 }
-                break;
-            default:
-                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
-                break;
+            }
+            default ->
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
 
         return transactionType;

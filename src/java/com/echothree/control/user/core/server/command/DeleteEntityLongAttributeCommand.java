@@ -31,7 +31,9 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class DeleteEntityLongAttributeCommand
         extends BaseSimpleCommand<DeleteEntityLongAttributeForm> {
 
@@ -77,7 +79,6 @@ public class DeleteEntityLongAttributeCommand
 
                     if(!hasExecutionErrors()) {
                         if(entityInstance.getEntityType().equals(entityAttribute.getLastDetail().getEntityType())) {
-                            var coreControl = getCoreControl();
                             var entityLongAttribute = coreControl.getEntityLongAttributeForUpdate(entityAttribute, entityInstance);
 
                             if(entityLongAttribute != null) {

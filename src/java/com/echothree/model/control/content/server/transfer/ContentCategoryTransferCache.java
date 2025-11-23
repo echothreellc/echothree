@@ -27,10 +27,13 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.transfer.ListWrapperBuilder;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ContentCategoryTransferCache
         extends BaseContentTransferCache<ContentCategory, ContentCategoryTransfer> {
 
+    ContentControl contentControl = Session.getModelController(ContentControl.class);
     OfferUseControl offerUseControl = Session.getModelController(OfferUseControl.class);
     SelectorControl selectorControl = Session.getModelController(SelectorControl.class);
     
@@ -48,8 +51,8 @@ public class ContentCategoryTransferCache
     boolean filterEntityInstance;
     
     /** Creates a new instance of ContentCategoryTransferCache */
-    public ContentCategoryTransferCache(UserVisit userVisit, ContentControl contentControl) {
-        super(userVisit, contentControl);
+    protected ContentCategoryTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {
@@ -79,7 +82,7 @@ public class ContentCategoryTransferCache
         setIncludeEntityInstance(!filterEntityInstance);
     }
     
-    public ContentCategoryTransfer getContentCategoryTransfer(ContentCategory contentCategory) {
+    public ContentCategoryTransfer getContentCategoryTransfer(UserVisit userVisit, ContentCategory contentCategory) {
         var contentCategoryTransfer = get(contentCategory);
         
         if(contentCategoryTransfer == null) {
@@ -94,11 +97,11 @@ public class ContentCategoryTransferCache
             var contentCategoryItemSelectorTransfer = contentCategoryItemSelector == null ? null : selectorControl.getSelectorTransfer(userVisit, contentCategoryItemSelector);
             var isDefault = filterIsDefault ? null : contentCategoryDetail.getIsDefault();
             var sortOrder = filterSortOrder ? null : contentCategoryDetail.getSortOrder();
-            var description = filterDescription ? null : contentControl.getBestContentCategoryDescription(contentCategory, getLanguage());
+            var description = filterDescription ? null : contentControl.getBestContentCategoryDescription(contentCategory, getLanguage(userVisit));
             
             contentCategoryTransfer = new ContentCategoryTransfer(contentCatalogTransfer, contentCategoryName, parentContentCategoryTransfer,
                     defaultOfferUseTransfer, contentCategoryItemSelectorTransfer, isDefault, sortOrder, description);
-            put(contentCategory, contentCategoryTransfer);
+            put(userVisit, contentCategory, contentCategoryTransfer);
 
             if(includeContentCategoryItems) {
                 contentCategoryTransfer.setContentCategoryItems(ListWrapperBuilder.getInstance().filter(transferProperties, contentControl.getContentCategoryItemTransfersByContentCategory(userVisit, contentCategoryDetail.getContentCategory())));

@@ -31,12 +31,15 @@ import com.echothree.model.data.customer.server.entity.CustomerType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CustomerTypeTransferCache
         extends BaseCustomerTransferCache<CustomerType, CustomerTypeTransfer> {
 
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
     CancellationPolicyControl cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
+    CustomerControl customerControl = Session.getModelController(CustomerControl.class);
     FreeOnBoardControl freeOnBoardControl = Session.getModelController(FreeOnBoardControl.class);
     InventoryControl inventoryControl = Session.getModelController(InventoryControl.class);
     OfferUseControl offerUseControl = Session.getModelController(OfferUseControl.class);
@@ -68,8 +71,8 @@ public class CustomerTypeTransferCache
     boolean filterEntityInstance;
 
     /** Creates a new instance of CustomerTypeTransferCache */
-    public CustomerTypeTransferCache(UserVisit userVisit, CustomerControl customerControl) {
-        super(userVisit, customerControl);
+    protected CustomerTypeTransferCache() {
+        super();
 
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
@@ -103,7 +106,7 @@ public class CustomerTypeTransferCache
         setIncludeEntityInstance(!filterEntityInstance);
     }
 
-    public CustomerTypeTransfer getCustomerTypeTransfer(CustomerType customerType) {
+    public CustomerTypeTransfer getCustomerTypeTransfer(UserVisit userVisit, CustomerType customerType) {
         var customerTypeTransfer = get(customerType);
 
         if(customerTypeTransfer == null) {
@@ -135,14 +138,14 @@ public class CustomerTypeTransferCache
             var allocationPriorityTransfer = allocationPriority == null ? null : inventoryControl.getAllocationPriorityTransfer(userVisit, allocationPriority);
             var isDefault = filterIsDefault ? null : customerTypeDetail.getIsDefault();
             var sortOrder = filterSortOrder ? null : customerTypeDetail.getSortOrder();
-            var description = filterDescription ? null : customerControl.getBestCustomerTypeDescription(customerType, getLanguage());
+            var description = filterDescription ? null : customerControl.getBestCustomerTypeDescription(customerType, getLanguage(userVisit));
 
             customerTypeTransfer = new CustomerTypeTransfer(customerTypeName, customerSequenceTransfer, defaultOfferUseTransfer,
                     defaultTermTransfer, defaultFreeOnBoardTransfer, defaultCancellationPolicyTransfer, defaultReturnPolicyTransfer,
                     defaultArGlAccountTransfer, defaultHoldUntilComplete, defaultAllowBackorders, defaultAllowSubstitutions,
                     defaultAllowCombiningShipments, defaultRequireReference, defaultAllowReferenceDuplicates,
                     defaultReferenceValidationPattern, defaultTaxable, allocationPriorityTransfer, isDefault, sortOrder, description);
-            put(customerType, customerTypeTransfer);
+            put(userVisit, customerType, customerTypeTransfer);
         }
 
         return customerTypeTransfer;

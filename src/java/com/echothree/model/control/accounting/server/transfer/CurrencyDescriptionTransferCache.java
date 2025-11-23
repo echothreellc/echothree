@@ -21,28 +21,29 @@ import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.data.accounting.server.entity.CurrencyDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CurrencyDescriptionTransferCache
         extends BaseAccountingDescriptionTransferCache<CurrencyDescription, CurrencyDescriptionTransfer> {
 
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
 
     /** Creates a new instance of CurrencyDescriptionTransferCache */
-    public CurrencyDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected CurrencyDescriptionTransferCache() {
+        super();
     }
     
     @Override
-    public CurrencyDescriptionTransfer getTransfer(CurrencyDescription currencyDescription) {
+    public CurrencyDescriptionTransfer getTransfer(UserVisit userVisit, CurrencyDescription currencyDescription) {
         var currencyDescriptionTransfer = get(currencyDescription);
         
         if(currencyDescriptionTransfer == null) {
-            var currencyTransferCache = accountingControl.getAccountingTransferCaches(userVisit).getCurrencyTransferCache();
-            var currencyTransfer = currencyTransferCache.getTransfer(currencyDescription.getCurrency());
+            var currencyTransfer = accountingControl.getCurrencyTransfer(userVisit, currencyDescription.getCurrency());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, currencyDescription.getLanguage());
             
             currencyDescriptionTransfer = new CurrencyDescriptionTransfer(languageTransfer, currencyTransfer, currencyDescription.getDescription());
-            put(currencyDescription, currencyDescriptionTransfer);
+            put(userVisit, currencyDescription, currencyDescriptionTransfer);
         }
         
         return currencyDescriptionTransfer;

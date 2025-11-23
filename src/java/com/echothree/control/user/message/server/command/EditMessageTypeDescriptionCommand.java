@@ -34,7 +34,9 @@ import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EditMessageTypeDescriptionCommand
         extends BaseEditCommand<MessageTypeDescriptionSpec, MessageTypeDescriptionEdit> {
     
@@ -63,11 +65,11 @@ public class EditMessageTypeDescriptionCommand
     protected BaseResult execute() {
         var result = MessageResultFactory.getEditMessageTypeDescriptionResult();
         var componentVendorName = spec.getComponentVendorName();
-        var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
+        var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
             var entityTypeName = spec.getEntityTypeName();
-            var entityType = getEntityTypeControl().getEntityTypeByName(componentVendor, entityTypeName);
+            var entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
                 var messageControl = Session.getModelController(MessageControl.class);

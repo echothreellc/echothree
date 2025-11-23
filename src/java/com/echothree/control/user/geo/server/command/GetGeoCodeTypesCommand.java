@@ -24,20 +24,24 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.geo.server.entity.GeoCodeType;
 import com.echothree.model.data.geo.server.factory.GeoCodeTypeFactory;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
+@RequestScoped
 public class GetGeoCodeTypesCommand
-        extends BaseMultipleEntitiesCommand<GeoCodeType, GetGeoCodeTypesForm> {
-    
+        extends BasePaginatedMultipleEntitiesCommand<GeoCodeType, GetGeoCodeTypesForm> {
+
+    @Inject
+    GeoControl geoControl;
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
@@ -58,9 +62,17 @@ public class GetGeoCodeTypesCommand
     }
 
     @Override
-    protected Collection<GeoCodeType> getEntities() {
-        var geoControl = Session.getModelController(GeoControl.class);
+    protected void handleForm() {
+        // No form fields.
+    }
 
+    @Override
+    protected Long getTotalEntities() {
+        return geoControl.countGeoCodeTypes();
+    }
+
+    @Override
+    protected Collection<GeoCodeType> getEntities() {
         return geoControl.getGeoCodeTypes();
     }
 
@@ -69,10 +81,8 @@ public class GetGeoCodeTypesCommand
         var result = GeoResultFactory.getGetGeoCodeTypesResult();
 
         if(entities != null) {
-            var geoControl = Session.getModelController(GeoControl.class);
-
             if(session.hasLimit(GeoCodeTypeFactory.class)) {
-                result.setGeoCodeTypeCount(geoControl.countGeoCodeTypes());
+                result.setGeoCodeTypeCount(getTotalEntities());
             }
 
             result.setGeoCodeTypes(geoControl.getGeoCodeTypeTransfers(getUserVisit(), entities));

@@ -25,23 +25,26 @@ import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.comment.server.entity.CommentType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CommentTypeTransferCache
         extends BaseCommentTransferCache<CommentType, CommentTypeTransfer> {
-    
+
+    CommentControl commentControl = Session.getModelController(CommentControl.class);
     EntityTypeControl entityTypeControl = Session.getModelController(EntityTypeControl.class);
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
     SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of CommentTypeTransferCache */
-    public CommentTypeTransferCache(UserVisit userVisit, CommentControl commentControl) {
-        super(userVisit, commentControl);
+    protected CommentTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public CommentTypeTransfer getCommentTypeTransfer(CommentType commentType) {
+    public CommentTypeTransfer getCommentTypeTransfer(UserVisit userVisit, CommentType commentType) {
         var commentTypeTransfer = get(commentType);
         
         if(commentTypeTransfer == null) {
@@ -55,11 +58,11 @@ public class CommentTypeTransferCache
             var mimeTypeUsageType = commentTypeDetail.getMimeTypeUsageType();
             var mimeTypeUsageTypeTransfer = mimeTypeUsageType == null? null: mimeTypeControl.getMimeTypeUsageTypeTransfer(userVisit, mimeTypeUsageType);
             var sortOrder = commentTypeDetail.getSortOrder();
-            var description = commentControl.getBestCommentTypeDescription(commentType, getLanguage());
+            var description = commentControl.getBestCommentTypeDescription(commentType, getLanguage(userVisit));
             
             commentTypeTransfer = new CommentTypeTransfer(entityTypeTransfer, commentTypeName, commentSequenceTransfer,
                     workflowEntranceTransfer, mimeTypeUsageTypeTransfer, sortOrder, description);
-            put(commentType, commentTypeTransfer);
+            put(userVisit, commentType, commentTypeTransfer);
         }
         
         return commentTypeTransfer;

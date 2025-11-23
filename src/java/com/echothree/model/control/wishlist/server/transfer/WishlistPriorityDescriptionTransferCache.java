@@ -20,16 +20,21 @@ import com.echothree.model.control.wishlist.common.transfer.WishlistPriorityDesc
 import com.echothree.model.control.wishlist.server.control.WishlistControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.wishlist.server.entity.WishlistPriorityDescription;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class WishlistPriorityDescriptionTransferCache
         extends BaseWishlistDescriptionTransferCache<WishlistPriorityDescription, WishlistPriorityDescriptionTransfer> {
-    
+
+    WishlistControl wishlistControl = Session.getModelController(WishlistControl.class);
+
     /** Creates a new instance of WishlistPriorityDescriptionTransferCache */
-    public WishlistPriorityDescriptionTransferCache(UserVisit userVisit, WishlistControl wishlistControl) {
-        super(userVisit, wishlistControl);
+    protected WishlistPriorityDescriptionTransferCache() {
+        super();
     }
     
-    public WishlistPriorityDescriptionTransfer getWishlistPriorityDescriptionTransfer(WishlistPriorityDescription wishlistPriorityDescription) {
+    public WishlistPriorityDescriptionTransfer getWishlistPriorityDescriptionTransfer(UserVisit userVisit, WishlistPriorityDescription wishlistPriorityDescription) {
         var wishlistPriorityDescriptionTransfer = get(wishlistPriorityDescription);
         
         if(wishlistPriorityDescriptionTransfer == null) {
@@ -37,7 +42,7 @@ public class WishlistPriorityDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, wishlistPriorityDescription.getLanguage());
             
             wishlistPriorityDescriptionTransfer = new WishlistPriorityDescriptionTransfer(languageTransfer, wishlistPriorityTransfer, wishlistPriorityDescription.getDescription());
-            put(wishlistPriorityDescription, wishlistPriorityDescriptionTransfer);
+            put(userVisit, wishlistPriorityDescription, wishlistPriorityDescriptionTransfer);
         }
         
         return wishlistPriorityDescriptionTransfer;

@@ -28,7 +28,9 @@ import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CreateComponentVersionCommand
         extends BaseSimpleCommand<CreateComponentVersionForm> {
     
@@ -54,7 +56,7 @@ public class CreateComponentVersionCommand
     protected BaseResult execute() {
         var componentControl = Session.getModelController(ComponentControl.class);
         var componentVendorName = form.getComponentVendorName();
-        var componentVendor = getComponentControl().getComponentVendorByName(componentVendorName);
+        var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
         
         if(componentVendor != null) {
             var componentName = form.getComponentName();

@@ -20,24 +20,29 @@ import com.echothree.model.control.invoice.common.transfer.InvoiceLineUseTypeTra
 import com.echothree.model.control.invoice.server.control.InvoiceControl;
 import com.echothree.model.data.invoice.server.entity.InvoiceLineUseType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class InvoiceLineUseTypeTransferCache
         extends BaseInvoiceTransferCache<InvoiceLineUseType, InvoiceLineUseTypeTransfer> {
-    
+
+    InvoiceControl invoiceControl = Session.getModelController(InvoiceControl.class);
+
     /** Creates a new instance of InvoiceLineUseTypeTransferCache */
-    public InvoiceLineUseTypeTransferCache(UserVisit userVisit, InvoiceControl invoiceControl) {
-        super(userVisit, invoiceControl);
+    protected InvoiceLineUseTypeTransferCache() {
+        super();
     }
     
-    public InvoiceLineUseTypeTransfer getInvoiceLineUseTypeTransfer(InvoiceLineUseType invoiceLineUseType) {
+    public InvoiceLineUseTypeTransfer getInvoiceLineUseTypeTransfer(UserVisit userVisit, InvoiceLineUseType invoiceLineUseType) {
         var invoiceLineUseTypeTransfer = get(invoiceLineUseType);
         
         if(invoiceLineUseTypeTransfer == null) {
             var invoiceLineUseTypeName = invoiceLineUseType.getInvoiceLineUseTypeName();
-            var description = invoiceControl.getBestInvoiceLineUseTypeDescription(invoiceLineUseType, getLanguage());
+            var description = invoiceControl.getBestInvoiceLineUseTypeDescription(invoiceLineUseType, getLanguage(userVisit));
             
             invoiceLineUseTypeTransfer = new InvoiceLineUseTypeTransfer(invoiceLineUseTypeName, description);
-            put(invoiceLineUseType, invoiceLineUseTypeTransfer);
+            put(userVisit, invoiceLineUseType, invoiceLineUseTypeTransfer);
         }
         
         return invoiceLineUseTypeTransfer;

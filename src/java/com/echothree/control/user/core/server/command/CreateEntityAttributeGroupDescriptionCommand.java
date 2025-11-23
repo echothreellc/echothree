@@ -34,7 +34,9 @@ import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CreateEntityAttributeGroupDescriptionCommand
         extends BaseSimpleCommand<CreateEntityAttributeGroupDescriptionForm> {
     
@@ -63,7 +65,6 @@ public class CreateEntityAttributeGroupDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
         var entityAttributeGroupName = form.getEntityAttributeGroupName();
         var entityAttributeGroup = coreControl.getEntityAttributeGroupByName(entityAttributeGroupName);
         

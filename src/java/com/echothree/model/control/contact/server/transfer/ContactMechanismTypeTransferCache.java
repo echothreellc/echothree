@@ -20,29 +20,34 @@ import com.echothree.model.control.contact.common.transfer.ContactMechanismTypeT
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.data.contact.server.entity.ContactMechanismType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ContactMechanismTypeTransferCache
         extends BaseContactTransferCache<ContactMechanismType, ContactMechanismTypeTransfer> {
-    
+
+    ContactControl contactControl = Session.getModelController(ContactControl.class);
+
     /** Creates a new instance of ContactMechanismTypeTransferCache */
-    public ContactMechanismTypeTransferCache(UserVisit userVisit, ContactControl contactControl) {
-        super(userVisit, contactControl);
+    protected ContactMechanismTypeTransferCache() {
+        super();
     }
     
-    public ContactMechanismTypeTransfer getContactMechanismTypeTransfer(ContactMechanismType contactMechanismType) {
+    public ContactMechanismTypeTransfer getContactMechanismTypeTransfer(UserVisit userVisit, ContactMechanismType contactMechanismType) {
         var contactMechanismTypeTransfer = get(contactMechanismType);
         
         if(contactMechanismTypeTransfer == null) {
             var contactMechanismTypeName = contactMechanismType.getContactMechanismTypeName();
             var parentContactMechanismType = contactMechanismType.getParentContactMechanismType();
-            var parentContactMechanismTypeTransfer = parentContactMechanismType == null? null: getContactMechanismTypeTransfer(parentContactMechanismType);
+            var parentContactMechanismTypeTransfer = parentContactMechanismType == null ? null : getContactMechanismTypeTransfer(userVisit, parentContactMechanismType);
             var isDefault = contactMechanismType.getIsDefault();
             var sortOrder = contactMechanismType.getSortOrder();
-            var description = contactControl.getBestContactMechanismTypeDescription(contactMechanismType, getLanguage());
+            var description = contactControl.getBestContactMechanismTypeDescription(contactMechanismType, getLanguage(userVisit));
             
             contactMechanismTypeTransfer = new ContactMechanismTypeTransfer(contactMechanismTypeName,
                     parentContactMechanismTypeTransfer, isDefault, sortOrder, description);
-            put(contactMechanismType, contactMechanismTypeTransfer);
+            put(userVisit, contactMechanismType, contactMechanismTypeTransfer);
         }
         
         return contactMechanismTypeTransfer;

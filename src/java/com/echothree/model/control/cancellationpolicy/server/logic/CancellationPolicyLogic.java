@@ -44,20 +44,19 @@ import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.ParameterUtils;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class CancellationPolicyLogic
         extends BaseLogic {
-    
-    private CancellationPolicyLogic() {
+
+    protected CancellationPolicyLogic() {
         super();
     }
-    
-    private static class CancellationPolicyLogicHolder {
-        static CancellationPolicyLogic instance = new CancellationPolicyLogic();
-    }
-    
+
     public static CancellationPolicyLogic getInstance() {
-        return CancellationPolicyLogicHolder.instance;
+        return CDI.current().select(CancellationPolicyLogic.class).get();
     }
 
     public CancellationPolicy createCancellationPolicy(final ExecutionErrorAccumulator eea, final String cancellationKindName, final String cancellationPolicyName,

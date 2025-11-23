@@ -22,18 +22,21 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.contactlist.server.entity.PartyTypeContactList;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PartyTypeContactListTransferCache
         extends BaseContactListTransferCache<PartyTypeContactList, PartyTypeContactListTransfer> {
 
+    ContactListControl contactListControl = Session.getModelController(ContactListControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of PartyTypeContactListTransferCache */
-    public PartyTypeContactListTransferCache(UserVisit userVisit, ContactListControl contactListControl) {
-        super(userVisit, contactListControl);
+    protected PartyTypeContactListTransferCache() {
+        super();
     }
     
-    public PartyTypeContactListTransfer getPartyTypeContactListTransfer(PartyTypeContactList partyTypeContactList) {
+    public PartyTypeContactListTransfer getPartyTypeContactListTransfer(UserVisit userVisit, PartyTypeContactList partyTypeContactList) {
         var partyTypeContactListTransfer = get(partyTypeContactList);
         
         if(partyTypeContactListTransfer == null) {
@@ -42,7 +45,7 @@ public class PartyTypeContactListTransferCache
             var addWhenCreated = partyTypeContactList.getAddWhenCreated();
             
             partyTypeContactListTransfer = new PartyTypeContactListTransfer(partyTypeTransfer, contactListTransfer, addWhenCreated);
-            put(partyTypeContactList, partyTypeContactListTransfer);
+            put(userVisit, partyTypeContactList, partyTypeContactListTransfer);
         }
         
         return partyTypeContactListTransfer;

@@ -20,17 +20,22 @@ import com.echothree.model.control.item.common.transfer.ItemDescriptionTypeUseTy
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.item.server.entity.ItemDescriptionTypeUseTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ItemDescriptionTypeUseTypeDescriptionTransferCache
         extends BaseItemDescriptionTransferCache<ItemDescriptionTypeUseTypeDescription, ItemDescriptionTypeUseTypeDescriptionTransfer> {
-    
+
+    ItemControl itemControl = Session.getModelController(ItemControl.class);
+
     /** Creates a new instance of ItemDescriptionTypeUseTypeDescriptionTransferCache */
-    public ItemDescriptionTypeUseTypeDescriptionTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    protected ItemDescriptionTypeUseTypeDescriptionTransferCache() {
+        super();
     }
     
     @Override
-    public ItemDescriptionTypeUseTypeDescriptionTransfer getTransfer(ItemDescriptionTypeUseTypeDescription itemDescriptionTypeUseTypeDescription) {
+    public ItemDescriptionTypeUseTypeDescriptionTransfer getTransfer(UserVisit userVisit, ItemDescriptionTypeUseTypeDescription itemDescriptionTypeUseTypeDescription) {
         var itemDescriptionTypeUseTypeDescriptionTransfer = get(itemDescriptionTypeUseTypeDescription);
         
         if(itemDescriptionTypeUseTypeDescriptionTransfer == null) {
@@ -38,7 +43,7 @@ public class ItemDescriptionTypeUseTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, itemDescriptionTypeUseTypeDescription.getLanguage());
             
             itemDescriptionTypeUseTypeDescriptionTransfer = new ItemDescriptionTypeUseTypeDescriptionTransfer(languageTransfer, itemDescriptionTypeUseTypeTransfer, itemDescriptionTypeUseTypeDescription.getDescription());
-            put(itemDescriptionTypeUseTypeDescription, itemDescriptionTypeUseTypeDescriptionTransfer);
+            put(userVisit, itemDescriptionTypeUseTypeDescription, itemDescriptionTypeUseTypeDescriptionTransfer);
         }
         
         return itemDescriptionTypeUseTypeDescriptionTransfer;

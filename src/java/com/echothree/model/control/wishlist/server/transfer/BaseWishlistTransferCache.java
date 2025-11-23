@@ -16,8 +16,6 @@
 
 package com.echothree.model.control.wishlist.server.transfer;
 
-import com.echothree.model.control.wishlist.server.control.WishlistControl;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.BaseTransfer;
 import com.echothree.util.server.persistence.BaseEntity;
 import com.echothree.util.server.transfer.BaseTransferCache;
@@ -25,13 +23,9 @@ import com.echothree.util.server.transfer.BaseTransferCache;
 public abstract class BaseWishlistTransferCache<K extends BaseEntity, V extends BaseTransfer>
         extends BaseTransferCache<K, V> {
     
-    WishlistControl wishlistControl;
-    
     /** Creates a new instance of BaseWishlistTransferCache */
-    protected BaseWishlistTransferCache(UserVisit userVisit, WishlistControl wishlistControl) {
-        super(userVisit);
-        
-        this.wishlistControl = wishlistControl;
+    protected BaseWishlistTransferCache() {
+        super();
     }
     
 }

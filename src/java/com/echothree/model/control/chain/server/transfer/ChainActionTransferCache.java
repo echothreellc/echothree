@@ -22,15 +22,20 @@ import com.echothree.model.control.chain.common.transfer.ChainActionTransfer;
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.data.chain.server.entity.ChainAction;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ChainActionTransferCache
         extends BaseChainTransferCache<ChainAction, ChainActionTransfer> {
+
+    ChainControl chainControl = Session.getModelController(ChainControl.class);
 
     boolean includeRelated;
 
     /** Creates a new instance of ChainActionTransferCache */
-    public ChainActionTransferCache(UserVisit userVisit, ChainControl chainControl) {
-        super(userVisit, chainControl);
+    protected ChainActionTransferCache() {
+        super();
 
         var options = session.getOptions();
         if(options != null) {
@@ -40,7 +45,7 @@ public class ChainActionTransferCache
         setIncludeEntityInstance(true);
     }
 
-    public ChainActionTransfer getChainActionTransfer(ChainAction chainAction) {
+    public ChainActionTransfer getChainActionTransfer(UserVisit userVisit, ChainAction chainAction) {
         var chainActionTransfer = get(chainAction);
 
         if(chainActionTransfer == null) {
@@ -50,10 +55,10 @@ public class ChainActionTransferCache
             var chainActionType = chainActionDetail.getChainActionType();
             var chainActionTypeTransfer = chainControl.getChainActionTypeTransfer(userVisit, chainActionType);
             var sortOrder = chainActionDetail.getSortOrder();
-            var description = chainControl.getBestChainActionDescription(chainAction, getLanguage());
+            var description = chainControl.getBestChainActionDescription(chainAction, getLanguage(userVisit));
 
             chainActionTransfer = new ChainActionTransfer(chainActionSetTransfer, chainActionName, chainActionTypeTransfer, sortOrder, description);
-            put(chainAction, chainActionTransfer);
+            put(userVisit, chainAction, chainActionTransfer);
 
             if(includeRelated) {
                 var chainActionTypeName = chainActionType.getLastDetail().getChainActionTypeName();

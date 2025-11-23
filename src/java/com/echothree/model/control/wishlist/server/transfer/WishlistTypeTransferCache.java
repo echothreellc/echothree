@@ -20,18 +20,23 @@ import com.echothree.model.control.wishlist.common.transfer.WishlistTypeTransfer
 import com.echothree.model.control.wishlist.server.control.WishlistControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.wishlist.server.entity.WishlistType;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class WishlistTypeTransferCache
         extends BaseWishlistTransferCache<WishlistType, WishlistTypeTransfer> {
-    
+
+    WishlistControl wishlistControl = Session.getModelController(WishlistControl.class);
+
     /** Creates a new instance of WishlistTypeTransferCache */
-    public WishlistTypeTransferCache(UserVisit userVisit, WishlistControl wishlistControl) {
-        super(userVisit, wishlistControl);
+    protected WishlistTypeTransferCache() {
+        super();
 
         setIncludeEntityInstance(true);
     }
     
-    public WishlistTypeTransfer getWishlistTypeTransfer(WishlistType wishlistType) {
+    public WishlistTypeTransfer getWishlistTypeTransfer(UserVisit userVisit, WishlistType wishlistType) {
         var wishlistTypeTransfer = get(wishlistType);
         
         if(wishlistTypeTransfer == null) {
@@ -39,10 +44,10 @@ public class WishlistTypeTransferCache
             var wishlistTypeName = wishlistTypeDetail.getWishlistTypeName();
             var isDefault = wishlistTypeDetail.getIsDefault();
             var sortOrder = wishlistTypeDetail.getSortOrder();
-            var description = wishlistControl.getBestWishlistTypeDescription(wishlistType, getLanguage());
+            var description = wishlistControl.getBestWishlistTypeDescription(wishlistType, getLanguage(userVisit));
             
             wishlistTypeTransfer = new WishlistTypeTransfer(wishlistTypeName, isDefault, sortOrder, description);
-            put(wishlistType, wishlistTypeTransfer);
+            put(userVisit, wishlistType, wishlistTypeTransfer);
         }
         
         return wishlistTypeTransfer;

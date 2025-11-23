@@ -24,7 +24,11 @@ import com.echothree.model.control.associate.common.transfer.AssociateProgramDes
 import com.echothree.model.control.associate.common.transfer.AssociateProgramTransfer;
 import com.echothree.model.control.associate.common.transfer.AssociateReferralTransfer;
 import com.echothree.model.control.associate.common.transfer.AssociateTransfer;
-import com.echothree.model.control.associate.server.transfer.AssociateTransferCaches;
+import com.echothree.model.control.associate.server.transfer.AssociatePartyContactMechanismTransferCache;
+import com.echothree.model.control.associate.server.transfer.AssociateProgramDescriptionTransferCache;
+import com.echothree.model.control.associate.server.transfer.AssociateProgramTransferCache;
+import com.echothree.model.control.associate.server.transfer.AssociateReferralTransferCache;
+import com.echothree.model.control.associate.server.transfer.AssociateTransferCache;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
@@ -64,29 +68,37 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
+@RequestScoped
 public class AssociateControl
         extends BaseModelControl {
     
     /** Creates a new instance of AssociateControl */
-    public AssociateControl() {
+    protected AssociateControl() {
         super();
     }
     
     // --------------------------------------------------------------------------------
     //   Associate Transfer Caches
     // --------------------------------------------------------------------------------
-    
-    private AssociateTransferCaches associateTransferCaches;
-    
-    public AssociateTransferCaches getAssociateTransferCaches(UserVisit userVisit) {
-        if(associateTransferCaches == null) {
-            associateTransferCaches = new AssociateTransferCaches(userVisit, this);
-        }
-        
-        return associateTransferCaches;
-    }
-    
+
+    @Inject
+    AssociateProgramTransferCache associateProgramTransferCache;
+
+    @Inject
+    AssociateProgramDescriptionTransferCache associateProgramDescriptionTransferCache;
+
+    @Inject
+    AssociateTransferCache associateTransferCache;
+
+    @Inject
+    AssociatePartyContactMechanismTransferCache associatePartyContactMechanismTransferCache;
+
+    @Inject
+    AssociateReferralTransferCache associateReferralTransferCache;
+
     // --------------------------------------------------------------------------------
     //   Associate Programs
     // --------------------------------------------------------------------------------
@@ -262,16 +274,15 @@ public class AssociateControl
     }
     
     public AssociateProgramTransfer getAssociateProgramTransfer(UserVisit userVisit, AssociateProgram associateProgram) {
-        return getAssociateTransferCaches(userVisit).getAssociateProgramTransferCache().getTransfer(associateProgram);
+        return associateProgramTransferCache.getTransfer(userVisit, associateProgram);
     }
     
     public List<AssociateProgramTransfer> getAssociateProgramTransfers(UserVisit userVisit) {
         var associatePrograms = getAssociatePrograms();
         List<AssociateProgramTransfer> associateProgramTransfers = new ArrayList<>(associatePrograms.size());
-        var associateProgramTransferCache = getAssociateTransferCaches(userVisit).getAssociateProgramTransferCache();
         
         associatePrograms.forEach((associateProgram) ->
-                associateProgramTransfers.add(associateProgramTransferCache.getTransfer(associateProgram))
+                associateProgramTransfers.add(associateProgramTransferCache.getTransfer(userVisit, associateProgram))
         );
         
         return associateProgramTransfers;
@@ -461,7 +472,7 @@ public class AssociateControl
         var associateProgramDescription = getAssociateProgramDescription(associateProgram, language);
         
         if(associateProgramDescription == null && !language.getIsDefault()) {
-            associateProgramDescription = getAssociateProgramDescription(associateProgram, getPartyControl().getDefaultLanguage());
+            associateProgramDescription = getAssociateProgramDescription(associateProgram, partyControl.getDefaultLanguage());
         }
         
         if(associateProgramDescription == null) {
@@ -474,16 +485,15 @@ public class AssociateControl
     }
     
     public AssociateProgramDescriptionTransfer getAssociateProgramDescriptionTransfer(UserVisit userVisit, AssociateProgramDescription associateProgramDescription) {
-        return getAssociateTransferCaches(userVisit).getAssociateProgramDescriptionTransferCache().getTransfer(associateProgramDescription);
+        return associateProgramDescriptionTransferCache.getTransfer(userVisit, associateProgramDescription);
     }
     
     public List<AssociateProgramDescriptionTransfer> getAssociateProgramDescriptionTransfersByAssociateProgram(UserVisit userVisit, AssociateProgram associateProgram) {
         var associateProgramDescriptions = getAssociateProgramDescriptionsByAssociateProgram(associateProgram);
         List<AssociateProgramDescriptionTransfer> associateProgramDescriptionTransfers = new ArrayList<>(associateProgramDescriptions.size());
-        var associateProgramDescriptionTransferCache = getAssociateTransferCaches(userVisit).getAssociateProgramDescriptionTransferCache();
         
         associateProgramDescriptions.forEach((associateProgramDescription) ->
-                associateProgramDescriptionTransfers.add(associateProgramDescriptionTransferCache.getTransfer(associateProgramDescription))
+                associateProgramDescriptionTransfers.add(associateProgramDescriptionTransferCache.getTransfer(userVisit, associateProgramDescription))
         );
         
         return associateProgramDescriptionTransfers;
@@ -665,15 +675,14 @@ public class AssociateControl
     }
     
     public AssociateTransfer getAssociateTransfer(UserVisit userVisit, Associate associate) {
-        return getAssociateTransferCaches(userVisit).getAssociateTransferCache().getTransfer(associate);
+        return associateTransferCache.getTransfer(userVisit, associate);
     }
     
     public List<AssociateTransfer> getAssociateTransfers(List<Associate> associates, UserVisit userVisit) {
         List<AssociateTransfer> associateTransfers = new ArrayList<>(associates.size());
-        var associateTransferCache = getAssociateTransferCaches(userVisit).getAssociateTransferCache();
         
         associates.forEach((associate) ->
-                associateTransfers.add(associateTransferCache.getTransfer(associate))
+                associateTransfers.add(associateTransferCache.getTransfer(userVisit, associate))
         );
         
         return associateTransfers;
@@ -973,15 +982,14 @@ public class AssociateControl
     }
     
     public AssociatePartyContactMechanismTransfer getAssociatePartyContactMechanismTransfer(UserVisit userVisit, AssociatePartyContactMechanism associatePartyContactMechanism) {
-        return getAssociateTransferCaches(userVisit).getAssociatePartyContactMechanismTransferCache().getTransfer(associatePartyContactMechanism);
+        return associatePartyContactMechanismTransferCache.getTransfer(userVisit, associatePartyContactMechanism);
     }
     
     public List<AssociatePartyContactMechanismTransfer> getAssociatePartyContactMechanismTransfers(List<AssociatePartyContactMechanism> associatePartyContactMechanisms, UserVisit userVisit) {
         List<AssociatePartyContactMechanismTransfer> associatePartyContactMechanismTransfers = new ArrayList<>(associatePartyContactMechanisms.size());
-        var associatePartyContactMechanismTransferCache = getAssociateTransferCaches(userVisit).getAssociatePartyContactMechanismTransferCache();
         
         associatePartyContactMechanisms.forEach((associatePartyContactMechanism) ->
-                associatePartyContactMechanismTransfers.add(associatePartyContactMechanismTransferCache.getTransfer(associatePartyContactMechanism))
+                associatePartyContactMechanismTransfers.add(associatePartyContactMechanismTransferCache.getTransfer(userVisit, associatePartyContactMechanism))
         );
         
         return associatePartyContactMechanismTransfers;
@@ -1290,15 +1298,14 @@ public class AssociateControl
     }
     
     public AssociateReferralTransfer getAssociateReferralTransfer(UserVisit userVisit, AssociateReferral associateReferral) {
-        return getAssociateTransferCaches(userVisit).getAssociateReferralTransferCache().getTransfer(associateReferral);
+        return associateReferralTransferCache.getTransfer(userVisit, associateReferral);
     }
     
     public List<AssociateReferralTransfer> getAssociateReferralTransfers(List<AssociateReferral> associateReferrals, UserVisit userVisit) {
         List<AssociateReferralTransfer> associateReferralTransfers = new ArrayList<>(associateReferrals.size());
-        var associateReferralTransferCache = getAssociateTransferCaches(userVisit).getAssociateReferralTransferCache();
         
         associateReferrals.forEach((associateReferral) ->
-                associateReferralTransfers.add(associateReferralTransferCache.getTransfer(associateReferral))
+                associateReferralTransfers.add(associateReferralTransferCache.getTransfer(userVisit, associateReferral))
         );
         
         return associateReferralTransfers;

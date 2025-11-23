@@ -56,12 +56,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class TagControl
         extends BaseTagControl {
     
     /** Creates a new instance of TagControl */
-    public TagControl() {
+    protected TagControl() {
         super();
     }
     
@@ -312,15 +314,14 @@ public class TagControl
     }
     
     public TagScopeTransfer getTagScopeTransfer(UserVisit userVisit, TagScope tagScope) {
-        return getTagTransferCaches(userVisit).getTagScopeTransferCache().getTagScopeTransfer(tagScope);
+        return tagScopeTransferCache.getTagScopeTransfer(userVisit, tagScope);
     }
     
     public List<TagScopeTransfer> getTagScopeTransfers(UserVisit userVisit, Collection<TagScope> tagScopes) {
         List<TagScopeTransfer> tagScopeTransfers = new ArrayList<>(tagScopes.size());
-        var tagScopeTransferCache = getTagTransferCaches(userVisit).getTagScopeTransferCache();
         
         tagScopes.forEach((tagScope) ->
-                tagScopeTransfers.add(tagScopeTransferCache.getTagScopeTransfer(tagScope))
+                tagScopeTransfers.add(tagScopeTransferCache.getTagScopeTransfer(userVisit, tagScope))
         );
         
         return tagScopeTransfers;
@@ -516,7 +517,7 @@ public class TagControl
         var tagScopeDescription = getTagScopeDescription(tagScope, language);
         
         if(tagScopeDescription == null && !language.getIsDefault()) {
-            tagScopeDescription = getTagScopeDescription(tagScope, getPartyControl().getDefaultLanguage());
+            tagScopeDescription = getTagScopeDescription(tagScope, partyControl.getDefaultLanguage());
         }
         
         if(tagScopeDescription == null) {
@@ -529,16 +530,15 @@ public class TagControl
     }
     
     public TagScopeDescriptionTransfer getTagScopeDescriptionTransfer(UserVisit userVisit, TagScopeDescription tagScopeDescription) {
-        return getTagTransferCaches(userVisit).getTagScopeDescriptionTransferCache().getTagScopeDescriptionTransfer(tagScopeDescription);
+        return tagScopeDescriptionTransferCache.getTagScopeDescriptionTransfer(userVisit, tagScopeDescription);
     }
     
     public List<TagScopeDescriptionTransfer> getTagScopeDescriptionTransfers(UserVisit userVisit, TagScope tagScope) {
         var tagScopeDescriptions = getTagScopeDescriptionsByTagScope(tagScope);
         List<TagScopeDescriptionTransfer> tagScopeDescriptionTransfers = new ArrayList<>(tagScopeDescriptions.size());
-        var tagScopeDescriptionTransferCache = getTagTransferCaches(userVisit).getTagScopeDescriptionTransferCache();
         
         tagScopeDescriptions.forEach((tagScopeDescription) ->
-                tagScopeDescriptionTransfers.add(tagScopeDescriptionTransferCache.getTagScopeDescriptionTransfer(tagScopeDescription))
+                tagScopeDescriptionTransfers.add(tagScopeDescriptionTransferCache.getTagScopeDescriptionTransfer(userVisit, tagScopeDescription))
         );
         
         return tagScopeDescriptionTransfers;
@@ -744,15 +744,14 @@ public class TagControl
     }
     
     public TagScopeEntityTypeTransfer getTagScopeEntityTypeTransfer(UserVisit userVisit, TagScopeEntityType tagScopeEntityType) {
-        return getTagTransferCaches(userVisit).getTagScopeEntityTypeTransferCache().getTagScopeEntityTypeTransfer(tagScopeEntityType);
+        return tagScopeEntityTypeTransferCache.getTagScopeEntityTypeTransfer(userVisit, tagScopeEntityType);
     }
     
     public List<TagScopeEntityTypeTransfer> getTagScopeEntityTypeTransfers(UserVisit userVisit, Collection<TagScopeEntityType> tagScopeEntityTypes) {
         List<TagScopeEntityTypeTransfer> tagScopeEntityTypeTransfers = new ArrayList<>(tagScopeEntityTypes.size());
-        var tagScopeEntityTypeTransferCache = getTagTransferCaches(userVisit).getTagScopeEntityTypeTransferCache();
         
         tagScopeEntityTypes.forEach((tagScopeEntityType) ->
-                tagScopeEntityTypeTransfers.add(tagScopeEntityTypeTransferCache.getTagScopeEntityTypeTransfer(tagScopeEntityType))
+                tagScopeEntityTypeTransfers.add(tagScopeEntityTypeTransferCache.getTagScopeEntityTypeTransfer(userVisit, tagScopeEntityType))
         );
         
         return tagScopeEntityTypeTransfers;
@@ -1000,15 +999,14 @@ public class TagControl
     }
     
     public TagTransfer getTagTransfer(UserVisit userVisit, Tag tag) {
-        return getTagTransferCaches(userVisit).getTagTransferCache().getTagTransfer(tag);
+        return tagTransferCache.getTagTransfer(userVisit, tag);
     }
     
     public List<TagTransfer> getTagTransfers(UserVisit userVisit, Collection<Tag> tags) {
         List<TagTransfer> tagTransfers = new ArrayList<>(tags.size());
-        var tagTransferCache = getTagTransferCaches(userVisit).getTagTransferCache();
         
         tags.forEach((tag) ->
-                tagTransfers.add(tagTransferCache.getTagTransfer(tag))
+                tagTransfers.add(tagTransferCache.getTagTransfer(userVisit, tag))
         );
         
         return tagTransfers;
@@ -1228,15 +1226,14 @@ public class TagControl
     }
     
     public EntityTagTransfer getEntityTagTransfer(UserVisit userVisit, EntityTag entityTag) {
-        return getTagTransferCaches(userVisit).getEntityTagTransferCache().getEntityTagTransfer(entityTag);
+        return entityTagTransferCache.getEntityTagTransfer(userVisit, entityTag);
     }
     
     public List<EntityTagTransfer> getEntityTagTransfers(UserVisit userVisit, Collection<EntityTag> entityTags) {
         List<EntityTagTransfer> entityTagTransfers = new ArrayList<>(entityTags.size());
-        var entityTagTransferCache = getTagTransferCaches(userVisit).getEntityTagTransferCache();
         
         entityTags.forEach((entityTag) ->
-                entityTagTransfers.add(entityTagTransferCache.getEntityTagTransfer(entityTag))
+                entityTagTransfers.add(entityTagTransferCache.getEntityTagTransfer(userVisit, entityTag))
         );
         
         return entityTagTransfers;

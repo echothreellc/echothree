@@ -22,7 +22,9 @@ import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.data.core.server.entity.EntityAlias;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EntityAliasTransferCache
         extends BaseCoreTransferCache<EntityAlias, EntityAliasTransfer> {
 
@@ -30,11 +32,11 @@ public class EntityAliasTransferCache
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
     /** Creates a new instance of EntityAliasTransferCache */
-    public EntityAliasTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected EntityAliasTransferCache() {
+        super();
     }
     
-    public EntityAliasTransfer getEntityAliasTransfer(EntityAlias entityAlias) {
+    public EntityAliasTransfer getEntityAliasTransfer(UserVisit userVisit, EntityAlias entityAlias) {
         var entityAliasTransfer = get(entityAlias);
         
         if(entityAliasTransfer == null) {
@@ -44,7 +46,7 @@ public class EntityAliasTransferCache
             var entityInstanceTransfer = entityInstanceControl.getEntityInstanceTransfer(userVisit, entityAlias.getEntityInstance(), false, false, false, false);
             
             entityAliasTransfer = new EntityAliasTransfer(entityAliasType, alias, entityInstanceTransfer);
-            put(entityAlias, entityAliasTransfer);
+            put(userVisit, entityAlias, entityAliasTransfer);
         }
         
         return entityAliasTransfer;

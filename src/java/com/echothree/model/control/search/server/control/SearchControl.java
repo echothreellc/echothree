@@ -42,7 +42,22 @@ import com.echothree.model.control.search.common.transfer.SearchTypeDescriptionT
 import com.echothree.model.control.search.common.transfer.SearchTypeTransfer;
 import com.echothree.model.control.search.common.transfer.SearchUseTypeDescriptionTransfer;
 import com.echothree.model.control.search.common.transfer.SearchUseTypeTransfer;
-import com.echothree.model.control.search.server.transfer.SearchTransferCaches;
+import com.echothree.model.control.search.server.transfer.SearchCheckSpellingActionTypeDescriptionTransferCache;
+import com.echothree.model.control.search.server.transfer.SearchCheckSpellingActionTypeTransferCache;
+import com.echothree.model.control.search.server.transfer.SearchDefaultOperatorDescriptionTransferCache;
+import com.echothree.model.control.search.server.transfer.SearchDefaultOperatorTransferCache;
+import com.echothree.model.control.search.server.transfer.SearchKindDescriptionTransferCache;
+import com.echothree.model.control.search.server.transfer.SearchKindTransferCache;
+import com.echothree.model.control.search.server.transfer.SearchResultActionTypeDescriptionTransferCache;
+import com.echothree.model.control.search.server.transfer.SearchResultActionTypeTransferCache;
+import com.echothree.model.control.search.server.transfer.SearchSortDirectionDescriptionTransferCache;
+import com.echothree.model.control.search.server.transfer.SearchSortDirectionTransferCache;
+import com.echothree.model.control.search.server.transfer.SearchSortOrderDescriptionTransferCache;
+import com.echothree.model.control.search.server.transfer.SearchSortOrderTransferCache;
+import com.echothree.model.control.search.server.transfer.SearchTypeDescriptionTransferCache;
+import com.echothree.model.control.search.server.transfer.SearchTypeTransferCache;
+import com.echothree.model.control.search.server.transfer.SearchUseTypeDescriptionTransferCache;
+import com.echothree.model.control.search.server.transfer.SearchUseTypeTransferCache;
 import com.echothree.model.data.core.common.pk.EntityInstancePK;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.index.server.entity.Index;
@@ -156,12 +171,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
+@RequestScoped
 public class SearchControl
         extends BaseModelControl {
     
     /** Creates a new instance of SearchControl */
-    public SearchControl() {
+    protected SearchControl() {
         super();
     }
     
@@ -169,15 +187,53 @@ public class SearchControl
     //   Search Transfer Caches
     // --------------------------------------------------------------------------------
 
-    private SearchTransferCaches searchTransferCaches;
+    @Inject
+    SearchKindTransferCache searchKindTransferCache;
 
-    public SearchTransferCaches getSearchTransferCaches(UserVisit userVisit) {
-        if(searchTransferCaches == null) {
-            searchTransferCaches = new SearchTransferCaches(userVisit, this);
-        }
+    @Inject
+    SearchKindDescriptionTransferCache searchKindDescriptionTransferCache;
 
-        return searchTransferCaches;
-    }
+    @Inject
+    SearchTypeTransferCache searchTypeTransferCache;
+
+    @Inject
+    SearchTypeDescriptionTransferCache searchTypeDescriptionTransferCache;
+
+    @Inject
+    SearchSortOrderTransferCache searchSortOrderTransferCache;
+
+    @Inject
+    SearchSortOrderDescriptionTransferCache searchSortOrderDescriptionTransferCache;
+
+    @Inject
+    SearchSortDirectionTransferCache searchSortDirectionTransferCache;
+
+    @Inject
+    SearchSortDirectionDescriptionTransferCache searchSortDirectionDescriptionTransferCache;
+
+    @Inject
+    SearchDefaultOperatorTransferCache searchDefaultOperatorTransferCache;
+
+    @Inject
+    SearchDefaultOperatorDescriptionTransferCache searchDefaultOperatorDescriptionTransferCache;
+
+    @Inject
+    SearchUseTypeTransferCache searchUseTypeTransferCache;
+
+    @Inject
+    SearchUseTypeDescriptionTransferCache searchUseTypeDescriptionTransferCache;
+
+    @Inject
+    SearchResultActionTypeTransferCache searchResultActionTypeTransferCache;
+
+    @Inject
+    SearchResultActionTypeDescriptionTransferCache searchResultActionTypeDescriptionTransferCache;
+
+    @Inject
+    SearchCheckSpellingActionTypeTransferCache searchCheckSpellingActionTypeTransferCache;
+
+    @Inject
+    SearchCheckSpellingActionTypeDescriptionTransferCache searchCheckSpellingActionTypeDescriptionTransferCache;
 
     // --------------------------------------------------------------------------------
     //   Search Use Types
@@ -340,15 +396,14 @@ public class SearchControl
     }
 
    public SearchUseTypeTransfer getSearchUseTypeTransfer(UserVisit userVisit, SearchUseType searchUseType) {
-        return getSearchTransferCaches(userVisit).getSearchUseTypeTransferCache().getSearchUseTypeTransfer(searchUseType);
+        return searchUseTypeTransferCache.getSearchUseTypeTransfer(userVisit, searchUseType);
     }
 
     public List<SearchUseTypeTransfer> getSearchUseTypeTransfers(UserVisit userVisit, Collection<SearchUseType> searchUseTypes) {
         List<SearchUseTypeTransfer> searchUseTypeTransfers = new ArrayList<>(searchUseTypes.size());
-        var searchUseTypeTransferCache = getSearchTransferCaches(userVisit).getSearchUseTypeTransferCache();
 
         searchUseTypes.forEach((searchUseType) ->
-                searchUseTypeTransfers.add(searchUseTypeTransferCache.getSearchUseTypeTransfer(searchUseType))
+                searchUseTypeTransfers.add(searchUseTypeTransferCache.getSearchUseTypeTransfer(userVisit, searchUseType))
         );
 
         return searchUseTypeTransfers;
@@ -569,7 +624,7 @@ public class SearchControl
         var searchUseTypeDescription = getSearchUseTypeDescription(searchUseType, language);
 
         if(searchUseTypeDescription == null && !language.getIsDefault()) {
-            searchUseTypeDescription = getSearchUseTypeDescription(searchUseType, getPartyControl().getDefaultLanguage());
+            searchUseTypeDescription = getSearchUseTypeDescription(searchUseType, partyControl.getDefaultLanguage());
         }
 
         if(searchUseTypeDescription == null) {
@@ -582,16 +637,15 @@ public class SearchControl
     }
 
     public SearchUseTypeDescriptionTransfer getSearchUseTypeDescriptionTransfer(UserVisit userVisit, SearchUseTypeDescription searchUseTypeDescription) {
-        return getSearchTransferCaches(userVisit).getSearchUseTypeDescriptionTransferCache().getSearchUseTypeDescriptionTransfer(searchUseTypeDescription);
+        return searchUseTypeDescriptionTransferCache.getSearchUseTypeDescriptionTransfer(userVisit, searchUseTypeDescription);
     }
 
     public List<SearchUseTypeDescriptionTransfer> getSearchUseTypeDescriptionTransfersBySearchUseType(UserVisit userVisit, SearchUseType searchUseType) {
         var searchUseTypeDescriptions = getSearchUseTypeDescriptionsBySearchUseType(searchUseType);
         List<SearchUseTypeDescriptionTransfer> searchUseTypeDescriptionTransfers = new ArrayList<>(searchUseTypeDescriptions.size());
-        var searchUseTypeDescriptionTransferCache = getSearchTransferCaches(userVisit).getSearchUseTypeDescriptionTransferCache();
 
         searchUseTypeDescriptions.forEach((searchUseTypeDescription) ->
-                searchUseTypeDescriptionTransfers.add(searchUseTypeDescriptionTransferCache.getSearchUseTypeDescriptionTransfer(searchUseTypeDescription))
+                searchUseTypeDescriptionTransfers.add(searchUseTypeDescriptionTransferCache.getSearchUseTypeDescriptionTransfer(userVisit, searchUseTypeDescription))
         );
 
         return searchUseTypeDescriptionTransfers;
@@ -796,15 +850,14 @@ public class SearchControl
     }
 
    public SearchResultActionTypeTransfer getSearchResultActionTypeTransfer(UserVisit userVisit, SearchResultActionType searchResultActionType) {
-        return getSearchTransferCaches(userVisit).getSearchResultActionTypeTransferCache().getSearchResultActionTypeTransfer(searchResultActionType);
+        return searchResultActionTypeTransferCache.getSearchResultActionTypeTransfer(userVisit, searchResultActionType);
     }
 
     public List<SearchResultActionTypeTransfer> getSearchResultActionTypeTransfers(UserVisit userVisit, Collection<SearchResultActionType> searchResultActionTypes) {
         List<SearchResultActionTypeTransfer> searchResultActionTypeTransfers = new ArrayList<>(searchResultActionTypes.size());
-        var searchResultActionTypeTransferCache = getSearchTransferCaches(userVisit).getSearchResultActionTypeTransferCache();
 
         searchResultActionTypes.forEach((searchResultActionType) ->
-                searchResultActionTypeTransfers.add(searchResultActionTypeTransferCache.getSearchResultActionTypeTransfer(searchResultActionType))
+                searchResultActionTypeTransfers.add(searchResultActionTypeTransferCache.getSearchResultActionTypeTransfer(userVisit, searchResultActionType))
         );
 
         return searchResultActionTypeTransfers;
@@ -1025,7 +1078,7 @@ public class SearchControl
         var searchResultActionTypeDescription = getSearchResultActionTypeDescription(searchResultActionType, language);
 
         if(searchResultActionTypeDescription == null && !language.getIsDefault()) {
-            searchResultActionTypeDescription = getSearchResultActionTypeDescription(searchResultActionType, getPartyControl().getDefaultLanguage());
+            searchResultActionTypeDescription = getSearchResultActionTypeDescription(searchResultActionType, partyControl.getDefaultLanguage());
         }
 
         if(searchResultActionTypeDescription == null) {
@@ -1038,16 +1091,15 @@ public class SearchControl
     }
 
     public SearchResultActionTypeDescriptionTransfer getSearchResultActionTypeDescriptionTransfer(UserVisit userVisit, SearchResultActionTypeDescription searchResultActionTypeDescription) {
-        return getSearchTransferCaches(userVisit).getSearchResultActionTypeDescriptionTransferCache().getSearchResultActionTypeDescriptionTransfer(searchResultActionTypeDescription);
+        return searchResultActionTypeDescriptionTransferCache.getSearchResultActionTypeDescriptionTransfer(userVisit, searchResultActionTypeDescription);
     }
 
     public List<SearchResultActionTypeDescriptionTransfer> getSearchResultActionTypeDescriptionTransfersBySearchResultActionType(UserVisit userVisit, SearchResultActionType searchResultActionType) {
         var searchResultActionTypeDescriptions = getSearchResultActionTypeDescriptionsBySearchResultActionType(searchResultActionType);
         List<SearchResultActionTypeDescriptionTransfer> searchResultActionTypeDescriptionTransfers = new ArrayList<>(searchResultActionTypeDescriptions.size());
-        var searchResultActionTypeDescriptionTransferCache = getSearchTransferCaches(userVisit).getSearchResultActionTypeDescriptionTransferCache();
 
         searchResultActionTypeDescriptions.forEach((searchResultActionTypeDescription) ->
-                searchResultActionTypeDescriptionTransfers.add(searchResultActionTypeDescriptionTransferCache.getSearchResultActionTypeDescriptionTransfer(searchResultActionTypeDescription))
+                searchResultActionTypeDescriptionTransfers.add(searchResultActionTypeDescriptionTransferCache.getSearchResultActionTypeDescriptionTransfer(userVisit, searchResultActionTypeDescription))
         );
 
         return searchResultActionTypeDescriptionTransfers;
@@ -1248,15 +1300,14 @@ public class SearchControl
     }
 
    public SearchCheckSpellingActionTypeTransfer getSearchCheckSpellingActionTypeTransfer(UserVisit userVisit, SearchCheckSpellingActionType searchCheckSpellingActionType) {
-        return getSearchTransferCaches(userVisit).getSearchCheckSpellingActionTypeTransferCache().getSearchCheckSpellingActionTypeTransfer(searchCheckSpellingActionType);
+        return searchCheckSpellingActionTypeTransferCache.getSearchCheckSpellingActionTypeTransfer(userVisit, searchCheckSpellingActionType);
     }
 
     public List<SearchCheckSpellingActionTypeTransfer> getSearchCheckSpellingActionTypeTransfers(UserVisit userVisit, Collection<SearchCheckSpellingActionType> entities) {
         var searchCheckSpellingActionTypeTransfers = new ArrayList<SearchCheckSpellingActionTypeTransfer>(entities.size());
-        var searchCheckSpellingActionTypeTransferCache = getSearchTransferCaches(userVisit).getSearchCheckSpellingActionTypeTransferCache();
 
         entities.forEach((searchCheckSpellingActionType) ->
-                searchCheckSpellingActionTypeTransfers.add(searchCheckSpellingActionTypeTransferCache.getSearchCheckSpellingActionTypeTransfer(searchCheckSpellingActionType))
+                searchCheckSpellingActionTypeTransfers.add(searchCheckSpellingActionTypeTransferCache.getSearchCheckSpellingActionTypeTransfer(userVisit, searchCheckSpellingActionType))
         );
 
         return searchCheckSpellingActionTypeTransfers;
@@ -1476,7 +1527,7 @@ public class SearchControl
         var searchCheckSpellingActionTypeDescription = getSearchCheckSpellingActionTypeDescription(searchCheckSpellingActionType, language);
 
         if(searchCheckSpellingActionTypeDescription == null && !language.getIsDefault()) {
-            searchCheckSpellingActionTypeDescription = getSearchCheckSpellingActionTypeDescription(searchCheckSpellingActionType, getPartyControl().getDefaultLanguage());
+            searchCheckSpellingActionTypeDescription = getSearchCheckSpellingActionTypeDescription(searchCheckSpellingActionType, partyControl.getDefaultLanguage());
         }
 
         if(searchCheckSpellingActionTypeDescription == null) {
@@ -1489,16 +1540,15 @@ public class SearchControl
     }
 
     public SearchCheckSpellingActionTypeDescriptionTransfer getSearchCheckSpellingActionTypeDescriptionTransfer(UserVisit userVisit, SearchCheckSpellingActionTypeDescription searchCheckSpellingActionTypeDescription) {
-        return getSearchTransferCaches(userVisit).getSearchCheckSpellingActionTypeDescriptionTransferCache().getSearchCheckSpellingActionTypeDescriptionTransfer(searchCheckSpellingActionTypeDescription);
+        return searchCheckSpellingActionTypeDescriptionTransferCache.getSearchCheckSpellingActionTypeDescriptionTransfer(userVisit, searchCheckSpellingActionTypeDescription);
     }
 
     public List<SearchCheckSpellingActionTypeDescriptionTransfer> getSearchCheckSpellingActionTypeDescriptionTransfersBySearchCheckSpellingActionType(UserVisit userVisit, SearchCheckSpellingActionType searchCheckSpellingActionType) {
         var searchCheckSpellingActionTypeDescriptions = getSearchCheckSpellingActionTypeDescriptionsBySearchCheckSpellingActionType(searchCheckSpellingActionType);
         List<SearchCheckSpellingActionTypeDescriptionTransfer> searchCheckSpellingActionTypeDescriptionTransfers = new ArrayList<>(searchCheckSpellingActionTypeDescriptions.size());
-        var searchCheckSpellingActionTypeDescriptionTransferCache = getSearchTransferCaches(userVisit).getSearchCheckSpellingActionTypeDescriptionTransferCache();
 
         searchCheckSpellingActionTypeDescriptions.forEach((searchCheckSpellingActionTypeDescription) ->
-                searchCheckSpellingActionTypeDescriptionTransfers.add(searchCheckSpellingActionTypeDescriptionTransferCache.getSearchCheckSpellingActionTypeDescriptionTransfer(searchCheckSpellingActionTypeDescription))
+                searchCheckSpellingActionTypeDescriptionTransfers.add(searchCheckSpellingActionTypeDescriptionTransferCache.getSearchCheckSpellingActionTypeDescriptionTransfer(userVisit, searchCheckSpellingActionTypeDescription))
         );
 
         return searchCheckSpellingActionTypeDescriptionTransfers;
@@ -1699,15 +1749,14 @@ public class SearchControl
     }
 
    public SearchDefaultOperatorTransfer getSearchDefaultOperatorTransfer(UserVisit userVisit, SearchDefaultOperator searchDefaultOperator) {
-        return getSearchTransferCaches(userVisit).getSearchDefaultOperatorTransferCache().getSearchDefaultOperatorTransfer(searchDefaultOperator);
+        return searchDefaultOperatorTransferCache.getSearchDefaultOperatorTransfer(userVisit, searchDefaultOperator);
     }
 
     public List<SearchDefaultOperatorTransfer> getSearchDefaultOperatorTransfers(UserVisit userVisit, Collection<SearchDefaultOperator> searchDefaultOperators) {
         List<SearchDefaultOperatorTransfer> searchDefaultOperatorTransfers = new ArrayList<>(searchDefaultOperators.size());
-        var searchDefaultOperatorTransferCache = getSearchTransferCaches(userVisit).getSearchDefaultOperatorTransferCache();
 
         searchDefaultOperators.forEach((searchDefaultOperator) ->
-                searchDefaultOperatorTransfers.add(searchDefaultOperatorTransferCache.getSearchDefaultOperatorTransfer(searchDefaultOperator))
+                searchDefaultOperatorTransfers.add(searchDefaultOperatorTransferCache.getSearchDefaultOperatorTransfer(userVisit, searchDefaultOperator))
         );
 
         return searchDefaultOperatorTransfers;
@@ -1929,7 +1978,7 @@ public class SearchControl
         var searchDefaultOperatorDescription = getSearchDefaultOperatorDescription(searchDefaultOperator, language);
 
         if(searchDefaultOperatorDescription == null && !language.getIsDefault()) {
-            searchDefaultOperatorDescription = getSearchDefaultOperatorDescription(searchDefaultOperator, getPartyControl().getDefaultLanguage());
+            searchDefaultOperatorDescription = getSearchDefaultOperatorDescription(searchDefaultOperator, partyControl.getDefaultLanguage());
         }
 
         if(searchDefaultOperatorDescription == null) {
@@ -1942,16 +1991,15 @@ public class SearchControl
     }
 
     public SearchDefaultOperatorDescriptionTransfer getSearchDefaultOperatorDescriptionTransfer(UserVisit userVisit, SearchDefaultOperatorDescription searchDefaultOperatorDescription) {
-        return getSearchTransferCaches(userVisit).getSearchDefaultOperatorDescriptionTransferCache().getSearchDefaultOperatorDescriptionTransfer(searchDefaultOperatorDescription);
+        return searchDefaultOperatorDescriptionTransferCache.getSearchDefaultOperatorDescriptionTransfer(userVisit, searchDefaultOperatorDescription);
     }
 
     public List<SearchDefaultOperatorDescriptionTransfer> getSearchDefaultOperatorDescriptionTransfersBySearchDefaultOperator(UserVisit userVisit, SearchDefaultOperator searchDefaultOperator) {
         var searchDefaultOperatorDescriptions = getSearchDefaultOperatorDescriptionsBySearchDefaultOperator(searchDefaultOperator);
         List<SearchDefaultOperatorDescriptionTransfer> searchDefaultOperatorDescriptionTransfers = new ArrayList<>(searchDefaultOperatorDescriptions.size());
-        var searchDefaultOperatorDescriptionTransferCache = getSearchTransferCaches(userVisit).getSearchDefaultOperatorDescriptionTransferCache();
 
         searchDefaultOperatorDescriptions.forEach((searchDefaultOperatorDescription) ->
-                searchDefaultOperatorDescriptionTransfers.add(searchDefaultOperatorDescriptionTransferCache.getSearchDefaultOperatorDescriptionTransfer(searchDefaultOperatorDescription))
+                searchDefaultOperatorDescriptionTransfers.add(searchDefaultOperatorDescriptionTransferCache.getSearchDefaultOperatorDescriptionTransfer(userVisit, searchDefaultOperatorDescription))
         );
 
         return searchDefaultOperatorDescriptionTransfers;
@@ -2152,15 +2200,14 @@ public class SearchControl
     }
 
    public SearchSortDirectionTransfer getSearchSortDirectionTransfer(UserVisit userVisit, SearchSortDirection searchSortDirection) {
-        return getSearchTransferCaches(userVisit).getSearchSortDirectionTransferCache().getSearchSortDirectionTransfer(searchSortDirection);
+        return searchSortDirectionTransferCache.getSearchSortDirectionTransfer(userVisit, searchSortDirection);
     }
 
     public List<SearchSortDirectionTransfer> getSearchSortDirectionTransfers(UserVisit userVisit, Collection<SearchSortDirection> searchSortDirections) {
         List<SearchSortDirectionTransfer> searchSortDirectionTransfers = new ArrayList<>(searchSortDirections.size());
-        var searchSortDirectionTransferCache = getSearchTransferCaches(userVisit).getSearchSortDirectionTransferCache();
 
         searchSortDirections.forEach((searchSortDirection) ->
-                searchSortDirectionTransfers.add(searchSortDirectionTransferCache.getSearchSortDirectionTransfer(searchSortDirection))
+                searchSortDirectionTransfers.add(searchSortDirectionTransferCache.getSearchSortDirectionTransfer(userVisit, searchSortDirection))
         );
 
         return searchSortDirectionTransfers;
@@ -2382,7 +2429,7 @@ public class SearchControl
         var searchSortDirectionDescription = getSearchSortDirectionDescription(searchSortDirection, language);
 
         if(searchSortDirectionDescription == null && !language.getIsDefault()) {
-            searchSortDirectionDescription = getSearchSortDirectionDescription(searchSortDirection, getPartyControl().getDefaultLanguage());
+            searchSortDirectionDescription = getSearchSortDirectionDescription(searchSortDirection, partyControl.getDefaultLanguage());
         }
 
         if(searchSortDirectionDescription == null) {
@@ -2395,16 +2442,15 @@ public class SearchControl
     }
 
     public SearchSortDirectionDescriptionTransfer getSearchSortDirectionDescriptionTransfer(UserVisit userVisit, SearchSortDirectionDescription searchSortDirectionDescription) {
-        return getSearchTransferCaches(userVisit).getSearchSortDirectionDescriptionTransferCache().getSearchSortDirectionDescriptionTransfer(searchSortDirectionDescription);
+        return searchSortDirectionDescriptionTransferCache.getSearchSortDirectionDescriptionTransfer(userVisit, searchSortDirectionDescription);
     }
 
     public List<SearchSortDirectionDescriptionTransfer> getSearchSortDirectionDescriptionTransfersBySearchSortDirection(UserVisit userVisit, SearchSortDirection searchSortDirection) {
         var searchSortDirectionDescriptions = getSearchSortDirectionDescriptionsBySearchSortDirection(searchSortDirection);
         List<SearchSortDirectionDescriptionTransfer> searchSortDirectionDescriptionTransfers = new ArrayList<>(searchSortDirectionDescriptions.size());
-        var searchSortDirectionDescriptionTransferCache = getSearchTransferCaches(userVisit).getSearchSortDirectionDescriptionTransferCache();
 
         searchSortDirectionDescriptions.forEach((searchSortDirectionDescription) ->
-                searchSortDirectionDescriptionTransfers.add(searchSortDirectionDescriptionTransferCache.getSearchSortDirectionDescriptionTransfer(searchSortDirectionDescription))
+                searchSortDirectionDescriptionTransfers.add(searchSortDirectionDescriptionTransferCache.getSearchSortDirectionDescriptionTransfer(userVisit, searchSortDirectionDescription))
         );
 
         return searchSortDirectionDescriptionTransfers;
@@ -2637,15 +2683,14 @@ public class SearchControl
     }
 
     public SearchKindTransfer getSearchKindTransfer(UserVisit userVisit, SearchKind searchKind) {
-        return getSearchTransferCaches(userVisit).getSearchKindTransferCache().getSearchKindTransfer(searchKind);
+        return searchKindTransferCache.getSearchKindTransfer(userVisit, searchKind);
     }
 
     public List<SearchKindTransfer> getSearchKindTransfers(UserVisit userVisit, Collection<SearchKind> searchKinds) {
         List<SearchKindTransfer> searchKindTransfers = new ArrayList<>(searchKinds.size());
-        var searchKindTransferCache = getSearchTransferCaches(userVisit).getSearchKindTransferCache();
 
         searchKinds.forEach((searchKind) ->
-                searchKindTransfers.add(searchKindTransferCache.getSearchKindTransfer(searchKind))
+                searchKindTransfers.add(searchKindTransferCache.getSearchKindTransfer(userVisit, searchKind))
         );
 
         return searchKindTransfers;
@@ -2831,7 +2876,7 @@ public class SearchControl
         var searchKindDescription = getSearchKindDescription(searchKind, language);
 
         if(searchKindDescription == null && !language.getIsDefault()) {
-            searchKindDescription = getSearchKindDescription(searchKind, getPartyControl().getDefaultLanguage());
+            searchKindDescription = getSearchKindDescription(searchKind, partyControl.getDefaultLanguage());
         }
 
         if(searchKindDescription == null) {
@@ -2844,7 +2889,7 @@ public class SearchControl
     }
 
     public SearchKindDescriptionTransfer getSearchKindDescriptionTransfer(UserVisit userVisit, SearchKindDescription searchKindDescription) {
-        return getSearchTransferCaches(userVisit).getSearchKindDescriptionTransferCache().getSearchKindDescriptionTransfer(searchKindDescription);
+        return searchKindDescriptionTransferCache.getSearchKindDescriptionTransfer(userVisit, searchKindDescription);
     }
 
     public List<SearchKindDescriptionTransfer> getSearchKindDescriptionTransfersBySearchKind(UserVisit userVisit, SearchKind searchKind) {
@@ -2852,7 +2897,7 @@ public class SearchControl
         List<SearchKindDescriptionTransfer> searchKindDescriptionTransfers = new ArrayList<>(searchKindDescriptions.size());
 
         searchKindDescriptions.forEach((searchKindDescription) -> {
-            searchKindDescriptionTransfers.add(getSearchTransferCaches(userVisit).getSearchKindDescriptionTransferCache().getSearchKindDescriptionTransfer(searchKindDescription));
+            searchKindDescriptionTransfers.add(searchKindDescriptionTransferCache.getSearchKindDescriptionTransfer(userVisit, searchKindDescription));
         });
 
         return searchKindDescriptionTransfers;
@@ -3091,15 +3136,14 @@ public class SearchControl
     }
 
     public SearchTypeTransfer getSearchTypeTransfer(UserVisit userVisit, SearchType searchType) {
-        return getSearchTransferCaches(userVisit).getSearchTypeTransferCache().getSearchTypeTransfer(searchType);
+        return searchTypeTransferCache.getSearchTypeTransfer(userVisit, searchType);
     }
 
     public List<SearchTypeTransfer> getSearchTypeTransfers(UserVisit userVisit, Collection<SearchType> searchTypes) {
         var searchTypeTransfers = new ArrayList<SearchTypeTransfer>(searchTypes.size());
-        var searchTypeTransferCache = getSearchTransferCaches(userVisit).getSearchTypeTransferCache();
 
         searchTypes.forEach((searchType) ->
-                searchTypeTransfers.add(searchTypeTransferCache.getSearchTypeTransfer(searchType))
+                searchTypeTransfers.add(searchTypeTransferCache.getSearchTypeTransfer(userVisit, searchType))
         );
 
         return searchTypeTransfers;
@@ -3286,7 +3330,7 @@ public class SearchControl
         var searchTypeDescription = getSearchTypeDescription(searchType, language);
 
         if(searchTypeDescription == null && !language.getIsDefault()) {
-            searchTypeDescription = getSearchTypeDescription(searchType, getPartyControl().getDefaultLanguage());
+            searchTypeDescription = getSearchTypeDescription(searchType, partyControl.getDefaultLanguage());
         }
 
         if(searchTypeDescription == null) {
@@ -3299,7 +3343,7 @@ public class SearchControl
     }
 
     public SearchTypeDescriptionTransfer getSearchTypeDescriptionTransfer(UserVisit userVisit, SearchTypeDescription searchTypeDescription) {
-        return getSearchTransferCaches(userVisit).getSearchTypeDescriptionTransferCache().getSearchTypeDescriptionTransfer(searchTypeDescription);
+        return searchTypeDescriptionTransferCache.getSearchTypeDescriptionTransfer(userVisit, searchTypeDescription);
     }
 
     public List<SearchTypeDescriptionTransfer> getSearchTypeDescriptionTransfersBySearchType(UserVisit userVisit, SearchType searchType) {
@@ -3307,7 +3351,7 @@ public class SearchControl
         List<SearchTypeDescriptionTransfer> searchTypeDescriptionTransfers = new ArrayList<>(searchTypeDescriptions.size());
 
         searchTypeDescriptions.forEach((searchTypeDescription) -> {
-            searchTypeDescriptionTransfers.add(getSearchTransferCaches(userVisit).getSearchTypeDescriptionTransferCache().getSearchTypeDescriptionTransfer(searchTypeDescription));
+            searchTypeDescriptionTransfers.add(searchTypeDescriptionTransferCache.getSearchTypeDescriptionTransfer(userVisit, searchTypeDescription));
         });
 
         return searchTypeDescriptionTransfers;
@@ -3546,15 +3590,14 @@ public class SearchControl
     }
 
     public SearchSortOrderTransfer getSearchSortOrderTransfer(UserVisit userVisit, SearchSortOrder searchSortOrder) {
-        return getSearchTransferCaches(userVisit).getSearchSortOrderTransferCache().getSearchSortOrderTransfer(searchSortOrder);
+        return searchSortOrderTransferCache.getSearchSortOrderTransfer(userVisit, searchSortOrder);
     }
 
     public List<SearchSortOrderTransfer> getSearchSortOrderTransfers(UserVisit userVisit, Collection<SearchSortOrder> searchSortOrders) {
         List<SearchSortOrderTransfer> searchSortOrderTransfers = new ArrayList<>(searchSortOrders.size());
-        var searchSortOrderTransferCache = getSearchTransferCaches(userVisit).getSearchSortOrderTransferCache();
 
         searchSortOrders.forEach((searchSortOrder) ->
-                searchSortOrderTransfers.add(searchSortOrderTransferCache.getSearchSortOrderTransfer(searchSortOrder))
+                searchSortOrderTransfers.add(searchSortOrderTransferCache.getSearchSortOrderTransfer(userVisit, searchSortOrder))
         );
 
         return searchSortOrderTransfers;
@@ -3739,7 +3782,7 @@ public class SearchControl
         var searchSortOrderDescription = getSearchSortOrderDescription(searchSortOrder, language);
 
         if(searchSortOrderDescription == null && !language.getIsDefault()) {
-            searchSortOrderDescription = getSearchSortOrderDescription(searchSortOrder, getPartyControl().getDefaultLanguage());
+            searchSortOrderDescription = getSearchSortOrderDescription(searchSortOrder, partyControl.getDefaultLanguage());
         }
 
         if(searchSortOrderDescription == null) {
@@ -3752,7 +3795,7 @@ public class SearchControl
     }
 
     public SearchSortOrderDescriptionTransfer getSearchSortOrderDescriptionTransfer(UserVisit userVisit, SearchSortOrderDescription searchSortOrderDescription) {
-        return getSearchTransferCaches(userVisit).getSearchSortOrderDescriptionTransferCache().getSearchSortOrderDescriptionTransfer(searchSortOrderDescription);
+        return searchSortOrderDescriptionTransferCache.getSearchSortOrderDescriptionTransfer(userVisit, searchSortOrderDescription);
     }
 
     public List<SearchSortOrderDescriptionTransfer> getSearchSortOrderDescriptionTransfersBySearchSortOrder(UserVisit userVisit, SearchSortOrder searchSortOrder) {
@@ -3760,7 +3803,7 @@ public class SearchControl
         List<SearchSortOrderDescriptionTransfer> searchSortOrderDescriptionTransfers = new ArrayList<>(searchSortOrderDescriptions.size());
 
         searchSortOrderDescriptions.forEach((searchSortOrderDescription) -> {
-            searchSortOrderDescriptionTransfers.add(getSearchTransferCaches(userVisit).getSearchSortOrderDescriptionTransferCache().getSearchSortOrderDescriptionTransfer(searchSortOrderDescription));
+            searchSortOrderDescriptionTransfers.add(searchSortOrderDescriptionTransferCache.getSearchSortOrderDescriptionTransfer(userVisit, searchSortOrderDescription));
         });
 
         return searchSortOrderDescriptionTransfers;

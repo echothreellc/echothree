@@ -17,24 +17,25 @@
 package com.echothree.model.control.inventory.server.transfer;
 
 import com.echothree.model.control.inventory.common.transfer.LotAliasTypeDescriptionTransfer;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.inventory.server.control.LotAliasControl;
 import com.echothree.model.data.inventory.server.entity.LotAliasTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class LotAliasTypeDescriptionTransferCache
         extends BaseInventoryDescriptionTransferCache<LotAliasTypeDescription, LotAliasTypeDescriptionTransfer> {
 
     LotAliasControl lotAliasControl = Session.getModelController(LotAliasControl.class);
 
     /** Creates a new instance of LotAliasTypeDescriptionTransferCache */
-    public LotAliasTypeDescriptionTransferCache(UserVisit userVisit, InventoryControl inventoryControl) {
-        super(userVisit, inventoryControl);
+    protected LotAliasTypeDescriptionTransferCache() {
+        super();
     }
     
     @Override
-    public LotAliasTypeDescriptionTransfer getTransfer(LotAliasTypeDescription lotAliasTypeDescription) {
+    public LotAliasTypeDescriptionTransfer getTransfer(UserVisit userVisit, LotAliasTypeDescription lotAliasTypeDescription) {
         var lotAliasTypeDescriptionTransfer = get(lotAliasTypeDescription);
         
         if(lotAliasTypeDescriptionTransfer == null) {
@@ -42,7 +43,7 @@ public class LotAliasTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, lotAliasTypeDescription.getLanguage());
             
             lotAliasTypeDescriptionTransfer = new LotAliasTypeDescriptionTransfer(languageTransfer, lotAliasTypeTransfer, lotAliasTypeDescription.getDescription());
-            put(lotAliasTypeDescription, lotAliasTypeDescriptionTransfer);
+            put(userVisit, lotAliasTypeDescription, lotAliasTypeDescriptionTransfer);
         }
         
         return lotAliasTypeDescriptionTransfer;

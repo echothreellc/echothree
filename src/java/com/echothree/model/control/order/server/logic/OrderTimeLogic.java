@@ -32,20 +32,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
 import java.util.List;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class OrderTimeLogic
         extends BaseLogic {
 
-    private OrderTimeLogic() {
+    protected OrderTimeLogic() {
         super();
     }
 
-    private static class OrderTimeLogicHolder {
-        static OrderTimeLogic instance = new OrderTimeLogic();
-    }
-
     public static OrderTimeLogic getInstance() {
-        return OrderTimeLogicHolder.instance;
+        return CDI.current().select(OrderTimeLogic.class).get();
     }
 
     private String getOrderTypeName(OrderType orderType) {

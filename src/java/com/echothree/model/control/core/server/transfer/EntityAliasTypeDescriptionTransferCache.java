@@ -22,18 +22,20 @@ import com.echothree.model.data.core.server.entity.EntityAliasTypeDescription;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EntityAliasTypeDescriptionTransferCache
         extends BaseCoreDescriptionTransferCache<EntityAliasTypeDescription, EntityAliasTypeDescriptionTransfer> {
 
     EntityAliasControl entityAliasControl = Session.getModelController(EntityAliasControl.class);
 
     /** Creates a new instance of EntityAliasTypeDescriptionTransferCache */
-    public EntityAliasTypeDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected EntityAliasTypeDescriptionTransferCache() {
+        super();
     }
     
-    public EntityAliasTypeDescriptionTransfer getEntityAliasTypeDescriptionTransfer(EntityAliasTypeDescription entityAliasTypeDescription, EntityInstance entityInstance) {
+    public EntityAliasTypeDescriptionTransfer getEntityAliasTypeDescriptionTransfer(final UserVisit userVisit, final EntityAliasTypeDescription entityAliasTypeDescription, final EntityInstance entityInstance) {
         var entityAliasTypeDescriptionTransfer = get(entityAliasTypeDescription);
         
         if(entityAliasTypeDescriptionTransfer == null) {
@@ -41,7 +43,7 @@ public class EntityAliasTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, entityAliasTypeDescription.getLanguage());
             
             entityAliasTypeDescriptionTransfer = new EntityAliasTypeDescriptionTransfer(languageTransfer, entityAliasTypeTransfer, entityAliasTypeDescription.getDescription());
-            put(entityAliasTypeDescription, entityAliasTypeDescriptionTransfer);
+            put(userVisit, entityAliasTypeDescription, entityAliasTypeDescriptionTransfer);
         }
         return entityAliasTypeDescriptionTransfer;
     }

@@ -30,12 +30,14 @@ import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PaymentProcessorActionControl
         extends BasePaymentControl {
 
     /** Creates a new instance of PaymentProcessorActionControl */
-    public PaymentProcessorActionControl() {
+    protected PaymentProcessorActionControl() {
         super();
     }
 
@@ -148,16 +150,15 @@ public class PaymentProcessorActionControl
 
     public PaymentProcessorActionTransfer getPaymentProcessorActionTransfer(final UserVisit userVisit,
             final PaymentProcessorAction paymentProcessorAction) {
-        return getPaymentTransferCaches(userVisit).getPaymentProcessorActionTransferCache().getTransfer(paymentProcessorAction);
+        return paymentProcessorActionTransferCache.getTransfer(userVisit, paymentProcessorAction);
     }
 
     public List<PaymentProcessorActionTransfer> getPaymentProcessorActionTransfers(final UserVisit userVisit,
             final List<PaymentProcessorAction> paymentProcessorActions) {
         var paymentProcessorActionTransfers = new ArrayList<PaymentProcessorActionTransfer>(paymentProcessorActions.size());
-        var paymentProcessorActionTransferCache = getPaymentTransferCaches(userVisit).getPaymentProcessorActionTransferCache();
 
         paymentProcessorActions.forEach((paymentProcessorAction) ->
-                paymentProcessorActionTransfers.add(paymentProcessorActionTransferCache.getTransfer(paymentProcessorAction))
+                paymentProcessorActionTransfers.add(paymentProcessorActionTransferCache.getTransfer(userVisit, paymentProcessorAction))
         );
 
         return paymentProcessorActionTransfers;

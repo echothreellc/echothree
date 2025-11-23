@@ -34,20 +34,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class PaymentProcessorTypeActionLogic
     extends BaseLogic {
-    
-    private PaymentProcessorTypeActionLogic() {
+
+    protected PaymentProcessorTypeActionLogic() {
         super();
     }
-    
-    private static class PaymentProcessorTypeActionLogicHolder {
-        static PaymentProcessorTypeActionLogic instance = new PaymentProcessorTypeActionLogic();
-    }
-    
+
     public static PaymentProcessorTypeActionLogic getInstance() {
-        return PaymentProcessorTypeActionLogicHolder.instance;
+        return CDI.current().select(PaymentProcessorTypeActionLogic.class).get();
     }
 
     public PaymentProcessorTypeAction createPaymentProcessorTypeAction(final ExecutionErrorAccumulator eea,
@@ -147,7 +146,7 @@ public class PaymentProcessorTypeActionLogic
         var parameterCount = (fullySpecifiedName ? 1 : 0) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
-            case 0:
+            case 0 -> {
                 if(allowDefault) {
                     if(paymentProcessorTypeName != null) {
                         var paymentProcessorType = PaymentProcessorTypeLogic.getInstance().getPaymentProcessorTypeByName(eea,
@@ -166,8 +165,8 @@ public class PaymentProcessorTypeActionLogic
                 } else {
                     handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                 }
-                break;
-            case 1:
+            }
+            case 1 -> {
                 if(fullySpecifiedName) {
                     var paymentProcessorType = PaymentProcessorTypeLogic.getInstance().getPaymentProcessorTypeByName(eea,
                             paymentProcessorTypeName);
@@ -186,10 +185,9 @@ public class PaymentProcessorTypeActionLogic
                         paymentProcessorTypeAction = paymentProcessorTypeActionControl.getPaymentProcessorTypeActionByEntityInstance(entityInstance, entityPermission);
                     }
                 }
-                break;
-            default:
-                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
-                break;
+            }
+            default ->
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
 
         return paymentProcessorTypeAction;

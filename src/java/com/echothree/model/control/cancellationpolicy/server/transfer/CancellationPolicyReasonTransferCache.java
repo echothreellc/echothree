@@ -20,16 +20,21 @@ import com.echothree.model.control.cancellationpolicy.common.transfer.Cancellati
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicyReason;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CancellationPolicyReasonTransferCache
         extends BaseCancellationPolicyTransferCache<CancellationPolicyReason, CancellationPolicyReasonTransfer> {
-    
+
+    CancellationPolicyControl cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
+
     /** Creates a new instance of CancellationPolicyReasonTransferCache */
-    public CancellationPolicyReasonTransferCache(UserVisit userVisit, CancellationPolicyControl cancellationPolicyControl) {
-        super(userVisit, cancellationPolicyControl);
+    protected CancellationPolicyReasonTransferCache() {
+        super();
     }
     
-    public CancellationPolicyReasonTransfer getCancellationPolicyReasonTransfer(CancellationPolicyReason cancellationPolicyReason) {
+    public CancellationPolicyReasonTransfer getCancellationPolicyReasonTransfer(UserVisit userVisit, CancellationPolicyReason cancellationPolicyReason) {
         var cancellationPolicyReasonTransfer = get(cancellationPolicyReason);
         
         if(cancellationPolicyReasonTransfer == null) {
@@ -39,7 +44,7 @@ public class CancellationPolicyReasonTransferCache
             var sortOrder = cancellationPolicyReason.getSortOrder();
             
             cancellationPolicyReasonTransfer = new CancellationPolicyReasonTransfer(cancellationPolicy, cancellationReason, isDefault, sortOrder);
-            put(cancellationPolicyReason, cancellationPolicyReasonTransfer);
+            put(userVisit, cancellationPolicyReason, cancellationPolicyReasonTransfer);
         }
         
         return cancellationPolicyReasonTransfer;

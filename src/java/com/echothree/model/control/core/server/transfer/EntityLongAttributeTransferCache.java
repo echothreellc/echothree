@@ -23,7 +23,9 @@ import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityLongAttribute;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EntityLongAttributeTransferCache
         extends BaseCoreTransferCache<EntityLongAttribute, EntityLongAttributeTransfer> {
 
@@ -31,11 +33,11 @@ public class EntityLongAttributeTransferCache
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
     /** Creates a new instance of EntityLongAttributeTransferCache */
-    public EntityLongAttributeTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected EntityLongAttributeTransferCache() {
+        super();
     }
     
-    public EntityLongAttributeTransfer getEntityLongAttributeTransfer(EntityLongAttribute entityLongAttribute, EntityInstance entityInstance) {
+    public EntityLongAttributeTransfer getEntityLongAttributeTransfer(final UserVisit userVisit, final EntityLongAttribute entityLongAttribute, final EntityInstance entityInstance) {
         var entityLongAttributeTransfer = get(entityLongAttribute);
         
         if(entityLongAttributeTransfer == null) {
@@ -44,7 +46,7 @@ public class EntityLongAttributeTransferCache
             var longAttribute = entityLongAttribute.getLongAttribute();
             
             entityLongAttributeTransfer = new EntityLongAttributeTransfer(entityAttribute, entityInstanceTransfer, longAttribute);
-            put(entityLongAttribute, entityLongAttributeTransfer);
+            put(userVisit, entityLongAttribute, entityLongAttributeTransfer);
         }
         
         return entityLongAttributeTransfer;

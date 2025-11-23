@@ -20,16 +20,21 @@ import com.echothree.model.control.employee.common.transfer.TerminationTypeDescr
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.data.employee.server.entity.TerminationTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class TerminationTypeDescriptionTransferCache
         extends BaseEmployeeDescriptionTransferCache<TerminationTypeDescription, TerminationTypeDescriptionTransfer> {
-    
+
+    EmployeeControl employeeControl = Session.getModelController(EmployeeControl.class);
+
     /** Creates a new instance of TerminationTypeDescriptionTransferCache */
-    public TerminationTypeDescriptionTransferCache(UserVisit userVisit, EmployeeControl employeeControl) {
-        super(userVisit, employeeControl);
+    protected TerminationTypeDescriptionTransferCache() {
+        super();
     }
     
-    public TerminationTypeDescriptionTransfer getTerminationTypeDescriptionTransfer(TerminationTypeDescription terminationTypeDescription) {
+    public TerminationTypeDescriptionTransfer getTerminationTypeDescriptionTransfer(UserVisit userVisit, TerminationTypeDescription terminationTypeDescription) {
         var terminationTypeDescriptionTransfer = get(terminationTypeDescription);
         
         if(terminationTypeDescriptionTransfer == null) {
@@ -38,7 +43,7 @@ public class TerminationTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, terminationTypeDescription.getLanguage());
             
             terminationTypeDescriptionTransfer = new TerminationTypeDescriptionTransfer(languageTransfer, terminationTypeTransfer, terminationTypeDescription.getDescription());
-            put(terminationTypeDescription, terminationTypeDescriptionTransfer);
+            put(userVisit, terminationTypeDescription, terminationTypeDescriptionTransfer);
         }
         
         return terminationTypeDescriptionTransfer;

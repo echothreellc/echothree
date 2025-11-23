@@ -20,16 +20,21 @@ import com.echothree.model.control.selector.common.transfer.SelectorTypeDescript
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.selector.server.entity.SelectorTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class SelectorTypeDescriptionTransferCache
         extends BaseSelectorDescriptionTransferCache<SelectorTypeDescription, SelectorTypeDescriptionTransfer> {
-    
+
+    SelectorControl selectorControl = Session.getModelController(SelectorControl.class);
+
     /** Creates a new instance of SelectorTypeDescriptionTransferCache */
-    public SelectorTypeDescriptionTransferCache(UserVisit userVisit, SelectorControl selectorControl) {
-        super(userVisit, selectorControl);
+    protected SelectorTypeDescriptionTransferCache() {
+        super();
     }
     
-    public SelectorTypeDescriptionTransfer getSelectorTypeDescriptionTransfer(SelectorTypeDescription selectorTypeDescription) {
+    public SelectorTypeDescriptionTransfer getSelectorTypeDescriptionTransfer(UserVisit userVisit, SelectorTypeDescription selectorTypeDescription) {
         var selectorTypeDescriptionTransfer = get(selectorTypeDescription);
         
         if(selectorTypeDescriptionTransfer == null) {
@@ -37,7 +42,7 @@ public class SelectorTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, selectorTypeDescription.getLanguage());
             
             selectorTypeDescriptionTransfer = new SelectorTypeDescriptionTransfer(languageTransfer, selectorTypeTransfer, selectorTypeDescription.getDescription());
-            put(selectorTypeDescription, selectorTypeDescriptionTransfer);
+            put(userVisit, selectorTypeDescription, selectorTypeDescriptionTransfer);
         }
         
         return selectorTypeDescriptionTransfer;

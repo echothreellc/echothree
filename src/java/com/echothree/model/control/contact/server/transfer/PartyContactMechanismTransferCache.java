@@ -28,19 +28,23 @@ import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PartyContactMechanismTransferCache
         extends BaseContactTransferCache<PartyContactMechanism, PartyContactMechanismTransfer> {
-    
+
+    ContactControl contactControl = Session.getModelController(ContactControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
+
     boolean includePartyContactMechanismPurposes;
     boolean includePartyContactMechanismRelationships;
     boolean includePartyContactMechanismRelationshipsByFromPartyContactMechanism;
     boolean includePartyContactMechanismRelationshipsByToPartyContactMechanism;
     
     /** Creates a new instance of PartyContactMechanismTransferCache */
-    public PartyContactMechanismTransferCache(UserVisit userVisit, ContactControl contactControl) {
-        super(userVisit, contactControl);
+    protected PartyContactMechanismTransferCache() {
+        super();
         
         var options = session.getOptions();
         if(options != null) {
@@ -54,7 +58,7 @@ public class PartyContactMechanismTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public PartyContactMechanismTransfer getPartyContactMechanismTransfer(PartyContactMechanism partyContactMechanism) {
+    public PartyContactMechanismTransfer getPartyContactMechanismTransfer(UserVisit userVisit, PartyContactMechanism partyContactMechanism) {
         var partyContactMechanismTransfer = get(partyContactMechanism);
         
         if(partyContactMechanismTransfer == null) {
@@ -66,7 +70,7 @@ public class PartyContactMechanismTransferCache
             var description = partyContactMechanismDetail.getDescription();
             
             partyContactMechanismTransfer = new PartyContactMechanismTransfer(party, contactMechanism, isDefault, sortOrder, description);
-            put(partyContactMechanism, partyContactMechanismTransfer);
+            put(userVisit, partyContactMechanism, partyContactMechanismTransfer);
 
             if(includePartyContactMechanismPurposes) {
                 partyContactMechanismTransfer.setPartyContactMechanismPurposes(new ListWrapper<>(contactControl.getPartyContactMechanismPurposeTransfersByPartyContactMechanism(userVisit, partyContactMechanism)));

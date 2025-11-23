@@ -29,7 +29,14 @@ import com.echothree.model.control.picklist.common.transfer.PicklistTimeTypeTran
 import com.echothree.model.control.picklist.common.transfer.PicklistTransfer;
 import com.echothree.model.control.picklist.common.transfer.PicklistTypeDescriptionTransfer;
 import com.echothree.model.control.picklist.common.transfer.PicklistTypeTransfer;
-import com.echothree.model.control.picklist.server.transfer.PicklistTransferCaches;
+import com.echothree.model.control.picklist.server.transfer.PicklistAliasTransferCache;
+import com.echothree.model.control.picklist.server.transfer.PicklistAliasTypeDescriptionTransferCache;
+import com.echothree.model.control.picklist.server.transfer.PicklistAliasTypeTransferCache;
+import com.echothree.model.control.picklist.server.transfer.PicklistTimeTransferCache;
+import com.echothree.model.control.picklist.server.transfer.PicklistTimeTypeDescriptionTransferCache;
+import com.echothree.model.control.picklist.server.transfer.PicklistTimeTypeTransferCache;
+import com.echothree.model.control.picklist.server.transfer.PicklistTypeDescriptionTransferCache;
+import com.echothree.model.control.picklist.server.transfer.PicklistTypeTransferCache;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.picklist.server.entity.Picklist;
 import com.echothree.model.data.picklist.server.entity.PicklistAlias;
@@ -76,12 +83,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
+@RequestScoped
 public class PicklistControl
         extends BaseModelControl {
     
     /** Creates a new instance of PicklistControl */
-    public PicklistControl() {
+    protected PicklistControl() {
         super();
     }
     
@@ -89,15 +99,29 @@ public class PicklistControl
     //   Picklist Transfer Caches
     // --------------------------------------------------------------------------------
 
-    private PicklistTransferCaches picklistTransferCaches;
+    @Inject
+    PicklistTypeTransferCache picklistTypeTransferCache;
 
-    public PicklistTransferCaches getPicklistTransferCaches(UserVisit userVisit) {
-        if(picklistTransferCaches == null) {
-            picklistTransferCaches = new PicklistTransferCaches(userVisit, this);
-        }
+    @Inject
+    PicklistTypeDescriptionTransferCache picklistTypeDescriptionTransferCache;
 
-        return picklistTransferCaches;
-    }
+    @Inject
+    PicklistAliasTypeTransferCache picklistAliasTypeTransferCache;
+
+    @Inject
+    PicklistAliasTypeDescriptionTransferCache picklistAliasTypeDescriptionTransferCache;
+
+    @Inject
+    PicklistAliasTransferCache picklistAliasTransferCache;
+
+    @Inject
+    PicklistTimeTypeTransferCache picklistTimeTypeTransferCache;
+
+    @Inject
+    PicklistTimeTypeDescriptionTransferCache picklistTimeTypeDescriptionTransferCache;
+
+    @Inject
+    PicklistTimeTransferCache picklistTimeTransferCache;
 
     // --------------------------------------------------------------------------------
     //   Picklist Types
@@ -273,16 +297,15 @@ public class PicklistControl
     }
 
    public PicklistTypeTransfer getPicklistTypeTransfer(UserVisit userVisit, PicklistType picklistType) {
-        return getPicklistTransferCaches(userVisit).getPicklistTypeTransferCache().getPicklistTypeTransfer(picklistType);
+        return picklistTypeTransferCache.getPicklistTypeTransfer(userVisit, picklistType);
     }
 
     public List<PicklistTypeTransfer> getPicklistTypeTransfers(UserVisit userVisit) {
         var picklistTypes = getPicklistTypes();
         List<PicklistTypeTransfer> picklistTypeTransfers = new ArrayList<>(picklistTypes.size());
-        var picklistTypeTransferCache = getPicklistTransferCaches(userVisit).getPicklistTypeTransferCache();
 
         picklistTypes.forEach((picklistType) ->
-                picklistTypeTransfers.add(picklistTypeTransferCache.getPicklistTypeTransfer(picklistType))
+                picklistTypeTransfers.add(picklistTypeTransferCache.getPicklistTypeTransfer(userVisit, picklistType))
         );
 
         return picklistTypeTransfers;
@@ -532,7 +555,7 @@ public class PicklistControl
         var picklistTypeDescription = getPicklistTypeDescription(picklistType, language);
 
         if(picklistTypeDescription == null && !language.getIsDefault()) {
-            picklistTypeDescription = getPicklistTypeDescription(picklistType, getPartyControl().getDefaultLanguage());
+            picklistTypeDescription = getPicklistTypeDescription(picklistType, partyControl.getDefaultLanguage());
         }
 
         if(picklistTypeDescription == null) {
@@ -545,16 +568,15 @@ public class PicklistControl
     }
 
     public PicklistTypeDescriptionTransfer getPicklistTypeDescriptionTransfer(UserVisit userVisit, PicklistTypeDescription picklistTypeDescription) {
-        return getPicklistTransferCaches(userVisit).getPicklistTypeDescriptionTransferCache().getPicklistTypeDescriptionTransfer(picklistTypeDescription);
+        return picklistTypeDescriptionTransferCache.getPicklistTypeDescriptionTransfer(userVisit, picklistTypeDescription);
     }
 
     public List<PicklistTypeDescriptionTransfer> getPicklistTypeDescriptionTransfersByPicklistType(UserVisit userVisit, PicklistType picklistType) {
         var picklistTypeDescriptions = getPicklistTypeDescriptionsByPicklistType(picklistType);
         List<PicklistTypeDescriptionTransfer> picklistTypeDescriptionTransfers = new ArrayList<>(picklistTypeDescriptions.size());
-        var picklistTypeDescriptionTransferCache = getPicklistTransferCaches(userVisit).getPicklistTypeDescriptionTransferCache();
 
         picklistTypeDescriptions.forEach((picklistTypeDescription) ->
-                picklistTypeDescriptionTransfers.add(picklistTypeDescriptionTransferCache.getPicklistTypeDescriptionTransfer(picklistTypeDescription))
+                picklistTypeDescriptionTransfers.add(picklistTypeDescriptionTransferCache.getPicklistTypeDescriptionTransfer(userVisit, picklistTypeDescription))
         );
 
         return picklistTypeDescriptionTransfers;
@@ -737,16 +759,15 @@ public class PicklistControl
     }
 
     public PicklistTimeTypeTransfer getPicklistTimeTypeTransfer(UserVisit userVisit, PicklistTimeType picklistTimeType) {
-        return getPicklistTransferCaches(userVisit).getPicklistTimeTypeTransferCache().getPicklistTimeTypeTransfer(picklistTimeType);
+        return picklistTimeTypeTransferCache.getPicklistTimeTypeTransfer(userVisit, picklistTimeType);
     }
 
     public List<PicklistTimeTypeTransfer> getPicklistTimeTypeTransfers(UserVisit userVisit, PicklistType picklistType) {
         var picklistTimeTypes = getPicklistTimeTypes(picklistType);
         List<PicklistTimeTypeTransfer> picklistTimeTypeTransfers = new ArrayList<>(picklistTimeTypes.size());
-        var picklistTimeTypeTransferCache = getPicklistTransferCaches(userVisit).getPicklistTimeTypeTransferCache();
 
         picklistTimeTypes.forEach((picklistTimeType) ->
-                picklistTimeTypeTransfers.add(picklistTimeTypeTransferCache.getPicklistTimeTypeTransfer(picklistTimeType))
+                picklistTimeTypeTransfers.add(picklistTimeTypeTransferCache.getPicklistTimeTypeTransfer(userVisit, picklistTimeType))
         );
 
         return picklistTimeTypeTransfers;
@@ -951,7 +972,7 @@ public class PicklistControl
         var picklistTimeTypeDescription = getPicklistTimeTypeDescription(picklistTimeType, language);
 
         if(picklistTimeTypeDescription == null && !language.getIsDefault()) {
-            picklistTimeTypeDescription = getPicklistTimeTypeDescription(picklistTimeType, getPartyControl().getDefaultLanguage());
+            picklistTimeTypeDescription = getPicklistTimeTypeDescription(picklistTimeType, partyControl.getDefaultLanguage());
         }
 
         if(picklistTimeTypeDescription == null) {
@@ -964,16 +985,15 @@ public class PicklistControl
     }
 
     public PicklistTimeTypeDescriptionTransfer getPicklistTimeTypeDescriptionTransfer(UserVisit userVisit, PicklistTimeTypeDescription picklistTimeTypeDescription) {
-        return getPicklistTransferCaches(userVisit).getPicklistTimeTypeDescriptionTransferCache().getPicklistTimeTypeDescriptionTransfer(picklistTimeTypeDescription);
+        return picklistTimeTypeDescriptionTransferCache.getPicklistTimeTypeDescriptionTransfer(userVisit, picklistTimeTypeDescription);
     }
 
     public List<PicklistTimeTypeDescriptionTransfer> getPicklistTimeTypeDescriptionTransfersByPicklistTimeType(UserVisit userVisit, PicklistTimeType picklistTimeType) {
         var picklistTimeTypeDescriptions = getPicklistTimeTypeDescriptionsByPicklistTimeType(picklistTimeType);
         List<PicklistTimeTypeDescriptionTransfer> picklistTimeTypeDescriptionTransfers = new ArrayList<>(picklistTimeTypeDescriptions.size());
-        var picklistTimeTypeDescriptionTransferCache = getPicklistTransferCaches(userVisit).getPicklistTimeTypeDescriptionTransferCache();
 
         picklistTimeTypeDescriptions.forEach((picklistTimeTypeDescription) ->
-                picklistTimeTypeDescriptionTransfers.add(picklistTimeTypeDescriptionTransferCache.getPicklistTimeTypeDescriptionTransfer(picklistTimeTypeDescription))
+                picklistTimeTypeDescriptionTransfers.add(picklistTimeTypeDescriptionTransferCache.getPicklistTimeTypeDescriptionTransfer(userVisit, picklistTimeTypeDescription))
         );
 
         return picklistTimeTypeDescriptionTransfers;
@@ -1153,16 +1173,15 @@ public class PicklistControl
     }
 
     public PicklistAliasTypeTransfer getPicklistAliasTypeTransfer(UserVisit userVisit, PicklistAliasType picklistAliasType) {
-        return getPicklistTransferCaches(userVisit).getPicklistAliasTypeTransferCache().getPicklistAliasTypeTransfer(picklistAliasType);
+        return picklistAliasTypeTransferCache.getPicklistAliasTypeTransfer(userVisit, picklistAliasType);
     }
 
     public List<PicklistAliasTypeTransfer> getPicklistAliasTypeTransfers(UserVisit userVisit, PicklistType picklistType) {
         var picklistAliasTypes = getPicklistAliasTypes(picklistType);
         List<PicklistAliasTypeTransfer> picklistAliasTypeTransfers = new ArrayList<>(picklistAliasTypes.size());
-        var picklistAliasTypeTransferCache = getPicklistTransferCaches(userVisit).getPicklistAliasTypeTransferCache();
 
         picklistAliasTypes.forEach((picklistAliasType) ->
-                picklistAliasTypeTransfers.add(picklistAliasTypeTransferCache.getPicklistAliasTypeTransfer(picklistAliasType))
+                picklistAliasTypeTransfers.add(picklistAliasTypeTransferCache.getPicklistAliasTypeTransfer(userVisit, picklistAliasType))
         );
 
         return picklistAliasTypeTransfers;
@@ -1378,7 +1397,7 @@ public class PicklistControl
         var picklistAliasTypeDescription = getPicklistAliasTypeDescription(picklistAliasType, language);
 
         if(picklistAliasTypeDescription == null && !language.getIsDefault()) {
-            picklistAliasTypeDescription = getPicklistAliasTypeDescription(picklistAliasType, getPartyControl().getDefaultLanguage());
+            picklistAliasTypeDescription = getPicklistAliasTypeDescription(picklistAliasType, partyControl.getDefaultLanguage());
         }
 
         if(picklistAliasTypeDescription == null) {
@@ -1391,16 +1410,15 @@ public class PicklistControl
     }
 
     public PicklistAliasTypeDescriptionTransfer getPicklistAliasTypeDescriptionTransfer(UserVisit userVisit, PicklistAliasTypeDescription picklistAliasTypeDescription) {
-        return getPicklistTransferCaches(userVisit).getPicklistAliasTypeDescriptionTransferCache().getPicklistAliasTypeDescriptionTransfer(picklistAliasTypeDescription);
+        return picklistAliasTypeDescriptionTransferCache.getPicklistAliasTypeDescriptionTransfer(userVisit, picklistAliasTypeDescription);
     }
 
     public List<PicklistAliasTypeDescriptionTransfer> getPicklistAliasTypeDescriptionTransfersByPicklistAliasType(UserVisit userVisit, PicklistAliasType picklistAliasType) {
         var picklistAliasTypeDescriptions = getPicklistAliasTypeDescriptionsByPicklistAliasType(picklistAliasType);
         List<PicklistAliasTypeDescriptionTransfer> picklistAliasTypeDescriptionTransfers = new ArrayList<>(picklistAliasTypeDescriptions.size());
-        var picklistAliasTypeDescriptionTransferCache = getPicklistTransferCaches(userVisit).getPicklistAliasTypeDescriptionTransferCache();
 
         picklistAliasTypeDescriptions.forEach((picklistAliasTypeDescription) ->
-                picklistAliasTypeDescriptionTransfers.add(picklistAliasTypeDescriptionTransferCache.getPicklistAliasTypeDescriptionTransfer(picklistAliasTypeDescription))
+                picklistAliasTypeDescriptionTransfers.add(picklistAliasTypeDescriptionTransferCache.getPicklistAliasTypeDescriptionTransfer(userVisit, picklistAliasTypeDescription))
         );
 
         return picklistAliasTypeDescriptionTransfers;
@@ -1568,15 +1586,14 @@ public class PicklistControl
     }
 
     public PicklistTimeTransfer getPicklistTimeTransfer(UserVisit userVisit, PicklistTime picklistTime) {
-        return getPicklistTransferCaches(userVisit).getPicklistTimeTransferCache().getPicklistTimeTransfer(picklistTime);
+        return picklistTimeTransferCache.getPicklistTimeTransfer(userVisit, picklistTime);
     }
 
     public List<PicklistTimeTransfer> getPicklistTimeTransfers(UserVisit userVisit, Collection<PicklistTime> picklistTimes) {
         List<PicklistTimeTransfer> picklistTimeTransfers = new ArrayList<>(picklistTimes.size());
-        var picklistTimeTransferCache = getPicklistTransferCaches(userVisit).getPicklistTimeTransferCache();
 
         picklistTimes.forEach((picklistTime) ->
-                picklistTimeTransfers.add(picklistTimeTransferCache.getPicklistTimeTransfer(picklistTime))
+                picklistTimeTransfers.add(picklistTimeTransferCache.getPicklistTimeTransfer(userVisit, picklistTime))
         );
 
         return picklistTimeTransfers;
@@ -1773,16 +1790,15 @@ public class PicklistControl
     }
 
     public PicklistAliasTransfer getPicklistAliasTransfer(UserVisit userVisit, PicklistAlias picklistAlias) {
-        return getPicklistTransferCaches(userVisit).getPicklistAliasTransferCache().getPicklistAliasTransfer(picklistAlias);
+        return picklistAliasTransferCache.getPicklistAliasTransfer(userVisit, picklistAlias);
     }
 
     public List<PicklistAliasTransfer> getPicklistAliasTransfersByPicklist(UserVisit userVisit, Picklist picklist) {
         var picklistaliases = getPicklistAliasesByPicklist(picklist);
         List<PicklistAliasTransfer> picklistAliasTransfers = new ArrayList<>(picklistaliases.size());
-        var picklistAliasTransferCache = getPicklistTransferCaches(userVisit).getPicklistAliasTransferCache();
 
         picklistaliases.forEach((picklistAlias) ->
-                picklistAliasTransfers.add(picklistAliasTransferCache.getPicklistAliasTransfer(picklistAlias))
+                picklistAliasTransfers.add(picklistAliasTransferCache.getPicklistAliasTransfer(userVisit, picklistAlias))
         );
 
         return picklistAliasTransfers;

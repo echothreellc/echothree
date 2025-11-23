@@ -45,12 +45,14 @@ import com.echothree.util.server.persistence.Sha1Utils;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EncryptionKeyControl
         extends BaseCoreControl {
 
     /** Creates a new instance of EncryptionKeyControl */
-    public EncryptionKeyControl() {
+    protected EncryptionKeyControl() {
         super();
     }
 
@@ -74,7 +76,7 @@ public class EncryptionKeyControl
             baseEncryptionKey = createBaseEncryptionKey(baseEncryptionKeyName, sha1Hash, createdBy);
 
             var entityInstance = getEntityInstanceByBaseEntity(baseEncryptionKey);
-            getWorkflowControl().addEntityToWorkflowUsingNames(null, Workflow_BASE_ENCRYPTION_KEY_STATUS, entityInstance, null, null,createdBy);
+            workflowControl.addEntityToWorkflowUsingNames(null, Workflow_BASE_ENCRYPTION_KEY_STATUS, entityInstance, null, null,createdBy);
         }
 
         return baseEncryptionKey;
@@ -116,7 +118,7 @@ public class EncryptionKeyControl
     }
 
     private BaseEncryptionKey getActiveBaseEncryptionKey(EntityPermission entityPermission) {
-        var workflowStep = getWorkflowControl().getWorkflowStepUsingNames(Workflow_BASE_ENCRYPTION_KEY_STATUS,
+        var workflowStep = workflowControl.getWorkflowStepUsingNames(Workflow_BASE_ENCRYPTION_KEY_STATUS,
                 WorkflowStep_BASE_ENCRYPTION_KEY_STATUS_ACTIVE);
         BaseEncryptionKey baseEncryptionKey = null;
 
@@ -244,20 +246,19 @@ public class EncryptionKeyControl
     }
 
     public BaseEncryptionKeyTransfer getBaseEncryptionKeyTransfer(UserVisit userVisit, BaseEncryptionKey baseEncryptionKey) {
-        return getCoreTransferCaches(userVisit).getBaseEncryptionKeyTransferCache().getBaseEncryptionKeyTransfer(baseEncryptionKey);
+        return baseEncryptionKeyTransferCache.getBaseEncryptionKeyTransfer(userVisit, baseEncryptionKey);
     }
 
     public BaseEncryptionKeyTransfer getActiveBaseEncryptionKeyTransfer(UserVisit userVisit) {
-        return getCoreTransferCaches(userVisit).getBaseEncryptionKeyTransferCache().getBaseEncryptionKeyTransfer(getActiveBaseEncryptionKey());
+        return baseEncryptionKeyTransferCache.getBaseEncryptionKeyTransfer(userVisit, getActiveBaseEncryptionKey());
     }
 
     public List<BaseEncryptionKeyTransfer> getBaseEncryptionKeyTransfers(UserVisit userVisit) {
         var baseEncryptionKeys = getBaseEncryptionKeys();
         List<BaseEncryptionKeyTransfer> baseEncryptionKeyTransfers = new ArrayList<>(baseEncryptionKeys.size());
-        var baseEncryptionKeyTransferCache = getCoreTransferCaches(userVisit).getBaseEncryptionKeyTransferCache();
 
         baseEncryptionKeys.forEach((baseEncryptionKey) ->
-                baseEncryptionKeyTransfers.add(baseEncryptionKeyTransferCache.getBaseEncryptionKeyTransfer(baseEncryptionKey))
+                baseEncryptionKeyTransfers.add(baseEncryptionKeyTransferCache.getBaseEncryptionKeyTransfer(userVisit, baseEncryptionKey))
         );
 
         return baseEncryptionKeyTransfers;
@@ -265,7 +266,6 @@ public class EncryptionKeyControl
 
     public BaseEncryptionKeyStatusChoicesBean getBaseEncryptionKeyStatusChoices(String defaultBaseEncryptionKeyStatusChoice,
             Language language, boolean allowNullChoice, BaseEncryptionKey baseEncryptionKey, PartyPK partyPK) {
-        var workflowControl = getWorkflowControl();
         var baseEncryptionKeyStatusChoicesBean = new BaseEncryptionKeyStatusChoicesBean();
 
         if(baseEncryptionKey == null) {
@@ -285,7 +285,6 @@ public class EncryptionKeyControl
     }
 
     public void setBaseEncryptionKeyStatus(ExecutionErrorAccumulator eea, BaseEncryptionKey baseEncryptionKey, String baseEncryptionKeyStatusChoice, PartyPK modifiedBy) {
-        var workflowControl = getWorkflowControl();
         var entityInstance = getEntityInstanceByBaseEntity(baseEncryptionKey);
         var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdateUsingNames(Workflow_BASE_ENCRYPTION_KEY_STATUS,
                 entityInstance);

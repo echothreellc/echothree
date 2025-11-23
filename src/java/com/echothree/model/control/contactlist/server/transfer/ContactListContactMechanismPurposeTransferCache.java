@@ -22,18 +22,22 @@ import com.echothree.model.control.contactlist.server.control.ContactListControl
 import com.echothree.model.data.contactlist.server.entity.ContactListContactMechanismPurpose;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ContactListContactMechanismPurposeTransferCache
         extends BaseContactListTransferCache<ContactListContactMechanismPurpose, ContactListContactMechanismPurposeTransfer> {
     
     final ContactControl contactControl = Session.getModelController(ContactControl.class);
-    
+    ContactListControl contactListControl = Session.getModelController(ContactListControl.class);
+
     /** Creates a new instance of ContactListContactMechanismPurposeTransferCache */
-    public ContactListContactMechanismPurposeTransferCache(UserVisit userVisit, ContactListControl contactListControl) {
-        super(userVisit, contactListControl);
+    protected ContactListContactMechanismPurposeTransferCache() {
+        super();
     }
     
-    public ContactListContactMechanismPurposeTransfer getContactListContactMechanismPurposeTransfer(final ContactListContactMechanismPurpose contactListContactMechanismPurpose) {
+    public ContactListContactMechanismPurposeTransfer getContactListContactMechanismPurposeTransfer(final UserVisit userVisit,
+            final ContactListContactMechanismPurpose contactListContactMechanismPurpose) {
         var contactListContactMechanismPurposeTransfer = get(contactListContactMechanismPurpose);
         
         if(contactListContactMechanismPurposeTransfer == null) {
@@ -44,7 +48,7 @@ public class ContactListContactMechanismPurposeTransferCache
             var sortOrder = contactListContactMechanismPurposeDetail.getSortOrder();
             
             contactListContactMechanismPurposeTransfer = new ContactListContactMechanismPurposeTransfer(contactList, contactMechanismPurpose, isDefault, sortOrder);
-            put(contactListContactMechanismPurpose, contactListContactMechanismPurposeTransfer);
+            put(userVisit, contactListContactMechanismPurpose, contactListContactMechanismPurposeTransfer);
         }
         
         return contactListContactMechanismPurposeTransfer;

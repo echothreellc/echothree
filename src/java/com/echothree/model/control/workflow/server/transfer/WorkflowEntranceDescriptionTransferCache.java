@@ -20,16 +20,21 @@ import com.echothree.model.control.workflow.common.transfer.WorkflowEntranceDesc
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntranceDescription;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class WorkflowEntranceDescriptionTransferCache
         extends BaseWorkflowDescriptionTransferCache<WorkflowEntranceDescription, WorkflowEntranceDescriptionTransfer> {
-    
+
+    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
+
     /** Creates a new instance of WorkflowEntranceDescriptionTransferCache */
-    public WorkflowEntranceDescriptionTransferCache(UserVisit userVisit, WorkflowControl workflowControl) {
-        super(userVisit, workflowControl);
+    protected WorkflowEntranceDescriptionTransferCache() {
+        super();
     }
     
-    public WorkflowEntranceDescriptionTransfer getWorkflowEntranceDescriptionTransfer(WorkflowEntranceDescription workflowEntranceDescription) {
+    public WorkflowEntranceDescriptionTransfer getWorkflowEntranceDescriptionTransfer(UserVisit userVisit, WorkflowEntranceDescription workflowEntranceDescription) {
         var workflowEntranceDescriptionTransfer = get(workflowEntranceDescription);
         
         if(workflowEntranceDescriptionTransfer == null) {
@@ -37,7 +42,7 @@ public class WorkflowEntranceDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, workflowEntranceDescription.getLanguage());
             
             workflowEntranceDescriptionTransfer = new WorkflowEntranceDescriptionTransfer(languageTransfer, workflowEntranceTransfer, workflowEntranceDescription.getDescription());
-            put(workflowEntranceDescription, workflowEntranceDescriptionTransfer);
+            put(userVisit, workflowEntranceDescription, workflowEntranceDescriptionTransfer);
         }
         
         return workflowEntranceDescriptionTransfer;

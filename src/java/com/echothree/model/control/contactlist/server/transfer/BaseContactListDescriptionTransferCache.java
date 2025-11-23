@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.contactlist.server.transfer;
 
-import com.echothree.model.control.contactlist.server.control.ContactListControl;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.BaseTransfer;
 import com.echothree.util.server.persistence.BaseEntity;
 import com.echothree.util.server.persistence.Session;
@@ -26,13 +24,11 @@ import com.echothree.util.server.persistence.Session;
 public abstract class BaseContactListDescriptionTransferCache<K extends BaseEntity, V extends BaseTransfer>
         extends BaseContactListTransferCache<K, V> {
     
-    PartyControl partyControl;
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of BaseContactListDescriptionTransferCache */
-    protected BaseContactListDescriptionTransferCache(UserVisit userVisit, ContactListControl contactListControl) {
-        super(userVisit, contactListControl);
-        
-        partyControl = Session.getModelController(PartyControl.class);
+    protected BaseContactListDescriptionTransferCache() {
+        super();
     }
     
 }

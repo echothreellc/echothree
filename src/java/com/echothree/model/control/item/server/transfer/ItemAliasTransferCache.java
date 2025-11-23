@@ -22,21 +22,22 @@ import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.item.server.entity.ItemAlias;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ItemAliasTransferCache
         extends BaseItemTransferCache<ItemAlias, ItemAliasTransfer> {
-    
-    UomControl uomControl;
+
+    ItemControl itemControl = Session.getModelController(ItemControl.class);
+    UomControl uomControl = Session.getModelController(UomControl.class);
     
     /** Creates a new instance of ItemAliasTransferCache */
-    public ItemAliasTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
-        
-        uomControl = Session.getModelController(UomControl.class);
+    protected ItemAliasTransferCache() {
+        super();
     }
     
     @Override
-    public ItemAliasTransfer getTransfer(ItemAlias itemAlias) {
+    public ItemAliasTransfer getTransfer(UserVisit userVisit, ItemAlias itemAlias) {
         var itemAliasTransfer = get(itemAlias);
         
         if(itemAliasTransfer == null) {
@@ -46,7 +47,7 @@ public class ItemAliasTransferCache
             var alias = itemAlias.getAlias();
             
             itemAliasTransfer = new ItemAliasTransfer(item, unitOfMeasureType, itemAliasType, alias);
-            put(itemAlias, itemAliasTransfer);
+            put(userVisit, itemAlias, itemAliasTransfer);
         }
         
         return itemAliasTransfer;

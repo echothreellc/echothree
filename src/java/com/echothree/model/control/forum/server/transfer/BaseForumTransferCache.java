@@ -16,8 +16,6 @@
 
 package com.echothree.model.control.forum.server.transfer;
 
-import com.echothree.model.control.forum.server.control.ForumControl;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.BaseTransfer;
 import com.echothree.util.server.persistence.BaseEntity;
 import com.echothree.util.server.transfer.BaseTransferCache;
@@ -25,13 +23,9 @@ import com.echothree.util.server.transfer.BaseTransferCache;
 public abstract class BaseForumTransferCache<K extends BaseEntity, V extends BaseTransfer>
         extends BaseTransferCache<K, V> {
     
-    ForumControl forumControl;
-    
     /** Creates a new instance of BaseForumTransferCache */
-    protected BaseForumTransferCache(UserVisit userVisit, ForumControl forumControl) {
-        super(userVisit);
-        
-        this.forumControl = forumControl;
+    protected BaseForumTransferCache() {
+        super();
     }
     
 }

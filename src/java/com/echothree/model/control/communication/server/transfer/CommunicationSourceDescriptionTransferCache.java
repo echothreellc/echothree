@@ -20,16 +20,21 @@ import com.echothree.model.control.communication.common.transfer.CommunicationSo
 import com.echothree.model.control.communication.server.control.CommunicationControl;
 import com.echothree.model.data.communication.server.entity.CommunicationSourceDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CommunicationSourceDescriptionTransferCache
         extends BaseCommunicationDescriptionTransferCache<CommunicationSourceDescription, CommunicationSourceDescriptionTransfer> {
-    
+
+    CommunicationControl communicationControl = Session.getModelController(CommunicationControl.class);
+
     /** Creates a new instance of CommunicationSourceDescriptionTransferCache */
-    public CommunicationSourceDescriptionTransferCache(UserVisit userVisit, CommunicationControl communicationControl) {
-        super(userVisit, communicationControl);
+    protected CommunicationSourceDescriptionTransferCache() {
+        super();
     }
     
-    public CommunicationSourceDescriptionTransfer getCommunicationSourceDescriptionTransfer(CommunicationSourceDescription communicationSourceDescription) {
+    public CommunicationSourceDescriptionTransfer getCommunicationSourceDescriptionTransfer(UserVisit userVisit, CommunicationSourceDescription communicationSourceDescription) {
         var communicationSourceDescriptionTransfer = get(communicationSourceDescription);
         
         if(communicationSourceDescriptionTransfer == null) {
@@ -38,7 +43,7 @@ public class CommunicationSourceDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, communicationSourceDescription.getLanguage());
             
             communicationSourceDescriptionTransfer = new CommunicationSourceDescriptionTransfer(languageTransfer, communicationSourceTransfer, communicationSourceDescription.getDescription());
-            put(communicationSourceDescription, communicationSourceDescriptionTransfer);
+            put(userVisit, communicationSourceDescription, communicationSourceDescriptionTransfer);
         }
         
         return communicationSourceDescriptionTransfer;

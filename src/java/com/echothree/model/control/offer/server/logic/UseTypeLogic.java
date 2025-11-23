@@ -35,20 +35,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class UseTypeLogic
         extends BaseLogic {
 
-    private UseTypeLogic() {
+    protected UseTypeLogic() {
         super();
     }
 
-    private static class UseTypeLogicHolder {
-        static UseTypeLogic instance = new UseTypeLogic();
-    }
-
     public static UseTypeLogic getInstance() {
-        return UseTypeLogic.UseTypeLogicHolder.instance;
+        return CDI.current().select(UseTypeLogic.class).get();
     }
 
     public UseType createUseType(final ExecutionErrorAccumulator eea, final String useTypeName,
@@ -98,7 +97,7 @@ public class UseTypeLogic
         var parameterCount = (useTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
-            case 0:
+            case 0 -> {
                 if(allowDefault) {
                     useType = useTypeControl.getDefaultUseType(entityPermission);
 
@@ -108,8 +107,8 @@ public class UseTypeLogic
                 } else {
                     handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                 }
-                break;
-            case 1:
+            }
+            case 1 -> {
                 if(useTypeName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.UseType.name());
@@ -120,10 +119,9 @@ public class UseTypeLogic
                 } else {
                     useType = getUseTypeByName(eea, useTypeName, entityPermission);
                 }
-                break;
-            default:
-                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
-                break;
+            }
+            default ->
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
 
         return useType;

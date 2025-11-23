@@ -20,16 +20,21 @@ import com.echothree.model.control.uom.common.transfer.UnitOfMeasureKindUseTrans
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKindUse;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class UnitOfMeasureKindUseTransferCache
         extends BaseUomTransferCache<UnitOfMeasureKindUse, UnitOfMeasureKindUseTransfer> {
-    
+
+    UomControl uomControl = Session.getModelController(UomControl.class);
+
     /** Creates a new instance of UnitOfMeasureKindUseTransferCache */
-    public UnitOfMeasureKindUseTransferCache(UserVisit userVisit, UomControl uomControl) {
-        super(userVisit, uomControl);
+    protected UnitOfMeasureKindUseTransferCache() {
+        super();
     }
     
-    public UnitOfMeasureKindUseTransfer getUnitOfMeasureKindUseTransfer(UnitOfMeasureKindUse unitOfMeasureKindUse) {
+    public UnitOfMeasureKindUseTransfer getUnitOfMeasureKindUseTransfer(UserVisit userVisit, UnitOfMeasureKindUse unitOfMeasureKindUse) {
         var unitOfMeasureKindUseTransfer = get(unitOfMeasureKindUse);
         
         if(unitOfMeasureKindUseTransfer == null) {
@@ -40,7 +45,7 @@ public class UnitOfMeasureKindUseTransferCache
             
             unitOfMeasureKindUseTransfer = new UnitOfMeasureKindUseTransfer(unitOfMeasureKindUseType, unitOfMeasureKind, isDefault,
                     sortOrder);
-            put(unitOfMeasureKindUse, unitOfMeasureKindUseTransfer);
+            put(userVisit, unitOfMeasureKindUse, unitOfMeasureKindUseTransfer);
         }
         
         return unitOfMeasureKindUseTransfer;

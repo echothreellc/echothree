@@ -23,27 +23,32 @@ import com.echothree.model.control.item.server.logic.ItemLogic;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.item.server.entity.ItemAlias;
 import com.echothree.model.data.item.server.factory.ItemAliasFactory;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
-import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
+@RequestScoped
 public class GetItemAliasesCommand
-        extends BaseMultipleEntitiesCommand<ItemAlias, GetItemAliasesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<ItemAlias, GetItemAliasesForm> {
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    ItemLogic itemLogic;
 
     // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null)
-                ));
+        );
     }
     
     /** Creates a new instance of GetItemAliasesCommand */
@@ -54,17 +59,30 @@ public class GetItemAliasesCommand
     Item item;
 
     @Override
-    protected Collection<ItemAlias> getEntities() {
-        var itemControl = Session.getModelController(ItemControl.class);
-        Collection<ItemAlias> itemAliases = null;
+    protected void handleForm() {
+        item = itemLogic.getItemByName(this, form.getItemName());
+    }
 
-        item = ItemLogic.getInstance().getItemByName(this, form.getItemName());
+    @Override
+    protected Long getTotalEntities() {
+        Long totalEntities = null;
 
         if(!hasExecutionErrors()) {
-            itemAliases = itemControl.getItemAliasesByItem(item);
+            totalEntities = itemControl.countItemAliasesByItem(item);
         }
 
-        return itemAliases;
+        return totalEntities;
+    }
+
+    @Override
+    protected Collection<ItemAlias> getEntities() {
+        Collection<ItemAlias> entities = null;
+
+        if(!hasExecutionErrors()) {
+            entities = itemControl.getItemAliasesByItem(item);
+        }
+
+        return entities;
     }
 
     @Override
@@ -72,11 +90,10 @@ public class GetItemAliasesCommand
         var result = ItemResultFactory.getGetItemAliasesResult();
 
         if(entities != null) {
-            var itemControl = Session.getModelController(ItemControl.class);
             var userVisit = getUserVisit();
 
             if(session.hasLimit(ItemAliasFactory.class)) {
-                result.setItemAliasCount(itemControl.countItemAliasesByItem(item));
+                result.setItemAliasCount(getTotalEntities());
             }
 
             result.setItem(itemControl.getItemTransfer(userVisit, item));

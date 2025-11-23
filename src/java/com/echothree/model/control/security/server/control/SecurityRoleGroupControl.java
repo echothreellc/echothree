@@ -25,17 +25,20 @@ import com.echothree.model.data.security.server.factory.SecurityRoleGroupFactory
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.server.control.BaseModelControl;
+import javax.enterprise.inject.spi.CDI;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class SecurityRoleGroupControl
         extends BaseModelControl {
 
     /** Creates a new instance of SecurityControl */
-    public SecurityRoleGroupControl() {
+    protected SecurityRoleGroupControl() {
         super();
     }
 

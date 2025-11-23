@@ -28,12 +28,14 @@ import com.echothree.util.server.persistence.Session;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class OrderBatchControl
         extends BaseOrderControl {
 
     /** Creates a new instance of OrderControl */
-    public OrderBatchControl() {
+    protected OrderBatchControl() {
         super();
     }
 

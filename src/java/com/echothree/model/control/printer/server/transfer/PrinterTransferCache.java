@@ -16,30 +16,32 @@
 
 package com.echothree.model.control.printer.server.transfer;
 
-import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.printer.common.transfer.PrinterTransfer;
-import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.control.printer.common.workflow.PrinterStatusConstants;
+import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.printer.server.entity.Printer;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PrinterTransferCache
         extends BasePrinterTransferCache<Printer, PrinterTransfer> {
     
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+    PrinterControl printerControl = Session.getModelController(PrinterControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of PrinterTransferCache */
-    public PrinterTransferCache(UserVisit userVisit, PrinterControl printerControl) {
-        super(userVisit, printerControl);
+    protected PrinterTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public PrinterTransfer getPrinterTransfer(Printer printer) {
+    public PrinterTransfer getPrinterTransfer(UserVisit userVisit, Printer printer) {
         var printerTransfer = get(printer);
         
         if(printerTransfer == null) {
@@ -47,14 +49,14 @@ public class PrinterTransferCache
             var printerName = printerDetail.getPrinterName();
             var printerGroupTransfer = printerControl.getPrinterGroupTransfer(userVisit, printerDetail.getPrinterGroup());
             var priority = printerDetail.getPriority();
-            var description = printerControl.getBestPrinterDescription(printer, getLanguage());
+            var description = printerControl.getBestPrinterDescription(printer, getLanguage(userVisit));
 
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(printer.getPrimaryKey());
             var printerStatusTransfer = workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                     PrinterStatusConstants.Workflow_PRINTER_STATUS, entityInstance);
             
             printerTransfer = new PrinterTransfer(printerName, printerGroupTransfer, priority, printerStatusTransfer, description);
-            put(printer, printerTransfer);
+            put(userVisit, printer, printerTransfer);
         }
         
         return printerTransfer;

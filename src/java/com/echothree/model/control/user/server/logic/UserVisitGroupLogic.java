@@ -29,20 +29,19 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class UserVisitGroupLogic
         extends BaseLogic {
 
-    private UserVisitGroupLogic() {
+    protected UserVisitGroupLogic() {
         super();
     }
 
-    private static class UserVisitGroupLogicHolder {
-        static UserVisitGroupLogic instance = new UserVisitGroupLogic();
-    }
-
     public static UserVisitGroupLogic getInstance() {
-        return UserVisitGroupLogic.UserVisitGroupLogicHolder.instance;
+        return CDI.current().select(UserVisitGroupLogic.class).get();
     }
 
     public UserVisitGroup getUserVisitGroupByName(final ExecutionErrorAccumulator eea, final String userVisitGroupName,
@@ -73,7 +72,7 @@ public class UserVisitGroupLogic
         var parameterCount = (userVisitGroupName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
-            case 1:
+            case 1 -> {
                 if(userVisitGroupName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.UserVisitGroup.name());
@@ -84,10 +83,9 @@ public class UserVisitGroupLogic
                 } else {
                     userVisitGroup = getUserVisitGroupByName(eea, userVisitGroupName, entityPermission);
                 }
-                break;
-            default:
-                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
-                break;
+            }
+            default ->
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
 
         return userVisitGroup;

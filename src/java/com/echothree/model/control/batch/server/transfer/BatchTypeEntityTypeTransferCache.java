@@ -18,24 +18,26 @@ package com.echothree.model.control.batch.server.transfer;
 
 import com.echothree.model.control.batch.common.transfer.BatchTypeEntityTypeTransfer;
 import com.echothree.model.control.batch.server.control.BatchControl;
-import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.control.EntityTypeControl;
 import com.echothree.model.data.batch.server.entity.BatchTypeEntityType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class BatchTypeEntityTypeTransferCache
         extends BaseBatchTransferCache<BatchTypeEntityType, BatchTypeEntityTypeTransfer> {
-    
+
+    BatchControl batchControl = Session.getModelController(BatchControl.class);
     EntityTypeControl entityTypeControl = Session.getModelController(EntityTypeControl.class);
 
     /** Creates a new instance of BatchTypeEntityTypeTransferCache */
-    public BatchTypeEntityTypeTransferCache(UserVisit userVisit, BatchControl batchControl) {
-        super(userVisit, batchControl);
+    protected BatchTypeEntityTypeTransferCache() {
+        super();
     }
     
     @Override
-    public BatchTypeEntityTypeTransfer getTransfer(BatchTypeEntityType batchTypeEntityType) {
+    public BatchTypeEntityTypeTransfer getTransfer(UserVisit userVisit, BatchTypeEntityType batchTypeEntityType) {
         var batchTypeEntityTypeTransfer = get(batchTypeEntityType);
         
         if(batchTypeEntityTypeTransfer == null) {
@@ -43,7 +45,7 @@ public class BatchTypeEntityTypeTransferCache
             var entityType = entityTypeControl.getEntityTypeTransfer(userVisit, batchTypeEntityType.getEntityType());
             
             batchTypeEntityTypeTransfer = new BatchTypeEntityTypeTransfer(batchType, entityType);
-            put(batchTypeEntityType, batchTypeEntityTypeTransfer);
+            put(userVisit, batchTypeEntityType, batchTypeEntityTypeTransfer);
         }
         
         return batchTypeEntityTypeTransfer;

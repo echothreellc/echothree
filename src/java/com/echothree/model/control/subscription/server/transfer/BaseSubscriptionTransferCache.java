@@ -16,8 +16,6 @@
 
 package com.echothree.model.control.subscription.server.transfer;
 
-import com.echothree.model.control.subscription.server.control.SubscriptionControl;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.BaseTransfer;
 import com.echothree.util.server.persistence.BaseEntity;
 import com.echothree.util.server.transfer.BaseTransferCache;
@@ -25,13 +23,9 @@ import com.echothree.util.server.transfer.BaseTransferCache;
 public abstract class BaseSubscriptionTransferCache<K extends BaseEntity, V extends BaseTransfer>
         extends BaseTransferCache<K, V> {
     
-    SubscriptionControl subscriptionControl;
-    
     /** Creates a new instance of BaseSubscriptionTransferCache */
-    protected BaseSubscriptionTransferCache(UserVisit userVisit, SubscriptionControl subscriptionControl) {
-        super(userVisit);
-        
-        this.subscriptionControl = subscriptionControl;
+    protected BaseSubscriptionTransferCache() {
+        super();
     }
     
 }

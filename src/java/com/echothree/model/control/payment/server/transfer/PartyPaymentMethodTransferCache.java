@@ -41,7 +41,9 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.string.StringUtils;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PartyPaymentMethodTransferCache
         extends BasePaymentTransferCache<PartyPaymentMethod, PartyPaymentMethodTransfer> {
     
@@ -52,6 +54,8 @@ public class PartyPaymentMethodTransferCache
     PaymentMethodControl paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
 
+    boolean needToMaskChecked = false;
+
     boolean includeNumber;
     boolean includeSecurityCode;
     boolean includePartyPaymentMethodContactMechanisms;
@@ -59,8 +63,8 @@ public class PartyPaymentMethodTransferCache
     boolean maskNumberAndSecurityCode;
 
     /** Creates a new instance of PartyPaymentMethodTransferCache */
-    public PartyPaymentMethodTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected PartyPaymentMethodTransferCache() {
+        super();
 
         var options = session.getOptions();
         if(options != null) {
@@ -69,7 +73,17 @@ public class PartyPaymentMethodTransferCache
             includeSecurityCode = options.contains(PaymentOptions.PartyPaymentMethodIncludeSecurityCode);
             includePartyPaymentMethodContactMechanisms = options.contains(PaymentOptions.PartyPaymentMethodIncludePartyPaymentMethodContactMechanisms);
             includeComments = options.contains(PaymentOptions.PartyPaymentMethodIncludeComments);
+        }
+        
+        setIncludeEntityInstance(true);
+    }
 
+    @Override
+    public PartyPaymentMethodTransfer getTransfer(UserVisit userVisit, PartyPaymentMethod partyPaymentMethod) {
+        var partyPaymentMethodTransfer = get(partyPaymentMethod);
+
+        // Additional security check to determine if the PAN or security code should be masked.
+        if(!needToMaskChecked) {
             if(includeNumber || includeSecurityCode) {
                 var userControl = Session.getModelController(UserControl.class);
 
@@ -80,15 +94,10 @@ public class PartyPaymentMethodTransferCache
                     maskNumberAndSecurityCode = true;
                 }
             }
-        }
-        
-        setIncludeEntityInstance(true);
-    }
 
-    @Override
-    public PartyPaymentMethodTransfer getTransfer(PartyPaymentMethod partyPaymentMethod) {
-        var partyPaymentMethodTransfer = get(partyPaymentMethod);
-        
+            needToMaskChecked = true;
+        }
+
         if(partyPaymentMethodTransfer == null) {
             var partyPaymentMethodDetail = partyPaymentMethod.getLastDetail();
             var partyPaymentMethodName = partyPaymentMethodDetail.getPartyPaymentMethodName();
@@ -166,14 +175,14 @@ public class PartyPaymentMethodTransferCache
                     partyPaymentMethodStatusTransfer, number, expirationMonth, expirationYear, personalTitleTransfer, firstName,
                     middleName, lastName, nameSuffixTransfer, name, billingPartyContactMechanismTransfer, issuerName,
                     issuerPartyContactMechanismTransfer, securityCode);
-            put(partyPaymentMethod, partyPaymentMethodTransfer);
+            put(userVisit, partyPaymentMethod, partyPaymentMethodTransfer);
             
             if(includePartyPaymentMethodContactMechanisms) {
                 partyPaymentMethodTransfer.setPartyPaymentMethodContactMechanisms(new ListWrapper<>(partyPaymentMethodControl.getPartyPaymentMethodContactMechanismTransfersByPartyPaymentMethod(userVisit, partyPaymentMethod)));
             }
 
             if(includeComments) {
-                setupComments(partyPaymentMethod, entityInstance, partyPaymentMethodTransfer, CommentConstants.CommentType_PARTY_PAYMENT_METHOD);
+                setupComments(userVisit, partyPaymentMethod, entityInstance, partyPaymentMethodTransfer, CommentConstants.CommentType_PARTY_PAYMENT_METHOD);
             }
         }
         

@@ -20,16 +20,21 @@ import com.echothree.model.control.search.common.transfer.SearchSortOrderDescrip
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.data.search.server.entity.SearchSortOrderDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class SearchSortOrderDescriptionTransferCache
         extends BaseSearchDescriptionTransferCache<SearchSortOrderDescription, SearchSortOrderDescriptionTransfer> {
-    
+
+    SearchControl searchControl = Session.getModelController(SearchControl.class);
+
     /** Creates a new instance of SearchSortOrderDescriptionTransferCache */
-    public SearchSortOrderDescriptionTransferCache(UserVisit userVisit, SearchControl searchControl) {
-        super(userVisit, searchControl);
+    protected SearchSortOrderDescriptionTransferCache() {
+        super();
     }
     
-    public SearchSortOrderDescriptionTransfer getSearchSortOrderDescriptionTransfer(SearchSortOrderDescription searchSortOrderDescription) {
+    public SearchSortOrderDescriptionTransfer getSearchSortOrderDescriptionTransfer(UserVisit userVisit, SearchSortOrderDescription searchSortOrderDescription) {
         var searchSortOrderDescriptionTransfer = get(searchSortOrderDescription);
         
         if(searchSortOrderDescriptionTransfer == null) {
@@ -37,7 +42,7 @@ public class SearchSortOrderDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, searchSortOrderDescription.getLanguage());
             
             searchSortOrderDescriptionTransfer = new SearchSortOrderDescriptionTransfer(languageTransfer, searchSortOrderTransfer, searchSortOrderDescription.getDescription());
-            put(searchSortOrderDescription, searchSortOrderDescriptionTransfer);
+            put(userVisit, searchSortOrderDescription, searchSortOrderDescriptionTransfer);
         }
         
         return searchSortOrderDescriptionTransfer;

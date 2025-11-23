@@ -45,12 +45,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class OrderAdjustmentControl
         extends BaseOrderControl {
 
     /** Creates a new instance of OrderControl */
-    public OrderAdjustmentControl() {
+    protected OrderAdjustmentControl() {
         super();
     }
     
@@ -197,16 +199,15 @@ public class OrderAdjustmentControl
     }
 
     public OrderAdjustmentTypeTransfer getOrderAdjustmentTypeTransfer(UserVisit userVisit, OrderAdjustmentType orderAdjustmentType) {
-        return getOrderTransferCaches(userVisit).getOrderAdjustmentTypeTransferCache().getOrderAdjustmentTypeTransfer(orderAdjustmentType);
+        return orderAdjustmentTypeTransferCache.getOrderAdjustmentTypeTransfer(userVisit, orderAdjustmentType);
     }
 
     public List<OrderAdjustmentTypeTransfer> getOrderAdjustmentTypeTransfers(UserVisit userVisit, OrderType orderType) {
         var orderAdjustmentTypes = getOrderAdjustmentTypes(orderType);
         List<OrderAdjustmentTypeTransfer> orderAdjustmentTypeTransfers = new ArrayList<>(orderAdjustmentTypes.size());
-        var orderAdjustmentTypeTransferCache = getOrderTransferCaches(userVisit).getOrderAdjustmentTypeTransferCache();
 
         orderAdjustmentTypes.forEach((orderAdjustmentType) ->
-                orderAdjustmentTypeTransfers.add(orderAdjustmentTypeTransferCache.getOrderAdjustmentTypeTransfer(orderAdjustmentType))
+                orderAdjustmentTypeTransfers.add(orderAdjustmentTypeTransferCache.getOrderAdjustmentTypeTransfer(userVisit, orderAdjustmentType))
         );
 
         return orderAdjustmentTypeTransfers;
@@ -411,7 +412,7 @@ public class OrderAdjustmentControl
         var orderAdjustmentTypeDescription = getOrderAdjustmentTypeDescription(orderAdjustmentType, language);
 
         if(orderAdjustmentTypeDescription == null && !language.getIsDefault()) {
-            orderAdjustmentTypeDescription = getOrderAdjustmentTypeDescription(orderAdjustmentType, getPartyControl().getDefaultLanguage());
+            orderAdjustmentTypeDescription = getOrderAdjustmentTypeDescription(orderAdjustmentType, partyControl.getDefaultLanguage());
         }
 
         if(orderAdjustmentTypeDescription == null) {
@@ -424,16 +425,15 @@ public class OrderAdjustmentControl
     }
 
     public OrderAdjustmentTypeDescriptionTransfer getOrderAdjustmentTypeDescriptionTransfer(UserVisit userVisit, OrderAdjustmentTypeDescription orderAdjustmentTypeDescription) {
-        return getOrderTransferCaches(userVisit).getOrderAdjustmentTypeDescriptionTransferCache().getOrderAdjustmentTypeDescriptionTransfer(orderAdjustmentTypeDescription);
+        return orderAdjustmentTypeDescriptionTransferCache.getOrderAdjustmentTypeDescriptionTransfer(userVisit, orderAdjustmentTypeDescription);
     }
 
     public List<OrderAdjustmentTypeDescriptionTransfer> getOrderAdjustmentTypeDescriptionTransfersByOrderAdjustmentType(UserVisit userVisit, OrderAdjustmentType orderAdjustmentType) {
         var orderAdjustmentTypeDescriptions = getOrderAdjustmentTypeDescriptionsByOrderAdjustmentType(orderAdjustmentType);
         List<OrderAdjustmentTypeDescriptionTransfer> orderAdjustmentTypeDescriptionTransfers = new ArrayList<>(orderAdjustmentTypeDescriptions.size());
-        var orderAdjustmentTypeDescriptionTransferCache = getOrderTransferCaches(userVisit).getOrderAdjustmentTypeDescriptionTransferCache();
 
         orderAdjustmentTypeDescriptions.forEach((orderAdjustmentTypeDescription) ->
-                orderAdjustmentTypeDescriptionTransfers.add(orderAdjustmentTypeDescriptionTransferCache.getOrderAdjustmentTypeDescriptionTransfer(orderAdjustmentTypeDescription))
+                orderAdjustmentTypeDescriptionTransfers.add(orderAdjustmentTypeDescriptionTransferCache.getOrderAdjustmentTypeDescriptionTransfer(userVisit, orderAdjustmentTypeDescription))
         );
 
         return orderAdjustmentTypeDescriptionTransfers;

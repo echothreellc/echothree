@@ -21,20 +21,22 @@ import com.echothree.model.control.offer.server.control.OfferNameElementControl;
 import com.echothree.model.data.offer.server.entity.OfferNameElement;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class OfferNameElementTransferCache
         extends BaseOfferTransferCache<OfferNameElement, OfferNameElementTransfer> {
 
     OfferNameElementControl offerNameElementControl = Session.getModelController(OfferNameElementControl.class);
 
     /** Creates a new instance of OfferNameElementTransferCache */
-    public OfferNameElementTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected OfferNameElementTransferCache() {
+        super();
 
         setIncludeEntityInstance(true);
     }
     
-    public OfferNameElementTransfer getOfferNameElementTransfer(OfferNameElement offerNameElement) {
+    public OfferNameElementTransfer getOfferNameElementTransfer(UserVisit userVisit, OfferNameElement offerNameElement) {
         var offerNameElementTransfer = get(offerNameElement);
         
         if(offerNameElementTransfer == null) {
@@ -43,11 +45,11 @@ public class OfferNameElementTransferCache
             var offset = offerNameElementDetail.getOffset();
             var length = offerNameElementDetail.getLength();
             var validationPattern = offerNameElementDetail.getValidationPattern();
-            var description = offerNameElementControl.getBestOfferNameElementDescription(offerNameElement, getLanguage());
+            var description = offerNameElementControl.getBestOfferNameElementDescription(offerNameElement, getLanguage(userVisit));
             
             offerNameElementTransfer = new OfferNameElementTransfer(offerNameElementName, offset, length, validationPattern,
                     description);
-            put(offerNameElement, offerNameElementTransfer);
+            put(userVisit, offerNameElement, offerNameElementTransfer);
         }
         
         return offerNameElementTransfer;

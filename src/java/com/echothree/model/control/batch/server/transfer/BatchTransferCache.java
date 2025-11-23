@@ -22,21 +22,23 @@ import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.data.batch.server.entity.Batch;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class BatchTransferCache
         extends GenericBatchTransferCache<BatchTransfer> {
 
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     
     /** Creates a new instance of BatchTransferCache */
-    public BatchTransferCache(UserVisit userVisit, BatchControl batchControl) {
-        super(userVisit, batchControl);
+    protected BatchTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
     @Override
-    public BatchTransfer getTransfer(Batch batch) {
+    public BatchTransfer getTransfer(UserVisit userVisit, Batch batch) {
         var batchTransfer = get(batch);
         
         if(batchTransfer == null) {
@@ -46,10 +48,10 @@ public class BatchTransferCache
             var batchName = batchDetail.getBatchName();
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(batch.getPrimaryKey());
             
-            batchTransfer = new BatchTransfer(batchTypeTransfer, batchName, getBatchStatus(batch, entityInstance));
-            put(batch, batchTransfer, entityInstance);
+            batchTransfer = new BatchTransfer(batchTypeTransfer, batchName, getBatchStatus(userVisit, batch, entityInstance));
+            put(userVisit, batch, batchTransfer, entityInstance);
 
-            handleOptions(batch, batchTransfer);
+            handleOptions(userVisit, batch, batchTransfer);
         }
         
         return batchTransfer;

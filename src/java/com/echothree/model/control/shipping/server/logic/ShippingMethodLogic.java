@@ -42,20 +42,19 @@ import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.Set;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 
+@ApplicationScoped
 public class ShippingMethodLogic
     extends BaseLogic {
 
-    private ShippingMethodLogic() {
+    protected ShippingMethodLogic() {
         super();
     }
 
-    private static class ShippingMethodLogicHolder {
-        static ShippingMethodLogic instance = new ShippingMethodLogic();
-    }
-
     public static ShippingMethodLogic getInstance() {
-        return ShippingMethodLogicHolder.instance;
+        return CDI.current().select(ShippingMethodLogic.class).get();
     }
 
     public ShippingMethod createShippingMethod(final ExecutionErrorAccumulator eea, final String shippingMethodName,
@@ -106,7 +105,7 @@ public class ShippingMethodLogic
         var parameterCount = (shippingMethodName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
-            case 1:
+            case 1 -> {
                 if(shippingMethodName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.ShippingMethod.name());
@@ -117,10 +116,9 @@ public class ShippingMethodLogic
                 } else {
                     shippingMethod = getShippingMethodByName(eea, shippingMethodName, entityPermission);
                 }
-                break;
-            default:
-                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
-                break;
+            }
+            default ->
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
 
         return shippingMethod;

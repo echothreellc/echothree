@@ -20,16 +20,21 @@ import com.echothree.model.control.letter.common.transfer.LetterDescriptionTrans
 import com.echothree.model.control.letter.server.control.LetterControl;
 import com.echothree.model.data.letter.server.entity.LetterDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class LetterDescriptionTransferCache
         extends BaseLetterDescriptionTransferCache<LetterDescription, LetterDescriptionTransfer> {
-    
+
+    LetterControl letterControl = Session.getModelController(LetterControl.class);
+
     /** Creates a new instance of LetterDescriptionTransferCache */
-    public LetterDescriptionTransferCache(UserVisit userVisit, LetterControl letterControl) {
-        super(userVisit, letterControl);
+    protected LetterDescriptionTransferCache() {
+        super();
     }
     
-    public LetterDescriptionTransfer getLetterDescriptionTransfer(LetterDescription letterDescription) {
+    public LetterDescriptionTransfer getLetterDescriptionTransfer(UserVisit userVisit, LetterDescription letterDescription) {
         var letterDescriptionTransfer = get(letterDescription);
         
         if(letterDescriptionTransfer == null) {
@@ -37,7 +42,7 @@ public class LetterDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, letterDescription.getLanguage());
             
             letterDescriptionTransfer = new LetterDescriptionTransfer(languageTransfer, letterTransfer, letterDescription.getDescription());
-            put(letterDescription, letterDescriptionTransfer);
+            put(userVisit, letterDescription, letterDescriptionTransfer);
         }
         
         return letterDescriptionTransfer;

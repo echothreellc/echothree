@@ -20,16 +20,21 @@ import com.echothree.model.control.training.common.transfer.PartyTrainingClassSe
 import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.data.training.server.entity.PartyTrainingClassSessionSection;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PartyTrainingClassSessionSectionTransferCache
         extends BaseTrainingTransferCache<PartyTrainingClassSessionSection, PartyTrainingClassSessionSectionTransfer> {
-    
+
+    TrainingControl trainingControl = Session.getModelController(TrainingControl.class);
+
     /** Creates a new instance of PartyTrainingClassSessionSectionTransferCache */
-    public PartyTrainingClassSessionSectionTransferCache(UserVisit userVisit, TrainingControl trainingControl) {
-        super(userVisit, trainingControl);
+    protected PartyTrainingClassSessionSectionTransferCache() {
+        super();
     }
     
-    public PartyTrainingClassSessionSectionTransfer getPartyTrainingClassSessionSectionTransfer(PartyTrainingClassSessionSection partyTrainingClassSessionSection) {
+    public PartyTrainingClassSessionSectionTransfer getPartyTrainingClassSessionSectionTransfer(UserVisit userVisit, PartyTrainingClassSessionSection partyTrainingClassSessionSection) {
         var partyTrainingClassSessionSectionTransfer = get(partyTrainingClassSessionSection);
         
         if(partyTrainingClassSessionSectionTransfer == null) {
@@ -37,14 +42,14 @@ public class PartyTrainingClassSessionSectionTransferCache
             var partyTrainingClassSessionSectionSequence = partyTrainingClassSessionSection.getPartyTrainingClassSessionSectionSequence();
             var trainingClassSection = trainingControl.getTrainingClassSectionTransfer(userVisit, partyTrainingClassSessionSection.getTrainingClassSection());
             var unformattedReadingStartTime = partyTrainingClassSessionSection.getReadingStartTime();
-            var readingStartTime = formatTypicalDateTime(unformattedReadingStartTime);
+            var readingStartTime = formatTypicalDateTime(userVisit, unformattedReadingStartTime);
             var unformattedReadingEndTime = partyTrainingClassSessionSection.getReadingEndTime();
-            var readingEndTime = formatTypicalDateTime(unformattedReadingEndTime);
+            var readingEndTime = formatTypicalDateTime(userVisit, unformattedReadingEndTime);
 
 
             partyTrainingClassSessionSectionTransfer = new PartyTrainingClassSessionSectionTransfer(partyTrainingClassSession, partyTrainingClassSessionSectionSequence,
                     trainingClassSection, unformattedReadingStartTime, readingStartTime, unformattedReadingEndTime, readingEndTime);
-            put(partyTrainingClassSessionSection, partyTrainingClassSessionSectionTransfer);
+            put(userVisit, partyTrainingClassSessionSection, partyTrainingClassSessionSectionTransfer);
         }
         
         return partyTrainingClassSessionSectionTransfer;

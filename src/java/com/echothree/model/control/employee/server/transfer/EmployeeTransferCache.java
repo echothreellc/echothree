@@ -43,16 +43,19 @@ import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EmployeeTransferCache
         extends BaseEmployeeTransferCache<Party, EmployeeTransfer> {
 
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
-    PartyApplicationEditorUseControl partyApplicationEditorUseControl = Session.getModelController(PartyApplicationEditorUseControl.class);
     ContactControl contactControl = Session.getModelController(ContactControl.class);
     ContactListControl contactListControl = Session.getModelController(ContactListControl.class);
     DocumentControl documentControl = Session.getModelController(DocumentControl.class);
+    EmployeeControl employeeControl = Session.getModelController(EmployeeControl.class);
     EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+    PartyApplicationEditorUseControl partyApplicationEditorUseControl = Session.getModelController(PartyApplicationEditorUseControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     PartyEntityTypeControl partyEntityTypeControl = Session.getModelController(PartyEntityTypeControl.class);
     PrinterControl printerControl = Session.getModelController(PrinterControl.class);
@@ -81,8 +84,8 @@ public class EmployeeTransferCache
     boolean includePartySkills;
 
     /** Creates a new instance of EmployeeTransferCache */
-    public EmployeeTransferCache(UserVisit userVisit, EmployeeControl employeeControl) {
-        super(userVisit, employeeControl);
+    protected EmployeeTransferCache() {
+        super();
 
         var options = session.getOptions();
         if(options != null) {
@@ -112,11 +115,11 @@ public class EmployeeTransferCache
         setIncludeEntityInstance(true);
     }
 
-    public EmployeeTransfer getTransfer(PartyEmployee partyEmployee) {
-        return getTransfer(partyEmployee.getParty());
+    public EmployeeTransfer getTransfer(UserVisit userVisit, PartyEmployee partyEmployee) {
+        return getTransfer(userVisit, partyEmployee.getParty());
     }
 
-    public EmployeeTransfer getTransfer(Party party) {
+    public EmployeeTransfer getTransfer(UserVisit userVisit, Party party) {
         var employeeTransfer = get(party);
 
         if(employeeTransfer == null) {
@@ -148,7 +151,7 @@ public class EmployeeTransferCache
 
             employeeTransfer = new EmployeeTransfer(partyName, partyTypeTransfer, preferredLanguageTransfer, preferredCurrencyTransfer, preferredTimeZoneTransfer, preferredDateTimeFormatTransfer,
                     personTransfer, profileTransfer, employeeName, employeeType, employeeStatusTransfer, employeeAvailabilityTransfer);
-            put(party, employeeTransfer, entityInstance);
+            put(userVisit, party, employeeTransfer, entityInstance);
 
             if(includeUserLogin) {
                 employeeTransfer.setUserLogin(userControl.getUserLoginTransfer(userVisit, party));

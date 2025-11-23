@@ -20,16 +20,21 @@ import com.echothree.model.control.uom.common.transfer.UnitOfMeasureKindUseTypeT
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKindUseType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class UnitOfMeasureKindUseTypeTransferCache
         extends BaseUomTransferCache<UnitOfMeasureKindUseType, UnitOfMeasureKindUseTypeTransfer> {
-    
+
+    UomControl uomControl = Session.getModelController(UomControl.class);
+
     /** Creates a new instance of UnitOfMeasureKindUseTypeTransferCache */
-    public UnitOfMeasureKindUseTypeTransferCache(UserVisit userVisit, UomControl uomControl) {
-        super(userVisit, uomControl);
+    protected UnitOfMeasureKindUseTypeTransferCache() {
+        super();
     }
     
-    public UnitOfMeasureKindUseTypeTransfer getUnitOfMeasureKindUseTypeTransfer(UnitOfMeasureKindUseType unitOfMeasureKindUseType) {
+    public UnitOfMeasureKindUseTypeTransfer getUnitOfMeasureKindUseTypeTransfer(UserVisit userVisit, UnitOfMeasureKindUseType unitOfMeasureKindUseType) {
         var unitOfMeasureKindUseTypeTransfer = get(unitOfMeasureKindUseType);
         
         if(unitOfMeasureKindUseTypeTransfer == null) {
@@ -38,11 +43,11 @@ public class UnitOfMeasureKindUseTypeTransferCache
             var allowFractionDigits = unitOfMeasureKindUseType.getAllowFractionDigits();
             var isDefault = unitOfMeasureKindUseType.getIsDefault();
             var sortOrder = unitOfMeasureKindUseType.getSortOrder();
-            var description = uomControl.getBestUnitOfMeasureKindUseTypeDescription(unitOfMeasureKindUseType, getLanguage());
+            var description = uomControl.getBestUnitOfMeasureKindUseTypeDescription(unitOfMeasureKindUseType, getLanguage(userVisit));
             
             unitOfMeasureKindUseTypeTransfer = new UnitOfMeasureKindUseTypeTransfer(unitOfMeasureKindUseTypeName, allowMultiple, allowFractionDigits, isDefault,
                     sortOrder, description);
-            put(unitOfMeasureKindUseType, unitOfMeasureKindUseTypeTransfer);
+            put(userVisit, unitOfMeasureKindUseType, unitOfMeasureKindUseTypeTransfer);
         }
         
         return unitOfMeasureKindUseTypeTransfer;

@@ -22,18 +22,20 @@ import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityIntegerRangeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class EntityIntegerRangeDescriptionTransferCache
         extends BaseCoreDescriptionTransferCache<EntityIntegerRangeDescription, EntityIntegerRangeDescriptionTransfer> {
 
     CoreControl coreControl = Session.getModelController(CoreControl.class);
 
     /** Creates a new instance of EntityIntegerRangeDescriptionTransferCache */
-    public EntityIntegerRangeDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected EntityIntegerRangeDescriptionTransferCache() {
+        super();
     }
     
-    public EntityIntegerRangeDescriptionTransfer getEntityIntegerRangeDescriptionTransfer(EntityIntegerRangeDescription entityIntegerRangeDescription, EntityInstance entityInstance) {
+    public EntityIntegerRangeDescriptionTransfer getEntityIntegerRangeDescriptionTransfer(final UserVisit userVisit, final EntityIntegerRangeDescription entityIntegerRangeDescription, final EntityInstance entityInstance) {
         var entityIntegerRangeDescriptionTransfer = get(entityIntegerRangeDescription);
         
         if(entityIntegerRangeDescriptionTransfer == null) {
@@ -42,7 +44,7 @@ public class EntityIntegerRangeDescriptionTransferCache
             
             entityIntegerRangeDescriptionTransfer = new EntityIntegerRangeDescriptionTransfer(languageTransfer, entityIntegerRangeTransfer,
                     entityIntegerRangeDescription.getDescription());
-            put(entityIntegerRangeDescription, entityIntegerRangeDescriptionTransfer);
+            put(userVisit, entityIntegerRangeDescription, entityIntegerRangeDescriptionTransfer);
         }
         return entityIntegerRangeDescriptionTransfer;
     }

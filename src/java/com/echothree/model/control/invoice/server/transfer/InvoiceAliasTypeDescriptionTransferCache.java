@@ -20,16 +20,21 @@ import com.echothree.model.control.invoice.common.transfer.InvoiceAliasTypeDescr
 import com.echothree.model.control.invoice.server.control.InvoiceControl;
 import com.echothree.model.data.invoice.server.entity.InvoiceAliasTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class InvoiceAliasTypeDescriptionTransferCache
         extends BaseInvoiceDescriptionTransferCache<InvoiceAliasTypeDescription, InvoiceAliasTypeDescriptionTransfer> {
-    
+
+    InvoiceControl invoiceControl = Session.getModelController(InvoiceControl.class);
+
     /** Creates a new instance of InvoiceAliasTypeDescriptionTransferCache */
-    public InvoiceAliasTypeDescriptionTransferCache(UserVisit userVisit, InvoiceControl invoiceControl) {
-        super(userVisit, invoiceControl);
+    protected InvoiceAliasTypeDescriptionTransferCache() {
+        super();
     }
     
-    public InvoiceAliasTypeDescriptionTransfer getInvoiceAliasTypeDescriptionTransfer(InvoiceAliasTypeDescription invoiceAliasTypeDescription) {
+    public InvoiceAliasTypeDescriptionTransfer getInvoiceAliasTypeDescriptionTransfer(UserVisit userVisit, InvoiceAliasTypeDescription invoiceAliasTypeDescription) {
         var invoiceAliasTypeDescriptionTransfer = get(invoiceAliasTypeDescription);
         
         if(invoiceAliasTypeDescriptionTransfer == null) {
@@ -37,7 +42,7 @@ public class InvoiceAliasTypeDescriptionTransferCache
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, invoiceAliasTypeDescription.getLanguage());
             
             invoiceAliasTypeDescriptionTransfer = new InvoiceAliasTypeDescriptionTransfer(languageTransfer, invoiceAliasTypeTransfer, invoiceAliasTypeDescription.getDescription());
-            put(invoiceAliasTypeDescription, invoiceAliasTypeDescriptionTransfer);
+            put(userVisit, invoiceAliasTypeDescription, invoiceAliasTypeDescriptionTransfer);
         }
         
         return invoiceAliasTypeDescriptionTransfer;

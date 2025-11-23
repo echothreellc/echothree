@@ -16,8 +16,6 @@
 
 package com.echothree.model.control.sequence.server.transfer;
 
-import com.echothree.model.control.sequence.server.control.SequenceControl;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.BaseTransfer;
 import com.echothree.util.server.persistence.BaseEntity;
 import com.echothree.util.server.transfer.BaseTransferCache;
@@ -25,13 +23,9 @@ import com.echothree.util.server.transfer.BaseTransferCache;
 public abstract class BaseSequenceTransferCache<K extends BaseEntity, V extends BaseTransfer>
         extends BaseTransferCache<K, V> {
     
-    SequenceControl sequenceControl;
-    
     /** Creates a new instance of BaseSequenceTransferCache */
-    protected BaseSequenceTransferCache(UserVisit userVisit, SequenceControl sequenceControl) {
-        super(userVisit);
-        
-        this.sequenceControl = sequenceControl;
+    protected BaseSequenceTransferCache() {
+        super();
     }
     
 }

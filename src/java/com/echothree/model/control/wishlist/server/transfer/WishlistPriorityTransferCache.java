@@ -20,18 +20,23 @@ import com.echothree.model.control.wishlist.common.transfer.WishlistPriorityTran
 import com.echothree.model.control.wishlist.server.control.WishlistControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.wishlist.server.entity.WishlistPriority;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class WishlistPriorityTransferCache
         extends BaseWishlistTransferCache<WishlistPriority, WishlistPriorityTransfer> {
-    
+
+    WishlistControl wishlistControl = Session.getModelController(WishlistControl.class);
+
     /** Creates a new instance of WishlistPriorityTransferCache */
-    public WishlistPriorityTransferCache(UserVisit userVisit, WishlistControl wishlistControl) {
-        super(userVisit, wishlistControl);
+    protected WishlistPriorityTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public WishlistPriorityTransfer getWishlistPriorityTransfer(WishlistPriority wishlistPriority) {
+    public WishlistPriorityTransfer getWishlistPriorityTransfer(UserVisit userVisit, WishlistPriority wishlistPriority) {
         var wishlistPriorityTransfer = get(wishlistPriority);
         
         if(wishlistPriorityTransfer == null) {
@@ -40,11 +45,11 @@ public class WishlistPriorityTransferCache
             var wishlistPriorityName = wishlistPriorityDetail.getWishlistPriorityName();
             var isDefault = wishlistPriorityDetail.getIsDefault();
             var sortOrder = wishlistPriorityDetail.getSortOrder();
-            var description = wishlistControl.getBestWishlistPriorityDescription(wishlistPriority, getLanguage());
+            var description = wishlistControl.getBestWishlistPriorityDescription(wishlistPriority, getLanguage(userVisit));
             
             wishlistPriorityTransfer = new WishlistPriorityTransfer(wishlistType, wishlistPriorityName, isDefault,
                     sortOrder, description);
-            put(wishlistPriority, wishlistPriorityTransfer);
+            put(userVisit, wishlistPriority, wishlistPriorityTransfer);
         }
         
         return wishlistPriorityTransfer;

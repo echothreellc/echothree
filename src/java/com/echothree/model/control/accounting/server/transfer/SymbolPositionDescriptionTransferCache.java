@@ -21,28 +21,29 @@ import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.data.accounting.server.entity.SymbolPositionDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class SymbolPositionDescriptionTransferCache
         extends BaseAccountingDescriptionTransferCache<SymbolPositionDescription, SymbolPositionDescriptionTransfer> {
 
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
 
     /** Creates a new instance of SymbolPositionDescriptionTransferCache */
-    public SymbolPositionDescriptionTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected SymbolPositionDescriptionTransferCache() {
+        super();
     }
     
     @Override
-    public SymbolPositionDescriptionTransfer getTransfer(SymbolPositionDescription symbolPositionDescription) {
+    public SymbolPositionDescriptionTransfer getTransfer(UserVisit userVisit, SymbolPositionDescription symbolPositionDescription) {
         var symbolPositionDescriptionTransfer = get(symbolPositionDescription);
         
         if(symbolPositionDescriptionTransfer == null) {
-            var symbolPositionTransferCache = accountingControl.getAccountingTransferCaches(userVisit).getSymbolPositionTransferCache();
-            var symbolPositionTransfer = symbolPositionTransferCache.getTransfer(symbolPositionDescription.getSymbolPosition());
+            var symbolPositionTransfer = accountingControl.getSymbolPositionTransfer(userVisit, symbolPositionDescription.getSymbolPosition());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, symbolPositionDescription.getLanguage());
             
             symbolPositionDescriptionTransfer = new SymbolPositionDescriptionTransfer(languageTransfer, symbolPositionTransfer, symbolPositionDescription.getDescription());
-            put(symbolPositionDescription, symbolPositionDescriptionTransfer);
+            put(userVisit, symbolPositionDescription, symbolPositionDescriptionTransfer);
         }
         
         return symbolPositionDescriptionTransfer;

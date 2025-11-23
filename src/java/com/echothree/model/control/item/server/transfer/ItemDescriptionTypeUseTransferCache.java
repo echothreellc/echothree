@@ -20,17 +20,22 @@ import com.echothree.model.control.item.common.transfer.ItemDescriptionTypeUseTr
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.item.server.entity.ItemDescriptionTypeUse;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ItemDescriptionTypeUseTransferCache
         extends BaseItemTransferCache<ItemDescriptionTypeUse, ItemDescriptionTypeUseTransfer> {
-    
+
+    ItemControl itemControl = Session.getModelController(ItemControl.class);
+
     /** Creates a new instance of ItemDescriptionTypeUseTransferCache */
-    public ItemDescriptionTypeUseTransferCache(UserVisit userVisit, ItemControl itemControl) {
-        super(userVisit, itemControl);
+    protected ItemDescriptionTypeUseTransferCache() {
+        super();
     }
     
     @Override
-    public ItemDescriptionTypeUseTransfer getTransfer(ItemDescriptionTypeUse itemDescriptionTypeUse) {
+    public ItemDescriptionTypeUseTransfer getTransfer(UserVisit userVisit, ItemDescriptionTypeUse itemDescriptionTypeUse) {
         var itemDescriptionTypeUseTransfer = get(itemDescriptionTypeUse);
         
         if(itemDescriptionTypeUseTransfer == null) {
@@ -38,7 +43,7 @@ public class ItemDescriptionTypeUseTransferCache
             var itemDescriptionTypeUseType = itemControl.getItemDescriptionTypeUseTypeTransfer(userVisit, itemDescriptionTypeUse.getItemDescriptionTypeUseType());
             
             itemDescriptionTypeUseTransfer = new ItemDescriptionTypeUseTransfer(itemDescriptionType, itemDescriptionTypeUseType);
-            put(itemDescriptionTypeUse, itemDescriptionTypeUseTransfer);
+            put(userVisit, itemDescriptionTypeUse, itemDescriptionTypeUseTransfer);
         }
         
         return itemDescriptionTypeUseTransfer;

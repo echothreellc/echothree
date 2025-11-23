@@ -19,19 +19,21 @@ package com.echothree.model.control.party.server.transfer;
 import com.echothree.model.control.party.common.transfer.PersonalTitleTransfer;
 import com.echothree.model.data.party.server.entity.PersonalTitle;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PersonalTitleTransferCache
         extends BasePartyTransferCache<PersonalTitle, PersonalTitleTransfer> {
     
     /** Creates a new instance of PersonalTitleTransferCache */
-    public PersonalTitleTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected PersonalTitleTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
 
     @Override
-    public PersonalTitleTransfer getTransfer(PersonalTitle personalTitle) {
+    public PersonalTitleTransfer getTransfer(UserVisit userVisit, PersonalTitle personalTitle) {
         var personalTitleTransfer = get(personalTitle);
         
         if(personalTitleTransfer == null) {
@@ -43,7 +45,7 @@ public class PersonalTitleTransferCache
             var sortOrder = personalTitleDetail.getSortOrder();
             
             personalTitleTransfer = new PersonalTitleTransfer(personalTitleId, description, isDefault, sortOrder);
-            put(personalTitle, personalTitleTransfer);
+            put(userVisit, personalTitle, personalTitleTransfer);
         }
         
         return personalTitleTransfer;

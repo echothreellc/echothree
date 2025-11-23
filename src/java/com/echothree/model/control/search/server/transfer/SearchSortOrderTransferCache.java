@@ -20,18 +20,23 @@ import com.echothree.model.control.search.common.transfer.SearchSortOrderTransfe
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.data.search.server.entity.SearchSortOrder;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class SearchSortOrderTransferCache
         extends BaseSearchTransferCache<SearchSortOrder, SearchSortOrderTransfer> {
-    
+
+    SearchControl searchControl = Session.getModelController(SearchControl.class);
+
     /** Creates a new instance of SearchSortOrderTransferCache */
-    public SearchSortOrderTransferCache(UserVisit userVisit, SearchControl searchControl) {
-        super(userVisit, searchControl);
+    protected SearchSortOrderTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public SearchSortOrderTransfer getSearchSortOrderTransfer(SearchSortOrder searchSortOrder) {
+    public SearchSortOrderTransfer getSearchSortOrderTransfer(UserVisit userVisit, SearchSortOrder searchSortOrder) {
         var searchSortOrderTransfer = get(searchSortOrder);
         
         if(searchSortOrderTransfer == null) {
@@ -40,10 +45,10 @@ public class SearchSortOrderTransferCache
             var searchSortOrderName = searchSortOrderDetail.getSearchSortOrderName();
             var isDefault = searchSortOrderDetail.getIsDefault();
             var sortOrder = searchSortOrderDetail.getSortOrder();
-            var description = searchControl.getBestSearchSortOrderDescription(searchSortOrder, getLanguage());
+            var description = searchControl.getBestSearchSortOrderDescription(searchSortOrder, getLanguage(userVisit));
             
             searchSortOrderTransfer = new SearchSortOrderTransfer(searchKindTransfer, searchSortOrderName, isDefault, sortOrder, description);
-            put(searchSortOrder, searchSortOrderTransfer);
+            put(userVisit, searchSortOrder, searchSortOrderTransfer);
         }
         
         return searchSortOrderTransfer;

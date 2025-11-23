@@ -20,18 +20,23 @@ import com.echothree.model.control.comment.common.transfer.CommentUsageTypeTrans
 import com.echothree.model.control.comment.server.control.CommentControl;
 import com.echothree.model.data.comment.server.entity.CommentUsageType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class CommentUsageTypeTransferCache
         extends BaseCommentTransferCache<CommentUsageType, CommentUsageTypeTransfer> {
-    
+
+    CommentControl commentControl = Session.getModelController(CommentControl.class);
+
     /** Creates a new instance of CommentUsageTypeTransferCache */
-    public CommentUsageTypeTransferCache(UserVisit userVisit, CommentControl commentControl) {
-        super(userVisit, commentControl);
+    protected CommentUsageTypeTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
     
-    public CommentUsageTypeTransfer getCommentUsageTypeTransfer(CommentUsageType commentUsageType) {
+    public CommentUsageTypeTransfer getCommentUsageTypeTransfer(UserVisit userVisit, CommentUsageType commentUsageType) {
         var commentUsageTypeTransfer = get(commentUsageType);
         
         if(commentUsageTypeTransfer == null) {
@@ -39,10 +44,10 @@ public class CommentUsageTypeTransferCache
             var commentType = commentControl.getCommentTypeTransfer(userVisit, commentUsageTypeDetail.getCommentType());
             var commentUsageTypeName = commentUsageTypeDetail.getCommentUsageTypeName();
             var selectedByDefault = commentUsageTypeDetail.getSelectedByDefault();
-            var description = commentControl.getBestCommentUsageTypeDescription(commentUsageType, getLanguage());
+            var description = commentControl.getBestCommentUsageTypeDescription(commentUsageType, getLanguage(userVisit));
             
             commentUsageTypeTransfer = new CommentUsageTypeTransfer(commentType, commentUsageTypeName, selectedByDefault, description);
-            put(commentUsageType, commentUsageTypeTransfer);
+            put(userVisit, commentUsageType, commentUsageTypeTransfer);
         }
         
         return commentUsageTypeTransfer;

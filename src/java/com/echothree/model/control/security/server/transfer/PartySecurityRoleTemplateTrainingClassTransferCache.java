@@ -22,18 +22,21 @@ import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.data.security.server.entity.PartySecurityRoleTemplateTrainingClass;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class PartySecurityRoleTemplateTrainingClassTransferCache
         extends BaseSecurityTransferCache<PartySecurityRoleTemplateTrainingClass, PartySecurityRoleTemplateTrainingClassTransfer> {
-    
+
+    SecurityControl securityControl = Session.getModelController(SecurityControl.class);
     TrainingControl trainingControl = Session.getModelController(TrainingControl.class);
     
     /** Creates a new instance of PartySecurityRoleTemplateTrainingClassTransferCache */
-    public PartySecurityRoleTemplateTrainingClassTransferCache(UserVisit userVisit, SecurityControl securityControl) {
-        super(userVisit, securityControl);
+    protected PartySecurityRoleTemplateTrainingClassTransferCache() {
+        super();
     }
     
-    public PartySecurityRoleTemplateTrainingClassTransfer getPartySecurityRoleTemplateTrainingClassTransfer(PartySecurityRoleTemplateTrainingClass partySecurityRoleTemplateTrainingClass) {
+    public PartySecurityRoleTemplateTrainingClassTransfer getPartySecurityRoleTemplateTrainingClassTransfer(UserVisit userVisit, PartySecurityRoleTemplateTrainingClass partySecurityRoleTemplateTrainingClass) {
         var partySecurityRoleTemplateTrainingClassTransfer = get(partySecurityRoleTemplateTrainingClass);
         
         if(partySecurityRoleTemplateTrainingClassTransfer == null) {
@@ -41,7 +44,7 @@ public class PartySecurityRoleTemplateTrainingClassTransferCache
             var trainingClass = trainingControl.getTrainingClassTransfer(userVisit, partySecurityRoleTemplateTrainingClass.getTrainingClass());
             
             partySecurityRoleTemplateTrainingClassTransfer = new PartySecurityRoleTemplateTrainingClassTransfer(partySecurityRoleTemplate, trainingClass);
-            put(partySecurityRoleTemplateTrainingClass, partySecurityRoleTemplateTrainingClassTransfer);
+            put(userVisit, partySecurityRoleTemplateTrainingClass, partySecurityRoleTemplateTrainingClassTransfer);
         }
         
         return partySecurityRoleTemplateTrainingClassTransfer;

@@ -20,26 +20,30 @@ import com.echothree.model.control.uom.common.transfer.UnitOfMeasureEquivalentTr
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureEquivalent;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class UnitOfMeasureEquivalentTransferCache
         extends BaseUomTransferCache<UnitOfMeasureEquivalent, UnitOfMeasureEquivalentTransfer> {
-    
+
+    UomControl uomControl = Session.getModelController(UomControl.class);
+
     /** Creates a new instance of UnitOfMeasureEquivalentTransferCache */
-    public UnitOfMeasureEquivalentTransferCache(UserVisit userVisit, UomControl uomControl) {
-        super(userVisit, uomControl);
+    protected UnitOfMeasureEquivalentTransferCache() {
+        super();
     }
     
-    public UnitOfMeasureEquivalentTransfer getUnitOfMeasureEquivalentTransfer(UnitOfMeasureEquivalent unitOfMeasureEquivalent) {
+    public UnitOfMeasureEquivalentTransfer getUnitOfMeasureEquivalentTransfer(UserVisit userVisit, UnitOfMeasureEquivalent unitOfMeasureEquivalent) {
         var unitOfMeasureEquivalentTransfer = get(unitOfMeasureEquivalent);
         
         if(unitOfMeasureEquivalentTransfer == null) {
-            var unitOfMeasureTypeTransferCache = uomControl.getUomTransferCaches(userVisit).getUnitOfMeasureTypeTransferCache();
-            var fromUnitOfMeasureType = unitOfMeasureTypeTransferCache.getUnitOfMeasureTypeTransfer(unitOfMeasureEquivalent.getFromUnitOfMeasureType());
-            var toUnitOfMeasureType = unitOfMeasureTypeTransferCache.getUnitOfMeasureTypeTransfer(unitOfMeasureEquivalent.getToUnitOfMeasureType());
+            var fromUnitOfMeasureType = uomControl.getUnitOfMeasureTypeTransfer(userVisit, unitOfMeasureEquivalent.getFromUnitOfMeasureType());
+            var toUnitOfMeasureType = uomControl.getUnitOfMeasureTypeTransfer(userVisit, unitOfMeasureEquivalent.getToUnitOfMeasureType());
             var toQuantity = unitOfMeasureEquivalent.getToQuantity();
             
             unitOfMeasureEquivalentTransfer = new UnitOfMeasureEquivalentTransfer(fromUnitOfMeasureType, toUnitOfMeasureType, toQuantity);
-            put(unitOfMeasureEquivalent, unitOfMeasureEquivalentTransfer);
+            put(userVisit, unitOfMeasureEquivalent, unitOfMeasureEquivalentTransfer);
         }
         
         return unitOfMeasureEquivalentTransfer;

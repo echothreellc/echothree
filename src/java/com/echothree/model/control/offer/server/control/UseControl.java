@@ -45,12 +45,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class UseControl
         extends BaseOfferControl {
 
     /** Creates a new instance of UseControl */
-    public UseControl() {
+    protected UseControl() {
         super();
     }
 
@@ -263,7 +265,7 @@ public class UseControl
         List<UseTransfer> useTransfers = new ArrayList<>(uses.size());
 
         uses.forEach((use) -> {
-            useTransfers.add(getOfferTransferCaches(userVisit).getUseTransferCache().getUseTransfer(use));
+            useTransfers.add(useTransferCache.getUseTransfer(userVisit, use));
         });
 
         return useTransfers;
@@ -274,7 +276,7 @@ public class UseControl
     }
 
     public UseTransfer getUseTransfer(UserVisit userVisit, Use use) {
-        return getOfferTransferCaches(userVisit).getUseTransferCache().getUseTransfer(use);
+        return useTransferCache.getUseTransfer(userVisit, use);
     }
 
     public UseChoicesBean getUseChoices(String defaultUseChoice, Language language, boolean allowNullChoice) {
@@ -503,7 +505,7 @@ public class UseControl
         var useDescription = getUseDescription(use, language);
 
         if(useDescription == null && !language.getIsDefault()) {
-            useDescription = getUseDescription(use, getPartyControl().getDefaultLanguage());
+            useDescription = getUseDescription(use, partyControl.getDefaultLanguage());
         }
 
         if(useDescription == null) {
@@ -516,7 +518,7 @@ public class UseControl
     }
 
     public UseDescriptionTransfer getUseDescriptionTransfer(UserVisit userVisit, UseDescription useDescription) {
-        return getOfferTransferCaches(userVisit).getUseDescriptionTransferCache().getUseDescriptionTransfer(useDescription);
+        return useDescriptionTransferCache.getUseDescriptionTransfer(userVisit, useDescription);
     }
 
     public List<UseDescriptionTransfer> getUseDescriptionTransfers(UserVisit userVisit, Use use) {
@@ -524,7 +526,7 @@ public class UseControl
         List<UseDescriptionTransfer> useDescriptionTransfers = new ArrayList<>(useDescriptions.size());
 
         useDescriptions.forEach((useDescription) -> {
-            useDescriptionTransfers.add(getOfferTransferCaches(userVisit).getUseDescriptionTransferCache().getUseDescriptionTransfer(useDescription));
+            useDescriptionTransfers.add(useDescriptionTransferCache.getUseDescriptionTransfer(userVisit, useDescription));
         });
 
         return useDescriptionTransfers;

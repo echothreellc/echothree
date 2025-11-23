@@ -20,16 +20,21 @@ import com.echothree.model.control.workrequirement.common.transfer.WorkRequireme
 import com.echothree.model.control.workrequirement.server.control.WorkRequirementControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workrequirement.server.entity.WorkRequirementTypeDescription;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class WorkRequirementTypeDescriptionTransferCache
         extends BaseWorkRequirementDescriptionTransferCache<WorkRequirementTypeDescription, WorkRequirementTypeDescriptionTransfer> {
-    
+
+    WorkRequirementControl workRequirementControl = Session.getModelController(WorkRequirementControl.class);
+
     /** Creates a new instance of WorkRequirementTypeDescriptionTransferCache */
-    public WorkRequirementTypeDescriptionTransferCache(UserVisit userVisit, WorkRequirementControl workRequirementControl) {
-        super(userVisit, workRequirementControl);
+    protected WorkRequirementTypeDescriptionTransferCache() {
+        super();
     }
     
-    public WorkRequirementTypeDescriptionTransfer getWorkRequirementTypeDescriptionTransfer(WorkRequirementTypeDescription workRequirementTypeDescription) {
+    public WorkRequirementTypeDescriptionTransfer getWorkRequirementTypeDescriptionTransfer(UserVisit userVisit, WorkRequirementTypeDescription workRequirementTypeDescription) {
         var workRequirementTypeDescriptionTransfer = get(workRequirementTypeDescription);
         
         if(workRequirementTypeDescriptionTransfer == null) {
@@ -39,7 +44,7 @@ public class WorkRequirementTypeDescriptionTransferCache
             
             workRequirementTypeDescriptionTransfer = new WorkRequirementTypeDescriptionTransfer(languageTransfer, workRequirementTypeTransfer,
                     description);
-            put(workRequirementTypeDescription, workRequirementTypeDescriptionTransfer);
+            put(userVisit, workRequirementTypeDescription, workRequirementTypeDescriptionTransfer);
         }
         
         return workRequirementTypeDescriptionTransfer;

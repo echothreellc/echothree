@@ -21,16 +21,21 @@ import com.echothree.model.control.chain.common.transfer.ChainActionTypeUseTrans
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.data.chain.server.entity.ChainActionTypeUse;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class ChainActionTypeUseTransferCache
         extends BaseChainTransferCache<ChainActionTypeUse, ChainActionTypeUseTransfer> {
-    
+
+    ChainControl chainControl = Session.getModelController(ChainControl.class);
+
     /** Creates a new instance of ChainActionTypeUseTransferCache */
-    public ChainActionTypeUseTransferCache(UserVisit userVisit, ChainControl chainControl) {
-        super(userVisit, chainControl);
+    protected ChainActionTypeUseTransferCache() {
+        super();
     }
     
-    public ChainActionTypeUseTransfer getChainActionTypeUseTransfer(ChainActionTypeUse chainActionTypeUse) {
+    public ChainActionTypeUseTransfer getChainActionTypeUseTransfer(UserVisit userVisit, ChainActionTypeUse chainActionTypeUse) {
         var chainActionTypeUseTransfer = get(chainActionTypeUse);
         
         if(chainActionTypeUseTransfer == null) {
@@ -39,7 +44,7 @@ public class ChainActionTypeUseTransferCache
             var isDefault = chainActionTypeUse.getIsDefault();
             
             chainActionTypeUseTransfer = new ChainActionTypeUseTransfer(chainKind, chainActionType, isDefault);
-            put(chainActionTypeUse, chainActionTypeUseTransfer);
+            put(userVisit, chainActionTypeUse, chainActionTypeUseTransfer);
         }
         return chainActionTypeUseTransfer;
     }

@@ -21,20 +21,22 @@ import com.echothree.model.control.core.server.control.FontControl;
 import com.echothree.model.data.core.server.entity.FontWeight;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
+import javax.enterprise.context.RequestScoped;
 
+@RequestScoped
 public class FontWeightTransferCache
         extends BaseCoreTransferCache<FontWeight, FontWeightTransfer> {
 
     FontControl fontControl = Session.getModelController(FontControl.class);
 
     /** Creates a new instance of FontWeightTransferCache */
-    public FontWeightTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    protected FontWeightTransferCache() {
+        super();
         
         setIncludeEntityInstance(true);
     }
 
-    public FontWeightTransfer getFontWeightTransfer(FontWeight fontWeight) {
+    public FontWeightTransfer getFontWeightTransfer(UserVisit userVisit, FontWeight fontWeight) {
         var fontWeightTransfer = get(fontWeight);
 
         if(fontWeightTransfer == null) {
@@ -42,10 +44,10 @@ public class FontWeightTransferCache
             var fontWeightName = fontWeightDetail.getFontWeightName();
             var isDefault = fontWeightDetail.getIsDefault();
             var sortOrder = fontWeightDetail.getSortOrder();
-            var description = fontControl.getBestFontWeightDescription(fontWeight, getLanguage());
+            var description = fontControl.getBestFontWeightDescription(fontWeight, getLanguage(userVisit));
 
             fontWeightTransfer = new FontWeightTransfer(fontWeightName, isDefault, sortOrder, description);
-            put(fontWeight, fontWeightTransfer);
+            put(userVisit, fontWeight, fontWeightTransfer);
         }
 
         return fontWeightTransfer;
