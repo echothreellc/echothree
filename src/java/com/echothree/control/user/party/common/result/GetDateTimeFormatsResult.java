@@ -22,7 +22,10 @@ import java.util.List;
 
 public interface GetDateTimeFormatsResult
         extends BaseResult {
-    
+
+    Long getDateTimeCount();
+    void setDateTimeCount(Long dateTimeCount);
+
     List<DateTimeFormatTransfer> getDateTimeFormats();
     void setDateTimeFormats(List<DateTimeFormatTransfer> dateTimeFormats);
     

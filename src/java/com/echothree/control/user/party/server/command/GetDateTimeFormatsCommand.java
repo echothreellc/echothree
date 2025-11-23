@@ -20,27 +20,27 @@ import com.echothree.control.user.party.common.form.GetDateTimeFormatsForm;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.party.server.entity.DateTimeFormat;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.model.data.party.server.factory.DateTimeFormatFactory;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
-import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 @RequestScoped
 public class GetDateTimeFormatsCommand
-        extends BaseMultipleEntitiesCommand<DateTimeFormat, GetDateTimeFormatsForm> {
+        extends BasePaginatedMultipleEntitiesCommand<DateTimeFormat, GetDateTimeFormatsForm> {
+    
+    @Inject
+    PartyControl partyControl;
     
     // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                ));
+        FORM_FIELD_DEFINITIONS = List.of();
     }
     
     /** Creates a new instance of GetDateTimeFormatsCommand */
@@ -49,18 +49,31 @@ public class GetDateTimeFormatsCommand
     }
     
     @Override
+    protected void handleForm() {
+        // No form fields.
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return partyControl.countDateTimeFormats();
+    }
+
+    @Override
     protected Collection<DateTimeFormat> getEntities() {
-        var partyControl = Session.getModelController(PartyControl.class);
-        
         return partyControl.getDateTimeFormats();
     }
     
     @Override
     protected BaseResult getResult(Collection<DateTimeFormat> entities) {
         var result = PartyResultFactory.getGetDateTimeFormatsResult();
-        var partyControl = Session.getModelController(PartyControl.class);
-        
-        result.setDateTimeFormats(partyControl.getDateTimeFormatTransfers(getUserVisit(), entities));
+
+        if(entities != null) {
+            if(session.hasLimit(DateTimeFormatFactory.class)) {
+                result.setDateTimeCount(getTotalEntities());
+            }
+
+            result.setDateTimeFormats(partyControl.getDateTimeFormatTransfers(getUserVisit(), entities));
+        }
         
         return result;
     }
