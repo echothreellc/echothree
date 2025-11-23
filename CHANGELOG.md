@@ -1,5 +1,24 @@
 # Changelog
 
+## 2025-11-23-01
+
+* Convert GetTimeZones UC to Use BasePaginatedMultipleEntitiesCommand [1161](https://gitlab.echothree.com/echothree/echothree/-/issues/1161)
+* Convert GetPartyTypes UC to Use BasePaginatedMultipleEntitiesCommand [1162](https://gitlab.echothree.com/echothree/echothree/-/issues/1162)
+* Convert GetLanguages UC to Use BasePaginatedMultipleEntitiesCommand [1166](https://gitlab.echothree.com/echothree/echothree/-/issues/1166)
+* Convert GetGeoCodeTypes UC to Use BasePaginatedMultipleEntitiesCommand [1181](https://gitlab.echothree.com/echothree/echothree/-/issues/1181)
+* Convert GetGeoCodeScopes UC to Use BasePaginatedMultipleEntitiesCommand [1183](https://gitlab.echothree.com/echothree/echothree/-/issues/1183)
+* Convert GetFilterAdjustmentTypes UC to Use BasePaginatedMultipleEntitiesCommand [1250](https://gitlab.echothree.com/echothree/echothree/-/issues/1250)
+* Convert GetFilterAdjustmentSources UC to Use BasePaginatedMultipleEntitiesCommand [1251](https://gitlab.echothree.com/echothree/echothree/-/issues/1251)
+* Migrate to Parameterless Constructor for BaseTransferCache [1637](https://gitlab.echothree.com/echothree/echothree/-/issues/1637)
+* Error Prone 2.44.0 Upgrade [1639](https://gitlab.echothree.com/echothree/echothree/-/issues/1639)
+* Correct Statement Switch to Expression Switch Warnings From Error Prone [1641](https://gitlab.echothree.com/echothree/echothree/-/issues/1641)
+* Migrate to Parameterless Constructors for Transfer Caches [1642](https://gitlab.echothree.com/echothree/echothree/-/issues/1642)
+* Convert Transfer Caches to CDI Beans [1643](https://gitlab.echothree.com/echothree/echothree/-/issues/1643)
+* Core Transfer Caches Null When Called From BaseAbstractEditCommand [1644](https://gitlab.echothree.com/echothree/echothree/-/issues/1644)
+* Transfer Caches Classes Missing @Injects [1645](https://gitlab.echothree.com/echothree/echothree/-/issues/1645)
+* Eliminate Transfer Caches Classes [1646](https://gitlab.echothree.com/echothree/echothree/-/issues/1646)
+* Convert GetDateTimeFormats UC to Use BasePaginatedMultipleEntitiesCommand [1650](https://gitlab.echothree.com/echothree/echothree/-/issues/1650)
+
 ## 2025-11-09-01
 
 * Convert GetItemDescriptionTypeUses UC to Use BasePaginatedMultipleEntitiesCommand [1207](https://gitlab.echothree.com/echothree/echothree/-/issues/1207)
