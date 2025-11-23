@@ -729,6 +729,7 @@ import com.echothree.model.data.customer.server.entity.Customer;
 import com.echothree.model.data.customer.server.entity.CustomerType;
 import com.echothree.model.data.employee.common.PartyEmployeeConstants;
 import com.echothree.model.data.employee.server.entity.PartyEmployee;
+import com.echothree.model.data.filter.common.FilterAdjustmentTypeConstants;
 import com.echothree.model.data.filter.common.FilterKindConstants;
 import com.echothree.model.data.filter.server.entity.Filter;
 import com.echothree.model.data.filter.server.entity.FilterAdjustment;
@@ -2995,29 +2996,34 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("filterAdjustmentTypes")
-    static Collection<FilterAdjustmentTypeObject> filterAdjustmentTypes(final DataFetchingEnvironment env) {
-        Collection<FilterAdjustmentType> filterAdjustmentTypes;
-        Collection<FilterAdjustmentTypeObject> filterAdjustmentTypeObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<FilterAdjustmentTypeObject> filterAdjustmentTypes(final DataFetchingEnvironment env) {
+        CountingPaginatedData<FilterAdjustmentTypeObject> data;
 
         try {
             var commandForm = FilterUtil.getHome().getGetFilterAdjustmentTypesForm();
+            var command = CDI.current().select(GetFilterAdjustmentTypesCommand.class).get();
 
-            filterAdjustmentTypes = CDI.current().select(GetFilterAdjustmentTypesCommand.class).get().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, FilterAdjustmentTypeConstants.COMPONENT_VENDOR_NAME, FilterAdjustmentTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var filterAdjustmentTypes = entities.stream()
+                            .map(FilterAdjustmentTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, filterAdjustmentTypes);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(filterAdjustmentTypes == null) {
-            filterAdjustmentTypeObjects = emptyList();
-        } else {
-            filterAdjustmentTypeObjects = new ArrayList<>(filterAdjustmentTypes.size());
-
-            filterAdjustmentTypes.stream()
-                    .map(FilterAdjustmentTypeObject::new)
-                    .forEachOrdered(filterAdjustmentTypeObjects::add);
-        }
-
-        return filterAdjustmentTypeObjects;
+        return data;
     }
 
     @GraphQLField
