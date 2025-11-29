@@ -23,7 +23,6 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.tag.server.control.TagControl;
 import com.echothree.model.data.tag.server.entity.EntityTag;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -98,7 +97,7 @@ public class CreateEntityTagCommand
                             tagControl.createEntityTag(taggedEntityInstance, tag, createdBy);
                         } else {
                             addExecutionError(ExecutionErrors.DuplicateEntityTag.name(),
-                                    EntityInstanceUtils.getInstance().getEntityRefByEntityInstance(taggedEntityInstance),
+                                    EntityInstanceUtils.getEntityRefByEntityInstance(taggedEntityInstance),
                                     tagScopeName, tagName);
                         }
                     } else {

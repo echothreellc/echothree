@@ -1285,6 +1285,9 @@ public class EventControl
     //   Utilities
     // --------------------------------------------------------------------------------
 
+    @Inject
+    EventTopic eventTopic;
+
     private void queueEntityInstanceToIndexing(final EntityInstance entityInstance) {
         if(indexControl.isEntityTypeUsedByIndexTypes(entityInstance.getEntityType())) {
             try {
@@ -1334,13 +1337,11 @@ public class EventControl
         Event event = null;
 
         if(CoreDebugFlags.LogSentEvents) {
-            var entityInstanceUtils = EntityInstanceUtils.getInstance();
-
-            getLog().info("entityInstance = " + entityInstanceUtils.getEntityRefByEntityInstance(entityInstance)
+            getLog().info("entityInstance = " + EntityInstanceUtils.getEntityRefByEntityInstance(entityInstance)
                     + ", eventType = " + eventType.getEventTypeName()
-                    + ", relatedEntityInstance = " + entityInstanceUtils.getEntityRefByEntityInstance(relatedEntityInstance)
+                    + ", relatedEntityInstance = " + EntityInstanceUtils.getEntityRefByEntityInstance(relatedEntityInstance)
                     + ", relatedEventType = " + (relatedEventType == null ? "(null)" : relatedEventType.getEventTypeName())
-                    + ", createdByEntityInstance = " + entityInstanceUtils.getEntityRefByEntityInstance(createdByEntityInstance));
+                    + ", createdByEntityInstance = " + EntityInstanceUtils.getEntityRefByEntityInstance(createdByEntityInstance));
         }
 
         final var eventTime = session.START_TIME_LONG;
@@ -1425,7 +1426,7 @@ public class EventControl
                 pruneEvents(entityInstance, eventType, maximumHistory);
             }
 
-            EventTopic.getInstance().sendEvent(event);
+            eventTopic.sendEvent(event);
 
             SentEventEventBus.eventBus.post(new SentEvent(event));
         }
