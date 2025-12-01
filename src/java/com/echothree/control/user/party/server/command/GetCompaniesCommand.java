@@ -24,21 +24,23 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.party.server.entity.PartyCompany;
 import com.echothree.model.data.party.server.factory.PartyCompanyFactory;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 @RequestScoped
 public class GetCompaniesCommand
-        extends BaseMultipleEntitiesCommand<PartyCompany, GetCompaniesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<PartyCompany, GetCompaniesForm> {
+
+    @Inject
+    PartyControl partyControl;
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -60,9 +62,17 @@ public class GetCompaniesCommand
     }
     
     @Override
-    protected Collection<PartyCompany> getEntities() {
-        var partyControl = Session.getModelController(PartyControl.class);
+    protected void handleForm() {
+        // No form fields.
+    }
 
+    @Override
+    protected Long getTotalEntities() {
+        return partyControl.countPartyCompanies();
+    }
+
+    @Override
+    protected Collection<PartyCompany> getEntities() {
         return partyControl.getCompanies();
     }
 
@@ -71,10 +81,8 @@ public class GetCompaniesCommand
         var result = PartyResultFactory.getGetCompaniesResult();
 
         if(entities != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
-
             if(session.hasLimit(PartyCompanyFactory.class)) {
-                result.setCompanyCount(partyControl.countPartyCompanies());
+                result.setCompanyCount(getTotalEntities());
             }
 
             result.setCompanies(partyControl.getCompanyTransfers(getUserVisit(), entities));
