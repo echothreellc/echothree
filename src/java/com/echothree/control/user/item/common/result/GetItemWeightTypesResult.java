@@ -22,10 +22,10 @@ import java.util.List;
 
 public interface GetItemWeightTypesResult
         extends BaseResult {
-    
-    ItemWeightTypeTransfer getParentItemWeightType();
-    void setParentItemWeightType(ItemWeightTypeTransfer parentItemWeightType);
-    
+
+    Long getItemWeightTypeCount();
+    void setItemWeightTypeCount(Long itemWeightTypeCount);
+
     List<ItemWeightTypeTransfer> getItemWeightTypes();
     void setItemWeightTypes(List<ItemWeightTypeTransfer> itemWeightTypes);
     
