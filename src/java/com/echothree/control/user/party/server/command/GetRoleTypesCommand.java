@@ -24,21 +24,23 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.party.server.entity.RoleType;
 import com.echothree.model.data.party.server.factory.RoleTypeFactory;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 @RequestScoped
 public class GetRoleTypesCommand
-        extends BaseMultipleEntitiesCommand<RoleType, GetRoleTypesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<RoleType, GetRoleTypesForm> {
+
+    @Inject
+    PartyControl partyControl;
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -56,13 +58,21 @@ public class GetRoleTypesCommand
 
     /** Creates a new instance of GetRoleTypesCommand */
     public GetRoleTypesCommand() {
-        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    }
+
+    @Override
+    protected void handleForm() {
+        // No form fields.
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return partyControl.countRoleTypes();
     }
 
     @Override
     protected Collection<RoleType> getEntities() {
-        var partyControl = Session.getModelController(PartyControl.class);
-
         return partyControl.getRoleTypes();
     }
 
@@ -71,10 +81,8 @@ public class GetRoleTypesCommand
         var result = PartyResultFactory.getGetRoleTypesResult();
 
         if(entities != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
-
             if(session.hasLimit(RoleTypeFactory.class)) {
-                result.setRoleTypeCount(partyControl.countRoleTypes());
+                result.setRoleTypeCount(getTotalEntities());
             }
 
             result.setRoleTypes(partyControl.getRoleTypeTransfers(getUserVisit(), entities));
