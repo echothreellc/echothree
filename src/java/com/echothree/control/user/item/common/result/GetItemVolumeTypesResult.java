@@ -22,9 +22,9 @@ import java.util.List;
 
 public interface GetItemVolumeTypesResult
         extends BaseResult {
-    
-    ItemVolumeTypeTransfer getParentItemVolumeType();
-    void setParentItemVolumeType(ItemVolumeTypeTransfer parentItemVolumeType);
+
+    Long getItemVolumeTypeCount();
+    void setItemVolumeTypeCount(Long itemVolumeTypeCount);
     
     List<ItemVolumeTypeTransfer> getItemVolumeTypes();
     void setItemVolumeTypes(List<ItemVolumeTypeTransfer> itemVolumeTypes);

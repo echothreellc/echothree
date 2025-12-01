@@ -9779,17 +9779,19 @@ public interface GraphQlQueries {
         CountingPaginatedData<ItemVolumeTypeObject> data;
 
         try {
-            var itemControl = Session.getModelController(ItemControl.class);
-            var totalCount = itemControl.countItemVolumeTypes();
+            var commandForm = ItemUtil.getHome().getGetItemVolumeTypesForm();
+            var command = CDI.current().select(GetItemVolumeTypesCommand.class).get();
 
-            try(var objectLimiter = new ObjectLimiter(env, ItemVolumeTypeConstants.COMPONENT_VENDOR_NAME, ItemVolumeTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var commandForm = ItemUtil.getHome().getGetItemVolumeTypesForm();
-                var entities = CDI.current().select(GetItemVolumeTypesCommand.class).get().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, ItemVolumeTypeConstants.COMPONENT_VENDOR_NAME, ItemVolumeTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
 
-                if(entities == null) {
-                    data = Connections.emptyConnection();
-                } else {
-                    var itemVolumeTypes = entities.stream().map(ItemVolumeTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+                    var itemVolumeTypes = entities.stream()
+                            .map(ItemVolumeTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, itemVolumeTypes);
                 }
