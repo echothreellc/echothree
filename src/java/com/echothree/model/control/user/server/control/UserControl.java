@@ -595,7 +595,8 @@ public class UserControl
             query = "SELECT _ALL_ " +
                     "FROM uservisitgroups, uservisitgroupdetails " +
                     "WHERE uvisgrp_activedetailid = uvisgrpdt_uservisitgroupdetailid " +
-                    "ORDER BY uvisgrpdt_uservisitgroupname";
+                    "ORDER BY uvisgrpdt_uservisitgroupname " +
+                    "_LIMIT_";
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
             query = "SELECT _ALL_ " +
                     "FROM uservisitgroups, uservisitgroupdetails " +

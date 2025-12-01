@@ -18,29 +18,24 @@ package com.echothree.control.user.user.server.command;
 
 import com.echothree.control.user.user.common.form.GetUserVisitGroupsForm;
 import com.echothree.control.user.user.common.result.UserResultFactory;
-import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.server.entity.UserVisitGroup;
 import com.echothree.model.data.user.server.factory.UserVisitGroupFactory;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class GetUserVisitGroupsCommand
-        extends BaseMultipleEntitiesCommand<UserVisitGroup, GetUserVisitGroupsForm> {
+        extends BasePaginatedMultipleEntitiesCommand<UserVisitGroup, GetUserVisitGroupsForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -62,9 +57,17 @@ public class GetUserVisitGroupsCommand
     }
 
     @Override
-    protected Collection<UserVisitGroup> getEntities() {
-        var userControl = Session.getModelController(UserControl.class);
+    protected void handleForm() {
+        // No form fields.
+    }
 
+    @Override
+    protected Long getTotalEntities() {
+        return userControl.countUserVisitGroups();
+    }
+
+    @Override
+    protected Collection<UserVisitGroup> getEntities() {
         return userControl.getUserVisitGroups();
     }
 
@@ -73,10 +76,8 @@ public class GetUserVisitGroupsCommand
         var result = UserResultFactory.getGetUserVisitGroupsResult();
 
         if(entities != null) {
-            var userControl = Session.getModelController(UserControl.class);
-
             if(session.hasLimit(UserVisitGroupFactory.class)) {
-                result.setUserVisitGroupCount(userControl.countUserVisitGroups());
+                result.setUserVisitGroupCount(getTotalEntities());
             }
 
             result.setUserVisitGroups(userControl.getUserVisitGroupTransfers(getUserVisit(), entities));

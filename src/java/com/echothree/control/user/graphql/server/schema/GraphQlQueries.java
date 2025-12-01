@@ -525,7 +525,6 @@ import com.echothree.model.control.offer.server.graphql.UseTypeObject;
 import com.echothree.model.control.order.server.graphql.OrderPriorityObject;
 import com.echothree.model.control.order.server.graphql.OrderTimeTypeObject;
 import com.echothree.model.control.order.server.graphql.OrderTypeObject;
-import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.party.server.graphql.CompanyObject;
 import com.echothree.model.control.party.server.graphql.DateTimeFormatObject;
 import com.echothree.model.control.party.server.graphql.DepartmentObject;
@@ -599,7 +598,6 @@ import com.echothree.model.control.uom.server.graphql.UnitOfMeasureKindObject;
 import com.echothree.model.control.uom.server.graphql.UnitOfMeasureKindUseObject;
 import com.echothree.model.control.uom.server.graphql.UnitOfMeasureKindUseTypeObject;
 import com.echothree.model.control.uom.server.graphql.UnitOfMeasureTypeObject;
-import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.user.server.graphql.RecoveryQuestionObject;
 import com.echothree.model.control.user.server.graphql.UserLoginObject;
 import com.echothree.model.control.user.server.graphql.UserSessionObject;
@@ -6868,17 +6866,19 @@ public interface GraphQlQueries {
         CountingPaginatedData<UserVisitGroupObject> data;
 
         try {
-            var userControl = Session.getModelController(UserControl.class);
-            var totalCount = userControl.countUserVisitGroups();
+            var commandForm = UserUtil.getHome().getGetUserVisitGroupsForm();
+            var command = CDI.current().select(GetUserVisitGroupsCommand.class).get();
 
-            try(var objectLimiter = new ObjectLimiter(env, UserVisitGroupConstants.COMPONENT_VENDOR_NAME, UserVisitGroupConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var commandForm = UserUtil.getHome().getGetUserVisitGroupsForm();
-                var entities = CDI.current().select(GetUserVisitGroupsCommand.class).get().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, UserVisitGroupConstants.COMPONENT_VENDOR_NAME, UserVisitGroupConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
 
-                if(entities == null) {
-                    data = Connections.emptyConnection();
-                } else {
-                    var userVisitGroups = entities.stream().map(UserVisitGroupObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+                    var userVisitGroups = entities.stream()
+                            .map(UserVisitGroupObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, userVisitGroups);
                 }
