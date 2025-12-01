@@ -493,7 +493,6 @@ import com.echothree.model.control.inventory.server.graphql.InventoryAdjustmentT
 import com.echothree.model.control.inventory.server.graphql.InventoryConditionObject;
 import com.echothree.model.control.inventory.server.graphql.InventoryTransactionTypeObject;
 import com.echothree.model.control.inventory.server.graphql.LotObject;
-import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.item.server.graphql.ItemAliasChecksumTypeObject;
 import com.echothree.model.control.item.server.graphql.ItemAliasObject;
 import com.echothree.model.control.item.server.graphql.ItemAliasTypeObject;
@@ -7796,17 +7795,19 @@ public interface GraphQlQueries {
         CountingPaginatedData<PartyObject> data;
 
         try {
-            var partyControl = Session.getModelController(PartyControl.class);
-            var totalCount = partyControl.countParties();
+            var commandForm = PartyUtil.getHome().getGetPartiesForm();
+            var command = CDI.current().select(GetPartiesCommand.class).get();
 
-            try(var objectLimiter = new ObjectLimiter(env, PartyConstants.COMPONENT_VENDOR_NAME, PartyConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var commandForm = PartyUtil.getHome().getGetPartiesForm();
-                var entities = CDI.current().select(GetPartiesCommand.class).get().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, PartyConstants.COMPONENT_VENDOR_NAME, PartyConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
 
-                if(entities == null) {
-                    data = Connections.emptyConnection();
-                } else {
-                    var parties = entities.stream().map(PartyObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+                    var parties = entities.stream()
+                            .map(PartyObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, parties);
                 }
