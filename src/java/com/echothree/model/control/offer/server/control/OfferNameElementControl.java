@@ -147,7 +147,8 @@ public class OfferNameElementControl
             query = "SELECT _ALL_ " +
                     "FROM offernameelements, offernameelementdetails " +
                     "WHERE ofrne_activedetailid = ofrnedt_offernameelementdetailid " +
-                    "ORDER BY ofrnedt_offset";
+                    "ORDER BY ofrnedt_offset " +
+                    "_LIMIT_";
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
             query = "SELECT _ALL_ " +
                     "FROM offernameelements, offernameelementdetails " +
