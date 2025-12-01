@@ -493,7 +493,6 @@ import com.echothree.model.control.inventory.server.graphql.InventoryAdjustmentT
 import com.echothree.model.control.inventory.server.graphql.InventoryConditionObject;
 import com.echothree.model.control.inventory.server.graphql.InventoryTransactionTypeObject;
 import com.echothree.model.control.inventory.server.graphql.LotObject;
-import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.item.server.graphql.ItemAliasChecksumTypeObject;
 import com.echothree.model.control.item.server.graphql.ItemAliasObject;
 import com.echothree.model.control.item.server.graphql.ItemAliasTypeObject;
@@ -7580,17 +7579,19 @@ public interface GraphQlQueries {
         CountingPaginatedData<RoleTypeObject> data;
 
         try {
-            var partyControl = Session.getModelController(PartyControl.class);
-            var totalCount = partyControl.countRoleTypes();
+            var commandForm = PartyUtil.getHome().getGetRoleTypesForm();
+            var command = CDI.current().select(GetRoleTypesCommand.class).get();
 
-            try(var objectLimiter = new ObjectLimiter(env, RoleTypeConstants.COMPONENT_VENDOR_NAME, RoleTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var commandForm = PartyUtil.getHome().getGetRoleTypesForm();
-                var entities = CDI.current().select(GetRoleTypesCommand.class).get().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, RoleTypeConstants.COMPONENT_VENDOR_NAME, RoleTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
 
-                if(entities == null) {
-                    data = Connections.emptyConnection();
-                } else {
-                    var roleTypes = entities.stream().map(RoleTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+                    var roleTypes = entities.stream()
+                            .map(RoleTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, roleTypes);
                 }
