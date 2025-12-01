@@ -19,26 +19,28 @@ package com.echothree.control.user.party.server.command;
 import com.echothree.control.user.party.common.form.GetPartiesForm;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.factory.PartyFactory;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 @RequestScoped
 public class GetPartiesCommand
-        extends BaseMultipleEntitiesCommand<Party, GetPartiesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<Party, GetPartiesForm> {
+
+    @Inject
+    PartyControl partyControl;
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -60,9 +62,17 @@ public class GetPartiesCommand
     }
 
     @Override
-    protected Collection<Party> getEntities() {
-        var partyControl = Session.getModelController(PartyControl.class);
+    protected void handleForm() {
+        // No form fields.
+    }
 
+    @Override
+    protected Long getTotalEntities() {
+        return partyControl.countParties();
+    }
+
+    @Override
+    protected Collection<Party> getEntities() {
         return partyControl.getParties();
     }
 
@@ -71,10 +81,8 @@ public class GetPartiesCommand
         var result = PartyResultFactory.getGetPartiesResult();
 
         if(entities != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
-
             if(session.hasLimit(PartyFactory.class)) {
-                result.setPartyCount(partyControl.countParties());
+                result.setPartyCount(getTotalEntities());
             }
 
             result.setParties(partyControl.getPartyTransfers(getUserVisit(), entities));
