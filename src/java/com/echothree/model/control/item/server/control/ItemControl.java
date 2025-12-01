@@ -9549,7 +9549,8 @@ public class ItemControl
             query = "SELECT _ALL_ " +
                     "FROM itemvolumetypes, itemvolumetypedetails " +
                     "WHERE ivolt_activedetailid = ivoltdt_itemvolumetypedetailid " +
-                    "ORDER BY ivoltdt_sortorder, ivoltdt_itemvolumetypename";
+                    "ORDER BY ivoltdt_sortorder, ivoltdt_itemvolumetypename " +
+                    "_LIMIT_";
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
             query = "SELECT _ALL_ " +
                     "FROM itemvolumetypes, itemvolumetypedetails " +
