@@ -525,7 +525,6 @@ import com.echothree.model.control.offer.server.graphql.UseTypeObject;
 import com.echothree.model.control.order.server.graphql.OrderPriorityObject;
 import com.echothree.model.control.order.server.graphql.OrderTimeTypeObject;
 import com.echothree.model.control.order.server.graphql.OrderTypeObject;
-import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.party.server.graphql.CompanyObject;
 import com.echothree.model.control.party.server.graphql.DateTimeFormatObject;
 import com.echothree.model.control.party.server.graphql.DepartmentObject;
@@ -796,6 +795,7 @@ import com.echothree.model.data.item.server.entity.ItemWeightType;
 import com.echothree.model.data.item.server.entity.RelatedItem;
 import com.echothree.model.data.item.server.entity.RelatedItemType;
 import com.echothree.model.data.offer.common.OfferConstants;
+import com.echothree.model.data.offer.common.OfferNameElementConstants;
 import com.echothree.model.data.offer.common.UseConstants;
 import com.echothree.model.data.offer.common.UseTypeConstants;
 import com.echothree.model.data.offer.server.entity.Offer;
@@ -3554,29 +3554,34 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("offerNameElements")
-    static Collection<OfferNameElementObject> offerNameElements(final DataFetchingEnvironment env) {
-        Collection<OfferNameElement> offerNameElements;
-        Collection<OfferNameElementObject> offerNameElementObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<OfferNameElementObject> offerNameElements(final DataFetchingEnvironment env) {
+        CountingPaginatedData<OfferNameElementObject> data;
 
         try {
             var commandForm = OfferUtil.getHome().getGetOfferNameElementsForm();
+            var command = CDI.current().select(GetOfferNameElementsCommand.class).get();
 
-            offerNameElements = CDI.current().select(GetOfferNameElementsCommand.class).get().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, OfferNameElementConstants.COMPONENT_VENDOR_NAME, OfferNameElementConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var offerNameElementObjects = entities.stream()
+                            .map(OfferNameElementObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, offerNameElementObjects);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(offerNameElements == null) {
-            offerNameElementObjects = emptyList();
-        } else {
-            offerNameElementObjects = new ArrayList<>(offerNameElements.size());
-
-            offerNameElements.stream()
-                    .map(OfferNameElementObject::new)
-                    .forEachOrdered(offerNameElementObjects::add);
-        }
-
-        return offerNameElementObjects;
+        return data;
     }
 
     @GraphQLField
