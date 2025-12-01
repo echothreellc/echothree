@@ -10263,7 +10263,8 @@ public class ItemControl
             query = "SELECT _ALL_ " +
                     "FROM itemweighttypes, itemweighttypedetails " +
                     "WHERE iwghtt_activedetailid = iwghttdt_itemweighttypedetailid " +
-                    "ORDER BY iwghttdt_sortorder, iwghttdt_itemweighttypename";
+                    "ORDER BY iwghttdt_sortorder, iwghttdt_itemweighttypename " +
+                    "_LIMIT_";
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
             query = "SELECT _ALL_ " +
                     "FROM itemweighttypes, itemweighttypedetails " +

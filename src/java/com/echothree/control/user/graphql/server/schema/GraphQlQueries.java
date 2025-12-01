@@ -478,7 +478,6 @@ import com.echothree.model.control.filter.server.graphql.FilterKindObject;
 import com.echothree.model.control.filter.server.graphql.FilterObject;
 import com.echothree.model.control.filter.server.graphql.FilterStepObject;
 import com.echothree.model.control.filter.server.graphql.FilterTypeObject;
-import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.geo.server.graphql.GeoCodeObject;
 import com.echothree.model.control.geo.server.graphql.GeoCodeScopeObject;
 import com.echothree.model.control.geo.server.graphql.GeoCodeTypeObject;
@@ -9727,17 +9726,19 @@ public interface GraphQlQueries {
         CountingPaginatedData<ItemWeightTypeObject> data;
 
         try {
-            var itemControl = Session.getModelController(ItemControl.class);
-            var totalCount = itemControl.countItemWeightTypes();
+            var commandForm = ItemUtil.getHome().getGetItemWeightTypesForm();
+            var command = CDI.current().select(GetItemWeightTypesCommand.class).get();
 
-            try(var objectLimiter = new ObjectLimiter(env, ItemWeightTypeConstants.COMPONENT_VENDOR_NAME, ItemWeightTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var commandForm = ItemUtil.getHome().getGetItemWeightTypesForm();
-                var entities = CDI.current().select(GetItemWeightTypesCommand.class).get().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, ItemWeightTypeConstants.COMPONENT_VENDOR_NAME, ItemWeightTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
 
-                if(entities == null) {
-                    data = Connections.emptyConnection();
-                } else {
-                    var itemWeightTypes = entities.stream().map(ItemWeightTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+                    var itemWeightTypes = entities.stream()
+                            .map(ItemWeightTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, itemWeightTypes);
                 }
