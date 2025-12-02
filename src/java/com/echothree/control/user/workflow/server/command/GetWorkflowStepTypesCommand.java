@@ -34,9 +34,9 @@ import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.Dependent;
 
-@RequestScoped
+@Dependent
 public class GetWorkflowStepTypesCommand
         extends BasePaginatedMultipleEntitiesCommand<WorkflowStepType, GetWorkflowStepTypesForm> {
 

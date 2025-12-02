@@ -38,9 +38,9 @@ import graphql.annotations.strategies.EnhancedExecutionStrategy;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.Dependent;
 
-@RequestScoped
+@Dependent
 public class ExecuteGraphQlCommand
         extends BaseSimpleCommand<ExecuteGraphQlForm> {
     

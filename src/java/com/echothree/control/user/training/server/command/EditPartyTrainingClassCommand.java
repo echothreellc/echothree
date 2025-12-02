@@ -42,9 +42,9 @@ import com.echothree.util.server.string.DateUtils;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.Dependent;
 
-@RequestScoped
+@Dependent
 public class EditPartyTrainingClassCommand
         extends BaseAbstractEditCommand<PartyTrainingClassSpec, PartyTrainingClassEdit, EditPartyTrainingClassResult, PartyTrainingClass, PartyTrainingClass> {
     

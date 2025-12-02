@@ -44,9 +44,9 @@ import com.echothree.util.server.string.PercentUtils;
 import com.echothree.util.server.validation.Validator;
 import com.google.common.base.Splitter;
 import java.util.List;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.Dependent;
 
-@RequestScoped
+@Dependent
 public class EditFilterAdjustmentPercentCommand
         extends BaseEditCommand<FilterAdjustmentPercentSpec, FilterAdjustmentPercentEdit> {
 

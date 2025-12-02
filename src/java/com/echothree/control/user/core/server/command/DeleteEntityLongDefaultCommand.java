@@ -27,9 +27,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import java.util.List;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.Dependent;
 
-@RequestScoped
+@Dependent
 public class DeleteEntityLongDefaultCommand
         extends BaseSimpleCommand<DeleteEntityLongDefaultForm> {
 

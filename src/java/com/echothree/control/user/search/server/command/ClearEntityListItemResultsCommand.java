@@ -20,9 +20,9 @@ import com.echothree.control.user.search.common.form.ClearEntityListItemResultsF
 import com.echothree.model.control.search.common.SearchKinds;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.Dependent;
 
-@RequestScoped
+@Dependent
 public class ClearEntityListItemResultsCommand
         extends BaseClearResultsCommand<ClearEntityListItemResultsForm> {
 

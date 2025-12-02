@@ -55,9 +55,9 @@ import java.util.List;
 import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.Dependent;
 
-@RequestScoped
+@Dependent
 public class CreateCommunicationEventCommand
         extends BaseSimpleCommand<CreateCommunicationEventForm> {
     

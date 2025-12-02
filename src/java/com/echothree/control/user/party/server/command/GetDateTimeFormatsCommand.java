@@ -26,10 +26,10 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import java.util.Collection;
 import java.util.List;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
-@RequestScoped
+@Dependent
 public class GetDateTimeFormatsCommand
         extends BasePaginatedMultipleEntitiesCommand<DateTimeFormat, GetDateTimeFormatsForm> {
     

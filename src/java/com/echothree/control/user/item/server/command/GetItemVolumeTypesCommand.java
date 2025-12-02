@@ -32,10 +32,10 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import java.util.Collection;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
-@RequestScoped
+@Dependent
 public class GetItemVolumeTypesCommand
         extends BasePaginatedMultipleEntitiesCommand<ItemVolumeType, GetItemVolumeTypesForm> {
 

@@ -30,9 +30,9 @@ import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.EncryptionUtils;
 import java.util.Arrays;
 import java.util.Collections;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.Dependent;
 
-@RequestScoped
+@Dependent
 public class ChangeBaseKeysCommand
         extends BaseSimpleCommand<ChangeBaseKeysForm> {
     

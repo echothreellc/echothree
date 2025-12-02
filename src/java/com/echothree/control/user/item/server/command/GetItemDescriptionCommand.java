@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.ParameterUtils;
 import java.util.List;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.Dependent;
 
-@RequestScoped
+@Dependent
 public class GetItemDescriptionCommand
         extends BaseSingleEntityCommand<ItemDescription, GetItemDescriptionForm> {
 

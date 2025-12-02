@@ -24,9 +24,9 @@ import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.search.common.SearchKinds;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.Dependent;
 
-@RequestScoped
+@Dependent
 public class GetOfferResultsFacetsCommand
         extends BaseGetResultsFacetsCommand<GetOfferResultsFacetsForm, GetOfferResultsFacetsResult> {
 
