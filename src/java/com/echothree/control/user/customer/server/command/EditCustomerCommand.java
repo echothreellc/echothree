@@ -52,9 +52,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import org.apache.commons.codec.language.Soundex;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.Dependent;
 
-@RequestScoped
+@Dependent
 public class EditCustomerCommand
         extends BaseAbstractEditCommand<CustomerSpec, CustomerEdit, EditCustomerResult, Party, Party> {
     

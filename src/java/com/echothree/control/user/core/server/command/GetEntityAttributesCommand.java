@@ -38,9 +38,9 @@ import com.google.common.base.Splitter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.Dependent;
 
-@RequestScoped
+@Dependent
 public class GetEntityAttributesCommand
         extends BasePaginatedMultipleEntitiesCommand<EntityAttribute, GetEntityAttributesForm> {
 

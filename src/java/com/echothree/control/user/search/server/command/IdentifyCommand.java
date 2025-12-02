@@ -62,9 +62,9 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.Dependent;
 
-@RequestScoped
+@Dependent
 public class IdentifyCommand
         extends BaseSimpleCommand<IdentifyForm> {
     

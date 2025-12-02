@@ -68,9 +68,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.Dependent;
 
-@RequestScoped
+@Dependent
 public class UpdateIndexesCommand
         extends BaseSimpleCommand<UpdateIndexesForm> {
     

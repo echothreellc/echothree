@@ -18,9 +18,9 @@ package com.echothree.control.user.authentication.server.command;
 
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.Dependent;
 
-@RequestScoped
+@Dependent
 public class IdleCommand
         extends BaseSimpleCommand {
     

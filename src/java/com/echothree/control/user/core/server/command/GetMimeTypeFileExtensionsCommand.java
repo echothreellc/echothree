@@ -27,9 +27,9 @@ import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.Dependent;
 
-@RequestScoped
+@Dependent
 public class GetMimeTypeFileExtensionsCommand
         extends BaseMultipleEntitiesCommand<MimeTypeFileExtension, GetMimeTypeFileExtensionsForm> {
     
