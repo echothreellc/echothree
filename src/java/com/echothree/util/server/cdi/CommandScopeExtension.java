@@ -15,7 +15,7 @@ public class CommandScopeExtension implements Extension {
         abd.addContext(commandScopeContext);
     }
 
-    public static CommandScopeContext getMyCustomScopeContext() {
+    public static CommandScopeContext getCommandScopeContext() {
         return commandScopeContext;
     }
 

@@ -49,12 +49,12 @@ public class CommandScopeContext implements Context {
         return true; // For demonstration, assume it's always active
     }
 
-    public void pushContext() {
-        System.err.println("CommandScopeContext.pushContext()");
+    public void activate() {
+        System.err.println("CommandScopeContext.activate()");
     }
 
-    public void popContext() {
-        System.err.println("CommandScopeContext.popContext()");
+    public void deactivate() {
+        System.err.println("CommandScopeContext.deactivate()");
     }
 
 //    // You might also need methods to activate/deactivate the context,
