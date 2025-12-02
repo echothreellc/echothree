@@ -796,6 +796,7 @@ import com.echothree.model.data.item.server.entity.RelatedItemType;
 import com.echothree.model.data.offer.common.OfferConstants;
 import com.echothree.model.data.offer.common.OfferNameElementConstants;
 import com.echothree.model.data.offer.common.UseConstants;
+import com.echothree.model.data.offer.common.UseNameElementConstants;
 import com.echothree.model.data.offer.common.UseTypeConstants;
 import com.echothree.model.data.offer.server.entity.Offer;
 import com.echothree.model.data.offer.server.entity.OfferItem;
@@ -3606,29 +3607,34 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("useNameElements")
-    static Collection<UseNameElementObject> useNameElements(final DataFetchingEnvironment env) {
-        Collection<UseNameElement> useNameElements;
-        Collection<UseNameElementObject> useNameElementObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<UseNameElementObject> useNameElements(final DataFetchingEnvironment env) {
+        CountingPaginatedData<UseNameElementObject> data;
 
         try {
             var commandForm = OfferUtil.getHome().getGetUseNameElementsForm();
+            var command = CDI.current().select(GetUseNameElementsCommand.class).get();
 
-            useNameElements = CDI.current().select(GetUseNameElementsCommand.class).get().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, UseNameElementConstants.COMPONENT_VENDOR_NAME, UseNameElementConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var useNameElementObjects = entities.stream()
+                            .map(UseNameElementObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, useNameElementObjects);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(useNameElements == null) {
-            useNameElementObjects = emptyList();
-        } else {
-            useNameElementObjects = new ArrayList<>(useNameElements.size());
-
-            useNameElements.stream()
-                    .map(UseNameElementObject::new)
-                    .forEachOrdered(useNameElementObjects::add);
-        }
-
-        return useNameElementObjects;
+        return data;
     }
 
     @GraphQLField

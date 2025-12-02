@@ -147,7 +147,8 @@ public class UseNameElementControl
             query = "SELECT _ALL_ " +
                     "FROM usenameelements, usenameelementdetails " +
                     "WHERE usene_activedetailid = usenedt_usenameelementdetailid " +
-                    "ORDER BY usenedt_offset";
+                    "ORDER BY usenedt_offset " +
+                    "_LIMIT_";
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
             query = "SELECT _ALL_ " +
                     "FROM usenameelements, usenameelementdetails " +
