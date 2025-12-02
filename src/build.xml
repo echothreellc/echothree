@@ -272,8 +272,9 @@
             </fileset>
             
             <metainf dir="${dir.home}/build/metadata/server/META-INF">
-                <include name="*.xml" />
-                <include name="*.properties" />
+                <include name="**/*.xml" />
+                <include name="**/*.properties" />
+                <include name="**/*.Extension" />
             </metainf>
         </jar>
     </target>
