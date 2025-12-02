@@ -34,9 +34,9 @@ import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.Dependent;
 
-@RequestScoped
+@Dependent
 public class EditMessageTypeDescriptionCommand
         extends BaseEditCommand<MessageTypeDescriptionSpec, MessageTypeDescriptionEdit> {
     

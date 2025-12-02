@@ -37,9 +37,9 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.persistence.PersistenceUtils;
 import java.util.List;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.Dependent;
 
-@RequestScoped
+@Dependent
 public class EditEntityEntityAttributeCommand
         extends BaseEditCommand<EntityEntityAttributeSpec, EntityEntityAttributeEdit> {
 

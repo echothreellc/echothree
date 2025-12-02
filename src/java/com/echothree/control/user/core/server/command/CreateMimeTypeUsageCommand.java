@@ -30,9 +30,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import javax.imageio.ImageIO;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.Dependent;
 
-@RequestScoped
+@Dependent
 public class CreateMimeTypeUsageCommand
         extends BaseSimpleCommand<CreateMimeTypeUsageForm> {
     

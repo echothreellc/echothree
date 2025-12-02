@@ -36,9 +36,9 @@ import com.echothree.util.server.string.EntityInstanceUtils;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.Dependent;
 
-@RequestScoped
+@Dependent
 public class CreateEntityTagCommand
         extends BaseSimpleCommand<CreateEntityTagForm> {
     

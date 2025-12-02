@@ -35,9 +35,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.Dependent;
 
-@RequestScoped
+@Dependent
 public class CreateGeoCodeAliasCommand
         extends BaseSimpleCommand<CreateGeoCodeAliasForm> {
     

@@ -36,9 +36,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import java.util.List;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.Dependent;
 
-@RequestScoped
+@Dependent
 public class EditEntityStringDefaultCommand
         extends BaseAbstractEditCommand<EntityStringDefaultSpec, EntityStringDefaultEdit, EditEntityStringDefaultResult, EntityStringDefault, EntityAttribute> {
     

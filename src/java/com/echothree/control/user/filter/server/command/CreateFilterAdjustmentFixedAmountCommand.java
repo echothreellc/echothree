@@ -39,9 +39,9 @@ import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.Validator;
 import com.google.common.base.Splitter;
 import java.util.List;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.Dependent;
 
-@RequestScoped
+@Dependent
 public class CreateFilterAdjustmentFixedAmountCommand
         extends BaseSimpleCommand<CreateFilterAdjustmentFixedAmountForm> {
 
