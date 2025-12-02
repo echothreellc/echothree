@@ -25,7 +25,6 @@ import com.echothree.model.control.core.server.control.ComponentControl;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.control.EntityTypeControl;
 import com.echothree.model.control.core.server.control.EventControl;
-import com.echothree.model.control.license.server.logic.LicenseCheckLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.server.logic.SecurityRoleLogic;
 import com.echothree.model.control.user.server.control.UserControl;
@@ -54,6 +53,7 @@ import com.echothree.util.common.message.Messages;
 import com.echothree.util.common.message.SecurityMessages;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.common.transfer.BaseTransfer;
+import com.echothree.util.server.cdi.CommandScopeExtension;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.message.ExecutionWarningAccumulator;
 import com.echothree.util.server.message.MessageUtils;
@@ -124,6 +124,7 @@ public abstract class BaseCommand
         if(ControlDebugFlags.LogBaseCommands) {
             getLog().info("BaseCommand()");
         }
+        getLog().info("BaseCommand()");
 
         this.commandSecurityDefinition = commandSecurityDefinition;
     }
@@ -511,6 +512,7 @@ public abstract class BaseCommand
         this.userVisitPK = userVisitPK;
 
         setupSession();
+        CommandScopeExtension.getCommandScopeContext().activate();
 
         SecurityResult securityResult;
         ValidationResult validationResult = null;
@@ -609,6 +611,7 @@ public abstract class BaseCommand
             }
         } finally {
             teardownSession();
+            CommandScopeExtension.getCommandScopeContext().deactivate();
         }
 
         // The Session for this Thread must NOT be utilized by anything after teardownSession() has been called.
