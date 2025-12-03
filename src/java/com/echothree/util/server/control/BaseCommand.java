@@ -512,7 +512,11 @@ public abstract class BaseCommand
         this.userVisitPK = userVisitPK;
 
         setupSession();
-        CommandScopeExtension.getCommandScopeContext().activate();
+        if(CommandScopeExtension.getCommandScopeContext().isActive()) {
+            CommandScopeExtension.getCommandScopeContext().push();
+        } else {
+            CommandScopeExtension.getCommandScopeContext().activate();
+        }
 
         SecurityResult securityResult;
         ValidationResult validationResult = null;
@@ -611,7 +615,7 @@ public abstract class BaseCommand
             }
         } finally {
             teardownSession();
-            CommandScopeExtension.getCommandScopeContext().deactivate();
+            CommandScopeExtension.getCommandScopeContext().pop();
         }
 
         // The Session for this Thread must NOT be utilized by anything after teardownSession() has been called.
