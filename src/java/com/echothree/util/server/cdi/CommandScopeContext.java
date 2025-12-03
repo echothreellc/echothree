@@ -1,15 +1,23 @@
 package com.echothree.util.server.cdi;
 
 import java.lang.annotation.Annotation;
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.Map;
+import javax.enterprise.context.ContextNotActiveException;
 import javax.enterprise.context.spi.Context;
 import javax.enterprise.context.spi.Contextual;
 import javax.enterprise.context.spi.CreationalContext;
 
 public class CommandScopeContext implements Context {
 
-    private final Map<Contextual<?>, Object> beanInstances = new HashMap<>();
+    /**
+     * Per-thread stack of context layers.
+     * Each layer holds the contextual instances for that "sub-scope".
+     */
+    private final ThreadLocal<Deque<ContextLayer>> layers =
+            ThreadLocal.withInitial(ArrayDeque::new);
 
     @Override
     public Class<? extends Annotation> getScope() {
@@ -18,54 +26,188 @@ public class CommandScopeContext implements Context {
     }
 
     @Override
-    public <T> T get(Contextual<T> contextual, CreationalContext<T> creationalContext) {
-        System.err.println("get(Contextual<T> contextual, CreationalContext<T> creationalContext)");
+    public boolean isActive() {
+        var isActive = !layers.get().isEmpty();
+
+        System.err.println("CommandScopeContext.isActive() = " + isActive);
+
+        return isActive;
+    }
+
+    // --------------------------------------------------------------------------------
+    //   Public Lifecycle API
+    // --------------------------------------------------------------------------------
+
+    /**
+     * Activate the root scope for the current thread if not already active.
+     * Typically called at the start of a request.
+     */
+    public void activate() {
+        System.err.println("CommandScopeContext.activate()");
+
+        Deque<ContextLayer> deque = layers.get();
+        if (deque.isEmpty()) {
+            deque.push(new ContextLayer());
+        }
+    }
+
+    /**
+     * Deactivate the scope for the current thread, destroying all layers.
+     * Typically called at the end of a request.
+     */
+    public void deactivate() {
+        System.err.println("CommandScopeContext.deactivate()");
+
+        Deque<ContextLayer> deque = layers.get();
+        while (!deque.isEmpty()) {
+            destroyLayer(deque.pop());
+        }
+
+        System.err.println("layers empty, removing ThreadLocal");
+        layers.remove();
+    }
+
+    /**
+     * Push a new nested layer on top of the current one.
+     * Returns an AutoCloseable handle so you can use try-with-resources.
+     */
+    public ScopeHandle push() {
+        System.err.println("CommandScopeContext.push()");
+
         if (!isActive()) {
+            // You can choose to implicitly activate() here instead
+            throw new ContextNotActiveException("@StackedRequestScoped context is not active; call activate() first");
+        }
+        layers.get().push(new ContextLayer());
+        return new ScopeHandle();
+    }
+
+    /**
+     * Pop the current layer, destroying its beans.
+     */
+    public void pop() {
+        System.err.println("CommandScopeContext.pop()");
+
+        Deque<ContextLayer> deque = layers.get();
+        if (deque.isEmpty()) {
+            throw new ContextNotActiveException("No active @StackedRequestScoped layer to pop");
+        }
+
+        ContextLayer layer = deque.pop();
+        destroyLayer(layer);
+
+        if (deque.isEmpty()) {
+            System.err.println("layers empty, removing ThreadLocal");
+
+            // Optionally clean up thread-local completely
+            layers.remove();
+        } else {
+            System.err.println(deque.size() + " layers remaining");
+        }
+    }
+
+    // --------------------------------------------------------------------------------
+    //   CDI Context Methods
+    // --------------------------------------------------------------------------------
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T> T get(Contextual<T> contextual, CreationalContext<T> creationalContext) {
+        System.err.println("CommandScopeContext.get(Contextual<T> contextual, CreationalContext<T> creationalContext)");
+
+        ContextLayer layer = currentLayer();
+        InstanceHandle<T> handle = (InstanceHandle<T>) layer.instances.get(contextual);
+        if (handle != null) {
+            return handle.instance;
+        }
+
+        if (creationalContext == null) {
             return null;
         }
-        // Retrieve or create the bean instance
-        T instance = (T) beanInstances.get(contextual);
-        if (instance == null) {
-            instance = contextual.create(creationalContext);
-            beanInstances.put(contextual, instance);
-        }
+
+        T instance = contextual.create(creationalContext);
+        handle = new InstanceHandle<>(instance, creationalContext);
+        layer.instances.put(contextual, handle);
         return instance;
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public <T> T get(Contextual<T> contextual) {
         System.err.println("CommandScopeContext.get(Contextual<T> contextual)");
-        if (!isActive()) {
-            return null;
+
+        ContextLayer layer = currentLayer();
+        InstanceHandle<T> handle = (InstanceHandle<T>) layer.instances.get(contextual);
+        return handle != null ? handle.instance : null;
+    }
+
+    // --------------------------------------------------------------------------------
+    //   Internal Helpers
+    // --------------------------------------------------------------------------------
+
+    private ContextLayer currentLayer() {
+        Deque<ContextLayer> deque = layers.get();
+
+        if (deque.isEmpty()) {
+            throw new ContextNotActiveException("@Command context is not active");
         }
-        return (T) beanInstances.get(contextual);
+
+        return deque.peek();
     }
 
-    @Override
-    public boolean isActive() {
-        System.err.println("CommandScopeContext.isActive()");
-        // Define when your custom scope is active
-        // This could be based on a thread-local, request attribute, etc.
-        return true; // For demonstration, assume it's always active
+    private void destroyLayer(ContextLayer layer) {
+        for (Map.Entry<Contextual<?>, InstanceHandle<?>> entry : layer.instances.entrySet()) {
+            Contextual<?> contextual = entry.getKey();
+            InstanceHandle<?> handle = entry.getValue();
+
+            try {
+                // Generics on Contextual#destroy require matching <T> for both the instance and the
+                // CreationalContext<T>. Since we store them in wildcarded holders, cast safely here.
+                @SuppressWarnings({"rawtypes", "unchecked"})
+                Contextual rawContextual = contextual;
+                @SuppressWarnings("unchecked")
+                CreationalContext<Object> cc = (CreationalContext<Object>) handle.creationalContext;
+
+                System.err.println("destroying " + handle.instance.getClass().getName());
+                rawContextual.destroy(handle.instance, cc);
+            } catch (Exception e) {
+                // Log and continue; don't stop destroying other beans
+                e.printStackTrace();
+            }
+        }
+        layer.instances.clear();
     }
 
-    public void activate() {
-        System.err.println("CommandScopeContext.activate()");
+    private static final class ContextLayer {
+        final Map<Contextual<?>, InstanceHandle<?>> instances = new HashMap<>();
     }
 
-    public void deactivate() {
-        System.err.println("CommandScopeContext.deactivate()");
+    private static final class InstanceHandle<T> {
+        final T instance;
+        final CreationalContext<T> creationalContext;
+
+        InstanceHandle(T instance, CreationalContext<T> creationalContext) {
+            this.instance = instance;
+            this.creationalContext = creationalContext;
+        }
     }
 
-//    // You might also need methods to activate/deactivate the context,
-//    // and to destroy beans when the context ends.
-//    public void activate() {
-//        // Logic to activate the context
-//    }
-//
-//    public void deactivate() {
-//        // Logic to deactivate the context and destroy beans
-//        beanInstances.forEach((contextual, instance) -> contextual.destroy(instance));
-//        beanInstances.clear();
-//    }
+    /**
+     * Handle used for try-with-resources push/pop.
+     */
+    public final class ScopeHandle implements AutoCloseable {
+        private boolean closed;
+
+        private ScopeHandle() {
+        }
+
+        @Override
+        public void close() {
+            if (!closed) {
+                pop();
+                closed = true;
+            }
+        }
+    }
+
 }
