@@ -84,10 +84,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.enterprise.context.RequestScoped;
+import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
-@RequestScoped
+@CommandScope
 public class EventControl
         extends BaseCoreControl {
 
@@ -1287,6 +1287,22 @@ public class EventControl
 
     @Inject
     EventTopic eventTopic;
+
+//    Caused by: java.lang.NullPointerException: Cannot invoke "java.sql.Connection.prepareStatement(String)" because "this.connection" is null
+//    at deployment.echothree.ear.echothree-server.jar//com.echothree.util.server.persistence.Session.prepareStatement(Session.java:255)
+//    at deployment.echothree.ear.echothree-server.jar//com.echothree.util.server.persistence.Session.prepareStatement(Session.java:282)
+//    at deployment.echothree.ear.echothree-server.jar//com.echothree.util.server.persistence.Session.queryForLong(Session.java:359)
+//    at deployment.echothree.ear.echothree-server.jar//com.echothree.model.control.index.server.control.IndexControl.countIndexTypesByEntityType(IndexControl.java:143)
+//    at deployment.echothree.ear.echothree-server.jar//com.echothree.model.control.index.server.control.IndexControl.isEntityTypeUsedByIndexTypes(IndexControl.java:151)
+//    at deployment.echothree.ear.echothree-server.jar//com.echothree.model.control.index.server.control.IndexControl$Proxy$_$$_WeldClientProxy.isEntityTypeUsedByIndexTypes(Unknown Source)
+//    at deployment.echothree.ear.echothree-server.jar//com.echothree.model.control.core.server.control.EventControl.queueEntityInstanceToIndexing(EventControl.java:1292)
+//    at deployment.echothree.ear.echothree-server.jar//com.echothree.model.control.core.server.control.EventControl.sendEvent(EventControl.java:1439)
+//    at deployment.echothree.ear.echothree-server.jar//com.echothree.model.control.core.server.control.EventControl.sendEvent(EventControl.java:1460)
+//    at deployment.echothree.ear.echothree-server.jar//com.echothree.model.control.core.server.control.EventControl$Proxy$_$$_WeldClientProxy.sendEvent(Unknown Source)
+//    at deployment.echothree.ear.echothree-server.jar//com.echothree.util.server.control.BaseModelControl.sendEvent(BaseModelControl.java:89)
+//    at deployment.echothree.ear.echothree-server.jar//com.echothree.model.control.offer.server.control.OfferNameElementControl.updateOfferNameElementFromValue(OfferNameElementControl.java:211)
+
+// https://stackoverflow.com/questions/26514456/removing-specific-cdi-managed-beans-from-session
 
     private void queueEntityInstanceToIndexing(final EntityInstance entityInstance) {
         if(indexControl.isEntityTypeUsedByIndexTypes(entityInstance.getEntityType())) {
