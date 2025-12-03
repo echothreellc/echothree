@@ -9,8 +9,12 @@ import javax.enterprise.context.ContextNotActiveException;
 import javax.enterprise.context.spi.Context;
 import javax.enterprise.context.spi.Contextual;
 import javax.enterprise.context.spi.CreationalContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class CommandScopeContext implements Context {
+
+    private static final Logger log = LoggerFactory.getLogger(CommandScopeContext.class);
 
     /**
      * Per-thread stack of context layers.
@@ -21,7 +25,7 @@ public class CommandScopeContext implements Context {
 
     @Override
     public Class<? extends Annotation> getScope() {
-        System.err.println("CommandScopeContext.getScope()");
+        log.info("CommandScopeContext.getScope()");
         return CommandScope.class;
     }
 
@@ -29,7 +33,7 @@ public class CommandScopeContext implements Context {
     public boolean isActive() {
         var isActive = !layers.get().isEmpty();
 
-        System.err.println("CommandScopeContext.isActive() = " + isActive);
+        log.info("CommandScopeContext.isActive() = {}", isActive);
 
         return isActive;
     }
@@ -43,7 +47,7 @@ public class CommandScopeContext implements Context {
      * Typically called at the start of a request.
      */
     public void activate() {
-        System.err.println("CommandScopeContext.activate()");
+        log.info("CommandScopeContext.activate()");
 
         Deque<ContextLayer> deque = layers.get();
         if (deque.isEmpty()) {
@@ -56,14 +60,14 @@ public class CommandScopeContext implements Context {
      * Typically called at the end of a request.
      */
     public void deactivate() {
-        System.err.println("CommandScopeContext.deactivate()");
+        log.info("CommandScopeContext.deactivate()");
 
         Deque<ContextLayer> deque = layers.get();
         while (!deque.isEmpty()) {
             destroyLayer(deque.pop());
         }
 
-        System.err.println("layers empty, removing ThreadLocal");
+        log.info("layers empty, removing ThreadLocal");
         layers.remove();
     }
 
@@ -72,7 +76,7 @@ public class CommandScopeContext implements Context {
      * Returns an AutoCloseable handle so you can use try-with-resources.
      */
     public ScopeHandle push() {
-        System.err.println("CommandScopeContext.push()");
+        log.info("CommandScopeContext.push()");
 
         if (!isActive()) {
             // You can choose to implicitly activate() here instead
@@ -86,7 +90,7 @@ public class CommandScopeContext implements Context {
      * Pop the current layer, destroying its beans.
      */
     public void pop() {
-        System.err.println("CommandScopeContext.pop()");
+        log.info("CommandScopeContext.pop()");
 
         Deque<ContextLayer> deque = layers.get();
         if (deque.isEmpty()) {
@@ -97,12 +101,12 @@ public class CommandScopeContext implements Context {
         destroyLayer(layer);
 
         if (deque.isEmpty()) {
-            System.err.println("layers empty, removing ThreadLocal");
+            log.info("layers empty, removing ThreadLocal");
 
             // Optionally clean up thread-local completely
             layers.remove();
         } else {
-            System.err.println(deque.size() + " layers remaining");
+            log.info("{} layers remaining", deque.size());
         }
     }
 
@@ -113,7 +117,7 @@ public class CommandScopeContext implements Context {
     @Override
     @SuppressWarnings("unchecked")
     public <T> T get(Contextual<T> contextual, CreationalContext<T> creationalContext) {
-        System.err.println("CommandScopeContext.get(Contextual<T> contextual, CreationalContext<T> creationalContext)");
+        log.info("CommandScopeContext.get(Contextual<T> contextual, CreationalContext<T> creationalContext)");
 
         ContextLayer layer = currentLayer();
         InstanceHandle<T> handle = (InstanceHandle<T>) layer.instances.get(contextual);
@@ -134,7 +138,7 @@ public class CommandScopeContext implements Context {
     @Override
     @SuppressWarnings("unchecked")
     public <T> T get(Contextual<T> contextual) {
-        System.err.println("CommandScopeContext.get(Contextual<T> contextual)");
+        log.info("CommandScopeContext.get(Contextual<T> contextual)");
 
         ContextLayer layer = currentLayer();
         InstanceHandle<T> handle = (InstanceHandle<T>) layer.instances.get(contextual);
@@ -168,7 +172,7 @@ public class CommandScopeContext implements Context {
                 @SuppressWarnings("unchecked")
                 CreationalContext<Object> cc = (CreationalContext<Object>) handle.creationalContext;
 
-                System.err.println("destroying " + handle.instance.getClass().getName());
+                log.info("destroying " + handle.instance.getClass().getName());
                 rawContextual.destroy(handle.instance, cc);
             } catch (Exception e) {
                 // Log and continue; don't stop destroying other beans
