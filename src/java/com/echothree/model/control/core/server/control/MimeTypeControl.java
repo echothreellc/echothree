@@ -25,6 +25,7 @@ import com.echothree.model.control.core.common.transfer.MimeTypeTransfer;
 import com.echothree.model.control.core.common.transfer.MimeTypeUsageTransfer;
 import com.echothree.model.control.core.common.transfer.MimeTypeUsageTypeTransfer;
 import com.echothree.model.data.core.common.pk.MimeTypePK;
+import com.echothree.model.data.core.common.pk.MimeTypeUsageTypePK;
 import com.echothree.model.data.core.server.entity.EntityAttributeType;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.MimeType;
@@ -46,6 +47,7 @@ import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.sql.SQLException;
@@ -56,7 +58,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import com.echothree.util.server.cdi.CommandScope;
 
 @CommandScope
 public class MimeTypeControl
@@ -75,11 +76,33 @@ public class MimeTypeControl
         return MimeTypeUsageTypeFactory.getInstance().create(mimeTypeUsageTypeName, isDefault, sortOrder);
     }
 
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.MimeTypeUsageType */
+    public MimeTypeUsageType getMimeTypeUsageTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new MimeTypeUsageTypePK(entityInstance.getEntityUniqueId());
+
+        return MimeTypeUsageTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public MimeTypeUsageType getMimeTypeUsageTypeByEntityInstance(EntityInstance entityInstance) {
+        return getMimeTypeUsageTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public MimeTypeUsageType getMimeTypeUsageTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getMimeTypeUsageTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countMimeTypeUsageTypes() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM mimetypeusagetypes");
+    }
+
     public List<MimeTypeUsageType> getMimeTypeUsageTypes() {
         var ps = MimeTypeUsageTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                         "FROM mimetypeusagetypes " +
-                        "ORDER BY mtyput_sortorder, mtyput_mimetypeusagetypename");
+                        "ORDER BY mtyput_sortorder, mtyput_mimetypeusagetypename " +
+                        "_LIMIT_");
 
         return MimeTypeUsageTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }

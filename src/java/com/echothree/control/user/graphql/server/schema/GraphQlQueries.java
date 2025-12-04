@@ -5765,29 +5765,34 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("mimeTypeUsageTypes")
-    static Collection<MimeTypeUsageTypeObject> mimeTypeUsageTypes(final DataFetchingEnvironment env) {
-        Collection<MimeTypeUsageType> mimeTypeUsageTypes;
-        Collection<MimeTypeUsageTypeObject> mimeTypeUsageTypeObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<MimeTypeUsageTypeObject> mimeTypeUsageTypes(final DataFetchingEnvironment env) {
+        CountingPaginatedData<MimeTypeUsageTypeObject> data;
 
         try {
             var commandForm = CoreUtil.getHome().getGetMimeTypeUsageTypesForm();
+            var command = CDI.current().select(GetMimeTypeUsageTypesCommand.class).get();
 
-            mimeTypeUsageTypes = CDI.current().select(GetMimeTypeUsageTypesCommand.class).get().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, com.echothree.model.data.core.common.MimeTypeUsageTypeConstants.COMPONENT_VENDOR_NAME, com.echothree.model.data.core.common.MimeTypeUsageTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var mimeTypeUsageTypes = entities.stream()
+                            .map(MimeTypeUsageTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, mimeTypeUsageTypes);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(mimeTypeUsageTypes == null) {
-            mimeTypeUsageTypeObjects = emptyList();
-        } else {
-            mimeTypeUsageTypeObjects = new ArrayList<>(mimeTypeUsageTypes.size());
-
-            mimeTypeUsageTypes.stream()
-                    .map(MimeTypeUsageTypeObject::new)
-                    .forEachOrdered(mimeTypeUsageTypeObjects::add);
-        }
-
-        return mimeTypeUsageTypeObjects;
+        return data;
     }
 
     @GraphQLField
