@@ -15,9 +15,9 @@
 // --------------------------------------------------------------------------------
 
 package com.echothree.model.control.purchase.server.control;
-import javax.enterprise.context.RequestScoped;
+import com.echothree.util.server.cdi.CommandScope;
 
-@RequestScoped
+@CommandScope
 public class PurchaseOrderControl
         extends BasePurchaseControl {
 

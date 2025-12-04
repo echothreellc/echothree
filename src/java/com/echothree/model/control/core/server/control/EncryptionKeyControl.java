@@ -45,9 +45,9 @@ import com.echothree.util.server.persistence.Sha1Utils;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.enterprise.context.RequestScoped;
+import com.echothree.util.server.cdi.CommandScope;
 
-@RequestScoped
+@CommandScope
 public class EncryptionKeyControl
         extends BaseCoreControl {
 

@@ -29,9 +29,9 @@ import com.echothree.util.server.persistence.DslContextFactory;
 import com.echothree.util.server.persistence.Session;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import javax.enterprise.context.RequestScoped;
+import com.echothree.util.server.cdi.CommandScope;
 
-@RequestScoped
+@CommandScope
 public class EntityLockControl
         extends BaseCoreControl {
 
