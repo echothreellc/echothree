@@ -840,6 +840,7 @@ import com.echothree.model.data.payment.server.entity.PaymentProcessorTransactio
 import com.echothree.model.data.payment.server.entity.PaymentProcessorType;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorTypeCode;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorTypeCodeType;
+import com.echothree.model.data.payment.common.PaymentProcessorConstants;
 import com.echothree.model.data.queue.common.QueueTypeConstants;
 import com.echothree.model.data.queue.server.entity.QueueType;
 import com.echothree.model.data.returnpolicy.common.ReturnKindConstants;
@@ -3862,29 +3863,34 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("paymentProcessors")
-    static Collection<PaymentProcessorObject> paymentProcessors(final DataFetchingEnvironment env) {
-        Collection<PaymentProcessor> paymentProcessors;
-        Collection<PaymentProcessorObject> paymentProcessorObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<PaymentProcessorObject> paymentProcessors(final DataFetchingEnvironment env) {
+        CountingPaginatedData<PaymentProcessorObject> data;
 
         try {
             var commandForm = PaymentUtil.getHome().getGetPaymentProcessorsForm();
+            var command = CDI.current().select(GetPaymentProcessorsCommand.class).get();
 
-            paymentProcessors = CDI.current().select(GetPaymentProcessorsCommand.class).get().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, PaymentProcessorConstants.COMPONENT_VENDOR_NAME, PaymentProcessorConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var paymentProcessors = entities.stream()
+                            .map(PaymentProcessorObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, paymentProcessors);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(paymentProcessors == null) {
-            paymentProcessorObjects = emptyList();
-        } else {
-            paymentProcessorObjects = new ArrayList<>(paymentProcessors.size());
-
-            paymentProcessors.stream()
-                    .map(PaymentProcessorObject::new)
-                    .forEachOrdered(paymentProcessorObjects::add);
-        }
-
-        return paymentProcessorObjects;
+        return data;
     }
 
     @GraphQLField
