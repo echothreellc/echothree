@@ -103,6 +103,13 @@ public class PaymentProcessorControl
         return getPaymentProcessorByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
 
+    public long countPaymentProcessors() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM paymentprocessors, paymentprocessordetails " +
+                        "WHERE pprc_activedetailid = pprcdt_paymentprocessordetailid");
+    }
+
     public PaymentProcessorDetailValue getPaymentProcessorDetailValueForUpdate(PaymentProcessor paymentProcessor) {
         return paymentProcessor.getLastDetailForUpdate().getPaymentProcessorDetailValue().clone();
     }
