@@ -10297,17 +10297,19 @@ public interface GraphQlQueries {
         CountingPaginatedData<TermObject> data;
 
         try {
-            var termControl = Session.getModelController(TermControl.class);
-            var totalCount = termControl.countTerms();
+            var commandForm = TermUtil.getHome().getGetTermsForm();
+            var command = CDI.current().select(GetTermsCommand.class).get();
 
-            try(var objectLimiter = new ObjectLimiter(env, TermConstants.COMPONENT_VENDOR_NAME, TermConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var commandForm = TermUtil.getHome().getGetTermsForm();
-                var entities = CDI.current().select(GetTermsCommand.class).get().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, TermConstants.COMPONENT_VENDOR_NAME, TermConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
 
-                if(entities == null) {
-                    data = Connections.emptyConnection();
-                } else {
-                    var terms = entities.stream().map(TermObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+                    var terms = entities.stream()
+                            .map(TermObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, terms);
                 }
