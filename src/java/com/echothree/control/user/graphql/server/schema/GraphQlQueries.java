@@ -590,7 +590,6 @@ import com.echothree.model.control.tag.server.graphql.EntityTagObject;
 import com.echothree.model.control.tag.server.graphql.TagObject;
 import com.echothree.model.control.tag.server.graphql.TagScopeEntityTypeObject;
 import com.echothree.model.control.tag.server.graphql.TagScopeObject;
-import com.echothree.model.control.term.server.control.TermControl;
 import com.echothree.model.control.term.server.graphql.TermObject;
 import com.echothree.model.control.term.server.graphql.TermTypeObject;
 import com.echothree.model.control.uom.server.control.UomControl;
@@ -832,6 +831,7 @@ import com.echothree.model.data.party.server.entity.PartyDivision;
 import com.echothree.model.data.party.server.entity.PartyType;
 import com.echothree.model.data.party.server.entity.RoleType;
 import com.echothree.model.data.party.server.entity.TimeZone;
+import com.echothree.model.data.payment.common.PaymentMethodTypeConstants;
 import com.echothree.model.data.payment.server.entity.PaymentMethodType;
 import com.echothree.model.data.payment.server.entity.PaymentProcessor;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorActionType;
@@ -3958,29 +3958,34 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("paymentMethodTypes")
-    static Collection<PaymentMethodTypeObject> paymentMethodTypes(final DataFetchingEnvironment env) {
-        Collection<PaymentMethodType> paymentMethodTypes;
-        Collection<PaymentMethodTypeObject> paymentMethodTypeObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<PaymentMethodTypeObject> paymentMethodTypes(final DataFetchingEnvironment env) {
+        CountingPaginatedData<PaymentMethodTypeObject> data;
 
         try {
             var commandForm = PaymentUtil.getHome().getGetPaymentMethodTypesForm();
+            var command = CDI.current().select(GetPaymentMethodTypesCommand.class).get();
 
-            paymentMethodTypes = CDI.current().select(GetPaymentMethodTypesCommand.class).get().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, PaymentMethodTypeConstants.COMPONENT_VENDOR_NAME, PaymentMethodTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var paymentMethodTypes = entities.stream()
+                            .map(PaymentMethodTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, paymentMethodTypes);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(paymentMethodTypes == null) {
-            paymentMethodTypeObjects = emptyList();
-        } else {
-            paymentMethodTypeObjects = new ArrayList<>(paymentMethodTypes.size());
-
-            paymentMethodTypes.stream()
-                    .map(PaymentMethodTypeObject::new)
-                    .forEachOrdered(paymentMethodTypeObjects::add);
-        }
-
-        return paymentMethodTypeObjects;
+        return data;
     }
 
     @GraphQLField

@@ -99,6 +99,13 @@ public class PaymentMethodTypeControl
         return getPaymentMethodTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
 
+    public long countPaymentMethodTypes() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM paymentmethodtypes, paymentmethodtypedetails " +
+                        "WHERE pmtyp_paymentmethodtypeid = pmtypdt_pmtyp_paymentmethodtypeid");
+    }
+
     private static final Map<EntityPermission, String> getPaymentMethodTypeByNameQueries = Map.of(
             EntityPermission.READ_ONLY,
             "SELECT _ALL_ " +
@@ -162,7 +169,8 @@ public class PaymentMethodTypeControl
             EntityPermission.READ_ONLY,
             "SELECT _ALL_ " + "FROM paymentmethodtypes, paymentmethodtypedetails " +
                     "WHERE pmtyp_paymentmethodtypeid = pmtypdt_pmtyp_paymentmethodtypeid AND pmtypdt_thrutime = ? " +
-                    "ORDER BY pmtypdt_sortorder, pmtypdt_paymentmethodtypename",
+                    "ORDER BY pmtypdt_sortorder, pmtypdt_paymentmethodtypename " +
+                    "_LIMIT_",
             EntityPermission.READ_WRITE,
             "SELECT _ALL_ " + "FROM paymentmethodtypes, paymentmethodtypedetails " +
                     "WHERE pmtyp_paymentmethodtypeid = pmtypdt_pmtyp_paymentmethodtypeid AND pmtypdt_thrutime = ? " +
