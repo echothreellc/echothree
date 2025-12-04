@@ -124,7 +124,6 @@ public abstract class BaseCommand
         if(ControlDebugFlags.LogBaseCommands) {
             getLog().info("BaseCommand()");
         }
-        getLog().info("BaseCommand()");
 
         this.commandSecurityDefinition = commandSecurityDefinition;
     }
