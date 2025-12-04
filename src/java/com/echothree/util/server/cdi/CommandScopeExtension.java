@@ -13,7 +13,7 @@ public class CommandScopeExtension implements Extension {
     private static CommandScopeContext commandScopeContext;
 
     void afterBeanDiscovery(@Observes AfterBeanDiscovery abd) {
-        log.info("CommandScopeExtension.afterBeanDiscovery()");
+        log.debug("CommandScopeExtension.afterBeanDiscovery()");
 
         commandScopeContext = new CommandScopeContext();
         abd.addContext(commandScopeContext);
