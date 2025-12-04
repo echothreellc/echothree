@@ -20,8 +20,7 @@ public class CommandScopeContext implements Context {
      * Per-thread stack of context layers.
      * Each layer holds the contextual instances for that "sub-scope".
      */
-    private final ThreadLocal<Deque<ContextLayer>> layers =
-            ThreadLocal.withInitial(ArrayDeque::new);
+    private final ThreadLocal<Deque<ContextLayer>> layers = ThreadLocal.withInitial(ArrayDeque::new);
 
     @Override
     public Class<? extends Annotation> getScope() {
@@ -31,7 +30,7 @@ public class CommandScopeContext implements Context {
 
     @Override
     public boolean isActive() {
-        var isActive = !layers.get().isEmpty();
+        final var isActive = !layers.get().isEmpty();
 
         log.debug("CommandScopeContext.isActive() = {}", isActive);
 
@@ -49,8 +48,8 @@ public class CommandScopeContext implements Context {
     public void activate() {
         log.debug("CommandScopeContext.activate()");
 
-        Deque<ContextLayer> deque = layers.get();
-        if (deque.isEmpty()) {
+        final var deque = layers.get();
+        if(deque.isEmpty()) {
             deque.push(new ContextLayer());
         }
     }
@@ -62,7 +61,7 @@ public class CommandScopeContext implements Context {
     public void deactivate() {
         log.debug("CommandScopeContext.deactivate()");
 
-        Deque<ContextLayer> deque = layers.get();
+        final var deque = layers.get();
         while (!deque.isEmpty()) {
             destroyLayer(deque.pop());
         }
@@ -78,10 +77,11 @@ public class CommandScopeContext implements Context {
     public ScopeHandle push() {
         log.debug("CommandScopeContext.push()");
 
-        if (!isActive()) {
+        if(!isActive()) {
             // You can choose to implicitly activate() here instead
             throw new ContextNotActiveException("@StackedRequestScoped context is not active; call activate() first");
         }
+        
         layers.get().push(new ContextLayer());
         return new ScopeHandle();
     }
@@ -92,15 +92,15 @@ public class CommandScopeContext implements Context {
     public void pop() {
         log.debug("CommandScopeContext.pop()");
 
-        Deque<ContextLayer> deque = layers.get();
-        if (deque.isEmpty()) {
+        final var deque = layers.get();
+        if(deque.isEmpty()) {
             throw new ContextNotActiveException("No active @StackedRequestScoped layer to pop");
         }
 
-        ContextLayer layer = deque.pop();
+        final var layer = deque.pop();
         destroyLayer(layer);
 
-        if (deque.isEmpty()) {
+        if(deque.isEmpty()) {
             log.debug("layers empty, removing ThreadLocal");
 
             // Optionally clean up thread-local completely
@@ -116,32 +116,34 @@ public class CommandScopeContext implements Context {
 
     @Override
     @SuppressWarnings("unchecked")
-    public <T> T get(Contextual<T> contextual, CreationalContext<T> creationalContext) {
+    public <T> T get(final Contextual<T> contextual, final CreationalContext<T> creationalContext) {
         log.debug("CommandScopeContext.get(Contextual<T> contextual, CreationalContext<T> creationalContext)");
 
-        ContextLayer layer = currentLayer();
-        InstanceHandle<T> handle = (InstanceHandle<T>) layer.instances.get(contextual);
-        if (handle != null) {
+        final var layer = currentLayer();
+        var handle = (InstanceHandle<T>) layer.instances.get(contextual);
+        if(handle != null) {
             return handle.instance;
         }
 
-        if (creationalContext == null) {
+        if(creationalContext == null) {
             return null;
         }
 
-        T instance = contextual.create(creationalContext);
+        final var instance = contextual.create(creationalContext);
         handle = new InstanceHandle<>(instance, creationalContext);
         layer.instances.put(contextual, handle);
+
         return instance;
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public <T> T get(Contextual<T> contextual) {
+    public <T> T get(final Contextual<T> contextual) {
         log.debug("CommandScopeContext.get(Contextual<T> contextual)");
 
-        ContextLayer layer = currentLayer();
-        InstanceHandle<T> handle = (InstanceHandle<T>) layer.instances.get(contextual);
+        final var layer = currentLayer();
+        final var handle = (InstanceHandle<T>) layer.instances.get(contextual);
+
         return handle != null ? handle.instance : null;
     }
 
@@ -150,33 +152,33 @@ public class CommandScopeContext implements Context {
     // --------------------------------------------------------------------------------
 
     private ContextLayer currentLayer() {
-        Deque<ContextLayer> deque = layers.get();
+        final var deque = layers.get();
 
-        if (deque.isEmpty()) {
+        if(deque.isEmpty()) {
             throw new ContextNotActiveException("@Command context is not active");
         }
 
         return deque.peek();
     }
 
-    private void destroyLayer(ContextLayer layer) {
-        for (Map.Entry<Contextual<?>, InstanceHandle<?>> entry : layer.instances.entrySet()) {
-            Contextual<?> contextual = entry.getKey();
-            InstanceHandle<?> handle = entry.getValue();
+    private void destroyLayer(final ContextLayer layer) {
+        for (var entry : layer.instances.entrySet()) {
+            final var contextual = entry.getKey();
+            final var handle = entry.getValue();
 
             try {
                 // Generics on Contextual#destroy require matching <T> for both the instance and the
                 // CreationalContext<T>. Since we store them in wildcarded holders, cast safely here.
-                @SuppressWarnings({"rawtypes", "unchecked"})
-                Contextual rawContextual = contextual;
+                @SuppressWarnings("unchecked")
+                Contextual<Object> typedContextual = (Contextual<Object>) contextual;
                 @SuppressWarnings("unchecked")
                 CreationalContext<Object> cc = (CreationalContext<Object>) handle.creationalContext;
 
-                log.debug("destroying " + handle.instance.getClass().getName());
-                rawContextual.destroy(handle.instance, cc);
+                log.debug("destroying {}", handle.instance.getClass().getName());
+                typedContextual.destroy(handle.instance, cc);
             } catch (Exception e) {
                 // Log and continue; don't stop destroying other beans
-                e.printStackTrace();
+                log.warn("Exception destroying bean {}", handle.instance.getClass().getName(), e);
             }
         }
         layer.instances.clear();
@@ -186,14 +188,7 @@ public class CommandScopeContext implements Context {
         final Map<Contextual<?>, InstanceHandle<?>> instances = new HashMap<>();
     }
 
-    private static final class InstanceHandle<T> {
-        final T instance;
-        final CreationalContext<T> creationalContext;
-
-        InstanceHandle(T instance, CreationalContext<T> creationalContext) {
-            this.instance = instance;
-            this.creationalContext = creationalContext;
-        }
+    private record InstanceHandle<T>(T instance, CreationalContext<T> creationalContext) {
     }
 
     /**
@@ -207,7 +202,7 @@ public class CommandScopeContext implements Context {
 
         @Override
         public void close() {
-            if (!closed) {
+            if(!closed) {
                 pop();
                 closed = true;
             }
