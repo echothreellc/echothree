@@ -28,9 +28,9 @@ import com.echothree.util.server.persistence.Session;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import javax.enterprise.context.RequestScoped;
+import com.echothree.util.server.cdi.CommandScope;
 
-@RequestScoped
+@CommandScope
 public class OrderBatchControl
         extends BaseOrderControl {
 
