@@ -22,7 +22,10 @@ import java.util.List;
 
 public interface GetPaymentProcessorTypesResult
         extends BaseResult {
-    
+
+    Long getPaymentProcessorTypeCount();
+    void setPaymentProcessorTypeCount(Long paymentProcessorTypeCount);
+
     List<PaymentProcessorTypeTransfer> getPaymentProcessorTypes();
     void setPaymentProcessorTypes(List<PaymentProcessorTypeTransfer> paymentProcessorTypes);
     

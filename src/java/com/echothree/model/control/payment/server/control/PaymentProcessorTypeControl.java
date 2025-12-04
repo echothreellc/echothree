@@ -99,6 +99,13 @@ public class PaymentProcessorTypeControl
         return getPaymentProcessorTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
 
+    public long countPaymentProcessorTypes() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM paymentprocessortypes, paymentprocessortypedetails " +
+                        "WHERE pprctyp_paymentprocessortypeid = pprctypdt_pprctyp_paymentprocessortypeid");
+    }
+
     private static final Map<EntityPermission, String> getPaymentProcessorTypeByNameQueries = Map.of(
             EntityPermission.READ_ONLY,
             "SELECT _ALL_ " +
@@ -162,7 +169,8 @@ public class PaymentProcessorTypeControl
             EntityPermission.READ_ONLY,
             "SELECT _ALL_ " + "FROM paymentprocessortypes, paymentprocessortypedetails " +
                     "WHERE pprctyp_paymentprocessortypeid = pprctypdt_pprctyp_paymentprocessortypeid AND pprctypdt_thrutime = ? " +
-                    "ORDER BY pprctypdt_sortorder, pprctypdt_paymentprocessortypename",
+                    "ORDER BY pprctypdt_sortorder, pprctypdt_paymentprocessortypename " +
+                    "_LIMIT_",
             EntityPermission.READ_WRITE,
             "SELECT _ALL_ " + "FROM paymentprocessortypes, paymentprocessortypedetails " +
                     "WHERE pprctyp_paymentprocessortypeid = pprctypdt_pprctyp_paymentprocessortypeid AND pprctypdt_thrutime = ? " +
