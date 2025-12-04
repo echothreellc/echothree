@@ -22,7 +22,10 @@ import java.util.List;
 
 public interface GetMimeTypeUsageTypesResult
         extends BaseResult {
-    
+
+    Long getMimeTypeUsageTypeCount();
+    void setMimeTypeUsageTypeCount(Long mimeTypeUsageTypeCount);
+
     List<MimeTypeUsageTypeTransfer> getMimeTypeUsageTypes();
     void setMimeTypeUsageTypes(List<MimeTypeUsageTypeTransfer> mimeTypeUsageTypes);
     
