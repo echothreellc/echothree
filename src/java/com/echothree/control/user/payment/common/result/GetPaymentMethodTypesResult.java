@@ -22,7 +22,10 @@ import java.util.List;
 
 public interface GetPaymentMethodTypesResult
         extends BaseResult {
-    
+
+    Long getPaymentMethodTypeCount();
+    void setPaymentMethodTypeCount(Long paymentMethodTypeCount);
+
     List<PaymentMethodTypeTransfer> getPaymentMethodTypes();
     void setPaymentMethodTypes(List<PaymentMethodTypeTransfer> paymentMethodTypes);
     
