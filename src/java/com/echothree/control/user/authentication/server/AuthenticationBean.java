@@ -95,10 +95,9 @@ public class AuthenticationBean
             throw pde;
         } finally {
             ThreadUtils.close();
+            ThreadUtils.restoreState(preservedState);
             CommandScopeExtension.getCommandScopeContext().pop();
         }
-
-        ThreadUtils.restoreState(preservedState);
 
         return userVisitPK;
     }
