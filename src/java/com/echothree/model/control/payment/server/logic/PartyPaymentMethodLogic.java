@@ -162,7 +162,7 @@ public class PartyPaymentMethodLogic
                 var timeZone = userControl.getPreferredTimeZoneFromParty(party);
                 int expirationMonth = Integer.valueOf(strExpirationMonth);
                 int expirationYear = Integer.valueOf(strExpirationYear);
-                var dt = ZonedDateTime.ofInstant(Instant.ofEpochMilli(session.START_TIME), ZoneId.of(timeZone.getLastDetail().getJavaTimeZoneName()));
+                var dt = ZonedDateTime.ofInstant(Instant.ofEpochMilli(session.getStartTime()), ZoneId.of(timeZone.getLastDetail().getJavaTimeZoneName()));
                 var validExpirationDate = true;
                 var thisYear = dt.getYear();
 

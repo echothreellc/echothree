@@ -27,8 +27,6 @@ import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.server.cdi.CommandScopeExtension;
-import com.echothree.util.server.persistence.Session;
-import com.echothree.util.server.persistence.ThreadUtils;
 import javax.ejb.Stateless;
 import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
@@ -69,7 +67,6 @@ public class AuthenticationBean
         } else {
             CommandScopeExtension.getCommandScopeContext().activate();
         }
-        var preservedState = ThreadUtils.preserveState();
 
         UserVisitPK userVisitPK = null;
         
@@ -94,8 +91,6 @@ public class AuthenticationBean
         } catch (PersistenceDatabaseException pde) {
             throw pde;
         } finally {
-            ThreadUtils.close();
-            ThreadUtils.restoreState(preservedState);
             CommandScopeExtension.getCommandScopeContext().pop();
         }
 

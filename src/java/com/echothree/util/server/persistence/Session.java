@@ -22,6 +22,7 @@ import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.common.transfer.Limit;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.valuecache.ValueCache;
 import com.echothree.util.server.persistence.valuecache.ValueCacheProviderImpl;
@@ -35,11 +36,14 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.enterprise.inject.spi.CDI;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jooq.DSLContext;
 
+@CommandScope
 public class Session {
     
     private static final String GET_INSTANCE = "getInstance";
@@ -73,25 +77,28 @@ public class Session {
     private Map<String, Limit> limits;
     
     public static final long MAX_TIME = Long.MAX_VALUE;
-    public static final Long MAX_TIME_LONG = Long.MAX_VALUE;
+    private final long START_TIME;
 
-    public final long START_TIME;
-    public final Long START_TIME_LONG;
-    
+    public long getStartTime() {
+        return START_TIME;
+    }
+
     /**
      * Creates a new instance of Session
      */
     public Session() {
+        START_TIME = System.currentTimeMillis();
+    }
+
+    @PostConstruct
+    public void init() {
         if(PersistenceDebugFlags.LogSessions) {
             getLog().info("Session()");
         }
-        
+
         dslContext = DslContextFactory.getInstance().getDslContext();
         connection = dslContext.parsingConnection();
-        
-        START_TIME = System.currentTimeMillis();
-        START_TIME_LONG = START_TIME;
-        
+
         if(PersistenceDebugFlags.LogConnections) {
             getLog().info("new connection is " + connection);
         }
@@ -123,7 +130,7 @@ public class Session {
         sessionEntityCache = sessionEntityCache.popSessionEntityCache();
     }
 
-    final protected Log getLog() {
+    protected Log getLog() {
         if(log == null) {
             log = LogFactory.getLog(this.getClass());
         }
@@ -399,6 +406,7 @@ public class Session {
     }
 
     @SuppressWarnings("Finally")
+    @PreDestroy
     public void close() {
         if(PersistenceDebugFlags.LogSessions) {
             getLog().info("close()");

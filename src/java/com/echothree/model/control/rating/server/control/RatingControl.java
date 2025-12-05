@@ -101,7 +101,7 @@ public class RatingControl
             BasePK createdBy) {
         var ratingType = RatingTypeFactory.getInstance().create();
         var ratingTypeDetail = RatingTypeDetailFactory.getInstance().create(ratingType, entityType,
-                ratingTypeName, ratingSequence, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                ratingTypeName, ratingSequence, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         ratingType = RatingTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -222,7 +222,7 @@ public class RatingControl
                      ratingTypeDetailValue.getRatingTypePK());
             var ratingTypeDetail = ratingType.getActiveDetailForUpdate();
             
-            ratingTypeDetail.setThruTime(session.START_TIME_LONG);
+            ratingTypeDetail.setThruTime(session.getStartTime());
             ratingTypeDetail.store();
 
             var ratingTypePK = ratingTypeDetail.getRatingTypePK(); // Not updated
@@ -232,7 +232,7 @@ public class RatingControl
             var sortOrder = ratingTypeDetailValue.getSortOrder();
             
             ratingTypeDetail = RatingTypeDetailFactory.getInstance().create(ratingTypePK, entityTypePK, ratingTypeName,
-                    ratingSequencePK, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    ratingSequencePK, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             ratingType.setActiveDetail(ratingTypeDetail);
             ratingType.setLastDetail(ratingTypeDetail);
@@ -246,7 +246,7 @@ public class RatingControl
         deleteRatingTypeListItemsByRatingType(ratingType, deletedBy);
 
         var ratingTypeDetail = ratingType.getLastDetailForUpdate();
-        ratingTypeDetail.setThruTime(session.START_TIME_LONG);
+        ratingTypeDetail.setThruTime(session.getStartTime());
         ratingType.setActiveDetail(null);
         ratingType.store();
         
@@ -270,7 +270,7 @@ public class RatingControl
     public RatingTypeDescription createRatingTypeDescription(RatingType ratingType, Language language, String description,
             BasePK createdBy) {
         var ratingTypeDescription = RatingTypeDescriptionFactory.getInstance().create(ratingType,
-                language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(ratingType.getPrimaryKey(), EventTypes.MODIFY, ratingTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -399,21 +399,21 @@ public class RatingControl
         if(ratingTypeDescriptionValue.hasBeenModified()) {
             var ratingTypeDescription = RatingTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, ratingTypeDescriptionValue.getPrimaryKey());
             
-            ratingTypeDescription.setThruTime(session.START_TIME_LONG);
+            ratingTypeDescription.setThruTime(session.getStartTime());
             ratingTypeDescription.store();
 
             var ratingType = ratingTypeDescription.getRatingType();
             var language = ratingTypeDescription.getLanguage();
             var description = ratingTypeDescriptionValue.getDescription();
             
-            ratingTypeDescription = RatingTypeDescriptionFactory.getInstance().create(ratingType, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+            ratingTypeDescription = RatingTypeDescriptionFactory.getInstance().create(ratingType, language, description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(ratingType.getPrimaryKey(), EventTypes.MODIFY, ratingTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteRatingTypeDescription(RatingTypeDescription ratingTypeDescription, BasePK deletedBy) {
-        ratingTypeDescription.setThruTime(session.START_TIME_LONG);
+        ratingTypeDescription.setThruTime(session.getStartTime());
         
         sendEvent(ratingTypeDescription.getRatingTypePK(), EventTypes.MODIFY, ratingTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
@@ -447,8 +447,8 @@ public class RatingControl
 
         var ratingTypeListItem = RatingTypeListItemFactory.getInstance().create();
         var ratingTypeListItemDetail = RatingTypeListItemDetailFactory.getInstance().create(session,
-                ratingTypeListItem, ratingType, ratingTypeListItemName, isDefault, sortOrder, session.START_TIME_LONG,
-                Session.MAX_TIME_LONG);
+                ratingTypeListItem, ratingType, ratingTypeListItemName, isDefault, sortOrder, session.getStartTime(),
+                Session.MAX_TIME);
         
         // Convert to R/W
         ratingTypeListItem = RatingTypeListItemFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -616,7 +616,7 @@ public class RatingControl
                      ratingTypeListItemDetailValue.getRatingTypeListItemPK());
             var ratingTypeListItemDetail = ratingTypeListItem.getActiveDetailForUpdate();
             
-            ratingTypeListItemDetail.setThruTime(session.START_TIME_LONG);
+            ratingTypeListItemDetail.setThruTime(session.getStartTime());
             ratingTypeListItemDetail.store();
 
             var ratingTypeListItemPK = ratingTypeListItemDetail.getRatingTypeListItemPK();
@@ -643,7 +643,7 @@ public class RatingControl
             }
             
             ratingTypeListItemDetail = RatingTypeListItemDetailFactory.getInstance().create(ratingTypeListItemPK,
-                    ratingTypePK, ratingTypeListItemName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    ratingTypePK, ratingTypeListItemName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             ratingTypeListItem.setActiveDetail(ratingTypeListItemDetail);
             ratingTypeListItem.setLastDetail(ratingTypeListItemDetail);
@@ -695,7 +695,7 @@ public class RatingControl
         deleteRatingsByRatingTypeListItem(ratingTypeListItem, deletedBy);
         
         var ratingTypeListItemDetail = ratingTypeListItem.getLastDetailForUpdate();
-        ratingTypeListItemDetail.setThruTime(session.START_TIME_LONG);
+        ratingTypeListItemDetail.setThruTime(session.getStartTime());
         ratingTypeListItem.setActiveDetail(null);
         ratingTypeListItem.store();
 
@@ -741,7 +741,7 @@ public class RatingControl
     public RatingTypeListItemDescription createRatingTypeListItemDescription(RatingTypeListItem ratingTypeListItem, Language language,
             String description, BasePK createdBy) {
         var ratingTypeListItemDescription = RatingTypeListItemDescriptionFactory.getInstance().create(session,
-                ratingTypeListItem, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                ratingTypeListItem, language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(ratingTypeListItem.getPrimaryKey(), EventTypes.MODIFY, ratingTypeListItemDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -870,21 +870,21 @@ public class RatingControl
         if(ratingTypeListItemDescriptionValue.hasBeenModified()) {
             var ratingTypeListItemDescription = RatingTypeListItemDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, ratingTypeListItemDescriptionValue.getPrimaryKey());
             
-            ratingTypeListItemDescription.setThruTime(session.START_TIME_LONG);
+            ratingTypeListItemDescription.setThruTime(session.getStartTime());
             ratingTypeListItemDescription.store();
 
             var ratingTypeListItem = ratingTypeListItemDescription.getRatingTypeListItem();
             var language = ratingTypeListItemDescription.getLanguage();
             var description = ratingTypeListItemDescriptionValue.getDescription();
             
-            ratingTypeListItemDescription = RatingTypeListItemDescriptionFactory.getInstance().create(ratingTypeListItem, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+            ratingTypeListItemDescription = RatingTypeListItemDescriptionFactory.getInstance().create(ratingTypeListItem, language, description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(ratingTypeListItem.getPrimaryKey(), EventTypes.MODIFY, ratingTypeListItemDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteRatingTypeListItemDescription(RatingTypeListItemDescription ratingTypeListItemDescription, BasePK deletedBy) {
-        ratingTypeListItemDescription.setThruTime(session.START_TIME_LONG);
+        ratingTypeListItemDescription.setThruTime(session.getStartTime());
         
         sendEvent(ratingTypeListItemDescription.getRatingTypeListItemPK(), EventTypes.MODIFY, ratingTypeListItemDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
@@ -906,7 +906,7 @@ public class RatingControl
             EntityInstance ratedByEntityInstance, BasePK createdBy) {
         var rating = RatingFactory.getInstance().create();
         var ratingDetail = RatingDetailFactory.getInstance().create(rating, ratingName, ratingTypeListItem,
-                ratedEntityInstance, ratedByEntityInstance, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                ratedEntityInstance, ratedByEntityInstance, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         rating = RatingFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, rating.getPrimaryKey());
@@ -1197,7 +1197,7 @@ public class RatingControl
             var rating = RatingFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, ratingDetailValue.getRatingPK());
             var ratingDetail = rating.getActiveDetailForUpdate();
             
-            ratingDetail.setThruTime(session.START_TIME_LONG);
+            ratingDetail.setThruTime(session.getStartTime());
             ratingDetail.store();
 
             var ratingPK = ratingDetail.getRatingPK(); // Not updated
@@ -1207,7 +1207,7 @@ public class RatingControl
             var ratedByEntityInstancePK = ratingDetail.getRatedByEntityInstancePK(); // Not updated
             
             ratingDetail = RatingDetailFactory.getInstance().create(ratingPK, ratingName, ratingTypeListItemPK, ratedEntityInstancePK, ratedByEntityInstancePK,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             rating.setActiveDetail(ratingDetail);
             rating.setLastDetail(ratingDetail);
@@ -1220,7 +1220,7 @@ public class RatingControl
     public void deleteRating(Rating rating, BasePK deletedBy) {
         var ratingDetail = rating.getLastDetailForUpdate();
         
-        ratingDetail.setThruTime(session.START_TIME_LONG);
+        ratingDetail.setThruTime(session.getStartTime());
         rating.setActiveDetail(null);
         rating.store();
         

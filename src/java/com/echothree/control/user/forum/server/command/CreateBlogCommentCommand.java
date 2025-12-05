@@ -26,7 +26,6 @@ import com.echothree.model.control.icon.common.IconConstants;
 import com.echothree.model.control.icon.server.control.IconControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.user.server.control.UserControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
@@ -118,7 +117,7 @@ public class CreateBlogCommentCommand
                                             if(forumMimeType != null) {
                                                 var title = form.getTitle();
                                                 var rawPostedTime = form.getPostedTime();
-                                                var postedTime = rawPostedTime == null? session.START_TIME_LONG: Long.valueOf(rawPostedTime);
+                                                var postedTime = rawPostedTime == null? session.getStartTime(): Long.valueOf(rawPostedTime);
                                                 var content = form.getContent();
                                                 BasePK createdBy = getPartyPK();
 

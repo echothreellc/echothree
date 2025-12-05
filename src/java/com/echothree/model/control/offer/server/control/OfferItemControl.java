@@ -67,7 +67,7 @@ public class OfferItemControl
 
     /** Use the function in OfferLogic instead. */
     public OfferItem createOfferItem(Offer offer, Item item, BasePK createdBy) {
-        var offerItem = OfferItemFactory.getInstance().create(offer, item, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var offerItem = OfferItemFactory.getInstance().create(offer, item, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(offerItem.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
@@ -228,7 +228,7 @@ public class OfferItemControl
     public void deleteOfferItem(OfferItem offerItem, BasePK deletedBy) {
         OfferItemLogic.getInstance().deleteOfferItemPricesByOfferItem(offerItem, deletedBy);
 
-        offerItem.setThruTime(session.START_TIME_LONG);
+        offerItem.setThruTime(session.getStartTime());
         offerItem.store();
 
         sendEvent(offerItem.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
@@ -242,7 +242,7 @@ public class OfferItemControl
     public OfferItemPrice createOfferItemPrice(OfferItem offerItem, InventoryCondition inventoryCondition, UnitOfMeasureType unitOfMeasureType,
             Currency currency, BasePK createdBy) {
         var offerItemPrice = OfferItemPriceFactory.getInstance().create(offerItem, inventoryCondition, unitOfMeasureType, currency,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(offerItem.getPrimaryKey(), EventTypes.MODIFY, offerItemPrice.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -485,7 +485,7 @@ public class OfferItemControl
 
     /** Use the function in OfferItemLogic instead. */
     public void deleteOfferItemPrice(OfferItemPrice offerItemPrice, BasePK deletedBy) {
-        offerItemPrice.setThruTime(session.START_TIME_LONG);
+        offerItemPrice.setThruTime(session.getStartTime());
         offerItemPrice.store();
 
         var offerItem = offerItemPrice.getOfferItemForUpdate();
@@ -513,7 +513,7 @@ public class OfferItemControl
     /** Use the function in OfferItemLogic instead. */
     public OfferItemFixedPrice createOfferItemFixedPrice(OfferItemPrice offerItemPrice, Long unitPrice, BasePK createdBy) {
         var offerItemFixedPrice = OfferItemFixedPriceFactory.getInstance().create(offerItemPrice,
-                unitPrice, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                unitPrice, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(offerItemPrice.getOfferItemPK(), EventTypes.MODIFY, offerItemFixedPrice.getPrimaryKey(),
                 EventTypes.CREATE, createdBy);
@@ -583,14 +583,14 @@ public class OfferItemControl
             offerItemFixedPrice = OfferItemFixedPriceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     offerItemFixedPriceValue.getPrimaryKey());
 
-            offerItemFixedPrice.setThruTime(session.START_TIME_LONG);
+            offerItemFixedPrice.setThruTime(session.getStartTime());
             offerItemFixedPrice.store();
 
             var offerItemPricePK = offerItemFixedPrice.getOfferItemPricePK();
             var unitPrice = offerItemFixedPriceValue.getUnitPrice();
 
             offerItemFixedPrice = OfferItemFixedPriceFactory.getInstance().create(offerItemPricePK, unitPrice,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(offerItemFixedPrice.getOfferItemPrice().getOfferItemPK(), EventTypes.MODIFY,
                     offerItemFixedPrice.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -600,7 +600,7 @@ public class OfferItemControl
     }
 
     private void deleteOfferItemFixedPrice(OfferItemFixedPrice offerItemFixedPrice, BasePK deletedBy) {
-        offerItemFixedPrice.setThruTime(session.START_TIME_LONG);
+        offerItemFixedPrice.setThruTime(session.getStartTime());
         offerItemFixedPrice.store();
 
         sendEvent(offerItemFixedPrice.getOfferItemPrice().getOfferItemPK(), EventTypes.MODIFY,
@@ -615,7 +615,7 @@ public class OfferItemControl
     public OfferItemVariablePrice createOfferItemVariablePrice(OfferItemPrice offerItemPrice, Long minimumUnitPrice, Long maximumUnitPrice,
             Long unitPriceIncrement, BasePK createdBy) {
         var offerItemVariablePrice = OfferItemVariablePriceFactory.getInstance().create(offerItemPrice, minimumUnitPrice, maximumUnitPrice,
-                unitPriceIncrement, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                unitPriceIncrement, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(offerItemPrice.getOfferItemPK(), EventTypes.MODIFY, offerItemVariablePrice.getPrimaryKey(),
                 EventTypes.CREATE, createdBy);
@@ -685,7 +685,7 @@ public class OfferItemControl
             offerItemVariablePrice = OfferItemVariablePriceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     offerItemVariablePriceValue.getPrimaryKey());
 
-            offerItemVariablePrice.setThruTime(session.START_TIME_LONG);
+            offerItemVariablePrice.setThruTime(session.getStartTime());
             offerItemVariablePrice.store();
 
             var offerItemPricePK = offerItemVariablePrice.getOfferItemPricePK();
@@ -694,7 +694,7 @@ public class OfferItemControl
             var unitPriceIncrement = offerItemVariablePriceValue.getUnitPriceIncrement();
 
             offerItemVariablePrice = OfferItemVariablePriceFactory.getInstance().create(offerItemPricePK, maximumUnitPrice,
-                    minimumUnitPrice, unitPriceIncrement, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    minimumUnitPrice, unitPriceIncrement, session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(offerItemVariablePrice.getOfferItemPrice().getOfferItemPK(), EventTypes.MODIFY,
                     offerItemVariablePrice.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -704,7 +704,7 @@ public class OfferItemControl
     }
 
     private void deleteOfferItemVariablePrice(OfferItemVariablePrice offerItemVariablePrice, BasePK deletedBy) {
-        offerItemVariablePrice.setThruTime(session.START_TIME_LONG);
+        offerItemVariablePrice.setThruTime(session.getStartTime());
         offerItemVariablePrice.store();
 
         sendEvent(offerItemVariablePrice.getOfferItemPrice().getOfferItemPK(), EventTypes.MODIFY,

@@ -32,7 +32,7 @@ public class EntityInstancePKsByMultipleListItemEntityAttributeQuery
     
     @Override
     public List<EntityInstancePKResult> execute(final EntityAttribute entityAttribute) {
-        return super.execute(entityAttribute, Session.MAX_TIME_LONG);
+        return super.execute(entityAttribute, Session.MAX_TIME);
     }
     
 }

@@ -82,7 +82,7 @@ public class WorkflowTriggerLogic {
         var workflowControl = Session.getModelController(WorkflowControl.class);
         var remainingTime = 1L * 60 * 1000; // 1 minute
         
-        for(var workflowTrigger : workflowControl.getWorkflowTriggersByTriggerTime(session.START_TIME_LONG)) {
+        for(var workflowTrigger : workflowControl.getWorkflowTriggersByTriggerTime(session.getStartTime())) {
             var errorsOccurred = workflowTrigger.getErrorsOccurred();
 
             if(errorsOccurred == null || errorsOccurred == false) {

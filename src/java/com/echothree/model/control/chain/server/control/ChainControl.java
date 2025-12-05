@@ -253,7 +253,7 @@ public class ChainControl
 
         var chainKind = ChainKindFactory.getInstance().create();
         var chainKindDetail = ChainKindDetailFactory.getInstance().create(chainKind, chainKindName, isDefault, sortOrder,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         chainKind = ChainKindFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -422,7 +422,7 @@ public class ChainControl
                 EntityPermission.READ_WRITE, chainKindDetailValue.getChainKindPK());
         var chainKindDetail = chainKind.getActiveDetailForUpdate();
 
-        chainKindDetail.setThruTime(session.START_TIME_LONG);
+        chainKindDetail.setThruTime(session.getStartTime());
         chainKindDetail.store();
 
         var chainKindPK = chainKindDetail.getChainKindPK();
@@ -446,8 +446,8 @@ public class ChainControl
             }
         }
 
-        chainKindDetail = ChainKindDetailFactory.getInstance().create(chainKindPK, chainKindName, isDefault, sortOrder, session.START_TIME_LONG,
-                Session.MAX_TIME_LONG);
+        chainKindDetail = ChainKindDetailFactory.getInstance().create(chainKindPK, chainKindName, isDefault, sortOrder, session.getStartTime(),
+                Session.MAX_TIME);
 
         chainKind.setActiveDetail(chainKindDetail);
         chainKind.setLastDetail(chainKindDetail);
@@ -465,7 +465,7 @@ public class ChainControl
         deleteChainKindDescriptionsByChainKind(chainKind, deletedBy);
 
         var chainKindDetail = chainKind.getLastDetailForUpdate();
-        chainKindDetail.setThruTime(session.START_TIME_LONG);
+        chainKindDetail.setThruTime(session.getStartTime());
         chainKind.setActiveDetail(null);
         chainKind.store();
 
@@ -496,7 +496,7 @@ public class ChainControl
     public ChainKindDescription createChainKindDescription(ChainKind chainKind, Language language, String description,
             BasePK createdBy) {
         var chainKindDescription = ChainKindDescriptionFactory.getInstance().create(chainKind,
-                language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(chainKind.getPrimaryKey(), EventTypes.MODIFY, chainKindDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -609,7 +609,7 @@ public class ChainControl
             var chainKindDescription = ChainKindDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      chainKindDescriptionValue.getPrimaryKey());
 
-            chainKindDescription.setThruTime(session.START_TIME_LONG);
+            chainKindDescription.setThruTime(session.getStartTime());
             chainKindDescription.store();
 
             var chainKind = chainKindDescription.getChainKind();
@@ -617,14 +617,14 @@ public class ChainControl
             var description = chainKindDescriptionValue.getDescription();
 
             chainKindDescription = ChainKindDescriptionFactory.getInstance().create(chainKind, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(chainKind.getPrimaryKey(), EventTypes.MODIFY, chainKindDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteChainKindDescription(ChainKindDescription chainKindDescription, BasePK deletedBy) {
-        chainKindDescription.setThruTime(session.START_TIME_LONG);
+        chainKindDescription.setThruTime(session.getStartTime());
 
         sendEvent(chainKindDescription.getChainKindPK(), EventTypes.MODIFY, chainKindDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
@@ -657,7 +657,7 @@ public class ChainControl
 
         var chainType = ChainTypeFactory.getInstance().create();
         var chainTypeDetail = ChainTypeDetailFactory.getInstance().create(session, chainType, chainKind, chainTypeName, isDefault, sortOrder,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         chainType = ChainTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -866,7 +866,7 @@ public class ChainControl
                      chainTypeDetailValue.getChainTypePK());
             var chainTypeDetail = chainType.getActiveDetailForUpdate();
 
-            chainTypeDetail.setThruTime(session.START_TIME_LONG);
+            chainTypeDetail.setThruTime(session.getStartTime());
             chainTypeDetail.store();
 
             var chainTypePK = chainTypeDetail.getChainTypePK();
@@ -893,7 +893,7 @@ public class ChainControl
             }
 
             chainTypeDetail = ChainTypeDetailFactory.getInstance().create(chainTypePK, chainKindPK, chainTypeName, isDefault, sortOrder,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             chainType.setActiveDetail(chainTypeDetail);
             chainType.setLastDetail(chainTypeDetail);
@@ -912,7 +912,7 @@ public class ChainControl
         deleteChainTypeDescriptionsByChainType(chainType, deletedBy);
 
         var chainTypeDetail = chainType.getLastDetailForUpdate();
-        chainTypeDetail.setThruTime(session.START_TIME_LONG);
+        chainTypeDetail.setThruTime(session.getStartTime());
         chainType.setActiveDetail(null);
         chainType.store();
 
@@ -958,7 +958,7 @@ public class ChainControl
     public ChainTypeDescription createChainTypeDescription(ChainType chainType, Language language, String description,
             BasePK createdBy) {
         var chainTypeDescription = ChainTypeDescriptionFactory.getInstance().create(chainType,
-                language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(chainType.getPrimaryKey(), EventTypes.MODIFY, chainTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -1071,7 +1071,7 @@ public class ChainControl
             var chainTypeDescription = ChainTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      chainTypeDescriptionValue.getPrimaryKey());
 
-            chainTypeDescription.setThruTime(session.START_TIME_LONG);
+            chainTypeDescription.setThruTime(session.getStartTime());
             chainTypeDescription.store();
 
             var chainType = chainTypeDescription.getChainType();
@@ -1079,14 +1079,14 @@ public class ChainControl
             var description = chainTypeDescriptionValue.getDescription();
 
             chainTypeDescription = ChainTypeDescriptionFactory.getInstance().create(chainType, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(chainType.getPrimaryKey(), EventTypes.MODIFY, chainTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteChainTypeDescription(ChainTypeDescription chainTypeDescription, BasePK deletedBy) {
-        chainTypeDescription.setThruTime(session.START_TIME_LONG);
+        chainTypeDescription.setThruTime(session.getStartTime());
 
         sendEvent(chainTypeDescription.getChainTypePK(), EventTypes.MODIFY, chainTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
@@ -1108,7 +1108,7 @@ public class ChainControl
             BasePK createdBy) {
         var chainEntityRoleType = ChainEntityRoleTypeFactory.getInstance().create();
         var chainEntityRoleTypeDetail = ChainEntityRoleTypeDetailFactory.getInstance().create(session, chainEntityRoleType, chainType,
-                chainEntityRoleTypeName, entityType, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                chainEntityRoleTypeName, entityType, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         chainEntityRoleType = ChainEntityRoleTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -1214,7 +1214,7 @@ public class ChainControl
                      chainEntityRoleTypeDetailValue.getChainEntityRoleTypePK());
             var chainEntityRoleTypeDetail = chainEntityRoleType.getActiveDetailForUpdate();
 
-            chainEntityRoleTypeDetail.setThruTime(session.START_TIME_LONG);
+            chainEntityRoleTypeDetail.setThruTime(session.getStartTime());
             chainEntityRoleTypeDetail.store();
 
             var chainEntityRoleTypePK = chainEntityRoleTypeDetail.getChainEntityRoleTypePK();
@@ -1225,7 +1225,7 @@ public class ChainControl
             var sortOrder = chainEntityRoleTypeDetailValue.getSortOrder();
 
             chainEntityRoleTypeDetail = ChainEntityRoleTypeDetailFactory.getInstance().create(chainEntityRoleTypePK, chainTypePK, chainEntityRoleTypeName,
-                    entityTypePK, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    entityTypePK, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             chainEntityRoleType.setActiveDetail(chainEntityRoleTypeDetail);
             chainEntityRoleType.setLastDetail(chainEntityRoleTypeDetail);
@@ -1239,7 +1239,7 @@ public class ChainControl
         deleteChainEntityRoleTypeDescriptionsByChainEntityRoleType(chainEntityRoleType, deletedBy);
 
         var chainEntityRoleTypeDetail = chainEntityRoleType.getLastDetailForUpdate();
-        chainEntityRoleTypeDetail.setThruTime(session.START_TIME_LONG);
+        chainEntityRoleTypeDetail.setThruTime(session.getStartTime());
         chainEntityRoleType.setActiveDetail(null);
         chainEntityRoleType.store();
 
@@ -1261,7 +1261,7 @@ public class ChainControl
     public ChainEntityRoleTypeDescription createChainEntityRoleTypeDescription(ChainEntityRoleType chainEntityRoleType, Language language, String description,
             BasePK createdBy) {
         var chainEntityRoleTypeDescription = ChainEntityRoleTypeDescriptionFactory.getInstance().create(chainEntityRoleType,
-                language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(chainEntityRoleType.getPrimaryKey(), EventTypes.MODIFY, chainEntityRoleTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -1374,7 +1374,7 @@ public class ChainControl
             var chainEntityRoleTypeDescription = ChainEntityRoleTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      chainEntityRoleTypeDescriptionValue.getPrimaryKey());
 
-            chainEntityRoleTypeDescription.setThruTime(session.START_TIME_LONG);
+            chainEntityRoleTypeDescription.setThruTime(session.getStartTime());
             chainEntityRoleTypeDescription.store();
 
             var chainEntityRoleType = chainEntityRoleTypeDescription.getChainEntityRoleType();
@@ -1382,14 +1382,14 @@ public class ChainControl
             var description = chainEntityRoleTypeDescriptionValue.getDescription();
 
             chainEntityRoleTypeDescription = ChainEntityRoleTypeDescriptionFactory.getInstance().create(chainEntityRoleType, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(chainEntityRoleType.getPrimaryKey(), EventTypes.MODIFY, chainEntityRoleTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteChainEntityRoleTypeDescription(ChainEntityRoleTypeDescription chainEntityRoleTypeDescription, BasePK deletedBy) {
-        chainEntityRoleTypeDescription.setThruTime(session.START_TIME_LONG);
+        chainEntityRoleTypeDescription.setThruTime(session.getStartTime());
 
         sendEvent(chainEntityRoleTypeDescription.getChainEntityRoleTypePK(), EventTypes.MODIFY, chainEntityRoleTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
@@ -1422,7 +1422,7 @@ public class ChainControl
 
         var chain = ChainFactory.getInstance().create();
         var chainDetail = ChainDetailFactory.getInstance().create(session, chain, chainType, chainName, chainInstanceSequence, isDefault, sortOrder,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         chain = ChainFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, chain.getPrimaryKey());
@@ -1631,7 +1631,7 @@ public class ChainControl
                      chainDetailValue.getChainPK());
             var chainDetail = chain.getActiveDetailForUpdate();
 
-            chainDetail.setThruTime(session.START_TIME_LONG);
+            chainDetail.setThruTime(session.getStartTime());
             chainDetail.store();
 
             var chainPK = chainDetail.getChainPK();
@@ -1659,7 +1659,7 @@ public class ChainControl
             }
 
             chainDetail = ChainDetailFactory.getInstance().create(chainPK, chainTypePK, chainName, chainInstanceSequencePK, isDefault, sortOrder,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             chain.setActiveDetail(chainDetail);
             chain.setLastDetail(chainDetail);
@@ -1683,7 +1683,7 @@ public class ChainControl
         deleteChainDescriptionsByChain(chain, deletedBy);
 
         var chainDetail = chain.getLastDetailForUpdate();
-        chainDetail.setThruTime(session.START_TIME_LONG);
+        chainDetail.setThruTime(session.getStartTime());
         chain.setActiveDetail(null);
         chain.store();
 
@@ -1729,7 +1729,7 @@ public class ChainControl
     public ChainDescription createChainDescription(Chain chain, Language language, String description,
             BasePK createdBy) {
         var chainDescription = ChainDescriptionFactory.getInstance().create(chain,
-                language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(chain.getPrimaryKey(), EventTypes.MODIFY, chainDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -1842,7 +1842,7 @@ public class ChainControl
             var chainDescription = ChainDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      chainDescriptionValue.getPrimaryKey());
 
-            chainDescription.setThruTime(session.START_TIME_LONG);
+            chainDescription.setThruTime(session.getStartTime());
             chainDescription.store();
 
             var chain = chainDescription.getChain();
@@ -1850,14 +1850,14 @@ public class ChainControl
             var description = chainDescriptionValue.getDescription();
 
             chainDescription = ChainDescriptionFactory.getInstance().create(chain, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(chain.getPrimaryKey(), EventTypes.MODIFY, chainDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteChainDescription(ChainDescription chainDescription, BasePK deletedBy) {
-        chainDescription.setThruTime(session.START_TIME_LONG);
+        chainDescription.setThruTime(session.getStartTime());
 
         sendEvent(chainDescription.getChainPK(), EventTypes.MODIFY, chainDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
@@ -1890,7 +1890,7 @@ public class ChainControl
 
         var chainActionSet = ChainActionSetFactory.getInstance().create();
         var chainActionSetDetail = ChainActionSetDetailFactory.getInstance().create(session, chainActionSet, chain, chainActionSetName,
-                isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         chainActionSet = ChainActionSetFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, chainActionSet.getPrimaryKey());
@@ -2065,7 +2065,7 @@ public class ChainControl
                      chainActionSetDetailValue.getChainActionSetPK());
             var chainActionSetDetail = chainActionSet.getActiveDetailForUpdate();
 
-            chainActionSetDetail.setThruTime(session.START_TIME_LONG);
+            chainActionSetDetail.setThruTime(session.getStartTime());
             chainActionSetDetail.store();
 
             var chainActionSetPK = chainActionSetDetail.getChainActionSetPK();
@@ -2092,7 +2092,7 @@ public class ChainControl
             }
 
             chainActionSetDetail = ChainActionSetDetailFactory.getInstance().create(chainActionSetPK, chainPK, chainActionSetName, isDefault, sortOrder,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             chainActionSet.setActiveDetail(chainActionSetDetail);
             chainActionSet.setLastDetail(chainActionSetDetail);
@@ -2111,7 +2111,7 @@ public class ChainControl
         deleteChainActionSetDescriptionsByChainActionSet(chainActionSet, deletedBy);
 
         var chainActionSetDetail = chainActionSet.getLastDetailForUpdate();
-        chainActionSetDetail.setThruTime(session.START_TIME_LONG);
+        chainActionSetDetail.setThruTime(session.getStartTime());
         chainActionSet.setActiveDetail(null);
         chainActionSet.store();
 
@@ -2152,7 +2152,7 @@ public class ChainControl
 
     public ChainActionSetDescription createChainActionSetDescription(ChainActionSet chainActionSet, Language language, String description, BasePK createdBy) {
         var chainActionSetDescription = ChainActionSetDescriptionFactory.getInstance().create(chainActionSet,
-                language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(chainActionSet.getPrimaryKey(), EventTypes.MODIFY, chainActionSetDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -2265,7 +2265,7 @@ public class ChainControl
             var chainActionSetDescription = ChainActionSetDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      chainActionSetDescriptionValue.getPrimaryKey());
 
-            chainActionSetDescription.setThruTime(session.START_TIME_LONG);
+            chainActionSetDescription.setThruTime(session.getStartTime());
             chainActionSetDescription.store();
 
             var chainActionSet = chainActionSetDescription.getChainActionSet();
@@ -2273,14 +2273,14 @@ public class ChainControl
             var description = chainActionSetDescriptionValue.getDescription();
 
             chainActionSetDescription = ChainActionSetDescriptionFactory.getInstance().create(chainActionSet, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(chainActionSet.getPrimaryKey(), EventTypes.MODIFY, chainActionSetDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteChainActionSetDescription(ChainActionSetDescription chainActionSetDescription, BasePK deletedBy) {
-        chainActionSetDescription.setThruTime(session.START_TIME_LONG);
+        chainActionSetDescription.setThruTime(session.getStartTime());
 
         sendEvent(chainActionSetDescription.getChainActionSetPK(), EventTypes.MODIFY, chainActionSetDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
@@ -2313,7 +2313,7 @@ public class ChainControl
 
         var chainActionType = ChainActionTypeFactory.getInstance().create();
         var chainActionTypeDetail = ChainActionTypeDetailFactory.getInstance().create(chainActionType, chainActionTypeName, allowMultiple,
-                isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         chainActionType = ChainActionTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -2482,7 +2482,7 @@ public class ChainControl
                 EntityPermission.READ_WRITE, chainActionTypeDetailValue.getChainActionTypePK());
         var chainActionTypeDetail = chainActionType.getActiveDetailForUpdate();
 
-        chainActionTypeDetail.setThruTime(session.START_TIME_LONG);
+        chainActionTypeDetail.setThruTime(session.getStartTime());
         chainActionTypeDetail.store();
 
         var chainActionTypePK = chainActionTypeDetail.getChainActionTypePK();
@@ -2508,7 +2508,7 @@ public class ChainControl
         }
 
         chainActionTypeDetail = ChainActionTypeDetailFactory.getInstance().create(chainActionTypePK, chainActionTypeName, allowMultiple, isDefault, sortOrder,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         chainActionType.setActiveDetail(chainActionTypeDetail);
         chainActionType.setLastDetail(chainActionTypeDetail);
@@ -2525,7 +2525,7 @@ public class ChainControl
         deleteChainActionTypeDescriptionsByChainActionType(chainActionType, deletedBy);
 
         var chainActionTypeDetail = chainActionType.getLastDetailForUpdate();
-        chainActionTypeDetail.setThruTime(session.START_TIME_LONG);
+        chainActionTypeDetail.setThruTime(session.getStartTime());
         chainActionType.setActiveDetail(null);
         chainActionType.store();
 
@@ -2556,7 +2556,7 @@ public class ChainControl
     public ChainActionTypeDescription createChainActionTypeDescription(ChainActionType chainActionType, Language language, String description,
             BasePK createdBy) {
         var chainActionTypeDescription = ChainActionTypeDescriptionFactory.getInstance().create(chainActionType,
-                language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(chainActionType.getPrimaryKey(), EventTypes.MODIFY, chainActionTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -2669,7 +2669,7 @@ public class ChainControl
             var chainActionTypeDescription = ChainActionTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      chainActionTypeDescriptionValue.getPrimaryKey());
 
-            chainActionTypeDescription.setThruTime(session.START_TIME_LONG);
+            chainActionTypeDescription.setThruTime(session.getStartTime());
             chainActionTypeDescription.store();
 
             var chainActionType = chainActionTypeDescription.getChainActionType();
@@ -2677,14 +2677,14 @@ public class ChainControl
             var description = chainActionTypeDescriptionValue.getDescription();
 
             chainActionTypeDescription = ChainActionTypeDescriptionFactory.getInstance().create(chainActionType, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(chainActionType.getPrimaryKey(), EventTypes.MODIFY, chainActionTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteChainActionTypeDescription(ChainActionTypeDescription chainActionTypeDescription, BasePK deletedBy) {
-        chainActionTypeDescription.setThruTime(session.START_TIME_LONG);
+        chainActionTypeDescription.setThruTime(session.getStartTime());
 
         sendEvent(chainActionTypeDescription.getChainActionTypePK(), EventTypes.MODIFY, chainActionTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
@@ -2734,8 +2734,8 @@ public class ChainControl
     public ChainAction createChainAction(ChainActionSet chainActionSet, String chainActionName, ChainActionType chainActionType, Integer sortOrder,
             BasePK createdBy) {
         var chainAction = ChainActionFactory.getInstance().create();
-        var chainActionDetail = ChainActionDetailFactory.getInstance().create(chainAction, chainActionSet, chainActionName, chainActionType, sortOrder, session.START_TIME_LONG,
-                Session.MAX_TIME_LONG);
+        var chainActionDetail = ChainActionDetailFactory.getInstance().create(chainAction, chainActionSet, chainActionName, chainActionType, sortOrder, session.getStartTime(),
+                Session.MAX_TIME);
 
         // Convert to R/W
         chainAction = ChainActionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, chainAction.getPrimaryKey());
@@ -2837,7 +2837,7 @@ public class ChainControl
             var chainAction = ChainActionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, chainActionDetailValue.getChainActionPK());
             var chainActionDetail = chainAction.getActiveDetailForUpdate();
 
-            chainActionDetail.setThruTime(session.START_TIME_LONG);
+            chainActionDetail.setThruTime(session.getStartTime());
             chainActionDetail.store();
 
             var chainActionPK = chainActionDetail.getChainActionPK(); // Not updated
@@ -2848,7 +2848,7 @@ public class ChainControl
             var sortOrder = chainActionDetailValue.getSortOrder();
 
             chainActionDetail = ChainActionDetailFactory.getInstance().create(chainActionPK, chainActionSetPK, chainActionName, chainActionTypePK, sortOrder,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             chainAction.setActiveDetail(chainActionDetail);
             chainAction.setLastDetail(chainActionDetail);
@@ -2871,7 +2871,7 @@ public class ChainControl
             deleteChainActionChainActionSet(getChainActionChainActionSetForUpdate(chainAction), deletedBy);
         }
         
-        chainActionDetail.setThruTime(session.START_TIME_LONG);
+        chainActionDetail.setThruTime(session.getStartTime());
         chainAction.setActiveDetail(null);
         chainAction.store();
 
@@ -2894,7 +2894,7 @@ public class ChainControl
     
     public ChainActionDescription createChainActionDescription(ChainAction chainAction, Language language, String description, BasePK createdBy) {
         var chainActionDescription = ChainActionDescriptionFactory.getInstance().create(chainAction,
-                language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(chainAction.getPrimaryKey(), EventTypes.MODIFY, chainActionDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -3007,7 +3007,7 @@ public class ChainControl
             var chainActionDescription = ChainActionDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      chainActionDescriptionValue.getPrimaryKey());
 
-            chainActionDescription.setThruTime(session.START_TIME_LONG);
+            chainActionDescription.setThruTime(session.getStartTime());
             chainActionDescription.store();
 
             var chainAction = chainActionDescription.getChainAction();
@@ -3015,14 +3015,14 @@ public class ChainControl
             var description = chainActionDescriptionValue.getDescription();
 
             chainActionDescription = ChainActionDescriptionFactory.getInstance().create(chainAction, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(chainAction.getPrimaryKey(), EventTypes.MODIFY, chainActionDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteChainActionDescription(ChainActionDescription chainActionDescription, BasePK deletedBy) {
-        chainActionDescription.setThruTime(session.START_TIME_LONG);
+        chainActionDescription.setThruTime(session.getStartTime());
 
         sendEvent(chainActionDescription.getChainActionPK(), EventTypes.MODIFY, chainActionDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
@@ -3041,8 +3041,8 @@ public class ChainControl
     // --------------------------------------------------------------------------------
     
     public ChainActionLetter createChainActionLetter(ChainAction chainAction, Letter letter, BasePK createdBy) {
-        var chainActionLetter = ChainActionLetterFactory.getInstance().create(chainAction, letter, session.START_TIME_LONG,
-                Session.MAX_TIME_LONG);
+        var chainActionLetter = ChainActionLetterFactory.getInstance().create(chainAction, letter, session.getStartTime(),
+                Session.MAX_TIME);
 
         sendEvent(chainAction.getPrimaryKey(), EventTypes.MODIFY, chainActionLetter.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -3105,21 +3105,21 @@ public class ChainControl
         if(chainActionLetterValue.hasBeenModified()) {
             var chainActionLetter = ChainActionLetterFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, chainActionLetterValue.getPrimaryKey());
 
-            chainActionLetter.setThruTime(session.START_TIME_LONG);
+            chainActionLetter.setThruTime(session.getStartTime());
             chainActionLetter.store();
 
             var chainAction = chainActionLetter.getChainAction();
             var letterPK = chainActionLetterValue.getLetterPK();
 
-            chainActionLetter = ChainActionLetterFactory.getInstance().create(chainAction.getPrimaryKey(), letterPK, session.START_TIME_LONG,
-                    Session.MAX_TIME_LONG);
+            chainActionLetter = ChainActionLetterFactory.getInstance().create(chainAction.getPrimaryKey(), letterPK, session.getStartTime(),
+                    Session.MAX_TIME);
 
             sendEvent(chainAction.getPrimaryKey(), EventTypes.MODIFY, chainActionLetter.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteChainActionLetter(ChainActionLetter chainActionLetter, BasePK deletedBy) {
-        chainActionLetter.setThruTime(session.START_TIME_LONG);
+        chainActionLetter.setThruTime(session.getStartTime());
 
         sendEvent(chainActionLetter.getChainActionPK(), EventTypes.MODIFY, chainActionLetter.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
@@ -3129,8 +3129,8 @@ public class ChainControl
     // --------------------------------------------------------------------------------
     
     public ChainActionSurvey createChainActionSurvey(ChainAction chainAction, Survey survey, BasePK createdBy) {
-        var chainActionSurvey = ChainActionSurveyFactory.getInstance().create(chainAction, survey, session.START_TIME_LONG,
-                Session.MAX_TIME_LONG);
+        var chainActionSurvey = ChainActionSurveyFactory.getInstance().create(chainAction, survey, session.getStartTime(),
+                Session.MAX_TIME);
 
         sendEvent(chainAction.getPrimaryKey(), EventTypes.MODIFY, chainActionSurvey.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -3193,21 +3193,21 @@ public class ChainControl
         if(chainActionSurveyValue.hasBeenModified()) {
             var chainActionSurvey = ChainActionSurveyFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, chainActionSurveyValue.getPrimaryKey());
 
-            chainActionSurvey.setThruTime(session.START_TIME_LONG);
+            chainActionSurvey.setThruTime(session.getStartTime());
             chainActionSurvey.store();
 
             var chainAction = chainActionSurvey.getChainAction();
             var surveyPK = chainActionSurveyValue.getSurveyPK();
 
-            chainActionSurvey = ChainActionSurveyFactory.getInstance().create(chainAction.getPrimaryKey(), surveyPK, session.START_TIME_LONG,
-                    Session.MAX_TIME_LONG);
+            chainActionSurvey = ChainActionSurveyFactory.getInstance().create(chainAction.getPrimaryKey(), surveyPK, session.getStartTime(),
+                    Session.MAX_TIME);
 
             sendEvent(chainAction.getPrimaryKey(), EventTypes.MODIFY, chainActionSurvey.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteChainActionSurvey(ChainActionSurvey chainActionSurvey, BasePK deletedBy) {
-        chainActionSurvey.setThruTime(session.START_TIME_LONG);
+        chainActionSurvey.setThruTime(session.getStartTime());
 
         sendEvent(chainActionSurvey.getChainActionPK(), EventTypes.MODIFY, chainActionSurvey.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
@@ -3217,8 +3217,8 @@ public class ChainControl
     // --------------------------------------------------------------------------------
     
     public ChainActionChainActionSet createChainActionChainActionSet(ChainAction chainAction, ChainActionSet nextChainActionSet, Long delayTime, BasePK createdBy) {
-        var chainActionChainActionSet = ChainActionChainActionSetFactory.getInstance().create(chainAction, nextChainActionSet, delayTime, session.START_TIME_LONG,
-                Session.MAX_TIME_LONG);
+        var chainActionChainActionSet = ChainActionChainActionSetFactory.getInstance().create(chainAction, nextChainActionSet, delayTime, session.getStartTime(),
+                Session.MAX_TIME);
 
         sendEvent(chainAction.getPrimaryKey(), EventTypes.MODIFY, chainActionChainActionSet.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -3282,22 +3282,22 @@ public class ChainControl
             var chainActionChainActionSet = ChainActionChainActionSetFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      chainActionChainActionSetValue.getPrimaryKey());
 
-            chainActionChainActionSet.setThruTime(session.START_TIME_LONG);
+            chainActionChainActionSet.setThruTime(session.getStartTime());
             chainActionChainActionSet.store();
 
             var chainAction = chainActionChainActionSet.getChainAction();
             var nextChainActionSetPK = chainActionChainActionSetValue.getNextChainActionSetPK();
             var delayTime = chainActionChainActionSetValue.getDelayTime();
 
-            chainActionChainActionSet = ChainActionChainActionSetFactory.getInstance().create(chainAction.getPrimaryKey(), nextChainActionSetPK, delayTime, session.START_TIME_LONG,
-                    Session.MAX_TIME_LONG);
+            chainActionChainActionSet = ChainActionChainActionSetFactory.getInstance().create(chainAction.getPrimaryKey(), nextChainActionSetPK, delayTime, session.getStartTime(),
+                    Session.MAX_TIME);
 
             sendEvent(chainAction.getPrimaryKey(), EventTypes.MODIFY, chainActionChainActionSet.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteChainActionChainActionSet(ChainActionChainActionSet chainActionChainActionSet, BasePK deletedBy) {
-        chainActionChainActionSet.setThruTime(session.START_TIME_LONG);
+        chainActionChainActionSet.setThruTime(session.getStartTime());
 
         sendEvent(chainActionChainActionSet.getChainActionPK(), EventTypes.MODIFY, chainActionChainActionSet.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
@@ -3309,7 +3309,7 @@ public class ChainControl
     public ChainInstance createChainInstance(String chainInstanceName, ChainActionSet defaultChainActionSet, BasePK createdBy) {
         var chainInstance = ChainInstanceFactory.getInstance().create();
         var chainInstanceDetail = ChainInstanceDetailFactory.getInstance().create(chainInstance,
-                chainInstanceName, defaultChainActionSet.getLastDetail().getChain(), session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                chainInstanceName, defaultChainActionSet.getLastDetail().getChain(), session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         chainInstance = ChainInstanceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -3440,7 +3440,7 @@ public class ChainControl
         deleteChainInstanceEntityRolesByChainInstance(chainInstance, deletedBy);
 
         var chainInstanceDetail = chainInstance.getLastDetailForUpdate();
-        chainInstanceDetail.setThruTime(session.START_TIME_LONG);
+        chainInstanceDetail.setThruTime(session.getStartTime());
         chainInstance.setActiveDetail(null);
         chainInstance.store();
         
@@ -3483,7 +3483,7 @@ public class ChainControl
     // --------------------------------------------------------------------------------
     
     public ChainInstanceStatus createChainInstanceStatus(ChainInstance chainInstance, ChainActionSet defaultChainActionSet) {
-        return createChainInstanceStatus(chainInstance, defaultChainActionSet, session.START_TIME_LONG);
+        return createChainInstanceStatus(chainInstance, defaultChainActionSet, session.getStartTime());
     }
     
     public ChainInstanceStatus createChainInstanceStatus(ChainInstance chainInstance, ChainActionSet nextChainActionSet, Long nextChainActionSetTime) {
@@ -3614,7 +3614,7 @@ public class ChainControl
     public ChainInstanceEntityRole createChainInstanceEntityRole(ChainInstance chainInstance, ChainEntityRoleType chainEntityRoleType,
             EntityInstance entityInstance, BasePK createdBy) {
         var chainInstanceEntityRole = ChainInstanceEntityRoleFactory.getInstance().create(session, chainInstance, chainEntityRoleType,
-                entityInstance, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                entityInstance, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(chainInstance.getPrimaryKey(), EventTypes.MODIFY, chainInstanceEntityRole.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -3850,7 +3850,7 @@ public class ChainControl
     }
     
     public void deleteChainInstanceEntityRole(ChainInstanceEntityRole chainInstanceEntityRole, BasePK deletedBy) {
-        chainInstanceEntityRole.setThruTime(session.START_TIME_LONG);
+        chainInstanceEntityRole.setThruTime(session.getStartTime());
         
         sendEvent(chainInstanceEntityRole.getChainInstancePK(), EventTypes.MODIFY, chainInstanceEntityRole.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }

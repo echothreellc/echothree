@@ -30,7 +30,7 @@ public abstract class BaseIdUtils {
         if(entityTime == null) {
             var session = ThreadSession.currentSession();
 
-            entityTime = eventControl.createEntityTime(entityInstance, session.START_TIME, null, null);
+            entityTime = eventControl.createEntityTime(entityInstance, session.getStartTime(), null, null);
         }
 
         return entityTime.getCreatedTime();

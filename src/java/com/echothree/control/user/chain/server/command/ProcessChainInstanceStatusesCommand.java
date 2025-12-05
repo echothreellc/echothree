@@ -19,7 +19,6 @@ package com.echothree.control.user.chain.server.command;
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.chain.server.logic.ChainInstanceStatusLogic;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseSimpleCommand;
@@ -55,7 +54,7 @@ public class ProcessChainInstanceStatusesCommand
         long chainInstanceStatusesProcessed = 0;
         var remainingTime = 2L * 60 * 1000; // 2 minutes
         
-        for(var chainInstanceStatus: chainControl.getChainInstanceStatusesByNextChainActionSetTimeForUpdate(session.START_TIME_LONG)) {
+        for(var chainInstanceStatus: chainControl.getChainInstanceStatusesByNextChainActionSetTimeForUpdate(session.getStartTime())) {
             var startTime = System.currentTimeMillis();
 
             chainInstanceStatusLogic.processChainInstanceStatus(session, chainControl, chainInstanceStatus, processedBy);

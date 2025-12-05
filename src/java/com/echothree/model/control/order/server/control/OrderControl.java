@@ -76,8 +76,8 @@ public class OrderControl
         var order = OrderFactory.getInstance().create();
         var orderDetail = OrderDetailFactory.getInstance().create(order, orderType, orderName, orderPriority,
                 currency, holdUntilComplete, allowBackorders, allowSubstitutions, allowCombiningShipments, term,
-                freeOnBoard, reference, description, cancellationPolicy, returnPolicy, taxable, session.START_TIME_LONG,
-                Session.MAX_TIME_LONG);
+                freeOnBoard, reference, description, cancellationPolicy, returnPolicy, taxable, session.getStartTime(),
+                Session.MAX_TIME);
         
         // Convert to R/W
         order = OrderFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, order.getPrimaryKey());
@@ -216,7 +216,7 @@ public class OrderControl
                 "WHERE ord_activedetailid = orddt_orderdetailid AND orddt_reference = ? " +
                 "AND ord_orderid = ordr_ord_orderid AND ordr_thrutime = ? AND ordr_par_partyid = ? " +
                 "AND ordr_ordrtyp_orderroletypeid = ordrtyp_orderroletypeid AND ordrtyp_orderroletypename = ?",
-                reference, Session.MAX_TIME_LONG, billToParty, OrderRoleTypes.BILL_TO.name());
+                reference, Session.MAX_TIME, billToParty, OrderRoleTypes.BILL_TO.name());
     }
 
     public OrderTransfer getOrderTransfer(UserVisit userVisit, Order order) {
@@ -229,7 +229,7 @@ public class OrderControl
             var order = OrderFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, orderDetailValue.getOrderPK());
             var orderDetail = order.getActiveDetailForUpdate();
             
-            orderDetail.setThruTime(session.START_TIME_LONG);
+            orderDetail.setThruTime(session.getStartTime());
             orderDetail.store();
 
             var orderPK = orderDetail.getOrderPK(); // Not updated
@@ -251,7 +251,7 @@ public class OrderControl
             
             orderDetail = OrderDetailFactory.getInstance().create(orderPK, orderTypePK, orderName, orderPriorityPK, currencyPK, holdUntilComplete,
                     allowBackorders, allowSubstitutions, allowCombiningShipments, termPK, freeOnBoardPK, reference, description, cancellationPolicyPK,
-                    returnPolicyPK, taxable, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    returnPolicyPK, taxable, session.getStartTime(), Session.MAX_TIME);
             
             order.setActiveDetail(orderDetail);
             order.setLastDetail(orderDetail);
@@ -281,7 +281,7 @@ public class OrderControl
             wishlistControl.deleteWishlistByOrder(order, deletedBy);
         }
         
-        orderDetail.setThruTime(session.START_TIME_LONG);
+        orderDetail.setThruTime(session.getStartTime());
         order.setActiveDetail(null);
         order.store();
         
@@ -361,7 +361,7 @@ public class OrderControl
     // --------------------------------------------------------------------------------
     
     public OrderUserVisit createOrderUserVisit(Order order, UserVisit userVisit) {
-        return OrderUserVisitFactory.getInstance().create(order, userVisit, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        return OrderUserVisitFactory.getInstance().create(order, userVisit, session.getStartTime(), Session.MAX_TIME);
     }
     
     private static final Map<EntityPermission, String> getOrderUserVisitQueries;
@@ -467,7 +467,7 @@ public class OrderControl
     }
     
     public void deleteOrderUserVisit(OrderUserVisit orderUserVisit) {
-        orderUserVisit.setThruTime(session.START_TIME_LONG);
+        orderUserVisit.setThruTime(session.getStartTime());
         orderUserVisit.store();
     }
     

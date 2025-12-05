@@ -258,7 +258,7 @@ public class UpdateIndexesCommand
                 var indexersMap = new HashMap<EntityType, List<BaseIndexer<?>>>(toIntExact(indexControl.countIndexes()));
 
                 try {
-                    var exitTime = session.START_TIME + MAXIMUM_MILLISECONDS;
+                    var exitTime = session.getStartTime() + MAXIMUM_MILLISECONDS;
 
                     setLimits();
 

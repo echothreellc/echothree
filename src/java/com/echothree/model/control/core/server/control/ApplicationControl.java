@@ -87,8 +87,8 @@ public class ApplicationControl
         }
 
         var application = ApplicationFactory.getInstance().create();
-        var applicationDetail = ApplicationDetailFactory.getInstance().create(application, applicationName, isDefault, sortOrder, session.START_TIME_LONG,
-                Session.MAX_TIME_LONG);
+        var applicationDetail = ApplicationDetailFactory.getInstance().create(application, applicationName, isDefault, sortOrder, session.getStartTime(),
+                Session.MAX_TIME);
 
         // Convert to R/W
         application = ApplicationFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, application.getPrimaryKey());
@@ -268,7 +268,7 @@ public class ApplicationControl
                     applicationDetailValue.getApplicationPK());
             var applicationDetail = application.getActiveDetailForUpdate();
 
-            applicationDetail.setThruTime(session.START_TIME_LONG);
+            applicationDetail.setThruTime(session.getStartTime());
             applicationDetail.store();
 
             var applicationPK = applicationDetail.getApplicationPK(); // Not updated
@@ -292,8 +292,8 @@ public class ApplicationControl
                 }
             }
 
-            applicationDetail = ApplicationDetailFactory.getInstance().create(applicationPK, applicationName, isDefault, sortOrder, session.START_TIME_LONG,
-                    Session.MAX_TIME_LONG);
+            applicationDetail = ApplicationDetailFactory.getInstance().create(applicationPK, applicationName, isDefault, sortOrder, session.getStartTime(),
+                    Session.MAX_TIME);
 
             application.setActiveDetail(applicationDetail);
             application.setLastDetail(applicationDetail);
@@ -313,7 +313,7 @@ public class ApplicationControl
         deleteApplicationEditorsByApplication(application, deletedBy);
         deleteApplicationEditorUsesByApplication(application, deletedBy);
 
-        applicationDetail.setThruTime(session.START_TIME_LONG);
+        applicationDetail.setThruTime(session.getStartTime());
         application.setActiveDetail(null);
         application.store();
 
@@ -358,7 +358,7 @@ public class ApplicationControl
 
     public ApplicationDescription createApplicationDescription(Application application, Language language, String description, BasePK createdBy) {
         var applicationDescription = ApplicationDescriptionFactory.getInstance().create(application, language, description,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(application.getPrimaryKey(), EventTypes.MODIFY, applicationDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -471,7 +471,7 @@ public class ApplicationControl
             var applicationDescription = ApplicationDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     applicationDescriptionValue.getPrimaryKey());
 
-            applicationDescription.setThruTime(session.START_TIME_LONG);
+            applicationDescription.setThruTime(session.getStartTime());
             applicationDescription.store();
 
             var application = applicationDescription.getApplication();
@@ -479,14 +479,14 @@ public class ApplicationControl
             var description = applicationDescriptionValue.getDescription();
 
             applicationDescription = ApplicationDescriptionFactory.getInstance().create(application, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(application.getPrimaryKey(), EventTypes.MODIFY, applicationDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteApplicationDescription(ApplicationDescription applicationDescription, BasePK deletedBy) {
-        applicationDescription.setThruTime(session.START_TIME_LONG);
+        applicationDescription.setThruTime(session.getStartTime());
 
         sendEvent(applicationDescription.getApplicationPK(), EventTypes.MODIFY, applicationDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
@@ -519,7 +519,7 @@ public class ApplicationControl
 
         var applicationEditor = ApplicationEditorFactory.getInstance().create();
         var applicationEditorDetail = ApplicationEditorDetailFactory.getInstance().create(applicationEditor, application, editor, isDefault,
-                sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         applicationEditor = ApplicationEditorFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, applicationEditor.getPrimaryKey());
@@ -739,7 +739,7 @@ public class ApplicationControl
                     applicationEditorDetailValue.getApplicationEditorPK());
             var applicationEditorDetail = applicationEditor.getActiveDetailForUpdate();
 
-            applicationEditorDetail.setThruTime(session.START_TIME_LONG);
+            applicationEditorDetail.setThruTime(session.getStartTime());
             applicationEditorDetail.store();
 
             var applicationEditorPK = applicationEditorDetail.getApplicationEditorPK(); // Not updated
@@ -766,7 +766,7 @@ public class ApplicationControl
             }
 
             applicationEditorDetail = ApplicationEditorDetailFactory.getInstance().create(applicationEditorPK, applicationPK, editorPK, isDefault, sortOrder,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             applicationEditor.setActiveDetail(applicationEditorDetail);
             applicationEditor.setLastDetail(applicationEditorDetail);
@@ -787,7 +787,7 @@ public class ApplicationControl
         deleteApplicationEditorUsesByDefaultApplicationEditor(applicationEditor, deletedBy);
         partyApplicationEditorUseControl.deletePartyApplicationEditorUsesByApplicationEditor(applicationEditor, deletedBy);
 
-        applicationEditorDetail.setThruTime(session.START_TIME_LONG);
+        applicationEditorDetail.setThruTime(session.getStartTime());
         applicationEditor.setActiveDetail(null);
         applicationEditor.store();
 
@@ -854,8 +854,8 @@ public class ApplicationControl
 
         var applicationEditorUse = ApplicationEditorUseFactory.getInstance().create();
         var applicationEditorUseDetail = ApplicationEditorUseDetailFactory.getInstance().create(applicationEditorUse, application,
-                applicationEditorUseName, defaultApplicationEditor, defaultHeight, defaultWidth, isDefault, sortOrder, session.START_TIME_LONG,
-                Session.MAX_TIME_LONG);
+                applicationEditorUseName, defaultApplicationEditor, defaultHeight, defaultWidth, isDefault, sortOrder, session.getStartTime(),
+                Session.MAX_TIME);
 
         // Convert to R/W
         applicationEditorUse = ApplicationEditorUseFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, applicationEditorUse.getPrimaryKey());
@@ -1073,7 +1073,7 @@ public class ApplicationControl
                     applicationEditorUseDetailValue.getApplicationEditorUsePK());
             var applicationEditorUseDetail = applicationEditorUse.getActiveDetailForUpdate();
 
-            applicationEditorUseDetail.setThruTime(session.START_TIME_LONG);
+            applicationEditorUseDetail.setThruTime(session.getStartTime());
             applicationEditorUseDetail.store();
 
             var applicationEditorUsePK = applicationEditorUseDetail.getApplicationEditorUsePK(); // Not updated
@@ -1103,7 +1103,7 @@ public class ApplicationControl
             }
 
             applicationEditorUseDetail = ApplicationEditorUseDetailFactory.getInstance().create(applicationEditorUsePK, applicationPK, applicationEditorUseName,
-                    defaultApplicationEditorPK, defaultHeight, defaultWidth, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    defaultApplicationEditorPK, defaultHeight, defaultWidth, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             applicationEditorUse.setActiveDetail(applicationEditorUseDetail);
             applicationEditorUse.setLastDetail(applicationEditorUseDetail);
@@ -1124,7 +1124,7 @@ public class ApplicationControl
         deleteApplicationEditorUseDescriptionsByApplicationEditorUse(applicationEditorUse, deletedBy);
         partyApplicationEditorUseControl.deletePartyApplicationEditorUsesByParty(applicationEditorUse, deletedBy);
 
-        applicationEditorUseDetail.setThruTime(session.START_TIME_LONG);
+        applicationEditorUseDetail.setThruTime(session.getStartTime());
         applicationEditorUse.setActiveDetail(null);
         applicationEditorUse.store();
 
@@ -1178,7 +1178,7 @@ public class ApplicationControl
     public ApplicationEditorUseDescription createApplicationEditorUseDescription(ApplicationEditorUse applicationEditorUse, Language language,
             String description, BasePK createdBy) {
         var applicationEditorUseDescription = ApplicationEditorUseDescriptionFactory.getInstance().create(applicationEditorUse,
-                language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(applicationEditorUse.getPrimaryKey(), EventTypes.MODIFY, applicationEditorUseDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -1291,7 +1291,7 @@ public class ApplicationControl
             var applicationEditorUseDescription = ApplicationEditorUseDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     applicationEditorUseDescriptionValue.getPrimaryKey());
 
-            applicationEditorUseDescription.setThruTime(session.START_TIME_LONG);
+            applicationEditorUseDescription.setThruTime(session.getStartTime());
             applicationEditorUseDescription.store();
 
             var applicationEditorUse = applicationEditorUseDescription.getApplicationEditorUse();
@@ -1299,14 +1299,14 @@ public class ApplicationControl
             var description = applicationEditorUseDescriptionValue.getDescription();
 
             applicationEditorUseDescription = ApplicationEditorUseDescriptionFactory.getInstance().create(applicationEditorUse, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(applicationEditorUse.getPrimaryKey(), EventTypes.MODIFY, applicationEditorUseDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteApplicationEditorUseDescription(ApplicationEditorUseDescription applicationEditorUseDescription, BasePK deletedBy) {
-        applicationEditorUseDescription.setThruTime(session.START_TIME_LONG);
+        applicationEditorUseDescription.setThruTime(session.getStartTime());
 
         sendEvent(applicationEditorUseDescription.getApplicationEditorUsePK(), EventTypes.MODIFY, applicationEditorUseDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 

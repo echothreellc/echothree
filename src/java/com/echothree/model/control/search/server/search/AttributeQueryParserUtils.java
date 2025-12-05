@@ -161,7 +161,7 @@ public class AttributeQueryParserUtils
         ZonedDateTime zdt = null;
         
         if(fieldValue.equalsIgnoreCase("TODAY")) {
-            zdt = ZonedDateTime.ofInstant(Instant.ofEpochMilli(ThreadSession.currentSession().START_TIME), zoneId);
+            zdt = ZonedDateTime.ofInstant(Instant.ofEpochMilli(ThreadSession.currentSession().getStartTime()), zoneId);
         } else {
             var javaShortDateFormat = DateTimeFormatter.ofPattern(dateTimeFormatDetail.getJavaShortDateFormat()).withZone(zoneId);
 
@@ -183,7 +183,7 @@ public class AttributeQueryParserUtils
         Long result = null;
         
         if(fieldValue.equalsIgnoreCase("NOW")) {
-            result = ThreadSession.currentSession().START_TIME_LONG;
+            result = ThreadSession.currentSession().getStartTime();
         } else {
             var dateTimeFormatDetail = getUserControl().getPreferredDateTimeFormatFromUserVisit(userVisit).getLastDetail();
             var zoneId = ZoneId.of(getUserControl().getPreferredTimeZoneFromUserVisit(userVisit).getLastDetail().getJavaTimeZoneName());

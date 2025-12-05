@@ -34,7 +34,7 @@ public class CachedSearchToInvalidateQuery
     }
     
     public List<CachedSearchToInvalidateResult> execute(Index index) {
-        return super.execute(index, Session.MAX_TIME_LONG);
+        return super.execute(index, Session.MAX_TIME);
     }
     
 }

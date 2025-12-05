@@ -67,8 +67,8 @@ public class ShippingControl
             BasePK createdBy) {
         var shippingMethod = ShippingMethodFactory.getInstance().create();
         var shippingMethodDetail = ShippingMethodDetailFactory.getInstance().create(session,
-                shippingMethod, shippingMethodName, geoCodeSelector, itemSelector, sortOrder, session.START_TIME_LONG,
-                Session.MAX_TIME_LONG);
+                shippingMethod, shippingMethodName, geoCodeSelector, itemSelector, sortOrder, session.getStartTime(),
+                Session.MAX_TIME);
         
         // Convert to R/W
         shippingMethod = ShippingMethodFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -274,7 +274,7 @@ public class ShippingControl
                      shippingMethodDetailValue.getShippingMethodPK());
             var shippingMethodDetail = shippingMethod.getActiveDetailForUpdate();
             
-            shippingMethodDetail.setThruTime(session.START_TIME_LONG);
+            shippingMethodDetail.setThruTime(session.getStartTime());
             shippingMethodDetail.store();
 
             var shippingMethodPK = shippingMethodDetail.getShippingMethodPK();
@@ -284,7 +284,7 @@ public class ShippingControl
             var sortOrder = shippingMethodDetailValue.getSortOrder();
             
             shippingMethodDetail = ShippingMethodDetailFactory.getInstance().create(shippingMethodPK, shippingMethodName,
-                    geoCodeSelectorPK, itemSelectorPK, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    geoCodeSelectorPK, itemSelectorPK, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             shippingMethod.setActiveDetail(shippingMethodDetail);
             shippingMethod.setLastDetail(shippingMethodDetail);
@@ -307,7 +307,7 @@ public class ShippingControl
         deleteShippingMethodCarrierServicesByShippingMethod(shippingMethod, deletedBy);
 
         var shippingMethodDetail = shippingMethod.getLastDetailForUpdate();
-        shippingMethodDetail.setThruTime(session.START_TIME_LONG);
+        shippingMethodDetail.setThruTime(session.getStartTime());
         shippingMethod.setActiveDetail(null);
         shippingMethod.store();
         
@@ -321,7 +321,7 @@ public class ShippingControl
     public ShippingMethodDescription createShippingMethodDescription(ShippingMethod shippingMethod, Language language, String description,
             BasePK createdBy) {
         var shippingMethodDescription = ShippingMethodDescriptionFactory.getInstance().create(shippingMethod,
-                language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(shippingMethod.getPrimaryKey(), EventTypes.MODIFY, shippingMethodDescription.getPrimaryKey(),
                 EventTypes.CREATE, createdBy);
@@ -452,7 +452,7 @@ public class ShippingControl
             var shippingMethodDescription = ShippingMethodDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      shippingMethodDescriptionValue.getPrimaryKey());
             
-            shippingMethodDescription.setThruTime(session.START_TIME_LONG);
+            shippingMethodDescription.setThruTime(session.getStartTime());
             shippingMethodDescription.store();
 
             var shippingMethod = shippingMethodDescription.getShippingMethod();
@@ -460,7 +460,7 @@ public class ShippingControl
             var description = shippingMethodDescriptionValue.getDescription();
             
             shippingMethodDescription = ShippingMethodDescriptionFactory.getInstance().create(shippingMethod, language,
-                    description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(shippingMethod.getPrimaryKey(), EventTypes.MODIFY, shippingMethodDescription.getPrimaryKey(),
                     EventTypes.MODIFY, updatedBy);
@@ -468,7 +468,7 @@ public class ShippingControl
     }
     
     public void deleteShippingMethodDescription(ShippingMethodDescription shippingMethodDescription, BasePK deletedBy) {
-        shippingMethodDescription.setThruTime(session.START_TIME_LONG);
+        shippingMethodDescription.setThruTime(session.getStartTime());
         
         sendEvent(shippingMethodDescription.getShippingMethodPK(), EventTypes.MODIFY,
                 shippingMethodDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
@@ -489,7 +489,7 @@ public class ShippingControl
     public ShippingMethodCarrierService createShippingMethodCarrierService(ShippingMethod shippingMethod, CarrierService carrierService,
             BasePK createdBy) {
         var shippingMethodCarrierService = ShippingMethodCarrierServiceFactory.getInstance().create(session,
-                shippingMethod, carrierService, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                shippingMethod, carrierService, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(shippingMethod.getPrimaryKey(), EventTypes.MODIFY, shippingMethodCarrierService.getPrimaryKey(),
                 EventTypes.CREATE, createdBy);
@@ -652,7 +652,7 @@ public class ShippingControl
     }
     
     public void deleteShippingMethodCarrierService(ShippingMethodCarrierService shippingMethodCarrierService, BasePK deletedBy) {
-        shippingMethodCarrierService.setThruTime(session.START_TIME_LONG);
+        shippingMethodCarrierService.setThruTime(session.getStartTime());
         
         sendEvent(shippingMethodCarrierService.getShippingMethod().getPrimaryKey(), EventTypes.MODIFY,
                 shippingMethodCarrierService.getPrimaryKey(), EventTypes.DELETE, deletedBy);

@@ -44,7 +44,7 @@ public class EntityListItemAttributeFacetQuery
     }
     
     public List<EntityListItemAttributeFacetResult> execute(EntityAttribute entityAttribute) {
-        return super.execute(cachedExecutedSearch == null ? search : cachedExecutedSearch, entityAttribute, Session.MAX_TIME_LONG);
+        return super.execute(cachedExecutedSearch == null ? search : cachedExecutedSearch, entityAttribute, Session.MAX_TIME);
     }
     
 }

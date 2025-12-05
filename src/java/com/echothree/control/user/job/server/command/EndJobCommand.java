@@ -64,7 +64,7 @@ public class EndJobCommand
         if(job != null) {
             var jobStatus = jobControl.getJobStatusForUpdate(job);
             
-            jobStatus.setLastEndTime(session.START_TIME);
+            jobStatus.setLastEndTime(session.getStartTime());
         } else {
             addExecutionError(ExecutionErrors.UnknownJobName.name(), jobName);
         }

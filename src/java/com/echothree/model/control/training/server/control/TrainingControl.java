@@ -235,8 +235,8 @@ public class TrainingControl
         var trainingClass = TrainingClassFactory.getInstance().create();
         var trainingClassDetail = TrainingClassDetailFactory.getInstance().create(trainingClass, trainingClassName, estimatedReadingTime,
                 readingTimeAllowed, estimatedTestingTime, testingTimeAllowed, requiredCompletionTime, workEffortScope, defaultPercentageToPass,
-                overallQuestionCount, testingValidityTime, expiredRetentionTime, alwaysReassignOnExpiration, isDefault, sortOrder, session.START_TIME_LONG,
-                Session.MAX_TIME_LONG);
+                overallQuestionCount, testingValidityTime, expiredRetentionTime, alwaysReassignOnExpiration, isDefault, sortOrder, session.getStartTime(),
+                Session.MAX_TIME);
         
         // Convert to R/W
         trainingClass = TrainingClassFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, trainingClass.getPrimaryKey());
@@ -415,7 +415,7 @@ public class TrainingControl
                      trainingClassDetailValue.getTrainingClassPK());
             var trainingClassDetail = trainingClass.getActiveDetailForUpdate();
             
-            trainingClassDetail.setThruTime(session.START_TIME_LONG);
+            trainingClassDetail.setThruTime(session.getStartTime());
             trainingClassDetail.store();
 
             var trainingClassPK = trainingClassDetail.getTrainingClassPK();
@@ -452,7 +452,7 @@ public class TrainingControl
             
             trainingClassDetail = TrainingClassDetailFactory.getInstance().create(trainingClassPK, trainingClassName, estimatedReadingTime, readingTimeAllowed,
                     estimatedTestingTime, testingTimeAllowed, requiredCompletionTime, workEffortScopePK, defaultPercentageToPass, overallQuestionCount,
-                    testingValidityTime, expiredRetentionTime, alwaysReassignOnExpiration, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    testingValidityTime, expiredRetentionTime, alwaysReassignOnExpiration, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             trainingClass.setActiveDetail(trainingClassDetail);
             trainingClass.setLastDetail(trainingClassDetail);
@@ -471,7 +471,7 @@ public class TrainingControl
         PartySecurityRoleTemplateLogic.getInstance().deletePartySecurityRoleTemplateTrainingClassesByTrainingClass(trainingClass, deletedBy);
 
         var trainingClassDetail = trainingClass.getLastDetailForUpdate();
-        trainingClassDetail.setThruTime(session.START_TIME_LONG);
+        trainingClassDetail.setThruTime(session.getStartTime());
         trainingClass.setActiveDetail(null);
         trainingClass.store();
         
@@ -502,7 +502,7 @@ public class TrainingControl
     public TrainingClassTranslation createTrainingClassTranslation(TrainingClass trainingClass, Language language, String description, MimeType overviewMimeType,
             String overview, MimeType introductionMimeType, String introduction, BasePK createdBy) {
         var trainingClassTranslation = TrainingClassTranslationFactory.getInstance().create(trainingClass, language, description,
-                overviewMimeType, overview, introductionMimeType, introduction, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                overviewMimeType, overview, introductionMimeType, introduction, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(trainingClass.getPrimaryKey(), EventTypes.MODIFY, trainingClassTranslation.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -609,7 +609,7 @@ public class TrainingControl
             var trainingClassTranslation = TrainingClassTranslationFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     trainingClassTranslationValue.getPrimaryKey());
             
-            trainingClassTranslation.setThruTime(session.START_TIME_LONG);
+            trainingClassTranslation.setThruTime(session.getStartTime());
             trainingClassTranslation.store();
 
             var trainingClassPK = trainingClassTranslation.getTrainingClassPK();
@@ -621,14 +621,14 @@ public class TrainingControl
             var introduction = trainingClassTranslationValue.getIntroduction();
             
             trainingClassTranslation = TrainingClassTranslationFactory.getInstance().create(trainingClassPK, languagePK, description, overviewMimeTypePK,
-                    overview, introductionMimeTypePK, introduction, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    overview, introductionMimeTypePK, introduction, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(trainingClassPK, EventTypes.MODIFY, trainingClassTranslation.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteTrainingClassTranslation(TrainingClassTranslation trainingClassTranslation, BasePK deletedBy) {
-        trainingClassTranslation.setThruTime(session.START_TIME_LONG);
+        trainingClassTranslation.setThruTime(session.getStartTime());
         
         sendEvent(trainingClassTranslation.getTrainingClassPK(), EventTypes.MODIFY, trainingClassTranslation.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
@@ -650,7 +650,7 @@ public class TrainingControl
             Integer questionCount, Integer sortOrder, BasePK createdBy) {
         var trainingClassSection = TrainingClassSectionFactory.getInstance().create();
         var trainingClassSectionDetail = TrainingClassSectionDetailFactory.getInstance().create(trainingClassSection, trainingClass,
-                trainingClassSectionName, percentageToPass, questionCount, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                trainingClassSectionName, percentageToPass, questionCount, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         trainingClassSection = TrainingClassSectionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, trainingClassSection.getPrimaryKey());
@@ -760,7 +760,7 @@ public class TrainingControl
                      trainingClassSectionDetailValue.getTrainingClassSectionPK());
             var trainingClassSectionDetail = trainingClassSection.getActiveDetailForUpdate();
             
-            trainingClassSectionDetail.setThruTime(session.START_TIME_LONG);
+            trainingClassSectionDetail.setThruTime(session.getStartTime());
             trainingClassSectionDetail.store();
 
             var trainingClassSectionPK = trainingClassSectionDetail.getTrainingClassSectionPK(); // Not updated
@@ -771,7 +771,7 @@ public class TrainingControl
             var sortOrder = trainingClassSectionDetailValue.getSortOrder();
             
             trainingClassSectionDetail = TrainingClassSectionDetailFactory.getInstance().create(trainingClassSectionPK, trainingClassPK,
-                    trainingClassSectionName, percentageToPass, questionCount, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    trainingClassSectionName, percentageToPass, questionCount, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             trainingClassSection.setActiveDetail(trainingClassSectionDetail);
             trainingClassSection.setLastDetail(trainingClassSectionDetail);
@@ -787,7 +787,7 @@ public class TrainingControl
         deletePartyTrainingClassSessionSectionsByTrainingClassSection(trainingClassSection, deletedBy);
 
         var trainingClassSectionDetail = trainingClassSection.getLastDetailForUpdate();
-        trainingClassSectionDetail.setThruTime(session.START_TIME_LONG);
+        trainingClassSectionDetail.setThruTime(session.getStartTime());
         trainingClassSection.setActiveDetail(null);
         trainingClassSection.store();
         
@@ -811,7 +811,7 @@ public class TrainingControl
     public TrainingClassSectionTranslation createTrainingClassSectionTranslation(TrainingClassSection trainingClassSection, Language language,
             String description, MimeType overviewMimeType, String overview, MimeType introductionMimeType, String introduction, BasePK createdBy) {
         var trainingClassSectionTranslation = TrainingClassSectionTranslationFactory.getInstance().create(trainingClassSection,
-                language, description, overviewMimeType, overview, introductionMimeType, introduction, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                language, description, overviewMimeType, overview, introductionMimeType, introduction, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(trainingClassSection.getPrimaryKey(), EventTypes.MODIFY, trainingClassSectionTranslation.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -918,7 +918,7 @@ public class TrainingControl
             var trainingClassSectionTranslation = TrainingClassSectionTranslationFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     trainingClassSectionTranslationValue.getPrimaryKey());
             
-            trainingClassSectionTranslation.setThruTime(session.START_TIME_LONG);
+            trainingClassSectionTranslation.setThruTime(session.getStartTime());
             trainingClassSectionTranslation.store();
 
             var trainingClassSectionPK = trainingClassSectionTranslation.getTrainingClassSectionPK();
@@ -930,14 +930,14 @@ public class TrainingControl
             var introduction = trainingClassSectionTranslationValue.getIntroduction();
             
             trainingClassSectionTranslation = TrainingClassSectionTranslationFactory.getInstance().create(trainingClassSectionPK, languagePK, description,
-                    overviewMimeTypePK, overview, introductionMimeTypePK, introduction, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    overviewMimeTypePK, overview, introductionMimeTypePK, introduction, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(trainingClassSectionPK, EventTypes.MODIFY, trainingClassSectionTranslation.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteTrainingClassSectionTranslation(TrainingClassSectionTranslation trainingClassSectionTranslation, BasePK deletedBy) {
-        trainingClassSectionTranslation.setThruTime(session.START_TIME_LONG);
+        trainingClassSectionTranslation.setThruTime(session.getStartTime());
         
         sendEvent(trainingClassSectionTranslation.getTrainingClassSectionPK(), EventTypes.MODIFY, trainingClassSectionTranslation.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
@@ -959,7 +959,7 @@ public class TrainingControl
             BasePK createdBy) {
         var trainingClassPage = TrainingClassPageFactory.getInstance().create();
         var trainingClassPageDetail = TrainingClassPageDetailFactory.getInstance().create(trainingClassPage, trainingClassSection,
-                trainingClassPageName, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                trainingClassPageName, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         trainingClassPage = TrainingClassPageFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, trainingClassPage.getPrimaryKey());
@@ -1091,7 +1091,7 @@ public class TrainingControl
                      trainingClassPageDetailValue.getTrainingClassPagePK());
             var trainingClassPageDetail = trainingClassPage.getActiveDetailForUpdate();
             
-            trainingClassPageDetail.setThruTime(session.START_TIME_LONG);
+            trainingClassPageDetail.setThruTime(session.getStartTime());
             trainingClassPageDetail.store();
 
             var trainingClassPagePK = trainingClassPageDetail.getTrainingClassPagePK(); // Not updated
@@ -1100,7 +1100,7 @@ public class TrainingControl
             var sortOrder = trainingClassPageDetailValue.getSortOrder();
             
             trainingClassPageDetail = TrainingClassPageDetailFactory.getInstance().create(trainingClassPagePK, trainingClassSectionPK, trainingClassPageName,
-                    sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             trainingClassPage.setActiveDetail(trainingClassPageDetail);
             trainingClassPage.setLastDetail(trainingClassPageDetail);
@@ -1114,7 +1114,7 @@ public class TrainingControl
         deletePartyTrainingClassSessionPagesByTrainingClassPage(trainingClassPage, deletedBy);
 
         var trainingClassPageDetail = trainingClassPage.getLastDetailForUpdate();
-        trainingClassPageDetail.setThruTime(session.START_TIME_LONG);
+        trainingClassPageDetail.setThruTime(session.getStartTime());
         trainingClassPage.setActiveDetail(null);
         trainingClassPage.store();
         
@@ -1138,7 +1138,7 @@ public class TrainingControl
     public TrainingClassPageTranslation createTrainingClassPageTranslation(TrainingClassPage trainingClassPage, Language language, String description,
             MimeType pageMimeType, String page, BasePK createdBy) {
         var trainingClassPageTranslation = TrainingClassPageTranslationFactory.getInstance().create(trainingClassPage, language,
-                description, pageMimeType, page, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                description, pageMimeType, page, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(trainingClassPage.getPrimaryKey(), EventTypes.MODIFY, trainingClassPageTranslation.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1247,7 +1247,7 @@ public class TrainingControl
             var trainingClassPageTranslation = TrainingClassPageTranslationFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     trainingClassPageTranslationValue.getPrimaryKey());
             
-            trainingClassPageTranslation.setThruTime(session.START_TIME_LONG);
+            trainingClassPageTranslation.setThruTime(session.getStartTime());
             trainingClassPageTranslation.store();
 
             var trainingClassPagePK = trainingClassPageTranslation.getTrainingClassPagePK();
@@ -1257,14 +1257,14 @@ public class TrainingControl
             var page = trainingClassPageTranslationValue.getPage();
             
             trainingClassPageTranslation = TrainingClassPageTranslationFactory.getInstance().create(trainingClassPagePK, languagePK, description,
-                    pageMimeTypePK, page, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    pageMimeTypePK, page, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(trainingClassPagePK, EventTypes.MODIFY, trainingClassPageTranslation.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteTrainingClassPageTranslation(TrainingClassPageTranslation trainingClassPageTranslation, BasePK deletedBy) {
-        trainingClassPageTranslation.setThruTime(session.START_TIME_LONG);
+        trainingClassPageTranslation.setThruTime(session.getStartTime());
         
         sendEvent(trainingClassPageTranslation.getTrainingClassPagePK(), EventTypes.MODIFY, trainingClassPageTranslation.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
@@ -1286,7 +1286,7 @@ public class TrainingControl
             Boolean passingRequired, Integer sortOrder, BasePK createdBy) {
         var trainingClassQuestion = TrainingClassQuestionFactory.getInstance().create();
         var trainingClassQuestionDetail = TrainingClassQuestionDetailFactory.getInstance().create(trainingClassQuestion,
-                trainingClassSection, trainingClassQuestionName, askingRequired, passingRequired, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                trainingClassSection, trainingClassQuestionName, askingRequired, passingRequired, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         trainingClassQuestion = TrainingClassQuestionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, trainingClassQuestion.getPrimaryKey());
@@ -1419,7 +1419,7 @@ public class TrainingControl
                      trainingClassQuestionDetailValue.getTrainingClassQuestionPK());
             var trainingClassQuestionDetail = trainingClassQuestion.getActiveDetailForUpdate();
             
-            trainingClassQuestionDetail.setThruTime(session.START_TIME_LONG);
+            trainingClassQuestionDetail.setThruTime(session.getStartTime());
             trainingClassQuestionDetail.store();
 
             var trainingClassQuestionPK = trainingClassQuestionDetail.getTrainingClassQuestionPK(); // Not updated
@@ -1430,7 +1430,7 @@ public class TrainingControl
             var sortOrder = trainingClassQuestionDetailValue.getSortOrder();
             
             trainingClassQuestionDetail = TrainingClassQuestionDetailFactory.getInstance().create(trainingClassQuestionPK, trainingClassSectionPK,
-                    trainingClassQuestionName, askingRequired, passingRequired, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    trainingClassQuestionName, askingRequired, passingRequired, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             trainingClassQuestion.setActiveDetail(trainingClassQuestionDetail);
             trainingClassQuestion.setLastDetail(trainingClassQuestionDetail);
@@ -1445,7 +1445,7 @@ public class TrainingControl
         deletePartyTrainingClassSessionQuestionsByTrainingClassQuestion(trainingClassQuestion, deletedBy);
 
         var trainingClassQuestionDetail = trainingClassQuestion.getLastDetailForUpdate();
-        trainingClassQuestionDetail.setThruTime(session.START_TIME_LONG);
+        trainingClassQuestionDetail.setThruTime(session.getStartTime());
         trainingClassQuestion.setActiveDetail(null);
         trainingClassQuestion.store();
         
@@ -1469,7 +1469,7 @@ public class TrainingControl
     public TrainingClassQuestionTranslation createTrainingClassQuestionTranslation(TrainingClassQuestion trainingClassQuestion, Language language,
             MimeType questionMimeType, String question, BasePK createdBy) {
         var trainingClassQuestionTranslation = TrainingClassQuestionTranslationFactory.getInstance().create(trainingClassQuestion,
-                language, questionMimeType, question, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                language, questionMimeType, question, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(trainingClassQuestion.getPrimaryKey(), EventTypes.MODIFY, trainingClassQuestionTranslation.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1578,7 +1578,7 @@ public class TrainingControl
         if(trainingClassQuestionTranslationValue.hasBeenModified()) {
             var trainingClassQuestionTranslation = TrainingClassQuestionTranslationFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, trainingClassQuestionTranslationValue.getPrimaryKey());
             
-            trainingClassQuestionTranslation.setThruTime(session.START_TIME_LONG);
+            trainingClassQuestionTranslation.setThruTime(session.getStartTime());
             trainingClassQuestionTranslation.store();
 
             var trainingClassQuestionPK = trainingClassQuestionTranslation.getTrainingClassQuestionPK();
@@ -1587,14 +1587,14 @@ public class TrainingControl
             var question = trainingClassQuestionTranslationValue.getQuestion();
             
             trainingClassQuestionTranslation = TrainingClassQuestionTranslationFactory.getInstance().create(trainingClassQuestionPK, languagePK,
-                    questionMimeTypePK, question, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    questionMimeTypePK, question, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(trainingClassQuestionPK, EventTypes.MODIFY, trainingClassQuestionTranslation.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteTrainingClassQuestionTranslation(TrainingClassQuestionTranslation trainingClassQuestionTranslation, BasePK deletedBy) {
-        trainingClassQuestionTranslation.setThruTime(session.START_TIME_LONG);
+        trainingClassQuestionTranslation.setThruTime(session.getStartTime());
         
         sendEvent(trainingClassQuestionTranslation.getTrainingClassQuestionPK(), EventTypes.MODIFY, trainingClassQuestionTranslation.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
@@ -1616,7 +1616,7 @@ public class TrainingControl
             Integer sortOrder, BasePK createdBy) {
         var trainingClassAnswer = TrainingClassAnswerFactory.getInstance().create();
         var trainingClassAnswerDetail = TrainingClassAnswerDetailFactory.getInstance().create(trainingClassAnswer, trainingClassQuestion,
-                trainingClassAnswerName, isCorrect, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                trainingClassAnswerName, isCorrect, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         trainingClassAnswer = TrainingClassAnswerFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, trainingClassAnswer.getPrimaryKey());
@@ -1725,7 +1725,7 @@ public class TrainingControl
                      trainingClassAnswerDetailValue.getTrainingClassAnswerPK());
             var trainingClassAnswerDetail = trainingClassAnswer.getActiveDetailForUpdate();
             
-            trainingClassAnswerDetail.setThruTime(session.START_TIME_LONG);
+            trainingClassAnswerDetail.setThruTime(session.getStartTime());
             trainingClassAnswerDetail.store();
 
             var trainingClassAnswerPK = trainingClassAnswerDetail.getTrainingClassAnswerPK(); // Not updated
@@ -1735,7 +1735,7 @@ public class TrainingControl
             var sortOrder = trainingClassAnswerDetailValue.getSortOrder();
             
             trainingClassAnswerDetail = TrainingClassAnswerDetailFactory.getInstance().create(trainingClassAnswerPK, trainingClassQuestionPK,
-                    trainingClassAnswerName, isCorrect, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    trainingClassAnswerName, isCorrect, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             trainingClassAnswer.setActiveDetail(trainingClassAnswerDetail);
             trainingClassAnswer.setLastDetail(trainingClassAnswerDetail);
@@ -1749,7 +1749,7 @@ public class TrainingControl
         deletePartyTrainingClassSessionAnswersByTrainingClassAnswer(trainingClassAnswer, deletedBy);
 
         var trainingClassAnswerDetail = trainingClassAnswer.getLastDetailForUpdate();
-        trainingClassAnswerDetail.setThruTime(session.START_TIME_LONG);
+        trainingClassAnswerDetail.setThruTime(session.getStartTime());
         trainingClassAnswer.setActiveDetail(null);
         trainingClassAnswer.store();
         
@@ -1773,7 +1773,7 @@ public class TrainingControl
     public TrainingClassAnswerTranslation createTrainingClassAnswerTranslation(TrainingClassAnswer trainingClassAnswer, Language language,
             MimeType answerMimeType, String answer, MimeType selectedMimeType, String selected, BasePK createdBy) {
         var trainingClassAnswerTranslation = TrainingClassAnswerTranslationFactory.getInstance().create(trainingClassAnswer,
-                language, answerMimeType, answer, selectedMimeType, selected, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                language, answerMimeType, answer, selectedMimeType, selected, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(trainingClassAnswer.getPrimaryKey(), EventTypes.MODIFY, trainingClassAnswerTranslation.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1881,7 +1881,7 @@ public class TrainingControl
             var trainingClassAnswerTranslation = TrainingClassAnswerTranslationFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     trainingClassAnswerTranslationValue.getPrimaryKey());
             
-            trainingClassAnswerTranslation.setThruTime(session.START_TIME_LONG);
+            trainingClassAnswerTranslation.setThruTime(session.getStartTime());
             trainingClassAnswerTranslation.store();
 
             var trainingClassAnswerPK = trainingClassAnswerTranslation.getTrainingClassAnswerPK();
@@ -1892,14 +1892,14 @@ public class TrainingControl
             var selected = trainingClassAnswerTranslationValue.getSelected();
             
             trainingClassAnswerTranslation = TrainingClassAnswerTranslationFactory.getInstance().create(trainingClassAnswerPK, languagePK, answerMimeTypePK,
-                    answer, selectedMimeTypePK, selected, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    answer, selectedMimeTypePK, selected, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(trainingClassAnswerPK, EventTypes.MODIFY, trainingClassAnswerTranslation.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteTrainingClassAnswerTranslation(TrainingClassAnswerTranslation trainingClassAnswerTranslation, BasePK deletedBy) {
-        trainingClassAnswerTranslation.setThruTime(session.START_TIME_LONG);
+        trainingClassAnswerTranslation.setThruTime(session.getStartTime());
         
         sendEvent(trainingClassAnswerTranslation.getTrainingClassAnswerPK(), EventTypes.MODIFY, trainingClassAnswerTranslation.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
@@ -1929,7 +1929,7 @@ public class TrainingControl
             Long validUntilTime, BasePK createdBy) {
         var partyTrainingClass = PartyTrainingClassFactory.getInstance().create();
         var partyTrainingClassDetail = PartyTrainingClassDetailFactory.getInstance().create(partyTrainingClass, partyTrainingClassName,
-                party, trainingClass, completedTime, validUntilTime, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                party, trainingClass, completedTime, validUntilTime, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         partyTrainingClass = PartyTrainingClassFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, partyTrainingClass.getPrimaryKey());
@@ -2109,7 +2109,7 @@ public class TrainingControl
             EntityPermission entityPermission) {
         return PartyTrainingClassFactory.getInstance().getEntitiesFromQuery(entityPermission, getPartyTrainingClassesByStatusQueries, party,
                 trainingClass, PartyTrainingClassStatusConstants.Workflow_PARTY_TRAINING_CLASS_STATUS, workflowStepName, ComponentVendors.ECHO_THREE.name(),
-                EntityTypes.PartyTrainingClass.name(), Session.MAX_TIME_LONG);
+                EntityTypes.PartyTrainingClass.name(), Session.MAX_TIME);
     }
     
     public List<PartyTrainingClass> getPartyTrainingClassesByStatus(Party party, TrainingClass trainingClass, String workflowStepName) {
@@ -2153,7 +2153,7 @@ public class TrainingControl
                 "AND ent_entitytypeid = eni_ent_entitytypeid AND ptrncls_partytrainingclassid = eni_entityuniqueid " +
                 "AND eni_entityinstanceid = wkfles_eni_entityinstanceid AND wkfles_wkfls_workflowstepid = ? AND wkfles_thrutime = ?",
                 party, trainingClass, ComponentVendors.ECHO_THREE.name(), EntityTypes.PartyTrainingClass.name(), workflowStep,
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
     }
     
     public long countPartyTrainingClassesUsingNames(Party party, TrainingClass trainingClass, String workflowStepName) {
@@ -2226,7 +2226,7 @@ public class TrainingControl
                      partyTrainingClassDetailValue.getPartyTrainingClassPK());
             var partyTrainingClassDetail = partyTrainingClass.getActiveDetailForUpdate();
             
-            partyTrainingClassDetail.setThruTime(session.START_TIME_LONG);
+            partyTrainingClassDetail.setThruTime(session.getStartTime());
             partyTrainingClassDetail.store();
 
             var partyTrainingClassPK = partyTrainingClassDetail.getPartyTrainingClassPK();
@@ -2238,7 +2238,7 @@ public class TrainingControl
             var validUntilTime = partyTrainingClassDetailValue.getValidUntilTime();
             
             partyTrainingClassDetail = PartyTrainingClassDetailFactory.getInstance().create(partyTrainingClassPK, partyTrainingClassName, partyPK,
-                    trainingClassPK, completedTime, validUntilTime, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    trainingClassPK, completedTime, validUntilTime, session.getStartTime(), Session.MAX_TIME);
             
             partyTrainingClass.setActiveDetail(partyTrainingClassDetail);
             partyTrainingClass.setLastDetail(partyTrainingClassDetail);
@@ -2254,7 +2254,7 @@ public class TrainingControl
         removePartyTrainingClassStatusByPartyTrainingClass(partyTrainingClass);
         deletePartyTrainingClassSessionsByPartyTrainingClass(partyTrainingClass, deletedBy);
         
-        partyTrainingClassDetail.setThruTime(session.START_TIME_LONG);
+        partyTrainingClassDetail.setThruTime(session.getStartTime());
         partyTrainingClass.setActiveDetail(null);
         partyTrainingClass.store();
 
@@ -2347,7 +2347,7 @@ public class TrainingControl
             BasePK createdBy) {
         var partyTrainingClassSession = PartyTrainingClassSessionFactory.getInstance().create();
         var partyTrainingClassSessionDetail = PartyTrainingClassSessionDetailFactory.getInstance().create(partyTrainingClassSession,
-                partyTrainingClass, partyTrainingClassSessionSequence, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                partyTrainingClass, partyTrainingClassSessionSequence, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         partyTrainingClassSession = PartyTrainingClassSessionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, partyTrainingClassSession.getPrimaryKey());
@@ -2462,7 +2462,7 @@ public class TrainingControl
                      partyTrainingClassSessionDetailValue.getPartyTrainingClassSessionPK());
             var partyTrainingClassSessionDetail = partyTrainingClassSession.getActiveDetailForUpdate();
             
-            partyTrainingClassSessionDetail.setThruTime(session.START_TIME_LONG);
+            partyTrainingClassSessionDetail.setThruTime(session.getStartTime());
             partyTrainingClassSessionDetail.store();
 
             var partyTrainingClassSessionPK = partyTrainingClassSessionDetail.getPartyTrainingClassSessionPK();
@@ -2470,7 +2470,7 @@ public class TrainingControl
             var partyTrainingClassSessionSequence = partyTrainingClassSessionDetailValue.getPartyTrainingClassSessionSequence();
             
             partyTrainingClassSessionDetail = PartyTrainingClassSessionDetailFactory.getInstance().create(partyTrainingClassSessionPK,
-                    partyTrainingClassPK, partyTrainingClassSessionSequence, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    partyTrainingClassPK, partyTrainingClassSessionSequence, session.getStartTime(), Session.MAX_TIME);
             
             partyTrainingClassSession.setActiveDetail(partyTrainingClassSessionDetail);
             partyTrainingClassSession.setLastDetail(partyTrainingClassSessionDetail);
@@ -2485,7 +2485,7 @@ public class TrainingControl
         deletePartyTrainingClassSessionQuestionsByPartyTrainingClassSession(partyTrainingClassSession, deletedBy);
 
         var partyTrainingClassSessionDetail = partyTrainingClassSession.getLastDetailForUpdate();
-        partyTrainingClassSessionDetail.setThruTime(session.START_TIME_LONG);
+        partyTrainingClassSessionDetail.setThruTime(session.getStartTime());
         partyTrainingClassSession.setActiveDetail(null);
         partyTrainingClassSession.store();
         
@@ -2654,7 +2654,7 @@ public class TrainingControl
     public PartyTrainingClassSessionSection createPartyTrainingClassSessionSection(PartyTrainingClassSession partyTrainingClassSession,
             Integer partyTrainingClassSessionSectionSequence, TrainingClassSection trainingClassSection, Long readingStartTime, Long readingEndTime, BasePK createdBy) {
         var partyTrainingClassSessionSection = PartyTrainingClassSessionSectionFactory.getInstance().create(partyTrainingClassSession,
-                partyTrainingClassSessionSectionSequence, trainingClassSection, readingStartTime, readingEndTime, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                partyTrainingClassSessionSectionSequence, trainingClassSection, readingStartTime, readingEndTime, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(partyTrainingClassSession.getPrimaryKey(), EventTypes.MODIFY, partyTrainingClassSessionSection.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -2795,7 +2795,7 @@ public class TrainingControl
             var partyTrainingClassSessionSection = PartyTrainingClassSessionSectionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     partyTrainingClassSessionSectionValue.getPrimaryKey());
             
-            partyTrainingClassSessionSection.setThruTime(session.START_TIME_LONG);
+            partyTrainingClassSessionSection.setThruTime(session.getStartTime());
             partyTrainingClassSessionSection.store();
 
             var partyTrainingClassSessionPK = partyTrainingClassSessionSection.getPartyTrainingClassSessionPK(); // Not updated
@@ -2805,8 +2805,8 @@ public class TrainingControl
             var readingEndTime = partyTrainingClassSessionSectionValue.getReadingEndTime();
             
             partyTrainingClassSessionSection = PartyTrainingClassSessionSectionFactory.getInstance().create(partyTrainingClassSessionPK,
-                    partyTrainingClassSessionSectionSequence, trainingClassSectionPK, readingStartTime, readingEndTime, session.START_TIME_LONG,
-                    Session.MAX_TIME_LONG);
+                    partyTrainingClassSessionSectionSequence, trainingClassSectionPK, readingStartTime, readingEndTime, session.getStartTime(),
+                    Session.MAX_TIME);
             
             sendEvent(partyTrainingClassSessionPK, EventTypes.MODIFY, partyTrainingClassSessionSection.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -2815,7 +2815,7 @@ public class TrainingControl
     public void deletePartyTrainingClassSessionSection(PartyTrainingClassSessionSection partyTrainingClassSessionSection, BasePK deletedBy) {
         clearPartyTrainingClassSessionSectionFromPartyTrainingClassSessionStatuses(partyTrainingClassSessionSection);
         
-        partyTrainingClassSessionSection.setThruTime(session.START_TIME_LONG);
+        partyTrainingClassSessionSection.setThruTime(session.getStartTime());
         
         sendEvent(partyTrainingClassSessionSection.getPartyTrainingClassSessionPK(), EventTypes.MODIFY, partyTrainingClassSessionSection.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
@@ -2852,7 +2852,7 @@ public class TrainingControl
     public PartyTrainingClassSessionPage createPartyTrainingClassSessionPage(PartyTrainingClassSession partyTrainingClassSession,
             Integer partyTrainingClassSessionPageSequence, TrainingClassPage trainingClassPage, Long readingStartTime, Long readingEndTime, BasePK createdBy) {
         var partyTrainingClassSessionPage = PartyTrainingClassSessionPageFactory.getInstance().create(partyTrainingClassSession,
-                partyTrainingClassSessionPageSequence, trainingClassPage, readingStartTime, readingEndTime, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                partyTrainingClassSessionPageSequence, trainingClassPage, readingStartTime, readingEndTime, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(partyTrainingClassSession.getPrimaryKey(), EventTypes.MODIFY, partyTrainingClassSessionPage.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -2993,7 +2993,7 @@ public class TrainingControl
             var partyTrainingClassSessionPage = PartyTrainingClassSessionPageFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     partyTrainingClassSessionPageValue.getPrimaryKey());
             
-            partyTrainingClassSessionPage.setThruTime(session.START_TIME_LONG);
+            partyTrainingClassSessionPage.setThruTime(session.getStartTime());
             partyTrainingClassSessionPage.store();
 
             var partyTrainingClassSessionPK = partyTrainingClassSessionPage.getPartyTrainingClassSessionPK(); // Not updated
@@ -3003,8 +3003,8 @@ public class TrainingControl
             var readingEndTime = partyTrainingClassSessionPageValue.getReadingEndTime();
             
             partyTrainingClassSessionPage = PartyTrainingClassSessionPageFactory.getInstance().create(partyTrainingClassSessionPK,
-                    partyTrainingClassSessionPageSequence, trainingClassPagePK, readingStartTime, readingEndTime, session.START_TIME_LONG,
-                    Session.MAX_TIME_LONG);
+                    partyTrainingClassSessionPageSequence, trainingClassPagePK, readingStartTime, readingEndTime, session.getStartTime(),
+                    Session.MAX_TIME);
             
             sendEvent(partyTrainingClassSessionPK, EventTypes.MODIFY, partyTrainingClassSessionPage.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -3013,7 +3013,7 @@ public class TrainingControl
     public void deletePartyTrainingClassSessionPage(PartyTrainingClassSessionPage partyTrainingClassSessionPage, BasePK deletedBy) {
         clearPartyTrainingClassSessionPageFromPartyTrainingClassSessionStatuses(partyTrainingClassSessionPage);
         
-        partyTrainingClassSessionPage.setThruTime(session.START_TIME_LONG);
+        partyTrainingClassSessionPage.setThruTime(session.getStartTime());
         
         sendEvent(partyTrainingClassSessionPage.getPartyTrainingClassSessionPK(), EventTypes.MODIFY, partyTrainingClassSessionPage.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
@@ -3040,7 +3040,7 @@ public class TrainingControl
             TrainingClassQuestion trainingClassQuestion, Integer sortOrder, BasePK createdBy) {
         var partyTrainingClassSessionQuestion = PartyTrainingClassSessionQuestionFactory.getInstance().create();
         var partyTrainingClassSessionQuestionDetail = PartyTrainingClassSessionQuestionDetailFactory.getInstance().create(partyTrainingClassSessionQuestion,
-                partyTrainingClassSession, trainingClassQuestion, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                partyTrainingClassSession, trainingClassQuestion, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         partyTrainingClassSessionQuestion = PartyTrainingClassSessionQuestionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, partyTrainingClassSessionQuestion.getPrimaryKey());
@@ -3200,7 +3200,7 @@ public class TrainingControl
                      partyTrainingClassSessionQuestionDetailValue.getPartyTrainingClassSessionQuestionPK());
             var partyTrainingClassSessionQuestionDetail = partyTrainingClassSessionQuestion.getActiveDetailForUpdate();
             
-            partyTrainingClassSessionQuestionDetail.setThruTime(session.START_TIME_LONG);
+            partyTrainingClassSessionQuestionDetail.setThruTime(session.getStartTime());
             partyTrainingClassSessionQuestionDetail.store();
 
             var partyTrainingClassSessionQuestionPK = partyTrainingClassSessionQuestionDetail.getPartyTrainingClassSessionQuestionPK();
@@ -3209,7 +3209,7 @@ public class TrainingControl
             var sortOrder = partyTrainingClassSessionQuestionDetail.getSortOrder();
             
             partyTrainingClassSessionQuestionDetail = PartyTrainingClassSessionQuestionDetailFactory.getInstance().create(partyTrainingClassSessionQuestionPK,
-                    partyTrainingClassSessionPK, trainingClassQuestionPK, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    partyTrainingClassSessionPK, trainingClassQuestionPK, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             partyTrainingClassSessionQuestion.setActiveDetail(partyTrainingClassSessionQuestionDetail);
             partyTrainingClassSessionQuestion.setLastDetail(partyTrainingClassSessionQuestionDetail);
@@ -3224,7 +3224,7 @@ public class TrainingControl
         clearPartyTrainingClassSessionQuestionFromPartyTrainingClassSessionStatuses(partyTrainingClassSessionQuestion);
 
         var partyTrainingClassSessionQuestionDetail = partyTrainingClassSessionQuestion.getLastDetailForUpdate();
-        partyTrainingClassSessionQuestionDetail.setThruTime(session.START_TIME_LONG);
+        partyTrainingClassSessionQuestionDetail.setThruTime(session.getStartTime());
         partyTrainingClassSessionQuestion.setActiveDetail(null);
         partyTrainingClassSessionQuestion.store();
         
@@ -3310,7 +3310,7 @@ public class TrainingControl
     public PartyTrainingClassSessionAnswer createPartyTrainingClassSessionAnswer(PartyTrainingClassSessionQuestion partyTrainingClassSessionQuestion,
             Integer partyTrainingClassSessionAnswerSequence, TrainingClassAnswer trainingClassAnswer, Long questionStartTime, Long questionEndTime, BasePK createdBy) {
         var partyTrainingClassSessionAnswer = PartyTrainingClassSessionAnswerFactory.getInstance().create(partyTrainingClassSessionQuestion,
-            partyTrainingClassSessionAnswerSequence, trainingClassAnswer, questionStartTime, questionEndTime, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+            partyTrainingClassSessionAnswerSequence, trainingClassAnswer, questionStartTime, questionEndTime, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(partyTrainingClassSessionQuestion.getPrimaryKey(), EventTypes.MODIFY, partyTrainingClassSessionAnswer.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -3452,7 +3452,7 @@ public class TrainingControl
             var partyTrainingClassSessionAnswer = PartyTrainingClassSessionAnswerFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     partyTrainingClassSessionAnswerValue.getPrimaryKey());
             
-            partyTrainingClassSessionAnswer.setThruTime(session.START_TIME_LONG);
+            partyTrainingClassSessionAnswer.setThruTime(session.getStartTime());
             partyTrainingClassSessionAnswer.store();
 
             var partyTrainingClassSessionQuestionPK = partyTrainingClassSessionAnswer.getPartyTrainingClassSessionQuestionPK(); // Not updated
@@ -3462,15 +3462,15 @@ public class TrainingControl
             var questionEndTime = partyTrainingClassSessionAnswerValue.getQuestionEndTime();
             
             partyTrainingClassSessionAnswer = PartyTrainingClassSessionAnswerFactory.getInstance().create(partyTrainingClassSessionQuestionPK,
-                    partyTrainingClassSessionAnswerSequence, trainingClassAnswerPK, questionStartTime, questionEndTime, session.START_TIME_LONG,
-                    Session.MAX_TIME_LONG);
+                    partyTrainingClassSessionAnswerSequence, trainingClassAnswerPK, questionStartTime, questionEndTime, session.getStartTime(),
+                    Session.MAX_TIME);
             
             sendEvent(partyTrainingClassSessionQuestionPK, EventTypes.MODIFY, partyTrainingClassSessionAnswer.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deletePartyTrainingClassSessionAnswer(PartyTrainingClassSessionAnswer partyTrainingClassSessionAnswer, BasePK deletedBy) {
-        partyTrainingClassSessionAnswer.setThruTime(session.START_TIME_LONG);
+        partyTrainingClassSessionAnswer.setThruTime(session.getStartTime());
         
         sendEvent(partyTrainingClassSessionAnswer.getPartyTrainingClassSessionQuestionPK(), EventTypes.MODIFY, partyTrainingClassSessionAnswer.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }

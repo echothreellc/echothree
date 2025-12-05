@@ -40,7 +40,7 @@ public class SubscriptionLogic {
     public Subscription createSubscription(final ExecutionErrorAccumulator eea, final Session session, final SubscriptionType subscriptionType, final Party party,
             final Long endTime, final BasePK createdBy) {
         var subscriptionControl = Session.getModelController(SubscriptionControl.class);
-        var subscription = subscriptionControl.createSubscription(subscriptionType, party, session.START_TIME_LONG, endTime, createdBy);
+        var subscription = subscriptionControl.createSubscription(subscriptionType, party, session.getStartTime(), endTime, createdBy);
 
         SubscriptionChainLogic.getInstance().createSubscriptionInitialChainInstance(eea, subscription, createdBy);
         

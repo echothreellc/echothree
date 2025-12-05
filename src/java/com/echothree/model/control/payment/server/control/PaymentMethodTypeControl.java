@@ -70,7 +70,7 @@ public class PaymentMethodTypeControl
 
         var paymentMethodType = PaymentMethodTypeFactory.getInstance().create();
         var paymentMethodTypeDetail = PaymentMethodTypeDetailFactory.getInstance().create(session,
-                paymentMethodType, paymentMethodTypeName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                paymentMethodType, paymentMethodTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         paymentMethodType = PaymentMethodTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, paymentMethodType.getPrimaryKey());
@@ -251,7 +251,7 @@ public class PaymentMethodTypeControl
                     paymentMethodTypeDetailValue.getPaymentMethodTypePK());
             var paymentMethodTypeDetail = paymentMethodType.getActiveDetailForUpdate();
 
-            paymentMethodTypeDetail.setThruTime(session.START_TIME_LONG);
+            paymentMethodTypeDetail.setThruTime(session.getStartTime());
             paymentMethodTypeDetail.store();
 
             var paymentMethodTypePK = paymentMethodTypeDetail.getPaymentMethodTypePK();
@@ -276,7 +276,7 @@ public class PaymentMethodTypeControl
             }
 
             paymentMethodTypeDetail = PaymentMethodTypeDetailFactory.getInstance().create(paymentMethodTypePK,
-                    paymentMethodTypeName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    paymentMethodTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             paymentMethodType.setActiveDetail(paymentMethodTypeDetail);
             paymentMethodType.setLastDetail(paymentMethodTypeDetail);
@@ -297,7 +297,7 @@ public class PaymentMethodTypeControl
         deletePaymentMethodTypeDescriptionsByPaymentMethodType(paymentMethodType, deletedBy);
 
         var paymentMethodTypeDetail = paymentMethodType.getLastDetailForUpdate();
-        paymentMethodTypeDetail.setThruTime(session.START_TIME_LONG);
+        paymentMethodTypeDetail.setThruTime(session.getStartTime());
         paymentMethodTypeDetail.store();
         paymentMethodType.setActiveDetail(null);
 
@@ -328,7 +328,7 @@ public class PaymentMethodTypeControl
     public PaymentMethodTypeDescription createPaymentMethodTypeDescription(final PaymentMethodType paymentMethodType,
             final Language language, final String description, final BasePK createdBy) {
         var paymentMethodTypeDescription = PaymentMethodTypeDescriptionFactory.getInstance().create(paymentMethodType,
-                language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(paymentMethodType.getPrimaryKey(), EventTypes.MODIFY, paymentMethodTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -437,7 +437,7 @@ public class PaymentMethodTypeControl
         if(paymentMethodTypeDescriptionValue.hasBeenModified()) {
             var paymentMethodTypeDescription = PaymentMethodTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, paymentMethodTypeDescriptionValue.getPrimaryKey());
 
-            paymentMethodTypeDescription.setThruTime(session.START_TIME_LONG);
+            paymentMethodTypeDescription.setThruTime(session.getStartTime());
             paymentMethodTypeDescription.store();
 
             var paymentMethodType = paymentMethodTypeDescription.getPaymentMethodType();
@@ -445,14 +445,14 @@ public class PaymentMethodTypeControl
             var description = paymentMethodTypeDescriptionValue.getDescription();
 
             paymentMethodTypeDescription = PaymentMethodTypeDescriptionFactory.getInstance().create(paymentMethodType, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(paymentMethodType.getPrimaryKey(), EventTypes.MODIFY, paymentMethodTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deletePaymentMethodTypeDescription(final PaymentMethodTypeDescription paymentMethodTypeDescription, final BasePK deletedBy) {
-        paymentMethodTypeDescription.setThruTime(session.START_TIME_LONG);
+        paymentMethodTypeDescription.setThruTime(session.getStartTime());
 
         sendEvent(paymentMethodTypeDescription.getPaymentMethodTypePK(), EventTypes.MODIFY, paymentMethodTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 

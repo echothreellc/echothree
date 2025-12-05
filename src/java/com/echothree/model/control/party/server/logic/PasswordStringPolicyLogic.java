@@ -78,7 +78,7 @@ public class PasswordStringPolicyLogic {
         var minimumPasswordLifetime = policyDetail.getMinimumPasswordLifetime();
         
         if(minimumPasswordLifetime != null) {
-            var currentPasswordLifetime = session.START_TIME - ulpsv.getChangedTime();
+            var currentPasswordLifetime = session.getStartTime() - ulpsv.getChangedTime();
             
             if(currentPasswordLifetime < minimumPasswordLifetime) {
                 var uomControl = Session.getModelController(UomControl.class);

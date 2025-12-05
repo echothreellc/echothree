@@ -16,7 +16,6 @@
 
 package com.echothree.model.control.accounting.server.database;
 
-import com.echothree.model.control.accounting.server.database.TransactionBalancedResult;
 import com.echothree.model.data.accounting.server.entity.Transaction;
 import com.echothree.util.server.persistence.BaseDatabaseQuery;
 import com.echothree.util.server.persistence.EntityPermission;
@@ -37,7 +36,7 @@ public class TransactionBalancedQuery
     }
 
     public List<TransactionBalancedResult> execute(final Transaction transaction) {
-        return super.execute(transaction, Session.MAX_TIME_LONG);
+        return super.execute(transaction, Session.MAX_TIME);
     }
 
 }

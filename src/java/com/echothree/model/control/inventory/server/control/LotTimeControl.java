@@ -74,7 +74,7 @@ public class LotTimeControl
 
         var lotTimeType = LotTimeTypeFactory.getInstance().create();
         var lotTimeTypeDetail = LotTimeTypeDetailFactory.getInstance().create(lotTimeType, lotTimeTypeName, isDefault,
-                sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         lotTimeType = LotTimeTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -249,7 +249,7 @@ public class LotTimeControl
                      lotTimeTypeDetailValue.getLotTimeTypePK());
             var lotTimeTypeDetail = lotTimeType.getActiveDetailForUpdate();
 
-            lotTimeTypeDetail.setThruTime(session.START_TIME_LONG);
+            lotTimeTypeDetail.setThruTime(session.getStartTime());
             lotTimeTypeDetail.store();
 
             var lotTimeTypePK = lotTimeTypeDetail.getLotTimeTypePK(); // Not updated
@@ -274,7 +274,7 @@ public class LotTimeControl
             }
 
             lotTimeTypeDetail = LotTimeTypeDetailFactory.getInstance().create(lotTimeTypePK, lotTimeTypeName, isDefault, sortOrder,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             lotTimeType.setActiveDetail(lotTimeTypeDetail);
             lotTimeType.setLastDetail(lotTimeTypeDetail);
@@ -292,7 +292,7 @@ public class LotTimeControl
         deleteLotTimeTypeDescriptionsByLotTimeType(lotTimeType, deletedBy);
 
         var lotTimeTypeDetail = lotTimeType.getLastDetailForUpdate();
-        lotTimeTypeDetail.setThruTime(session.START_TIME_LONG);
+        lotTimeTypeDetail.setThruTime(session.getStartTime());
         lotTimeType.setActiveDetail(null);
         lotTimeType.store();
 
@@ -322,7 +322,7 @@ public class LotTimeControl
 
     public LotTimeTypeDescription createLotTimeTypeDescription(LotTimeType lotTimeType, Language language, String description, BasePK createdBy) {
         var lotTimeTypeDescription = LotTimeTypeDescriptionFactory.getInstance().create(lotTimeType, language, description,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(lotTimeType.getPrimaryKey(), EventTypes.MODIFY, lotTimeTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -435,7 +435,7 @@ public class LotTimeControl
             var lotTimeTypeDescription = LotTimeTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     lotTimeTypeDescriptionValue.getPrimaryKey());
 
-            lotTimeTypeDescription.setThruTime(session.START_TIME_LONG);
+            lotTimeTypeDescription.setThruTime(session.getStartTime());
             lotTimeTypeDescription.store();
 
             var lotTimeType = lotTimeTypeDescription.getLotTimeType();
@@ -443,14 +443,14 @@ public class LotTimeControl
             var description = lotTimeTypeDescriptionValue.getDescription();
 
             lotTimeTypeDescription = LotTimeTypeDescriptionFactory.getInstance().create(lotTimeType, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(lotTimeType.getPrimaryKey(), EventTypes.MODIFY, lotTimeTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteLotTimeTypeDescription(LotTimeTypeDescription lotTimeTypeDescription, BasePK deletedBy) {
-        lotTimeTypeDescription.setThruTime(session.START_TIME_LONG);
+        lotTimeTypeDescription.setThruTime(session.getStartTime());
 
         sendEvent(lotTimeTypeDescription.getLotTimeTypePK(), EventTypes.MODIFY, lotTimeTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
@@ -469,7 +469,7 @@ public class LotTimeControl
     // --------------------------------------------------------------------------------
 
     public LotTime createLotTime(Lot lot, LotTimeType lotTimeType, Long time, BasePK createdBy) {
-        var lotTime = LotTimeFactory.getInstance().create(lot, lotTimeType, time, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var lotTime = LotTimeFactory.getInstance().create(lot, lotTimeType, time, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(lot.getPrimaryKey(), EventTypes.MODIFY, lotTime.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -481,7 +481,7 @@ public class LotTimeControl
                 "SELECT COUNT(*) " +
                 "FROM lottimes " +
                 "WHERE lttim_lt_lotid = ? AND lttim_thrutime = ?",
-                lot, Session.MAX_TIME_LONG);
+                lot, Session.MAX_TIME);
     }
 
     public long countLotTimesByLotTimeType(LotTimeType lotTimeType) {
@@ -489,7 +489,7 @@ public class LotTimeControl
                 "SELECT COUNT(*) " +
                 "FROM lottimes " +
                 "WHERE lttim_lttimtyp_lottimetypeid = ? AND lttim_thrutime = ?",
-                lotTimeType, Session.MAX_TIME_LONG);
+                lotTimeType, Session.MAX_TIME);
     }
 
     private static final Map<EntityPermission, String> getLotTimeQueries;
@@ -618,21 +618,21 @@ public class LotTimeControl
             var lotTime = LotTimeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     lotTimeValue.getPrimaryKey());
 
-            lotTime.setThruTime(session.START_TIME_LONG);
+            lotTime.setThruTime(session.getStartTime());
             lotTime.store();
 
             var lotPK = lotTime.getLotPK(); // Not updated
             var lotTimeTypePK = lotTime.getLotTimeTypePK(); // Not updated
             var time = lotTimeValue.getTime();
 
-            lotTime = LotTimeFactory.getInstance().create(lotPK, lotTimeTypePK, time, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+            lotTime = LotTimeFactory.getInstance().create(lotPK, lotTimeTypePK, time, session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(lotPK, EventTypes.MODIFY, lotTime.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteLotTime(LotTime lotTime, BasePK deletedBy) {
-        lotTime.setThruTime(session.START_TIME_LONG);
+        lotTime.setThruTime(session.getStartTime());
 
         sendEvent(lotTime.getLotTimeTypePK(), EventTypes.MODIFY, lotTime.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
