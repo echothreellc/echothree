@@ -138,12 +138,12 @@ public class EditPartyTrainingClassCommand
         
         completedTime = strCompletedTime == null ? null : Long.valueOf(strCompletedTime);
 
-        if(completedTime == null || completedTime < session.START_TIME) {
+        if(completedTime == null || completedTime < session.getStartTime()) {
             var strValidUntilTime = edit.getValidUntilTime();
             
             validUntilTime = strValidUntilTime == null ? null : Long.valueOf(strValidUntilTime);
 
-            if(validUntilTime != null && validUntilTime <= session.START_TIME) {
+            if(validUntilTime != null && validUntilTime <= session.getStartTime()) {
                 addExecutionError(ExecutionErrors.InvalidValidUntilTime.name());
             }
         } else {

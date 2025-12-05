@@ -40,7 +40,7 @@ public class EntityIntegerAttributeFacetQuery
     }
     
     public List<EntityIntegerAttributeFacetResult> execute(EntityAttribute entityAttribute) {
-        return super.execute(cachedExecutedSearch == null ? search : cachedExecutedSearch, entityAttribute, Session.MAX_TIME_LONG);
+        return super.execute(cachedExecutedSearch == null ? search : cachedExecutedSearch, entityAttribute, Session.MAX_TIME);
     }
     
 }

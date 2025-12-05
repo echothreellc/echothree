@@ -107,7 +107,7 @@ public abstract class BaseLoginCommand<F extends BaseForm>
                     var expirationWarningTime = partyTypePasswordStringPolicyDetail.getExpirationWarningTime();
                     var changedTime = result.getChangedTime();
                     
-                    if((session.START_TIME - changedTime) > maximumPasswordLifetime) {
+                    if((session.getStartTime() - changedTime) > maximumPasswordLifetime) {
                         userLoginStatus.setExpiredCount(userLoginStatus.getExpiredCount() + 1);
                         
                         addExecutionWarning(ExecutionWarnings.PasswordExpired.name());
@@ -115,10 +115,10 @@ public abstract class BaseLoginCommand<F extends BaseForm>
                         var expirationTime = changedTime + maximumPasswordLifetime;
                         var warningTime = expirationTime - expirationWarningTime;
                         
-                        if(session.START_TIME > warningTime) {
+                        if(session.getStartTime() > warningTime) {
                             var uomControl = Session.getModelController(UomControl.class);
                             var timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
-                            var remainingTime = UnitOfMeasureUtils.getInstance().formatUnitOfMeasure(getUserVisit(), timeUnitOfMeasureKind, Long.valueOf(expirationTime - session.START_TIME));
+                            var remainingTime = UnitOfMeasureUtils.getInstance().formatUnitOfMeasure(getUserVisit(), timeUnitOfMeasureKind, Long.valueOf(expirationTime - session.getStartTime()));
                             
                             addExecutionWarning(ExecutionWarnings.PasswordExpiration.name(), remainingTime);
                         }
@@ -191,7 +191,7 @@ public abstract class BaseLoginCommand<F extends BaseForm>
         var userKey = userVisit.getUserKey();
         var userKeyDetailValue = userControl.getUserKeyDetailValueByPKForUpdate(userKey.getLastDetail().getPrimaryKey());
 
-        userControl.associatePartyToUserVisit(userVisit, party, partyRelationship, session.START_TIME_LONG);
+        userControl.associatePartyToUserVisit(userVisit, party, partyRelationship, session.getStartTime());
         
         // Only update the UserKeyDetail if the party has changed
         var partyPK = party.getPrimaryKey();
@@ -208,7 +208,7 @@ public abstract class BaseLoginCommand<F extends BaseForm>
 
         clearLoginFailures(userLoginStatus);
 
-        userLoginStatus.setLastLoginTime(session.START_TIME_LONG);
+        userLoginStatus.setLastLoginTime(session.getStartTime());
 
         addRemoteInet4AddressToParty(party, remoteInet4Address);
 
@@ -220,9 +220,9 @@ public abstract class BaseLoginCommand<F extends BaseForm>
         
         userLoginStatus.setFailureCount(failureCount + 1);
         if(userLoginStatus.getFirstFailureTime() == null) {
-            userLoginStatus.setFirstFailureTime(session.START_TIME_LONG);
+            userLoginStatus.setFirstFailureTime(session.getStartTime());
         }
-        userLoginStatus.setLastFailureTime(session.START_TIME_LONG);
+        userLoginStatus.setLastFailureTime(session.getStartTime());
         
         // TODO: Create audit trail
     }

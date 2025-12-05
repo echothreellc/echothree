@@ -69,7 +69,7 @@ public class PaymentProcessorTypeActionControl
         var paymentProcessorTypeAction = PaymentProcessorTypeActionFactory.getInstance().create();
         var paymentProcessorTypeActionDetail = PaymentProcessorTypeActionDetailFactory.getInstance().create(session,
                 paymentProcessorTypeAction, paymentProcessorType, paymentProcessorActionType, isDefault, sortOrder,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         paymentProcessorTypeAction = PaymentProcessorTypeActionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, paymentProcessorTypeAction.getPrimaryKey());
@@ -291,7 +291,7 @@ public class PaymentProcessorTypeActionControl
                     paymentProcessorTypeActionDetailValue.getPaymentProcessorTypeActionPK());
             var paymentProcessorTypeActionDetail = paymentProcessorTypeAction.getActiveDetailForUpdate();
 
-            paymentProcessorTypeActionDetail.setThruTime(session.START_TIME_LONG);
+            paymentProcessorTypeActionDetail.setThruTime(session.getStartTime());
             paymentProcessorTypeActionDetail.store();
 
             var paymentProcessorTypeActionPK = paymentProcessorTypeActionDetail.getPaymentProcessorTypeActionPK(); // R/O
@@ -319,7 +319,7 @@ public class PaymentProcessorTypeActionControl
             }
 
             paymentProcessorTypeActionDetail = PaymentProcessorTypeActionDetailFactory.getInstance().create(paymentProcessorTypeActionPK,
-                    paymentProcessorTypePK, paymentProcessorActionTypePK, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    paymentProcessorTypePK, paymentProcessorActionTypePK, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             paymentProcessorTypeAction.setActiveDetail(paymentProcessorTypeActionDetail);
             paymentProcessorTypeAction.setLastDetail(paymentProcessorTypeActionDetail);
@@ -339,7 +339,7 @@ public class PaymentProcessorTypeActionControl
         paymentProcessorActionControl.deletePaymentProcessorActionsByPaymentProcessorTypeAction(paymentProcessorTypeAction, deletedBy);
         
         var paymentProcessorTypeActionDetail = paymentProcessorTypeAction.getLastDetailForUpdate();
-        paymentProcessorTypeActionDetail.setThruTime(session.START_TIME_LONG);
+        paymentProcessorTypeActionDetail.setThruTime(session.getStartTime());
         paymentProcessorTypeActionDetail.store();
         paymentProcessorTypeAction.setActiveDetail(null);
 

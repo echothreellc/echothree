@@ -42,7 +42,7 @@ public class EntityInstancesMissingStringEntityAttributeQuery
     }
     
     public List<EntityInstanceResult> execute(final EntityAttribute entityAttribute, final Language language) {
-        return super.execute(entityAttribute, entityAttribute, language, Session.MAX_TIME_LONG);
+        return super.execute(entityAttribute, entityAttribute, language, Session.MAX_TIME);
     }
     
 }

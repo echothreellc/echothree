@@ -86,7 +86,7 @@ public class ForumMessageSearchEvaluator
                     Session.MAX_TIME, forum, ComponentVendors.ECHO_THREE.name(), EntityTypes.ForumMessage.name());
         } else {
             entityInstancePKHolder = getEntityInstancePKHolderFromQuery(ps,
-                    Session.MAX_TIME, forum, ComponentVendors.ECHO_THREE.name(), EntityTypes.ForumMessage.name(), session.START_TIME);
+                    Session.MAX_TIME, forum, ComponentVendors.ECHO_THREE.name(), EntityTypes.ForumMessage.name(), session.getStartTime());
         }
 
         return entityInstancePKHolder;
@@ -111,7 +111,7 @@ public class ForumMessageSearchEvaluator
                     forumMessageType, ComponentVendors.ECHO_THREE.name(), EntityTypes.ForumMessage.name());
         } else {
             entityInstancePKHolder = getEntityInstancePKHolderFromQuery(ps,
-                    forumMessageType, ComponentVendors.ECHO_THREE.name(), EntityTypes.ForumMessage.name(),  session.START_TIME);
+                    forumMessageType, ComponentVendors.ECHO_THREE.name(), EntityTypes.ForumMessage.name(),  session.getStartTime());
         }
 
         return entityInstancePKHolder;

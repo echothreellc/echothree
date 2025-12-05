@@ -108,8 +108,8 @@ public class EntityTypeControl
             Long lockTimeout, Boolean isExtensible, Integer sortOrder, BasePK createdBy) {
         var entityType = entityTypeFactory.create();
         var entityTypeDetail = entityTypeDetailFactory.create(entityType, componentVendor,
-                entityTypeName, keepAllHistory, lockTimeout, isExtensible, sortOrder, session.START_TIME_LONG,
-                Session.MAX_TIME_LONG);
+                entityTypeName, keepAllHistory, lockTimeout, isExtensible, sortOrder, session.getStartTime(),
+                Session.MAX_TIME);
 
         // Convert to R/W
         entityType = entityTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE, entityType.getPrimaryKey());
@@ -339,7 +339,7 @@ public class EntityTypeControl
                     entityTypeDetailValue.getEntityTypePK());
             var entityTypeDetail = entityType.getActiveDetailForUpdate();
 
-            entityTypeDetail.setThruTime(session.START_TIME_LONG);
+            entityTypeDetail.setThruTime(session.getStartTime());
             entityTypeDetail.store();
 
             var entityTypePK = entityTypeDetail.getEntityTypePK();
@@ -351,7 +351,7 @@ public class EntityTypeControl
             var sortOrder = entityTypeDetailValue.getSortOrder();
 
             entityTypeDetail = entityTypeDetailFactory.create(entityTypePK, componentVendorPK, entityTypeName,
-                    keepAllHistory, lockTimeout, isExtensible, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    keepAllHistory, lockTimeout, isExtensible, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             entityType.setActiveDetail(entityTypeDetail);
             entityType.setLastDetail(entityTypeDetail);
@@ -380,7 +380,7 @@ public class EntityTypeControl
         workflowControl.deleteWorkflowEntityTypesByEntityType(entityType, deletedBy);
 
         var entityTypeDetail = entityType.getLastDetailForUpdate();
-        entityTypeDetail.setThruTime(session.START_TIME_LONG);
+        entityTypeDetail.setThruTime(session.getStartTime());
         entityType.setActiveDetail(null);
         entityType.store();
 
@@ -405,7 +405,7 @@ public class EntityTypeControl
     public EntityTypeDescription createEntityTypeDescription(EntityType entityType, Language language, String description,
             BasePK createdBy) {
         var entityTypeDescription = entityTypeDescriptionFactory.create(entityType,
-                language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(entityType.getPrimaryKey(), EventTypes.MODIFY, entityTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -538,7 +538,7 @@ public class EntityTypeControl
             var entityTypeDescription = entityTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     entityTypeDescriptionValue.getPrimaryKey());
 
-            entityTypeDescription.setThruTime(session.START_TIME_LONG);
+            entityTypeDescription.setThruTime(session.getStartTime());
             entityTypeDescription.store();
 
             var entityType = entityTypeDescription.getEntityType();
@@ -546,14 +546,14 @@ public class EntityTypeControl
             var description = entityTypeDescriptionValue.getDescription();
 
             entityTypeDescription = entityTypeDescriptionFactory.create(entityType, language,
-                    description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    description, session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(entityType.getPrimaryKey(), EventTypes.MODIFY, entityTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteEntityTypeDescription(EntityTypeDescription entityTypeDescription, BasePK deletedBy) {
-        entityTypeDescription.setThruTime(session.START_TIME_LONG);
+        entityTypeDescription.setThruTime(session.getStartTime());
 
         sendEvent(entityTypeDescription.getEntityTypePK(), EventTypes.MODIFY, entityTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }

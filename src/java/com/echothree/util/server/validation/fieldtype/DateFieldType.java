@@ -45,7 +45,7 @@ public class DateFieldType
         LocalDate localDate = null;
         
         if(fieldValue.equalsIgnoreCase("TODAY")) {
-            var zonedDateTime = ZonedDateTime.ofInstant(Instant.ofEpochMilli(getSession().START_TIME), zoneId);
+            var zonedDateTime = ZonedDateTime.ofInstant(Instant.ofEpochMilli(getSession().getStartTime()), zoneId);
             
             localDate = LocalDate.of(zonedDateTime.getYear(), zonedDateTime.getMonth(), zonedDateTime.getDayOfMonth());
         } else {

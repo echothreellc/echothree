@@ -76,7 +76,7 @@ public class TransactionTimeControl
 
         var transactionTimeType = TransactionTimeTypeFactory.getInstance().create();
         var transactionTimeTypeDetail = TransactionTimeTypeDetailFactory.getInstance().create(transactionTimeType, transactionTimeTypeName, isDefault,
-                sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         transactionTimeType = TransactionTimeTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -282,7 +282,7 @@ public class TransactionTimeControl
                      transactionTimeTypeDetailValue.getTransactionTimeTypePK());
             var transactionTimeTypeDetail = transactionTimeType.getActiveDetailForUpdate();
 
-            transactionTimeTypeDetail.setThruTime(session.START_TIME_LONG);
+            transactionTimeTypeDetail.setThruTime(session.getStartTime());
             transactionTimeTypeDetail.store();
 
             var transactionTimeTypePK = transactionTimeTypeDetail.getTransactionTimeTypePK(); // Not updated
@@ -307,7 +307,7 @@ public class TransactionTimeControl
             }
 
             transactionTimeTypeDetail = TransactionTimeTypeDetailFactory.getInstance().create(transactionTimeTypePK, transactionTimeTypeName, isDefault, sortOrder,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             transactionTimeType.setActiveDetail(transactionTimeTypeDetail);
             transactionTimeType.setLastDetail(transactionTimeTypeDetail);
@@ -325,7 +325,7 @@ public class TransactionTimeControl
         deleteTransactionTimeTypeDescriptionsByTransactionTimeType(transactionTimeType, deletedBy);
 
         var transactionTimeTypeDetail = transactionTimeType.getLastDetailForUpdate();
-        transactionTimeTypeDetail.setThruTime(session.START_TIME_LONG);
+        transactionTimeTypeDetail.setThruTime(session.getStartTime());
         transactionTimeType.setActiveDetail(null);
         transactionTimeType.store();
 
@@ -355,7 +355,7 @@ public class TransactionTimeControl
 
     public TransactionTimeTypeDescription createTransactionTimeTypeDescription(TransactionTimeType transactionTimeType, Language language, String description, BasePK createdBy) {
         var transactionTimeTypeDescription = TransactionTimeTypeDescriptionFactory.getInstance().create(transactionTimeType, language, description,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(transactionTimeType.getPrimaryKey(), EventTypes.MODIFY, transactionTimeTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -468,7 +468,7 @@ public class TransactionTimeControl
             var transactionTimeTypeDescription = TransactionTimeTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     transactionTimeTypeDescriptionValue.getPrimaryKey());
 
-            transactionTimeTypeDescription.setThruTime(session.START_TIME_LONG);
+            transactionTimeTypeDescription.setThruTime(session.getStartTime());
             transactionTimeTypeDescription.store();
 
             var transactionTimeType = transactionTimeTypeDescription.getTransactionTimeType();
@@ -476,14 +476,14 @@ public class TransactionTimeControl
             var description = transactionTimeTypeDescriptionValue.getDescription();
 
             transactionTimeTypeDescription = TransactionTimeTypeDescriptionFactory.getInstance().create(transactionTimeType, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(transactionTimeType.getPrimaryKey(), EventTypes.MODIFY, transactionTimeTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteTransactionTimeTypeDescription(TransactionTimeTypeDescription transactionTimeTypeDescription, BasePK deletedBy) {
-        transactionTimeTypeDescription.setThruTime(session.START_TIME_LONG);
+        transactionTimeTypeDescription.setThruTime(session.getStartTime());
 
         sendEvent(transactionTimeTypeDescription.getTransactionTimeTypePK(), EventTypes.MODIFY, transactionTimeTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
@@ -502,7 +502,7 @@ public class TransactionTimeControl
     // --------------------------------------------------------------------------------
 
     public TransactionTime createTransactionTime(Transaction transaction, TransactionTimeType transactionTimeType, Long time, BasePK createdBy) {
-        var transactionTime = TransactionTimeFactory.getInstance().create(transaction, transactionTimeType, time, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var transactionTime = TransactionTimeFactory.getInstance().create(transaction, transactionTimeType, time, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(transaction.getPrimaryKey(), EventTypes.MODIFY, transactionTime.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -514,7 +514,7 @@ public class TransactionTimeControl
                 "SELECT COUNT(*) " +
                         "FROM transactiontimes " +
                         "WHERE txntim_trx_transactionid = ? AND txntim_thrutime = ?",
-                transaction, Session.MAX_TIME_LONG);
+                transaction, Session.MAX_TIME);
     }
 
     public long countTransactionTimesByTransactionTimeType(TransactionTimeType transactionTimeType) {
@@ -522,7 +522,7 @@ public class TransactionTimeControl
                 "SELECT COUNT(*) " +
                         "FROM transactiontimes " +
                         "WHERE txntim_txntimtyp_transactiontimetypeid = ? AND txntim_thrutime = ?",
-                transactionTimeType, Session.MAX_TIME_LONG);
+                transactionTimeType, Session.MAX_TIME);
     }
 
     public boolean transactionTimeExists(Transaction transaction, TransactionTimeType transactionTimeType) {
@@ -530,7 +530,7 @@ public class TransactionTimeControl
                 "SELECT COUNT(*) " +
                         "FROM transactiontimes " +
                         "WHERE txntim_trx_transactionid = ? AND txntim_txntimtyp_transactiontimetypeid = ? AND txntim_thrutime = ?",
-                transaction, transactionTimeType, Session.MAX_TIME_LONG) == 1;
+                transaction, transactionTimeType, Session.MAX_TIME) == 1;
     }
 
     private static final Map<EntityPermission, String> getTransactionTimeQueries;
@@ -659,21 +659,21 @@ public class TransactionTimeControl
             var transactionTime = TransactionTimeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     transactionTimeValue.getPrimaryKey());
 
-            transactionTime.setThruTime(session.START_TIME_LONG);
+            transactionTime.setThruTime(session.getStartTime());
             transactionTime.store();
 
             var transactionPK = transactionTime.getTransactionPK(); // Not updated
             var transactionTimeTypePK = transactionTime.getTransactionTimeTypePK(); // Not updated
             var time = transactionTimeValue.getTime();
 
-            transactionTime = TransactionTimeFactory.getInstance().create(transactionPK, transactionTimeTypePK, time, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+            transactionTime = TransactionTimeFactory.getInstance().create(transactionPK, transactionTimeTypePK, time, session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(transactionPK, EventTypes.MODIFY, transactionTime.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteTransactionTime(TransactionTime transactionTime, BasePK deletedBy) {
-        transactionTime.setThruTime(session.START_TIME_LONG);
+        transactionTime.setThruTime(session.getStartTime());
 
         sendEvent(transactionTime.getTransactionTimeTypePK(), EventTypes.MODIFY, transactionTime.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 

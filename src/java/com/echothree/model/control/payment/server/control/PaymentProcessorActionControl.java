@@ -48,7 +48,7 @@ public class PaymentProcessorActionControl
     public PaymentProcessorAction createPaymentProcessorAction(final PaymentProcessor paymentProcessor,
             final PaymentProcessorTypeAction paymentProcessorTypeAction, final BasePK createdBy) {
         var paymentProcessorAction = PaymentProcessorActionFactory.getInstance().create(paymentProcessor,
-                paymentProcessorTypeAction, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                paymentProcessorTypeAction, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(paymentProcessor.getPrimaryKey(), EventTypes.MODIFY, paymentProcessorAction.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -175,7 +175,7 @@ public class PaymentProcessorActionControl
     }
 
     public void deletePaymentProcessorAction(final PaymentProcessorAction paymentProcessorAction, final BasePK deletedBy) {
-        paymentProcessorAction.setThruTime(session.START_TIME_LONG);
+        paymentProcessorAction.setThruTime(session.getStartTime());
 
         sendEvent(paymentProcessorAction.getPaymentProcessorPK(), EventTypes.MODIFY, paymentProcessorAction.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 

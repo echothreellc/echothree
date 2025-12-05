@@ -28,6 +28,7 @@ import com.echothree.util.server.persistence.BaseEntity;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.persistence.ThreadSession;
 import java.sql.Connection;
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -52,6 +53,10 @@ public abstract class BaseModelControl {
     
     /** Creates a new instance of BaseModelControl */
     protected BaseModelControl() {
+    }
+
+    @PostConstruct
+    public void init() {
         this.session = ThreadSession.currentSession();
         this.connection = session.getConnection();
     }

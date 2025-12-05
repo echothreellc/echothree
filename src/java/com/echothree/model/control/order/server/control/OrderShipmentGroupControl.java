@@ -18,15 +18,12 @@ package com.echothree.model.control.order.server.control;
 
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.order.common.transfer.OrderShipmentGroupTransfer;
-import com.echothree.model.data.batch.server.entity.Batch;
 import com.echothree.model.data.contact.server.entity.PartyContactMechanism;
 import com.echothree.model.data.item.server.entity.ItemDeliveryType;
 import com.echothree.model.data.order.server.entity.Order;
-import com.echothree.model.data.order.server.entity.OrderBatch;
 import com.echothree.model.data.order.server.entity.OrderShipmentGroup;
 import com.echothree.model.data.order.server.factory.OrderShipmentGroupDetailFactory;
 import com.echothree.model.data.order.server.factory.OrderShipmentGroupFactory;
-import com.echothree.model.data.order.server.value.OrderBatchValue;
 import com.echothree.model.data.order.server.value.OrderShipmentGroupDetailValue;
 import com.echothree.model.data.shipping.server.entity.ShippingMethod;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -71,8 +68,8 @@ public class OrderShipmentGroupControl
 
         var orderShipmentGroup = OrderShipmentGroupFactory.getInstance().create();
         var orderShipmentGroupDetail = OrderShipmentGroupDetailFactory.getInstance().create(orderShipmentGroup, order,
-                orderShipmentGroupSequence, itemDeliveryType, isDefault, partyContactMechanism, shippingMethod, holdUntilComplete, session.START_TIME_LONG,
-                Session.MAX_TIME_LONG);
+                orderShipmentGroupSequence, itemDeliveryType, isDefault, partyContactMechanism, shippingMethod, holdUntilComplete, session.getStartTime(),
+                Session.MAX_TIME);
         
         // Convert to R/W
         orderShipmentGroup = OrderShipmentGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, orderShipmentGroup.getPrimaryKey());
@@ -252,7 +249,7 @@ public class OrderShipmentGroupControl
                      orderShipmentGroupDetailValue.getOrderShipmentGroupPK());
             var orderShipmentGroupDetail = orderShipmentGroup.getActiveDetailForUpdate();
 
-            orderShipmentGroupDetail.setThruTime(session.START_TIME_LONG);
+            orderShipmentGroupDetail.setThruTime(session.getStartTime());
             orderShipmentGroupDetail.store();
 
             var orderShipmentGroupPK = orderShipmentGroupDetail.getOrderShipmentGroupPK(); // Not updated
@@ -283,7 +280,7 @@ public class OrderShipmentGroupControl
             }
 
             orderShipmentGroupDetail = OrderShipmentGroupDetailFactory.getInstance().create(orderShipmentGroupPK, orderPK, orderShipmentGroupSequence,
-                    itemDeliveryTypePK, isDefault, partyContactMechanismPK, shippingMethodPK, holdUntilComplete, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    itemDeliveryTypePK, isDefault, partyContactMechanismPK, shippingMethodPK, holdUntilComplete, session.getStartTime(), Session.MAX_TIME);
 
             orderShipmentGroup.setActiveDetail(orderShipmentGroupDetail);
             orderShipmentGroup.setLastDetail(orderShipmentGroupDetail);
@@ -302,7 +299,7 @@ public class OrderShipmentGroupControl
         orderLineControl.deleteOrderLinesByOrderShipmentGroup(orderShipmentGroup, deletedBy);
 
         var orderShipmentGroupDetail = orderShipmentGroup.getLastDetailForUpdate();
-        orderShipmentGroupDetail.setThruTime(session.START_TIME_LONG);
+        orderShipmentGroupDetail.setThruTime(session.getStartTime());
         orderShipmentGroup.setActiveDetail(null);
         orderShipmentGroup.store();
 

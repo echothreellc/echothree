@@ -231,7 +231,7 @@ public class PartyTrainingClassSessionLogic
             final TrainingClassPage trainingClassPage, final BasePK createdBy) {
         var trainingControl = Session.getModelController(TrainingControl.class);
         var partyTrainingClassSessionPage = trainingControl.createPartyTrainingClassSessionPage(partyTrainingClassSession,
-                trainingClassPage, session.START_TIME_LONG, null, createdBy);
+                trainingClassPage, session.getStartTime(), null, createdBy);
 
         return partyTrainingClassSessionPage;
     }

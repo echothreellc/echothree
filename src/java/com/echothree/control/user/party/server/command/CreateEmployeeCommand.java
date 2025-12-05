@@ -38,7 +38,6 @@ import com.echothree.model.control.user.common.UserConstants;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.employee.server.entity.PartyEmployee;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
@@ -177,7 +176,7 @@ public class CreateEmployeeCommand
 
                                             var userLoginPasswordType = userControl.getUserLoginPasswordTypeByName(UserConstants.UserLoginPasswordType_STRING);
                                             var userLoginPassword = userControl.createUserLoginPassword(party, userLoginPasswordType, createdBy);
-                                            userControl.createUserLoginPasswordString(userLoginPassword, password1, session.START_TIME_LONG, false, createdBy);
+                                            userControl.createUserLoginPasswordString(userLoginPassword, password1, session.getStartTime(), false, createdBy);
 
                                             if(partyTypePasswordStringPolicy != null && partyTypePasswordStringPolicy.getLastDetail().getForceChangeAfterCreate()) {
                                                 var userLoginStatus = userControl.getUserLoginStatusForUpdate(party);

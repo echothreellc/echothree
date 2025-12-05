@@ -81,11 +81,11 @@ public class CreatePartyTrainingClassCommand
                 var strCompletedTime = form.getCompletedTime();
                 var completedTime = strCompletedTime == null ? null : Long.valueOf(strCompletedTime);
 
-                if(completedTime == null || completedTime < session.START_TIME) {
+                if(completedTime == null || completedTime < session.getStartTime()) {
                     var strValidUntilTime = form.getValidUntilTime();
                     var validUntilTime = strValidUntilTime == null ? null : Long.valueOf(strValidUntilTime);
 
-                    if(validUntilTime == null || validUntilTime > session.START_TIME) {
+                    if(validUntilTime == null || validUntilTime > session.getStartTime()) {
                         var partyTrainingClassLogic = PartyTrainingClassLogic.getInstance();
                         var preparedPartyTrainingClass = partyTrainingClassLogic.preparePartyTrainingClass(this, party, trainingClass,
                                 completedTime, validUntilTime);

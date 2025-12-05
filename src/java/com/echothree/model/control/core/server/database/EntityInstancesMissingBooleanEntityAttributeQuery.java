@@ -41,7 +41,7 @@ public class EntityInstancesMissingBooleanEntityAttributeQuery
     }
     
     public List<EntityInstanceResult> execute(final EntityAttribute entityAttribute) {
-        return super.execute(entityAttribute, entityAttribute, Session.MAX_TIME_LONG);
+        return super.execute(entityAttribute, entityAttribute, Session.MAX_TIME);
     }
     
 }

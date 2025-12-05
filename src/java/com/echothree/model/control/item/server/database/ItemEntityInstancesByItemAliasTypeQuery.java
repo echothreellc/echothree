@@ -40,7 +40,7 @@ public class ItemEntityInstancesByItemAliasTypeQuery
     }
     
     public List<ItemEntityInstanceResult> execute(final ItemAliasTypePK itemAliasTypePK) {
-        return super.execute(itemAliasTypePK, Session.MAX_TIME_LONG, ComponentVendors.ECHO_THREE.name(), EntityTypes.Item.name());
+        return super.execute(itemAliasTypePK, Session.MAX_TIME, ComponentVendors.ECHO_THREE.name(), EntityTypes.Item.name());
     }
 
 }

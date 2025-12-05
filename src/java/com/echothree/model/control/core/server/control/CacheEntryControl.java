@@ -155,7 +155,7 @@ public class CacheEntryControl
         if(cacheEntry != null) {
             var validUntilTime = cacheEntry.getValidUntilTime();
 
-            if(validUntilTime != null && validUntilTime < session.START_TIME) {
+            if(validUntilTime != null && validUntilTime < session.getStartTime()) {
                 removeCacheEntry(cacheEntry);
             } else {
                 cacheEntryTransfer = getCacheEntryTransfer(userVisit, cacheEntry);

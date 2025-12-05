@@ -48,7 +48,7 @@ public class RemovedExpiredEntityLocksCommand
     @Override
     protected BaseResult execute() {
         var entityLockControl = Session.getModelController(EntityLockControl.class);
-        Long lockExpirationTime = session.START_TIME - 24 * 60 * 60 * 1000; // 24 hours
+        Long lockExpirationTime = session.getStartTime() - 24 * 60 * 60 * 1000; // 24 hours
         
         entityLockControl.removeEntityLocksByLockExpirationTime(lockExpirationTime);
         

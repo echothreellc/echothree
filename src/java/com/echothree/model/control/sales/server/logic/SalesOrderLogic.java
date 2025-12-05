@@ -405,7 +405,7 @@ public class SalesOrderLogic
                             orderControl.createOrderUserVisit(order, userVisit);
                             
                             workflowControl.addEntityToWorkflowUsingNames(null, SalesOrderStatusConstants.Workflow_SALES_ORDER_STATUS, workflowEntranceName,
-                                    entityInstance, null, session.START_TIME + AllocatedInventoryTimeout, createdBy);
+                                    entityInstance, null, session.getStartTime() + AllocatedInventoryTimeout, createdBy);
                             
                             if(billToParty != null) {
                                 orderRoleControl.createOrderRole(order, billToParty, billToOrderRoleType, createdBy);
@@ -535,7 +535,7 @@ public class SalesOrderLogic
                 if(workflowDestinationLogic.workflowDestinationMapContainsStep(map, SalesOrderStatusConstants.Workflow_SALES_ORDER_STATUS, SalesOrderStatusConstants.WorkflowStep_ENTRY_ALLOCATED)) {
                     // TODO: Allocate inventory.
                     
-                    triggerTime = session.START_TIME + AllocatedInventoryTimeout;
+                    triggerTime = session.getStartTime() + AllocatedInventoryTimeout;
                     handled = true;
                 }
             } else if(currentWorkflowStepName.equals(SalesOrderStatusConstants.WorkflowStep_BATCH_AUDIT)) {
@@ -571,7 +571,7 @@ public class SalesOrderLogic
         if(workflowStepName.equals(SalesOrderStatusConstants.WorkflowEntrance_ENTRY_ALLOCATED)) {
             var workflowTrigger = workflowControl.getWorkflowTriggerForUpdate(workflowEntityStatus);
             
-            workflowTrigger.setTriggerTime(session.START_TIME + AllocatedInventoryTimeout);
+            workflowTrigger.setTriggerTime(session.getStartTime() + AllocatedInventoryTimeout);
         } else if(workflowStepName.equals(SalesOrderStatusConstants.WorkflowEntrance_ENTRY_UNALLOCATED)) {
             setSalesOrderStatus(session, eea, order, SalesOrderStatusConstants.WorkflowDestination_ENTRY_UNALLOCATED_TO_ALLOCATED, modifiedBy);
         } else {

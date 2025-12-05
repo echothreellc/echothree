@@ -308,12 +308,12 @@ public class SalesOrderLineLogic
 
                 // Check Item's SalesOrderStartTime and SalesOrderEndTime.
                 var salesOrderStartTime = itemDetail.getSalesOrderStartTime();
-                if(salesOrderStartTime != null && session.START_TIME < salesOrderStartTime) {
+                if(salesOrderStartTime != null && session.getStartTime() < salesOrderStartTime) {
                     handleExecutionError(CurrentTimeBeforeSalesOrderStartTimeException.class, eea, ExecutionErrors.CurrentTimeBeforeSalesOrderStartTime.name());
                 }
 
                 var salesOrderEndTime = itemDetail.getSalesOrderEndTime();
-                if(salesOrderEndTime != null && session.START_TIME > salesOrderEndTime) {
+                if(salesOrderEndTime != null && session.getStartTime() > salesOrderEndTime) {
                     handleExecutionError(CurrentTimeAfterSalesOrderEndTimeException.class, eea, ExecutionErrors.CurrentTimeAfterSalesOrderEndTime.name());
                 }
 

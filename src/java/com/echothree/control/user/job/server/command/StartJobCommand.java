@@ -64,7 +64,7 @@ public class StartJobCommand
         if(job != null) {
             var jobStatus = jobControl.getJobStatusForUpdate(job);
             
-            jobStatus.setLastStartTime(session.START_TIME);
+            jobStatus.setLastStartTime(session.getStartTime());
             jobStatus.setLastEndTime(null);
         } else {
             addExecutionError(ExecutionErrors.UnknownJobName.name(), jobName);

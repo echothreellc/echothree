@@ -96,7 +96,7 @@ public class CreateSubscriptionCommand
                                 
                                 if(subscriptionTime != null) {
                                     var conversion = new Conversion(uomControl, unitOfMeasureType, subscriptionTime).convertToLowestUnitOfMeasureType();
-                                    endTime = session.START_TIME + conversion.getQuantity();
+                                    endTime = session.getStartTime() + conversion.getQuantity();
                                 }
                                 
                                 // ExecutionErrorAccumulator is passed in as null so that an Exception will be thrown if there is an error.

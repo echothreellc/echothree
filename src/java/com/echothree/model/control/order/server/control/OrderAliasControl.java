@@ -75,7 +75,7 @@ public class OrderAliasControl
 
         var orderAliasType = OrderAliasTypeFactory.getInstance().create();
         var orderAliasTypeDetail = OrderAliasTypeDetailFactory.getInstance().create(orderAliasType, orderType, orderAliasTypeName,
-                validationPattern, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                validationPattern, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         orderAliasType = OrderAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, orderAliasType.getPrimaryKey());
@@ -251,7 +251,7 @@ public class OrderAliasControl
                     orderAliasTypeDetailValue.getOrderAliasTypePK());
             var orderAliasTypeDetail = orderAliasType.getActiveDetailForUpdate();
 
-            orderAliasTypeDetail.setThruTime(session.START_TIME_LONG);
+            orderAliasTypeDetail.setThruTime(session.getStartTime());
             orderAliasTypeDetail.store();
 
             var orderAliasTypePK = orderAliasTypeDetail.getOrderAliasTypePK();
@@ -279,7 +279,7 @@ public class OrderAliasControl
             }
 
             orderAliasTypeDetail = OrderAliasTypeDetailFactory.getInstance().create(orderAliasTypePK, orderTypePK, orderAliasTypeName,
-                    validationPattern, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    validationPattern, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             orderAliasType.setActiveDetail(orderAliasTypeDetail);
             orderAliasType.setLastDetail(orderAliasTypeDetail);
@@ -297,7 +297,7 @@ public class OrderAliasControl
         deleteOrderAliasTypeDescriptionsByOrderAliasType(orderAliasType, deletedBy);
 
         var orderAliasTypeDetail = orderAliasType.getLastDetailForUpdate();
-        orderAliasTypeDetail.setThruTime(session.START_TIME_LONG);
+        orderAliasTypeDetail.setThruTime(session.getStartTime());
         orderAliasType.setActiveDetail(null);
         orderAliasType.store();
 
@@ -338,7 +338,7 @@ public class OrderAliasControl
 
     public OrderAliasTypeDescription createOrderAliasTypeDescription(OrderAliasType orderAliasType, Language language, String description, BasePK createdBy) {
         var orderAliasTypeDescription = OrderAliasTypeDescriptionFactory.getInstance().create(orderAliasType, language,
-                description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(orderAliasType.getPrimaryKey(), EventTypes.MODIFY, orderAliasTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -451,7 +451,7 @@ public class OrderAliasControl
             var orderAliasTypeDescription = OrderAliasTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      orderAliasTypeDescriptionValue.getPrimaryKey());
 
-            orderAliasTypeDescription.setThruTime(session.START_TIME_LONG);
+            orderAliasTypeDescription.setThruTime(session.getStartTime());
             orderAliasTypeDescription.store();
 
             var orderAliasType = orderAliasTypeDescription.getOrderAliasType();
@@ -459,14 +459,14 @@ public class OrderAliasControl
             var description = orderAliasTypeDescriptionValue.getDescription();
 
             orderAliasTypeDescription = OrderAliasTypeDescriptionFactory.getInstance().create(orderAliasType, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(orderAliasType.getPrimaryKey(), EventTypes.MODIFY, orderAliasTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteOrderAliasTypeDescription(OrderAliasTypeDescription orderAliasTypeDescription, BasePK deletedBy) {
-        orderAliasTypeDescription.setThruTime(session.START_TIME_LONG);
+        orderAliasTypeDescription.setThruTime(session.getStartTime());
 
         sendEvent(orderAliasTypeDescription.getOrderAliasTypePK(), EventTypes.MODIFY, orderAliasTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
@@ -485,7 +485,7 @@ public class OrderAliasControl
     // --------------------------------------------------------------------------------
 
     public OrderAlias createOrderAlias(Order order, OrderAliasType orderAliasType, String alias, BasePK createdBy) {
-        var orderAlias = OrderAliasFactory.getInstance().create(order, orderAliasType, alias, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var orderAlias = OrderAliasFactory.getInstance().create(order, orderAliasType, alias, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(order.getPrimaryKey(), EventTypes.MODIFY, orderAlias.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -642,21 +642,21 @@ public class OrderAliasControl
         if(orderAliasValue.hasBeenModified()) {
             var orderAlias = OrderAliasFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, orderAliasValue.getPrimaryKey());
 
-            orderAlias.setThruTime(session.START_TIME_LONG);
+            orderAlias.setThruTime(session.getStartTime());
             orderAlias.store();
 
             var orderPK = orderAlias.getOrderPK();
             var orderAliasTypePK = orderAlias.getOrderAliasTypePK();
             var alias  = orderAliasValue.getAlias();
 
-            orderAlias = OrderAliasFactory.getInstance().create(orderPK, orderAliasTypePK, alias, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+            orderAlias = OrderAliasFactory.getInstance().create(orderPK, orderAliasTypePK, alias, session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(orderPK, EventTypes.MODIFY, orderAlias.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteOrderAlias(OrderAlias orderAlias, BasePK deletedBy) {
-        orderAlias.setThruTime(session.START_TIME_LONG);
+        orderAlias.setThruTime(session.getStartTime());
 
         sendEvent(orderAlias.getOrderPK(), EventTypes.MODIFY, orderAlias.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 

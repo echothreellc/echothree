@@ -34,10 +34,11 @@ import com.echothree.model.data.sequence.server.entity.SequenceDetail;
 import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.sequence.server.entity.SequenceTypeDetail;
 import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.server.cdi.CommandScopeExtension;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
-import com.echothree.util.server.persistence.SessionFactory;
+import com.echothree.util.server.persistence.ThreadSession;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.EmptyStackException;
@@ -163,118 +164,118 @@ public class SequenceGeneratorLogic
             try {
                 result = sequenceDeque.removeFirst();
             } catch (NoSuchElementException nsee1) {
-                var sequenceControl = Session.getModelController(SequenceControl.class);
-                var sequenceSession = SessionFactory.getInstance().getSession();
-                var sequenceValue = sequenceControl.getSequenceValueForUpdateInSession(sequenceSession, sequence);
+                try(var ignored = CommandScopeExtension.getCommandScopeContext().push()) {
+                    var sequenceControl = Session.getModelController(SequenceControl.class);
+                    var sequenceSession = ThreadSession.currentSession();
+                    var sequenceValue = sequenceControl.getSequenceValueForUpdateInSession(sequenceSession, sequence);
 
-                if(sequenceValue != null) {
-                    var sequenceDetail = sequence.getLastDetail();
-                    var sequenceTypeDetail = sequenceDetail.getSequenceType().getLastDetail();
-                    var prefix = sequenceTypeDetail.getPrefix();
-                    var suffix = sequenceTypeDetail.getSuffix();
-                    var chunkSize = getChunkSize(sequenceTypeDetail, sequenceDetail);
-                    var mask = sequenceDetail.getMask();
-                    var maskChars = mask.toCharArray();
-                    var value = sequenceValue.getValue();
-                    var valueLength = value.length();
-                    var valueChars = value.toCharArray();
+                    if(sequenceValue != null) {
+                        var sequenceDetail = sequence.getLastDetail();
+                        var sequenceTypeDetail = sequenceDetail.getSequenceType().getLastDetail();
+                        var prefix = sequenceTypeDetail.getPrefix();
+                        var suffix = sequenceTypeDetail.getSuffix();
+                        var chunkSize = getChunkSize(sequenceTypeDetail, sequenceDetail);
+                        var mask = sequenceDetail.getMask();
+                        var maskChars = mask.toCharArray();
+                        var value = sequenceValue.getValue();
+                        var valueLength = value.length();
+                        var valueChars = value.toCharArray();
 
-                    // Mask and its value must be the same length.
-                    if(valueLength == mask.length()) {
-                        for(var i = 0; i < chunkSize; i++) {
-                            // Step through the string from the right to the left.
-                            var forceIncrement = false;
+                        // Mask and its value must be the same length.
+                        if(valueLength == mask.length()) {
+                            for(var i = 0; i < chunkSize; i++) {
+                                // Step through the string from the right to the left.
+                                var forceIncrement = false;
 
-                            for(var index = valueLength - 1; index > -1; index--) {
-                                var maskChar = maskChars[index];
-                                var valueChar = valueChars[index];
+                                for(var index = valueLength - 1; index > -1; index--) {
+                                    var maskChar = maskChars[index];
+                                    var valueChar = valueChars[index];
 
-                                switch(maskChar) {
-                                    case '9' -> {
-                                        var currentIndex = NUMERIC_VALUES.indexOf(valueChar);
-                                        if(currentIndex != -1) {
-                                            int newCharIndex;
-                                            if(currentIndex == NUMERIC_MAX_INDEX) {
-                                                newCharIndex = 0;
-                                                forceIncrement = true;
+                                    switch(maskChar) {
+                                        case '9' -> {
+                                            var currentIndex = NUMERIC_VALUES.indexOf(valueChar);
+                                            if(currentIndex != -1) {
+                                                int newCharIndex;
+                                                if(currentIndex == NUMERIC_MAX_INDEX) {
+                                                    newCharIndex = 0;
+                                                    forceIncrement = true;
+                                                } else {
+                                                    newCharIndex = currentIndex + 1;
+                                                }
+                                                valueChars[index] = NUMERIC_VALUES.charAt(newCharIndex);
                                             } else {
-                                                newCharIndex = currentIndex + 1;
+                                                value = null;
                                             }
-                                            valueChars[index] = NUMERIC_VALUES.charAt(newCharIndex);
-                                        } else {
-                                            value = null;
+                                        }
+                                        case 'A' -> {
+                                            var currentIndex = ALPHABETIC_VALUES.indexOf(valueChar);
+                                            if(currentIndex != -1) {
+                                                int newCharIndex;
+                                                if(currentIndex == ALPHABETIC_MAX_INDEX) {
+                                                    newCharIndex = 0;
+                                                    forceIncrement = true;
+                                                } else {
+                                                    newCharIndex = currentIndex + 1;
+                                                }
+                                                valueChars[index] = ALPHABETIC_VALUES.charAt(newCharIndex);
+                                            } else {
+                                                value = null;
+                                            }
+                                        }
+                                        case 'Z' -> {
+                                            var currentIndex = ALPHANUMERIC_VALUES.indexOf(valueChar);
+                                            if(currentIndex != -1) {
+                                                int newCharIndex;
+                                                if(currentIndex == ALPHANUMERIC_MAX_INDEX) {
+                                                    newCharIndex = 0;
+                                                    forceIncrement = true;
+                                                } else {
+                                                    newCharIndex = currentIndex + 1;
+                                                }
+                                                valueChars[index] = ALPHANUMERIC_VALUES.charAt(newCharIndex);
+                                            } else {
+                                                value = null;
+                                            }
                                         }
                                     }
-                                    case 'A' -> {
-                                        var currentIndex = ALPHABETIC_VALUES.indexOf(valueChar);
-                                        if(currentIndex != -1) {
-                                            int newCharIndex;
-                                            if(currentIndex == ALPHABETIC_MAX_INDEX) {
-                                                newCharIndex = 0;
-                                                forceIncrement = true;
-                                            } else {
-                                                newCharIndex = currentIndex + 1;
-                                            }
-                                            valueChars[index] = ALPHABETIC_VALUES.charAt(newCharIndex);
-                                        } else {
-                                            value = null;
-                                        }
+
+                                    // If an error occurred, or we do not need to increment any other positions in
+                                    // the sequences value, exit.
+                                    if((value == null) || !forceIncrement) {
+                                        break;
                                     }
-                                    case 'Z' -> {
-                                        var currentIndex = ALPHANUMERIC_VALUES.indexOf(valueChar);
-                                        if(currentIndex != -1) {
-                                            int newCharIndex;
-                                            if(currentIndex == ALPHANUMERIC_MAX_INDEX) {
-                                                newCharIndex = 0;
-                                                forceIncrement = true;
-                                            } else {
-                                                newCharIndex = currentIndex + 1;
-                                            }
-                                            valueChars[index] = ALPHANUMERIC_VALUES.charAt(newCharIndex);
-                                        } else {
-                                            value = null;
-                                        }
+
+                                    // If we reach the start of the sequences value, and have not yet exited, the
+                                    // sequence is at its maximum possible value, exit.
+                                    if(index == 0) {
+                                        value = null;
                                     }
+
+                                    forceIncrement = false;
                                 }
 
-                                // If an error occurred, or we do not need to increment any other positions in
-                                // the sequences value, exit.
-                                if((value == null) || !forceIncrement) {
-                                    break;
-                                }
+                                if(value != null) {
+                                    value = new String(valueChars);
 
-                                // If we reach the start of the sequences value, and have not yet exited, the
-                                // sequence is at its maximum possible value, exit.
-                                if(index == 0) {
-                                    value = null;
-                                }
+                                    var encodedValue = encode(sequenceTypeDetail, value);
 
-                                forceIncrement = false;
+                                    var intermediateValue = (prefix != null ? prefix : "") + encodedValue + (suffix != null ? suffix : "");
+                                    var checksum = getSequenceChecksum(sequenceTypeDetail).calculate(intermediateValue);
+
+                                    sequenceDeque.add(intermediateValue + checksum);
+                                }
                             }
 
-                            if(value != null) {
-                                value = new String(valueChars);
+                            sequenceValue.setValue(value);
 
-                                var encodedValue = encode(sequenceTypeDetail, value);
-
-                                var intermediateValue = (prefix != null ? prefix : "") + encodedValue + (suffix != null ? suffix : "");
-                                var checksum = getSequenceChecksum(sequenceTypeDetail).calculate(intermediateValue);
-
-                                sequenceDeque.add(intermediateValue + checksum);
+                            try {
+                                result = sequenceDeque.removeFirst();
+                            } catch(EmptyStackException ese2) {
+                                // Shouldn't happen, if it does, result stays null
                             }
-                        }
-
-                        sequenceValue.setValue(value);
-
-                        try {
-                            result = sequenceDeque.removeFirst();
-                        } catch (EmptyStackException ese2) {
-                            // Shouldn't happen, if it does, result stays null
                         }
                     }
                 }
-
-                sequenceSession.close();
             }
         }
 
