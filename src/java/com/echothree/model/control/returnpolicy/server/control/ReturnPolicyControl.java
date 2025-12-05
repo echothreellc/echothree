@@ -167,7 +167,7 @@ public class ReturnPolicyControl
     // --------------------------------------------------------------------------------
 
     public PartyReturnPolicy createPartyReturnPolicy(Party party, ReturnPolicy returnPolicy, BasePK createdBy) {
-        var partyReturnPolicy = PartyReturnPolicyFactory.getInstance().create(party, returnPolicy, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+        var partyReturnPolicy = PartyReturnPolicyFactory.getInstance().create(party, returnPolicy, session.getStartTime(), Session.MAX_TIME_LONG);
 
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyReturnPolicy.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -323,7 +323,7 @@ public class ReturnPolicyControl
     public void deletePartyReturnPolicy(PartyReturnPolicy partyReturnPolicy, BasePK deletedBy) {
         var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
-        partyReturnPolicy.setThruTime(session.getStartTimeLong());
+        partyReturnPolicy.setThruTime(session.getStartTime());
 
         // Performed manually, since sendEvent doesn't call it for relatedEntityInstances.
         entityInstanceControl.deleteEntityInstanceDependencies(entityInstanceControl.getEntityInstanceByBasePK(partyReturnPolicy.getPrimaryKey()), deletedBy);
@@ -365,7 +365,7 @@ public class ReturnPolicyControl
 
         var returnKind = ReturnKindFactory.getInstance().create();
         var returnKindDetail = ReturnKindDetailFactory.getInstance().create(returnKind, returnKindName,
-                returnSequenceType, isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                returnSequenceType, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
         
         // Convert to R/W
         returnKind = ReturnKindFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -560,7 +560,7 @@ public class ReturnPolicyControl
                 EntityPermission.READ_WRITE, returnKindDetailValue.getReturnKindPK());
         var returnKindDetail = returnKind.getActiveDetailForUpdate();
         
-        returnKindDetail.setThruTime(session.getStartTimeLong());
+        returnKindDetail.setThruTime(session.getStartTime());
         returnKindDetail.store();
 
         var returnKindPK = returnKindDetail.getReturnKindPK();
@@ -586,7 +586,7 @@ public class ReturnPolicyControl
         }
         
         returnKindDetail = ReturnKindDetailFactory.getInstance().create(returnKindPK, returnKindName, returnSequenceTypePK,
-                isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
         
         returnKind.setActiveDetail(returnKindDetail);
         returnKind.setLastDetail(returnKindDetail);
@@ -603,7 +603,7 @@ public class ReturnPolicyControl
         deleteReturnKindDescriptionsByReturnKind(returnKind, deletedBy);
 
         var returnKindDetail = returnKind.getLastDetailForUpdate();
-        returnKindDetail.setThruTime(session.getStartTimeLong());
+        returnKindDetail.setThruTime(session.getStartTime());
         returnKind.setActiveDetail(null);
         returnKind.store();
         
@@ -634,7 +634,7 @@ public class ReturnPolicyControl
     public ReturnKindDescription createReturnKindDescription(ReturnKind returnKind, Language language, String description,
             BasePK createdBy) {
         var returnKindDescription = ReturnKindDescriptionFactory.getInstance().create(returnKind,
-                language, description, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                language, description, session.getStartTime(), Session.MAX_TIME_LONG);
         
         sendEvent(returnKind.getPrimaryKey(), EventTypes.MODIFY, returnKindDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -748,7 +748,7 @@ public class ReturnPolicyControl
             var returnKindDescription = ReturnKindDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      returnKindDescriptionValue.getPrimaryKey());
             
-            returnKindDescription.setThruTime(session.getStartTimeLong());
+            returnKindDescription.setThruTime(session.getStartTime());
             returnKindDescription.store();
 
             var returnKind = returnKindDescription.getReturnKind();
@@ -756,14 +756,14 @@ public class ReturnPolicyControl
             var description = returnKindDescriptionValue.getDescription();
             
             returnKindDescription = ReturnKindDescriptionFactory.getInstance().create(returnKind, language, description,
-                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME_LONG);
             
             sendEvent(returnKind.getPrimaryKey(), EventTypes.MODIFY, returnKindDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteReturnKindDescription(ReturnKindDescription returnKindDescription, BasePK deletedBy) {
-        returnKindDescription.setThruTime(session.getStartTimeLong());
+        returnKindDescription.setThruTime(session.getStartTime());
         
         sendEvent(returnKindDescription.getReturnKindPK(), EventTypes.MODIFY, returnKindDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
@@ -797,7 +797,7 @@ public class ReturnPolicyControl
 
         var returnPolicy = ReturnPolicyFactory.getInstance().create();
         var returnPolicyDetail = ReturnPolicyDetailFactory.getInstance().create(session,
-                returnPolicy, returnKind, returnPolicyName, isDefault, sortOrder, session.getStartTimeLong(),
+                returnPolicy, returnKind, returnPolicyName, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -1027,7 +1027,7 @@ public class ReturnPolicyControl
                      returnPolicyDetailValue.getReturnPolicyPK());
             var returnPolicyDetail = returnPolicy.getActiveDetailForUpdate();
             
-            returnPolicyDetail.setThruTime(session.getStartTimeLong());
+            returnPolicyDetail.setThruTime(session.getStartTime());
             returnPolicyDetail.store();
 
             var returnPolicyPK = returnPolicyDetail.getReturnPolicyPK();
@@ -1054,7 +1054,7 @@ public class ReturnPolicyControl
             }
             
             returnPolicyDetail = ReturnPolicyDetailFactory.getInstance().create(returnPolicyPK,
-                    returnKindPK, returnPolicyName, isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    returnKindPK, returnPolicyName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
             
             returnPolicy.setActiveDetail(returnPolicyDetail);
             returnPolicy.setLastDetail(returnPolicyDetail);
@@ -1073,7 +1073,7 @@ public class ReturnPolicyControl
         deleteReturnPolicyTranslationsByReturnPolicy(returnPolicy, deletedBy);
 
         var returnPolicyDetail = returnPolicy.getLastDetailForUpdate();
-        returnPolicyDetail.setThruTime(session.getStartTimeLong());
+        returnPolicyDetail.setThruTime(session.getStartTime());
         returnPolicy.setActiveDetail(null);
         returnPolicy.store();
         
@@ -1113,7 +1113,7 @@ public class ReturnPolicyControl
     public ReturnPolicyTranslation createReturnPolicyTranslation(ReturnPolicy returnPolicy, Language language,
             String description, MimeType overviewMimeType, String overview, BasePK createdBy) {
         var returnPolicyTranslation = ReturnPolicyTranslationFactory.getInstance().create(returnPolicy,
-                language, description, overviewMimeType, overview, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                language, description, overviewMimeType, overview, session.getStartTime(), Session.MAX_TIME_LONG);
 
         sendEvent(returnPolicy.getPrimaryKey(), EventTypes.MODIFY, returnPolicyTranslation.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -1220,7 +1220,7 @@ public class ReturnPolicyControl
             var returnPolicyTranslation = ReturnPolicyTranslationFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     returnPolicyTranslationValue.getPrimaryKey());
 
-            returnPolicyTranslation.setThruTime(session.getStartTimeLong());
+            returnPolicyTranslation.setThruTime(session.getStartTime());
             returnPolicyTranslation.store();
 
             var returnPolicyPK = returnPolicyTranslation.getReturnPolicyPK();
@@ -1230,14 +1230,14 @@ public class ReturnPolicyControl
             var policy = returnPolicyTranslationValue.getPolicy();
 
             returnPolicyTranslation = ReturnPolicyTranslationFactory.getInstance().create(returnPolicyPK, languagePK, description,
-                    policyMimeTypePK, policy, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    policyMimeTypePK, policy, session.getStartTime(), Session.MAX_TIME_LONG);
 
             sendEvent(returnPolicyPK, EventTypes.MODIFY, returnPolicyTranslation.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteReturnPolicyTranslation(ReturnPolicyTranslation returnPolicyTranslation, BasePK deletedBy) {
-        returnPolicyTranslation.setThruTime(session.getStartTimeLong());
+        returnPolicyTranslation.setThruTime(session.getStartTime());
 
         sendEvent(returnPolicyTranslation.getReturnPolicyPK(), EventTypes.MODIFY, returnPolicyTranslation.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
@@ -1270,7 +1270,7 @@ public class ReturnPolicyControl
         }
 
         var returnPolicyReason = ReturnPolicyReasonFactory.getInstance().create(returnPolicy, returnReason,
-                isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
         
         sendEvent(returnPolicy.getPrimaryKey(), EventTypes.MODIFY, returnPolicyReason.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1475,7 +1475,7 @@ public class ReturnPolicyControl
             var returnPolicyReason = ReturnPolicyReasonFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      returnPolicyReasonValue.getPrimaryKey());
             
-            returnPolicyReason.setThruTime(session.getStartTimeLong());
+            returnPolicyReason.setThruTime(session.getStartTime());
             returnPolicyReason.store();
 
             var returnPolicy = returnPolicyReason.getReturnPolicy(); // Not Updated
@@ -1501,7 +1501,7 @@ public class ReturnPolicyControl
             }
             
             returnPolicyReason = ReturnPolicyReasonFactory.getInstance().create(returnPolicyPK, returnReasonPK,
-                    isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
             
             sendEvent(returnPolicyPK, EventTypes.MODIFY, returnPolicyReason.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -1512,7 +1512,7 @@ public class ReturnPolicyControl
     }
     
     public void deleteReturnPolicyReason(ReturnPolicyReason returnPolicyReason, BasePK deletedBy) {
-        returnPolicyReason.setThruTime(session.getStartTimeLong());
+        returnPolicyReason.setThruTime(session.getStartTime());
         returnPolicyReason.store();
         
         // Check for default, and pick one if necessary
@@ -1570,7 +1570,7 @@ public class ReturnPolicyControl
 
         var returnReason = ReturnReasonFactory.getInstance().create();
         var returnReasonDetail = ReturnReasonDetailFactory.getInstance().create(session,
-                returnReason, returnKind, returnReasonName, isDefault, sortOrder, session.getStartTimeLong(),
+                returnReason, returnKind, returnReasonName, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -1771,7 +1771,7 @@ public class ReturnPolicyControl
                      returnReasonDetailValue.getReturnReasonPK());
             var returnReasonDetail = returnReason.getActiveDetailForUpdate();
             
-            returnReasonDetail.setThruTime(session.getStartTimeLong());
+            returnReasonDetail.setThruTime(session.getStartTime());
             returnReasonDetail.store();
 
             var returnReasonPK = returnReasonDetail.getReturnReasonPK();
@@ -1798,7 +1798,7 @@ public class ReturnPolicyControl
             }
             
             returnReasonDetail = ReturnReasonDetailFactory.getInstance().create(returnReasonPK,
-                    returnKindPK, returnReasonName, isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    returnKindPK, returnReasonName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
             
             returnReason.setActiveDetail(returnReasonDetail);
             returnReason.setLastDetail(returnReasonDetail);
@@ -1817,7 +1817,7 @@ public class ReturnPolicyControl
         deleteReturnReasonDescriptionsByReturnReason(returnReason, deletedBy);
 
         var returnReasonDetail = returnReason.getLastDetailForUpdate();
-        returnReasonDetail.setThruTime(session.getStartTimeLong());
+        returnReasonDetail.setThruTime(session.getStartTime());
         returnReason.setActiveDetail(null);
         returnReason.store();
         
@@ -1857,7 +1857,7 @@ public class ReturnPolicyControl
     public ReturnReasonDescription createReturnReasonDescription(ReturnReason returnReason, Language language, String description,
             BasePK createdBy) {
         var returnReasonDescription = ReturnReasonDescriptionFactory.getInstance().create(returnReason,
-                language, description, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                language, description, session.getStartTime(), Session.MAX_TIME_LONG);
         
         sendEvent(returnReason.getPrimaryKey(), EventTypes.MODIFY, returnReasonDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1988,7 +1988,7 @@ public class ReturnPolicyControl
             var returnReasonDescription = ReturnReasonDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      returnReasonDescriptionValue.getPrimaryKey());
             
-            returnReasonDescription.setThruTime(session.getStartTimeLong());
+            returnReasonDescription.setThruTime(session.getStartTime());
             returnReasonDescription.store();
 
             var returnReason = returnReasonDescription.getReturnReason();
@@ -1996,14 +1996,14 @@ public class ReturnPolicyControl
             var description = returnReasonDescriptionValue.getDescription();
             
             returnReasonDescription = ReturnReasonDescriptionFactory.getInstance().create(returnReason, language, description,
-                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME_LONG);
             
             sendEvent(returnReason.getPrimaryKey(), EventTypes.MODIFY, returnReasonDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteReturnReasonDescription(ReturnReasonDescription returnReasonDescription, BasePK deletedBy) {
-        returnReasonDescription.setThruTime(session.getStartTimeLong());
+        returnReasonDescription.setThruTime(session.getStartTime());
         
         sendEvent(returnReasonDescription.getReturnReasonPK(), EventTypes.MODIFY, returnReasonDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
@@ -2036,7 +2036,7 @@ public class ReturnPolicyControl
         }
 
         var returnReasonType = ReturnReasonTypeFactory.getInstance().create(returnReason, returnType,
-                isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
         
         sendEvent(returnReason.getPrimaryKey(), EventTypes.MODIFY, returnReasonType.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -2242,7 +2242,7 @@ public class ReturnPolicyControl
             var returnReasonType = ReturnReasonTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      returnReasonTypeValue.getPrimaryKey());
             
-            returnReasonType.setThruTime(session.getStartTimeLong());
+            returnReasonType.setThruTime(session.getStartTime());
             returnReasonType.store();
 
             var returnReason = returnReasonType.getReturnReason(); // Not Updated
@@ -2268,7 +2268,7 @@ public class ReturnPolicyControl
             }
             
             returnReasonType = ReturnReasonTypeFactory.getInstance().create(returnReasonPK, returnTypePK,
-                    isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
             
             sendEvent(returnReasonPK, EventTypes.MODIFY, returnReasonType.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -2279,7 +2279,7 @@ public class ReturnPolicyControl
     }
     
     public void deleteReturnReasonType(ReturnReasonType returnReasonType, BasePK deletedBy) {
-        returnReasonType.setThruTime(session.getStartTimeLong());
+        returnReasonType.setThruTime(session.getStartTime());
         returnReasonType.store();
         
         // Check for default, and pick one if necessary
@@ -2337,7 +2337,7 @@ public class ReturnPolicyControl
 
         var returnType = ReturnTypeFactory.getInstance().create();
         var returnTypeDetail = ReturnTypeDetailFactory.getInstance().create(session,
-                returnType, returnKind, returnTypeName, returnSequence, isDefault, sortOrder, session.getStartTimeLong(),
+                returnType, returnKind, returnTypeName, returnSequence, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -2540,7 +2540,7 @@ public class ReturnPolicyControl
                      returnTypeDetailValue.getReturnTypePK());
             var returnTypeDetail = returnType.getActiveDetailForUpdate();
             
-            returnTypeDetail.setThruTime(session.getStartTimeLong());
+            returnTypeDetail.setThruTime(session.getStartTime());
             returnTypeDetail.store();
 
             var returnTypePK = returnTypeDetail.getReturnTypePK();
@@ -2568,7 +2568,7 @@ public class ReturnPolicyControl
             }
             
             returnTypeDetail = ReturnTypeDetailFactory.getInstance().create(returnTypePK, returnKindPK, returnTypeName,
-                    returnSequencePK, isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    returnSequencePK, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
             
             returnType.setActiveDetail(returnTypeDetail);
             returnType.setLastDetail(returnTypeDetail);
@@ -2587,7 +2587,7 @@ public class ReturnPolicyControl
         deleteReturnTypeDescriptionsByReturnType(returnType, deletedBy);
 
         var returnTypeDetail = returnType.getLastDetailForUpdate();
-        returnTypeDetail.setThruTime(session.getStartTimeLong());
+        returnTypeDetail.setThruTime(session.getStartTime());
         returnType.setActiveDetail(null);
         returnType.store();
         
@@ -2627,7 +2627,7 @@ public class ReturnPolicyControl
     public ReturnTypeDescription createReturnTypeDescription(ReturnType returnType, Language language, String description,
             BasePK createdBy) {
         var returnTypeDescription = ReturnTypeDescriptionFactory.getInstance().create(returnType,
-                language, description, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                language, description, session.getStartTime(), Session.MAX_TIME_LONG);
         
         sendEvent(returnType.getPrimaryKey(), EventTypes.MODIFY, returnTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -2741,7 +2741,7 @@ public class ReturnPolicyControl
             var returnTypeDescription = ReturnTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      returnTypeDescriptionValue.getPrimaryKey());
             
-            returnTypeDescription.setThruTime(session.getStartTimeLong());
+            returnTypeDescription.setThruTime(session.getStartTime());
             returnTypeDescription.store();
 
             var returnType = returnTypeDescription.getReturnType();
@@ -2749,14 +2749,14 @@ public class ReturnPolicyControl
             var description = returnTypeDescriptionValue.getDescription();
             
             returnTypeDescription = ReturnTypeDescriptionFactory.getInstance().create(returnType, language, description,
-                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME_LONG);
             
             sendEvent(returnType.getPrimaryKey(), EventTypes.MODIFY, returnTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteReturnTypeDescription(ReturnTypeDescription returnTypeDescription, BasePK deletedBy) {
-        returnTypeDescription.setThruTime(session.getStartTimeLong());
+        returnTypeDescription.setThruTime(session.getStartTime());
         
         sendEvent(returnTypeDescription.getReturnTypePK(), EventTypes.MODIFY, returnTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
@@ -2789,7 +2789,7 @@ public class ReturnPolicyControl
         }
 
         var returnTypeShippingMethod = ReturnTypeShippingMethodFactory.getInstance().create(returnType, shippingMethod,
-                isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
         
         sendEvent(returnType.getPrimaryKey(), EventTypes.MODIFY, returnTypeShippingMethod.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -2995,7 +2995,7 @@ public class ReturnPolicyControl
             var returnTypeShippingMethod = ReturnTypeShippingMethodFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      returnTypeShippingMethodValue.getPrimaryKey());
             
-            returnTypeShippingMethod.setThruTime(session.getStartTimeLong());
+            returnTypeShippingMethod.setThruTime(session.getStartTime());
             returnTypeShippingMethod.store();
 
             var returnType = returnTypeShippingMethod.getReturnType(); // Not Updated
@@ -3021,7 +3021,7 @@ public class ReturnPolicyControl
             }
             
             returnTypeShippingMethod = ReturnTypeShippingMethodFactory.getInstance().create(returnTypePK, shippingMethodPK,
-                    isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
             
             sendEvent(returnTypePK, EventTypes.MODIFY, returnTypeShippingMethod.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -3032,7 +3032,7 @@ public class ReturnPolicyControl
     }
     
     public void deleteReturnTypeShippingMethod(ReturnTypeShippingMethod returnTypeShippingMethod, BasePK deletedBy) {
-        returnTypeShippingMethod.setThruTime(session.getStartTimeLong());
+        returnTypeShippingMethod.setThruTime(session.getStartTime());
         returnTypeShippingMethod.store();
         
         // Check for default, and pick one if necessary

@@ -156,7 +156,7 @@ public class PrinterControl
 
         var printerGroup = PrinterGroupFactory.getInstance().create();
         var printerGroupDetail = PrinterGroupDetailFactory.getInstance().create(printerGroup, printerGroupName, keepPrintedJobsTime, isDefault,
-                sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
 
         // Convert to R/W
         printerGroup = PrinterGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -334,7 +334,7 @@ public class PrinterControl
                      printerGroupDetailValue.getPrinterGroupPK());
             var printerGroupDetail = printerGroup.getActiveDetailForUpdate();
 
-            printerGroupDetail.setThruTime(session.getStartTimeLong());
+            printerGroupDetail.setThruTime(session.getStartTime());
             printerGroupDetail.store();
 
             var printerGroupPK = printerGroupDetail.getPrinterGroupPK(); // Not updated
@@ -360,7 +360,7 @@ public class PrinterControl
             }
 
             printerGroupDetail = PrinterGroupDetailFactory.getInstance().create(printerGroupPK, printerGroupName, keepPrintedJobsTime, isDefault, sortOrder,
-                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME_LONG);
 
             printerGroup.setActiveDetail(printerGroupDetail);
             printerGroup.setLastDetail(printerGroupDetail);
@@ -407,7 +407,7 @@ public class PrinterControl
         removePrinterGroupJobsByPrinterGroup(printerGroup);
 
         var printerGroupDetail = printerGroup.getLastDetailForUpdate();
-        printerGroupDetail.setThruTime(session.getStartTimeLong());
+        printerGroupDetail.setThruTime(session.getStartTime());
         printerGroup.setActiveDetail(null);
         printerGroup.store();
 
@@ -438,7 +438,7 @@ public class PrinterControl
     public PrinterGroupDescription createPrinterGroupDescription(PrinterGroup printerGroup,
             Language language, String description, BasePK createdBy) {
         var printerGroupDescription = PrinterGroupDescriptionFactory.getInstance().create(printerGroup,
-                language, description, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                language, description, session.getStartTime(), Session.MAX_TIME_LONG);
 
         sendEvent(printerGroup.getPrimaryKey(), EventTypes.MODIFY, printerGroupDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -554,7 +554,7 @@ public class PrinterControl
             var printerGroupDescription = PrinterGroupDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     printerGroupDescriptionValue.getPrimaryKey());
 
-            printerGroupDescription.setThruTime(session.getStartTimeLong());
+            printerGroupDescription.setThruTime(session.getStartTime());
             printerGroupDescription.store();
 
             var printerGroup = printerGroupDescription.getPrinterGroup();
@@ -562,14 +562,14 @@ public class PrinterControl
             var description = printerGroupDescriptionValue.getDescription();
 
             printerGroupDescription = PrinterGroupDescriptionFactory.getInstance().create(printerGroup, language, description,
-                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME_LONG);
 
             sendEvent(printerGroup.getPrimaryKey(), EventTypes.MODIFY, printerGroupDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deletePrinterGroupDescription(PrinterGroupDescription printerGroupDescription, BasePK deletedBy) {
-        printerGroupDescription.setThruTime(session.getStartTimeLong());
+        printerGroupDescription.setThruTime(session.getStartTime());
 
         sendEvent(printerGroupDescription.getPrinterGroupPK(), EventTypes.MODIFY, printerGroupDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
@@ -589,7 +589,7 @@ public class PrinterControl
 
     public Printer createPrinter(String printerName, PrinterGroup printerGroup, Integer priority, BasePK createdBy) {
         var printer = PrinterFactory.getInstance().create();
-        var printerDetail = PrinterDetailFactory.getInstance().create(printer, printerName, printerGroup, priority, session.getStartTimeLong(),
+        var printerDetail = PrinterDetailFactory.getInstance().create(printer, printerName, printerGroup, priority, session.getStartTime(),
                 Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -778,7 +778,7 @@ public class PrinterControl
             var printer = PrinterFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, printerDetailValue.getPrinterPK());
             var printerDetail = printer.getActiveDetailForUpdate();
 
-            printerDetail.setThruTime(session.getStartTimeLong());
+            printerDetail.setThruTime(session.getStartTime());
             printerDetail.store();
 
             var printerPK = printerDetail.getPrinterPK(); // Not updated
@@ -786,7 +786,7 @@ public class PrinterControl
             var printerGroupPK = printerDetailValue.getPrinterGroupPK();
             var priority = printerDetailValue.getPriority();
 
-            printerDetail = PrinterDetailFactory.getInstance().create(printerPK, printerName, printerGroupPK, priority, session.getStartTimeLong(),
+            printerDetail = PrinterDetailFactory.getInstance().create(printerPK, printerName, printerGroupPK, priority, session.getStartTime(),
                     Session.MAX_TIME_LONG);
 
             printer.setActiveDetail(printerDetail);
@@ -826,7 +826,7 @@ public class PrinterControl
         deletePrinterDescriptionsByPrinter(printer, deletedBy);
 
         var printerDetail = printer.getLastDetailForUpdate();
-        printerDetail.setThruTime(session.getStartTimeLong());
+        printerDetail.setThruTime(session.getStartTime());
         printer.setActiveDetail(null);
         printer.store();
 
@@ -848,7 +848,7 @@ public class PrinterControl
     // --------------------------------------------------------------------------------
 
     public PrinterDescription createPrinterDescription(Printer printer, Language language, String description, BasePK createdBy) {
-        var printerDescription = PrinterDescriptionFactory.getInstance().create(printer, language, description, session.getStartTimeLong(),
+        var printerDescription = PrinterDescriptionFactory.getInstance().create(printer, language, description, session.getStartTime(),
                 Session.MAX_TIME_LONG);
 
         sendEvent(printer.getPrimaryKey(), EventTypes.MODIFY, printerDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -965,7 +965,7 @@ public class PrinterControl
             var printerDescription = PrinterDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     printerDescriptionValue.getPrimaryKey());
 
-            printerDescription.setThruTime(session.getStartTimeLong());
+            printerDescription.setThruTime(session.getStartTime());
             printerDescription.store();
 
             var printer = printerDescription.getPrinter();
@@ -973,14 +973,14 @@ public class PrinterControl
             var description = printerDescriptionValue.getDescription();
 
             printerDescription = PrinterDescriptionFactory.getInstance().create(printer, language, description,
-                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME_LONG);
 
             sendEvent(printer.getPrimaryKey(), EventTypes.MODIFY, printerDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deletePrinterDescription(PrinterDescription printerDescription, BasePK deletedBy) {
-        printerDescription.setThruTime(session.getStartTimeLong());
+        printerDescription.setThruTime(session.getStartTime());
 
         sendEvent(printerDescription.getPrinterPK(), EventTypes.MODIFY, printerDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
@@ -1009,7 +1009,7 @@ public class PrinterControl
             BasePK createdBy) {
         var printerGroupJob = PrinterGroupJobFactory.getInstance().create();
         var printerGroupJobDetail = PrinterGroupJobDetailFactory.getInstance().create(printerGroupJob, printerGroupJobName, printerGroup,
-                document, copies, priority, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                document, copies, priority, session.getStartTime(), Session.MAX_TIME_LONG);
 
         // Convert to R/W
         printerGroupJob = PrinterGroupJobFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -1273,7 +1273,7 @@ public class PrinterControl
                      printerGroupJobDetailValue.getPrinterGroupJobPK());
             var printerGroupJobDetail = printerGroupJob.getActiveDetailForUpdate();
 
-            printerGroupJobDetail.setThruTime(session.getStartTimeLong());
+            printerGroupJobDetail.setThruTime(session.getStartTime());
             printerGroupJobDetail.store();
 
             var printerGroupJobPK = printerGroupJobDetail.getPrinterGroupJobPK(); // Not updated
@@ -1284,7 +1284,7 @@ public class PrinterControl
             var priority = printerGroupJobDetailValue.getPriority();
 
             printerGroupJobDetail = PrinterGroupJobDetailFactory.getInstance().create(printerGroupJobPK, printerGroupJobName, printerGroupPK, documentPK,
-                    copies, priority, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    copies, priority, session.getStartTime(), Session.MAX_TIME_LONG);
 
             printerGroupJob.setActiveDetail(printerGroupJobDetail);
             printerGroupJob.setLastDetail(printerGroupJobDetail);
@@ -1324,7 +1324,7 @@ public class PrinterControl
                     var keepPrintedJobsTime = printerGroupJob.getLastDetail().getPrinterGroup().getLastDetail().getKeepPrintedJobsTime();
 
                     if(keepPrintedJobsTime != null) {
-                        triggerTime = session.getStartTimeLong() + keepPrintedJobsTime;
+                        triggerTime = session.getStartTime() + keepPrintedJobsTime;
                     }
                 }
             }
@@ -1341,7 +1341,7 @@ public class PrinterControl
 
         documentControl.deleteDocument(printerGroupJobDetail.getDocumentForUpdate(), deletedBy);
 
-        printerGroupJobDetail.setThruTime(session.getStartTimeLong());
+        printerGroupJobDetail.setThruTime(session.getStartTime());
         printerGroupJob.setActiveDetail(null);
         printerGroupJob.store();
 
@@ -1397,7 +1397,7 @@ public class PrinterControl
 
         var printerGroupUseType = PrinterGroupUseTypeFactory.getInstance().create();
         var printerGroupUseTypeDetail = PrinterGroupUseTypeDetailFactory.getInstance().create(printerGroupUseType,
-                printerGroupUseTypeName, isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                printerGroupUseTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
 
         // Convert to R/W
         printerGroupUseType = PrinterGroupUseTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -1575,7 +1575,7 @@ public class PrinterControl
                      printerGroupUseTypeDetailValue.getPrinterGroupUseTypePK());
             var printerGroupUseTypeDetail = printerGroupUseType.getActiveDetailForUpdate();
 
-            printerGroupUseTypeDetail.setThruTime(session.getStartTimeLong());
+            printerGroupUseTypeDetail.setThruTime(session.getStartTime());
             printerGroupUseTypeDetail.store();
 
             var printerGroupUseTypePK = printerGroupUseTypeDetail.getPrinterGroupUseTypePK(); // Not updated
@@ -1600,7 +1600,7 @@ public class PrinterControl
             }
 
             printerGroupUseTypeDetail = PrinterGroupUseTypeDetailFactory.getInstance().create(printerGroupUseTypePK, printerGroupUseTypeName, isDefault,
-                    sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
 
             printerGroupUseType.setActiveDetail(printerGroupUseTypeDetail);
             printerGroupUseType.setLastDetail(printerGroupUseTypeDetail);
@@ -1618,7 +1618,7 @@ public class PrinterControl
         deletePartyPrinterGroupUsesByPrinterGroupUseType(printerGroupUseType, deletedBy);
 
         var printerGroupUseTypeDetail = printerGroupUseType.getLastDetailForUpdate();
-        printerGroupUseTypeDetail.setThruTime(session.getStartTimeLong());
+        printerGroupUseTypeDetail.setThruTime(session.getStartTime());
         printerGroupUseType.setActiveDetail(null);
         printerGroupUseType.store();
 
@@ -1649,7 +1649,7 @@ public class PrinterControl
     public PrinterGroupUseTypeDescription createPrinterGroupUseTypeDescription(PrinterGroupUseType printerGroupUseType,
             Language language, String description, BasePK createdBy) {
         var printerGroupUseTypeDescription = PrinterGroupUseTypeDescriptionFactory.getInstance().create(printerGroupUseType,
-                language, description, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                language, description, session.getStartTime(), Session.MAX_TIME_LONG);
 
         sendEvent(printerGroupUseType.getPrimaryKey(), EventTypes.MODIFY, printerGroupUseTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -1765,7 +1765,7 @@ public class PrinterControl
             var printerGroupUseTypeDescription = PrinterGroupUseTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     printerGroupUseTypeDescriptionValue.getPrimaryKey());
 
-            printerGroupUseTypeDescription.setThruTime(session.getStartTimeLong());
+            printerGroupUseTypeDescription.setThruTime(session.getStartTime());
             printerGroupUseTypeDescription.store();
 
             var printerGroupUseType = printerGroupUseTypeDescription.getPrinterGroupUseType();
@@ -1773,14 +1773,14 @@ public class PrinterControl
             var description = printerGroupUseTypeDescriptionValue.getDescription();
 
             printerGroupUseTypeDescription = PrinterGroupUseTypeDescriptionFactory.getInstance().create(printerGroupUseType, language, description,
-                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME_LONG);
 
             sendEvent(printerGroupUseType.getPrimaryKey(), EventTypes.MODIFY, printerGroupUseTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deletePrinterGroupUseTypeDescription(PrinterGroupUseTypeDescription printerGroupUseTypeDescription, BasePK deletedBy) {
-        printerGroupUseTypeDescription.setThruTime(session.getStartTimeLong());
+        printerGroupUseTypeDescription.setThruTime(session.getStartTime());
 
         sendEvent(printerGroupUseTypeDescription.getPrinterGroupUseTypePK(), EventTypes.MODIFY, printerGroupUseTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
@@ -1800,7 +1800,7 @@ public class PrinterControl
     
     public PartyPrinterGroupUse createPartyPrinterGroupUse(Party party, PrinterGroupUseType printerGroupUseType, PrinterGroup printerGroup, BasePK createdBy) {
         var partyPrinterGroupUse = PartyPrinterGroupUseFactory.getInstance().create(party, printerGroupUseType, printerGroup,
-                session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME_LONG);
         
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyPrinterGroupUse.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1981,7 +1981,7 @@ public class PrinterControl
             var partyPrinterGroupUse = PartyPrinterGroupUseFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     partyPrinterGroupUseValue.getPrimaryKey());
             
-            partyPrinterGroupUse.setThruTime(session.getStartTimeLong());
+            partyPrinterGroupUse.setThruTime(session.getStartTime());
             partyPrinterGroupUse.store();
 
             var partyPK = partyPrinterGroupUse.getPartyPK(); // Not updated
@@ -1989,14 +1989,14 @@ public class PrinterControl
             var printerGroupPK = partyPrinterGroupUseValue.getPrinterGroupPK();
             
             partyPrinterGroupUse = PartyPrinterGroupUseFactory.getInstance().create(partyPK, printerGroupUseTypePK,
-                    printerGroupPK, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    printerGroupPK, session.getStartTime(), Session.MAX_TIME_LONG);
             
             sendEvent(partyPK, EventTypes.MODIFY, partyPrinterGroupUse.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deletePartyPrinterGroupUse(PartyPrinterGroupUse partyPrinterGroupUse, BasePK deletedBy) {
-        partyPrinterGroupUse.setThruTime(session.getStartTimeLong());
+        partyPrinterGroupUse.setThruTime(session.getStartTime());
 
         sendEvent(partyPrinterGroupUse.getPartyPK(), EventTypes.MODIFY, partyPrinterGroupUse.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }

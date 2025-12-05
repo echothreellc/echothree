@@ -47,7 +47,6 @@ import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPol
 import com.echothree.model.data.customer.server.entity.Customer;
 import com.echothree.model.data.offer.server.entity.OfferUse;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.form.ValidationResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -373,7 +372,7 @@ public class CreateCustomerWithLoginCommand
 
                                                                     var userLoginPasswordType = userControl.getUserLoginPasswordTypeByName(UserConstants.UserLoginPasswordType_STRING);
                                                                     var userLoginPassword = userControl.createUserLoginPassword(party, userLoginPasswordType, createdBy);
-                                                                    userControl.createUserLoginPasswordString(userLoginPassword, password1, session.getStartTimeLong(), false, createdBy);
+                                                                    userControl.createUserLoginPasswordString(userLoginPassword, password1, session.getStartTime(), false, createdBy);
 
                                                                     if(partyTypePasswordStringPolicy != null && partyTypePasswordStringPolicy.getLastDetail().getForceChangeAfterCreate()) {
                                                                         var userLoginStatus = userControl.getUserLoginStatusForUpdate(party);

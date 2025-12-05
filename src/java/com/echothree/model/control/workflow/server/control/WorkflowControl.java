@@ -463,7 +463,7 @@ public class WorkflowControl
             SecurityRoleGroup securityRoleGroup, Integer sortOrder, BasePK createdBy) {
         var workflow = WorkflowFactory.getInstance().create();
         var workflowDetail = WorkflowDetailFactory.getInstance().create(workflow, workflowName,
-                selectorType, securityRoleGroup, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                selectorType, securityRoleGroup, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
         
         // Convert to R/W
         workflow = WorkflowFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, workflow.getPrimaryKey());
@@ -642,7 +642,7 @@ public class WorkflowControl
             var workflow = WorkflowFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, workflowDetailValue.getWorkflowPK());
             var workflowDetail = workflow.getActiveDetailForUpdate();
             
-            workflowDetail.setThruTime(session.getStartTimeLong());
+            workflowDetail.setThruTime(session.getStartTime());
             workflowDetail.store();
 
             var workflowPK = workflowDetail.getWorkflowPK();
@@ -652,7 +652,7 @@ public class WorkflowControl
             var sortOrder = workflowDetailValue.getSortOrder();
             
             workflowDetail = WorkflowDetailFactory.getInstance().create(workflowPK, workflowName, selectorTypePK, securityRoleGroupPK,
-                    sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
             
             workflow.setActiveDetail(workflowDetail);
             workflow.setLastDetail(workflowDetail);
@@ -669,7 +669,7 @@ public class WorkflowControl
         deleteWorkflowSelectorKindsByWorkflow(workflow, deletedBy);
 
         var workflowDetail = workflow.getLastDetailForUpdate();
-        workflowDetail.setThruTime(session.getStartTimeLong());
+        workflowDetail.setThruTime(session.getStartTime());
         workflow.setActiveDetail(null);
         workflow.store();
         
@@ -682,7 +682,7 @@ public class WorkflowControl
     
     public WorkflowDescription createWorkflowDescription(Workflow workflow, Language language, String description, BasePK createdBy) {
         var workflowDescription = WorkflowDescriptionFactory.getInstance().create(workflow, language,
-                description, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                description, session.getStartTime(), Session.MAX_TIME_LONG);
         
         sendEvent(workflow.getPrimaryKey(), EventTypes.MODIFY, workflowDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -795,7 +795,7 @@ public class WorkflowControl
         if(workflowDescriptionValue.hasBeenModified()) {
             var workflowDescription = WorkflowDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, workflowDescriptionValue.getPrimaryKey());
             
-            workflowDescription.setThruTime(session.getStartTimeLong());
+            workflowDescription.setThruTime(session.getStartTime());
             workflowDescription.store();
 
             var workflow = workflowDescription.getWorkflow();
@@ -803,14 +803,14 @@ public class WorkflowControl
             var description = workflowDescriptionValue.getDescription();
             
             workflowDescription = WorkflowDescriptionFactory.getInstance().create(workflow, language, description,
-                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME_LONG);
             
             sendEvent(workflow.getPrimaryKey(), EventTypes.MODIFY, workflowDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteWorkflowDescription(WorkflowDescription workflowDescription, BasePK deletedBy) {
-        workflowDescription.setThruTime(session.getStartTimeLong());
+        workflowDescription.setThruTime(session.getStartTime());
         
         sendEvent(workflowDescription.getWorkflowPK(), EventTypes.MODIFY, workflowDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
@@ -844,7 +844,7 @@ public class WorkflowControl
 
         var workflowStep = WorkflowStepFactory.getInstance().create();
         var workflowStepDetail = WorkflowStepDetailFactory.getInstance().create(workflowStep, workflow,
-                workflowStepName, workflowStepType, isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                workflowStepName, workflowStepType, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
         
         // Convert to R/W
         workflowStep = WorkflowStepFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, workflowStep.getPrimaryKey());
@@ -1065,7 +1065,7 @@ public class WorkflowControl
                     workflowStepDetailValue.getWorkflowStepPK());
             var workflowStepDetail = workflowStep.getActiveDetailForUpdate();
             
-            workflowStepDetail.setThruTime(session.getStartTimeLong());
+            workflowStepDetail.setThruTime(session.getStartTime());
             workflowStepDetail.store();
 
             var workflowStepPK = workflowStepDetail.getWorkflowStepPK();
@@ -1093,7 +1093,7 @@ public class WorkflowControl
             }
             
             workflowStepDetail = WorkflowStepDetailFactory.getInstance().create(workflowStepPK, workflowPK, workflowStepName, workflowStepTypePK,
-                    isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
             
             workflowStep.setActiveDetail(workflowStepDetail);
             workflowStep.setLastDetail(workflowStepDetail);
@@ -1116,7 +1116,7 @@ public class WorkflowControl
         deleteWorkflowStepDescriptionsByWorkflowStep(workflowStep, deletedBy);
 
         var workflowStepDetail = workflowStep.getLastDetailForUpdate();
-        workflowStepDetail.setThruTime(session.getStartTimeLong());
+        workflowStepDetail.setThruTime(session.getStartTime());
         workflowStep.setActiveDetail(null);
         workflowStep.store();
         
@@ -1162,7 +1162,7 @@ public class WorkflowControl
     public WorkflowStepDescription createWorkflowStepDescription(WorkflowStep workflowStep, Language language, String description,
             BasePK createdBy) {
         var workflowStepDescription = WorkflowStepDescriptionFactory.getInstance().create(workflowStep,
-                language, description, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                language, description, session.getStartTime(), Session.MAX_TIME_LONG);
         
         sendEvent(workflowStep.getLastDetail().getWorkflowPK(), EventTypes.MODIFY, workflowStepDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1292,7 +1292,7 @@ public class WorkflowControl
         if(workflowStepDescriptionValue.hasBeenModified()) {
             var workflowStepDescription = WorkflowStepDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, workflowStepDescriptionValue.getPrimaryKey());
             
-            workflowStepDescription.setThruTime(session.getStartTimeLong());
+            workflowStepDescription.setThruTime(session.getStartTime());
             workflowStepDescription.store();
 
             var workflowStep = workflowStepDescription.getWorkflowStep();
@@ -1300,14 +1300,14 @@ public class WorkflowControl
             var description = workflowStepDescriptionValue.getDescription();
             
             workflowStepDescription = WorkflowStepDescriptionFactory.getInstance().create(workflowStep, language, description,
-                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME_LONG);
             
             sendEvent(workflowStep.getLastDetail().getWorkflowPK(), EventTypes.MODIFY, workflowStepDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteWorkflowStepDescription(WorkflowStepDescription workflowStepDescription, BasePK deletedBy) {
-        workflowStepDescription.setThruTime(session.getStartTimeLong());
+        workflowStepDescription.setThruTime(session.getStartTime());
         
         sendEvent(workflowStepDescription.getWorkflowStep().getLastDetail().getWorkflowPK(), EventTypes.MODIFY, workflowStepDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
@@ -1327,7 +1327,7 @@ public class WorkflowControl
     
     public WorkflowEntityType createWorkflowEntityType(Workflow workflow, EntityType entityType, BasePK createdBy) {
         var workflowEntityType = WorkflowEntityTypeFactory.getInstance().create(workflow, entityType,
-                session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME_LONG);
         
         sendEvent(workflow.getPrimaryKey(), EventTypes.MODIFY, workflowEntityType.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1477,7 +1477,7 @@ public class WorkflowControl
     }
 
     public void deleteWorkflowEntityType(WorkflowEntityType workflowEntityType, BasePK deletedBy) {
-        workflowEntityType.setThruTime(session.getStartTimeLong());
+        workflowEntityType.setThruTime(session.getStartTime());
         
         sendEvent(workflowEntityType.getWorkflowPK(), EventTypes.MODIFY, workflowEntityType.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
@@ -1516,7 +1516,7 @@ public class WorkflowControl
 
         var workflowEntrance = WorkflowEntranceFactory.getInstance().create();
         var workflowEntranceDetail = WorkflowEntranceDetailFactory.getInstance().create(workflowEntrance,
-                workflow, workflowEntranceName, isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                workflow, workflowEntranceName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
         
         // Convert to R/W
         workflowEntrance = WorkflowEntranceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -1773,7 +1773,7 @@ public class WorkflowControl
                     workflowEntranceDetailValue.getWorkflowEntrancePK());
             var workflowEntranceDetail = workflowEntrance.getActiveDetailForUpdate();
             
-            workflowEntranceDetail.setThruTime(session.getStartTimeLong());
+            workflowEntranceDetail.setThruTime(session.getStartTime());
             workflowEntranceDetail.store();
 
             var workflowEntrancePK = workflowEntranceDetail.getWorkflowEntrancePK();
@@ -1800,7 +1800,7 @@ public class WorkflowControl
             }
             
             workflowEntranceDetail = WorkflowEntranceDetailFactory.getInstance().create(workflowEntrancePK, workflowPK, workflowEntranceName,
-                    isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
             
             workflowEntrance.setActiveDetail(workflowEntranceDetail);
             workflowEntrance.setLastDetail(workflowEntranceDetail);
@@ -1820,7 +1820,7 @@ public class WorkflowControl
         deleteWorkflowEntranceSelectorsByWorkflowEntrance(workflowEntrance, deletedBy);
 
         var workflowEntranceDetail = workflowEntrance.getLastDetailForUpdate();
-        workflowEntranceDetail.setThruTime(session.getStartTimeLong());
+        workflowEntranceDetail.setThruTime(session.getStartTime());
         workflowEntrance.setActiveDetail(null);
         workflowEntrance.store();
 
@@ -1867,7 +1867,7 @@ public class WorkflowControl
     public WorkflowEntranceDescription createWorkflowEntranceDescription(WorkflowEntrance workflowEntrance, Language language,
             String description, BasePK createdBy) {
         var workflowEntranceDescription = WorkflowEntranceDescriptionFactory.getInstance().create(session,
-                workflowEntrance, language, description, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                workflowEntrance, language, description, session.getStartTime(), Session.MAX_TIME_LONG);
         
         sendEvent(workflowEntrance.getLastDetail().getWorkflowPK(), EventTypes.MODIFY, workflowEntranceDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1997,7 +1997,7 @@ public class WorkflowControl
         if(workflowEntranceDescriptionValue.hasBeenModified()) {
             var workflowEntranceDescription = WorkflowEntranceDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, workflowEntranceDescriptionValue.getPrimaryKey());
             
-            workflowEntranceDescription.setThruTime(session.getStartTimeLong());
+            workflowEntranceDescription.setThruTime(session.getStartTime());
             workflowEntranceDescription.store();
 
             var workflowEntrance = workflowEntranceDescription.getWorkflowEntrance();
@@ -2005,14 +2005,14 @@ public class WorkflowControl
             var description = workflowEntranceDescriptionValue.getDescription();
             
             workflowEntranceDescription = WorkflowEntranceDescriptionFactory.getInstance().create(workflowEntrance, language, description,
-                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME_LONG);
             
             sendEvent(workflowEntrance.getLastDetail().getWorkflowPK(), EventTypes.MODIFY, workflowEntranceDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteWorkflowEntranceDescription(WorkflowEntranceDescription workflowEntranceDescription, BasePK deletedBy) {
-        workflowEntranceDescription.setThruTime(session.getStartTimeLong());
+        workflowEntranceDescription.setThruTime(session.getStartTime());
         
         sendEvent(workflowEntranceDescription.getWorkflowEntrance().getLastDetail().getWorkflowPK(), EventTypes.MODIFY, workflowEntranceDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
@@ -2033,7 +2033,7 @@ public class WorkflowControl
     public WorkflowEntranceSelector createWorkflowEntranceSelector(WorkflowEntrance workflowEntrance, Selector selector,
             BasePK createdBy) {
         var workflowEntranceSelector = WorkflowEntranceSelectorFactory.getInstance().create(workflowEntrance,
-                selector, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                selector, session.getStartTime(), Session.MAX_TIME_LONG);
         
         sendEvent(workflowEntrance.getLastDetail().getWorkflowPK(), EventTypes.MODIFY, workflowEntranceSelector.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -2247,7 +2247,7 @@ public class WorkflowControl
     }
     
     public void deleteWorkflowEntranceSelector(WorkflowEntranceSelector workflowEntranceSelector, BasePK deletedBy) {
-        workflowEntranceSelector.setThruTime(session.getStartTimeLong());
+        workflowEntranceSelector.setThruTime(session.getStartTime());
         workflowEntranceSelector.store();
         
         sendEvent(workflowEntranceSelector.getWorkflowEntrance().getLastDetail().getWorkflowPK(), EventTypes.MODIFY, workflowEntranceSelector.getPrimaryKey(), EventTypes.DELETE, deletedBy);
@@ -2274,7 +2274,7 @@ public class WorkflowControl
     public WorkflowEntrancePartyType createWorkflowEntrancePartyType(WorkflowEntrance workflowEntrance, PartyType partyType,
             BasePK createdBy) {
         var workflowEntrancePartyType = WorkflowEntrancePartyTypeFactory.getInstance().create(session,
-                workflowEntrance, partyType, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                workflowEntrance, partyType, session.getStartTime(), Session.MAX_TIME_LONG);
         
         sendEvent(workflowEntrance.getLastDetail().getWorkflowPK(), EventTypes.MODIFY, workflowEntrancePartyType.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -2400,7 +2400,7 @@ public class WorkflowControl
     public void deleteWorkflowEntrancePartyType(WorkflowEntrancePartyType workflowEntrancePartyType, BasePK deletedBy) {
         deleteWorkflowEntranceSecurityRolesByWorkflowEntrancePartyType(workflowEntrancePartyType, deletedBy);
         
-        workflowEntrancePartyType.setThruTime(session.getStartTimeLong());
+        workflowEntrancePartyType.setThruTime(session.getStartTime());
         workflowEntrancePartyType.store();
         
         sendEvent(workflowEntrancePartyType.getWorkflowEntrance().getLastDetail().getWorkflowPK(), EventTypes.MODIFY, workflowEntrancePartyType.getPrimaryKey(), EventTypes.DELETE, deletedBy);
@@ -2423,7 +2423,7 @@ public class WorkflowControl
     public WorkflowEntranceSecurityRole createWorkflowEntranceSecurityRole(WorkflowEntrancePartyType workflowEntrancePartyType, SecurityRole securityRole,
             BasePK createdBy) {
         var workflowEntranceSecurityRole = WorkflowEntranceSecurityRoleFactory.getInstance().create(session,
-                workflowEntrancePartyType, securityRole, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                workflowEntrancePartyType, securityRole, session.getStartTime(), Session.MAX_TIME_LONG);
         
         sendEvent(workflowEntrancePartyType.getWorkflowEntrance().getLastDetail().getWorkflowPK(), EventTypes.MODIFY, workflowEntranceSecurityRole.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -2548,7 +2548,7 @@ public class WorkflowControl
     }
     
     public void deleteWorkflowEntranceSecurityRole(WorkflowEntranceSecurityRole workflowEntranceSecurityRole, BasePK deletedBy) {
-        workflowEntranceSecurityRole.setThruTime(session.getStartTimeLong());
+        workflowEntranceSecurityRole.setThruTime(session.getStartTime());
         workflowEntranceSecurityRole.store();
         
         sendEvent(workflowEntranceSecurityRole.getWorkflowEntrancePartyType().getWorkflowEntrance().getLastDetail().getWorkflowPK(), EventTypes.MODIFY, workflowEntranceSecurityRole.getPrimaryKey(), EventTypes.DELETE, deletedBy);
@@ -2571,7 +2571,7 @@ public class WorkflowControl
     public WorkflowEntranceStep createWorkflowEntranceStep(WorkflowEntrance workflowEntrance, WorkflowStep workflowStep,
             BasePK createdBy) {
         var workflowEntranceStep = WorkflowEntranceStepFactory.getInstance().create(workflowEntrance,
-                workflowStep, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                workflowStep, session.getStartTime(), Session.MAX_TIME_LONG);
         
         sendEvent(workflowEntrance.getLastDetail().getWorkflowPK(), EventTypes.MODIFY, workflowEntranceStep.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -2717,7 +2717,7 @@ public class WorkflowControl
     }
 
     public void deleteWorkflowEntranceStep(WorkflowEntranceStep workflowEntranceStep, BasePK deletedBy) {
-        workflowEntranceStep.setThruTime(session.getStartTimeLong());
+        workflowEntranceStep.setThruTime(session.getStartTime());
         
         sendEvent(workflowEntranceStep.getWorkflowEntrance().getLastDetail().getWorkflowPK(), EventTypes.MODIFY, workflowEntranceStep.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
@@ -2756,7 +2756,7 @@ public class WorkflowControl
 
         var workflowDestination = WorkflowDestinationFactory.getInstance().create();
         var workflowDestinationDetail = WorkflowDestinationDetailFactory.getInstance().create(workflowDestination, workflowStep,
-                workflowDestinationName, isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                workflowDestinationName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
         
         // Convert to R/W
         workflowDestination = WorkflowDestinationFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, workflowDestination.getPrimaryKey());
@@ -2975,7 +2975,7 @@ public class WorkflowControl
                     workflowDestinationDetailValue.getWorkflowDestinationPK());
             var workflowDestinationDetail = workflowDestination.getActiveDetailForUpdate();
             
-            workflowDestinationDetail.setThruTime(session.getStartTimeLong());
+            workflowDestinationDetail.setThruTime(session.getStartTime());
             workflowDestinationDetail.store();
 
             var workflowDestinationPK = workflowDestinationDetail.getWorkflowDestinationPK();
@@ -3002,7 +3002,7 @@ public class WorkflowControl
             }
             
             workflowDestinationDetail = WorkflowDestinationDetailFactory.getInstance().create(workflowDestinationPK, workflowStepPK, workflowDestinationName,
-                    isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
             
             workflowDestination.setActiveDetail(workflowDestinationDetail);
             workflowDestination.setLastDetail(workflowDestinationDetail);
@@ -3022,7 +3022,7 @@ public class WorkflowControl
         deleteWorkflowDestinationSelectorsByWorkflowDestination(workflowDestination, deletedBy);
 
         var workflowDestinationDetail = workflowDestination.getLastDetailForUpdate();
-        workflowDestinationDetail.setThruTime(session.getStartTimeLong());
+        workflowDestinationDetail.setThruTime(session.getStartTime());
         workflowDestination.setActiveDetail(null);
         workflowDestination.store();
 
@@ -3068,7 +3068,7 @@ public class WorkflowControl
     
     public WorkflowDestinationDescription createWorkflowDestinationDescription(WorkflowDestination workflowDestination, Language language, String description, BasePK createdBy) {
         var workflowDestinationDescription = WorkflowDestinationDescriptionFactory.getInstance().create(workflowDestination, language, description,
-                session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME_LONG);
         
         sendEvent(workflowDestination.getLastDetail().getWorkflowStep().getLastDetail().getWorkflowPK(), EventTypes.MODIFY, workflowDestinationDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -3198,7 +3198,7 @@ public class WorkflowControl
         if(workflowDestinationDescriptionValue.hasBeenModified()) {
             var workflowDestinationDescription = WorkflowDestinationDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, workflowDestinationDescriptionValue.getPrimaryKey());
             
-            workflowDestinationDescription.setThruTime(session.getStartTimeLong());
+            workflowDestinationDescription.setThruTime(session.getStartTime());
             workflowDestinationDescription.store();
 
             var workflowDestination = workflowDestinationDescription.getWorkflowDestination();
@@ -3206,14 +3206,14 @@ public class WorkflowControl
             var description = workflowDestinationDescriptionValue.getDescription();
             
             workflowDestinationDescription = WorkflowDestinationDescriptionFactory.getInstance().create(workflowDestination, language, description,
-                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME_LONG);
             
             sendEvent(workflowDestination.getLastDetail().getWorkflowStep().getLastDetail().getWorkflowPK(), EventTypes.MODIFY, workflowDestinationDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteWorkflowDestinationDescription(WorkflowDestinationDescription workflowDestinationDescription, BasePK deletedBy) {
-        workflowDestinationDescription.setThruTime(session.getStartTimeLong());
+        workflowDestinationDescription.setThruTime(session.getStartTime());
         
         sendEvent(workflowDestinationDescription.getWorkflowDestination().getLastDetail().getWorkflowStep().getLastDetail().getWorkflowPK(), EventTypes.MODIFY, workflowDestinationDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
@@ -3234,7 +3234,7 @@ public class WorkflowControl
     public WorkflowDestinationSelector createWorkflowDestinationSelector(WorkflowDestination workflowDestination, Selector selector,
             BasePK createdBy) {
         var workflowDestinationSelector = WorkflowDestinationSelectorFactory.getInstance().create(session,
-                workflowDestination, selector, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                workflowDestination, selector, session.getStartTime(), Session.MAX_TIME_LONG);
         
         sendEvent(workflowDestination.getLastDetail().getWorkflowStep().getLastDetail().getWorkflowPK(), EventTypes.MODIFY, workflowDestinationSelector.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -3406,7 +3406,7 @@ public class WorkflowControl
     }
     
     public void deleteWorkflowDestinationSelector(WorkflowDestinationSelector workflowDestinationSelector, BasePK deletedBy) {
-        workflowDestinationSelector.setThruTime(session.getStartTimeLong());
+        workflowDestinationSelector.setThruTime(session.getStartTime());
         workflowDestinationSelector.store();
         
         sendEvent(workflowDestinationSelector.getWorkflowDestination().getLastDetail().getWorkflowStep().getLastDetail().getWorkflowPK(), EventTypes.MODIFY, workflowDestinationSelector.getPrimaryKey(), EventTypes.DELETE, deletedBy);
@@ -3433,7 +3433,7 @@ public class WorkflowControl
     public WorkflowDestinationPartyType createWorkflowDestinationPartyType(WorkflowDestination workflowDestination, PartyType partyType,
             BasePK createdBy) {
         var workflowDestinationPartyType = WorkflowDestinationPartyTypeFactory.getInstance().create(session,
-                workflowDestination, partyType, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                workflowDestination, partyType, session.getStartTime(), Session.MAX_TIME_LONG);
         
         sendEvent(workflowDestination.getLastDetail().getWorkflowStep().getLastDetail().getWorkflowPK(), EventTypes.MODIFY, workflowDestinationPartyType.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -3567,7 +3567,7 @@ public class WorkflowControl
     public void deleteWorkflowDestinationPartyType(WorkflowDestinationPartyType workflowDestinationPartyType, BasePK deletedBy) {
         deleteWorkflowDestinationSecurityRolesByWorkflowDestinationPartyType(workflowDestinationPartyType, deletedBy);
         
-        workflowDestinationPartyType.setThruTime(session.getStartTimeLong());
+        workflowDestinationPartyType.setThruTime(session.getStartTime());
         workflowDestinationPartyType.store();
         
         sendEvent(workflowDestinationPartyType.getWorkflowDestination().getLastDetail().getWorkflowStep().getLastDetail().getWorkflowPK(), EventTypes.MODIFY, workflowDestinationPartyType.getPrimaryKey(), EventTypes.DELETE, deletedBy);
@@ -3590,7 +3590,7 @@ public class WorkflowControl
     public WorkflowDestinationSecurityRole createWorkflowDestinationSecurityRole(WorkflowDestinationPartyType workflowDestinationPartyType, SecurityRole securityRole,
             BasePK createdBy) {
         var workflowDestinationSecurityRole = WorkflowDestinationSecurityRoleFactory.getInstance().create(session,
-                workflowDestinationPartyType, securityRole, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                workflowDestinationPartyType, securityRole, session.getStartTime(), Session.MAX_TIME_LONG);
         
         sendEvent(workflowDestinationPartyType.getWorkflowDestination().getLastDetail().getWorkflowStep().getLastDetail().getWorkflowPK(), EventTypes.MODIFY, workflowDestinationSecurityRole.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -3715,7 +3715,7 @@ public class WorkflowControl
     }
     
     public void deleteWorkflowDestinationSecurityRole(WorkflowDestinationSecurityRole workflowDestinationSecurityRole, BasePK deletedBy) {
-        workflowDestinationSecurityRole.setThruTime(session.getStartTimeLong());
+        workflowDestinationSecurityRole.setThruTime(session.getStartTime());
         workflowDestinationSecurityRole.store();
         
         sendEvent(workflowDestinationSecurityRole.getWorkflowDestinationPartyType().getWorkflowDestination().getLastDetail().getWorkflowStep().getLastDetail().getWorkflowPK(), EventTypes.MODIFY, workflowDestinationSecurityRole.getPrimaryKey(), EventTypes.DELETE, deletedBy);
@@ -3738,7 +3738,7 @@ public class WorkflowControl
     public WorkflowDestinationStep createWorkflowDestinationStep(WorkflowDestination workflowDestination, WorkflowStep workflowStep,
             BasePK createdBy) {
         var workflowDestinationStep = WorkflowDestinationStepFactory.getInstance().create(session,
-                workflowDestination, workflowStep, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                workflowDestination, workflowStep, session.getStartTime(), Session.MAX_TIME_LONG);
         
         sendEvent(workflowDestination.getLastDetail().getWorkflowStep().getLastDetail().getWorkflowPK(), EventTypes.MODIFY, workflowDestinationStep.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -3885,7 +3885,7 @@ public class WorkflowControl
     }
 
     public void deleteWorkflowDestinationStep(WorkflowDestinationStep workflowDestinationStep, BasePK deletedBy) {
-        workflowDestinationStep.setThruTime(session.getStartTimeLong());
+        workflowDestinationStep.setThruTime(session.getStartTime());
         
         sendEvent(workflowDestinationStep.getWorkflowDestination().getLastDetail().getWorkflowStep().getLastDetail().getWorkflowPK(), EventTypes.MODIFY, workflowDestinationStep.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
@@ -3911,7 +3911,7 @@ public class WorkflowControl
     public WorkflowSelectorKind createWorkflowSelectorKind(Workflow workflow, SelectorKind selectorKind,
             BasePK createdBy) {
         var workflowSelectorKind = WorkflowSelectorKindFactory.getInstance().create(workflow,
-                selectorKind, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                selectorKind, session.getStartTime(), Session.MAX_TIME_LONG);
         
         sendEvent(workflow.getLastDetail().getWorkflowPK(), EventTypes.MODIFY, workflowSelectorKind.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -4081,7 +4081,7 @@ public class WorkflowControl
     }
     
     public void deleteWorkflowSelectorKind(WorkflowSelectorKind workflowSelectorKind, BasePK deletedBy) {
-        workflowSelectorKind.setThruTime(session.getStartTimeLong());
+        workflowSelectorKind.setThruTime(session.getStartTime());
         
         sendEvent(workflowSelectorKind.getWorkflow().getLastDetail().getWorkflowPK(), EventTypes.MODIFY, workflowSelectorKind.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
@@ -4102,7 +4102,7 @@ public class WorkflowControl
     
     public WorkflowEntityStatus createWorkflowEntityStatus(EntityInstance entityInstance, WorkflowStep workflowStep,
             WorkEffortScope workEffortScope, BasePK createdBy) {
-        var workflowEntityStatus = WorkflowEntityStatusFactory.getInstance().create(entityInstance, workflowStep, workEffortScope, session.getStartTimeLong(),
+        var workflowEntityStatus = WorkflowEntityStatusFactory.getInstance().create(entityInstance, workflowStep, workEffortScope, session.getStartTime(),
                 Session.MAX_TIME_LONG);
         
         sendEvent(entityInstance, EventTypes.MODIFY, workflowEntityStatus.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -4465,7 +4465,7 @@ public class WorkflowControl
     public void deleteWorkflowEntityStatus(WorkflowEntityStatus workflowEntityStatus, BasePK deletedBy) {
         var workflowTrigger = getWorkflowTrigger(workflowEntityStatus);
         
-        workflowEntityStatus.setThruTime(session.getStartTimeLong());
+        workflowEntityStatus.setThruTime(session.getStartTime());
         workflowEntityStatus.store();
         
         if(workflowTrigger != null) {

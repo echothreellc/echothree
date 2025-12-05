@@ -451,7 +451,7 @@ public class GeoControl
 
         var geoCodeType = GeoCodeTypeFactory.getInstance().create();
         var geoCodeTypeDetail = GeoCodeTypeDetailFactory.getInstance().create(geoCodeType, geoCodeTypeName,
-                parentGeoCodeType, isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                parentGeoCodeType, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
         
         // Convert to R/W
         geoCodeType = GeoCodeTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -712,7 +712,7 @@ public class GeoControl
                      geoCodeTypeDetailValue.getGeoCodeTypePK());
             var geoCodeTypeDetail = geoCodeType.getActiveDetailForUpdate();
             
-            geoCodeTypeDetail.setThruTime(session.getStartTimeLong());
+            geoCodeTypeDetail.setThruTime(session.getStartTime());
             geoCodeTypeDetail.store();
 
             var geoCodeTypePK = geoCodeTypeDetail.getGeoCodeTypePK();
@@ -738,7 +738,7 @@ public class GeoControl
             }
             
             geoCodeTypeDetail = GeoCodeTypeDetailFactory.getInstance().create(geoCodeTypePK,
-                    geoCodeTypeName, parentGeoCodeTypePK, isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    geoCodeTypeName, parentGeoCodeTypePK, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
             
             geoCodeType.setActiveDetail(geoCodeTypeDetail);
             geoCodeType.setLastDetail(geoCodeTypeDetail);
@@ -759,7 +759,7 @@ public class GeoControl
         // deleteGeoCodeAliasTypesByGeoCodeType(geoCodeType, deletedBy);
         deleteGeoCodeTypeDescriptionsByGeoCodeType(geoCodeType, deletedBy);
         
-        geoCodeTypeDetail.setThruTime(session.getStartTimeLong());
+        geoCodeTypeDetail.setThruTime(session.getStartTime());
         geoCodeType.setActiveDetail(null);
         geoCodeType.store();
 
@@ -808,7 +808,7 @@ public class GeoControl
     
     public GeoCodeTypeDescription createGeoCodeTypeDescription(GeoCodeType geoCodeType, Language language, String description, BasePK createdBy) {
         var geoCodeTypeDescription = GeoCodeTypeDescriptionFactory.getInstance().create(geoCodeType,
-                language, description, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                language, description, session.getStartTime(), Session.MAX_TIME_LONG);
         
         sendEvent(geoCodeType.getPrimaryKey(), EventTypes.MODIFY, geoCodeTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -938,21 +938,21 @@ public class GeoControl
         if(geoCodeTypeDescriptionValue.hasBeenModified()) {
             var geoCodeTypeDescription = GeoCodeTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, geoCodeTypeDescriptionValue.getPrimaryKey());
             
-            geoCodeTypeDescription.setThruTime(session.getStartTimeLong());
+            geoCodeTypeDescription.setThruTime(session.getStartTime());
             geoCodeTypeDescription.store();
 
             var geoCodeType = geoCodeTypeDescription.getGeoCodeType();
             var language = geoCodeTypeDescription.getLanguage();
             var description = geoCodeTypeDescriptionValue.getDescription();
             
-            geoCodeTypeDescription = GeoCodeTypeDescriptionFactory.getInstance().create(geoCodeType, language, description, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+            geoCodeTypeDescription = GeoCodeTypeDescriptionFactory.getInstance().create(geoCodeType, language, description, session.getStartTime(), Session.MAX_TIME_LONG);
             
             sendEvent(geoCodeType.getPrimaryKey(), EventTypes.MODIFY, geoCodeTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteGeoCodeTypeDescription(GeoCodeTypeDescription geoCodeTypeDescription, BasePK deletedBy) {
-        geoCodeTypeDescription.setThruTime(session.getStartTimeLong());
+        geoCodeTypeDescription.setThruTime(session.getStartTime());
         
         sendEvent(geoCodeTypeDescription.getGeoCodeTypePK(), EventTypes.MODIFY, geoCodeTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
@@ -985,7 +985,7 @@ public class GeoControl
 
         var geoCodeScope = GeoCodeScopeFactory.getInstance().create();
         var geoCodeScopeDetail = GeoCodeScopeDetailFactory.getInstance().create(session,
-                geoCodeScope, geoCodeScopeName, isDefault, sortOrder, session.getStartTimeLong(),
+                geoCodeScope, geoCodeScopeName, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -1184,7 +1184,7 @@ public class GeoControl
                      geoCodeScopeDetailValue.getGeoCodeScopePK());
             var geoCodeScopeDetail = geoCodeScope.getActiveDetailForUpdate();
             
-            geoCodeScopeDetail.setThruTime(session.getStartTimeLong());
+            geoCodeScopeDetail.setThruTime(session.getStartTime());
             geoCodeScopeDetail.store();
 
             var geoCodeScopePK = geoCodeScopeDetail.getGeoCodeScopePK();
@@ -1209,7 +1209,7 @@ public class GeoControl
             }
             
             geoCodeScopeDetail = GeoCodeScopeDetailFactory.getInstance().create(geoCodeScopePK, geoCodeScopeName,
-                    isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
             
             geoCodeScope.setActiveDetail(geoCodeScopeDetail);
             geoCodeScope.setLastDetail(geoCodeScopeDetail);
@@ -1228,7 +1228,7 @@ public class GeoControl
         deleteGeoCodeScopeDescriptionsByGeoCodeScope(geoCodeScope, deletedBy);
 
         var geoCodeScopeDetail = geoCodeScope.getLastDetailForUpdate();
-        geoCodeScopeDetail.setThruTime(session.getStartTimeLong());
+        geoCodeScopeDetail.setThruTime(session.getStartTime());
         geoCodeScope.setActiveDetail(null);
         geoCodeScope.store();
         
@@ -1257,7 +1257,7 @@ public class GeoControl
     // --------------------------------------------------------------------------------
     
     public GeoCodeScopeDescription createGeoCodeScopeDescription(GeoCodeScope geoCodeScope, Language language, String description, BasePK createdBy) {
-        var geoCodeScopeDescription = GeoCodeScopeDescriptionFactory.getInstance().create(geoCodeScope, language, description, session.getStartTimeLong(),
+        var geoCodeScopeDescription = GeoCodeScopeDescriptionFactory.getInstance().create(geoCodeScope, language, description, session.getStartTime(),
                 Session.MAX_TIME_LONG);
         
         sendEvent(geoCodeScope.getPrimaryKey(), EventTypes.MODIFY, geoCodeScopeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1388,21 +1388,21 @@ public class GeoControl
         if(geoCodeScopeDescriptionValue.hasBeenModified()) {
             var geoCodeScopeDescription = GeoCodeScopeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, geoCodeScopeDescriptionValue.getPrimaryKey());
             
-            geoCodeScopeDescription.setThruTime(session.getStartTimeLong());
+            geoCodeScopeDescription.setThruTime(session.getStartTime());
             geoCodeScopeDescription.store();
 
             var geoCodeScope = geoCodeScopeDescription.getGeoCodeScope();
             var language = geoCodeScopeDescription.getLanguage();
             var description = geoCodeScopeDescriptionValue.getDescription();
             
-            geoCodeScopeDescription = GeoCodeScopeDescriptionFactory.getInstance().create(geoCodeScope, language, description, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+            geoCodeScopeDescription = GeoCodeScopeDescriptionFactory.getInstance().create(geoCodeScope, language, description, session.getStartTime(), Session.MAX_TIME_LONG);
             
             sendEvent(geoCodeScope.getPrimaryKey(), EventTypes.MODIFY, geoCodeScopeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteGeoCodeScopeDescription(GeoCodeScopeDescription geoCodeScopeDescription, BasePK deletedBy) {
-        geoCodeScopeDescription.setThruTime(session.getStartTimeLong());
+        geoCodeScopeDescription.setThruTime(session.getStartTime());
         
         sendEvent(geoCodeScopeDescription.getGeoCodeScopePK(), EventTypes.MODIFY, geoCodeScopeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
@@ -1436,7 +1436,7 @@ public class GeoControl
 
         var geoCodeAliasType = GeoCodeAliasTypeFactory.getInstance().create();
         var geoCodeAliasTypeDetail = GeoCodeAliasTypeDetailFactory.getInstance().create(session, geoCodeAliasType, geoCodeType,
-                geoCodeAliasTypeName, validationPattern, isRequired, isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                geoCodeAliasTypeName, validationPattern, isRequired, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
         
         // Convert to R/W
         geoCodeAliasType = GeoCodeAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -1677,7 +1677,7 @@ public class GeoControl
                      geoCodeAliasTypeDetailValue.getGeoCodeAliasTypePK());
             var geoCodeAliasTypeDetail = geoCodeAliasType.getActiveDetailForUpdate();
             
-            geoCodeAliasTypeDetail.setThruTime(session.getStartTimeLong());
+            geoCodeAliasTypeDetail.setThruTime(session.getStartTime());
             geoCodeAliasTypeDetail.store();
 
             var geoCodeAliasTypePK = geoCodeAliasTypeDetail.getGeoCodeAliasTypePK();
@@ -1706,7 +1706,7 @@ public class GeoControl
             }
             
             geoCodeAliasTypeDetail = GeoCodeAliasTypeDetailFactory.getInstance().create(geoCodeAliasTypePK, geoCodeTypePK, geoCodeAliasTypeName,
-                    validationPattern, isRequired, isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    validationPattern, isRequired, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
             
             geoCodeAliasType.setActiveDetail(geoCodeAliasTypeDetail);
             geoCodeAliasType.setLastDetail(geoCodeAliasTypeDetail);
@@ -1724,7 +1724,7 @@ public class GeoControl
         deleteGeoCodeAliasTypeDescriptionsByGeoCodeAliasType(geoCodeAliasType, deletedBy);
 
         var geoCodeAliasTypeDetail = geoCodeAliasType.getLastDetailForUpdate();
-        geoCodeAliasTypeDetail.setThruTime(session.getStartTimeLong());
+        geoCodeAliasTypeDetail.setThruTime(session.getStartTime());
         geoCodeAliasType.setActiveDetail(null);
         geoCodeAliasType.store();
         
@@ -1755,7 +1755,7 @@ public class GeoControl
     
     public GeoCodeAliasTypeDescription createGeoCodeAliasTypeDescription(GeoCodeAliasType geoCodeAliasType, Language language, String description, BasePK createdBy) {
         var geoCodeAliasTypeDescription = GeoCodeAliasTypeDescriptionFactory.getInstance().create(geoCodeAliasType, language, description,
-                session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME_LONG);
         
         sendEvent(geoCodeAliasType.getPrimaryKey(), EventTypes.MODIFY, geoCodeAliasTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1884,21 +1884,21 @@ public class GeoControl
         if(geoCodeAliasTypeDescriptionValue.hasBeenModified()) {
             var geoCodeAliasTypeDescription = GeoCodeAliasTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, geoCodeAliasTypeDescriptionValue.getPrimaryKey());
             
-            geoCodeAliasTypeDescription.setThruTime(session.getStartTimeLong());
+            geoCodeAliasTypeDescription.setThruTime(session.getStartTime());
             geoCodeAliasTypeDescription.store();
 
             var geoCodeAliasType = geoCodeAliasTypeDescription.getGeoCodeAliasType();
             var language = geoCodeAliasTypeDescription.getLanguage();
             var description = geoCodeAliasTypeDescriptionValue.getDescription();
             
-            geoCodeAliasTypeDescription = GeoCodeAliasTypeDescriptionFactory.getInstance().create(geoCodeAliasType, language, description, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+            geoCodeAliasTypeDescription = GeoCodeAliasTypeDescriptionFactory.getInstance().create(geoCodeAliasType, language, description, session.getStartTime(), Session.MAX_TIME_LONG);
             
             sendEvent(geoCodeAliasType.getPrimaryKey(), EventTypes.MODIFY, geoCodeAliasTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteGeoCodeAliasTypeDescription(GeoCodeAliasTypeDescription geoCodeAliasTypeDescription, BasePK deletedBy) {
-        geoCodeAliasTypeDescription.setThruTime(session.getStartTimeLong());
+        geoCodeAliasTypeDescription.setThruTime(session.getStartTime());
         
         sendEvent(geoCodeAliasTypeDescription.getGeoCodeAliasTypePK(), EventTypes.MODIFY, geoCodeAliasTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
@@ -1932,7 +1932,7 @@ public class GeoControl
 
         var geoCode = GeoCodeFactory.getInstance().create();
         var geoCodeDetail = GeoCodeDetailFactory.getInstance().create(geoCode, geoCodeName, geoCodeType,
-                geoCodeScope, isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                geoCodeScope, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
         
         // Convert to R/W
         geoCode = GeoCodeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, geoCode.getPrimaryKey());
@@ -2131,7 +2131,7 @@ public class GeoControl
                      geoCodeDetailValue.getGeoCodePK());
             var geoCodeDetail = geoCode.getActiveDetailForUpdate();
             
-            geoCodeDetail.setThruTime(session.getStartTimeLong());
+            geoCodeDetail.setThruTime(session.getStartTime());
             geoCodeDetail.store();
 
             var geoCodePK = geoCodeDetail.getGeoCodePK(); // Not updated
@@ -2158,7 +2158,7 @@ public class GeoControl
             }
             
             geoCodeDetail = GeoCodeDetailFactory.getInstance().create(geoCodePK, geoCodeName, geoCodeTypePK, geoCodeScope.getPrimaryKey(), isDefault,
-                    sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
             
             geoCode.setActiveDetail(geoCodeDetail);
             geoCode.setLastDetail(geoCodeDetail);
@@ -2191,7 +2191,7 @@ public class GeoControl
             deleteGeoCodeCountryByGeoCode(geoCode, deletedBy);
         }
 
-        geoCodeDetail.setThruTime(session.getStartTimeLong());
+        geoCodeDetail.setThruTime(session.getStartTime());
         geoCode.setActiveDetail(null);
         geoCode.store();
 
@@ -2221,7 +2221,7 @@ public class GeoControl
     // --------------------------------------------------------------------------------
     
     public GeoCodeDescription createGeoCodeDescription(GeoCode geoCode, Language language, String description, BasePK createdBy) {
-        var geoCodeDescription = GeoCodeDescriptionFactory.getInstance().create(geoCode, language, description, session.getStartTimeLong(),
+        var geoCodeDescription = GeoCodeDescriptionFactory.getInstance().create(geoCode, language, description, session.getStartTime(),
                 Session.MAX_TIME_LONG);
         
         sendEvent(geoCode.getPrimaryKey(), EventTypes.MODIFY, geoCodeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2352,21 +2352,21 @@ public class GeoControl
         if(geoCodeDescriptionValue.hasBeenModified()) {
             var geoCodeDescription = GeoCodeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, geoCodeDescriptionValue.getPrimaryKey());
             
-            geoCodeDescription.setThruTime(session.getStartTimeLong());
+            geoCodeDescription.setThruTime(session.getStartTime());
             geoCodeDescription.store();
 
             var geoCode = geoCodeDescription.getGeoCode();
             var language = geoCodeDescription.getLanguage();
             var description = geoCodeDescriptionValue.getDescription();
             
-            geoCodeDescription = GeoCodeDescriptionFactory.getInstance().create(geoCode, language, description, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+            geoCodeDescription = GeoCodeDescriptionFactory.getInstance().create(geoCode, language, description, session.getStartTime(), Session.MAX_TIME_LONG);
             
             sendEvent(geoCode.getPrimaryKey(), EventTypes.MODIFY, geoCodeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteGeoCodeDescription(GeoCodeDescription geoCodeDescription, BasePK deletedBy) {
-        geoCodeDescription.setThruTime(session.getStartTimeLong());
+        geoCodeDescription.setThruTime(session.getStartTime());
         
         sendEvent(geoCodeDescription.getGeoCodePK(), EventTypes.MODIFY, geoCodeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
@@ -2386,7 +2386,7 @@ public class GeoControl
     
     public GeoCodeAlias createGeoCodeAlias(GeoCode geoCode, GeoCodeAliasType geoCodeAliasType, String alias, BasePK createdBy) {
         var geoCodeAlias = GeoCodeAliasFactory.getInstance().create(geoCode, geoCode.getLastDetail().getGeoCodeScope(), geoCodeAliasType, alias,
-                session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME_LONG);
         
         sendEvent(geoCode.getPrimaryKey(), EventTypes.MODIFY, geoCodeAlias.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -2580,7 +2580,7 @@ public class GeoControl
             var geoCodeAlias = GeoCodeAliasFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     geoCodeAliasValue.getPrimaryKey());
 
-            geoCodeAlias.setThruTime(session.getStartTimeLong());
+            geoCodeAlias.setThruTime(session.getStartTime());
             geoCodeAlias.store();
 
             var geoCodePK = geoCodeAlias.getGeoCodePK(); // Not updated
@@ -2588,7 +2588,7 @@ public class GeoControl
             var geoCodeAliasTypePK = geoCodeAlias.getGeoCodeAliasTypePK(); // Not updated
             var alias = geoCodeAliasValue.getAlias();
 
-            geoCodeAlias = GeoCodeAliasFactory.getInstance().create(geoCodePK, geoCodeScopePK, geoCodeAliasTypePK, alias, session.getStartTimeLong(),
+            geoCodeAlias = GeoCodeAliasFactory.getInstance().create(geoCodePK, geoCodeScopePK, geoCodeAliasTypePK, alias, session.getStartTime(),
                     Session.MAX_TIME_LONG);
 
             sendEvent(geoCodePK, EventTypes.MODIFY, geoCodeAlias.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -2596,7 +2596,7 @@ public class GeoControl
     }
 
     public void deleteGeoCodeAlias(GeoCodeAlias geoCodeAlias, BasePK deletedBy) {
-        geoCodeAlias.setThruTime(session.getStartTimeLong());
+        geoCodeAlias.setThruTime(session.getStartTime());
 
         sendEvent(geoCodeAlias.getGeoCodePK(), EventTypes.MODIFY, geoCodeAlias.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
@@ -2625,7 +2625,7 @@ public class GeoControl
     
     public GeoCodeRelationship createGeoCodeRelationship(GeoCode fromGeoCode, GeoCode toGeoCode, BasePK createdBy) {
         var geoCodeRelationship = GeoCodeRelationshipFactory.getInstance().create(fromGeoCode, toGeoCode,
-                session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME_LONG);
         
         sendEvent(fromGeoCode.getPrimaryKey(), EventTypes.MODIFY, geoCodeRelationship.getPrimaryKey(), null, createdBy);
         
@@ -2757,7 +2757,7 @@ public class GeoControl
     }
 
     public void deleteGeoCodeRelationship(GeoCodeRelationship geoCodeRelationship, BasePK deletedBy) {
-        geoCodeRelationship.setThruTime(session.getStartTimeLong());
+        geoCodeRelationship.setThruTime(session.getStartTime());
         geoCodeRelationship.store();
     }
 
@@ -2799,7 +2799,7 @@ public class GeoControl
         }
 
         var geoCodeLanguage = GeoCodeLanguageFactory.getInstance().create(geoCode, language, isDefault,
-                sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
         
         sendEvent(geoCode.getPrimaryKey(), EventTypes.MODIFY, geoCodeLanguage.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -3004,7 +3004,7 @@ public class GeoControl
             var geoCodeLanguage = GeoCodeLanguageFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      geoCodeLanguageValue.getPrimaryKey());
             
-            geoCodeLanguage.setThruTime(session.getStartTimeLong());
+            geoCodeLanguage.setThruTime(session.getStartTime());
             geoCodeLanguage.store();
 
             var geoCode = geoCodeLanguage.getGeoCode(); // Not Updated
@@ -3030,7 +3030,7 @@ public class GeoControl
             }
             
             geoCodeLanguage = GeoCodeLanguageFactory.getInstance().create(geoCodePK, languagePK, isDefault, sortOrder,
-                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME_LONG);
             
             sendEvent(geoCodePK, EventTypes.MODIFY, geoCodeLanguage.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -3041,7 +3041,7 @@ public class GeoControl
     }
     
     public void deleteGeoCodeLanguage(GeoCodeLanguage geoCodeLanguage, BasePK deletedBy) {
-        geoCodeLanguage.setThruTime(session.getStartTimeLong());
+        geoCodeLanguage.setThruTime(session.getStartTime());
         geoCodeLanguage.store();
         
         // Check for default, and pick one if necessary
@@ -3098,7 +3098,7 @@ public class GeoControl
         }
 
         var geoCodeCurrency = GeoCodeCurrencyFactory.getInstance().create(geoCode, currency, isDefault,
-                sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
         
         sendEvent(geoCode.getPrimaryKey(), EventTypes.MODIFY, geoCodeCurrency.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -3303,7 +3303,7 @@ public class GeoControl
             var geoCodeCurrency = GeoCodeCurrencyFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      geoCodeCurrencyValue.getPrimaryKey());
             
-            geoCodeCurrency.setThruTime(session.getStartTimeLong());
+            geoCodeCurrency.setThruTime(session.getStartTime());
             geoCodeCurrency.store();
 
             var geoCode = geoCodeCurrency.getGeoCode(); // Not Updated
@@ -3329,7 +3329,7 @@ public class GeoControl
             }
             
             geoCodeCurrency = GeoCodeCurrencyFactory.getInstance().create(geoCodePK, currencyPK, isDefault, sortOrder,
-                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME_LONG);
             
             sendEvent(geoCodePK, EventTypes.MODIFY, geoCodeCurrency.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -3340,7 +3340,7 @@ public class GeoControl
     }
     
     public void deleteGeoCodeCurrency(GeoCodeCurrency geoCodeCurrency, BasePK deletedBy) {
-        geoCodeCurrency.setThruTime(session.getStartTimeLong());
+        geoCodeCurrency.setThruTime(session.getStartTime());
         geoCodeCurrency.store();
         
         // Check for default, and pick one if necessary
@@ -3397,7 +3397,7 @@ public class GeoControl
         }
 
         var geoCodeTimeZone = GeoCodeTimeZoneFactory.getInstance().create(geoCode, timeZone, isDefault,
-                sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
         
         sendEvent(geoCode.getPrimaryKey(), EventTypes.MODIFY, geoCodeTimeZone.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -3602,7 +3602,7 @@ public class GeoControl
             var geoCodeTimeZone = GeoCodeTimeZoneFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      geoCodeTimeZoneValue.getPrimaryKey());
             
-            geoCodeTimeZone.setThruTime(session.getStartTimeLong());
+            geoCodeTimeZone.setThruTime(session.getStartTime());
             geoCodeTimeZone.store();
 
             var geoCode = geoCodeTimeZone.getGeoCode(); // Not Updated
@@ -3628,7 +3628,7 @@ public class GeoControl
             }
             
             geoCodeTimeZone = GeoCodeTimeZoneFactory.getInstance().create(geoCodePK, timeZonePK, isDefault, sortOrder,
-                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME_LONG);
             
             sendEvent(geoCodePK, EventTypes.MODIFY, geoCodeTimeZone.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -3639,7 +3639,7 @@ public class GeoControl
     }
     
     public void deleteGeoCodeTimeZone(GeoCodeTimeZone geoCodeTimeZone, BasePK deletedBy) {
-        geoCodeTimeZone.setThruTime(session.getStartTimeLong());
+        geoCodeTimeZone.setThruTime(session.getStartTime());
         geoCodeTimeZone.store();
         
         // Check for default, and pick one if necessary
@@ -3696,7 +3696,7 @@ public class GeoControl
         }
 
         var geoCodeDateTimeFormat = GeoCodeDateTimeFormatFactory.getInstance().create(geoCode,
-                dateTimeFormat, isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                dateTimeFormat, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
         
         sendEvent(geoCode.getPrimaryKey(), EventTypes.MODIFY, geoCodeDateTimeFormat.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -3904,7 +3904,7 @@ public class GeoControl
             var geoCodeDateTimeFormat = GeoCodeDateTimeFormatFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      geoCodeDateTimeFormatValue.getPrimaryKey());
             
-            geoCodeDateTimeFormat.setThruTime(session.getStartTimeLong());
+            geoCodeDateTimeFormat.setThruTime(session.getStartTime());
             geoCodeDateTimeFormat.store();
 
             var geoCode = geoCodeDateTimeFormat.getGeoCode(); // Not Updated
@@ -3930,7 +3930,7 @@ public class GeoControl
             }
             
             geoCodeDateTimeFormat = GeoCodeDateTimeFormatFactory.getInstance().create(geoCodePK, dateTimeFormatPK,
-                    isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
             
             sendEvent(geoCodePK, EventTypes.MODIFY, geoCodeDateTimeFormat.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -3941,7 +3941,7 @@ public class GeoControl
     }
     
     public void deleteGeoCodeDateTimeFormat(GeoCodeDateTimeFormat geoCodeDateTimeFormat, BasePK deletedBy) {
-        geoCodeDateTimeFormat.setThruTime(session.getStartTimeLong());
+        geoCodeDateTimeFormat.setThruTime(session.getStartTime());
         geoCodeDateTimeFormat.store();
         
         // Check for default, and pick one if necessary
@@ -3992,7 +3992,7 @@ public class GeoControl
         var geoCodeCountry = GeoCodeCountryFactory.getInstance().create(geoCode, telephoneCode, areaCodePattern,
                 areaCodeRequired, areaCodeExample, telephoneNumberPattern, telephoneNumberExample, postalAddressFormat,
                 cityRequired, cityGeoCodeRequired, stateRequired, stateGeoCodeRequired, postalCodePattern, postalCodeRequired,
-                postalCodeGeoCodeRequired, postalCodeLength, postalCodeGeoCodeLength, postalCodeExample, session.getStartTimeLong(),
+                postalCodeGeoCodeRequired, postalCodeLength, postalCodeGeoCodeLength, postalCodeExample, session.getStartTime(),
                 Session.MAX_TIME_LONG);
         
         sendEvent(geoCode.getPrimaryKey(), EventTypes.MODIFY, geoCodeCountry.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -4051,7 +4051,7 @@ public class GeoControl
             var geoCodeCountry = GeoCodeCountryFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      geoCodeCountryValue.getPrimaryKey());
             
-            geoCodeCountry.setThruTime(session.getStartTimeLong());
+            geoCodeCountry.setThruTime(session.getStartTime());
             geoCodeCountry.store();
 
             var geoCodePK = geoCodeCountry.getGeoCodePK(); // Not Updated
@@ -4077,14 +4077,14 @@ public class GeoControl
                     areaCodeRequired, areaCodeExample, telephoneNumberPattern, telephoneNumberExample, postalAddressFormatPK,
                     cityRequired, cityGeoCodeRequired, stateRequired, stateGeoCodeRequired, postalCodePattern, postalCodeRequired,
                     postalCodeGeoCodeRequired, postalCodeLength, postalCodeGeoCodeLength, postalCodeExample,
-                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME_LONG);
             
             sendEvent(geoCodePK, EventTypes.MODIFY, geoCodeCountry.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteGeoCodeCountry(GeoCodeCountry geoCodeCountry, BasePK deletedBy) {
-        geoCodeCountry.setThruTime(session.getStartTimeLong());
+        geoCodeCountry.setThruTime(session.getStartTime());
         geoCodeCountry.store();
         
         sendEvent(geoCodeCountry.getGeoCodePK(), EventTypes.MODIFY, geoCodeCountry.getPrimaryKey(), EventTypes.DELETE, deletedBy);

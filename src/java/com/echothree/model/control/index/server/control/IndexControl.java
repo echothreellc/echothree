@@ -126,7 +126,7 @@ public class IndexControl
 
         var indexType = IndexTypeFactory.getInstance().create();
         var indexTypeDetail = IndexTypeDetailFactory.getInstance().create(indexType, indexTypeName, entityType, isDefault, sortOrder,
-                session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME_LONG);
 
         // Convert to R/W
         indexType = IndexTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, indexType.getPrimaryKey());
@@ -358,7 +358,7 @@ public class IndexControl
                      indexTypeDetailValue.getIndexTypePK());
             var indexTypeDetail = indexType.getActiveDetailForUpdate();
 
-            indexTypeDetail.setThruTime(session.getStartTimeLong());
+            indexTypeDetail.setThruTime(session.getStartTime());
             indexTypeDetail.store();
 
             var indexTypePK = indexTypeDetail.getIndexTypePK(); // Not updated
@@ -384,7 +384,7 @@ public class IndexControl
             }
 
             indexTypeDetail = IndexTypeDetailFactory.getInstance().create(indexTypePK, indexTypeName, entityTypePK, isDefault, sortOrder,
-                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME_LONG);
 
             indexType.setActiveDetail(indexTypeDetail);
             indexType.setLastDetail(indexTypeDetail);
@@ -404,7 +404,7 @@ public class IndexControl
         deleteIndexesByIndexType(indexType, deletedBy);
         deleteIndexTypeDescriptionsByIndexType(indexType, deletedBy);
 
-        indexTypeDetail.setThruTime(session.getStartTimeLong());
+        indexTypeDetail.setThruTime(session.getStartTime());
         indexType.setActiveDetail(null);
         indexType.store();
 
@@ -453,7 +453,7 @@ public class IndexControl
 
     public IndexTypeDescription createIndexTypeDescription(IndexType indexType, Language language, String description, BasePK createdBy) {
         var indexTypeDescription = IndexTypeDescriptionFactory.getInstance().create(indexType, language, description,
-                session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME_LONG);
 
         sendEvent(indexType.getPrimaryKey(), EventTypes.MODIFY, indexTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -566,7 +566,7 @@ public class IndexControl
             var indexTypeDescription = IndexTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     indexTypeDescriptionValue.getPrimaryKey());
 
-            indexTypeDescription.setThruTime(session.getStartTimeLong());
+            indexTypeDescription.setThruTime(session.getStartTime());
             indexTypeDescription.store();
 
             var indexType = indexTypeDescription.getIndexType();
@@ -574,14 +574,14 @@ public class IndexControl
             var description = indexTypeDescriptionValue.getDescription();
 
             indexTypeDescription = IndexTypeDescriptionFactory.getInstance().create(indexType, language, description,
-                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME_LONG);
 
             sendEvent(indexType.getPrimaryKey(), EventTypes.MODIFY, indexTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteIndexTypeDescription(IndexTypeDescription indexTypeDescription, BasePK deletedBy) {
-        indexTypeDescription.setThruTime(session.getStartTimeLong());
+        indexTypeDescription.setThruTime(session.getStartTime());
 
         sendEvent(indexTypeDescription.getIndexTypePK(), EventTypes.MODIFY, indexTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
@@ -614,7 +614,7 @@ public class IndexControl
 
         var indexField = IndexFieldFactory.getInstance().create();
         var indexFieldDetail = IndexFieldDetailFactory.getInstance().create(session, indexField, indexType, indexFieldName, isDefault, sortOrder,
-                session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME_LONG);
 
         // Convert to R/W
         indexField = IndexFieldFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -790,7 +790,7 @@ public class IndexControl
                      indexFieldDetailValue.getIndexFieldPK());
             var indexFieldDetail = indexField.getActiveDetailForUpdate();
 
-            indexFieldDetail.setThruTime(session.getStartTimeLong());
+            indexFieldDetail.setThruTime(session.getStartTime());
             indexFieldDetail.store();
 
             var indexFieldPK = indexFieldDetail.getIndexFieldPK();
@@ -817,7 +817,7 @@ public class IndexControl
             }
 
             indexFieldDetail = IndexFieldDetailFactory.getInstance().create(indexFieldPK, indexTypePK, indexFieldName, isDefault, sortOrder,
-                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME_LONG);
 
             indexField.setActiveDetail(indexFieldDetail);
             indexField.setLastDetail(indexFieldDetail);
@@ -837,7 +837,7 @@ public class IndexControl
         searchControl.deleteCachedSearchIndexFieldsByIndexField(indexField, deletedBy);
 
         var indexFieldDetail = indexField.getLastDetailForUpdate();
-        indexFieldDetail.setThruTime(session.getStartTimeLong());
+        indexFieldDetail.setThruTime(session.getStartTime());
         indexField.setActiveDetail(null);
         indexField.store();
 
@@ -877,7 +877,7 @@ public class IndexControl
     public IndexFieldDescription createIndexFieldDescription(IndexField indexField, Language language, String description,
             BasePK createdBy) {
         var indexFieldDescription = IndexFieldDescriptionFactory.getInstance().create(indexField,
-                language, description, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                language, description, session.getStartTime(), Session.MAX_TIME_LONG);
 
         sendEvent(indexField.getPrimaryKey(), EventTypes.MODIFY, indexFieldDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -990,7 +990,7 @@ public class IndexControl
             var indexFieldDescription = IndexFieldDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      indexFieldDescriptionValue.getPrimaryKey());
 
-            indexFieldDescription.setThruTime(session.getStartTimeLong());
+            indexFieldDescription.setThruTime(session.getStartTime());
             indexFieldDescription.store();
 
             var indexField = indexFieldDescription.getIndexField();
@@ -998,14 +998,14 @@ public class IndexControl
             var description = indexFieldDescriptionValue.getDescription();
 
             indexFieldDescription = IndexFieldDescriptionFactory.getInstance().create(indexField, language, description,
-                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME_LONG);
 
             sendEvent(indexField.getPrimaryKey(), EventTypes.MODIFY, indexFieldDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteIndexFieldDescription(IndexFieldDescription indexFieldDescription, BasePK deletedBy) {
-        indexFieldDescription.setThruTime(session.getStartTimeLong());
+        indexFieldDescription.setThruTime(session.getStartTime());
 
         sendEvent(indexFieldDescription.getIndexFieldPK(), EventTypes.MODIFY, indexFieldDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
@@ -1038,7 +1038,7 @@ public class IndexControl
 
         var index = IndexFactory.getInstance().create();
         var indexDetail = IndexDetailFactory.getInstance().create(index, indexName, indexType, language, directory, isDefault, sortOrder,
-                session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME_LONG);
 
         // Convert to R/W
         index = IndexFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, index.getPrimaryKey());
@@ -1341,7 +1341,7 @@ public class IndexControl
                      indexDetailValue.getIndexPK());
             var indexDetail = index.getActiveDetailForUpdate();
 
-            indexDetail.setThruTime(session.getStartTimeLong());
+            indexDetail.setThruTime(session.getStartTime());
             indexDetail.store();
 
             var indexPK = indexDetail.getIndexPK(); // Not updated
@@ -1369,7 +1369,7 @@ public class IndexControl
             }
 
             indexDetail = IndexDetailFactory.getInstance().create(indexPK, indexName, indexTypePK, languagePK, directory, isDefault, sortOrder,
-                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME_LONG);
 
             index.setActiveDetail(indexDetail);
             index.setLastDetail(indexDetail);
@@ -1390,7 +1390,7 @@ public class IndexControl
         removeIndexStatusByIndex(index);
         deleteIndexDescriptionsByIndex(index, deletedBy);
 
-        indexDetail.setThruTime(session.getStartTimeLong());
+        indexDetail.setThruTime(session.getStartTime());
         index.setActiveDetail(null);
         index.store();
 
@@ -1439,7 +1439,7 @@ public class IndexControl
 
     public IndexDescription createIndexDescription(Index index, Language language, String description, BasePK createdBy) {
         var indexDescription = IndexDescriptionFactory.getInstance().create(index, language, description,
-                session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME_LONG);
 
         sendEvent(index.getPrimaryKey(), EventTypes.MODIFY, indexDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -1552,7 +1552,7 @@ public class IndexControl
             var indexDescription = IndexDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     indexDescriptionValue.getPrimaryKey());
 
-            indexDescription.setThruTime(session.getStartTimeLong());
+            indexDescription.setThruTime(session.getStartTime());
             indexDescription.store();
 
             var index = indexDescription.getIndex();
@@ -1560,14 +1560,14 @@ public class IndexControl
             var description = indexDescriptionValue.getDescription();
 
             indexDescription = IndexDescriptionFactory.getInstance().create(index, language, description,
-                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME_LONG);
 
             sendEvent(index.getPrimaryKey(), EventTypes.MODIFY, indexDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteIndexDescription(IndexDescription indexDescription, BasePK deletedBy) {
-        indexDescription.setThruTime(session.getStartTimeLong());
+        indexDescription.setThruTime(session.getStartTime());
 
         sendEvent(indexDescription.getIndexPK(), EventTypes.MODIFY, indexDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 

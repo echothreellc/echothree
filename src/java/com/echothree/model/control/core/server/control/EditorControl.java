@@ -79,7 +79,7 @@ public class EditorControl
 
         var editor = editorFactory.create();
         var editorDetail = editorDetailFactory.create(editor, editorName, hasDimensions, minimumHeight, minimumWidth, maximumHeight,
-                maximumWidth, defaultHeight, defaultWidth, isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                maximumWidth, defaultHeight, defaultWidth, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
 
         // Convert to R/W
         editor = editorFactory.getEntityFromPK(EntityPermission.READ_WRITE, editor.getPrimaryKey());
@@ -252,7 +252,7 @@ public class EditorControl
                     editorDetailValue.getEditorPK());
             var editorDetail = editor.getActiveDetailForUpdate();
 
-            editorDetail.setThruTime(session.getStartTimeLong());
+            editorDetail.setThruTime(session.getStartTime());
             editorDetail.store();
 
             var editorPK = editorDetail.getEditorPK(); // Not updated
@@ -284,7 +284,7 @@ public class EditorControl
             }
 
             editorDetail = editorDetailFactory.create(editorPK, editorName, hasDimensions, minimumHeight, minimumWidth, maximumHeight,
-                    maximumWidth, defaultHeight, defaultWidth, isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    maximumWidth, defaultHeight, defaultWidth, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
 
             editor.setActiveDetail(editorDetail);
             editor.setLastDetail(editorDetail);
@@ -303,7 +303,7 @@ public class EditorControl
         deleteEditorDescriptionsByEditor(editor, deletedBy);
         applicationControl.deleteApplicationEditorsByEditor(editor, deletedBy);
 
-        editorDetail.setThruTime(session.getStartTimeLong());
+        editorDetail.setThruTime(session.getStartTime());
         editor.setActiveDetail(null);
         editor.store();
 
@@ -351,7 +351,7 @@ public class EditorControl
 
         public EditorDescription createEditorDescription(Editor editor, Language language, String description, BasePK createdBy) {
         var editorDescription = editorDescriptionFactory.create(editor, language, description,
-                session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME_LONG);
 
         sendEvent(editor.getPrimaryKey(), EventTypes.MODIFY, editorDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -464,7 +464,7 @@ public class EditorControl
             var editorDescription = editorDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     editorDescriptionValue.getPrimaryKey());
 
-            editorDescription.setThruTime(session.getStartTimeLong());
+            editorDescription.setThruTime(session.getStartTime());
             editorDescription.store();
 
             var editor = editorDescription.getEditor();
@@ -472,14 +472,14 @@ public class EditorControl
             var description = editorDescriptionValue.getDescription();
 
             editorDescription = editorDescriptionFactory.create(editor, language, description,
-                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME_LONG);
 
             sendEvent(editor.getPrimaryKey(), EventTypes.MODIFY, editorDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteEditorDescription(EditorDescription editorDescription, BasePK deletedBy) {
-        editorDescription.setThruTime(session.getStartTimeLong());
+        editorDescription.setThruTime(session.getStartTime());
 
         sendEvent(editorDescription.getEditorPK(), EventTypes.MODIFY, editorDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 

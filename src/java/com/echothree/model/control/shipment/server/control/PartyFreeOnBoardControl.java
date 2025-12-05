@@ -46,7 +46,7 @@ public class PartyFreeOnBoardControl
     // --------------------------------------------------------------------------------
 
     public PartyFreeOnBoard createPartyFreeOnBoard(Party party, FreeOnBoard freeOnBoard, BasePK createdBy) {
-        var partyFreeOnBoard = PartyFreeOnBoardFactory.getInstance().create(party, freeOnBoard, session.getStartTimeLong(),
+        var partyFreeOnBoard = PartyFreeOnBoardFactory.getInstance().create(party, freeOnBoard, session.getStartTime(),
                 Session.MAX_TIME_LONG);
 
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyFreeOnBoard.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -155,13 +155,13 @@ public class PartyFreeOnBoardControl
             var partyFreeOnBoard = PartyFreeOnBoardFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     partyFreeOnBoardValue.getPrimaryKey());
 
-            partyFreeOnBoard.setThruTime(session.getStartTimeLong());
+            partyFreeOnBoard.setThruTime(session.getStartTime());
             partyFreeOnBoard.store();
 
             var partyPK = partyFreeOnBoard.getPartyPK(); // Not updated
             var freeOnBoardPK = partyFreeOnBoardValue.getFreeOnBoardPK();
 
-            partyFreeOnBoard = PartyFreeOnBoardFactory.getInstance().create(partyPK, freeOnBoardPK, session.getStartTimeLong(),
+            partyFreeOnBoard = PartyFreeOnBoardFactory.getInstance().create(partyPK, freeOnBoardPK, session.getStartTime(),
                     Session.MAX_TIME_LONG);
 
             sendEvent(partyPK, EventTypes.MODIFY, partyFreeOnBoard.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -169,7 +169,7 @@ public class PartyFreeOnBoardControl
     }
 
     public void deletePartyFreeOnBoard(PartyFreeOnBoard partyFreeOnBoard, BasePK deletedBy) {
-        partyFreeOnBoard.setThruTime(session.getStartTimeLong());
+        partyFreeOnBoard.setThruTime(session.getStartTime());
 
         sendEvent(partyFreeOnBoard.getPartyPK(), EventTypes.MODIFY, partyFreeOnBoard.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }

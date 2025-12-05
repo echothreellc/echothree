@@ -157,7 +157,7 @@ public class CarrierControl
 
         var carrierType = CarrierTypeFactory.getInstance().create();
         var carrierTypeDetail = CarrierTypeDetailFactory.getInstance().create(carrierType,
-                carrierTypeName, isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                carrierTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
 
         // Convert to R/W
         carrierType = CarrierTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -371,7 +371,7 @@ public class CarrierControl
                      carrierTypeDetailValue.getCarrierTypePK());
             var carrierTypeDetail = carrierType.getActiveDetailForUpdate();
 
-            carrierTypeDetail.setThruTime(session.getStartTimeLong());
+            carrierTypeDetail.setThruTime(session.getStartTime());
             carrierTypeDetail.store();
 
             var carrierTypePK = carrierTypeDetail.getCarrierTypePK(); // Not updated
@@ -396,7 +396,7 @@ public class CarrierControl
             }
 
             carrierTypeDetail = CarrierTypeDetailFactory.getInstance().create(carrierTypePK,
-                    carrierTypeName, isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    carrierTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
 
             carrierType.setActiveDetail(carrierTypeDetail);
             carrierType.setLastDetail(carrierTypeDetail);
@@ -414,7 +414,7 @@ public class CarrierControl
         // TODO: deleteCarriersByCarrierType(carrierType, deletedBy);
 
         var carrierTypeDetail = carrierType.getLastDetailForUpdate();
-        carrierTypeDetail.setThruTime(session.getStartTimeLong());
+        carrierTypeDetail.setThruTime(session.getStartTime());
         carrierType.setActiveDetail(null);
         carrierType.store();
 
@@ -445,7 +445,7 @@ public class CarrierControl
     public CarrierTypeDescription createCarrierTypeDescription(CarrierType carrierType,
             Language language, String description, BasePK createdBy) {
         var carrierTypeDescription = CarrierTypeDescriptionFactory.getInstance().create(carrierType,
-                language, description, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                language, description, session.getStartTime(), Session.MAX_TIME_LONG);
 
         sendEvent(carrierType.getPrimaryKey(), EventTypes.MODIFY, carrierTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -561,7 +561,7 @@ public class CarrierControl
             var carrierTypeDescription = CarrierTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     carrierTypeDescriptionValue.getPrimaryKey());
 
-            carrierTypeDescription.setThruTime(session.getStartTimeLong());
+            carrierTypeDescription.setThruTime(session.getStartTime());
             carrierTypeDescription.store();
 
             var carrierType = carrierTypeDescription.getCarrierType();
@@ -569,14 +569,14 @@ public class CarrierControl
             var description = carrierTypeDescriptionValue.getDescription();
 
             carrierTypeDescription = CarrierTypeDescriptionFactory.getInstance().create(carrierType, language, description,
-                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME_LONG);
 
             sendEvent(carrierType.getPrimaryKey(), EventTypes.MODIFY, carrierTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteCarrierTypeDescription(CarrierTypeDescription carrierTypeDescription, BasePK deletedBy) {
-        carrierTypeDescription.setThruTime(session.getStartTimeLong());
+        carrierTypeDescription.setThruTime(session.getStartTime());
 
         sendEvent(carrierTypeDescription.getCarrierTypePK(), EventTypes.MODIFY, carrierTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
@@ -609,7 +609,7 @@ public class CarrierControl
         }
 
         var carrier = CarrierFactory.getInstance().create(party, carrierName, carrierType, geoCodeSelector, itemSelector, accountValidationPattern,
-                isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
         
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, carrier.getPrimaryKey(), null, createdBy);
         
@@ -837,7 +837,7 @@ public class CarrierControl
             var carrier = CarrierFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     carrierValue.getPrimaryKey());
             
-            carrier.setThruTime(session.getStartTimeLong());
+            carrier.setThruTime(session.getStartTime());
             carrier.store();
 
             var partyPK = carrier.getPartyPK();
@@ -866,7 +866,7 @@ public class CarrierControl
             }
             
             carrier = CarrierFactory.getInstance().create(partyPK, carrierName, carrierTypePK, geoCodeSelectorPK, itemSelectorPK, accountValidationPattern,
-                    isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
             
             sendEvent(partyPK, EventTypes.MODIFY, carrier.getPrimaryKey(), null, updatedBy);
         }
@@ -886,7 +886,7 @@ public class CarrierControl
         
         partyControl.deleteParty(party, deletedBy);
         
-        carrier.setThruTime(session.getStartTimeLong());
+        carrier.setThruTime(session.getStartTime());
         carrier.store();
         
         // Check for default, and pick one if necessary
@@ -930,7 +930,7 @@ public class CarrierControl
 
         var carrierService = CarrierServiceFactory.getInstance().create();
         var carrierServiceDetail = CarrierServiceDetailFactory.getInstance().create(session,
-                carrierService, carrierParty, carrierServiceName, geoCodeSelector, itemSelector, isDefault, sortOrder, session.getStartTimeLong(),
+                carrierService, carrierParty, carrierServiceName, geoCodeSelector, itemSelector, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -1130,7 +1130,7 @@ public class CarrierControl
                      carrierServiceDetailValue.getCarrierServicePK());
             var carrierServiceDetail = carrierService.getActiveDetailForUpdate();
             
-            carrierServiceDetail.setThruTime(session.getStartTimeLong());
+            carrierServiceDetail.setThruTime(session.getStartTime());
             carrierServiceDetail.store();
 
             var carrierServicePK = carrierServiceDetail.getCarrierServicePK();
@@ -1159,7 +1159,7 @@ public class CarrierControl
             }
             
             carrierServiceDetail = CarrierServiceDetailFactory.getInstance().create(carrierServicePK, carrierPartyPK,
-                    carrierServiceName, geoCodeSelectorPK, itemSelectorPK, isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    carrierServiceName, geoCodeSelectorPK, itemSelectorPK, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
             
             carrierService.setActiveDetail(carrierServiceDetail);
             carrierService.setLastDetail(carrierServiceDetail);
@@ -1180,7 +1180,7 @@ public class CarrierControl
         shippingControl.deleteShippingMethodCarrierServicesByCarrierService(carrierService, deletedBy);
 
         var carrierServiceDetail = carrierService.getLastDetailForUpdate();
-        carrierServiceDetail.setThruTime(session.getStartTimeLong());
+        carrierServiceDetail.setThruTime(session.getStartTime());
         carrierService.setActiveDetail(null);
         carrierService.store();
         
@@ -1229,7 +1229,7 @@ public class CarrierControl
     public CarrierServiceDescription createCarrierServiceDescription(CarrierService carrierService, Language language, String description,
             BasePK createdBy) {
         var carrierServiceDescription = CarrierServiceDescriptionFactory.getInstance().create(carrierService,
-                language, description, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                language, description, session.getStartTime(), Session.MAX_TIME_LONG);
         
         sendEvent(carrierService.getPrimaryKey(), EventTypes.MODIFY, carrierServiceDescription.getPrimaryKey(),
                 null, createdBy);
@@ -1360,7 +1360,7 @@ public class CarrierControl
             var carrierServiceDescription = CarrierServiceDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      carrierServiceDescriptionValue.getPrimaryKey());
             
-            carrierServiceDescription.setThruTime(session.getStartTimeLong());
+            carrierServiceDescription.setThruTime(session.getStartTime());
             carrierServiceDescription.store();
 
             var carrierService = carrierServiceDescription.getCarrierService();
@@ -1368,7 +1368,7 @@ public class CarrierControl
             var description = carrierServiceDescriptionValue.getDescription();
             
             carrierServiceDescription = CarrierServiceDescriptionFactory.getInstance().create(carrierService, language,
-                    description, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    description, session.getStartTime(), Session.MAX_TIME_LONG);
             
             sendEvent(carrierService.getPrimaryKey(), EventTypes.MODIFY, carrierServiceDescription.getPrimaryKey(),
                     null, updatedBy);
@@ -1376,7 +1376,7 @@ public class CarrierControl
     }
     
     public void deleteCarrierServiceDescription(CarrierServiceDescription carrierServiceDescription, BasePK deletedBy) {
-        carrierServiceDescription.setThruTime(session.getStartTimeLong());
+        carrierServiceDescription.setThruTime(session.getStartTime());
         
         sendEvent(carrierServiceDescription.getCarrierServicePK(), EventTypes.MODIFY,
                 carrierServiceDescription.getPrimaryKey(), null, deletedBy);
@@ -1413,7 +1413,7 @@ public class CarrierControl
         var carrierOption = CarrierOptionFactory.getInstance().create();
         var carrierOptionDetail = CarrierOptionDetailFactory.getInstance().create(carrierOption, carrierParty, carrierOptionName, isRecommended,
                 isRequired, recommendedGeoCodeSelector, requiredGeoCodeSelector, recommendedItemSelector, requiredItemSelector, recommendedOrderSelector,
-                requiredOrderSelector, recommendedShipmentSelector, requiredShipmentSelector, isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                requiredOrderSelector, recommendedShipmentSelector, requiredShipmentSelector, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
         
         // Convert to R/W
         carrierOption = CarrierOptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -1612,7 +1612,7 @@ public class CarrierControl
                      carrierOptionDetailValue.getCarrierOptionPK());
             var carrierOptionDetail = carrierOption.getActiveDetailForUpdate();
             
-            carrierOptionDetail.setThruTime(session.getStartTimeLong());
+            carrierOptionDetail.setThruTime(session.getStartTime());
             carrierOptionDetail.store();
 
             var carrierOptionPK = carrierOptionDetail.getCarrierOptionPK();
@@ -1650,7 +1650,7 @@ public class CarrierControl
             
             carrierOptionDetail = CarrierOptionDetailFactory.getInstance().create(carrierOptionPK, carrierPartyPK, carrierOptionName, isRecommended, isRequired,
                     recommendedGeoCodeSelectorPK, requiredGeoCodeSelectorPK, recommendedItemSelectorPK, requiredItemSelectorPK, recommendedOrderSelectorPK,
-                    requiredOrderSelectorPK, recommendedShipmentSelectorPK, requiredShipmentSelectorPK, isDefault, sortOrder, session.getStartTimeLong(),
+                    requiredOrderSelectorPK, recommendedShipmentSelectorPK, requiredShipmentSelectorPK, isDefault, sortOrder, session.getStartTime(),
                     Session.MAX_TIME_LONG);
             
             carrierOption.setActiveDetail(carrierOptionDetail);
@@ -1669,7 +1669,7 @@ public class CarrierControl
         deleteCarrierServiceOptionsByCarrierOption(carrierOption, deletedBy);
 
         var carrierOptionDetail = carrierOption.getLastDetailForUpdate();
-        carrierOptionDetail.setThruTime(session.getStartTimeLong());
+        carrierOptionDetail.setThruTime(session.getStartTime());
         carrierOption.setActiveDetail(null);
         carrierOption.store();
         
@@ -1718,7 +1718,7 @@ public class CarrierControl
     public CarrierOptionDescription createCarrierOptionDescription(CarrierOption carrierOption, Language language, String description,
             BasePK createdBy) {
         var carrierOptionDescription = CarrierOptionDescriptionFactory.getInstance().create(carrierOption,
-                language, description, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                language, description, session.getStartTime(), Session.MAX_TIME_LONG);
         
         sendEvent(carrierOption.getPrimaryKey(), EventTypes.MODIFY, carrierOptionDescription.getPrimaryKey(),
                 null, createdBy);
@@ -1849,7 +1849,7 @@ public class CarrierControl
             var carrierOptionDescription = CarrierOptionDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      carrierOptionDescriptionValue.getPrimaryKey());
             
-            carrierOptionDescription.setThruTime(session.getStartTimeLong());
+            carrierOptionDescription.setThruTime(session.getStartTime());
             carrierOptionDescription.store();
 
             var carrierOption = carrierOptionDescription.getCarrierOption();
@@ -1857,7 +1857,7 @@ public class CarrierControl
             var description = carrierOptionDescriptionValue.getDescription();
             
             carrierOptionDescription = CarrierOptionDescriptionFactory.getInstance().create(carrierOption, language,
-                    description, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    description, session.getStartTime(), Session.MAX_TIME_LONG);
             
             sendEvent(carrierOption.getPrimaryKey(), EventTypes.MODIFY, carrierOptionDescription.getPrimaryKey(),
                     null, updatedBy);
@@ -1865,7 +1865,7 @@ public class CarrierControl
     }
     
     public void deleteCarrierOptionDescription(CarrierOptionDescription carrierOptionDescription, BasePK deletedBy) {
-        carrierOptionDescription.setThruTime(session.getStartTimeLong());
+        carrierOptionDescription.setThruTime(session.getStartTime());
         
         sendEvent(carrierOptionDescription.getCarrierOptionPK(), EventTypes.MODIFY,
                 carrierOptionDescription.getPrimaryKey(), null, deletedBy);
@@ -1889,7 +1889,7 @@ public class CarrierControl
             Selector requiredShipmentSelector, BasePK createdBy) {
         var carrierServiceOption = CarrierServiceOptionFactory.getInstance().create(carrierService, carrierOption, isRecommended, isRequired,
                 recommendedGeoCodeSelector, requiredGeoCodeSelector, recommendedItemSelector, requiredItemSelector, recommendedOrderSelector,
-                requiredOrderSelector, recommendedShipmentSelector, requiredShipmentSelector, session.getStartTimeLong(),
+                requiredOrderSelector, recommendedShipmentSelector, requiredShipmentSelector, session.getStartTime(),
                 Session.MAX_TIME_LONG);
         
         sendEvent(carrierService.getPrimaryKey(), EventTypes.MODIFY, carrierServiceOption.getPrimaryKey(),
@@ -2055,7 +2055,7 @@ public class CarrierControl
             var carrierServiceOption = CarrierServiceOptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      carrierServiceOptionValue.getPrimaryKey());
             
-            carrierServiceOption.setThruTime(session.getStartTimeLong());
+            carrierServiceOption.setThruTime(session.getStartTime());
             carrierServiceOption.store();
 
             var carrierServicePK = carrierServiceOption.getCarrierServicePK();
@@ -2073,14 +2073,14 @@ public class CarrierControl
             
             carrierServiceOption = CarrierServiceOptionFactory.getInstance().create(carrierServicePK, carrierOptionPK, isRecommended, isRequired,
                     recommendedGeoCodeSelectorPK, requiredGeoCodeSelectorPK, recommendedItemSelectorPK, requiredItemSelectorPK, recommendedOrderSelectorPK,
-                    requiredOrderSelectorPK, recommendedShipmentSelectorPK, requiredShipmentSelectorPK, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    requiredOrderSelectorPK, recommendedShipmentSelectorPK, requiredShipmentSelectorPK, session.getStartTime(), Session.MAX_TIME_LONG);
             
             sendEvent(carrierServicePK, EventTypes.MODIFY, carrierServiceOption.getPrimaryKey(), null, updatedBy);
         }
     }
     
     public void deleteCarrierServiceOption(CarrierServiceOption carrierServiceOption, BasePK deletedBy) {
-        carrierServiceOption.setThruTime(session.getStartTimeLong());
+        carrierServiceOption.setThruTime(session.getStartTime());
         
         sendEvent(carrierServiceOption.getCarrierService().getPrimaryKey(), EventTypes.MODIFY,
                 carrierServiceOption.getPrimaryKey(), null, deletedBy);
@@ -2105,7 +2105,7 @@ public class CarrierControl
     // --------------------------------------------------------------------------------
     
     public PartyCarrier createPartyCarrier(Party party, Party carrierParty, BasePK createdBy) {
-        var partyCarrier = PartyCarrierFactory.getInstance().create(party, carrierParty, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+        var partyCarrier = PartyCarrierFactory.getInstance().create(party, carrierParty, session.getStartTime(), Session.MAX_TIME_LONG);
         
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyCarrier.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -2265,7 +2265,7 @@ public class CarrierControl
     }
 
     public void deletePartyCarrier(PartyCarrier partyCarrier, BasePK deletedBy) {
-        partyCarrier.setThruTime(session.getStartTimeLong());
+        partyCarrier.setThruTime(session.getStartTime());
         
         sendEvent(partyCarrier.getParty().getPrimaryKey(), EventTypes.MODIFY, partyCarrier.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
@@ -2291,7 +2291,7 @@ public class CarrierControl
     public PartyCarrierAccount createPartyCarrierAccount(Party party, Party carrierParty, String account, Boolean alwaysUseThirdPartyBilling, BasePK createdBy) {
         var partyCarrierAccount = PartyCarrierAccountFactory.getInstance().create();
         var partyCarrierAccountDetail = PartyCarrierAccountDetailFactory.getInstance().create(partyCarrierAccount, party, carrierParty,
-                account, alwaysUseThirdPartyBilling, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                account, alwaysUseThirdPartyBilling, session.getStartTime(), Session.MAX_TIME_LONG);
 
         // Convert to R/W
         partyCarrierAccount = PartyCarrierAccountFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, partyCarrierAccount.getPrimaryKey());
@@ -2443,7 +2443,7 @@ public class CarrierControl
                      partyCarrierAccountDetailValue.getPartyCarrierAccountPK());
             var partyCarrierAccountDetail = partyCarrierAccount.getActiveDetailForUpdate();
 
-            partyCarrierAccountDetail.setThruTime(session.getStartTimeLong());
+            partyCarrierAccountDetail.setThruTime(session.getStartTime());
             partyCarrierAccountDetail.store();
 
             var partyCarrierAccountPK = partyCarrierAccountDetail.getPartyCarrierAccountPK(); // Not updated
@@ -2453,7 +2453,7 @@ public class CarrierControl
             var alwaysUseThirdPartyBilling = partyCarrierAccountDetailValue.getAlwaysUseThirdPartyBilling();
 
             partyCarrierAccountDetail = PartyCarrierAccountDetailFactory.getInstance().create(partyCarrierAccountPK, partyPK, carrierPartyPK, account,
-                    alwaysUseThirdPartyBilling, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    alwaysUseThirdPartyBilling, session.getStartTime(), Session.MAX_TIME_LONG);
 
             partyCarrierAccount.setActiveDetail(partyCarrierAccountDetail);
             partyCarrierAccount.setLastDetail(partyCarrierAccountDetail);
@@ -2465,7 +2465,7 @@ public class CarrierControl
     public void deletePartyCarrierAccount(PartyCarrierAccount partyCarrierAccount, BasePK deletedBy) {
         var partyCarrierAccountDetail = partyCarrierAccount.getLastDetailForUpdate();
 
-        partyCarrierAccountDetail.setThruTime(session.getStartTimeLong());
+        partyCarrierAccountDetail.setThruTime(session.getStartTime());
         partyCarrierAccount.setActiveDetail(null);
         partyCarrierAccount.store();
 

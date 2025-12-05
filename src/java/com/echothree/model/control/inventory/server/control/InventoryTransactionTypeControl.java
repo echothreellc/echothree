@@ -75,7 +75,7 @@ public class InventoryTransactionTypeControl
 
         var inventoryTransactionType = InventoryTransactionTypeFactory.getInstance().create();
         var inventoryTransactionTypeDetail = InventoryTransactionTypeDetailFactory.getInstance().create(inventoryTransactionType, inventoryTransactionTypeName, inventoryTransactionSequenceType,
-                inventoryTransactionWorkflow, inventoryTransactionWorkflowEntrance, isDefault, sortOrder, session.getStartTimeLong(),
+                inventoryTransactionWorkflow, inventoryTransactionWorkflowEntrance, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -282,7 +282,7 @@ public class InventoryTransactionTypeControl
                      inventoryTransactionTypeDetailValue.getInventoryTransactionTypePK());
             var inventoryTransactionTypeDetail = inventoryTransactionType.getActiveDetailForUpdate();
 
-            inventoryTransactionTypeDetail.setThruTime(session.getStartTimeLong());
+            inventoryTransactionTypeDetail.setThruTime(session.getStartTime());
             inventoryTransactionTypeDetail.store();
 
             var inventoryTransactionTypePK = inventoryTransactionTypeDetail.getInventoryTransactionTypePK(); // Not updated
@@ -310,7 +310,7 @@ public class InventoryTransactionTypeControl
             }
 
             inventoryTransactionTypeDetail = InventoryTransactionTypeDetailFactory.getInstance().create(inventoryTransactionTypePK, inventoryTransactionTypeName, inventoryTransactionSequenceTypePK,
-                    inventoryTransactionWorkflowPK, inventoryTransactionWorkflowEntrancePK, isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    inventoryTransactionWorkflowPK, inventoryTransactionWorkflowEntrancePK, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
 
             inventoryTransactionType.setActiveDetail(inventoryTransactionTypeDetail);
             inventoryTransactionType.setLastDetail(inventoryTransactionTypeDetail);
@@ -329,7 +329,7 @@ public class InventoryTransactionTypeControl
         deleteInventoryTransactionTypeDescriptionsByInventoryTransactionType(inventoryTransactionType, deletedBy);
         // TODO: deleteInventoryTransactionsByInventoryTransactionType(inventoryTransactionType, deletedBy);
 
-        inventoryTransactionTypeDetail.setThruTime(session.getStartTimeLong());
+        inventoryTransactionTypeDetail.setThruTime(session.getStartTime());
         inventoryTransactionType.setActiveDetail(null);
         inventoryTransactionType.store();
 
@@ -373,7 +373,7 @@ public class InventoryTransactionTypeControl
 
     public InventoryTransactionTypeDescription createInventoryTransactionTypeDescription(InventoryTransactionType inventoryTransactionType, Language language, String description, BasePK createdBy) {
         var inventoryTransactionTypeDescription = InventoryTransactionTypeDescriptionFactory.getInstance().create(inventoryTransactionType, language, description,
-                session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME_LONG);
 
         sendEvent(inventoryTransactionType.getPrimaryKey(), EventTypes.MODIFY, inventoryTransactionTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -486,7 +486,7 @@ public class InventoryTransactionTypeControl
             var inventoryTransactionTypeDescription = InventoryTransactionTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     inventoryTransactionTypeDescriptionValue.getPrimaryKey());
 
-            inventoryTransactionTypeDescription.setThruTime(session.getStartTimeLong());
+            inventoryTransactionTypeDescription.setThruTime(session.getStartTime());
             inventoryTransactionTypeDescription.store();
 
             var inventoryTransactionType = inventoryTransactionTypeDescription.getInventoryTransactionType();
@@ -494,14 +494,14 @@ public class InventoryTransactionTypeControl
             var description = inventoryTransactionTypeDescriptionValue.getDescription();
 
             inventoryTransactionTypeDescription = InventoryTransactionTypeDescriptionFactory.getInstance().create(inventoryTransactionType, language, description,
-                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME_LONG);
 
             sendEvent(inventoryTransactionType.getPrimaryKey(), EventTypes.MODIFY, inventoryTransactionTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteInventoryTransactionTypeDescription(InventoryTransactionTypeDescription inventoryTransactionTypeDescription, BasePK deletedBy) {
-        inventoryTransactionTypeDescription.setThruTime(session.getStartTimeLong());
+        inventoryTransactionTypeDescription.setThruTime(session.getStartTime());
 
         sendEvent(inventoryTransactionTypeDescription.getInventoryTransactionTypePK(), EventTypes.MODIFY, inventoryTransactionTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 

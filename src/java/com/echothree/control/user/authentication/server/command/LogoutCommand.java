@@ -32,7 +32,7 @@ public class LogoutCommand
     
     @Override
     protected BaseResult execute() {
-        UserVisitLogic.getInstance().logout(getUserVisitPK(), session.getStartTimeLong(), getPartyPK());
+        UserVisitLogic.getInstance().logout(getUserVisitPK(), session.getStartTime(), getPartyPK());
         
         return null;
     }

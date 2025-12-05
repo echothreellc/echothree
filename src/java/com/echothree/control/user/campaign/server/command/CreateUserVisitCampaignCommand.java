@@ -23,7 +23,6 @@ import com.echothree.model.data.campaign.server.entity.CampaignContent;
 import com.echothree.model.data.campaign.server.entity.CampaignMedium;
 import com.echothree.model.data.campaign.server.entity.CampaignSource;
 import com.echothree.model.data.campaign.server.entity.CampaignTerm;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -171,7 +170,7 @@ public class CreateUserVisitCampaignCommand
                 }
             }
             
-            campaignControl.createUserVisitCampaign(getUserVisit(), session.getStartTimeLong(), campaign, campaignSource, campaignMedium, campaignTerm,
+            campaignControl.createUserVisitCampaign(getUserVisit(), session.getStartTime(), campaign, campaignSource, campaignMedium, campaignTerm,
                     campaignContent);
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());

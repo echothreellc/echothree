@@ -143,7 +143,7 @@ public class PicklistControl
 
         var picklistType = PicklistTypeFactory.getInstance().create();
         var picklistTypeDetail = PicklistTypeDetailFactory.getInstance().create(picklistType, picklistTypeName, parentPicklistType, picklistSequenceType,
-                picklistWorkflow, picklistWorkflowEntrance, isDefault, sortOrder, session.getStartTimeLong(),
+                picklistWorkflow, picklistWorkflowEntrance, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -375,7 +375,7 @@ public class PicklistControl
                      picklistTypeDetailValue.getPicklistTypePK());
             var picklistTypeDetail = picklistType.getActiveDetailForUpdate();
 
-            picklistTypeDetail.setThruTime(session.getStartTimeLong());
+            picklistTypeDetail.setThruTime(session.getStartTime());
             picklistTypeDetail.store();
 
             var picklistTypePK = picklistTypeDetail.getPicklistTypePK(); // Not updated
@@ -404,7 +404,7 @@ public class PicklistControl
             }
 
             picklistTypeDetail = PicklistTypeDetailFactory.getInstance().create(picklistTypePK, picklistTypeName, parentPicklistTypePK, picklistSequenceTypePK,
-                    picklistWorkflowPK, picklistWorkflowEntrancePK, isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    picklistWorkflowPK, picklistWorkflowEntrancePK, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
 
             picklistType.setActiveDetail(picklistTypeDetail);
             picklistType.setLastDetail(picklistTypeDetail);
@@ -425,7 +425,7 @@ public class PicklistControl
         deletePicklistAliasTypesByPicklistType(picklistType, deletedBy);
         // TODO: deletePicklistsByPicklistType(picklistType, deletedBy);
 
-        picklistTypeDetail.setThruTime(session.getStartTimeLong());
+        picklistTypeDetail.setThruTime(session.getStartTime());
         picklistType.setActiveDetail(null);
         picklistType.store();
 
@@ -474,7 +474,7 @@ public class PicklistControl
 
     public PicklistTypeDescription createPicklistTypeDescription(PicklistType picklistType, Language language, String description, BasePK createdBy) {
         var picklistTypeDescription = PicklistTypeDescriptionFactory.getInstance().create(picklistType, language, description,
-                session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME_LONG);
 
         sendEvent(picklistType.getPrimaryKey(), EventTypes.MODIFY, picklistTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -587,7 +587,7 @@ public class PicklistControl
             var picklistTypeDescription = PicklistTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     picklistTypeDescriptionValue.getPrimaryKey());
 
-            picklistTypeDescription.setThruTime(session.getStartTimeLong());
+            picklistTypeDescription.setThruTime(session.getStartTime());
             picklistTypeDescription.store();
 
             var picklistType = picklistTypeDescription.getPicklistType();
@@ -595,14 +595,14 @@ public class PicklistControl
             var description = picklistTypeDescriptionValue.getDescription();
 
             picklistTypeDescription = PicklistTypeDescriptionFactory.getInstance().create(picklistType, language, description,
-                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME_LONG);
 
             sendEvent(picklistType.getPrimaryKey(), EventTypes.MODIFY, picklistTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deletePicklistTypeDescription(PicklistTypeDescription picklistTypeDescription, BasePK deletedBy) {
-        picklistTypeDescription.setThruTime(session.getStartTimeLong());
+        picklistTypeDescription.setThruTime(session.getStartTime());
 
         sendEvent(picklistTypeDescription.getPicklistTypePK(), EventTypes.MODIFY, picklistTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
@@ -635,7 +635,7 @@ public class PicklistControl
 
         var picklistTimeType = PicklistTimeTypeFactory.getInstance().create();
         var picklistTimeTypeDetail = PicklistTimeTypeDetailFactory.getInstance().create(picklistTimeType, picklistType, picklistTimeTypeName, isDefault,
-                sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
 
         // Convert to R/W
         picklistTimeType = PicklistTimeTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -815,7 +815,7 @@ public class PicklistControl
                      picklistTimeTypeDetailValue.getPicklistTimeTypePK());
             var picklistTimeTypeDetail = picklistTimeType.getActiveDetailForUpdate();
 
-            picklistTimeTypeDetail.setThruTime(session.getStartTimeLong());
+            picklistTimeTypeDetail.setThruTime(session.getStartTime());
             picklistTimeTypeDetail.store();
 
             var picklistType = picklistTimeTypeDetail.getPicklistType(); // Not updated
@@ -842,7 +842,7 @@ public class PicklistControl
             }
 
             picklistTimeTypeDetail = PicklistTimeTypeDetailFactory.getInstance().create(picklistTimeTypePK, picklistTypePK, picklistTimeTypeName, isDefault, sortOrder,
-                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME_LONG);
 
             picklistTimeType.setActiveDetail(picklistTimeTypeDetail);
             picklistTimeType.setLastDetail(picklistTimeTypeDetail);
@@ -860,7 +860,7 @@ public class PicklistControl
         deletePicklistTimeTypeDescriptionsByPicklistTimeType(picklistTimeType, deletedBy);
 
         var picklistTimeTypeDetail = picklistTimeType.getLastDetailForUpdate();
-        picklistTimeTypeDetail.setThruTime(session.getStartTimeLong());
+        picklistTimeTypeDetail.setThruTime(session.getStartTime());
         picklistTimeType.setActiveDetail(null);
         picklistTimeType.store();
 
@@ -891,7 +891,7 @@ public class PicklistControl
 
     public PicklistTimeTypeDescription createPicklistTimeTypeDescription(PicklistTimeType picklistTimeType, Language language, String description, BasePK createdBy) {
         var picklistTimeTypeDescription = PicklistTimeTypeDescriptionFactory.getInstance().create(picklistTimeType, language, description,
-                session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME_LONG);
 
         sendEvent(picklistTimeType.getPrimaryKey(), EventTypes.MODIFY, picklistTimeTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -1004,7 +1004,7 @@ public class PicklistControl
             var picklistTimeTypeDescription = PicklistTimeTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     picklistTimeTypeDescriptionValue.getPrimaryKey());
 
-            picklistTimeTypeDescription.setThruTime(session.getStartTimeLong());
+            picklistTimeTypeDescription.setThruTime(session.getStartTime());
             picklistTimeTypeDescription.store();
 
             var picklistTimeType = picklistTimeTypeDescription.getPicklistTimeType();
@@ -1012,14 +1012,14 @@ public class PicklistControl
             var description = picklistTimeTypeDescriptionValue.getDescription();
 
             picklistTimeTypeDescription = PicklistTimeTypeDescriptionFactory.getInstance().create(picklistTimeType, language, description,
-                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME_LONG);
 
             sendEvent(picklistTimeType.getPrimaryKey(), EventTypes.MODIFY, picklistTimeTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deletePicklistTimeTypeDescription(PicklistTimeTypeDescription picklistTimeTypeDescription, BasePK deletedBy) {
-        picklistTimeTypeDescription.setThruTime(session.getStartTimeLong());
+        picklistTimeTypeDescription.setThruTime(session.getStartTime());
 
         sendEvent(picklistTimeTypeDescription.getPicklistTimeTypePK(), EventTypes.MODIFY, picklistTimeTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
@@ -1053,7 +1053,7 @@ public class PicklistControl
 
         var picklistAliasType = PicklistAliasTypeFactory.getInstance().create();
         var picklistAliasTypeDetail = PicklistAliasTypeDetailFactory.getInstance().create(picklistAliasType, picklistType, picklistAliasTypeName,
-                validationPattern, isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                validationPattern, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
 
         // Convert to R/W
         picklistAliasType = PicklistAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, picklistAliasType.getPrimaryKey());
@@ -1229,7 +1229,7 @@ public class PicklistControl
                     picklistAliasTypeDetailValue.getPicklistAliasTypePK());
             var picklistAliasTypeDetail = picklistAliasType.getActiveDetailForUpdate();
 
-            picklistAliasTypeDetail.setThruTime(session.getStartTimeLong());
+            picklistAliasTypeDetail.setThruTime(session.getStartTime());
             picklistAliasTypeDetail.store();
 
             var picklistAliasTypePK = picklistAliasTypeDetail.getPicklistAliasTypePK();
@@ -1257,7 +1257,7 @@ public class PicklistControl
             }
 
             picklistAliasTypeDetail = PicklistAliasTypeDetailFactory.getInstance().create(picklistAliasTypePK, picklistTypePK, picklistAliasTypeName,
-                    validationPattern, isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    validationPattern, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
 
             picklistAliasType.setActiveDetail(picklistAliasTypeDetail);
             picklistAliasType.setLastDetail(picklistAliasTypeDetail);
@@ -1275,7 +1275,7 @@ public class PicklistControl
         deletePicklistAliasTypeDescriptionsByPicklistAliasType(picklistAliasType, deletedBy);
 
         var picklistAliasTypeDetail = picklistAliasType.getLastDetailForUpdate();
-        picklistAliasTypeDetail.setThruTime(session.getStartTimeLong());
+        picklistAliasTypeDetail.setThruTime(session.getStartTime());
         picklistAliasType.setActiveDetail(null);
         picklistAliasType.store();
 
@@ -1316,7 +1316,7 @@ public class PicklistControl
 
     public PicklistAliasTypeDescription createPicklistAliasTypeDescription(PicklistAliasType picklistAliasType, Language language, String description, BasePK createdBy) {
         var picklistAliasTypeDescription = PicklistAliasTypeDescriptionFactory.getInstance().create(picklistAliasType, language,
-                description, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                description, session.getStartTime(), Session.MAX_TIME_LONG);
 
         sendEvent(picklistAliasType.getPrimaryKey(), EventTypes.MODIFY, picklistAliasTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -1429,7 +1429,7 @@ public class PicklistControl
             var picklistAliasTypeDescription = PicklistAliasTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      picklistAliasTypeDescriptionValue.getPrimaryKey());
 
-            picklistAliasTypeDescription.setThruTime(session.getStartTimeLong());
+            picklistAliasTypeDescription.setThruTime(session.getStartTime());
             picklistAliasTypeDescription.store();
 
             var picklistAliasType = picklistAliasTypeDescription.getPicklistAliasType();
@@ -1437,14 +1437,14 @@ public class PicklistControl
             var description = picklistAliasTypeDescriptionValue.getDescription();
 
             picklistAliasTypeDescription = PicklistAliasTypeDescriptionFactory.getInstance().create(picklistAliasType, language, description,
-                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME_LONG);
 
             sendEvent(picklistAliasType.getPrimaryKey(), EventTypes.MODIFY, picklistAliasTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deletePicklistAliasTypeDescription(PicklistAliasTypeDescription picklistAliasTypeDescription, BasePK deletedBy) {
-        picklistAliasTypeDescription.setThruTime(session.getStartTimeLong());
+        picklistAliasTypeDescription.setThruTime(session.getStartTime());
 
         sendEvent(picklistAliasTypeDescription.getPicklistAliasTypePK(), EventTypes.MODIFY, picklistAliasTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
@@ -1463,7 +1463,7 @@ public class PicklistControl
     // --------------------------------------------------------------------------------
 
     public PicklistTime createPicklistTime(Picklist picklist, PicklistTimeType picklistTimeType, Long time, BasePK createdBy) {
-        var picklistTime = PicklistTimeFactory.getInstance().create(picklist, picklistTimeType, time, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+        var picklistTime = PicklistTimeFactory.getInstance().create(picklist, picklistTimeType, time, session.getStartTime(), Session.MAX_TIME_LONG);
 
         sendEvent(picklist.getPrimaryKey(), EventTypes.MODIFY, picklistTime.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -1612,21 +1612,21 @@ public class PicklistControl
             var picklistTime = PicklistTimeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     picklistTimeValue.getPrimaryKey());
 
-            picklistTime.setThruTime(session.getStartTimeLong());
+            picklistTime.setThruTime(session.getStartTime());
             picklistTime.store();
 
             var picklistPK = picklistTime.getPicklistPK(); // Not updated
             var picklistTimeTypePK = picklistTime.getPicklistTimeTypePK(); // Not updated
             var time = picklistTimeValue.getTime();
 
-            picklistTime = PicklistTimeFactory.getInstance().create(picklistPK, picklistTimeTypePK, time, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+            picklistTime = PicklistTimeFactory.getInstance().create(picklistPK, picklistTimeTypePK, time, session.getStartTime(), Session.MAX_TIME_LONG);
 
             sendEvent(picklistPK, EventTypes.MODIFY, picklistTime.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deletePicklistTime(PicklistTime picklistTime, BasePK deletedBy) {
-        picklistTime.setThruTime(session.getStartTimeLong());
+        picklistTime.setThruTime(session.getStartTime());
 
         sendEvent(picklistTime.getPicklistTimeTypePK(), EventTypes.MODIFY, picklistTime.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
@@ -1651,7 +1651,7 @@ public class PicklistControl
     // --------------------------------------------------------------------------------
 
     public PicklistAlias createPicklistAlias(Picklist picklist, PicklistAliasType picklistAliasType, String alias, BasePK createdBy) {
-        var picklistAlias = PicklistAliasFactory.getInstance().create(picklist, picklistAliasType, alias, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+        var picklistAlias = PicklistAliasFactory.getInstance().create(picklist, picklistAliasType, alias, session.getStartTime(), Session.MAX_TIME_LONG);
 
         sendEvent(picklist.getPrimaryKey(), EventTypes.MODIFY, picklistAlias.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -1808,21 +1808,21 @@ public class PicklistControl
         if(picklistAliasValue.hasBeenModified()) {
             var picklistAlias = PicklistAliasFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, picklistAliasValue.getPrimaryKey());
 
-            picklistAlias.setThruTime(session.getStartTimeLong());
+            picklistAlias.setThruTime(session.getStartTime());
             picklistAlias.store();
 
             var picklistPK = picklistAlias.getPicklistPK();
             var picklistAliasTypePK = picklistAlias.getPicklistAliasTypePK();
             var alias  = picklistAliasValue.getAlias();
 
-            picklistAlias = PicklistAliasFactory.getInstance().create(picklistPK, picklistAliasTypePK, alias, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+            picklistAlias = PicklistAliasFactory.getInstance().create(picklistPK, picklistAliasTypePK, alias, session.getStartTime(), Session.MAX_TIME_LONG);
 
             sendEvent(picklistPK, EventTypes.MODIFY, picklistAlias.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deletePicklistAlias(PicklistAlias picklistAlias, BasePK deletedBy) {
-        picklistAlias.setThruTime(session.getStartTimeLong());
+        picklistAlias.setThruTime(session.getStartTime());
 
         sendEvent(picklistAlias.getPicklistPK(), EventTypes.MODIFY, picklistAlias.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 

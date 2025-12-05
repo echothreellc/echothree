@@ -80,7 +80,7 @@ public class WorkRequirementLogic {
         }
 
         var workRequirementName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(workRequirementSequence);
-        var startTime = session.getStartTimeLong();
+        var startTime = session.getStartTime();
         var estimatedTimeAllowed = workRequirementScopeDetail.getEstimatedTimeAllowed();
 
         if(estimatedTimeAllowed == null) {
@@ -104,7 +104,7 @@ public class WorkRequirementLogic {
 
         if(assignedParty != null) {
             // If an assignedParty is specified, then create a WorkAssignment and do not give that Party a choice on acceptance.
-            createWorkAssignment(workRequirement, assignedParty, session.getStartTimeLong(), assignedEndTime,
+            createWorkAssignment(workRequirement, assignedParty, session.getStartTime(), assignedEndTime,
                     WorkAssignmentStatusConstants.WorkflowEntrance_NEW_ACCEPTED, createdBy);
         }
 

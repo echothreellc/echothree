@@ -144,7 +144,7 @@ public class SetPasswordCommand
                                         var changingForSelf = self.equals(party);
 
                                         userLoginPasswordStringValue.setPassword(newPassword1);
-                                        userLoginPasswordStringValue.setChangedTime(session.getStartTimeLong());
+                                        userLoginPasswordStringValue.setChangedTime(session.getStartTime());
                                         userLoginPasswordStringValue.setWasReset(!changingForSelf);
 
                                         userControl.updateUserLoginPasswordStringFromValue(userLoginPasswordStringValue, self.getPrimaryKey());

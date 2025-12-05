@@ -69,7 +69,7 @@ public class AssociateReferralLogic
                         var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
                         associateReferral = associateControl.createAssociateReferral(associate, associatePartyContactMechanism,
-                                entityInstanceControl.getEntityInstanceByBasePK(targetPK), session.getStartTimeLong(), partyPK);
+                                entityInstanceControl.getEntityInstanceByBasePK(targetPK), session.getStartTime(), partyPK);
 
                         userVisit.setAssociateReferral(associateReferral);
                     }

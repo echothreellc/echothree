@@ -75,7 +75,7 @@ public class UseControl
 
         var use = UseFactory.getInstance().create();
         var useDetail = UseDetailFactory.getInstance().create(use, useName, useType, isDefault, sortOrder,
-                session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME_LONG);
 
         // Convert to R/W
         use = UseFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, use.getPrimaryKey());
@@ -319,7 +319,7 @@ public class UseControl
                     useDetailValue.getUsePK());
             var useDetail = use.getActiveDetailForUpdate();
 
-            useDetail.setThruTime(session.getStartTimeLong());
+            useDetail.setThruTime(session.getStartTime());
             useDetail.store();
 
             var usePK = useDetail.getUsePK();
@@ -345,7 +345,7 @@ public class UseControl
             }
 
             useDetail = UseDetailFactory.getInstance().create(usePK, useName, useTypePK, isDefault, sortOrder,
-                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME_LONG);
 
             use.setActiveDetail(useDetail);
             use.setLastDetail(useDetail);
@@ -366,7 +366,7 @@ public class UseControl
         offerUseControl.deleteOfferUsesByUse(use, deletedBy);
 
         var useDetail = use.getLastDetailForUpdate();
-        useDetail.setThruTime(session.getStartTimeLong());
+        useDetail.setThruTime(session.getStartTime());
         use.setActiveDetail(null);
         use.store();
 
@@ -406,7 +406,7 @@ public class UseControl
 
     public UseDescription createUseDescription(Use use, Language language, String description, BasePK createdBy) {
         var useDescription = UseDescriptionFactory.getInstance().create(use, language, description,
-                session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME_LONG);
 
         sendEvent(use.getPrimaryKey(), EventTypes.MODIFY, useDescription.getPrimaryKey(),
                 EventTypes.CREATE, createdBy);
@@ -537,14 +537,14 @@ public class UseControl
             var useDescription = UseDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     useDescriptionValue.getPrimaryKey());
 
-            useDescription.setThruTime(session.getStartTimeLong());
+            useDescription.setThruTime(session.getStartTime());
             useDescription.store();
 
             var use = useDescription.getUse();
             var language = useDescription.getLanguage();
             var description = useDescriptionValue.getDescription();
 
-            useDescription = UseDescriptionFactory.getInstance().create(use, language, description, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+            useDescription = UseDescriptionFactory.getInstance().create(use, language, description, session.getStartTime(), Session.MAX_TIME_LONG);
 
             sendEvent(use.getPrimaryKey(), EventTypes.MODIFY, useDescription.getPrimaryKey(),
                     EventTypes.MODIFY, updatedBy);
@@ -552,7 +552,7 @@ public class UseControl
     }
 
     public void deleteUseDescription(UseDescription useDescription, BasePK deletedBy) {
-        useDescription.setThruTime(session.getStartTimeLong());
+        useDescription.setThruTime(session.getStartTime());
 
         sendEvent(useDescription.getUsePK(), EventTypes.MODIFY,
                 useDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);

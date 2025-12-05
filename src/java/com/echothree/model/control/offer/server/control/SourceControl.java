@@ -67,7 +67,7 @@ public class SourceControl
 
         var source = SourceFactory.getInstance().create();
         var sourceDetail = SourceDetailFactory.getInstance().create(source, sourceName, offerUse, isDefault,
-                sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
 
         // Convert to R/W
         source = SourceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, source.getPrimaryKey());
@@ -310,7 +310,7 @@ public class SourceControl
                     sourceDetailValue.getSourcePK());
             var sourceDetail = source.getActiveDetailForUpdate();
 
-            sourceDetail.setThruTime(session.getStartTimeLong());
+            sourceDetail.setThruTime(session.getStartTime());
             sourceDetail.store();
 
             var sourcePK = sourceDetail.getSourcePK(); // Do not update
@@ -336,7 +336,7 @@ public class SourceControl
             }
 
             sourceDetail = SourceDetailFactory.getInstance().create(sourcePK, sourceName, offerUse.getPrimaryKey(), isDefault,
-                    sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
 
             source.setActiveDetail(sourceDetail);
             source.setLastDetail(sourceDetail);
@@ -352,7 +352,7 @@ public class SourceControl
 
     public void deleteSource(Source source, BasePK deletedBy) {
         var sourceDetail = source.getLastDetailForUpdate();
-        sourceDetail.setThruTime(session.getStartTimeLong());
+        sourceDetail.setThruTime(session.getStartTime());
         source.setActiveDetail(null);
         source.store();
 

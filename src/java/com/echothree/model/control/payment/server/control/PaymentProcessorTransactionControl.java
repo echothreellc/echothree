@@ -57,7 +57,7 @@ public class PaymentProcessorTransactionControl
         var paymentProcessorTransaction = PaymentProcessorTransactionFactory.getInstance().create();
         var paymentProcessorTransactionDetail = PaymentProcessorTransactionDetailFactory.getInstance().create(session,
                 paymentProcessorTransaction, paymentProcessorTransactionName, paymentProcessor, paymentProcessorActionType,
-                paymentProcessorResultCode, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                paymentProcessorResultCode, session.getStartTime(), Session.MAX_TIME_LONG);
 
         // Convert to R/W
         paymentProcessorTransaction = PaymentProcessorTransactionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, paymentProcessorTransaction.getPrimaryKey());
@@ -263,7 +263,7 @@ public class PaymentProcessorTransactionControl
                     paymentProcessorTransactionDetailValue.getPaymentProcessorTransactionPK());
             var paymentProcessorTransactionDetail = paymentProcessorTransaction.getActiveDetailForUpdate();
 
-            paymentProcessorTransactionDetail.setThruTime(session.getStartTimeLong());
+            paymentProcessorTransactionDetail.setThruTime(session.getStartTime());
             paymentProcessorTransactionDetail.store();
 
             var paymentProcessorTransactionPK = paymentProcessorTransactionDetail.getPaymentProcessorTransactionPK(); // R/O
@@ -274,7 +274,7 @@ public class PaymentProcessorTransactionControl
 
             paymentProcessorTransactionDetail = PaymentProcessorTransactionDetailFactory.getInstance().create(paymentProcessorTransactionPK,
                     paymentProcessorTransactionName, paymentProcessorPK, paymentProcessorActionTypePK, paymentProcessorResultCodePK,
-                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME_LONG);
 
             paymentProcessorTransaction.setActiveDetail(paymentProcessorTransactionDetail);
             paymentProcessorTransaction.setLastDetail(paymentProcessorTransactionDetail);
@@ -289,7 +289,7 @@ public class PaymentProcessorTransactionControl
         paymentProcessorTransactionCodeControl.deletePaymentProcessorTransactionCodesByPaymentProcessorTransaction(paymentProcessorTransaction, deletedBy);
 
         var paymentProcessorTransactionDetail = paymentProcessorTransaction.getLastDetailForUpdate();
-        paymentProcessorTransactionDetail.setThruTime(session.getStartTimeLong());
+        paymentProcessorTransactionDetail.setThruTime(session.getStartTime());
         paymentProcessorTransactionDetail.store();
         paymentProcessorTransaction.setActiveDetail(null);
 

@@ -74,7 +74,7 @@ public class LotTimeControl
 
         var lotTimeType = LotTimeTypeFactory.getInstance().create();
         var lotTimeTypeDetail = LotTimeTypeDetailFactory.getInstance().create(lotTimeType, lotTimeTypeName, isDefault,
-                sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
 
         // Convert to R/W
         lotTimeType = LotTimeTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -249,7 +249,7 @@ public class LotTimeControl
                      lotTimeTypeDetailValue.getLotTimeTypePK());
             var lotTimeTypeDetail = lotTimeType.getActiveDetailForUpdate();
 
-            lotTimeTypeDetail.setThruTime(session.getStartTimeLong());
+            lotTimeTypeDetail.setThruTime(session.getStartTime());
             lotTimeTypeDetail.store();
 
             var lotTimeTypePK = lotTimeTypeDetail.getLotTimeTypePK(); // Not updated
@@ -274,7 +274,7 @@ public class LotTimeControl
             }
 
             lotTimeTypeDetail = LotTimeTypeDetailFactory.getInstance().create(lotTimeTypePK, lotTimeTypeName, isDefault, sortOrder,
-                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME_LONG);
 
             lotTimeType.setActiveDetail(lotTimeTypeDetail);
             lotTimeType.setLastDetail(lotTimeTypeDetail);
@@ -292,7 +292,7 @@ public class LotTimeControl
         deleteLotTimeTypeDescriptionsByLotTimeType(lotTimeType, deletedBy);
 
         var lotTimeTypeDetail = lotTimeType.getLastDetailForUpdate();
-        lotTimeTypeDetail.setThruTime(session.getStartTimeLong());
+        lotTimeTypeDetail.setThruTime(session.getStartTime());
         lotTimeType.setActiveDetail(null);
         lotTimeType.store();
 
@@ -322,7 +322,7 @@ public class LotTimeControl
 
     public LotTimeTypeDescription createLotTimeTypeDescription(LotTimeType lotTimeType, Language language, String description, BasePK createdBy) {
         var lotTimeTypeDescription = LotTimeTypeDescriptionFactory.getInstance().create(lotTimeType, language, description,
-                session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME_LONG);
 
         sendEvent(lotTimeType.getPrimaryKey(), EventTypes.MODIFY, lotTimeTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -435,7 +435,7 @@ public class LotTimeControl
             var lotTimeTypeDescription = LotTimeTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     lotTimeTypeDescriptionValue.getPrimaryKey());
 
-            lotTimeTypeDescription.setThruTime(session.getStartTimeLong());
+            lotTimeTypeDescription.setThruTime(session.getStartTime());
             lotTimeTypeDescription.store();
 
             var lotTimeType = lotTimeTypeDescription.getLotTimeType();
@@ -443,14 +443,14 @@ public class LotTimeControl
             var description = lotTimeTypeDescriptionValue.getDescription();
 
             lotTimeTypeDescription = LotTimeTypeDescriptionFactory.getInstance().create(lotTimeType, language, description,
-                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME_LONG);
 
             sendEvent(lotTimeType.getPrimaryKey(), EventTypes.MODIFY, lotTimeTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteLotTimeTypeDescription(LotTimeTypeDescription lotTimeTypeDescription, BasePK deletedBy) {
-        lotTimeTypeDescription.setThruTime(session.getStartTimeLong());
+        lotTimeTypeDescription.setThruTime(session.getStartTime());
 
         sendEvent(lotTimeTypeDescription.getLotTimeTypePK(), EventTypes.MODIFY, lotTimeTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
@@ -469,7 +469,7 @@ public class LotTimeControl
     // --------------------------------------------------------------------------------
 
     public LotTime createLotTime(Lot lot, LotTimeType lotTimeType, Long time, BasePK createdBy) {
-        var lotTime = LotTimeFactory.getInstance().create(lot, lotTimeType, time, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+        var lotTime = LotTimeFactory.getInstance().create(lot, lotTimeType, time, session.getStartTime(), Session.MAX_TIME_LONG);
 
         sendEvent(lot.getPrimaryKey(), EventTypes.MODIFY, lotTime.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -618,21 +618,21 @@ public class LotTimeControl
             var lotTime = LotTimeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     lotTimeValue.getPrimaryKey());
 
-            lotTime.setThruTime(session.getStartTimeLong());
+            lotTime.setThruTime(session.getStartTime());
             lotTime.store();
 
             var lotPK = lotTime.getLotPK(); // Not updated
             var lotTimeTypePK = lotTime.getLotTimeTypePK(); // Not updated
             var time = lotTimeValue.getTime();
 
-            lotTime = LotTimeFactory.getInstance().create(lotPK, lotTimeTypePK, time, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+            lotTime = LotTimeFactory.getInstance().create(lotPK, lotTimeTypePK, time, session.getStartTime(), Session.MAX_TIME_LONG);
 
             sendEvent(lotPK, EventTypes.MODIFY, lotTime.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteLotTime(LotTime lotTime, BasePK deletedBy) {
-        lotTime.setThruTime(session.getStartTimeLong());
+        lotTime.setThruTime(session.getStartTime());
 
         sendEvent(lotTime.getLotTimeTypePK(), EventTypes.MODIFY, lotTime.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 

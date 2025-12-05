@@ -89,7 +89,7 @@ public class PostingLogic {
         var partyControl = Session.getModelController(PartyControl.class);
         var periodControl = Session.getModelController(PeriodControl.class);
 
-        var postedTime = session.getStartTimeLong();
+        var postedTime = session.getStartTime();
         var periods = periodControl.getContainingPeriodsUsingNames(PeriodConstants.PeriodKind_FISCAL, postedTime);
         var transactionGlEntries = accountingControl.getTransactionGlEntriesByTransaction(transaction);
         transactionGlEntries.forEach((transactionGlEntry) ->

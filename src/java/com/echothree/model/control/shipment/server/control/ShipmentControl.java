@@ -114,7 +114,7 @@ public class ShipmentControl
 
         var shipmentType = ShipmentTypeFactory.getInstance().create();
         var shipmentTypeDetail = ShipmentTypeDetailFactory.getInstance().create(shipmentType, shipmentTypeName, parentShipmentType,
-                shipmentSequenceType, shipmentPackageSequenceType, shipmentWorkflow, shipmentWorkflowEntrance, isDefault, sortOrder, session.getStartTimeLong(),
+                shipmentSequenceType, shipmentPackageSequenceType, shipmentWorkflow, shipmentWorkflowEntrance, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -346,7 +346,7 @@ public class ShipmentControl
                      shipmentTypeDetailValue.getShipmentTypePK());
             var shipmentTypeDetail = shipmentType.getActiveDetailForUpdate();
 
-            shipmentTypeDetail.setThruTime(session.getStartTimeLong());
+            shipmentTypeDetail.setThruTime(session.getStartTime());
             shipmentTypeDetail.store();
 
             var shipmentTypePK = shipmentTypeDetail.getShipmentTypePK(); // Not updated
@@ -376,7 +376,7 @@ public class ShipmentControl
             }
 
             shipmentTypeDetail = ShipmentTypeDetailFactory.getInstance().create(shipmentTypePK, shipmentTypeName, parentShipmentTypePK, shipmentSequenceTypePK,
-                    shipmentPackageSequenceTypePK, shipmentWorkflowPK, shipmentWorkflowEntrancePK, isDefault, sortOrder, session.getStartTimeLong(),
+                    shipmentPackageSequenceTypePK, shipmentWorkflowPK, shipmentWorkflowEntrancePK, isDefault, sortOrder, session.getStartTime(),
                     Session.MAX_TIME_LONG);
 
             shipmentType.setActiveDetail(shipmentTypeDetail);
@@ -398,7 +398,7 @@ public class ShipmentControl
         deleteShipmentAliasTypesByShipmentType(shipmentType, deletedBy);
         // TODO: deleteShipmentsByShipmentType(shipmentType, deletedBy);
 
-        shipmentTypeDetail.setThruTime(session.getStartTimeLong());
+        shipmentTypeDetail.setThruTime(session.getStartTime());
         shipmentType.setActiveDetail(null);
         shipmentType.store();
 
@@ -447,7 +447,7 @@ public class ShipmentControl
 
     public ShipmentTypeDescription createShipmentTypeDescription(ShipmentType shipmentType, Language language, String description, BasePK createdBy) {
         var shipmentTypeDescription = ShipmentTypeDescriptionFactory.getInstance().create(shipmentType, language, description,
-                session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME_LONG);
 
         sendEvent(shipmentType.getPrimaryKey(), EventTypes.MODIFY, shipmentTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -560,7 +560,7 @@ public class ShipmentControl
             var shipmentTypeDescription = ShipmentTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     shipmentTypeDescriptionValue.getPrimaryKey());
 
-            shipmentTypeDescription.setThruTime(session.getStartTimeLong());
+            shipmentTypeDescription.setThruTime(session.getStartTime());
             shipmentTypeDescription.store();
 
             var shipmentType = shipmentTypeDescription.getShipmentType();
@@ -568,14 +568,14 @@ public class ShipmentControl
             var description = shipmentTypeDescriptionValue.getDescription();
 
             shipmentTypeDescription = ShipmentTypeDescriptionFactory.getInstance().create(shipmentType, language, description,
-                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME_LONG);
 
             sendEvent(shipmentType.getPrimaryKey(), EventTypes.MODIFY, shipmentTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteShipmentTypeDescription(ShipmentTypeDescription shipmentTypeDescription, BasePK deletedBy) {
-        shipmentTypeDescription.setThruTime(session.getStartTimeLong());
+        shipmentTypeDescription.setThruTime(session.getStartTime());
 
         sendEvent(shipmentTypeDescription.getShipmentTypePK(), EventTypes.MODIFY, shipmentTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
@@ -608,7 +608,7 @@ public class ShipmentControl
 
         var shipmentTimeType = ShipmentTimeTypeFactory.getInstance().create();
         var shipmentTimeTypeDetail = ShipmentTimeTypeDetailFactory.getInstance().create(shipmentTimeType, shipmentType, shipmentTimeTypeName, isDefault,
-                sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
 
         // Convert to R/W
         shipmentTimeType = ShipmentTimeTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -788,7 +788,7 @@ public class ShipmentControl
                      shipmentTimeTypeDetailValue.getShipmentTimeTypePK());
             var shipmentTimeTypeDetail = shipmentTimeType.getActiveDetailForUpdate();
 
-            shipmentTimeTypeDetail.setThruTime(session.getStartTimeLong());
+            shipmentTimeTypeDetail.setThruTime(session.getStartTime());
             shipmentTimeTypeDetail.store();
 
             var shipmentType = shipmentTimeTypeDetail.getShipmentType(); // Not updated
@@ -815,7 +815,7 @@ public class ShipmentControl
             }
 
             shipmentTimeTypeDetail = ShipmentTimeTypeDetailFactory.getInstance().create(shipmentTimeTypePK, shipmentTypePK, shipmentTimeTypeName, isDefault, sortOrder,
-                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME_LONG);
 
             shipmentTimeType.setActiveDetail(shipmentTimeTypeDetail);
             shipmentTimeType.setLastDetail(shipmentTimeTypeDetail);
@@ -833,7 +833,7 @@ public class ShipmentControl
         deleteShipmentTimeTypeDescriptionsByShipmentTimeType(shipmentTimeType, deletedBy);
 
         var shipmentTimeTypeDetail = shipmentTimeType.getLastDetailForUpdate();
-        shipmentTimeTypeDetail.setThruTime(session.getStartTimeLong());
+        shipmentTimeTypeDetail.setThruTime(session.getStartTime());
         shipmentTimeType.setActiveDetail(null);
         shipmentTimeType.store();
 
@@ -864,7 +864,7 @@ public class ShipmentControl
 
     public ShipmentTimeTypeDescription createShipmentTimeTypeDescription(ShipmentTimeType shipmentTimeType, Language language, String description, BasePK createdBy) {
         var shipmentTimeTypeDescription = ShipmentTimeTypeDescriptionFactory.getInstance().create(shipmentTimeType, language, description,
-                session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME_LONG);
 
         sendEvent(shipmentTimeType.getPrimaryKey(), EventTypes.MODIFY, shipmentTimeTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -977,7 +977,7 @@ public class ShipmentControl
             var shipmentTimeTypeDescription = ShipmentTimeTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     shipmentTimeTypeDescriptionValue.getPrimaryKey());
 
-            shipmentTimeTypeDescription.setThruTime(session.getStartTimeLong());
+            shipmentTimeTypeDescription.setThruTime(session.getStartTime());
             shipmentTimeTypeDescription.store();
 
             var shipmentTimeType = shipmentTimeTypeDescription.getShipmentTimeType();
@@ -985,14 +985,14 @@ public class ShipmentControl
             var description = shipmentTimeTypeDescriptionValue.getDescription();
 
             shipmentTimeTypeDescription = ShipmentTimeTypeDescriptionFactory.getInstance().create(shipmentTimeType, language, description,
-                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME_LONG);
 
             sendEvent(shipmentTimeType.getPrimaryKey(), EventTypes.MODIFY, shipmentTimeTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteShipmentTimeTypeDescription(ShipmentTimeTypeDescription shipmentTimeTypeDescription, BasePK deletedBy) {
-        shipmentTimeTypeDescription.setThruTime(session.getStartTimeLong());
+        shipmentTimeTypeDescription.setThruTime(session.getStartTime());
 
         sendEvent(shipmentTimeTypeDescription.getShipmentTimeTypePK(), EventTypes.MODIFY, shipmentTimeTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
@@ -1025,7 +1025,7 @@ public class ShipmentControl
         }
 
         var shipmentTypeShippingMethod = ShipmentTypeShippingMethodFactory.getInstance().create(shipmentType, shippingMethod,
-                isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
         
         sendEvent(shippingMethod.getPrimaryKey(), EventTypes.MODIFY, shipmentTypeShippingMethod.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1229,7 +1229,7 @@ public class ShipmentControl
             var shipmentTypeShippingMethod = ShipmentTypeShippingMethodFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      shipmentTypeShippingMethodValue.getPrimaryKey());
             
-            shipmentTypeShippingMethod.setThruTime(session.getStartTimeLong());
+            shipmentTypeShippingMethod.setThruTime(session.getStartTime());
             shipmentTypeShippingMethod.store();
 
             var shipmentType = shipmentTypeShippingMethod.getShipmentType(); // Not Updated
@@ -1255,7 +1255,7 @@ public class ShipmentControl
             }
             
             shipmentTypeShippingMethod = ShipmentTypeShippingMethodFactory.getInstance().create(shipmentTypePK, shippingMethodPK,
-                    isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
             
             sendEvent(shippingMethodPK, EventTypes.MODIFY, shipmentTypeShippingMethod.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -1266,7 +1266,7 @@ public class ShipmentControl
     }
     
     public void deleteShipmentTypeShippingMethod(ShipmentTypeShippingMethod shipmentTypeShippingMethod, BasePK deletedBy) {
-        shipmentTypeShippingMethod.setThruTime(session.getStartTimeLong());
+        shipmentTypeShippingMethod.setThruTime(session.getStartTime());
         shipmentTypeShippingMethod.store();
         
         // Check for default, and pick one if necessary
@@ -1309,7 +1309,7 @@ public class ShipmentControl
     // --------------------------------------------------------------------------------
 
     public ShipmentTime createShipmentTime(Shipment shipment, ShipmentTimeType shipmentTimeType, Long time, BasePK createdBy) {
-        var shipmentTime = ShipmentTimeFactory.getInstance().create(shipment, shipmentTimeType, time, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+        var shipmentTime = ShipmentTimeFactory.getInstance().create(shipment, shipmentTimeType, time, session.getStartTime(), Session.MAX_TIME_LONG);
 
         sendEvent(shipment.getPrimaryKey(), EventTypes.MODIFY, shipmentTime.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -1458,21 +1458,21 @@ public class ShipmentControl
             var shipmentTime = ShipmentTimeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     shipmentTimeValue.getPrimaryKey());
 
-            shipmentTime.setThruTime(session.getStartTimeLong());
+            shipmentTime.setThruTime(session.getStartTime());
             shipmentTime.store();
 
             var shipmentPK = shipmentTime.getShipmentPK(); // Not updated
             var shipmentTimeTypePK = shipmentTime.getShipmentTimeTypePK(); // Not updated
             var time = shipmentTimeValue.getTime();
 
-            shipmentTime = ShipmentTimeFactory.getInstance().create(shipmentPK, shipmentTimeTypePK, time, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+            shipmentTime = ShipmentTimeFactory.getInstance().create(shipmentPK, shipmentTimeTypePK, time, session.getStartTime(), Session.MAX_TIME_LONG);
 
             sendEvent(shipmentPK, EventTypes.MODIFY, shipmentTime.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteShipmentTime(ShipmentTime shipmentTime, BasePK deletedBy) {
-        shipmentTime.setThruTime(session.getStartTimeLong());
+        shipmentTime.setThruTime(session.getStartTime());
 
         sendEvent(shipmentTime.getShipmentTimeTypePK(), EventTypes.MODIFY, shipmentTime.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
@@ -1512,7 +1512,7 @@ public class ShipmentControl
 
         var shipmentAliasType = ShipmentAliasTypeFactory.getInstance().create();
         var shipmentAliasTypeDetail = ShipmentAliasTypeDetailFactory.getInstance().create(shipmentAliasType, shipmentType, shipmentAliasTypeName,
-                validationPattern, isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                validationPattern, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
 
         // Convert to R/W
         shipmentAliasType = ShipmentAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, shipmentAliasType.getPrimaryKey());
@@ -1688,7 +1688,7 @@ public class ShipmentControl
                     shipmentAliasTypeDetailValue.getShipmentAliasTypePK());
             var shipmentAliasTypeDetail = shipmentAliasType.getActiveDetailForUpdate();
 
-            shipmentAliasTypeDetail.setThruTime(session.getStartTimeLong());
+            shipmentAliasTypeDetail.setThruTime(session.getStartTime());
             shipmentAliasTypeDetail.store();
 
             var shipmentAliasTypePK = shipmentAliasTypeDetail.getShipmentAliasTypePK();
@@ -1716,7 +1716,7 @@ public class ShipmentControl
             }
 
             shipmentAliasTypeDetail = ShipmentAliasTypeDetailFactory.getInstance().create(shipmentAliasTypePK, shipmentTypePK, shipmentAliasTypeName,
-                    validationPattern, isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    validationPattern, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
 
             shipmentAliasType.setActiveDetail(shipmentAliasTypeDetail);
             shipmentAliasType.setLastDetail(shipmentAliasTypeDetail);
@@ -1734,7 +1734,7 @@ public class ShipmentControl
         deleteShipmentAliasTypeDescriptionsByShipmentAliasType(shipmentAliasType, deletedBy);
 
         var shipmentAliasTypeDetail = shipmentAliasType.getLastDetailForUpdate();
-        shipmentAliasTypeDetail.setThruTime(session.getStartTimeLong());
+        shipmentAliasTypeDetail.setThruTime(session.getStartTime());
         shipmentAliasType.setActiveDetail(null);
         shipmentAliasType.store();
 
@@ -1775,7 +1775,7 @@ public class ShipmentControl
 
     public ShipmentAliasTypeDescription createShipmentAliasTypeDescription(ShipmentAliasType shipmentAliasType, Language language, String description, BasePK createdBy) {
         var shipmentAliasTypeDescription = ShipmentAliasTypeDescriptionFactory.getInstance().create(shipmentAliasType, language,
-                description, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                description, session.getStartTime(), Session.MAX_TIME_LONG);
 
         sendEvent(shipmentAliasType.getPrimaryKey(), EventTypes.MODIFY, shipmentAliasTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -1888,7 +1888,7 @@ public class ShipmentControl
             var shipmentAliasTypeDescription = ShipmentAliasTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      shipmentAliasTypeDescriptionValue.getPrimaryKey());
 
-            shipmentAliasTypeDescription.setThruTime(session.getStartTimeLong());
+            shipmentAliasTypeDescription.setThruTime(session.getStartTime());
             shipmentAliasTypeDescription.store();
 
             var shipmentAliasType = shipmentAliasTypeDescription.getShipmentAliasType();
@@ -1896,14 +1896,14 @@ public class ShipmentControl
             var description = shipmentAliasTypeDescriptionValue.getDescription();
 
             shipmentAliasTypeDescription = ShipmentAliasTypeDescriptionFactory.getInstance().create(shipmentAliasType, language, description,
-                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME_LONG);
 
             sendEvent(shipmentAliasType.getPrimaryKey(), EventTypes.MODIFY, shipmentAliasTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteShipmentAliasTypeDescription(ShipmentAliasTypeDescription shipmentAliasTypeDescription, BasePK deletedBy) {
-        shipmentAliasTypeDescription.setThruTime(session.getStartTimeLong());
+        shipmentAliasTypeDescription.setThruTime(session.getStartTime());
 
         sendEvent(shipmentAliasTypeDescription.getShipmentAliasTypePK(), EventTypes.MODIFY, shipmentAliasTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
@@ -1922,7 +1922,7 @@ public class ShipmentControl
     // --------------------------------------------------------------------------------
 
     public ShipmentAlias createShipmentAlias(Shipment shipment, ShipmentAliasType shipmentAliasType, String alias, BasePK createdBy) {
-        var shipmentAlias = ShipmentAliasFactory.getInstance().create(shipment, shipmentAliasType, alias, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+        var shipmentAlias = ShipmentAliasFactory.getInstance().create(shipment, shipmentAliasType, alias, session.getStartTime(), Session.MAX_TIME_LONG);
 
         sendEvent(shipment.getPrimaryKey(), EventTypes.MODIFY, shipmentAlias.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -2079,21 +2079,21 @@ public class ShipmentControl
         if(shipmentAliasValue.hasBeenModified()) {
             var shipmentAlias = ShipmentAliasFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, shipmentAliasValue.getPrimaryKey());
 
-            shipmentAlias.setThruTime(session.getStartTimeLong());
+            shipmentAlias.setThruTime(session.getStartTime());
             shipmentAlias.store();
 
             var shipmentPK = shipmentAlias.getShipmentPK();
             var shipmentAliasTypePK = shipmentAlias.getShipmentAliasTypePK();
             var alias  = shipmentAliasValue.getAlias();
 
-            shipmentAlias = ShipmentAliasFactory.getInstance().create(shipmentPK, shipmentAliasTypePK, alias, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+            shipmentAlias = ShipmentAliasFactory.getInstance().create(shipmentPK, shipmentAliasTypePK, alias, session.getStartTime(), Session.MAX_TIME_LONG);
 
             sendEvent(shipmentPK, EventTypes.MODIFY, shipmentAlias.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteShipmentAlias(ShipmentAlias shipmentAlias, BasePK deletedBy) {
-        shipmentAlias.setThruTime(session.getStartTimeLong());
+        shipmentAlias.setThruTime(session.getStartTime());
 
         sendEvent(shipmentAlias.getShipmentPK(), EventTypes.MODIFY, shipmentAlias.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 

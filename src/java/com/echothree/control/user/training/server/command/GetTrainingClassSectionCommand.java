@@ -24,7 +24,6 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.control.training.server.logic.PartyTrainingClassSessionLogic;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -103,7 +102,7 @@ public class GetTrainingClassSectionCommand
 
                         if(partyTrainingClassSessionStatus != null) {
                             var partyTrainingClassSessionSection = trainingControl.createPartyTrainingClassSessionSection(partyTrainingClassSession,
-                                    trainingClassSection, session.getStartTimeLong(), null, partyPK);
+                                    trainingClassSection, session.getStartTime(), null, partyPK);
 
                             PartyTrainingClassSessionLogic.getInstance().updatePartyTrainingClassSessionStatus(session, partyTrainingClassSessionStatus,
                                     partyTrainingClassSessionSection, null, null);

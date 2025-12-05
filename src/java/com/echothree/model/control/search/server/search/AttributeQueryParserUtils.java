@@ -183,7 +183,7 @@ public class AttributeQueryParserUtils
         Long result = null;
         
         if(fieldValue.equalsIgnoreCase("NOW")) {
-            result = ThreadSession.currentSession().getStartTimeLong();
+            result = ThreadSession.currentSession().getStartTime();
         } else {
             var dateTimeFormatDetail = getUserControl().getPreferredDateTimeFormatFromUserVisit(userVisit).getLastDetail();
             var zoneId = ZoneId.of(getUserControl().getPreferredTimeZoneFromUserVisit(userVisit).getLastDetail().getJavaTimeZoneName());

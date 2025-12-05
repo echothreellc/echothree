@@ -18,19 +18,14 @@ package com.echothree.model.control.inventory.server.control;
 
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.inventory.common.transfer.LotTransfer;
-import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.inventory.common.pk.LotPK;
-import com.echothree.model.data.inventory.server.entity.InventoryCondition;
 import com.echothree.model.data.inventory.server.entity.Lot;
 import com.echothree.model.data.inventory.server.factory.LotDetailFactory;
 import com.echothree.model.data.inventory.server.factory.LotFactory;
 import com.echothree.model.data.inventory.server.value.LotDetailValue;
 import com.echothree.model.data.item.server.entity.Item;
-import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
@@ -56,7 +51,7 @@ public class LotControl
     public Lot createLot(final Item item, final String lotIdentifier, final BasePK createdBy) {
 
         var lot = LotFactory.getInstance().create();
-        var lotDetail = LotDetailFactory.getInstance().create(session, lot, item, lotIdentifier, session.getStartTimeLong(),
+        var lotDetail = LotDetailFactory.getInstance().create(session, lot, item, lotIdentifier, session.getStartTime(),
                 Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -191,14 +186,14 @@ public class LotControl
                     lotDetailValue.getLotPK());
             var lotDetail = lot.getActiveDetailForUpdate();
 
-            lotDetail.setThruTime(session.getStartTimeLong());
+            lotDetail.setThruTime(session.getStartTime());
             lotDetail.store();
 
             var lotPK = lotDetail.getLotPK(); // R/O
             var itemPK = lotDetailValue.getItemPK(); // R/O
             var lotIdentifier = lotDetailValue.getLotIdentifier(); // R/W
 
-            lotDetail = LotDetailFactory.getInstance().create(lotPK, itemPK, lotIdentifier, session.getStartTimeLong(),
+            lotDetail = LotDetailFactory.getInstance().create(lotPK, itemPK, lotIdentifier, session.getStartTime(),
                     Session.MAX_TIME_LONG);
 
             lot.setActiveDetail(lotDetail);
@@ -210,7 +205,7 @@ public class LotControl
 
     public void deleteLot(final Lot lot, final BasePK deletedBy) {
         var lotDetail = lot.getLastDetailForUpdate();
-        lotDetail.setThruTime(session.getStartTimeLong());
+        lotDetail.setThruTime(session.getStartTime());
         lotDetail.store();
         lot.setActiveDetail(null);
 

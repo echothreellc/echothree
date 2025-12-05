@@ -170,7 +170,7 @@ public class LicenseCheckLogic
                 lastLicenseAttempt = null;
             } else {
                 // Otherwise, if there was no last attempt time record it, save it.
-                lastLicenseAttempt = session.getStartTimeLong();
+                lastLicenseAttempt = session.getStartTime();
                 log.info("Retrieval failed.");
             }
         }

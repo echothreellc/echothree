@@ -22,7 +22,6 @@ import com.echothree.model.control.core.server.control.CacheEntryControl;
 import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -83,7 +82,7 @@ public class CreateCacheEntryCommand
                             var clob = form.getClob();
 
                             if(clob != null) {
-                                cacheEntryControl.createCacheEntry(cacheEntryKey, mimeType, session.getStartTimeLong(),
+                                cacheEntryControl.createCacheEntry(cacheEntryKey, mimeType, session.getStartTime(),
                                         validForTime == null ? null : session.getStartTime() + validForTime, clob, null, entityRefs);
                             } else {
                                 addExecutionError(ExecutionErrors.MissingClob.name());
@@ -92,7 +91,7 @@ public class CreateCacheEntryCommand
                             var blob = form.getBlob();
 
                             if(blob != null) {
-                                cacheEntryControl.createCacheEntry(cacheEntryKey, mimeType, session.getStartTimeLong(),
+                                cacheEntryControl.createCacheEntry(cacheEntryKey, mimeType, session.getStartTime(),
                                         validForTime == null ? null : session.getStartTime() + validForTime, null, blob, entityRefs);
                             } else {
                                 addExecutionError(ExecutionErrors.MissingBlob.name());

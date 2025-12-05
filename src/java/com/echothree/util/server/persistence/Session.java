@@ -80,22 +80,16 @@ public class Session {
     public static final Long MAX_TIME_LONG = Long.MAX_VALUE;
 
     private final long START_TIME;
-    private final Long START_TIME_LONG;
 
     public long getStartTime() {
         return START_TIME;
     }
 
-    public Long getStartTimeLong() {
-        return START_TIME_LONG;
-    }
-    
     /**
      * Creates a new instance of Session
      */
     public Session() {
         START_TIME = System.currentTimeMillis();
-        START_TIME_LONG = START_TIME;
     }
 
     @PostConstruct

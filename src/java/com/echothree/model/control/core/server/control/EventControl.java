@@ -402,7 +402,7 @@ public class EventControl
     public EventGroup createEventGroup(String eventGroupName, BasePK createdBy) {
         var eventGroup = eventGroupFactory.create();
         var eventGroupDetail = eventGroupDetailFactory.create(eventGroup, eventGroupName,
-                session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME_LONG);
 
         // Convert to R/W
         eventGroup = eventGroupFactory.getEntityFromPK(EntityPermission.READ_WRITE,
@@ -855,7 +855,7 @@ public class EventControl
     protected EntityVisitFactory entityVisitFactory;
     
     public EntityVisit createEntityVisit(final EntityInstance entityInstance, final EntityInstance visitedEntityInstance) {
-        return entityVisitFactory.create(entityInstance, visitedEntityInstance, session.getStartTimeLong());
+        return entityVisitFactory.create(entityInstance, visitedEntityInstance, session.getStartTime());
     }
 
     private static final Map<EntityPermission, String> getEntityVisitQueries;
@@ -915,7 +915,7 @@ public class EventControl
             Integer sortOrder, BasePK createdBy) {
         var eventSubscriber = eventSubscriberFactory.create();
         var eventSubscriberDetail = eventSubscriberDetailFactory.create(session,
-                eventSubscriber, eventSubscriberName, entityInstance, description, sortOrder, session.getStartTimeLong(),
+                eventSubscriber, eventSubscriberName, entityInstance, description, sortOrder, session.getStartTime(),
                 Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -1026,7 +1026,7 @@ public class EventControl
         removeQueuedSubscriberEventsByEventSubscriber(eventSubscriber);
 
         var eventSubscriberDetail = eventSubscriber.getLastDetailForUpdate();
-        eventSubscriberDetail.setThruTime(session.getStartTimeLong());
+        eventSubscriberDetail.setThruTime(session.getStartTime());
         eventSubscriber.setActiveDetail(null);
         eventSubscriber.store();
 
@@ -1116,7 +1116,7 @@ public class EventControl
     public EventSubscriberEventType createEventSubscriberEventType(EventSubscriber eventSubscriber, EventType eventType,
             BasePK createdBy) {
         var eventSubscriberEventType = eventSubscriberEventTypeFactory.create(session,
-                eventSubscriber, eventType, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                eventSubscriber, eventType, session.getStartTime(), Session.MAX_TIME_LONG);
 
         sendEvent(eventSubscriber.getPrimaryKey(), EventTypes.MODIFY, eventSubscriberEventType.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -1173,7 +1173,7 @@ public class EventControl
     public EventSubscriberEntityType createEventSubscriberEntityType(EventSubscriber eventSubscriber, EntityType entityType,
             EventType eventType, BasePK createdBy) {
         var eventSubscriberEntityType = eventSubscriberEntityTypeFactory.create(session,
-                eventSubscriber, entityType, eventType, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                eventSubscriber, entityType, eventType, session.getStartTime(), Session.MAX_TIME_LONG);
 
         sendEvent(eventSubscriber.getPrimaryKey(), EventTypes.MODIFY, eventSubscriberEntityType.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -1232,7 +1232,7 @@ public class EventControl
     public EventSubscriberEntityInstance createEventSubscriberEntityInstance(EventSubscriber eventSubscriber,
             EntityInstance entityInstance, EventType eventType, BasePK createdBy) {
         var eventSubscriberEntityInstance = eventSubscriberEntityInstanceFactory.create(session,
-                eventSubscriber, entityInstance, eventType, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                eventSubscriber, entityInstance, eventType, session.getStartTime(), Session.MAX_TIME_LONG);
 
         sendEvent(eventSubscriber.getPrimaryKey(), EventTypes.MODIFY, eventSubscriberEntityInstance.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -1360,7 +1360,7 @@ public class EventControl
                     + ", createdByEntityInstance = " + EntityInstanceUtils.getEntityRefByEntityInstance(createdByEntityInstance));
         }
 
-        final var eventTime = session.getStartTimeLong();
+        final var eventTime = session.getStartTime();
         final var entityTime = createOrGetEntityTime(entityInstance, eventTime);
         var shouldClearCache = false;
         var shouldQueueEntityInstanceToIndexing = false;

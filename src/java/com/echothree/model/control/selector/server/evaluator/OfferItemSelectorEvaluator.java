@@ -385,7 +385,7 @@ public class OfferItemSelectorEvaluator
                         }
                     }
                     
-                    cachedSelectorWithTime.setLastEvaluationTime(session.getStartTimeLong());
+                    cachedSelectorWithTime.setLastEvaluationTime(session.getStartTime());
                 }
             } // Error, unknown entityTypeName
         } // Error, unknown componentVendorName

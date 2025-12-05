@@ -191,7 +191,7 @@ public abstract class BaseLoginCommand<F extends BaseForm>
         var userKey = userVisit.getUserKey();
         var userKeyDetailValue = userControl.getUserKeyDetailValueByPKForUpdate(userKey.getLastDetail().getPrimaryKey());
 
-        userControl.associatePartyToUserVisit(userVisit, party, partyRelationship, session.getStartTimeLong());
+        userControl.associatePartyToUserVisit(userVisit, party, partyRelationship, session.getStartTime());
         
         // Only update the UserKeyDetail if the party has changed
         var partyPK = party.getPrimaryKey();
@@ -208,7 +208,7 @@ public abstract class BaseLoginCommand<F extends BaseForm>
 
         clearLoginFailures(userLoginStatus);
 
-        userLoginStatus.setLastLoginTime(session.getStartTimeLong());
+        userLoginStatus.setLastLoginTime(session.getStartTime());
 
         addRemoteInet4AddressToParty(party, remoteInet4Address);
 
@@ -220,9 +220,9 @@ public abstract class BaseLoginCommand<F extends BaseForm>
         
         userLoginStatus.setFailureCount(failureCount + 1);
         if(userLoginStatus.getFirstFailureTime() == null) {
-            userLoginStatus.setFirstFailureTime(session.getStartTimeLong());
+            userLoginStatus.setFirstFailureTime(session.getStartTime());
         }
-        userLoginStatus.setLastFailureTime(session.getStartTimeLong());
+        userLoginStatus.setLastFailureTime(session.getStartTime());
         
         // TODO: Create audit trail
     }

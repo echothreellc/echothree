@@ -134,7 +134,7 @@ public class WorkRequirementControl
         var workRequirementType = WorkRequirementTypeFactory.getInstance().create();
         var workRequirementTypeDetail = WorkRequirementTypeDetailFactory.getInstance().create(session, workRequirementType,
                 workEffortType, workRequirementTypeName, workRequirementSequence, workflowStep, estimatedTimeAllowed, maximumTimeAllowed, allowReassignment,
-                sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
         
         // Convert to R/W
         workRequirementType = WorkRequirementTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, workRequirementType.getPrimaryKey());
@@ -294,7 +294,7 @@ public class WorkRequirementControl
                      workRequirementTypeDetailValue.getWorkRequirementTypePK());
             var workRequirementTypeDetail = workRequirementType.getActiveDetailForUpdate();
             
-            workRequirementTypeDetail.setThruTime(session.getStartTimeLong());
+            workRequirementTypeDetail.setThruTime(session.getStartTime());
             workRequirementTypeDetail.store();
 
             var workRequirementTypePK = workRequirementTypeDetail.getWorkRequirementTypePK();
@@ -308,7 +308,7 @@ public class WorkRequirementControl
             var sortOrder = workRequirementTypeDetailValue.getSortOrder();
             
             workRequirementTypeDetail = WorkRequirementTypeDetailFactory.getInstance().create(workRequirementTypePK, workEffortTypePK, workRequirementTypeName,
-                    workRequirementSequencePK, workflowStepPK, estimatedTimeAllowed, maximumTimeAllowed, allowReassignment, sortOrder, session.getStartTimeLong(),
+                    workRequirementSequencePK, workflowStepPK, estimatedTimeAllowed, maximumTimeAllowed, allowReassignment, sortOrder, session.getStartTime(),
                     Session.MAX_TIME_LONG);
             
             workRequirementType.setActiveDetail(workRequirementTypeDetail);
@@ -323,7 +323,7 @@ public class WorkRequirementControl
         deleteWorkRequirementScopesByWorkRequirementType(workRequirementType, deletedBy);
 
         var workRequirementTypeDetail = workRequirementType.getLastDetailForUpdate();
-        workRequirementTypeDetail.setThruTime(session.getStartTimeLong());
+        workRequirementTypeDetail.setThruTime(session.getStartTime());
         workRequirementType.setActiveDetail(null);
         workRequirementType.store();
         
@@ -353,7 +353,7 @@ public class WorkRequirementControl
     public WorkRequirementTypeDescription createWorkRequirementTypeDescription(WorkRequirementType workRequirementType, Language language,
             String description, BasePK createdBy) {
         var workRequirementTypeDescription = WorkRequirementTypeDescriptionFactory.getInstance().create(workRequirementType,
-                language, description, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                language, description, session.getStartTime(), Session.MAX_TIME_LONG);
         
         sendEvent(workRequirementType.getPrimaryKey(), EventTypes.MODIFY, workRequirementTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -484,7 +484,7 @@ public class WorkRequirementControl
             var workRequirementTypeDescription = WorkRequirementTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      workRequirementTypeDescriptionValue.getPrimaryKey());
             
-            workRequirementTypeDescription.setThruTime(session.getStartTimeLong());
+            workRequirementTypeDescription.setThruTime(session.getStartTime());
             workRequirementTypeDescription.store();
 
             var workRequirementType = workRequirementTypeDescription.getWorkRequirementType();
@@ -492,14 +492,14 @@ public class WorkRequirementControl
             var description = workRequirementTypeDescriptionValue.getDescription();
             
             workRequirementTypeDescription = WorkRequirementTypeDescriptionFactory.getInstance().create(workRequirementType, language,
-                    description, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    description, session.getStartTime(), Session.MAX_TIME_LONG);
             
             sendEvent(workRequirementType.getPrimaryKey(), EventTypes.MODIFY, workRequirementTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteWorkRequirementTypeDescription(WorkRequirementTypeDescription workRequirementTypeDescription, BasePK deletedBy) {
-        workRequirementTypeDescription.setThruTime(session.getStartTimeLong());
+        workRequirementTypeDescription.setThruTime(session.getStartTime());
         
         sendEvent(workRequirementTypeDescription.getWorkRequirementTypePK(), EventTypes.MODIFY, workRequirementTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
@@ -522,7 +522,7 @@ public class WorkRequirementControl
         var workRequirementScope = WorkRequirementScopeFactory.getInstance().create();
         var workRequirementScopeDetail = WorkRequirementScopeDetailFactory.getInstance().create(session,
                 workRequirementScope, workEffortScope, workRequirementType, workRequirementSequence, workTimeSequence,
-                workAssignmentSelector, estimatedTimeAllowed, maximumTimeAllowed, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                workAssignmentSelector, estimatedTimeAllowed, maximumTimeAllowed, session.getStartTime(), Session.MAX_TIME_LONG);
         
         // Convert to R/W
         workRequirementScope = WorkRequirementScopeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -733,7 +733,7 @@ public class WorkRequirementControl
                      workRequirementScopeDetailValue.getWorkRequirementScopePK());
             var workRequirementScopeDetail = workRequirementScope.getActiveDetailForUpdate();
             
-            workRequirementScopeDetail.setThruTime(session.getStartTimeLong());
+            workRequirementScopeDetail.setThruTime(session.getStartTime());
             workRequirementScopeDetail.store();
 
             var workRequirementScopePK = workRequirementScopeDetail.getWorkRequirementScopePK();
@@ -747,7 +747,7 @@ public class WorkRequirementControl
             
             workRequirementScopeDetail = WorkRequirementScopeDetailFactory.getInstance().create(workRequirementScopePK,
                     workEffortScopePK, workRequirementTypePK, workRequirementSequencePK, workTimeSequencePK,
-                    workAssignmentSelectorPK, estimatedTimeAllowed, maximumTimeAllowed, session.getStartTimeLong(),
+                    workAssignmentSelectorPK, estimatedTimeAllowed, maximumTimeAllowed, session.getStartTime(),
                     Session.MAX_TIME_LONG);
             
             workRequirementScope.setActiveDetail(workRequirementScopeDetail);
@@ -761,7 +761,7 @@ public class WorkRequirementControl
         deleteWorkRequirementsByWorkRequirementScope(workRequirementScope, deletedBy);
 
         var workRequirementScopeDetail = workRequirementScope.getLastDetailForUpdate();
-        workRequirementScopeDetail.setThruTime(session.getStartTimeLong());
+        workRequirementScopeDetail.setThruTime(session.getStartTime());
         workRequirementScope.setActiveDetail(null);
         workRequirementScope.store();
         
@@ -792,7 +792,7 @@ public class WorkRequirementControl
             Long requiredTime, BasePK createdBy) {
         var workRequirement = WorkRequirementFactory.getInstance().create();
         var workRequirementDetail = WorkRequirementDetailFactory.getInstance().create(workRequirement,
-                workRequirementName, workEffort, workRequirementScope, startTime, requiredTime, session.getStartTimeLong(),
+                workRequirementName, workEffort, workRequirementScope, startTime, requiredTime, session.getStartTime(),
                 Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -994,7 +994,7 @@ public class WorkRequirementControl
                      workRequirementDetailValue.getWorkRequirementPK());
             var workRequirementDetail = workRequirement.getActiveDetailForUpdate();
             
-            workRequirementDetail.setThruTime(session.getStartTimeLong());
+            workRequirementDetail.setThruTime(session.getStartTime());
             workRequirementDetail.store();
 
             var workRequirementPK = workRequirementDetail.getWorkRequirementPK();
@@ -1005,7 +1005,7 @@ public class WorkRequirementControl
             var requiredTime = workRequirementDetail.getRequiredTime();
             
             workRequirementDetail = WorkRequirementDetailFactory.getInstance().create(workRequirementPK,
-                    workRequirementName, workEffortPK, workRequirementScopePK, startTime, requiredTime, session.getStartTimeLong(),
+                    workRequirementName, workEffortPK, workRequirementScopePK, startTime, requiredTime, session.getStartTime(),
                     Session.MAX_TIME_LONG);
             
             workRequirement.setActiveDetail(workRequirementDetail);
@@ -1021,7 +1021,7 @@ public class WorkRequirementControl
         deleteWorkTimesByWorkRequirement(workRequirement, deletedBy);
 
         var workRequirementDetail = workRequirement.getLastDetailForUpdate();
-        workRequirementDetail.setThruTime(session.getStartTimeLong());
+        workRequirementDetail.setThruTime(session.getStartTime());
         workRequirement.setActiveDetail(null);
         workRequirement.store();
         
@@ -1106,7 +1106,7 @@ public class WorkRequirementControl
     public WorkAssignment createWorkAssignment(WorkRequirement workRequirement, Integer workAssignmentSequence, Party party, Long startTime, Long endTime, BasePK createdBy) {
         var workAssignment = WorkAssignmentFactory.getInstance().create();
         var workAssignmentDetail = WorkAssignmentDetailFactory.getInstance().create(workAssignment, workRequirement, workAssignmentSequence, party, startTime, endTime,
-                session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME_LONG);
 
         // Convert to R/W
         workAssignment = WorkAssignmentFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, workAssignment.getPrimaryKey());
@@ -1298,7 +1298,7 @@ public class WorkRequirementControl
                      workAssignmentDetailValue.getWorkAssignmentPK());
             var workAssignmentDetail = workAssignment.getActiveDetailForUpdate();
 
-            workAssignmentDetail.setThruTime(session.getStartTimeLong());
+            workAssignmentDetail.setThruTime(session.getStartTime());
             workAssignmentDetail.store();
 
             var workAssignmentPK = workAssignmentDetailValue.getWorkAssignmentPK();
@@ -1309,7 +1309,7 @@ public class WorkRequirementControl
             var endTime = workAssignmentDetailValue.getEndTime();
 
             workAssignmentDetail = WorkAssignmentDetailFactory.getInstance().create(workAssignmentPK, workRequirementPK, workAssignmentSequence, partyPK, startTime, endTime,
-                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME_LONG);
 
             workAssignment.setActiveDetail(workAssignmentDetail);
             workAssignment.setLastDetail(workAssignmentDetail);
@@ -1320,7 +1320,7 @@ public class WorkRequirementControl
 
     public void deleteWorkAssignment(WorkAssignment workAssignment, BasePK deletedBy) {
         var workAssignmentDetail = workAssignment.getLastDetailForUpdate();
-        workAssignmentDetail.setThruTime(session.getStartTimeLong());
+        workAssignmentDetail.setThruTime(session.getStartTime());
         workAssignment.setActiveDetail(null);
         workAssignment.store();
 
@@ -1357,7 +1357,7 @@ public class WorkRequirementControl
     public WorkTime createWorkTime(WorkRequirement workRequirement, Integer workTimeSequence, Party party, Long startTime, Long endTime, BasePK createdBy) {
         var workTime = WorkTimeFactory.getInstance().create();
         var workTimeDetail = WorkTimeDetailFactory.getInstance().create(workTime, workRequirement, workTimeSequence, party, startTime, endTime,
-                session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME_LONG);
 
         // Convert to R/W
         workTime = WorkTimeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, workTime.getPrimaryKey());
@@ -1543,7 +1543,7 @@ public class WorkRequirementControl
                      workTimeDetailValue.getWorkTimePK());
             var workTimeDetail = workTime.getActiveDetailForUpdate();
 
-            workTimeDetail.setThruTime(session.getStartTimeLong());
+            workTimeDetail.setThruTime(session.getStartTime());
             workTimeDetail.store();
 
             var workTimePK = workTimeDetailValue.getWorkTimePK();
@@ -1554,7 +1554,7 @@ public class WorkRequirementControl
             var endTime = workTimeDetailValue.getEndTime();
 
             workTimeDetail = WorkTimeDetailFactory.getInstance().create(workTimePK, workRequirementPK, workTimeSequence, partyPK, startTime, endTime,
-                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME_LONG);
 
             workTime.setActiveDetail(workTimeDetail);
             workTime.setLastDetail(workTimeDetail);
@@ -1567,7 +1567,7 @@ public class WorkRequirementControl
         removeWorkTimeUserVisitsByWorkTime(workTime);
 
         var workTimeDetail = workTime.getLastDetailForUpdate();
-        workTimeDetail.setThruTime(session.getStartTimeLong());
+        workTimeDetail.setThruTime(session.getStartTime());
         workTime.setActiveDetail(null);
         workTime.store();
 
@@ -1593,7 +1593,7 @@ public class WorkRequirementControl
     // --------------------------------------------------------------------------------
     
     public WorkTimeUserVisit createWorkTimeUserVisit(WorkTime workTime, UserVisit userVisit) {
-        return WorkTimeUserVisitFactory.getInstance().create(workTime, userVisit, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+        return WorkTimeUserVisitFactory.getInstance().create(workTime, userVisit, session.getStartTime(), Session.MAX_TIME_LONG);
     }
     
     private static final Map<EntityPermission, String> getWorkTimeUserVisitQueries;
@@ -1699,7 +1699,7 @@ public class WorkRequirementControl
     }
     
     public void deleteWorkTimeUserVisit(WorkTimeUserVisit workTimeUserVisit) {
-        workTimeUserVisit.setThruTime(session.getStartTimeLong());
+        workTimeUserVisit.setThruTime(session.getStartTime());
         workTimeUserVisit.store();
     }
     

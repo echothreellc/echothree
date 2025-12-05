@@ -586,7 +586,7 @@ public class EntityAttributeLogic
                 final var queuedEntities = new ArrayList<QueuedEntityValue>(entityInstanceResults.size());
 
                 for(final var entityInstanceResult : entityInstanceResults) {
-                    queuedEntities.add(new QueuedEntityValue(queueTypePK, entityInstanceResult.getEntityInstancePK(), session.getStartTimeLong()));
+                    queuedEntities.add(new QueuedEntityValue(queueTypePK, entityInstanceResult.getEntityInstancePK(), session.getStartTime()));
                 }
 
                 queueControl.createQueuedEntities(queuedEntities);
@@ -831,7 +831,7 @@ public class EntityAttributeLogic
                     List<QueuedEntityValue> queuedEntities = new ArrayList<>(entityListItemAttributes.size());
 
                     entityListItemAttributes.forEach((entityListItemAttribute) -> {
-                        queuedEntities.add(new QueuedEntityValue(queueTypePK, entityListItemAttribute.getEntityInstancePK(), session.getStartTimeLong()));
+                        queuedEntities.add(new QueuedEntityValue(queueTypePK, entityListItemAttribute.getEntityInstancePK(), session.getStartTime()));
                     });
 
                     queueControl.createQueuedEntities(queuedEntities);
@@ -840,7 +840,7 @@ public class EntityAttributeLogic
                     List<QueuedEntityValue> queuedEntities = new ArrayList<>(entityMultipleListItemAttributes.size());
 
                     entityMultipleListItemAttributes.forEach((entityMultipleListItemAttribute) -> {
-                        queuedEntities.add(new QueuedEntityValue(queueTypePK, entityMultipleListItemAttribute.getEntityInstancePK(), session.getStartTimeLong()));
+                        queuedEntities.add(new QueuedEntityValue(queueTypePK, entityMultipleListItemAttribute.getEntityInstancePK(), session.getStartTime()));
                     });
 
                     queueControl.createQueuedEntities(queuedEntities);

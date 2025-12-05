@@ -71,7 +71,7 @@ public class IndexLogic
         List<QueuedEntityValue> queuedEntities = new ArrayList<>(entityInstanceResults.size());
 
         for(var entityInstanceResult : entityInstanceResults) {
-            queuedEntities.add(new QueuedEntityValue(queueTypePK, entityInstanceResult.getEntityInstancePK(), session.getStartTimeLong()));
+            queuedEntities.add(new QueuedEntityValue(queueTypePK, entityInstanceResult.getEntityInstancePK(), session.getStartTime()));
         }
 
         queueControl.createQueuedEntities(queuedEntities);

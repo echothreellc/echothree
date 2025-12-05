@@ -135,7 +135,7 @@ public class InventoryControl
 
         var inventoryLocationGroup = InventoryLocationGroupFactory.getInstance().create();
         var inventoryLocationGroupDetail = InventoryLocationGroupDetailFactory.getInstance().create(session,
-                inventoryLocationGroup, warehouseParty, inventoryLocationGroupName, isDefault, sortOrder, session.getStartTimeLong(),
+                inventoryLocationGroup, warehouseParty, inventoryLocationGroupName, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -347,7 +347,7 @@ public class InventoryControl
         var inventoryLocationGroup = InventoryLocationGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, inventoryLocationGroupDetailValue.getInventoryLocationGroupPK());
         var inventoryLocationGroupDetail = inventoryLocationGroup.getActiveDetailForUpdate();
         
-        inventoryLocationGroupDetail.setThruTime(session.getStartTimeLong());
+        inventoryLocationGroupDetail.setThruTime(session.getStartTime());
         inventoryLocationGroupDetail.store();
 
         var inventoryLocationGroupPK = inventoryLocationGroupDetail.getInventoryLocationGroupPK();
@@ -374,7 +374,7 @@ public class InventoryControl
         }
         
         inventoryLocationGroupDetail = InventoryLocationGroupDetailFactory.getInstance().create(inventoryLocationGroupPK,
-                warehousePartyPK, inventoryLocationGroupName, isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                warehousePartyPK, inventoryLocationGroupName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
         
         inventoryLocationGroup.setActiveDetail(inventoryLocationGroupDetail);
         inventoryLocationGroup.setLastDetail(inventoryLocationGroupDetail);
@@ -419,7 +419,7 @@ public class InventoryControl
         deleteInventoryLocationGroupDescriptionsByInventoryLocationGroup(inventoryLocationGroup, deletedBy);
 
         var inventoryLocationGroupDetail = inventoryLocationGroup.getLastDetailForUpdate();
-        inventoryLocationGroupDetail.setThruTime(session.getStartTimeLong());
+        inventoryLocationGroupDetail.setThruTime(session.getStartTime());
         inventoryLocationGroupDetail.store();
         inventoryLocationGroup.setActiveDetail(null);
         
@@ -468,7 +468,7 @@ public class InventoryControl
     // --------------------------------------------------------------------------------
     
     public InventoryLocationGroupDescription createInventoryLocationGroupDescription(InventoryLocationGroup inventoryLocationGroup, Language language, String description, BasePK createdBy) {
-        var inventoryLocationGroupDescription = InventoryLocationGroupDescriptionFactory.getInstance().create(inventoryLocationGroup, language, description, session.getStartTimeLong(),
+        var inventoryLocationGroupDescription = InventoryLocationGroupDescriptionFactory.getInstance().create(inventoryLocationGroup, language, description, session.getStartTime(),
                 Session.MAX_TIME_LONG);
         
         sendEvent(inventoryLocationGroup.getPrimaryKey(), EventTypes.MODIFY, inventoryLocationGroupDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -603,7 +603,7 @@ public class InventoryControl
         if(inventoryLocationGroupDescriptionValue.hasBeenModified()) {
             var inventoryLocationGroupDescription = InventoryLocationGroupDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, inventoryLocationGroupDescriptionValue.getPrimaryKey());
             
-            inventoryLocationGroupDescription.setThruTime(session.getStartTimeLong());
+            inventoryLocationGroupDescription.setThruTime(session.getStartTime());
             inventoryLocationGroupDescription.store();
 
             var inventoryLocationGroup = inventoryLocationGroupDescription.getInventoryLocationGroup();
@@ -611,14 +611,14 @@ public class InventoryControl
             var description = inventoryLocationGroupDescriptionValue.getDescription();
             
             inventoryLocationGroupDescription = InventoryLocationGroupDescriptionFactory.getInstance().create(inventoryLocationGroup, language, description,
-                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME_LONG);
             
             sendEvent(inventoryLocationGroup.getPrimaryKey(), EventTypes.MODIFY, inventoryLocationGroupDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteInventoryLocationGroupDescription(InventoryLocationGroupDescription inventoryLocationGroupDescription, BasePK deletedBy) {
-        inventoryLocationGroupDescription.setThruTime(session.getStartTimeLong());
+        inventoryLocationGroupDescription.setThruTime(session.getStartTime());
         
         sendEvent(inventoryLocationGroupDescription.getInventoryLocationGroupPK(), EventTypes.MODIFY, inventoryLocationGroupDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
@@ -639,7 +639,7 @@ public class InventoryControl
     public InventoryLocationGroupVolume createInventoryLocationGroupVolume(InventoryLocationGroup inventoryLocationGroup,
             Long height, Long width, Long depth, BasePK createdBy) {
         var inventoryLocationGroupVolume = InventoryLocationGroupVolumeFactory.getInstance().create(inventoryLocationGroup, height, width, depth,
-                session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME_LONG);
         
         sendEvent(inventoryLocationGroup.getPrimaryKey(), EventTypes.MODIFY, inventoryLocationGroupVolume.getPrimaryKey(), null, createdBy);
         
@@ -703,7 +703,7 @@ public class InventoryControl
             var inventoryInventoryLocationGroupGroupVolume = InventoryLocationGroupVolumeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      inventoryInventoryLocationGroupGroupVolumeValue.getPrimaryKey());
             
-            inventoryInventoryLocationGroupGroupVolume.setThruTime(session.getStartTimeLong());
+            inventoryInventoryLocationGroupGroupVolume.setThruTime(session.getStartTime());
             inventoryInventoryLocationGroupGroupVolume.store();
 
             var inventoryInventoryLocationGroupGroupPK = inventoryInventoryLocationGroupGroupVolume.getInventoryLocationGroupPK(); // Not updated
@@ -712,14 +712,14 @@ public class InventoryControl
             var depth = inventoryInventoryLocationGroupGroupVolumeValue.getDepth();
             
             inventoryInventoryLocationGroupGroupVolume = InventoryLocationGroupVolumeFactory.getInstance().create(inventoryInventoryLocationGroupGroupPK, height,
-                    width, depth, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    width, depth, session.getStartTime(), Session.MAX_TIME_LONG);
             
             sendEvent(inventoryInventoryLocationGroupGroupPK, EventTypes.MODIFY, inventoryInventoryLocationGroupGroupVolume.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteInventoryLocationGroupVolume(InventoryLocationGroupVolume inventoryInventoryLocationGroupGroupVolume, BasePK deletedBy) {
-        inventoryInventoryLocationGroupGroupVolume.setThruTime(session.getStartTimeLong());
+        inventoryInventoryLocationGroupGroupVolume.setThruTime(session.getStartTime());
         
         sendEvent(inventoryInventoryLocationGroupGroupVolume.getInventoryLocationGroup().getPrimaryKey(), EventTypes.MODIFY, inventoryInventoryLocationGroupGroupVolume.getPrimaryKey(), null, deletedBy);
     }
@@ -738,7 +738,7 @@ public class InventoryControl
     public InventoryLocationGroupCapacity createInventoryLocationGroupCapacity(InventoryLocationGroup inventoryInventoryLocationGroupGroup,
             UnitOfMeasureType unitOfMeasureType, Long capacity, BasePK createdBy) {
         var inventoryInventoryLocationGroupGroupCapacity = InventoryLocationGroupCapacityFactory.getInstance().create(inventoryInventoryLocationGroupGroup,
-                unitOfMeasureType, capacity, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                unitOfMeasureType, capacity, session.getStartTime(), Session.MAX_TIME_LONG);
         
         sendEvent(inventoryInventoryLocationGroupGroup.getPrimaryKey(), EventTypes.MODIFY, inventoryInventoryLocationGroupGroupCapacity.getPrimaryKey(), null, createdBy);
         
@@ -844,7 +844,7 @@ public class InventoryControl
             var inventoryLocationGroupCapacity = InventoryLocationGroupCapacityFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      inventoryLocationGroupCapacityValue.getPrimaryKey());
             
-            inventoryLocationGroupCapacity.setThruTime(session.getStartTimeLong());
+            inventoryLocationGroupCapacity.setThruTime(session.getStartTime());
             inventoryLocationGroupCapacity.store();
 
             var unitOfMeasureTypePK = inventoryLocationGroupCapacity.getUnitOfMeasureTypePK(); // Not updated
@@ -852,7 +852,7 @@ public class InventoryControl
             var capacity = inventoryLocationGroupCapacityValue.getCapacity();
             
             inventoryLocationGroupCapacity = InventoryLocationGroupCapacityFactory.getInstance().create(inventoryLocationGroupPK, unitOfMeasureTypePK, capacity,
-                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME_LONG);
             
             sendEvent(unitOfMeasureTypePK, EventTypes.MODIFY, inventoryLocationGroupCapacity.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -874,7 +874,7 @@ public class InventoryControl
     }
     
     public void deleteInventoryLocationGroupCapacity(InventoryLocationGroupCapacity inventoryLocationGroupCapacity, BasePK deletedBy) {
-        inventoryLocationGroupCapacity.setThruTime(session.getStartTimeLong());
+        inventoryLocationGroupCapacity.setThruTime(session.getStartTime());
         
         sendEvent(inventoryLocationGroupCapacity.getInventoryLocationGroup().getPrimaryKey(), EventTypes.MODIFY, inventoryLocationGroupCapacity.getPrimaryKey(), null, deletedBy);
     }
@@ -907,7 +907,7 @@ public class InventoryControl
 
         var inventoryCondition = InventoryConditionFactory.getInstance().create();
         var inventoryConditionDetail = InventoryConditionDetailFactory.getInstance().create(session,
-                inventoryCondition, inventoryConditionName, isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                inventoryCondition, inventoryConditionName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
         
         // Convert to R/W
         inventoryCondition = InventoryConditionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, inventoryCondition.getPrimaryKey());
@@ -1124,7 +1124,7 @@ public class InventoryControl
                      inventoryConditionDetailValue.getInventoryConditionPK());
             var inventoryConditionDetail = inventoryCondition.getActiveDetailForUpdate();
             
-            inventoryConditionDetail.setThruTime(session.getStartTimeLong());
+            inventoryConditionDetail.setThruTime(session.getStartTime());
             inventoryConditionDetail.store();
 
             var inventoryConditionPK = inventoryConditionDetail.getInventoryConditionPK();
@@ -1149,7 +1149,7 @@ public class InventoryControl
             }
             
             inventoryConditionDetail = InventoryConditionDetailFactory.getInstance().create(inventoryConditionPK,
-                    inventoryConditionName, isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    inventoryConditionName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
             
             inventoryCondition.setActiveDetail(inventoryConditionDetail);
             inventoryCondition.setLastDetail(inventoryConditionDetail);
@@ -1179,7 +1179,7 @@ public class InventoryControl
         vendorControl.deleteVendorItemCostsByInventoryCondition(inventoryCondition, deletedBy);
         
         var inventoryConditionDetail = inventoryCondition.getLastDetailForUpdate();
-        inventoryConditionDetail.setThruTime(session.getStartTimeLong());
+        inventoryConditionDetail.setThruTime(session.getStartTime());
         inventoryConditionDetail.store();
         inventoryCondition.setActiveDetail(null);
         
@@ -1210,7 +1210,7 @@ public class InventoryControl
     public InventoryConditionDescription createInventoryConditionDescription(final InventoryCondition inventoryCondition,
             final Language language, final String description, final BasePK createdBy) {
         var inventoryConditionDescription = InventoryConditionDescriptionFactory.getInstance().create(inventoryCondition,
-                language, description, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                language, description, session.getStartTime(), Session.MAX_TIME_LONG);
         
         sendEvent(inventoryCondition.getPrimaryKey(), EventTypes.MODIFY, inventoryConditionDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1320,7 +1320,7 @@ public class InventoryControl
         if(inventoryConditionDescriptionValue.hasBeenModified()) {
             var inventoryConditionDescription = InventoryConditionDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, inventoryConditionDescriptionValue.getPrimaryKey());
             
-            inventoryConditionDescription.setThruTime(session.getStartTimeLong());
+            inventoryConditionDescription.setThruTime(session.getStartTime());
             inventoryConditionDescription.store();
             
             var inventoryCondition = inventoryConditionDescription.getInventoryCondition();
@@ -1328,14 +1328,14 @@ public class InventoryControl
             var description = inventoryConditionDescriptionValue.getDescription();
             
             inventoryConditionDescription = InventoryConditionDescriptionFactory.getInstance().create(inventoryCondition, language, description,
-                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME_LONG);
             
             sendEvent(inventoryCondition.getPrimaryKey(), EventTypes.MODIFY, inventoryConditionDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteInventoryConditionDescription(final InventoryConditionDescription inventoryConditionDescription, final BasePK deletedBy) {
-        inventoryConditionDescription.setThruTime(session.getStartTimeLong());
+        inventoryConditionDescription.setThruTime(session.getStartTime());
         
         sendEvent(inventoryConditionDescription.getInventoryConditionPK(), EventTypes.MODIFY, inventoryConditionDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
@@ -1501,7 +1501,7 @@ public class InventoryControl
         }
 
         var inventoryConditionUse = InventoryConditionUseFactory.getInstance().create(inventoryConditionUseType,
-                inventoryCondition, isDefault, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                inventoryCondition, isDefault, session.getStartTime(), Session.MAX_TIME_LONG);
         
         sendEvent(inventoryCondition.getPrimaryKey(), EventTypes.MODIFY, inventoryConditionUse.getPrimaryKey(),
                 null, createdBy);
@@ -1732,7 +1732,7 @@ public class InventoryControl
         var inventoryConditionUse = InventoryConditionUseFactory.getInstance().getEntityFromPK(session,
                 EntityPermission.READ_WRITE, inventoryConditionUseValue.getPrimaryKey());
         
-        inventoryConditionUse.setThruTime(session.getStartTimeLong());
+        inventoryConditionUse.setThruTime(session.getStartTime());
         inventoryConditionUse.store();
 
         var inventoryConditionUseTypePK = inventoryConditionUse.getInventoryConditionUseTypePK();
@@ -1757,7 +1757,7 @@ public class InventoryControl
         }
         
         inventoryConditionUse = InventoryConditionUseFactory.getInstance().create(inventoryConditionUseTypePK,
-                inventoryConditionPK, isDefault, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                inventoryConditionPK, isDefault, session.getStartTime(), Session.MAX_TIME_LONG);
         
         sendEvent(inventoryConditionPK, EventTypes.MODIFY, inventoryConditionUse.getPrimaryKey(), null, updatedBy);
     }
@@ -1769,7 +1769,7 @@ public class InventoryControl
     }
     
     public void deleteInventoryConditionUse(InventoryConditionUse inventoryConditionUse, BasePK deletedBy) {
-        inventoryConditionUse.setThruTime(session.getStartTimeLong());
+        inventoryConditionUse.setThruTime(session.getStartTime());
         inventoryConditionUse.store();
         
         // Check for default, and pick one if necessary
@@ -1811,7 +1811,7 @@ public class InventoryControl
             GlAccount returnsGlAccount, GlAccount cogsGlAccount, GlAccount returnsCogsGlAccount, BasePK createdBy) {
         var inventoryConditionGlAccount = InventoryConditionGlAccountFactory.getInstance().create(session,
                 inventoryCondition, itemAccountingCategory, inventoryGlAccount, salesGlAccount, returnsGlAccount, cogsGlAccount,
-                returnsCogsGlAccount, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                returnsCogsGlAccount, session.getStartTime(), Session.MAX_TIME_LONG);
         
         sendEvent(inventoryCondition.getPrimaryKey(), EventTypes.MODIFY, inventoryConditionGlAccount.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1951,7 +1951,7 @@ public class InventoryControl
             var inventoryConditionGlAccount = InventoryConditionGlAccountFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      inventoryConditionGlAccountValue.getPrimaryKey());
             
-            inventoryConditionGlAccount.setThruTime(session.getStartTimeLong());
+            inventoryConditionGlAccount.setThruTime(session.getStartTime());
             inventoryConditionGlAccount.store();
 
             var inventoryConditionPK = inventoryConditionGlAccount.getInventoryConditionPK();
@@ -1964,7 +1964,7 @@ public class InventoryControl
             
             inventoryConditionGlAccount = InventoryConditionGlAccountFactory.getInstance().create(inventoryConditionPK,
                     itemAccountingCategoryPK, inventoryGlAccountPK, salesGlAccountPK, returnsGlAccountPK, cogsGlAccountPK,
-                    returnsCogsGlAccountPK, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    returnsCogsGlAccountPK, session.getStartTime(), Session.MAX_TIME_LONG);
             
             sendEvent(inventoryConditionPK, EventTypes.MODIFY, inventoryConditionGlAccount.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -1990,7 +1990,7 @@ public class InventoryControl
     }
     
     public void deleteInventoryConditionGlAccount(InventoryConditionGlAccount inventoryConditionGlAccount, BasePK deletedBy) {
-        inventoryConditionGlAccount.setThruTime(session.getStartTimeLong());
+        inventoryConditionGlAccount.setThruTime(session.getStartTime());
         
         sendEvent(inventoryConditionGlAccount.getInventoryConditionPK(), EventTypes.MODIFY, inventoryConditionGlAccount.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
@@ -2024,7 +2024,7 @@ public class InventoryControl
     public PartyInventoryLevel createPartyInventoryLevel(Party party, Item item, InventoryCondition inventoryCondition,
             Long minimumInventory, Long maximumInventory, Long reorderQuantity, BasePK createdBy) {
         var partyInventoryLevel = PartyInventoryLevelFactory.getInstance().create(party, item,
-                inventoryCondition, minimumInventory, maximumInventory, reorderQuantity, session.getStartTimeLong(),
+                inventoryCondition, minimumInventory, maximumInventory, reorderQuantity, session.getStartTime(),
                 Session.MAX_TIME_LONG);
         
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyInventoryLevel.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2241,7 +2241,7 @@ public class InventoryControl
             var partyInventoryLevel = PartyInventoryLevelFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      partyInventoryLevelValue.getPrimaryKey());
             
-            partyInventoryLevel.setThruTime(session.getStartTimeLong());
+            partyInventoryLevel.setThruTime(session.getStartTime());
             partyInventoryLevel.store();
 
             var partyPK = partyInventoryLevel.getPartyPK(); // Not updated
@@ -2252,14 +2252,14 @@ public class InventoryControl
             var reorderQuantity = partyInventoryLevelValue.getReorderQuantity();
             
             partyInventoryLevel = PartyInventoryLevelFactory.getInstance().create(partyPK, itemPK, inventoryConditionPK,
-                    minimumInventory, maximumInventory, reorderQuantity, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    minimumInventory, maximumInventory, reorderQuantity, session.getStartTime(), Session.MAX_TIME_LONG);
             
             sendEvent(partyPK, EventTypes.MODIFY, partyInventoryLevel.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deletePartyInventoryLevel(PartyInventoryLevel partyInventoryLevel, BasePK deletedBy) {
-        partyInventoryLevel.setThruTime(session.getStartTimeLong());
+        partyInventoryLevel.setThruTime(session.getStartTime());
         
         sendEvent(partyInventoryLevel.getPartyPK(), EventTypes.MODIFY, partyInventoryLevel.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
@@ -2303,7 +2303,7 @@ public class InventoryControl
 
         var allocationPriority = AllocationPriorityFactory.getInstance().create();
         var allocationPriorityDetail = AllocationPriorityDetailFactory.getInstance().create(allocationPriority, allocationPriorityName,
-                priority, isDefault, sortPriority, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                priority, isDefault, sortPriority, session.getStartTime(), Session.MAX_TIME_LONG);
 
         // Convert to R/W
         allocationPriority = AllocationPriorityFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -2505,7 +2505,7 @@ public class InventoryControl
                      allocationPriorityDetailValue.getAllocationPriorityPK());
             var allocationPriorityDetail = allocationPriority.getActiveDetailForUpdate();
 
-            allocationPriorityDetail.setThruTime(session.getStartTimeLong());
+            allocationPriorityDetail.setThruTime(session.getStartTime());
             allocationPriorityDetail.store();
 
             var allocationPriorityPK = allocationPriorityDetail.getAllocationPriorityPK(); // Not updated
@@ -2531,7 +2531,7 @@ public class InventoryControl
             }
 
             allocationPriorityDetail = AllocationPriorityDetailFactory.getInstance().create(allocationPriorityPK, allocationPriorityName, priority, isDefault,
-                    sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
 
             allocationPriority.setActiveDetail(allocationPriorityDetail);
             allocationPriority.setLastDetail(allocationPriorityDetail);
@@ -2548,7 +2548,7 @@ public class InventoryControl
         deleteAllocationPriorityDescriptionsByAllocationPriority(allocationPriority, deletedBy);
 
         var allocationPriorityDetail = allocationPriority.getLastDetailForUpdate();
-        allocationPriorityDetail.setThruTime(session.getStartTimeLong());
+        allocationPriorityDetail.setThruTime(session.getStartTime());
         allocationPriority.setActiveDetail(null);
         allocationPriority.store();
 
@@ -2578,7 +2578,7 @@ public class InventoryControl
 
     public AllocationPriorityDescription createAllocationPriorityDescription(AllocationPriority allocationPriority, Language language, String description, BasePK createdBy) {
         var allocationPriorityDescription = AllocationPriorityDescriptionFactory.getInstance().create(allocationPriority, language, description,
-                session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME_LONG);
 
         sendEvent(allocationPriority.getPrimaryKey(), EventTypes.MODIFY, allocationPriorityDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -2692,7 +2692,7 @@ public class InventoryControl
             var allocationPriorityDescription = AllocationPriorityDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     allocationPriorityDescriptionValue.getPrimaryKey());
 
-            allocationPriorityDescription.setThruTime(session.getStartTimeLong());
+            allocationPriorityDescription.setThruTime(session.getStartTime());
             allocationPriorityDescription.store();
 
             var allocationPriority = allocationPriorityDescription.getAllocationPriority();
@@ -2700,14 +2700,14 @@ public class InventoryControl
             var description = allocationPriorityDescriptionValue.getDescription();
 
             allocationPriorityDescription = AllocationPriorityDescriptionFactory.getInstance().create(allocationPriority, language, description,
-                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME_LONG);
 
             sendEvent(allocationPriority.getPrimaryKey(), EventTypes.MODIFY, allocationPriorityDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteAllocationPriorityDescription(AllocationPriorityDescription allocationPriorityDescription, BasePK deletedBy) {
-        allocationPriorityDescription.setThruTime(session.getStartTimeLong());
+        allocationPriorityDescription.setThruTime(session.getStartTime());
 
         sendEvent(allocationPriorityDescription.getAllocationPriorityPK(), EventTypes.MODIFY, allocationPriorityDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 

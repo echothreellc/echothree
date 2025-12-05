@@ -241,7 +241,7 @@ public class FilterControl
 
         var filterKind = FilterKindFactory.getInstance().create();
         var filterKindDetail = FilterKindDetailFactory.getInstance().create(filterKind, filterKindName, isDefault, sortOrder,
-                session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME_LONG);
 
         // Convert to R/W
         filterKind = FilterKindFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -436,7 +436,7 @@ public class FilterControl
                 EntityPermission.READ_WRITE, filterKindDetailValue.getFilterKindPK());
         var filterKindDetail = filterKind.getActiveDetailForUpdate();
 
-        filterKindDetail.setThruTime(session.getStartTimeLong());
+        filterKindDetail.setThruTime(session.getStartTime());
         filterKindDetail.store();
 
         var filterKindPK = filterKindDetail.getFilterKindPK();
@@ -460,7 +460,7 @@ public class FilterControl
             }
         }
 
-        filterKindDetail = FilterKindDetailFactory.getInstance().create(filterKindPK, filterKindName, isDefault, sortOrder, session.getStartTimeLong(),
+        filterKindDetail = FilterKindDetailFactory.getInstance().create(filterKindPK, filterKindName, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME_LONG);
 
         filterKind.setActiveDetail(filterKindDetail);
@@ -478,7 +478,7 @@ public class FilterControl
         deleteFilterKindDescriptionsByFilterKind(filterKind, deletedBy);
 
         var filterKindDetail = filterKind.getLastDetailForUpdate();
-        filterKindDetail.setThruTime(session.getStartTimeLong());
+        filterKindDetail.setThruTime(session.getStartTime());
         filterKind.setActiveDetail(null);
         filterKind.store();
 
@@ -509,7 +509,7 @@ public class FilterControl
     public FilterKindDescription createFilterKindDescription(FilterKind filterKind, Language language, String description,
             BasePK createdBy) {
         var filterKindDescription = FilterKindDescriptionFactory.getInstance().create(filterKind,
-                language, description, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                language, description, session.getStartTime(), Session.MAX_TIME_LONG);
 
         sendEvent(filterKind.getPrimaryKey(), EventTypes.MODIFY, filterKindDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -622,7 +622,7 @@ public class FilterControl
             var filterKindDescription = FilterKindDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      filterKindDescriptionValue.getPrimaryKey());
 
-            filterKindDescription.setThruTime(session.getStartTimeLong());
+            filterKindDescription.setThruTime(session.getStartTime());
             filterKindDescription.store();
 
             var filterKind = filterKindDescription.getFilterKind();
@@ -630,14 +630,14 @@ public class FilterControl
             var description = filterKindDescriptionValue.getDescription();
 
             filterKindDescription = FilterKindDescriptionFactory.getInstance().create(filterKind, language, description,
-                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME_LONG);
 
             sendEvent(filterKind.getPrimaryKey(), EventTypes.MODIFY, filterKindDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteFilterKindDescription(FilterKindDescription filterKindDescription, BasePK deletedBy) {
-        filterKindDescription.setThruTime(session.getStartTimeLong());
+        filterKindDescription.setThruTime(session.getStartTime());
 
         sendEvent(filterKindDescription.getFilterKindPK(), EventTypes.MODIFY, filterKindDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
@@ -670,7 +670,7 @@ public class FilterControl
 
         var filterType = FilterTypeFactory.getInstance().create();
         var filterTypeDetail = FilterTypeDetailFactory.getInstance().create(session, filterType, filterKind, filterTypeName, isDefault, sortOrder,
-                session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME_LONG);
 
         // Convert to R/W
         filterType = FilterTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -874,7 +874,7 @@ public class FilterControl
                      filterTypeDetailValue.getFilterTypePK());
             var filterTypeDetail = filterType.getActiveDetailForUpdate();
 
-            filterTypeDetail.setThruTime(session.getStartTimeLong());
+            filterTypeDetail.setThruTime(session.getStartTime());
             filterTypeDetail.store();
 
             var filterTypePK = filterTypeDetail.getFilterTypePK();
@@ -901,7 +901,7 @@ public class FilterControl
             }
 
             filterTypeDetail = FilterTypeDetailFactory.getInstance().create(filterTypePK, filterKindPK, filterTypeName, isDefault, sortOrder,
-                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME_LONG);
 
             filterType.setActiveDetail(filterTypeDetail);
             filterType.setLastDetail(filterTypeDetail);
@@ -918,7 +918,7 @@ public class FilterControl
         deleteFilterTypeDescriptionsByFilterType(filterType, deletedBy);
 
         var filterTypeDetail = filterType.getLastDetailForUpdate();
-        filterTypeDetail.setThruTime(session.getStartTimeLong());
+        filterTypeDetail.setThruTime(session.getStartTime());
         filterType.setActiveDetail(null);
         filterType.store();
 
@@ -958,7 +958,7 @@ public class FilterControl
     public FilterTypeDescription createFilterTypeDescription(FilterType filterType, Language language, String description,
             BasePK createdBy) {
         var filterTypeDescription = FilterTypeDescriptionFactory.getInstance().create(filterType,
-                language, description, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                language, description, session.getStartTime(), Session.MAX_TIME_LONG);
 
         sendEvent(filterType.getPrimaryKey(), EventTypes.MODIFY, filterTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -1071,7 +1071,7 @@ public class FilterControl
             var filterTypeDescription = FilterTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      filterTypeDescriptionValue.getPrimaryKey());
 
-            filterTypeDescription.setThruTime(session.getStartTimeLong());
+            filterTypeDescription.setThruTime(session.getStartTime());
             filterTypeDescription.store();
 
             var filterType = filterTypeDescription.getFilterType();
@@ -1079,14 +1079,14 @@ public class FilterControl
             var description = filterTypeDescriptionValue.getDescription();
 
             filterTypeDescription = FilterTypeDescriptionFactory.getInstance().create(filterType, language, description,
-                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME_LONG);
 
             sendEvent(filterType.getPrimaryKey(), EventTypes.MODIFY, filterTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteFilterTypeDescription(FilterTypeDescription filterTypeDescription, BasePK deletedBy) {
-        filterTypeDescription.setThruTime(session.getStartTimeLong());
+        filterTypeDescription.setThruTime(session.getStartTime());
 
         sendEvent(filterTypeDescription.getFilterTypePK(), EventTypes.MODIFY, filterTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
@@ -1397,7 +1397,7 @@ public class FilterControl
         var filterAdjustment = FilterAdjustmentFactory.getInstance().create();
         var filterAdjustmentDetail = FilterAdjustmentDetailFactory.getInstance().create(session,
                 filterAdjustment, filterKind, filterAdjustmentName, filterAdjustmentSource, filterAdjustmentType,
-                isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
         
         // Convert to R/W
         filterAdjustment = FilterAdjustmentFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -1621,7 +1621,7 @@ public class FilterControl
                      filterAdjustmentDetailValue.getFilterAdjustmentPK());
             var filterAdjustmentDetail = filterAdjustment.getActiveDetailForUpdate();
             
-            filterAdjustmentDetail.setThruTime(session.getStartTimeLong());
+            filterAdjustmentDetail.setThruTime(session.getStartTime());
             filterAdjustmentDetail.store();
 
             var filterAdjustmentPK = filterAdjustmentDetail.getFilterAdjustmentPK();
@@ -1651,7 +1651,7 @@ public class FilterControl
             
             filterAdjustmentDetail = FilterAdjustmentDetailFactory.getInstance().create(filterAdjustmentPK, filterKindPK,
                     filterAdjustmentName, filterAdjustmentSourcePK, filterAdjustmentTypePK, isDefault, sortOrder,
-                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME_LONG);
             
             filterAdjustment.setActiveDetail(filterAdjustmentDetail);
             filterAdjustment.setLastDetail(filterAdjustmentDetail);
@@ -1671,7 +1671,7 @@ public class FilterControl
         deleteFilterAdjustmentDescriptionsByFilterAdjustment(filterAdjustment, deletedBy);
 
         var filterAdjustmentDetail = filterAdjustment.getLastDetailForUpdate();
-        filterAdjustmentDetail.setThruTime(session.getStartTimeLong());
+        filterAdjustmentDetail.setThruTime(session.getStartTime());
         filterAdjustment.setActiveDetail(null);
         filterAdjustment.store();
         
@@ -1703,7 +1703,7 @@ public class FilterControl
     public FilterAdjustmentAmount createFilterAdjustmentAmount(FilterAdjustment filterAdjustment,
             UnitOfMeasureType unitOfMeasureType, Currency currency, Long amount, BasePK createdBy) {
         var filterAdjustmentAmount = FilterAdjustmentAmountFactory.getInstance().create(session,
-                filterAdjustment, unitOfMeasureType, currency, amount, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                filterAdjustment, unitOfMeasureType, currency, amount, session.getStartTime(), Session.MAX_TIME_LONG);
         
         sendEvent(filterAdjustment.getPrimaryKey(), EventTypes.MODIFY,
                 filterAdjustmentAmount.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1838,7 +1838,7 @@ public class FilterControl
             var filterAdjustmentAmount = FilterAdjustmentAmountFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      filterAdjustmentAmountValue.getPrimaryKey());
             
-            filterAdjustmentAmount.setThruTime(session.getStartTimeLong());
+            filterAdjustmentAmount.setThruTime(session.getStartTime());
             filterAdjustmentAmount.store();
 
             var filterAdjustmentPK = filterAdjustmentAmount.getFilterAdjustmentPK(); // Not updated
@@ -1847,7 +1847,7 @@ public class FilterControl
             var amount = filterAdjustmentAmountValue.getAmount();
             
             filterAdjustmentAmount = FilterAdjustmentAmountFactory.getInstance().create(filterAdjustmentPK,
-                    unitOfMeasureTypePK, currencyPK, amount, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    unitOfMeasureTypePK, currencyPK, amount, session.getStartTime(), Session.MAX_TIME_LONG);
             
             sendEvent(filterAdjustmentPK, EventTypes.MODIFY,
                     filterAdjustmentAmount.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -1855,7 +1855,7 @@ public class FilterControl
     }
     
     public void deleteFilterAdjustmentAmount(FilterAdjustmentAmount filterAdjustmentAmount, BasePK deletedBy) {
-        filterAdjustmentAmount.setThruTime(session.getStartTimeLong());
+        filterAdjustmentAmount.setThruTime(session.getStartTime());
         
         sendEvent(filterAdjustmentAmount.getFilterAdjustment().getPrimaryKey(), EventTypes.MODIFY,
                 filterAdjustmentAmount.getPrimaryKey(), EventTypes.DELETE, deletedBy);
@@ -1876,7 +1876,7 @@ public class FilterControl
     public FilterAdjustmentFixedAmount createFilterAdjustmentFixedAmount(FilterAdjustment filterAdjustment,
             UnitOfMeasureType unitOfMeasureType, Currency currency, Long unitAmount, BasePK createdBy) {
         var filterAdjustmentFixedAmount = FilterAdjustmentFixedAmountFactory.getInstance().create(session,
-                filterAdjustment, unitOfMeasureType, currency, unitAmount, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                filterAdjustment, unitOfMeasureType, currency, unitAmount, session.getStartTime(), Session.MAX_TIME_LONG);
         
         sendEvent(filterAdjustment.getPrimaryKey(), EventTypes.MODIFY,
                 filterAdjustmentFixedAmount.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2014,7 +2014,7 @@ public class FilterControl
             var filterAdjustmentFixedAmount = FilterAdjustmentFixedAmountFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      filterAdjustmentFixedAmountValue.getPrimaryKey());
             
-            filterAdjustmentFixedAmount.setThruTime(session.getStartTimeLong());
+            filterAdjustmentFixedAmount.setThruTime(session.getStartTime());
             filterAdjustmentFixedAmount.store();
 
             var filterAdjustmentPK = filterAdjustmentFixedAmount.getFilterAdjustmentPK(); // Not updated
@@ -2023,7 +2023,7 @@ public class FilterControl
             var unitAmount = filterAdjustmentFixedAmountValue.getUnitAmount();
             
             filterAdjustmentFixedAmount = FilterAdjustmentFixedAmountFactory.getInstance().create(filterAdjustmentPK,
-                    unitOfMeasureTypePK, currencyPK, unitAmount, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    unitOfMeasureTypePK, currencyPK, unitAmount, session.getStartTime(), Session.MAX_TIME_LONG);
             
             sendEvent(filterAdjustmentPK, EventTypes.MODIFY,
                     filterAdjustmentFixedAmount.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -2031,7 +2031,7 @@ public class FilterControl
     }
     
     public void deleteFilterAdjustmentFixedAmount(FilterAdjustmentFixedAmount filterAdjustmentFixedAmount, BasePK deletedBy) {
-        filterAdjustmentFixedAmount.setThruTime(session.getStartTimeLong());
+        filterAdjustmentFixedAmount.setThruTime(session.getStartTime());
         
         sendEvent(filterAdjustmentFixedAmount.getFilterAdjustment().getPrimaryKey(),
                 EventTypes.MODIFY, filterAdjustmentFixedAmount.getPrimaryKey(), EventTypes.DELETE,
@@ -2053,7 +2053,7 @@ public class FilterControl
     public FilterAdjustmentPercent createFilterAdjustmentPercent(FilterAdjustment filterAdjustment,
             UnitOfMeasureType unitOfMeasureType, Currency currency, Integer percent, BasePK createdBy) {
         var filterAdjustmentPercent = FilterAdjustmentPercentFactory.getInstance().create(session,
-                filterAdjustment, unitOfMeasureType, currency, percent, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                filterAdjustment, unitOfMeasureType, currency, percent, session.getStartTime(), Session.MAX_TIME_LONG);
         
         sendEvent(filterAdjustment.getPrimaryKey(), EventTypes.MODIFY,
                 filterAdjustmentPercent.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2190,7 +2190,7 @@ public class FilterControl
             var filterAdjustmentPercent = FilterAdjustmentPercentFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      filterAdjustmentPercentValue.getPrimaryKey());
             
-            filterAdjustmentPercent.setThruTime(session.getStartTimeLong());
+            filterAdjustmentPercent.setThruTime(session.getStartTime());
             filterAdjustmentPercent.store();
 
             var filterAdjustmentPK = filterAdjustmentPercent.getFilterAdjustmentPK(); // Not updated
@@ -2199,7 +2199,7 @@ public class FilterControl
             var percent = filterAdjustmentPercentValue.getPercent();
             
             filterAdjustmentPercent = FilterAdjustmentPercentFactory.getInstance().create(filterAdjustmentPK,
-                    unitOfMeasureTypePK, currencyPK, percent, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    unitOfMeasureTypePK, currencyPK, percent, session.getStartTime(), Session.MAX_TIME_LONG);
             
             sendEvent(filterAdjustmentPK, EventTypes.MODIFY,
                     filterAdjustmentPercent.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -2207,7 +2207,7 @@ public class FilterControl
     }
     
     public void deleteFilterAdjustmentPercent(FilterAdjustmentPercent filterAdjustmentPercent, BasePK deletedBy) {
-        filterAdjustmentPercent.setThruTime(session.getStartTimeLong());
+        filterAdjustmentPercent.setThruTime(session.getStartTime());
         
         sendEvent(filterAdjustmentPercent.getFilterAdjustment().getPrimaryKey(), EventTypes.MODIFY,
                 filterAdjustmentPercent.getPrimaryKey(), EventTypes.DELETE, deletedBy);
@@ -2229,7 +2229,7 @@ public class FilterControl
             String description,
             BasePK createdBy) {
         var filterAdjustmentDescription = FilterAdjustmentDescriptionFactory.getInstance().create(session,
-                filterAdjustment, language, description, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                filterAdjustment, language, description, session.getStartTime(), Session.MAX_TIME_LONG);
         
         sendEvent(filterAdjustment.getPrimaryKey(), EventTypes.MODIFY,
                 filterAdjustmentDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2371,7 +2371,7 @@ public class FilterControl
             var filterAdjustmentDescription = FilterAdjustmentDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      filterAdjustmentDescriptionValue.getPrimaryKey());
             
-            filterAdjustmentDescription.setThruTime(session.getStartTimeLong());
+            filterAdjustmentDescription.setThruTime(session.getStartTime());
             filterAdjustmentDescription.store();
 
             var filterAdjustment = filterAdjustmentDescription.getFilterAdjustment();
@@ -2379,7 +2379,7 @@ public class FilterControl
             var description = filterAdjustmentDescriptionValue.getDescription();
             
             filterAdjustmentDescription = FilterAdjustmentDescriptionFactory.getInstance().create(filterAdjustment,
-                    language, description, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    language, description, session.getStartTime(), Session.MAX_TIME_LONG);
             
             sendEvent(filterAdjustment.getPrimaryKey(), EventTypes.MODIFY,
                     filterAdjustmentDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -2387,7 +2387,7 @@ public class FilterControl
     }
     
     public void deleteFilterAdjustmentDescription(FilterAdjustmentDescription filterAdjustmentDescription, BasePK deletedBy) {
-        filterAdjustmentDescription.setThruTime(session.getStartTimeLong());
+        filterAdjustmentDescription.setThruTime(session.getStartTime());
         
         sendEvent(filterAdjustmentDescription.getFilterAdjustmentPK(), EventTypes.MODIFY,
                 filterAdjustmentDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
@@ -2421,7 +2421,7 @@ public class FilterControl
 
         var filter = FilterFactory.getInstance().create();
         var filterDetail = FilterDetailFactory.getInstance().create(filter, filterType, filterName,
-                initialFilterAdjustment, filterItemSelector, isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                initialFilterAdjustment, filterItemSelector, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
         
         // Convert to R/W
         filter = FilterFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, filter.getPrimaryKey());
@@ -2657,7 +2657,7 @@ public class FilterControl
                      filterDetailValue.getFilterPK());
             var filterDetail = filter.getActiveDetailForUpdate();
             
-            filterDetail.setThruTime(session.getStartTimeLong());
+            filterDetail.setThruTime(session.getStartTime());
             filterDetail.store();
 
             var filterPK = filterDetail.getFilterPK();
@@ -2686,7 +2686,7 @@ public class FilterControl
             }
             
             filterDetail = FilterDetailFactory.getInstance().create(filterPK, filterTypePK, filterName,
-                    initialFilterAdjustmentPK, filterItemSelectorPK,  isDefault, sortOrder, session.getStartTimeLong(),
+                    initialFilterAdjustmentPK, filterItemSelectorPK,  isDefault, sortOrder, session.getStartTime(),
                     Session.MAX_TIME_LONG);
             
             filter.setActiveDetail(filterDetail);
@@ -2705,7 +2705,7 @@ public class FilterControl
         deleteFilterDescriptionsByFilter(filter, deletedBy);
 
         var filterDetail = filter.getLastDetailForUpdate();
-        filterDetail.setThruTime(session.getStartTimeLong());
+        filterDetail.setThruTime(session.getStartTime());
         filter.setActiveDetail(null);
         filter.store();
         
@@ -2735,7 +2735,7 @@ public class FilterControl
     // --------------------------------------------------------------------------------
     
     public FilterDescription createFilterDescription(Filter filter, Language language, String description, BasePK createdBy) {
-        var filterDescription = FilterDescriptionFactory.getInstance().create(filter, language, description, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+        var filterDescription = FilterDescriptionFactory.getInstance().create(filter, language, description, session.getStartTime(), Session.MAX_TIME_LONG);
         
         sendEvent(filter.getPrimaryKey(), EventTypes.MODIFY, filterDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -2866,21 +2866,21 @@ public class FilterControl
         if(filterDescriptionValue.hasBeenModified()) {
             var filterDescription = FilterDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, filterDescriptionValue.getPrimaryKey());
             
-            filterDescription.setThruTime(session.getStartTimeLong());
+            filterDescription.setThruTime(session.getStartTime());
             filterDescription.store();
 
             var filter = filterDescription.getFilter();
             var language = filterDescription.getLanguage();
             var description = filterDescriptionValue.getDescription();
             
-            filterDescription = FilterDescriptionFactory.getInstance().create(filter, language, description, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+            filterDescription = FilterDescriptionFactory.getInstance().create(filter, language, description, session.getStartTime(), Session.MAX_TIME_LONG);
             
             sendEvent(filter.getPrimaryKey(), EventTypes.MODIFY, filterDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteFilterDescription(FilterDescription filterDescription, BasePK deletedBy) {
-        filterDescription.setThruTime(session.getStartTimeLong());
+        filterDescription.setThruTime(session.getStartTime());
         
         sendEvent(filterDescription.getFilterPK(), EventTypes.MODIFY, filterDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
@@ -2900,7 +2900,7 @@ public class FilterControl
     
     public FilterStep createFilterStep(Filter filter, String filterStepName, Selector filterItemSelector, BasePK createdBy) {
         var filterStep = FilterStepFactory.getInstance().create();
-        var filterStepDetail = FilterStepDetailFactory.getInstance().create(filterStep, filter, filterStepName, filterItemSelector, session.getStartTimeLong(),
+        var filterStepDetail = FilterStepDetailFactory.getInstance().create(filterStep, filter, filterStepName, filterItemSelector, session.getStartTime(),
                 Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -3089,7 +3089,7 @@ public class FilterControl
                      filterStepDetailValue.getFilterStepPK());
             var filterStepDetail = filterStep.getActiveDetailForUpdate();
             
-            filterStepDetail.setThruTime(session.getStartTimeLong());
+            filterStepDetail.setThruTime(session.getStartTime());
             filterStepDetail.store();
 
             var filterStepPK = filterStepDetail.getFilterStepPK();
@@ -3099,7 +3099,7 @@ public class FilterControl
             var filterItemSelectorPK = filterStepDetailValue.getFilterItemSelectorPK();
             
             filterStepDetail = FilterStepDetailFactory.getInstance().create(filterStepPK, filterPK, filterStepName,
-                    filterItemSelectorPK, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    filterItemSelectorPK, session.getStartTime(), Session.MAX_TIME_LONG);
             
             filterStep.setActiveDetail(filterStepDetail);
             filterStep.setLastDetail(filterStepDetail);
@@ -3115,7 +3115,7 @@ public class FilterControl
         deleteFilterStepDescriptionsByFilterStep(filterStep, deletedBy);
 
         var filterStepDetail = filterStep.getLastDetailForUpdate();
-        filterStepDetail.setThruTime(session.getStartTimeLong());
+        filterStepDetail.setThruTime(session.getStartTime());
         filterStep.setActiveDetail(null);
         filterStep.store();
         
@@ -3136,7 +3136,7 @@ public class FilterControl
     
     public FilterStepDescription createFilterStepDescription(FilterStep filterStep, Language language, String description, BasePK createdBy) {
         var filterStepDescription = FilterStepDescriptionFactory.getInstance().create(filterStep, language,
-                description, session.getStartTimeLong(),
+                description, session.getStartTime(),
                 Session.MAX_TIME_LONG);
         
         sendEvent(filterStep.getPrimaryKey(), EventTypes.MODIFY,
@@ -3270,7 +3270,7 @@ public class FilterControl
             var filterStepDescription = FilterStepDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      filterStepDescriptionValue.getPrimaryKey());
             
-            filterStepDescription.setThruTime(session.getStartTimeLong());
+            filterStepDescription.setThruTime(session.getStartTime());
             filterStepDescription.store();
 
             var filterStep = filterStepDescription.getFilterStep();
@@ -3278,7 +3278,7 @@ public class FilterControl
             var description = filterStepDescriptionValue.getDescription();
             
             filterStepDescription = FilterStepDescriptionFactory.getInstance().create(filterStep, language, description,
-                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME_LONG);
             
             sendEvent(filterStep.getPrimaryKey(), EventTypes.MODIFY, filterStepDescription.getPrimaryKey(),
                     EventTypes.MODIFY, updatedBy);
@@ -3286,7 +3286,7 @@ public class FilterControl
     }
     
     public void deleteFilterStepDescription(FilterStepDescription filterStepDescription, BasePK deletedBy) {
-        filterStepDescription.setThruTime(session.getStartTimeLong());
+        filterStepDescription.setThruTime(session.getStartTime());
         
         sendEvent(filterStepDescription.getFilterStep().getPrimaryKey(), EventTypes.MODIFY,
                 filterStepDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
@@ -3306,7 +3306,7 @@ public class FilterControl
     // --------------------------------------------------------------------------------
     
     public FilterEntranceStep createFilterEntranceStep(Filter filter, FilterStep filterStep, BasePK createdBy) {
-        var filterEntranceStep = FilterEntranceStepFactory.getInstance().create(filter, filterStep, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+        var filterEntranceStep = FilterEntranceStepFactory.getInstance().create(filter, filterStep, session.getStartTime(), Session.MAX_TIME_LONG);
         
         sendEvent(filter.getPrimaryKey(), EventTypes.MODIFY, filterEntranceStep.getPrimaryKey(),
                 EventTypes.CREATE, createdBy);
@@ -3458,7 +3458,7 @@ public class FilterControl
     }
     
     public void deleteFilterEntranceStep(FilterEntranceStep filterEntranceStep, BasePK deletedBy) {
-        filterEntranceStep.setThruTime(session.getStartTimeLong());
+        filterEntranceStep.setThruTime(session.getStartTime());
         
         sendEvent(filterEntranceStep.getFilter().getPrimaryKey(), EventTypes.MODIFY,
                 filterEntranceStep.getPrimaryKey(), EventTypes.DELETE, deletedBy);
@@ -3478,7 +3478,7 @@ public class FilterControl
     
     public FilterStepDestination createFilterStepDestination(FilterStep fromFilterStep, FilterStep toFilterStep, BasePK createdBy) {
         var filterStepDestination = FilterStepDestinationFactory.getInstance().create(fromFilterStep,
-                toFilterStep, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                toFilterStep, session.getStartTime(), Session.MAX_TIME_LONG);
         
         sendEvent(fromFilterStep.getLastDetail().getFilter().getPrimaryKey(), EventTypes.MODIFY,
                 filterStepDestination.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -3653,7 +3653,7 @@ public class FilterControl
     }
     
     public void deleteFilterStepDestination(FilterStepDestination filterStepDestination, BasePK deletedBy) {
-        filterStepDestination.setThruTime(session.getStartTimeLong());
+        filterStepDestination.setThruTime(session.getStartTime());
         filterStepDestination.store();
         
         sendEvent(filterStepDestination.getFromFilterStep().getLastDetail().getFilter().getPrimaryKey(),
@@ -3689,7 +3689,7 @@ public class FilterControl
             FilterAdjustment filterAdjustment, BasePK createdBy) {
         var filterStepElement = FilterStepElementFactory.getInstance().create();
         var filterStepElementDetail = FilterStepElementDetailFactory.getInstance().create(filterStepElement, filterStep,
-                filterStepElementName, filterItemSelector, filterAdjustment, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                filterStepElementName, filterItemSelector, filterAdjustment, session.getStartTime(), Session.MAX_TIME_LONG);
         
         // Convert to R/W
         filterStepElement = FilterStepElementFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, filterStepElement.getPrimaryKey());
@@ -3829,7 +3829,7 @@ public class FilterControl
                      filterStepElementDetailValue.getFilterStepElementPK());
             var filterStepElementDetail = filterStepElement.getActiveDetailForUpdate();
             
-            filterStepElementDetail.setThruTime(session.getStartTimeLong());
+            filterStepElementDetail.setThruTime(session.getStartTime());
             filterStepElementDetail.store();
 
             var filterStepElementPK = filterStepElementDetail.getFilterStepElementPK();
@@ -3840,7 +3840,7 @@ public class FilterControl
             var filterAdjustmentPK = filterStepElementDetailValue.getFilterAdjustmentPK();
             
             filterStepElementDetail = FilterStepElementDetailFactory.getInstance().create(filterStepElementPK,
-                    filterStepPK, filterStepElementName, filterItemSelectorPK, filterAdjustmentPK, session.getStartTimeLong(),
+                    filterStepPK, filterStepElementName, filterItemSelectorPK, filterAdjustmentPK, session.getStartTime(),
                     Session.MAX_TIME_LONG);
             
             filterStepElement.setActiveDetail(filterStepElementDetail);
@@ -3855,7 +3855,7 @@ public class FilterControl
         deleteFilterStepElementDescriptionsByFilterStepElement(filterStepElement, deletedBy);
 
         var filterStepElementDetail = filterStepElement.getLastDetailForUpdate();
-        filterStepElementDetail.setThruTime(session.getStartTimeLong());
+        filterStepElementDetail.setThruTime(session.getStartTime());
         filterStepElement.setActiveDetail(null);
         filterStepElement.store();
         
@@ -3878,7 +3878,7 @@ public class FilterControl
     public FilterStepElementDescription createFilterStepElementDescription(FilterStepElement filterStepElement, Language language,
             String description, BasePK createdBy) {
         var filterStepElementDescription = FilterStepElementDescriptionFactory.getInstance().create(session,
-                filterStepElement, language, description, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                filterStepElement, language, description, session.getStartTime(), Session.MAX_TIME_LONG);
         
         sendEvent(filterStepElement.getLastDetail().getFilterStep().getLastDetail().getFilterPK(),
                 EventTypes.MODIFY, filterStepElementDescription.getPrimaryKey(), EventTypes.CREATE,
@@ -4012,7 +4012,7 @@ public class FilterControl
         if(filterStepElementDescriptionValue.hasBeenModified()) {
             var filterStepElementDescription = FilterStepElementDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, filterStepElementDescriptionValue.getPrimaryKey());
             
-            filterStepElementDescription.setThruTime(session.getStartTimeLong());
+            filterStepElementDescription.setThruTime(session.getStartTime());
             filterStepElementDescription.store();
 
             var filterStepElement = filterStepElementDescription.getFilterStepElement();
@@ -4020,14 +4020,14 @@ public class FilterControl
             var description = filterStepElementDescriptionValue.getDescription();
             
             filterStepElementDescription = FilterStepElementDescriptionFactory.getInstance().create(filterStepElement,
-                    language, description, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    language, description, session.getStartTime(), Session.MAX_TIME_LONG);
             
             sendEvent(filterStepElement.getLastDetail().getFilterStep().getLastDetail().getFilterPK(), EventTypes.MODIFY, filterStepElementDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteFilterStepElementDescription(FilterStepElementDescription filterStepElementDescription, BasePK deletedBy) {
-        filterStepElementDescription.setThruTime(session.getStartTimeLong());
+        filterStepElementDescription.setThruTime(session.getStartTime());
         
         sendEvent(filterStepElementDescription.getFilterStepElement().getLastDetail().getFilterStep().getLastDetail().getFilterPK(), EventTypes.MODIFY, filterStepElementDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         

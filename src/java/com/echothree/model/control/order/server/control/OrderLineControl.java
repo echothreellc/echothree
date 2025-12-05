@@ -59,7 +59,7 @@ public class OrderLineControl
         var orderLine = OrderLineFactory.getInstance().create();
         var orderLineDetail = OrderLineDetailFactory.getInstance().create(orderLine, order, orderLineSequence, parentOrderLine, orderShipmentGroup,
                 item, inventoryCondition, unitOfMeasureType, quantity, unitAmount, description, cancellationPolicy, returnPolicy, taxable,
-                session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME_LONG);
         
         // Convert to R/W
         orderLine = OrderLineFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -259,7 +259,7 @@ public class OrderLineControl
                     orderLineDetailValue.getOrderLinePK());
             var orderLineDetail = orderLine.getActiveDetailForUpdate();
             
-            orderLineDetail.setThruTime(session.getStartTimeLong());
+            orderLineDetail.setThruTime(session.getStartTime());
             orderLineDetail.store();
 
             var orderLinePK = orderLineDetail.getOrderLinePK(); // Not updated
@@ -279,7 +279,7 @@ public class OrderLineControl
             
             orderLineDetail = OrderLineDetailFactory.getInstance().create(orderLinePK, orderPK, orderLineSequence, parentOrderLinePK, orderShipmentGroupPK,
                     itemPK, inventoryConditionPK, unitOfMeasureTypePK, quantity, unitAmount, description, cancellationPolicyPK, returnPolicyPK, taxable,
-                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME_LONG);
             
             orderLine.setActiveDetail(orderLineDetail);
             orderLine.setLastDetail(orderLineDetail);
@@ -295,7 +295,7 @@ public class OrderLineControl
         removeOrderLineStatusByOrderLine(orderLine);
         orderLineAdjustmentControl.deleteOrderLineAdjustmentsByOrderLine(orderLine, deletedBy);
         
-        orderLineDetail.setThruTime(session.getStartTimeLong());
+        orderLineDetail.setThruTime(session.getStartTime());
         orderLine.setActiveDetail(null);
         orderLine.store();
         

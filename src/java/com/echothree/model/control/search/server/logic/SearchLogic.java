@@ -285,7 +285,7 @@ public class SearchLogic
                         handleExecutionError(DuplicateSearchResultActionException.class, eea, ExecutionErrors.DuplicateSearchResultAction.name(),
                                 searchKindName, searchTypeName, searchResultActionTypeName, basePK.getEntityRef());
                     } else {
-                        searchControl.createSearchResultAction(search, searchResultActionType, getSession().getStartTimeLong(), entityInstance, createdBy);
+                        searchControl.createSearchResultAction(search, searchResultActionType, getSession().getStartTime(), entityInstance, createdBy);
                     }
                 }
             }

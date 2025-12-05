@@ -591,7 +591,7 @@ public abstract class BaseCommand
 
                                     userVisitStatus.setUserVisitCommandSequence(userVisitCommandSequence);
 
-                                    userControl.createUserVisitCommand(userVisit, userVisitCommandSequence, party, command, session.getStartTimeLong(),
+                                    userControl.createUserVisitCommand(userVisit, userVisitCommandSequence, party, command, session.getStartTime(),
                                             System.currentTimeMillis(), hadSecurityErrors, hadValidationErrors, hasExecutionErrors);
                                 } else {
                                     getLog().error("Command not logged, unknown userVisitStatus for " + userVisit.getPrimaryKey());

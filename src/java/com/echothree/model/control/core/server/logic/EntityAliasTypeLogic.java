@@ -298,7 +298,7 @@ public class EntityAliasTypeLogic
                 final var queuedEntities = new ArrayList<QueuedEntityValue>(entityAliases.size());
 
                 for(final var entityAlias : entityAliases) {
-                    queuedEntities.add(new QueuedEntityValue(queueTypePK, entityAlias.getEntityInstancePK(), session.getStartTimeLong()));
+                    queuedEntities.add(new QueuedEntityValue(queueTypePK, entityAlias.getEntityInstancePK(), session.getStartTime()));
                 }
 
                 queueControl.createQueuedEntities(queuedEntities);

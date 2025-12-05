@@ -76,7 +76,7 @@ public class TransactionLogic
         var transaction = accountingControl.createTransaction(groupParty, transactionType, createdBy);
 
         TransactionTimeLogic.getInstance().createTransactionTime(null, transaction, TransactionTimeTypes.TRANSACTION_TIME.name(),
-                transactionTime == null ? session.getStartTimeLong() : transactionTime, createdBy);
+                transactionTime == null ? session.getStartTime() : transactionTime, createdBy);
 
         return transaction;
     }

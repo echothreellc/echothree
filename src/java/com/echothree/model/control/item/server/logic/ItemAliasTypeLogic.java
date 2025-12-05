@@ -163,7 +163,7 @@ public class ItemAliasTypeLogic
             final var queuedEntities = new ArrayList<QueuedEntityValue>(itemEntityInstanceResults.size());
 
             for(final var itemEntityInstanceResult : itemEntityInstanceResults) {
-                queuedEntities.add(new QueuedEntityValue(queueTypePK, itemEntityInstanceResult.getEntityInstancePK(), session.getStartTimeLong()));
+                queuedEntities.add(new QueuedEntityValue(queueTypePK, itemEntityInstanceResult.getEntityInstancePK(), session.getStartTime()));
             }
 
             queueControl.createQueuedEntities(queuedEntities);

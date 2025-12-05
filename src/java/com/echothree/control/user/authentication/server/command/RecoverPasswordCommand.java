@@ -105,7 +105,7 @@ public class RecoverPasswordCommand
                     }
 
                     var userLoginPassword = userControl.createUserLoginPassword(party, userLoginPasswordType, createdBy);
-                    userControl.createUserLoginPasswordString(userLoginPassword, password, session.getStartTimeLong(), false, createdBy);
+                    userControl.createUserLoginPasswordString(userLoginPassword, password, session.getStartTime(), false, createdBy);
                     
                     // ExecutionErrorAccumulator is passed in as null so that an Exception will be thrown if there is an error.
                     PartyChainLogic.getInstance().createPartyPasswordRecoveryChainInstance(null, party, createdBy);

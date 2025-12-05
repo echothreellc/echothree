@@ -91,7 +91,7 @@ public class AppearanceControl
 
         var appearance = AppearanceFactory.getInstance().create();
         var appearanceDetail = AppearanceDetailFactory.getInstance().create(appearance, appearanceName, textColor, backgroundColor, fontStyle,
-                fontWeight, isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                fontWeight, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
 
         // Convert to R/W
         appearance = AppearanceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, appearance.getPrimaryKey());
@@ -419,7 +419,7 @@ public class AppearanceControl
                     appearanceDetailValue.getAppearancePK());
             var appearanceDetail = appearance.getActiveDetailForUpdate();
 
-            appearanceDetail.setThruTime(session.getStartTimeLong());
+            appearanceDetail.setThruTime(session.getStartTime());
             appearanceDetail.store();
 
             var appearancePK = appearanceDetail.getAppearancePK(); // Not updated
@@ -448,7 +448,7 @@ public class AppearanceControl
             }
 
             appearanceDetail = AppearanceDetailFactory.getInstance().create(appearancePK, appearanceName, textColorPK, backgroundColorPK, fontStylePK,
-                    fontWeightPK, isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    fontWeightPK, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
 
             appearance.setActiveDetail(appearanceDetail);
             appearance.setLastDetail(appearanceDetail);
@@ -469,7 +469,7 @@ public class AppearanceControl
         deleteAppearanceDescriptionsByAppearance(appearance, deletedBy);
         deleteEntityAppearancesByAppearance(appearance, deletedBy);
 
-        appearanceDetail.setThruTime(session.getStartTimeLong());
+        appearanceDetail.setThruTime(session.getStartTime());
         appearance.setActiveDetail(null);
         appearance.store();
 
@@ -535,7 +535,7 @@ public class AppearanceControl
 
     public AppearanceDescription createAppearanceDescription(Appearance appearance, Language language, String description, BasePK createdBy) {
         var appearanceDescription = AppearanceDescriptionFactory.getInstance().create(appearance, language, description,
-                session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME_LONG);
 
         sendEvent(appearance.getPrimaryKey(), EventTypes.MODIFY, appearanceDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -648,7 +648,7 @@ public class AppearanceControl
             var appearanceDescription = AppearanceDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     appearanceDescriptionValue.getPrimaryKey());
 
-            appearanceDescription.setThruTime(session.getStartTimeLong());
+            appearanceDescription.setThruTime(session.getStartTime());
             appearanceDescription.store();
 
             var appearance = appearanceDescription.getAppearance();
@@ -656,14 +656,14 @@ public class AppearanceControl
             var description = appearanceDescriptionValue.getDescription();
 
             appearanceDescription = AppearanceDescriptionFactory.getInstance().create(appearance, language, description,
-                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME_LONG);
 
             sendEvent(appearance.getPrimaryKey(), EventTypes.MODIFY, appearanceDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteAppearanceDescription(AppearanceDescription appearanceDescription, BasePK deletedBy) {
-        appearanceDescription.setThruTime(session.getStartTimeLong());
+        appearanceDescription.setThruTime(session.getStartTime());
 
         sendEvent(appearanceDescription.getAppearancePK(), EventTypes.MODIFY, appearanceDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
@@ -683,7 +683,7 @@ public class AppearanceControl
 
     public AppearanceTextDecoration createAppearanceTextDecoration(Appearance appearance, TextDecoration textDecoration, BasePK createdBy) {
         var appearanceTextDecoration = AppearanceTextDecorationFactory.getInstance().create(appearance, textDecoration,
-                session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME_LONG);
 
         sendEvent(appearance.getPrimaryKey(), EventTypes.MODIFY, appearanceTextDecoration.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -815,7 +815,7 @@ public class AppearanceControl
     }
 
     public void deleteAppearanceTextDecoration(AppearanceTextDecoration appearanceTextDecoration, BasePK deletedBy) {
-        appearanceTextDecoration.setThruTime(session.getStartTimeLong());
+        appearanceTextDecoration.setThruTime(session.getStartTime());
 
         sendEvent(appearanceTextDecoration.getAppearancePK(), EventTypes.MODIFY, appearanceTextDecoration.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
@@ -840,7 +840,7 @@ public class AppearanceControl
 
     public AppearanceTextTransformation createAppearanceTextTransformation(Appearance appearance, TextTransformation textTransformation, BasePK createdBy) {
         var appearanceTextTransformation = AppearanceTextTransformationFactory.getInstance().create(appearance, textTransformation,
-                session.getStartTimeLong(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME_LONG);
 
         sendEvent(appearance.getPrimaryKey(), EventTypes.MODIFY, appearanceTextTransformation.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -972,7 +972,7 @@ public class AppearanceControl
     }
 
     public void deleteAppearanceTextTransformation(AppearanceTextTransformation appearanceTextTransformation, BasePK deletedBy) {
-        appearanceTextTransformation.setThruTime(session.getStartTimeLong());
+        appearanceTextTransformation.setThruTime(session.getStartTime());
 
         sendEvent(appearanceTextTransformation.getAppearancePK(), EventTypes.MODIFY, appearanceTextTransformation.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
@@ -996,7 +996,7 @@ public class AppearanceControl
     // --------------------------------------------------------------------------------
 
     public EntityAppearance createEntityAppearance(EntityInstance entityInstance, Appearance appearance, BasePK createdBy) {
-        var entityAppearance = EntityAppearanceFactory.getInstance().create(entityInstance, appearance, session.getStartTimeLong(),
+        var entityAppearance = EntityAppearanceFactory.getInstance().create(entityInstance, appearance, session.getStartTime(),
                 Session.MAX_TIME_LONG);
 
         sendEvent(entityInstance, EventTypes.MODIFY, entityAppearance.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1117,20 +1117,20 @@ public class AppearanceControl
             var entityAppearance = EntityAppearanceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     entityAppearanceValue.getPrimaryKey());
 
-            entityAppearance.setThruTime(session.getStartTimeLong());
+            entityAppearance.setThruTime(session.getStartTime());
             entityAppearance.store();
 
             var entityInstance = entityAppearance.getEntityInstance(); // Not updated.
             var appearancePK = entityAppearanceValue.getAppearancePK();
 
-            entityAppearance = EntityAppearanceFactory.getInstance().create(entityInstance.getPrimaryKey(), appearancePK, session.getStartTimeLong(), Session.MAX_TIME_LONG);
+            entityAppearance = EntityAppearanceFactory.getInstance().create(entityInstance.getPrimaryKey(), appearancePK, session.getStartTime(), Session.MAX_TIME_LONG);
 
             sendEvent(entityInstance, EventTypes.MODIFY, entityAppearance.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteEntityAppearance(EntityAppearance entityAppearance, BasePK deletedBy) {
-        entityAppearance.setThruTime(session.getStartTimeLong());
+        entityAppearance.setThruTime(session.getStartTime());
 
         sendEvent(entityAppearance.getEntityInstance(), EventTypes.MODIFY, entityAppearance.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }

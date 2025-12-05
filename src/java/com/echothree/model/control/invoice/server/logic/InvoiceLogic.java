@@ -193,7 +193,7 @@ public class InvoiceLogic
         } else if(termTypeName.equals(TermTypes.PREPAID.name())) {
             dueTime = null;
         } else { // TODO: TermTypes.DATE_DRIVEN.name()
-            dueTime = session.getStartTimeLong();
+            dueTime = session.getStartTime();
         }
         
         return dueTime;
@@ -203,7 +203,7 @@ public class InvoiceLogic
         Long paidTime;
         
         if(termTypeName.equals(TermTypes.PREPAID.name())) {
-            paidTime = session.getStartTimeLong();
+            paidTime = session.getStartTime();
         } else {
             paidTime = null;
         }
@@ -247,7 +247,7 @@ public class InvoiceLogic
                         var billToContactMechanism = billingControl.getBillingAccountRoleUsingNames(billingAccount, BillingAccountRoleTypes.BILL_TO.name()).getPartyContactMechanism();
                         var termTypeName = getTermTypeName(term);
 
-                        invoicedTime = invoicedTime == null ? session.getStartTimeLong() : invoicedTime;
+                        invoicedTime = invoicedTime == null ? session.getStartTime() : invoicedTime;
                         dueTime = dueTime == null ? getDueTime(session, term, termTypeName, invoicedTime) : dueTime;
                         paidTime = paidTime == null ? getPaidTime(session, termTypeName) : paidTime;
 

@@ -31,7 +31,6 @@ import static com.echothree.model.control.security.common.SecurityRoles.UserLogi
 import com.echothree.model.control.security.server.logic.SecurityRoleLogic;
 import com.echothree.model.control.user.common.UserConstants;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -150,7 +149,7 @@ public class CreateUserLoginCommand
                                                         userControl.createUserLogin(party, username, createdBy);
 
                                                         var userLoginPassword = userControl.createUserLoginPassword(party, userLoginPasswordType, createdBy);
-                                                        userControl.createUserLoginPasswordString(userLoginPassword, password1, session.getStartTimeLong(), false, createdBy);
+                                                        userControl.createUserLoginPasswordString(userLoginPassword, password1, session.getStartTime(), false, createdBy);
 
                                                         if(partyTypePasswordStringPolicy != null && partyTypePasswordStringPolicy.getLastDetail().getForceChangeAfterCreate()) {
                                                             var userLoginStatus = userControl.getUserLoginStatusForUpdate(party);
