@@ -510,12 +510,12 @@ public abstract class BaseCommand
 
         this.userVisitPK = userVisitPK;
 
-        setupSession();
         if(CommandScopeExtension.getCommandScopeContext().isActive()) {
             CommandScopeExtension.getCommandScopeContext().push();
         } else {
             CommandScopeExtension.getCommandScopeContext().activate();
         }
+        setupSession();
 
         SecurityResult securityResult;
         ValidationResult validationResult = null;
