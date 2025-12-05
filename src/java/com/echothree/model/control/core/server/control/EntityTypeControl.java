@@ -109,7 +109,7 @@ public class EntityTypeControl
         var entityType = entityTypeFactory.create();
         var entityTypeDetail = entityTypeDetailFactory.create(entityType, componentVendor,
                 entityTypeName, keepAllHistory, lockTimeout, isExtensible, sortOrder, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
 
         // Convert to R/W
         entityType = entityTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE, entityType.getPrimaryKey());
@@ -351,7 +351,7 @@ public class EntityTypeControl
             var sortOrder = entityTypeDetailValue.getSortOrder();
 
             entityTypeDetail = entityTypeDetailFactory.create(entityTypePK, componentVendorPK, entityTypeName,
-                    keepAllHistory, lockTimeout, isExtensible, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                    keepAllHistory, lockTimeout, isExtensible, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             entityType.setActiveDetail(entityTypeDetail);
             entityType.setLastDetail(entityTypeDetail);
@@ -405,7 +405,7 @@ public class EntityTypeControl
     public EntityTypeDescription createEntityTypeDescription(EntityType entityType, Language language, String description,
             BasePK createdBy) {
         var entityTypeDescription = entityTypeDescriptionFactory.create(entityType,
-                language, description, session.getStartTime(), Session.MAX_TIME_LONG);
+                language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(entityType.getPrimaryKey(), EventTypes.MODIFY, entityTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -546,7 +546,7 @@ public class EntityTypeControl
             var description = entityTypeDescriptionValue.getDescription();
 
             entityTypeDescription = entityTypeDescriptionFactory.create(entityType, language,
-                    description, session.getStartTime(), Session.MAX_TIME_LONG);
+                    description, session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(entityType.getPrimaryKey(), EventTypes.MODIFY, entityTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }

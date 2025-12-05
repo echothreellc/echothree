@@ -254,7 +254,7 @@ public class SearchControl
 
         var searchUseType = SearchUseTypeFactory.getInstance().create();
         var searchUseTypeDetail = SearchUseTypeDetailFactory.getInstance().create(searchUseType, searchUseTypeName, isDefault, sortOrder, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
 
         // Convert to R/W
         searchUseType = SearchUseTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, searchUseType.getPrimaryKey());
@@ -478,7 +478,7 @@ public class SearchControl
             }
 
             searchUseTypeDetail = SearchUseTypeDetailFactory.getInstance().create(searchUseTypePK, searchUseTypeName, isDefault, sortOrder,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             searchUseType.setActiveDetail(searchUseTypeDetail);
             searchUseType.setLastDetail(searchUseTypeDetail);
@@ -542,7 +542,7 @@ public class SearchControl
 
     public SearchUseTypeDescription createSearchUseTypeDescription(SearchUseType searchUseType, Language language, String description, BasePK createdBy) {
         var searchUseTypeDescription = SearchUseTypeDescriptionFactory.getInstance().create(searchUseType, language, description,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(searchUseType.getPrimaryKey(), EventTypes.MODIFY, searchUseTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -664,7 +664,7 @@ public class SearchControl
             var description = searchUseTypeDescriptionValue.getDescription();
 
             searchUseTypeDescription = SearchUseTypeDescriptionFactory.getInstance().create(searchUseType, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(searchUseType.getPrimaryKey(), EventTypes.MODIFY, searchUseTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -704,7 +704,7 @@ public class SearchControl
 
         var searchResultActionType = SearchResultActionTypeFactory.getInstance().create();
         var searchResultActionTypeDetail = SearchResultActionTypeDetailFactory.getInstance().create(searchResultActionType, searchResultActionTypeName, isDefault, sortOrder, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
 
         // Convert to R/W
         searchResultActionType = SearchResultActionTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, searchResultActionType.getPrimaryKey());
@@ -932,7 +932,7 @@ public class SearchControl
             }
 
             searchResultActionTypeDetail = SearchResultActionTypeDetailFactory.getInstance().create(searchResultActionTypePK, searchResultActionTypeName, isDefault, sortOrder,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             searchResultActionType.setActiveDetail(searchResultActionTypeDetail);
             searchResultActionType.setLastDetail(searchResultActionTypeDetail);
@@ -996,7 +996,7 @@ public class SearchControl
 
     public SearchResultActionTypeDescription createSearchResultActionTypeDescription(SearchResultActionType searchResultActionType, Language language, String description, BasePK createdBy) {
         var searchResultActionTypeDescription = SearchResultActionTypeDescriptionFactory.getInstance().create(searchResultActionType, language, description,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(searchResultActionType.getPrimaryKey(), EventTypes.MODIFY, searchResultActionTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -1118,7 +1118,7 @@ public class SearchControl
             var description = searchResultActionTypeDescriptionValue.getDescription();
 
             searchResultActionTypeDescription = SearchResultActionTypeDescriptionFactory.getInstance().create(searchResultActionType, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(searchResultActionType.getPrimaryKey(), EventTypes.MODIFY, searchResultActionTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -1158,7 +1158,7 @@ public class SearchControl
 
         var searchCheckSpellingActionType = SearchCheckSpellingActionTypeFactory.getInstance().create();
         var searchCheckSpellingActionTypeDetail = SearchCheckSpellingActionTypeDetailFactory.getInstance().create(searchCheckSpellingActionType, searchCheckSpellingActionTypeName, isDefault, sortOrder, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
 
         // Convert to R/W
         searchCheckSpellingActionType = SearchCheckSpellingActionTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, searchCheckSpellingActionType.getPrimaryKey());
@@ -1382,7 +1382,7 @@ public class SearchControl
             }
 
             searchCheckSpellingActionTypeDetail = SearchCheckSpellingActionTypeDetailFactory.getInstance().create(searchCheckSpellingActionTypePK, searchCheckSpellingActionTypeName, isDefault, sortOrder,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             searchCheckSpellingActionType.setActiveDetail(searchCheckSpellingActionTypeDetail);
             searchCheckSpellingActionType.setLastDetail(searchCheckSpellingActionTypeDetail);
@@ -1445,7 +1445,7 @@ public class SearchControl
 
     public SearchCheckSpellingActionTypeDescription createSearchCheckSpellingActionTypeDescription(SearchCheckSpellingActionType searchCheckSpellingActionType, Language language, String description, BasePK createdBy) {
         var searchCheckSpellingActionTypeDescription = SearchCheckSpellingActionTypeDescriptionFactory.getInstance().create(searchCheckSpellingActionType, language, description,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(searchCheckSpellingActionType.getPrimaryKey(), EventTypes.MODIFY, searchCheckSpellingActionTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -1567,7 +1567,7 @@ public class SearchControl
             var description = searchCheckSpellingActionTypeDescriptionValue.getDescription();
 
             searchCheckSpellingActionTypeDescription = SearchCheckSpellingActionTypeDescriptionFactory.getInstance().create(searchCheckSpellingActionType, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(searchCheckSpellingActionType.getPrimaryKey(), EventTypes.MODIFY, searchCheckSpellingActionTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -1607,7 +1607,7 @@ public class SearchControl
 
         var searchDefaultOperator = SearchDefaultOperatorFactory.getInstance().create();
         var searchDefaultOperatorDetail = SearchDefaultOperatorDetailFactory.getInstance().create(searchDefaultOperator, searchDefaultOperatorName, isDefault, sortOrder, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
 
         // Convert to R/W
         searchDefaultOperator = SearchDefaultOperatorFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, searchDefaultOperator.getPrimaryKey());
@@ -1831,7 +1831,7 @@ public class SearchControl
             }
 
             searchDefaultOperatorDetail = SearchDefaultOperatorDetailFactory.getInstance().create(searchDefaultOperatorPK, searchDefaultOperatorName, isDefault, sortOrder, session.getStartTime(),
-                    Session.MAX_TIME_LONG);
+                    Session.MAX_TIME);
 
             searchDefaultOperator.setActiveDetail(searchDefaultOperatorDetail);
             searchDefaultOperator.setLastDetail(searchDefaultOperatorDetail);
@@ -1896,7 +1896,7 @@ public class SearchControl
 
     public SearchDefaultOperatorDescription createSearchDefaultOperatorDescription(SearchDefaultOperator searchDefaultOperator, Language language, String description, BasePK createdBy) {
         var searchDefaultOperatorDescription = SearchDefaultOperatorDescriptionFactory.getInstance().create(searchDefaultOperator, language, description,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(searchDefaultOperator.getPrimaryKey(), EventTypes.MODIFY, searchDefaultOperatorDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -2018,7 +2018,7 @@ public class SearchControl
             var description = searchDefaultOperatorDescriptionValue.getDescription();
 
             searchDefaultOperatorDescription = SearchDefaultOperatorDescriptionFactory.getInstance().create(searchDefaultOperator, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(searchDefaultOperator.getPrimaryKey(), EventTypes.MODIFY, searchDefaultOperatorDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -2058,7 +2058,7 @@ public class SearchControl
 
         var searchSortDirection = SearchSortDirectionFactory.getInstance().create();
         var searchSortDirectionDetail = SearchSortDirectionDetailFactory.getInstance().create(searchSortDirection, searchSortDirectionName, isDefault, sortOrder, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
 
         // Convert to R/W
         searchSortDirection = SearchSortDirectionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, searchSortDirection.getPrimaryKey());
@@ -2282,7 +2282,7 @@ public class SearchControl
             }
 
             searchSortDirectionDetail = SearchSortDirectionDetailFactory.getInstance().create(searchSortDirectionPK, searchSortDirectionName, isDefault, sortOrder, session.getStartTime(),
-                    Session.MAX_TIME_LONG);
+                    Session.MAX_TIME);
 
             searchSortDirection.setActiveDetail(searchSortDirectionDetail);
             searchSortDirection.setLastDetail(searchSortDirectionDetail);
@@ -2347,7 +2347,7 @@ public class SearchControl
 
     public SearchSortDirectionDescription createSearchSortDirectionDescription(SearchSortDirection searchSortDirection, Language language, String description, BasePK createdBy) {
         var searchSortDirectionDescription = SearchSortDirectionDescriptionFactory.getInstance().create(searchSortDirection, language, description,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(searchSortDirection.getPrimaryKey(), EventTypes.MODIFY, searchSortDirectionDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -2469,7 +2469,7 @@ public class SearchControl
             var description = searchSortDirectionDescriptionValue.getDescription();
 
             searchSortDirectionDescription = SearchSortDirectionDescriptionFactory.getInstance().create(searchSortDirection, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(searchSortDirection.getPrimaryKey(), EventTypes.MODIFY, searchSortDirectionDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -2509,7 +2509,7 @@ public class SearchControl
 
         var searchKind = SearchKindFactory.getInstance().create();
         var searchKindDetail = SearchKindDetailFactory.getInstance().create(searchKind, searchKindName, isDefault, sortOrder,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         searchKind = SearchKindFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -2730,7 +2730,7 @@ public class SearchControl
         }
 
         searchKindDetail = SearchKindDetailFactory.getInstance().create(searchKindPK, searchKindName, isDefault, sortOrder,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         searchKind.setActiveDetail(searchKindDetail);
         searchKind.setLastDetail(searchKindDetail);
@@ -2794,7 +2794,7 @@ public class SearchControl
     public SearchKindDescription createSearchKindDescription(SearchKind searchKind, Language language, String description,
             BasePK createdBy) {
         var searchKindDescription = SearchKindDescriptionFactory.getInstance().create(searchKind,
-                language, description, session.getStartTime(), Session.MAX_TIME_LONG);
+                language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(searchKind.getPrimaryKey(), EventTypes.MODIFY, searchKindDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -2916,7 +2916,7 @@ public class SearchControl
             var description = searchKindDescriptionValue.getDescription();
 
             searchKindDescription = SearchKindDescriptionFactory.getInstance().create(searchKind, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(searchKind.getPrimaryKey(), EventTypes.MODIFY, searchKindDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -2956,7 +2956,7 @@ public class SearchControl
 
         var searchType = SearchTypeFactory.getInstance().create();
         var searchTypeDetail = SearchTypeDetailFactory.getInstance().create(session, searchType, searchKind, searchTypeName, isDefault, sortOrder,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         searchType = SearchTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -3187,7 +3187,7 @@ public class SearchControl
             }
 
             searchTypeDetail = SearchTypeDetailFactory.getInstance().create(searchTypePK, searchKindPK, searchTypeName, isDefault, sortOrder,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             searchType.setActiveDetail(searchTypeDetail);
             searchType.setLastDetail(searchTypeDetail);
@@ -3248,7 +3248,7 @@ public class SearchControl
     public SearchTypeDescription createSearchTypeDescription(SearchType searchType, Language language, String description,
             BasePK createdBy) {
         var searchTypeDescription = SearchTypeDescriptionFactory.getInstance().create(searchType,
-                language, description, session.getStartTime(), Session.MAX_TIME_LONG);
+                language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(searchType.getPrimaryKey(), EventTypes.MODIFY, searchTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -3370,7 +3370,7 @@ public class SearchControl
             var description = searchTypeDescriptionValue.getDescription();
 
             searchTypeDescription = SearchTypeDescriptionFactory.getInstance().create(searchType, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(searchType.getPrimaryKey(), EventTypes.MODIFY, searchTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -3410,7 +3410,7 @@ public class SearchControl
 
         var searchSortOrder = SearchSortOrderFactory.getInstance().create();
         var searchSortOrderDetail = SearchSortOrderDetailFactory.getInstance().create(session, searchSortOrder, searchKind, searchSortOrderName, isDefault, sortOrder,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         searchSortOrder = SearchSortOrderFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -3641,7 +3641,7 @@ public class SearchControl
             }
 
             searchSortOrderDetail = SearchSortOrderDetailFactory.getInstance().create(searchSortOrderPK, searchKindPK, searchSortOrderName, isDefault, sortOrder,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             searchSortOrder.setActiveDetail(searchSortOrderDetail);
             searchSortOrder.setLastDetail(searchSortOrderDetail);
@@ -3700,7 +3700,7 @@ public class SearchControl
     public SearchSortOrderDescription createSearchSortOrderDescription(SearchSortOrder searchSortOrder, Language language, String description,
             BasePK createdBy) {
         var searchSortOrderDescription = SearchSortOrderDescriptionFactory.getInstance().create(searchSortOrder,
-                language, description, session.getStartTime(), Session.MAX_TIME_LONG);
+                language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(searchSortOrder.getPrimaryKey(), EventTypes.MODIFY, searchSortOrderDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -3822,7 +3822,7 @@ public class SearchControl
             var description = searchSortOrderDescriptionValue.getDescription();
 
             searchSortOrderDescription = SearchSortOrderDescriptionFactory.getInstance().create(searchSortOrder, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(searchSortOrder.getPrimaryKey(), EventTypes.MODIFY, searchSortOrderDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -3850,7 +3850,7 @@ public class SearchControl
     public Search createSearch(Party party, Boolean partyVerified, SearchType searchType, Long executedTime, SearchUseType searchUseType,
             CachedSearch cachedSearch, BasePK createdBy) {
         var search = SearchFactory.getInstance().create(party, partyVerified, searchType, executedTime, searchUseType, cachedSearch,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(search.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
@@ -4100,7 +4100,7 @@ public class SearchControl
     public CachedSearch createCachedSearch(Index index, String querySha1Hash, String query, String parsedQuerySha1Hash, String parsedQuery,
             SearchDefaultOperator searchDefaultOperator, SearchSortOrder searchSortOrder, SearchSortDirection searchSortDirection, BasePK createdBy) {
         var cachedSearch = CachedSearchFactory.getInstance().create(index, querySha1Hash, query, parsedQuerySha1Hash, parsedQuery,
-                searchDefaultOperator, searchSortOrder, searchSortDirection, session.getStartTime(), Session.MAX_TIME_LONG);
+                searchDefaultOperator, searchSortOrder, searchSortDirection, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(cachedSearch.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
@@ -4131,7 +4131,7 @@ public class SearchControl
     private CachedSearch getCachedSearch(Index index, String querySha1Hash, String parsedQuerySha1Hash, SearchDefaultOperator searchDefaultOperator,
             SearchSortOrder searchSortOrder, SearchSortDirection searchSortDirection, EntityPermission entityPermission) {
         return CachedSearchFactory.getInstance().getEntityFromQuery(entityPermission, getCachedSearchQueries,
-                index, querySha1Hash, parsedQuerySha1Hash, searchDefaultOperator, searchSortOrder, searchSortDirection, Session.MAX_TIME_LONG);
+                index, querySha1Hash, parsedQuerySha1Hash, searchDefaultOperator, searchSortOrder, searchSortDirection, Session.MAX_TIME);
     }
 
     public CachedSearch getCachedSearch(Index index, String querySha1Hash, String parsedQuerySha1Hash, SearchDefaultOperator searchDefaultOperator,
@@ -4161,7 +4161,7 @@ public class SearchControl
 
     private List<CachedSearch> getCachedSearchesByIndex(Index index, EntityPermission entityPermission) {
         return CachedSearchFactory.getInstance().getEntitiesFromQuery(entityPermission, getCachedSearchesByIndexQueries,
-                index, Session.MAX_TIME_LONG);
+                index, Session.MAX_TIME);
     }
 
     public List<CachedSearch> getCachedSearchesByIndexForUpdate(Index index) {
@@ -4183,7 +4183,7 @@ public class SearchControl
 
     private List<CachedSearch> getCachedSearchesBySearchDefaultOperator(SearchDefaultOperator searchDefaultOperator, EntityPermission entityPermission) {
         return CachedSearchFactory.getInstance().getEntitiesFromQuery(entityPermission, getCachedSearchQueriesBySearchDefaultOperator,
-                searchDefaultOperator, Session.MAX_TIME_LONG);
+                searchDefaultOperator, Session.MAX_TIME);
     }
 
     public List<CachedSearch> getCachedSearchesBySearchDefaultOperatorForUpdate(SearchDefaultOperator searchDefaultOperator) {
@@ -4205,7 +4205,7 @@ public class SearchControl
 
     private List<CachedSearch> getCachedSearchesBySearchSortOrder(SearchSortOrder searchSortOrder, EntityPermission entityPermission) {
         return CachedSearchFactory.getInstance().getEntitiesFromQuery(entityPermission, getCachedSearchQueriesBySearchSortOrder,
-                searchSortOrder, Session.MAX_TIME_LONG);
+                searchSortOrder, Session.MAX_TIME);
     }
 
     public List<CachedSearch> getCachedSearchesBySearchSortOrderForUpdate(SearchSortOrder searchSortOrder) {
@@ -4227,7 +4227,7 @@ public class SearchControl
 
     private List<CachedSearch> getCachedSearchesBySearchSortDirection(SearchSortDirection searchSortDirection, EntityPermission entityPermission) {
         return CachedSearchFactory.getInstance().getEntitiesFromQuery(entityPermission, getCachedSearchQueriesBySearchSortDirection,
-                searchSortDirection, Session.MAX_TIME_LONG);
+                searchSortDirection, Session.MAX_TIME);
     }
 
     public List<CachedSearch> getCachedSearchesBySearchSortDirectionForUpdate(SearchSortDirection searchSortDirection) {
@@ -4321,7 +4321,7 @@ public class SearchControl
 
     public CachedSearchIndexField createCachedSearchIndexField(CachedSearch cachedSearch, IndexField indexField, BasePK createdBy) {
         var cachedSearchIndexField = CachedSearchIndexFieldFactory.getInstance().create(cachedSearch, indexField, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
         
         sendEvent(cachedSearch.getPrimaryKey(), EventTypes.MODIFY, cachedSearchIndexField.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -4342,7 +4342,7 @@ public class SearchControl
 
     private CachedSearchIndexField getCachedSearchIndexField(CachedSearch cachedSearch, IndexField indexField, EntityPermission entityPermission) {
         return CachedSearchIndexFieldFactory.getInstance().getEntityFromQuery(entityPermission, getCachedSearchIndexFieldQueries,
-                cachedSearch, indexField, Session.MAX_TIME_LONG);
+                cachedSearch, indexField, Session.MAX_TIME);
     }
 
     public CachedSearchIndexField getCachedSearchIndexField(CachedSearch cachedSearch, IndexField indexField) {
@@ -4364,7 +4364,7 @@ public class SearchControl
 
     private List<CachedSearchIndexField> getCachedSearchIndexFieldsByCachedSearch(CachedSearch cachedSearch, EntityPermission entityPermission) {
         return CachedSearchIndexFieldFactory.getInstance().getEntitiesFromQuery(entityPermission, getCachedSearchIndexFieldsByCachedSearchQueries,
-                cachedSearch, Session.MAX_TIME_LONG);
+                cachedSearch, Session.MAX_TIME);
     }
 
     public List<CachedSearchIndexField> getCachedSearchIndexFieldsByCachedSearchForUpdate(CachedSearch cachedSearch) {
@@ -4386,7 +4386,7 @@ public class SearchControl
 
     private List<CachedSearchIndexField> getCachedSearchIndexFieldsByIndexField(IndexField indexField, EntityPermission entityPermission) {
         return CachedSearchIndexFieldFactory.getInstance().getEntitiesFromQuery(entityPermission, getCachedSearchIndexFieldsBySearchIndexFieldTypeQueries,
-                indexField, Session.MAX_TIME_LONG);
+                indexField, Session.MAX_TIME);
     }
 
     public List<CachedSearchIndexField> getCachedSearchIndexFieldsByIndexFieldForUpdate(IndexField indexField) {
@@ -4421,7 +4421,7 @@ public class SearchControl
 
     public CachedExecutedSearch createCachedExecutedSearch(CachedSearch cachedSearch, BasePK createdBy) {
         var cachedExecutedSearch = CachedExecutedSearchFactory.getInstance().create(cachedSearch, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
         
         sendEvent(cachedSearch.getPrimaryKey(), EventTypes.MODIFY, cachedExecutedSearch.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -4447,7 +4447,7 @@ public class SearchControl
 
     private CachedExecutedSearch getCachedExecutedSearch(CachedSearch cachedSearch, EntityPermission entityPermission) {
         return CachedExecutedSearchFactory.getInstance().getEntityFromQuery(entityPermission, getCachedExecutedSearchQueries,
-                cachedSearch, Session.MAX_TIME_LONG);
+                cachedSearch, Session.MAX_TIME);
     }
 
     public CachedExecutedSearch getCachedExecutedSearch(CachedSearch cachedSearch) {
@@ -4705,7 +4705,7 @@ public class SearchControl
             SearchSortOrder searchSortOrder, SearchSortDirection searchSortDirection, BasePK createdBy) {
         var partySearchTypePreference = PartySearchTypePreferenceFactory.getInstance().create();
         var partySearchTypePreferenceDetail = PartySearchTypePreferenceDetailFactory.getInstance().create(partySearchTypePreference,
-                party, searchType, searchDefaultOperator, searchSortOrder, searchSortDirection, session.getStartTime(), Session.MAX_TIME_LONG);
+                party, searchType, searchDefaultOperator, searchSortOrder, searchSortDirection, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         partySearchTypePreference = PartySearchTypePreferenceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, partySearchTypePreference.getPrimaryKey());
@@ -4877,7 +4877,7 @@ public class SearchControl
             var searchSortDirectionPK = partySearchTypePreferenceDetailValue.getSearchSortDirectionPK();
             
             partySearchTypePreferenceDetail = PartySearchTypePreferenceDetailFactory.getInstance().create(partySearchTypePreferencePK, partyPK, searchTypePK,
-                    searchDefaultOperatorPK, searchSortOrderPK, searchSortDirectionPK, session.getStartTime(), Session.MAX_TIME_LONG);
+                    searchDefaultOperatorPK, searchSortOrderPK, searchSortDirectionPK, session.getStartTime(), Session.MAX_TIME);
 
             partySearchTypePreference.setActiveDetail(partySearchTypePreferenceDetail);
             partySearchTypePreference.setLastDetail(partySearchTypePreferenceDetail);
@@ -4929,7 +4929,7 @@ public class SearchControl
     public SearchResultAction createSearchResultAction(Search search, SearchResultActionType searchResultActionType, Long actionTime,
             EntityInstance entityInstance, BasePK createdBy) {
         var searchResultAction = SearchResultActionFactory.getInstance().create(search, searchResultActionType, actionTime, entityInstance,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(search.getPrimaryKey(), EventTypes.MODIFY, searchResultAction.getPrimaryKey(), EventTypes.CREATE, createdBy);
 

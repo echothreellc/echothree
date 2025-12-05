@@ -101,7 +101,7 @@ public class RatingControl
             BasePK createdBy) {
         var ratingType = RatingTypeFactory.getInstance().create();
         var ratingTypeDetail = RatingTypeDetailFactory.getInstance().create(ratingType, entityType,
-                ratingTypeName, ratingSequence, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                ratingTypeName, ratingSequence, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         ratingType = RatingTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -232,7 +232,7 @@ public class RatingControl
             var sortOrder = ratingTypeDetailValue.getSortOrder();
             
             ratingTypeDetail = RatingTypeDetailFactory.getInstance().create(ratingTypePK, entityTypePK, ratingTypeName,
-                    ratingSequencePK, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                    ratingSequencePK, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             ratingType.setActiveDetail(ratingTypeDetail);
             ratingType.setLastDetail(ratingTypeDetail);
@@ -270,7 +270,7 @@ public class RatingControl
     public RatingTypeDescription createRatingTypeDescription(RatingType ratingType, Language language, String description,
             BasePK createdBy) {
         var ratingTypeDescription = RatingTypeDescriptionFactory.getInstance().create(ratingType,
-                language, description, session.getStartTime(), Session.MAX_TIME_LONG);
+                language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(ratingType.getPrimaryKey(), EventTypes.MODIFY, ratingTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -406,7 +406,7 @@ public class RatingControl
             var language = ratingTypeDescription.getLanguage();
             var description = ratingTypeDescriptionValue.getDescription();
             
-            ratingTypeDescription = RatingTypeDescriptionFactory.getInstance().create(ratingType, language, description, session.getStartTime(), Session.MAX_TIME_LONG);
+            ratingTypeDescription = RatingTypeDescriptionFactory.getInstance().create(ratingType, language, description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(ratingType.getPrimaryKey(), EventTypes.MODIFY, ratingTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -448,7 +448,7 @@ public class RatingControl
         var ratingTypeListItem = RatingTypeListItemFactory.getInstance().create();
         var ratingTypeListItemDetail = RatingTypeListItemDetailFactory.getInstance().create(session,
                 ratingTypeListItem, ratingType, ratingTypeListItemName, isDefault, sortOrder, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
         
         // Convert to R/W
         ratingTypeListItem = RatingTypeListItemFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -643,7 +643,7 @@ public class RatingControl
             }
             
             ratingTypeListItemDetail = RatingTypeListItemDetailFactory.getInstance().create(ratingTypeListItemPK,
-                    ratingTypePK, ratingTypeListItemName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                    ratingTypePK, ratingTypeListItemName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             ratingTypeListItem.setActiveDetail(ratingTypeListItemDetail);
             ratingTypeListItem.setLastDetail(ratingTypeListItemDetail);
@@ -741,7 +741,7 @@ public class RatingControl
     public RatingTypeListItemDescription createRatingTypeListItemDescription(RatingTypeListItem ratingTypeListItem, Language language,
             String description, BasePK createdBy) {
         var ratingTypeListItemDescription = RatingTypeListItemDescriptionFactory.getInstance().create(session,
-                ratingTypeListItem, language, description, session.getStartTime(), Session.MAX_TIME_LONG);
+                ratingTypeListItem, language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(ratingTypeListItem.getPrimaryKey(), EventTypes.MODIFY, ratingTypeListItemDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -877,7 +877,7 @@ public class RatingControl
             var language = ratingTypeListItemDescription.getLanguage();
             var description = ratingTypeListItemDescriptionValue.getDescription();
             
-            ratingTypeListItemDescription = RatingTypeListItemDescriptionFactory.getInstance().create(ratingTypeListItem, language, description, session.getStartTime(), Session.MAX_TIME_LONG);
+            ratingTypeListItemDescription = RatingTypeListItemDescriptionFactory.getInstance().create(ratingTypeListItem, language, description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(ratingTypeListItem.getPrimaryKey(), EventTypes.MODIFY, ratingTypeListItemDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -906,7 +906,7 @@ public class RatingControl
             EntityInstance ratedByEntityInstance, BasePK createdBy) {
         var rating = RatingFactory.getInstance().create();
         var ratingDetail = RatingDetailFactory.getInstance().create(rating, ratingName, ratingTypeListItem,
-                ratedEntityInstance, ratedByEntityInstance, session.getStartTime(), Session.MAX_TIME_LONG);
+                ratedEntityInstance, ratedByEntityInstance, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         rating = RatingFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, rating.getPrimaryKey());
@@ -1207,7 +1207,7 @@ public class RatingControl
             var ratedByEntityInstancePK = ratingDetail.getRatedByEntityInstancePK(); // Not updated
             
             ratingDetail = RatingDetailFactory.getInstance().create(ratingPK, ratingName, ratingTypeListItemPK, ratedEntityInstancePK, ratedByEntityInstancePK,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             rating.setActiveDetail(ratingDetail);
             rating.setLastDetail(ratingDetail);

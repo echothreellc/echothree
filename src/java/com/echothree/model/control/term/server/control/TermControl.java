@@ -353,7 +353,7 @@ public class TermControl
 
         var term = TermFactory.getInstance().create();
         var termDetail = TermDetailFactory.getInstance().create(term, termName, termType, isDefault, sortOrder,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         term = TermFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -573,7 +573,7 @@ public class TermControl
         }
         
         termDetail = TermDetailFactory.getInstance().create(termPK, termName, termTypePK, isDefault, sortOrder,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         term.setActiveDetail(termDetail);
         term.setLastDetail(termDetail);
@@ -628,7 +628,7 @@ public class TermControl
     
     public TermDescription createTermDescription(Term term, Language language, String description, BasePK createdBy) {
         var termDescription = TermDescriptionFactory.getInstance().create(term, language, description,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(term.getPrimaryKey(), EventTypes.MODIFY, termDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -765,7 +765,7 @@ public class TermControl
             var description = termDescriptionValue.getDescription();
             
             termDescription = TermDescriptionFactory.getInstance().create(term, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(term.getPrimaryKey(), EventTypes.MODIFY, termDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -793,7 +793,7 @@ public class TermControl
     public StandardTerm createStandardTerm(Term term, Integer netDueDays, Integer discountPercentage, Integer discountDays,
             BasePK createdBy) {
         var standardTerm = StandardTermFactory.getInstance().create(term, netDueDays, discountPercentage,
-                discountDays, session.getStartTime(), Session.MAX_TIME_LONG);
+                discountDays, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(term.getPrimaryKey(), EventTypes.MODIFY, standardTerm.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -860,7 +860,7 @@ public class TermControl
             var discountDays = standardTermValue.getDiscountDays();
             
             standardTerm = StandardTermFactory.getInstance().create(termPK, netDueDays, discountPercentage, discountDays,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(termPK, EventTypes.MODIFY, standardTerm.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -887,7 +887,7 @@ public class TermControl
     public DateDrivenTerm createDateDrivenTerm(Term term, Integer netDueDayOfMonth, Integer dueNextMonthDays,
             Integer discountPercentage, Integer discountBeforeDayOfMonth, BasePK createdBy) {
         var dateDrivenTerm = DateDrivenTermFactory.getInstance().create(term, netDueDayOfMonth,
-                dueNextMonthDays, discountPercentage, discountBeforeDayOfMonth, session.getStartTime(), Session.MAX_TIME_LONG);
+                dueNextMonthDays, discountPercentage, discountBeforeDayOfMonth, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(term.getPrimaryKey(), EventTypes.MODIFY, dateDrivenTerm.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -955,7 +955,7 @@ public class TermControl
             var discountBeforeDayOfMonth = dateDrivenTermValue.getDiscountBeforeDayOfMonth();
             
             dateDrivenTerm = DateDrivenTermFactory.getInstance().create(termPK, netDueDayOfMonth, dueNextMonthDays,
-                    discountPercentage, discountBeforeDayOfMonth, session.getStartTime(), Session.MAX_TIME_LONG);
+                    discountPercentage, discountBeforeDayOfMonth, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(termPK, EventTypes.MODIFY, dateDrivenTerm.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -982,7 +982,7 @@ public class TermControl
     public CustomerTypeCreditLimit createCustomerTypeCreditLimit(CustomerType customerType, Currency currency, Long creditLimit,
             Long potentialCreditLimit, BasePK createdBy) {
         var customerTypeCreditLimit = CustomerTypeCreditLimitFactory.getInstance().create(customerType,
-                currency, creditLimit, potentialCreditLimit, session.getStartTime(), Session.MAX_TIME_LONG);
+                currency, creditLimit, potentialCreditLimit, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(customerType.getPrimaryKey(), EventTypes.MODIFY, customerTypeCreditLimit.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1106,7 +1106,7 @@ public class TermControl
             var potentialCreditLimit = customerTypeCreditLimitValue.getPotentialCreditLimit();
             
             customerTypeCreditLimit = CustomerTypeCreditLimitFactory.getInstance().create(customerTypePK, currencyPK, creditLimit,
-                    potentialCreditLimit, session.getStartTime(), Session.MAX_TIME_LONG);
+                    potentialCreditLimit, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(customerTypePK, EventTypes.MODIFY, customerTypeCreditLimit.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -1133,7 +1133,7 @@ public class TermControl
     public PartyCreditLimit createPartyCreditLimit(Party party, Currency currency, Long creditLimit, Long potentialCreditLimit,
             BasePK createdBy) {
         var partyCreditLimit = PartyCreditLimitFactory.getInstance().create(party, currency, creditLimit,
-                potentialCreditLimit, session.getStartTime(), Session.MAX_TIME_LONG);
+                potentialCreditLimit, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyCreditLimit.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1256,7 +1256,7 @@ public class TermControl
             var potentialCreditLimit = partyCreditLimitValue.getPotentialCreditLimit();
             
             partyCreditLimit = PartyCreditLimitFactory.getInstance().create(partyPK, currencyPK, creditLimit,
-                    potentialCreditLimit, session.getStartTime(), Session.MAX_TIME_LONG);
+                    potentialCreditLimit, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(partyPK, EventTypes.MODIFY, partyCreditLimit.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -1282,7 +1282,7 @@ public class TermControl
     
     public PartyTerm createPartyTerm(Party party, Term term, Boolean taxable, BasePK createdBy) {
         var partyTerm = PartyTermFactory.getInstance().create(party, term, taxable, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
         
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyTerm.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1398,7 +1398,7 @@ public class TermControl
             var taxable = partyTermValue.getTaxable();
             
             partyTerm = PartyTermFactory.getInstance().create(partyPK, termPK, taxable, session.getStartTime(),
-                    Session.MAX_TIME_LONG);
+                    Session.MAX_TIME);
             
             sendEvent(partyPK, EventTypes.MODIFY, partyTerm.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }

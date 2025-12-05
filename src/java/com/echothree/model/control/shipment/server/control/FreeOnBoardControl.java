@@ -70,7 +70,7 @@ public class FreeOnBoardControl
 
         var freeOnBoard = FreeOnBoardFactory.getInstance().create();
         var freeOnBoardDetail = FreeOnBoardDetailFactory.getInstance().create(session,
-                freeOnBoard, freeOnBoardName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                freeOnBoard, freeOnBoardName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         freeOnBoard = FreeOnBoardFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, freeOnBoard.getPrimaryKey());
@@ -275,7 +275,7 @@ public class FreeOnBoardControl
             }
 
             freeOnBoardDetail = FreeOnBoardDetailFactory.getInstance().create(freeOnBoardPK,
-                    freeOnBoardName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                    freeOnBoardName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             freeOnBoard.setActiveDetail(freeOnBoardDetail);
             freeOnBoard.setLastDetail(freeOnBoardDetail);
@@ -327,7 +327,7 @@ public class FreeOnBoardControl
     public FreeOnBoardDescription createFreeOnBoardDescription(final FreeOnBoard freeOnBoard,
             final Language language, final String description, final BasePK createdBy) {
         var freeOnBoardDescription = FreeOnBoardDescriptionFactory.getInstance().create(freeOnBoard,
-                language, description, session.getStartTime(), Session.MAX_TIME_LONG);
+                language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(freeOnBoard.getPrimaryKey(), EventTypes.MODIFY, freeOnBoardDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -444,7 +444,7 @@ public class FreeOnBoardControl
             var description = freeOnBoardDescriptionValue.getDescription();
 
             freeOnBoardDescription = FreeOnBoardDescriptionFactory.getInstance().create(freeOnBoard, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(freeOnBoard.getPrimaryKey(), EventTypes.MODIFY, freeOnBoardDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }

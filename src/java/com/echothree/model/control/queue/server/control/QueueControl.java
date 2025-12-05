@@ -96,7 +96,7 @@ public class QueueControl
 
         var queueType = QueueTypeFactory.getInstance().create();
         var queueTypeDetail = QueueTypeDetailFactory.getInstance().create(queueType, queueTypeName, isDefault, sortOrder, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
 
         // Convert to R/W
         queueType = QueueTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, queueType.getPrimaryKey());
@@ -320,7 +320,7 @@ public class QueueControl
             }
 
             queueTypeDetail = QueueTypeDetailFactory.getInstance().create(queueTypePK, queueTypeName, isDefault, sortOrder, session.getStartTime(),
-                    Session.MAX_TIME_LONG);
+                    Session.MAX_TIME);
 
             queueType.setActiveDetail(queueTypeDetail);
             queueType.setLastDetail(queueTypeDetail);
@@ -384,7 +384,7 @@ public class QueueControl
 
     public QueueTypeDescription createQueueTypeDescription(QueueType queueType, Language language, String description, BasePK createdBy) {
         var queueTypeDescription = QueueTypeDescriptionFactory.getInstance().create(queueType, language, description,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(queueType.getPrimaryKey(), EventTypes.MODIFY, queueTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -505,7 +505,7 @@ public class QueueControl
             var description = queueTypeDescriptionValue.getDescription();
 
             queueTypeDescription = QueueTypeDescriptionFactory.getInstance().create(queueType, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(queueType.getPrimaryKey(), EventTypes.MODIFY, queueTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }

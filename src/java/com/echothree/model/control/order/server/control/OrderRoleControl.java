@@ -138,7 +138,7 @@ public class OrderRoleControl
     }
 
     public OrderRole createOrderRole(Order order, Party party, OrderRoleType orderRoleType, BasePK createdBy) {
-        var orderRole = OrderRoleFactory.getInstance().create(order, party, orderRoleType, session.getStartTime(), Session.MAX_TIME_LONG);
+        var orderRole = OrderRoleFactory.getInstance().create(order, party, orderRoleType, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(order.getPrimaryKey(), EventTypes.MODIFY, orderRole.getPrimaryKey(), EventTypes.CREATE, createdBy);
 

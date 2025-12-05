@@ -67,7 +67,7 @@ public class SourceControl
 
         var source = SourceFactory.getInstance().create();
         var sourceDetail = SourceDetailFactory.getInstance().create(source, sourceName, offerUse, isDefault,
-                sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         source = SourceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, source.getPrimaryKey());
@@ -336,7 +336,7 @@ public class SourceControl
             }
 
             sourceDetail = SourceDetailFactory.getInstance().create(sourcePK, sourceName, offerUse.getPrimaryKey(), isDefault,
-                    sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                    sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             source.setActiveDetail(sourceDetail);
             source.setLastDetail(sourceDetail);

@@ -134,7 +134,7 @@ public class WarehouseControl
 
         var warehouseType = WarehouseTypeFactory.getInstance().create();
         var warehouseTypeDetail = WarehouseTypeDetailFactory.getInstance().create(warehouseType, warehouseTypeName, priority, isDefault, sortOrder,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         warehouseType = WarehouseTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -355,7 +355,7 @@ public class WarehouseControl
         }
 
         warehouseTypeDetail = WarehouseTypeDetailFactory.getInstance().create(warehouseTypePK, warehouseTypeName, priority,
-                isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         warehouseType.setActiveDetail(warehouseTypeDetail);
         warehouseType.setLastDetail(warehouseTypeDetail);
@@ -403,7 +403,7 @@ public class WarehouseControl
     public WarehouseTypeDescription createWarehouseTypeDescription(WarehouseType warehouseType, Language language, String description,
             BasePK createdBy) {
         var warehouseTypeDescription = WarehouseTypeDescriptionFactory.getInstance().create(warehouseType,
-                language, description, session.getStartTime(), Session.MAX_TIME_LONG);
+                language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(warehouseType.getPrimaryKey(), EventTypes.MODIFY, warehouseTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -524,7 +524,7 @@ public class WarehouseControl
             var description = warehouseTypeDescriptionValue.getDescription();
 
             warehouseTypeDescription = WarehouseTypeDescriptionFactory.getInstance().create(warehouseType, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(warehouseType.getPrimaryKey(), EventTypes.MODIFY, warehouseTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -564,7 +564,7 @@ public class WarehouseControl
         }
 
         var warehouse = WarehouseFactory.getInstance().create(party, warehouseName, warehouseType, isDefault, sortOrder,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, warehouse.getPrimaryKey(), null, createdBy);
         
@@ -834,7 +834,7 @@ public class WarehouseControl
             }
             
             warehouse = WarehouseFactory.getInstance().create(partyPK, warehouseName, warehouseTypePK, isDefault, sortOrder,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(partyPK, EventTypes.MODIFY, warehouse.getPrimaryKey(), null, updatedBy);
         }
@@ -886,7 +886,7 @@ public class WarehouseControl
             BasePK createdBy) {
         var locationType = LocationTypeFactory.getInstance().create();
         var locationTypeDetail = LocationTypeDetailFactory.getInstance().create(locationType, warehouseParty,
-                locationTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                locationTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         locationType = LocationTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, locationType.getPrimaryKey());
@@ -1123,7 +1123,7 @@ public class WarehouseControl
             }
             
             locationTypeDetail = LocationTypeDetailFactory.getInstance().create(locationTypePK, warehousePartyPK,
-                    locationTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                    locationTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             locationType.setActiveDetail(locationTypeDetail);
             locationType.setLastDetail(locationTypeDetail);
@@ -1188,7 +1188,7 @@ public class WarehouseControl
     
     public LocationTypeDescription createLocationTypeDescription(LocationType locationType, Language language, String description, BasePK createdBy) {
         var locationTypeDescription = LocationTypeDescriptionFactory.getInstance().create(locationType, language, description, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
         
         sendEvent(locationType.getPrimaryKey(), EventTypes.MODIFY, locationTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1331,7 +1331,7 @@ public class WarehouseControl
             var description = locationTypeDescriptionValue.getDescription();
             
             locationTypeDescription = LocationTypeDescriptionFactory.getInstance().create(locationType, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(locationType.getPrimaryKey(), EventTypes.MODIFY, locationTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -1361,7 +1361,7 @@ public class WarehouseControl
         var locationNameElement = LocationNameElementFactory.getInstance().create();
         var locationNameElementDetail = LocationNameElementDetailFactory.getInstance().create(session,
                 locationNameElement, locationType, locationNameElementName, offset, length, validationPattern, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
         
         // Convert to R/W
         locationNameElement = LocationNameElementFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, locationNameElement.getPrimaryKey());
@@ -1509,7 +1509,7 @@ public class WarehouseControl
             
             locationNameElementDetail = LocationNameElementDetailFactory.getInstance().create(locationNameElementPK,
                     locationTypePK, locationNameElementName, offset, length, validationPattern, session.getStartTime(),
-                    Session.MAX_TIME_LONG);
+                    Session.MAX_TIME);
             
             locationNameElement.setActiveDetail(locationNameElementDetail);
             locationNameElement.setLastDetail(locationNameElementDetail);
@@ -1544,7 +1544,7 @@ public class WarehouseControl
     public LocationNameElementDescription createLocationNameElementDescription(LocationNameElement locationNameElement, Language language,
             String description, BasePK createdBy) {
         var locationNameElementDescription = LocationNameElementDescriptionFactory.getInstance().create(session,
-                locationNameElement, language, description, session.getStartTime(), Session.MAX_TIME_LONG);
+                locationNameElement, language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(locationNameElement.getPrimaryKey(), EventTypes.MODIFY, locationNameElementDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1687,7 +1687,7 @@ public class WarehouseControl
             var description = locationNameElementDescriptionValue.getDescription();
             
             locationNameElementDescription = LocationNameElementDescriptionFactory.getInstance().create(locationNameElement,
-                    language, description, session.getStartTime(), Session.MAX_TIME_LONG);
+                    language, description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(locationNameElement.getPrimaryKey(), EventTypes.MODIFY, locationNameElementDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -1716,7 +1716,7 @@ public class WarehouseControl
             LocationUseType locationUseType, Integer velocity, InventoryLocationGroup inventoryLocationGroup, BasePK createdBy) {
         var location = LocationFactory.getInstance().create();
         var locationDetail = LocationDetailFactory.getInstance().create(location, warehouseParty, locationName,
-                locationType, locationUseType, velocity, inventoryLocationGroup, session.getStartTime(), Session.MAX_TIME_LONG);
+                locationType, locationUseType, velocity, inventoryLocationGroup, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         location = LocationFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, location.getPrimaryKey());
@@ -2057,7 +2057,7 @@ public class WarehouseControl
             
             locationDetail = LocationDetailFactory.getInstance().create(locationPK, warehousePartyPK, locationName,
                     locationTypePK, locationUseTypePK, velocity, inventoryLocationGroupPK, session.getStartTime(),
-                    Session.MAX_TIME_LONG);
+                    Session.MAX_TIME);
             
             location.setActiveDetail(locationDetail);
             location.setLastDetail(locationDetail);
@@ -2109,7 +2109,7 @@ public class WarehouseControl
     
     public LocationDescription createLocationDescription(Location location, Language language, String description, BasePK createdBy) {
         var locationDescription = LocationDescriptionFactory.getInstance().create(location, language, description, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
         
         sendEvent(location.getPrimaryKey(), EventTypes.MODIFY, locationDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -2251,7 +2251,7 @@ public class WarehouseControl
             var description = locationDescriptionValue.getDescription();
             
             locationDescription = LocationDescriptionFactory.getInstance().create(location, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(location.getPrimaryKey(), EventTypes.MODIFY, locationDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -2278,7 +2278,7 @@ public class WarehouseControl
     
     public LocationVolume createLocationVolume(Location location, Long height, Long width, Long depth, BasePK createdBy) {
         var locationVolume = LocationVolumeFactory.getInstance().create(location, height, width, depth,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(location.getPrimaryKey(), EventTypes.MODIFY, locationVolume.getPrimaryKey(), null, createdBy);
         
@@ -2353,7 +2353,7 @@ public class WarehouseControl
             var depth = locationVolumeValue.getDepth();
             
             locationVolume = LocationVolumeFactory.getInstance().create(locationPK, height,
-                    width, depth, session.getStartTime(), Session.MAX_TIME_LONG);
+                    width, depth, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(locationPK, EventTypes.MODIFY, locationVolume.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -2379,7 +2379,7 @@ public class WarehouseControl
     public LocationCapacity createLocationCapacity(Location location, UnitOfMeasureType unitOfMeasureType,
             Long capacity, BasePK createdBy) {
         var locationCapacity = LocationCapacityFactory.getInstance().create(location,
-                unitOfMeasureType, capacity, session.getStartTime(), Session.MAX_TIME_LONG);
+                unitOfMeasureType, capacity, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(location.getPrimaryKey(), EventTypes.MODIFY, locationCapacity.getPrimaryKey(), null, createdBy);
         
@@ -2491,7 +2491,7 @@ public class WarehouseControl
             var capacity = locationCapacityValue.getCapacity();
             
             locationCapacity = LocationCapacityFactory.getInstance().create(locationPK, unitOfMeasureTypePK, capacity,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(unitOfMeasureTypePK, EventTypes.MODIFY, locationCapacity.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }

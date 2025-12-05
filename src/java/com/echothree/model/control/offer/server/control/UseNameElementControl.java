@@ -58,7 +58,7 @@ public class UseNameElementControl
         var useNameElement = UseNameElementFactory.getInstance().create();
         var useNameElementDetail = UseNameElementDetailFactory.getInstance().create(session,
                 useNameElement, useNameElementName, offset, length, validationPattern, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
 
         // Convert to R/W
         useNameElement = UseNameElementFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -203,7 +203,7 @@ public class UseNameElementControl
             var validationPattern = useNameElementDetailValue.getValidationPattern();
 
             useNameElementDetail = UseNameElementDetailFactory.getInstance().create(useNameElementPK,
-                    useNameElementName, offset, length, validationPattern, session.getStartTime(), Session.MAX_TIME_LONG);
+                    useNameElementName, offset, length, validationPattern, session.getStartTime(), Session.MAX_TIME);
 
             useNameElement.setActiveDetail(useNameElementDetail);
             useNameElement.setLastDetail(useNameElementDetail);
@@ -230,7 +230,7 @@ public class UseNameElementControl
     public UseNameElementDescription createUseNameElementDescription(UseNameElement useNameElement, Language language,
             String description, BasePK createdBy) {
         var useNameElementDescription = UseNameElementDescriptionFactory.getInstance().create(session,
-                useNameElement, language, description, session.getStartTime(), Session.MAX_TIME_LONG);
+                useNameElement, language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(useNameElement.getPrimaryKey(), EventTypes.MODIFY,
                 useNameElementDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -373,7 +373,7 @@ public class UseNameElementControl
             var description = useNameElementDescriptionValue.getDescription();
 
             useNameElementDescription = UseNameElementDescriptionFactory.getInstance().create(useNameElement,
-                    language, description, session.getStartTime(), Session.MAX_TIME_LONG);
+                    language, description, session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(useNameElement.getPrimaryKey(), EventTypes.MODIFY,
                     useNameElementDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);

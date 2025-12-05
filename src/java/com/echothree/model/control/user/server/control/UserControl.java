@@ -221,7 +221,7 @@ public class UserControl
         
         userKey = userKeyFactory.create();
         var userKeyDetail = userKeyDetailFactory.create(userKey, userKeyName, (Party)null, (PartyRelationship)null,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         userKey = userKeyFactory.getEntityFromPK(EntityPermission.READ_WRITE, userKey.getPrimaryKey());
@@ -362,7 +362,7 @@ public class UserControl
         var partyRelationshipPK = userKeyDetailValue.getPartyRelationshipPK();
         
         userKeyDetail = userKeyDetailFactory.create(userKeyPK, userKeyDetail.getUserKeyName(), partyPK, partyRelationshipPK,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         userKey.setActiveDetail(userKeyDetail);
         userKey.setLastDetail(userKeyDetail);
@@ -506,7 +506,7 @@ public class UserControl
     public UserVisitGroup createUserVisitGroup(String userVisitGroupName, BasePK createdBy) {
         var userVisitGroup = userVisitGroupFactory.create();
         var userVisitGroupDetail = userVisitGroupDetailFactory.create(userVisitGroup, userVisitGroupName,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         userVisitGroup = userVisitGroupFactory.getEntityFromPK(EntityPermission.READ_WRITE,
@@ -696,7 +696,7 @@ public class UserControl
 
         var userVisit = userVisitFactory.create(userVisitGroup, userKey, preferredLanguage, preferredCurrency,
                 preferredTimeZone, preferredDateTimeFormat, session.getStartTime(), offerUse, associateReferral, retainUntilTime,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         createUserVisitStatus(userVisit);
 
@@ -1205,7 +1205,7 @@ public class UserControl
             }
         }
         
-        return userSessionFactory.create(userVisit, party, partyRelationship, identityVerifiedTime, session.getStartTime(), Session.MAX_TIME_LONG);
+        return userSessionFactory.create(userVisit, party, partyRelationship, identityVerifiedTime, session.getStartTime(), Session.MAX_TIME);
     }
     
     private static final Map<EntityPermission, String> getUserSessionsByPartyQueries;
@@ -1351,7 +1351,7 @@ public class UserControl
 
         var recoveryQuestion = recoveryQuestionFactory.create();
         var recoveryQuestionDetail = recoveryQuestionDetailFactory.create(recoveryQuestion,
-                recoveryQuestionName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                recoveryQuestionName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         recoveryQuestion = recoveryQuestionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
@@ -1571,7 +1571,7 @@ public class UserControl
             }
             
             recoveryQuestionDetail = recoveryQuestionDetailFactory.create(recoveryQuestionPK,
-                    recoveryQuestionName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                    recoveryQuestionName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             recoveryQuestion.setActiveDetail(recoveryQuestionDetail);
             recoveryQuestion.setLastDetail(recoveryQuestionDetail);
@@ -1627,7 +1627,7 @@ public class UserControl
     public RecoveryQuestionDescription createRecoveryQuestionDescription(RecoveryQuestion recoveryQuestion, Language language,
             String description, BasePK createdBy) {
         var recoveryQuestionDescription = recoveryQuestionDescriptionFactory.create(session,
-                recoveryQuestion, language, description, session.getStartTime(), Session.MAX_TIME_LONG);
+                recoveryQuestion, language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(recoveryQuestion.getPrimaryKey(), EventTypes.MODIFY, recoveryQuestionDescription.getPrimaryKey(),
                 null, createdBy);
@@ -1768,7 +1768,7 @@ public class UserControl
             var description = recoveryQuestionDescriptionValue.getDescription();
             
             recoveryQuestionDescription = recoveryQuestionDescriptionFactory.create(recoveryQuestion, language,
-                    description, session.getStartTime(), Session.MAX_TIME_LONG);
+                    description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(recoveryQuestion.getPrimaryKey(), EventTypes.MODIFY, recoveryQuestionDescription.getPrimaryKey(),
                     null, updatedBy);
@@ -1803,7 +1803,7 @@ public class UserControl
     public RecoveryAnswer createRecoveryAnswer(Party party, RecoveryQuestion recoveryQuestion, String answer, BasePK createdBy) {
         var recoveryAnswer = recoveryAnswerFactory.create();
         var recoveryAnswerDetail = recoveryAnswerDetailFactory.create(recoveryAnswer,
-                party, recoveryQuestion, answer, session.getStartTime(), Session.MAX_TIME_LONG);
+                party, recoveryQuestion, answer, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         recoveryAnswer = recoveryAnswerFactory.getEntityFromPK(EntityPermission.READ_WRITE, recoveryAnswer.getPrimaryKey());
@@ -1924,7 +1924,7 @@ public class UserControl
             var answer = recoveryAnswerDetailValue.getAnswer();
 
             recoveryAnswerDetail = recoveryAnswerDetailFactory.create(recoveryAnswerPK, partyPK, recoveryQuestionPK, answer,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             recoveryAnswer.setActiveDetail(recoveryAnswerDetail);
             recoveryAnswer.setLastDetail(recoveryAnswerDetail);
@@ -2150,7 +2150,7 @@ public class UserControl
     
     public UserLoginPassword createUserLoginPassword(Party party, UserLoginPasswordType userLoginPasswordType, BasePK createdBy) {
         var userLoginPassword = userLoginPasswordFactory.create(party, userLoginPasswordType,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, userLoginPassword.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -2295,7 +2295,7 @@ public class UserControl
         }
 
         var userLoginPasswordString = userLoginPasswordStringFactory.create(session,
-                userLoginPassword, salt, password, changedTime, wasReset, session.getStartTime(), Session.MAX_TIME_LONG);
+                userLoginPassword, salt, password, changedTime, wasReset, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(userLoginPassword.getPartyPK(), EventTypes.MODIFY, userLoginPasswordString.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -2399,7 +2399,7 @@ public class UserControl
             }
             
             userLoginPasswordString = userLoginPasswordStringFactory.create(userLoginPasswordPK, salt, password, changedTime, wasReset,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(userLoginPasswordString.getUserLoginPassword().getPartyPK(), EventTypes.MODIFY, userLoginPasswordString.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -2421,7 +2421,7 @@ public class UserControl
     
     public UserLogin createUserLogin(Party party, String username, BasePK createdBy) {
         var userLogin = userLoginFactory.create(party, username, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
         
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, userLogin.getPrimaryKey(), null, createdBy);
         
@@ -2536,7 +2536,7 @@ public class UserControl
             var username = userLoginValue.getUsername();
             
             userLogin = userLoginFactory.create(partyPK, username, session.getStartTime(),
-                    Session.MAX_TIME_LONG);
+                    Session.MAX_TIME);
             
             sendEvent(partyPK, EventTypes.MODIFY, userLogin.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }

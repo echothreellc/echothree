@@ -159,7 +159,7 @@ public class CancellationPolicyControl
     
     public PartyCancellationPolicy createPartyCancellationPolicy(Party party, CancellationPolicy cancellationPolicy, BasePK createdBy) {
         var partyCancellationPolicy = PartyCancellationPolicyFactory.getInstance().create(party, cancellationPolicy,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyCancellationPolicy.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -209,7 +209,7 @@ public class CancellationPolicyControl
 
     private PartyCancellationPolicy getPartyCancellationPolicy(Party party, CancellationPolicy cancellationPolicy, EntityPermission entityPermission) {
         return PartyCancellationPolicyFactory.getInstance().getEntityFromQuery(entityPermission, getPartyCancellationPolicyQueries,
-                party, cancellationPolicy, Session.MAX_TIME_LONG);
+                party, cancellationPolicy, Session.MAX_TIME);
     }
 
     public PartyCancellationPolicy getPartyCancellationPolicy(Party party, CancellationPolicy cancellationPolicy) {
@@ -246,7 +246,7 @@ public class CancellationPolicyControl
 
     private List<PartyCancellationPolicy> getPartyCancellationPoliciesByCancellationPolicy(CancellationPolicy cancellationPolicy, EntityPermission entityPermission) {
         return PartyCancellationPolicyFactory.getInstance().getEntitiesFromQuery(entityPermission, getPartyCancellationPoliciesByCancellationPolicyQueries,
-                cancellationPolicy, Session.MAX_TIME_LONG);
+                cancellationPolicy, Session.MAX_TIME);
     }
 
     public List<PartyCancellationPolicy> getPartyCancellationPoliciesByCancellationPolicy(CancellationPolicy cancellationPolicy) {
@@ -279,7 +279,7 @@ public class CancellationPolicyControl
 
     private List<PartyCancellationPolicy> getPartyCancellationPoliciesByParty(Party party, EntityPermission entityPermission) {
         return PartyCancellationPolicyFactory.getInstance().getEntitiesFromQuery(entityPermission, getPartyCancellationPoliciesByPartyQueries,
-                party, Session.MAX_TIME_LONG);
+                party, Session.MAX_TIME);
     }
 
     public List<PartyCancellationPolicy> getPartyCancellationPoliciesByParty(Party party) {
@@ -357,7 +357,7 @@ public class CancellationPolicyControl
 
         var cancellationKind = CancellationKindFactory.getInstance().create();
         var cancellationKindDetail = CancellationKindDetailFactory.getInstance().create(cancellationKind, cancellationKindName,
-                cancellationSequenceType, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                cancellationSequenceType, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         cancellationKind = CancellationKindFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -581,7 +581,7 @@ public class CancellationPolicyControl
         }
         
         cancellationKindDetail = CancellationKindDetailFactory.getInstance().create(cancellationKindPK, cancellationKindName, cancellationSequenceTypePK,
-                isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         cancellationKind.setActiveDetail(cancellationKindDetail);
         cancellationKind.setLastDetail(cancellationKindDetail);
@@ -629,7 +629,7 @@ public class CancellationPolicyControl
     public CancellationKindDescription createCancellationKindDescription(CancellationKind cancellationKind, Language language, String description,
             BasePK createdBy) {
         var cancellationKindDescription = CancellationKindDescriptionFactory.getInstance().create(cancellationKind,
-                language, description, session.getStartTime(), Session.MAX_TIME_LONG);
+                language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(cancellationKind.getPrimaryKey(), EventTypes.MODIFY, cancellationKindDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -768,7 +768,7 @@ public class CancellationPolicyControl
             var description = cancellationKindDescriptionValue.getDescription();
             
             cancellationKindDescription = CancellationKindDescriptionFactory.getInstance().create(cancellationKind, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(cancellationKind.getPrimaryKey(), EventTypes.MODIFY, cancellationKindDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -810,7 +810,7 @@ public class CancellationPolicyControl
         var cancellationPolicy = CancellationPolicyFactory.getInstance().create();
         var cancellationPolicyDetail = CancellationPolicyDetailFactory.getInstance().create(session,
                 cancellationPolicy, cancellationKind, cancellationPolicyName, isDefault, sortOrder, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
         
         // Convert to R/W
         cancellationPolicy = CancellationPolicyFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -1066,7 +1066,7 @@ public class CancellationPolicyControl
             }
             
             cancellationPolicyDetail = CancellationPolicyDetailFactory.getInstance().create(cancellationPolicyPK,
-                    cancellationKindPK, cancellationPolicyName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                    cancellationKindPK, cancellationPolicyName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             cancellationPolicy.setActiveDetail(cancellationPolicyDetail);
             cancellationPolicy.setLastDetail(cancellationPolicyDetail);
@@ -1125,7 +1125,7 @@ public class CancellationPolicyControl
     public CancellationPolicyTranslation createCancellationPolicyTranslation(CancellationPolicy cancellationPolicy, Language language,
             String description, MimeType policyMimeType, String policy, BasePK createdBy) {
         var cancellationPolicyTranslation = CancellationPolicyTranslationFactory.getInstance().create(cancellationPolicy,
-                language, description, policyMimeType, policy, session.getStartTime(), Session.MAX_TIME_LONG);
+                language, description, policyMimeType, policy, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(cancellationPolicy.getPrimaryKey(), EventTypes.MODIFY, cancellationPolicyTranslation.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -1242,7 +1242,7 @@ public class CancellationPolicyControl
             var policy = cancellationPolicyTranslationValue.getPolicy();
 
             cancellationPolicyTranslation = CancellationPolicyTranslationFactory.getInstance().create(cancellationPolicyPK, languagePK, description,
-                    policyMimeTypePK, policy, session.getStartTime(), Session.MAX_TIME_LONG);
+                    policyMimeTypePK, policy, session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(cancellationPolicyPK, EventTypes.MODIFY, cancellationPolicyTranslation.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -1282,7 +1282,7 @@ public class CancellationPolicyControl
         }
 
         var cancellationPolicyReason = CancellationPolicyReasonFactory.getInstance().create(cancellationPolicy, cancellationReason,
-                isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(cancellationPolicy.getPrimaryKey(), EventTypes.MODIFY, cancellationPolicyReason.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1513,7 +1513,7 @@ public class CancellationPolicyControl
             }
             
             cancellationPolicyReason = CancellationPolicyReasonFactory.getInstance().create(cancellationPolicyPK, cancellationReasonPK,
-                    isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                    isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(cancellationPolicyPK, EventTypes.MODIFY, cancellationPolicyReason.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -1583,7 +1583,7 @@ public class CancellationPolicyControl
         var cancellationReason = CancellationReasonFactory.getInstance().create();
         var cancellationReasonDetail = CancellationReasonDetailFactory.getInstance().create(session,
                 cancellationReason, cancellationKind, cancellationReasonName, isDefault, sortOrder, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
         
         // Convert to R/W
         cancellationReason = CancellationReasonFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -1810,7 +1810,7 @@ public class CancellationPolicyControl
             }
             
             cancellationReasonDetail = CancellationReasonDetailFactory.getInstance().create(cancellationReasonPK,
-                    cancellationKindPK, cancellationReasonName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                    cancellationKindPK, cancellationReasonName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             cancellationReason.setActiveDetail(cancellationReasonDetail);
             cancellationReason.setLastDetail(cancellationReasonDetail);
@@ -1869,7 +1869,7 @@ public class CancellationPolicyControl
     public CancellationReasonDescription createCancellationReasonDescription(CancellationReason cancellationReason, Language language, String description,
             BasePK createdBy) {
         var cancellationReasonDescription = CancellationReasonDescriptionFactory.getInstance().create(cancellationReason,
-                language, description, session.getStartTime(), Session.MAX_TIME_LONG);
+                language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(cancellationReason.getPrimaryKey(), EventTypes.MODIFY, cancellationReasonDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -2008,7 +2008,7 @@ public class CancellationPolicyControl
             var description = cancellationReasonDescriptionValue.getDescription();
             
             cancellationReasonDescription = CancellationReasonDescriptionFactory.getInstance().create(cancellationReason, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(cancellationReason.getPrimaryKey(), EventTypes.MODIFY, cancellationReasonDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -2048,7 +2048,7 @@ public class CancellationPolicyControl
         }
 
         var cancellationReasonType = CancellationReasonTypeFactory.getInstance().create(cancellationReason, cancellationType,
-                isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(cancellationReason.getPrimaryKey(), EventTypes.MODIFY, cancellationReasonType.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -2280,7 +2280,7 @@ public class CancellationPolicyControl
             }
             
             cancellationReasonType = CancellationReasonTypeFactory.getInstance().create(cancellationReasonPK, cancellationTypePK,
-                    isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                    isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(cancellationReasonPK, EventTypes.MODIFY, cancellationReasonType.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -2350,7 +2350,7 @@ public class CancellationPolicyControl
         var cancellationType = CancellationTypeFactory.getInstance().create();
         var cancellationTypeDetail = CancellationTypeDetailFactory.getInstance().create(session,
                 cancellationType, cancellationKind, cancellationTypeName, cancellationSequence, isDefault, sortOrder, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
         
         // Convert to R/W
         cancellationType = CancellationTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -2602,7 +2602,7 @@ public class CancellationPolicyControl
             }
             
             cancellationTypeDetail = CancellationTypeDetailFactory.getInstance().create(cancellationTypePK, cancellationKindPK, cancellationTypeName,
-                    cancellationSequencePK, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                    cancellationSequencePK, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             cancellationType.setActiveDetail(cancellationTypeDetail);
             cancellationType.setLastDetail(cancellationTypeDetail);
@@ -2660,7 +2660,7 @@ public class CancellationPolicyControl
     public CancellationTypeDescription createCancellationTypeDescription(CancellationType cancellationType, Language language, String description,
             BasePK createdBy) {
         var cancellationTypeDescription = CancellationTypeDescriptionFactory.getInstance().create(cancellationType,
-                language, description, session.getStartTime(), Session.MAX_TIME_LONG);
+                language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(cancellationType.getPrimaryKey(), EventTypes.MODIFY, cancellationTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -2799,7 +2799,7 @@ public class CancellationPolicyControl
             var description = cancellationTypeDescriptionValue.getDescription();
             
             cancellationTypeDescription = CancellationTypeDescriptionFactory.getInstance().create(cancellationType, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(cancellationType.getPrimaryKey(), EventTypes.MODIFY, cancellationTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }

@@ -402,7 +402,7 @@ public class EventControl
     public EventGroup createEventGroup(String eventGroupName, BasePK createdBy) {
         var eventGroup = eventGroupFactory.create();
         var eventGroupDetail = eventGroupDetailFactory.create(eventGroup, eventGroupName,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         eventGroup = eventGroupFactory.getEntityFromPK(EntityPermission.READ_WRITE,
@@ -916,7 +916,7 @@ public class EventControl
         var eventSubscriber = eventSubscriberFactory.create();
         var eventSubscriberDetail = eventSubscriberDetailFactory.create(session,
                 eventSubscriber, eventSubscriberName, entityInstance, description, sortOrder, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
 
         // Convert to R/W
         eventSubscriber = eventSubscriberFactory.getEntityFromPK(EntityPermission.READ_WRITE,
@@ -1116,7 +1116,7 @@ public class EventControl
     public EventSubscriberEventType createEventSubscriberEventType(EventSubscriber eventSubscriber, EventType eventType,
             BasePK createdBy) {
         var eventSubscriberEventType = eventSubscriberEventTypeFactory.create(session,
-                eventSubscriber, eventType, session.getStartTime(), Session.MAX_TIME_LONG);
+                eventSubscriber, eventType, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(eventSubscriber.getPrimaryKey(), EventTypes.MODIFY, eventSubscriberEventType.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -1173,7 +1173,7 @@ public class EventControl
     public EventSubscriberEntityType createEventSubscriberEntityType(EventSubscriber eventSubscriber, EntityType entityType,
             EventType eventType, BasePK createdBy) {
         var eventSubscriberEntityType = eventSubscriberEntityTypeFactory.create(session,
-                eventSubscriber, entityType, eventType, session.getStartTime(), Session.MAX_TIME_LONG);
+                eventSubscriber, entityType, eventType, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(eventSubscriber.getPrimaryKey(), EventTypes.MODIFY, eventSubscriberEntityType.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -1232,7 +1232,7 @@ public class EventControl
     public EventSubscriberEntityInstance createEventSubscriberEntityInstance(EventSubscriber eventSubscriber,
             EntityInstance entityInstance, EventType eventType, BasePK createdBy) {
         var eventSubscriberEntityInstance = eventSubscriberEntityInstanceFactory.create(session,
-                eventSubscriber, entityInstance, eventType, session.getStartTime(), Session.MAX_TIME_LONG);
+                eventSubscriber, entityInstance, eventType, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(eventSubscriber.getPrimaryKey(), EventTypes.MODIFY, eventSubscriberEntityInstance.getPrimaryKey(), EventTypes.CREATE, createdBy);
 

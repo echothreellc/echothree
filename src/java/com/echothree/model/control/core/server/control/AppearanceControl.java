@@ -91,7 +91,7 @@ public class AppearanceControl
 
         var appearance = AppearanceFactory.getInstance().create();
         var appearanceDetail = AppearanceDetailFactory.getInstance().create(appearance, appearanceName, textColor, backgroundColor, fontStyle,
-                fontWeight, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                fontWeight, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         appearance = AppearanceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, appearance.getPrimaryKey());
@@ -448,7 +448,7 @@ public class AppearanceControl
             }
 
             appearanceDetail = AppearanceDetailFactory.getInstance().create(appearancePK, appearanceName, textColorPK, backgroundColorPK, fontStylePK,
-                    fontWeightPK, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                    fontWeightPK, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             appearance.setActiveDetail(appearanceDetail);
             appearance.setLastDetail(appearanceDetail);
@@ -535,7 +535,7 @@ public class AppearanceControl
 
     public AppearanceDescription createAppearanceDescription(Appearance appearance, Language language, String description, BasePK createdBy) {
         var appearanceDescription = AppearanceDescriptionFactory.getInstance().create(appearance, language, description,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(appearance.getPrimaryKey(), EventTypes.MODIFY, appearanceDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -656,7 +656,7 @@ public class AppearanceControl
             var description = appearanceDescriptionValue.getDescription();
 
             appearanceDescription = AppearanceDescriptionFactory.getInstance().create(appearance, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(appearance.getPrimaryKey(), EventTypes.MODIFY, appearanceDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -683,7 +683,7 @@ public class AppearanceControl
 
     public AppearanceTextDecoration createAppearanceTextDecoration(Appearance appearance, TextDecoration textDecoration, BasePK createdBy) {
         var appearanceTextDecoration = AppearanceTextDecorationFactory.getInstance().create(appearance, textDecoration,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(appearance.getPrimaryKey(), EventTypes.MODIFY, appearanceTextDecoration.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -840,7 +840,7 @@ public class AppearanceControl
 
     public AppearanceTextTransformation createAppearanceTextTransformation(Appearance appearance, TextTransformation textTransformation, BasePK createdBy) {
         var appearanceTextTransformation = AppearanceTextTransformationFactory.getInstance().create(appearance, textTransformation,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(appearance.getPrimaryKey(), EventTypes.MODIFY, appearanceTextTransformation.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -997,7 +997,7 @@ public class AppearanceControl
 
     public EntityAppearance createEntityAppearance(EntityInstance entityInstance, Appearance appearance, BasePK createdBy) {
         var entityAppearance = EntityAppearanceFactory.getInstance().create(entityInstance, appearance, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
 
         sendEvent(entityInstance, EventTypes.MODIFY, entityAppearance.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -1123,7 +1123,7 @@ public class AppearanceControl
             var entityInstance = entityAppearance.getEntityInstance(); // Not updated.
             var appearancePK = entityAppearanceValue.getAppearancePK();
 
-            entityAppearance = EntityAppearanceFactory.getInstance().create(entityInstance.getPrimaryKey(), appearancePK, session.getStartTime(), Session.MAX_TIME_LONG);
+            entityAppearance = EntityAppearanceFactory.getInstance().create(entityInstance.getPrimaryKey(), appearancePK, session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(entityInstance, EventTypes.MODIFY, entityAppearance.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }

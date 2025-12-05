@@ -76,7 +76,7 @@ public class OrderTypeControl
         var orderType = OrderTypeFactory.getInstance().create();
         var orderTypeDetail = OrderTypeDetailFactory.getInstance().create(orderType, orderTypeName, orderSequenceType,
                 orderWorkflow, orderWorkflowEntrance, isDefault, sortOrder, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
 
         // Convert to R/W
         orderType = OrderTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -310,7 +310,7 @@ public class OrderTypeControl
             }
 
             orderTypeDetail = OrderTypeDetailFactory.getInstance().create(orderTypePK, orderTypeName, orderSequenceTypePK,
-                    orderWorkflowPK, orderWorkflowEntrancePK, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                    orderWorkflowPK, orderWorkflowEntrancePK, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             orderType.setActiveDetail(orderTypeDetail);
             orderType.setLastDetail(orderTypeDetail);
@@ -375,7 +375,7 @@ public class OrderTypeControl
 
     public OrderTypeDescription createOrderTypeDescription(OrderType orderType, Language language, String description, BasePK createdBy) {
         var orderTypeDescription = OrderTypeDescriptionFactory.getInstance().create(orderType, language, description,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(orderType.getPrimaryKey(), EventTypes.MODIFY, orderTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -496,7 +496,7 @@ public class OrderTypeControl
             var description = orderTypeDescriptionValue.getDescription();
 
             orderTypeDescription = OrderTypeDescriptionFactory.getInstance().create(orderType, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(orderType.getPrimaryKey(), EventTypes.MODIFY, orderTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }

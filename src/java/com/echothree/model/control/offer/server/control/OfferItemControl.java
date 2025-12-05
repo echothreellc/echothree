@@ -67,7 +67,7 @@ public class OfferItemControl
 
     /** Use the function in OfferLogic instead. */
     public OfferItem createOfferItem(Offer offer, Item item, BasePK createdBy) {
-        var offerItem = OfferItemFactory.getInstance().create(offer, item, session.getStartTime(), Session.MAX_TIME_LONG);
+        var offerItem = OfferItemFactory.getInstance().create(offer, item, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(offerItem.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
@@ -242,7 +242,7 @@ public class OfferItemControl
     public OfferItemPrice createOfferItemPrice(OfferItem offerItem, InventoryCondition inventoryCondition, UnitOfMeasureType unitOfMeasureType,
             Currency currency, BasePK createdBy) {
         var offerItemPrice = OfferItemPriceFactory.getInstance().create(offerItem, inventoryCondition, unitOfMeasureType, currency,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(offerItem.getPrimaryKey(), EventTypes.MODIFY, offerItemPrice.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -513,7 +513,7 @@ public class OfferItemControl
     /** Use the function in OfferItemLogic instead. */
     public OfferItemFixedPrice createOfferItemFixedPrice(OfferItemPrice offerItemPrice, Long unitPrice, BasePK createdBy) {
         var offerItemFixedPrice = OfferItemFixedPriceFactory.getInstance().create(offerItemPrice,
-                unitPrice, session.getStartTime(), Session.MAX_TIME_LONG);
+                unitPrice, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(offerItemPrice.getOfferItemPK(), EventTypes.MODIFY, offerItemFixedPrice.getPrimaryKey(),
                 EventTypes.CREATE, createdBy);
@@ -590,7 +590,7 @@ public class OfferItemControl
             var unitPrice = offerItemFixedPriceValue.getUnitPrice();
 
             offerItemFixedPrice = OfferItemFixedPriceFactory.getInstance().create(offerItemPricePK, unitPrice,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(offerItemFixedPrice.getOfferItemPrice().getOfferItemPK(), EventTypes.MODIFY,
                     offerItemFixedPrice.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -615,7 +615,7 @@ public class OfferItemControl
     public OfferItemVariablePrice createOfferItemVariablePrice(OfferItemPrice offerItemPrice, Long minimumUnitPrice, Long maximumUnitPrice,
             Long unitPriceIncrement, BasePK createdBy) {
         var offerItemVariablePrice = OfferItemVariablePriceFactory.getInstance().create(offerItemPrice, minimumUnitPrice, maximumUnitPrice,
-                unitPriceIncrement, session.getStartTime(), Session.MAX_TIME_LONG);
+                unitPriceIncrement, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(offerItemPrice.getOfferItemPK(), EventTypes.MODIFY, offerItemVariablePrice.getPrimaryKey(),
                 EventTypes.CREATE, createdBy);
@@ -694,7 +694,7 @@ public class OfferItemControl
             var unitPriceIncrement = offerItemVariablePriceValue.getUnitPriceIncrement();
 
             offerItemVariablePrice = OfferItemVariablePriceFactory.getInstance().create(offerItemPricePK, maximumUnitPrice,
-                    minimumUnitPrice, unitPriceIncrement, session.getStartTime(), Session.MAX_TIME_LONG);
+                    minimumUnitPrice, unitPriceIncrement, session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(offerItemVariablePrice.getOfferItemPrice().getOfferItemPK(), EventTypes.MODIFY,
                     offerItemVariablePrice.getPrimaryKey(), EventTypes.MODIFY, updatedBy);

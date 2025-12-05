@@ -82,7 +82,7 @@ public class OrderTimeControl
 
         var orderTimeType = OrderTimeTypeFactory.getInstance().create();
         var orderTimeTypeDetail = OrderTimeTypeDetailFactory.getInstance().create(orderTimeType, orderType, orderTimeTypeName, isDefault,
-                sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         orderTimeType = OrderTimeTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -321,7 +321,7 @@ public class OrderTimeControl
             }
 
             orderTimeTypeDetail = OrderTimeTypeDetailFactory.getInstance().create(orderTimeTypePK, orderTypePK, orderTimeTypeName, isDefault, sortOrder,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             orderTimeType.setActiveDetail(orderTimeTypeDetail);
             orderTimeType.setLastDetail(orderTimeTypeDetail);
@@ -370,7 +370,7 @@ public class OrderTimeControl
 
     public OrderTimeTypeDescription createOrderTimeTypeDescription(OrderTimeType orderTimeType, Language language, String description, BasePK createdBy) {
         var orderTimeTypeDescription = OrderTimeTypeDescriptionFactory.getInstance().create(orderTimeType, language, description,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(orderTimeType.getPrimaryKey(), EventTypes.MODIFY, orderTimeTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -491,7 +491,7 @@ public class OrderTimeControl
             var description = orderTimeTypeDescriptionValue.getDescription();
 
             orderTimeTypeDescription = OrderTimeTypeDescriptionFactory.getInstance().create(orderTimeType, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(orderTimeType.getPrimaryKey(), EventTypes.MODIFY, orderTimeTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -517,7 +517,7 @@ public class OrderTimeControl
     // --------------------------------------------------------------------------------
 
     public OrderTime createOrderTime(Order order, OrderTimeType orderTimeType, Long time, BasePK createdBy) {
-        var orderTime = OrderTimeFactory.getInstance().create(order, orderTimeType, time, session.getStartTime(), Session.MAX_TIME_LONG);
+        var orderTime = OrderTimeFactory.getInstance().create(order, orderTimeType, time, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(order.getPrimaryKey(), EventTypes.MODIFY, orderTime.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -529,7 +529,7 @@ public class OrderTimeControl
                 "SELECT COUNT(*) " +
                         "FROM ordertimes " +
                         "WHERE ordtim_ord_orderid = ? AND ordtim_thrutime = ?",
-                order, Session.MAX_TIME_LONG);
+                order, Session.MAX_TIME);
     }
 
     public long countOrderTimesByOrderTimeType(OrderTimeType orderTimeType) {
@@ -537,7 +537,7 @@ public class OrderTimeControl
                 "SELECT COUNT(*) " +
                         "FROM ordertimes " +
                         "WHERE ordtim_ordtimtyp_ordertimetypeid = ? AND ordtim_thrutime = ?",
-                orderTimeType, Session.MAX_TIME_LONG);
+                orderTimeType, Session.MAX_TIME);
     }
 
     public boolean orderTimeExists(Order order, OrderTimeType orderTimeType) {
@@ -545,7 +545,7 @@ public class OrderTimeControl
                 "SELECT COUNT(*) " +
                         "FROM ordertimes " +
                         "WHERE ordtim_ord_orderid = ? AND ordtim_ordtimtyp_ordertimetypeid = ? AND ordtim_thrutime = ?",
-                order, orderTimeType, Session.MAX_TIME_LONG) == 1;
+                order, orderTimeType, Session.MAX_TIME) == 1;
     }
 
     private static final Map<EntityPermission, String> getOrderTimeQueries;
@@ -681,7 +681,7 @@ public class OrderTimeControl
             var orderTimeTypePK = orderTime.getOrderTimeTypePK(); // Not updated
             var time = orderTimeValue.getTime();
 
-            orderTime = OrderTimeFactory.getInstance().create(orderPK, orderTimeTypePK, time, session.getStartTime(), Session.MAX_TIME_LONG);
+            orderTime = OrderTimeFactory.getInstance().create(orderPK, orderTimeTypePK, time, session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(orderPK, EventTypes.MODIFY, orderTime.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -713,7 +713,7 @@ public class OrderTimeControl
     // --------------------------------------------------------------------------------
 
     public OrderLineTime createOrderLineTime(OrderLine orderLine, OrderTimeType orderTimeType, Long time, BasePK createdBy) {
-        var orderLineTime = OrderLineTimeFactory.getInstance().create(orderLine, orderTimeType, time, session.getStartTime(), Session.MAX_TIME_LONG);
+        var orderLineTime = OrderLineTimeFactory.getInstance().create(orderLine, orderTimeType, time, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(orderLine.getPrimaryKey(), EventTypes.MODIFY, orderLineTime.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -725,7 +725,7 @@ public class OrderTimeControl
                 "SELECT COUNT(*) " +
                         "FROM orderlinetimes " +
                         "WHERE ordltim_ordl_orderlineid = ? AND ordltim_thrutime = ?",
-                orderLine, Session.MAX_TIME_LONG);
+                orderLine, Session.MAX_TIME);
     }
 
     public long countOrderLineTimesByOrderTimeType(OrderTimeType orderTimeType) {
@@ -733,7 +733,7 @@ public class OrderTimeControl
                 "SELECT COUNT(*) " +
                         "FROM orderlinetimes " +
                         "WHERE ordltim_ordtimtyp_ordertimetypeid = ? AND ordltim_thrutime = ?",
-                orderTimeType, Session.MAX_TIME_LONG);
+                orderTimeType, Session.MAX_TIME);
     }
 
     public boolean orderLineTimeExists(OrderLine orderLine, OrderTimeType orderTimeType) {
@@ -741,7 +741,7 @@ public class OrderTimeControl
                 "SELECT COUNT(*) " +
                         "FROM orderlinetimes " +
                         "WHERE ordltim_ordl_orderlineid = ? AND ordltim_ordtimtyp_ordertimetypeid = ? AND ordltim_thrutime = ?",
-                orderLine, orderTimeType, Session.MAX_TIME_LONG) == 1;
+                orderLine, orderTimeType, Session.MAX_TIME) == 1;
     }
 
     private static final Map<EntityPermission, String> getOrderLineTimeQueries;
@@ -880,7 +880,7 @@ public class OrderTimeControl
             var orderTimeTypePK = orderLineTime.getOrderTimeTypePK(); // Not updated
             var time = orderLineTimeValue.getTime();
 
-            orderLineTime = OrderLineTimeFactory.getInstance().create(orderLinePK, orderTimeTypePK, time, session.getStartTime(), Session.MAX_TIME_LONG);
+            orderLineTime = OrderLineTimeFactory.getInstance().create(orderLinePK, orderTimeTypePK, time, session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(orderLinePK, EventTypes.MODIFY, orderLineTime.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }

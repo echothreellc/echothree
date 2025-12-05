@@ -57,7 +57,7 @@ public class SalesOrderBatchControl
     // --------------------------------------------------------------------------------
 
     public SalesOrderBatch createSalesOrderBatch(Batch batch, PaymentMethod paymentMethod, BasePK createdBy) {
-        var salesOrderBatch = SalesOrderBatchFactory.getInstance().create(batch, paymentMethod, session.getStartTime(), Session.MAX_TIME_LONG);
+        var salesOrderBatch = SalesOrderBatchFactory.getInstance().create(batch, paymentMethod, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(batch.getPrimaryKey(), EventTypes.MODIFY, salesOrderBatch.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -83,7 +83,7 @@ public class SalesOrderBatchControl
 
     private SalesOrderBatch getSalesOrderBatch(Batch batch, EntityPermission entityPermission) {
         return SalesOrderBatchFactory.getInstance().getEntityFromQuery(entityPermission, getSalesOrderBatchQueries,
-                batch, Session.MAX_TIME_LONG);
+                batch, Session.MAX_TIME);
     }
 
     public SalesOrderBatch getSalesOrderBatch(Batch batch) {
@@ -129,7 +129,7 @@ public class SalesOrderBatchControl
             var batchPK = salesOrderBatch.getBatchPK(); // Not updated
             var paymentMethodPK = salesOrderBatchValue.getPaymentMethodPK();
 
-            salesOrderBatch = SalesOrderBatchFactory.getInstance().create(batchPK, paymentMethodPK, session.getStartTime(), Session.MAX_TIME_LONG);
+            salesOrderBatch = SalesOrderBatchFactory.getInstance().create(batchPK, paymentMethodPK, session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(batchPK, EventTypes.MODIFY, salesOrderBatch.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }

@@ -130,7 +130,7 @@ public class SequenceControl
         var sequenceType = SequenceTypeFactory.getInstance().create();
         var sequenceTypeDetail = SequenceTypeDetailFactory.getInstance().create(sequenceType,
                 sequenceTypeName, prefix, suffix, sequenceEncoderType, sequenceChecksumType, chunkSize, isDefault, sortOrder,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         sequenceType = SequenceTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, sequenceType.getPrimaryKey());
@@ -433,7 +433,7 @@ public class SequenceControl
         
         sequenceTypeDetail = SequenceTypeDetailFactory.getInstance().create(sequenceTypePK, sequenceTypeName, prefix,
                 suffix, sequenceEncoderTypePK, sequenceChecksumTypePK, chunkSize, isDefault, sortOrder, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
         
         sequenceType.setActiveDetail(sequenceTypeDetail);
         sequenceType.setLastDetail(sequenceTypeDetail);
@@ -481,7 +481,7 @@ public class SequenceControl
     
     public SequenceTypeDescription createSequenceTypeDescription(SequenceType sequenceType, Language language, String description, BasePK createdBy) {
         var sequenceTypeDescription = SequenceTypeDescriptionFactory.getInstance().create(sequenceType, language, description, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
         
         sendEvent(sequenceType.getPrimaryKey(), EventTypes.MODIFY, sequenceTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -617,7 +617,7 @@ public class SequenceControl
             var language = sequenceTypeDescription.getLanguage();
             var description = sequenceTypeDescriptionValue.getDescription();
             
-            sequenceTypeDescription = SequenceTypeDescriptionFactory.getInstance().create(sequenceType, language, description, session.getStartTime(), Session.MAX_TIME_LONG);
+            sequenceTypeDescription = SequenceTypeDescriptionFactory.getInstance().create(sequenceType, language, description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(sequenceType.getPrimaryKey(), EventTypes.MODIFY, sequenceTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -931,7 +931,7 @@ public class SequenceControl
 
         var sequence = SequenceFactory.getInstance().create();
         var sequenceDetail = SequenceDetailFactory.getInstance().create(sequence, sequenceType, sequenceName,
-                mask, chunkSize, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                mask, chunkSize, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         sequence = SequenceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, sequence.getPrimaryKey());
@@ -1200,7 +1200,7 @@ public class SequenceControl
         }
         
         sequenceDetail = SequenceDetailFactory.getInstance().create(sequencePK, sequenceTypePK, sequenceName, mask,
-                chunkSize, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                chunkSize, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         sequence.setActiveDetail(sequenceDetail);
         sequence.setLastDetail(sequenceDetail);
@@ -1264,7 +1264,7 @@ public class SequenceControl
 
     public SequenceDescription createSequenceDescription(Sequence sequence, Language language, String description, BasePK createdBy) {
         var sequenceDescription = SequenceDescriptionFactory.getInstance().create(sequence, language,
-                description, session.getStartTime(), Session.MAX_TIME_LONG);
+                description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(sequence.getPrimaryKey(), EventTypes.MODIFY, sequenceDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1400,7 +1400,7 @@ public class SequenceControl
             var language = sequenceDescription.getLanguage();
             var description = sequenceDescriptionValue.getDescription();
             
-            sequenceDescription = SequenceDescriptionFactory.getInstance().create(sequence, language, description, session.getStartTime(), Session.MAX_TIME_LONG);
+            sequenceDescription = SequenceDescriptionFactory.getInstance().create(sequence, language, description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(sequence.getPrimaryKey(), EventTypes.MODIFY, sequenceDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }

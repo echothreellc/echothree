@@ -484,7 +484,7 @@ public class ContentControl
 
         var contentPageLayout = ContentPageLayoutFactory.getInstance().create();
         var contentPageLayoutDetail = ContentPageLayoutDetailFactory.getInstance().create(session,
-                contentPageLayout, contentPageLayoutName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                contentPageLayout, contentPageLayoutName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         contentPageLayout = ContentPageLayoutFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contentPageLayout.getPrimaryKey());
@@ -709,7 +709,7 @@ public class ContentControl
             }
             
             contentPageLayoutDetail = ContentPageLayoutDetailFactory.getInstance().create(contentPageLayoutPK,
-                    contentPageLayoutName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                    contentPageLayoutName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             contentPageLayout.setActiveDetail(contentPageLayoutDetail);
             contentPageLayout.setLastDetail(contentPageLayoutDetail);
@@ -757,7 +757,7 @@ public class ContentControl
     
     public ContentPageLayoutDescription createContentPageLayoutDescription(ContentPageLayout contentPageLayout, Language language, String description, BasePK createdBy) {
         var contentPageLayoutDescription = ContentPageLayoutDescriptionFactory.getInstance().create(contentPageLayout, language, description, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
         
         sendEvent(contentPageLayout.getPrimaryKey(), EventTypes.MODIFY, contentPageLayoutDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -894,7 +894,7 @@ public class ContentControl
             var description = contentPageLayoutDescriptionValue.getDescription();
             
             contentPageLayoutDescription = ContentPageLayoutDescriptionFactory.getInstance().create(contentPageLayout, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(contentPageLayout.getPrimaryKey(), EventTypes.MODIFY, contentPageLayoutDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -1044,7 +1044,7 @@ public class ContentControl
     public ContentCollection createContentCollection(String contentCollectionName, OfferUse defaultOfferUse, BasePK createdBy) {
         var contentCollection = ContentCollectionFactory.getInstance().create();
         var contentCollectionDetail = ContentCollectionDetailFactory.getInstance().create(session,
-                contentCollection, contentCollectionName, defaultOfferUse, session.getStartTime(), Session.MAX_TIME_LONG);
+                contentCollection, contentCollectionName, defaultOfferUse, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         contentCollection = ContentCollectionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contentCollection.getPrimaryKey());
@@ -1210,7 +1210,7 @@ public class ContentControl
             var defaultOfferUsePK = contentCollectionDetailValue.getDefaultOfferUsePK();
 
             contentCollectionDetail = ContentCollectionDetailFactory.getInstance().create(contentCollectionPK,
-                    contentCollectionName, defaultOfferUsePK, session.getStartTime(), Session.MAX_TIME_LONG);
+                    contentCollectionName, defaultOfferUsePK, session.getStartTime(), Session.MAX_TIME);
 
             contentCollection.setActiveDetail(contentCollectionDetail);
             contentCollection.setLastDetail(contentCollectionDetail);
@@ -1239,7 +1239,7 @@ public class ContentControl
     public ContentCollectionDescription createContentCollectionDescription(ContentCollection contentCollection, Language language, String description, BasePK createdBy) {
 
         var contentCollectionDescription = ContentCollectionDescriptionFactory.getInstance().create(contentCollection, language, description, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
         
         sendEvent(contentCollection.getPrimaryKey(), EventTypes.MODIFY, contentCollectionDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1376,7 +1376,7 @@ public class ContentControl
             var language = contentCollectionDescription.getLanguage();
             var description = contentCollectionDescriptionValue.getDescription();
             
-            contentCollectionDescription = ContentCollectionDescriptionFactory.getInstance().create(contentCollection, language, description, session.getStartTime(), Session.MAX_TIME_LONG);
+            contentCollectionDescription = ContentCollectionDescriptionFactory.getInstance().create(contentCollection, language, description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(contentCollection.getPrimaryKey(), EventTypes.MODIFY, contentCollectionDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -1423,7 +1423,7 @@ public class ContentControl
 
         var contentSection = ContentSectionFactory.getInstance().create();
         var contentSectionDetail = ContentSectionDetailFactory.getInstance().create(contentSection, contentCollection, contentSectionName, parentContentSection, isDefault,
-                sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         contentSection = ContentSectionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contentSection.getPrimaryKey());
@@ -1732,7 +1732,7 @@ public class ContentControl
             }
 
             contentSectionDetail = ContentSectionDetailFactory.getInstance().create(contentSectionPK, contentCollectionPK, contentSectionName, parentContentSectionPK, isDefault,
-                    sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                    sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             contentSection.setActiveDetail(contentSectionDetail);
             contentSection.setLastDetail(contentSectionDetail);
@@ -1812,7 +1812,7 @@ public class ContentControl
     public ContentSectionDescription createContentSectionDescription(ContentSection contentSection, Language language, String description, BasePK createdBy) {
 
         var contentSectionDescription = ContentSectionDescriptionFactory.getInstance().create(contentSection, language, description, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
         
         sendEvent(contentSection.getPrimaryKey(), EventTypes.MODIFY, contentSectionDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1949,7 +1949,7 @@ public class ContentControl
             var language = contentSectionDescription.getLanguage();
             var description = contentSectionDescriptionValue.getDescription();
             
-            contentSectionDescription = ContentSectionDescriptionFactory.getInstance().create(contentSection, language, description, session.getStartTime(), Session.MAX_TIME_LONG);
+            contentSectionDescription = ContentSectionDescriptionFactory.getInstance().create(contentSection, language, description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(contentSection.getPrimaryKey(), EventTypes.MODIFY, contentSectionDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -1987,7 +1987,7 @@ public class ContentControl
 
         var contentPage = ContentPageFactory.getInstance().create();
         var contentPageDetail = ContentPageDetailFactory.getInstance().create(contentPage, contentSection, contentPageName, contentPageLayout, isDefault, sortOrder,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         contentPage = ContentPageFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contentPage.getPrimaryKey());
@@ -2247,7 +2247,7 @@ public class ContentControl
             }
 
             contentPageDetail = ContentPageDetailFactory.getInstance().create(contentPagePK, contentSectionPK, contentPageName, contentPageLayoutPK, isDefault, sortOrder,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             contentPage.setActiveDetail(contentPageDetail);
             contentPage.setLastDetail(contentPageDetail);
@@ -2305,7 +2305,7 @@ public class ContentControl
     
     public ContentPageDescription createContentPageDescription(ContentPage contentPage, Language language, String description, BasePK createdBy) {
         var contentPageDescription = ContentPageDescriptionFactory.getInstance().create(contentPage, language, description, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
         
         sendEvent(contentPage.getPrimaryKey(), EventTypes.MODIFY, contentPageDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -2442,7 +2442,7 @@ public class ContentControl
             var language = contentPageDescription.getLanguage();
             var description = contentPageDescriptionValue.getDescription();
             
-            contentPageDescription = ContentPageDescriptionFactory.getInstance().create(contentPage, language, description, session.getStartTime(), Session.MAX_TIME_LONG);
+            contentPageDescription = ContentPageDescriptionFactory.getInstance().create(contentPage, language, description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(contentPage.getPrimaryKey(), EventTypes.MODIFY, contentPageDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -2468,7 +2468,7 @@ public class ContentControl
     public ContentPageArea createContentPageArea(ContentPage contentPage, ContentPageLayoutArea contentPageLayoutArea, Language language, MimeType mimeType, BasePK createdBy) {
         var contentPageArea = ContentPageAreaFactory.getInstance().create();
         var contentPageAreaDetail = ContentPageAreaDetailFactory.getInstance().create(contentPageArea, contentPage, contentPageLayoutArea,
-                language, mimeType, session.getStartTime(), Session.MAX_TIME_LONG);
+                language, mimeType, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         contentPageArea = ContentPageAreaFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contentPageArea.getPrimaryKey());
@@ -2674,7 +2674,7 @@ public class ContentControl
             var mimeTypePK = contentPageAreaDetailValue.getMimeTypePK();
             
             contentPageAreaDetail = ContentPageAreaDetailFactory.getInstance().create(contentPageAreaPK, contentPagePK, contentPageLayoutAreaPK,
-                    languagePK, mimeTypePK, session.getStartTime(), Session.MAX_TIME_LONG);
+                    languagePK, mimeTypePK, session.getStartTime(), Session.MAX_TIME);
 
             var contentPageArea = ContentPageAreaFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contentPageAreaPK);
             contentPageArea.setActiveDetail(contentPageAreaDetail);
@@ -2829,7 +2829,7 @@ public class ContentControl
         var contentCatalog = ContentCatalogFactory.getInstance().create();
         var contentCatalogDetail = ContentCatalogDetailFactory.getInstance().create(contentCatalog,
                 contentCollection, contentCatalogName, defaultOfferUse, isDefault, sortOrder, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
         
         // Convert to R/W
         contentCatalog = ContentCatalogFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contentCatalog.getPrimaryKey());
@@ -3078,7 +3078,7 @@ public class ContentControl
             }
 
             contentCatalogDetail = ContentCatalogDetailFactory.getInstance().create(contentCatalogPK, contentCollectionPK,
-                    contentCatalogName, defaultOfferUsePK, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                    contentCatalogName, defaultOfferUsePK, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             contentCatalog.setActiveDetail(contentCatalogDetail);
             contentCatalog.setLastDetail(contentCatalogDetail);
@@ -3139,7 +3139,7 @@ public class ContentControl
     public ContentCatalogDescription createContentCatalogDescription(ContentCatalog contentCatalog, Language language, String description, BasePK createdBy) {
 
         var contentCatalogDescription = ContentCatalogDescriptionFactory.getInstance().create(contentCatalog, language, description, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
         
         sendEvent(contentCatalog.getPrimaryKey(), EventTypes.MODIFY, contentCatalogDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -3276,7 +3276,7 @@ public class ContentControl
             var language = contentCatalogDescription.getLanguage();
             var description = contentCatalogDescriptionValue.getDescription();
             
-            contentCatalogDescription = ContentCatalogDescriptionFactory.getInstance().create(contentCatalog, language, description, session.getStartTime(), Session.MAX_TIME_LONG);
+            contentCatalogDescription = ContentCatalogDescriptionFactory.getInstance().create(contentCatalog, language, description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(contentCatalog.getPrimaryKey(), EventTypes.MODIFY, contentCatalogDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -3302,7 +3302,7 @@ public class ContentControl
     public ContentCatalogItem createContentCatalogItem(ContentCatalog contentCatalog, Item item, InventoryCondition inventoryCondition,
             UnitOfMeasureType unitOfMeasureType, Currency currency, BasePK createdBy) {
         var contentCatalogItem = ContentCatalogItemFactory.getInstance().create(contentCatalog, item,
-                inventoryCondition, unitOfMeasureType, currency, session.getStartTime(), Session.MAX_TIME_LONG);
+                inventoryCondition, unitOfMeasureType, currency, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(contentCatalogItem.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
@@ -3687,7 +3687,7 @@ public class ContentControl
     public ContentCatalogItemFixedPrice createContentCatalogItemFixedPrice(ContentCatalogItem contentCatalogItem, Long unitPrice,
             BasePK createdBy) {
         var contentCatalogItemFixedPrice = ContentCatalogItemFixedPriceFactory.getInstance().create(session,
-                contentCatalogItem, unitPrice, session.getStartTime(), Session.MAX_TIME_LONG);
+                contentCatalogItem, unitPrice, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(contentCatalogItem.getPrimaryKey(), EventTypes.MODIFY, contentCatalogItemFixedPrice.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -3757,7 +3757,7 @@ public class ContentControl
             var unitPrice = contentCatalogItemFixedPriceValue.getUnitPrice();
 
             contentCatalogItemFixedPrice = ContentCatalogItemFixedPriceFactory.getInstance().create(contentCatalogItemPK,
-                    unitPrice, session.getStartTime(), Session.MAX_TIME_LONG);
+                    unitPrice, session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(contentCatalogItemFixedPrice.getContentCatalogItemPK(), EventTypes.MODIFY, contentCatalogItemFixedPrice.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -3777,7 +3777,7 @@ public class ContentControl
     public ContentCatalogItemVariablePrice createContentCatalogItemVariablePrice(ContentCatalogItem contentCatalogItem, Long minimumUnitPrice,
             Long maximumUnitPrice, Long unitPriceIncrement, BasePK createdBy) {
         var contentCatalogItemVariablePrice = ContentCatalogItemVariablePriceFactory.getInstance().create(session,
-                contentCatalogItem, minimumUnitPrice, maximumUnitPrice, unitPriceIncrement, session.getStartTime(), Session.MAX_TIME_LONG);
+                contentCatalogItem, minimumUnitPrice, maximumUnitPrice, unitPriceIncrement, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(contentCatalogItem.getPrimaryKey(), EventTypes.MODIFY, contentCatalogItemVariablePrice.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -3849,7 +3849,7 @@ public class ContentControl
             var unitPriceIncrement = contentCatalogItemVariablePriceValue.getUnitPriceIncrement();
 
             contentCatalogItemVariablePrice = ContentCatalogItemVariablePriceFactory.getInstance().create(contentCatalogItemPK, maximumUnitPrice,
-                    minimumUnitPrice, unitPriceIncrement, session.getStartTime(), Session.MAX_TIME_LONG);
+                    minimumUnitPrice, unitPriceIncrement, session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(contentCatalogItemVariablePrice.getContentCatalogItemPK(), EventTypes.MODIFY, contentCatalogItemVariablePrice.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -3889,7 +3889,7 @@ public class ContentControl
         var contentCategory = ContentCategoryFactory.getInstance().create();
         var contentCategoryDetail = ContentCategoryDetailFactory.getInstance().create(contentCategory,
                 contentCatalog, contentCategoryName, parentContentCategory, defaultOfferUse, itemSelector, isDefault, sortOrder,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         contentCategory = ContentCategoryFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contentCategory.getPrimaryKey());
@@ -4296,7 +4296,7 @@ public class ContentControl
 
             contentCategoryDetail = ContentCategoryDetailFactory.getInstance().create(contentCategoryPK, contentCatalogPK,
                     contentCategoryName, parentContentCategoryPK, defaultOfferUsePK, itemSelectorPK, isDefault, sortOrder,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             contentCategory.setActiveDetail(contentCategoryDetail);
             contentCategory.setLastDetail(contentCategoryDetail);
@@ -4381,7 +4381,7 @@ public class ContentControl
 
         var contentCategoryDescription = ContentCategoryDescriptionFactory.getInstance().create(session,
                 contentCategory, language, description, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
         
         sendEvent(contentCategory.getPrimaryKey(), EventTypes.MODIFY, contentCategoryDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -4519,7 +4519,7 @@ public class ContentControl
             var language = contentCategoryDescription.getLanguage();
             var description = contentCategoryDescriptionValue.getDescription();
             
-            contentCategoryDescription = ContentCategoryDescriptionFactory.getInstance().create(contentCategory, language, description, session.getStartTime(), Session.MAX_TIME_LONG);
+            contentCategoryDescription = ContentCategoryDescriptionFactory.getInstance().create(contentCategory, language, description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(contentCategory.getPrimaryKey(), EventTypes.MODIFY, contentCategoryDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -4559,7 +4559,7 @@ public class ContentControl
 
         var contentCategoryItem = ContentCategoryItemFactory.getInstance().create(session,
                 contentCategory, contentCatalogItem, isDefault, sortOrder, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
         
         sendEvent(contentCategory.getPrimaryKey(), EventTypes.MODIFY, contentCategoryItem.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -4777,7 +4777,7 @@ public class ContentControl
                 "SELECT COUNT(*) " +
                 "FROM contentcategoryitems " +
                 "WHERE cntcgi_cntcti_contentcatalogitemid = ? AND cntcgi_thrutime = ?",
-                contentCatalogItem, Session.MAX_TIME_LONG);
+                contentCatalogItem, Session.MAX_TIME);
     }
 
     private void updateContentCategoryItemFromValue(ContentCategoryItemValue contentCategoryItemValue, boolean checkDefault, BasePK updatedBy) {
@@ -4811,7 +4811,7 @@ public class ContentControl
             }
             
             contentCategoryItem = ContentCategoryItemFactory.getInstance().create(contentCategoryPK, contentCatalogItemPK,
-                    isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                    isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(contentCategoryPK, EventTypes.MODIFY, contentCategoryItem.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -4886,7 +4886,7 @@ public class ContentControl
 
         var contentForum = ContentForumFactory.getInstance().create();
         var contentForumDetail = ContentForumDetailFactory.getInstance().create(contentForum, contentCollection, forum, isDefault,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         contentForum = ContentForumFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contentForum.getPrimaryKey());
@@ -5076,7 +5076,7 @@ public class ContentControl
             }
 
             contentForumDetail = ContentForumDetailFactory.getInstance().create(contentForumPK, contentCollectionPK, forumPK,
-                    isDefault, session.getStartTime(), Session.MAX_TIME_LONG);
+                    isDefault, session.getStartTime(), Session.MAX_TIME);
 
             contentForum.setActiveDetail(contentForumDetail);
             contentForum.setLastDetail(contentForumDetail);
@@ -5131,7 +5131,7 @@ public class ContentControl
             BasePK createdBy) {
         var contentWebAddress = ContentWebAddressFactory.getInstance().create();
         var contentWebAddressDetail = ContentWebAddressDetailFactory.getInstance().create(contentWebAddress,
-                contentWebAddressName, contentCollection, session.getStartTime(), Session.MAX_TIME_LONG);
+                contentWebAddressName, contentCollection, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         contentWebAddress = ContentWebAddressFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, contentWebAddress.getPrimaryKey());
@@ -5362,7 +5362,7 @@ public class ContentControl
             var contentCollectionPK = contentWebAddressDetailValue.getContentCollectionPK();
             
             contentWebAddressDetail = ContentWebAddressDetailFactory.getInstance().create(contentWebAddressPK, contentWebAddressName, contentCollectionPK, session.getStartTime(),
-                    Session.MAX_TIME_LONG);
+                    Session.MAX_TIME);
             
             contentWebAddress.setActiveDetail(contentWebAddressDetail);
             contentWebAddress.setLastDetail(contentWebAddressDetail);
@@ -5393,7 +5393,7 @@ public class ContentControl
     public ContentWebAddressDescription createContentWebAddressDescription(ContentWebAddress contentWebAddress, Language language, String description, BasePK createdBy) {
 
         var contentWebAddressDescription = ContentWebAddressDescriptionFactory.getInstance().create(contentWebAddress, language, description, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
         
         sendEvent(contentWebAddress.getPrimaryKey(), EventTypes.MODIFY, contentWebAddressDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -5530,7 +5530,7 @@ public class ContentControl
             var language = contentWebAddressDescription.getLanguage();
             var description = contentWebAddressDescriptionValue.getDescription();
             
-            contentWebAddressDescription = ContentWebAddressDescriptionFactory.getInstance().create(contentWebAddress, language, description, session.getStartTime(), Session.MAX_TIME_LONG);
+            contentWebAddressDescription = ContentWebAddressDescriptionFactory.getInstance().create(contentWebAddress, language, description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(contentWebAddress.getPrimaryKey(), EventTypes.MODIFY, contentWebAddressDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -5556,7 +5556,7 @@ public class ContentControl
     public ContentWebAddressServer createContentWebAddressServer(ContentWebAddress contentWebAddress, Server server, BasePK createdBy) {
 
         var contentWebAddressServer = ContentWebAddressServerFactory.getInstance().create(contentWebAddress, server,  session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
         
         sendEvent(contentWebAddress.getPrimaryKey(), EventTypes.MODIFY, contentWebAddressServer.getPrimaryKey(), EventTypes.CREATE, createdBy);
         

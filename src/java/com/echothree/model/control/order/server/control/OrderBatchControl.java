@@ -44,7 +44,7 @@ public class OrderBatchControl
     // --------------------------------------------------------------------------------
 
     public OrderBatch createOrderBatch(Batch batch, Currency currency, Long count, Long amount, BasePK createdBy) {
-        var orderBatch = OrderBatchFactory.getInstance().create(batch, currency, count, amount, session.getStartTime(), Session.MAX_TIME_LONG);
+        var orderBatch = OrderBatchFactory.getInstance().create(batch, currency, count, amount, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(batch.getPrimaryKey(), EventTypes.MODIFY, orderBatch.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -70,7 +70,7 @@ public class OrderBatchControl
 
     private OrderBatch getOrderBatch(Batch batch, EntityPermission entityPermission) {
         return OrderBatchFactory.getInstance().getEntityFromQuery(entityPermission, getOrderBatchQueries,
-                batch, Session.MAX_TIME_LONG);
+                batch, Session.MAX_TIME);
     }
 
     public OrderBatch getOrderBatch(Batch batch) {
@@ -102,7 +102,7 @@ public class OrderBatchControl
             var count = orderBatchValue.getCount();
             var amount = orderBatchValue.getAmount();
 
-            orderBatch = OrderBatchFactory.getInstance().create(batchPK, currencyPK, count, amount, session.getStartTime(), Session.MAX_TIME_LONG);
+            orderBatch = OrderBatchFactory.getInstance().create(batchPK, currencyPK, count, amount, session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(batchPK, EventTypes.MODIFY, orderBatch.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }

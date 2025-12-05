@@ -164,7 +164,7 @@ public class DocumentControl
 
         var documentType = DocumentTypeFactory.getInstance().create();
         var documentTypeDetail = DocumentTypeDetailFactory.getInstance().create(documentType, documentTypeName, parentDocumentType,
-                mimeTypeUsageType, maximumPages, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                mimeTypeUsageType, maximumPages, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         documentType = DocumentTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -421,7 +421,7 @@ public class DocumentControl
             }
             
             documentTypeDetail = DocumentTypeDetailFactory.getInstance().create(documentTypePK, documentTypeName, parentDocumentTypePK, mimeTypeUsageTypePK,
-                    maximumPages, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                    maximumPages, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             documentType.setActiveDetail(documentTypeDetail);
             documentType.setLastDetail(documentTypeDetail);
@@ -491,7 +491,7 @@ public class DocumentControl
     
     public DocumentTypeDescription createDocumentTypeDescription(DocumentType documentType, Language language, String description, BasePK createdBy) {
         var documentTypeDescription = DocumentTypeDescriptionFactory.getInstance().create(documentType, language, description,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(documentType.getPrimaryKey(), EventTypes.MODIFY, documentTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -613,7 +613,7 @@ public class DocumentControl
             var description = documentTypeDescriptionValue.getDescription();
             
             documentTypeDescription = DocumentTypeDescriptionFactory.getInstance().create(documentType, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(documentType.getPrimaryKey(), EventTypes.MODIFY, documentTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -653,7 +653,7 @@ public class DocumentControl
 
         var documentTypeUsageType = DocumentTypeUsageTypeFactory.getInstance().create();
         var documentTypeUsageTypeDetail = DocumentTypeUsageTypeDetailFactory.getInstance().create(documentTypeUsageType,
-                documentTypeUsageTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                documentTypeUsageTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         documentTypeUsageType = DocumentTypeUsageTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -852,7 +852,7 @@ public class DocumentControl
             }
 
             documentTypeUsageTypeDetail = DocumentTypeUsageTypeDetailFactory.getInstance().create(documentTypeUsageTypePK, documentTypeUsageTypeName, isDefault,
-                    sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                    sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             documentTypeUsageType.setActiveDetail(documentTypeUsageTypeDetail);
             documentTypeUsageType.setLastDetail(documentTypeUsageTypeDetail);
@@ -917,7 +917,7 @@ public class DocumentControl
 
     public DocumentTypeUsageTypeDescription createDocumentTypeUsageTypeDescription(DocumentTypeUsageType documentTypeUsageType, Language language, String description, BasePK createdBy) {
         var documentTypeUsageTypeDescription = DocumentTypeUsageTypeDescriptionFactory.getInstance().create(documentTypeUsageType, language, description,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(documentTypeUsageType.getPrimaryKey(), EventTypes.MODIFY, documentTypeUsageTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -1039,7 +1039,7 @@ public class DocumentControl
             var description = documentTypeUsageTypeDescriptionValue.getDescription();
 
             documentTypeUsageTypeDescription = DocumentTypeUsageTypeDescriptionFactory.getInstance().create(documentTypeUsageType, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(documentTypeUsageType.getPrimaryKey(), EventTypes.MODIFY, documentTypeUsageTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -1079,7 +1079,7 @@ public class DocumentControl
         }
 
         var documentTypeUsage = DocumentTypeUsageFactory.getInstance().create(documentTypeUsageType, documentType, isDefault, sortOrder,
-                maximumInstances, session.getStartTime(), Session.MAX_TIME_LONG);
+                maximumInstances, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(documentTypeUsageType.getPrimaryKey(), EventTypes.MODIFY, documentTypeUsage.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -1278,7 +1278,7 @@ public class DocumentControl
             }
 
             documentTypeUsage = DocumentTypeUsageFactory.getInstance().create(documentTypeUsageTypePK, documentTypePK, isDefault,
-                    sortOrder, maximumInstances, session.getStartTime(), Session.MAX_TIME_LONG);
+                    sortOrder, maximumInstances, session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(documentTypeUsageTypePK, EventTypes.MODIFY, documentTypeUsage.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -1352,7 +1352,7 @@ public class DocumentControl
     public Document createDocument(String documentName, DocumentType documentType, MimeType mimeType, Integer pages, BasePK createdBy) {
         var document = DocumentFactory.getInstance().create();
         var documentDetail = DocumentDetailFactory.getInstance().create(document, documentName, documentType, mimeType, pages,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         document = DocumentFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, document.getPrimaryKey());
@@ -1472,7 +1472,7 @@ public class DocumentControl
             var pages = documentDetailValue.getPages();
 
             documentDetail = DocumentDetailFactory.getInstance().create(documentPK, documentName, documentTypePK, mimeTypePK, pages, session.getStartTime(),
-                    Session.MAX_TIME_LONG);
+                    Session.MAX_TIME);
 
             document.setActiveDetail(documentDetail);
             document.setLastDetail(documentDetail);
@@ -1535,7 +1535,7 @@ public class DocumentControl
     public DocumentBlob createDocumentBlob(Document document, ByteArray blob, BasePK createdBy) {
         verifyDocumentMimeType(document, EntityAttributeTypes.BLOB.name());
 
-        var documentBlob = DocumentBlobFactory.getInstance().create(document, blob, session.getStartTime(), Session.MAX_TIME_LONG);
+        var documentBlob = DocumentBlobFactory.getInstance().create(document, blob, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(document.getPrimaryKey(), EventTypes.MODIFY, documentBlob.getPrimaryKey(), EventTypes.MODIFY, createdBy);
         
@@ -1601,7 +1601,7 @@ public class DocumentControl
             var blob = documentBlobValue.getBlob();
             
             documentBlob = DocumentBlobFactory.getInstance().create(documentPK, blob, session.getStartTime(),
-                    Session.MAX_TIME_LONG);
+                    Session.MAX_TIME);
             
             sendEvent(documentBlob.getDocumentPK(), EventTypes.MODIFY, documentBlob.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -1628,7 +1628,7 @@ public class DocumentControl
     public DocumentClob createDocumentClob(Document document, String clob, BasePK createdBy) {
         verifyDocumentMimeType(document, EntityAttributeTypes.CLOB.name());
 
-        var documentClob = DocumentClobFactory.getInstance().create(document, clob, session.getStartTime(), Session.MAX_TIME_LONG);
+        var documentClob = DocumentClobFactory.getInstance().create(document, clob, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(document.getPrimaryKey(), EventTypes.MODIFY, documentClob.getPrimaryKey(), EventTypes.MODIFY, createdBy);
         
@@ -1693,7 +1693,7 @@ public class DocumentControl
             var clob = documentClobValue.getClob();
             
             documentClob = DocumentClobFactory.getInstance().create(documentPK, clob, session.getStartTime(),
-                    Session.MAX_TIME_LONG);
+                    Session.MAX_TIME);
             
             sendEvent(documentClob.getDocumentPK(), EventTypes.MODIFY, documentClob.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -1719,7 +1719,7 @@ public class DocumentControl
     
     public DocumentDescription createDocumentDescription(Document document, Language language, String description, BasePK createdBy) {
         var documentDescription = DocumentDescriptionFactory.getInstance().create(document, language,
-                description, session.getStartTime(), Session.MAX_TIME_LONG);
+                description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(document.getPrimaryKey(), EventTypes.MODIFY, documentDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1860,7 +1860,7 @@ public class DocumentControl
             var description = documentDescriptionValue.getDescription();
             
             documentDescription = DocumentDescriptionFactory.getInstance().create(document, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(document.getPrimaryKey(), EventTypes.MODIFY, documentDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -1900,7 +1900,7 @@ public class DocumentControl
         }
 
         var partyTypeDocumentTypeUsageType = PartyTypeDocumentTypeUsageTypeFactory.getInstance().create(partyType,
-                documentTypeUsageType, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                documentTypeUsageType, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(documentTypeUsageType.getPrimaryKey(), EventTypes.MODIFY, partyTypeDocumentTypeUsageType.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -2098,7 +2098,7 @@ public class DocumentControl
             }
 
             partyTypeDocumentTypeUsageType = PartyTypeDocumentTypeUsageTypeFactory.getInstance().create(partyTypePK, documentTypeUsageTypePK, isDefault,
-                    sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                    sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(documentTypeUsageTypePK, EventTypes.MODIFY, partyTypeDocumentTypeUsageType.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -2175,7 +2175,7 @@ public class DocumentControl
             isDefault = true;
         }
 
-        var partyDocument = PartyDocumentFactory.getInstance().create(party, document, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+        var partyDocument = PartyDocumentFactory.getInstance().create(party, document, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyDocument.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -2454,7 +2454,7 @@ public class DocumentControl
             }
 
             partyDocument = PartyDocumentFactory.getInstance().create(partyPK, documentPK, isDefault, sortOrder, session.getStartTime(),
-                    Session.MAX_TIME_LONG);
+                    Session.MAX_TIME);
 
             sendEvent(partyPK, EventTypes.MODIFY, partyDocument.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }

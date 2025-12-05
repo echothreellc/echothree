@@ -156,7 +156,7 @@ public class PrinterControl
 
         var printerGroup = PrinterGroupFactory.getInstance().create();
         var printerGroupDetail = PrinterGroupDetailFactory.getInstance().create(printerGroup, printerGroupName, keepPrintedJobsTime, isDefault,
-                sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         printerGroup = PrinterGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -360,7 +360,7 @@ public class PrinterControl
             }
 
             printerGroupDetail = PrinterGroupDetailFactory.getInstance().create(printerGroupPK, printerGroupName, keepPrintedJobsTime, isDefault, sortOrder,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             printerGroup.setActiveDetail(printerGroupDetail);
             printerGroup.setLastDetail(printerGroupDetail);
@@ -438,7 +438,7 @@ public class PrinterControl
     public PrinterGroupDescription createPrinterGroupDescription(PrinterGroup printerGroup,
             Language language, String description, BasePK createdBy) {
         var printerGroupDescription = PrinterGroupDescriptionFactory.getInstance().create(printerGroup,
-                language, description, session.getStartTime(), Session.MAX_TIME_LONG);
+                language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(printerGroup.getPrimaryKey(), EventTypes.MODIFY, printerGroupDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -562,7 +562,7 @@ public class PrinterControl
             var description = printerGroupDescriptionValue.getDescription();
 
             printerGroupDescription = PrinterGroupDescriptionFactory.getInstance().create(printerGroup, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(printerGroup.getPrimaryKey(), EventTypes.MODIFY, printerGroupDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -590,7 +590,7 @@ public class PrinterControl
     public Printer createPrinter(String printerName, PrinterGroup printerGroup, Integer priority, BasePK createdBy) {
         var printer = PrinterFactory.getInstance().create();
         var printerDetail = PrinterDetailFactory.getInstance().create(printer, printerName, printerGroup, priority, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
 
         // Convert to R/W
         printer = PrinterFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -787,7 +787,7 @@ public class PrinterControl
             var priority = printerDetailValue.getPriority();
 
             printerDetail = PrinterDetailFactory.getInstance().create(printerPK, printerName, printerGroupPK, priority, session.getStartTime(),
-                    Session.MAX_TIME_LONG);
+                    Session.MAX_TIME);
 
             printer.setActiveDetail(printerDetail);
             printer.setLastDetail(printerDetail);
@@ -849,7 +849,7 @@ public class PrinterControl
 
     public PrinterDescription createPrinterDescription(Printer printer, Language language, String description, BasePK createdBy) {
         var printerDescription = PrinterDescriptionFactory.getInstance().create(printer, language, description, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
 
         sendEvent(printer.getPrimaryKey(), EventTypes.MODIFY, printerDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -973,7 +973,7 @@ public class PrinterControl
             var description = printerDescriptionValue.getDescription();
 
             printerDescription = PrinterDescriptionFactory.getInstance().create(printer, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(printer.getPrimaryKey(), EventTypes.MODIFY, printerDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -1009,7 +1009,7 @@ public class PrinterControl
             BasePK createdBy) {
         var printerGroupJob = PrinterGroupJobFactory.getInstance().create();
         var printerGroupJobDetail = PrinterGroupJobDetailFactory.getInstance().create(printerGroupJob, printerGroupJobName, printerGroup,
-                document, copies, priority, session.getStartTime(), Session.MAX_TIME_LONG);
+                document, copies, priority, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         printerGroupJob = PrinterGroupJobFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -1284,7 +1284,7 @@ public class PrinterControl
             var priority = printerGroupJobDetailValue.getPriority();
 
             printerGroupJobDetail = PrinterGroupJobDetailFactory.getInstance().create(printerGroupJobPK, printerGroupJobName, printerGroupPK, documentPK,
-                    copies, priority, session.getStartTime(), Session.MAX_TIME_LONG);
+                    copies, priority, session.getStartTime(), Session.MAX_TIME);
 
             printerGroupJob.setActiveDetail(printerGroupJobDetail);
             printerGroupJob.setLastDetail(printerGroupJobDetail);
@@ -1397,7 +1397,7 @@ public class PrinterControl
 
         var printerGroupUseType = PrinterGroupUseTypeFactory.getInstance().create();
         var printerGroupUseTypeDetail = PrinterGroupUseTypeDetailFactory.getInstance().create(printerGroupUseType,
-                printerGroupUseTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                printerGroupUseTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         printerGroupUseType = PrinterGroupUseTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -1600,7 +1600,7 @@ public class PrinterControl
             }
 
             printerGroupUseTypeDetail = PrinterGroupUseTypeDetailFactory.getInstance().create(printerGroupUseTypePK, printerGroupUseTypeName, isDefault,
-                    sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                    sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             printerGroupUseType.setActiveDetail(printerGroupUseTypeDetail);
             printerGroupUseType.setLastDetail(printerGroupUseTypeDetail);
@@ -1649,7 +1649,7 @@ public class PrinterControl
     public PrinterGroupUseTypeDescription createPrinterGroupUseTypeDescription(PrinterGroupUseType printerGroupUseType,
             Language language, String description, BasePK createdBy) {
         var printerGroupUseTypeDescription = PrinterGroupUseTypeDescriptionFactory.getInstance().create(printerGroupUseType,
-                language, description, session.getStartTime(), Session.MAX_TIME_LONG);
+                language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(printerGroupUseType.getPrimaryKey(), EventTypes.MODIFY, printerGroupUseTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -1773,7 +1773,7 @@ public class PrinterControl
             var description = printerGroupUseTypeDescriptionValue.getDescription();
 
             printerGroupUseTypeDescription = PrinterGroupUseTypeDescriptionFactory.getInstance().create(printerGroupUseType, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(printerGroupUseType.getPrimaryKey(), EventTypes.MODIFY, printerGroupUseTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -1800,7 +1800,7 @@ public class PrinterControl
     
     public PartyPrinterGroupUse createPartyPrinterGroupUse(Party party, PrinterGroupUseType printerGroupUseType, PrinterGroup printerGroup, BasePK createdBy) {
         var partyPrinterGroupUse = PartyPrinterGroupUseFactory.getInstance().create(party, printerGroupUseType, printerGroup,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyPrinterGroupUse.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1989,7 +1989,7 @@ public class PrinterControl
             var printerGroupPK = partyPrinterGroupUseValue.getPrinterGroupPK();
             
             partyPrinterGroupUse = PartyPrinterGroupUseFactory.getInstance().create(partyPK, printerGroupUseTypePK,
-                    printerGroupPK, session.getStartTime(), Session.MAX_TIME_LONG);
+                    printerGroupPK, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(partyPK, EventTypes.MODIFY, partyPrinterGroupUse.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }

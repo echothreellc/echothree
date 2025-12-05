@@ -76,7 +76,7 @@ public class JobControl
     public Job createJob(String jobName, Party runAsParty, Integer sortOrder, BasePK createdBy) {
         var job = JobFactory.getInstance().create();
         var jobDetail = JobDetailFactory.getInstance().create(job, jobName, runAsParty, sortOrder,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         job = JobFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, job.getPrimaryKey());
@@ -226,7 +226,7 @@ public class JobControl
         var sortOrder = jobDetailValue.getSortOrder();
         
         jobDetail = JobDetailFactory.getInstance().create(jobPK, jobName, runAsPartyPK, sortOrder,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         job.setActiveDetail(jobDetail);
         job.setLastDetail(jobDetail);
@@ -255,7 +255,7 @@ public class JobControl
     public JobDescription createJobDescription(Job job, Language language,
             String description, BasePK createdBy) {
         var jobDescription = JobDescriptionFactory.getInstance().create(session,
-                job, language, description, session.getStartTime(), Session.MAX_TIME_LONG);
+                job, language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(job.getPrimaryKey(), EventTypes.MODIFY, jobDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -393,7 +393,7 @@ public class JobControl
             var description = jobDescriptionValue.getDescription();
             
             jobDescription = JobDescriptionFactory.getInstance().create(job, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(job.getPrimaryKey(), EventTypes.MODIFY, jobDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }

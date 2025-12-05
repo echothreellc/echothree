@@ -70,7 +70,7 @@ public class PaymentProcessorResultCodeControl
 
         var paymentProcessorResultCode = PaymentProcessorResultCodeFactory.getInstance().create();
         var paymentProcessorResultCodeDetail = PaymentProcessorResultCodeDetailFactory.getInstance().create(session,
-                paymentProcessorResultCode, paymentProcessorResultCodeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                paymentProcessorResultCode, paymentProcessorResultCodeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         paymentProcessorResultCode = PaymentProcessorResultCodeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, paymentProcessorResultCode.getPrimaryKey());
@@ -266,7 +266,7 @@ public class PaymentProcessorResultCodeControl
             }
 
             paymentProcessorResultCodeDetail = PaymentProcessorResultCodeDetailFactory.getInstance().create(paymentProcessorResultCodePK,
-                    paymentProcessorResultCodeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                    paymentProcessorResultCodeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             paymentProcessorResultCode.setActiveDetail(paymentProcessorResultCodeDetail);
             paymentProcessorResultCode.setLastDetail(paymentProcessorResultCodeDetail);
@@ -318,7 +318,7 @@ public class PaymentProcessorResultCodeControl
     public PaymentProcessorResultCodeDescription createPaymentProcessorResultCodeDescription(final PaymentProcessorResultCode paymentProcessorResultCode,
             final Language language, final String description, final BasePK createdBy) {
         var paymentProcessorResultCodeDescription = PaymentProcessorResultCodeDescriptionFactory.getInstance().create(paymentProcessorResultCode,
-                language, description, session.getStartTime(), Session.MAX_TIME_LONG);
+                language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(paymentProcessorResultCode.getPrimaryKey(), EventTypes.MODIFY, paymentProcessorResultCodeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -435,7 +435,7 @@ public class PaymentProcessorResultCodeControl
             var description = paymentProcessorResultCodeDescriptionValue.getDescription();
 
             paymentProcessorResultCodeDescription = PaymentProcessorResultCodeDescriptionFactory.getInstance().create(paymentProcessorResultCode, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(paymentProcessorResultCode.getPrimaryKey(), EventTypes.MODIFY, paymentProcessorResultCodeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }

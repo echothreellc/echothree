@@ -76,7 +76,7 @@ public class InventoryTransactionTypeControl
         var inventoryTransactionType = InventoryTransactionTypeFactory.getInstance().create();
         var inventoryTransactionTypeDetail = InventoryTransactionTypeDetailFactory.getInstance().create(inventoryTransactionType, inventoryTransactionTypeName, inventoryTransactionSequenceType,
                 inventoryTransactionWorkflow, inventoryTransactionWorkflowEntrance, isDefault, sortOrder, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
 
         // Convert to R/W
         inventoryTransactionType = InventoryTransactionTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -310,7 +310,7 @@ public class InventoryTransactionTypeControl
             }
 
             inventoryTransactionTypeDetail = InventoryTransactionTypeDetailFactory.getInstance().create(inventoryTransactionTypePK, inventoryTransactionTypeName, inventoryTransactionSequenceTypePK,
-                    inventoryTransactionWorkflowPK, inventoryTransactionWorkflowEntrancePK, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                    inventoryTransactionWorkflowPK, inventoryTransactionWorkflowEntrancePK, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             inventoryTransactionType.setActiveDetail(inventoryTransactionTypeDetail);
             inventoryTransactionType.setLastDetail(inventoryTransactionTypeDetail);
@@ -373,7 +373,7 @@ public class InventoryTransactionTypeControl
 
     public InventoryTransactionTypeDescription createInventoryTransactionTypeDescription(InventoryTransactionType inventoryTransactionType, Language language, String description, BasePK createdBy) {
         var inventoryTransactionTypeDescription = InventoryTransactionTypeDescriptionFactory.getInstance().create(inventoryTransactionType, language, description,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(inventoryTransactionType.getPrimaryKey(), EventTypes.MODIFY, inventoryTransactionTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -494,7 +494,7 @@ public class InventoryTransactionTypeControl
             var description = inventoryTransactionTypeDescriptionValue.getDescription();
 
             inventoryTransactionTypeDescription = InventoryTransactionTypeDescriptionFactory.getInstance().create(inventoryTransactionType, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(inventoryTransactionType.getPrimaryKey(), EventTypes.MODIFY, inventoryTransactionTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }

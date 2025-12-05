@@ -79,7 +79,7 @@ public class EditorControl
 
         var editor = editorFactory.create();
         var editorDetail = editorDetailFactory.create(editor, editorName, hasDimensions, minimumHeight, minimumWidth, maximumHeight,
-                maximumWidth, defaultHeight, defaultWidth, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                maximumWidth, defaultHeight, defaultWidth, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         editor = editorFactory.getEntityFromPK(EntityPermission.READ_WRITE, editor.getPrimaryKey());
@@ -284,7 +284,7 @@ public class EditorControl
             }
 
             editorDetail = editorDetailFactory.create(editorPK, editorName, hasDimensions, minimumHeight, minimumWidth, maximumHeight,
-                    maximumWidth, defaultHeight, defaultWidth, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                    maximumWidth, defaultHeight, defaultWidth, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             editor.setActiveDetail(editorDetail);
             editor.setLastDetail(editorDetail);
@@ -351,7 +351,7 @@ public class EditorControl
 
         public EditorDescription createEditorDescription(Editor editor, Language language, String description, BasePK createdBy) {
         var editorDescription = editorDescriptionFactory.create(editor, language, description,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(editor.getPrimaryKey(), EventTypes.MODIFY, editorDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -472,7 +472,7 @@ public class EditorControl
             var description = editorDescriptionValue.getDescription();
 
             editorDescription = editorDescriptionFactory.create(editor, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(editor.getPrimaryKey(), EventTypes.MODIFY, editorDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }

@@ -124,7 +124,7 @@ public class MessageControl
             Integer sortOrder, BasePK createdBy) {
         var messageType = MessageTypeFactory.getInstance().create();
         var messageTypeDetail = MessageTypeDetailFactory.getInstance().create(messageType, entityType,
-                messageTypeName, mimeTypeUsageType, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                messageTypeName, mimeTypeUsageType, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         messageType = MessageTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -255,7 +255,7 @@ public class MessageControl
             var sortOrder = messageTypeDetailValue.getSortOrder();
             
             messageTypeDetail = MessageTypeDetailFactory.getInstance().create(messageTypePK, entityTypePK, messageTypeName,
-                    mimeTypeUsageTypePK, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                    mimeTypeUsageTypePK, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             messageType.setActiveDetail(messageTypeDetail);
             messageType.setLastDetail(messageTypeDetail);
@@ -292,7 +292,7 @@ public class MessageControl
     public MessageTypeDescription createMessageTypeDescription(MessageType messageType, Language language, String description,
             BasePK createdBy) {
         var messageTypeDescription = MessageTypeDescriptionFactory.getInstance().create(messageType,
-                language, description, session.getStartTime(), Session.MAX_TIME_LONG);
+                language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(messageType.getPrimaryKey(), EventTypes.MODIFY, messageTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -430,7 +430,7 @@ public class MessageControl
             var description = messageTypeDescriptionValue.getDescription();
             
             messageTypeDescription = MessageTypeDescriptionFactory.getInstance().create(messageType, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(messageType.getPrimaryKey(), EventTypes.MODIFY, messageTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -471,7 +471,7 @@ public class MessageControl
 
         var message = MessageFactory.getInstance().create();
         var messageDetail = MessageDetailFactory.getInstance().create(message, messageType, messageName,
-                includeByDefault, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                includeByDefault, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         message = MessageFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -698,7 +698,7 @@ public class MessageControl
             }
             
             messageDetail = MessageDetailFactory.getInstance().create(messagePK, messageTypePK, messageName,
-                    includeByDefault, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                    includeByDefault, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             message.setActiveDetail(messageDetail);
             message.setLastDetail(messageDetail);
@@ -760,7 +760,7 @@ public class MessageControl
     
     public MessageDescription createMessageDescription(Message message, Language language, String description, BasePK createdBy) {
         var messageDescription = MessageDescriptionFactory.getInstance().create(message,
-                language, description, session.getStartTime(), Session.MAX_TIME_LONG);
+                language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(message.getPrimaryKey(), EventTypes.MODIFY, messageDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -896,7 +896,7 @@ public class MessageControl
             var language = messageDescription.getLanguage();
             var description = messageDescriptionValue.getDescription();
             
-            messageDescription = MessageDescriptionFactory.getInstance().create(message, language, description, session.getStartTime(), Session.MAX_TIME_LONG);
+            messageDescription = MessageDescriptionFactory.getInstance().create(message, language, description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(message.getPrimaryKey(), EventTypes.MODIFY, messageDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -923,7 +923,7 @@ public class MessageControl
     
     public MessageString createMessageString(Message message, Language language, String string, BasePK createdBy) {
         var messageString = MessageStringFactory.getInstance().create(message, language, string,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(messageString.getMessagePK(), EventTypes.MODIFY, messageString.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1046,7 +1046,7 @@ public class MessageControl
             var string = messageStringValue.getString();
             
             messageString = MessageStringFactory.getInstance().create(messagePK, languagePK, string,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(messagePK, EventTypes.MODIFY, messageString.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -1074,7 +1074,7 @@ public class MessageControl
     
     public MessageBlob createMessageBlob(Message message, Language language, MimeType mimeType, ByteArray blob, BasePK createdBy) {
         var messageBlob = MessageBlobFactory.getInstance().create(message, language, mimeType, blob,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(messageBlob.getMessagePK(), EventTypes.MODIFY, messageBlob.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1198,7 +1198,7 @@ public class MessageControl
             var blob = messageBlobValue.getBlob();
             
             messageBlob = MessageBlobFactory.getInstance().create(messagePK, languagePK, mimeTypePK, blob,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(messagePK, EventTypes.MODIFY, messageBlob.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -1226,7 +1226,7 @@ public class MessageControl
     
     public MessageClob createMessageClob(Message message, Language language, MimeType mimeType, String clob, BasePK createdBy) {
         var messageClob = MessageClobFactory.getInstance().create(message, language, mimeType, clob,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(messageClob.getMessagePK(), EventTypes.MODIFY, messageClob.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1350,7 +1350,7 @@ public class MessageControl
             var clob = messageClobValue.getClob();
             
             messageClob = MessageClobFactory.getInstance().create(messagePK, languagePK, mimeTypePK, clob,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(messagePK, EventTypes.MODIFY, messageClob.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -1378,7 +1378,7 @@ public class MessageControl
     
     public EntityMessage createEntityMessage(EntityInstance entityInstance, Message message, BasePK createdBy) {
         var entityMessage = EntityMessageFactory.getInstance().create(entityInstance, message,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(message.getPrimaryKey(), EventTypes.MODIFY, entityMessage.getPrimaryKey(), EventTypes.CREATE, createdBy);
         

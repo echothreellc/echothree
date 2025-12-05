@@ -75,7 +75,7 @@ public class UseControl
 
         var use = UseFactory.getInstance().create();
         var useDetail = UseDetailFactory.getInstance().create(use, useName, useType, isDefault, sortOrder,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         use = UseFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, use.getPrimaryKey());
@@ -345,7 +345,7 @@ public class UseControl
             }
 
             useDetail = UseDetailFactory.getInstance().create(usePK, useName, useTypePK, isDefault, sortOrder,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             use.setActiveDetail(useDetail);
             use.setLastDetail(useDetail);
@@ -406,7 +406,7 @@ public class UseControl
 
     public UseDescription createUseDescription(Use use, Language language, String description, BasePK createdBy) {
         var useDescription = UseDescriptionFactory.getInstance().create(use, language, description,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(use.getPrimaryKey(), EventTypes.MODIFY, useDescription.getPrimaryKey(),
                 EventTypes.CREATE, createdBy);
@@ -544,7 +544,7 @@ public class UseControl
             var language = useDescription.getLanguage();
             var description = useDescriptionValue.getDescription();
 
-            useDescription = UseDescriptionFactory.getInstance().create(use, language, description, session.getStartTime(), Session.MAX_TIME_LONG);
+            useDescription = UseDescriptionFactory.getInstance().create(use, language, description, session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(use.getPrimaryKey(), EventTypes.MODIFY, useDescription.getPrimaryKey(),
                     EventTypes.MODIFY, updatedBy);

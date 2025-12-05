@@ -42,7 +42,7 @@ public class EntityInstancesMissingMultipleListItemEntityAttributeQuery
     }
     
     public List<EntityInstanceResult> execute(final EntityAttribute entityAttribute, final EntityListItem entityListItem) {
-        return super.execute(entityAttribute, entityListItem, Session.MAX_TIME_LONG);
+        return super.execute(entityAttribute, entityListItem, Session.MAX_TIME);
     }
     
 }

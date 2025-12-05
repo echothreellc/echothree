@@ -75,7 +75,7 @@ public class OrderAdjustmentControl
 
         var orderAdjustmentType = OrderAdjustmentTypeFactory.getInstance().create();
         var orderAdjustmentTypeDetail = OrderAdjustmentTypeDetailFactory.getInstance().create(orderAdjustmentType, orderType,
-                orderAdjustmentTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                orderAdjustmentTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         orderAdjustmentType = OrderAdjustmentTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -282,7 +282,7 @@ public class OrderAdjustmentControl
             }
 
             orderAdjustmentTypeDetail = OrderAdjustmentTypeDetailFactory.getInstance().create(orderAdjustmentTypePK, orderTypePK, orderAdjustmentTypeName, isDefault, sortOrder,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             orderAdjustmentType.setActiveDetail(orderAdjustmentTypeDetail);
             orderAdjustmentType.setLastDetail(orderAdjustmentTypeDetail);
@@ -331,7 +331,7 @@ public class OrderAdjustmentControl
 
     public OrderAdjustmentTypeDescription createOrderAdjustmentTypeDescription(OrderAdjustmentType orderAdjustmentType, Language language, String description, BasePK createdBy) {
         var orderAdjustmentTypeDescription = OrderAdjustmentTypeDescriptionFactory.getInstance().create(orderAdjustmentType, language, description,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(orderAdjustmentType.getPrimaryKey(), EventTypes.MODIFY, orderAdjustmentTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -452,7 +452,7 @@ public class OrderAdjustmentControl
             var description = orderAdjustmentTypeDescriptionValue.getDescription();
 
             orderAdjustmentTypeDescription = OrderAdjustmentTypeDescriptionFactory.getInstance().create(orderAdjustmentType, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(orderAdjustmentType.getPrimaryKey(), EventTypes.MODIFY, orderAdjustmentTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -481,7 +481,7 @@ public class OrderAdjustmentControl
             BasePK createdBy) {
         var orderAdjustment = OrderAdjustmentFactory.getInstance().create();
         var orderAdjustmentDetail = OrderAdjustmentDetailFactory.getInstance().create(orderAdjustment,
-                order, orderAdjustmentSequence, orderAdjustmentType, amount, session.getStartTime(), Session.MAX_TIME_LONG);
+                order, orderAdjustmentSequence, orderAdjustmentType, amount, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         orderAdjustment = OrderAdjustmentFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,

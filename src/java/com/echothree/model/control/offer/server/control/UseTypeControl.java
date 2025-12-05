@@ -74,7 +74,7 @@ public class UseTypeControl
 
         var useType = UseTypeFactory.getInstance().create();
         var useTypeDetail = UseTypeDetailFactory.getInstance().create(useType, useTypeName, isDefault, sortOrder,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         useType = UseTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, useType.getPrimaryKey());
@@ -300,7 +300,7 @@ public class UseTypeControl
             }
             
             useTypeDetail = UseTypeDetailFactory.getInstance().create(useTypePK, useTypeName, isDefault, sortOrder,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             useType.setActiveDetail(useTypeDetail);
             useType.setLastDetail(useTypeDetail);
@@ -350,7 +350,7 @@ public class UseTypeControl
     
     public UseTypeDescription createUseTypeDescription(UseType useType, Language language, String description, BasePK createdBy) {
         var useTypeDescription = UseTypeDescriptionFactory.getInstance().create(useType, language,
-                description, session.getStartTime(), Session.MAX_TIME_LONG);
+                description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(useType.getPrimaryKey(), EventTypes.MODIFY, useTypeDescription.getPrimaryKey(),
                 EventTypes.CREATE, createdBy);
@@ -489,7 +489,7 @@ public class UseTypeControl
             var description = useTypeDescriptionValue.getDescription();
             
             useTypeDescription = UseTypeDescriptionFactory.getInstance().create(useType, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(useType.getPrimaryKey(), EventTypes.MODIFY, useTypeDescription.getPrimaryKey(),
                     EventTypes.MODIFY, updatedBy);

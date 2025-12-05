@@ -316,7 +316,7 @@ public class FinancialControl
         var financialAccountType = FinancialAccountTypeFactory.getInstance().create();
         var financialAccountTypeDetail = FinancialAccountTypeDetailFactory.getInstance().create(financialAccountType,
                 financialAccountTypeName, parentFinancialAccountType, defaultGlAccount, financialAccountSequenceType, financialAccountTransactionSequenceType,
-                financialAccountWorkflow, financialAccountWorkflowEntrance, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                financialAccountWorkflow, financialAccountWorkflowEntrance, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         financialAccountType = FinancialAccountTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -579,7 +579,7 @@ public class FinancialControl
             
             financialAccountTypeDetail = FinancialAccountTypeDetailFactory.getInstance().create(financialAccountTypePK, financialAccountTypeName,
                     parentFinancialAccountTypePK, defaultGlAccountPK, financialAccountSequenceTypePK, financialAccountTransactionSequenceTypePK,
-                    financialAccountWorkflowPK, financialAccountWorkflowEntrancePK, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                    financialAccountWorkflowPK, financialAccountWorkflowEntrancePK, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             financialAccountType.setActiveDetail(financialAccountTypeDetail);
             financialAccountType.setLastDetail(financialAccountTypeDetail);
@@ -649,7 +649,7 @@ public class FinancialControl
     
     public FinancialAccountTypeDescription createFinancialAccountTypeDescription(FinancialAccountType financialAccountType, Language language, String description, BasePK createdBy) {
         var financialAccountTypeDescription = FinancialAccountTypeDescriptionFactory.getInstance().create(financialAccountType, language, description,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(financialAccountType.getPrimaryKey(), EventTypes.MODIFY, financialAccountTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -770,7 +770,7 @@ public class FinancialControl
             var description = financialAccountTypeDescriptionValue.getDescription();
             
             financialAccountTypeDescription = FinancialAccountTypeDescriptionFactory.getInstance().create(financialAccountType, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(financialAccountType.getPrimaryKey(), EventTypes.MODIFY, financialAccountTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -813,7 +813,7 @@ public class FinancialControl
         var financialAccountTransactionType = FinancialAccountTransactionTypeFactory.getInstance().create();
         var financialAccountTransactionTypeDetail = FinancialAccountTransactionTypeDetailFactory.getInstance().create(session,
                 financialAccountTransactionType, financialAccountType, financialAccountTransactionTypeName, parentFinancialAccountTransactionType, glAccount,
-                isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         financialAccountTransactionType = FinancialAccountTransactionTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -1087,7 +1087,7 @@ public class FinancialControl
             
             financialAccountTransactionTypeDetail = FinancialAccountTransactionTypeDetailFactory.getInstance().create(session,
                     financialAccountTransactionTypePK, financialAccountTypePK, financialAccountTransactionTypeName, parentFinancialAccountTransactionTypePK,
-                    glAccountPK, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                    glAccountPK, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             financialAccountTransactionType.setActiveDetail(financialAccountTransactionTypeDetail);
             financialAccountTransactionType.setLastDetail(financialAccountTransactionTypeDetail);
@@ -1159,7 +1159,7 @@ public class FinancialControl
     public FinancialAccountTransactionTypeDescription createFinancialAccountTransactionTypeDescription(FinancialAccountTransactionType financialAccountTransactionType,
             Language language, String description, BasePK createdBy) {
         var financialAccountTransactionTypeDescription = FinancialAccountTransactionTypeDescriptionFactory.getInstance().create(session,
-                financialAccountTransactionType, language, description, session.getStartTime(), Session.MAX_TIME_LONG);
+                financialAccountTransactionType, language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(financialAccountTransactionType.getPrimaryKey(), EventTypes.MODIFY, financialAccountTransactionTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1288,7 +1288,7 @@ public class FinancialControl
             var description = financialAccountTransactionTypeDescriptionValue.getDescription();
             
             financialAccountTransactionTypeDescription = FinancialAccountTransactionTypeDescriptionFactory.getInstance().create(session,
-                    financialAccountTransactionType, language, description, session.getStartTime(), Session.MAX_TIME_LONG);
+                    financialAccountTransactionType, language, description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(financialAccountTransactionType.getPrimaryKey(), EventTypes.MODIFY, financialAccountTransactionTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -1329,7 +1329,7 @@ public class FinancialControl
         var financialAccountAliasType = FinancialAccountAliasTypeFactory.getInstance().create();
         var financialAccountAliasTypeDetail = FinancialAccountAliasTypeDetailFactory.getInstance().create(session,
                 financialAccountAliasType, financialAccountType, financialAccountAliasTypeName, validationPattern, isDefault, sortOrder,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         financialAccountAliasType = FinancialAccountAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, financialAccountAliasType.getPrimaryKey());
@@ -1535,7 +1535,7 @@ public class FinancialControl
             
             financialAccountAliasTypeDetail = FinancialAccountAliasTypeDetailFactory.getInstance().create(financialAccountAliasTypePK,
                     financialAccountTypePK, financialAccountAliasTypeName, validationPattern, isDefault, sortOrder, session.getStartTime(),
-                    Session.MAX_TIME_LONG);
+                    Session.MAX_TIME);
             
             financialAccountAliasType.setActiveDetail(financialAccountAliasTypeDetail);
             financialAccountAliasType.setLastDetail(financialAccountAliasTypeDetail);
@@ -1595,7 +1595,7 @@ public class FinancialControl
     public FinancialAccountAliasTypeDescription createFinancialAccountAliasTypeDescription(FinancialAccountAliasType financialAccountAliasType,
             Language language, String description, BasePK createdBy) {
         var financialAccountAliasTypeDescription = FinancialAccountAliasTypeDescriptionFactory.getInstance().create(session,
-                financialAccountAliasType, language, description, session.getStartTime(), Session.MAX_TIME_LONG);
+                financialAccountAliasType, language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(financialAccountAliasType.getPrimaryKey(), EventTypes.MODIFY, financialAccountAliasTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1723,7 +1723,7 @@ public class FinancialControl
             var description = financialAccountAliasTypeDescriptionValue.getDescription();
             
             financialAccountAliasTypeDescription = FinancialAccountAliasTypeDescriptionFactory.getInstance().create(financialAccountAliasType,
-                    language, description, session.getStartTime(), Session.MAX_TIME_LONG);
+                    language, description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(financialAccountAliasType.getPrimaryKey(), EventTypes.MODIFY, financialAccountAliasTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -1758,7 +1758,7 @@ public class FinancialControl
     public FinancialAccountRole createFinancialAccountRole(FinancialAccount financialAccount, Party party, PartyContactMechanism partyContactMechanism,
             FinancialAccountRoleType financialAccountRoleType, BasePK createdBy) {
         var financialAccountRole = FinancialAccountRoleFactory.getInstance().create(financialAccount, party, financialAccountRoleType,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(financialAccount.getPrimaryKey(), EventTypes.MODIFY, financialAccountRole.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1871,7 +1871,7 @@ public class FinancialControl
             var financialAccountRoleTypePK = financialAccountRole.getFinancialAccountRoleTypePK(); // Not updated
             
             financialAccountRole = FinancialAccountRoleFactory.getInstance().create(financialAccountPK, partyPK, financialAccountRoleTypePK,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(financialAccountPK, EventTypes.MODIFY, financialAccountRole.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -1897,7 +1897,7 @@ public class FinancialControl
             GlAccount glAccount, String reference, String description, BasePK createdBy) {
         var financialAccount = FinancialAccountFactory.getInstance().create();
         var financialAccountDetail = FinancialAccountDetailFactory.getInstance().create(financialAccount, financialAccountType,
-                financialAccountName, currency, glAccount, reference, description, session.getStartTime(), Session.MAX_TIME_LONG);
+                financialAccountName, currency, glAccount, reference, description, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         financialAccount = FinancialAccountFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, financialAccount.getPrimaryKey());
@@ -2051,7 +2051,7 @@ public class FinancialControl
             var description = financialAccountDetailValue.getDescription();
             
             financialAccountDetail = FinancialAccountDetailFactory.getInstance().create(financialAccountPK, financialAccountTypePK,
-                    financialAccountName, currencyPK, glAccountPK, reference, description, session.getStartTime(), Session.MAX_TIME_LONG);
+                    financialAccountName, currencyPK, glAccountPK, reference, description, session.getStartTime(), Session.MAX_TIME);
             
             financialAccount.setActiveDetail(financialAccountDetail);
             financialAccount.setLastDetail(financialAccountDetail);
@@ -2141,7 +2141,7 @@ public class FinancialControl
     public FinancialAccountAlias createFinancialAccountAlias(FinancialAccount financialAccount, FinancialAccountAliasType financialAccountAliasType,
             String alias, BasePK createdBy) {
         var financialAccountAlias = FinancialAccountAliasFactory.getInstance().create(financialAccount, financialAccountAliasType,
-                alias, session.getStartTime(), Session.MAX_TIME_LONG);
+                alias, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(financialAccount.getPrimaryKey(), EventTypes.MODIFY, financialAccountAlias.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -2281,7 +2281,7 @@ public class FinancialControl
             var alias  = financialAccountAliasValue.getAlias();
             
             financialAccountAlias = FinancialAccountAliasFactory.getInstance().create(financialAccountPK, financialAccountAliasTypePK, alias,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(financialAccountPK, EventTypes.MODIFY, financialAccountAlias.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -2319,7 +2319,7 @@ public class FinancialControl
         var financialAccountTransaction = FinancialAccountTransactionFactory.getInstance().create();
         var financialAccountTransactionDetail = FinancialAccountTransactionDetailFactory.getInstance().create(session,
                 financialAccountTransaction, financialAccountTransactionName, financialAccount, financialAccountTransactionType, amount, comment,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         financialAccountTransaction = FinancialAccountTransactionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, financialAccountTransaction.getPrimaryKey());
@@ -2465,7 +2465,7 @@ public class FinancialControl
             
             financialAccountTransactionDetail = FinancialAccountTransactionDetailFactory.getInstance().create(financialAccountTransactionPK,
                     financialAccountTransactionName, financialAccountPK, financialAccountTransactionTypePK, amount, comment, session.getStartTime(),
-                    Session.MAX_TIME_LONG);
+                    Session.MAX_TIME);
             
             financialAccountTransaction.setActiveDetail(financialAccountTransactionDetail);
             financialAccountTransaction.setLastDetail(financialAccountTransactionDetail);

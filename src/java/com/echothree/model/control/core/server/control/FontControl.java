@@ -82,7 +82,7 @@ public class FontControl
 
         var fontStyle = FontStyleFactory.getInstance().create();
         var fontStyleDetail = FontStyleDetailFactory.getInstance().create(fontStyle, fontStyleName, isDefault, sortOrder, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
 
         // Convert to R/W
         fontStyle = FontStyleFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, fontStyle.getPrimaryKey());
@@ -306,7 +306,7 @@ public class FontControl
             }
 
             fontStyleDetail = FontStyleDetailFactory.getInstance().create(fontStylePK, fontStyleName, isDefault, sortOrder, session.getStartTime(),
-                    Session.MAX_TIME_LONG);
+                    Session.MAX_TIME);
 
             fontStyle.setActiveDetail(fontStyleDetail);
             fontStyle.setLastDetail(fontStyleDetail);
@@ -371,7 +371,7 @@ public class FontControl
 
     public FontStyleDescription createFontStyleDescription(FontStyle fontStyle, Language language, String description, BasePK createdBy) {
         var fontStyleDescription = FontStyleDescriptionFactory.getInstance().create(fontStyle, language, description,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(fontStyle.getPrimaryKey(), EventTypes.MODIFY, fontStyleDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -492,7 +492,7 @@ public class FontControl
             var description = fontStyleDescriptionValue.getDescription();
 
             fontStyleDescription = FontStyleDescriptionFactory.getInstance().create(fontStyle, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(fontStyle.getPrimaryKey(), EventTypes.MODIFY, fontStyleDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -532,7 +532,7 @@ public class FontControl
 
         var fontWeight = FontWeightFactory.getInstance().create();
         var fontWeightDetail = FontWeightDetailFactory.getInstance().create(fontWeight, fontWeightName, isDefault, sortOrder, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
 
         // Convert to R/W
         fontWeight = FontWeightFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, fontWeight.getPrimaryKey());
@@ -756,7 +756,7 @@ public class FontControl
             }
 
             fontWeightDetail = FontWeightDetailFactory.getInstance().create(fontWeightPK, fontWeightName, isDefault, sortOrder, session.getStartTime(),
-                    Session.MAX_TIME_LONG);
+                    Session.MAX_TIME);
 
             fontWeight.setActiveDetail(fontWeightDetail);
             fontWeight.setLastDetail(fontWeightDetail);
@@ -821,7 +821,7 @@ public class FontControl
 
     public FontWeightDescription createFontWeightDescription(FontWeight fontWeight, Language language, String description, BasePK createdBy) {
         var fontWeightDescription = FontWeightDescriptionFactory.getInstance().create(fontWeight, language, description,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(fontWeight.getPrimaryKey(), EventTypes.MODIFY, fontWeightDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -942,7 +942,7 @@ public class FontControl
             var description = fontWeightDescriptionValue.getDescription();
 
             fontWeightDescription = FontWeightDescriptionFactory.getInstance().create(fontWeight, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(fontWeight.getPrimaryKey(), EventTypes.MODIFY, fontWeightDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }

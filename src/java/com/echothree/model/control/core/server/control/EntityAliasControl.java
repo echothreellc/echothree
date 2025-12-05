@@ -79,7 +79,7 @@ public class EntityAliasControl
 
         var entityAliasType = EntityAliasTypeFactory.getInstance().create();
         var entityAliasTypeDetail = EntityAliasTypeDetailFactory.getInstance().create(entityAliasType, entityType,
-                entityAliasTypeName, validationPattern, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                entityAliasTypeName, validationPattern, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         entityAliasType = EntityAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -299,7 +299,7 @@ public class EntityAliasControl
             }
 
             entityAliasTypeDetail = EntityAliasTypeDetailFactory.getInstance().create(entityAliasTypePK, entityTypePK,
-                    entityAliasTypeName, validationPattern, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                    entityAliasTypeName, validationPattern, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             entityAliasType.setActiveDetail(entityAliasTypeDetail);
             entityAliasType.setLastDetail(entityAliasTypeDetail);
@@ -399,7 +399,7 @@ public class EntityAliasControl
     public EntityAliasTypeDescription createEntityAliasTypeDescription(EntityAliasType entityAliasType, Language language,
             String description, BasePK createdBy) {
         var entityAliasTypeDescription = EntityAliasTypeDescriptionFactory.getInstance().create(session,
-                entityAliasType, language, description, session.getStartTime(), Session.MAX_TIME_LONG);
+                entityAliasType, language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(entityAliasType.getPrimaryKey(), EventTypes.MODIFY, entityAliasTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -540,7 +540,7 @@ public class EntityAliasControl
             var description = entityAliasTypeDescriptionValue.getDescription();
 
             entityAliasTypeDescription = EntityAliasTypeDescriptionFactory.getInstance().create(entityAliasType, language,
-                    description, session.getStartTime(), Session.MAX_TIME_LONG);
+                    description, session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(entityAliasType.getPrimaryKey(), EventTypes.MODIFY, entityAliasTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -567,7 +567,7 @@ public class EntityAliasControl
     public EntityAlias createEntityAlias(EntityInstance entityInstance, EntityAliasType entityAliasType, String alias,
             BasePK createdBy) {
         var entityAlias = EntityAliasFactory.getInstance().create(entityInstance, entityAliasType,
-                alias, session.getStartTime(), Session.MAX_TIME_LONG);
+                alias, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(entityInstance, EventTypes.MODIFY, entityAliasType.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -767,7 +767,7 @@ public class EntityAliasControl
             entityAlias.store();
 
             EntityAliasFactory.getInstance().create(entityInstance, entityAliasType, entityAliasValue.getAlias(), session.getStartTime(),
-                    Session.MAX_TIME_LONG);
+                    Session.MAX_TIME);
 
             sendEvent(entityInstance, EventTypes.MODIFY, entityAliasType.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }

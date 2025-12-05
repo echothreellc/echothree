@@ -58,7 +58,7 @@ public class OfferNameElementControl
         var offerNameElement = OfferNameElementFactory.getInstance().create();
         var offerNameElementDetail = OfferNameElementDetailFactory.getInstance().create(session,
                 offerNameElement, offerNameElementName, offset, length, validationPattern, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
         
         // Convert to R/W
         offerNameElement = OfferNameElementFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -203,7 +203,7 @@ public class OfferNameElementControl
             var validationPattern = offerNameElementDetailValue.getValidationPattern();
             
             offerNameElementDetail = OfferNameElementDetailFactory.getInstance().create(offerNameElementPK,
-                    offerNameElementName, offset, length, validationPattern, session.getStartTime(), Session.MAX_TIME_LONG);
+                    offerNameElementName, offset, length, validationPattern, session.getStartTime(), Session.MAX_TIME);
             
             offerNameElement.setActiveDetail(offerNameElementDetail);
             offerNameElement.setLastDetail(offerNameElementDetail);
@@ -230,7 +230,7 @@ public class OfferNameElementControl
     public OfferNameElementDescription createOfferNameElementDescription(OfferNameElement offerNameElement, Language language,
             String description, BasePK createdBy) {
         var offerNameElementDescription = OfferNameElementDescriptionFactory.getInstance().create(session,
-                offerNameElement, language, description, session.getStartTime(), Session.MAX_TIME_LONG);
+                offerNameElement, language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(offerNameElement.getPrimaryKey(), EventTypes.MODIFY,
                 offerNameElementDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -372,7 +372,7 @@ public class OfferNameElementControl
             var description = offerNameElementDescriptionValue.getDescription();
             
             offerNameElementDescription = OfferNameElementDescriptionFactory.getInstance().create(offerNameElement,
-                    language, description, session.getStartTime(), Session.MAX_TIME_LONG);
+                    language, description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(offerNameElement.getPrimaryKey(), EventTypes.MODIFY,
                     offerNameElementDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);

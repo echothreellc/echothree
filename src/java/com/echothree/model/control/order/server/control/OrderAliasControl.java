@@ -75,7 +75,7 @@ public class OrderAliasControl
 
         var orderAliasType = OrderAliasTypeFactory.getInstance().create();
         var orderAliasTypeDetail = OrderAliasTypeDetailFactory.getInstance().create(orderAliasType, orderType, orderAliasTypeName,
-                validationPattern, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                validationPattern, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         orderAliasType = OrderAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, orderAliasType.getPrimaryKey());
@@ -279,7 +279,7 @@ public class OrderAliasControl
             }
 
             orderAliasTypeDetail = OrderAliasTypeDetailFactory.getInstance().create(orderAliasTypePK, orderTypePK, orderAliasTypeName,
-                    validationPattern, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                    validationPattern, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             orderAliasType.setActiveDetail(orderAliasTypeDetail);
             orderAliasType.setLastDetail(orderAliasTypeDetail);
@@ -338,7 +338,7 @@ public class OrderAliasControl
 
     public OrderAliasTypeDescription createOrderAliasTypeDescription(OrderAliasType orderAliasType, Language language, String description, BasePK createdBy) {
         var orderAliasTypeDescription = OrderAliasTypeDescriptionFactory.getInstance().create(orderAliasType, language,
-                description, session.getStartTime(), Session.MAX_TIME_LONG);
+                description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(orderAliasType.getPrimaryKey(), EventTypes.MODIFY, orderAliasTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -459,7 +459,7 @@ public class OrderAliasControl
             var description = orderAliasTypeDescriptionValue.getDescription();
 
             orderAliasTypeDescription = OrderAliasTypeDescriptionFactory.getInstance().create(orderAliasType, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(orderAliasType.getPrimaryKey(), EventTypes.MODIFY, orderAliasTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -485,7 +485,7 @@ public class OrderAliasControl
     // --------------------------------------------------------------------------------
 
     public OrderAlias createOrderAlias(Order order, OrderAliasType orderAliasType, String alias, BasePK createdBy) {
-        var orderAlias = OrderAliasFactory.getInstance().create(order, orderAliasType, alias, session.getStartTime(), Session.MAX_TIME_LONG);
+        var orderAlias = OrderAliasFactory.getInstance().create(order, orderAliasType, alias, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(order.getPrimaryKey(), EventTypes.MODIFY, orderAlias.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -649,7 +649,7 @@ public class OrderAliasControl
             var orderAliasTypePK = orderAlias.getOrderAliasTypePK();
             var alias  = orderAliasValue.getAlias();
 
-            orderAlias = OrderAliasFactory.getInstance().create(orderPK, orderAliasTypePK, alias, session.getStartTime(), Session.MAX_TIME_LONG);
+            orderAlias = OrderAliasFactory.getInstance().create(orderPK, orderAliasTypePK, alias, session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(orderPK, EventTypes.MODIFY, orderAlias.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }

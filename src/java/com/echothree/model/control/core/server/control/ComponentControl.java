@@ -81,7 +81,7 @@ public class ComponentControl
     public ComponentVendor createComponentVendor(String componentVendorName, String description, BasePK createdBy) {
         var componentVendor = componentVendorFactory.create();
         var componentVendorDetail = componentVendorDetailFactory.create(componentVendor,
-                componentVendorName, description, session.getStartTime(), Session.MAX_TIME_LONG);
+                componentVendorName, description, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         componentVendor = componentVendorFactory.getEntityFromPK(EntityPermission.READ_WRITE,
@@ -221,7 +221,7 @@ public class ComponentControl
             var description = componentVendorDetailValue.getDescription();
 
             componentVendorDetail = componentVendorDetailFactory.create(componentVendorPK,
-                    componentVendorName, description, session.getStartTime(), Session.MAX_TIME_LONG);
+                    componentVendorName, description, session.getStartTime(), Session.MAX_TIME);
 
             componentVendor.setActiveDetail(componentVendorDetail);
             componentVendor.setLastDetail(componentVendorDetail);
@@ -363,7 +363,7 @@ public class ComponentControl
     public Component createComponent(ComponentVendor componentVendor, String componentName, String description, BasePK createdBy) {
         var component = componentFactory.create();
         var componentDetail = componentDetailFactory.create(componentVendor, component,
-                componentName, description, session.getStartTime(), Session.MAX_TIME_LONG);
+                componentName, description, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         component = componentFactory.getEntityFromPK(EntityPermission.READ_WRITE, component.getPrimaryKey());
@@ -440,7 +440,7 @@ public class ComponentControl
             BasePK createdBy) {
 
         return componentVersionFactory.create(component, majorRevision, minorRevision, componentStage,
-                buildNumber, session.getStartTime(), Session.MAX_TIME_LONG);
+                buildNumber, session.getStartTime(), Session.MAX_TIME);
     }
 
     public ComponentVersion getComponentVersion(Component component) {

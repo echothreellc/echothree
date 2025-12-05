@@ -412,7 +412,7 @@ public class CoreControl
 
         var entityAttributeGroup = entityAttributeGroupFactory.create();
         var entityAttributeGroupDetail = entityAttributeGroupDetailFactory.create(entityAttributeGroup,
-                entityAttributeGroupName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                entityAttributeGroupName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         entityAttributeGroup = entityAttributeGroupFactory.getEntityFromPK(EntityPermission.READ_WRITE,
@@ -705,7 +705,7 @@ public class CoreControl
             }
             
             entityAttributeGroupDetail = entityAttributeGroupDetailFactory.create(entityAttributeGroupPK, entityAttributeGroupName,
-                    isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                    isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             entityAttributeGroup.setActiveDetail(entityAttributeGroupDetail);
             entityAttributeGroup.setLastDetail(entityAttributeGroupDetail);
@@ -762,7 +762,7 @@ public class CoreControl
             BasePK createdBy) {
         var entityAttributeGroupDescription = entityAttributeGroupDescriptionFactory.create(entityAttributeGroup,
                 language, description,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(entityAttributeGroup.getPrimaryKey(), EventTypes.MODIFY, entityAttributeGroupDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -901,7 +901,7 @@ public class CoreControl
             var description = entityAttributeGroupDescriptionValue.getDescription();
             
             entityAttributeGroupDescription = entityAttributeGroupDescriptionFactory.create(entityAttributeGroup, language,
-                    description, session.getStartTime(), Session.MAX_TIME_LONG);
+                    description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(entityAttributeGroup.getPrimaryKey(), EventTypes.MODIFY, entityAttributeGroupDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -935,7 +935,7 @@ public class CoreControl
             EntityAttributeType entityAttributeType, Boolean trackRevisions, Integer sortOrder, BasePK createdBy) {
         var entityAttribute = entityAttributeFactory.create();
         var entityAttributeDetail = entityAttributeDetailFactory.create(entityAttribute, entityType,
-                entityAttributeName, entityAttributeType, trackRevisions, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                entityAttributeName, entityAttributeType, trackRevisions, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         entityAttribute = entityAttributeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
@@ -1233,7 +1233,7 @@ public class CoreControl
             
             entityAttributeDetail = entityAttributeDetailFactory.create(entityAttributePK, entityTypePK,
                     entityAttributeName, entityAttributeTypePK, trackRevisions, sortOrder, session.getStartTime(),
-                    Session.MAX_TIME_LONG);
+                    Session.MAX_TIME);
             
             entityAttribute.setActiveDetail(entityAttributeDetail);
             entityAttribute.setLastDetail(entityAttributeDetail);
@@ -1393,7 +1393,7 @@ public class CoreControl
     public EntityAttributeDescription createEntityAttributeDescription(EntityAttribute entityAttribute, Language language,
             String description, BasePK createdBy) {
         var entityAttributeDescription = entityAttributeDescriptionFactory.create(session,
-                entityAttribute, language, description, session.getStartTime(), Session.MAX_TIME_LONG);
+                entityAttribute, language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1534,7 +1534,7 @@ public class CoreControl
             var description = entityAttributeDescriptionValue.getDescription();
             
             entityAttributeDescription = entityAttributeDescriptionFactory.create(entityAttribute, language,
-                    description, session.getStartTime(), Session.MAX_TIME_LONG);
+                    description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -1564,7 +1564,7 @@ public class CoreControl
     public EntityAttributeBlob createEntityAttributeBlob(EntityAttribute entityAttribute, Boolean checkContentWebAddress,
             BasePK createdBy) {
         var entityAttributeBlob = entityAttributeBlobFactory.create(session,
-                entityAttribute, checkContentWebAddress, session.getStartTime(), Session.MAX_TIME_LONG);
+                entityAttribute, checkContentWebAddress, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeBlob.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1590,7 +1590,7 @@ public class CoreControl
 
     private EntityAttributeBlob getEntityAttributeBlob(EntityAttribute entityAttribute, EntityPermission entityPermission) {
         return entityAttributeBlobFactory.getEntityFromQuery(entityPermission, getEntityAttributeBlobQueries,
-                entityAttribute, Session.MAX_TIME_LONG);
+                entityAttribute, Session.MAX_TIME);
     }
     
     public EntityAttributeBlob getEntityAttributeBlob(EntityAttribute entityAttribute) {
@@ -1621,7 +1621,7 @@ public class CoreControl
             var checkContentWebAddress = entityAttributeBlobValue.getCheckContentWebAddress();
             
             entityAttributeBlob = entityAttributeBlobFactory.create(entityAttribute, checkContentWebAddress,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeBlob.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -1651,7 +1651,7 @@ public class CoreControl
     public EntityAttributeString createEntityAttributeString(EntityAttribute entityAttribute, String validationPattern,
             BasePK createdBy) {
         var entityAttributeString = entityAttributeStringFactory.create(session,
-                entityAttribute, validationPattern, session.getStartTime(), Session.MAX_TIME_LONG);
+                entityAttribute, validationPattern, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeString.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1677,7 +1677,7 @@ public class CoreControl
 
     private EntityAttributeString getEntityAttributeString(EntityAttribute entityAttribute, EntityPermission entityPermission) {
         return entityAttributeStringFactory.getEntityFromQuery(entityPermission, getEntityAttributeStringQueries,
-                entityAttribute, Session.MAX_TIME_LONG);
+                entityAttribute, Session.MAX_TIME);
     }
     
     public EntityAttributeString getEntityAttributeString(EntityAttribute entityAttribute) {
@@ -1708,7 +1708,7 @@ public class CoreControl
             var validationPattern = entityAttributeStringValue.getValidationPattern();
             
             entityAttributeString = entityAttributeStringFactory.create(entityAttribute, validationPattern,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeString.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -1739,7 +1739,7 @@ public class CoreControl
             Integer upperLimitIntegerValue, Integer lowerLimitIntegerValue, Integer lowerRangeIntegerValue, BasePK createdBy) {
         var entityAttributeInteger = entityAttributeIntegerFactory.create(session,
                 entityAttribute, upperRangeIntegerValue, upperLimitIntegerValue, lowerLimitIntegerValue, lowerRangeIntegerValue,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeInteger.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1765,7 +1765,7 @@ public class CoreControl
 
     private EntityAttributeInteger getEntityAttributeInteger(EntityAttribute entityAttribute, EntityPermission entityPermission) {
         return entityAttributeIntegerFactory.getEntityFromQuery(entityPermission, getEntityAttributeIntegerQueries,
-                entityAttribute, Session.MAX_TIME_LONG);
+                entityAttribute, Session.MAX_TIME);
     }
     
     public EntityAttributeInteger getEntityAttributeInteger(EntityAttribute entityAttribute) {
@@ -1800,7 +1800,7 @@ public class CoreControl
             
             entityAttributeInteger = entityAttributeIntegerFactory.create(entityAttribute, upperRangeIntegerValue,
                     upperLimitIntegerValue, lowerLimitIntegerValue, lowerRangeIntegerValue, session.getStartTime(),
-                    Session.MAX_TIME_LONG);
+                    Session.MAX_TIME);
             
             sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeInteger.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -1831,7 +1831,7 @@ public class CoreControl
             Long upperLimitLongValue, Long lowerLimitLongValue, Long lowerRangeLongValue, BasePK createdBy) {
         var entityAttributeLong = entityAttributeLongFactory.create(session,
                 entityAttribute, upperRangeLongValue, upperLimitLongValue, lowerLimitLongValue, lowerRangeLongValue,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeLong.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1857,7 +1857,7 @@ public class CoreControl
 
     private EntityAttributeLong getEntityAttributeLong(EntityAttribute entityAttribute, EntityPermission entityPermission) {
         return entityAttributeLongFactory.getEntityFromQuery(entityPermission, getEntityAttributeLongQueries,
-                entityAttribute, Session.MAX_TIME_LONG);
+                entityAttribute, Session.MAX_TIME);
     }
     
     public EntityAttributeLong getEntityAttributeLong(EntityAttribute entityAttribute) {
@@ -1891,7 +1891,7 @@ public class CoreControl
             var lowerRangeLongValue = entityAttributeLongValue.getLowerRangeLongValue();
             
             entityAttributeLong = entityAttributeLongFactory.create(entityAttribute, upperRangeLongValue,
-                    upperLimitLongValue, lowerLimitLongValue, lowerRangeLongValue, session.getStartTime(), Session.MAX_TIME_LONG);
+                    upperLimitLongValue, lowerLimitLongValue, lowerRangeLongValue, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeLong.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -1921,7 +1921,7 @@ public class CoreControl
     public EntityAttributeNumeric createEntityAttributeNumeric(EntityAttribute entityAttribute, UnitOfMeasureType unitOfMeasureType,
             BasePK createdBy) {
         var entityAttributeNumeric = entityAttributeNumericFactory.create(session,
-                entityAttribute, unitOfMeasureType, session.getStartTime(), Session.MAX_TIME_LONG);
+                entityAttribute, unitOfMeasureType, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeNumeric.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1933,7 +1933,7 @@ public class CoreControl
                 "SELECT COUNT(*) " +
                 "FROM entityattributenumerics " +
                 "WHERE enan_uomt_unitofmeasuretypeid = ? AND enan_thrutime = ?",
-                unitOfMeasureType, Session.MAX_TIME_LONG);
+                unitOfMeasureType, Session.MAX_TIME);
     }
 
     private static final Map<EntityPermission, String> getEntityAttributeNumericQueries;
@@ -1955,7 +1955,7 @@ public class CoreControl
 
     private EntityAttributeNumeric getEntityAttributeNumeric(EntityAttribute entityAttribute, EntityPermission entityPermission) {
         return entityAttributeNumericFactory.getEntityFromQuery(entityPermission, getEntityAttributeNumericQueries,
-                entityAttribute, Session.MAX_TIME_LONG);
+                entityAttribute, Session.MAX_TIME);
     }
     
     public EntityAttributeNumeric getEntityAttributeNumeric(EntityAttribute entityAttribute) {
@@ -1986,7 +1986,7 @@ public class CoreControl
             var unitOfMeasureTypePK = entityAttributeNumericValue.getUnitOfMeasureTypePK();
             
             entityAttributeNumeric = entityAttributeNumericFactory.create(entityAttributePK, unitOfMeasureTypePK,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(entityAttributePK, EventTypes.MODIFY, entityAttributeNumeric.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -2016,7 +2016,7 @@ public class CoreControl
     public EntityAttributeListItem createEntityAttributeListItem(EntityAttribute entityAttribute, Sequence entityListItemSequence,
             BasePK createdBy) {
         var entityAttributeListItem = entityAttributeListItemFactory.create(session,
-                entityAttribute, entityListItemSequence, session.getStartTime(), Session.MAX_TIME_LONG);
+                entityAttribute, entityListItemSequence, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeListItem.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -2028,7 +2028,7 @@ public class CoreControl
                 "SELECT COUNT(*) " +
                 "FROM entityattributelistitems " +
                 "WHERE enali_entitylistitemsequenceid = ? AND enali_thrutime = ?",
-                entityListItemSequence, Session.MAX_TIME_LONG);
+                entityListItemSequence, Session.MAX_TIME);
     }
 
     private static final Map<EntityPermission, String> getEntityAttributeListItemQueries;
@@ -2050,7 +2050,7 @@ public class CoreControl
 
     private EntityAttributeListItem getEntityAttributeListItem(EntityAttribute entityAttribute, EntityPermission entityPermission) {
         return entityAttributeListItemFactory.getEntityFromQuery(entityPermission, getEntityAttributeListItemQueries,
-                entityAttribute, Session.MAX_TIME_LONG);
+                entityAttribute, Session.MAX_TIME);
     }
     
     public EntityAttributeListItem getEntityAttributeListItem(EntityAttribute entityAttribute) {
@@ -2081,7 +2081,7 @@ public class CoreControl
             var entityListItemSequencePK = entityAttributeListItemValue.getEntityListItemSequencePK();
             
             entityAttributeListItem = entityAttributeListItemFactory.create(entityAttributePK, entityListItemSequencePK,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(entityAttributePK, EventTypes.MODIFY, entityAttributeListItem.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -2111,7 +2111,7 @@ public class CoreControl
     public EntityAttributeWorkflow createEntityAttributeWorkflow(EntityAttribute entityAttribute, Workflow workflow,
             BasePK createdBy) {
         var entityAttributeWorkflow = entityAttributeWorkflowFactory.create(session,
-                entityAttribute, workflow, session.getStartTime(), Session.MAX_TIME_LONG);
+                entityAttribute, workflow, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeWorkflow.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -2123,7 +2123,7 @@ public class CoreControl
                 "SELECT COUNT(*) " +
                         "FROM entityattributeworkflows " +
                         "WHERE enawkfl_wkfl_workflowid = ? AND enawkfl_thrutime = ?",
-                workflow, Session.MAX_TIME_LONG);
+                workflow, Session.MAX_TIME);
     }
 
     private static final Map<EntityPermission, String> getEntityAttributeWorkflowQueries;
@@ -2145,7 +2145,7 @@ public class CoreControl
 
     private EntityAttributeWorkflow getEntityAttributeWorkflow(EntityAttribute entityAttribute, EntityPermission entityPermission) {
         return entityAttributeWorkflowFactory.getEntityFromQuery(entityPermission, getEntityAttributeWorkflowQueries,
-                entityAttribute, Session.MAX_TIME_LONG);
+                entityAttribute, Session.MAX_TIME);
     }
 
     public EntityAttributeWorkflow getEntityAttributeWorkflow(EntityAttribute entityAttribute) {
@@ -2176,7 +2176,7 @@ public class CoreControl
             var workflowPK = entityAttributeWorkflowValue.getWorkflowPK();
 
             entityAttributeWorkflow = entityAttributeWorkflowFactory.create(entityAttributePK, workflowPK,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(entityAttributePK, EventTypes.MODIFY, entityAttributeWorkflow.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -2206,7 +2206,7 @@ public class CoreControl
     public EntityAttributeEntityAttributeGroup createEntityAttributeEntityAttributeGroup(EntityAttribute entityAttribute,
             EntityAttributeGroup entityAttributeGroup, Integer sortOrder, BasePK createdBy) {
         var entityAttributeEntityAttributeGroup = entityAttributeEntityAttributeGroupFactory.create(session,
-                entityAttribute, entityAttributeGroup, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                entityAttribute, entityAttributeGroup, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeEntityAttributeGroup.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -2218,7 +2218,7 @@ public class CoreControl
                 "SELECT COUNT(*) " +
                 "FROM entityattributeentityattributegroups " +
                 "WHERE enaenagp_ena_entityattributeid = ? AND enaenagp_thrutime = ?",
-                entityAttribute, Session.MAX_TIME_LONG);
+                entityAttribute, Session.MAX_TIME);
     }
 
     public long countEntityAttributeEntityAttributeGroupsByEntityAttributeGroup(EntityAttributeGroup entityAttributeGroup) {
@@ -2226,7 +2226,7 @@ public class CoreControl
                 "SELECT COUNT(*) " +
                 "FROM entityattributeentityattributegroups " +
                 "WHERE enaenagp_enagp_entityattributegroupid = ? AND enaenagp_thrutime = ?",
-                entityAttributeGroup, Session.MAX_TIME_LONG);
+                entityAttributeGroup, Session.MAX_TIME);
     }
 
     private EntityAttributeEntityAttributeGroup getEntityAttributeEntityAttributeGroup(EntityAttribute entityAttribute,
@@ -2399,7 +2399,7 @@ public class CoreControl
             var sortOrder = entityAttributeEntityAttributeGroupValue.getSortOrder();
             
             entityAttributeEntityAttributeGroup = entityAttributeEntityAttributeGroupFactory.create(entityAttribute, entityAttributeGroup,
-                    sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                    sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeEntityAttributeGroup.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -2453,7 +2453,7 @@ public class CoreControl
 
         var entityListItem = entityListItemFactory.create();
         var entityListItemDetail = entityListItemDetailFactory.create(entityListItem,
-                entityAttribute, entityListItemName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                entityAttribute, entityListItemName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         entityListItem = entityListItemFactory.getEntityFromPK(EntityPermission.READ_WRITE, entityListItem.getPrimaryKey());
@@ -2682,7 +2682,7 @@ public class CoreControl
             
             entityListItemDetail = entityListItemDetailFactory.create(entityListItemPK,
                     entityAttribute.getPrimaryKey(), entityListItemName, isDefault, sortOrder, session.getStartTime(),
-                    Session.MAX_TIME_LONG);
+                    Session.MAX_TIME);
             
             entityListItem.setActiveDetail(entityListItemDetail);
             entityListItem.setLastDetail(entityListItemDetail);
@@ -2791,7 +2791,7 @@ public class CoreControl
     
     public EntityListItemDescription createEntityListItemDescription(EntityListItem entityListItem, Language language, String description, BasePK createdBy) {
         var entityListItemDescription = entityListItemDescriptionFactory.create(entityListItem, language, description, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
         
         sendEvent(entityListItem.getPrimaryKey(), EventTypes.MODIFY, entityListItemDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -2928,7 +2928,7 @@ public class CoreControl
             var description = entityListItemDescriptionValue.getDescription();
             
             entityListItemDescription = entityListItemDescriptionFactory.create(entityListItem, language,
-                    description, session.getStartTime(), Session.MAX_TIME_LONG);
+                    description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(entityListItem.getPrimaryKey(), EventTypes.MODIFY, entityListItemDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -2974,7 +2974,7 @@ public class CoreControl
 
         var entityIntegerRange = entityIntegerRangeFactory.create();
         var entityIntegerRangeDetail = entityIntegerRangeDetailFactory.create(entityIntegerRange, entityAttribute,
-                entityIntegerRangeName, minimumIntegerValue, maximumIntegerValue, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                entityIntegerRangeName, minimumIntegerValue, maximumIntegerValue, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         entityIntegerRange = entityIntegerRangeFactory.getEntityFromPK(EntityPermission.READ_WRITE, entityIntegerRange.getPrimaryKey());
@@ -3186,7 +3186,7 @@ public class CoreControl
             }
             
             entityIntegerRangeDetail = entityIntegerRangeDetailFactory.create(entityIntegerRangePK, entityAttribute.getPrimaryKey(), entityIntegerRangeName,
-                    minimumIntegerValue, maximumIntegerValue, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                    minimumIntegerValue, maximumIntegerValue, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             entityIntegerRange.setActiveDetail(entityIntegerRangeDetail);
             entityIntegerRange.setLastDetail(entityIntegerRangeDetail);
@@ -3286,7 +3286,7 @@ public class CoreControl
     
     public EntityIntegerRangeDescription createEntityIntegerRangeDescription(EntityIntegerRange entityIntegerRange, Language language, String description, BasePK createdBy) {
         var entityIntegerRangeDescription = entityIntegerRangeDescriptionFactory.create(entityIntegerRange, language, description, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
         
         sendEvent(entityIntegerRange.getPrimaryKey(), EventTypes.MODIFY, entityIntegerRangeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -3423,7 +3423,7 @@ public class CoreControl
             var description = entityIntegerRangeDescriptionValue.getDescription();
             
             entityIntegerRangeDescription = entityIntegerRangeDescriptionFactory.create(entityIntegerRange, language,
-                    description, session.getStartTime(), Session.MAX_TIME_LONG);
+                    description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(entityIntegerRange.getPrimaryKey(), EventTypes.MODIFY, entityIntegerRangeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -3469,7 +3469,7 @@ public class CoreControl
 
         var entityLongRange = entityLongRangeFactory.create();
         var entityLongRangeDetail = entityLongRangeDetailFactory.create(entityLongRange, entityAttribute, entityLongRangeName,
-                minimumLongValue, maximumLongValue, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                minimumLongValue, maximumLongValue, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         entityLongRange = entityLongRangeFactory.getEntityFromPK(EntityPermission.READ_WRITE, entityLongRange.getPrimaryKey());
@@ -3681,7 +3681,7 @@ public class CoreControl
             }
             
             entityLongRangeDetail = entityLongRangeDetailFactory.create(entityLongRangePK, entityAttribute.getPrimaryKey(), entityLongRangeName,
-                    minimumLongValue, maximumLongValue, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                    minimumLongValue, maximumLongValue, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             entityLongRange.setActiveDetail(entityLongRangeDetail);
             entityLongRange.setLastDetail(entityLongRangeDetail);
@@ -3781,7 +3781,7 @@ public class CoreControl
     
     public EntityLongRangeDescription createEntityLongRangeDescription(EntityLongRange entityLongRange, Language language, String description, BasePK createdBy) {
         var entityLongRangeDescription = entityLongRangeDescriptionFactory.create(entityLongRange, language, description, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
         
         sendEvent(entityLongRange.getPrimaryKey(), EventTypes.MODIFY, entityLongRangeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -3918,7 +3918,7 @@ public class CoreControl
             var description = entityLongRangeDescriptionValue.getDescription();
             
             entityLongRangeDescription = entityLongRangeDescriptionFactory.create(entityLongRange, language,
-                    description, session.getStartTime(), Session.MAX_TIME_LONG);
+                    description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(entityLongRange.getPrimaryKey(), EventTypes.MODIFY, entityLongRangeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -3948,7 +3948,7 @@ public class CoreControl
     public EntityBooleanDefault createEntityBooleanDefault(EntityAttribute entityAttribute, Boolean booleanAttribute,
             BasePK createdBy) {
         var entityBooleanDefault = entityBooleanDefaultFactory.create(entityAttribute,
-                booleanAttribute, session.getStartTime(), Session.MAX_TIME_LONG);
+                booleanAttribute, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityBooleanDefault.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -4045,7 +4045,7 @@ public class CoreControl
 
             entityBooleanDefault = entityBooleanDefaultFactory.create(entityAttribute,
                     entityBooleanDefaultValue.getBooleanAttribute(), session.getStartTime(),
-                    Session.MAX_TIME_LONG);
+                    Session.MAX_TIME);
 
             sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityBooleanDefault.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -4087,7 +4087,7 @@ public class CoreControl
     public EntityBooleanAttribute createEntityBooleanAttribute(EntityAttributePK entityAttribute, EntityInstance entityInstance,
             Boolean booleanAttribute, BasePK createdBy) {
         var entityBooleanAttribute = entityBooleanAttributeFactory.create(entityAttribute,
-                entityInstance.getPrimaryKey(), booleanAttribute, session.getStartTime(), Session.MAX_TIME_LONG);
+                entityInstance.getPrimaryKey(), booleanAttribute, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute, EventTypes.CREATE, createdBy);
 
@@ -4228,7 +4228,7 @@ public class CoreControl
             }
             
             entityBooleanAttributeFactory.create(entityAttribute, entityInstance, entityBooleanAttributeValue.getBooleanAttribute(), session.getStartTime(),
-                    Session.MAX_TIME_LONG);
+                    Session.MAX_TIME);
             
             sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -4271,7 +4271,7 @@ public class CoreControl
     public EntityDateDefault createEntityDateDefault(EntityAttribute entityAttribute, Integer dateAttribute,
             BasePK createdBy) {
         var entityDateDefault = entityDateDefaultFactory.create(entityAttribute,
-                dateAttribute, session.getStartTime(), Session.MAX_TIME_LONG);
+                dateAttribute, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityDateDefault.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -4368,7 +4368,7 @@ public class CoreControl
 
             entityDateDefault = entityDateDefaultFactory.create(entityAttribute,
                     entityDateDefaultValue.getDateAttribute(), session.getStartTime(),
-                    Session.MAX_TIME_LONG);
+                    Session.MAX_TIME);
 
             sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityDateDefault.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -4410,7 +4410,7 @@ public class CoreControl
     public EntityDateAttribute createEntityDateAttribute(EntityAttributePK entityAttribute, EntityInstance entityInstance,
             Integer dateAttribute, BasePK createdBy) {
         var entityDateAttribute = entityDateAttributeFactory.create(entityAttribute,
-                entityInstance.getPrimaryKey(), dateAttribute, session.getStartTime(), Session.MAX_TIME_LONG);
+                entityInstance.getPrimaryKey(), dateAttribute, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute, EventTypes.CREATE, createdBy);
 
@@ -4550,7 +4550,7 @@ public class CoreControl
             }
             
             entityDateAttributeFactory.create(entityAttribute, entityInstance, entityDateAttributeValue.getDateAttribute(), session.getStartTime(),
-                    Session.MAX_TIME_LONG);
+                    Session.MAX_TIME);
             
             sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -4593,7 +4593,7 @@ public class CoreControl
     public EntityIntegerDefault createEntityIntegerDefault(EntityAttribute entityAttribute, Integer integerAttribute,
             BasePK createdBy) {
         var entityIntegerDefault = entityIntegerDefaultFactory.create(entityAttribute,
-                integerAttribute, session.getStartTime(), Session.MAX_TIME_LONG);
+                integerAttribute, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityIntegerDefault.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -4690,7 +4690,7 @@ public class CoreControl
 
             entityIntegerDefault = entityIntegerDefaultFactory.create(entityAttribute,
                     entityIntegerDefaultValue.getIntegerAttribute(), session.getStartTime(),
-                    Session.MAX_TIME_LONG);
+                    Session.MAX_TIME);
 
             sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityIntegerDefault.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -4732,7 +4732,7 @@ public class CoreControl
     public EntityIntegerAttribute createEntityIntegerAttribute(EntityAttributePK entityAttribute, EntityInstance entityInstance,
             Integer integerAttribute, BasePK createdBy) {
         var entityIntegerAttribute = entityIntegerAttributeFactory.create(entityAttribute,
-                entityInstance.getPrimaryKey(), integerAttribute, session.getStartTime(), Session.MAX_TIME_LONG);
+                entityInstance.getPrimaryKey(), integerAttribute, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute, EventTypes.CREATE, createdBy);
 
@@ -4873,7 +4873,7 @@ public class CoreControl
             }
             
             entityIntegerAttributeFactory.create(entityAttribute, entityInstance, entityIntegerAttributeValue.getIntegerAttribute(), session.getStartTime(),
-                    Session.MAX_TIME_LONG);
+                    Session.MAX_TIME);
             
             sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -4915,7 +4915,7 @@ public class CoreControl
     public EntityListItemDefault createEntityListItemDefault(EntityAttribute entityAttribute,
             EntityListItem entityListItem, BasePK createdBy) {
         var entityListItemDefault = entityListItemDefaultFactory.create(session,
-                entityAttribute, entityListItem, session.getStartTime(), Session.MAX_TIME_LONG);
+                entityAttribute, entityListItem, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityListItemDefault.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -5050,7 +5050,7 @@ public class CoreControl
             }
 
             entityListItemDefault = entityListItemDefaultFactory.create(entityAttribute.getPrimaryKey(),
-                    entityListItemDefaultValue.getEntityListItemPK(), session.getStartTime(), Session.MAX_TIME_LONG);
+                    entityListItemDefaultValue.getEntityListItemPK(), session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityListItemDefault.getPrimaryKey(), EventTypes.DELETE, updatedBy);
         }
@@ -5092,7 +5092,7 @@ public class CoreControl
             EntityListItem entityListItem, BasePK createdBy) {
         var entityListItemAttribute = entityListItemAttributeFactory.create(entityAttribute,
                 entityInstance.getPrimaryKey(), entityListItem.getPrimaryKey(), session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
 
         sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute, EventTypes.CREATE, createdBy);
 
@@ -5252,7 +5252,7 @@ public class CoreControl
             }
             
             entityListItemAttributeFactory.create(entityAttribute.getPrimaryKey(), entityInstance.getPrimaryKey(), entityListItemAttributeValue.getEntityListItemPK(),
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -5295,7 +5295,7 @@ public class CoreControl
     public EntityLongDefault createEntityLongDefault(EntityAttribute entityAttribute, Long longAttribute,
             BasePK createdBy) {
         var entityLongDefault = entityLongDefaultFactory.create(entityAttribute,
-                longAttribute, session.getStartTime(), Session.MAX_TIME_LONG);
+                longAttribute, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityLongDefault.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -5392,7 +5392,7 @@ public class CoreControl
 
             entityLongDefault = entityLongDefaultFactory.create(entityAttribute,
                     entityLongDefaultValue.getLongAttribute(), session.getStartTime(),
-                    Session.MAX_TIME_LONG);
+                    Session.MAX_TIME);
 
             sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityLongDefault.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -5434,7 +5434,7 @@ public class CoreControl
     public EntityLongAttribute createEntityLongAttribute(EntityAttributePK entityAttribute, EntityInstance entityInstance,
             Long longAttribute, BasePK createdBy) {
         var entityLongAttribute = entityLongAttributeFactory.create(entityAttribute,
-                entityInstance.getPrimaryKey(), longAttribute, session.getStartTime(), Session.MAX_TIME_LONG);
+                entityInstance.getPrimaryKey(), longAttribute, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute, EventTypes.CREATE, createdBy);
 
@@ -5575,7 +5575,7 @@ public class CoreControl
             }
             
             entityLongAttributeFactory.create(entityAttribute, entityInstance, entityLongAttributeValue.getLongAttribute(), session.getStartTime(),
-                    Session.MAX_TIME_LONG);
+                    Session.MAX_TIME);
             
             sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -5618,7 +5618,7 @@ public class CoreControl
     public EntityMultipleListItemDefault createEntityMultipleListItemDefault(EntityAttribute entityAttribute,
             EntityListItem entityListItem, BasePK createdBy) {
         var entityMultipleListItemDefault = entityMultipleListItemDefaultFactory.create(session,
-                entityAttribute, entityListItem, session.getStartTime(), Session.MAX_TIME_LONG);
+                entityAttribute, entityListItem, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -5821,7 +5821,7 @@ public class CoreControl
             EntityListItem entityListItem, BasePK createdBy) {
         var entityListItemAttribute = entityMultipleListItemAttributeFactory.create(entityAttribute,
                 entityInstance.getPrimaryKey(), entityListItem.getPrimaryKey(), session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
 
         sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute, EventTypes.CREATE, createdBy);
 
@@ -6024,7 +6024,7 @@ public class CoreControl
     public EntityNameAttribute createEntityNameAttribute(EntityAttribute entityAttribute, String nameAttribute,
             EntityInstance entityInstance, BasePK createdBy) {
         var entityNameAttribute = entityNameAttributeFactory.create(entityAttribute,
-                nameAttribute, entityInstance, session.getStartTime(), Session.MAX_TIME_LONG);
+                nameAttribute, entityInstance, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -6165,7 +6165,7 @@ public class CoreControl
             }
             
             entityNameAttributeFactory.create(entityAttribute, entityNameAttributeValue.getNameAttribute(), entityInstance, session.getStartTime(),
-                    Session.MAX_TIME_LONG);
+                    Session.MAX_TIME);
             
             sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -6229,7 +6229,7 @@ public class CoreControl
     public EntityStringDefault createEntityStringDefault(EntityAttribute entityAttribute, Language language,
             String stringAttribute, BasePK createdBy) {
         var entityStringDefault = entityStringDefaultFactory.create(entityAttribute, language,
-                stringAttribute, session.getStartTime(), Session.MAX_TIME_LONG);
+                stringAttribute, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityStringDefault.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -6369,7 +6369,7 @@ public class CoreControl
 
             entityStringDefault = entityStringDefaultFactory.create(entityAttribute, language,
                     entityStringDefaultValue.getStringAttribute(), session.getStartTime(),
-                    Session.MAX_TIME_LONG);
+                    Session.MAX_TIME);
 
             sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityStringDefault.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -6412,7 +6412,7 @@ public class CoreControl
     public EntityStringAttribute createEntityStringAttribute(EntityAttributePK entityAttribute, EntityInstance entityInstance,
             Language language, String stringAttribute, BasePK createdBy) {
         var entityStringAttribute = entityStringAttributeFactory.create(entityAttribute,
-                entityInstance.getPrimaryKey(), language.getPrimaryKey(), stringAttribute, session.getStartTime(), Session.MAX_TIME_LONG);
+                entityInstance.getPrimaryKey(), language.getPrimaryKey(), stringAttribute, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute, EventTypes.CREATE, createdBy);
 
@@ -6567,7 +6567,7 @@ public class CoreControl
             }
             
             entityStringAttributeFactory.create(entityAttribute, entityInstance, language, entityStringAttributeValue.getStringAttribute(), session.getStartTime(),
-                    Session.MAX_TIME_LONG);
+                    Session.MAX_TIME);
             
             sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -6610,7 +6610,7 @@ public class CoreControl
     public EntityGeoPointDefault createEntityGeoPointDefault(EntityAttribute entityAttribute, Integer latitude,
             Integer longitude, Long elevation, Long altitude, BasePK createdBy) {
         var entityGeoPointDefault = entityGeoPointDefaultFactory.create(entityAttribute,
-                latitude, longitude, elevation, altitude, session.getStartTime(), Session.MAX_TIME_LONG);
+                latitude, longitude, elevation, altitude, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityGeoPointDefault.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -6708,7 +6708,7 @@ public class CoreControl
             entityGeoPointDefault = entityGeoPointDefaultFactory.create(entityAttribute,
                     entityGeoPointDefaultValue.getLatitude(), entityGeoPointDefaultValue.getLongitude(),
                     entityGeoPointDefaultValue.getElevation(), entityGeoPointDefaultValue.getAltitude(),
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityGeoPointDefault.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -6751,7 +6751,7 @@ public class CoreControl
             Integer latitude, Integer longitude, Long elevation, Long altitude, BasePK createdBy) {
         var entityGeoPointAttribute = entityGeoPointAttributeFactory.create(entityAttribute,
                 entityInstance.getPrimaryKey(), latitude, longitude, elevation, altitude, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
 
         sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute, EventTypes.CREATE, createdBy);
 
@@ -6893,7 +6893,7 @@ public class CoreControl
             
             entityGeoPointAttributeFactory.create(entityAttribute, entityInstance, entityGeoPointAttributeValue.getLatitude(),
                     entityGeoPointAttributeValue.getLongitude(), entityGeoPointAttributeValue.getElevation(), entityGeoPointAttributeValue.getAltitude(),
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -6936,7 +6936,7 @@ public class CoreControl
     public EntityTimeDefault createEntityTimeDefault(EntityAttribute entityAttribute, Long timeAttribute,
             BasePK createdBy) {
         var entityTimeDefault = entityTimeDefaultFactory.create(entityAttribute,
-                timeAttribute, session.getStartTime(), Session.MAX_TIME_LONG);
+                timeAttribute, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityTimeDefault.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -7033,7 +7033,7 @@ public class CoreControl
 
             entityTimeDefault = entityTimeDefaultFactory.create(entityAttribute,
                     entityTimeDefaultValue.getTimeAttribute(), session.getStartTime(),
-                    Session.MAX_TIME_LONG);
+                    Session.MAX_TIME);
 
             sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityTimeDefault.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -7075,7 +7075,7 @@ public class CoreControl
     public EntityTimeAttribute createEntityTimeAttribute(EntityAttributePK entityAttribute, EntityInstance entityInstance,
             Long timeAttribute, BasePK createdBy) {
         var entityTimeAttribute = entityTimeAttributeFactory.create(entityAttribute,
-                entityInstance.getPrimaryKey(), timeAttribute, session.getStartTime(), Session.MAX_TIME_LONG);
+                entityInstance.getPrimaryKey(), timeAttribute, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute, EventTypes.CREATE, createdBy);
 
@@ -7215,7 +7215,7 @@ public class CoreControl
             }
             
             entityTimeAttributeFactory.create(entityAttribute, entityInstance, entityTimeAttributeValue.getTimeAttribute(), session.getStartTime(),
-                    Session.MAX_TIME_LONG);
+                    Session.MAX_TIME);
             
             sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -7258,7 +7258,7 @@ public class CoreControl
     public EntityBlobAttribute createEntityBlobAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             Language language, ByteArray blobAttribute, MimeType mimeType, BasePK createdBy) {
         var entityBlobAttribute = entityBlobAttributeFactory.create(entityAttribute,
-                entityInstance, language, blobAttribute, mimeType, session.getStartTime(), Session.MAX_TIME_LONG);
+                entityInstance, language, blobAttribute, mimeType, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -7387,7 +7387,7 @@ public class CoreControl
             }
             
             entityBlobAttributeFactory.create(entityAttribute.getPrimaryKey(), entityInstance.getPrimaryKey(), language.getPrimaryKey(),
-                    entityBlobAttributeValue.getBlobAttribute(), entityBlobAttributeValue.getMimeTypePK(), session.getStartTime(), Session.MAX_TIME_LONG);
+                    entityBlobAttributeValue.getBlobAttribute(), entityBlobAttributeValue.getMimeTypePK(), session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -7430,7 +7430,7 @@ public class CoreControl
     public EntityClobAttribute createEntityClobAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             Language language, String clobAttribute, MimeType mimeType, BasePK createdBy) {
         var entityClobAttribute = entityClobAttributeFactory.create(entityAttribute,
-                entityInstance, language, clobAttribute, mimeType, session.getStartTime(), Session.MAX_TIME_LONG);
+                entityInstance, language, clobAttribute, mimeType, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -7585,7 +7585,7 @@ public class CoreControl
             }
             
             entityClobAttributeFactory.create(entityAttribute.getPrimaryKey(), entityInstance.getPrimaryKey(), language.getPrimaryKey(),
-                    entityClobAttributeValue.getClobAttribute(), entityClobAttributeValue.getMimeTypePK(), session.getStartTime(), Session.MAX_TIME_LONG);
+                    entityClobAttributeValue.getClobAttribute(), entityClobAttributeValue.getMimeTypePK(), session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -7627,7 +7627,7 @@ public class CoreControl
     
     public EntityAttributeEntityType createEntityAttributeEntityType(EntityAttribute entityAttribute, EntityType allowedEntityType, BasePK createdBy) {
         var entityAttributeEntityType = entityAttributeEntityTypeFactory.create(entityAttribute, allowedEntityType,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeEntityType.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -7677,7 +7677,7 @@ public class CoreControl
 
     private EntityAttributeEntityType getEntityAttributeEntityType(EntityAttribute entityAttribute, EntityType allowedEntityType, EntityPermission entityPermission) {
         return entityAttributeEntityTypeFactory.getEntityFromQuery(entityPermission, getEntityAttributeEntityTypeQueries,
-                entityAttribute, allowedEntityType, Session.MAX_TIME_LONG);
+                entityAttribute, allowedEntityType, Session.MAX_TIME);
     }
 
     public EntityAttributeEntityType getEntityAttributeEntityType(EntityAttribute entityAttribute, EntityType allowedEntityType) {
@@ -7711,7 +7711,7 @@ public class CoreControl
     
     private List<EntityAttributeEntityType> getEntityAttributeEntityTypesByEntityAttribute(EntityAttribute entityAttribute, EntityPermission entityPermission) {
         return entityAttributeEntityTypeFactory.getEntitiesFromQuery(entityPermission, getEntityAttributeEntityTypesByEntityAttributeQueries,
-                entityAttribute, Session.MAX_TIME_LONG);
+                entityAttribute, Session.MAX_TIME);
     }
     
     public List<EntityAttributeEntityType> getEntityAttributeEntityTypesByEntityAttribute(EntityAttribute entityAttribute) {
@@ -7743,7 +7743,7 @@ public class CoreControl
 
     private List<EntityAttributeEntityType> getEntityAttributeEntityTypesByAllowedEntityType(EntityType allowedEntityType, EntityPermission entityPermission) {
         return entityAttributeEntityTypeFactory.getEntitiesFromQuery(entityPermission, getEntityAttributeEntityTypesByAllowedEntityTypeQueries,
-                allowedEntityType, Session.MAX_TIME_LONG);
+                allowedEntityType, Session.MAX_TIME);
     }
 
     public List<EntityAttributeEntityType> getEntityAttributeEntityTypesByAllowedEntityType(EntityType allowedEntityType) {
@@ -7806,7 +7806,7 @@ public class CoreControl
     public EntityEntityAttribute createEntityEntityAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             EntityInstance entityInstanceAttribute, BasePK createdBy) {
         var entityEntityAttribute = entityEntityAttributeFactory.create(entityAttribute, entityInstance,
-                entityInstanceAttribute, session.getStartTime(), Session.MAX_TIME_LONG);
+                entityInstanceAttribute, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -7969,7 +7969,7 @@ public class CoreControl
             }
             
             entityEntityAttributeFactory.create(entityAttribute.getPrimaryKey(), entityInstance.getPrimaryKey(),
-                    entityEntityAttributeValue.getEntityInstanceAttributePK(), session.getStartTime(), Session.MAX_TIME_LONG);
+                    entityEntityAttributeValue.getEntityInstanceAttributePK(), session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -8013,7 +8013,7 @@ public class CoreControl
     public EntityCollectionAttribute createEntityCollectionAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             EntityInstance entityInstanceAttribute, BasePK createdBy) {
         var entityCollectionAttribute = entityCollectionAttributeFactory.create(entityAttribute, entityInstance,
-                entityInstanceAttribute, session.getStartTime(), Session.MAX_TIME_LONG);
+                entityInstanceAttribute, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.CREATE, createdBy);
         

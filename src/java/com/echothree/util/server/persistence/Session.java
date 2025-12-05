@@ -77,8 +77,6 @@ public class Session {
     private Map<String, Limit> limits;
     
     public static final long MAX_TIME = Long.MAX_VALUE;
-    public static final Long MAX_TIME_LONG = Long.MAX_VALUE;
-
     private final long START_TIME;
 
     public long getStartTime() {

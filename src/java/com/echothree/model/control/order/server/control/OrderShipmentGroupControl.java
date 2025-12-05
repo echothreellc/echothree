@@ -69,7 +69,7 @@ public class OrderShipmentGroupControl
         var orderShipmentGroup = OrderShipmentGroupFactory.getInstance().create();
         var orderShipmentGroupDetail = OrderShipmentGroupDetailFactory.getInstance().create(orderShipmentGroup, order,
                 orderShipmentGroupSequence, itemDeliveryType, isDefault, partyContactMechanism, shippingMethod, holdUntilComplete, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
         
         // Convert to R/W
         orderShipmentGroup = OrderShipmentGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, orderShipmentGroup.getPrimaryKey());
@@ -280,7 +280,7 @@ public class OrderShipmentGroupControl
             }
 
             orderShipmentGroupDetail = OrderShipmentGroupDetailFactory.getInstance().create(orderShipmentGroupPK, orderPK, orderShipmentGroupSequence,
-                    itemDeliveryTypePK, isDefault, partyContactMechanismPK, shippingMethodPK, holdUntilComplete, session.getStartTime(), Session.MAX_TIME_LONG);
+                    itemDeliveryTypePK, isDefault, partyContactMechanismPK, shippingMethodPK, holdUntilComplete, session.getStartTime(), Session.MAX_TIME);
 
             orderShipmentGroup.setActiveDetail(orderShipmentGroupDetail);
             orderShipmentGroup.setLastDetail(orderShipmentGroupDetail);

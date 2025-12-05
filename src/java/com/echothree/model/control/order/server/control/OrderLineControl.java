@@ -59,7 +59,7 @@ public class OrderLineControl
         var orderLine = OrderLineFactory.getInstance().create();
         var orderLineDetail = OrderLineDetailFactory.getInstance().create(orderLine, order, orderLineSequence, parentOrderLine, orderShipmentGroup,
                 item, inventoryCondition, unitOfMeasureType, quantity, unitAmount, description, cancellationPolicy, returnPolicy, taxable,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         orderLine = OrderLineFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -279,7 +279,7 @@ public class OrderLineControl
             
             orderLineDetail = OrderLineDetailFactory.getInstance().create(orderLinePK, orderPK, orderLineSequence, parentOrderLinePK, orderShipmentGroupPK,
                     itemPK, inventoryConditionPK, unitOfMeasureTypePK, quantity, unitAmount, description, cancellationPolicyPK, returnPolicyPK, taxable,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             orderLine.setActiveDetail(orderLineDetail);
             orderLine.setLastDetail(orderLineDetail);

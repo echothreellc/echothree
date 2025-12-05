@@ -57,7 +57,7 @@ public class PaymentProcessorTransactionControl
         var paymentProcessorTransaction = PaymentProcessorTransactionFactory.getInstance().create();
         var paymentProcessorTransactionDetail = PaymentProcessorTransactionDetailFactory.getInstance().create(session,
                 paymentProcessorTransaction, paymentProcessorTransactionName, paymentProcessor, paymentProcessorActionType,
-                paymentProcessorResultCode, session.getStartTime(), Session.MAX_TIME_LONG);
+                paymentProcessorResultCode, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         paymentProcessorTransaction = PaymentProcessorTransactionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, paymentProcessorTransaction.getPrimaryKey());
@@ -274,7 +274,7 @@ public class PaymentProcessorTransactionControl
 
             paymentProcessorTransactionDetail = PaymentProcessorTransactionDetailFactory.getInstance().create(paymentProcessorTransactionPK,
                     paymentProcessorTransactionName, paymentProcessorPK, paymentProcessorActionTypePK, paymentProcessorResultCodePK,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             paymentProcessorTransaction.setActiveDetail(paymentProcessorTransactionDetail);
             paymentProcessorTransaction.setLastDetail(paymentProcessorTransactionDetail);

@@ -69,7 +69,7 @@ public class PaymentProcessorTypeActionControl
         var paymentProcessorTypeAction = PaymentProcessorTypeActionFactory.getInstance().create();
         var paymentProcessorTypeActionDetail = PaymentProcessorTypeActionDetailFactory.getInstance().create(session,
                 paymentProcessorTypeAction, paymentProcessorType, paymentProcessorActionType, isDefault, sortOrder,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         paymentProcessorTypeAction = PaymentProcessorTypeActionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, paymentProcessorTypeAction.getPrimaryKey());
@@ -319,7 +319,7 @@ public class PaymentProcessorTypeActionControl
             }
 
             paymentProcessorTypeActionDetail = PaymentProcessorTypeActionDetailFactory.getInstance().create(paymentProcessorTypeActionPK,
-                    paymentProcessorTypePK, paymentProcessorActionTypePK, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                    paymentProcessorTypePK, paymentProcessorActionTypePK, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             paymentProcessorTypeAction.setActiveDetail(paymentProcessorTypeActionDetail);
             paymentProcessorTypeAction.setLastDetail(paymentProcessorTypeActionDetail);

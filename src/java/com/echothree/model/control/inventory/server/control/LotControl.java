@@ -52,7 +52,7 @@ public class LotControl
 
         var lot = LotFactory.getInstance().create();
         var lotDetail = LotDetailFactory.getInstance().create(session, lot, item, lotIdentifier, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
 
         // Convert to R/W
         lot = LotFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, lot.getPrimaryKey());
@@ -194,7 +194,7 @@ public class LotControl
             var lotIdentifier = lotDetailValue.getLotIdentifier(); // R/W
 
             lotDetail = LotDetailFactory.getInstance().create(lotPK, itemPK, lotIdentifier, session.getStartTime(),
-                    Session.MAX_TIME_LONG);
+                    Session.MAX_TIME);
 
             lot.setActiveDetail(lotDetail);
             lot.setLastDetail(lotDetail);

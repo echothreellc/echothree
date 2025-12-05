@@ -114,7 +114,7 @@ public class TrackControl
 
         var track = TrackFactory.getInstance().create();
         var trackDetail = TrackDetailFactory.getInstance().create(track, trackName, valueSha1Hash, value,
-                isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         track = TrackFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, track.getPrimaryKey());
@@ -394,7 +394,7 @@ public class TrackControl
             }
 
             trackDetail = TrackDetailFactory.getInstance().create(trackPK, trackName, valueSha1Hash, value, isDefault,
-                    sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                    sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             track.setActiveDetail(trackDetail);
             track.setLastDetail(trackDetail);
@@ -458,7 +458,7 @@ public class TrackControl
 
     public TrackDescription createTrackDescription(Track track, Language language, String description, BasePK createdBy) {
         var trackDescription = TrackDescriptionFactory.getInstance().create(track, language, description,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(track.getPrimaryKey(), EventTypes.MODIFY, trackDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -579,7 +579,7 @@ public class TrackControl
             var description = trackDescriptionValue.getDescription();
 
             trackDescription = TrackDescriptionFactory.getInstance().create(track, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(track.getPrimaryKey(), EventTypes.MODIFY, trackDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -616,7 +616,7 @@ public class TrackControl
 
     public UserVisitTrack createUserVisitTrack(UserVisit userVisit, Integer userVisitTrackSequence, Long time, Track track) {
         var userVisitTrack = UserVisitTrackFactory.getInstance().create(userVisit, userVisitTrackSequence, time, track,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         return userVisitTrack;
     }

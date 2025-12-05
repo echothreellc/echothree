@@ -80,7 +80,7 @@ public class PaymentMethodControl
 
         var paymentMethod = PaymentMethodFactory.getInstance().create();
         var paymentMethodDetail = PaymentMethodDetailFactory.getInstance().create(paymentMethod, paymentMethodName, paymentMethodType,
-                paymentProcessor, itemSelector, salesOrderItemSelector, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                paymentProcessor, itemSelector, salesOrderItemSelector, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         paymentMethod = PaymentMethodFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, paymentMethod.getPrimaryKey());
@@ -368,7 +368,7 @@ public class PaymentMethodControl
             }
             
             paymentMethodDetail = PaymentMethodDetailFactory.getInstance().create(paymentMethodPK, paymentMethodName, paymentMethodTypePK, paymentProcessorPK,
-                    itemSelectorPK, salesOrderItemSelectorPK, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                    itemSelectorPK, salesOrderItemSelectorPK, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             paymentMethod.setActiveDetail(paymentMethodDetail);
             paymentMethod.setLastDetail(paymentMethodDetail);
@@ -431,7 +431,7 @@ public class PaymentMethodControl
     public PaymentMethodDescription createPaymentMethodDescription(PaymentMethod paymentMethod, Language language,
             String description, BasePK createdBy) {
         var paymentMethodDescription = PaymentMethodDescriptionFactory.getInstance().create(session,
-                paymentMethod, language, description, session.getStartTime(), Session.MAX_TIME_LONG);
+                paymentMethod, language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(paymentMethod.getPrimaryKey(), EventTypes.MODIFY, paymentMethodDescription.getPrimaryKey(),
                 EventTypes.CREATE, createdBy);
@@ -571,7 +571,7 @@ public class PaymentMethodControl
             var description = paymentMethodDescriptionValue.getDescription();
             
             paymentMethodDescription = PaymentMethodDescriptionFactory.getInstance().create(paymentMethod, language,
-                    description, session.getStartTime(), Session.MAX_TIME_LONG);
+                    description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(paymentMethod.getPrimaryKey(), EventTypes.MODIFY,
                     paymentMethodDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -599,7 +599,7 @@ public class PaymentMethodControl
     
     public PaymentMethodCheck createPaymentMethodCheck(PaymentMethod paymentMethod, Integer holdDays, BasePK createdBy) {
         var paymentMethodCheck = PaymentMethodCheckFactory.getInstance().create(paymentMethod, holdDays,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(paymentMethod.getPrimaryKey(), EventTypes.MODIFY, paymentMethodCheck.getPrimaryKey(),
                 EventTypes.CREATE, createdBy);
@@ -663,7 +663,7 @@ public class PaymentMethodControl
             var holdDays = paymentMethodCheckValue.getHoldDays();
             
             paymentMethodCheck = PaymentMethodCheckFactory.getInstance().create(paymentMethodPK, holdDays,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(paymentMethodPK, EventTypes.MODIFY, paymentMethodCheck.getPrimaryKey(),
                     EventTypes.MODIFY, updatedBy);
@@ -690,7 +690,7 @@ public class PaymentMethodControl
                 paymentMethod, requestNameOnCard, requireNameOnCard, checkCardNumber, requestExpirationDate, requireExpirationDate,
                 checkExpirationDate, requestSecurityCode, requireSecurityCode, cardNumberValidationPattern,
                 securityCodeValidationPattern, retainCreditCard, retainSecurityCode, requestBilling, requireBilling, requestIssuer, requireIssuer,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(paymentMethod.getPrimaryKey(), EventTypes.MODIFY, paymentMethodCreditCard.getPrimaryKey(),
                 EventTypes.CREATE, createdBy);
@@ -772,7 +772,7 @@ public class PaymentMethodControl
                     requestNameOnCard, reqireNameOnCard, checkCardNumber, requestExpirationDate, requireExpirationDate,
                     checkExpirationDate, requestSecurityCode, requireSecurityCode, cardNumberValidationPattern,
                     securityCodeValidationPattern, retainCreditCard, retainSecurityCode, requestBilling, requireBilling, requestIssuer, requireIssuer,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(paymentMethodPK, EventTypes.MODIFY, paymentMethodCreditCard.getPrimaryKey(),
                     EventTypes.MODIFY, updatedBy);

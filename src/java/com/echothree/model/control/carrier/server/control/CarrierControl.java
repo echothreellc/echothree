@@ -157,7 +157,7 @@ public class CarrierControl
 
         var carrierType = CarrierTypeFactory.getInstance().create();
         var carrierTypeDetail = CarrierTypeDetailFactory.getInstance().create(carrierType,
-                carrierTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                carrierTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         carrierType = CarrierTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -396,7 +396,7 @@ public class CarrierControl
             }
 
             carrierTypeDetail = CarrierTypeDetailFactory.getInstance().create(carrierTypePK,
-                    carrierTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                    carrierTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             carrierType.setActiveDetail(carrierTypeDetail);
             carrierType.setLastDetail(carrierTypeDetail);
@@ -445,7 +445,7 @@ public class CarrierControl
     public CarrierTypeDescription createCarrierTypeDescription(CarrierType carrierType,
             Language language, String description, BasePK createdBy) {
         var carrierTypeDescription = CarrierTypeDescriptionFactory.getInstance().create(carrierType,
-                language, description, session.getStartTime(), Session.MAX_TIME_LONG);
+                language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(carrierType.getPrimaryKey(), EventTypes.MODIFY, carrierTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -569,7 +569,7 @@ public class CarrierControl
             var description = carrierTypeDescriptionValue.getDescription();
 
             carrierTypeDescription = CarrierTypeDescriptionFactory.getInstance().create(carrierType, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(carrierType.getPrimaryKey(), EventTypes.MODIFY, carrierTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -609,7 +609,7 @@ public class CarrierControl
         }
 
         var carrier = CarrierFactory.getInstance().create(party, carrierName, carrierType, geoCodeSelector, itemSelector, accountValidationPattern,
-                isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, carrier.getPrimaryKey(), null, createdBy);
         
@@ -866,7 +866,7 @@ public class CarrierControl
             }
             
             carrier = CarrierFactory.getInstance().create(partyPK, carrierName, carrierTypePK, geoCodeSelectorPK, itemSelectorPK, accountValidationPattern,
-                    isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                    isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(partyPK, EventTypes.MODIFY, carrier.getPrimaryKey(), null, updatedBy);
         }
@@ -931,7 +931,7 @@ public class CarrierControl
         var carrierService = CarrierServiceFactory.getInstance().create();
         var carrierServiceDetail = CarrierServiceDetailFactory.getInstance().create(session,
                 carrierService, carrierParty, carrierServiceName, geoCodeSelector, itemSelector, isDefault, sortOrder, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
         
         // Convert to R/W
         carrierService = CarrierServiceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -1159,7 +1159,7 @@ public class CarrierControl
             }
             
             carrierServiceDetail = CarrierServiceDetailFactory.getInstance().create(carrierServicePK, carrierPartyPK,
-                    carrierServiceName, geoCodeSelectorPK, itemSelectorPK, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                    carrierServiceName, geoCodeSelectorPK, itemSelectorPK, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             carrierService.setActiveDetail(carrierServiceDetail);
             carrierService.setLastDetail(carrierServiceDetail);
@@ -1229,7 +1229,7 @@ public class CarrierControl
     public CarrierServiceDescription createCarrierServiceDescription(CarrierService carrierService, Language language, String description,
             BasePK createdBy) {
         var carrierServiceDescription = CarrierServiceDescriptionFactory.getInstance().create(carrierService,
-                language, description, session.getStartTime(), Session.MAX_TIME_LONG);
+                language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(carrierService.getPrimaryKey(), EventTypes.MODIFY, carrierServiceDescription.getPrimaryKey(),
                 null, createdBy);
@@ -1368,7 +1368,7 @@ public class CarrierControl
             var description = carrierServiceDescriptionValue.getDescription();
             
             carrierServiceDescription = CarrierServiceDescriptionFactory.getInstance().create(carrierService, language,
-                    description, session.getStartTime(), Session.MAX_TIME_LONG);
+                    description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(carrierService.getPrimaryKey(), EventTypes.MODIFY, carrierServiceDescription.getPrimaryKey(),
                     null, updatedBy);
@@ -1413,7 +1413,7 @@ public class CarrierControl
         var carrierOption = CarrierOptionFactory.getInstance().create();
         var carrierOptionDetail = CarrierOptionDetailFactory.getInstance().create(carrierOption, carrierParty, carrierOptionName, isRecommended,
                 isRequired, recommendedGeoCodeSelector, requiredGeoCodeSelector, recommendedItemSelector, requiredItemSelector, recommendedOrderSelector,
-                requiredOrderSelector, recommendedShipmentSelector, requiredShipmentSelector, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                requiredOrderSelector, recommendedShipmentSelector, requiredShipmentSelector, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         carrierOption = CarrierOptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -1651,7 +1651,7 @@ public class CarrierControl
             carrierOptionDetail = CarrierOptionDetailFactory.getInstance().create(carrierOptionPK, carrierPartyPK, carrierOptionName, isRecommended, isRequired,
                     recommendedGeoCodeSelectorPK, requiredGeoCodeSelectorPK, recommendedItemSelectorPK, requiredItemSelectorPK, recommendedOrderSelectorPK,
                     requiredOrderSelectorPK, recommendedShipmentSelectorPK, requiredShipmentSelectorPK, isDefault, sortOrder, session.getStartTime(),
-                    Session.MAX_TIME_LONG);
+                    Session.MAX_TIME);
             
             carrierOption.setActiveDetail(carrierOptionDetail);
             carrierOption.setLastDetail(carrierOptionDetail);
@@ -1718,7 +1718,7 @@ public class CarrierControl
     public CarrierOptionDescription createCarrierOptionDescription(CarrierOption carrierOption, Language language, String description,
             BasePK createdBy) {
         var carrierOptionDescription = CarrierOptionDescriptionFactory.getInstance().create(carrierOption,
-                language, description, session.getStartTime(), Session.MAX_TIME_LONG);
+                language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(carrierOption.getPrimaryKey(), EventTypes.MODIFY, carrierOptionDescription.getPrimaryKey(),
                 null, createdBy);
@@ -1857,7 +1857,7 @@ public class CarrierControl
             var description = carrierOptionDescriptionValue.getDescription();
             
             carrierOptionDescription = CarrierOptionDescriptionFactory.getInstance().create(carrierOption, language,
-                    description, session.getStartTime(), Session.MAX_TIME_LONG);
+                    description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(carrierOption.getPrimaryKey(), EventTypes.MODIFY, carrierOptionDescription.getPrimaryKey(),
                     null, updatedBy);
@@ -1890,7 +1890,7 @@ public class CarrierControl
         var carrierServiceOption = CarrierServiceOptionFactory.getInstance().create(carrierService, carrierOption, isRecommended, isRequired,
                 recommendedGeoCodeSelector, requiredGeoCodeSelector, recommendedItemSelector, requiredItemSelector, recommendedOrderSelector,
                 requiredOrderSelector, recommendedShipmentSelector, requiredShipmentSelector, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
         
         sendEvent(carrierService.getPrimaryKey(), EventTypes.MODIFY, carrierServiceOption.getPrimaryKey(),
                 null, createdBy);
@@ -2073,7 +2073,7 @@ public class CarrierControl
             
             carrierServiceOption = CarrierServiceOptionFactory.getInstance().create(carrierServicePK, carrierOptionPK, isRecommended, isRequired,
                     recommendedGeoCodeSelectorPK, requiredGeoCodeSelectorPK, recommendedItemSelectorPK, requiredItemSelectorPK, recommendedOrderSelectorPK,
-                    requiredOrderSelectorPK, recommendedShipmentSelectorPK, requiredShipmentSelectorPK, session.getStartTime(), Session.MAX_TIME_LONG);
+                    requiredOrderSelectorPK, recommendedShipmentSelectorPK, requiredShipmentSelectorPK, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(carrierServicePK, EventTypes.MODIFY, carrierServiceOption.getPrimaryKey(), null, updatedBy);
         }
@@ -2105,7 +2105,7 @@ public class CarrierControl
     // --------------------------------------------------------------------------------
     
     public PartyCarrier createPartyCarrier(Party party, Party carrierParty, BasePK createdBy) {
-        var partyCarrier = PartyCarrierFactory.getInstance().create(party, carrierParty, session.getStartTime(), Session.MAX_TIME_LONG);
+        var partyCarrier = PartyCarrierFactory.getInstance().create(party, carrierParty, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyCarrier.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -2117,7 +2117,7 @@ public class CarrierControl
                 "SELECT COUNT(*) " +
                 "FROM partycarriers " +
                 "WHERE pcrr_par_partyid = ? AND pcrr_thrutime = ?",
-                party, Session.MAX_TIME_LONG);
+                party, Session.MAX_TIME);
     }
 
     private PartyCarrier getPartyCarrier(Party party, Party carrierParty, EntityPermission entityPermission) {
@@ -2291,7 +2291,7 @@ public class CarrierControl
     public PartyCarrierAccount createPartyCarrierAccount(Party party, Party carrierParty, String account, Boolean alwaysUseThirdPartyBilling, BasePK createdBy) {
         var partyCarrierAccount = PartyCarrierAccountFactory.getInstance().create();
         var partyCarrierAccountDetail = PartyCarrierAccountDetailFactory.getInstance().create(partyCarrierAccount, party, carrierParty,
-                account, alwaysUseThirdPartyBilling, session.getStartTime(), Session.MAX_TIME_LONG);
+                account, alwaysUseThirdPartyBilling, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         partyCarrierAccount = PartyCarrierAccountFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, partyCarrierAccount.getPrimaryKey());
@@ -2453,7 +2453,7 @@ public class CarrierControl
             var alwaysUseThirdPartyBilling = partyCarrierAccountDetailValue.getAlwaysUseThirdPartyBilling();
 
             partyCarrierAccountDetail = PartyCarrierAccountDetailFactory.getInstance().create(partyCarrierAccountPK, partyPK, carrierPartyPK, account,
-                    alwaysUseThirdPartyBilling, session.getStartTime(), Session.MAX_TIME_LONG);
+                    alwaysUseThirdPartyBilling, session.getStartTime(), Session.MAX_TIME);
 
             partyCarrierAccount.setActiveDetail(partyCarrierAccountDetail);
             partyCarrierAccount.setLastDetail(partyCarrierAccountDetail);

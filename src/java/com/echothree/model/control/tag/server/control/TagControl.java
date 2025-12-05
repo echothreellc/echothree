@@ -86,7 +86,7 @@ public class TagControl
 
         var tagScope = TagScopeFactory.getInstance().create();
         var tagScopeDetail = TagScopeDetailFactory.getInstance().create(tagScope,
-                tagScopeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                tagScopeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         tagScope = TagScopeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -366,7 +366,7 @@ public class TagControl
             }
             
             tagScopeDetail = TagScopeDetailFactory.getInstance().create(tagScopePK, tagScopeName,
-                    isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                    isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             tagScope.setActiveDetail(tagScopeDetail);
             tagScope.setLastDetail(tagScopeDetail);
@@ -417,7 +417,7 @@ public class TagControl
             BasePK createdBy) {
         var tagScopeDescription = TagScopeDescriptionFactory.getInstance().create(tagScope,
                 language, description,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(tagScope.getPrimaryKey(), EventTypes.MODIFY, tagScopeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -557,7 +557,7 @@ public class TagControl
             var description = tagScopeDescriptionValue.getDescription();
             
             tagScopeDescription = TagScopeDescriptionFactory.getInstance().create(tagScope, language,
-                    description, session.getStartTime(), Session.MAX_TIME_LONG);
+                    description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(tagScope.getPrimaryKey(), EventTypes.MODIFY, tagScopeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -583,7 +583,7 @@ public class TagControl
     
     public TagScopeEntityType createTagScopeEntityType(TagScope tagScope, EntityType entityType, BasePK createdBy) {
         var tagScopeEntityType = TagScopeEntityTypeFactory.getInstance().create(tagScope, entityType,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(tagScope.getPrimaryKey(), EventTypes.MODIFY, tagScopeEntityType.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -792,7 +792,7 @@ public class TagControl
     public Tag createTag(TagScope tagScope, String tagName, BasePK createdBy) {
         var tag = TagFactory.getInstance().create();
         var tagDetail = TagDetailFactory.getInstance().create(tag, tagScope, tagName, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
         
         // Convert to R/W
         tag = TagFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -821,7 +821,7 @@ public class TagControl
                 FROM tags, tagdetails, entitytags
                 WHERE t_activedetailid = tdt_tagdetailid AND tdt_ts_tagscopeid = ?
                 AND t_tagid = et_t_tagid AND et_taggedentityinstanceid = ? AND et_thrutime = ?
-                """, tagScope, taggedEntityInstance, Session.MAX_TIME_LONG);
+                """, tagScope, taggedEntityInstance, Session.MAX_TIME);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.Tag */
@@ -1035,7 +1035,7 @@ public class TagControl
             var tagName = tagDetailValue.getTagName();
             
             tagDetail = TagDetailFactory.getInstance().create(tagPK, tagScopePK, tagName, session.getStartTime(),
-                    Session.MAX_TIME_LONG);
+                    Session.MAX_TIME);
             
             tag.setActiveDetail(tagDetail);
             tag.setLastDetail(tagDetail);
@@ -1070,7 +1070,7 @@ public class TagControl
     // --------------------------------------------------------------------------------
     
     public EntityTag createEntityTag(EntityInstance taggedEntityInstance, Tag tag, BasePK createdBy) {
-        var entityTag = EntityTagFactory.getInstance().create(taggedEntityInstance, tag, session.getStartTime(), Session.MAX_TIME_LONG);
+        var entityTag = EntityTagFactory.getInstance().create(taggedEntityInstance, tag, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(taggedEntityInstance, EventTypes.MODIFY, entityTag.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1082,7 +1082,7 @@ public class TagControl
                 "SELECT COUNT(*) " +
                 "FROM entitytags " +
                 "WHERE et_t_tagid = ? AND et_thrutime = ?",
-                tag, Session.MAX_TIME_LONG);
+                tag, Session.MAX_TIME);
     }
 
     public long countEntityTagsByTagScopeAndEntityInstance(final TagScope tagScope, final EntityInstance taggedEntityInstance) {
@@ -1091,7 +1091,7 @@ public class TagControl
                 "FROM tags, tagdetails, entitytags " +
                 "WHERE t_activedetailid = tdt_tagdetailid AND tdt_ts_tagscopeid = ? " +
                 "AND t_tagid = et_t_tagid AND et_taggedentityinstanceid = ? AND et_thrutime = ?",
-                tagScope, taggedEntityInstance, Session.MAX_TIME_LONG);
+                tagScope, taggedEntityInstance, Session.MAX_TIME);
     }
 
     private EntityTag getEntityTag(EntityInstance taggedEntityInstance, Tag tag, EntityPermission entityPermission) {

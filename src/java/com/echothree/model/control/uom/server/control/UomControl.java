@@ -152,7 +152,7 @@ public class UomControl
 
         var unitOfMeasureKind = UnitOfMeasureKindFactory.getInstance().create();
         var unitOfMeasureKindDetail = UnitOfMeasureKindDetailFactory.getInstance().create(session, unitOfMeasureKind, unitOfMeasureKindName,
-                fractionDigits, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                fractionDigits, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         unitOfMeasureKind = UnitOfMeasureKindFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, unitOfMeasureKind.getPrimaryKey());
@@ -461,7 +461,7 @@ public class UomControl
             }
             
             unitOfMeasureKindDetail = UnitOfMeasureKindDetailFactory.getInstance().create(unitOfMeasureKindPK, unitOfMeasureKindName, fractionDigits, isDefault,
-                    sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                    sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             unitOfMeasureKind.setActiveDetail(unitOfMeasureKindDetail);
             unitOfMeasureKind.setLastDetail(unitOfMeasureKindDetail);
@@ -510,7 +510,7 @@ public class UomControl
     
     public UnitOfMeasureKindDescription createUnitOfMeasureKindDescription(UnitOfMeasureKind unitOfMeasureKind, Language language, String description, BasePK createdBy) {
         var unitOfMeasureKindDescription = UnitOfMeasureKindDescriptionFactory.getInstance().create(unitOfMeasureKind, language, description,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(unitOfMeasureKind.getPrimaryKey(), EventTypes.MODIFY, unitOfMeasureKindDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -650,7 +650,7 @@ public class UomControl
             var description = unitOfMeasureKindDescriptionValue.getDescription();
             
             unitOfMeasureKindDescription = UnitOfMeasureKindDescriptionFactory.getInstance().create(unitOfMeasureKind,
-                    language, description, session.getStartTime(), Session.MAX_TIME_LONG);
+                    language, description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(unitOfMeasureKind.getPrimaryKey(), EventTypes.MODIFY, unitOfMeasureKindDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -692,7 +692,7 @@ public class UomControl
         var unitOfMeasureType = UnitOfMeasureTypeFactory.getInstance().create();
         var unitOfMeasureTypeDetail = UnitOfMeasureTypeDetailFactory.getInstance().create(unitOfMeasureType,
                 unitOfMeasureKind, unitOfMeasureTypeName, symbolPosition, suppressSymbolSeparator, isDefault, sortOrder,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         unitOfMeasureType = UnitOfMeasureTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, unitOfMeasureType.getPrimaryKey());
@@ -954,7 +954,7 @@ public class UomControl
             
             unitOfMeasureTypeDetail = UnitOfMeasureTypeDetailFactory.getInstance().create(unitOfMeasureTypePK, unitOfMeasureKindPK,
                     unitOfMeasureTypeName, symbolPositionPK, suppressSymbolSeparator, isDefault, sortOrder, session.getStartTime(),
-                    Session.MAX_TIME_LONG);
+                    Session.MAX_TIME);
             
             unitOfMeasureType.setActiveDetail(unitOfMeasureTypeDetail);
             unitOfMeasureType.setLastDetail(unitOfMeasureTypeDetail);
@@ -1020,7 +1020,7 @@ public class UomControl
             String singularDescription, String pluralDescription, String symbol, BasePK createdBy) {
         var unitOfMeasureTypeDescription = UnitOfMeasureTypeDescriptionFactory.getInstance().create(session,
                 unitOfMeasureType, language, singularDescription, pluralDescription, symbol, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
         
         sendEvent(unitOfMeasureType.getLastDetail().getUnitOfMeasureTypePK(), EventTypes.MODIFY, unitOfMeasureTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1202,7 +1202,7 @@ public class UomControl
             var symbol = unitOfMeasureTypeDescriptionValue.getSymbol();
             
             unitOfMeasureTypeDescription = UnitOfMeasureTypeDescriptionFactory.getInstance().create(unitOfMeasureType, language,
-                    singularDescription, pluralDescription, symbol, session.getStartTime(), Session.MAX_TIME_LONG);
+                    singularDescription, pluralDescription, symbol, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(unitOfMeasureType.getPrimaryKey(), EventTypes.MODIFY, unitOfMeasureTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -1229,7 +1229,7 @@ public class UomControl
     public UnitOfMeasureTypeVolume createUnitOfMeasureTypeVolume(UnitOfMeasureType unitOfMeasureType, Long height, Long width,
             Long depth, BasePK createdBy) {
         var unitOfMeasureTypeVolume = UnitOfMeasureTypeVolumeFactory.getInstance().create(session,
-                unitOfMeasureType, height, width, depth, session.getStartTime(), Session.MAX_TIME_LONG);
+                unitOfMeasureType, height, width, depth, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(unitOfMeasureType.getPrimaryKey(), EventTypes.MODIFY, unitOfMeasureTypeVolume.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1302,7 +1302,7 @@ public class UomControl
             var depth = unitOfMeasureTypeVolumeValue.getDepth();
             
             unitOfMeasureTypeVolume = UnitOfMeasureTypeVolumeFactory.getInstance().create(unitOfMeasureTypePK, height,
-                    width, depth, session.getStartTime(), Session.MAX_TIME_LONG);
+                    width, depth, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(unitOfMeasureTypePK, EventTypes.MODIFY, unitOfMeasureTypeVolume.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -1327,7 +1327,7 @@ public class UomControl
     
     public UnitOfMeasureTypeWeight createUnitOfMeasureTypeWeight(UnitOfMeasureType unitOfMeasureType, Long weight, BasePK createdBy) {
         var unitOfMeasureTypeWeight = UnitOfMeasureTypeWeightFactory.getInstance().create(unitOfMeasureType, weight,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(unitOfMeasureType.getPrimaryKey(), EventTypes.MODIFY, unitOfMeasureTypeWeight.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1398,7 +1398,7 @@ public class UomControl
             var weight = unitOfMeasureTypeWeightValue.getWeight();
             
             unitOfMeasureTypeWeight = UnitOfMeasureTypeWeightFactory.getInstance().create(unitOfMeasureTypePK, weight,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(unitOfMeasureTypePK, EventTypes.MODIFY, unitOfMeasureTypeWeight.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -1424,7 +1424,7 @@ public class UomControl
     public UnitOfMeasureEquivalent createUnitOfMeasureEquivalent(UnitOfMeasureType fromUnitOfMeasureType,
             UnitOfMeasureType toUnitOfMeasureType, Long toQuantity, BasePK createdBy) {
         var unitOfMeasureEquivalent = UnitOfMeasureEquivalentFactory.getInstance().create(session,
-                fromUnitOfMeasureType, toUnitOfMeasureType, toQuantity, session.getStartTime(), Session.MAX_TIME_LONG);
+                fromUnitOfMeasureType, toUnitOfMeasureType, toQuantity, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(fromUnitOfMeasureType.getPrimaryKey(), EventTypes.MODIFY, unitOfMeasureEquivalent.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1664,7 +1664,7 @@ public class UomControl
             var toQuantity = unitOfMeasureEquivalentValue.getToQuantity();
             
             unitOfMeasureEquivalent = UnitOfMeasureEquivalentFactory.getInstance().create(fromUnitOfMeasureTypePK,
-                    toUnitOfMeasureTypePK, toQuantity, session.getStartTime(), Session.MAX_TIME_LONG);
+                    toUnitOfMeasureTypePK, toQuantity, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(fromUnitOfMeasureTypePK, EventTypes.MODIFY, unitOfMeasureEquivalent.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -1873,7 +1873,7 @@ public class UomControl
         }
 
         var unitOfMeasureKindUse = UnitOfMeasureKindUseFactory.getInstance().create(session,
-                unitOfMeasureKindUseType, unitOfMeasureKind, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                unitOfMeasureKindUseType, unitOfMeasureKind, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(unitOfMeasureKind.getPrimaryKey(), EventTypes.MODIFY, unitOfMeasureKindUse.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -2191,7 +2191,7 @@ public class UomControl
             }
             
             unitOfMeasureKindUse = UnitOfMeasureKindUseFactory.getInstance().create(unitOfMeasureKindUseTypePK,
-                    unitOfMeasureKindPK, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                    unitOfMeasureKindPK, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(unitOfMeasureKindPK, EventTypes.MODIFY, unitOfMeasureKindUse.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }

@@ -72,7 +72,7 @@ public class InventoryAdjustmentTypeControl
 
         var inventoryAdjustmentType = InventoryAdjustmentTypeFactory.getInstance().create();
         var inventoryAdjustmentTypeDetail = InventoryAdjustmentTypeDetailFactory.getInstance().create(inventoryAdjustmentType,
-                inventoryAdjustmentTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                inventoryAdjustmentTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         inventoryAdjustmentType = InventoryAdjustmentTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -303,7 +303,7 @@ public class InventoryAdjustmentTypeControl
             }
 
             inventoryAdjustmentTypeDetail = InventoryAdjustmentTypeDetailFactory.getInstance().create(inventoryAdjustmentTypePK,
-                    inventoryAdjustmentTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                    inventoryAdjustmentTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             inventoryAdjustmentType.setActiveDetail(inventoryAdjustmentTypeDetail);
             inventoryAdjustmentType.setLastDetail(inventoryAdjustmentTypeDetail);
@@ -366,7 +366,7 @@ public class InventoryAdjustmentTypeControl
 
     public InventoryAdjustmentTypeDescription createInventoryAdjustmentTypeDescription(InventoryAdjustmentType inventoryAdjustmentType, Language language, String description, BasePK createdBy) {
         var inventoryAdjustmentTypeDescription = InventoryAdjustmentTypeDescriptionFactory.getInstance().create(inventoryAdjustmentType, language, description,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(inventoryAdjustmentType.getPrimaryKey(), EventTypes.MODIFY, inventoryAdjustmentTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -487,7 +487,7 @@ public class InventoryAdjustmentTypeControl
             var description = inventoryAdjustmentTypeDescriptionValue.getDescription();
 
             inventoryAdjustmentTypeDescription = InventoryAdjustmentTypeDescriptionFactory.getInstance().create(inventoryAdjustmentType, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(inventoryAdjustmentType.getPrimaryKey(), EventTypes.MODIFY, inventoryAdjustmentTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }

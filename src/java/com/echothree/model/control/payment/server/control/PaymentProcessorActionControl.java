@@ -48,7 +48,7 @@ public class PaymentProcessorActionControl
     public PaymentProcessorAction createPaymentProcessorAction(final PaymentProcessor paymentProcessor,
             final PaymentProcessorTypeAction paymentProcessorTypeAction, final BasePK createdBy) {
         var paymentProcessorAction = PaymentProcessorActionFactory.getInstance().create(paymentProcessor,
-                paymentProcessorTypeAction, session.getStartTime(), Session.MAX_TIME_LONG);
+                paymentProcessorTypeAction, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(paymentProcessor.getPrimaryKey(), EventTypes.MODIFY, paymentProcessorAction.getPrimaryKey(), EventTypes.CREATE, createdBy);
 

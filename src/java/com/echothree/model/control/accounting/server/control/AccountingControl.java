@@ -498,7 +498,7 @@ public class AccountingControl
         var itemAccountingCategoryDetail = ItemAccountingCategoryDetailFactory.getInstance().create(session,
                 itemAccountingCategory, itemAccountingCategoryName, parentItemAccountingCategory, inventoryGlAccount,
                 salesGlAccount, returnsGlAccount, cogsGlAccount, returnsCogsGlAccount, isDefault, sortOrder, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
         
         // Convert to R/W
         itemAccountingCategory = ItemAccountingCategoryFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -788,7 +788,7 @@ public class AccountingControl
             itemAccountingCategoryDetail = ItemAccountingCategoryDetailFactory.getInstance().create(itemAccountingCategoryPK,
                     itemAccountingCategoryName, parentItemAccountingCategoryPK, inventoryGlAccountPK, salesGlAccountPK,
                     returnsGlAccountPK, cogsGlAccountPK, returnsCogsGlAccountPK, isDefault, sortOrder, session.getStartTime(),
-                    Session.MAX_TIME_LONG);
+                    Session.MAX_TIME);
             
             itemAccountingCategory.setActiveDetail(itemAccountingCategoryDetail);
             itemAccountingCategory.setLastDetail(itemAccountingCategoryDetail);
@@ -859,7 +859,7 @@ public class AccountingControl
     public ItemAccountingCategoryDescription createItemAccountingCategoryDescription(ItemAccountingCategory itemAccountingCategory,
             Language language, String description, BasePK createdBy) {
         var itemAccountingCategoryDescription = ItemAccountingCategoryDescriptionFactory.getInstance().create(itemAccountingCategory, language, description, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
         
         sendEvent(itemAccountingCategory.getPrimaryKey(), EventTypes.MODIFY, itemAccountingCategoryDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1003,7 +1003,7 @@ public class AccountingControl
             var description = itemAccountingCategoryDescriptionValue.getDescription();
             
             itemAccountingCategoryDescription = ItemAccountingCategoryDescriptionFactory.getInstance().create(itemAccountingCategory, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(itemAccountingCategory.getPrimaryKey(), EventTypes.MODIFY, itemAccountingCategoryDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -1209,7 +1209,7 @@ public class AccountingControl
         var glAccountClass = GlAccountClassFactory.getInstance().create();
         var glAccountClassDetail = GlAccountClassDetailFactory.getInstance().create(session,
                 glAccountClass, glAccountClassName, parentGlAccountClass, isDefault, sortOrder, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
         
         // Convert to R/W
         glAccountClass = GlAccountClassFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, glAccountClass.getPrimaryKey());
@@ -1490,7 +1490,7 @@ public class AccountingControl
             }
             
             glAccountClassDetail = GlAccountClassDetailFactory.getInstance().create(glAccountClassPK,
-                    glAccountClassName, parentGlAccountClassPK, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                    glAccountClassName, parentGlAccountClassPK, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             glAccountClass.setActiveDetail(glAccountClassDetail);
             glAccountClass.setLastDetail(glAccountClassDetail);
@@ -1559,7 +1559,7 @@ public class AccountingControl
     
     public GlAccountClassDescription createGlAccountClassDescription(GlAccountClass glAccountClass, Language language, String description, BasePK createdBy) {
         var glAccountClassDescription = GlAccountClassDescriptionFactory.getInstance().create(glAccountClass, language, description, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
         
         sendEvent(glAccountClass.getPrimaryKey(), EventTypes.MODIFY, glAccountClassDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1696,7 +1696,7 @@ public class AccountingControl
             var description = glAccountClassDescriptionValue.getDescription();
             
             glAccountClassDescription = GlAccountClassDescriptionFactory.getInstance().create(glAccountClass, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(glAccountClass.getPrimaryKey(), EventTypes.MODIFY, glAccountClassDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -1738,7 +1738,7 @@ public class AccountingControl
         var glAccountCategory = GlAccountCategoryFactory.getInstance().create();
         var glAccountCategoryDetail = GlAccountCategoryDetailFactory.getInstance().create(session,
                 glAccountCategory, glAccountCategoryName, parentGlAccountCategory, isDefault, sortOrder, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
         
         // Convert to R/W
         glAccountCategory = GlAccountCategoryFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -2020,7 +2020,7 @@ public class AccountingControl
             }
             
             glAccountCategoryDetail = GlAccountCategoryDetailFactory.getInstance().create(glAccountCategoryPK,
-                    glAccountCategoryName, parentGlAccountCategoryPK, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                    glAccountCategoryName, parentGlAccountCategoryPK, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             glAccountCategory.setActiveDetail(glAccountCategoryDetail);
             glAccountCategory.setLastDetail(glAccountCategoryDetail);
@@ -2090,7 +2090,7 @@ public class AccountingControl
     
     public GlAccountCategoryDescription createGlAccountCategoryDescription(GlAccountCategory glAccountCategory, Language language, String description, BasePK createdBy) {
         var glAccountCategoryDescription = GlAccountCategoryDescriptionFactory.getInstance().create(glAccountCategory, language, description, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
         
         sendEvent(glAccountCategory.getPrimaryKey(), EventTypes.MODIFY, glAccountCategoryDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -2227,7 +2227,7 @@ public class AccountingControl
             var description = glAccountCategoryDescriptionValue.getDescription();
             
             glAccountCategoryDescription = GlAccountCategoryDescriptionFactory.getInstance().create(glAccountCategory, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(glAccountCategory.getPrimaryKey(), EventTypes.MODIFY, glAccountCategoryDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -2267,7 +2267,7 @@ public class AccountingControl
 
         var glResourceType = GlResourceTypeFactory.getInstance().create();
         var glResourceTypeDetail = GlResourceTypeDetailFactory.getInstance().create(session,
-                glResourceType, glResourceTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                glResourceType, glResourceTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         glResourceType = GlResourceTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, glResourceType.getPrimaryKey());
@@ -2513,7 +2513,7 @@ public class AccountingControl
             }
             
             glResourceTypeDetail = GlResourceTypeDetailFactory.getInstance().create(glResourceTypePK,
-                    glResourceTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                    glResourceTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             glResourceType.setActiveDetail(glResourceTypeDetail);
             glResourceType.setLastDetail(glResourceTypeDetail);
@@ -2561,7 +2561,7 @@ public class AccountingControl
     
     public GlResourceTypeDescription createGlResourceTypeDescription(GlResourceType glResourceType, Language language, String description, BasePK createdBy) {
         var glResourceTypeDescription = GlResourceTypeDescriptionFactory.getInstance().create(glResourceType, language, description, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
         
         sendEvent(glResourceType.getPrimaryKey(), EventTypes.MODIFY, glResourceTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -2698,7 +2698,7 @@ public class AccountingControl
             var description = glResourceTypeDescriptionValue.getDescription();
             
             glResourceTypeDescription = GlResourceTypeDescriptionFactory.getInstance().create(glResourceType, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(glResourceType.getPrimaryKey(), EventTypes.MODIFY, glResourceTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -2746,7 +2746,7 @@ public class AccountingControl
         var glAccount = GlAccountFactory.getInstance().create();
         var glAccountDetail = GlAccountDetailFactory.getInstance().create(glAccount, glAccountName,
                 parentGlAccount, glAccountType, glAccountClass, glAccountCategory, glResourceType, currency, isDefault,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         glAccount = GlAccountFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, glAccount.getPrimaryKey());
@@ -3333,7 +3333,7 @@ public class AccountingControl
             
             glAccountDetail = GlAccountDetailFactory.getInstance().create(glAccountPK, glAccountName,
                     parentGlAccountPK, glAccountTypePK, glAccountClassPK, glAccountCategoryPK, glResourceTypePK, currencyPK,
-                    isDefault, session.getStartTime(), Session.MAX_TIME_LONG);
+                    isDefault, session.getStartTime(), Session.MAX_TIME);
             
             glAccount.setActiveDetail(glAccountDetail);
             glAccount.setLastDetail(glAccountDetail);
@@ -3406,7 +3406,7 @@ public class AccountingControl
     
     public GlAccountDescription createGlAccountDescription(GlAccount glAccount, Language language, String description, BasePK createdBy) {
         var glAccountDescription = GlAccountDescriptionFactory.getInstance().create(glAccount, language, description, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
         
         sendEvent(glAccount.getPrimaryKey(), EventTypes.MODIFY, glAccountDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -3543,7 +3543,7 @@ public class AccountingControl
             var description = glAccountDescriptionValue.getDescription();
             
             glAccountDescription = GlAccountDescriptionFactory.getInstance().create(glAccount, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(glAccount.getPrimaryKey(), EventTypes.MODIFY, glAccountDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -3618,7 +3618,7 @@ public class AccountingControl
     public TransactionType createTransactionType(String transactionTypeName, Integer sortOrder, BasePK createdBy) {
         var transactionType = TransactionTypeFactory.getInstance().create();
         var transactionTypeDetail = TransactionTypeDetailFactory.getInstance().create(transactionType, transactionTypeName, sortOrder, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
         
         // Convert to R/W
         transactionType = TransactionTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, transactionType.getPrimaryKey());
@@ -3758,7 +3758,7 @@ public class AccountingControl
         var transactionTypeName = transactionTypeDetailValue.getTransactionTypeName();
         var sortOrder = transactionTypeDetailValue.getSortOrder();
 
-        transactionTypeDetail = TransactionTypeDetailFactory.getInstance().create(transactionTypePK, transactionTypeName, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+        transactionTypeDetail = TransactionTypeDetailFactory.getInstance().create(transactionTypePK, transactionTypeName, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         transactionType.setActiveDetail(transactionTypeDetail);
         transactionType.setLastDetail(transactionTypeDetail);
@@ -3791,7 +3791,7 @@ public class AccountingControl
     
     public TransactionTypeDescription createTransactionTypeDescription(TransactionType transactionType, Language language, String description, BasePK createdBy) {
         var transactionTypeDescription = TransactionTypeDescriptionFactory.getInstance().create(transactionType, language, description, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
         
         sendEvent(transactionType.getPrimaryKey(), EventTypes.MODIFY, transactionTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -3928,7 +3928,7 @@ public class AccountingControl
             var description = transactionTypeDescriptionValue.getDescription();
             
             transactionTypeDescription = TransactionTypeDescriptionFactory.getInstance().create(transactionType, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(transactionType.getPrimaryKey(), EventTypes.MODIFY, transactionTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -3957,7 +3957,7 @@ public class AccountingControl
             Integer sortOrder, BasePK createdBy) {
         var transactionGlAccountCategory = TransactionGlAccountCategoryFactory.getInstance().create();
         var transactionGlAccountCategoryDetail = TransactionGlAccountCategoryDetailFactory.getInstance().create(transactionGlAccountCategory, transactionType,
-                transactionGlAccountCategoryName, glAccountCategory, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                transactionGlAccountCategoryName, glAccountCategory, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         transactionGlAccountCategory = TransactionGlAccountCategoryFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, transactionGlAccountCategory.getPrimaryKey());
@@ -4111,7 +4111,7 @@ public class AccountingControl
         var sortOrder = transactionGlAccountCategoryDetailValue.getSortOrder();
 
         transactionGlAccountCategoryDetail = TransactionGlAccountCategoryDetailFactory.getInstance().create(transactionGlAccountCategoryPK, transactionTypePK,
-                transactionGlAccountCategoryName, glAccountCategoryPK, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                transactionGlAccountCategoryName, glAccountCategoryPK, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         transactionGlAccountCategory.setActiveDetail(transactionGlAccountCategoryDetail);
         transactionGlAccountCategory.setLastDetail(transactionGlAccountCategoryDetail);
@@ -4148,7 +4148,7 @@ public class AccountingControl
      public TransactionGlAccountCategoryDescription createTransactionGlAccountCategoryDescription(TransactionGlAccountCategory transactionGlAccountCategory, Language language, String description,
              BasePK createdBy) {
          var transactionGlAccountCategoryDescription = TransactionGlAccountCategoryDescriptionFactory.getInstance().create(transactionGlAccountCategory,
-                language, description, session.getStartTime(), Session.MAX_TIME_LONG);
+                language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(transactionGlAccountCategory.getPrimaryKey(), EventTypes.MODIFY, transactionGlAccountCategoryDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -4285,7 +4285,7 @@ public class AccountingControl
             var description = transactionGlAccountCategoryDescriptionValue.getDescription();
             
             transactionGlAccountCategoryDescription = TransactionGlAccountCategoryDescriptionFactory.getInstance().create(transactionGlAccountCategory, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(transactionGlAccountCategory.getPrimaryKey(), EventTypes.MODIFY, transactionGlAccountCategoryDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -4314,7 +4314,7 @@ public class AccountingControl
             Integer sortOrder, BasePK createdBy) {
          var transactionEntityRoleType = TransactionEntityRoleTypeFactory.getInstance().create();
          var transactionEntityRoleTypeDetail = TransactionEntityRoleTypeDetailFactory.getInstance().create(transactionEntityRoleType, transactionType,
-                transactionEntityRoleTypeName, entityType, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                transactionEntityRoleTypeName, entityType, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         transactionEntityRoleType = TransactionEntityRoleTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, transactionEntityRoleType.getPrimaryKey());
@@ -4512,7 +4512,7 @@ public class AccountingControl
         var sortOrder = transactionEntityRoleTypeDetailValue.getSortOrder();
 
         transactionEntityRoleTypeDetail = TransactionEntityRoleTypeDetailFactory.getInstance().create(transactionEntityRoleTypePK, transactionTypePK,
-                transactionEntityRoleTypeName, entityTypePK, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                transactionEntityRoleTypeName, entityTypePK, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         transactionEntityRoleType.setActiveDetail(transactionEntityRoleTypeDetail);
         transactionEntityRoleType.setLastDetail(transactionEntityRoleTypeDetail);
@@ -4551,7 +4551,7 @@ public class AccountingControl
     
     public TransactionEntityRoleTypeDescription createTransactionEntityRoleTypeDescription(TransactionEntityRoleType transactionEntityRoleType, Language language, String description, BasePK createdBy) {
         var transactionEntityRoleTypeDescription = TransactionEntityRoleTypeDescriptionFactory.getInstance().create(transactionEntityRoleType, language,
-                description, session.getStartTime(), Session.MAX_TIME_LONG);
+                description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(transactionEntityRoleType.getPrimaryKey(), EventTypes.MODIFY, transactionEntityRoleTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -4688,7 +4688,7 @@ public class AccountingControl
             var description = transactionEntityRoleTypeDescriptionValue.getDescription();
             
             transactionEntityRoleTypeDescription = TransactionEntityRoleTypeDescriptionFactory.getInstance().create(transactionEntityRoleType, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(transactionEntityRoleType.getPrimaryKey(), EventTypes.MODIFY, transactionEntityRoleTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -4714,7 +4714,7 @@ public class AccountingControl
     // --------------------------------------------------------------------------------
     
      public TransactionGlAccount createTransactionGlAccount(TransactionGlAccountCategory transactionGlAccountCategory, GlAccount glAccount, BasePK createdBy) {
-         var transactionGlAccount = TransactionGlAccountFactory.getInstance().create(transactionGlAccountCategory, glAccount, session.getStartTime(), Session.MAX_TIME_LONG);
+         var transactionGlAccount = TransactionGlAccountFactory.getInstance().create(transactionGlAccountCategory, glAccount, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(transactionGlAccountCategory.getPrimaryKey(), EventTypes.MODIFY, transactionGlAccount.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -4822,7 +4822,7 @@ public class AccountingControl
             var transactionGlAccountCategoryPK = transactionGlAccount.getTransactionGlAccountCategoryPK();
             var glAccountPK = transactionGlAccountValue.getGlAccountPK();
             
-            transactionGlAccount = TransactionGlAccountFactory.getInstance().create(transactionGlAccountCategoryPK, glAccountPK, session.getStartTime(), Session.MAX_TIME_LONG);
+            transactionGlAccount = TransactionGlAccountFactory.getInstance().create(transactionGlAccountCategoryPK, glAccountPK, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(transactionGlAccountCategoryPK, EventTypes.MODIFY, transactionGlAccount.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -4915,7 +4915,7 @@ public class AccountingControl
     public TransactionGroup createTransactionGroup(String transactionGroupName, BasePK createdBy) {
         var transactionGroup = TransactionGroupFactory.getInstance().create();
         var transactionGroupDetail = TransactionGroupDetailFactory.getInstance().create(transactionGroup,
-                transactionGroupName, session.getStartTime(), Session.MAX_TIME_LONG);
+                transactionGroupName, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         transactionGroup = TransactionGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -5098,7 +5098,7 @@ public class AccountingControl
             TransactionType transactionType, BasePK createdBy) {
         var transaction = TransactionFactory.getInstance().create();
         var transactionDetail = TransactionDetailFactory.getInstance().create(transaction, transactionName,
-                groupParty, transactionGroup, transactionType, session.getStartTime(), Session.MAX_TIME_LONG);
+                groupParty, transactionGroup, transactionType, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         transaction = TransactionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -5345,7 +5345,7 @@ public class AccountingControl
             BasePK createdBy) {
         var transactionGlEntry = TransactionGlEntryFactory.getInstance().create(transaction, transactionGlEntrySequence,
                 groupParty, transactionGlAccountCategory, glAccount, originalCurrency, originalDebit,
-                originalCredit, debit, credit, session.getStartTime(), Session.MAX_TIME_LONG);
+                originalCredit, debit, credit, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(transaction.getPrimaryKey(), EventTypes.MODIFY, transactionGlEntry.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -5357,7 +5357,7 @@ public class AccountingControl
                         SELECT COUNT(*)
                         FROM transactionglentries
                         WHERE trxglent_trx_transactionid = ? AND trxglent_thrutime = ?
-                        """, transaction, Session.MAX_TIME_LONG);
+                        """, transaction, Session.MAX_TIME);
     }
 
     public long countTransactionGlEntryByGlAccount(GlAccount glAccount) {
@@ -5365,7 +5365,7 @@ public class AccountingControl
                         SELECT COUNT(*)
                         FROM transactionglentries
                         WHERE trxgla_gla_glaccountid = ? AND trxglent_thrutime = ?
-                        """, glAccount, Session.MAX_TIME_LONG);
+                        """, glAccount, Session.MAX_TIME);
     }
 
     public List<TransactionGlEntry> getTransactionGlEntriesByTransaction(Transaction transaction) {
@@ -5443,7 +5443,7 @@ public class AccountingControl
     
     public TransactionEntityRole createTransactionEntityRole(Transaction transaction, TransactionEntityRoleType transactionEntityRoleType, EntityInstance entityInstance, BasePK createdBy) {
         var transactionEntityRole = TransactionEntityRoleFactory.getInstance().create(transaction, transactionEntityRoleType, entityInstance, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
         
         sendEvent(transaction.getPrimaryKey(), EventTypes.MODIFY, transactionEntityRole.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -5455,7 +5455,7 @@ public class AccountingControl
                         SELECT COUNT(*)
                         FROM transactionentityroles
                         WHERE trxer_trx_transactionid = ? AND trxer_thrutime = ?
-                        """, transaction, Session.MAX_TIME_LONG);
+                        """, transaction, Session.MAX_TIME);
     }
 
     public TransactionEntityRole getTransactionEntityRole(Transaction transaction, TransactionEntityRoleType transactionEntityRoleType) {
@@ -5617,7 +5617,7 @@ public class AccountingControl
 
         var symbolPosition = SymbolPositionFactory.getInstance().create();
         var symbolPositionDetail = SymbolPositionDetailFactory.getInstance().create(session,
-                symbolPosition, symbolPositionName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                symbolPosition, symbolPositionName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         symbolPosition = SymbolPositionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, symbolPosition.getPrimaryKey());
@@ -5863,7 +5863,7 @@ public class AccountingControl
             }
             
             symbolPositionDetail = SymbolPositionDetailFactory.getInstance().create(symbolPositionPK,
-                    symbolPositionName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                    symbolPositionName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             symbolPosition.setActiveDetail(symbolPositionDetail);
             symbolPosition.setLastDetail(symbolPositionDetail);
@@ -5910,7 +5910,7 @@ public class AccountingControl
     
     public SymbolPositionDescription createSymbolPositionDescription(SymbolPosition symbolPosition, Language language, String description, BasePK createdBy) {
         var symbolPositionDescription = SymbolPositionDescriptionFactory.getInstance().create(symbolPosition, language, description, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
         
         sendEvent(symbolPosition.getPrimaryKey(), EventTypes.MODIFY, symbolPositionDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -6047,7 +6047,7 @@ public class AccountingControl
             var description = symbolPositionDescriptionValue.getDescription();
             
             symbolPositionDescription = SymbolPositionDescriptionFactory.getInstance().create(symbolPosition, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(symbolPosition.getPrimaryKey(), EventTypes.MODIFY, symbolPositionDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }

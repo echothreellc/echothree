@@ -82,7 +82,7 @@ public class TextControl
 
         var textDecoration = TextDecorationFactory.getInstance().create();
         var textDecorationDetail = TextDecorationDetailFactory.getInstance().create(textDecoration, textDecorationName, isDefault, sortOrder, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
 
         // Convert to R/W
         textDecoration = TextDecorationFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, textDecoration.getPrimaryKey());
@@ -306,7 +306,7 @@ public class TextControl
             }
 
             textDecorationDetail = TextDecorationDetailFactory.getInstance().create(textDecorationPK, textDecorationName, isDefault, sortOrder, session.getStartTime(),
-                    Session.MAX_TIME_LONG);
+                    Session.MAX_TIME);
 
             textDecoration.setActiveDetail(textDecorationDetail);
             textDecoration.setLastDetail(textDecorationDetail);
@@ -371,7 +371,7 @@ public class TextControl
 
     public TextDecorationDescription createTextDecorationDescription(TextDecoration textDecoration, Language language, String description, BasePK createdBy) {
         var textDecorationDescription = TextDecorationDescriptionFactory.getInstance().create(textDecoration, language, description,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(textDecoration.getPrimaryKey(), EventTypes.MODIFY, textDecorationDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -492,7 +492,7 @@ public class TextControl
             var description = textDecorationDescriptionValue.getDescription();
 
             textDecorationDescription = TextDecorationDescriptionFactory.getInstance().create(textDecoration, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(textDecoration.getPrimaryKey(), EventTypes.MODIFY, textDecorationDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -532,7 +532,7 @@ public class TextControl
 
         var textTransformation = TextTransformationFactory.getInstance().create();
         var textTransformationDetail = TextTransformationDetailFactory.getInstance().create(textTransformation, textTransformationName, isDefault, sortOrder, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
 
         // Convert to R/W
         textTransformation = TextTransformationFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, textTransformation.getPrimaryKey());
@@ -756,7 +756,7 @@ public class TextControl
             }
 
             textTransformationDetail = TextTransformationDetailFactory.getInstance().create(textTransformationPK, textTransformationName, isDefault, sortOrder, session.getStartTime(),
-                    Session.MAX_TIME_LONG);
+                    Session.MAX_TIME);
 
             textTransformation.setActiveDetail(textTransformationDetail);
             textTransformation.setLastDetail(textTransformationDetail);
@@ -821,7 +821,7 @@ public class TextControl
 
     public TextTransformationDescription createTextTransformationDescription(TextTransformation textTransformation, Language language, String description, BasePK createdBy) {
         var textTransformationDescription = TextTransformationDescriptionFactory.getInstance().create(textTransformation, language, description,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(textTransformation.getPrimaryKey(), EventTypes.MODIFY, textTransformationDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -942,7 +942,7 @@ public class TextControl
             var description = textTransformationDescriptionValue.getDescription();
 
             textTransformationDescription = TextTransformationDescriptionFactory.getInstance().create(textTransformation, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(textTransformation.getPrimaryKey(), EventTypes.MODIFY, textTransformationDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }

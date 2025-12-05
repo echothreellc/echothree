@@ -96,7 +96,7 @@ public class OfferControl
 
         var offer = OfferFactory.getInstance().create();
         var offerDetail = OfferDetailFactory.getInstance().create(offer, offerName, salesOrderSequence, departmentParty, offerItemSelector,
-                offerItemPriceFilter, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                offerItemPriceFilter, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         offer = OfferFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, offer.getPrimaryKey());
@@ -398,7 +398,7 @@ public class OfferControl
             }
             
             offerDetail = OfferDetailFactory.getInstance().create(offerPK, offerName, salesOrderSequencePK, departmentPartyPK, offerItemSelectorPK,
-                    offerItemPriceFilterPK, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                    offerItemPriceFilterPK, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             offer.setActiveDetail(offerDetail);
             offer.setLastDetail(offerDetail);
@@ -455,7 +455,7 @@ public class OfferControl
     
     public OfferDescription createOfferDescription(Offer offer, Language language, String description, BasePK createdBy) {
         var offerDescription = OfferDescriptionFactory.getInstance().create(offer, language, description,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(offer.getPrimaryKey(), EventTypes.MODIFY, offerDescription.getPrimaryKey(),
                 EventTypes.CREATE, createdBy);
@@ -594,7 +594,7 @@ public class OfferControl
             var description = offerDescriptionValue.getDescription();
             
             offerDescription = OfferDescriptionFactory.getInstance().create(offer, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(offer.getPrimaryKey(), EventTypes.MODIFY, offerDescription.getPrimaryKey(),
                     EventTypes.MODIFY, updatedBy);
@@ -675,7 +675,7 @@ public class OfferControl
         }
 
         var offerCustomerType = OfferCustomerTypeFactory.getInstance().create(offer, customerType,
-                isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(offer.getPrimaryKey(), EventTypes.MODIFY, offerCustomerType.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -904,7 +904,7 @@ public class OfferControl
             }
 
             offerCustomerType = OfferCustomerTypeFactory.getInstance().create(offerPK, customerTypePK,
-                    isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                    isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(offerPK, EventTypes.MODIFY, offerCustomerType.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -959,7 +959,7 @@ public class OfferControl
     
     public OfferChainType createOfferChainType(Offer offer, ChainType chainType, Chain chain, BasePK createdBy) {
         var offerChainType = OfferChainTypeFactory.getInstance().create(offer, chainType, chain,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(offer.getPrimaryKey(), EventTypes.MODIFY, offerChainType.getPrimaryKey(),
                 EventTypes.CREATE, createdBy);
@@ -1171,7 +1171,7 @@ public class OfferControl
             var chainPK = offerChainTypeValue.getChainPK();
             
             offerChainType = OfferChainTypeFactory.getInstance().create(offerPK, chainTypePK, chainPK,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(offerPK, EventTypes.MODIFY, offerChainType.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }

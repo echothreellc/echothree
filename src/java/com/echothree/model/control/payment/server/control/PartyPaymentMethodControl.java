@@ -100,7 +100,7 @@ public class PartyPaymentMethodControl
 
         var partyPaymentMethod = PartyPaymentMethodFactory.getInstance().create();
         var partyPaymentMethodDetail = PartyPaymentMethodDetailFactory.getInstance().create(partyPaymentMethod, partyPaymentMethodName,
-                party, description, paymentMethod, deleteWhenUnused, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                party, description, paymentMethod, deleteWhenUnused, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         partyPaymentMethod = PartyPaymentMethodFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, partyPaymentMethod.getPrimaryKey());
@@ -338,7 +338,7 @@ public class PartyPaymentMethodControl
             }
 
             partyPaymentMethodDetail = PartyPaymentMethodDetailFactory.getInstance().create(partyPaymentMethodPK, partyPaymentMethodName, party.getPrimaryKey(),
-                    description, paymentMethodPK, deleteWhenUnused, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                    description, paymentMethodPK, deleteWhenUnused, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             partyPaymentMethod.setActiveDetail(partyPaymentMethodDetail);
             partyPaymentMethod.setLastDetail(partyPaymentMethodDetail);
@@ -419,7 +419,7 @@ public class PartyPaymentMethodControl
         var partyPaymentMethodCreditCard = PartyPaymentMethodCreditCardFactory.getInstance().create(session,
                 partyPaymentMethod, encodePartyPaymentMethodCreditCardNumber(number), expirationMonth, expirationYear, personalTitle,
                 firstName, firstNameSdx, middleName, middleNameSdx, lastName, lastNameSdx, nameSuffix, name, billingPartyContactMechanism,
-                issuerName, issuerPartyContactMechanism, session.getStartTime(), Session.MAX_TIME_LONG);
+                issuerName, issuerPartyContactMechanism, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(partyPaymentMethod.getPrimaryKey(), EventTypes.MODIFY,
                 partyPaymentMethodCreditCard.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -640,7 +640,7 @@ public class PartyPaymentMethodControl
             
             partyPaymentMethodCreditCard = PartyPaymentMethodCreditCardFactory.getInstance().create(partyPaymentMethodPK, number, expirationMonth,
                     expirationYear, personalTitlePK, firstName, firstNameSdx, middleName, middleNameSdx, lastName, lastNameSdx, nameSuffixPK, name,
-                    billingPartyContactMechanismPK, issuerName, issuerPartyContactMechanismPK, session.getStartTime(), Session.MAX_TIME_LONG);
+                    billingPartyContactMechanismPK, issuerName, issuerPartyContactMechanismPK, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(partyPaymentMethodPK, EventTypes.MODIFY, partyPaymentMethodCreditCard.getPrimaryKey(),
                     EventTypes.MODIFY, updatedBy);
@@ -680,7 +680,7 @@ public class PartyPaymentMethodControl
             String securityCode, BasePK createdBy) {
         var partyPaymentMethodCreditCardSecurityCode = PartyPaymentMethodCreditCardSecurityCodeFactory.getInstance().create(session,
                 partyPaymentMethod, encodePartyPaymentMethodCreditCardSecurityCodeSecurityCode(securityCode), session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
         
         sendEvent(partyPaymentMethod.getPrimaryKey(), EventTypes.MODIFY,
                 partyPaymentMethodCreditCardSecurityCode.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -769,7 +769,7 @@ public class PartyPaymentMethodControl
             var securityCode = partyPaymentMethodCreditCardSecurityCodeValue.getSecurityCode();
             
             partyPaymentMethodCreditCardSecurityCode = PartyPaymentMethodCreditCardSecurityCodeFactory.getInstance().create(session,
-                    partyPaymentMethodPK, securityCode, session.getStartTime(), Session.MAX_TIME_LONG);
+                    partyPaymentMethodPK, securityCode, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(partyPaymentMethodPK, EventTypes.MODIFY, partyPaymentMethodCreditCardSecurityCode.getPrimaryKey(),
                     EventTypes.MODIFY, updatedBy);
@@ -791,7 +791,7 @@ public class PartyPaymentMethodControl
     public PartyPaymentMethodContactMechanism createPartyPaymentMethodContactMechanism(PartyPaymentMethod partyPaymentMethod,
             PartyContactMechanismPurpose partyContactMechanismPurpose, BasePK createdBy) {
         var partyPaymentMethodContactMechanism = PartyPaymentMethodContactMechanismFactory.getInstance().create(session,
-                partyPaymentMethod, partyContactMechanismPurpose, session.getStartTime(), Session.MAX_TIME_LONG);
+                partyPaymentMethod, partyContactMechanismPurpose, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(partyPaymentMethod.getPrimaryKey(), EventTypes.MODIFY, partyPaymentMethodContactMechanism.getPrimaryKey(), EventTypes.CREATE, createdBy);
         

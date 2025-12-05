@@ -73,7 +73,7 @@ public class OrderPriorityControl
 
         var orderPriority = OrderPriorityFactory.getInstance().create();
         var orderPriorityDetail = OrderPriorityDetailFactory.getInstance().create(orderPriority, orderType, orderPriorityName, priority,
-                isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         orderPriority = OrderPriorityFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -313,7 +313,7 @@ public class OrderPriorityControl
             }
 
             orderPriorityDetail = OrderPriorityDetailFactory.getInstance().create(orderPriorityPK, orderTypePK, orderPriorityName, priority, isDefault,
-                    sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                    sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             orderPriority.setActiveDetail(orderPriorityDetail);
             orderPriority.setLastDetail(orderPriorityDetail);
@@ -361,7 +361,7 @@ public class OrderPriorityControl
 
     public OrderPriorityDescription createOrderPriorityDescription(OrderPriority orderPriority, Language language, String description, BasePK createdBy) {
         var orderPriorityDescription = OrderPriorityDescriptionFactory.getInstance().create(orderPriority, language, description,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(orderPriority.getPrimaryKey(), EventTypes.MODIFY, orderPriorityDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -482,7 +482,7 @@ public class OrderPriorityControl
             var description = orderPriorityDescriptionValue.getDescription();
 
             orderPriorityDescription = OrderPriorityDescriptionFactory.getInstance().create(orderPriority, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(orderPriority.getPrimaryKey(), EventTypes.MODIFY, orderPriorityDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }

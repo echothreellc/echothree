@@ -71,7 +71,7 @@ public class ColorControl
 
         var color = ColorFactory.getInstance().create();
         var colorDetail = ColorDetailFactory.getInstance().create(color, colorName, red, green, blue, isDefault, sortOrder, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
 
         // Convert to R/W
         color = ColorFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, color.getPrimaryKey());
@@ -298,7 +298,7 @@ public class ColorControl
             }
 
             colorDetail = ColorDetailFactory.getInstance().create(colorPK, colorName, red, green, blue, isDefault, sortOrder, session.getStartTime(),
-                    Session.MAX_TIME_LONG);
+                    Session.MAX_TIME);
 
             color.setActiveDetail(colorDetail);
             color.setLastDetail(colorDetail);
@@ -363,7 +363,7 @@ public class ColorControl
 
     public ColorDescription createColorDescription(Color color, Language language, String description, BasePK createdBy) {
         var colorDescription = ColorDescriptionFactory.getInstance().create(color, language, description,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(color.getPrimaryKey(), EventTypes.MODIFY, colorDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -484,7 +484,7 @@ public class ColorControl
             var description = colorDescriptionValue.getDescription();
 
             colorDescription = ColorDescriptionFactory.getInstance().create(color, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(color.getPrimaryKey(), EventTypes.MODIFY, colorDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }

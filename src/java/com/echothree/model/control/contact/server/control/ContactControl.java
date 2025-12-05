@@ -406,7 +406,7 @@ public class ContactControl
 
         var contactMechanismAliasType = ContactMechanismAliasTypeFactory.getInstance().create();
         var contactMechanismAliasTypeDetail = ContactMechanismAliasTypeDetailFactory.getInstance().create(contactMechanismAliasType,
-                contactMechanismAliasTypeName, validationPattern, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                contactMechanismAliasTypeName, validationPattern, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         contactMechanismAliasType = ContactMechanismAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -654,7 +654,7 @@ public class ContactControl
             }
 
             contactMechanismAliasTypeDetail = ContactMechanismAliasTypeDetailFactory.getInstance().create(contactMechanismAliasTypePK,
-                    contactMechanismAliasTypeName, validationPattern, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                    contactMechanismAliasTypeName, validationPattern, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             contactMechanismAliasType.setActiveDetail(contactMechanismAliasTypeDetail);
             contactMechanismAliasType.setLastDetail(contactMechanismAliasTypeDetail);
@@ -703,7 +703,7 @@ public class ContactControl
     public ContactMechanismAliasTypeDescription createContactMechanismAliasTypeDescription(ContactMechanismAliasType contactMechanismAliasType,
             Language language, String description, BasePK createdBy) {
         var contactMechanismAliasTypeDescription = ContactMechanismAliasTypeDescriptionFactory.getInstance().create(contactMechanismAliasType,
-                language, description, session.getStartTime(), Session.MAX_TIME_LONG);
+                language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(contactMechanismAliasType.getPrimaryKey(), EventTypes.MODIFY, contactMechanismAliasTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -827,7 +827,7 @@ public class ContactControl
             var description = contactMechanismAliasTypeDescriptionValue.getDescription();
 
             contactMechanismAliasTypeDescription = ContactMechanismAliasTypeDescriptionFactory.getInstance().create(contactMechanismAliasType, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(contactMechanismAliasType.getPrimaryKey(), EventTypes.MODIFY, contactMechanismAliasTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -1105,7 +1105,7 @@ public class ContactControl
             Boolean allowSolicitation, BasePK createdBy) {
         var contactMechanism = ContactMechanismFactory.getInstance().create();
         var contactMechanismDetail = ContactMechanismDetailFactory.getInstance().create(contactMechanism,
-                contactMechanismName, contactMechanismType, allowSolicitation, session.getStartTime(), Session.MAX_TIME_LONG);
+                contactMechanismName, contactMechanismType, allowSolicitation, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         contactMechanism = ContactMechanismFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -1342,7 +1342,7 @@ public class ContactControl
             
             contactMechanismDetail = ContactMechanismDetailFactory.getInstance().create(contactMechanismPK,
                     contactMechanismName, contactMechanismTypePK, allowSolicitation, session.getStartTime(),
-                    Session.MAX_TIME_LONG);
+                    Session.MAX_TIME);
             
             contactMechanism.setActiveDetail(contactMechanismDetail);
             contactMechanism.setLastDetail(contactMechanismDetail);
@@ -1388,7 +1388,7 @@ public class ContactControl
             ContactMechanismAliasType contactMechanismAliasType, String alias, BasePK createdBy) {
 
         var contactMechanismAlias = ContactMechanismAliasFactory.getInstance().create(contactMechanism,
-                contactMechanismAliasType, alias, session.getStartTime(), Session.MAX_TIME_LONG);
+                contactMechanismAliasType, alias, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(contactMechanism.getPrimaryKey(), EventTypes.MODIFY, contactMechanismAlias.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1556,7 +1556,7 @@ public class ContactControl
     
     public ContactEmailAddress createContactEmailAddress(ContactMechanism contactMechanism, String emailAddress, BasePK createdBy) {
         var contactEmailAddress = ContactEmailAddressFactory.getInstance().create(contactMechanism,
-                emailAddress, session.getStartTime(), Session.MAX_TIME_LONG);
+                emailAddress, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(contactMechanism.getPrimaryKey(), EventTypes.MODIFY, contactEmailAddress.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1620,7 +1620,7 @@ public class ContactControl
             var emailAddress = contactEmailAddressValue.getEmailAddress();
             
             contactEmailAddress = ContactEmailAddressFactory.getInstance().create(contactMechanismPK, emailAddress,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(contactMechanismPK, EventTypes.MODIFY, contactEmailAddress.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -1642,7 +1642,7 @@ public class ContactControl
     
     public ContactInet4Address createContactInet4Address(ContactMechanism contactMechanism, Integer inet4Address, BasePK createdBy) {
         var contactInet4Address = ContactInet4AddressFactory.getInstance().create(contactMechanism,
-                inet4Address, session.getStartTime(), Session.MAX_TIME_LONG);
+                inet4Address, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(contactMechanism.getPrimaryKey(), EventTypes.MODIFY, contactInet4Address.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1706,7 +1706,7 @@ public class ContactControl
             var inet4Address = contactInet4Address.getInet4Address();
             
             contactInet4Address = ContactInet4AddressFactory.getInstance().create(contactMechanismPK, inet4Address,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(contactMechanismPK, EventTypes.MODIFY, contactInet4Address.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -1729,7 +1729,7 @@ public class ContactControl
     public ContactInet6Address createContactInet6Address(ContactMechanism contactMechanism, Long inet6AddressLow,
             Long inet6AddressHigh, BasePK createdBy) {
         var contactInet6Address = ContactInet6AddressFactory.getInstance().create(contactMechanism,
-                inet6AddressLow, inet6AddressHigh, session.getStartTime(), Session.MAX_TIME_LONG);
+                inet6AddressLow, inet6AddressHigh, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(contactMechanism.getPrimaryKey(), EventTypes.MODIFY, contactInet6Address.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1790,7 +1790,7 @@ public class ContactControl
             var inet6AddressHigh = contactInet6Address.getInet6AddressHigh();
             
             contactInet6Address = ContactInet6AddressFactory.getInstance().create(contactMechanismPK, inet6AddressLow,
-                    inet6AddressHigh, session.getStartTime(), Session.MAX_TIME_LONG);
+                    inet6AddressHigh, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(contactMechanismPK, EventTypes.MODIFY, contactInet6Address.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -1818,7 +1818,7 @@ public class ContactControl
         var contactPostalAddress = ContactPostalAddressFactory.getInstance().create(contactMechanism,
                 personalTitle, firstName, firstNameSdx, middleName, middleNameSdx, lastName, lastNameSdx, nameSuffix, companyName, attention,
                 address1, address2, address3, city, cityGeoCode, countyGeoCode, state, stateGeoCode, postalCode, postalCodeGeoCode,
-                countryGeoCode, isCommercial, session.getStartTime(), Session.MAX_TIME_LONG);
+                countryGeoCode, isCommercial, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(contactMechanism.getPrimaryKey(), EventTypes.MODIFY, contactPostalAddress.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1830,7 +1830,7 @@ public class ContactControl
                 "SELECT COUNT(*) " +
                 "FROM contactpostaladdresses " +
                 "WHERE ctpa_pert_personaltitleid = ? AND ctpa_thrutime = ?",
-                personalTitle, Session.MAX_TIME_LONG);
+                personalTitle, Session.MAX_TIME);
     }
 
     public long countContactPostalAddressesByNameSuffix(NameSuffix nameSuffix) {
@@ -1838,7 +1838,7 @@ public class ContactControl
                 "SELECT COUNT(*) " +
                 "FROM contactpostaladdresses " +
                 "WHERE ctpa_nsfx_namesuffixid = ? AND ctpa_thrutime = ?",
-                nameSuffix, Session.MAX_TIME_LONG);
+                nameSuffix, Session.MAX_TIME);
     }
 
     public long countContactPostalAddressesByCityGeoCode(GeoCode cityGeoCode) {
@@ -1846,7 +1846,7 @@ public class ContactControl
                 "SELECT COUNT(*) " +
                 "FROM contactpostaladdresses " +
                 "WHERE ctpa_citygeocodeid = ? AND ctpa_thrutime = ?",
-                cityGeoCode, Session.MAX_TIME_LONG);
+                cityGeoCode, Session.MAX_TIME);
     }
 
     public long countContactPostalAddressesByCountyGeoCode(GeoCode countyGeoCode) {
@@ -1854,7 +1854,7 @@ public class ContactControl
                 "SELECT COUNT(*) " +
                 "FROM contactpostaladdresses " +
                 "WHERE ctpa_countygeocodeid = ? AND ctpa_thrutime = ?",
-                countyGeoCode, Session.MAX_TIME_LONG);
+                countyGeoCode, Session.MAX_TIME);
     }
 
     public long countContactPostalAddressesByStateGeoCode(GeoCode stateGeoCode) {
@@ -1862,7 +1862,7 @@ public class ContactControl
                 "SELECT COUNT(*) " +
                 "FROM contactpostaladdresses " +
                 "WHERE ctpa_stategeocodeid = ? AND ctpa_thrutime = ?",
-                stateGeoCode, Session.MAX_TIME_LONG);
+                stateGeoCode, Session.MAX_TIME);
     }
 
     public long countContactPostalAddressesByPostalCodeGeoCode(GeoCode postalCodeGeoCode) {
@@ -1870,7 +1870,7 @@ public class ContactControl
                 "SELECT COUNT(*) " +
                 "FROM contactpostaladdresses " +
                 "WHERE ctpa_postalcodegeocodeid = ? AND ctpa_thrutime = ?",
-                postalCodeGeoCode, Session.MAX_TIME_LONG);
+                postalCodeGeoCode, Session.MAX_TIME);
     }
 
     public long countContactPostalAddressesByCountryGeoCode(GeoCode countryGeoCode) {
@@ -1878,7 +1878,7 @@ public class ContactControl
                 "SELECT COUNT(*) " +
                 "FROM contactpostaladdresses " +
                 "WHERE ctpa_countrygeocodeid = ? AND ctpa_thrutime = ?",
-                countryGeoCode, Session.MAX_TIME_LONG);
+                countryGeoCode, Session.MAX_TIME);
     }
 
     private ContactPostalAddress getContactPostalAddress(ContactMechanism contactMechanism, EntityPermission entityPermission) {
@@ -1961,7 +1961,7 @@ public class ContactControl
             contactPostalAddress = ContactPostalAddressFactory.getInstance().create(contactMechanismPK, personalTitlePK,
                     firstName, firstNameSdx, middleName, middleNameSdx, lastName, lastNameSdx, nameSuffixPK, companyName, attention, address1,
                     address2, address3, city, cityGeoCodePK, countyGeoCodePK, state, stateGeoCodePK, postalCode, postalCodeGeoCodePK,
-                    countryGeoCodePK, isCommercial, session.getStartTime(), Session.MAX_TIME_LONG);
+                    countryGeoCodePK, isCommercial, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(contactMechanismPK, EventTypes.MODIFY, contactPostalAddress.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -1986,7 +1986,7 @@ public class ContactControl
             GeoCode stateGeoCode, String postalCode, GeoCode postalCodeGeoCode, GeoCode countryGeoCode, BasePK createdBy) {
         var contactPostalAddressCorrection = ContactPostalAddressCorrectionFactory.getInstance().create(session,
                 contactMechanism, address1, address2, address3, city, cityGeoCode, countyGeoCode, state, stateGeoCode, postalCode,
-                postalCodeGeoCode, countryGeoCode, session.getStartTime(), Session.MAX_TIME_LONG);
+                postalCodeGeoCode, countryGeoCode, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(contactMechanism.getPrimaryKey(), EventTypes.MODIFY, contactPostalAddressCorrection.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1998,7 +1998,7 @@ public class ContactControl
                 "SELECT COUNT(*) " +
                 "FROM contactpostaladdresscorrections " +
                 "WHERE ctpac_citygeocodeid = ? AND ctpac_thrutime = ?",
-                cityGeoCode, Session.MAX_TIME_LONG);
+                cityGeoCode, Session.MAX_TIME);
     }
 
     public long countContactPostalAddressCorrectionsByCountyGeoCode(GeoCode countyGeoCode) {
@@ -2006,7 +2006,7 @@ public class ContactControl
                 "SELECT COUNT(*) " +
                 "FROM contactpostaladdresscorrections " +
                 "WHERE ctpac_countygeocodeid = ? AND ctpac_thrutime = ?",
-                countyGeoCode, Session.MAX_TIME_LONG);
+                countyGeoCode, Session.MAX_TIME);
     }
 
     public long countContactPostalAddressCorrectionsByStateGeoCode(GeoCode stateGeoCode) {
@@ -2014,7 +2014,7 @@ public class ContactControl
                 "SELECT COUNT(*) " +
                 "FROM contactpostaladdresscorrections " +
                 "WHERE ctpac_stategeocodeid = ? AND ctpac_thrutime = ?",
-                stateGeoCode, Session.MAX_TIME_LONG);
+                stateGeoCode, Session.MAX_TIME);
     }
 
     public long countContactPostalAddressCorrectionsByPostalCodeGeoCode(GeoCode postalCodeGeoCode) {
@@ -2022,7 +2022,7 @@ public class ContactControl
                 "SELECT COUNT(*) " +
                 "FROM contactpostaladdresscorrections " +
                 "WHERE ctpac_postalcodegeocodeid = ? AND ctpac_thrutime = ?",
-                postalCodeGeoCode, Session.MAX_TIME_LONG);
+                postalCodeGeoCode, Session.MAX_TIME);
     }
 
     public long countContactPostalAddressCorrectionsByCountryGeoCode(GeoCode countryGeoCode) {
@@ -2030,7 +2030,7 @@ public class ContactControl
                 "SELECT COUNT(*) " +
                 "FROM contactpostaladdresscorrections " +
                 "WHERE ctpac_countrygeocodeid = ? AND ctpac_thrutime = ?",
-                countryGeoCode, Session.MAX_TIME_LONG);
+                countryGeoCode, Session.MAX_TIME);
     }
 
     private ContactPostalAddressCorrection getContactPostalAddressCorrection(ContactMechanism contactMechanism, EntityPermission entityPermission) {
@@ -2097,7 +2097,7 @@ public class ContactControl
             
             contactPostalAddressCorrection = ContactPostalAddressCorrectionFactory.getInstance().create(contactMechanismPK,
                     address1, address2, address3, city, cityGeoCodePK, countyGeoCodePK, state, stateGeoCodePK, postalCode,
-                    postalCodeGeoCodePK, countryGeoCodePK, session.getStartTime(), Session.MAX_TIME_LONG);
+                    postalCodeGeoCodePK, countryGeoCodePK, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(contactMechanismPK, EventTypes.MODIFY, contactPostalAddressCorrection.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -2124,7 +2124,7 @@ public class ContactControl
     public ContactTelephone createContactTelephone(ContactMechanism contactMechanism, GeoCode countryGeoCode, String areaCode,
             String telephoneNumber, String telephoneExtension, BasePK createdBy) {
         var contactTelephone = ContactTelephoneFactory.getInstance().create(contactMechanism, countryGeoCode,
-                areaCode, telephoneNumber, telephoneExtension, session.getStartTime(), Session.MAX_TIME_LONG);
+                areaCode, telephoneNumber, telephoneExtension, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(contactMechanism.getPrimaryKey(), EventTypes.MODIFY, contactTelephone.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -2136,7 +2136,7 @@ public class ContactControl
                 "SELECT COUNT(*) " +
                 "FROM contacttelephones " +
                 "WHERE cttp_countrygeocodeid = ? AND cttp_thrutime = ?",
-                countryGeoCode, Session.MAX_TIME_LONG);
+                countryGeoCode, Session.MAX_TIME);
     }
 
     private ContactTelephone getContactTelephone(ContactMechanism contactMechanism, EntityPermission entityPermission) {
@@ -2199,7 +2199,7 @@ public class ContactControl
             var telephoneExtension = contactTelephoneValue.getTelephoneExtension();
             
             contactTelephone = ContactTelephoneFactory.getInstance().create(contactMechanismPK, countryGeoCodePK,
-                    areaCode, telephoneNumber, telephoneExtension, session.getStartTime(), Session.MAX_TIME_LONG);
+                    areaCode, telephoneNumber, telephoneExtension, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(contactMechanismPK, EventTypes.MODIFY, contactTelephone.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -2221,7 +2221,7 @@ public class ContactControl
     
     public ContactWebAddress createContactWebAddress(ContactMechanism contactMechanism, String url, BasePK createdBy) {
         var contactWebAddress = ContactWebAddressFactory.getInstance().create(contactMechanism, url,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(contactMechanism.getPrimaryKey(), EventTypes.MODIFY, contactWebAddress.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -2285,7 +2285,7 @@ public class ContactControl
             var url = contactWebAddressValue.getUrl();
             
             contactWebAddress = ContactWebAddressFactory.getInstance().create(contactMechanismPK, url, session.getStartTime(),
-                    Session.MAX_TIME_LONG);
+                    Session.MAX_TIME);
             
             sendEvent(contactMechanismPK, EventTypes.MODIFY, contactWebAddress.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -2322,7 +2322,7 @@ public class ContactControl
         var partyContactMechanism = PartyContactMechanismFactory.getInstance().create();
         var partyContactMechanismDetail = PartyContactMechanismDetailFactory.getInstance().create(session,
                 partyContactMechanism, party, contactMechanism, description, isDefault, sortOrder, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
         
         // Convert to R/W
         partyContactMechanism = PartyContactMechanismFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, partyContactMechanism.getPrimaryKey());
@@ -2686,7 +2686,7 @@ public class ContactControl
             }
             
             partyContactMechanismDetail = PartyContactMechanismDetailFactory.getInstance().create(partyContactMechanismPK,
-                    partyPK, contactMechanismPK, description, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                    partyPK, contactMechanismPK, description, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             partyContactMechanism.setActiveDetail(partyContactMechanismDetail);
             partyContactMechanism.setLastDetail(partyContactMechanismDetail);
@@ -2847,7 +2847,7 @@ public class ContactControl
             ContactMechanismAliasType contactMechanismAliasType, String alias, BasePK createdBy) {
 
         var partyContactMechanismAlias = PartyContactMechanismAliasFactory.getInstance().create(session,
-                party, contactMechanism, contactMechanismAliasType, alias, session.getStartTime(), Session.MAX_TIME_LONG);
+                party, contactMechanism, contactMechanismAliasType, alias, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyContactMechanismAlias.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -3030,7 +3030,7 @@ public class ContactControl
         var partyContactMechanismPurpose = PartyContactMechanismPurposeFactory.getInstance().create();
         var partyContactMechanismPurposeDetail = PartyContactMechanismPurposeDetailFactory.getInstance().create(session,
                 partyContactMechanismPurpose, partyContactMechanism, contactMechanismPurpose, isDefault, sortOrder,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         partyContactMechanismPurpose = PartyContactMechanismPurposeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, partyContactMechanismPurpose.getPrimaryKey());
@@ -3294,7 +3294,7 @@ public class ContactControl
             
             partyContactMechanismPurposeDetail = PartyContactMechanismPurposeDetailFactory.getInstance().create(session,
                     partyContactMechanismPurposePK, partyContactMechanism.getPrimaryKey(), contactMechanismPurpose.getPrimaryKey(),
-                    isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                    isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             partyContactMechanismPurpose.setActiveDetail(partyContactMechanismPurposeDetail);
             partyContactMechanismPurpose.setLastDetail(partyContactMechanismPurposeDetail);
@@ -3351,7 +3351,7 @@ public class ContactControl
     public PartyContactMechanismRelationship createPartyContactMechanismRelationship(PartyContactMechanism fromPartyContactMechanism,
             PartyContactMechanism toPartyContactMechanism, BasePK createdBy) {
         var partyContactMechanismRelationship = PartyContactMechanismRelationshipFactory.getInstance().create(fromPartyContactMechanism,
-                toPartyContactMechanism, session.getStartTime(), Session.MAX_TIME_LONG);
+                toPartyContactMechanism, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(fromPartyContactMechanism.getPrimaryKey(), EventTypes.MODIFY, partyContactMechanismRelationship.getPrimaryKey(), null, createdBy);
         
@@ -3363,7 +3363,7 @@ public class ContactControl
                 "SELECT COUNT(*) "
                 + "FROM partycontactmechanismrelationships "
                 + "WHERE pcmr_frompartycontactmechanismid = ? AND pcmr_topartycontactmechanismid = ? AND pcmr_thrutime = ?",
-                fromPartyContactMechanism, toPartyContactMechanism, Session.MAX_TIME_LONG) == 1;
+                fromPartyContactMechanism, toPartyContactMechanism, Session.MAX_TIME) == 1;
     }
 
     public long countPartyContactMechanismRelationshipsByFromPartyContactMechanism(PartyContactMechanism fromPartyContactMechanism) {
@@ -3371,7 +3371,7 @@ public class ContactControl
                 "SELECT COUNT(*) "
                 + "FROM partycontactmechanismrelationships "
                 + "WHERE pcmr_frompartycontactmechanismid = ? AND pcmr_thrutime = ?",
-                fromPartyContactMechanism, Session.MAX_TIME_LONG);
+                fromPartyContactMechanism, Session.MAX_TIME);
     }
 
     public long countPartyContactMechanismRelationshipsByToPartyContactMechanism(PartyContactMechanism toPartyContactMechanism) {
@@ -3379,7 +3379,7 @@ public class ContactControl
                 "SELECT COUNT(*) "
                 + "FROM partycontactmechanismrelationships "
                 + "WHERE pcmr_topartycontactmechanismid = ? AND pcmr_thrutime = ?",
-                toPartyContactMechanism, Session.MAX_TIME_LONG);
+                toPartyContactMechanism, Session.MAX_TIME);
     }
 
     private static final Map<EntityPermission, String> getPartyContactMechanismRelationshipQueries;
@@ -3402,7 +3402,7 @@ public class ContactControl
     public PartyContactMechanismRelationship getPartyContactMechanismRelationship(PartyContactMechanism fromPartyContactMechanism,
             PartyContactMechanism toPartyContactMechanism, EntityPermission entityPermission) {
         return PartyContactMechanismRelationshipFactory.getInstance().getEntityFromQuery(entityPermission, getPartyContactMechanismRelationshipQueries,
-                fromPartyContactMechanism, toPartyContactMechanism, Session.MAX_TIME_LONG);
+                fromPartyContactMechanism, toPartyContactMechanism, Session.MAX_TIME);
     }
     
     public PartyContactMechanismRelationship getPartyContactMechanismRelationship(PartyContactMechanism fromPartyContactMechanism,
@@ -3437,7 +3437,7 @@ public class ContactControl
 
     public List<PartyContactMechanismRelationship> getPartyContactMechanismRelationshipsByFromPartyContactMechanism(PartyContactMechanism fromPartyContactMechanism, EntityPermission entityPermission) {
         return PartyContactMechanismRelationshipFactory.getInstance().getEntitiesFromQuery(entityPermission, getPartyContactMechanismRelationshipsByFromPartyContactMechanismQueries,
-                fromPartyContactMechanism, Session.MAX_TIME_LONG);
+                fromPartyContactMechanism, Session.MAX_TIME);
     }
 
     public List<PartyContactMechanismRelationship> getPartyContactMechanismRelationshipsByFromPartyContactMechanism(PartyContactMechanism fromPartyContactMechanism) {
@@ -3471,7 +3471,7 @@ public class ContactControl
     public List<PartyContactMechanismRelationship> getPartyContactMechanismRelationshipsByToPartyContactMechanism(PartyContactMechanism toPartyContactMechanism,
             EntityPermission entityPermission) {
         return PartyContactMechanismRelationshipFactory.getInstance().getEntitiesFromQuery(entityPermission, getPartyContactMechanismRelationshipsByToPartyContactMechanismQueries,
-                toPartyContactMechanism, Session.MAX_TIME_LONG);
+                toPartyContactMechanism, Session.MAX_TIME);
     }
 
     public List<PartyContactMechanismRelationship> getPartyContactMechanismRelationshipsByToPartyContactMechanism(PartyContactMechanism toPartyContactMechanism) {
@@ -3667,7 +3667,7 @@ public class ContactControl
 
         var postalAddressFormat = PostalAddressFormatFactory.getInstance().create();
         var postalAddressFormatDetail = PostalAddressFormatDetailFactory.getInstance().create(postalAddressFormat,
-                postalAddressFormatName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                postalAddressFormatName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         postalAddressFormat = PostalAddressFormatFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -3866,7 +3866,7 @@ public class ContactControl
             }
             
             postalAddressFormatDetail = PostalAddressFormatDetailFactory.getInstance().create(postalAddressFormatPK, postalAddressFormatName,
-                    isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                    isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             postalAddressFormat.setActiveDetail(postalAddressFormatDetail);
             postalAddressFormat.setLastDetail(postalAddressFormatDetail);
@@ -3915,7 +3915,7 @@ public class ContactControl
     public PostalAddressFormatDescription createPostalAddressFormatDescription(PostalAddressFormat postalAddressFormat,
             Language language, String description, BasePK createdBy) {
         var postalAddressFormatDescription = PostalAddressFormatDescriptionFactory.getInstance().create(session,
-                postalAddressFormat, language, description, session.getStartTime(), Session.MAX_TIME_LONG);
+                postalAddressFormat, language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(postalAddressFormat.getPrimaryKey(), EventTypes.MODIFY, postalAddressFormatDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -4052,7 +4052,7 @@ public class ContactControl
             var description = postalAddressFormatDescriptionValue.getDescription();
             
             postalAddressFormatDescription = PostalAddressFormatDescriptionFactory.getInstance().create(postalAddressFormat, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(postalAddressFormat.getPrimaryKey(), EventTypes.MODIFY, postalAddressFormatDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -4083,7 +4083,7 @@ public class ContactControl
         var postalAddressLine = PostalAddressLineFactory.getInstance().create();
         var postalAddressLineDetail = PostalAddressLineDetailFactory.getInstance().create(session,
                 postalAddressLine, postalAddressFormat, postalAddressLineSortOrder, prefix, alwaysIncludePrefix, suffix,
-                alwaysIncludeSuffix, collapseIfEmpty, session.getStartTime(), Session.MAX_TIME_LONG);
+                alwaysIncludeSuffix, collapseIfEmpty, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         postalAddressLine = PostalAddressLineFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -4222,7 +4222,7 @@ public class ContactControl
             
             postalAddressLineDetail = PostalAddressLineDetailFactory.getInstance().create(postalAddressLinePK,
                     postalAddressFormatPK, postalAddressLineSortOrder, prefix, alwaysIncludePrefix, suffix, alwaysIncludeSuffix,
-                    collapseIfEmpty, session.getStartTime(), Session.MAX_TIME_LONG);
+                    collapseIfEmpty, session.getStartTime(), Session.MAX_TIME);
             
             postalAddressLine.setActiveDetail(postalAddressLineDetail);
             postalAddressLine.setLastDetail(postalAddressLineDetail);
@@ -4260,7 +4260,7 @@ public class ContactControl
 
         var postalAddressLineElement = PostalAddressLineElementFactory.getInstance().create(session,
                 postalAddressLine, postalAddressLineElementSortOrder, postalAddressElementType, prefix, alwaysIncludePrefix, suffix,
-                alwaysIncludeSuffix, session.getStartTime(), Session.MAX_TIME_LONG);
+                alwaysIncludeSuffix, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(postalAddressLine.getLastDetail().getPostalAddressFormatPK(), EventTypes.MODIFY, postalAddressLineElement.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -4374,7 +4374,7 @@ public class ContactControl
             
             postalAddressLineElement = PostalAddressLineElementFactory.getInstance().create(postalAddressLinePK,
                     postalAddressLineElementSortOrder, postalAddressElementTypePK, prefix, alwaysIncludePrefix, suffix, alwaysIncludeSuffix,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(postalAddressLineElement.getPostalAddressLine().getLastDetail().getPostalAddressFormatPK(), EventTypes.MODIFY, postalAddressLineElement.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }

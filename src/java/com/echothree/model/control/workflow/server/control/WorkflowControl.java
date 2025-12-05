@@ -463,7 +463,7 @@ public class WorkflowControl
             SecurityRoleGroup securityRoleGroup, Integer sortOrder, BasePK createdBy) {
         var workflow = WorkflowFactory.getInstance().create();
         var workflowDetail = WorkflowDetailFactory.getInstance().create(workflow, workflowName,
-                selectorType, securityRoleGroup, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                selectorType, securityRoleGroup, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         workflow = WorkflowFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, workflow.getPrimaryKey());
@@ -652,7 +652,7 @@ public class WorkflowControl
             var sortOrder = workflowDetailValue.getSortOrder();
             
             workflowDetail = WorkflowDetailFactory.getInstance().create(workflowPK, workflowName, selectorTypePK, securityRoleGroupPK,
-                    sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                    sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             workflow.setActiveDetail(workflowDetail);
             workflow.setLastDetail(workflowDetail);
@@ -682,7 +682,7 @@ public class WorkflowControl
     
     public WorkflowDescription createWorkflowDescription(Workflow workflow, Language language, String description, BasePK createdBy) {
         var workflowDescription = WorkflowDescriptionFactory.getInstance().create(workflow, language,
-                description, session.getStartTime(), Session.MAX_TIME_LONG);
+                description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(workflow.getPrimaryKey(), EventTypes.MODIFY, workflowDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -708,7 +708,7 @@ public class WorkflowControl
     
     private WorkflowDescription getWorkflowDescription(Workflow workflow, Language language, EntityPermission entityPermission) {
         return WorkflowDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getWorkflowDescriptionQueries,
-                workflow, language, Session.MAX_TIME_LONG);
+                workflow, language, Session.MAX_TIME);
     }
     
     public WorkflowDescription getWorkflowDescription(Workflow workflow, Language language) {
@@ -748,7 +748,7 @@ public class WorkflowControl
     
     private List<WorkflowDescription> getWorkflowDescriptionsByWorkflow(Workflow workflow, EntityPermission entityPermission) {
         return WorkflowDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getWorkflowDescriptionsByWorkflowQueries,
-                workflow, Session.MAX_TIME_LONG);
+                workflow, Session.MAX_TIME);
     }
     
     public List<WorkflowDescription> getWorkflowDescriptionsByWorkflow(Workflow workflow) {
@@ -803,7 +803,7 @@ public class WorkflowControl
             var description = workflowDescriptionValue.getDescription();
             
             workflowDescription = WorkflowDescriptionFactory.getInstance().create(workflow, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(workflow.getPrimaryKey(), EventTypes.MODIFY, workflowDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -844,7 +844,7 @@ public class WorkflowControl
 
         var workflowStep = WorkflowStepFactory.getInstance().create();
         var workflowStepDetail = WorkflowStepDetailFactory.getInstance().create(workflowStep, workflow,
-                workflowStepName, workflowStepType, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                workflowStepName, workflowStepType, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         workflowStep = WorkflowStepFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, workflowStep.getPrimaryKey());
@@ -1093,7 +1093,7 @@ public class WorkflowControl
             }
             
             workflowStepDetail = WorkflowStepDetailFactory.getInstance().create(workflowStepPK, workflowPK, workflowStepName, workflowStepTypePK,
-                    isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                    isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             workflowStep.setActiveDetail(workflowStepDetail);
             workflowStep.setLastDetail(workflowStepDetail);
@@ -1162,7 +1162,7 @@ public class WorkflowControl
     public WorkflowStepDescription createWorkflowStepDescription(WorkflowStep workflowStep, Language language, String description,
             BasePK createdBy) {
         var workflowStepDescription = WorkflowStepDescriptionFactory.getInstance().create(workflowStep,
-                language, description, session.getStartTime(), Session.MAX_TIME_LONG);
+                language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(workflowStep.getLastDetail().getWorkflowPK(), EventTypes.MODIFY, workflowStepDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1300,7 +1300,7 @@ public class WorkflowControl
             var description = workflowStepDescriptionValue.getDescription();
             
             workflowStepDescription = WorkflowStepDescriptionFactory.getInstance().create(workflowStep, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(workflowStep.getLastDetail().getWorkflowPK(), EventTypes.MODIFY, workflowStepDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -1327,7 +1327,7 @@ public class WorkflowControl
     
     public WorkflowEntityType createWorkflowEntityType(Workflow workflow, EntityType entityType, BasePK createdBy) {
         var workflowEntityType = WorkflowEntityTypeFactory.getInstance().create(workflow, entityType,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(workflow.getPrimaryKey(), EventTypes.MODIFY, workflowEntityType.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1377,7 +1377,7 @@ public class WorkflowControl
 
     private WorkflowEntityType getWorkflowEntityType(Workflow workflow, EntityType entityType, EntityPermission entityPermission) {
         return WorkflowEntityTypeFactory.getInstance().getEntityFromQuery(entityPermission, getWorkflowEntityTypeQueries,
-                workflow, entityType, Session.MAX_TIME_LONG);
+                workflow, entityType, Session.MAX_TIME);
     }
 
     public WorkflowEntityType getWorkflowEntityType(Workflow workflow, EntityType entityType) {
@@ -1410,7 +1410,7 @@ public class WorkflowControl
     
     private List<WorkflowEntityType> getWorkflowEntityTypesByWorkflow(Workflow workflow, EntityPermission entityPermission) {
         return WorkflowEntityTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getWorkflowEntityTypesByWorkflowQueries,
-                workflow, Session.MAX_TIME_LONG);
+                workflow, Session.MAX_TIME);
     }
     
     public List<WorkflowEntityType> getWorkflowEntityTypesByWorkflow(Workflow workflow) {
@@ -1443,7 +1443,7 @@ public class WorkflowControl
 
     private List<WorkflowEntityType> getWorkflowEntityTypesByEntityType(EntityType entityType, EntityPermission entityPermission) {
         return WorkflowEntityTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getWorkflowEntityTypesByEntityTypeQueries,
-                entityType, Session.MAX_TIME_LONG);
+                entityType, Session.MAX_TIME);
     }
 
     public List<WorkflowEntityType> getWorkflowEntityTypesByEntityType(EntityType entityType) {
@@ -1516,7 +1516,7 @@ public class WorkflowControl
 
         var workflowEntrance = WorkflowEntranceFactory.getInstance().create();
         var workflowEntranceDetail = WorkflowEntranceDetailFactory.getInstance().create(workflowEntrance,
-                workflow, workflowEntranceName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                workflow, workflowEntranceName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         workflowEntrance = WorkflowEntranceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -1800,7 +1800,7 @@ public class WorkflowControl
             }
             
             workflowEntranceDetail = WorkflowEntranceDetailFactory.getInstance().create(workflowEntrancePK, workflowPK, workflowEntranceName,
-                    isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                    isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             workflowEntrance.setActiveDetail(workflowEntranceDetail);
             workflowEntrance.setLastDetail(workflowEntranceDetail);
@@ -1867,7 +1867,7 @@ public class WorkflowControl
     public WorkflowEntranceDescription createWorkflowEntranceDescription(WorkflowEntrance workflowEntrance, Language language,
             String description, BasePK createdBy) {
         var workflowEntranceDescription = WorkflowEntranceDescriptionFactory.getInstance().create(session,
-                workflowEntrance, language, description, session.getStartTime(), Session.MAX_TIME_LONG);
+                workflowEntrance, language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(workflowEntrance.getLastDetail().getWorkflowPK(), EventTypes.MODIFY, workflowEntranceDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -2005,7 +2005,7 @@ public class WorkflowControl
             var description = workflowEntranceDescriptionValue.getDescription();
             
             workflowEntranceDescription = WorkflowEntranceDescriptionFactory.getInstance().create(workflowEntrance, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(workflowEntrance.getLastDetail().getWorkflowPK(), EventTypes.MODIFY, workflowEntranceDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -2033,7 +2033,7 @@ public class WorkflowControl
     public WorkflowEntranceSelector createWorkflowEntranceSelector(WorkflowEntrance workflowEntrance, Selector selector,
             BasePK createdBy) {
         var workflowEntranceSelector = WorkflowEntranceSelectorFactory.getInstance().create(workflowEntrance,
-                selector, session.getStartTime(), Session.MAX_TIME_LONG);
+                selector, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(workflowEntrance.getLastDetail().getWorkflowPK(), EventTypes.MODIFY, workflowEntranceSelector.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -2045,7 +2045,7 @@ public class WorkflowControl
                 "SELECT COUNT(*) " +
                 "FROM workflowentranceselectors " +
                 "WHERE wkflensl_wkflen_workflowentranceid = ? AND wkflensl_thrutime = ?",
-                workflowEntrance, Session.MAX_TIME_LONG);
+                workflowEntrance, Session.MAX_TIME);
     }
 
     public long countWorkflowEntranceSelectorsBySelector(Selector selector) {
@@ -2053,7 +2053,7 @@ public class WorkflowControl
                 "SELECT COUNT(*) " +
                 "FROM workflowentranceselectors " +
                 "WHERE wkflensl_sl_selectorid = ? AND wkflensl_thrutime = ?",
-                selector, Session.MAX_TIME_LONG);
+                selector, Session.MAX_TIME);
     }
 
     private List<WorkflowEntranceSelector> getWorkflowEntranceSelectorsBySelectorForUpdate(Selector selector, EntityPermission entityPermission) {
@@ -2274,7 +2274,7 @@ public class WorkflowControl
     public WorkflowEntrancePartyType createWorkflowEntrancePartyType(WorkflowEntrance workflowEntrance, PartyType partyType,
             BasePK createdBy) {
         var workflowEntrancePartyType = WorkflowEntrancePartyTypeFactory.getInstance().create(session,
-                workflowEntrance, partyType, session.getStartTime(), Session.MAX_TIME_LONG);
+                workflowEntrance, partyType, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(workflowEntrance.getLastDetail().getWorkflowPK(), EventTypes.MODIFY, workflowEntrancePartyType.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -2286,7 +2286,7 @@ public class WorkflowControl
                 "SELECT COUNT(*) " +
                 "FROM workflowentrancepartytypes " +
                 "WHERE wkflenptyp_wkflen_workflowentranceid = ? AND wkflenptyp_thrutime = ?",
-                workflowEntrance, Session.MAX_TIME_LONG);
+                workflowEntrance, Session.MAX_TIME);
     }
 
     public long countWorkflowEntrancePartyTypesByPartyType(PartyType partyType) {
@@ -2294,7 +2294,7 @@ public class WorkflowControl
                 "SELECT COUNT(*) " +
                 "FROM workflowentrancepartytypes " +
                 "WHERE wkflenptyp_ptyp_partytypeid = ? AND wkflenptyp_thrutime = ?",
-                partyType, Session.MAX_TIME_LONG);
+                partyType, Session.MAX_TIME);
     }
 
     private List<WorkflowEntrancePartyType> getWorkflowEntrancePartyTypesByWorkflowEntrance(WorkflowEntrance workflowEntrance,
@@ -2423,7 +2423,7 @@ public class WorkflowControl
     public WorkflowEntranceSecurityRole createWorkflowEntranceSecurityRole(WorkflowEntrancePartyType workflowEntrancePartyType, SecurityRole securityRole,
             BasePK createdBy) {
         var workflowEntranceSecurityRole = WorkflowEntranceSecurityRoleFactory.getInstance().create(session,
-                workflowEntrancePartyType, securityRole, session.getStartTime(), Session.MAX_TIME_LONG);
+                workflowEntrancePartyType, securityRole, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(workflowEntrancePartyType.getWorkflowEntrance().getLastDetail().getWorkflowPK(), EventTypes.MODIFY, workflowEntranceSecurityRole.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -2571,7 +2571,7 @@ public class WorkflowControl
     public WorkflowEntranceStep createWorkflowEntranceStep(WorkflowEntrance workflowEntrance, WorkflowStep workflowStep,
             BasePK createdBy) {
         var workflowEntranceStep = WorkflowEntranceStepFactory.getInstance().create(workflowEntrance,
-                workflowStep, session.getStartTime(), Session.MAX_TIME_LONG);
+                workflowStep, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(workflowEntrance.getLastDetail().getWorkflowPK(), EventTypes.MODIFY, workflowEntranceStep.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -2614,7 +2614,7 @@ public class WorkflowControl
     
     private List<WorkflowEntranceStep> getWorkflowEntranceStepsByWorkflowStep(WorkflowStep workflowStep, EntityPermission entityPermission) {
         return WorkflowEntranceStepFactory.getInstance().getEntitiesFromQuery(entityPermission, getWorkflowEntranceStepsByWorkflowStepQueries,
-                workflowStep, Session.MAX_TIME_LONG);
+                workflowStep, Session.MAX_TIME);
     }
     
     public List<WorkflowEntranceStep> getWorkflowEntranceStepsByWorkflowStep(WorkflowStep workflowStep) {
@@ -2648,7 +2648,7 @@ public class WorkflowControl
     
     private List<WorkflowEntranceStep> getWorkflowEntranceStepsByWorkflowEntrance(WorkflowEntrance workflowEntrance, EntityPermission entityPermission) {
         return WorkflowEntranceStepFactory.getInstance().getEntitiesFromQuery(entityPermission, getWorkflowEntranceStepsByWorkflowEntranceQueries,
-                workflowEntrance, Session.MAX_TIME_LONG);
+                workflowEntrance, Session.MAX_TIME);
     }
     
     public List<WorkflowEntranceStep> getWorkflowEntranceStepsByWorkflowEntrance(WorkflowEntrance workflowEntrance) {
@@ -2756,7 +2756,7 @@ public class WorkflowControl
 
         var workflowDestination = WorkflowDestinationFactory.getInstance().create();
         var workflowDestinationDetail = WorkflowDestinationDetailFactory.getInstance().create(workflowDestination, workflowStep,
-                workflowDestinationName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                workflowDestinationName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         workflowDestination = WorkflowDestinationFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, workflowDestination.getPrimaryKey());
@@ -3002,7 +3002,7 @@ public class WorkflowControl
             }
             
             workflowDestinationDetail = WorkflowDestinationDetailFactory.getInstance().create(workflowDestinationPK, workflowStepPK, workflowDestinationName,
-                    isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                    isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             workflowDestination.setActiveDetail(workflowDestinationDetail);
             workflowDestination.setLastDetail(workflowDestinationDetail);
@@ -3068,7 +3068,7 @@ public class WorkflowControl
     
     public WorkflowDestinationDescription createWorkflowDestinationDescription(WorkflowDestination workflowDestination, Language language, String description, BasePK createdBy) {
         var workflowDestinationDescription = WorkflowDestinationDescriptionFactory.getInstance().create(workflowDestination, language, description,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(workflowDestination.getLastDetail().getWorkflowStep().getLastDetail().getWorkflowPK(), EventTypes.MODIFY, workflowDestinationDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -3206,7 +3206,7 @@ public class WorkflowControl
             var description = workflowDestinationDescriptionValue.getDescription();
             
             workflowDestinationDescription = WorkflowDestinationDescriptionFactory.getInstance().create(workflowDestination, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(workflowDestination.getLastDetail().getWorkflowStep().getLastDetail().getWorkflowPK(), EventTypes.MODIFY, workflowDestinationDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -3234,7 +3234,7 @@ public class WorkflowControl
     public WorkflowDestinationSelector createWorkflowDestinationSelector(WorkflowDestination workflowDestination, Selector selector,
             BasePK createdBy) {
         var workflowDestinationSelector = WorkflowDestinationSelectorFactory.getInstance().create(session,
-                workflowDestination, selector, session.getStartTime(), Session.MAX_TIME_LONG);
+                workflowDestination, selector, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(workflowDestination.getLastDetail().getWorkflowStep().getLastDetail().getWorkflowPK(), EventTypes.MODIFY, workflowDestinationSelector.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -3246,7 +3246,7 @@ public class WorkflowControl
                 "SELECT COUNT(*) " +
                 "FROM workflowdestinationselectors " +
                 "WHERE wkfldnsl_wkfldn_workflowdestinationid = ? AND wkfldnsl_thrutime = ?",
-                workflowDestination, Session.MAX_TIME_LONG);
+                workflowDestination, Session.MAX_TIME);
     }
 
     public long countWorkflowDestinationSelectorsBySelector(Selector selector) {
@@ -3254,7 +3254,7 @@ public class WorkflowControl
                 "SELECT COUNT(*) " +
                 "FROM workflowdestinationselectors " +
                 "WHERE wkfldnsl_sl_selectorid = ? AND wkfldnsl_thrutime = ?",
-                selector, Session.MAX_TIME_LONG);
+                selector, Session.MAX_TIME);
     }
 
     private List<WorkflowDestinationSelector> getWorkflowDestinationSelectorsBySelector(Selector selector, EntityPermission entityPermission) {
@@ -3433,7 +3433,7 @@ public class WorkflowControl
     public WorkflowDestinationPartyType createWorkflowDestinationPartyType(WorkflowDestination workflowDestination, PartyType partyType,
             BasePK createdBy) {
         var workflowDestinationPartyType = WorkflowDestinationPartyTypeFactory.getInstance().create(session,
-                workflowDestination, partyType, session.getStartTime(), Session.MAX_TIME_LONG);
+                workflowDestination, partyType, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(workflowDestination.getLastDetail().getWorkflowStep().getLastDetail().getWorkflowPK(), EventTypes.MODIFY, workflowDestinationPartyType.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -3445,7 +3445,7 @@ public class WorkflowControl
                 "SELECT COUNT(*) " +
                 "FROM workflowdestinationpartytypes " +
                 "WHERE wkfldnptyp_wkfldn_workflowdestinationid = ? AND wkfldnptyp_thrutime = ?",
-                workflowDestination, Session.MAX_TIME_LONG);
+                workflowDestination, Session.MAX_TIME);
     }
 
     public long countWorkflowDestinationPartyTypesByPartyType(PartyType partyType) {
@@ -3453,7 +3453,7 @@ public class WorkflowControl
                 "SELECT COUNT(*) " +
                 "FROM workflowdestinationpartytypes " +
                 "WHERE wkfldnptyp_ptyp_partytypeid = ? AND wkfldnptyp_thrutime = ?",
-                partyType, Session.MAX_TIME_LONG);
+                partyType, Session.MAX_TIME);
     }
 
     private List<WorkflowDestinationPartyType> getWorkflowDestinationPartyTypesByWorkflowDestination(WorkflowDestination workflowDestination,
@@ -3590,7 +3590,7 @@ public class WorkflowControl
     public WorkflowDestinationSecurityRole createWorkflowDestinationSecurityRole(WorkflowDestinationPartyType workflowDestinationPartyType, SecurityRole securityRole,
             BasePK createdBy) {
         var workflowDestinationSecurityRole = WorkflowDestinationSecurityRoleFactory.getInstance().create(session,
-                workflowDestinationPartyType, securityRole, session.getStartTime(), Session.MAX_TIME_LONG);
+                workflowDestinationPartyType, securityRole, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(workflowDestinationPartyType.getWorkflowDestination().getLastDetail().getWorkflowStep().getLastDetail().getWorkflowPK(), EventTypes.MODIFY, workflowDestinationSecurityRole.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -3738,7 +3738,7 @@ public class WorkflowControl
     public WorkflowDestinationStep createWorkflowDestinationStep(WorkflowDestination workflowDestination, WorkflowStep workflowStep,
             BasePK createdBy) {
         var workflowDestinationStep = WorkflowDestinationStepFactory.getInstance().create(session,
-                workflowDestination, workflowStep, session.getStartTime(), Session.MAX_TIME_LONG);
+                workflowDestination, workflowStep, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(workflowDestination.getLastDetail().getWorkflowStep().getLastDetail().getWorkflowPK(), EventTypes.MODIFY, workflowDestinationStep.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -3782,7 +3782,7 @@ public class WorkflowControl
     
     private List<WorkflowDestinationStep> getWorkflowDestinationStepsByWorkflowStep(WorkflowStep workflowStep, EntityPermission entityPermission) {
         return WorkflowDestinationStepFactory.getInstance().getEntitiesFromQuery(entityPermission, getWorkflowDestinationStepsByWorkflowStepQueries,
-                workflowStep, Session.MAX_TIME_LONG);
+                workflowStep, Session.MAX_TIME);
     }
     
     public List<WorkflowDestinationStep> getWorkflowDestinationStepsByWorkflowStep(WorkflowStep workflowStep) {
@@ -3816,7 +3816,7 @@ public class WorkflowControl
     
     private List<WorkflowDestinationStep> getWorkflowDestinationStepsByWorkflowDestination(WorkflowDestination workflowDestination, EntityPermission entityPermission) {
         return WorkflowDestinationStepFactory.getInstance().getEntitiesFromQuery(entityPermission, getWorkflowDestinationStepsByWorkflowDestinationQueries,
-                workflowDestination, Session.MAX_TIME_LONG);
+                workflowDestination, Session.MAX_TIME);
     }
     
     public List<WorkflowDestinationStep> getWorkflowDestinationStepsByWorkflowDestination(WorkflowDestination workflowDestination) {
@@ -3911,7 +3911,7 @@ public class WorkflowControl
     public WorkflowSelectorKind createWorkflowSelectorKind(Workflow workflow, SelectorKind selectorKind,
             BasePK createdBy) {
         var workflowSelectorKind = WorkflowSelectorKindFactory.getInstance().create(workflow,
-                selectorKind, session.getStartTime(), Session.MAX_TIME_LONG);
+                selectorKind, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(workflow.getLastDetail().getWorkflowPK(), EventTypes.MODIFY, workflowSelectorKind.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -4103,7 +4103,7 @@ public class WorkflowControl
     public WorkflowEntityStatus createWorkflowEntityStatus(EntityInstance entityInstance, WorkflowStep workflowStep,
             WorkEffortScope workEffortScope, BasePK createdBy) {
         var workflowEntityStatus = WorkflowEntityStatusFactory.getInstance().create(entityInstance, workflowStep, workEffortScope, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
         
         sendEvent(entityInstance, EventTypes.MODIFY, workflowEntityStatus.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -4375,7 +4375,7 @@ public class WorkflowControl
 
     private List<WorkflowEntityStatus> getWorkflowEntityStatusesByWorkflowStep(WorkflowStep workflowStep, EntityPermission entityPermission) {
         return WorkflowEntityStatusFactory.getInstance().getEntitiesFromQuery(entityPermission, getWorkflowEntityStatusesByWorkflowStepQueries,
-                workflowStep, Session.MAX_TIME_LONG);
+                workflowStep, Session.MAX_TIME);
     }
 
     public List<WorkflowEntityStatus> getWorkflowEntityStatusesByWorkflowStep(WorkflowStep workflowStep) {
@@ -4414,7 +4414,7 @@ public class WorkflowControl
 
     private List<WorkflowEntityStatus> getWorkflowEntityStatusesByWorkflowAndEntityType(Workflow workflow, EntityType entityType, EntityPermission entityPermission) {
         return WorkflowEntityStatusFactory.getInstance().getEntitiesFromQuery(entityPermission, getWorkflowEntityStatusesByWorkflowAndEntityTypeQueries,
-                workflow, entityType, Session.MAX_TIME_LONG);
+                workflow, entityType, Session.MAX_TIME);
     }
 
     public List<WorkflowEntityStatus> getWorkflowEntityStatusesByWorkflowAndEntityType(Workflow workflow, EntityType entityType) {

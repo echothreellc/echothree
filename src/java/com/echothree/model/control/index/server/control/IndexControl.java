@@ -126,7 +126,7 @@ public class IndexControl
 
         var indexType = IndexTypeFactory.getInstance().create();
         var indexTypeDetail = IndexTypeDetailFactory.getInstance().create(indexType, indexTypeName, entityType, isDefault, sortOrder,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         indexType = IndexTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, indexType.getPrimaryKey());
@@ -384,7 +384,7 @@ public class IndexControl
             }
 
             indexTypeDetail = IndexTypeDetailFactory.getInstance().create(indexTypePK, indexTypeName, entityTypePK, isDefault, sortOrder,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             indexType.setActiveDetail(indexTypeDetail);
             indexType.setLastDetail(indexTypeDetail);
@@ -453,7 +453,7 @@ public class IndexControl
 
     public IndexTypeDescription createIndexTypeDescription(IndexType indexType, Language language, String description, BasePK createdBy) {
         var indexTypeDescription = IndexTypeDescriptionFactory.getInstance().create(indexType, language, description,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(indexType.getPrimaryKey(), EventTypes.MODIFY, indexTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -574,7 +574,7 @@ public class IndexControl
             var description = indexTypeDescriptionValue.getDescription();
 
             indexTypeDescription = IndexTypeDescriptionFactory.getInstance().create(indexType, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(indexType.getPrimaryKey(), EventTypes.MODIFY, indexTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -614,7 +614,7 @@ public class IndexControl
 
         var indexField = IndexFieldFactory.getInstance().create();
         var indexFieldDetail = IndexFieldDetailFactory.getInstance().create(session, indexField, indexType, indexFieldName, isDefault, sortOrder,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         indexField = IndexFieldFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -817,7 +817,7 @@ public class IndexControl
             }
 
             indexFieldDetail = IndexFieldDetailFactory.getInstance().create(indexFieldPK, indexTypePK, indexFieldName, isDefault, sortOrder,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             indexField.setActiveDetail(indexFieldDetail);
             indexField.setLastDetail(indexFieldDetail);
@@ -877,7 +877,7 @@ public class IndexControl
     public IndexFieldDescription createIndexFieldDescription(IndexField indexField, Language language, String description,
             BasePK createdBy) {
         var indexFieldDescription = IndexFieldDescriptionFactory.getInstance().create(indexField,
-                language, description, session.getStartTime(), Session.MAX_TIME_LONG);
+                language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(indexField.getPrimaryKey(), EventTypes.MODIFY, indexFieldDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -998,7 +998,7 @@ public class IndexControl
             var description = indexFieldDescriptionValue.getDescription();
 
             indexFieldDescription = IndexFieldDescriptionFactory.getInstance().create(indexField, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(indexField.getPrimaryKey(), EventTypes.MODIFY, indexFieldDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -1038,7 +1038,7 @@ public class IndexControl
 
         var index = IndexFactory.getInstance().create();
         var indexDetail = IndexDetailFactory.getInstance().create(index, indexName, indexType, language, directory, isDefault, sortOrder,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         index = IndexFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, index.getPrimaryKey());
@@ -1369,7 +1369,7 @@ public class IndexControl
             }
 
             indexDetail = IndexDetailFactory.getInstance().create(indexPK, indexName, indexTypePK, languagePK, directory, isDefault, sortOrder,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             index.setActiveDetail(indexDetail);
             index.setLastDetail(indexDetail);
@@ -1439,7 +1439,7 @@ public class IndexControl
 
     public IndexDescription createIndexDescription(Index index, Language language, String description, BasePK createdBy) {
         var indexDescription = IndexDescriptionFactory.getInstance().create(index, language, description,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(index.getPrimaryKey(), EventTypes.MODIFY, indexDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -1560,7 +1560,7 @@ public class IndexControl
             var description = indexDescriptionValue.getDescription();
 
             indexDescription = IndexDescriptionFactory.getInstance().create(index, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(index.getPrimaryKey(), EventTypes.MODIFY, indexDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }

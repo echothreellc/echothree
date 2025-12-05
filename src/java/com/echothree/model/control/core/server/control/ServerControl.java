@@ -93,7 +93,7 @@ public class ServerControl
 
         var protocol = ProtocolFactory.getInstance().create();
         var protocolDetail = ProtocolDetailFactory.getInstance().create(protocol, protocolName, isDefault, sortOrder, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
 
         // Convert to R/W
         protocol = ProtocolFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -292,7 +292,7 @@ public class ServerControl
             }
 
             protocolDetail = ProtocolDetailFactory.getInstance().create(protocolPK, protocolName, isDefault, sortOrder, session.getStartTime(),
-                    Session.MAX_TIME_LONG);
+                    Session.MAX_TIME);
 
             protocol.setActiveDetail(protocolDetail);
             protocol.setLastDetail(protocolDetail);
@@ -356,7 +356,7 @@ public class ServerControl
 
     public ProtocolDescription createProtocolDescription(Protocol protocol, Language language, String description, BasePK createdBy) {
         var protocolDescription = ProtocolDescriptionFactory.getInstance().create(protocol, language, description,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(protocol.getPrimaryKey(), EventTypes.MODIFY, protocolDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -477,7 +477,7 @@ public class ServerControl
             var description = protocolDescriptionValue.getDescription();
 
             protocolDescription = ProtocolDescriptionFactory.getInstance().create(protocol, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(protocol.getPrimaryKey(), EventTypes.MODIFY, protocolDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -517,7 +517,7 @@ public class ServerControl
 
         var service = ServiceFactory.getInstance().create();
         var serviceDetail = ServiceDetailFactory.getInstance().create(service, serviceName, port, protocol, isDefault, sortOrder,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         service = ServiceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -751,7 +751,7 @@ public class ServerControl
             }
 
             serviceDetail = ServiceDetailFactory.getInstance().create(servicePK, serviceName, port, protocolPK, isDefault, sortOrder, session.getStartTime(),
-                    Session.MAX_TIME_LONG);
+                    Session.MAX_TIME);
 
             service.setActiveDetail(serviceDetail);
             service.setLastDetail(serviceDetail);
@@ -819,7 +819,7 @@ public class ServerControl
 
     public ServiceDescription createServiceDescription(Service service, Language language, String description, BasePK createdBy) {
         var serviceDescription = ServiceDescriptionFactory.getInstance().create(service, language, description,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(service.getPrimaryKey(), EventTypes.MODIFY, serviceDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -940,7 +940,7 @@ public class ServerControl
             var description = serviceDescriptionValue.getDescription();
 
             serviceDescription = ServiceDescriptionFactory.getInstance().create(service, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(service.getPrimaryKey(), EventTypes.MODIFY, serviceDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -980,7 +980,7 @@ public class ServerControl
 
         var server = ServerFactory.getInstance().create();
         var serverDetail = ServerDetailFactory.getInstance().create(server, serverName, isDefault, sortOrder, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
 
         // Convert to R/W
         server = ServerFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, server.getPrimaryKey());
@@ -1178,7 +1178,7 @@ public class ServerControl
             }
 
             serverDetail = ServerDetailFactory.getInstance().create(serverPK, serverName, isDefault, sortOrder, session.getStartTime(),
-                    Session.MAX_TIME_LONG);
+                    Session.MAX_TIME);
 
             server.setActiveDetail(serverDetail);
             server.setLastDetail(serverDetail);
@@ -1242,7 +1242,7 @@ public class ServerControl
 
     public ServerDescription createServerDescription(Server server, Language language, String description, BasePK createdBy) {
         var serverDescription = ServerDescriptionFactory.getInstance().create(server, language, description,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(server.getPrimaryKey(), EventTypes.MODIFY, serverDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -1363,7 +1363,7 @@ public class ServerControl
             var description = serverDescriptionValue.getDescription();
 
             serverDescription = ServerDescriptionFactory.getInstance().create(server, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(server.getPrimaryKey(), EventTypes.MODIFY, serverDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -1389,7 +1389,7 @@ public class ServerControl
     // --------------------------------------------------------------------------------
 
     public ServerService createServerService(Server server, Service service, BasePK createdBy) {
-        var serverService = ServerServiceFactory.getInstance().create(server, service, session.getStartTime(), Session.MAX_TIME_LONG);
+        var serverService = ServerServiceFactory.getInstance().create(server, service, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(server.getPrimaryKey(), EventTypes.MODIFY, serverService.getPrimaryKey(), EventTypes.CREATE, createdBy);
 

@@ -125,7 +125,7 @@ public class PeriodControl
 
         var periodKind = PeriodKindFactory.getInstance().create();
         var periodKindDetail = PeriodKindDetailFactory.getInstance().create(periodKind, periodKindName, workflowEntrance, isDefault, sortOrder, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
         
         // Convert to R/W
         periodKind = PeriodKindFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -322,7 +322,7 @@ public class PeriodControl
         }
         
         periodKindDetail = PeriodKindDetailFactory.getInstance().create(periodKindPK, periodKindName, workflowEntrancePK, isDefault, sortOrder, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
         
         periodKind.setActiveDetail(periodKindDetail);
         periodKind.setLastDetail(periodKindDetail);
@@ -371,7 +371,7 @@ public class PeriodControl
     public PeriodKindDescription createPeriodKindDescription(PeriodKind periodKind, Language language, String description,
             BasePK createdBy) {
         var periodKindDescription = PeriodKindDescriptionFactory.getInstance().create(periodKind,
-                language, description, session.getStartTime(), Session.MAX_TIME_LONG);
+                language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(periodKind.getPrimaryKey(), EventTypes.MODIFY, periodKindDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -509,7 +509,7 @@ public class PeriodControl
             var description = periodKindDescriptionValue.getDescription();
             
             periodKindDescription = PeriodKindDescriptionFactory.getInstance().create(periodKind, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(periodKind.getPrimaryKey(), EventTypes.MODIFY, periodKindDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -550,7 +550,7 @@ public class PeriodControl
 
         var periodType = PeriodTypeFactory.getInstance().create();
         var periodTypeDetail = PeriodTypeDetailFactory.getInstance().create(periodType, periodKind, periodTypeName, parentPeriodType, workflowEntrance, isDefault, sortOrder,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         periodType = PeriodTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -798,7 +798,7 @@ public class PeriodControl
             }
             
             periodTypeDetail = PeriodTypeDetailFactory.getInstance().create(periodTypePK, periodKindPK, periodTypeName, parentPeriodTypePK, workflowEntrancePK, isDefault, sortOrder,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             periodType.setActiveDetail(periodTypeDetail);
             periodType.setLastDetail(periodTypeDetail);
@@ -856,7 +856,7 @@ public class PeriodControl
     public PeriodTypeDescription createPeriodTypeDescription(PeriodType periodType, Language language, String description,
             BasePK createdBy) {
         var periodTypeDescription = PeriodTypeDescriptionFactory.getInstance().create(periodType,
-                language, description, session.getStartTime(), Session.MAX_TIME_LONG);
+                language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(periodType.getPrimaryKey(), EventTypes.MODIFY, periodTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -994,7 +994,7 @@ public class PeriodControl
             var description = periodTypeDescriptionValue.getDescription();
             
             periodTypeDescription = PeriodTypeDescriptionFactory.getInstance().create(periodType, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(periodType.getPrimaryKey(), EventTypes.MODIFY, periodTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -1021,7 +1021,7 @@ public class PeriodControl
     public Period createPeriod(PeriodKind periodKind, String periodName, Period parentPeriod, PeriodType periodType, Long startTime, Long endTime, BasePK createdBy) {
         var period = PeriodFactory.getInstance().create();
         var periodDetail = PeriodDetailFactory.getInstance().create(period, periodKind, periodName, parentPeriod, periodType, startTime,
-                endTime, session.getStartTime(), Session.MAX_TIME_LONG);
+                endTime, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         period = PeriodFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -1267,7 +1267,7 @@ public class PeriodControl
             var endTime = periodDetailValue.getEndTime();
             
             periodDetail = PeriodDetailFactory.getInstance().create(periodPK, periodKindPK, periodName, parentPeriodPK, periodTypePK, startTime,
-                    endTime, session.getStartTime(), Session.MAX_TIME_LONG);
+                    endTime, session.getStartTime(), Session.MAX_TIME);
             
             period.setActiveDetail(periodDetail);
             period.setLastDetail(periodDetail);
@@ -1313,7 +1313,7 @@ public class PeriodControl
     public PeriodDescription createPeriodDescription(Period period, Language language, String description,
             BasePK createdBy) {
         var periodDescription = PeriodDescriptionFactory.getInstance().create(period,
-                language, description, session.getStartTime(), Session.MAX_TIME_LONG);
+                language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(period.getPrimaryKey(), EventTypes.MODIFY, periodDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1451,7 +1451,7 @@ public class PeriodControl
             var description = periodDescriptionValue.getDescription();
             
             periodDescription = PeriodDescriptionFactory.getInstance().create(period, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(period.getPrimaryKey(), EventTypes.MODIFY, periodDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }

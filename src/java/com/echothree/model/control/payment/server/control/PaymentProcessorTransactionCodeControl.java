@@ -49,7 +49,7 @@ public class PaymentProcessorTransactionCodeControl
     public PaymentProcessorTransactionCode createPaymentProcessorTransactionCode(final PaymentProcessorTransaction paymentProcessorTransaction,
             final PaymentProcessorTypeCode paymentProcessorTypeCode, final BasePK createdBy) {
         var paymentProcessorTransactionCode = PaymentProcessorTransactionCodeFactory.getInstance().create(paymentProcessorTransaction,
-                paymentProcessorTypeCode, session.getStartTime(), Session.MAX_TIME_LONG);
+                paymentProcessorTypeCode, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(paymentProcessorTransaction.getPrimaryKey(), EventTypes.MODIFY, paymentProcessorTransactionCode.getPrimaryKey(), EventTypes.CREATE, createdBy);
 

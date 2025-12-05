@@ -53,7 +53,7 @@ public class OrderPaymentPreferenceControl
             PartyPaymentMethod partyPaymentMethod, Boolean wasPresent, Long maximumAmount, Integer sortOrder, BasePK createdBy) {
         var orderPaymentPreference = OrderPaymentPreferenceFactory.getInstance().create();
         var orderPaymentPreferenceDetail = OrderPaymentPreferenceDetailFactory.getInstance().create(orderPaymentPreference, order,
-                orderPaymentPreferenceSequence, paymentMethod, partyPaymentMethod, wasPresent, maximumAmount, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                orderPaymentPreferenceSequence, paymentMethod, partyPaymentMethod, wasPresent, maximumAmount, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         orderPaymentPreference = OrderPaymentPreferenceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -298,7 +298,7 @@ public class OrderPaymentPreferenceControl
 
             orderPaymentPreferenceDetail = OrderPaymentPreferenceDetailFactory.getInstance().create(orderPaymentPreferencePK, orderPK,
                     orderPaymentPreferenceSequence, paymentMethodPK, partyPaymentMethodPK, wasPresent, maximumAmount, sortOrder, session.getStartTime(),
-                    Session.MAX_TIME_LONG);
+                    Session.MAX_TIME);
 
             orderPaymentPreference.setActiveDetail(orderPaymentPreferenceDetail);
             orderPaymentPreference.setLastDetail(orderPaymentPreferenceDetail);

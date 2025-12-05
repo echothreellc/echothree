@@ -68,7 +68,7 @@ public class ShippingControl
         var shippingMethod = ShippingMethodFactory.getInstance().create();
         var shippingMethodDetail = ShippingMethodDetailFactory.getInstance().create(session,
                 shippingMethod, shippingMethodName, geoCodeSelector, itemSelector, sortOrder, session.getStartTime(),
-                Session.MAX_TIME_LONG);
+                Session.MAX_TIME);
         
         // Convert to R/W
         shippingMethod = ShippingMethodFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -284,7 +284,7 @@ public class ShippingControl
             var sortOrder = shippingMethodDetailValue.getSortOrder();
             
             shippingMethodDetail = ShippingMethodDetailFactory.getInstance().create(shippingMethodPK, shippingMethodName,
-                    geoCodeSelectorPK, itemSelectorPK, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                    geoCodeSelectorPK, itemSelectorPK, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             shippingMethod.setActiveDetail(shippingMethodDetail);
             shippingMethod.setLastDetail(shippingMethodDetail);
@@ -321,7 +321,7 @@ public class ShippingControl
     public ShippingMethodDescription createShippingMethodDescription(ShippingMethod shippingMethod, Language language, String description,
             BasePK createdBy) {
         var shippingMethodDescription = ShippingMethodDescriptionFactory.getInstance().create(shippingMethod,
-                language, description, session.getStartTime(), Session.MAX_TIME_LONG);
+                language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(shippingMethod.getPrimaryKey(), EventTypes.MODIFY, shippingMethodDescription.getPrimaryKey(),
                 EventTypes.CREATE, createdBy);
@@ -460,7 +460,7 @@ public class ShippingControl
             var description = shippingMethodDescriptionValue.getDescription();
             
             shippingMethodDescription = ShippingMethodDescriptionFactory.getInstance().create(shippingMethod, language,
-                    description, session.getStartTime(), Session.MAX_TIME_LONG);
+                    description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(shippingMethod.getPrimaryKey(), EventTypes.MODIFY, shippingMethodDescription.getPrimaryKey(),
                     EventTypes.MODIFY, updatedBy);
@@ -489,7 +489,7 @@ public class ShippingControl
     public ShippingMethodCarrierService createShippingMethodCarrierService(ShippingMethod shippingMethod, CarrierService carrierService,
             BasePK createdBy) {
         var shippingMethodCarrierService = ShippingMethodCarrierServiceFactory.getInstance().create(session,
-                shippingMethod, carrierService, session.getStartTime(), Session.MAX_TIME_LONG);
+                shippingMethod, carrierService, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(shippingMethod.getPrimaryKey(), EventTypes.MODIFY, shippingMethodCarrierService.getPrimaryKey(),
                 EventTypes.CREATE, createdBy);

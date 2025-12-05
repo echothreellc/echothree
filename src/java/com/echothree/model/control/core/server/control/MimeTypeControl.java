@@ -241,7 +241,7 @@ public class MimeTypeControl
 
         var mimeType = MimeTypeFactory.getInstance().create();
         var mimeTypeDetail = MimeTypeDetailFactory.getInstance().create(mimeType, mimeTypeName, entityAttributeType, isDefault, sortOrder,
-                session.getStartTime(), Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         mimeType = MimeTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -591,7 +591,7 @@ public class MimeTypeControl
             }
 
             mimeTypeDetail = MimeTypeDetailFactory.getInstance().create(mimeTypePK, mimeTypeName, entityAttributeTypePK, isDefault, sortOrder,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             mimeType.setActiveDetail(mimeTypeDetail);
             mimeType.setLastDetail(mimeTypeDetail);
@@ -639,7 +639,7 @@ public class MimeTypeControl
     public MimeTypeDescription createMimeTypeDescription(MimeType mimeType,
             Language language, String description, BasePK createdBy) {
         var mimeTypeDescription = MimeTypeDescriptionFactory.getInstance().create(mimeType,
-                language, description, session.getStartTime(), Session.MAX_TIME_LONG);
+                language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(mimeType.getPrimaryKey(), EventTypes.MODIFY, mimeTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -763,7 +763,7 @@ public class MimeTypeControl
             var description = mimeTypeDescriptionValue.getDescription();
 
             mimeTypeDescription = MimeTypeDescriptionFactory.getInstance().create(mimeType, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(mimeType.getPrimaryKey(), EventTypes.MODIFY, mimeTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }

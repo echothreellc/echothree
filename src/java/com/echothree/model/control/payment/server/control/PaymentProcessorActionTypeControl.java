@@ -70,7 +70,7 @@ public class PaymentProcessorActionTypeControl
 
         var paymentProcessorActionType = PaymentProcessorActionTypeFactory.getInstance().create();
         var paymentProcessorActionTypeDetail = PaymentProcessorActionTypeDetailFactory.getInstance().create(session,
-                paymentProcessorActionType, paymentProcessorActionTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                paymentProcessorActionType, paymentProcessorActionTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         paymentProcessorActionType = PaymentProcessorActionTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, paymentProcessorActionType.getPrimaryKey());
@@ -266,7 +266,7 @@ public class PaymentProcessorActionTypeControl
             }
 
             paymentProcessorActionTypeDetail = PaymentProcessorActionTypeDetailFactory.getInstance().create(paymentProcessorActionTypePK,
-                    paymentProcessorActionTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME_LONG);
+                    paymentProcessorActionTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             paymentProcessorActionType.setActiveDetail(paymentProcessorActionTypeDetail);
             paymentProcessorActionType.setLastDetail(paymentProcessorActionTypeDetail);
@@ -320,7 +320,7 @@ public class PaymentProcessorActionTypeControl
     public PaymentProcessorActionTypeDescription createPaymentProcessorActionTypeDescription(final PaymentProcessorActionType paymentProcessorActionType,
             final Language language, final String description, final BasePK createdBy) {
         var paymentProcessorActionTypeDescription = PaymentProcessorActionTypeDescriptionFactory.getInstance().create(paymentProcessorActionType,
-                language, description, session.getStartTime(), Session.MAX_TIME_LONG);
+                language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(paymentProcessorActionType.getPrimaryKey(), EventTypes.MODIFY, paymentProcessorActionTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -437,7 +437,7 @@ public class PaymentProcessorActionTypeControl
             var description = paymentProcessorActionTypeDescriptionValue.getDescription();
 
             paymentProcessorActionTypeDescription = PaymentProcessorActionTypeDescriptionFactory.getInstance().create(paymentProcessorActionType, language, description,
-                    session.getStartTime(), Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(paymentProcessorActionType.getPrimaryKey(), EventTypes.MODIFY, paymentProcessorActionTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }

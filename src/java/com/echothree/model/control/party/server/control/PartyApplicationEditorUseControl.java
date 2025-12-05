@@ -53,7 +53,7 @@ public class PartyApplicationEditorUseControl
             ApplicationEditor applicationEditor, Integer preferredHeight, Integer preferredWidth, BasePK createdBy) {
         var partyApplicationEditorUse = PartyApplicationEditorUseFactory.getInstance().create();
         var partyApplicationEditorUseDetail = PartyApplicationEditorUseDetailFactory.getInstance().create(partyApplicationEditorUse,
-                party, applicationEditorUse, applicationEditor, preferredHeight, preferredWidth, session.getStartTime(), Session.MAX_TIME_LONG);
+                party, applicationEditorUse, applicationEditor, preferredHeight, preferredWidth, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         partyApplicationEditorUse = PartyApplicationEditorUseFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, partyApplicationEditorUse.getPrimaryKey());
@@ -251,7 +251,7 @@ public class PartyApplicationEditorUseControl
             var preferredWidth = partyApplicationEditorUseDetailValue.getPreferredWidth();
 
             partyApplicationEditorUseDetail = PartyApplicationEditorUseDetailFactory.getInstance().create(partyApplicationEditorUsePK, partyPK,
-                    applicationEditorUsePK, applicationEditorPK, preferredHeight, preferredWidth, session.getStartTime(), Session.MAX_TIME_LONG);
+                    applicationEditorUsePK, applicationEditorPK, preferredHeight, preferredWidth, session.getStartTime(), Session.MAX_TIME);
 
             partyApplicationEditorUse.setActiveDetail(partyApplicationEditorUseDetail);
             partyApplicationEditorUse.setLastDetail(partyApplicationEditorUseDetail);
