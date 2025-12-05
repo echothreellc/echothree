@@ -264,7 +264,7 @@ public class ForumControl
     public ForumGroup createForumGroup(String forumGroupName, Icon icon, Integer sortOrder, BasePK createdBy) {
         var forumGroup = ForumGroupFactory.getInstance().create();
         var forumGroupDetail = ForumGroupDetailFactory.getInstance().create(forumGroup, forumGroupName, icon,
-                sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         // Convert to R/W
         forumGroup = ForumGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -405,7 +405,7 @@ public class ForumControl
                     forumGroupDetailValue.getForumGroupPK());
             var forumGroupDetail = forumGroup.getActiveDetailForUpdate();
             
-            forumGroupDetail.setThruTime(session.START_TIME_LONG);
+            forumGroupDetail.setThruTime(session.getStartTimeLong());
             forumGroupDetail.store();
 
             var forumGroupPK = forumGroupDetail.getForumGroupPK();
@@ -414,7 +414,7 @@ public class ForumControl
             var sortOrder = forumGroupDetailValue.getSortOrder();
             
             forumGroupDetail = ForumGroupDetailFactory.getInstance().create(forumGroupPK, forumGroupName, iconPK,
-                    sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
             
             forumGroup.setActiveDetail(forumGroupDetail);
             forumGroup.setLastDetail(forumGroupDetail);
@@ -428,7 +428,7 @@ public class ForumControl
         deleteForumGroupForumsByForumGroup(forumGroup, deletedBy);
 
         var forumGroupDetail = forumGroup.getLastDetailForUpdate();
-        forumGroupDetail.setThruTime(session.START_TIME_LONG);
+        forumGroupDetail.setThruTime(session.getStartTimeLong());
         forumGroup.setActiveDetail(null);
         forumGroup.store();
         
@@ -441,7 +441,7 @@ public class ForumControl
     
     public ForumGroupDescription createForumGroupDescription(ForumGroup forumGroup, Language language, String description, BasePK createdBy) {
         var forumGroupDescription = ForumGroupDescriptionFactory.getInstance().create(forumGroup,
-                language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                language, description, session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         sendEvent(forumGroup.getPrimaryKey(), EventTypes.MODIFY, forumGroupDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -581,7 +581,7 @@ public class ForumControl
             var forumGroupDescription = ForumGroupDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      forumGroupDescriptionValue.getPrimaryKey());
             
-            forumGroupDescription.setThruTime(session.START_TIME_LONG);
+            forumGroupDescription.setThruTime(session.getStartTimeLong());
             forumGroupDescription.store();
 
             var forumGroup = forumGroupDescription.getForumGroup();
@@ -589,14 +589,14 @@ public class ForumControl
             var description = forumGroupDescriptionValue.getDescription();
             
             forumGroupDescription = ForumGroupDescriptionFactory.getInstance().create(forumGroup, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
             
             sendEvent(forumGroup.getPrimaryKey(), EventTypes.MODIFY, forumGroupDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteForumGroupDescription(ForumGroupDescription forumGroupDescription, BasePK deletedBy) {
-        forumGroupDescription.setThruTime(session.START_TIME_LONG);
+        forumGroupDescription.setThruTime(session.getStartTimeLong());
         
         sendEvent(forumGroupDescription.getForumGroupPK(), EventTypes.MODIFY, forumGroupDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
@@ -617,7 +617,7 @@ public class ForumControl
             Sequence forumMessageSequence, Integer sortOrder, BasePK createdBy) {
         var forum = ForumFactory.getInstance().create();
         var forumDetail = ForumDetailFactory.getInstance().create(forum, forumName, forumType, icon,
-                forumThreadSequence, forumMessageSequence, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                forumThreadSequence, forumMessageSequence, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         // Convert to R/W
         forum = ForumFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -758,7 +758,7 @@ public class ForumControl
                     forumDetailValue.getForumPK());
             var forumDetail = forum.getActiveDetailForUpdate();
             
-            forumDetail.setThruTime(session.START_TIME_LONG);
+            forumDetail.setThruTime(session.getStartTimeLong());
             forumDetail.store();
 
             var forumPK = forumDetail.getForumPK();
@@ -770,7 +770,7 @@ public class ForumControl
             var sortOrder = forumDetailValue.getSortOrder();
             
             forumDetail = ForumDetailFactory.getInstance().create(forumPK, forumName, forumTypePK, iconPK,
-                    forumThreadSequencePK, forumMessageSequencePK, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    forumThreadSequencePK, forumMessageSequencePK, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
             
             forum.setActiveDetail(forumDetail);
             forum.setLastDetail(forumDetail);
@@ -794,7 +794,7 @@ public class ForumControl
         deleteForumForumThreadsByForum(forum, deletedBy);
 
         var forumDetail = forum.getLastDetailForUpdate();
-        forumDetail.setThruTime(session.START_TIME_LONG);
+        forumDetail.setThruTime(session.getStartTimeLong());
         forum.setActiveDetail(null);
         forum.store();
         
@@ -813,7 +813,7 @@ public class ForumControl
     
     public ForumDescription createForumDescription(Forum forum, Language language, String description, BasePK createdBy) {
         var forumDescription = ForumDescriptionFactory.getInstance().create(forum, language, description,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         sendEvent(forum.getPrimaryKey(), EventTypes.MODIFY, forumDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -948,7 +948,7 @@ public class ForumControl
             var forumDescription = ForumDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      forumDescriptionValue.getPrimaryKey());
             
-            forumDescription.setThruTime(session.START_TIME_LONG);
+            forumDescription.setThruTime(session.getStartTimeLong());
             forumDescription.store();
 
             var forum = forumDescription.getForum();
@@ -956,14 +956,14 @@ public class ForumControl
             var description = forumDescriptionValue.getDescription();
             
             forumDescription = ForumDescriptionFactory.getInstance().create(forum, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
             
             sendEvent(forum.getPrimaryKey(), EventTypes.MODIFY, forumDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteForumDescription(ForumDescription forumDescription, BasePK deletedBy) {
-        forumDescription.setThruTime(session.START_TIME_LONG);
+        forumDescription.setThruTime(session.getStartTimeLong());
         
         sendEvent(forumDescription.getForumPK(), EventTypes.MODIFY, forumDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
@@ -995,7 +995,7 @@ public class ForumControl
         }
 
         var forumGroupForum = ForumGroupForumFactory.getInstance().create(forumGroup, forum,
-                isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         sendEvent(forumGroup.getPrimaryKey(), EventTypes.MODIFY, forumGroupForum.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1208,7 +1208,7 @@ public class ForumControl
             var forumGroupForum = ForumGroupForumFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      forumGroupForumValue.getPrimaryKey());
             
-            forumGroupForum.setThruTime(session.START_TIME_LONG);
+            forumGroupForum.setThruTime(session.getStartTimeLong());
             forumGroupForum.store();
 
             var forumGroupPK = forumGroupForum.getForumGroupPK(); // Not Updated
@@ -1233,7 +1233,7 @@ public class ForumControl
             }
             
             forumGroupForum = ForumGroupForumFactory.getInstance().create(forumGroupPK, forum.getPrimaryKey(), isDefault,
-                    sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
             
             sendEvent(forumGroupPK, EventTypes.MODIFY, forumGroupForum.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -1244,7 +1244,7 @@ public class ForumControl
     }
     
     public void deleteForumGroupForum(ForumGroupForum forumGroupForum, BasePK deletedBy) {
-        forumGroupForum.setThruTime(session.START_TIME_LONG);
+        forumGroupForum.setThruTime(session.getStartTimeLong());
         forumGroupForum.store();
         
         // Check for default, and pick one if necessary
@@ -1537,7 +1537,7 @@ public class ForumControl
         }
 
         var forumMimeType = ForumMimeTypeFactory.getInstance().create(forum, mimeType,
-                isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         sendEvent(forum.getPrimaryKey(), EventTypes.MODIFY, forumMimeType.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1777,7 +1777,7 @@ public class ForumControl
             var forumMimeType = ForumMimeTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      forumMimeTypeValue.getPrimaryKey());
             
-            forumMimeType.setThruTime(session.START_TIME_LONG);
+            forumMimeType.setThruTime(session.getStartTimeLong());
             forumMimeType.store();
 
             var forum = forumMimeType.getForum(); // Not Updated
@@ -1803,7 +1803,7 @@ public class ForumControl
             }
             
             forumMimeType = ForumMimeTypeFactory.getInstance().create(forumPK, mimeTypePK,
-                    isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
             
             sendEvent(forumPK, EventTypes.MODIFY, forumMimeType.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -1814,7 +1814,7 @@ public class ForumControl
     }
     
     public void deleteForumMimeType(ForumMimeType forumMimeType, BasePK deletedBy) {
-        forumMimeType.setThruTime(session.START_TIME_LONG);
+        forumMimeType.setThruTime(session.getStartTimeLong());
         forumMimeType.store();
         
         // Check for default, and pick one if necessary
@@ -1858,7 +1858,7 @@ public class ForumControl
     
     public ForumPartyRole createForumPartyRole(Forum forum, Party party, ForumRoleType forumRoleType, BasePK createdBy) {
         var forumPartyRole = ForumPartyRoleFactory.getInstance().create(forum, party, forumRoleType,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         sendEvent(forum.getPrimaryKey(), EventTypes.MODIFY, forumPartyRole.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -2026,7 +2026,7 @@ public class ForumControl
     }
     
     public void deleteForumPartyRole(ForumPartyRole forumPartyRole, BasePK deletedBy) {
-        forumPartyRole.setThruTime(session.START_TIME_LONG);
+        forumPartyRole.setThruTime(session.getStartTimeLong());
         
         sendEvent(forumPartyRole.getForumPK(), EventTypes.MODIFY, forumPartyRole.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
@@ -2046,7 +2046,7 @@ public class ForumControl
     public ForumPartyTypeRole createForumPartyTypeRole(Forum forum, PartyType partyType, ForumRoleType forumRoleType,
             BasePK createdBy) {
         var forumPartyTypeRole = ForumPartyTypeRoleFactory.getInstance().create(forum, partyType,
-                forumRoleType, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                forumRoleType, session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         sendEvent(forum.getPrimaryKey(), EventTypes.MODIFY, forumPartyTypeRole.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -2173,7 +2173,7 @@ public class ForumControl
     }
     
     public void deleteForumPartyTypeRole(ForumPartyTypeRole forumPartyTypeRole, BasePK deletedBy) {
-        forumPartyTypeRole.setThruTime(session.START_TIME_LONG);
+        forumPartyTypeRole.setThruTime(session.getStartTimeLong());
         
         sendEvent(forumPartyTypeRole.getForumPK(), EventTypes.MODIFY, forumPartyTypeRole.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
@@ -2328,7 +2328,7 @@ public class ForumControl
         }
 
         var forumForumThread = ForumForumThreadFactory.getInstance().create(forum, forumThread,
-                isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         sendEvent(forum.getPrimaryKey(), EventTypes.MODIFY, forumForumThread.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -2533,7 +2533,7 @@ public class ForumControl
             var forumForumThread = ForumForumThreadFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      forumForumThreadValue.getPrimaryKey());
             
-            forumForumThread.setThruTime(session.START_TIME_LONG);
+            forumForumThread.setThruTime(session.getStartTimeLong());
             forumForumThread.store();
 
             var forumPK = forumForumThread.getForumPK(); // Not Updated
@@ -2558,7 +2558,7 @@ public class ForumControl
             }
             
             forumForumThread = ForumForumThreadFactory.getInstance().create(forumPK, forumThread.getPrimaryKey(), isDefault,
-                    sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
             
             sendEvent(forumPK, EventTypes.MODIFY, forumForumThread.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -2569,7 +2569,7 @@ public class ForumControl
     }
     
     private void deleteForumForumThread(ForumForumThread forumForumThread, boolean checkForumThread, BasePK deletedBy) {
-        forumForumThread.setThruTime(session.START_TIME_LONG);
+        forumForumThread.setThruTime(session.getStartTimeLong());
         forumForumThread.store();
         
         if(checkForumThread) {
@@ -2637,7 +2637,7 @@ public class ForumControl
     public ForumThread createForumThread(String forumThreadName, Icon icon, Long postedTime, Integer sortOrder, BasePK createdBy) {
         var forumThread = ForumThreadFactory.getInstance().create();
         var forumThreadDetail = ForumThreadDetailFactory.getInstance().create(forumThread, forumThreadName,
-                icon, postedTime, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                icon, postedTime, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         // Convert to R/W
         forumThread = ForumThreadFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -2721,7 +2721,7 @@ public class ForumControl
                     + "AND frmfrmthrd_frmthrd_forumthreadid = frmthrd_forumthreadid "
                     + "AND frmthrd_activedetailid = frmthrddt_forumthreaddetailid "
                     + "AND frmthrddt_postedtime <= ?",
-                    forum, Session.MAX_TIME, session.START_TIME);
+                    forum, Session.MAX_TIME, session.getStartTime());
         }
 
         return count;
@@ -2762,7 +2762,7 @@ public class ForumControl
             ps.setString(3, ComponentVendors.ECHO_THREE.name());
             ps.setString(4, EntityTypes.ForumThread.name());
             if(!includeFutureForumThreads) {
-                ps.setLong(5, session.START_TIME);
+                ps.setLong(5, session.getStartTime());
             }
             
             forumThreads = ForumThreadFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
@@ -2805,7 +2805,7 @@ public class ForumControl
                     forumThreadDetailValue.getForumThreadPK());
             var forumThreadDetail = forumThread.getActiveDetailForUpdate();
             
-            forumThreadDetail.setThruTime(session.START_TIME_LONG);
+            forumThreadDetail.setThruTime(session.getStartTimeLong());
             forumThreadDetail.store();
 
             var forumThreadPK = forumThreadDetail.getForumThreadPK();
@@ -2815,7 +2815,7 @@ public class ForumControl
             var sortOrder = forumThreadDetailValue.getSortOrder();
             
             forumThreadDetail = ForumThreadDetailFactory.getInstance().create(forumThreadPK, forumThreadName,
-                    iconPK, postedTime, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    iconPK, postedTime, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
             
             forumThread.setActiveDetail(forumThreadDetail);
             forumThread.setLastDetail(forumThreadDetail);
@@ -2829,7 +2829,7 @@ public class ForumControl
         deleteForumForumThreadsByForumThread(forumThread, deletedBy);
 
         var forumThreadDetail = forumThread.getLastDetailForUpdate();
-        forumThreadDetail.setThruTime(session.START_TIME_LONG);
+        forumThreadDetail.setThruTime(session.getStartTimeLong());
         forumThread.setActiveDetail(null);
         forumThread.store();
         
@@ -2865,7 +2865,7 @@ public class ForumControl
             ForumMessage parentForumMessage, Icon icon, Long postedTime, BasePK createdBy) {
         var forumMessage = ForumMessageFactory.getInstance().create();
         var forumMessageDetail = ForumMessageDetailFactory.getInstance().create(forumMessage,
-                forumMessageName, forumThread, forumMessageType, parentForumMessage, icon, postedTime, session.START_TIME_LONG,
+                forumMessageName, forumThread, forumMessageType, parentForumMessage, icon, postedTime, session.getStartTimeLong(),
                 Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -3049,7 +3049,7 @@ public class ForumControl
                     forumMessageDetailValue.getForumMessagePK());
             var forumMessageDetail = forumMessage.getActiveDetailForUpdate();
             
-            forumMessageDetail.setThruTime(session.START_TIME_LONG);
+            forumMessageDetail.setThruTime(session.getStartTimeLong());
             forumMessageDetail.store();
 
             var forumMessagePK = forumMessageDetail.getForumMessagePK();
@@ -3061,7 +3061,7 @@ public class ForumControl
             var postedTime = forumMessageDetailValue.getPostedTime();
             
             forumMessageDetail = ForumMessageDetailFactory.getInstance().create(forumMessagePK, forumMessageName,
-                    forumThreadPK, forumMessageTypePK, parentForumMessagePK, iconPK, postedTime, session.START_TIME_LONG,
+                    forumThreadPK, forumMessageTypePK, parentForumMessagePK, iconPK, postedTime, session.getStartTimeLong(),
                     Session.MAX_TIME_LONG);
             
             forumMessage.setActiveDetail(forumMessageDetail);
@@ -3079,7 +3079,7 @@ public class ForumControl
         deleteForumMessageAttachmentsByForumMessage(forumMessage, deletedBy);
 
         var forumMessageDetail = forumMessage.getLastDetailForUpdate();
-        forumMessageDetail.setThruTime(session.START_TIME_LONG);
+        forumMessageDetail.setThruTime(session.getStartTimeLong());
         forumMessage.setActiveDetail(null);
         forumMessage.store();
         
@@ -3165,7 +3165,7 @@ public class ForumControl
             BasePK createdBy) {
         var forumMessageAttachment = ForumMessageAttachmentFactory.getInstance().create();
         var forumMessageAttachmentDetail = ForumMessageAttachmentDetailFactory.getInstance().create(forumMessageAttachment,
-                forumMessage, forumMessageAttachmentSequence, mimeType, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                forumMessage, forumMessageAttachmentSequence, mimeType, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
         // Convert to R/W
         forumMessageAttachment = ForumMessageAttachmentFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, forumMessageAttachment.getPrimaryKey());
@@ -3273,7 +3273,7 @@ public class ForumControl
                      forumMessageAttachmentDetailValue.getForumMessageAttachmentPK());
             var forumMessageAttachmentDetail = forumMessageAttachment.getActiveDetailForUpdate();
 
-            forumMessageAttachmentDetail.setThruTime(session.START_TIME_LONG);
+            forumMessageAttachmentDetail.setThruTime(session.getStartTimeLong());
             forumMessageAttachmentDetail.store();
 
             var forumMessageAttachmentPK = forumMessageAttachmentDetail.getForumMessageAttachmentPK(); // Not updated
@@ -3282,7 +3282,7 @@ public class ForumControl
             var mimeTypePK = forumMessageAttachmentDetailValue.getMimeTypePK();
 
             forumMessageAttachmentDetail = ForumMessageAttachmentDetailFactory.getInstance().create(forumMessageAttachmentPK, forumMessagePK, forumMessageAttachmentSequence,
-                    mimeTypePK, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    mimeTypePK, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
             forumMessageAttachment.setActiveDetail(forumMessageAttachmentDetail);
             forumMessageAttachment.setLastDetail(forumMessageAttachmentDetail);
@@ -3295,7 +3295,7 @@ public class ForumControl
         deleteForumMessageAttachmentDescriptionsByForumMessageAttachment(forumMessageAttachment, deletedBy);
 
         var forumMessageAttachmentDetail = forumMessageAttachment.getLastDetailForUpdate();
-        forumMessageAttachmentDetail.setThruTime(session.START_TIME_LONG);
+        forumMessageAttachmentDetail.setThruTime(session.getStartTimeLong());
         forumMessageAttachmentDetail.store();
         forumMessageAttachment.setActiveDetail(null);
 
@@ -3338,7 +3338,7 @@ public class ForumControl
     public ForumMessageBlobAttachment createForumMessageBlobAttachment(ForumMessageAttachment forumMessageAttachment, ByteArray blob, BasePK createdBy) {
         verifyForumMessageAttachmentMimeType(forumMessageAttachment, EntityAttributeTypes.BLOB.name());
 
-        var forumMessageAttachmentBlob = ForumMessageBlobAttachmentFactory.getInstance().create(forumMessageAttachment, blob, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var forumMessageAttachmentBlob = ForumMessageBlobAttachmentFactory.getInstance().create(forumMessageAttachment, blob, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
         sendEvent(forumMessageAttachment.getLastDetail().getForumMessagePK(), EventTypes.MODIFY, forumMessageAttachmentBlob.getPrimaryKey(), EventTypes.MODIFY, createdBy);
 
@@ -3388,13 +3388,13 @@ public class ForumControl
             var forumMessageAttachmentBlob = ForumMessageBlobAttachmentFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     forumMessageAttachmentBlobValue.getPrimaryKey());
 
-            forumMessageAttachmentBlob.setThruTime(session.START_TIME_LONG);
+            forumMessageAttachmentBlob.setThruTime(session.getStartTimeLong());
             forumMessageAttachmentBlob.store();
 
             var forumMessageAttachmentPK = forumMessageAttachmentBlob.getForumMessageAttachmentPK(); // Not updated
             var blob = forumMessageAttachmentBlobValue.getBlob();
 
-            forumMessageAttachmentBlob = ForumMessageBlobAttachmentFactory.getInstance().create(forumMessageAttachmentPK, blob, session.START_TIME_LONG,
+            forumMessageAttachmentBlob = ForumMessageBlobAttachmentFactory.getInstance().create(forumMessageAttachmentPK, blob, session.getStartTimeLong(),
                     Session.MAX_TIME_LONG);
 
             sendEvent(forumMessageAttachmentBlob.getForumMessageAttachment().getLastDetail().getForumMessagePK(), EventTypes.MODIFY, forumMessageAttachmentBlob.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -3402,7 +3402,7 @@ public class ForumControl
     }
 
     public void deleteForumMessageBlobAttachment(ForumMessageBlobAttachment forumMessageAttachmentBlob, BasePK deletedBy) {
-        forumMessageAttachmentBlob.setThruTime(session.START_TIME_LONG);
+        forumMessageAttachmentBlob.setThruTime(session.getStartTimeLong());
 
         sendEvent(forumMessageAttachmentBlob.getForumMessageAttachment().getLastDetail().getForumMessagePK(), EventTypes.MODIFY, forumMessageAttachmentBlob.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
@@ -3422,7 +3422,7 @@ public class ForumControl
     public ForumMessageClobAttachment createForumMessageClobAttachment(ForumMessageAttachment forumMessageAttachment, String clob, BasePK createdBy) {
         verifyForumMessageAttachmentMimeType(forumMessageAttachment, EntityAttributeTypes.CLOB.name());
 
-        var forumMessageAttachmentClob = ForumMessageClobAttachmentFactory.getInstance().create(forumMessageAttachment, clob, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var forumMessageAttachmentClob = ForumMessageClobAttachmentFactory.getInstance().create(forumMessageAttachment, clob, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
         sendEvent(forumMessageAttachment.getLastDetail().getForumMessagePK(), EventTypes.MODIFY, forumMessageAttachmentClob.getPrimaryKey(), EventTypes.MODIFY, createdBy);
 
@@ -3472,13 +3472,13 @@ public class ForumControl
             var forumMessageAttachmentClob = ForumMessageClobAttachmentFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     forumMessageAttachmentClobValue.getPrimaryKey());
 
-            forumMessageAttachmentClob.setThruTime(session.START_TIME_LONG);
+            forumMessageAttachmentClob.setThruTime(session.getStartTimeLong());
             forumMessageAttachmentClob.store();
 
             var forumMessageAttachmentPK = forumMessageAttachmentClob.getForumMessageAttachmentPK(); // Not updated
             var clob = forumMessageAttachmentClobValue.getClob();
 
-            forumMessageAttachmentClob = ForumMessageClobAttachmentFactory.getInstance().create(forumMessageAttachmentPK, clob, session.START_TIME_LONG,
+            forumMessageAttachmentClob = ForumMessageClobAttachmentFactory.getInstance().create(forumMessageAttachmentPK, clob, session.getStartTimeLong(),
                     Session.MAX_TIME_LONG);
 
             sendEvent(forumMessageAttachmentClob.getForumMessageAttachment().getLastDetail().getForumMessagePK(), EventTypes.MODIFY, forumMessageAttachmentClob.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -3486,7 +3486,7 @@ public class ForumControl
     }
 
     public void deleteForumMessageClobAttachment(ForumMessageClobAttachment forumMessageAttachmentClob, BasePK deletedBy) {
-        forumMessageAttachmentClob.setThruTime(session.START_TIME_LONG);
+        forumMessageAttachmentClob.setThruTime(session.getStartTimeLong());
 
         sendEvent(forumMessageAttachmentClob.getForumMessageAttachment().getLastDetail().getForumMessagePK(), EventTypes.MODIFY, forumMessageAttachmentClob.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
@@ -3505,7 +3505,7 @@ public class ForumControl
 
     public ForumMessageAttachmentDescription createForumMessageAttachmentDescription(ForumMessageAttachment forumMessageAttachment, Language language, String description, BasePK createdBy) {
         var forumMessageAttachmentDescription = ForumMessageAttachmentDescriptionFactory.getInstance().create(forumMessageAttachment, language,
-                description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                description, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
         sendEvent(forumMessageAttachment.getLastDetail().getForumMessagePK(), EventTypes.MODIFY, forumMessageAttachmentDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -3624,7 +3624,7 @@ public class ForumControl
         if(forumMessageAttachmentDescriptionValue.hasBeenModified()) {
             var forumMessageAttachmentDescription = ForumMessageAttachmentDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, forumMessageAttachmentDescriptionValue.getPrimaryKey());
 
-            forumMessageAttachmentDescription.setThruTime(session.START_TIME_LONG);
+            forumMessageAttachmentDescription.setThruTime(session.getStartTimeLong());
             forumMessageAttachmentDescription.store();
 
             var forumMessageAttachment = forumMessageAttachmentDescription.getForumMessageAttachment();
@@ -3632,14 +3632,14 @@ public class ForumControl
             var description = forumMessageAttachmentDescriptionValue.getDescription();
 
             forumMessageAttachmentDescription = ForumMessageAttachmentDescriptionFactory.getInstance().create(forumMessageAttachment, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
             sendEvent(forumMessageAttachment.getLastDetail().getForumMessagePK(), EventTypes.MODIFY, forumMessageAttachmentDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteForumMessageAttachmentDescription(ForumMessageAttachmentDescription forumMessageAttachmentDescription, BasePK deletedBy) {
-        forumMessageAttachmentDescription.setThruTime(session.START_TIME_LONG);
+        forumMessageAttachmentDescription.setThruTime(session.getStartTimeLong());
 
         sendEvent(forumMessageAttachmentDescription.getForumMessageAttachment().getLastDetail().getForumMessagePK(), EventTypes.MODIFY, forumMessageAttachmentDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
@@ -3660,7 +3660,7 @@ public class ForumControl
     public ForumMessageRole createForumMessageRole(ForumMessage forumMessage, ForumRoleType forumRoleType, Party party,
             BasePK createdBy) {
         var forumMessageRole = ForumMessageRoleFactory.getInstance().create(forumMessage, forumRoleType,
-                party, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                party, session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         sendEvent(forumMessage.getPrimaryKey(), EventTypes.MODIFY, forumMessageRole.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -3767,7 +3767,7 @@ public class ForumControl
     }
     
     public void deleteForumMessageRole(ForumMessageRole forumMessageRole, BasePK deletedBy) {
-        forumMessageRole.setThruTime(session.START_TIME_LONG);
+        forumMessageRole.setThruTime(session.getStartTimeLong());
         
         sendEvent(forumMessageRole.getForumMessagePK(), EventTypes.MODIFY, forumMessageRole.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
@@ -3791,7 +3791,7 @@ public class ForumControl
 
         var forumMessagePart = ForumMessagePartFactory.getInstance().create();
         var forumMessagePartDetail = ForumMessagePartDetailFactory.getInstance().create(session,
-                forumMessagePart, forumMessage, forumMessagePartType, language, mimeType, session.START_TIME_LONG,
+                forumMessagePart, forumMessage, forumMessagePartType, language, mimeType, session.getStartTimeLong(),
                 Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -3923,7 +3923,7 @@ public class ForumControl
                     forumMessagePartDetailValue.getForumMessagePartPK());
             var forumMessagePartDetail = forumMessagePart.getActiveDetailForUpdate();
             
-            forumMessagePartDetail.setThruTime(session.START_TIME_LONG);
+            forumMessagePartDetail.setThruTime(session.getStartTimeLong());
             forumMessagePartDetail.store();
 
             var forumMessagePartPK = forumMessagePartDetail.getForumMessagePartPK();
@@ -3933,7 +3933,7 @@ public class ForumControl
             var mimeTypePK = forumMessagePartDetailValue.getMimeTypePK();
             
             forumMessagePartDetail = ForumMessagePartDetailFactory.getInstance().create(forumMessagePartPK, forumMessagePK,
-                    forumMessagePartTypePK, languagePK, mimeTypePK, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    forumMessagePartTypePK, languagePK, mimeTypePK, session.getStartTimeLong(), Session.MAX_TIME_LONG);
             
             forumMessagePart.setActiveDetail(forumMessagePartDetail);
             forumMessagePart.setLastDetail(forumMessagePartDetail);
@@ -3958,7 +3958,7 @@ public class ForumControl
             }
         }
         
-        forumMessagePartDetail.setThruTime(session.START_TIME_LONG);
+        forumMessagePartDetail.setThruTime(session.getStartTimeLong());
         forumMessagePart.setActiveDetail(null);
         forumMessagePart.store();
         
@@ -3981,7 +3981,7 @@ public class ForumControl
     
     public ForumStringMessagePart createForumStringMessagePart(ForumMessagePart forumMessagePart, String string, BasePK createdBy) {
         var forumStringMessagePart = ForumStringMessagePartFactory.getInstance().create(session,
-                forumMessagePart, string, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                forumMessagePart, string, session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         sendEvent(forumMessagePart.getLastDetail().getForumMessagePK(), EventTypes.MODIFY, forumStringMessagePart.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -4039,14 +4039,14 @@ public class ForumControl
             var forumStringMessagePart = ForumStringMessagePartFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      forumStringMessagePartValue.getPrimaryKey());
             
-            forumStringMessagePart.setThruTime(session.START_TIME_LONG);
+            forumStringMessagePart.setThruTime(session.getStartTimeLong());
             forumStringMessagePart.store();
 
             var forumMessagePartPK = forumStringMessagePart.getForumMessagePartPK(); // Not updated
             var string = forumStringMessagePartValue.getString();
             
             forumStringMessagePart = ForumStringMessagePartFactory.getInstance().create(forumMessagePartPK, string,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
             
             sendEvent(forumStringMessagePart.getForumMessagePart().getLastDetail().getForumMessagePK(),
                     EventTypes.MODIFY, forumStringMessagePart.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -4054,7 +4054,7 @@ public class ForumControl
     }
     
     public void deleteForumStringMessagePart(ForumStringMessagePart forumStringMessagePart, BasePK deletedBy) {
-        forumStringMessagePart.setThruTime(session.START_TIME_LONG);
+        forumStringMessagePart.setThruTime(session.getStartTimeLong());
         
         sendEvent(forumStringMessagePart.getForumMessagePart().getLastDetail().getForumMessagePK(),
                 EventTypes.MODIFY, forumStringMessagePart.getPrimaryKey(), EventTypes.DELETE, deletedBy);
@@ -4074,7 +4074,7 @@ public class ForumControl
     
     public ForumClobMessagePart createForumClobMessagePart(ForumMessagePart forumMessagePart, String clob, BasePK createdBy) {
         var forumClobMessagePart = ForumClobMessagePartFactory.getInstance().create(session,
-                forumMessagePart, clob, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                forumMessagePart, clob, session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         sendEvent(forumMessagePart.getLastDetail().getForumMessagePK(), EventTypes.MODIFY, forumClobMessagePart.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -4132,21 +4132,21 @@ public class ForumControl
             var forumClobMessagePart = ForumClobMessagePartFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      forumClobMessagePartValue.getPrimaryKey());
             
-            forumClobMessagePart.setThruTime(session.START_TIME_LONG);
+            forumClobMessagePart.setThruTime(session.getStartTimeLong());
             forumClobMessagePart.store();
 
             var forumMessagePartPK = forumClobMessagePart.getForumMessagePartPK(); // Not updated
             var clob = forumClobMessagePartValue.getClob();
             
             forumClobMessagePart = ForumClobMessagePartFactory.getInstance().create(forumMessagePartPK, clob,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
             
             sendEvent(forumClobMessagePart.getForumMessagePart().getLastDetail().getForumMessagePK(), EventTypes.MODIFY, forumClobMessagePart.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteForumClobMessagePart(ForumClobMessagePart forumClobMessagePart, BasePK deletedBy) {
-        forumClobMessagePart.setThruTime(session.START_TIME_LONG);
+        forumClobMessagePart.setThruTime(session.getStartTimeLong());
         
         sendEvent(forumClobMessagePart.getForumMessagePart().getLastDetail().getForumMessagePK(), EventTypes.MODIFY, forumClobMessagePart.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
@@ -4165,7 +4165,7 @@ public class ForumControl
     
     public ForumBlobMessagePart createForumBlobMessagePart(ForumMessagePart forumMessagePart, ByteArray blob, BasePK createdBy) {
         var forumBlobMessagePart = ForumBlobMessagePartFactory.getInstance().create(session,
-                forumMessagePart, blob, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                forumMessagePart, blob, session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         sendEvent(forumMessagePart.getLastDetail().getForumMessagePK(), EventTypes.MODIFY, forumBlobMessagePart.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -4223,21 +4223,21 @@ public class ForumControl
             var forumBlobMessagePart = ForumBlobMessagePartFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      forumBlobMessagePartValue.getPrimaryKey());
             
-            forumBlobMessagePart.setThruTime(session.START_TIME_LONG);
+            forumBlobMessagePart.setThruTime(session.getStartTimeLong());
             forumBlobMessagePart.store();
 
             var forumMessagePartPK = forumBlobMessagePart.getForumMessagePartPK(); // Not updated
             var blob = forumBlobMessagePartValue.getBlob();
             
             forumBlobMessagePart = ForumBlobMessagePartFactory.getInstance().create(forumMessagePartPK, blob,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
             
             sendEvent(forumBlobMessagePart.getForumMessagePart().getLastDetail().getForumMessagePK(), EventTypes.MODIFY, forumBlobMessagePart.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteForumBlobMessagePart(ForumBlobMessagePart forumBlobMessagePart, BasePK deletedBy) {
-        forumBlobMessagePart.setThruTime(session.START_TIME_LONG);
+        forumBlobMessagePart.setThruTime(session.getStartTimeLong());
         
         sendEvent(forumBlobMessagePart.getForumMessagePart().getLastDetail().getForumMessagePK(), EventTypes.MODIFY, forumBlobMessagePart.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }

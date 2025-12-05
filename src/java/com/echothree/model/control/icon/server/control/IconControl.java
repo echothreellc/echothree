@@ -89,7 +89,7 @@ public class IconControl
     public Icon createIcon(String iconName, Document document, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var icon = IconFactory.getInstance().create();
         var iconDetail = IconDetailFactory.getInstance().create(icon, iconName, document, isDefault, sortOrder,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         // Convert to R/W
         icon = IconFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, icon.getPrimaryKey());
@@ -218,7 +218,7 @@ public class IconControl
         deleteIconUsagesByIcon(icon, deletedBy);
 
         var iconDetail = icon.getLastDetailForUpdate();
-        iconDetail.setThruTime(session.START_TIME_LONG);
+        iconDetail.setThruTime(session.getStartTimeLong());
         iconDetail.store();
         icon.setActiveDetail(null);
         
@@ -244,7 +244,7 @@ public class IconControl
 
         var iconUsageType = IconUsageTypeFactory.getInstance().create();
         var iconUsageTypeDetail = IconUsageTypeDetailFactory.getInstance().create(iconUsageType,
-                iconUsageTypeName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                iconUsageTypeName, isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         // Convert to R/W
         iconUsageType = IconUsageTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -416,7 +416,7 @@ public class IconControl
                 EntityPermission.READ_WRITE, iconUsageTypeDetailValue.getIconUsageTypePK());
         var iconUsageTypeDetail = iconUsageType.getActiveDetailForUpdate();
         
-        iconUsageTypeDetail.setThruTime(session.START_TIME_LONG);
+        iconUsageTypeDetail.setThruTime(session.getStartTimeLong());
         iconUsageTypeDetail.store();
 
         var iconUsageTypePK = iconUsageTypeDetail.getIconUsageTypePK();
@@ -441,7 +441,7 @@ public class IconControl
         }
         
         iconUsageTypeDetail = IconUsageTypeDetailFactory.getInstance().create(iconUsageTypePK, iconUsageTypeName,
-                isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         iconUsageType.setActiveDetail(iconUsageTypeDetail);
         iconUsageType.setLastDetail(iconUsageTypeDetail);
@@ -458,7 +458,7 @@ public class IconControl
         deleteIconUsageTypeDescriptionsByIconUsageType(iconUsageType, deletedBy);
 
         var iconUsageTypeDetail = iconUsageType.getLastDetailForUpdate();
-        iconUsageTypeDetail.setThruTime(session.START_TIME_LONG);
+        iconUsageTypeDetail.setThruTime(session.getStartTimeLong());
         iconUsageType.setActiveDetail(null);
         iconUsageType.store();
         
@@ -489,7 +489,7 @@ public class IconControl
     public IconUsageTypeDescription createIconUsageTypeDescription(IconUsageType iconUsageType, Language language, String description,
             BasePK createdBy) {
         var iconUsageTypeDescription = IconUsageTypeDescriptionFactory.getInstance().create(iconUsageType,
-                language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                language, description, session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         sendEvent(iconUsageType.getPrimaryKey(), EventTypes.MODIFY, iconUsageTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -619,7 +619,7 @@ public class IconControl
             var iconUsageTypeDescription = IconUsageTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      iconUsageTypeDescriptionValue.getPrimaryKey());
             
-            iconUsageTypeDescription.setThruTime(session.START_TIME_LONG);
+            iconUsageTypeDescription.setThruTime(session.getStartTimeLong());
             iconUsageTypeDescription.store();
 
             var iconUsageType = iconUsageTypeDescription.getIconUsageType();
@@ -627,14 +627,14 @@ public class IconControl
             var description = iconUsageTypeDescriptionValue.getDescription();
             
             iconUsageTypeDescription = IconUsageTypeDescriptionFactory.getInstance().create(iconUsageType, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
             
             sendEvent(iconUsageType.getPrimaryKey(), EventTypes.MODIFY, iconUsageTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteIconUsageTypeDescription(IconUsageTypeDescription iconUsageTypeDescription, BasePK deletedBy) {
-        iconUsageTypeDescription.setThruTime(session.START_TIME_LONG);
+        iconUsageTypeDescription.setThruTime(session.getStartTimeLong());
         
         sendEvent(iconUsageTypeDescription.getIconUsageTypePK(), EventTypes.MODIFY, iconUsageTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
@@ -667,7 +667,7 @@ public class IconControl
         }
 
         var iconUsage = IconUsageFactory.getInstance().create(iconUsageType, icon,
-                isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         sendEvent(iconUsageType.getPrimaryKey(), EventTypes.MODIFY, iconUsage.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -871,7 +871,7 @@ public class IconControl
             var iconUsage = IconUsageFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      iconUsageValue.getPrimaryKey());
             
-            iconUsage.setThruTime(session.START_TIME_LONG);
+            iconUsage.setThruTime(session.getStartTimeLong());
             iconUsage.store();
 
             var iconUsageType = iconUsage.getIconUsageType(); // Not Updated
@@ -897,7 +897,7 @@ public class IconControl
             }
             
             iconUsage = IconUsageFactory.getInstance().create(iconUsageTypePK, iconPK,
-                    isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
             
             sendEvent(iconUsageTypePK, EventTypes.MODIFY, iconUsage.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -908,7 +908,7 @@ public class IconControl
     }
     
     public void deleteIconUsage(IconUsage iconUsage, BasePK deletedBy) {
-        iconUsage.setThruTime(session.START_TIME_LONG);
+        iconUsage.setThruTime(session.getStartTimeLong());
         iconUsage.store();
         
         // Check for default, and pick one if necessary

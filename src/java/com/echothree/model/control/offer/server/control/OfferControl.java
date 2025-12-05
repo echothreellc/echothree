@@ -96,7 +96,7 @@ public class OfferControl
 
         var offer = OfferFactory.getInstance().create();
         var offerDetail = OfferDetailFactory.getInstance().create(offer, offerName, salesOrderSequence, departmentParty, offerItemSelector,
-                offerItemPriceFilter, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                offerItemPriceFilter, isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         // Convert to R/W
         offer = OfferFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, offer.getPrimaryKey());
@@ -369,7 +369,7 @@ public class OfferControl
                      offerDetailValue.getOfferPK());
             var offerDetail = offer.getActiveDetailForUpdate();
             
-            offerDetail.setThruTime(session.START_TIME_LONG);
+            offerDetail.setThruTime(session.getStartTimeLong());
             offerDetail.store();
 
             var offerPK = offerDetail.getOfferPK();
@@ -398,7 +398,7 @@ public class OfferControl
             }
             
             offerDetail = OfferDetailFactory.getInstance().create(offerPK, offerName, salesOrderSequencePK, departmentPartyPK, offerItemSelectorPK,
-                    offerItemPriceFilterPK, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    offerItemPriceFilterPK, isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
             
             offer.setActiveDetail(offerDetail);
             offer.setLastDetail(offerDetail);
@@ -425,7 +425,7 @@ public class OfferControl
         removeOfferTimeByOffer(offer);
 
         var offerDetail = offer.getLastDetailForUpdate();
-        offerDetail.setThruTime(session.START_TIME_LONG);
+        offerDetail.setThruTime(session.getStartTimeLong());
         offer.setActiveDetail(null);
         offer.store();
         
@@ -455,7 +455,7 @@ public class OfferControl
     
     public OfferDescription createOfferDescription(Offer offer, Language language, String description, BasePK createdBy) {
         var offerDescription = OfferDescriptionFactory.getInstance().create(offer, language, description,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         sendEvent(offer.getPrimaryKey(), EventTypes.MODIFY, offerDescription.getPrimaryKey(),
                 EventTypes.CREATE, createdBy);
@@ -586,7 +586,7 @@ public class OfferControl
             var offerDescription = OfferDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      offerDescriptionValue.getPrimaryKey());
             
-            offerDescription.setThruTime(session.START_TIME_LONG);
+            offerDescription.setThruTime(session.getStartTimeLong());
             offerDescription.store();
 
             var offer = offerDescription.getOffer();
@@ -594,7 +594,7 @@ public class OfferControl
             var description = offerDescriptionValue.getDescription();
             
             offerDescription = OfferDescriptionFactory.getInstance().create(offer, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
             
             sendEvent(offer.getPrimaryKey(), EventTypes.MODIFY, offerDescription.getPrimaryKey(),
                     EventTypes.MODIFY, updatedBy);
@@ -602,7 +602,7 @@ public class OfferControl
     }
     
     public void deleteOfferDescription(OfferDescription offerDescription, BasePK deletedBy) {
-        offerDescription.setThruTime(session.START_TIME_LONG);
+        offerDescription.setThruTime(session.getStartTimeLong());
         
         sendEvent(offerDescription.getOfferPK(), EventTypes.MODIFY, offerDescription.getPrimaryKey(),
                 EventTypes.DELETE, deletedBy);
@@ -675,7 +675,7 @@ public class OfferControl
         }
 
         var offerCustomerType = OfferCustomerTypeFactory.getInstance().create(offer, customerType,
-                isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
         sendEvent(offer.getPrimaryKey(), EventTypes.MODIFY, offerCustomerType.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -878,7 +878,7 @@ public class OfferControl
             var offerCustomerType = OfferCustomerTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      offerCustomerTypeValue.getPrimaryKey());
 
-            offerCustomerType.setThruTime(session.START_TIME_LONG);
+            offerCustomerType.setThruTime(session.getStartTimeLong());
             offerCustomerType.store();
 
             var offer = offerCustomerType.getOffer(); // Not Updated
@@ -904,7 +904,7 @@ public class OfferControl
             }
 
             offerCustomerType = OfferCustomerTypeFactory.getInstance().create(offerPK, customerTypePK,
-                    isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
             sendEvent(offerPK, EventTypes.MODIFY, offerCustomerType.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -915,7 +915,7 @@ public class OfferControl
     }
 
     public void deleteOfferCustomerType(OfferCustomerType offerCustomerType, BasePK deletedBy) {
-        offerCustomerType.setThruTime(session.START_TIME_LONG);
+        offerCustomerType.setThruTime(session.getStartTimeLong());
         offerCustomerType.store();
 
         // Check for default, and pick one if necessary
@@ -959,7 +959,7 @@ public class OfferControl
     
     public OfferChainType createOfferChainType(Offer offer, ChainType chainType, Chain chain, BasePK createdBy) {
         var offerChainType = OfferChainTypeFactory.getInstance().create(offer, chainType, chain,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         sendEvent(offer.getPrimaryKey(), EventTypes.MODIFY, offerChainType.getPrimaryKey(),
                 EventTypes.CREATE, createdBy);
@@ -1162,7 +1162,7 @@ public class OfferControl
             var offerChainType = OfferChainTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      offerChainTypeValue.getPrimaryKey());
             
-            offerChainType.setThruTime(session.START_TIME_LONG);
+            offerChainType.setThruTime(session.getStartTimeLong());
             offerChainType.store();
 
             var offer = offerChainType.getOffer(); // Not Updated
@@ -1171,14 +1171,14 @@ public class OfferControl
             var chainPK = offerChainTypeValue.getChainPK();
             
             offerChainType = OfferChainTypeFactory.getInstance().create(offerPK, chainTypePK, chainPK,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
             
             sendEvent(offerPK, EventTypes.MODIFY, offerChainType.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteOfferChainType(OfferChainType offerChainType, BasePK deletedBy) {
-        offerChainType.setThruTime(session.START_TIME_LONG);
+        offerChainType.setThruTime(session.getStartTimeLong());
         
         sendEvent(offerChainType.getOfferPK(), EventTypes.MODIFY, offerChainType.getPrimaryKey(),
                 EventTypes.DELETE, deletedBy);

@@ -241,7 +241,7 @@ public class MimeTypeControl
 
         var mimeType = MimeTypeFactory.getInstance().create();
         var mimeTypeDetail = MimeTypeDetailFactory.getInstance().create(mimeType, mimeTypeName, entityAttributeType, isDefault, sortOrder,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
         // Convert to R/W
         mimeType = MimeTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -565,7 +565,7 @@ public class MimeTypeControl
                     mimeTypeDetailValue.getMimeTypePK());
             var mimeTypeDetail = mimeType.getActiveDetailForUpdate();
 
-            mimeTypeDetail.setThruTime(session.START_TIME_LONG);
+            mimeTypeDetail.setThruTime(session.getStartTimeLong());
             mimeTypeDetail.store();
 
             var mimeTypePK = mimeTypeDetail.getMimeTypePK(); // Not updated
@@ -591,7 +591,7 @@ public class MimeTypeControl
             }
 
             mimeTypeDetail = MimeTypeDetailFactory.getInstance().create(mimeTypePK, mimeTypeName, entityAttributeTypePK, isDefault, sortOrder,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
             mimeType.setActiveDetail(mimeTypeDetail);
             mimeType.setLastDetail(mimeTypeDetail);
@@ -608,7 +608,7 @@ public class MimeTypeControl
         deleteMimeTypeDescriptionsByMimeType(mimeType, deletedBy);
 
         var mimeTypeDetail = mimeType.getLastDetailForUpdate();
-        mimeTypeDetail.setThruTime(session.START_TIME_LONG);
+        mimeTypeDetail.setThruTime(session.getStartTimeLong());
         mimeType.setActiveDetail(null);
         mimeType.store();
 
@@ -639,7 +639,7 @@ public class MimeTypeControl
     public MimeTypeDescription createMimeTypeDescription(MimeType mimeType,
             Language language, String description, BasePK createdBy) {
         var mimeTypeDescription = MimeTypeDescriptionFactory.getInstance().create(mimeType,
-                language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                language, description, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
         sendEvent(mimeType.getPrimaryKey(), EventTypes.MODIFY, mimeTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -755,7 +755,7 @@ public class MimeTypeControl
             var mimeTypeDescription = MimeTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     mimeTypeDescriptionValue.getPrimaryKey());
 
-            mimeTypeDescription.setThruTime(session.START_TIME_LONG);
+            mimeTypeDescription.setThruTime(session.getStartTimeLong());
             mimeTypeDescription.store();
 
             var mimeType = mimeTypeDescription.getMimeType();
@@ -763,14 +763,14 @@ public class MimeTypeControl
             var description = mimeTypeDescriptionValue.getDescription();
 
             mimeTypeDescription = MimeTypeDescriptionFactory.getInstance().create(mimeType, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
             sendEvent(mimeType.getPrimaryKey(), EventTypes.MODIFY, mimeTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteMimeTypeDescription(MimeTypeDescription mimeTypeDescription, BasePK deletedBy) {
-        mimeTypeDescription.setThruTime(session.START_TIME_LONG);
+        mimeTypeDescription.setThruTime(session.getStartTimeLong());
 
         sendEvent(mimeTypeDescription.getMimeTypePK(), EventTypes.MODIFY, mimeTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 

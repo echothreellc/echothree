@@ -70,7 +70,7 @@ public class PaymentProcessorTypeControl
 
         var paymentProcessorType = PaymentProcessorTypeFactory.getInstance().create();
         var paymentProcessorTypeDetail = PaymentProcessorTypeDetailFactory.getInstance().create(session,
-                paymentProcessorType, paymentProcessorTypeName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                paymentProcessorType, paymentProcessorTypeName, isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
         // Convert to R/W
         paymentProcessorType = PaymentProcessorTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, paymentProcessorType.getPrimaryKey());
@@ -251,7 +251,7 @@ public class PaymentProcessorTypeControl
                     paymentProcessorTypeDetailValue.getPaymentProcessorTypePK());
             var paymentProcessorTypeDetail = paymentProcessorType.getActiveDetailForUpdate();
 
-            paymentProcessorTypeDetail.setThruTime(session.START_TIME_LONG);
+            paymentProcessorTypeDetail.setThruTime(session.getStartTimeLong());
             paymentProcessorTypeDetail.store();
 
             var paymentProcessorTypePK = paymentProcessorTypeDetail.getPaymentProcessorTypePK();
@@ -276,7 +276,7 @@ public class PaymentProcessorTypeControl
             }
 
             paymentProcessorTypeDetail = PaymentProcessorTypeDetailFactory.getInstance().create(paymentProcessorTypePK,
-                    paymentProcessorTypeName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    paymentProcessorTypeName, isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
             paymentProcessorType.setActiveDetail(paymentProcessorTypeDetail);
             paymentProcessorType.setLastDetail(paymentProcessorTypeDetail);
@@ -299,7 +299,7 @@ public class PaymentProcessorTypeControl
         deletePaymentProcessorTypeDescriptionsByPaymentProcessorType(paymentProcessorType, deletedBy);
 
         var paymentProcessorTypeDetail = paymentProcessorType.getLastDetailForUpdate();
-        paymentProcessorTypeDetail.setThruTime(session.START_TIME_LONG);
+        paymentProcessorTypeDetail.setThruTime(session.getStartTimeLong());
         paymentProcessorTypeDetail.store();
         paymentProcessorType.setActiveDetail(null);
 
@@ -330,7 +330,7 @@ public class PaymentProcessorTypeControl
     public PaymentProcessorTypeDescription createPaymentProcessorTypeDescription(final PaymentProcessorType paymentProcessorType,
             final Language language, final String description, final BasePK createdBy) {
         var paymentProcessorTypeDescription = PaymentProcessorTypeDescriptionFactory.getInstance().create(paymentProcessorType,
-                language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                language, description, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
         sendEvent(paymentProcessorType.getPrimaryKey(), EventTypes.MODIFY, paymentProcessorTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -439,7 +439,7 @@ public class PaymentProcessorTypeControl
         if(paymentProcessorTypeDescriptionValue.hasBeenModified()) {
             var paymentProcessorTypeDescription = PaymentProcessorTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, paymentProcessorTypeDescriptionValue.getPrimaryKey());
 
-            paymentProcessorTypeDescription.setThruTime(session.START_TIME_LONG);
+            paymentProcessorTypeDescription.setThruTime(session.getStartTimeLong());
             paymentProcessorTypeDescription.store();
 
             var paymentProcessorType = paymentProcessorTypeDescription.getPaymentProcessorType();
@@ -447,14 +447,14 @@ public class PaymentProcessorTypeControl
             var description = paymentProcessorTypeDescriptionValue.getDescription();
 
             paymentProcessorTypeDescription = PaymentProcessorTypeDescriptionFactory.getInstance().create(paymentProcessorType, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
             sendEvent(paymentProcessorType.getPrimaryKey(), EventTypes.MODIFY, paymentProcessorTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deletePaymentProcessorTypeDescription(final PaymentProcessorTypeDescription paymentProcessorTypeDescription, final BasePK deletedBy) {
-        paymentProcessorTypeDescription.setThruTime(session.START_TIME_LONG);
+        paymentProcessorTypeDescription.setThruTime(session.getStartTimeLong());
 
         sendEvent(paymentProcessorTypeDescription.getPaymentProcessorTypePK(), EventTypes.MODIFY, paymentProcessorTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 

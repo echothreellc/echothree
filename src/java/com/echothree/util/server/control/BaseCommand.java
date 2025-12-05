@@ -61,7 +61,6 @@ import com.echothree.util.server.message.SecurityMessageAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.persistence.ThreadSession;
-import com.echothree.util.server.persistence.ThreadUtils;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.Future;
 import javax.ejb.AsyncResult;
@@ -76,7 +75,6 @@ public abstract class BaseCommand
 
     private final CommandSecurityDefinition commandSecurityDefinition;
 
-    private ThreadUtils.PreservedState preservedState;
     protected Session session;
 
     private UserVisitPK userVisitPK;
@@ -313,7 +311,7 @@ public abstract class BaseCommand
                 var identityVerifiedTime = userSession.getIdentityVerifiedTime();
 
                 if(identityVerifiedTime != null) {
-                    var timeSinceLastCommand = session.START_TIME - userVisit.getLastCommandTime();
+                    var timeSinceLastCommand = session.getStartTime() - userVisit.getLastCommandTime();
 
                     // If it has been > 15 minutes since their last command, invalidate the UserSession.
                     if(timeSinceLastCommand > 15 * 60 * 1000) {
@@ -481,7 +479,6 @@ public abstract class BaseCommand
     }
 
     protected void setupSession() {
-        preservedState = ThreadUtils.preserveState();
         initSession();
     }
 
@@ -491,11 +488,7 @@ public abstract class BaseCommand
     }
 
     protected void teardownSession() {
-        ThreadUtils.close();
         session = null;
-
-        ThreadUtils.restoreState(preservedState);
-        preservedState = null;
     }
 
     public Future<CommandResult> runAsync(UserVisitPK userVisitPK) {
@@ -564,7 +557,7 @@ public abstract class BaseCommand
                 if(getUserVisitForUpdate() == null) {
                     getLog().error("Command not logged, unknown userVisit");
                 } else {
-                    userVisit.setLastCommandTime(Math.max(session.START_TIME, userVisit.getLastCommandTime()));
+                    userVisit.setLastCommandTime(Math.max(session.getStartTime(), userVisit.getLastCommandTime()));
 
                     // TODO: Check PartyTypeAuditPolicy to see if the command should be logged
                     if(logCommand) {
@@ -598,7 +591,7 @@ public abstract class BaseCommand
 
                                     userVisitStatus.setUserVisitCommandSequence(userVisitCommandSequence);
 
-                                    userControl.createUserVisitCommand(userVisit, userVisitCommandSequence, party, command, session.START_TIME_LONG,
+                                    userControl.createUserVisitCommand(userVisit, userVisitCommandSequence, party, command, session.getStartTimeLong(),
                                             System.currentTimeMillis(), hadSecurityErrors, hadValidationErrors, hasExecutionErrors);
                                 } else {
                                     getLog().error("Command not logged, unknown userVisitStatus for " + userVisit.getPrimaryKey());

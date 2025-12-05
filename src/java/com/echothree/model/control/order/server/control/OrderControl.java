@@ -76,7 +76,7 @@ public class OrderControl
         var order = OrderFactory.getInstance().create();
         var orderDetail = OrderDetailFactory.getInstance().create(order, orderType, orderName, orderPriority,
                 currency, holdUntilComplete, allowBackorders, allowSubstitutions, allowCombiningShipments, term,
-                freeOnBoard, reference, description, cancellationPolicy, returnPolicy, taxable, session.START_TIME_LONG,
+                freeOnBoard, reference, description, cancellationPolicy, returnPolicy, taxable, session.getStartTimeLong(),
                 Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -229,7 +229,7 @@ public class OrderControl
             var order = OrderFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, orderDetailValue.getOrderPK());
             var orderDetail = order.getActiveDetailForUpdate();
             
-            orderDetail.setThruTime(session.START_TIME_LONG);
+            orderDetail.setThruTime(session.getStartTimeLong());
             orderDetail.store();
 
             var orderPK = orderDetail.getOrderPK(); // Not updated
@@ -251,7 +251,7 @@ public class OrderControl
             
             orderDetail = OrderDetailFactory.getInstance().create(orderPK, orderTypePK, orderName, orderPriorityPK, currencyPK, holdUntilComplete,
                     allowBackorders, allowSubstitutions, allowCombiningShipments, termPK, freeOnBoardPK, reference, description, cancellationPolicyPK,
-                    returnPolicyPK, taxable, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    returnPolicyPK, taxable, session.getStartTimeLong(), Session.MAX_TIME_LONG);
             
             order.setActiveDetail(orderDetail);
             order.setLastDetail(orderDetail);
@@ -281,7 +281,7 @@ public class OrderControl
             wishlistControl.deleteWishlistByOrder(order, deletedBy);
         }
         
-        orderDetail.setThruTime(session.START_TIME_LONG);
+        orderDetail.setThruTime(session.getStartTimeLong());
         order.setActiveDetail(null);
         order.store();
         
@@ -361,7 +361,7 @@ public class OrderControl
     // --------------------------------------------------------------------------------
     
     public OrderUserVisit createOrderUserVisit(Order order, UserVisit userVisit) {
-        return OrderUserVisitFactory.getInstance().create(order, userVisit, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        return OrderUserVisitFactory.getInstance().create(order, userVisit, session.getStartTimeLong(), Session.MAX_TIME_LONG);
     }
     
     private static final Map<EntityPermission, String> getOrderUserVisitQueries;
@@ -467,7 +467,7 @@ public class OrderControl
     }
     
     public void deleteOrderUserVisit(OrderUserVisit orderUserVisit) {
-        orderUserVisit.setThruTime(session.START_TIME_LONG);
+        orderUserVisit.setThruTime(session.getStartTimeLong());
         orderUserVisit.store();
     }
     

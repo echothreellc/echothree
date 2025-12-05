@@ -118,7 +118,7 @@ public class CreateBlogCommentCommand
                                             if(forumMimeType != null) {
                                                 var title = form.getTitle();
                                                 var rawPostedTime = form.getPostedTime();
-                                                var postedTime = rawPostedTime == null? session.START_TIME_LONG: Long.valueOf(rawPostedTime);
+                                                var postedTime = rawPostedTime == null? session.getStartTimeLong(): Long.valueOf(rawPostedTime);
                                                 var content = form.getContent();
                                                 BasePK createdBy = getPartyPK();
 

@@ -70,7 +70,7 @@ public class FreeOnBoardControl
 
         var freeOnBoard = FreeOnBoardFactory.getInstance().create();
         var freeOnBoardDetail = FreeOnBoardDetailFactory.getInstance().create(session,
-                freeOnBoard, freeOnBoardName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                freeOnBoard, freeOnBoardName, isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
         // Convert to R/W
         freeOnBoard = FreeOnBoardFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, freeOnBoard.getPrimaryKey());
@@ -250,7 +250,7 @@ public class FreeOnBoardControl
                     freeOnBoardDetailValue.getFreeOnBoardPK());
             var freeOnBoardDetail = freeOnBoard.getActiveDetailForUpdate();
 
-            freeOnBoardDetail.setThruTime(session.START_TIME_LONG);
+            freeOnBoardDetail.setThruTime(session.getStartTimeLong());
             freeOnBoardDetail.store();
 
             var freeOnBoardPK = freeOnBoardDetail.getFreeOnBoardPK();
@@ -275,7 +275,7 @@ public class FreeOnBoardControl
             }
 
             freeOnBoardDetail = FreeOnBoardDetailFactory.getInstance().create(freeOnBoardPK,
-                    freeOnBoardName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    freeOnBoardName, isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
             freeOnBoard.setActiveDetail(freeOnBoardDetail);
             freeOnBoard.setLastDetail(freeOnBoardDetail);
@@ -296,7 +296,7 @@ public class FreeOnBoardControl
         deleteFreeOnBoardDescriptionsByFreeOnBoard(freeOnBoard, deletedBy);
 
         var freeOnBoardDetail = freeOnBoard.getLastDetailForUpdate();
-        freeOnBoardDetail.setThruTime(session.START_TIME_LONG);
+        freeOnBoardDetail.setThruTime(session.getStartTimeLong());
         freeOnBoardDetail.store();
         freeOnBoard.setActiveDetail(null);
 
@@ -327,7 +327,7 @@ public class FreeOnBoardControl
     public FreeOnBoardDescription createFreeOnBoardDescription(final FreeOnBoard freeOnBoard,
             final Language language, final String description, final BasePK createdBy) {
         var freeOnBoardDescription = FreeOnBoardDescriptionFactory.getInstance().create(freeOnBoard,
-                language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                language, description, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
         sendEvent(freeOnBoard.getPrimaryKey(), EventTypes.MODIFY, freeOnBoardDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -436,7 +436,7 @@ public class FreeOnBoardControl
         if(freeOnBoardDescriptionValue.hasBeenModified()) {
             var freeOnBoardDescription = FreeOnBoardDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, freeOnBoardDescriptionValue.getPrimaryKey());
 
-            freeOnBoardDescription.setThruTime(session.START_TIME_LONG);
+            freeOnBoardDescription.setThruTime(session.getStartTimeLong());
             freeOnBoardDescription.store();
 
             var freeOnBoard = freeOnBoardDescription.getFreeOnBoard();
@@ -444,14 +444,14 @@ public class FreeOnBoardControl
             var description = freeOnBoardDescriptionValue.getDescription();
 
             freeOnBoardDescription = FreeOnBoardDescriptionFactory.getInstance().create(freeOnBoard, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
             sendEvent(freeOnBoard.getPrimaryKey(), EventTypes.MODIFY, freeOnBoardDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteFreeOnBoardDescription(final FreeOnBoardDescription freeOnBoardDescription, final BasePK deletedBy) {
-        freeOnBoardDescription.setThruTime(session.START_TIME_LONG);
+        freeOnBoardDescription.setThruTime(session.getStartTimeLong());
 
         sendEvent(freeOnBoardDescription.getFreeOnBoardPK(), EventTypes.MODIFY, freeOnBoardDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 

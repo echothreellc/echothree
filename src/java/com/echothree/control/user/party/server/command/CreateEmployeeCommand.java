@@ -177,7 +177,7 @@ public class CreateEmployeeCommand
 
                                             var userLoginPasswordType = userControl.getUserLoginPasswordTypeByName(UserConstants.UserLoginPasswordType_STRING);
                                             var userLoginPassword = userControl.createUserLoginPassword(party, userLoginPasswordType, createdBy);
-                                            userControl.createUserLoginPasswordString(userLoginPassword, password1, session.START_TIME_LONG, false, createdBy);
+                                            userControl.createUserLoginPasswordString(userLoginPassword, password1, session.getStartTimeLong(), false, createdBy);
 
                                             if(partyTypePasswordStringPolicy != null && partyTypePasswordStringPolicy.getLastDetail().getForceChangeAfterCreate()) {
                                                 var userLoginStatus = userControl.getUserLoginStatusForUpdate(party);

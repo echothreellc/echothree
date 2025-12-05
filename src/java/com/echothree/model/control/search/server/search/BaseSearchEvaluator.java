@@ -178,7 +178,7 @@ public abstract class BaseSearchEvaluator
     
     protected Long createUserVisitSearchResults(EntityInstancePKHolder entityInstancePKHolder) {
         Long size;
-        var search = searchControl.createSearch(party, partyVerified, searchType, session.START_TIME_LONG, searchUseType, null, partyPK);
+        var search = searchControl.createSearch(party, partyVerified, searchType, session.getStartTimeLong(), searchUseType, null, partyPK);
 
         if(entityInstancePKHolder == null) {
             size = 0L;
@@ -333,7 +333,7 @@ public abstract class BaseSearchEvaluator
             }
 
             if(cachedSearch != null) {
-                var search = searchControl.createSearch(party, partyVerified, searchType, session.START_TIME_LONG, searchUseType, cachedSearch, partyPK);
+                var search = searchControl.createSearch(party, partyVerified, searchType, session.getStartTimeLong(), searchUseType, cachedSearch, partyPK);
 
                 try {
                     userVisitSearch = searchControl.createUserVisitSearch(userVisit, searchType, search);

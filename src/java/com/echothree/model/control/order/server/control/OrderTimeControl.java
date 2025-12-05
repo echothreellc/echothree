@@ -82,7 +82,7 @@ public class OrderTimeControl
 
         var orderTimeType = OrderTimeTypeFactory.getInstance().create();
         var orderTimeTypeDetail = OrderTimeTypeDetailFactory.getInstance().create(orderTimeType, orderType, orderTimeTypeName, isDefault,
-                sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
         // Convert to R/W
         orderTimeType = OrderTimeTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -294,7 +294,7 @@ public class OrderTimeControl
                      orderTimeTypeDetailValue.getOrderTimeTypePK());
             var orderTimeTypeDetail = orderTimeType.getActiveDetailForUpdate();
 
-            orderTimeTypeDetail.setThruTime(session.START_TIME_LONG);
+            orderTimeTypeDetail.setThruTime(session.getStartTimeLong());
             orderTimeTypeDetail.store();
 
             var orderType = orderTimeTypeDetail.getOrderType(); // Not updated
@@ -321,7 +321,7 @@ public class OrderTimeControl
             }
 
             orderTimeTypeDetail = OrderTimeTypeDetailFactory.getInstance().create(orderTimeTypePK, orderTypePK, orderTimeTypeName, isDefault, sortOrder,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
             orderTimeType.setActiveDetail(orderTimeTypeDetail);
             orderTimeType.setLastDetail(orderTimeTypeDetail);
@@ -339,7 +339,7 @@ public class OrderTimeControl
         deleteOrderTimeTypeDescriptionsByOrderTimeType(orderTimeType, deletedBy);
 
         var orderTimeTypeDetail = orderTimeType.getLastDetailForUpdate();
-        orderTimeTypeDetail.setThruTime(session.START_TIME_LONG);
+        orderTimeTypeDetail.setThruTime(session.getStartTimeLong());
         orderTimeType.setActiveDetail(null);
         orderTimeType.store();
 
@@ -370,7 +370,7 @@ public class OrderTimeControl
 
     public OrderTimeTypeDescription createOrderTimeTypeDescription(OrderTimeType orderTimeType, Language language, String description, BasePK createdBy) {
         var orderTimeTypeDescription = OrderTimeTypeDescriptionFactory.getInstance().create(orderTimeType, language, description,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
         sendEvent(orderTimeType.getPrimaryKey(), EventTypes.MODIFY, orderTimeTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -483,7 +483,7 @@ public class OrderTimeControl
             var orderTimeTypeDescription = OrderTimeTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     orderTimeTypeDescriptionValue.getPrimaryKey());
 
-            orderTimeTypeDescription.setThruTime(session.START_TIME_LONG);
+            orderTimeTypeDescription.setThruTime(session.getStartTimeLong());
             orderTimeTypeDescription.store();
 
             var orderTimeType = orderTimeTypeDescription.getOrderTimeType();
@@ -491,14 +491,14 @@ public class OrderTimeControl
             var description = orderTimeTypeDescriptionValue.getDescription();
 
             orderTimeTypeDescription = OrderTimeTypeDescriptionFactory.getInstance().create(orderTimeType, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
             sendEvent(orderTimeType.getPrimaryKey(), EventTypes.MODIFY, orderTimeTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteOrderTimeTypeDescription(OrderTimeTypeDescription orderTimeTypeDescription, BasePK deletedBy) {
-        orderTimeTypeDescription.setThruTime(session.START_TIME_LONG);
+        orderTimeTypeDescription.setThruTime(session.getStartTimeLong());
 
         sendEvent(orderTimeTypeDescription.getOrderTimeTypePK(), EventTypes.MODIFY, orderTimeTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
@@ -517,7 +517,7 @@ public class OrderTimeControl
     // --------------------------------------------------------------------------------
 
     public OrderTime createOrderTime(Order order, OrderTimeType orderTimeType, Long time, BasePK createdBy) {
-        var orderTime = OrderTimeFactory.getInstance().create(order, orderTimeType, time, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var orderTime = OrderTimeFactory.getInstance().create(order, orderTimeType, time, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
         sendEvent(order.getPrimaryKey(), EventTypes.MODIFY, orderTime.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -674,21 +674,21 @@ public class OrderTimeControl
             var orderTime = OrderTimeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     orderTimeValue.getPrimaryKey());
 
-            orderTime.setThruTime(session.START_TIME_LONG);
+            orderTime.setThruTime(session.getStartTimeLong());
             orderTime.store();
 
             var orderPK = orderTime.getOrderPK(); // Not updated
             var orderTimeTypePK = orderTime.getOrderTimeTypePK(); // Not updated
             var time = orderTimeValue.getTime();
 
-            orderTime = OrderTimeFactory.getInstance().create(orderPK, orderTimeTypePK, time, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+            orderTime = OrderTimeFactory.getInstance().create(orderPK, orderTimeTypePK, time, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
             sendEvent(orderPK, EventTypes.MODIFY, orderTime.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteOrderTime(OrderTime orderTime, BasePK deletedBy) {
-        orderTime.setThruTime(session.START_TIME_LONG);
+        orderTime.setThruTime(session.getStartTimeLong());
 
         sendEvent(orderTime.getOrderTimeTypePK(), EventTypes.MODIFY, orderTime.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
@@ -713,7 +713,7 @@ public class OrderTimeControl
     // --------------------------------------------------------------------------------
 
     public OrderLineTime createOrderLineTime(OrderLine orderLine, OrderTimeType orderTimeType, Long time, BasePK createdBy) {
-        var orderLineTime = OrderLineTimeFactory.getInstance().create(orderLine, orderTimeType, time, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var orderLineTime = OrderLineTimeFactory.getInstance().create(orderLine, orderTimeType, time, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
         sendEvent(orderLine.getPrimaryKey(), EventTypes.MODIFY, orderLineTime.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -873,21 +873,21 @@ public class OrderTimeControl
             var orderLineTime = OrderLineTimeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     orderLineTimeValue.getPrimaryKey());
 
-            orderLineTime.setThruTime(session.START_TIME_LONG);
+            orderLineTime.setThruTime(session.getStartTimeLong());
             orderLineTime.store();
 
             var orderLinePK = orderLineTime.getOrderLinePK(); // Not updated
             var orderTimeTypePK = orderLineTime.getOrderTimeTypePK(); // Not updated
             var time = orderLineTimeValue.getTime();
 
-            orderLineTime = OrderLineTimeFactory.getInstance().create(orderLinePK, orderTimeTypePK, time, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+            orderLineTime = OrderLineTimeFactory.getInstance().create(orderLinePK, orderTimeTypePK, time, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
             sendEvent(orderLinePK, EventTypes.MODIFY, orderLineTime.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteOrderLineTime(OrderLineTime orderLineTime, BasePK deletedBy) {
-        orderLineTime.setThruTime(session.START_TIME_LONG);
+        orderLineTime.setThruTime(session.getStartTimeLong());
 
         sendEvent(orderLineTime.getOrderTimeTypePK(), EventTypes.MODIFY, orderLineTime.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 

@@ -83,7 +83,7 @@ public class GetForumMessagesCommand
             }
 
             if(!hasExecutionErrors()) {
-                if(forumThread.getLastDetail().getPostedTime() <= session.START_TIME
+                if(forumThread.getLastDetail().getPostedTime() <= session.getStartTime()
                         || (getParty() == null ? false : getPartyTypeName().equals(PartyTypes.EMPLOYEE.name()))) {
                     if(form.getUuid() != null || ForumLogic.getInstance().isForumRoleTypePermitted(this, forumThread, getParty(), ForumConstants.ForumRoleType_READER)) {
                         result.setForumMessages(forumControl.getForumMessageTransfersByForumThread(getUserVisit(), forumThread));

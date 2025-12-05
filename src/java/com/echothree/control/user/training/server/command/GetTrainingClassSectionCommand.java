@@ -103,7 +103,7 @@ public class GetTrainingClassSectionCommand
 
                         if(partyTrainingClassSessionStatus != null) {
                             var partyTrainingClassSessionSection = trainingControl.createPartyTrainingClassSessionSection(partyTrainingClassSession,
-                                    trainingClassSection, session.START_TIME_LONG, null, partyPK);
+                                    trainingClassSection, session.getStartTimeLong(), null, partyPK);
 
                             PartyTrainingClassSessionLogic.getInstance().updatePartyTrainingClassSessionStatus(session, partyTrainingClassSessionStatus,
                                     partyTrainingClassSessionSection, null, null);

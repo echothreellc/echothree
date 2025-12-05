@@ -171,7 +171,7 @@ public class CreateUserVisitCampaignCommand
                 }
             }
             
-            campaignControl.createUserVisitCampaign(getUserVisit(), session.START_TIME_LONG, campaign, campaignSource, campaignMedium, campaignTerm,
+            campaignControl.createUserVisitCampaign(getUserVisit(), session.getStartTimeLong(), campaign, campaignSource, campaignMedium, campaignTerm,
                     campaignContent);
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());

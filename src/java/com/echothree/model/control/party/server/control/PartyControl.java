@@ -768,7 +768,7 @@ public class PartyControl
         var personalTitle = PersonalTitleFactory.getInstance().create((PersonalTitleDetailPK)null,
                 (PersonalTitleDetailPK)null);
         var personalTitleDetail = PersonalTitleDetailFactory.getInstance().create(personalTitle,
-                description, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                description, isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         // Convert to R/W
         personalTitle = PersonalTitleFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -940,7 +940,7 @@ public class PartyControl
                     personalTitleDetailValue.getPersonalTitlePK());
             var personalTitleDetail = personalTitle.getActiveDetailForUpdate();
             
-            personalTitleDetail.setThruTime(session.START_TIME_LONG);
+            personalTitleDetail.setThruTime(session.getStartTimeLong());
             personalTitleDetail.store();
 
             var description = personalTitleDetailValue.getDescription();
@@ -964,7 +964,7 @@ public class PartyControl
             }
             
             personalTitleDetail = PersonalTitleDetailFactory.getInstance().create(personalTitle, description, isDefault,
-                    sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
             
             personalTitle.setActiveDetail(personalTitleDetail);
             personalTitle.setLastDetail(personalTitleDetail);
@@ -997,7 +997,7 @@ public class PartyControl
     
     public void deletePersonalTitle(PersonalTitle personalTitle, BasePK deletedBy) {
         var personalTitleDetail = personalTitle.getLastDetailForUpdate();
-        personalTitleDetail.setThruTime(session.START_TIME_LONG);
+        personalTitleDetail.setThruTime(session.getStartTimeLong());
         personalTitle.setActiveDetail(null);
         personalTitle.store();
         
@@ -1040,7 +1040,7 @@ public class PartyControl
 
         var nameSuffix = NameSuffixFactory.getInstance().create();
         var nameSuffixDetail = NameSuffixDetailFactory.getInstance().create(nameSuffix, description,
-                isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         // Convert to R/W
         nameSuffix = NameSuffixFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, nameSuffix.getPrimaryKey());
@@ -1209,7 +1209,7 @@ public class PartyControl
                     nameSuffixDetailValue.getNameSuffixPK());
             var nameSuffixDetail = nameSuffix.getActiveDetailForUpdate();
             
-            nameSuffixDetail.setThruTime(session.START_TIME_LONG);
+            nameSuffixDetail.setThruTime(session.getStartTimeLong());
             nameSuffixDetail.store();
 
             var description = nameSuffixDetailValue.getDescription();
@@ -1233,7 +1233,7 @@ public class PartyControl
             }
             
             nameSuffixDetail = NameSuffixDetailFactory.getInstance().create(nameSuffix, description, isDefault, sortOrder,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
             
             nameSuffix.setActiveDetail(nameSuffixDetail);
             nameSuffix.setLastDetail(nameSuffixDetail);
@@ -1266,7 +1266,7 @@ public class PartyControl
     
     public void deleteNameSuffix(NameSuffix nameSuffix, BasePK deletedBy) {
         var nameSuffixDetail = nameSuffix.getLastDetailForUpdate();
-        nameSuffixDetail.setThruTime(session.START_TIME_LONG);
+        nameSuffixDetail.setThruTime(session.getStartTimeLong());
         nameSuffix.setActiveDetail(null);
         nameSuffix.store();
         
@@ -1299,7 +1299,7 @@ public class PartyControl
 
         var timeZone = TimeZoneFactory.getInstance().create();
         var timeZoneDetail = TimeZoneDetailFactory.getInstance().create(timeZone, javaTimeZoneName,
-                unixTimeZoneName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                unixTimeZoneName, isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         // Convert to R/W
         timeZone = TimeZoneFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, timeZone.getPrimaryKey());
@@ -1450,7 +1450,7 @@ public class PartyControl
     
     public TimeZoneDescription createTimeZoneDescription(TimeZone timeZone, Language language, String description, BasePK createdBy) {
         var timeZoneDescription = TimeZoneDescriptionFactory.getInstance().create(timeZone, language,
-                description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                description, session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         sendEvent(timeZone.getPrimaryKey(), EventTypes.MODIFY, timeZoneDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1581,7 +1581,7 @@ public class PartyControl
             var timeZoneDescription = TimeZoneDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      timeZoneDescriptionValue.getPrimaryKey());
             
-            timeZoneDescription.setThruTime(session.START_TIME_LONG);
+            timeZoneDescription.setThruTime(session.getStartTimeLong());
             timeZoneDescription.store();
 
             var timeZone = timeZoneDescription.getTimeZone();
@@ -1589,14 +1589,14 @@ public class PartyControl
             var description = timeZoneDescriptionValue.getDescription();
             
             timeZoneDescription = TimeZoneDescriptionFactory.getInstance().create(timeZone, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
             
             sendEvent(timeZone.getPrimaryKey(), EventTypes.MODIFY, timeZoneDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteTimeZoneDescription(TimeZoneDescription timeZoneDescription, BasePK deletedBy) {
-        timeZoneDescription.setThruTime(session.START_TIME_LONG);
+        timeZoneDescription.setThruTime(session.getStartTimeLong());
         
         sendEvent(timeZoneDescription.getTimeZonePK(), EventTypes.MODIFY, timeZoneDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
@@ -1625,7 +1625,7 @@ public class PartyControl
                 dateTimeFormatName, javaShortDateFormat, javaAbbrevDateFormat, javaAbbrevDateFormatWeekday, javaLongDateFormat,
                 javaLongDateFormatWeekday, javaTimeFormat, javaTimeFormatSeconds, unixShortDateFormat, unixAbbrevDateFormat,
                 unixAbbrevDateFormatWeekday, unixLongDateFormat, unixLongDateFormatWeekday, unixTimeFormat, unixTimeFormatSeconds,
-                shortDateSeparator, timeSeparator, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                shortDateSeparator, timeSeparator, isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         // Convert to R/W
         dateTimeFormat = DateTimeFormatFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -1778,7 +1778,7 @@ public class PartyControl
     public DateTimeFormatDescription createDateTimeFormatDescription(DateTimeFormat dateTimeFormat, Language language,
             String description, BasePK createdBy) {
         var dateTimeFormatDescription = DateTimeFormatDescriptionFactory.getInstance().create(session,
-                dateTimeFormat, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                dateTimeFormat, language, description, session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         sendEvent(dateTimeFormat.getPrimaryKey(), EventTypes.MODIFY, dateTimeFormatDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1909,7 +1909,7 @@ public class PartyControl
             var dateTimeFormatDescription = DateTimeFormatDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      dateTimeFormatDescriptionValue.getPrimaryKey());
             
-            dateTimeFormatDescription.setThruTime(session.START_TIME_LONG);
+            dateTimeFormatDescription.setThruTime(session.getStartTimeLong());
             dateTimeFormatDescription.store();
 
             var dateTimeFormat = dateTimeFormatDescription.getDateTimeFormat();
@@ -1917,14 +1917,14 @@ public class PartyControl
             var description = dateTimeFormatDescriptionValue.getDescription();
             
             dateTimeFormatDescription = DateTimeFormatDescriptionFactory.getInstance().create(dateTimeFormat, language,
-                    description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    description, session.getStartTimeLong(), Session.MAX_TIME_LONG);
             
             sendEvent(dateTimeFormat.getPrimaryKey(), EventTypes.MODIFY, dateTimeFormatDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteDateTimeFormatDescription(DateTimeFormatDescription dateTimeFormatDescription, BasePK deletedBy) {
-        dateTimeFormatDescription.setThruTime(session.START_TIME_LONG);
+        dateTimeFormatDescription.setThruTime(session.getStartTimeLong());
         
         sendEvent(dateTimeFormatDescription.getDateTimeFormatPK(), EventTypes.MODIFY, dateTimeFormatDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
@@ -1967,7 +1967,7 @@ public class PartyControl
             party = null;
         } else {
             var partyDetail = PartyDetailFactory.getInstance().create(party, partyName, partyType, preferredLanguage,
-                    preferredCurrency, preferredTimeZone, preferredDateTimeFormat, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    preferredCurrency, preferredTimeZone, preferredDateTimeFormat, session.getStartTimeLong(), Session.MAX_TIME_LONG);
             
             // Convert to R/W
             party = PartyFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, party.getPrimaryKey());
@@ -2178,7 +2178,7 @@ public class PartyControl
             var party = PartyFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, partyPK);
             var partyDetail = party.getActiveDetailForUpdate();
             
-            partyDetail.setThruTime(session.START_TIME_LONG);
+            partyDetail.setThruTime(session.getStartTimeLong());
             partyDetail.store();
 
             var partyName = partyDetailValue.getPartyName();
@@ -2189,7 +2189,7 @@ public class PartyControl
             var preferredDateTimeFormatPK = partyDetailValue.getPreferredDateTimeFormatPK();
             
             partyDetail = PartyDetailFactory.getInstance().create(partyPK, partyName, partyTypePK, preferredLanguagePK,
-                    preferredCurrencyPK, preferredTimeZonePK, preferredDateTimeFormatPK, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    preferredCurrencyPK, preferredTimeZonePK, preferredDateTimeFormatPK, session.getStartTimeLong(), Session.MAX_TIME_LONG);
             
             party.setActiveDetail(partyDetail);
             party.setLastDetail(partyDetail);
@@ -2296,7 +2296,7 @@ public class PartyControl
         
         removePartyStatusByParty(party);
 
-        partyDetail.setThruTime(session.START_TIME_LONG);
+        partyDetail.setThruTime(session.getStartTimeLong());
         partyDetail.store();
         party.setActiveDetail(null);
         
@@ -2441,7 +2441,7 @@ public class PartyControl
     // --------------------------------------------------------------------------------
 
     public PartyAlias createPartyAlias(Party party, PartyAliasType partyAliasType, String alias, BasePK createdBy) {
-        var partyAlias = PartyAliasFactory.getInstance().create(party, partyAliasType, alias, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var partyAlias = PartyAliasFactory.getInstance().create(party, partyAliasType, alias, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyAlias.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -2619,21 +2619,21 @@ public class PartyControl
         if(partyAliasValue.hasBeenModified()) {
             var partyAlias = PartyAliasFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, partyAliasValue.getPrimaryKey());
 
-            partyAlias.setThruTime(session.START_TIME_LONG);
+            partyAlias.setThruTime(session.getStartTimeLong());
             partyAlias.store();
 
             var partyPK = partyAlias.getPartyPK();
             var partyAliasTypePK = partyAlias.getPartyAliasTypePK();
             var alias  = partyAliasValue.getAlias();
 
-            partyAlias = PartyAliasFactory.getInstance().create(partyPK, partyAliasTypePK, alias, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+            partyAlias = PartyAliasFactory.getInstance().create(partyPK, partyAliasTypePK, alias, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
             sendEvent(partyPK, EventTypes.MODIFY, partyAlias.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deletePartyAlias(PartyAlias partyAlias, BasePK deletedBy) {
-        partyAlias.setThruTime(session.START_TIME_LONG);
+        partyAlias.setThruTime(session.getStartTimeLong());
 
         sendEvent(partyAlias.getPartyPK(), EventTypes.MODIFY, partyAlias.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
@@ -2750,7 +2750,7 @@ public class PartyControl
 
         var partyAliasType = PartyAliasTypeFactory.getInstance().create();
         var partyAliasTypeDetail = PartyAliasTypeDetailFactory.getInstance().create(partyAliasType, partyType, partyAliasTypeName,
-                validationPattern, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                validationPattern, isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
         // Convert to R/W
         partyAliasType = PartyAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, partyAliasType.getPrimaryKey());
@@ -2953,7 +2953,7 @@ public class PartyControl
                     partyAliasTypeDetailValue.getPartyAliasTypePK());
             var partyAliasTypeDetail = partyAliasType.getActiveDetailForUpdate();
 
-            partyAliasTypeDetail.setThruTime(session.START_TIME_LONG);
+            partyAliasTypeDetail.setThruTime(session.getStartTimeLong());
             partyAliasTypeDetail.store();
 
             var partyAliasTypePK = partyAliasTypeDetail.getPartyAliasTypePK();
@@ -2981,7 +2981,7 @@ public class PartyControl
             }
 
             partyAliasTypeDetail = PartyAliasTypeDetailFactory.getInstance().create(partyAliasTypePK, partyTypePK, partyAliasTypeName,
-                    validationPattern, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    validationPattern, isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
             partyAliasType.setActiveDetail(partyAliasTypeDetail);
             partyAliasType.setLastDetail(partyAliasTypeDetail);
@@ -2999,7 +2999,7 @@ public class PartyControl
         deletePartyAliasTypeDescriptionsByPartyAliasType(partyAliasType, deletedBy);
 
         var partyAliasTypeDetail = partyAliasType.getLastDetailForUpdate();
-        partyAliasTypeDetail.setThruTime(session.START_TIME_LONG);
+        partyAliasTypeDetail.setThruTime(session.getStartTimeLong());
         partyAliasType.setActiveDetail(null);
         partyAliasType.store();
 
@@ -3040,7 +3040,7 @@ public class PartyControl
 
     public PartyAliasTypeDescription createPartyAliasTypeDescription(PartyAliasType partyAliasType, Language language, String description, BasePK createdBy) {
         var partyAliasTypeDescription = PartyAliasTypeDescriptionFactory.getInstance().create(partyAliasType, language,
-                description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                description, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
         sendEvent(partyAliasType.getPrimaryKey(), EventTypes.MODIFY, partyAliasTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -3154,7 +3154,7 @@ public class PartyControl
             var partyAliasTypeDescription = PartyAliasTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      partyAliasTypeDescriptionValue.getPrimaryKey());
 
-            partyAliasTypeDescription.setThruTime(session.START_TIME_LONG);
+            partyAliasTypeDescription.setThruTime(session.getStartTimeLong());
             partyAliasTypeDescription.store();
 
             var partyAliasType = partyAliasTypeDescription.getPartyAliasType();
@@ -3162,14 +3162,14 @@ public class PartyControl
             var description = partyAliasTypeDescriptionValue.getDescription();
 
             partyAliasTypeDescription = PartyAliasTypeDescriptionFactory.getInstance().create(partyAliasType, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
             sendEvent(partyAliasType.getPrimaryKey(), EventTypes.MODIFY, partyAliasTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deletePartyAliasTypeDescription(PartyAliasTypeDescription partyAliasTypeDescription, BasePK deletedBy) {
-        partyAliasTypeDescription.setThruTime(session.START_TIME_LONG);
+        partyAliasTypeDescription.setThruTime(session.getStartTimeLong());
 
         sendEvent(partyAliasTypeDescription.getPartyAliasTypePK(), EventTypes.MODIFY, partyAliasTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
@@ -3340,7 +3340,7 @@ public class PartyControl
     // --------------------------------------------------------------------------------
     
     public PartyGroup createPartyGroup(Party party, String name, BasePK createdBy) {
-        var partyGroup = PartyGroupFactory.getInstance().create(party, name, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var partyGroup = PartyGroupFactory.getInstance().create(party, name, session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyGroup.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -3398,20 +3398,20 @@ public class PartyControl
             var partyGroup = PartyGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     partyGroupValue.getPrimaryKey());
             
-            partyGroup.setThruTime(session.START_TIME_LONG);
+            partyGroup.setThruTime(session.getStartTimeLong());
             partyGroup.store();
 
             var partyPK = partyGroup.getPartyPK();
             var name = partyGroupValue.getName();
             
-            partyGroup = PartyGroupFactory.getInstance().create(partyPK, name, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+            partyGroup = PartyGroupFactory.getInstance().create(partyPK, name, session.getStartTimeLong(), Session.MAX_TIME_LONG);
             
             sendEvent(partyPK, EventTypes.MODIFY, partyGroup.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deletePartyGroup(PartyGroup partyGroup, BasePK deletedBy) {
-        partyGroup.setThruTime(session.START_TIME_LONG);
+        partyGroup.setThruTime(session.getStartTimeLong());
         partyGroup.store();
         
         sendEvent(partyGroup.getPartyPK(), EventTypes.MODIFY, partyGroup.getPrimaryKey(), EventTypes.DELETE, deletedBy);
@@ -3448,7 +3448,7 @@ public class PartyControl
         }
 
         var partyCompany = PartyCompanyFactory.getInstance().create(party, partyCompanyName, isDefault, sortOrder,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyCompany.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -3699,7 +3699,7 @@ public class PartyControl
             var partyCompany = PartyCompanyFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      partyCompanyValue.getPrimaryKey());
             
-            partyCompany.setThruTime(session.START_TIME_LONG);
+            partyCompany.setThruTime(session.getStartTimeLong());
             partyCompany.store();
 
             var partyPK = partyCompanyValue.getPartyPK();
@@ -3724,7 +3724,7 @@ public class PartyControl
             }
             
             partyCompany = PartyCompanyFactory.getInstance().create(partyPK, partyCompanyName, isDefault, sortOrder,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
             
             sendEvent(partyPK, EventTypes.MODIFY, partyCompany.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -3753,7 +3753,7 @@ public class PartyControl
         }
 
         var partyDivision = PartyDivisionFactory.getInstance().create(party, companyParty, partyDivisionName,
-                isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyDivision.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -4051,7 +4051,7 @@ public class PartyControl
             var partyDivision = PartyDivisionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      partyDivisionValue.getPrimaryKey());
             
-            partyDivision.setThruTime(session.START_TIME_LONG);
+            partyDivision.setThruTime(session.getStartTimeLong());
             partyDivision.store();
 
             var partyPK = partyDivisionValue.getPartyPK();
@@ -4077,7 +4077,7 @@ public class PartyControl
             }
             
             partyDivision = PartyDivisionFactory.getInstance().create(partyPK, companyParty.getPrimaryKey(), partyDivisionName,
-                    isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
             
             sendEvent(partyPK, EventTypes.MODIFY, partyDivision.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -4106,7 +4106,7 @@ public class PartyControl
         }
 
         var partyDepartment = PartyDepartmentFactory.getInstance().create(party, divisionParty,
-                partyDepartmentName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                partyDepartmentName, isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyDepartment.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -4405,7 +4405,7 @@ public class PartyControl
             var partyDepartment = PartyDepartmentFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      partyDepartmentValue.getPrimaryKey());
             
-            partyDepartment.setThruTime(session.START_TIME_LONG);
+            partyDepartment.setThruTime(session.getStartTimeLong());
             partyDepartment.store();
 
             var partyPK = partyDepartmentValue.getPartyPK();
@@ -4431,7 +4431,7 @@ public class PartyControl
             }
             
             partyDepartment = PartyDepartmentFactory.getInstance().create(partyPK, companyParty.getPrimaryKey(), partyDepartmentName,
-                    isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
             
             sendEvent(partyPK, EventTypes.MODIFY, partyDepartment.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -4448,7 +4448,7 @@ public class PartyControl
     public Person createPerson(Party party, PersonalTitle personalTitle, String firstName, String firstNameSdx, String middleName, String middleNameSdx,
             String lastName, String lastNameSdx, NameSuffix nameSuffix, BasePK createdBy) {
         var person = PersonFactory.getInstance().create(party, personalTitle, firstName, firstNameSdx, middleName, middleNameSdx, lastName, lastNameSdx,
-                nameSuffix, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                nameSuffix, session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, person.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -4522,7 +4522,7 @@ public class PartyControl
             var person = PersonFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     personValue.getPrimaryKey());
             
-            person.setThruTime(session.START_TIME_LONG);
+            person.setThruTime(session.getStartTimeLong());
             person.store();
 
             var partyPK = person.getPartyPK();
@@ -4536,14 +4536,14 @@ public class PartyControl
             var nameSuffixPK = personValue.getNameSuffixPK();
             
             person = PersonFactory.getInstance().create(partyPK, personalTitlePK, firstName, firstNameSdx, middleName, middleNameSdx, lastName, lastNameSdx,
-                    nameSuffixPK, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    nameSuffixPK, session.getStartTimeLong(), Session.MAX_TIME_LONG);
             
             sendEvent(partyPK, EventTypes.MODIFY, person.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deletePerson(Person person, BasePK deletedBy) {
-        person.setThruTime(session.START_TIME_LONG);
+        person.setThruTime(session.getStartTimeLong());
         person.store();
         
         sendEvent(person.getPartyPK(), EventTypes.MODIFY, person.getPrimaryKey(), EventTypes.DELETE, deletedBy);
@@ -4568,7 +4568,7 @@ public class PartyControl
     public PartyRelationship createPartyRelationship(PartyRelationshipType partyRelationshipType, Party fromParty,
             RoleType fromRoleType, Party toParty, RoleType toRoleType, BasePK createdBy) {
         var partyRelationship = PartyRelationshipFactory.getInstance().create(partyRelationshipType,
-                fromParty, fromRoleType, toParty, toRoleType, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                fromParty, fromRoleType, toParty, toRoleType, session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         sendEvent(fromParty.getPrimaryKey(), EventTypes.MODIFY, partyRelationship.getPrimaryKey(), EventTypes.CREATE, createdBy);
         sendEvent(toParty.getPrimaryKey(), EventTypes.MODIFY, partyRelationship.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -4790,7 +4790,7 @@ public class PartyControl
     }
 
     public void deletePartyRelationship(PartyRelationship partyRelationship, BasePK deletedBy) {
-        partyRelationship.setThruTime(session.START_TIME_LONG);
+        partyRelationship.setThruTime(session.getStartTimeLong());
         
         sendEvent(partyRelationship.getFromPartyPK(), EventTypes.MODIFY, partyRelationship.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         sendEvent(partyRelationship.getToPartyPK(), EventTypes.MODIFY, partyRelationship.getPrimaryKey(), EventTypes.DELETE, deletedBy);
@@ -4814,7 +4814,7 @@ public class PartyControl
     public PartyTypeAuditPolicy createPartyTypeAuditPolicy(PartyType partyType, Boolean auditCommands, Long retainUserVisitsTime, BasePK createdBy) {
         var partyTypeAuditPolicy = PartyTypeAuditPolicyFactory.getInstance().create();
         var partyTypeAuditPolicyDetail = PartyTypeAuditPolicyDetailFactory.getInstance().create(partyTypeAuditPolicy, partyType, auditCommands, retainUserVisitsTime,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
         // Convert to R/W
         partyTypeAuditPolicy = PartyTypeAuditPolicyFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, partyTypeAuditPolicy.getPrimaryKey());
@@ -4886,7 +4886,7 @@ public class PartyControl
                     partyTypeAuditPolicyDetailValue.getPartyTypeAuditPolicyPK());
             var partyTypeAuditPolicyDetail = partyTypeAuditPolicy.getActiveDetailForUpdate();
 
-            partyTypeAuditPolicyDetail.setThruTime(session.START_TIME_LONG);
+            partyTypeAuditPolicyDetail.setThruTime(session.getStartTimeLong());
             partyTypeAuditPolicyDetail.store();
 
             var partyTypeAuditPolicyPK = partyTypeAuditPolicyDetail.getPartyTypeAuditPolicyPK();
@@ -4895,7 +4895,7 @@ public class PartyControl
             var retainUserVisitsTime = partyTypeAuditPolicyDetail.getRetainUserVisitsTime();
 
             partyTypeAuditPolicyDetail = PartyTypeAuditPolicyDetailFactory.getInstance().create(partyTypeAuditPolicyPK, partyTypePK, auditCommands, retainUserVisitsTime,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
             partyTypeAuditPolicy.setActiveDetail(partyTypeAuditPolicyDetail);
             partyTypeAuditPolicy.setLastDetail(partyTypeAuditPolicyDetail);
@@ -4906,7 +4906,7 @@ public class PartyControl
     
     public void deletePartyTypeAuditPolicy(PartyTypeAuditPolicy partyTypeAuditPolicy, BasePK deletedBy) {
         var partyTypeAuditPolicyDetail = partyTypeAuditPolicy.getLastDetailForUpdate();
-        partyTypeAuditPolicyDetail.setThruTime(session.START_TIME_LONG);
+        partyTypeAuditPolicyDetail.setThruTime(session.getStartTimeLong());
         partyTypeAuditPolicy.setActiveDetail(null);
         partyTypeAuditPolicy.store();
         
@@ -4922,7 +4922,7 @@ public class PartyControl
         var partyTypeLockoutPolicy = PartyTypeLockoutPolicyFactory.getInstance().create();
         var partyTypeLockoutPolicyDetail = PartyTypeLockoutPolicyDetailFactory.getInstance().create(session,
                 partyTypeLockoutPolicy, partyType, lockoutFailureCount, resetFailureCountTime, manualLockoutReset,
-                lockoutInactiveTime, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                lockoutInactiveTime, session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         // Convert to R/W
         partyTypeLockoutPolicy = PartyTypeLockoutPolicyFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -4995,7 +4995,7 @@ public class PartyControl
                      partyTypeLockoutPolicyDetailValue.getPartyTypeLockoutPolicyPK());
             var partyTypeLockoutPolicyDetail = partyTypeLockoutPolicy.getActiveDetailForUpdate();
             
-            partyTypeLockoutPolicyDetail.setThruTime(session.START_TIME_LONG);
+            partyTypeLockoutPolicyDetail.setThruTime(session.getStartTimeLong());
             partyTypeLockoutPolicyDetail.store();
 
             var partyTypeLockoutPolicyPK = partyTypeLockoutPolicyDetail.getPartyTypeLockoutPolicyPK();
@@ -5007,7 +5007,7 @@ public class PartyControl
             
             partyTypeLockoutPolicyDetail = PartyTypeLockoutPolicyDetailFactory.getInstance().create(session,
                     partyTypeLockoutPolicyPK, partyTypePK, lockoutFailureCount, resetFailureCountTime, manualLockoutReset,
-                    lockoutInactiveTime, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    lockoutInactiveTime, session.getStartTimeLong(), Session.MAX_TIME_LONG);
             
             partyTypeLockoutPolicy.setActiveDetail(partyTypeLockoutPolicyDetail);
             partyTypeLockoutPolicy.setLastDetail(partyTypeLockoutPolicyDetail);
@@ -5018,7 +5018,7 @@ public class PartyControl
     
     public void deletePartyTypeLockoutPolicy(PartyTypeLockoutPolicy partyTypeLockoutPolicy, BasePK deletedBy) {
         var partyTypeLockoutPolicyDetail = partyTypeLockoutPolicy.getLastDetailForUpdate();
-        partyTypeLockoutPolicyDetail.setThruTime(session.START_TIME_LONG);
+        partyTypeLockoutPolicyDetail.setThruTime(session.getStartTimeLong());
         partyTypeLockoutPolicy.setActiveDetail(null);
         partyTypeLockoutPolicy.store();
         
@@ -5039,7 +5039,7 @@ public class PartyControl
                 partyTypePasswordStringPolicy, partyType, forceChangeAfterCreate, forceChangeAfterReset, allowChange, passwordHistory,
                 minimumPasswordLifetime, maximumPasswordLifetime, expirationWarningTime, expiredLoginsPermitted, minimumLength,
                 maximumLength, requiredDigitCount, requiredLetterCount, requiredUpperCaseCount, requiredLowerCaseCount,
-                maximumRepeated, minimumCharacterTypes, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                maximumRepeated, minimumCharacterTypes, session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         // Convert to R/W
         partyTypePasswordStringPolicy = PartyTypePasswordStringPolicyFactory.getInstance().getEntityFromPK(session,
@@ -5112,7 +5112,7 @@ public class PartyControl
                      partyTypePasswordStringPolicyDetailValue.getPartyTypePasswordStringPolicyPK());
             var partyTypePasswordStringPolicyDetail = partyTypePasswordStringPolicy.getActiveDetailForUpdate();
             
-            partyTypePasswordStringPolicyDetail.setThruTime(session.START_TIME_LONG);
+            partyTypePasswordStringPolicyDetail.setThruTime(session.getStartTimeLong());
             partyTypePasswordStringPolicyDetail.store();
 
             var partyTypePasswordStringPolicyPK = partyTypePasswordStringPolicyDetail.getPartyTypePasswordStringPolicyPK();
@@ -5138,7 +5138,7 @@ public class PartyControl
                     partyTypePasswordStringPolicyPK, partyTypePK, forceChangeAfterCreate, forceChangeAfterReset, allowChange, passwordHistory,
                     minimumPasswordLifetime, maximumPasswordLifetime, expirationWarningTime, expiredLoginsPermitted, minimumLength,
                     maximumLength, requiredDigitCount, requiredLetterCount, requiredUpperCaseCount, requiredLowerCaseCount,
-                    maximumRepeated, minimumCharacterTypes, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    maximumRepeated, minimumCharacterTypes, session.getStartTimeLong(), Session.MAX_TIME_LONG);
             
             partyTypePasswordStringPolicy.setActiveDetail(partyTypePasswordStringPolicyDetail);
             partyTypePasswordStringPolicy.setLastDetail(partyTypePasswordStringPolicyDetail);
@@ -5149,7 +5149,7 @@ public class PartyControl
     
     public void deletePartyTypePasswordStringPolicy(PartyTypePasswordStringPolicy partyTypePasswordStringPolicy, BasePK deletedBy) {
         var partyTypePasswordStringPolicyDetail = partyTypePasswordStringPolicy.getLastDetailForUpdate();
-        partyTypePasswordStringPolicyDetail.setThruTime(session.START_TIME_LONG);
+        partyTypePasswordStringPolicyDetail.setThruTime(session.getStartTimeLong());
         partyTypePasswordStringPolicy.setActiveDetail(null);
         partyTypePasswordStringPolicy.store();
         
@@ -5175,7 +5175,7 @@ public class PartyControl
 
         var gender = GenderFactory.getInstance().create();
         var genderDetail = GenderDetailFactory.getInstance().create(gender, genderName, isDefault, sortOrder,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         // Convert to R/W
         gender = GenderFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, gender.getPrimaryKey());
@@ -5347,7 +5347,7 @@ public class PartyControl
                 EntityPermission.READ_WRITE, genderDetailValue.getGenderPK());
         var genderDetail = gender.getActiveDetailForUpdate();
         
-        genderDetail.setThruTime(session.START_TIME_LONG);
+        genderDetail.setThruTime(session.getStartTimeLong());
         genderDetail.store();
 
         var genderPK = genderDetail.getGenderPK();
@@ -5372,7 +5372,7 @@ public class PartyControl
         }
         
         genderDetail = GenderDetailFactory.getInstance().create(genderPK, genderName, isDefault, sortOrder,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         gender.setActiveDetail(genderDetail);
         gender.setLastDetail(genderDetail);
@@ -5389,7 +5389,7 @@ public class PartyControl
         deleteGenderDescriptionsByGender(gender, deletedBy);
 
         var genderDetail = gender.getLastDetailForUpdate();
-        genderDetail.setThruTime(session.START_TIME_LONG);
+        genderDetail.setThruTime(session.getStartTimeLong());
         gender.setActiveDetail(null);
         gender.store();
         
@@ -5419,7 +5419,7 @@ public class PartyControl
     
     public GenderDescription createGenderDescription(Gender gender, Language language, String description, BasePK createdBy) {
         var genderDescription = GenderDescriptionFactory.getInstance().create(gender, language, description,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         sendEvent(gender.getPrimaryKey(), EventTypes.MODIFY, genderDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -5550,7 +5550,7 @@ public class PartyControl
             var genderDescription = GenderDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      genderDescriptionValue.getPrimaryKey());
             
-            genderDescription.setThruTime(session.START_TIME_LONG);
+            genderDescription.setThruTime(session.getStartTimeLong());
             genderDescription.store();
 
             var gender = genderDescription.getGender();
@@ -5558,14 +5558,14 @@ public class PartyControl
             var description = genderDescriptionValue.getDescription();
             
             genderDescription = GenderDescriptionFactory.getInstance().create(gender, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
             
             sendEvent(gender.getPrimaryKey(), EventTypes.MODIFY, genderDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteGenderDescription(GenderDescription genderDescription, BasePK deletedBy) {
-        genderDescription.setThruTime(session.START_TIME_LONG);
+        genderDescription.setThruTime(session.getStartTimeLong());
         
         sendEvent(genderDescription.getGenderPK(), EventTypes.MODIFY, genderDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
@@ -5597,7 +5597,7 @@ public class PartyControl
         }
 
         var mood = MoodFactory.getInstance().create();
-        var moodDetail = MoodDetailFactory.getInstance().create(mood, moodName, icon, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var moodDetail = MoodDetailFactory.getInstance().create(mood, moodName, icon, isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         // Convert to R/W
         mood = MoodFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, mood.getPrimaryKey());
@@ -5769,7 +5769,7 @@ public class PartyControl
                 EntityPermission.READ_WRITE, moodDetailValue.getMoodPK());
         var moodDetail = mood.getActiveDetailForUpdate();
         
-        moodDetail.setThruTime(session.START_TIME_LONG);
+        moodDetail.setThruTime(session.getStartTimeLong());
         moodDetail.store();
 
         var moodPK = moodDetail.getMoodPK();
@@ -5795,7 +5795,7 @@ public class PartyControl
         }
         
         moodDetail = MoodDetailFactory.getInstance().create(moodPK, moodName, iconPK, isDefault, sortOrder,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         mood.setActiveDetail(moodDetail);
         mood.setLastDetail(moodDetail);
@@ -5812,7 +5812,7 @@ public class PartyControl
         deleteMoodDescriptionsByMood(mood, deletedBy);
 
         var moodDetail = mood.getLastDetailForUpdate();
-        moodDetail.setThruTime(session.START_TIME_LONG);
+        moodDetail.setThruTime(session.getStartTimeLong());
         mood.setActiveDetail(null);
         mood.store();
         
@@ -5842,7 +5842,7 @@ public class PartyControl
     
     public MoodDescription createMoodDescription(Mood mood, Language language, String description, BasePK createdBy) {
         var moodDescription = MoodDescriptionFactory.getInstance().create(mood, language, description,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         sendEvent(mood.getPrimaryKey(), EventTypes.MODIFY, moodDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -5973,7 +5973,7 @@ public class PartyControl
             var moodDescription = MoodDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      moodDescriptionValue.getPrimaryKey());
             
-            moodDescription.setThruTime(session.START_TIME_LONG);
+            moodDescription.setThruTime(session.getStartTimeLong());
             moodDescription.store();
 
             var mood = moodDescription.getMood();
@@ -5981,14 +5981,14 @@ public class PartyControl
             var description = moodDescriptionValue.getDescription();
             
             moodDescription = MoodDescriptionFactory.getInstance().create(mood, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
             
             sendEvent(mood.getPrimaryKey(), EventTypes.MODIFY, moodDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteMoodDescription(MoodDescription moodDescription, BasePK deletedBy) {
-        moodDescription.setThruTime(session.START_TIME_LONG);
+        moodDescription.setThruTime(session.getStartTimeLong());
         
         sendEvent(moodDescription.getMoodPK(), EventTypes.MODIFY, moodDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
@@ -6021,7 +6021,7 @@ public class PartyControl
 
         var birthdayFormat = BirthdayFormatFactory.getInstance().create();
         var birthdayFormatDetail = BirthdayFormatDetailFactory.getInstance().create(birthdayFormat,
-                birthdayFormatName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                birthdayFormatName, isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
         // Convert to R/W
         birthdayFormat = BirthdayFormatFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -6243,7 +6243,7 @@ public class PartyControl
                      birthdayFormatDetailValue.getBirthdayFormatPK());
             var birthdayFormatDetail = birthdayFormat.getActiveDetailForUpdate();
 
-            birthdayFormatDetail.setThruTime(session.START_TIME_LONG);
+            birthdayFormatDetail.setThruTime(session.getStartTimeLong());
             birthdayFormatDetail.store();
 
             var birthdayFormatPK = birthdayFormatDetail.getBirthdayFormatPK();
@@ -6268,7 +6268,7 @@ public class PartyControl
             }
 
             birthdayFormatDetail = BirthdayFormatDetailFactory.getInstance().create(birthdayFormatPK, birthdayFormatName,
-                    isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
             birthdayFormat.setActiveDetail(birthdayFormatDetail);
             birthdayFormat.setLastDetail(birthdayFormatDetail);
@@ -6285,7 +6285,7 @@ public class PartyControl
         deleteBirthdayFormatDescriptionsByBirthdayFormat(birthdayFormat, deletedBy);
 
         var birthdayFormatDetail = birthdayFormat.getLastDetailForUpdate();
-        birthdayFormatDetail.setThruTime(session.START_TIME_LONG);
+        birthdayFormatDetail.setThruTime(session.getStartTimeLong());
         birthdayFormat.setActiveDetail(null);
         birthdayFormat.store();
 
@@ -6317,7 +6317,7 @@ public class PartyControl
             BasePK createdBy) {
         var birthdayFormatDescription = BirthdayFormatDescriptionFactory.getInstance().create(birthdayFormat,
                 language, description,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
         sendEvent(birthdayFormat.getPrimaryKey(), EventTypes.MODIFY, birthdayFormatDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -6449,7 +6449,7 @@ public class PartyControl
             var birthdayFormatDescription = BirthdayFormatDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      birthdayFormatDescriptionValue.getPrimaryKey());
 
-            birthdayFormatDescription.setThruTime(session.START_TIME_LONG);
+            birthdayFormatDescription.setThruTime(session.getStartTimeLong());
             birthdayFormatDescription.store();
 
             var birthdayFormat = birthdayFormatDescription.getBirthdayFormat();
@@ -6457,14 +6457,14 @@ public class PartyControl
             var description = birthdayFormatDescriptionValue.getDescription();
 
             birthdayFormatDescription = BirthdayFormatDescriptionFactory.getInstance().create(birthdayFormat, language,
-                    description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    description, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
             sendEvent(birthdayFormat.getPrimaryKey(), EventTypes.MODIFY, birthdayFormatDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteBirthdayFormatDescription(BirthdayFormatDescription birthdayFormatDescription, BasePK deletedBy) {
-        birthdayFormatDescription.setThruTime(session.START_TIME_LONG);
+        birthdayFormatDescription.setThruTime(session.getStartTimeLong());
 
         sendEvent(birthdayFormatDescription.getBirthdayFormatPK(), EventTypes.MODIFY, birthdayFormatDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
@@ -6486,7 +6486,7 @@ public class PartyControl
             String bio, MimeType signatureMimeType, String signature, BasePK createdBy) {
         var profile = ProfileFactory.getInstance().create(party, nickname, icon, pronunciation, gender, pronouns,
                 birthday, birthdayFormat, occupation, hobbies, location, bioMimeType, bio, signatureMimeType, signature,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, profile.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -6582,7 +6582,7 @@ public class PartyControl
             var profile = ProfileFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     profileValue.getPrimaryKey());
             
-            profile.setThruTime(session.START_TIME_LONG);
+            profile.setThruTime(session.getStartTimeLong());
             profile.store();
 
             var partyPK = profile.getPartyPK();
@@ -6603,14 +6603,14 @@ public class PartyControl
             
             profile = ProfileFactory.getInstance().create(partyPK, nickname, iconPK, pronunciation, genderPK, pronouns,
                     birthday, birthdayFormatPK, occupation, hobbies, location, bioMimeTypePK, bio, signatureMimeTypePK,
-                    signature, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    signature, session.getStartTimeLong(), Session.MAX_TIME_LONG);
             
             sendEvent(partyPK, EventTypes.MODIFY, profile.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteProfile(Profile profile, BasePK deletedBy) {
-        profile.setThruTime(session.START_TIME_LONG);
+        profile.setThruTime(session.getStartTimeLong());
         profile.store();
         
         sendEvent(profile.getPartyPK(), EventTypes.MODIFY, profile.getPrimaryKey(), EventTypes.DELETE, deletedBy);

@@ -129,7 +129,7 @@ public class ScaleControl
 
         var scaleType = ScaleTypeFactory.getInstance().create();
         var scaleTypeDetail = ScaleTypeDetailFactory.getInstance().create(scaleType,
-                scaleTypeName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                scaleTypeName, isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
         // Convert to R/W
         scaleType = ScaleTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -307,7 +307,7 @@ public class ScaleControl
                      scaleTypeDetailValue.getScaleTypePK());
             var scaleTypeDetail = scaleType.getActiveDetailForUpdate();
 
-            scaleTypeDetail.setThruTime(session.START_TIME_LONG);
+            scaleTypeDetail.setThruTime(session.getStartTimeLong());
             scaleTypeDetail.store();
 
             var scaleTypePK = scaleTypeDetail.getScaleTypePK(); // Not updated
@@ -332,7 +332,7 @@ public class ScaleControl
             }
 
             scaleTypeDetail = ScaleTypeDetailFactory.getInstance().create(scaleTypePK, scaleTypeName, isDefault,
-                    sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
             scaleType.setActiveDetail(scaleTypeDetail);
             scaleType.setLastDetail(scaleTypeDetail);
@@ -350,7 +350,7 @@ public class ScaleControl
         deleteScalesByScaleType(scaleType, deletedBy);
 
         var scaleTypeDetail = scaleType.getLastDetailForUpdate();
-        scaleTypeDetail.setThruTime(session.START_TIME_LONG);
+        scaleTypeDetail.setThruTime(session.getStartTimeLong());
         scaleType.setActiveDetail(null);
         scaleType.store();
 
@@ -381,7 +381,7 @@ public class ScaleControl
     public ScaleTypeDescription createScaleTypeDescription(ScaleType scaleType,
             Language language, String description, BasePK createdBy) {
         var scaleTypeDescription = ScaleTypeDescriptionFactory.getInstance().create(scaleType,
-                language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                language, description, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
         sendEvent(scaleType.getPrimaryKey(), EventTypes.MODIFY, scaleTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -497,7 +497,7 @@ public class ScaleControl
             var scaleTypeDescription = ScaleTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     scaleTypeDescriptionValue.getPrimaryKey());
 
-            scaleTypeDescription.setThruTime(session.START_TIME_LONG);
+            scaleTypeDescription.setThruTime(session.getStartTimeLong());
             scaleTypeDescription.store();
 
             var scaleType = scaleTypeDescription.getScaleType();
@@ -505,14 +505,14 @@ public class ScaleControl
             var description = scaleTypeDescriptionValue.getDescription();
 
             scaleTypeDescription = ScaleTypeDescriptionFactory.getInstance().create(scaleType, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
             sendEvent(scaleType.getPrimaryKey(), EventTypes.MODIFY, scaleTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteScaleTypeDescription(ScaleTypeDescription scaleTypeDescription, BasePK deletedBy) {
-        scaleTypeDescription.setThruTime(session.START_TIME_LONG);
+        scaleTypeDescription.setThruTime(session.getStartTimeLong());
 
         sendEvent(scaleTypeDescription.getScaleTypePK(), EventTypes.MODIFY, scaleTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
@@ -546,7 +546,7 @@ public class ScaleControl
 
         var scale = ScaleFactory.getInstance().create();
         var scaleDetail = ScaleDetailFactory.getInstance().create(scale, scaleName, scaleType, serverService, isDefault, sortOrder,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
         // Convert to R/W
         scale = ScaleFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, scale.getPrimaryKey());
@@ -791,7 +791,7 @@ public class ScaleControl
                      scaleDetailValue.getScalePK());
             var scaleDetail = scale.getActiveDetailForUpdate();
 
-            scaleDetail.setThruTime(session.START_TIME_LONG);
+            scaleDetail.setThruTime(session.getStartTimeLong());
             scaleDetail.store();
 
             var scalePK = scaleDetail.getScalePK(); // Not updated
@@ -818,7 +818,7 @@ public class ScaleControl
             }
 
             scaleDetail = ScaleDetailFactory.getInstance().create(scalePK, scaleName, scaleTypePK, serverServicePK, isDefault, sortOrder,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
             scale.setActiveDetail(scaleDetail);
             scale.setLastDetail(scaleDetail);
@@ -837,7 +837,7 @@ public class ScaleControl
         deleteScaleDescriptionsByScale(scale, deletedBy);
         deletePartyScaleUsesByScale(scale, deletedBy);
 
-        scaleDetail.setThruTime(session.START_TIME_LONG);
+        scaleDetail.setThruTime(session.getStartTimeLong());
         scale.setActiveDetail(null);
         scale.store();
 
@@ -891,7 +891,7 @@ public class ScaleControl
     public ScaleDescription createScaleDescription(Scale scale,
             Language language, String description, BasePK createdBy) {
         var scaleDescription = ScaleDescriptionFactory.getInstance().create(scale,
-                language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                language, description, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
         sendEvent(scale.getPrimaryKey(), EventTypes.MODIFY, scaleDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -1007,7 +1007,7 @@ public class ScaleControl
             var scaleDescription = ScaleDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     scaleDescriptionValue.getPrimaryKey());
 
-            scaleDescription.setThruTime(session.START_TIME_LONG);
+            scaleDescription.setThruTime(session.getStartTimeLong());
             scaleDescription.store();
 
             var scale = scaleDescription.getScale();
@@ -1015,14 +1015,14 @@ public class ScaleControl
             var description = scaleDescriptionValue.getDescription();
 
             scaleDescription = ScaleDescriptionFactory.getInstance().create(scale, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
             sendEvent(scale.getPrimaryKey(), EventTypes.MODIFY, scaleDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteScaleDescription(ScaleDescription scaleDescription, BasePK deletedBy) {
-        scaleDescription.setThruTime(session.START_TIME_LONG);
+        scaleDescription.setThruTime(session.getStartTimeLong());
 
         sendEvent(scaleDescription.getScalePK(), EventTypes.MODIFY, scaleDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
@@ -1055,7 +1055,7 @@ public class ScaleControl
 
         var scaleUseType = ScaleUseTypeFactory.getInstance().create();
         var scaleUseTypeDetail = ScaleUseTypeDetailFactory.getInstance().create(scaleUseType,
-                scaleUseTypeName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                scaleUseTypeName, isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
         // Convert to R/W
         scaleUseType = ScaleUseTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -1233,7 +1233,7 @@ public class ScaleControl
                      scaleUseTypeDetailValue.getScaleUseTypePK());
             var scaleUseTypeDetail = scaleUseType.getActiveDetailForUpdate();
 
-            scaleUseTypeDetail.setThruTime(session.START_TIME_LONG);
+            scaleUseTypeDetail.setThruTime(session.getStartTimeLong());
             scaleUseTypeDetail.store();
 
             var scaleUseTypePK = scaleUseTypeDetail.getScaleUseTypePK(); // Not updated
@@ -1258,7 +1258,7 @@ public class ScaleControl
             }
 
             scaleUseTypeDetail = ScaleUseTypeDetailFactory.getInstance().create(scaleUseTypePK, scaleUseTypeName, isDefault,
-                    sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
             scaleUseType.setActiveDetail(scaleUseTypeDetail);
             scaleUseType.setLastDetail(scaleUseTypeDetail);
@@ -1276,7 +1276,7 @@ public class ScaleControl
         deletePartyScaleUsesByScaleUseType(scaleUseType, deletedBy);
 
         var scaleUseTypeDetail = scaleUseType.getLastDetailForUpdate();
-        scaleUseTypeDetail.setThruTime(session.START_TIME_LONG);
+        scaleUseTypeDetail.setThruTime(session.getStartTimeLong());
         scaleUseType.setActiveDetail(null);
         scaleUseType.store();
 
@@ -1307,7 +1307,7 @@ public class ScaleControl
     public ScaleUseTypeDescription createScaleUseTypeDescription(ScaleUseType scaleUseType,
             Language language, String description, BasePK createdBy) {
         var scaleUseTypeDescription = ScaleUseTypeDescriptionFactory.getInstance().create(scaleUseType,
-                language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                language, description, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
         sendEvent(scaleUseType.getPrimaryKey(), EventTypes.MODIFY, scaleUseTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -1423,7 +1423,7 @@ public class ScaleControl
             var scaleUseTypeDescription = ScaleUseTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     scaleUseTypeDescriptionValue.getPrimaryKey());
 
-            scaleUseTypeDescription.setThruTime(session.START_TIME_LONG);
+            scaleUseTypeDescription.setThruTime(session.getStartTimeLong());
             scaleUseTypeDescription.store();
 
             var scaleUseType = scaleUseTypeDescription.getScaleUseType();
@@ -1431,14 +1431,14 @@ public class ScaleControl
             var description = scaleUseTypeDescriptionValue.getDescription();
 
             scaleUseTypeDescription = ScaleUseTypeDescriptionFactory.getInstance().create(scaleUseType, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
             sendEvent(scaleUseType.getPrimaryKey(), EventTypes.MODIFY, scaleUseTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteScaleUseTypeDescription(ScaleUseTypeDescription scaleUseTypeDescription, BasePK deletedBy) {
-        scaleUseTypeDescription.setThruTime(session.START_TIME_LONG);
+        scaleUseTypeDescription.setThruTime(session.getStartTimeLong());
 
         sendEvent(scaleUseTypeDescription.getScaleUseTypePK(), EventTypes.MODIFY, scaleUseTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
@@ -1458,7 +1458,7 @@ public class ScaleControl
     
     public PartyScaleUse createPartyScaleUse(Party party, ScaleUseType scaleUseType, Scale scale, BasePK createdBy) {
         var partyScaleUse = PartyScaleUseFactory.getInstance().create(party, scaleUseType, scale,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyScaleUse.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1639,7 +1639,7 @@ public class ScaleControl
             var partyScaleUse = PartyScaleUseFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     partyScaleUseValue.getPrimaryKey());
             
-            partyScaleUse.setThruTime(session.START_TIME_LONG);
+            partyScaleUse.setThruTime(session.getStartTimeLong());
             partyScaleUse.store();
 
             var partyPK = partyScaleUse.getPartyPK(); // Not updated
@@ -1647,14 +1647,14 @@ public class ScaleControl
             var scalePK = partyScaleUseValue.getScalePK();
             
             partyScaleUse = PartyScaleUseFactory.getInstance().create(partyPK, scaleUseTypePK,
-                    scalePK, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    scalePK, session.getStartTimeLong(), Session.MAX_TIME_LONG);
             
             sendEvent(partyPK, EventTypes.MODIFY, partyScaleUse.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deletePartyScaleUse(PartyScaleUse partyScaleUse, BasePK deletedBy) {
-        partyScaleUse.setThruTime(session.START_TIME_LONG);
+        partyScaleUse.setThruTime(session.getStartTimeLong());
 
         sendEvent(partyScaleUse.getPartyPK(), EventTypes.MODIFY, partyScaleUse.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }

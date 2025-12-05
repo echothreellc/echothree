@@ -57,7 +57,7 @@ public class OfferNameElementControl
             String validationPattern, BasePK createdBy) {
         var offerNameElement = OfferNameElementFactory.getInstance().create();
         var offerNameElementDetail = OfferNameElementDetailFactory.getInstance().create(session,
-                offerNameElement, offerNameElementName, offset, length, validationPattern, session.START_TIME_LONG,
+                offerNameElement, offerNameElementName, offset, length, validationPattern, session.getStartTimeLong(),
                 Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -193,7 +193,7 @@ public class OfferNameElementControl
                      offerNameElementDetailValue.getOfferNameElementPK());
             var offerNameElementDetail = offerNameElement.getActiveDetailForUpdate();
             
-            offerNameElementDetail.setThruTime(session.START_TIME_LONG);
+            offerNameElementDetail.setThruTime(session.getStartTimeLong());
             offerNameElementDetail.store();
 
             var offerNameElementPK = offerNameElementDetail.getOfferNameElementPK();
@@ -203,7 +203,7 @@ public class OfferNameElementControl
             var validationPattern = offerNameElementDetailValue.getValidationPattern();
             
             offerNameElementDetail = OfferNameElementDetailFactory.getInstance().create(offerNameElementPK,
-                    offerNameElementName, offset, length, validationPattern, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    offerNameElementName, offset, length, validationPattern, session.getStartTimeLong(), Session.MAX_TIME_LONG);
             
             offerNameElement.setActiveDetail(offerNameElementDetail);
             offerNameElement.setLastDetail(offerNameElementDetail);
@@ -216,7 +216,7 @@ public class OfferNameElementControl
         deleteOfferNameElementDescriptionsByOfferNameElement(offerNameElement, deletedBy);
 
         var offerNameElementDetail = offerNameElement.getLastDetailForUpdate();
-        offerNameElementDetail.setThruTime(session.START_TIME_LONG);
+        offerNameElementDetail.setThruTime(session.getStartTimeLong());
         offerNameElement.setActiveDetail(null);
         offerNameElement.store();
         
@@ -230,7 +230,7 @@ public class OfferNameElementControl
     public OfferNameElementDescription createOfferNameElementDescription(OfferNameElement offerNameElement, Language language,
             String description, BasePK createdBy) {
         var offerNameElementDescription = OfferNameElementDescriptionFactory.getInstance().create(session,
-                offerNameElement, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                offerNameElement, language, description, session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         sendEvent(offerNameElement.getPrimaryKey(), EventTypes.MODIFY,
                 offerNameElementDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -364,7 +364,7 @@ public class OfferNameElementControl
             var offerNameElementDescription = OfferNameElementDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      offerNameElementDescriptionValue.getPrimaryKey());
             
-            offerNameElementDescription.setThruTime(session.START_TIME_LONG);
+            offerNameElementDescription.setThruTime(session.getStartTimeLong());
             offerNameElementDescription.store();
 
             var offerNameElement = offerNameElementDescription.getOfferNameElement();
@@ -372,7 +372,7 @@ public class OfferNameElementControl
             var description = offerNameElementDescriptionValue.getDescription();
             
             offerNameElementDescription = OfferNameElementDescriptionFactory.getInstance().create(offerNameElement,
-                    language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    language, description, session.getStartTimeLong(), Session.MAX_TIME_LONG);
             
             sendEvent(offerNameElement.getPrimaryKey(), EventTypes.MODIFY,
                     offerNameElementDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -380,7 +380,7 @@ public class OfferNameElementControl
     }
     
     public void deleteOfferNameElementDescription(OfferNameElementDescription offerNameElementDescription, BasePK deletedBy) {
-        offerNameElementDescription.setThruTime(session.START_TIME_LONG);
+        offerNameElementDescription.setThruTime(session.getStartTimeLong());
         
         sendEvent(offerNameElementDescription.getOfferNameElementPK(), EventTypes.MODIFY,
                 offerNameElementDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);

@@ -40,7 +40,7 @@ public class DateTimeFieldType
         String result = null;
 
         if(fieldValue.equalsIgnoreCase("NOW")) {
-            result = getSession().START_TIME_LONG.toString();
+            result = getSession().getStartTimeLong().toString();
         } else {
             var dateTimeFormatDetail = getPreferredDateTimeFormat().getLastDetail();
             var zoneId = ZoneId.of(getPreferredTimeZone().getLastDetail().getJavaTimeZoneName());

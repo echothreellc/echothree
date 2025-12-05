@@ -83,8 +83,8 @@ public class CreateCacheEntryCommand
                             var clob = form.getClob();
 
                             if(clob != null) {
-                                cacheEntryControl.createCacheEntry(cacheEntryKey, mimeType, session.START_TIME_LONG,
-                                        validForTime == null ? null : session.START_TIME + validForTime, clob, null, entityRefs);
+                                cacheEntryControl.createCacheEntry(cacheEntryKey, mimeType, session.getStartTimeLong(),
+                                        validForTime == null ? null : session.getStartTime() + validForTime, clob, null, entityRefs);
                             } else {
                                 addExecutionError(ExecutionErrors.MissingClob.name());
                             }
@@ -92,8 +92,8 @@ public class CreateCacheEntryCommand
                             var blob = form.getBlob();
 
                             if(blob != null) {
-                                cacheEntryControl.createCacheEntry(cacheEntryKey, mimeType, session.START_TIME_LONG,
-                                        validForTime == null ? null : session.START_TIME + validForTime, null, blob, entityRefs);
+                                cacheEntryControl.createCacheEntry(cacheEntryKey, mimeType, session.getStartTimeLong(),
+                                        validForTime == null ? null : session.getStartTime() + validForTime, null, blob, entityRefs);
                             } else {
                                 addExecutionError(ExecutionErrors.MissingBlob.name());
                             }

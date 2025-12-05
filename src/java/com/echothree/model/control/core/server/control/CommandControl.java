@@ -82,7 +82,7 @@ public class CommandControl
     public Command createCommand(ComponentVendor componentVendor, String commandName, Integer sortOrder, BasePK createdBy) {
         var command = commandFactory.create();
         var commandDetail = commandDetailFactory.create(command, componentVendor,
-                commandName, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                commandName, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
         // Convert to R/W
         command = commandFactory.getEntityFromPK(EntityPermission.READ_WRITE, command.getPrimaryKey());
@@ -221,7 +221,7 @@ public class CommandControl
                     commandDetailValue.getCommandPK());
             var commandDetail = command.getActiveDetailForUpdate();
 
-            commandDetail.setThruTime(session.START_TIME_LONG);
+            commandDetail.setThruTime(session.getStartTimeLong());
             commandDetail.store();
 
             var commandPK = commandDetail.getCommandPK();
@@ -230,7 +230,7 @@ public class CommandControl
             var sortOrder = commandDetailValue.getSortOrder();
 
             commandDetail = commandDetailFactory.create(commandPK, componentVendorPK, commandName,
-                    sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
             command.setActiveDetail(commandDetail);
             command.setLastDetail(commandDetail);
@@ -243,7 +243,7 @@ public class CommandControl
         deleteCommandDescriptionsByCommand(command, deletedBy);
 
         var commandDetail = command.getLastDetailForUpdate();
-        commandDetail.setThruTime(session.START_TIME_LONG);
+        commandDetail.setThruTime(session.getStartTimeLong());
         command.setActiveDetail(null);
         command.store();
 
@@ -268,7 +268,7 @@ public class CommandControl
     public CommandDescription createCommandDescription(Command command, Language language, String description,
             BasePK createdBy) {
         var commandDescription = commandDescriptionFactory.create(command,
-                language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                language, description, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
         sendEvent(command.getPrimaryKey(), EventTypes.MODIFY, commandDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -401,7 +401,7 @@ public class CommandControl
             var commandDescription = commandDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     commandDescriptionValue.getPrimaryKey());
 
-            commandDescription.setThruTime(session.START_TIME_LONG);
+            commandDescription.setThruTime(session.getStartTimeLong());
             commandDescription.store();
 
             var command = commandDescription.getCommand();
@@ -409,14 +409,14 @@ public class CommandControl
             var description = commandDescriptionValue.getDescription();
 
             commandDescription = commandDescriptionFactory.create(command, language,
-                    description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    description, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
             sendEvent(command.getPrimaryKey(), EventTypes.MODIFY, commandDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteCommandDescription(CommandDescription commandDescription, BasePK deletedBy) {
-        commandDescription.setThruTime(session.START_TIME_LONG);
+        commandDescription.setThruTime(session.getStartTimeLong());
 
         sendEvent(commandDescription.getCommandPK(), EventTypes.MODIFY, commandDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
@@ -454,7 +454,7 @@ public class CommandControl
 
         var commandMessageType = commandMessageTypeFactory.create();
         var commandMessageTypeDetail = commandMessageTypeDetailFactory.create(commandMessageType,
-                commandMessageTypeName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                commandMessageTypeName, isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
         // Convert to R/W
         commandMessageType = commandMessageTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
@@ -628,7 +628,7 @@ public class CommandControl
                     commandMessageTypeDetailValue.getCommandMessageTypePK());
             var commandMessageTypeDetail = commandMessageType.getActiveDetailForUpdate();
 
-            commandMessageTypeDetail.setThruTime(session.START_TIME_LONG);
+            commandMessageTypeDetail.setThruTime(session.getStartTimeLong());
             commandMessageTypeDetail.store();
 
             var commandMessageTypePK = commandMessageTypeDetail.getCommandMessageTypePK();
@@ -653,7 +653,7 @@ public class CommandControl
             }
 
             commandMessageTypeDetail = commandMessageTypeDetailFactory.create(commandMessageTypePK, commandMessageTypeName, isDefault,
-                    sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
             commandMessageType.setActiveDetail(commandMessageTypeDetail);
             commandMessageType.setLastDetail(commandMessageTypeDetail);
@@ -671,7 +671,7 @@ public class CommandControl
         deleteCommandMessageTypeDescriptionsByCommandMessageType(commandMessageType, deletedBy);
 
         var commandMessageTypeDetail = commandMessageType.getLastDetailForUpdate();
-        commandMessageTypeDetail.setThruTime(session.START_TIME_LONG);
+        commandMessageTypeDetail.setThruTime(session.getStartTimeLong());
         commandMessageType.setActiveDetail(null);
         commandMessageType.store();
 
@@ -706,7 +706,7 @@ public class CommandControl
             Language language, String description, BasePK createdBy) {
         var commandMessageTypeDescription = commandMessageTypeDescriptionFactory.create(commandMessageType,
                 language, description,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
         sendEvent(commandMessageType.getPrimaryKey(), EventTypes.MODIFY, commandMessageTypeDescription.getPrimaryKey(),
                 null, createdBy);
@@ -839,7 +839,7 @@ public class CommandControl
             var commandMessageTypeDescription = commandMessageTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     commandMessageTypeDescriptionValue.getPrimaryKey());
 
-            commandMessageTypeDescription.setThruTime(session.START_TIME_LONG);
+            commandMessageTypeDescription.setThruTime(session.getStartTimeLong());
             commandMessageTypeDescription.store();
 
             var commandMessageType = commandMessageTypeDescription.getCommandMessageType();
@@ -847,7 +847,7 @@ public class CommandControl
             var description = commandMessageTypeDescriptionValue.getDescription();
 
             commandMessageTypeDescription = commandMessageTypeDescriptionFactory.create(commandMessageType, language,
-                    description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    description, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
             sendEvent(commandMessageType.getPrimaryKey(), EventTypes.MODIFY, commandMessageTypeDescription.getPrimaryKey(),
                     null, updatedBy);
@@ -855,7 +855,7 @@ public class CommandControl
     }
 
     public void deleteCommandMessageTypeDescription(CommandMessageTypeDescription commandMessageTypeDescription, BasePK deletedBy) {
-        commandMessageTypeDescription.setThruTime(session.START_TIME_LONG);
+        commandMessageTypeDescription.setThruTime(session.getStartTimeLong());
 
         sendEvent(commandMessageTypeDescription.getCommandMessageTypePK(), EventTypes.MODIFY,
                 commandMessageTypeDescription.getPrimaryKey(), null, deletedBy);
@@ -882,7 +882,7 @@ public class CommandControl
     public CommandMessage createCommandMessage(CommandMessageType commandMessageType, String commandMessageKey, BasePK createdBy) {
         var commandMessage = commandMessageFactory.create();
         var commandMessageDetail = commandMessageDetailFactory.create(commandMessage,
-                commandMessageType, commandMessageKey, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                commandMessageType, commandMessageKey, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
         // Convert to R/W
         commandMessage = commandMessageFactory.getEntityFromPK(EntityPermission.READ_WRITE,
@@ -1008,7 +1008,7 @@ public class CommandControl
                     commandMessageDetailValue.getCommandMessagePK());
             var commandMessageDetail = commandMessage.getActiveDetailForUpdate();
 
-            commandMessageDetail.setThruTime(session.START_TIME_LONG);
+            commandMessageDetail.setThruTime(session.getStartTimeLong());
             commandMessageDetail.store();
 
             var commandMessagePK = commandMessageDetail.getCommandMessagePK();
@@ -1016,7 +1016,7 @@ public class CommandControl
             var commandMessageKey = commandMessageDetailValue.getCommandMessageKey();
 
             commandMessageDetail = commandMessageDetailFactory.create(commandMessagePK, commandMessageTypePK, commandMessageKey,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
             commandMessage.setActiveDetail(commandMessageDetail);
             commandMessage.setLastDetail(commandMessageDetail);
@@ -1029,7 +1029,7 @@ public class CommandControl
         deleteCommandMessageTranslationsByCommandMessage(commandMessage, deletedBy);
 
         var commandMessageDetail = commandMessage.getLastDetailForUpdate();
-        commandMessageDetail.setThruTime(session.START_TIME_LONG);
+        commandMessageDetail.setThruTime(session.getStartTimeLong());
         commandMessage.setActiveDetail(null);
         commandMessage.store();
 
@@ -1055,7 +1055,7 @@ public class CommandControl
     
     public CommandMessageTranslation createCommandMessageTranslation(CommandMessage commandMessage, Language language, String translation, BasePK createdBy) {
         var commandMessageTranslation = commandMessageTranslationFactory.create(commandMessage, language, translation,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
         sendEvent(commandMessageTranslation.getCommandMessagePK(), EventTypes.MODIFY, commandMessageTranslation.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -1184,14 +1184,14 @@ public class CommandControl
             var commandMessageTranslation = commandMessageTranslationFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     commandMessageTranslationValue.getPrimaryKey());
 
-            commandMessageTranslation.setThruTime(session.START_TIME_LONG);
+            commandMessageTranslation.setThruTime(session.getStartTimeLong());
             commandMessageTranslation.store();
 
             var commandMessagePK = commandMessageTranslation.getCommandMessagePK(); // Not updated
             var languagePK = commandMessageTranslation.getLanguagePK(); // Not updated
             var translation = commandMessageTranslationValue.getTranslation();
 
-            commandMessageTranslation = commandMessageTranslationFactory.create(commandMessagePK, languagePK, translation, session.START_TIME_LONG,
+            commandMessageTranslation = commandMessageTranslationFactory.create(commandMessagePK, languagePK, translation, session.getStartTimeLong(),
                     Session.MAX_TIME_LONG);
 
             sendEvent(commandMessagePK, EventTypes.MODIFY, commandMessageTranslation.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -1199,7 +1199,7 @@ public class CommandControl
     }
 
     public void deleteCommandMessageTranslation(CommandMessageTranslation commandMessageTranslation, BasePK deletedBy) {
-        commandMessageTranslation.setThruTime(session.START_TIME_LONG);
+        commandMessageTranslation.setThruTime(session.getStartTimeLong());
 
         sendEvent(commandMessageTranslation.getCommandMessagePK(), EventTypes.MODIFY, commandMessageTranslation.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }

@@ -116,7 +116,7 @@ public class GetTrainingClassQuestionCommand
                                 }
 
                                 var partyTrainingClassSessionAnswer = trainingControl.createPartyTrainingClassSessionAnswer(partyTrainingClassSessionQuestion,
-                                        null, session.START_TIME_LONG, null, partyPK);
+                                        null, session.getStartTimeLong(), null, partyPK);
 
                                 PartyTrainingClassSessionLogic.getInstance().updatePartyTrainingClassSessionStatus(session, partyTrainingClassSessionStatus,
                                         null, null, partyTrainingClassSessionQuestion);

@@ -126,7 +126,7 @@ public class TaxControl
 
         var taxClassification = TaxClassificationFactory.getInstance().create();
         var taxClassificationDetail = TaxClassificationDetailFactory.getInstance().create(session, taxClassification, countryGeoCode,
-                taxClassificationName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                taxClassificationName, isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
         // Convert to R/W
         taxClassification = TaxClassificationFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -332,7 +332,7 @@ public class TaxControl
                      taxClassificationDetailValue.getTaxClassificationPK());
             var taxClassificationDetail = taxClassification.getActiveDetailForUpdate();
 
-            taxClassificationDetail.setThruTime(session.START_TIME_LONG);
+            taxClassificationDetail.setThruTime(session.getStartTimeLong());
             taxClassificationDetail.store();
 
             var taxClassificationPK = taxClassificationDetail.getTaxClassificationPK();
@@ -359,7 +359,7 @@ public class TaxControl
             }
 
             taxClassificationDetail = TaxClassificationDetailFactory.getInstance().create(taxClassificationPK, countryGeoCodePK, taxClassificationName,
-                    isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
             taxClassification.setActiveDetail(taxClassificationDetail);
             taxClassification.setLastDetail(taxClassificationDetail);
@@ -377,7 +377,7 @@ public class TaxControl
         deleteItemTaxClassificationsByTaxClassification(taxClassification, deletedBy);
 
         var taxClassificationDetail = taxClassification.getLastDetailForUpdate();
-        taxClassificationDetail.setThruTime(session.START_TIME_LONG);
+        taxClassificationDetail.setThruTime(session.getStartTimeLong());
         taxClassification.setActiveDetail(null);
         taxClassification.store();
 
@@ -419,7 +419,7 @@ public class TaxControl
     public TaxClassificationTranslation createTaxClassificationTranslation(TaxClassification taxClassification,
             Language language, String description, MimeType overviewMimeType, String overview, BasePK createdBy) {
         var taxClassificationTranslation = TaxClassificationTranslationFactory.getInstance().create(taxClassification,
-                language, description, overviewMimeType, overview, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                language, description, overviewMimeType, overview, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
         sendEvent(taxClassification.getPrimaryKey(), EventTypes.MODIFY, taxClassificationTranslation.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -525,7 +525,7 @@ public class TaxControl
             var taxClassificationTranslation = TaxClassificationTranslationFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      taxClassificationTranslationValue.getPrimaryKey());
 
-            taxClassificationTranslation.setThruTime(session.START_TIME_LONG);
+            taxClassificationTranslation.setThruTime(session.getStartTimeLong());
             taxClassificationTranslation.store();
 
             var taxClassificationPK = taxClassificationTranslation.getTaxClassificationPK();
@@ -535,14 +535,14 @@ public class TaxControl
             var overview = taxClassificationTranslationValue.getOverview();
 
             taxClassificationTranslation = TaxClassificationTranslationFactory.getInstance().create(taxClassificationPK,
-                    languagePK, description, overviewMimeTypePK, overview, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    languagePK, description, overviewMimeTypePK, overview, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
             sendEvent(taxClassificationPK, EventTypes.MODIFY, taxClassificationTranslation.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteTaxClassificationTranslation(TaxClassificationTranslation taxClassificationTranslation, BasePK deletedBy) {
-        taxClassificationTranslation.setThruTime(session.START_TIME_LONG);
+        taxClassificationTranslation.setThruTime(session.getStartTimeLong());
 
         sendEvent(taxClassificationTranslation.getTaxClassificationPK(), EventTypes.MODIFY, taxClassificationTranslation.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
@@ -563,7 +563,7 @@ public class TaxControl
     public ItemTaxClassification createItemTaxClassification(Item item, GeoCode countryGeoCode, TaxClassification taxClassification, BasePK createdBy) {
         var itemTaxClassification = ItemTaxClassificationFactory.getInstance().create();
         var itemTaxClassificationDetail = ItemTaxClassificationDetailFactory.getInstance().create(session,
-                itemTaxClassification, item, countryGeoCode, taxClassification, session.START_TIME_LONG,
+                itemTaxClassification, item, countryGeoCode, taxClassification, session.getStartTimeLong(),
                 Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -748,7 +748,7 @@ public class TaxControl
                      itemTaxClassificationDetailValue.getItemTaxClassificationPK());
             var itemTaxClassificationDetail = itemTaxClassification.getActiveDetailForUpdate();
 
-            itemTaxClassificationDetail.setThruTime(session.START_TIME_LONG);
+            itemTaxClassificationDetail.setThruTime(session.getStartTimeLong());
             itemTaxClassificationDetail.store();
 
             var itemTaxClassificationPK = itemTaxClassificationDetail.getItemTaxClassificationPK();
@@ -757,7 +757,7 @@ public class TaxControl
             var taxClassificationPK = itemTaxClassificationDetailValue.getTaxClassificationPK();
 
             itemTaxClassificationDetail = ItemTaxClassificationDetailFactory.getInstance().create(itemTaxClassificationPK, itemPK, countryGeoCodePK,
-                    taxClassificationPK, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    taxClassificationPK, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
             itemTaxClassification.setActiveDetail(itemTaxClassificationDetail);
             itemTaxClassification.setLastDetail(itemTaxClassificationDetail);
@@ -768,7 +768,7 @@ public class TaxControl
 
     public void deleteItemTaxClassification(ItemTaxClassification itemTaxClassification, BasePK deletedBy) {
         var itemTaxClassificationDetail = itemTaxClassification.getLastDetailForUpdate();
-        itemTaxClassificationDetail.setThruTime(session.START_TIME_LONG);
+        itemTaxClassificationDetail.setThruTime(session.getStartTimeLong());
         itemTaxClassification.setActiveDetail(null);
         itemTaxClassification.store();
 
@@ -815,7 +815,7 @@ public class TaxControl
         var tax = TaxFactory.getInstance().create();
         var taxDetail = TaxDetailFactory.getInstance().create(tax, taxName, contactMechanismPurpose, glAccount,
                 includeShippingCharge, includeProcessingCharge, includeInsuranceCharge, percent, isDefault, sortOrder,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         // Convert to R/W
         tax = TaxFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, tax.getPrimaryKey());
@@ -954,7 +954,7 @@ public class TaxControl
                      taxDetailValue.getTaxPK());
             var taxDetail = tax.getActiveDetailForUpdate();
             
-            taxDetail.setThruTime(session.START_TIME_LONG);
+            taxDetail.setThruTime(session.getStartTimeLong());
             taxDetail.store();
 
             var taxPK = taxDetail.getTaxPK();
@@ -986,7 +986,7 @@ public class TaxControl
             
             taxDetail = TaxDetailFactory.getInstance().create(taxPK, taxName, contactMechanismPurposePK, glAccountPK,
                     includeShippingCharge, includeProcessingCharge, includeInsuranceCharge, percent, isDefault, sortOrder,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
             
             tax.setActiveDetail(taxDetail);
             tax.setLastDetail(taxDetail);
@@ -1004,7 +1004,7 @@ public class TaxControl
         deleteGeoCodeTaxesByTax(tax, deletedBy);
 
         var taxDetail = tax.getLastDetailForUpdate();
-        taxDetail.setThruTime(session.START_TIME_LONG);
+        taxDetail.setThruTime(session.getStartTimeLong());
         tax.setActiveDetail(null);
         tax.store();
         
@@ -1034,7 +1034,7 @@ public class TaxControl
     
     public TaxDescription createTaxDescription(Tax tax, Language language, String description, BasePK createdBy) {
         var taxDescription = TaxDescriptionFactory.getInstance().create(tax, language, description,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         sendEvent(tax.getPrimaryKey(), EventTypes.MODIFY, taxDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1168,7 +1168,7 @@ public class TaxControl
             var taxDescription = TaxDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     taxDescriptionValue.getPrimaryKey());
             
-            taxDescription.setThruTime(session.START_TIME_LONG);
+            taxDescription.setThruTime(session.getStartTimeLong());
             taxDescription.store();
 
             var tax = taxDescription.getTax();
@@ -1176,14 +1176,14 @@ public class TaxControl
             var description = taxDescriptionValue.getDescription();
             
             taxDescription = TaxDescriptionFactory.getInstance().create(tax, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
             
             sendEvent(tax.getPrimaryKey(), EventTypes.MODIFY, taxDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteTaxDescription(TaxDescription taxDescription, BasePK deletedBy) {
-        taxDescription.setThruTime(session.START_TIME_LONG);
+        taxDescription.setThruTime(session.getStartTimeLong());
         
         sendEvent(taxDescription.getTaxPK(), EventTypes.MODIFY,
                 taxDescription.getPrimaryKey(), null, deletedBy);
@@ -1202,7 +1202,7 @@ public class TaxControl
     // --------------------------------------------------------------------------------
     
     public GeoCodeTax createGeoCodeTax(GeoCode geoCode, Tax tax, BasePK createdBy) {
-        var geoCodeTax = GeoCodeTaxFactory.getInstance().create(geoCode, tax, session.START_TIME_LONG,
+        var geoCodeTax = GeoCodeTaxFactory.getInstance().create(geoCode, tax, session.getStartTimeLong(),
                 Session.MAX_TIME_LONG);
         
         sendEvent(geoCode.getPrimaryKey(), EventTypes.MODIFY, geoCodeTax.getPrimaryKey(), null, createdBy);
@@ -1363,7 +1363,7 @@ public class TaxControl
     }
     
     public void deleteGeoCodeTax(GeoCodeTax geoCodeTax, BasePK deletedBy) {
-        geoCodeTax.setThruTime(session.START_TIME_LONG);
+        geoCodeTax.setThruTime(session.getStartTimeLong());
         
         sendEvent(geoCodeTax.getGeoCodePK(), EventTypes.MODIFY, geoCodeTax.getPrimaryKey(), null, deletedBy);
         sendEvent(geoCodeTax.getTaxPK(), EventTypes.MODIFY, geoCodeTax.getPrimaryKey(), null, deletedBy);

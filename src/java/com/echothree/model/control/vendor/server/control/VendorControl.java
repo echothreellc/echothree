@@ -168,7 +168,7 @@ public class VendorControl
                 defaultFreeOnBoard, defaultCancellationPolicy, defaultReturnPolicy, defaultApGlAccount,
                 defaultHoldUntilComplete, defaultAllowBackorders, defaultAllowSubstitutions, defaultAllowCombiningShipments,
                 defaultRequireReference, defaultAllowReferenceDuplicates, defaultReferenceValidationPattern, isDefault,
-                sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         // Convert to R/W
         vendorType = VendorTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -373,7 +373,7 @@ public class VendorControl
                      vendorTypeDetailValue.getVendorTypePK());
             var vendorTypeDetail = vendorType.getActiveDetailForUpdate();
             
-            vendorTypeDetail.setThruTime(session.START_TIME_LONG);
+            vendorTypeDetail.setThruTime(session.getStartTimeLong());
             vendorTypeDetail.store();
 
             var vendorTypePK = vendorTypeDetail.getVendorTypePK();
@@ -413,7 +413,7 @@ public class VendorControl
                     defaultFreeOnBoardPK, defaultCancellationPolicyPK, defaultReturnPolicyPK, defaultApGlAccountPK,
                     defaultHoldUntilComplete, defaultAllowBackorders, defaultAllowSubstitutions, defaultAllowCombiningShipments,
                     defaultRequireReference, defaultAllowReferenceDuplicates, defaultReferenceValidationPattern, isDefault,
-                    sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
             
             vendorType.setActiveDetail(vendorTypeDetail);
             vendorType.setLastDetail(vendorTypeDetail);
@@ -430,7 +430,7 @@ public class VendorControl
         deleteVendorTypeDescriptionsByVendorType(vendorType, deletedBy);
 
         var vendorTypeDetail = vendorType.getLastDetailForUpdate();
-        vendorTypeDetail.setThruTime(session.START_TIME_LONG);
+        vendorTypeDetail.setThruTime(session.getStartTimeLong());
         vendorType.setActiveDetail(null);
         vendorType.store();
         
@@ -462,7 +462,7 @@ public class VendorControl
             BasePK createdBy) {
         var vendorTypeDescription = VendorTypeDescriptionFactory.getInstance().create(vendorType,
                 language, description,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         sendEvent(vendorType.getPrimaryKey(), EventTypes.MODIFY, vendorTypeDescription.getPrimaryKey(),
                 null, createdBy);
@@ -599,7 +599,7 @@ public class VendorControl
             var vendorTypeDescription = VendorTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      vendorTypeDescriptionValue.getPrimaryKey());
             
-            vendorTypeDescription.setThruTime(session.START_TIME_LONG);
+            vendorTypeDescription.setThruTime(session.getStartTimeLong());
             vendorTypeDescription.store();
 
             var vendorType = vendorTypeDescription.getVendorType();
@@ -607,7 +607,7 @@ public class VendorControl
             var description = vendorTypeDescriptionValue.getDescription();
             
             vendorTypeDescription = VendorTypeDescriptionFactory.getInstance().create(vendorType, language,
-                    description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    description, session.getStartTimeLong(), Session.MAX_TIME_LONG);
             
             sendEvent(vendorType.getPrimaryKey(), EventTypes.MODIFY, vendorTypeDescription.getPrimaryKey(),
                     null, updatedBy);
@@ -615,7 +615,7 @@ public class VendorControl
     }
     
     public void deleteVendorTypeDescription(VendorTypeDescription vendorTypeDescription, BasePK deletedBy) {
-        vendorTypeDescription.setThruTime(session.START_TIME_LONG);
+        vendorTypeDescription.setThruTime(session.getStartTimeLong());
         
         sendEvent(vendorTypeDescription.getVendorTypePK(), EventTypes.MODIFY,
                 vendorTypeDescription.getPrimaryKey(), null, deletedBy);
@@ -644,7 +644,7 @@ public class VendorControl
                 useItemPurchasingCategories, defaultItemAliasType, cancellationPolicy, returnPolicy,
                 apGlAccount, holdUntilComplete, allowBackorders, allowSubstitutions, allowCombiningShipments,
                 requireReference, allowReferenceDuplicates, referenceValidationPattern, vendorItemSelector,
-                vendorItemCostFilter, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                vendorItemCostFilter, session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, vendor.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -889,7 +889,7 @@ public class VendorControl
         if(vendorValue.hasBeenModified()) {
             var vendor = VendorFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, vendorValue.getPrimaryKey());
             
-            vendor.setThruTime(session.START_TIME_LONG);
+            vendor.setThruTime(session.getStartTimeLong());
             vendor.store();
 
             var partyPK = vendor.getPartyPK(); // Not updated
@@ -917,7 +917,7 @@ public class VendorControl
             vendor = VendorFactory.getInstance().create(partyPK, vendorName, vendorTypePK, minimumPurchaseOrderLines, maximumPurchaseOrderLines,
                     minimumPurchaseOrderAmount, maximumPurchaseOrderAmount, useItemPurchasingCategories, defaultItemAliasTypePK, cancellationPolicyPK,
                     returnPolicyPK, apGlAccountPK, holdUntilComplete, allowBackorders, allowSubstitutions, allowCombiningShipments, requireReference,
-                    allowReferenceDuplicates, referenceValidationPattern, vendorItemSelectorPK, vendorItemCostFilterPK, session.START_TIME_LONG,
+                    allowReferenceDuplicates, referenceValidationPattern, vendorItemSelectorPK, vendorItemCostFilterPK, session.getStartTimeLong(),
                     Session.MAX_TIME_LONG);
             
             sendEvent(partyPK, EventTypes.MODIFY, vendor.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -932,7 +932,7 @@ public class VendorControl
             CancellationPolicy cancellationPolicy, ReturnPolicy returnPolicy, BasePK createdBy) {
         var vendorItem = VendorItemFactory.getInstance().create();
         var vendorItemDetail = VendorItemDetailFactory.getInstance().create(vendorItem, item, vendorParty,
-                vendorItemName, description, priority, cancellationPolicy, returnPolicy, session.START_TIME_LONG,
+                vendorItemName, description, priority, cancellationPolicy, returnPolicy, session.getStartTimeLong(),
                 Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -1233,7 +1233,7 @@ public class VendorControl
                      vendorItemDetailValue.getVendorItemPK());
             var vendorItemDetail = vendorItem.getActiveDetailForUpdate();
             
-            vendorItemDetail.setThruTime(session.START_TIME_LONG);
+            vendorItemDetail.setThruTime(session.getStartTimeLong());
             vendorItemDetail.store();
 
             var vendorItemPK = vendorItemDetail.getVendorItemPK(); // Not updated
@@ -1246,7 +1246,7 @@ public class VendorControl
             var returnPolicyPK = vendorItemDetailValue.getReturnPolicyPK();
             
             vendorItemDetail = VendorItemDetailFactory.getInstance().create(vendorItemPK, itemPK, vendorPartyPK,
-                    vendorItemName, description, priority, cancellationPolicyPK, returnPolicyPK, session.START_TIME_LONG,
+                    vendorItemName, description, priority, cancellationPolicyPK, returnPolicyPK, session.getStartTimeLong(),
                     Session.MAX_TIME_LONG);
             
             vendorItem.setActiveDetail(vendorItemDetail);
@@ -1260,7 +1260,7 @@ public class VendorControl
         deleteVendorItemCostsByVendorItem(vendorItem, deletedBy);
 
         var vendorItemDetail = vendorItem.getLastDetailForUpdate();
-        vendorItemDetail.setThruTime(session.START_TIME_LONG);
+        vendorItemDetail.setThruTime(session.getStartTimeLong());
         vendorItem.setActiveDetail(null);
         vendorItem.store();
         
@@ -1288,7 +1288,7 @@ public class VendorControl
     public VendorItemCost createVendorItemCost(VendorItem vendorItem, InventoryCondition inventoryCondition,
             UnitOfMeasureType unitOfMeasureType, Long unitCost, BasePK createdBy) {
         var vendorItemCost = VendorItemCostFactory.getInstance().create(vendorItem, inventoryCondition,
-                unitOfMeasureType, unitCost, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                unitOfMeasureType, unitCost, session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         sendEvent(vendorItem.getPrimaryKey(), EventTypes.MODIFY, vendorItemCost.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1520,7 +1520,7 @@ public class VendorControl
             var vendorItemCost = VendorItemCostFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      vendorItemCostValue.getPrimaryKey());
             
-            vendorItemCost.setThruTime(session.START_TIME_LONG);
+            vendorItemCost.setThruTime(session.getStartTimeLong());
             vendorItemCost.store();
 
             var vendorItemPK = vendorItemCost.getVendorItemPK();
@@ -1529,14 +1529,14 @@ public class VendorControl
             var unitCost = vendorItemCostValue.getUnitCost();
             
             vendorItemCost = VendorItemCostFactory.getInstance().create(vendorItemPK, inventoryConditionPK,
-                    unitOfMeasureTypePK, unitCost, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    unitOfMeasureTypePK, unitCost, session.getStartTimeLong(), Session.MAX_TIME_LONG);
             
             sendEvent(vendorItemPK, EventTypes.MODIFY, vendorItemCost.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteVendorItemCost(VendorItemCost vendorItemCost, BasePK deletedBy) {
-        vendorItemCost.setThruTime(session.START_TIME_LONG);
+        vendorItemCost.setThruTime(session.getStartTimeLong());
         
         sendEvent(vendorItemCost.getVendorItemPK(), EventTypes.MODIFY, vendorItemCost.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
@@ -1584,7 +1584,7 @@ public class VendorControl
         var itemPurchasingCategory = ItemPurchasingCategoryFactory.getInstance().create();
         var itemPurchasingCategoryDetail = ItemPurchasingCategoryDetailFactory.getInstance().create(session,
                 itemPurchasingCategory, itemPurchasingCategoryName, parentItemPurchasingCategory, isDefault,
-                sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         // Convert to R/W
         itemPurchasingCategory = ItemPurchasingCategoryFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -1840,7 +1840,7 @@ public class VendorControl
                      itemPurchasingCategoryDetailValue.getItemPurchasingCategoryPK());
             var itemPurchasingCategoryDetail = itemPurchasingCategory.getActiveDetailForUpdate();
             
-            itemPurchasingCategoryDetail.setThruTime(session.START_TIME_LONG);
+            itemPurchasingCategoryDetail.setThruTime(session.getStartTimeLong());
             itemPurchasingCategoryDetail.store();
 
             var itemPurchasingCategoryPK = itemPurchasingCategoryDetail.getItemPurchasingCategoryPK();
@@ -1866,7 +1866,7 @@ public class VendorControl
             }
             
             itemPurchasingCategoryDetail = ItemPurchasingCategoryDetailFactory.getInstance().create(itemPurchasingCategoryPK,
-                    itemPurchasingCategoryName, parentItemPurchasingCategoryPK, isDefault, sortOrder, session.START_TIME_LONG,
+                    itemPurchasingCategoryName, parentItemPurchasingCategoryPK, isDefault, sortOrder, session.getStartTimeLong(),
                     Session.MAX_TIME_LONG);
             
             itemPurchasingCategory.setActiveDetail(itemPurchasingCategoryDetail);
@@ -1886,7 +1886,7 @@ public class VendorControl
         deleteItemPurchasingCategoriesByParentItemPurchasingCategory(itemPurchasingCategory, deletedBy);
         deleteItemPurchasingCategoryDescriptionsByItemPurchasingCategory(itemPurchasingCategory, deletedBy);
         
-        itemPurchasingCategoryDetail.setThruTime(session.START_TIME_LONG);
+        itemPurchasingCategoryDetail.setThruTime(session.getStartTimeLong());
         itemPurchasingCategory.setActiveDetail(null);
         itemPurchasingCategory.store();
 
@@ -1934,7 +1934,7 @@ public class VendorControl
     // --------------------------------------------------------------------------------
     
     public ItemPurchasingCategoryDescription createItemPurchasingCategoryDescription(ItemPurchasingCategory itemPurchasingCategory, Language language, String description, BasePK createdBy) {
-        var itemPurchasingCategoryDescription = ItemPurchasingCategoryDescriptionFactory.getInstance().create(itemPurchasingCategory, language, description, session.START_TIME_LONG,
+        var itemPurchasingCategoryDescription = ItemPurchasingCategoryDescriptionFactory.getInstance().create(itemPurchasingCategory, language, description, session.getStartTimeLong(),
                 Session.MAX_TIME_LONG);
         
         sendEvent(itemPurchasingCategory.getPrimaryKey(), EventTypes.MODIFY, itemPurchasingCategoryDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2065,7 +2065,7 @@ public class VendorControl
         if(itemPurchasingCategoryDescriptionValue.hasBeenModified()) {
             var itemPurchasingCategoryDescription = ItemPurchasingCategoryDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, itemPurchasingCategoryDescriptionValue.getPrimaryKey());
             
-            itemPurchasingCategoryDescription.setThruTime(session.START_TIME_LONG);
+            itemPurchasingCategoryDescription.setThruTime(session.getStartTimeLong());
             itemPurchasingCategoryDescription.store();
 
             var itemPurchasingCategory = itemPurchasingCategoryDescription.getItemPurchasingCategory();
@@ -2073,14 +2073,14 @@ public class VendorControl
             var description = itemPurchasingCategoryDescriptionValue.getDescription();
             
             itemPurchasingCategoryDescription = ItemPurchasingCategoryDescriptionFactory.getInstance().create(itemPurchasingCategory, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
             
             sendEvent(itemPurchasingCategory.getPrimaryKey(), EventTypes.MODIFY, itemPurchasingCategoryDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteItemPurchasingCategoryDescription(ItemPurchasingCategoryDescription itemPurchasingCategoryDescription, BasePK deletedBy) {
-        itemPurchasingCategoryDescription.setThruTime(session.START_TIME_LONG);
+        itemPurchasingCategoryDescription.setThruTime(session.getStartTimeLong());
         
         sendEvent(itemPurchasingCategoryDescription.getItemPurchasingCategoryPK(), EventTypes.MODIFY, itemPurchasingCategoryDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         

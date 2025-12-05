@@ -52,7 +52,7 @@ public class OfferUseControl
     public OfferUse createOfferUse(Offer offer, Use use, Sequence salesOrderSequence, BasePK createdBy) {
         var offerUse = OfferUseFactory.getInstance().create();
         var offerUseDetail = OfferUseDetailFactory.getInstance().create(offerUse, offer, use, salesOrderSequence,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
         // Convert to R/W
         offerUse = OfferUseFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, offerUse.getPrimaryKey());
@@ -298,7 +298,7 @@ public class OfferUseControl
                     offerUseDetailValue.getOfferUsePK());
             var offerUseDetail = offerUse.getActiveDetailForUpdate();
 
-            offerUseDetail.setThruTime(session.START_TIME_LONG);
+            offerUseDetail.setThruTime(session.getStartTimeLong());
             offerUseDetail.store();
 
             var offerUsePK = offerUseDetail.getOfferUsePK();
@@ -307,7 +307,7 @@ public class OfferUseControl
             var sequencePK = offerUseDetailValue.getSalesOrderSequencePK();
 
             offerUseDetail = OfferUseDetailFactory.getInstance().create(offerUsePK, offerPK, usePK, sequencePK,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
             offerUse.setActiveDetail(offerUseDetail);
             offerUse.setLastDetail(offerUseDetail);
@@ -322,7 +322,7 @@ public class OfferUseControl
         sourceControl.deleteSourcesByOfferUse(offerUse, deletedBy);
 
         var offerUseDetail = offerUse.getLastDetailForUpdate();
-        offerUseDetail.setThruTime(session.START_TIME_LONG);
+        offerUseDetail.setThruTime(session.getStartTimeLong());
         offerUse.setActiveDetail(null);
         offerUse.store();
 

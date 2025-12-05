@@ -150,7 +150,7 @@ public class CreateUserLoginCommand
                                                         userControl.createUserLogin(party, username, createdBy);
 
                                                         var userLoginPassword = userControl.createUserLoginPassword(party, userLoginPasswordType, createdBy);
-                                                        userControl.createUserLoginPasswordString(userLoginPassword, password1, session.START_TIME_LONG, false, createdBy);
+                                                        userControl.createUserLoginPasswordString(userLoginPassword, password1, session.getStartTimeLong(), false, createdBy);
 
                                                         if(partyTypePasswordStringPolicy != null && partyTypePasswordStringPolicy.getLastDetail().getForceChangeAfterCreate()) {
                                                             var userLoginStatus = userControl.getUserLoginStatusForUpdate(party);

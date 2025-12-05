@@ -59,7 +59,7 @@ public class SalesOrderControl
 
     public SalesOrder createSalesOrder(Order order, OfferUse offerUse, AssociateReferral associateReferral, BasePK createdBy) {
         var salesOrder = SalesOrderFactory.getInstance().create(order, offerUse, associateReferral,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
         sendEvent(order.getPrimaryKey(), EventTypes.MODIFY, salesOrder.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -133,7 +133,7 @@ public class SalesOrderControl
             var salesOrder = SalesOrderFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     salesOrderValue.getPrimaryKey());
 
-            salesOrder.setThruTime(session.START_TIME_LONG);
+            salesOrder.setThruTime(session.getStartTimeLong());
             salesOrder.store();
 
             var orderPK = salesOrder.getOrderPK(); // Not updated
@@ -141,14 +141,14 @@ public class SalesOrderControl
             var associateReferralPK = salesOrderValue.getAssociateReferralPK();
 
             salesOrder = SalesOrderFactory.getInstance().create(orderPK, offerUsePK, associateReferralPK,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
             sendEvent(orderPK, EventTypes.MODIFY, salesOrder.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteSalesOrder(SalesOrder salesOrder, BasePK deletedBy) {
-        salesOrder.setThruTime(session.START_TIME_LONG);
+        salesOrder.setThruTime(session.getStartTimeLong());
 
         sendEvent(salesOrder.getOrderPK(), EventTypes.MODIFY, salesOrder.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
@@ -160,7 +160,7 @@ public class SalesOrderControl
     public SalesOrderLine createSalesOrderLine(OrderLine orderLine, OfferUse offerUse, AssociateReferral associateReferral,
             BasePK createdBy) {
         var salesOrderLine = SalesOrderLineFactory.getInstance().create(orderLine, offerUse, associateReferral,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
         sendEvent(orderLine.getPrimaryKey(), EventTypes.MODIFY, salesOrderLine.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -234,7 +234,7 @@ public class SalesOrderControl
             var salesOrderLine = SalesOrderLineFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     salesOrderLineValue.getPrimaryKey());
 
-            salesOrderLine.setThruTime(session.START_TIME_LONG);
+            salesOrderLine.setThruTime(session.getStartTimeLong());
             salesOrderLine.store();
 
             var orderLinePK = salesOrderLine.getOrderLinePK(); // Not updated
@@ -242,14 +242,14 @@ public class SalesOrderControl
             var associateReferralPK = salesOrderLineValue.getAssociateReferralPK();
 
             salesOrderLine = SalesOrderLineFactory.getInstance().create(orderLinePK, offerUsePK, associateReferralPK,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
             sendEvent(orderLinePK, EventTypes.MODIFY, salesOrderLine.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteSalesOrderLine(SalesOrderLine salesOrderLine, BasePK deletedBy) {
-        salesOrderLine.setThruTime(session.START_TIME_LONG);
+        salesOrderLine.setThruTime(session.getStartTimeLong());
 
         sendEvent(salesOrderLine.getOrderLinePK(), EventTypes.MODIFY, salesOrderLine.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }

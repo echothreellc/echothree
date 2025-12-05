@@ -79,7 +79,7 @@ public class EntityAliasControl
 
         var entityAliasType = EntityAliasTypeFactory.getInstance().create();
         var entityAliasTypeDetail = EntityAliasTypeDetailFactory.getInstance().create(entityAliasType, entityType,
-                entityAliasTypeName, validationPattern, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                entityAliasTypeName, validationPattern, isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
         // Convert to R/W
         entityAliasType = EntityAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -271,7 +271,7 @@ public class EntityAliasControl
                     entityAliasTypeDetailValue.getEntityAliasTypePK());
             var entityAliasTypeDetail = entityAliasType.getActiveDetailForUpdate();
 
-            entityAliasTypeDetail.setThruTime(session.START_TIME_LONG);
+            entityAliasTypeDetail.setThruTime(session.getStartTimeLong());
             entityAliasTypeDetail.store();
 
             var entityTypePK = entityAliasTypeDetail.getEntityTypePK();
@@ -299,7 +299,7 @@ public class EntityAliasControl
             }
 
             entityAliasTypeDetail = EntityAliasTypeDetailFactory.getInstance().create(entityAliasTypePK, entityTypePK,
-                    entityAliasTypeName, validationPattern, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    entityAliasTypeName, validationPattern, isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
             entityAliasType.setActiveDetail(entityAliasTypeDetail);
             entityAliasType.setLastDetail(entityAliasTypeDetail);
@@ -352,7 +352,7 @@ public class EntityAliasControl
         deleteEntityAliasesByEntityAliasType(entityAliasType, deletedBy);
         deleteEntityAliasTypeDescriptionsByEntityAliasType(entityAliasType, deletedBy);
 
-        entityAliasTypeDetail.setThruTime(session.START_TIME_LONG);
+        entityAliasTypeDetail.setThruTime(session.getStartTimeLong());
         entityAliasType.setActiveDetail(null);
         entityAliasType.store();
 
@@ -399,7 +399,7 @@ public class EntityAliasControl
     public EntityAliasTypeDescription createEntityAliasTypeDescription(EntityAliasType entityAliasType, Language language,
             String description, BasePK createdBy) {
         var entityAliasTypeDescription = EntityAliasTypeDescriptionFactory.getInstance().create(session,
-                entityAliasType, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                entityAliasType, language, description, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
         sendEvent(entityAliasType.getPrimaryKey(), EventTypes.MODIFY, entityAliasTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -532,7 +532,7 @@ public class EntityAliasControl
             var entityAliasTypeDescription = EntityAliasTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     entityAliasTypeDescriptionValue.getPrimaryKey());
 
-            entityAliasTypeDescription.setThruTime(session.START_TIME_LONG);
+            entityAliasTypeDescription.setThruTime(session.getStartTimeLong());
             entityAliasTypeDescription.store();
 
             var entityAliasType = entityAliasTypeDescription.getEntityAliasType();
@@ -540,14 +540,14 @@ public class EntityAliasControl
             var description = entityAliasTypeDescriptionValue.getDescription();
 
             entityAliasTypeDescription = EntityAliasTypeDescriptionFactory.getInstance().create(entityAliasType, language,
-                    description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    description, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
             sendEvent(entityAliasType.getPrimaryKey(), EventTypes.MODIFY, entityAliasTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteEntityAliasTypeDescription(EntityAliasTypeDescription entityAliasTypeDescription, BasePK deletedBy) {
-        entityAliasTypeDescription.setThruTime(session.START_TIME_LONG);
+        entityAliasTypeDescription.setThruTime(session.getStartTimeLong());
 
         sendEvent(entityAliasTypeDescription.getEntityAliasTypePK(), EventTypes.MODIFY, entityAliasTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
@@ -567,7 +567,7 @@ public class EntityAliasControl
     public EntityAlias createEntityAlias(EntityInstance entityInstance, EntityAliasType entityAliasType, String alias,
             BasePK createdBy) {
         var entityAlias = EntityAliasFactory.getInstance().create(entityInstance, entityAliasType,
-                alias, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                alias, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
         sendEvent(entityInstance, EventTypes.MODIFY, entityAliasType.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -763,10 +763,10 @@ public class EntityAliasControl
             var entityAliasType = entityAlias.getEntityAliasType();
             var entityInstance = entityAlias.getEntityInstance();
 
-            entityAlias.setThruTime(session.START_TIME_LONG);
+            entityAlias.setThruTime(session.getStartTimeLong());
             entityAlias.store();
 
-            EntityAliasFactory.getInstance().create(entityInstance, entityAliasType, entityAliasValue.getAlias(), session.START_TIME_LONG,
+            EntityAliasFactory.getInstance().create(entityInstance, entityAliasType, entityAliasValue.getAlias(), session.getStartTimeLong(),
                     Session.MAX_TIME_LONG);
 
             sendEvent(entityInstance, EventTypes.MODIFY, entityAliasType.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -777,7 +777,7 @@ public class EntityAliasControl
         var entityAliasType = entityAlias.getEntityAliasType();
         var entityInstance = entityAlias.getEntityInstance();
 
-        entityAlias.setThruTime(session.START_TIME_LONG);
+        entityAlias.setThruTime(session.getStartTimeLong());
 
         sendEvent(entityInstance, EventTypes.MODIFY, entityAliasType.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }

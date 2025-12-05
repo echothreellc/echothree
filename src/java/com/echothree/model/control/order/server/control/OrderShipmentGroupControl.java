@@ -71,7 +71,7 @@ public class OrderShipmentGroupControl
 
         var orderShipmentGroup = OrderShipmentGroupFactory.getInstance().create();
         var orderShipmentGroupDetail = OrderShipmentGroupDetailFactory.getInstance().create(orderShipmentGroup, order,
-                orderShipmentGroupSequence, itemDeliveryType, isDefault, partyContactMechanism, shippingMethod, holdUntilComplete, session.START_TIME_LONG,
+                orderShipmentGroupSequence, itemDeliveryType, isDefault, partyContactMechanism, shippingMethod, holdUntilComplete, session.getStartTimeLong(),
                 Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -252,7 +252,7 @@ public class OrderShipmentGroupControl
                      orderShipmentGroupDetailValue.getOrderShipmentGroupPK());
             var orderShipmentGroupDetail = orderShipmentGroup.getActiveDetailForUpdate();
 
-            orderShipmentGroupDetail.setThruTime(session.START_TIME_LONG);
+            orderShipmentGroupDetail.setThruTime(session.getStartTimeLong());
             orderShipmentGroupDetail.store();
 
             var orderShipmentGroupPK = orderShipmentGroupDetail.getOrderShipmentGroupPK(); // Not updated
@@ -283,7 +283,7 @@ public class OrderShipmentGroupControl
             }
 
             orderShipmentGroupDetail = OrderShipmentGroupDetailFactory.getInstance().create(orderShipmentGroupPK, orderPK, orderShipmentGroupSequence,
-                    itemDeliveryTypePK, isDefault, partyContactMechanismPK, shippingMethodPK, holdUntilComplete, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    itemDeliveryTypePK, isDefault, partyContactMechanismPK, shippingMethodPK, holdUntilComplete, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
             orderShipmentGroup.setActiveDetail(orderShipmentGroupDetail);
             orderShipmentGroup.setLastDetail(orderShipmentGroupDetail);
@@ -302,7 +302,7 @@ public class OrderShipmentGroupControl
         orderLineControl.deleteOrderLinesByOrderShipmentGroup(orderShipmentGroup, deletedBy);
 
         var orderShipmentGroupDetail = orderShipmentGroup.getLastDetailForUpdate();
-        orderShipmentGroupDetail.setThruTime(session.START_TIME_LONG);
+        orderShipmentGroupDetail.setThruTime(session.getStartTimeLong());
         orderShipmentGroup.setActiveDetail(null);
         orderShipmentGroup.store();
 

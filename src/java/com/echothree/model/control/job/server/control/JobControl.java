@@ -76,7 +76,7 @@ public class JobControl
     public Job createJob(String jobName, Party runAsParty, Integer sortOrder, BasePK createdBy) {
         var job = JobFactory.getInstance().create();
         var jobDetail = JobDetailFactory.getInstance().create(job, jobName, runAsParty, sortOrder,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         // Convert to R/W
         job = JobFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, job.getPrimaryKey());
@@ -217,7 +217,7 @@ public class JobControl
                 EntityPermission.READ_WRITE, jobDetailValue.getJobPK());
         var jobDetail = job.getActiveDetailForUpdate();
         
-        jobDetail.setThruTime(session.START_TIME_LONG);
+        jobDetail.setThruTime(session.getStartTimeLong());
         jobDetail.store();
 
         var jobPK = jobDetail.getJobPK();
@@ -226,7 +226,7 @@ public class JobControl
         var sortOrder = jobDetailValue.getSortOrder();
         
         jobDetail = JobDetailFactory.getInstance().create(jobPK, jobName, runAsPartyPK, sortOrder,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         job.setActiveDetail(jobDetail);
         job.setLastDetail(jobDetail);
@@ -239,7 +239,7 @@ public class JobControl
         deleteJobDescriptionsByJob(job, deletedBy);
 
         var jobDetail = job.getLastDetailForUpdate();
-        jobDetail.setThruTime(session.START_TIME_LONG);
+        jobDetail.setThruTime(session.getStartTimeLong());
         job.setActiveDetail(null);
         job.store();
         
@@ -255,7 +255,7 @@ public class JobControl
     public JobDescription createJobDescription(Job job, Language language,
             String description, BasePK createdBy) {
         var jobDescription = JobDescriptionFactory.getInstance().create(session,
-                job, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                job, language, description, session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         sendEvent(job.getPrimaryKey(), EventTypes.MODIFY, jobDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -385,7 +385,7 @@ public class JobControl
             var jobDescription = JobDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      jobDescriptionValue.getPrimaryKey());
             
-            jobDescription.setThruTime(session.START_TIME_LONG);
+            jobDescription.setThruTime(session.getStartTimeLong());
             jobDescription.store();
 
             var job = jobDescription.getJob();
@@ -393,14 +393,14 @@ public class JobControl
             var description = jobDescriptionValue.getDescription();
             
             jobDescription = JobDescriptionFactory.getInstance().create(job, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
             
             sendEvent(job.getPrimaryKey(), EventTypes.MODIFY, jobDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteJobDescription(JobDescription jobDescription, BasePK deletedBy) {
-        jobDescription.setThruTime(session.START_TIME_LONG);
+        jobDescription.setThruTime(session.getStartTimeLong());
         
         sendEvent(jobDescription.getJobPK(), EventTypes.MODIFY, jobDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         

@@ -73,7 +73,7 @@ public class OrderPriorityControl
 
         var orderPriority = OrderPriorityFactory.getInstance().create();
         var orderPriorityDetail = OrderPriorityDetailFactory.getInstance().create(orderPriority, orderType, orderPriorityName, priority,
-                isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
         // Convert to R/W
         orderPriority = OrderPriorityFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -285,7 +285,7 @@ public class OrderPriorityControl
                      orderPriorityDetailValue.getOrderPriorityPK());
             var orderPriorityDetail = orderPriority.getActiveDetailForUpdate();
 
-            orderPriorityDetail.setThruTime(session.START_TIME_LONG);
+            orderPriorityDetail.setThruTime(session.getStartTimeLong());
             orderPriorityDetail.store();
 
             var orderType = orderPriorityDetail.getOrderType(); // Not updated
@@ -313,7 +313,7 @@ public class OrderPriorityControl
             }
 
             orderPriorityDetail = OrderPriorityDetailFactory.getInstance().create(orderPriorityPK, orderTypePK, orderPriorityName, priority, isDefault,
-                    sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
             orderPriority.setActiveDetail(orderPriorityDetail);
             orderPriority.setLastDetail(orderPriorityDetail);
@@ -330,7 +330,7 @@ public class OrderPriorityControl
         deleteOrderPriorityDescriptionsByOrderPriority(orderPriority, deletedBy);
 
         var orderPriorityDetail = orderPriority.getLastDetailForUpdate();
-        orderPriorityDetail.setThruTime(session.START_TIME_LONG);
+        orderPriorityDetail.setThruTime(session.getStartTimeLong());
         orderPriority.setActiveDetail(null);
         orderPriority.store();
 
@@ -361,7 +361,7 @@ public class OrderPriorityControl
 
     public OrderPriorityDescription createOrderPriorityDescription(OrderPriority orderPriority, Language language, String description, BasePK createdBy) {
         var orderPriorityDescription = OrderPriorityDescriptionFactory.getInstance().create(orderPriority, language, description,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
         sendEvent(orderPriority.getPrimaryKey(), EventTypes.MODIFY, orderPriorityDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -474,7 +474,7 @@ public class OrderPriorityControl
             var orderPriorityDescription = OrderPriorityDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     orderPriorityDescriptionValue.getPrimaryKey());
 
-            orderPriorityDescription.setThruTime(session.START_TIME_LONG);
+            orderPriorityDescription.setThruTime(session.getStartTimeLong());
             orderPriorityDescription.store();
 
             var orderPriority = orderPriorityDescription.getOrderPriority();
@@ -482,14 +482,14 @@ public class OrderPriorityControl
             var description = orderPriorityDescriptionValue.getDescription();
 
             orderPriorityDescription = OrderPriorityDescriptionFactory.getInstance().create(orderPriority, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
             sendEvent(orderPriority.getPrimaryKey(), EventTypes.MODIFY, orderPriorityDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteOrderPriorityDescription(OrderPriorityDescription orderPriorityDescription, BasePK deletedBy) {
-        orderPriorityDescription.setThruTime(session.START_TIME_LONG);
+        orderPriorityDescription.setThruTime(session.getStartTimeLong());
 
         sendEvent(orderPriorityDescription.getOrderPriorityPK(), EventTypes.MODIFY, orderPriorityDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 

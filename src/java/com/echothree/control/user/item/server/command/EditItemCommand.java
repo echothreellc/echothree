@@ -274,15 +274,15 @@ public class EditItemCommand
         var itemDetailValue = itemControl.getItemDetailValueForUpdate(item);
         var shippingChargeExempt = Boolean.valueOf(edit.getShippingChargeExempt());
         var strShippingStartTime = edit.getShippingStartTime();
-        var shippingStartTime = strShippingStartTime == null? session.START_TIME_LONG: Long.valueOf(strShippingStartTime);
+        var shippingStartTime = strShippingStartTime == null? session.getStartTimeLong(): Long.valueOf(strShippingStartTime);
         var strShippingEndTime = edit.getShippingEndTime();
         var shippingEndTime = strShippingEndTime == null? null: Long.valueOf(strShippingEndTime);
         var strSalesOrderStartTime = edit.getSalesOrderStartTime();
-        var salesOrderStartTime = strSalesOrderStartTime == null? session.START_TIME_LONG: Long.valueOf(strSalesOrderStartTime);
+        var salesOrderStartTime = strSalesOrderStartTime == null? session.getStartTimeLong(): Long.valueOf(strSalesOrderStartTime);
         var strSalesOrderEndTime = edit.getSalesOrderEndTime();
         var salesOrderEndTime = strSalesOrderEndTime == null? null: Long.valueOf(strSalesOrderEndTime);
         var strPurchaseOrderStartTime = edit.getPurchaseOrderStartTime();
-        var purchaseOrderStartTime = isKit? null: strPurchaseOrderStartTime == null? session.START_TIME_LONG: Long.valueOf(strPurchaseOrderStartTime);
+        var purchaseOrderStartTime = isKit? null: strPurchaseOrderStartTime == null? session.getStartTimeLong(): Long.valueOf(strPurchaseOrderStartTime);
         var strPurchaseOrderEndTime = edit.getPurchaseOrderEndTime();
         var purchaseOrderEndTime = isKit? null: strPurchaseOrderEndTime == null? null: Long.valueOf(strPurchaseOrderEndTime);
         var allowClubDiscounts = Boolean.valueOf(edit.getAllowClubDiscounts());

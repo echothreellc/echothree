@@ -254,15 +254,15 @@ public class CreateItemCommand
                                                                 if(!hasExecutionErrors() && WorkflowSecurityLogic.getInstance().checkAddEntityToWorkflow(this, itemStatus, createdBy)) {
                                                                     var shippingChargeExempt = Boolean.valueOf(form.getShippingChargeExempt());
                                                                     var strShippingStartTime = form.getShippingStartTime();
-                                                                    var shippingStartTime = strShippingStartTime == null ? session.START_TIME_LONG : Long.valueOf(strShippingStartTime);
+                                                                    var shippingStartTime = strShippingStartTime == null ? session.getStartTimeLong() : Long.valueOf(strShippingStartTime);
                                                                     var strShippingEndTime = form.getShippingEndTime();
                                                                     var shippingEndTime = strShippingEndTime == null ? null : Long.valueOf(strShippingEndTime);
                                                                     var strSalesOrderStartTime = form.getSalesOrderStartTime();
-                                                                    var salesOrderStartTime = strSalesOrderStartTime == null ? session.START_TIME_LONG : Long.valueOf(strSalesOrderStartTime);
+                                                                    var salesOrderStartTime = strSalesOrderStartTime == null ? session.getStartTimeLong() : Long.valueOf(strSalesOrderStartTime);
                                                                     var strSalesOrderEndTime = form.getSalesOrderEndTime();
                                                                     var salesOrderEndTime = strSalesOrderEndTime == null ? null : Long.valueOf(strSalesOrderEndTime);
                                                                     var strPurchaseOrderStartTime = form.getPurchaseOrderStartTime();
-                                                                    var purchaseOrderStartTime = isKitOrStyle ? null : strPurchaseOrderStartTime == null ? session.START_TIME_LONG : Long.valueOf(strPurchaseOrderStartTime);
+                                                                    var purchaseOrderStartTime = isKitOrStyle ? null : strPurchaseOrderStartTime == null ? session.getStartTimeLong() : Long.valueOf(strPurchaseOrderStartTime);
                                                                     var strPurchaseOrderEndTime = form.getPurchaseOrderEndTime();
                                                                     var purchaseOrderEndTime = isKitOrStyle ? null : strPurchaseOrderEndTime == null ? null : Long.valueOf(strPurchaseOrderEndTime);
                                                                     var allowClubDiscounts = Boolean.valueOf(form.getAllowClubDiscounts());

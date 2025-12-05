@@ -152,7 +152,7 @@ public class UomControl
 
         var unitOfMeasureKind = UnitOfMeasureKindFactory.getInstance().create();
         var unitOfMeasureKindDetail = UnitOfMeasureKindDetailFactory.getInstance().create(session, unitOfMeasureKind, unitOfMeasureKindName,
-                fractionDigits, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                fractionDigits, isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         // Convert to R/W
         unitOfMeasureKind = UnitOfMeasureKindFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, unitOfMeasureKind.getPrimaryKey());
@@ -435,7 +435,7 @@ public class UomControl
                      unitOfMeasureKindDetailValue.getUnitOfMeasureKindPK());
             var unitOfMeasureKindDetail = unitOfMeasureKind.getActiveDetailForUpdate();
             
-            unitOfMeasureKindDetail.setThruTime(session.START_TIME_LONG);
+            unitOfMeasureKindDetail.setThruTime(session.getStartTimeLong());
             unitOfMeasureKindDetail.store();
 
             var unitOfMeasureKindPK = unitOfMeasureKindDetail.getUnitOfMeasureKindPK();
@@ -461,7 +461,7 @@ public class UomControl
             }
             
             unitOfMeasureKindDetail = UnitOfMeasureKindDetailFactory.getInstance().create(unitOfMeasureKindPK, unitOfMeasureKindName, fractionDigits, isDefault,
-                    sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
             
             unitOfMeasureKind.setActiveDetail(unitOfMeasureKindDetail);
             unitOfMeasureKind.setLastDetail(unitOfMeasureKindDetail);
@@ -480,7 +480,7 @@ public class UomControl
         deleteUnitOfMeasureTypesByUnitOfMeasureKind(unitOfMeasureKind, deletedBy);
 
         var unitOfMeasureKindDetail = unitOfMeasureKind.getLastDetailForUpdate();
-        unitOfMeasureKindDetail.setThruTime(session.START_TIME_LONG);
+        unitOfMeasureKindDetail.setThruTime(session.getStartTimeLong());
         unitOfMeasureKindDetail.store();
         unitOfMeasureKind.setActiveDetail(null);
         
@@ -510,7 +510,7 @@ public class UomControl
     
     public UnitOfMeasureKindDescription createUnitOfMeasureKindDescription(UnitOfMeasureKind unitOfMeasureKind, Language language, String description, BasePK createdBy) {
         var unitOfMeasureKindDescription = UnitOfMeasureKindDescriptionFactory.getInstance().create(unitOfMeasureKind, language, description,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         sendEvent(unitOfMeasureKind.getPrimaryKey(), EventTypes.MODIFY, unitOfMeasureKindDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -642,7 +642,7 @@ public class UomControl
             var unitOfMeasureKindDescription = UnitOfMeasureKindDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      unitOfMeasureKindDescriptionValue.getPrimaryKey());
             
-            unitOfMeasureKindDescription.setThruTime(session.START_TIME_LONG);
+            unitOfMeasureKindDescription.setThruTime(session.getStartTimeLong());
             unitOfMeasureKindDescription.store();
 
             var unitOfMeasureKind = unitOfMeasureKindDescription.getUnitOfMeasureKind();
@@ -650,14 +650,14 @@ public class UomControl
             var description = unitOfMeasureKindDescriptionValue.getDescription();
             
             unitOfMeasureKindDescription = UnitOfMeasureKindDescriptionFactory.getInstance().create(unitOfMeasureKind,
-                    language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    language, description, session.getStartTimeLong(), Session.MAX_TIME_LONG);
             
             sendEvent(unitOfMeasureKind.getPrimaryKey(), EventTypes.MODIFY, unitOfMeasureKindDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteUnitOfMeasureKindDescription(UnitOfMeasureKindDescription unitOfMeasureKindDescription, BasePK deletedBy) {
-        unitOfMeasureKindDescription.setThruTime(session.START_TIME_LONG);
+        unitOfMeasureKindDescription.setThruTime(session.getStartTimeLong());
         
         sendEvent(unitOfMeasureKindDescription.getUnitOfMeasureKindPK(), EventTypes.MODIFY, unitOfMeasureKindDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
@@ -692,7 +692,7 @@ public class UomControl
         var unitOfMeasureType = UnitOfMeasureTypeFactory.getInstance().create();
         var unitOfMeasureTypeDetail = UnitOfMeasureTypeDetailFactory.getInstance().create(unitOfMeasureType,
                 unitOfMeasureKind, unitOfMeasureTypeName, symbolPosition, suppressSymbolSeparator, isDefault, sortOrder,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         // Convert to R/W
         unitOfMeasureType = UnitOfMeasureTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, unitOfMeasureType.getPrimaryKey());
@@ -924,7 +924,7 @@ public class UomControl
                      unitOfMeasureTypeDetailValue.getUnitOfMeasureTypePK());
             var unitOfMeasureTypeDetail = unitOfMeasureType.getActiveDetailForUpdate();
             
-            unitOfMeasureTypeDetail.setThruTime(session.START_TIME_LONG);
+            unitOfMeasureTypeDetail.setThruTime(session.getStartTimeLong());
             unitOfMeasureTypeDetail.store();
 
             var unitOfMeasureTypePK = unitOfMeasureTypeDetail.getUnitOfMeasureTypePK();
@@ -953,7 +953,7 @@ public class UomControl
             }
             
             unitOfMeasureTypeDetail = UnitOfMeasureTypeDetailFactory.getInstance().create(unitOfMeasureTypePK, unitOfMeasureKindPK,
-                    unitOfMeasureTypeName, symbolPositionPK, suppressSymbolSeparator, isDefault, sortOrder, session.START_TIME_LONG,
+                    unitOfMeasureTypeName, symbolPositionPK, suppressSymbolSeparator, isDefault, sortOrder, session.getStartTimeLong(),
                     Session.MAX_TIME_LONG);
             
             unitOfMeasureType.setActiveDetail(unitOfMeasureTypeDetail);
@@ -979,7 +979,7 @@ public class UomControl
         vendorControl.deleteVendorItemCostsByUnitOfMeasureType(unitOfMeasureType, deletedBy);
 
         var unitOfMeasureTypeDetail = unitOfMeasureType.getLastDetailForUpdate();
-        unitOfMeasureTypeDetail.setThruTime(session.START_TIME_LONG);
+        unitOfMeasureTypeDetail.setThruTime(session.getStartTimeLong());
         unitOfMeasureTypeDetail.store();
         unitOfMeasureType.setActiveDetail(null);
         
@@ -1019,7 +1019,7 @@ public class UomControl
     public UnitOfMeasureTypeDescription createUnitOfMeasureTypeDescription(UnitOfMeasureType unitOfMeasureType, Language language,
             String singularDescription, String pluralDescription, String symbol, BasePK createdBy) {
         var unitOfMeasureTypeDescription = UnitOfMeasureTypeDescriptionFactory.getInstance().create(session,
-                unitOfMeasureType, language, singularDescription, pluralDescription, symbol, session.START_TIME_LONG,
+                unitOfMeasureType, language, singularDescription, pluralDescription, symbol, session.getStartTimeLong(),
                 Session.MAX_TIME_LONG);
         
         sendEvent(unitOfMeasureType.getLastDetail().getUnitOfMeasureTypePK(), EventTypes.MODIFY, unitOfMeasureTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1192,7 +1192,7 @@ public class UomControl
             var unitOfMeasureTypeDescription = UnitOfMeasureTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      unitOfMeasureTypeDescriptionValue.getPrimaryKey());
             
-            unitOfMeasureTypeDescription.setThruTime(session.START_TIME_LONG);
+            unitOfMeasureTypeDescription.setThruTime(session.getStartTimeLong());
             unitOfMeasureTypeDescription.store();
 
             var unitOfMeasureType = unitOfMeasureTypeDescription.getUnitOfMeasureType();
@@ -1202,14 +1202,14 @@ public class UomControl
             var symbol = unitOfMeasureTypeDescriptionValue.getSymbol();
             
             unitOfMeasureTypeDescription = UnitOfMeasureTypeDescriptionFactory.getInstance().create(unitOfMeasureType, language,
-                    singularDescription, pluralDescription, symbol, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    singularDescription, pluralDescription, symbol, session.getStartTimeLong(), Session.MAX_TIME_LONG);
             
             sendEvent(unitOfMeasureType.getPrimaryKey(), EventTypes.MODIFY, unitOfMeasureTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteUnitOfMeasureTypeDescription(UnitOfMeasureTypeDescription unitOfMeasureTypeDescription, BasePK deletedBy) {
-        unitOfMeasureTypeDescription.setThruTime(session.START_TIME_LONG);
+        unitOfMeasureTypeDescription.setThruTime(session.getStartTimeLong());
         
         sendEvent(unitOfMeasureTypeDescription.getUnitOfMeasureTypePK(), EventTypes.MODIFY, unitOfMeasureTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
@@ -1229,7 +1229,7 @@ public class UomControl
     public UnitOfMeasureTypeVolume createUnitOfMeasureTypeVolume(UnitOfMeasureType unitOfMeasureType, Long height, Long width,
             Long depth, BasePK createdBy) {
         var unitOfMeasureTypeVolume = UnitOfMeasureTypeVolumeFactory.getInstance().create(session,
-                unitOfMeasureType, height, width, depth, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                unitOfMeasureType, height, width, depth, session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         sendEvent(unitOfMeasureType.getPrimaryKey(), EventTypes.MODIFY, unitOfMeasureTypeVolume.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1293,7 +1293,7 @@ public class UomControl
             var unitOfMeasureTypeVolume = UnitOfMeasureTypeVolumeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      unitOfMeasureTypeVolumeValue.getPrimaryKey());
             
-            unitOfMeasureTypeVolume.setThruTime(session.START_TIME_LONG);
+            unitOfMeasureTypeVolume.setThruTime(session.getStartTimeLong());
             unitOfMeasureTypeVolume.store();
 
             var unitOfMeasureTypePK = unitOfMeasureTypeVolume.getUnitOfMeasureTypePK(); // Not updated
@@ -1302,14 +1302,14 @@ public class UomControl
             var depth = unitOfMeasureTypeVolumeValue.getDepth();
             
             unitOfMeasureTypeVolume = UnitOfMeasureTypeVolumeFactory.getInstance().create(unitOfMeasureTypePK, height,
-                    width, depth, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    width, depth, session.getStartTimeLong(), Session.MAX_TIME_LONG);
             
             sendEvent(unitOfMeasureTypePK, EventTypes.MODIFY, unitOfMeasureTypeVolume.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteUnitOfMeasureTypeVolume(UnitOfMeasureTypeVolume unitOfMeasureTypeVolume, BasePK deletedBy) {
-        unitOfMeasureTypeVolume.setThruTime(session.START_TIME_LONG);
+        unitOfMeasureTypeVolume.setThruTime(session.getStartTimeLong());
         
         sendEvent(unitOfMeasureTypeVolume.getUnitOfMeasureTypePK(), EventTypes.MODIFY, unitOfMeasureTypeVolume.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
@@ -1327,7 +1327,7 @@ public class UomControl
     
     public UnitOfMeasureTypeWeight createUnitOfMeasureTypeWeight(UnitOfMeasureType unitOfMeasureType, Long weight, BasePK createdBy) {
         var unitOfMeasureTypeWeight = UnitOfMeasureTypeWeightFactory.getInstance().create(unitOfMeasureType, weight,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         sendEvent(unitOfMeasureType.getPrimaryKey(), EventTypes.MODIFY, unitOfMeasureTypeWeight.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1391,21 +1391,21 @@ public class UomControl
             var unitOfMeasureTypeWeight = UnitOfMeasureTypeWeightFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      unitOfMeasureTypeWeightValue.getPrimaryKey());
             
-            unitOfMeasureTypeWeight.setThruTime(session.START_TIME_LONG);
+            unitOfMeasureTypeWeight.setThruTime(session.getStartTimeLong());
             unitOfMeasureTypeWeight.store();
 
             var unitOfMeasureTypePK = unitOfMeasureTypeWeight.getUnitOfMeasureTypePK(); // Not updated
             var weight = unitOfMeasureTypeWeightValue.getWeight();
             
             unitOfMeasureTypeWeight = UnitOfMeasureTypeWeightFactory.getInstance().create(unitOfMeasureTypePK, weight,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
             
             sendEvent(unitOfMeasureTypePK, EventTypes.MODIFY, unitOfMeasureTypeWeight.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteUnitOfMeasureTypeWeight(UnitOfMeasureTypeWeight unitOfMeasureTypeWeight, BasePK deletedBy) {
-        unitOfMeasureTypeWeight.setThruTime(session.START_TIME_LONG);
+        unitOfMeasureTypeWeight.setThruTime(session.getStartTimeLong());
         
         sendEvent(unitOfMeasureTypeWeight.getUnitOfMeasureTypePK(), EventTypes.MODIFY, unitOfMeasureTypeWeight.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
@@ -1424,7 +1424,7 @@ public class UomControl
     public UnitOfMeasureEquivalent createUnitOfMeasureEquivalent(UnitOfMeasureType fromUnitOfMeasureType,
             UnitOfMeasureType toUnitOfMeasureType, Long toQuantity, BasePK createdBy) {
         var unitOfMeasureEquivalent = UnitOfMeasureEquivalentFactory.getInstance().create(session,
-                fromUnitOfMeasureType, toUnitOfMeasureType, toQuantity, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                fromUnitOfMeasureType, toUnitOfMeasureType, toQuantity, session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         sendEvent(fromUnitOfMeasureType.getPrimaryKey(), EventTypes.MODIFY, unitOfMeasureEquivalent.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1656,7 +1656,7 @@ public class UomControl
             var unitOfMeasureEquivalent = UnitOfMeasureEquivalentFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      unitOfMeasureEquivalentValue.getPrimaryKey());
             
-            unitOfMeasureEquivalent.setThruTime(session.START_TIME_LONG);
+            unitOfMeasureEquivalent.setThruTime(session.getStartTimeLong());
             unitOfMeasureEquivalent.store();
 
             var fromUnitOfMeasureTypePK = unitOfMeasureEquivalent.getFromUnitOfMeasureTypePK(); // Not updated
@@ -1664,14 +1664,14 @@ public class UomControl
             var toQuantity = unitOfMeasureEquivalentValue.getToQuantity();
             
             unitOfMeasureEquivalent = UnitOfMeasureEquivalentFactory.getInstance().create(fromUnitOfMeasureTypePK,
-                    toUnitOfMeasureTypePK, toQuantity, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    toUnitOfMeasureTypePK, toQuantity, session.getStartTimeLong(), Session.MAX_TIME_LONG);
             
             sendEvent(fromUnitOfMeasureTypePK, EventTypes.MODIFY, unitOfMeasureEquivalent.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteUnitOfMeasureEquivalent(UnitOfMeasureEquivalent unitOfMeasureEquivalent, BasePK deletedBy) {
-        unitOfMeasureEquivalent.setThruTime(session.START_TIME_LONG);
+        unitOfMeasureEquivalent.setThruTime(session.getStartTimeLong());
         unitOfMeasureEquivalent.store();
         
         sendEvent(unitOfMeasureEquivalent.getFromUnitOfMeasureTypePK(), EventTypes.MODIFY, unitOfMeasureEquivalent.getPrimaryKey(), EventTypes.DELETE, deletedBy);
@@ -1873,7 +1873,7 @@ public class UomControl
         }
 
         var unitOfMeasureKindUse = UnitOfMeasureKindUseFactory.getInstance().create(session,
-                unitOfMeasureKindUseType, unitOfMeasureKind, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                unitOfMeasureKindUseType, unitOfMeasureKind, isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         sendEvent(unitOfMeasureKind.getPrimaryKey(), EventTypes.MODIFY, unitOfMeasureKindUse.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -2165,7 +2165,7 @@ public class UomControl
             var unitOfMeasureKindUse = UnitOfMeasureKindUseFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      unitOfMeasureKindUseValue.getPrimaryKey());
             
-            unitOfMeasureKindUse.setThruTime(session.START_TIME_LONG);
+            unitOfMeasureKindUse.setThruTime(session.getStartTimeLong());
             unitOfMeasureKindUse.store();
 
             var unitOfMeasureKindUseTypePK = unitOfMeasureKindUse.getUnitOfMeasureKindUseTypePK();
@@ -2191,7 +2191,7 @@ public class UomControl
             }
             
             unitOfMeasureKindUse = UnitOfMeasureKindUseFactory.getInstance().create(unitOfMeasureKindUseTypePK,
-                    unitOfMeasureKindPK, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    unitOfMeasureKindPK, isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
             
             sendEvent(unitOfMeasureKindPK, EventTypes.MODIFY, unitOfMeasureKindUse.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -2204,7 +2204,7 @@ public class UomControl
     }
     
     public void deleteUnitOfMeasureKindUse(UnitOfMeasureKindUse unitOfMeasureKindUse, BasePK deletedBy) {
-        unitOfMeasureKindUse.setThruTime(session.START_TIME_LONG);
+        unitOfMeasureKindUse.setThruTime(session.getStartTimeLong());
         unitOfMeasureKindUse.store();
         
         // Check for default, and pick one if necessary

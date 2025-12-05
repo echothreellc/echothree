@@ -57,7 +57,7 @@ public class SalesOrderBatchControl
     // --------------------------------------------------------------------------------
 
     public SalesOrderBatch createSalesOrderBatch(Batch batch, PaymentMethod paymentMethod, BasePK createdBy) {
-        var salesOrderBatch = SalesOrderBatchFactory.getInstance().create(batch, paymentMethod, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var salesOrderBatch = SalesOrderBatchFactory.getInstance().create(batch, paymentMethod, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
         sendEvent(batch.getPrimaryKey(), EventTypes.MODIFY, salesOrderBatch.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -123,20 +123,20 @@ public class SalesOrderBatchControl
             var salesOrderBatch = SalesOrderBatchFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     salesOrderBatchValue.getPrimaryKey());
 
-            salesOrderBatch.setThruTime(session.START_TIME_LONG);
+            salesOrderBatch.setThruTime(session.getStartTimeLong());
             salesOrderBatch.store();
 
             var batchPK = salesOrderBatch.getBatchPK(); // Not updated
             var paymentMethodPK = salesOrderBatchValue.getPaymentMethodPK();
 
-            salesOrderBatch = SalesOrderBatchFactory.getInstance().create(batchPK, paymentMethodPK, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+            salesOrderBatch = SalesOrderBatchFactory.getInstance().create(batchPK, paymentMethodPK, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
             sendEvent(batchPK, EventTypes.MODIFY, salesOrderBatch.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteSalesOrderBatch(SalesOrderBatch salesOrderBatch, BasePK deletedBy) {
-        salesOrderBatch.setThruTime(session.START_TIME_LONG);
+        salesOrderBatch.setThruTime(session.getStartTimeLong());
 
         sendEvent(salesOrderBatch.getBatchPK(), EventTypes.MODIFY, salesOrderBatch.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }

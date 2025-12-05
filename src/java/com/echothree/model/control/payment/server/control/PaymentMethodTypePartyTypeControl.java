@@ -72,7 +72,7 @@ public class PaymentMethodTypePartyTypeControl
         var paymentMethodTypePartyType = PaymentMethodTypePartyTypeFactory.getInstance().create();
         var paymentMethodTypePartyTypeDetail = PaymentMethodTypePartyTypeDetailFactory.getInstance().create(session,
                 paymentMethodTypePartyType, paymentMethodType, partyType, partyPaymentMethodWorkflow,
-                partyContactMechanismWorkflow, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                partyContactMechanismWorkflow, isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
         // Convert to R/W
         paymentMethodTypePartyType = PaymentMethodTypePartyTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, paymentMethodTypePartyType.getPrimaryKey());
@@ -294,7 +294,7 @@ public class PaymentMethodTypePartyTypeControl
                     paymentMethodTypePartyTypeDetailValue.getPaymentMethodTypePartyTypePK());
             var paymentMethodTypePartyTypeDetail = paymentMethodTypePartyType.getActiveDetailForUpdate();
 
-            paymentMethodTypePartyTypeDetail.setThruTime(session.START_TIME_LONG);
+            paymentMethodTypePartyTypeDetail.setThruTime(session.getStartTimeLong());
             paymentMethodTypePartyTypeDetail.store();
 
             var paymentMethodTypePartyTypePK = paymentMethodTypePartyTypeDetail.getPaymentMethodTypePartyTypePK(); // R/O
@@ -325,7 +325,7 @@ public class PaymentMethodTypePartyTypeControl
 
             paymentMethodTypePartyTypeDetail = PaymentMethodTypePartyTypeDetailFactory.getInstance().create(paymentMethodTypePartyTypePK,
                     paymentMethodTypePK, partyTypePK, partyPaymentMethodWorkflowPK, partyContactMechanismWorkflowPK,
-                    isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
             paymentMethodTypePartyType.setActiveDetail(paymentMethodTypePartyTypeDetail);
             paymentMethodTypePartyType.setLastDetail(paymentMethodTypePartyTypeDetail);
@@ -341,7 +341,7 @@ public class PaymentMethodTypePartyTypeControl
 
     public void deletePaymentMethodTypePartyType(final PaymentMethodTypePartyType paymentMethodTypePartyType, final BasePK deletedBy) {
         var paymentMethodTypePartyTypeDetail = paymentMethodTypePartyType.getLastDetailForUpdate();
-        paymentMethodTypePartyTypeDetail.setThruTime(session.START_TIME_LONG);
+        paymentMethodTypePartyTypeDetail.setThruTime(session.getStartTimeLong());
         paymentMethodTypePartyTypeDetail.store();
         paymentMethodTypePartyType.setActiveDetail(null);
 

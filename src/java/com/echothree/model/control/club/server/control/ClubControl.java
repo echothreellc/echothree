@@ -104,7 +104,7 @@ public class ClubControl
 
         var club = ClubFactory.getInstance().create();
         var clubDetail = ClubDetailFactory.getInstance().create(club, clubName, subscriptionType, clubPriceFilter,
-                currency, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                currency, isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         // Convert to R/W
         club = ClubFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -303,7 +303,7 @@ public class ClubControl
                      clubDetailValue.getClubPK());
             var clubDetail = club.getActiveDetailForUpdate();
             
-            clubDetail.setThruTime(session.START_TIME_LONG);
+            clubDetail.setThruTime(session.getStartTimeLong());
             clubDetail.store();
 
             var clubPK = clubDetail.getClubPK();
@@ -331,7 +331,7 @@ public class ClubControl
             }
             
             clubDetail = ClubDetailFactory.getInstance().create(clubPK, clubName, subscriptionTypePK, clubPriceFilterPK,
-                    currencyPK, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    currencyPK, isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
             
             club.setActiveDetail(clubDetail);
             club.setLastDetail(clubDetail);
@@ -349,7 +349,7 @@ public class ClubControl
         deleteClubItemsByClub(club, deletedBy);
 
         var clubDetail = club.getLastDetailForUpdate();
-        clubDetail.setThruTime(session.START_TIME_LONG);
+        clubDetail.setThruTime(session.getStartTimeLong());
         club.setActiveDetail(null);
         club.store();
         
@@ -387,7 +387,7 @@ public class ClubControl
     
     public ClubDescription createClubDescription(Club club, Language language, String description, BasePK createdBy) {
         var clubDescription = ClubDescriptionFactory.getInstance().create(club,
-                language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                language, description, session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         sendEvent(club.getPrimaryKey(), EventTypes.MODIFY, clubDescription.getPrimaryKey(),
                 null, createdBy);
@@ -522,7 +522,7 @@ public class ClubControl
             var clubDescription = ClubDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      clubDescriptionValue.getPrimaryKey());
             
-            clubDescription.setThruTime(session.START_TIME_LONG);
+            clubDescription.setThruTime(session.getStartTimeLong());
             clubDescription.store();
 
             var club = clubDescription.getClub();
@@ -530,14 +530,14 @@ public class ClubControl
             var description = clubDescriptionValue.getDescription();
             
             clubDescription = ClubDescriptionFactory.getInstance().create(club, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
             
             sendEvent(club.getPrimaryKey(), EventTypes.MODIFY, clubDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteClubDescription(ClubDescription clubDescription, BasePK deletedBy) {
-        clubDescription.setThruTime(session.START_TIME_LONG);
+        clubDescription.setThruTime(session.getStartTimeLong());
         
         sendEvent(clubDescription.getClubPK(), EventTypes.MODIFY,
                 clubDescription.getPrimaryKey(), null, deletedBy);
@@ -681,7 +681,7 @@ public class ClubControl
     
     public ClubItem createClubItem(Club club, ClubItemType clubItemType, Item item, Long subscriptionTime, BasePK createdBy) {
         var clubItem = ClubItemFactory.getInstance().create(club, clubItemType, item, subscriptionTime,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         sendEvent(club.getPrimaryKey(), EventTypes.MODIFY, clubItem.getPrimaryKey(), null, createdBy);
         
@@ -839,7 +839,7 @@ public class ClubControl
             var clubItem = ClubItemFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     clubItemValue.getPrimaryKey());
             
-            clubItem.setThruTime(session.START_TIME_LONG);
+            clubItem.setThruTime(session.getStartTimeLong());
             clubItem.store();
 
             var subscriptionTypePK = clubItem.getClubPK(); // Not updated
@@ -848,7 +848,7 @@ public class ClubControl
             var subscriptionTime = clubItemValue.getSubscriptionTime();
             
             clubItem = ClubItemFactory.getInstance().create(subscriptionTypePK, clubItemTypePK, itemPK,
-                    subscriptionTime, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    subscriptionTime, session.getStartTimeLong(), Session.MAX_TIME_LONG);
             
             sendEvent(clubItem.getClubPK(), EventTypes.MODIFY,
                     clubItem.getPrimaryKey(), null, updatedBy);
@@ -856,7 +856,7 @@ public class ClubControl
     }
     
     public void deleteClubItem(ClubItem clubItem, BasePK deletedBy) {
-        clubItem.setThruTime(session.START_TIME_LONG);
+        clubItem.setThruTime(session.getStartTimeLong());
         
         sendEvent(clubItem.getClubPK(), EventTypes.MODIFY, clubItem.getPrimaryKey(), null, deletedBy);
     }

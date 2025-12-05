@@ -47,7 +47,7 @@ public class PartyEntityTypeControl
     // --------------------------------------------------------------------------------
 
     public PartyEntityType createPartyEntityType(Party party, EntityType entityType, Boolean confirmDelete, BasePK createdBy) {
-        var partyEntityType = PartyEntityTypeFactory.getInstance().create(party, entityType, confirmDelete, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var partyEntityType = PartyEntityTypeFactory.getInstance().create(party, entityType, confirmDelete, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyEntityType.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -161,21 +161,21 @@ public class PartyEntityTypeControl
         if(partyEntityTypeValue.hasBeenModified()) {
             var partyEntityType = PartyEntityTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, partyEntityTypeValue.getPrimaryKey());
 
-            partyEntityType.setThruTime(session.START_TIME_LONG);
+            partyEntityType.setThruTime(session.getStartTimeLong());
             partyEntityType.store();
 
             var partyPK = partyEntityType.getPartyPK(); // Not updated
             var entityTypePK = partyEntityType.getEntityTypePK(); // Not updated
             var confirmDelete = partyEntityTypeValue.getConfirmDelete();
 
-            partyEntityType = PartyEntityTypeFactory.getInstance().create(partyPK, entityTypePK, confirmDelete, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+            partyEntityType = PartyEntityTypeFactory.getInstance().create(partyPK, entityTypePK, confirmDelete, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
             sendEvent(partyPK, EventTypes.MODIFY, partyEntityType.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deletePartyEntityType(PartyEntityType partyEntityType, BasePK deletedBy) {
-        partyEntityType.setThruTime(session.START_TIME_LONG);
+        partyEntityType.setThruTime(session.getStartTimeLong());
 
         sendEvent(partyEntityType.getPartyPK(), EventTypes.MODIFY, partyEntityType.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }

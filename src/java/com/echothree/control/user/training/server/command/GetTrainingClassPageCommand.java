@@ -108,7 +108,7 @@ public class GetTrainingClassPageCommand
 
                             if(partyTrainingClassSessionStatus != null) {
                                 var partyTrainingClassSessionPage = trainingControl.createPartyTrainingClassSessionPage(partyTrainingClassSession,
-                                        trainingClassPage, session.START_TIME_LONG, null, partyPK);
+                                        trainingClassPage, session.getStartTimeLong(), null, partyPK);
 
                                 PartyTrainingClassSessionLogic.getInstance().updatePartyTrainingClassSessionStatus(session, partyTrainingClassSessionStatus,
                                         null, partyTrainingClassSessionPage, null);

@@ -51,7 +51,7 @@ public class GetUserVisitCommand
             userKeyName = userKeyDetail.getUserKeyName();
         } else {
             userKey = userKeyDetail.getUserKey();
-            userControl.getUserKeyStatusForUpdate(userKey).setLastSeenTime(session.START_TIME_LONG);
+            userControl.getUserKeyStatusForUpdate(userKey).setLastSeenTime(session.getStartTimeLong());
         }
         
         setUserVisitPK(userControl.createUserVisit(userKey, null, null, null, null, null, null, null).getPrimaryKey());

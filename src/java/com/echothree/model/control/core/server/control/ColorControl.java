@@ -70,7 +70,7 @@ public class ColorControl
         }
 
         var color = ColorFactory.getInstance().create();
-        var colorDetail = ColorDetailFactory.getInstance().create(color, colorName, red, green, blue, isDefault, sortOrder, session.START_TIME_LONG,
+        var colorDetail = ColorDetailFactory.getInstance().create(color, colorName, red, green, blue, isDefault, sortOrder, session.getStartTimeLong(),
                 Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -270,7 +270,7 @@ public class ColorControl
                     colorDetailValue.getColorPK());
             var colorDetail = color.getActiveDetailForUpdate();
 
-            colorDetail.setThruTime(session.START_TIME_LONG);
+            colorDetail.setThruTime(session.getStartTimeLong());
             colorDetail.store();
 
             var colorPK = colorDetail.getColorPK(); // Not updated
@@ -297,7 +297,7 @@ public class ColorControl
                 }
             }
 
-            colorDetail = ColorDetailFactory.getInstance().create(colorPK, colorName, red, green, blue, isDefault, sortOrder, session.START_TIME_LONG,
+            colorDetail = ColorDetailFactory.getInstance().create(colorPK, colorName, red, green, blue, isDefault, sortOrder, session.getStartTimeLong(),
                     Session.MAX_TIME_LONG);
 
             color.setActiveDetail(colorDetail);
@@ -318,7 +318,7 @@ public class ColorControl
         appearanceControl.deleteAppearancesByColor(color, deletedBy);
         deleteColorDescriptionsByColor(color, deletedBy);
 
-        colorDetail.setThruTime(session.START_TIME_LONG);
+        colorDetail.setThruTime(session.getStartTimeLong());
         color.setActiveDetail(null);
         color.store();
 
@@ -363,7 +363,7 @@ public class ColorControl
 
     public ColorDescription createColorDescription(Color color, Language language, String description, BasePK createdBy) {
         var colorDescription = ColorDescriptionFactory.getInstance().create(color, language, description,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
         sendEvent(color.getPrimaryKey(), EventTypes.MODIFY, colorDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -476,7 +476,7 @@ public class ColorControl
             var colorDescription = ColorDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     colorDescriptionValue.getPrimaryKey());
 
-            colorDescription.setThruTime(session.START_TIME_LONG);
+            colorDescription.setThruTime(session.getStartTimeLong());
             colorDescription.store();
 
             var color = colorDescription.getColor();
@@ -484,14 +484,14 @@ public class ColorControl
             var description = colorDescriptionValue.getDescription();
 
             colorDescription = ColorDescriptionFactory.getInstance().create(color, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
             sendEvent(color.getPrimaryKey(), EventTypes.MODIFY, colorDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteColorDescription(ColorDescription colorDescription, BasePK deletedBy) {
-        colorDescription.setThruTime(session.START_TIME_LONG);
+        colorDescription.setThruTime(session.getStartTimeLong());
 
         sendEvent(colorDescription.getColorPK(), EventTypes.MODIFY, colorDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 

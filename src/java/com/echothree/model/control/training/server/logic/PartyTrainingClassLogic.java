@@ -189,7 +189,7 @@ public class PartyTrainingClassLogic
 
             if(preparedWorkEffort != null) {
                 var requiredCompletionTime = trainingClass.getLastDetail().getRequiredCompletionTime();
-                var requiredTime = requiredCompletionTime == null ? null : session.START_TIME + requiredCompletionTime;
+                var requiredTime = requiredCompletionTime == null ? null : session.getStartTime() + requiredCompletionTime;
 
                 workEffort = WorkEffortLogic.getInstance().createWorkEffort(preparedWorkEffort, entityInstance, createdBy);
 

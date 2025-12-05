@@ -56,7 +56,7 @@ public class LotControl
     public Lot createLot(final Item item, final String lotIdentifier, final BasePK createdBy) {
 
         var lot = LotFactory.getInstance().create();
-        var lotDetail = LotDetailFactory.getInstance().create(session, lot, item, lotIdentifier, session.START_TIME_LONG,
+        var lotDetail = LotDetailFactory.getInstance().create(session, lot, item, lotIdentifier, session.getStartTimeLong(),
                 Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -191,14 +191,14 @@ public class LotControl
                     lotDetailValue.getLotPK());
             var lotDetail = lot.getActiveDetailForUpdate();
 
-            lotDetail.setThruTime(session.START_TIME_LONG);
+            lotDetail.setThruTime(session.getStartTimeLong());
             lotDetail.store();
 
             var lotPK = lotDetail.getLotPK(); // R/O
             var itemPK = lotDetailValue.getItemPK(); // R/O
             var lotIdentifier = lotDetailValue.getLotIdentifier(); // R/W
 
-            lotDetail = LotDetailFactory.getInstance().create(lotPK, itemPK, lotIdentifier, session.START_TIME_LONG,
+            lotDetail = LotDetailFactory.getInstance().create(lotPK, itemPK, lotIdentifier, session.getStartTimeLong(),
                     Session.MAX_TIME_LONG);
 
             lot.setActiveDetail(lotDetail);
@@ -210,7 +210,7 @@ public class LotControl
 
     public void deleteLot(final Lot lot, final BasePK deletedBy) {
         var lotDetail = lot.getLastDetailForUpdate();
-        lotDetail.setThruTime(session.START_TIME_LONG);
+        lotDetail.setThruTime(session.getStartTimeLong());
         lotDetail.store();
         lot.setActiveDetail(null);
 

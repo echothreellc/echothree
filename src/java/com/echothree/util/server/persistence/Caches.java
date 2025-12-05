@@ -16,55 +16,29 @@
 
 package com.echothree.util.server.persistence;
 
-import javax.enterprise.inject.spi.Unmanaged;
+import com.echothree.util.server.cdi.CommandScope;
+import javax.annotation.Resource;
 import org.infinispan.Cache;
 
+@CommandScope
 public class Caches {
 
-    private static Unmanaged<SecurityCacheBean> unmanagedSecurityCacheBean = new Unmanaged<>(SecurityCacheBean.class);
-    private static Unmanaged<DataCacheBean> unmanagedDataCacheBean = new Unmanaged<>(DataCacheBean.class);
+    @Resource(lookup = "java:app/infinispan/echothree/security")
+    Cache<String, Object> securityCache;
 
-    private Unmanaged.UnmanagedInstance<SecurityCacheBean> securityCacheBeanInstance = null;
-    private Cache<String, Object> securityCache = null;
-    private Unmanaged.UnmanagedInstance<DataCacheBean> dataCacheBeanInstance = null;
-    private Cache<String, Object> dataCache = null;
+    @Resource(lookup = "java:app/infinispan/echothree/data")
+    Cache<String, Object> dataCache;
 
     /** Creates a new instance of Caches */
     public Caches() {
     }
 
     public Cache<String, Object> getSecurityCache() {
-        if(securityCache == null) {
-            securityCacheBeanInstance = unmanagedSecurityCacheBean.newInstance();
-            var securityCacheBean = securityCacheBeanInstance.produce().inject().postConstruct().get();
-            securityCache = securityCacheBean.getCache();
-        }
-
         return securityCache;
     }
 
     public Cache<String, Object> getDataCache() {
-        if(dataCache == null) {
-            dataCacheBeanInstance = unmanagedDataCacheBean.newInstance();
-            var dataCacheBean = dataCacheBeanInstance.produce().inject().postConstruct().get();
-            dataCache = dataCacheBean.getCache();
-        }
-
         return dataCache;
     }
 
-    @SuppressWarnings("Finally")
-    public void close() {
-        if(securityCacheBeanInstance != null) {
-            securityCacheBeanInstance.preDestroy().dispose();
-            securityCacheBeanInstance = null;
-            securityCache = null;
-        }
-
-        if(dataCacheBeanInstance != null) {
-            dataCacheBeanInstance.preDestroy().dispose();
-            dataCacheBeanInstance = null;
-            dataCache = null;
-        }
-    }
 }

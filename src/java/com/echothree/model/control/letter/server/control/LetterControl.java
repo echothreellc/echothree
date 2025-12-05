@@ -130,7 +130,7 @@ public class LetterControl
         var letterSource = LetterSourceFactory.getInstance().create();
         var letterSourceDetail = LetterSourceDetailFactory.getInstance().create(letterSource,
                 letterSourceName, companyParty, emailAddressPartyContactMechanism, postalAddressPartyContactMechanism,
-                letterSourcePartyContactMechanism, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                letterSourcePartyContactMechanism, isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         // Convert to R/W
         letterSource = LetterSourceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, letterSource.getPrimaryKey());
@@ -418,7 +418,7 @@ public class LetterControl
                      letterSourceDetailValue.getLetterSourcePK());
             var letterSourceDetail = letterSource.getActiveDetailForUpdate();
             
-            letterSourceDetail.setThruTime(session.START_TIME_LONG);
+            letterSourceDetail.setThruTime(session.getStartTimeLong());
             letterSourceDetail.store();
 
             var letterSourcePK = letterSourceDetail.getLetterSourcePK(); // Not updated
@@ -448,7 +448,7 @@ public class LetterControl
             
             letterSourceDetail = LetterSourceDetailFactory.getInstance().create(letterSourcePK, letterSourceName,
                     companyPartyPK, emailAddressPartyContactMechanismPK, postalAddressPartyContactMechanismPK,
-                    letterSourcePartyContactMechanismPK, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    letterSourcePartyContactMechanismPK, isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
             
             letterSource.setActiveDetail(letterSourceDetail);
             letterSource.setLastDetail(letterSourceDetail);
@@ -466,7 +466,7 @@ public class LetterControl
         deleteLetterSourceDescriptionsByLetterSource(letterSource, deletedBy);
 
         var letterSourceDetail = letterSource.getLastDetailForUpdate();
-        letterSourceDetail.setThruTime(session.START_TIME_LONG);
+        letterSourceDetail.setThruTime(session.getStartTimeLong());
         letterSource.setActiveDetail(null);
         letterSource.store();
         
@@ -520,7 +520,7 @@ public class LetterControl
     
     public LetterSourceDescription createLetterSourceDescription(LetterSource letterSource, Language language, String description, BasePK createdBy) {
         var letterSourceDescription = LetterSourceDescriptionFactory.getInstance().create(letterSource, language, description,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         sendEvent(letterSource.getPrimaryKey(), EventTypes.MODIFY, letterSourceDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -657,7 +657,7 @@ public class LetterControl
             var letterSourceDescription = LetterSourceDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      letterSourceDescriptionValue.getPrimaryKey());
             
-            letterSourceDescription.setThruTime(session.START_TIME_LONG);
+            letterSourceDescription.setThruTime(session.getStartTimeLong());
             letterSourceDescription.store();
 
             var letterSource = letterSourceDescription.getLetterSource();
@@ -665,14 +665,14 @@ public class LetterControl
             var description = letterSourceDescriptionValue.getDescription();
             
             letterSourceDescription = LetterSourceDescriptionFactory.getInstance().create(letterSource,
-                    language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    language, description, session.getStartTimeLong(), Session.MAX_TIME_LONG);
             
             sendEvent(letterSource.getPrimaryKey(), EventTypes.MODIFY, letterSourceDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteLetterSourceDescription(LetterSourceDescription letterSourceDescription, BasePK deletedBy) {
-        letterSourceDescription.setThruTime(session.START_TIME_LONG);
+        letterSourceDescription.setThruTime(session.getStartTimeLong());
         
         sendEvent(letterSourceDescription.getLetterSourcePK(), EventTypes.MODIFY, letterSourceDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
@@ -705,7 +705,7 @@ public class LetterControl
 
         var letter = LetterFactory.getInstance().create();
         var letterDetail = LetterDetailFactory.getInstance().create(letter, chainType, letterName,
-                letterSource, contactList, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                letterSource, contactList, isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         // Convert to R/W
         letter = LetterFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, letter.getPrimaryKey());
@@ -980,7 +980,7 @@ public class LetterControl
                      letterDetailValue.getLetterPK());
             var letterDetail = letter.getActiveDetailForUpdate();
             
-            letterDetail.setThruTime(session.START_TIME_LONG);
+            letterDetail.setThruTime(session.getStartTimeLong());
             letterDetail.store();
 
             var letterPK = letterDetail.getLetterPK();
@@ -1009,7 +1009,7 @@ public class LetterControl
             }
             
             letterDetail = LetterDetailFactory.getInstance().create(letterPK, chainTypePK, letterName, letterSourcePK,
-                    contactListPK, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    contactListPK, isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
             
             letter.setActiveDetail(letterDetail);
             letter.setLastDetail(letterDetail);
@@ -1027,7 +1027,7 @@ public class LetterControl
         deleteLetterDescriptionsByLetter(letter, deletedBy);
 
         var letterDetail = letter.getLastDetailForUpdate();
-        letterDetail.setThruTime(session.START_TIME_LONG);
+        letterDetail.setThruTime(session.getStartTimeLong());
         letter.setActiveDetail(null);
         letter.store();
         
@@ -1072,7 +1072,7 @@ public class LetterControl
     
     public LetterDescription createLetterDescription(Letter letter, Language language, String description, BasePK createdBy) {
         var letterDescription = LetterDescriptionFactory.getInstance().create(letter, language, description,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         sendEvent(letter.getPrimaryKey(), EventTypes.MODIFY, letterDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1209,7 +1209,7 @@ public class LetterControl
             var letterDescription = LetterDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      letterDescriptionValue.getPrimaryKey());
             
-            letterDescription.setThruTime(session.START_TIME_LONG);
+            letterDescription.setThruTime(session.getStartTimeLong());
             letterDescription.store();
 
             var letter = letterDescription.getLetter();
@@ -1217,14 +1217,14 @@ public class LetterControl
             var description = letterDescriptionValue.getDescription();
             
             letterDescription = LetterDescriptionFactory.getInstance().create(letter,
-                    language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    language, description, session.getStartTimeLong(), Session.MAX_TIME_LONG);
             
             sendEvent(letter.getPrimaryKey(), EventTypes.MODIFY, letterDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteLetterDescription(LetterDescription letterDescription, BasePK deletedBy) {
-        letterDescription.setThruTime(session.START_TIME_LONG);
+        letterDescription.setThruTime(session.getStartTimeLong());
         
         sendEvent(letterDescription.getLetterPK(), EventTypes.MODIFY, letterDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
@@ -1245,7 +1245,7 @@ public class LetterControl
             ContactMechanismPurpose contactMechanismPurpose, BasePK createdBy) {
         var letterContactMechanismPurpose = LetterContactMechanismPurposeFactory.getInstance().create();
         var letterContactMechanismPurposeDetail = LetterContactMechanismPurposeDetailFactory.getInstance().create(session,
-                letterContactMechanismPurpose, letter, priority, contactMechanismPurpose, session.START_TIME_LONG,
+                letterContactMechanismPurpose, letter, priority, contactMechanismPurpose, session.getStartTimeLong(),
                 Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -1371,7 +1371,7 @@ public class LetterControl
                      letterContactMechanismPurposeDetailValue.getLetterContactMechanismPurposePK());
             var letterContactMechanismPurposeDetail = letterContactMechanismPurpose.getActiveDetailForUpdate();
             
-            letterContactMechanismPurposeDetail.setThruTime(session.START_TIME_LONG);
+            letterContactMechanismPurposeDetail.setThruTime(session.getStartTimeLong());
             letterContactMechanismPurposeDetail.store();
 
             var letterContactMechanismPurposePK = letterContactMechanismPurposeDetail.getLetterContactMechanismPurposePK();
@@ -1380,7 +1380,7 @@ public class LetterControl
             var contactMechanismPurposePK = letterContactMechanismPurposeDetailValue.getContactMechanismPurposePK();
             
             letterContactMechanismPurposeDetail = LetterContactMechanismPurposeDetailFactory.getInstance().create(session,
-                    letterContactMechanismPurposePK, letterPK, priority, contactMechanismPurposePK, session.START_TIME_LONG,
+                    letterContactMechanismPurposePK, letterPK, priority, contactMechanismPurposePK, session.getStartTimeLong(),
                     Session.MAX_TIME_LONG);
             
             letterContactMechanismPurpose.setActiveDetail(letterContactMechanismPurposeDetail);
@@ -1392,7 +1392,7 @@ public class LetterControl
     
     public void deleteLetterContactMechanismPurpose(LetterContactMechanismPurpose letterContactMechanismPurpose, BasePK deletedBy) {
         var letterContactMechanismPurposeDetail = letterContactMechanismPurpose.getLastDetailForUpdate();
-        letterContactMechanismPurposeDetail.setThruTime(session.START_TIME_LONG);
+        letterContactMechanismPurposeDetail.setThruTime(session.getStartTimeLong());
         letterContactMechanismPurpose.setActiveDetail(null);
         letterContactMechanismPurpose.store();
         

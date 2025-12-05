@@ -78,7 +78,7 @@ public class CreateUserVisitTrackCommand
                 }
             }
             
-            trackControl.createUserVisitTrack(getUserVisit(), session.START_TIME_LONG, track);
+            trackControl.createUserVisitTrack(getUserVisit(), session.getStartTimeLong(), track);
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());
         }

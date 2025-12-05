@@ -151,7 +151,7 @@ public class CustomerControl
                 customerSequence, defaultOfferUse, defaultTerm, defaultFreeOnBoard, defaultCancellationPolicy, defaultReturnPolicy,
                 defaultCustomerStatus, defaultCustomerCreditStatus, defaultArGlAccount, defaultHoldUntilComplete, defaultAllowBackorders,
                 defaultAllowSubstitutions, defaultAllowCombiningShipments, defaultRequireReference, defaultAllowReferenceDuplicates,
-                defaultReferenceValidationPattern, defaultTaxable, allocationPriority, isDefault, sortOrder, session.START_TIME_LONG,
+                defaultReferenceValidationPattern, defaultTaxable, allocationPriority, isDefault, sortOrder, session.getStartTimeLong(),
                 Session.MAX_TIME_LONG);
 
         // Convert to R/W
@@ -362,7 +362,7 @@ public class CustomerControl
             var customerType = CustomerTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, customerTypeDetailValue.getCustomerTypePK());
             var customerTypeDetail = customerType.getActiveDetailForUpdate();
 
-            customerTypeDetail.setThruTime(session.START_TIME_LONG);
+            customerTypeDetail.setThruTime(session.getStartTimeLong());
             customerTypeDetail.store();
 
             var customerTypePK = customerTypeDetail.getCustomerTypePK();
@@ -409,7 +409,7 @@ public class CustomerControl
                     defaultCustomerStatusPK, defaultCustomerCreditStatusPK, defaultArGlAccountPK, defaultHoldUntilComplete,
                     defaultAllowBackorders, defaultAllowSubstitutions, defaultAllowCombiningShipments, defaultRequireReference,
                     defaultAllowReferenceDuplicates, defaultReferenceValidationPattern, defaultTaxable, allocationPriority,
-                    isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
             customerType.setActiveDetail(customerTypeDetail);
             customerType.setLastDetail(customerTypeDetail);
@@ -435,7 +435,7 @@ public class CustomerControl
         deleteCustomerTypeDescriptionsByCustomerType(customerType, deletedBy);
 
         var customerTypeDetail = customerType.getLastDetailForUpdate();
-        customerTypeDetail.setThruTime(session.START_TIME_LONG);
+        customerTypeDetail.setThruTime(session.getStartTimeLong());
         customerType.setActiveDetail(null);
         customerType.store();
         
@@ -467,7 +467,7 @@ public class CustomerControl
             BasePK createdBy) {
         var customerTypeDescription = CustomerTypeDescriptionFactory.getInstance().create(customerType,
                 language, description,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         sendEvent(customerType.getPrimaryKey(), EventTypes.MODIFY, customerTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -602,7 +602,7 @@ public class CustomerControl
             var customerTypeDescription = CustomerTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      customerTypeDescriptionValue.getPrimaryKey());
             
-            customerTypeDescription.setThruTime(session.START_TIME_LONG);
+            customerTypeDescription.setThruTime(session.getStartTimeLong());
             customerTypeDescription.store();
 
             var customerType = customerTypeDescription.getCustomerType();
@@ -610,14 +610,14 @@ public class CustomerControl
             var description = customerTypeDescriptionValue.getDescription();
             
             customerTypeDescription = CustomerTypeDescriptionFactory.getInstance().create(customerType, language,
-                    description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    description, session.getStartTimeLong(), Session.MAX_TIME_LONG);
             
             sendEvent(customerType.getPrimaryKey(), EventTypes.MODIFY, customerTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteCustomerTypeDescription(CustomerTypeDescription customerTypeDescription, BasePK deletedBy) {
-        customerTypeDescription.setThruTime(session.START_TIME_LONG);
+        customerTypeDescription.setThruTime(session.getStartTimeLong());
         
         sendEvent(customerTypeDescription.getCustomerTypePK(), EventTypes.MODIFY, customerTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
@@ -643,7 +643,7 @@ public class CustomerControl
         var customer = CustomerFactory.getInstance().create(party, customerName, customerType, initialOfferUse,
                 cancellationPolicy, returnPolicy, arGlAccount, holdUntilComplete, allowBackorders, allowSubstitutions,
                 allowCombiningShipments, requireReference, allowReferenceDuplicates, referenceValidationPattern,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, customer.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -815,7 +815,7 @@ public class CustomerControl
         if(customerValue.hasBeenModified()) {
             var customer = CustomerFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, customerValue.getPrimaryKey());
 
-            customer.setThruTime(session.START_TIME_LONG);
+            customer.setThruTime(session.getStartTimeLong());
             customer.store();
 
             var partyPK = customer.getPartyPK(); // Not updated
@@ -835,7 +835,7 @@ public class CustomerControl
 
             customer = CustomerFactory.getInstance().create(partyPK, customerName, customerTypePK, initialOfferUsePK, cancellationPolicyPK, returnPolicyPK,
                     arGlAccountPK, holdUntilComplete, allowBackorders, allowSubstitutions, allowCombiningShipments, requireReference, allowReferenceDuplicates,
-                    referenceValidationPattern, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    referenceValidationPattern, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
             sendEvent(partyPK, EventTypes.MODIFY, customer.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -928,7 +928,7 @@ public class CustomerControl
         }
 
         var customerTypePaymentMethod = CustomerTypePaymentMethodFactory.getInstance().create(session, customerType, paymentMethod,
-                defaultSelectionPriority, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                defaultSelectionPriority, isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         sendEvent(customerType.getPrimaryKey(), EventTypes.MODIFY, customerTypePaymentMethod.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1126,7 +1126,7 @@ public class CustomerControl
             var customerTypePaymentMethod = CustomerTypePaymentMethodFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      customerTypePaymentMethodValue.getPrimaryKey());
             
-            customerTypePaymentMethod.setThruTime(session.START_TIME_LONG);
+            customerTypePaymentMethod.setThruTime(session.getStartTimeLong());
             customerTypePaymentMethod.store();
 
             var customerTypePK = customerTypePaymentMethod.getCustomerTypePK();
@@ -1153,7 +1153,7 @@ public class CustomerControl
             }
             
             customerTypePaymentMethod = CustomerTypePaymentMethodFactory.getInstance().create(customerTypePK, paymentMethodPK, defaultSelectionPriority,
-                    isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
             
             sendEvent(customerTypePK, EventTypes.MODIFY, customerTypePaymentMethod.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -1164,7 +1164,7 @@ public class CustomerControl
     }
     
     public void deleteCustomerTypePaymentMethod(CustomerTypePaymentMethod customerTypePaymentMethod, BasePK deletedBy) {
-        customerTypePaymentMethod.setThruTime(session.START_TIME_LONG);
+        customerTypePaymentMethod.setThruTime(session.getStartTimeLong());
         customerTypePaymentMethod.store();
         
         // Check for default, and pick one if necessary
@@ -1221,7 +1221,7 @@ public class CustomerControl
         }
 
         var customerTypeShippingMethod = CustomerTypeShippingMethodFactory.getInstance().create(session, customerType, shippingMethod,
-                defaultSelectionPriority, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                defaultSelectionPriority, isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         sendEvent(customerType.getPrimaryKey(), EventTypes.MODIFY, customerTypeShippingMethod.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1421,7 +1421,7 @@ public class CustomerControl
             var customerTypeShippingMethod = CustomerTypeShippingMethodFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      customerTypeShippingMethodValue.getPrimaryKey());
             
-            customerTypeShippingMethod.setThruTime(session.START_TIME_LONG);
+            customerTypeShippingMethod.setThruTime(session.getStartTimeLong());
             customerTypeShippingMethod.store();
 
             var customerTypePK = customerTypeShippingMethod.getCustomerTypePK();
@@ -1448,7 +1448,7 @@ public class CustomerControl
             }
             
             customerTypeShippingMethod = CustomerTypeShippingMethodFactory.getInstance().create(customerTypePK, shippingMethodPK, defaultSelectionPriority,
-                    isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
             
             sendEvent(customerTypePK, EventTypes.MODIFY, customerTypeShippingMethod.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -1459,7 +1459,7 @@ public class CustomerControl
     }
     
     public void deleteCustomerTypeShippingMethod(CustomerTypeShippingMethod customerTypeShippingMethod, BasePK deletedBy) {
-        customerTypeShippingMethod.setThruTime(session.START_TIME_LONG);
+        customerTypeShippingMethod.setThruTime(session.getStartTimeLong());
         customerTypeShippingMethod.store();
         
         // Check for default, and pick one if necessary

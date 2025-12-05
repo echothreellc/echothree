@@ -154,7 +154,7 @@ public class LicenseCheckLogic
         // If an attempt was made, and it failed, and RETRY_DELAY has passed, then
         // clear the last attempt time and allow another to happen.
         if(lastLicenseAttempt != null) {
-            if(session.START_TIME - lastLicenseAttempt > RETRY_DELAY) {
+            if(session.getStartTime() - lastLicenseAttempt > RETRY_DELAY) {
                 log.info("Clearing last license retrieval attempt.");
                 lastLicenseAttempt = null;
             }
@@ -162,7 +162,7 @@ public class LicenseCheckLogic
         
         // If we're within LICENSE_RENEWAL_PERIOD of the licenseValidUntilTime, start
         // our attempts to renew the license.
-        if(session.START_TIME + LICENSE_RENEWAL_PERIOD > licenseValidUntilTime.get() && lastLicenseAttempt == null) {
+        if(session.getStartTime() + LICENSE_RENEWAL_PERIOD > licenseValidUntilTime.get() && lastLicenseAttempt == null) {
             log.info("Attempting license retrieval.");
             if(attemptRetrieval()) {
                 // If the attempt was successful in retrieving something, clear the time we last attempted.
@@ -170,7 +170,7 @@ public class LicenseCheckLogic
                 lastLicenseAttempt = null;
             } else {
                 // Otherwise, if there was no last attempt time record it, save it.
-                lastLicenseAttempt = session.START_TIME_LONG;
+                lastLicenseAttempt = session.getStartTimeLong();
                 log.info("Retrieval failed.");
             }
         }
@@ -180,7 +180,7 @@ public class LicenseCheckLogic
         var result = executionPermitted.get();
 
         // If we're past the licenseValidUntilTime, disable command execution.
-        if(session.START_TIME > licenseValidUntilTime.get() && executionPermitted.get()) {
+        if(session.getStartTime() > licenseValidUntilTime.get() && executionPermitted.get()) {
             log.error("Disabling command execution, license no longer valid.");
             executionPermitted.set(false);
             result = false;

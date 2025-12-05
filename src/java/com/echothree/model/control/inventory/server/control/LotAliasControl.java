@@ -74,7 +74,7 @@ public class LotAliasControl
 
         var lotAliasType = LotAliasTypeFactory.getInstance().create();
         var lotAliasTypeDetail = LotAliasTypeDetailFactory.getInstance().create(lotAliasType, lotAliasTypeName,
-                validationPattern, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                validationPattern, isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
         // Convert to R/W
         lotAliasType = LotAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, lotAliasType.getPrimaryKey());
@@ -249,7 +249,7 @@ public class LotAliasControl
                     lotAliasTypeDetailValue.getLotAliasTypePK());
             var lotAliasTypeDetail = lotAliasType.getActiveDetailForUpdate();
 
-            lotAliasTypeDetail.setThruTime(session.START_TIME_LONG);
+            lotAliasTypeDetail.setThruTime(session.getStartTimeLong());
             lotAliasTypeDetail.store();
 
             var lotAliasTypePK = lotAliasTypeDetail.getLotAliasTypePK();
@@ -275,7 +275,7 @@ public class LotAliasControl
             }
 
             lotAliasTypeDetail = LotAliasTypeDetailFactory.getInstance().create(lotAliasTypePK, lotAliasTypeName,
-                    validationPattern, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    validationPattern, isDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
             lotAliasType.setActiveDetail(lotAliasTypeDetail);
             lotAliasType.setLastDetail(lotAliasTypeDetail);
@@ -293,7 +293,7 @@ public class LotAliasControl
         deleteLotAliasTypeDescriptionsByLotAliasType(lotAliasType, deletedBy);
 
         var lotAliasTypeDetail = lotAliasType.getLastDetailForUpdate();
-        lotAliasTypeDetail.setThruTime(session.START_TIME_LONG);
+        lotAliasTypeDetail.setThruTime(session.getStartTimeLong());
         lotAliasType.setActiveDetail(null);
         lotAliasType.store();
 
@@ -329,7 +329,7 @@ public class LotAliasControl
 
     public LotAliasTypeDescription createLotAliasTypeDescription(LotAliasType lotAliasType, Language language, String description, BasePK createdBy) {
         var lotAliasTypeDescription = LotAliasTypeDescriptionFactory.getInstance().create(lotAliasType, language,
-                description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                description, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
         sendEvent(lotAliasType.getPrimaryKey(), EventTypes.MODIFY, lotAliasTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -442,7 +442,7 @@ public class LotAliasControl
             var lotAliasTypeDescription = LotAliasTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      lotAliasTypeDescriptionValue.getPrimaryKey());
 
-            lotAliasTypeDescription.setThruTime(session.START_TIME_LONG);
+            lotAliasTypeDescription.setThruTime(session.getStartTimeLong());
             lotAliasTypeDescription.store();
 
             var lotAliasType = lotAliasTypeDescription.getLotAliasType();
@@ -450,14 +450,14 @@ public class LotAliasControl
             var description = lotAliasTypeDescriptionValue.getDescription();
 
             lotAliasTypeDescription = LotAliasTypeDescriptionFactory.getInstance().create(lotAliasType, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
             sendEvent(lotAliasType.getPrimaryKey(), EventTypes.MODIFY, lotAliasTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteLotAliasTypeDescription(LotAliasTypeDescription lotAliasTypeDescription, BasePK deletedBy) {
-        lotAliasTypeDescription.setThruTime(session.START_TIME_LONG);
+        lotAliasTypeDescription.setThruTime(session.getStartTimeLong());
 
         sendEvent(lotAliasTypeDescription.getLotAliasTypePK(), EventTypes.MODIFY, lotAliasTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
@@ -476,7 +476,7 @@ public class LotAliasControl
     // --------------------------------------------------------------------------------
 
     public LotAlias createLotAlias(Lot lot, LotAliasType lotAliasType, String alias, BasePK createdBy) {
-        var lotAlias = LotAliasFactory.getInstance().create(lot, lotAliasType, alias, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var lotAlias = LotAliasFactory.getInstance().create(lot, lotAliasType, alias, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
         sendEvent(lot.getPrimaryKey(), EventTypes.MODIFY, lotAlias.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -633,21 +633,21 @@ public class LotAliasControl
         if(lotAliasValue.hasBeenModified()) {
             var lotAlias = LotAliasFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, lotAliasValue.getPrimaryKey());
 
-            lotAlias.setThruTime(session.START_TIME_LONG);
+            lotAlias.setThruTime(session.getStartTimeLong());
             lotAlias.store();
 
             var lotPK = lotAlias.getLotPK();
             var lotAliasTypePK = lotAlias.getLotAliasTypePK();
             var alias  = lotAliasValue.getAlias();
 
-            lotAlias = LotAliasFactory.getInstance().create(lotPK, lotAliasTypePK, alias, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+            lotAlias = LotAliasFactory.getInstance().create(lotPK, lotAliasTypePK, alias, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
             sendEvent(lotPK, EventTypes.MODIFY, lotAlias.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteLotAlias(LotAlias lotAlias, BasePK deletedBy) {
-        lotAlias.setThruTime(session.START_TIME_LONG);
+        lotAlias.setThruTime(session.getStartTimeLong());
 
         sendEvent(lotAlias.getLotPK(), EventTypes.MODIFY, lotAlias.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 

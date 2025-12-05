@@ -124,7 +124,7 @@ public class CommentControl
             WorkflowEntrance workflowEntrance, MimeTypeUsageType mimeTypeUsageType, Integer sortOrder, BasePK createdBy) {
         var commentType = CommentTypeFactory.getInstance().create();
         var commentTypeDetail = CommentTypeDetailFactory.getInstance().create(commentType, entityType,
-                commentTypeName, commentSequence, workflowEntrance, mimeTypeUsageType, sortOrder, session.START_TIME_LONG,
+                commentTypeName, commentSequence, workflowEntrance, mimeTypeUsageType, sortOrder, session.getStartTimeLong(),
                 Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -246,7 +246,7 @@ public class CommentControl
                      commentTypeDetailValue.getCommentTypePK());
             var commentTypeDetail = commentType.getActiveDetailForUpdate();
             
-            commentTypeDetail.setThruTime(session.START_TIME_LONG);
+            commentTypeDetail.setThruTime(session.getStartTimeLong());
             commentTypeDetail.store();
 
             var commentTypePK = commentTypeDetail.getCommentTypePK(); // Not updated
@@ -258,7 +258,7 @@ public class CommentControl
             var sortOrder = commentTypeDetailValue.getSortOrder();
             
             commentTypeDetail = CommentTypeDetailFactory.getInstance().create(commentTypePK, entityTypePK, commentTypeName,
-                    commentSequencePK, workflowEntrancePK, mimeTypeUsageTypePK, sortOrder, session.START_TIME_LONG,
+                    commentSequencePK, workflowEntrancePK, mimeTypeUsageTypePK, sortOrder, session.getStartTimeLong(),
                     Session.MAX_TIME_LONG);
             
             commentType.setActiveDetail(commentTypeDetail);
@@ -274,7 +274,7 @@ public class CommentControl
         deleteCommentsByCommentType(commentType, deletedBy);
 
         var commentTypeDetail = commentType.getLastDetailForUpdate();
-        commentTypeDetail.setThruTime(session.START_TIME_LONG);
+        commentTypeDetail.setThruTime(session.getStartTimeLong());
         commentType.setActiveDetail(null);
         commentType.store();
         
@@ -298,7 +298,7 @@ public class CommentControl
     public CommentTypeDescription createCommentTypeDescription(CommentType commentType, Language language, String description,
             BasePK createdBy) {
         var commentTypeDescription = CommentTypeDescriptionFactory.getInstance().create(commentType,
-                language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                language, description, session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         sendEvent(commentType.getPrimaryKey(), EventTypes.MODIFY, commentTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -427,21 +427,21 @@ public class CommentControl
         if(commentTypeDescriptionValue.hasBeenModified()) {
             var commentTypeDescription = CommentTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, commentTypeDescriptionValue.getPrimaryKey());
             
-            commentTypeDescription.setThruTime(session.START_TIME_LONG);
+            commentTypeDescription.setThruTime(session.getStartTimeLong());
             commentTypeDescription.store();
 
             var commentType = commentTypeDescription.getCommentType();
             var language = commentTypeDescription.getLanguage();
             var description = commentTypeDescriptionValue.getDescription();
             
-            commentTypeDescription = CommentTypeDescriptionFactory.getInstance().create(commentType, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+            commentTypeDescription = CommentTypeDescriptionFactory.getInstance().create(commentType, language, description, session.getStartTimeLong(), Session.MAX_TIME_LONG);
             
             sendEvent(commentType.getPrimaryKey(), EventTypes.MODIFY, commentTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteCommentTypeDescription(CommentTypeDescription commentTypeDescription, BasePK deletedBy) {
-        commentTypeDescription.setThruTime(session.START_TIME_LONG);
+        commentTypeDescription.setThruTime(session.getStartTimeLong());
         
         sendEvent(commentTypeDescription.getCommentTypePK(), EventTypes.MODIFY, commentTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
@@ -463,7 +463,7 @@ public class CommentControl
             Integer sortOrder, BasePK createdBy) {
         var commentUsageType = CommentUsageTypeFactory.getInstance().create();
         var commentUsageTypeDetail = CommentUsageTypeDetailFactory.getInstance().create(session,
-                commentUsageType, commentType, commentUsageTypeName, selectedByDefault, sortOrder, session.START_TIME_LONG,
+                commentUsageType, commentType, commentUsageTypeName, selectedByDefault, sortOrder, session.getStartTimeLong(),
                 Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -588,7 +588,7 @@ public class CommentControl
                      commentUsageTypeDetailValue.getCommentUsageTypePK());
             var commentUsageTypeDetail = commentUsageType.getActiveDetailForUpdate();
             
-            commentUsageTypeDetail.setThruTime(session.START_TIME_LONG);
+            commentUsageTypeDetail.setThruTime(session.getStartTimeLong());
             commentUsageTypeDetail.store();
 
             var commentUsageTypePK = commentUsageTypeDetail.getCommentUsageTypePK(); // Not updated
@@ -598,7 +598,7 @@ public class CommentControl
             var sortOrder = commentUsageTypeDetailValue.getSortOrder();
             
             commentUsageTypeDetail = CommentUsageTypeDetailFactory.getInstance().create(commentUsageTypePK, commentTypePK,
-                    commentUsageTypeName, selectedByDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    commentUsageTypeName, selectedByDefault, sortOrder, session.getStartTimeLong(), Session.MAX_TIME_LONG);
             
             commentUsageType.setActiveDetail(commentUsageTypeDetail);
             commentUsageType.setLastDetail(commentUsageTypeDetail);
@@ -612,7 +612,7 @@ public class CommentControl
         deleteCommentUsagesByCommentUsageType(commentUsageType, deletedBy);
 
         var commentUsageTypeDetail = commentUsageType.getLastDetailForUpdate();
-        commentUsageTypeDetail.setThruTime(session.START_TIME_LONG);
+        commentUsageTypeDetail.setThruTime(session.getStartTimeLong());
         commentUsageType.setActiveDetail(null);
         commentUsageType.store();
         
@@ -636,7 +636,7 @@ public class CommentControl
     public CommentUsageTypeDescription createCommentUsageTypeDescription(CommentUsageType commentUsageType, Language language,
             String description, BasePK createdBy) {
         var commentUsageTypeDescription = CommentUsageTypeDescriptionFactory.getInstance().create(session,
-                commentUsageType, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                commentUsageType, language, description, session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         sendEvent(commentUsageType.getPrimaryKey(), EventTypes.MODIFY, commentUsageTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -769,7 +769,7 @@ public class CommentControl
             var commentUsageTypeDescription = CommentUsageTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      commentUsageTypeDescriptionValue.getPrimaryKey());
             
-            commentUsageTypeDescription.setThruTime(session.START_TIME_LONG);
+            commentUsageTypeDescription.setThruTime(session.getStartTimeLong());
             commentUsageTypeDescription.store();
 
             var commentUsageType = commentUsageTypeDescription.getCommentUsageType();
@@ -777,14 +777,14 @@ public class CommentControl
             var description = commentUsageTypeDescriptionValue.getDescription();
             
             commentUsageTypeDescription = CommentUsageTypeDescriptionFactory.getInstance().create(commentUsageType,
-                    language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    language, description, session.getStartTimeLong(), Session.MAX_TIME_LONG);
             
             sendEvent(commentUsageType.getPrimaryKey(), EventTypes.MODIFY, commentUsageTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteCommentUsageTypeDescription(CommentUsageTypeDescription commentUsageTypeDescription, BasePK deletedBy) {
-        commentUsageTypeDescription.setThruTime(session.START_TIME_LONG);
+        commentUsageTypeDescription.setThruTime(session.getStartTimeLong());
         
         sendEvent(commentUsageTypeDescription.getCommentUsageTypePK(), EventTypes.MODIFY, commentUsageTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
@@ -806,7 +806,7 @@ public class CommentControl
             EntityInstance commentedByEntityInstance, Language language, String description, MimeType mimeType, BasePK createdBy) {
         var comment = CommentFactory.getInstance().create();
         var commentDetail = CommentDetailFactory.getInstance().create(comment, commentName, commentType,
-                commentedEntityInstance, commentedByEntityInstance, language, description, mimeType, session.START_TIME_LONG,
+                commentedEntityInstance, commentedByEntityInstance, language, description, mimeType, session.getStartTimeLong(),
                 Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -1053,7 +1053,7 @@ public class CommentControl
                      commentDetailValue.getCommentPK());
             var commentDetail = comment.getActiveDetailForUpdate();
             
-            commentDetail.setThruTime(session.START_TIME_LONG);
+            commentDetail.setThruTime(session.getStartTimeLong());
             commentDetail.store();
 
             var commentPK = commentDetail.getCommentPK(); // Not updated
@@ -1067,7 +1067,7 @@ public class CommentControl
             
             commentDetail = CommentDetailFactory.getInstance().create(commentPK, commentName, commentTypePK,
                     commentedEntityInstancePK, commentedByEntityInstancePK, languagePK, description, mimeTypePK,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTimeLong(), Session.MAX_TIME_LONG);
             
             comment.setActiveDetail(commentDetail);
             comment.setLastDetail(commentDetail);
@@ -1153,7 +1153,7 @@ public class CommentControl
         }
 
         var commentDetail = comment.getLastDetailForUpdate();
-        commentDetail.setThruTime(session.START_TIME_LONG);
+        commentDetail.setThruTime(session.getStartTimeLong());
         commentDetail.store();
         comment.setActiveDetail(null);
         
@@ -1189,7 +1189,7 @@ public class CommentControl
     // --------------------------------------------------------------------------------
     
     public CommentString createCommentString(Comment comment, String string, BasePK createdBy) {
-        var commentString = CommentStringFactory.getInstance().create(comment, string, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var commentString = CommentStringFactory.getInstance().create(comment, string, session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         sendEvent(comment.getPrimaryKey(), EventTypes.MODIFY, commentString.getPrimaryKey(), EventTypes.CREATE, createdBy);
         sendEvent(comment.getLastDetail().getCommentedEntityInstance(), EventTypes.TOUCH, comment.getPrimaryKey(), EventTypes.MODIFY, createdBy);
@@ -1249,13 +1249,13 @@ public class CommentControl
         if(commentStringValue.hasBeenModified()) {
             var commentString = CommentStringFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, commentStringValue.getPrimaryKey());
             
-            commentString.setThruTime(session.START_TIME_LONG);
+            commentString.setThruTime(session.getStartTimeLong());
             commentString.store();
 
             var commentPK = commentString.getCommentPK(); // Not updated
             var string = commentStringValue.getString();
             
-            commentString = CommentStringFactory.getInstance().create(commentPK, string, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+            commentString = CommentStringFactory.getInstance().create(commentPK, string, session.getStartTimeLong(), Session.MAX_TIME_LONG);
             
             sendEvent(commentPK, EventTypes.MODIFY, commentString.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
             sendEvent(commentString.getComment().getLastDetail().getCommentedEntityInstance(), EventTypes.TOUCH, commentString.getCommentPK(), EventTypes.MODIFY, updatedBy);
@@ -1263,7 +1263,7 @@ public class CommentControl
     }
     
     public void deleteCommentString(CommentString commentString, BasePK deletedBy) {
-        commentString.setThruTime(session.START_TIME_LONG);
+        commentString.setThruTime(session.getStartTimeLong());
         
         sendEvent(commentString.getCommentPK(), EventTypes.MODIFY, commentString.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         sendEvent(commentString.getComment().getLastDetail().getCommentedEntityInstance(), EventTypes.TOUCH, commentString.getCommentPK(), EventTypes.MODIFY, deletedBy);
@@ -1274,7 +1274,7 @@ public class CommentControl
     // --------------------------------------------------------------------------------
     
     public CommentBlob createCommentBlob(Comment comment, ByteArray blob, BasePK createdBy) {
-        var commentBlob = CommentBlobFactory.getInstance().create(comment, blob, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var commentBlob = CommentBlobFactory.getInstance().create(comment, blob, session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         sendEvent(comment.getPrimaryKey(), EventTypes.MODIFY, commentBlob.getPrimaryKey(), EventTypes.CREATE, createdBy);
         sendEvent(comment.getLastDetail().getCommentedEntityInstance(), EventTypes.TOUCH, comment.getPrimaryKey(), EventTypes.MODIFY, createdBy);
@@ -1334,13 +1334,13 @@ public class CommentControl
         if(commentBlobValue.hasBeenModified()) {
             var commentBlob = CommentBlobFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, commentBlobValue.getPrimaryKey());
             
-            commentBlob.setThruTime(session.START_TIME_LONG);
+            commentBlob.setThruTime(session.getStartTimeLong());
             commentBlob.store();
 
             var commentPK = commentBlob.getCommentPK(); // Not updated
             var blob = commentBlobValue.getBlob();
             
-            commentBlob = CommentBlobFactory.getInstance().create(commentPK, blob, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+            commentBlob = CommentBlobFactory.getInstance().create(commentPK, blob, session.getStartTimeLong(), Session.MAX_TIME_LONG);
             
             sendEvent(commentPK, EventTypes.MODIFY, commentBlob.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
             sendEvent(commentBlob.getComment().getLastDetail().getCommentedEntityInstance(), EventTypes.TOUCH, commentBlob.getCommentPK(), EventTypes.MODIFY, updatedBy);
@@ -1348,7 +1348,7 @@ public class CommentControl
     }
     
     public void deleteCommentBlob(CommentBlob commentBlob, BasePK deletedBy) {
-        commentBlob.setThruTime(session.START_TIME_LONG);
+        commentBlob.setThruTime(session.getStartTimeLong());
         
         sendEvent(commentBlob.getCommentPK(), EventTypes.MODIFY, commentBlob.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         sendEvent(commentBlob.getComment().getLastDetail().getCommentedEntityInstance(), EventTypes.TOUCH, commentBlob.getCommentPK(), EventTypes.MODIFY, deletedBy);
@@ -1359,7 +1359,7 @@ public class CommentControl
     // --------------------------------------------------------------------------------
     
     public CommentClob createCommentClob(Comment comment, String clob, BasePK createdBy) {
-        var commentClob = CommentClobFactory.getInstance().create(comment, clob, session.START_TIME_LONG,
+        var commentClob = CommentClobFactory.getInstance().create(comment, clob, session.getStartTimeLong(),
                 Session.MAX_TIME_LONG);
         
         sendEvent(comment.getPrimaryKey(), EventTypes.MODIFY, commentClob.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1420,13 +1420,13 @@ public class CommentControl
         if(commentClobValue.hasBeenModified()) {
             var commentClob = CommentClobFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, commentClobValue.getPrimaryKey());
 
-            commentClob.setThruTime(session.START_TIME_LONG);
+            commentClob.setThruTime(session.getStartTimeLong());
             commentClob.store();
 
             var commentPK = commentClob.getCommentPK(); // Not updated
             var clob = commentClobValue.getClob();
 
-            commentClob = CommentClobFactory.getInstance().create(commentPK, clob, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+            commentClob = CommentClobFactory.getInstance().create(commentPK, clob, session.getStartTimeLong(), Session.MAX_TIME_LONG);
 
             sendEvent(commentPK, EventTypes.MODIFY, commentClob.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
             sendEvent(commentClob.getComment().getLastDetail().getCommentedEntityInstance(), EventTypes.TOUCH, commentClob.getCommentPK(), EventTypes.MODIFY, updatedBy);
@@ -1434,7 +1434,7 @@ public class CommentControl
     }
     
     public void deleteCommentClob(CommentClob commentClob, BasePK deletedBy) {
-        commentClob.setThruTime(session.START_TIME_LONG);
+        commentClob.setThruTime(session.getStartTimeLong());
         
         sendEvent(commentClob.getCommentPK(), EventTypes.MODIFY, commentClob.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         sendEvent(commentClob.getComment().getLastDetail().getCommentedEntityInstance(), EventTypes.TOUCH, commentClob.getCommentPK(), EventTypes.MODIFY, deletedBy);
@@ -1446,7 +1446,7 @@ public class CommentControl
     
     public CommentUsage createCommentUsage(Comment comment, CommentUsageType commentUsageType, BasePK createdBy) {
         var commentUsage = CommentUsageFactory.getInstance().create(comment, commentUsageType,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTimeLong(), Session.MAX_TIME_LONG);
         
         sendEvent(comment.getPrimaryKey(), EventTypes.MODIFY, commentUsage.getPrimaryKey(), EventTypes.CREATE, createdBy);
         sendEvent(comment.getLastDetail().getCommentedEntityInstance(), EventTypes.TOUCH, comment.getPrimaryKey(), EventTypes.MODIFY, createdBy);
@@ -1591,7 +1591,7 @@ public class CommentControl
     }
     
     public void deleteCommentUsage(CommentUsage commentUsage, BasePK deletedBy) {
-        commentUsage.setThruTime(session.START_TIME_LONG);
+        commentUsage.setThruTime(session.getStartTimeLong());
         commentUsage.store();
         
         sendEvent(commentUsage.getCommentPK(), EventTypes.MODIFY, commentUsage.getPrimaryKey(), EventTypes.DELETE, deletedBy);
