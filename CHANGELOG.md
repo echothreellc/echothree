@@ -1,5 +1,32 @@
 # Changelog
 
+## 2025-12-07-01
+
+* Convert GetOfferNameElements UC to Use BasePaginatedMultipleEntitiesCommand [1127](https://gitlab.echothree.com/echothree/echothree/-/issues/1127)
+* Convert GetUseNameElements UC to Use BasePaginatedMultipleEntitiesCommand [1134](https://gitlab.echothree.com/echothree/echothree/-/issues/1134)
+* Convert GetMimeTypeUsageTypes UC to Use BasePaginatedMultipleEntitiesCommand [1151](https://gitlab.echothree.com/echothree/echothree/-/issues/1151)
+* Convert GetCompanies UC to Use BasePaginatedMultipleEntitiesCommand [1155](https://gitlab.echothree.com/echothree/echothree/-/issues/1155)
+* Convert GetParties UC to Use BasePaginatedMultipleEntitiesCommand [1164](https://gitlab.echothree.com/echothree/echothree/-/issues/1164)
+* Convert GetPaymentProcessorTypes UC to Use BasePaginatedMultipleEntitiesCommand [1170](https://gitlab.echothree.com/echothree/echothree/-/issues/1170)
+* Convert GetPaymentMethodTypes UC to Use BasePaginatedMultipleEntitiesCommand [1174](https://gitlab.echothree.com/echothree/echothree/-/issues/1174)
+* Convert GetPaymentProcessors UC to Use BasePaginatedMultipleEntitiesCommand [1175](https://gitlab.echothree.com/echothree/echothree/-/issues/1175)
+* Convert GetTermTypes UC to Use BasePaginatedMultipleEntitiesCommand [1177](https://gitlab.echothree.com/echothree/echothree/-/issues/1177)
+* Convert GetTerms UC to Use BasePaginatedMultipleEntitiesCommand [1178](https://gitlab.echothree.com/echothree/echothree/-/issues/1178)
+* ICU4J 78.1 Upgrade [1638](https://gitlab.echothree.com/echothree/echothree/-/issues/1638)
+* Guava 33.5.0-jre Upgrade [1640](https://gitlab.echothree.com/echothree/echothree/-/issues/1640)
+* jOOQ 3.20.9 Upgrade [1647](https://gitlab.echothree.com/echothree/echothree/-/issues/1647)
+* Use @Resource for KafkaConnectionFactory [1651](https://gitlab.echothree.com/echothree/echothree/-/issues/1651)
+* kafka-clients 4.1.1 Upgrade [1652](https://gitlab.echothree.com/echothree/echothree/-/issues/1652)
+* Convert GetUserVisitGroups UC to Use BasePaginatedMultipleEntitiesCommand [1656](https://gitlab.echothree.com/echothree/echothree/-/issues/1656)
+* Convert GetRoleTypes UC to Use BasePaginatedMultipleEntitiesCommand [1657](https://gitlab.echothree.com/echothree/echothree/-/issues/1657)
+* Convert GetItemWeightTypes UC to Use BasePaginatedMultipleEntitiesCommand [1658](https://gitlab.echothree.com/echothree/echothree/-/issues/1658)
+* Convert GetItemVolumeTypes UC to Use BasePaginatedMultipleEntitiesCommand [1659](https://gitlab.echothree.com/echothree/echothree/-/issues/1659)
+* Switch User Commands from RequestScoped to Dependent [1660](https://gitlab.echothree.com/echothree/echothree/-/issues/1660)
+* Add Stackable Command Scope for CDI [1661](https://gitlab.echothree.com/echothree/echothree/-/issues/1661)
+* getDataLoaderUserVisit() Throwing ContextNotActiveException [1664](https://gitlab.echothree.com/echothree/echothree/-/issues/1664)
+* Move Session and Caches Into CommandScope [1665](https://gitlab.echothree.com/echothree/echothree/-/issues/1665)
+* Extend "minimal" Item's End Times [1666](https://gitlab.echothree.com/echothree/echothree/-/issues/1666)
+
 ## 2025-11-23-01
 
 * Convert GetTimeZones UC to Use BasePaginatedMultipleEntitiesCommand [1161](https://gitlab.echothree.com/echothree/echothree/-/issues/1161)
