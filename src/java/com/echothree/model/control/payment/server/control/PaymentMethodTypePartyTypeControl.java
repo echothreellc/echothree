@@ -70,7 +70,7 @@ public class PaymentMethodTypePartyTypeControl
         }
 
         var paymentMethodTypePartyType = PaymentMethodTypePartyTypeFactory.getInstance().create();
-        var paymentMethodTypePartyTypeDetail = PaymentMethodTypePartyTypeDetailFactory.getInstance().create(session,
+        var paymentMethodTypePartyTypeDetail = PaymentMethodTypePartyTypeDetailFactory.getInstance().create(
                 paymentMethodTypePartyType, paymentMethodType, partyType, partyPaymentMethodWorkflow,
                 partyContactMechanismWorkflow, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 

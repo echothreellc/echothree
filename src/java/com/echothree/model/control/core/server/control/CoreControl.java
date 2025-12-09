@@ -1392,7 +1392,7 @@ public class CoreControl
     
     public EntityAttributeDescription createEntityAttributeDescription(EntityAttribute entityAttribute, Language language,
             String description, BasePK createdBy) {
-        var entityAttributeDescription = entityAttributeDescriptionFactory.create(session,
+        var entityAttributeDescription = entityAttributeDescriptionFactory.create(
                 entityAttribute, language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1563,7 +1563,7 @@ public class CoreControl
     
     public EntityAttributeBlob createEntityAttributeBlob(EntityAttribute entityAttribute, Boolean checkContentWebAddress,
             BasePK createdBy) {
-        var entityAttributeBlob = entityAttributeBlobFactory.create(session,
+        var entityAttributeBlob = entityAttributeBlobFactory.create(
                 entityAttribute, checkContentWebAddress, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeBlob.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1650,7 +1650,7 @@ public class CoreControl
     
     public EntityAttributeString createEntityAttributeString(EntityAttribute entityAttribute, String validationPattern,
             BasePK createdBy) {
-        var entityAttributeString = entityAttributeStringFactory.create(session,
+        var entityAttributeString = entityAttributeStringFactory.create(
                 entityAttribute, validationPattern, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeString.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1737,7 +1737,7 @@ public class CoreControl
     
     public EntityAttributeInteger createEntityAttributeInteger(EntityAttribute entityAttribute, Integer upperRangeIntegerValue,
             Integer upperLimitIntegerValue, Integer lowerLimitIntegerValue, Integer lowerRangeIntegerValue, BasePK createdBy) {
-        var entityAttributeInteger = entityAttributeIntegerFactory.create(session,
+        var entityAttributeInteger = entityAttributeIntegerFactory.create(
                 entityAttribute, upperRangeIntegerValue, upperLimitIntegerValue, lowerLimitIntegerValue, lowerRangeIntegerValue,
                 session.getStartTime(), Session.MAX_TIME);
         
@@ -1829,7 +1829,7 @@ public class CoreControl
     
     public EntityAttributeLong createEntityAttributeLong(EntityAttribute entityAttribute, Long upperRangeLongValue,
             Long upperLimitLongValue, Long lowerLimitLongValue, Long lowerRangeLongValue, BasePK createdBy) {
-        var entityAttributeLong = entityAttributeLongFactory.create(session,
+        var entityAttributeLong = entityAttributeLongFactory.create(
                 entityAttribute, upperRangeLongValue, upperLimitLongValue, lowerLimitLongValue, lowerRangeLongValue,
                 session.getStartTime(), Session.MAX_TIME);
         
@@ -1920,7 +1920,7 @@ public class CoreControl
     
     public EntityAttributeNumeric createEntityAttributeNumeric(EntityAttribute entityAttribute, UnitOfMeasureType unitOfMeasureType,
             BasePK createdBy) {
-        var entityAttributeNumeric = entityAttributeNumericFactory.create(session,
+        var entityAttributeNumeric = entityAttributeNumericFactory.create(
                 entityAttribute, unitOfMeasureType, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeNumeric.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2015,7 +2015,7 @@ public class CoreControl
     
     public EntityAttributeListItem createEntityAttributeListItem(EntityAttribute entityAttribute, Sequence entityListItemSequence,
             BasePK createdBy) {
-        var entityAttributeListItem = entityAttributeListItemFactory.create(session,
+        var entityAttributeListItem = entityAttributeListItemFactory.create(
                 entityAttribute, entityListItemSequence, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeListItem.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2110,7 +2110,7 @@ public class CoreControl
     
     public EntityAttributeWorkflow createEntityAttributeWorkflow(EntityAttribute entityAttribute, Workflow workflow,
             BasePK createdBy) {
-        var entityAttributeWorkflow = entityAttributeWorkflowFactory.create(session,
+        var entityAttributeWorkflow = entityAttributeWorkflowFactory.create(
                 entityAttribute, workflow, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeWorkflow.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2205,7 +2205,7 @@ public class CoreControl
     
     public EntityAttributeEntityAttributeGroup createEntityAttributeEntityAttributeGroup(EntityAttribute entityAttribute,
             EntityAttributeGroup entityAttributeGroup, Integer sortOrder, BasePK createdBy) {
-        var entityAttributeEntityAttributeGroup = entityAttributeEntityAttributeGroupFactory.create(session,
+        var entityAttributeEntityAttributeGroup = entityAttributeEntityAttributeGroupFactory.create(
                 entityAttribute, entityAttributeGroup, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeEntityAttributeGroup.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -4033,7 +4033,7 @@ public class CoreControl
 
     public void updateEntityBooleanDefaultFromValue(EntityBooleanDefaultValue entityBooleanDefaultValue, BasePK updatedBy) {
         if(entityBooleanDefaultValue.hasBeenModified()) {
-            var entityBooleanDefault = entityBooleanDefaultFactory.getEntityFromValue(session, EntityPermission.READ_WRITE, entityBooleanDefaultValue);
+            var entityBooleanDefault = entityBooleanDefaultFactory.getEntityFromValue(EntityPermission.READ_WRITE, entityBooleanDefaultValue);
             var entityAttribute = entityBooleanDefault.getEntityAttribute();
 
             if(entityAttribute.getLastDetail().getTrackRevisions()) {
@@ -4216,7 +4216,7 @@ public class CoreControl
     
     public void updateEntityBooleanAttributeFromValue(EntityBooleanAttributeValue entityBooleanAttributeValue, BasePK updatedBy) {
         if(entityBooleanAttributeValue.hasBeenModified()) {
-            var entityBooleanAttribute = entityBooleanAttributeFactory.getEntityFromValue(session, EntityPermission.READ_WRITE, entityBooleanAttributeValue);
+            var entityBooleanAttribute = entityBooleanAttributeFactory.getEntityFromValue(EntityPermission.READ_WRITE, entityBooleanAttributeValue);
             var entityAttribute = entityBooleanAttribute.getEntityAttribute();
             var entityInstance = entityBooleanAttribute.getEntityInstance();
             
@@ -4356,7 +4356,7 @@ public class CoreControl
 
     public void updateEntityDateDefaultFromValue(EntityDateDefaultValue entityDateDefaultValue, BasePK updatedBy) {
         if(entityDateDefaultValue.hasBeenModified()) {
-            var entityDateDefault = entityDateDefaultFactory.getEntityFromValue(session, EntityPermission.READ_WRITE, entityDateDefaultValue);
+            var entityDateDefault = entityDateDefaultFactory.getEntityFromValue(EntityPermission.READ_WRITE, entityDateDefaultValue);
             var entityAttribute = entityDateDefault.getEntityAttribute();
 
             if(entityAttribute.getLastDetail().getTrackRevisions()) {
@@ -4538,7 +4538,7 @@ public class CoreControl
     
     public void updateEntityDateAttributeFromValue(EntityDateAttributeValue entityDateAttributeValue, BasePK updatedBy) {
         if(entityDateAttributeValue.hasBeenModified()) {
-            var entityDateAttribute = entityDateAttributeFactory.getEntityFromValue(session, EntityPermission.READ_WRITE, entityDateAttributeValue);
+            var entityDateAttribute = entityDateAttributeFactory.getEntityFromValue(EntityPermission.READ_WRITE, entityDateAttributeValue);
             var entityAttribute = entityDateAttribute.getEntityAttribute();
             var entityInstance = entityDateAttribute.getEntityInstance();
             
@@ -4678,7 +4678,7 @@ public class CoreControl
 
     public void updateEntityIntegerDefaultFromValue(EntityIntegerDefaultValue entityIntegerDefaultValue, BasePK updatedBy) {
         if(entityIntegerDefaultValue.hasBeenModified()) {
-            var entityIntegerDefault = entityIntegerDefaultFactory.getEntityFromValue(session, EntityPermission.READ_WRITE, entityIntegerDefaultValue);
+            var entityIntegerDefault = entityIntegerDefaultFactory.getEntityFromValue(EntityPermission.READ_WRITE, entityIntegerDefaultValue);
             var entityAttribute = entityIntegerDefault.getEntityAttribute();
 
             if(entityAttribute.getLastDetail().getTrackRevisions()) {
@@ -4861,7 +4861,7 @@ public class CoreControl
     
     public void updateEntityIntegerAttributeFromValue(EntityIntegerAttributeValue entityIntegerAttributeValue, BasePK updatedBy) {
         if(entityIntegerAttributeValue.hasBeenModified()) {
-            var entityIntegerAttribute = entityIntegerAttributeFactory.getEntityFromValue(session, EntityPermission.READ_WRITE, entityIntegerAttributeValue);
+            var entityIntegerAttribute = entityIntegerAttributeFactory.getEntityFromValue(EntityPermission.READ_WRITE, entityIntegerAttributeValue);
             var entityAttribute = entityIntegerAttribute.getEntityAttribute();
             var entityInstance = entityIntegerAttribute.getEntityInstance();
             
@@ -4914,7 +4914,7 @@ public class CoreControl
     
     public EntityListItemDefault createEntityListItemDefault(EntityAttribute entityAttribute,
             EntityListItem entityListItem, BasePK createdBy) {
-        var entityListItemDefault = entityListItemDefaultFactory.create(session,
+        var entityListItemDefault = entityListItemDefaultFactory.create(
                 entityAttribute, entityListItem, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityListItemDefault.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -5039,7 +5039,7 @@ public class CoreControl
 
     public void updateEntityListItemDefaultFromValue(EntityListItemDefaultValue entityListItemDefaultValue, BasePK updatedBy) {
         if(entityListItemDefaultValue.hasBeenModified()) {
-            var entityListItemDefault = entityListItemDefaultFactory.getEntityFromValue(session, EntityPermission.READ_WRITE, entityListItemDefaultValue);
+            var entityListItemDefault = entityListItemDefaultFactory.getEntityFromValue(EntityPermission.READ_WRITE, entityListItemDefaultValue);
             var entityAttribute = entityListItemDefault.getEntityAttribute();
 
             if(entityAttribute.getLastDetail().getTrackRevisions()) {
@@ -5240,7 +5240,7 @@ public class CoreControl
     
     public void updateEntityListItemAttributeFromValue(EntityListItemAttributeValue entityListItemAttributeValue, BasePK updatedBy) {
         if(entityListItemAttributeValue.hasBeenModified()) {
-            var entityListItemAttribute = entityListItemAttributeFactory.getEntityFromValue(session, EntityPermission.READ_WRITE, entityListItemAttributeValue);
+            var entityListItemAttribute = entityListItemAttributeFactory.getEntityFromValue(EntityPermission.READ_WRITE, entityListItemAttributeValue);
             var entityAttribute = entityListItemAttribute.getEntityAttribute();
             var entityInstance = entityListItemAttribute.getEntityInstance();
             
@@ -5380,7 +5380,7 @@ public class CoreControl
 
     public void updateEntityLongDefaultFromValue(EntityLongDefaultValue entityLongDefaultValue, BasePK updatedBy) {
         if(entityLongDefaultValue.hasBeenModified()) {
-            var entityLongDefault = entityLongDefaultFactory.getEntityFromValue(session, EntityPermission.READ_WRITE, entityLongDefaultValue);
+            var entityLongDefault = entityLongDefaultFactory.getEntityFromValue(EntityPermission.READ_WRITE, entityLongDefaultValue);
             var entityAttribute = entityLongDefault.getEntityAttribute();
 
             if(entityAttribute.getLastDetail().getTrackRevisions()) {
@@ -5563,7 +5563,7 @@ public class CoreControl
     
     public void updateEntityLongAttributeFromValue(EntityLongAttributeValue entityLongAttributeValue, BasePK updatedBy) {
         if(entityLongAttributeValue.hasBeenModified()) {
-            var entityLongAttribute = entityLongAttributeFactory.getEntityFromValue(session, EntityPermission.READ_WRITE, entityLongAttributeValue);
+            var entityLongAttribute = entityLongAttributeFactory.getEntityFromValue(EntityPermission.READ_WRITE, entityLongAttributeValue);
             var entityAttribute = entityLongAttribute.getEntityAttribute();
             var entityInstance = entityLongAttribute.getEntityInstance();
             
@@ -5617,7 +5617,7 @@ public class CoreControl
     
     public EntityMultipleListItemDefault createEntityMultipleListItemDefault(EntityAttribute entityAttribute,
             EntityListItem entityListItem, BasePK createdBy) {
-        var entityMultipleListItemDefault = entityMultipleListItemDefaultFactory.create(session,
+        var entityMultipleListItemDefault = entityMultipleListItemDefaultFactory.create(
                 entityAttribute, entityListItem, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -5673,7 +5673,7 @@ public class CoreControl
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
 
-            entityMultipleListItemDefaults = entityMultipleListItemDefaultFactory.getEntitiesFromQuery(session,
+            entityMultipleListItemDefaults = entityMultipleListItemDefaultFactory.getEntitiesFromQuery(
                     EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -5708,7 +5708,7 @@ public class CoreControl
             ps.setLong(2, entityListItem.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
 
-            entityMultipleListItemDefault = entityMultipleListItemDefaultFactory.getEntityFromQuery(session,
+            entityMultipleListItemDefault = entityMultipleListItemDefaultFactory.getEntityFromQuery(
                     entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -5851,7 +5851,7 @@ public class CoreControl
             ps.setLong(2, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            entityMultipleListItemAttributes = entityMultipleListItemAttributeFactory.getEntitiesFromQuery(session,
+            entityMultipleListItemAttributes = entityMultipleListItemAttributeFactory.getEntitiesFromQuery(
                     EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -5887,7 +5887,7 @@ public class CoreControl
             ps.setLong(3, entityListItem.getPrimaryKey().getEntityId());
             ps.setLong(4, Session.MAX_TIME);
             
-            entityMultipleListItemAttribute = entityMultipleListItemAttributeFactory.getEntityFromQuery(session,
+            entityMultipleListItemAttribute = entityMultipleListItemAttributeFactory.getEntityFromQuery(
                     entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -5959,7 +5959,7 @@ public class CoreControl
             ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            entityMultipleListItemAttributes = entityMultipleListItemAttributeFactory.getEntitiesFromQuery(session,
+            entityMultipleListItemAttributes = entityMultipleListItemAttributeFactory.getEntitiesFromQuery(
                     EntityPermission.READ_WRITE, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -6153,7 +6153,7 @@ public class CoreControl
     
     public void updateEntityNameAttributeFromValue(EntityNameAttributeValue entityNameAttributeValue, BasePK updatedBy) {
         if(entityNameAttributeValue.hasBeenModified()) {
-            var entityNameAttribute = entityNameAttributeFactory.getEntityFromValue(session, EntityPermission.READ_WRITE, entityNameAttributeValue);
+            var entityNameAttribute = entityNameAttributeFactory.getEntityFromValue(EntityPermission.READ_WRITE, entityNameAttributeValue);
             var entityAttribute = entityNameAttribute.getEntityAttribute();
             var entityInstance = entityNameAttribute.getEntityInstance();
             
@@ -6356,7 +6356,7 @@ public class CoreControl
 
     public void updateEntityStringDefaultFromValue(EntityStringDefaultValue entityStringDefaultValue, BasePK updatedBy) {
         if(entityStringDefaultValue.hasBeenModified()) {
-            var entityStringDefault = entityStringDefaultFactory.getEntityFromValue(session, EntityPermission.READ_WRITE, entityStringDefaultValue);
+            var entityStringDefault = entityStringDefaultFactory.getEntityFromValue(EntityPermission.READ_WRITE, entityStringDefaultValue);
             var entityAttribute = entityStringDefault.getEntityAttribute();
             var language = entityStringDefault.getLanguage();
 
@@ -6554,7 +6554,7 @@ public class CoreControl
     
     public void updateEntityStringAttributeFromValue(EntityStringAttributeValue entityStringAttributeValue, BasePK updatedBy) {
         if(entityStringAttributeValue.hasBeenModified()) {
-            var entityStringAttribute = entityStringAttributeFactory.getEntityFromValue(session, EntityPermission.READ_WRITE, entityStringAttributeValue);
+            var entityStringAttribute = entityStringAttributeFactory.getEntityFromValue(EntityPermission.READ_WRITE, entityStringAttributeValue);
             var entityAttribute = entityStringAttribute.getEntityAttribute();
             var entityInstance = entityStringAttribute.getEntityInstance();
             var language = entityStringAttribute.getLanguage();
@@ -6695,7 +6695,7 @@ public class CoreControl
 
     public void updateEntityGeoPointDefaultFromValue(EntityGeoPointDefaultValue entityGeoPointDefaultValue, BasePK updatedBy) {
         if(entityGeoPointDefaultValue.hasBeenModified()) {
-            var entityGeoPointDefault = entityGeoPointDefaultFactory.getEntityFromValue(session, EntityPermission.READ_WRITE, entityGeoPointDefaultValue);
+            var entityGeoPointDefault = entityGeoPointDefaultFactory.getEntityFromValue(EntityPermission.READ_WRITE, entityGeoPointDefaultValue);
             var entityAttribute = entityGeoPointDefault.getEntityAttribute();
 
             if(entityAttribute.getLastDetail().getTrackRevisions()) {
@@ -6880,7 +6880,7 @@ public class CoreControl
     
     public void updateEntityGeoPointAttributeFromValue(EntityGeoPointAttributeValue entityGeoPointAttributeValue, BasePK updatedBy) {
         if(entityGeoPointAttributeValue.hasBeenModified()) {
-            var entityGeoPointAttribute = entityGeoPointAttributeFactory.getEntityFromValue(session, EntityPermission.READ_WRITE, entityGeoPointAttributeValue);
+            var entityGeoPointAttribute = entityGeoPointAttributeFactory.getEntityFromValue(EntityPermission.READ_WRITE, entityGeoPointAttributeValue);
             var entityAttribute = entityGeoPointAttribute.getEntityAttribute();
             var entityInstance = entityGeoPointAttribute.getEntityInstance();
             
@@ -7021,7 +7021,7 @@ public class CoreControl
 
     public void updateEntityTimeDefaultFromValue(EntityTimeDefaultValue entityTimeDefaultValue, BasePK updatedBy) {
         if(entityTimeDefaultValue.hasBeenModified()) {
-            var entityTimeDefault = entityTimeDefaultFactory.getEntityFromValue(session, EntityPermission.READ_WRITE, entityTimeDefaultValue);
+            var entityTimeDefault = entityTimeDefaultFactory.getEntityFromValue(EntityPermission.READ_WRITE, entityTimeDefaultValue);
             var entityAttribute = entityTimeDefault.getEntityAttribute();
 
             if(entityAttribute.getLastDetail().getTrackRevisions()) {
@@ -7203,7 +7203,7 @@ public class CoreControl
     
     public void updateEntityTimeAttributeFromValue(EntityTimeAttributeValue entityTimeAttributeValue, BasePK updatedBy) {
         if(entityTimeAttributeValue.hasBeenModified()) {
-            var entityTimeAttribute = entityTimeAttributeFactory.getEntityFromValue(session, EntityPermission.READ_WRITE, entityTimeAttributeValue);
+            var entityTimeAttribute = entityTimeAttributeFactory.getEntityFromValue(EntityPermission.READ_WRITE, entityTimeAttributeValue);
             var entityAttribute = entityTimeAttribute.getEntityAttribute();
             var entityInstance = entityTimeAttribute.getEntityInstance();
             
@@ -7374,7 +7374,7 @@ public class CoreControl
     
     public void updateEntityBlobAttributeFromValue(EntityBlobAttributeValue entityBlobAttributeValue, BasePK updatedBy) {
         if(entityBlobAttributeValue.hasBeenModified()) {
-            var entityBlobAttribute = entityBlobAttributeFactory.getEntityFromValue(session, EntityPermission.READ_WRITE, entityBlobAttributeValue);
+            var entityBlobAttribute = entityBlobAttributeFactory.getEntityFromValue(EntityPermission.READ_WRITE, entityBlobAttributeValue);
             var entityAttribute = entityBlobAttribute.getEntityAttribute();
             var entityInstance = entityBlobAttribute.getEntityInstance();
             var language = entityBlobAttribute.getLanguage();
@@ -7572,7 +7572,7 @@ public class CoreControl
     
     public void updateEntityClobAttributeFromValue(EntityClobAttributeValue entityClobAttributeValue, BasePK updatedBy) {
         if(entityClobAttributeValue.hasBeenModified()) {
-            var entityClobAttribute = entityClobAttributeFactory.getEntityFromValue(session, EntityPermission.READ_WRITE, entityClobAttributeValue);
+            var entityClobAttribute = entityClobAttributeFactory.getEntityFromValue(EntityPermission.READ_WRITE, entityClobAttributeValue);
             var entityAttribute = entityClobAttribute.getEntityAttribute();
             var entityInstance = entityClobAttribute.getEntityInstance();
             var language = entityClobAttribute.getLanguage();
@@ -7957,7 +7957,7 @@ public class CoreControl
     
     public void updateEntityEntityAttributeFromValue(EntityEntityAttributeValue entityEntityAttributeValue, BasePK updatedBy) {
         if(entityEntityAttributeValue.hasBeenModified()) {
-            var entityEntityAttribute = entityEntityAttributeFactory.getEntityFromValue(session, EntityPermission.READ_WRITE, entityEntityAttributeValue);
+            var entityEntityAttribute = entityEntityAttributeFactory.getEntityFromValue(EntityPermission.READ_WRITE, entityEntityAttributeValue);
             var entityAttribute = entityEntityAttribute.getEntityAttribute();
             var entityInstance = entityEntityAttribute.getEntityInstance();
             
@@ -8037,7 +8037,7 @@ public class CoreControl
             ps.setLong(2, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            entityCollectionAttributes = entityCollectionAttributeFactory.getEntitiesFromQuery(session,
+            entityCollectionAttributes = entityCollectionAttributeFactory.getEntitiesFromQuery(
                     EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -8073,7 +8073,7 @@ public class CoreControl
             ps.setLong(3, entityInstanceAttribute.getPrimaryKey().getEntityId());
             ps.setLong(4, Session.MAX_TIME);
             
-            entityCollectionAttribute = entityCollectionAttributeFactory.getEntityFromQuery(session,
+            entityCollectionAttribute = entityCollectionAttributeFactory.getEntityFromQuery(
                     entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);

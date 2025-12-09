@@ -811,7 +811,7 @@ public class FinancialControl
         }
 
         var financialAccountTransactionType = FinancialAccountTransactionTypeFactory.getInstance().create();
-        var financialAccountTransactionTypeDetail = FinancialAccountTransactionTypeDetailFactory.getInstance().create(session,
+        var financialAccountTransactionTypeDetail = FinancialAccountTransactionTypeDetailFactory.getInstance().create(
                 financialAccountTransactionType, financialAccountType, financialAccountTransactionTypeName, parentFinancialAccountTransactionType, glAccount,
                 isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
@@ -1085,7 +1085,7 @@ public class FinancialControl
                 }
             }
             
-            financialAccountTransactionTypeDetail = FinancialAccountTransactionTypeDetailFactory.getInstance().create(session,
+            financialAccountTransactionTypeDetail = FinancialAccountTransactionTypeDetailFactory.getInstance().create(
                     financialAccountTransactionTypePK, financialAccountTypePK, financialAccountTransactionTypeName, parentFinancialAccountTransactionTypePK,
                     glAccountPK, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
@@ -1158,7 +1158,7 @@ public class FinancialControl
     
     public FinancialAccountTransactionTypeDescription createFinancialAccountTransactionTypeDescription(FinancialAccountTransactionType financialAccountTransactionType,
             Language language, String description, BasePK createdBy) {
-        var financialAccountTransactionTypeDescription = FinancialAccountTransactionTypeDescriptionFactory.getInstance().create(session,
+        var financialAccountTransactionTypeDescription = FinancialAccountTransactionTypeDescriptionFactory.getInstance().create(
                 financialAccountTransactionType, language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(financialAccountTransactionType.getPrimaryKey(), EventTypes.MODIFY, financialAccountTransactionTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1287,7 +1287,7 @@ public class FinancialControl
             var language = financialAccountTransactionTypeDescription.getLanguage();
             var description = financialAccountTransactionTypeDescriptionValue.getDescription();
             
-            financialAccountTransactionTypeDescription = FinancialAccountTransactionTypeDescriptionFactory.getInstance().create(session,
+            financialAccountTransactionTypeDescription = FinancialAccountTransactionTypeDescriptionFactory.getInstance().create(
                     financialAccountTransactionType, language, description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(financialAccountTransactionType.getPrimaryKey(), EventTypes.MODIFY, financialAccountTransactionTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -1327,7 +1327,7 @@ public class FinancialControl
         }
 
         var financialAccountAliasType = FinancialAccountAliasTypeFactory.getInstance().create();
-        var financialAccountAliasTypeDetail = FinancialAccountAliasTypeDetailFactory.getInstance().create(session,
+        var financialAccountAliasTypeDetail = FinancialAccountAliasTypeDetailFactory.getInstance().create(
                 financialAccountAliasType, financialAccountType, financialAccountAliasTypeName, validationPattern, isDefault, sortOrder,
                 session.getStartTime(), Session.MAX_TIME);
         
@@ -1594,7 +1594,7 @@ public class FinancialControl
     
     public FinancialAccountAliasTypeDescription createFinancialAccountAliasTypeDescription(FinancialAccountAliasType financialAccountAliasType,
             Language language, String description, BasePK createdBy) {
-        var financialAccountAliasTypeDescription = FinancialAccountAliasTypeDescriptionFactory.getInstance().create(session,
+        var financialAccountAliasTypeDescription = FinancialAccountAliasTypeDescriptionFactory.getInstance().create(
                 financialAccountAliasType, language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(financialAccountAliasType.getPrimaryKey(), EventTypes.MODIFY, financialAccountAliasTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2317,7 +2317,7 @@ public class FinancialControl
     public FinancialAccountTransaction createFinancialAccountTransaction(String financialAccountTransactionName, FinancialAccount financialAccount,
             FinancialAccountTransactionType financialAccountTransactionType, Long amount, String comment, BasePK createdBy) {
         var financialAccountTransaction = FinancialAccountTransactionFactory.getInstance().create();
-        var financialAccountTransactionDetail = FinancialAccountTransactionDetailFactory.getInstance().create(session,
+        var financialAccountTransactionDetail = FinancialAccountTransactionDetailFactory.getInstance().create(
                 financialAccountTransaction, financialAccountTransactionName, financialAccount, financialAccountTransactionType, amount, comment,
                 session.getStartTime(), Session.MAX_TIME);
         

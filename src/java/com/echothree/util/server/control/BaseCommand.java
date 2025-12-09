@@ -590,6 +590,7 @@ public abstract class BaseCommand
                                     var hasExecutionErrors = executionResult.getHasErrors();
 
                                     userVisitStatus.setUserVisitCommandSequence(userVisitCommandSequence);
+                                    userVisitStatus.store();
 
                                     userControl.createUserVisitCommand(userVisit, userVisitCommandSequence, party, command, session.getStartTime(),
                                             System.currentTimeMillis(), hadSecurityErrors, hadValidationErrors, hasExecutionErrors);

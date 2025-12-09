@@ -462,7 +462,7 @@ public class CommentControl
     public CommentUsageType createCommentUsageType(CommentType commentType, String commentUsageTypeName, Boolean selectedByDefault,
             Integer sortOrder, BasePK createdBy) {
         var commentUsageType = CommentUsageTypeFactory.getInstance().create();
-        var commentUsageTypeDetail = CommentUsageTypeDetailFactory.getInstance().create(session,
+        var commentUsageTypeDetail = CommentUsageTypeDetailFactory.getInstance().create(
                 commentUsageType, commentType, commentUsageTypeName, selectedByDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
         
@@ -635,7 +635,7 @@ public class CommentControl
     
     public CommentUsageTypeDescription createCommentUsageTypeDescription(CommentUsageType commentUsageType, Language language,
             String description, BasePK createdBy) {
-        var commentUsageTypeDescription = CommentUsageTypeDescriptionFactory.getInstance().create(session,
+        var commentUsageTypeDescription = CommentUsageTypeDescriptionFactory.getInstance().create(
                 commentUsageType, language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(commentUsageType.getPrimaryKey(), EventTypes.MODIFY, commentUsageTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -715,7 +715,7 @@ public class CommentControl
             ps.setLong(1, commentUsageType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            commentUsageTypeDescriptions = CommentUsageTypeDescriptionFactory.getInstance().getEntitiesFromQuery(session,
+            commentUsageTypeDescriptions = CommentUsageTypeDescriptionFactory.getInstance().getEntitiesFromQuery(
                     entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);

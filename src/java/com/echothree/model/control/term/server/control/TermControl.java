@@ -543,7 +543,7 @@ public class TermControl
     }
 
     private void updateTermFromValue(TermDetailValue termDetailValue, boolean checkDefault, BasePK updatedBy) {
-        var term = TermFactory.getInstance().getEntityFromPK(session,
+        var term = TermFactory.getInstance().getEntityFromPK(
                 EntityPermission.READ_WRITE, termDetailValue.getTermPK());
         var termDetail = term.getActiveDetailForUpdate();
         

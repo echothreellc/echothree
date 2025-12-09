@@ -551,7 +551,7 @@ public class CancellationPolicyControl
     }
 
     private void updateCancellationKindFromValue(CancellationKindDetailValue cancellationKindDetailValue, boolean checkDefault, BasePK updatedBy) {
-        var cancellationKind = CancellationKindFactory.getInstance().getEntityFromPK(session,
+        var cancellationKind = CancellationKindFactory.getInstance().getEntityFromPK(
                 EntityPermission.READ_WRITE, cancellationKindDetailValue.getCancellationKindPK());
         var cancellationKindDetail = cancellationKind.getActiveDetailForUpdate();
         
@@ -808,7 +808,7 @@ public class CancellationPolicyControl
         }
 
         var cancellationPolicy = CancellationPolicyFactory.getInstance().create();
-        var cancellationPolicyDetail = CancellationPolicyDetailFactory.getInstance().create(session,
+        var cancellationPolicyDetail = CancellationPolicyDetailFactory.getInstance().create(
                 cancellationPolicy, cancellationKind, cancellationPolicyName, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
         
@@ -1581,7 +1581,7 @@ public class CancellationPolicyControl
         }
 
         var cancellationReason = CancellationReasonFactory.getInstance().create();
-        var cancellationReasonDetail = CancellationReasonDetailFactory.getInstance().create(session,
+        var cancellationReasonDetail = CancellationReasonDetailFactory.getInstance().create(
                 cancellationReason, cancellationKind, cancellationReasonName, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
         
@@ -2348,7 +2348,7 @@ public class CancellationPolicyControl
         }
 
         var cancellationType = CancellationTypeFactory.getInstance().create();
-        var cancellationTypeDetail = CancellationTypeDetailFactory.getInstance().create(session,
+        var cancellationTypeDetail = CancellationTypeDetailFactory.getInstance().create(
                 cancellationType, cancellationKind, cancellationTypeName, cancellationSequence, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
         

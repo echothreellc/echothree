@@ -2701,7 +2701,7 @@ public class SearchControl
     }
 
     private void updateSearchKindFromValue(SearchKindDetailValue searchKindDetailValue, boolean checkDefault, BasePK updatedBy) {
-        var searchKind = SearchKindFactory.getInstance().getEntityFromPK(session,
+        var searchKind = SearchKindFactory.getInstance().getEntityFromPK(
                 EntityPermission.READ_WRITE, searchKindDetailValue.getSearchKindPK());
         var searchKindDetail = searchKind.getActiveDetailForUpdate();
 
@@ -2955,7 +2955,7 @@ public class SearchControl
         }
 
         var searchType = SearchTypeFactory.getInstance().create();
-        var searchTypeDetail = SearchTypeDetailFactory.getInstance().create(session, searchType, searchKind, searchTypeName, isDefault, sortOrder,
+        var searchTypeDetail = SearchTypeDetailFactory.getInstance().create( searchType, searchKind, searchTypeName, isDefault, sortOrder,
                 session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
@@ -3409,7 +3409,7 @@ public class SearchControl
         }
 
         var searchSortOrder = SearchSortOrderFactory.getInstance().create();
-        var searchSortOrderDetail = SearchSortOrderDetailFactory.getInstance().create(session, searchSortOrder, searchKind, searchSortOrderName, isDefault, sortOrder,
+        var searchSortOrderDetail = SearchSortOrderDetailFactory.getInstance().create( searchSortOrder, searchKind, searchSortOrderName, isDefault, sortOrder,
                 session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W

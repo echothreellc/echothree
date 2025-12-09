@@ -3790,7 +3790,7 @@ public class ForumControl
             Language language, MimeType mimeType, BasePK createdBy) {
 
         var forumMessagePart = ForumMessagePartFactory.getInstance().create();
-        var forumMessagePartDetail = ForumMessagePartDetailFactory.getInstance().create(session,
+        var forumMessagePartDetail = ForumMessagePartDetailFactory.getInstance().create(
                 forumMessagePart, forumMessage, forumMessagePartType, language, mimeType, session.getStartTime(),
                 Session.MAX_TIME);
         
@@ -3980,7 +3980,7 @@ public class ForumControl
     // --------------------------------------------------------------------------------
     
     public ForumStringMessagePart createForumStringMessagePart(ForumMessagePart forumMessagePart, String string, BasePK createdBy) {
-        var forumStringMessagePart = ForumStringMessagePartFactory.getInstance().create(session,
+        var forumStringMessagePart = ForumStringMessagePartFactory.getInstance().create(
                 forumMessagePart, string, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(forumMessagePart.getLastDetail().getForumMessagePK(), EventTypes.MODIFY, forumStringMessagePart.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -4073,7 +4073,7 @@ public class ForumControl
     // --------------------------------------------------------------------------------
     
     public ForumClobMessagePart createForumClobMessagePart(ForumMessagePart forumMessagePart, String clob, BasePK createdBy) {
-        var forumClobMessagePart = ForumClobMessagePartFactory.getInstance().create(session,
+        var forumClobMessagePart = ForumClobMessagePartFactory.getInstance().create(
                 forumMessagePart, clob, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(forumMessagePart.getLastDetail().getForumMessagePK(), EventTypes.MODIFY, forumClobMessagePart.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -4164,7 +4164,7 @@ public class ForumControl
     // --------------------------------------------------------------------------------
     
     public ForumBlobMessagePart createForumBlobMessagePart(ForumMessagePart forumMessagePart, ByteArray blob, BasePK createdBy) {
-        var forumBlobMessagePart = ForumBlobMessagePartFactory.getInstance().create(session,
+        var forumBlobMessagePart = ForumBlobMessagePartFactory.getInstance().create(
                 forumMessagePart, blob, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(forumMessagePart.getLastDetail().getForumMessagePK(), EventTypes.MODIFY, forumBlobMessagePart.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -4314,7 +4314,7 @@ public class ForumControl
             ps.setLong(1, forumMessagePartType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             
-            forumMessagePartTypeDescription = ForumMessagePartTypeDescriptionFactory.getInstance().getEntityFromQuery(session,
+            forumMessagePartTypeDescription = ForumMessagePartTypeDescriptionFactory.getInstance().getEntityFromQuery(
                     EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -4435,7 +4435,7 @@ public class ForumControl
             ps.setLong(1, forumMessageType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             
-            forumMessageTypeDescription = ForumMessageTypeDescriptionFactory.getInstance().getEntityFromQuery(session,
+            forumMessageTypeDescription = ForumMessageTypeDescriptionFactory.getInstance().getEntityFromQuery(
                     EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -4482,7 +4482,7 @@ public class ForumControl
             ps.setLong(1, forumMessageType.getPrimaryKey().getEntityId());
             ps.setInt(2, sortOrder);
             
-            forumMessageTypePartType = ForumMessageTypePartTypeFactory.getInstance().getEntityFromQuery(session,
+            forumMessageTypePartType = ForumMessageTypePartTypeFactory.getInstance().getEntityFromQuery(
                     EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -4502,7 +4502,7 @@ public class ForumControl
             
             ps.setLong(1, forumMessageType.getPrimaryKey().getEntityId());
             
-            forumMessageTypePartType = ForumMessageTypePartTypeFactory.getInstance().getEntityFromQuery(session, EntityPermission.READ_ONLY, ps);
+            forumMessageTypePartType = ForumMessageTypePartTypeFactory.getInstance().getEntityFromQuery( EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4522,7 +4522,7 @@ public class ForumControl
             
             ps.setLong(1, forumMessageType.getPrimaryKey().getEntityId());
             
-            forumMessageTypePartTypes = ForumMessageTypePartTypeFactory.getInstance().getEntitiesFromQuery(session, EntityPermission.READ_ONLY, ps);
+            forumMessageTypePartTypes = ForumMessageTypePartTypeFactory.getInstance().getEntitiesFromQuery( EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4542,7 +4542,7 @@ public class ForumControl
             
             ps.setLong(1, forumMessageType.getPrimaryKey().getEntityId());
             
-            forumMessageTypePartTypes = ForumMessageTypePartTypeFactory.getInstance().getEntitiesFromQuery(session, EntityPermission.READ_ONLY, ps);
+            forumMessageTypePartTypes = ForumMessageTypePartTypeFactory.getInstance().getEntitiesFromQuery( EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }

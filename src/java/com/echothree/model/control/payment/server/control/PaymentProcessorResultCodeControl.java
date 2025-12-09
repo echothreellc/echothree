@@ -69,7 +69,7 @@ public class PaymentProcessorResultCodeControl
         }
 
         var paymentProcessorResultCode = PaymentProcessorResultCodeFactory.getInstance().create();
-        var paymentProcessorResultCodeDetail = PaymentProcessorResultCodeDetailFactory.getInstance().create(session,
+        var paymentProcessorResultCodeDetail = PaymentProcessorResultCodeDetailFactory.getInstance().create(
                 paymentProcessorResultCode, paymentProcessorResultCodeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W

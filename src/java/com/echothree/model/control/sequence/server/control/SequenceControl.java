@@ -398,7 +398,7 @@ public class SequenceControl
 
     private void updateSequenceTypeFromValue(SequenceTypeDetailValue sequenceTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
-        var sequenceType = SequenceTypeFactory.getInstance().getEntityFromPK(session,
+        var sequenceType = SequenceTypeFactory.getInstance().getEntityFromPK(
                 EntityPermission.READ_WRITE, sequenceTypeDetailValue.getSequenceTypePK());
         var sequenceTypeDetail = sequenceType.getActiveDetailForUpdate();
         
@@ -1167,7 +1167,7 @@ public class SequenceControl
 
     private void updateSequenceFromValue(SequenceDetailValue sequenceDetailValue, boolean checkDefault,
             BasePK updatedBy) {
-        var sequence = SequenceFactory.getInstance().getEntityFromPK(session,
+        var sequence = SequenceFactory.getInstance().getEntityFromPK(
                 EntityPermission.READ_WRITE, sequenceDetailValue.getSequencePK());
         var sequenceDetail = sequence.getActiveDetailForUpdate();
         
@@ -1447,11 +1447,11 @@ public class SequenceControl
         return sequenceValue;
     }
     
-    public SequenceValue getSequenceValueForUpdateInSession(Session sequenceSession, Sequence sequence) {
+    public SequenceValue getSequenceValueForUpdate(Sequence sequence) {
         SequenceValue sequenceValue;
         
         try {
-            var ps = sequenceSession.prepareStatement(SequenceValueFactory.class,
+            var ps = session.prepareStatement(SequenceValueFactory.class,
                     "SELECT _ALL_ " +
                     "FROM sequencevalues " +
                     "WHERE sqv_sq_sequenceid = ? " +
@@ -1459,16 +1459,12 @@ public class SequenceControl
             
             ps.setLong(1, sequence.getPrimaryKey().getEntityId());
             
-            sequenceValue = SequenceValueFactory.getInstance().getEntityFromQuery(sequenceSession, EntityPermission.READ_WRITE, ps);
+            sequenceValue = SequenceValueFactory.getInstance().getEntityFromQuery(EntityPermission.READ_WRITE, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
         
         return sequenceValue;
     }
-    
-    public SequenceValue getSequenceValueForUpdate(Sequence sequence) {
-        return getSequenceValueForUpdateInSession(session, sequence);
-    }
-    
+
 }

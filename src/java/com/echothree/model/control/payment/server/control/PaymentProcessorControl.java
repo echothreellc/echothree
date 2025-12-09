@@ -71,7 +71,7 @@ public class PaymentProcessorControl
         }
 
         var paymentProcessor = PaymentProcessorFactory.getInstance().create();
-        var paymentProcessorDetail = PaymentProcessorDetailFactory.getInstance().create(session,
+        var paymentProcessorDetail = PaymentProcessorDetailFactory.getInstance().create(
                 paymentProcessor, paymentProcessorName, paymentProcessorType, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
         
@@ -349,7 +349,7 @@ public class PaymentProcessorControl
     
     public PaymentProcessorDescription createPaymentProcessorDescription(PaymentProcessor paymentProcessor, Language language,
             String description, BasePK createdBy) {
-        var paymentProcessorDescription = PaymentProcessorDescriptionFactory.getInstance().create(session,
+        var paymentProcessorDescription = PaymentProcessorDescriptionFactory.getInstance().create(
                 paymentProcessor, language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(paymentProcessor.getPrimaryKey(), EventTypes.MODIFY, paymentProcessorDescription.getPrimaryKey(),
