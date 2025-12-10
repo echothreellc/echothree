@@ -1626,7 +1626,7 @@ public class UserControl
     
     public RecoveryQuestionDescription createRecoveryQuestionDescription(RecoveryQuestion recoveryQuestion, Language language,
             String description, BasePK createdBy) {
-        var recoveryQuestionDescription = recoveryQuestionDescriptionFactory.create(session,
+        var recoveryQuestionDescription = recoveryQuestionDescriptionFactory.create(
                 recoveryQuestion, language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(recoveryQuestion.getPrimaryKey(), EventTypes.MODIFY, recoveryQuestionDescription.getPrimaryKey(),
@@ -2028,7 +2028,7 @@ public class UserControl
             ps.setLong(1, sequenceEncoderType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             
-            sequenceEncoderTypeDescription = userLoginPasswordEncoderTypeDescriptionFactory.getEntityFromQuery(session,
+            sequenceEncoderTypeDescription = userLoginPasswordEncoderTypeDescriptionFactory.getEntityFromQuery(
                     EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -2294,7 +2294,7 @@ public class UserControl
             // UserLoginPasswordEncoderType_TEXT requires no further action.
         }
 
-        var userLoginPasswordString = userLoginPasswordStringFactory.create(session,
+        var userLoginPasswordString = userLoginPasswordStringFactory.create(
                 userLoginPassword, salt, password, changedTime, wasReset, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(userLoginPassword.getPartyPK(), EventTypes.MODIFY, userLoginPasswordString.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2594,7 +2594,7 @@ public class UserControl
             
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             
-            userLoginStatus = userLoginStatusFactory.getEntityFromQuery(session,entityPermission, ps);
+            userLoginStatus = userLoginStatusFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }

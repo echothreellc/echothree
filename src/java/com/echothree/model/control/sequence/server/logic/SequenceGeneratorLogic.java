@@ -38,7 +38,6 @@ import com.echothree.util.server.cdi.CommandScopeExtension;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
-import com.echothree.util.server.persistence.ThreadSession;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.EmptyStackException;
@@ -166,8 +165,7 @@ public class SequenceGeneratorLogic
             } catch (NoSuchElementException nsee1) {
                 try(var ignored = CommandScopeExtension.getCommandScopeContext().push()) {
                     var sequenceControl = Session.getModelController(SequenceControl.class);
-                    var sequenceSession = ThreadSession.currentSession();
-                    var sequenceValue = sequenceControl.getSequenceValueForUpdateInSession(sequenceSession, sequence);
+                    var sequenceValue = sequenceControl.getSequenceValueForUpdate(sequence);
 
                     if(sequenceValue != null) {
                         var sequenceDetail = sequence.getLastDetail();

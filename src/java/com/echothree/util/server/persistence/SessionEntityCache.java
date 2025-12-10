@@ -220,7 +220,7 @@ public class SessionEntityCache {
             var firstBaseEntity = baseEntities.get(0);
             var baseFactory = firstBaseEntity.getBaseFactoryInstance();
             
-            baseFactory.store(session, baseEntities);
+            baseFactory.store(baseEntities);
         });
         
         if(LogSessionEntityCacheStatistics) {

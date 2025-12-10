@@ -1244,7 +1244,7 @@ public class LetterControl
     public LetterContactMechanismPurpose createLetterContactMechanismPurpose(Letter letter, Integer priority,
             ContactMechanismPurpose contactMechanismPurpose, BasePK createdBy) {
         var letterContactMechanismPurpose = LetterContactMechanismPurposeFactory.getInstance().create();
-        var letterContactMechanismPurposeDetail = LetterContactMechanismPurposeDetailFactory.getInstance().create(session,
+        var letterContactMechanismPurposeDetail = LetterContactMechanismPurposeDetailFactory.getInstance().create(
                 letterContactMechanismPurpose, letter, priority, contactMechanismPurpose, session.getStartTime(),
                 Session.MAX_TIME);
         
@@ -1379,7 +1379,7 @@ public class LetterControl
             var priority = letterContactMechanismPurposeDetailValue.getPriority();
             var contactMechanismPurposePK = letterContactMechanismPurposeDetailValue.getContactMechanismPurposePK();
             
-            letterContactMechanismPurposeDetail = LetterContactMechanismPurposeDetailFactory.getInstance().create(session,
+            letterContactMechanismPurposeDetail = LetterContactMechanismPurposeDetailFactory.getInstance().create(
                     letterContactMechanismPurposePK, letterPK, priority, contactMechanismPurposePK, session.getStartTime(),
                     Session.MAX_TIME);
             

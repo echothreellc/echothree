@@ -430,7 +430,7 @@ public class PaymentMethodControl
     
     public PaymentMethodDescription createPaymentMethodDescription(PaymentMethod paymentMethod, Language language,
             String description, BasePK createdBy) {
-        var paymentMethodDescription = PaymentMethodDescriptionFactory.getInstance().create(session,
+        var paymentMethodDescription = PaymentMethodDescriptionFactory.getInstance().create(
                 paymentMethod, language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(paymentMethod.getPrimaryKey(), EventTypes.MODIFY, paymentMethodDescription.getPrimaryKey(),
@@ -686,7 +686,7 @@ public class PaymentMethodControl
             Boolean checkExpirationDate, Boolean requestSecurityCode, Boolean requireSecurityCode,
             String cardNumberValidationPattern, String securityCodeValidationPattern, Boolean retainCreditCard,
             Boolean retainSecurityCode, Boolean requestBilling, Boolean requireBilling, Boolean requestIssuer, Boolean requireIssuer, BasePK createdBy) {
-        var paymentMethodCreditCard = PaymentMethodCreditCardFactory.getInstance().create(session,
+        var paymentMethodCreditCard = PaymentMethodCreditCardFactory.getInstance().create(
                 paymentMethod, requestNameOnCard, requireNameOnCard, checkCardNumber, requestExpirationDate, requireExpirationDate,
                 checkExpirationDate, requestSecurityCode, requireSecurityCode, cardNumberValidationPattern,
                 securityCodeValidationPattern, retainCreditCard, retainSecurityCode, requestBilling, requireBilling, requestIssuer, requireIssuer,

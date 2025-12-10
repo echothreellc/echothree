@@ -1582,7 +1582,7 @@ public class VendorControl
         }
 
         var itemPurchasingCategory = ItemPurchasingCategoryFactory.getInstance().create();
-        var itemPurchasingCategoryDetail = ItemPurchasingCategoryDetailFactory.getInstance().create(session,
+        var itemPurchasingCategoryDetail = ItemPurchasingCategoryDetailFactory.getInstance().create(
                 itemPurchasingCategory, itemPurchasingCategoryName, parentItemPurchasingCategory, isDefault,
                 sortOrder, session.getStartTime(), Session.MAX_TIME);
         

@@ -1408,7 +1408,7 @@ public class ItemControl
         }
 
         var itemCategory = ItemCategoryFactory.getInstance().create();
-        var itemCategoryDetail = ItemCategoryDetailFactory.getInstance().create(session,
+        var itemCategoryDetail = ItemCategoryDetailFactory.getInstance().create(
                 itemCategory, itemCategoryName, parentItemCategory, itemSequence, isDefault,
                 sortOrder, session.getStartTime(), Session.MAX_TIME);
         
@@ -2341,7 +2341,7 @@ public class ItemControl
             var itemAlias = getItemAliasByAlias(itemName);
             
             if(itemAlias != null) {
-                item = itemAlias.getItem(session, entityPermission);
+                item = itemAlias.getItem(entityPermission);
             }
         }
         
@@ -3232,7 +3232,7 @@ public class ItemControl
         }
 
         var itemAliasType = ItemAliasTypeFactory.getInstance().create();
-        var itemAliasTypeDetail = ItemAliasTypeDetailFactory.getInstance().create(session, itemAliasType, itemAliasTypeName, validationPattern,
+        var itemAliasTypeDetail = ItemAliasTypeDetailFactory.getInstance().create( itemAliasType, itemAliasTypeName, validationPattern,
                 itemAliasChecksumType, allowMultiple, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
@@ -3524,7 +3524,7 @@ public class ItemControl
     
     public ItemAliasTypeDescription createItemAliasTypeDescription(ItemAliasType itemAliasType, Language language,
             String description, BasePK createdBy) {
-        var itemAliasTypeDescription = ItemAliasTypeDescriptionFactory.getInstance().create(session,
+        var itemAliasTypeDescription = ItemAliasTypeDescriptionFactory.getInstance().create(
                 itemAliasType, language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(itemAliasType.getPrimaryKey(), EventTypes.MODIFY, itemAliasTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -4998,7 +4998,7 @@ public class ItemControl
             ps.setLong(2, unitOfMeasureType.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            itemPackCheckRequirements = ItemPackCheckRequirementFactory.getInstance().getEntitiesFromQuery(session,
+            itemPackCheckRequirements = ItemPackCheckRequirementFactory.getInstance().getEntitiesFromQuery(
                     EntityPermission.READ_WRITE, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -5284,7 +5284,7 @@ public class ItemControl
             ps.setLong(2, unitOfMeasureType.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            itemUnitCustomerTypeLimits = ItemUnitCustomerTypeLimitFactory.getInstance().getEntitiesFromQuery(session,
+            itemUnitCustomerTypeLimits = ItemUnitCustomerTypeLimitFactory.getInstance().getEntitiesFromQuery(
                     EntityPermission.READ_WRITE, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -9425,7 +9425,7 @@ public class ItemControl
         }
 
         var itemVolumeType = ItemVolumeTypeFactory.getInstance().create();
-        var itemVolumeTypeDetail = ItemVolumeTypeDetailFactory.getInstance().create(session, itemVolumeType, itemVolumeTypeName,
+        var itemVolumeTypeDetail = ItemVolumeTypeDetailFactory.getInstance().create( itemVolumeType, itemVolumeTypeName,
                 isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
@@ -9703,7 +9703,7 @@ public class ItemControl
 
     public ItemVolumeTypeDescription createItemVolumeTypeDescription(ItemVolumeType itemVolumeType, Language language,
             String description, BasePK createdBy) {
-        var itemVolumeTypeDescription = ItemVolumeTypeDescriptionFactory.getInstance().create(session,
+        var itemVolumeTypeDescription = ItemVolumeTypeDescriptionFactory.getInstance().create(
                 itemVolumeType, language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(itemVolumeType.getPrimaryKey(), EventTypes.MODIFY, itemVolumeTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -10140,7 +10140,7 @@ public class ItemControl
         }
 
         var itemWeightType = ItemWeightTypeFactory.getInstance().create();
-        var itemWeightTypeDetail = ItemWeightTypeDetailFactory.getInstance().create(session, itemWeightType, itemWeightTypeName,
+        var itemWeightTypeDetail = ItemWeightTypeDetailFactory.getInstance().create( itemWeightType, itemWeightTypeName,
                 isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
@@ -10419,7 +10419,7 @@ public class ItemControl
 
     public ItemWeightTypeDescription createItemWeightTypeDescription(ItemWeightType itemWeightType, Language language,
             String description, BasePK createdBy) {
-        var itemWeightTypeDescription = ItemWeightTypeDescriptionFactory.getInstance().create(session,
+        var itemWeightTypeDescription = ItemWeightTypeDescriptionFactory.getInstance().create(
                 itemWeightType, language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(itemWeightType.getPrimaryKey(), EventTypes.MODIFY, itemWeightTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -11699,7 +11699,7 @@ public class ItemControl
         }
 
         var harmonizedTariffScheduleCode = HarmonizedTariffScheduleCodeFactory.getInstance().create();
-        var harmonizedTariffScheduleCodeDetail = HarmonizedTariffScheduleCodeDetailFactory.getInstance().create(session,
+        var harmonizedTariffScheduleCodeDetail = HarmonizedTariffScheduleCodeDetailFactory.getInstance().create(
                 harmonizedTariffScheduleCode, countryGeoCode, harmonizedTariffScheduleCodeName, firstHarmonizedTariffScheduleCodeUnit,
                 secondHarmonizedTariffScheduleCodeUnit, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
@@ -12397,7 +12397,7 @@ public class ItemControl
     }
 
     private void updateHarmonizedTariffScheduleCodeUseTypeFromValue(HarmonizedTariffScheduleCodeUseTypeDetailValue harmonizedTariffScheduleCodeUseTypeDetailValue, boolean checkDefault, BasePK updatedBy) {
-        var harmonizedTariffScheduleCodeUseType = HarmonizedTariffScheduleCodeUseTypeFactory.getInstance().getEntityFromPK(session,
+        var harmonizedTariffScheduleCodeUseType = HarmonizedTariffScheduleCodeUseTypeFactory.getInstance().getEntityFromPK(
                 EntityPermission.READ_WRITE, harmonizedTariffScheduleCodeUseTypeDetailValue.getHarmonizedTariffScheduleCodeUseTypePK());
         var harmonizedTariffScheduleCodeUseTypeDetail = harmonizedTariffScheduleCodeUseType.getActiveDetailForUpdate();
 
@@ -12802,7 +12802,7 @@ public class ItemControl
     }
 
     private void updateHarmonizedTariffScheduleCodeUnitFromValue(HarmonizedTariffScheduleCodeUnitDetailValue harmonizedTariffScheduleCodeUnitDetailValue, boolean checkDefault, BasePK updatedBy) {
-        var harmonizedTariffScheduleCodeUnit = HarmonizedTariffScheduleCodeUnitFactory.getInstance().getEntityFromPK(session,
+        var harmonizedTariffScheduleCodeUnit = HarmonizedTariffScheduleCodeUnitFactory.getInstance().getEntityFromPK(
                 EntityPermission.READ_WRITE, harmonizedTariffScheduleCodeUnitDetailValue.getHarmonizedTariffScheduleCodeUnitPK());
         var harmonizedTariffScheduleCodeUnitDetail = harmonizedTariffScheduleCodeUnit.getActiveDetailForUpdate();
 
@@ -13194,7 +13194,7 @@ public class ItemControl
             HarmonizedTariffScheduleCodeUseType harmonizedTariffScheduleCodeUseType, HarmonizedTariffScheduleCode harmonizedTariffScheduleCode,
             BasePK createdBy) {
         var itemHarmonizedTariffScheduleCode = ItemHarmonizedTariffScheduleCodeFactory.getInstance().create();
-        var itemHarmonizedTariffScheduleCodeDetail = ItemHarmonizedTariffScheduleCodeDetailFactory.getInstance().create(session,
+        var itemHarmonizedTariffScheduleCodeDetail = ItemHarmonizedTariffScheduleCodeDetailFactory.getInstance().create(
                 itemHarmonizedTariffScheduleCode, item, countryGeoCode, harmonizedTariffScheduleCodeUseType, harmonizedTariffScheduleCode, session.getStartTime(),
                 Session.MAX_TIME);
 

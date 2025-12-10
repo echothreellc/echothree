@@ -929,7 +929,7 @@ public class CarrierControl
         }
 
         var carrierService = CarrierServiceFactory.getInstance().create();
-        var carrierServiceDetail = CarrierServiceDetailFactory.getInstance().create(session,
+        var carrierServiceDetail = CarrierServiceDetailFactory.getInstance().create(
                 carrierService, carrierParty, carrierServiceName, geoCodeSelector, itemSelector, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
         

@@ -69,7 +69,7 @@ public class FreeOnBoardControl
         }
 
         var freeOnBoard = FreeOnBoardFactory.getInstance().create();
-        var freeOnBoardDetail = FreeOnBoardDetailFactory.getInstance().create(session,
+        var freeOnBoardDetail = FreeOnBoardDetailFactory.getInstance().create(
                 freeOnBoard, freeOnBoardName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W

@@ -56,7 +56,7 @@ public class UseNameElementControl
     public UseNameElement createUseNameElement(String useNameElementName, Integer offset,
             Integer length, String validationPattern, BasePK createdBy) {
         var useNameElement = UseNameElementFactory.getInstance().create();
-        var useNameElementDetail = UseNameElementDetailFactory.getInstance().create(session,
+        var useNameElementDetail = UseNameElementDetailFactory.getInstance().create(
                 useNameElement, useNameElementName, offset, length, validationPattern, session.getStartTime(),
                 Session.MAX_TIME);
 
@@ -229,7 +229,7 @@ public class UseNameElementControl
 
     public UseNameElementDescription createUseNameElementDescription(UseNameElement useNameElement, Language language,
             String description, BasePK createdBy) {
-        var useNameElementDescription = UseNameElementDescriptionFactory.getInstance().create(session,
+        var useNameElementDescription = UseNameElementDescriptionFactory.getInstance().create(
                 useNameElement, language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(useNameElement.getPrimaryKey(), EventTypes.MODIFY,
@@ -309,7 +309,7 @@ public class UseNameElementControl
             ps.setLong(1, useNameElement.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
 
-            useNameElementDescriptions = UseNameElementDescriptionFactory.getInstance().getEntitiesFromQuery(session,
+            useNameElementDescriptions = UseNameElementDescriptionFactory.getInstance().getEntitiesFromQuery(
                     entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
