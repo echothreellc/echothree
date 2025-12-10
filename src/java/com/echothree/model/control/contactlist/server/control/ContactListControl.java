@@ -462,7 +462,7 @@ public class ContactListControl
     }
 
     private void updateContactListTypeFromValue(ContactListTypeDetailValue contactListTypeDetailValue, boolean checkDefault, BasePK updatedBy) {
-        var contactListType = ContactListTypeFactory.getInstance().getEntityFromPK(session,
+        var contactListType = ContactListTypeFactory.getInstance().getEntityFromPK(
                 EntityPermission.READ_WRITE, contactListTypeDetailValue.getContactListTypePK());
         var contactListTypeDetail = contactListType.getActiveDetailForUpdate();
 
@@ -894,7 +894,7 @@ public class ContactListControl
     }
 
     private void updateContactListGroupFromValue(ContactListGroupDetailValue contactListGroupDetailValue, boolean checkDefault, BasePK updatedBy) {
-        var contactListGroup = ContactListGroupFactory.getInstance().getEntityFromPK(session,
+        var contactListGroup = ContactListGroupFactory.getInstance().getEntityFromPK(
                 EntityPermission.READ_WRITE, contactListGroupDetailValue.getContactListGroupPK());
         var contactListGroupDetail = contactListGroup.getActiveDetailForUpdate();
 
@@ -1301,7 +1301,7 @@ public class ContactListControl
     }
 
     private void updateContactListFrequencyFromValue(ContactListFrequencyDetailValue contactListFrequencyDetailValue, boolean checkDefault, BasePK updatedBy) {
-        var contactListFrequency = ContactListFrequencyFactory.getInstance().getEntityFromPK(session,
+        var contactListFrequency = ContactListFrequencyFactory.getInstance().getEntityFromPK(
                 EntityPermission.READ_WRITE, contactListFrequencyDetailValue.getContactListFrequencyPK());
         var contactListFrequencyDetail = contactListFrequency.getActiveDetailForUpdate();
 
@@ -1838,7 +1838,7 @@ public class ContactListControl
     }
 
     private void updateContactListFromValue(ContactListDetailValue contactListDetailValue, boolean checkDefault, BasePK updatedBy) {
-        var contactList = ContactListFactory.getInstance().getEntityFromPK(session,
+        var contactList = ContactListFactory.getInstance().getEntityFromPK(
                 EntityPermission.READ_WRITE, contactListDetailValue.getContactListPK());
         var contactListDetail = contactList.getActiveDetailForUpdate();
 
@@ -2097,7 +2097,7 @@ public class ContactListControl
     public PartyContactList createPartyContactList(Party party, ContactList contactList, ContactListContactMechanismPurpose preferredContactListContactMechanismPurpose,
             BasePK createdBy) {
         var partyContactList = PartyContactListFactory.getInstance().create();
-        var partyContactListDetail = PartyContactListDetailFactory.getInstance().create(session, partyContactList, party, contactList,
+        var partyContactListDetail = PartyContactListDetailFactory.getInstance().create( partyContactList, party, contactList,
                 preferredContactListContactMechanismPurpose, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
@@ -2367,7 +2367,7 @@ public class ContactListControl
     
     public PartyTypeContactListGroup createPartyTypeContactListGroup(PartyType partyType, ContactListGroup contactListGroup,
             Boolean addWhenCreated, BasePK createdBy) {
-        var partyTypeContactListGroup = PartyTypeContactListGroupFactory.getInstance().create(session,
+        var partyTypeContactListGroup = PartyTypeContactListGroupFactory.getInstance().create(
                 partyType, contactListGroup, addWhenCreated, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(contactListGroup.getPrimaryKey(), EventTypes.MODIFY, partyTypeContactListGroup.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2544,7 +2544,7 @@ public class ContactListControl
     // --------------------------------------------------------------------------------
     
     public PartyTypeContactList createPartyTypeContactList(PartyType partyType, ContactList contactList, Boolean addWhenCreated, BasePK createdBy) {
-        var partyTypeContactList = PartyTypeContactListFactory.getInstance().create(session, partyType, contactList, addWhenCreated,
+        var partyTypeContactList = PartyTypeContactListFactory.getInstance().create( partyType, contactList, addWhenCreated,
                 session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(contactList.getPrimaryKey(), EventTypes.MODIFY, partyTypeContactList.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2722,7 +2722,7 @@ public class ContactListControl
 
     public CustomerTypeContactListGroup createCustomerTypeContactListGroup(CustomerType customerType, ContactListGroup contactListGroup,
             Boolean addWhenCreated, BasePK createdBy) {
-        var customerTypeContactListGroup = CustomerTypeContactListGroupFactory.getInstance().create(session,
+        var customerTypeContactListGroup = CustomerTypeContactListGroupFactory.getInstance().create(
                 customerType, contactListGroup, addWhenCreated, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(contactListGroup.getPrimaryKey(), EventTypes.MODIFY, customerTypeContactListGroup.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2899,7 +2899,7 @@ public class ContactListControl
     // --------------------------------------------------------------------------------
 
     public CustomerTypeContactList createCustomerTypeContactList(CustomerType customerType, ContactList contactList, Boolean addWhenCreated, BasePK createdBy) {
-        var customerTypeContactList = CustomerTypeContactListFactory.getInstance().create(session, customerType, contactList, addWhenCreated,
+        var customerTypeContactList = CustomerTypeContactListFactory.getInstance().create( customerType, contactList, addWhenCreated,
                 session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(contactList.getPrimaryKey(), EventTypes.MODIFY, customerTypeContactList.getPrimaryKey(), EventTypes.CREATE, createdBy);

@@ -51,7 +51,7 @@ public class LotControl
     public Lot createLot(final Item item, final String lotIdentifier, final BasePK createdBy) {
 
         var lot = LotFactory.getInstance().create();
-        var lotDetail = LotDetailFactory.getInstance().create(session, lot, item, lotIdentifier, session.getStartTime(),
+        var lotDetail = LotDetailFactory.getInstance().create( lot, item, lotIdentifier, session.getStartTime(),
                 Session.MAX_TIME);
 
         // Convert to R/W

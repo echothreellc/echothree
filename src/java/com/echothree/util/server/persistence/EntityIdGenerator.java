@@ -22,9 +22,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.concurrent.locks.ReentrantLock;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class EntityIdGenerator {
-    
+
+    private static final Logger log = LoggerFactory.getLogger(EntityIdGenerator.class);
+
     static private final String selectQuery = "SELECT eid_lastentityid FROM entityids WHERE eid_componentvendorname = ? AND eid_entitytypename = ?";
     static private final String updateQuery = "UPDATE entityids SET eid_lastentityid = ? WHERE eid_componentvendorname = ? AND eid_entitytypename = ? AND eid_lastentityid = ?";
     static private final String insertQuery = "INSERT INTO entityids (eid_componentvendorname, eid_entitytypename, eid_lastentityid) VALUES (?, ?, ?)";
@@ -41,6 +45,9 @@ public class EntityIdGenerator {
     private long currentValue = 0;
     
     private void init(String componentVendorName, String entityTypeName, int chunkSize) {
+        log.debug("EntityIdGenerator(componentVendorName = {}, entityTypeName = {}, chunkSize = {})",
+                componentVendorName, entityTypeName, chunkSize);
+
         this.componentVendorName = componentVendorName;
         this.entityTypeName = entityTypeName;
         this.chunkSize = chunkSize;
@@ -62,6 +69,9 @@ public class EntityIdGenerator {
     
     private boolean getNewChunk()
             throws SQLException {
+        log.debug("getNewChunk(), componentVendorName = {}, entityTypeName = {}",
+                componentVendorName, entityTypeName);
+
         PreparedStatement ps = null;
         ResultSet rs = null;
         long currentMax;
@@ -132,8 +142,9 @@ public class EntityIdGenerator {
     }
     
     public long getNextEntityId() {
-        lock.lock();
+        long nextEntityId;
 
+        lock.lock();
         try {
             if(currentValue == guardedValue) {
                 try {
@@ -150,10 +161,15 @@ public class EntityIdGenerator {
                 throw new PersistenceDatabaseException("Could not get next increment value");
             }
 
-            return ++currentValue;
+            nextEntityId = ++currentValue;
         } finally {
             lock.unlock();
         }
+
+        log.debug("getNextEntityId(), nextEntityId = {}, componentVendorName = {}, entityTypeName = {}",
+                nextEntityId, componentVendorName, entityTypeName);
+
+        return nextEntityId;
     }
     
 }

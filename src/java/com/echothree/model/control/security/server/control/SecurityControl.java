@@ -169,7 +169,7 @@ public class SecurityControl
         }
 
         var securityRoleGroup = securityRoleGroupFactory.create();
-        var securityRoleGroupDetail = securityRoleGroupDetailFactory.create(session,
+        var securityRoleGroupDetail = securityRoleGroupDetailFactory.create(
                 securityRoleGroup, securityRoleGroupName, parentSecurityRoleGroup, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
         
@@ -725,7 +725,7 @@ public class SecurityControl
         }
 
         var securityRole = securityRoleFactory.create();
-        var securityRoleDetail = securityRoleDetailFactory.create(session,
+        var securityRoleDetail = securityRoleDetailFactory.create(
                 securityRole, securityRoleGroup, securityRoleName, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
         
@@ -1679,7 +1679,7 @@ public class SecurityControl
     
     public PartySecurityRoleTemplateDescription createPartySecurityRoleTemplateDescription(PartySecurityRoleTemplate partySecurityRoleTemplate,
             Language language, String description, BasePK createdBy) {
-        var partySecurityRoleTemplateDescription = partySecurityRoleTemplateDescriptionFactory.create(session,
+        var partySecurityRoleTemplateDescription = partySecurityRoleTemplateDescriptionFactory.create(
                 partySecurityRoleTemplate, language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(partySecurityRoleTemplate.getPrimaryKey(), EventTypes.MODIFY, partySecurityRoleTemplateDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1821,7 +1821,7 @@ public class SecurityControl
             var language = partySecurityRoleTemplateDescription.getLanguage();
             var description = partySecurityRoleTemplateDescriptionValue.getDescription();
             
-            partySecurityRoleTemplateDescription = partySecurityRoleTemplateDescriptionFactory.create(session,
+            partySecurityRoleTemplateDescription = partySecurityRoleTemplateDescriptionFactory.create(
                     partySecurityRoleTemplate, language, description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(partySecurityRoleTemplate.getPrimaryKey(), EventTypes.MODIFY, partySecurityRoleTemplateDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -1883,7 +1883,7 @@ public class SecurityControl
             ps.setLong(2, securityRole.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            partySecurityRoleTemplateRole = partySecurityRoleTemplateRoleFactory.getEntityFromQuery(session,
+            partySecurityRoleTemplateRole = partySecurityRoleTemplateRoleFactory.getEntityFromQuery(
                     entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -2050,7 +2050,7 @@ public class SecurityControl
             ps.setLong(2, trainingClass.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            partySecurityRoleTemplateTrainingClass = partySecurityRoleTemplateTrainingClassFactory.getEntityFromQuery(session,
+            partySecurityRoleTemplateTrainingClass = partySecurityRoleTemplateTrainingClassFactory.getEntityFromQuery(
                     entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);

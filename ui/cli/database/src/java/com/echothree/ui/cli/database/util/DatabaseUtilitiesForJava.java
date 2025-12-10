@@ -810,21 +810,15 @@ public class DatabaseUtilitiesForJava {
         pw.println("    }");
         pw.println("    ");
         pw.println("    @Override");
-        pw.println("    public void store(Session session)");
+        pw.println("    public void store()");
         pw.println("            throws PersistenceDatabaseException {");
-        pw.println("        getBaseFactoryInstance().store(session, this);");
-        pw.println("    }");
-        pw.println("    ");
-        pw.println("    @Override");
-        pw.println("    public void remove(Session session)");
-        pw.println("            throws PersistenceDatabaseException {");
-        pw.println("        getBaseFactoryInstance().remove(session, this);");
+        pw.println("        getBaseFactoryInstance().store(this);");
         pw.println("    }");
         pw.println("    ");
         pw.println("    @Override");
         pw.println("    public void remove()");
         pw.println("            throws PersistenceDatabaseException {");
-        pw.println("        getBaseFactoryInstance().remove(ThreadSession.currentSession(), this);");
+        pw.println("        getBaseFactoryInstance().remove(this);");
         pw.println("    }");
         pw.println("    ");
         pw.println("    public " + valueClass + " get" + valueClass + "() {");
@@ -866,35 +860,23 @@ public class DatabaseUtilitiesForJava {
                     
                     fkEntityClass = column.getFKEntityClass();
                     
-                    pw.println("    public " + fkEntityClass + " " + getEntityFunctionName + "(Session session, EntityPermission entityPermission) {");
+                    pw.println("    public " + fkEntityClass + " " + getEntityFunctionName + "(EntityPermission entityPermission) {");
                     if(column.getNullAllowed()) {
                         pw.println("        " + javaType + " pk = " + getFunctionName + "();");
-                        pw.println("        " + fkEntityClass + " entity = pk == null? null: " + fkFactoryClass + ".getInstance().getEntityFromPK(session, entityPermission, pk);");
+                        pw.println("        " + fkEntityClass + " entity = pk == null? null: " + fkFactoryClass + ".getInstance().getEntityFromPK(entityPermission, pk);");
                         pw.println("        ");
                         pw.println("        return entity;");
                     } else {
-                        pw.println("        return " + fkFactoryClass + ".getInstance().getEntityFromPK(session, entityPermission, " + getFunctionName + "());");
+                        pw.println("        return " + fkFactoryClass + ".getInstance().getEntityFromPK(entityPermission, " + getFunctionName + "());");
                     }
                     pw.println("    }");
                     pw.println("    ");
-                    pw.println("    public " + fkEntityClass + " " + getEntityFunctionName + "(EntityPermission entityPermission) {");
-                    pw.println("        return " + getEntityFunctionName + "(ThreadSession.currentSession(), entityPermission);");
-                    pw.println("    }");
-                    pw.println("    ");
-                    pw.println("    public " + fkEntityClass + " " + getEntityFunctionName + "(Session session) {");
-                    pw.println("        return " + getEntityFunctionName + "(session, EntityPermission.READ_ONLY);");
-                    pw.println("    }");
-                    pw.println("    ");
                     pw.println("    public " + fkEntityClass + " " + getEntityFunctionName + "() {");
-                    pw.println("        return " + getEntityFunctionName + "(ThreadSession.currentSession(), EntityPermission.READ_ONLY);");
-                    pw.println("    }");
-                    pw.println("    ");
-                    pw.println("    public " + fkEntityClass + " " + getEntityFunctionName + "ForUpdate(Session session) {");
-                    pw.println("        return " + getEntityFunctionName + "(session, EntityPermission.READ_WRITE);");
+                    pw.println("        return " + getEntityFunctionName + "(EntityPermission.READ_ONLY);");
                     pw.println("    }");
                     pw.println("    ");
                     pw.println("    public " + fkEntityClass + " " + getEntityFunctionName + "ForUpdate() {");
-                    pw.println("        return " + getEntityFunctionName + "(ThreadSession.currentSession(), EntityPermission.READ_WRITE);");
+                    pw.println("        return " + getEntityFunctionName + "(EntityPermission.READ_WRITE);");
                     pw.println("    }");
                     pw.println("    ");
                 }
@@ -1021,8 +1003,8 @@ public class DatabaseUtilitiesForJava {
         pw.println("import javax.enterprise.context.ApplicationScoped;");
         pw.println("import javax.enterprise.inject.spi.CDI;");
         pw.println("import javax.inject.Inject;");
-        pw.println("import org.apache.commons.logging.Log;");
-        pw.println("import org.apache.commons.logging.LogFactory;");
+        pw.println("import org.slf4j.Logger;");
+        pw.println("import org.slf4j.LoggerFactory;");
         pw.println("");
     }
 
@@ -1083,7 +1065,7 @@ public class DatabaseUtilitiesForJava {
         allColumns = !allColumnsExceptPk.isEmpty() ? pkColumn + ", " + allColumnsExceptPk: pkColumn;
         insertAllColumns = !insertAllColumns.isEmpty() ? pkColumn + ", " + insertAllColumns: pkColumn;
 
-        pw.println("    //final private static Log log = LogFactory.getLog(" + factoryClass + ".class);");
+        pw.println("    //private static final Logger log = LoggerFactory.getLogger(" + factoryClass + ".class);");
         pw.println("    ");
         pw.println("    final private static String SQL_SELECT_READ_ONLY = \"SELECT " + allColumns + " FROM " + dbTableName + " WHERE " + pkColumn + " = ?\";");
         pw.println("    final private static String SQL_SELECT_READ_WRITE = \"SELECT " + allColumns + " FROM " + dbTableName + " WHERE " + pkColumn + " = ? FOR UPDATE\";");
@@ -1220,13 +1202,13 @@ public class DatabaseUtilitiesForJava {
         var pkClass = theTable.getPKClass();
         
         pw.println("    @Override");
-        pw.println("    public void remove(Session session, " + theTable.getEntityClass() + " entity)");
+        pw.println("    public void remove(" + theTable.getEntityClass() + " entity)");
         pw.println("            throws PersistenceDatabaseException {");
-        pw.println("        remove(session, entity.getPrimaryKey());");
+        pw.println("        remove(entity.getPrimaryKey());");
         pw.println("    }");
         pw.println("    ");
         pw.println("    @Override");
-        pw.println("    public void remove(Session session, " + theTable.getPKClass() + " pk)");
+        pw.println("    public void remove(" + theTable.getPKClass() + " pk)");
         pw.println("            throws PersistenceDatabaseException {");
         pw.println("        PreparedStatement _ps = session.prepareStatement(SQL_DELETE);");
         pw.println("        long _entityId = pk.getEntityId();");
@@ -1253,7 +1235,7 @@ public class DatabaseUtilitiesForJava {
         pw.println("    }");
         pw.println("    ");
         pw.println("    @Override");
-        pw.println("    public void remove(Session session, Collection<" + pkClass + "> pks)");
+        pw.println("    public void remove(Collection<" + pkClass + "> pks)");
         pw.println("            throws PersistenceDatabaseException {");
         pw.println("        if(pks.size() > 0) {");
         pw.println("            PreparedStatement _ps = session.prepareStatement(SQL_DELETE);");
@@ -1296,12 +1278,6 @@ public class DatabaseUtilitiesForJava {
         pw.println("                session.removed(pk, true);");
         pw.println("            });");
         pw.println("        }");
-        pw.println("    }");
-        pw.println("    ");
-        pw.println("    @Override");
-        pw.println("    public void remove(Collection<" + pkClass + "> pks)");
-        pw.println("            throws PersistenceDatabaseException {");
-        pw.println("        remove(session, pks);");
         pw.println("    }");
         pw.println("    ");
     }
@@ -1368,7 +1344,7 @@ public class DatabaseUtilitiesForJava {
         pw.println("    }");
         pw.println("    ");
         pw.println("    @Override");
-        pw.println("    public void store(Session session, " + entityClass + " entity)");
+        pw.println("    public void store(" + entityClass + " entity)");
         pw.println("            throws PersistenceDatabaseException {");
         if(columns.size() > 1) {
             pw.println("        PreparedStatement _ps = session.prepareStatement(SQL_UPDATE);");
@@ -1398,7 +1374,7 @@ public class DatabaseUtilitiesForJava {
         pw.println("    }");
         pw.println("    ");
         pw.println("    @Override");
-        pw.println("    public void store(Session session, Collection<" + entityClass + "> entities)");
+        pw.println("    public void store(Collection<" + entityClass + "> entities)");
         pw.println("            throws PersistenceDatabaseException {");
         pw.println("        if(entities.size() > 0) {");
         if(columns.size() > 1) {
@@ -1441,12 +1417,6 @@ public class DatabaseUtilitiesForJava {
             pw.println("        throw new PersistenceDatabaseException(\"nothing to store\");");
         }
         pw.println("    ");
-        pw.println("    @Override");
-        pw.println("    public void store(Collection<" + entityClass + "> entities)");
-        pw.println("            throws PersistenceDatabaseException {");
-        pw.println("        store(session, entities);");
-        pw.println("    }");
-        pw.println("    ");
     }
     
     public void writeFactoryCreateFunctions(PrintWriter pw, Table theTable)
@@ -1469,14 +1439,14 @@ public class DatabaseUtilitiesForJava {
                 if(!isFirst) {
                     createEntityParameters += ", ";
                     createPkParameters += ", ";
+                    pkParameters += ", ";
+                    nullParameters += ", ";
                 } else {
                     isFirst = false;
                 }
-                
-                pkParameters += ", ";
+
                 valueParameters += ", ";
-                nullParameters += ", ";
-                
+
                 if(type == ColumnType.columnForeignKey) {
                     createEntityParameters += column.getFKEntityClass() + " " + column.getEntityVariableName();
                     pkParameters += column.getEntityVariableName() + " == null ? null : " + column.getEntityVariableName() + ".getPrimaryKey()";
@@ -1494,27 +1464,16 @@ public class DatabaseUtilitiesForJava {
         }
         
         if(theTable.hasNotNullColumn() && (theTable.getColumns().size() > 1)) {
-            pw.println("    public " + entityClass + " create(Session session)");
-            pw.println("            throws PersistenceDatabaseException, PersistenceNotNullException {");
-            pw.println("        return create(session" + nullParameters + ");");
-            pw.println("    }");
-            pw.println("    ");
             pw.println("    public " + entityClass + " create()");
             pw.println("            throws PersistenceDatabaseException, PersistenceNotNullException {");
-            pw.println("        return create(session" + nullParameters + ");");
+            pw.println("        return create(" + nullParameters + ");");
             pw.println("    }");
-            pw.println("    ");
         }
         
         if(theTable.hasForeignKey()) {
-            pw.println("    public " + entityClass + " create(Session session, " + createEntityParameters + ")");
-            pw.println("            throws PersistenceDatabaseException, PersistenceNotNullException {");
-            pw.println("        return create(session" + pkParameters + ");");
-            pw.println("    }");
-            pw.println("    ");
             pw.println("    public " + entityClass + " create(" + createEntityParameters + ")");
             pw.println("            throws PersistenceDatabaseException, PersistenceNotNullException {");
-            pw.println("        return create(session" + pkParameters + ");");
+            pw.println("        return create(" + pkParameters + ");");
             pw.println("    }");
             pw.println("    ");
         }
@@ -1565,7 +1524,7 @@ public class DatabaseUtilitiesForJava {
         }
         pw.println("    }");
         pw.println("    ");
-        pw.println("    public " + entityClass + " create(Session session, " + createPkParameters + ")");
+        pw.println("    public " + entityClass + " create(" + createPkParameters + ")");
         pw.println("            throws PersistenceDatabaseException, PersistenceNotNullException {");
         pw.println("        " + pkClass + " _pk = getNextPK();");
         pw.println("        " + valueClass + " _value = new " + valueClass + "(_pk" + valueParameters + ");");
@@ -1596,12 +1555,7 @@ public class DatabaseUtilitiesForJava {
         pw.println("        return _entity;");
         pw.println("    }");
         pw.println("    ");
-        pw.println("    public " + entityClass + " create(" + createPkParameters + ")");
-        pw.println("            throws PersistenceDatabaseException, PersistenceNotNullException {");
-        pw.println("        return create(session" + valueParameters + ");");
-        pw.println("    }");
-        pw.println("    ");
-        pw.println("    public void create(Session session, Collection<" + valueClass + "> _values)");
+        pw.println("    public void create(Collection<" + valueClass + "> _values)");
         pw.println("            throws PersistenceDatabaseException, PersistenceNotNullException {");
         pw.println("        int _size = _values.size();");
         pw.println("        ");
@@ -1644,11 +1598,6 @@ public class DatabaseUtilitiesForJava {
         pw.println("        }");
         pw.println("    }");
         pw.println("    ");
-        pw.println("    public void create(Collection<" + valueClass + "> _values)");
-        pw.println("            throws PersistenceDatabaseException, PersistenceNotNullException {");
-        pw.println("        create(session, _values);");
-        pw.println("    }");
-        pw.println("    ");
       }
     
     public void writeFactoryValueFunctions(PrintWriter pw, Table theTable)
@@ -1659,38 +1608,38 @@ public class DatabaseUtilitiesForJava {
         var eidColumn = theTable.getEID();
         var eidDbColumnName = eidColumn.getDbColumnName();
         
-        pw.println("    public java.util.List<" + valueClass + "> getValuesFromPKs(Session session, Collection<" + pkClass + "> pks)");
+        pw.println("    public java.util.List<" + valueClass + "> getValuesFromPKs(Collection<" + pkClass + "> pks)");
         pw.println("            throws PersistenceDatabaseException {");
         pw.println("        java.util.List<" + valueClass + "> _values = new ArrayList<>(pks.size());");
         pw.println("        ");
         pw.println("        for(" + pkClass + " _pk: pks) {");
-        pw.println("            _values.add(getValueFromPK(session, _pk));");
+        pw.println("            _values.add(getValueFromPK(_pk));");
         pw.println("        }");
         pw.println("        ");
         pw.println("        return _values;");
         pw.println("    }");
         pw.println("    ");
-        pw.println("    public " + valueClass + " getValueFromPK(Session session, " + pkClass + " pk)");
+        pw.println("    public " + valueClass + " getValueFromPK(" + pkClass + " pk)");
         pw.println("            throws PersistenceDatabaseException {");
         pw.println("        " + valueClass + " _value;");
         pw.println("        ");
         pw.println("        // See if we already have the entity in the session cache");
         pw.println("        " + entityClass + " _entity = (" + entityClass + ")session.getEntity(pk);");
         pw.println("        if(_entity == null)");
-        pw.println("            _value = getEntityFromPK(session, EntityPermission.READ_ONLY, pk).get" + valueClass + "();");
+        pw.println("            _value = getEntityFromPK(EntityPermission.READ_ONLY, pk).get" + valueClass + "();");
         pw.println("        else");
         pw.println("            _value = _entity.get" + valueClass + "();");
         pw.println("        ");
         pw.println("        return _value;");
         pw.println("    }");
         pw.println("    ");
-        pw.println("    public java.util.List<" + valueClass + "> getValuesFromResultSet(Session session, ResultSet rs)");
+        pw.println("    public java.util.List<" + valueClass + "> getValuesFromResultSet(ResultSet rs)");
         pw.println("            throws PersistenceDatabaseException {");
         pw.println("        java.util.List<" + valueClass + "> _result = new ArrayList<>();");
         pw.println("        ");
         pw.println("        try {");
         pw.println("            while(rs.next()) {");
-        pw.println("                _result.add(getValueFromResultSet(session, rs));");
+        pw.println("                _result.add(getValueFromResultSet(rs));");
         pw.println("            }");
         pw.println("        } catch (SQLException se) {");
         pw.println("            throw new PersistenceDatabaseException(se);");
@@ -1699,7 +1648,7 @@ public class DatabaseUtilitiesForJava {
         pw.println("        return _result;");
         pw.println("    }");
         pw.println("    ");
-        pw.println("    public " + valueClass + " getValueFromResultSet(Session session, ResultSet rs)");
+        pw.println("    public " + valueClass + " getValueFromResultSet(ResultSet rs)");
         pw.println("            throws PersistenceDatabaseException {");
         pw.println("        " + valueClass + " _value;");
         pw.println("        ");
@@ -1792,40 +1741,26 @@ public class DatabaseUtilitiesForJava {
         
         pw.println("    public java.util.List<" + entityClass + "> getEntitiesFromPKs(EntityPermission entityPermission, Collection<" + pkClass + "> pks)");
         pw.println("            throws PersistenceDatabaseException {");
-        pw.println("        return getEntitiesFromPKs(session, entityPermission, pks);");
-        pw.println("    }");
-        pw.println("    ");
-        pw.println("    public java.util.List<" + entityClass + "> getEntitiesFromPKs(Session session, EntityPermission entityPermission, Collection<" + pkClass + "> pks)");
-        pw.println("            throws PersistenceDatabaseException {");
         pw.println("        java.util.List<" + entityClass + "> _entities = new ArrayList<>(pks.size());");
         pw.println("        ");
         pw.println("        for(" + pkClass + " _pk: pks) {");
-        pw.println("            _entities.add(getEntityFromPK(session, entityPermission, _pk));");
+        pw.println("            _entities.add(getEntityFromPK(entityPermission, _pk));");
         pw.println("        }");
         pw.println("        ");
         pw.println("        return _entities;");
         pw.println("    }");
         pw.println("    ");
         pw.println("    public " + entityClass + " getEntityFromValue(EntityPermission entityPermission, " + valueClass + " value) {");
-        pw.println("        return getEntityFromPK(session, entityPermission, value.getPrimaryKey());");
+        pw.println("        return getEntityFromPK(entityPermission, value.getPrimaryKey());");
         pw.println("    }");
         pw.println("    ");
-        pw.println("    public " + entityClass + " getEntityFromValue(Session session, EntityPermission entityPermission, " + valueClass + " value) {");
-        pw.println("        return getEntityFromPK(session, entityPermission, value.getPrimaryKey());");
-        pw.println("    }");
-        pw.println("    ");
-        pw.println("    public " + entityClass + " getEntityFromPK(EntityPermission entityPermission, " + pkClass + " pk)");
-        pw.println("            throws PersistenceDatabaseException {");
-        pw.println("        return getEntityFromPK(session, entityPermission, pk);");
-        pw.println("    }");
-        pw.println("    ");
-        pw.println("    public " + entityClass + " getEntityFromCache(Session session, " + pkClass + " pk) {");
+        pw.println("    public " + entityClass + " getEntityFromCache(" + pkClass + " pk) {");
         pw.println("        " + valueClass + " _value = (" + valueClass + ")session.getValueCache().get(pk);");
         pw.println("    ");
         pw.println("        return _value == null ? null : new " + entityClass + "(_value, EntityPermission.READ_ONLY);");
         pw.println("    }");
         pw.println("    ");
-        pw.println("    public " + entityClass + " getEntityFromPK(Session session, EntityPermission entityPermission, " + pkClass + " pk)");
+        pw.println("    public " + entityClass + " getEntityFromPK(EntityPermission entityPermission, " + pkClass + " pk)");
         pw.println("            throws PersistenceDatabaseException {");
         pw.println("        " + entityClass + " _entity;");
         pw.println("        ");
@@ -1842,7 +1777,7 @@ public class DatabaseUtilitiesForJava {
         pw.println("        }");
         pw.println("        ");
         pw.println("        if(_entity == null && entityPermission.equals(EntityPermission.READ_ONLY)) {");
-        pw.println("            _entity = getEntityFromCache(session, pk);");
+        pw.println("            _entity = getEntityFromCache(pk);");
         pw.println("        }");
         pw.println("        ");
         pw.println("        if(_entity == null) {");
@@ -1854,7 +1789,7 @@ public class DatabaseUtilitiesForJava {
         pw.println("                _ps.setLong(1, _entityId);");
         pw.println("                _rs = _ps.executeQuery();");
         pw.println("                if(_rs.next()) {");
-        pw.println("                    _entity = getEntityFromResultSet(session, entityPermission, _rs);");
+        pw.println("                    _entity = getEntityFromResultSet(entityPermission, _rs);");
         pw.println("                }");
         pw.println("            } catch (SQLException se) {");
         pw.println("                throw new PersistenceDatabaseException(se);");
@@ -1958,45 +1893,21 @@ public class DatabaseUtilitiesForJava {
         pw.println("        return _pk;");
         pw.println("    }");
         pw.println("    ");
-        pw.println("    public java.util.List<" + entityClass + "> getEntitiesFromQuery(Session session, EntityPermission entityPermission, Map<EntityPermission, String>queryMap, final Object... params)");
-        pw.println("            throws PersistenceDatabaseException {");
-        pw.println("        PreparedStatement ps = session.prepareStatement(" + factoryClass + ".class, queryMap.get(entityPermission));");
-        pw.println("        ");
-        pw.println("        return getEntitiesFromQuery(session, entityPermission, ps, params);");
-        pw.println("    }");
-        pw.println("    ");
         pw.println("    public java.util.List<" + entityClass + "> getEntitiesFromQuery(EntityPermission entityPermission, Map<EntityPermission, String>queryMap, final Object... params)");
         pw.println("            throws PersistenceDatabaseException {");
         pw.println("        PreparedStatement ps = session.prepareStatement(" + factoryClass + ".class, queryMap.get(entityPermission));");
         pw.println("        ");
-        pw.println("        return getEntitiesFromQuery(session, entityPermission, ps, params);");
-        pw.println("    }");
-        pw.println("    ");
-        pw.println("    public java.util.List<" + entityClass + "> getEntitiesFromQuery(Session session, EntityPermission entityPermission, Map<EntityPermission, String>queryMap)");
-        pw.println("            throws PersistenceDatabaseException {");
-        pw.println("        PreparedStatement ps = session.prepareStatement(" + factoryClass + ".class, queryMap.get(entityPermission));");
-        pw.println("        ");
-        pw.println("        return getEntitiesFromQuery(session, entityPermission, ps);");
+        pw.println("        return getEntitiesFromQuery(entityPermission, ps, params);");
         pw.println("    }");
         pw.println("    ");
         pw.println("    public java.util.List<" + entityClass + "> getEntitiesFromQuery(EntityPermission entityPermission, Map<EntityPermission, String>queryMap)");
         pw.println("            throws PersistenceDatabaseException {");
         pw.println("        PreparedStatement ps = session.prepareStatement(" + factoryClass + ".class, queryMap.get(entityPermission));");
         pw.println("        ");
-        pw.println("        return getEntitiesFromQuery(session, entityPermission, ps);");
-        pw.println("    }");
-        pw.println("    ");
-        pw.println("    public java.util.List<" + entityClass + "> getEntitiesFromQuery(EntityPermission entityPermission, PreparedStatement ps)");
-        pw.println("            throws PersistenceDatabaseException {");
-        pw.println("        return getEntitiesFromQuery(session, entityPermission, ps);");
+        pw.println("        return getEntitiesFromQuery(entityPermission, ps);");
         pw.println("    }");
         pw.println("    ");
         pw.println("    public java.util.List<" + entityClass + "> getEntitiesFromQuery(EntityPermission entityPermission, PreparedStatement ps, final Object... params)");
-        pw.println("            throws PersistenceDatabaseException {");
-        pw.println("        return getEntitiesFromQuery(session, entityPermission, ps, params);");
-        pw.println("    }");
-        pw.println("    ");
-        pw.println("    public java.util.List<" + entityClass + "> getEntitiesFromQuery(Session session, EntityPermission entityPermission, PreparedStatement ps, final Object... params)");
         pw.println("            throws PersistenceDatabaseException {");
         pw.println("        java.util.List<" + entityClass + "> _entities;");
         pw.println("        ResultSet _rs = null;");
@@ -2007,7 +1918,7 @@ public class DatabaseUtilitiesForJava {
         pw.println("            }");
         pw.println("            ");
         pw.println("            _rs = ps.executeQuery();");
-        pw.println("            _entities = getEntitiesFromResultSet(session, entityPermission, _rs);");
+        pw.println("            _entities = getEntitiesFromResultSet(entityPermission, _rs);");
         pw.println("            _rs.close();");
         pw.println("        } catch (SQLException se) {");
         pw.println("            throw new PersistenceDatabaseException(se);");
@@ -2024,45 +1935,21 @@ public class DatabaseUtilitiesForJava {
         pw.println("        return _entities;");
         pw.println("    }");
         pw.println("    ");
-        pw.println("    public " + entityClass + " getEntityFromQuery(Session session, EntityPermission entityPermission, Map<EntityPermission, String>queryMap, final Object... params)");
-        pw.println("            throws PersistenceDatabaseException {");
-        pw.println("        PreparedStatement ps = session.prepareStatement(" + factoryClass + ".class, queryMap.get(entityPermission));");
-        pw.println("        ");
-        pw.println("        return getEntityFromQuery(session, entityPermission, ps, params);");
-        pw.println("    }");
-        pw.println("    ");
         pw.println("    public " + entityClass + " getEntityFromQuery(EntityPermission entityPermission, Map<EntityPermission, String>queryMap, final Object... params)");
         pw.println("            throws PersistenceDatabaseException {");
         pw.println("        PreparedStatement ps = session.prepareStatement(" + factoryClass + ".class, queryMap.get(entityPermission));");
         pw.println("        ");
-        pw.println("        return getEntityFromQuery(session, entityPermission, ps, params);");
-        pw.println("    }");
-        pw.println("    ");
-        pw.println("    public " + entityClass + " getEntityFromQuery(Session session, EntityPermission entityPermission, Map<EntityPermission, String>queryMap)");
-        pw.println("            throws PersistenceDatabaseException {");
-        pw.println("        PreparedStatement ps = session.prepareStatement(" + factoryClass + ".class, queryMap.get(entityPermission));");
-        pw.println("        ");
-        pw.println("        return getEntityFromQuery(session, entityPermission, ps);");
+        pw.println("        return getEntityFromQuery(entityPermission, ps, params);");
         pw.println("    }");
         pw.println("    ");
         pw.println("    public " + entityClass + " getEntityFromQuery(EntityPermission entityPermission, Map<EntityPermission, String>queryMap)");
         pw.println("            throws PersistenceDatabaseException {");
         pw.println("        PreparedStatement ps = session.prepareStatement(" + factoryClass + ".class, queryMap.get(entityPermission));");
         pw.println("        ");
-        pw.println("        return getEntityFromQuery(session, entityPermission, ps);");
-        pw.println("    }");
-        pw.println("    ");
-        pw.println("    public " + entityClass + " getEntityFromQuery(EntityPermission entityPermission, PreparedStatement ps)");
-        pw.println("            throws PersistenceDatabaseException {");
-        pw.println("        return getEntityFromQuery(session, entityPermission, ps);");
+        pw.println("        return getEntityFromQuery(entityPermission, ps);");
         pw.println("    }");
         pw.println("    ");
         pw.println("    public " + entityClass + " getEntityFromQuery(EntityPermission entityPermission, PreparedStatement ps, final Object... params)");
-        pw.println("            throws PersistenceDatabaseException {");
-        pw.println("        return getEntityFromQuery(session, entityPermission, ps, params);");
-        pw.println("    }");
-        pw.println("    ");
-        pw.println("    public " + entityClass + " getEntityFromQuery(Session session, EntityPermission entityPermission, PreparedStatement ps, final Object... params)");
         pw.println("            throws PersistenceDatabaseException {");
         pw.println("        " + entityClass + " _entity = null;");
         pw.println("        ResultSet _rs = null;");
@@ -2074,7 +1961,7 @@ public class DatabaseUtilitiesForJava {
         pw.println("            ");
         pw.println("            _rs = ps.executeQuery();");
         pw.println("            if(_rs.next()) {");
-        pw.println("                _entity = getEntityFromResultSet(session, entityPermission, _rs);");
+        pw.println("                _entity = getEntityFromResultSet(entityPermission, _rs);");
         pw.println("            }");
         pw.println("            _rs.close();");
         pw.println("        } catch (SQLException se) {");
@@ -2094,16 +1981,11 @@ public class DatabaseUtilitiesForJava {
         pw.println("    ");
         pw.println("    public java.util.List<" + entityClass + "> getEntitiesFromResultSet(EntityPermission entityPermission, ResultSet rs)");
         pw.println("            throws PersistenceDatabaseException {");
-        pw.println("        return getEntitiesFromResultSet(session, entityPermission, rs);");
-        pw.println("    }");
-        pw.println("    ");
-        pw.println("    public java.util.List<" + entityClass + "> getEntitiesFromResultSet(Session session, EntityPermission entityPermission, ResultSet rs)");
-        pw.println("            throws PersistenceDatabaseException {");
         pw.println("        java.util.List<" + entityClass + "> _result = new ArrayList<>();");
         pw.println("        ");
         pw.println("        try {");
         pw.println("            while(rs.next()) {");
-        pw.println("                _result.add(getEntityFromResultSet(session, entityPermission, rs));");
+        pw.println("                _result.add(getEntityFromResultSet(entityPermission, rs));");
         pw.println("            }");
         pw.println("        } catch (SQLException se) {");
         pw.println("            throw new PersistenceDatabaseException(se);");
@@ -2113,11 +1995,6 @@ public class DatabaseUtilitiesForJava {
         pw.println("    }");
         pw.println("    ");
         pw.println("    public " + entityClass + " getEntityFromResultSet(EntityPermission entityPermission, ResultSet rs)");
-        pw.println("            throws PersistenceDatabaseException {");
-        pw.println("        return getEntityFromResultSet(session, entityPermission, rs);");
-        pw.println("    }");
-        pw.println("    ");
-        pw.println("    public " + entityClass + " getEntityFromResultSet(Session session, EntityPermission entityPermission, ResultSet rs)");
         pw.println("            throws PersistenceDatabaseException {");
         pw.println("        " + entityClass + " _entity;");
         pw.println("        ");
@@ -2139,7 +2016,7 @@ public class DatabaseUtilitiesForJava {
         pw.println("            boolean foundInSessionCache = _entity != null;");
         pw.println("            ");
         pw.println("            if(_entity == null && entityPermission.equals(EntityPermission.READ_ONLY)) {");
-        pw.println("                _entity = getEntityFromCache(session, _pk);");
+        pw.println("                _entity = getEntityFromCache(_pk);");
         pw.println("            }");
         pw.println("            ");
         pw.println("            if(_entity == null) {");
@@ -2224,7 +2101,7 @@ public class DatabaseUtilitiesForJava {
     
     public void writeFactoryValidFunction(PrintWriter pw, Table theTable) {
         pw.println("    @Override");
-        pw.println("    public boolean validPK(Session session, " + theTable.getPKClass() + " pk)");
+        pw.println("    public boolean validPK(" + theTable.getPKClass() + " pk)");
         pw.println("            throws PersistenceDatabaseException {");
         pw.println("        boolean valid = false;");
         pw.println("        PreparedStatement _ps = session.prepareStatement(SQL_VALID);");

@@ -125,7 +125,7 @@ public class TaxControl
         }
 
         var taxClassification = TaxClassificationFactory.getInstance().create();
-        var taxClassificationDetail = TaxClassificationDetailFactory.getInstance().create(session, taxClassification, countryGeoCode,
+        var taxClassificationDetail = TaxClassificationDetailFactory.getInstance().create( taxClassification, countryGeoCode,
                 taxClassificationName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
@@ -562,7 +562,7 @@ public class TaxControl
 
     public ItemTaxClassification createItemTaxClassification(Item item, GeoCode countryGeoCode, TaxClassification taxClassification, BasePK createdBy) {
         var itemTaxClassification = ItemTaxClassificationFactory.getInstance().create();
-        var itemTaxClassificationDetail = ItemTaxClassificationDetailFactory.getInstance().create(session,
+        var itemTaxClassificationDetail = ItemTaxClassificationDetailFactory.getInstance().create(
                 itemTaxClassification, item, countryGeoCode, taxClassification, session.getStartTime(),
                 Session.MAX_TIME);
 

@@ -914,7 +914,7 @@ public class EventControl
     public EventSubscriber createEventSubscriber(String eventSubscriberName, EntityInstance entityInstance, String description,
             Integer sortOrder, BasePK createdBy) {
         var eventSubscriber = eventSubscriberFactory.create();
-        var eventSubscriberDetail = eventSubscriberDetailFactory.create(session,
+        var eventSubscriberDetail = eventSubscriberDetailFactory.create(
                 eventSubscriber, eventSubscriberName, entityInstance, description, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
 
@@ -1115,7 +1115,7 @@ public class EventControl
     
     public EventSubscriberEventType createEventSubscriberEventType(EventSubscriber eventSubscriber, EventType eventType,
             BasePK createdBy) {
-        var eventSubscriberEventType = eventSubscriberEventTypeFactory.create(session,
+        var eventSubscriberEventType = eventSubscriberEventTypeFactory.create(
                 eventSubscriber, eventType, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(eventSubscriber.getPrimaryKey(), EventTypes.MODIFY, eventSubscriberEventType.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1172,7 +1172,7 @@ public class EventControl
     
     public EventSubscriberEntityType createEventSubscriberEntityType(EventSubscriber eventSubscriber, EntityType entityType,
             EventType eventType, BasePK createdBy) {
-        var eventSubscriberEntityType = eventSubscriberEntityTypeFactory.create(session,
+        var eventSubscriberEntityType = eventSubscriberEntityTypeFactory.create(
                 eventSubscriber, entityType, eventType, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(eventSubscriber.getPrimaryKey(), EventTypes.MODIFY, eventSubscriberEntityType.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1231,7 +1231,7 @@ public class EventControl
     
     public EventSubscriberEntityInstance createEventSubscriberEntityInstance(EventSubscriber eventSubscriber,
             EntityInstance entityInstance, EventType eventType, BasePK createdBy) {
-        var eventSubscriberEntityInstance = eventSubscriberEntityInstanceFactory.create(session,
+        var eventSubscriberEntityInstance = eventSubscriberEntityInstanceFactory.create(
                 eventSubscriber, entityInstance, eventType, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(eventSubscriber.getPrimaryKey(), EventTypes.MODIFY, eventSubscriberEntityInstance.getPrimaryKey(), EventTypes.CREATE, createdBy);

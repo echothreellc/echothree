@@ -984,7 +984,7 @@ public class GeoControl
         }
 
         var geoCodeScope = GeoCodeScopeFactory.getInstance().create();
-        var geoCodeScopeDetail = GeoCodeScopeDetailFactory.getInstance().create(session,
+        var geoCodeScopeDetail = GeoCodeScopeDetailFactory.getInstance().create(
                 geoCodeScope, geoCodeScopeName, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
         
@@ -1435,7 +1435,7 @@ public class GeoControl
         }
 
         var geoCodeAliasType = GeoCodeAliasTypeFactory.getInstance().create();
-        var geoCodeAliasTypeDetail = GeoCodeAliasTypeDetailFactory.getInstance().create(session, geoCodeAliasType, geoCodeType,
+        var geoCodeAliasTypeDetail = GeoCodeAliasTypeDetailFactory.getInstance().create( geoCodeAliasType, geoCodeType,
                 geoCodeAliasTypeName, validationPattern, isRequired, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W

@@ -432,7 +432,7 @@ public class FilterControl
     }
 
     private void updateFilterKindFromValue(FilterKindDetailValue filterKindDetailValue, boolean checkDefault, BasePK updatedBy) {
-        var filterKind = FilterKindFactory.getInstance().getEntityFromPK(session,
+        var filterKind = FilterKindFactory.getInstance().getEntityFromPK(
                 EntityPermission.READ_WRITE, filterKindDetailValue.getFilterKindPK());
         var filterKindDetail = filterKind.getActiveDetailForUpdate();
 
@@ -669,7 +669,7 @@ public class FilterControl
         }
 
         var filterType = FilterTypeFactory.getInstance().create();
-        var filterTypeDetail = FilterTypeDetailFactory.getInstance().create(session, filterType, filterKind, filterTypeName, isDefault, sortOrder,
+        var filterTypeDetail = FilterTypeDetailFactory.getInstance().create( filterType, filterKind, filterTypeName, isDefault, sortOrder,
                 session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
@@ -1137,7 +1137,7 @@ public class FilterControl
             
             ps.setString(1, filterAdjustmentSourceName);
             
-            filterAdjustmentSource = FilterAdjustmentSourceFactory.getInstance().getEntityFromQuery(session,
+            filterAdjustmentSource = FilterAdjustmentSourceFactory.getInstance().getEntityFromQuery(
                     EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -1210,7 +1210,7 @@ public class FilterControl
             ps.setLong(1, filterAdjustmentSource.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             
-            filterAdjustmentSourceDescription = FilterAdjustmentSourceDescriptionFactory.getInstance().getEntityFromQuery(session,
+            filterAdjustmentSourceDescription = FilterAdjustmentSourceDescriptionFactory.getInstance().getEntityFromQuery(
                     EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -1348,7 +1348,7 @@ public class FilterControl
             ps.setLong(1, filterAdjustmentType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             
-            filterAdjustmentTypeDescription = FilterAdjustmentTypeDescriptionFactory.getInstance().getEntityFromQuery(session,
+            filterAdjustmentTypeDescription = FilterAdjustmentTypeDescriptionFactory.getInstance().getEntityFromQuery(
                     EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -1395,7 +1395,7 @@ public class FilterControl
         }
 
         var filterAdjustment = FilterAdjustmentFactory.getInstance().create();
-        var filterAdjustmentDetail = FilterAdjustmentDetailFactory.getInstance().create(session,
+        var filterAdjustmentDetail = FilterAdjustmentDetailFactory.getInstance().create(
                 filterAdjustment, filterKind, filterAdjustmentName, filterAdjustmentSource, filterAdjustmentType,
                 isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
@@ -1702,7 +1702,7 @@ public class FilterControl
     
     public FilterAdjustmentAmount createFilterAdjustmentAmount(FilterAdjustment filterAdjustment,
             UnitOfMeasureType unitOfMeasureType, Currency currency, Long amount, BasePK createdBy) {
-        var filterAdjustmentAmount = FilterAdjustmentAmountFactory.getInstance().create(session,
+        var filterAdjustmentAmount = FilterAdjustmentAmountFactory.getInstance().create(
                 filterAdjustment, unitOfMeasureType, currency, amount, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(filterAdjustment.getPrimaryKey(), EventTypes.MODIFY,
@@ -1875,7 +1875,7 @@ public class FilterControl
     
     public FilterAdjustmentFixedAmount createFilterAdjustmentFixedAmount(FilterAdjustment filterAdjustment,
             UnitOfMeasureType unitOfMeasureType, Currency currency, Long unitAmount, BasePK createdBy) {
-        var filterAdjustmentFixedAmount = FilterAdjustmentFixedAmountFactory.getInstance().create(session,
+        var filterAdjustmentFixedAmount = FilterAdjustmentFixedAmountFactory.getInstance().create(
                 filterAdjustment, unitOfMeasureType, currency, unitAmount, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(filterAdjustment.getPrimaryKey(), EventTypes.MODIFY,
@@ -1915,7 +1915,7 @@ public class FilterControl
                 ps.setLong(4, Session.MAX_TIME);
             }
             
-            filterAdjustmentFixedAmounts = FilterAdjustmentFixedAmountFactory.getInstance().getEntitiesFromQuery(session,
+            filterAdjustmentFixedAmounts = FilterAdjustmentFixedAmountFactory.getInstance().getEntitiesFromQuery(
                     entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -1959,7 +1959,7 @@ public class FilterControl
             ps.setLong(3, currency.getPrimaryKey().getEntityId());
             ps.setLong(4, Session.MAX_TIME);
             
-            filterAdjustmentFixedAmount = FilterAdjustmentFixedAmountFactory.getInstance().getEntityFromQuery(session,
+            filterAdjustmentFixedAmount = FilterAdjustmentFixedAmountFactory.getInstance().getEntityFromQuery(
                     entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -2052,7 +2052,7 @@ public class FilterControl
     
     public FilterAdjustmentPercent createFilterAdjustmentPercent(FilterAdjustment filterAdjustment,
             UnitOfMeasureType unitOfMeasureType, Currency currency, Integer percent, BasePK createdBy) {
-        var filterAdjustmentPercent = FilterAdjustmentPercentFactory.getInstance().create(session,
+        var filterAdjustmentPercent = FilterAdjustmentPercentFactory.getInstance().create(
                 filterAdjustment, unitOfMeasureType, currency, percent, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(filterAdjustment.getPrimaryKey(), EventTypes.MODIFY,
@@ -2228,7 +2228,7 @@ public class FilterControl
     public FilterAdjustmentDescription createFilterAdjustmentDescription(FilterAdjustment filterAdjustment, Language language,
             String description,
             BasePK createdBy) {
-        var filterAdjustmentDescription = FilterAdjustmentDescriptionFactory.getInstance().create(session,
+        var filterAdjustmentDescription = FilterAdjustmentDescriptionFactory.getInstance().create(
                 filterAdjustment, language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(filterAdjustment.getPrimaryKey(), EventTypes.MODIFY,
@@ -2261,7 +2261,7 @@ public class FilterControl
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            filterAdjustmentDescription = FilterAdjustmentDescriptionFactory.getInstance().getEntityFromQuery(session,
+            filterAdjustmentDescription = FilterAdjustmentDescriptionFactory.getInstance().getEntityFromQuery(
                     entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -2315,7 +2315,7 @@ public class FilterControl
             ps.setLong(1, filterAdjustment.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            filterAdjustmentDescriptions = FilterAdjustmentDescriptionFactory.getInstance().getEntitiesFromQuery(session,
+            filterAdjustmentDescriptions = FilterAdjustmentDescriptionFactory.getInstance().getEntitiesFromQuery(
                     entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -3877,7 +3877,7 @@ public class FilterControl
     
     public FilterStepElementDescription createFilterStepElementDescription(FilterStepElement filterStepElement, Language language,
             String description, BasePK createdBy) {
-        var filterStepElementDescription = FilterStepElementDescriptionFactory.getInstance().create(session,
+        var filterStepElementDescription = FilterStepElementDescriptionFactory.getInstance().create(
                 filterStepElement, language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(filterStepElement.getLastDetail().getFilterStep().getLastDetail().getFilterPK(),

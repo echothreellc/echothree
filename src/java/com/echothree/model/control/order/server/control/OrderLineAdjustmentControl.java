@@ -481,7 +481,7 @@ public class OrderLineAdjustmentControl
     public OrderLineAdjustment createOrderLineAdjustment(OrderLine orderLine, Integer orderLineAdjustmentSequence,
             OrderLineAdjustmentType orderLineAdjustmentType, Long amount, BasePK createdBy) {
         var orderLineAdjustment = OrderLineAdjustmentFactory.getInstance().create();
-        var orderLineAdjustmentDetail = OrderLineAdjustmentDetailFactory.getInstance().create(session,
+        var orderLineAdjustmentDetail = OrderLineAdjustmentDetailFactory.getInstance().create(
                 orderLineAdjustment, orderLine, orderLineAdjustmentSequence, orderLineAdjustmentType, amount,
                 session.getStartTime(), Session.MAX_TIME);
 

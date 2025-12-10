@@ -55,7 +55,7 @@ public class PaymentProcessorTransactionControl
             final PaymentProcessorResultCode paymentProcessorResultCode, final BasePK createdBy) {
 
         var paymentProcessorTransaction = PaymentProcessorTransactionFactory.getInstance().create();
-        var paymentProcessorTransactionDetail = PaymentProcessorTransactionDetailFactory.getInstance().create(session,
+        var paymentProcessorTransactionDetail = PaymentProcessorTransactionDetailFactory.getInstance().create(
                 paymentProcessorTransaction, paymentProcessorTransactionName, paymentProcessor, paymentProcessorActionType,
                 paymentProcessorResultCode, session.getStartTime(), Session.MAX_TIME);
 

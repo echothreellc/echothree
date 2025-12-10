@@ -495,7 +495,7 @@ public class AccountingControl
         }
 
         var itemAccountingCategory = ItemAccountingCategoryFactory.getInstance().create();
-        var itemAccountingCategoryDetail = ItemAccountingCategoryDetailFactory.getInstance().create(session,
+        var itemAccountingCategoryDetail = ItemAccountingCategoryDetailFactory.getInstance().create(
                 itemAccountingCategory, itemAccountingCategoryName, parentItemAccountingCategory, inventoryGlAccount,
                 salesGlAccount, returnsGlAccount, cogsGlAccount, returnsCogsGlAccount, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
@@ -1207,7 +1207,7 @@ public class AccountingControl
         }
 
         var glAccountClass = GlAccountClassFactory.getInstance().create();
-        var glAccountClassDetail = GlAccountClassDetailFactory.getInstance().create(session,
+        var glAccountClassDetail = GlAccountClassDetailFactory.getInstance().create(
                 glAccountClass, glAccountClassName, parentGlAccountClass, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
         
@@ -1736,7 +1736,7 @@ public class AccountingControl
         }
 
         var glAccountCategory = GlAccountCategoryFactory.getInstance().create();
-        var glAccountCategoryDetail = GlAccountCategoryDetailFactory.getInstance().create(session,
+        var glAccountCategoryDetail = GlAccountCategoryDetailFactory.getInstance().create(
                 glAccountCategory, glAccountCategoryName, parentGlAccountCategory, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
         
@@ -2266,7 +2266,7 @@ public class AccountingControl
         }
 
         var glResourceType = GlResourceTypeFactory.getInstance().create();
-        var glResourceTypeDetail = GlResourceTypeDetailFactory.getInstance().create(session,
+        var glResourceTypeDetail = GlResourceTypeDetailFactory.getInstance().create(
                 glResourceType, glResourceTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
@@ -3747,7 +3747,7 @@ public class AccountingControl
     }
     
     public void updateTransactionTypeFromValue(TransactionTypeDetailValue transactionTypeDetailValue, BasePK updatedBy) {
-        var transactionType = TransactionTypeFactory.getInstance().getEntityFromPK(session,
+        var transactionType = TransactionTypeFactory.getInstance().getEntityFromPK(
                 EntityPermission.READ_WRITE, transactionTypeDetailValue.getTransactionTypePK());
         var transactionTypeDetail = transactionType.getActiveDetailForUpdate();
 
@@ -4097,7 +4097,7 @@ public class AccountingControl
     }
     
     public void updateTransactionGlAccountCategoryFromValue(TransactionGlAccountCategoryDetailValue transactionGlAccountCategoryDetailValue, BasePK updatedBy) {
-        var transactionGlAccountCategory = TransactionGlAccountCategoryFactory.getInstance().getEntityFromPK(session,
+        var transactionGlAccountCategory = TransactionGlAccountCategoryFactory.getInstance().getEntityFromPK(
                 EntityPermission.READ_WRITE, transactionGlAccountCategoryDetailValue.getTransactionGlAccountCategoryPK());
         var transactionGlAccountCategoryDetail = transactionGlAccountCategory.getActiveDetailForUpdate();
 
@@ -4498,7 +4498,7 @@ public class AccountingControl
     }
     
     public void updateTransactionEntityRoleTypeFromValue(TransactionEntityRoleTypeDetailValue transactionEntityRoleTypeDetailValue, BasePK updatedBy) {
-        var transactionEntityRoleType = TransactionEntityRoleTypeFactory.getInstance().getEntityFromPK(session,
+        var transactionEntityRoleType = TransactionEntityRoleTypeFactory.getInstance().getEntityFromPK(
                 EntityPermission.READ_WRITE, transactionEntityRoleTypeDetailValue.getTransactionEntityRoleTypePK());
         var transactionEntityRoleTypeDetail = transactionEntityRoleType.getActiveDetailForUpdate();
 
@@ -5382,7 +5382,7 @@ public class AccountingControl
             ps.setLong(1, transaction.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            transactionGlEntries = TransactionGlEntryFactory.getInstance().getEntitiesFromQuery(session,
+            transactionGlEntries = TransactionGlEntryFactory.getInstance().getEntitiesFromQuery(
                     EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -5410,7 +5410,7 @@ public class AccountingControl
             ps.setLong(2, Session.MAX_TIME);
             ps.setString(3, TransactionTimeTypes.TRANSACTION_TIME.name());
 
-            transactionGlEntries = TransactionGlEntryFactory.getInstance().getEntitiesFromQuery(session,
+            transactionGlEntries = TransactionGlEntryFactory.getInstance().getEntitiesFromQuery(
                     EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -5471,7 +5471,7 @@ public class AccountingControl
             ps.setLong(2, transactionEntityRoleType.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            transactionEntityRole = TransactionEntityRoleFactory.getInstance().getEntityFromQuery(session,
+            transactionEntityRole = TransactionEntityRoleFactory.getInstance().getEntityFromQuery(
                     EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -5543,7 +5543,7 @@ public class AccountingControl
             ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            transactionEntityRoles = TransactionEntityRoleFactory.getInstance().getEntitiesFromQuery(session,
+            transactionEntityRoles = TransactionEntityRoleFactory.getInstance().getEntitiesFromQuery(
                     entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -5616,7 +5616,7 @@ public class AccountingControl
         }
 
         var symbolPosition = SymbolPositionFactory.getInstance().create();
-        var symbolPositionDetail = SymbolPositionDetailFactory.getInstance().create(session,
+        var symbolPositionDetail = SymbolPositionDetailFactory.getInstance().create(
                 symbolPosition, symbolPositionName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W

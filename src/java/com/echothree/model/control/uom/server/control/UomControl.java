@@ -151,7 +151,7 @@ public class UomControl
         }
 
         var unitOfMeasureKind = UnitOfMeasureKindFactory.getInstance().create();
-        var unitOfMeasureKindDetail = UnitOfMeasureKindDetailFactory.getInstance().create(session, unitOfMeasureKind, unitOfMeasureKindName,
+        var unitOfMeasureKindDetail = UnitOfMeasureKindDetailFactory.getInstance().create( unitOfMeasureKind, unitOfMeasureKindName,
                 fractionDigits, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
@@ -1018,7 +1018,7 @@ public class UomControl
     
     public UnitOfMeasureTypeDescription createUnitOfMeasureTypeDescription(UnitOfMeasureType unitOfMeasureType, Language language,
             String singularDescription, String pluralDescription, String symbol, BasePK createdBy) {
-        var unitOfMeasureTypeDescription = UnitOfMeasureTypeDescriptionFactory.getInstance().create(session,
+        var unitOfMeasureTypeDescription = UnitOfMeasureTypeDescriptionFactory.getInstance().create(
                 unitOfMeasureType, language, singularDescription, pluralDescription, symbol, session.getStartTime(),
                 Session.MAX_TIME);
         
@@ -1228,7 +1228,7 @@ public class UomControl
     
     public UnitOfMeasureTypeVolume createUnitOfMeasureTypeVolume(UnitOfMeasureType unitOfMeasureType, Long height, Long width,
             Long depth, BasePK createdBy) {
-        var unitOfMeasureTypeVolume = UnitOfMeasureTypeVolumeFactory.getInstance().create(session,
+        var unitOfMeasureTypeVolume = UnitOfMeasureTypeVolumeFactory.getInstance().create(
                 unitOfMeasureType, height, width, depth, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(unitOfMeasureType.getPrimaryKey(), EventTypes.MODIFY, unitOfMeasureTypeVolume.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1423,7 +1423,7 @@ public class UomControl
     
     public UnitOfMeasureEquivalent createUnitOfMeasureEquivalent(UnitOfMeasureType fromUnitOfMeasureType,
             UnitOfMeasureType toUnitOfMeasureType, Long toQuantity, BasePK createdBy) {
-        var unitOfMeasureEquivalent = UnitOfMeasureEquivalentFactory.getInstance().create(session,
+        var unitOfMeasureEquivalent = UnitOfMeasureEquivalentFactory.getInstance().create(
                 fromUnitOfMeasureType, toUnitOfMeasureType, toQuantity, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(fromUnitOfMeasureType.getPrimaryKey(), EventTypes.MODIFY, unitOfMeasureEquivalent.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1872,7 +1872,7 @@ public class UomControl
             isDefault = true;
         }
 
-        var unitOfMeasureKindUse = UnitOfMeasureKindUseFactory.getInstance().create(session,
+        var unitOfMeasureKindUse = UnitOfMeasureKindUseFactory.getInstance().create(
                 unitOfMeasureKindUseType, unitOfMeasureKind, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(unitOfMeasureKind.getPrimaryKey(), EventTypes.MODIFY, unitOfMeasureKindUse.getPrimaryKey(), EventTypes.CREATE, createdBy);

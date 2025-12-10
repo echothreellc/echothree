@@ -70,7 +70,7 @@ public class PaymentProcessorTypeCodeControl
         }
 
         var paymentProcessorTypeCode = PaymentProcessorTypeCodeFactory.getInstance().create();
-        var paymentProcessorTypeCodeDetail = PaymentProcessorTypeCodeDetailFactory.getInstance().create(session,
+        var paymentProcessorTypeCodeDetail = PaymentProcessorTypeCodeDetailFactory.getInstance().create(
                 paymentProcessorTypeCode, paymentProcessorTypeCodeType, paymentProcessorTypeCodeName, isDefault, sortOrder,
                 session.getStartTime(), Session.MAX_TIME);
 

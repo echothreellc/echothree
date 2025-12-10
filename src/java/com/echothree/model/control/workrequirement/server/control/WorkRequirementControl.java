@@ -132,7 +132,7 @@ public class WorkRequirementControl
     public WorkRequirementType createWorkRequirementType(WorkEffortType workEffortType, String workRequirementTypeName, Sequence workRequirementSequence,
             WorkflowStep workflowStep, Long estimatedTimeAllowed, Long maximumTimeAllowed, Boolean allowReassignment, Integer sortOrder, BasePK createdBy) {
         var workRequirementType = WorkRequirementTypeFactory.getInstance().create();
-        var workRequirementTypeDetail = WorkRequirementTypeDetailFactory.getInstance().create(session, workRequirementType,
+        var workRequirementTypeDetail = WorkRequirementTypeDetailFactory.getInstance().create( workRequirementType,
                 workEffortType, workRequirementTypeName, workRequirementSequence, workflowStep, estimatedTimeAllowed, maximumTimeAllowed, allowReassignment,
                 sortOrder, session.getStartTime(), Session.MAX_TIME);
         
@@ -520,7 +520,7 @@ public class WorkRequirementControl
             Sequence workRequirementSequence, Sequence workTimeSequence, Selector workAssignmentSelector, Long estimatedTimeAllowed,
             Long maximumTimeAllowed, BasePK createdBy) {
         var workRequirementScope = WorkRequirementScopeFactory.getInstance().create();
-        var workRequirementScopeDetail = WorkRequirementScopeDetailFactory.getInstance().create(session,
+        var workRequirementScopeDetail = WorkRequirementScopeDetailFactory.getInstance().create(
                 workRequirementScope, workEffortScope, workRequirementType, workRequirementSequence, workTimeSequence,
                 workAssignmentSelector, estimatedTimeAllowed, maximumTimeAllowed, session.getStartTime(), Session.MAX_TIME);
         

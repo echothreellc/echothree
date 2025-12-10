@@ -921,7 +921,7 @@ public class ContactControl
             
             ps.setLong(1, contactMechanismType.getPrimaryKey().getEntityId());
             
-            contactMechanismPurposes = ContactMechanismPurposeFactory.getInstance().getEntitiesFromQuery(session,
+            contactMechanismPurposes = ContactMechanismPurposeFactory.getInstance().getEntitiesFromQuery(
                     EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -1984,7 +1984,7 @@ public class ContactControl
     public ContactPostalAddressCorrection createContactPostalAddressCorrection(ContactMechanism contactMechanism, String address1,
             String address2, String address3, String city, GeoCode cityGeoCode, GeoCode countyGeoCode, String state,
             GeoCode stateGeoCode, String postalCode, GeoCode postalCodeGeoCode, GeoCode countryGeoCode, BasePK createdBy) {
-        var contactPostalAddressCorrection = ContactPostalAddressCorrectionFactory.getInstance().create(session,
+        var contactPostalAddressCorrection = ContactPostalAddressCorrectionFactory.getInstance().create(
                 contactMechanism, address1, address2, address3, city, cityGeoCode, countyGeoCode, state, stateGeoCode, postalCode,
                 postalCodeGeoCode, countryGeoCode, session.getStartTime(), Session.MAX_TIME);
         
@@ -2320,7 +2320,7 @@ public class ContactControl
         }
 
         var partyContactMechanism = PartyContactMechanismFactory.getInstance().create();
-        var partyContactMechanismDetail = PartyContactMechanismDetailFactory.getInstance().create(session,
+        var partyContactMechanismDetail = PartyContactMechanismDetailFactory.getInstance().create(
                 partyContactMechanism, party, contactMechanism, description, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
         
@@ -2846,7 +2846,7 @@ public class ContactControl
     public PartyContactMechanismAlias createPartyContactMechanismAlias(Party party, ContactMechanism contactMechanism,
             ContactMechanismAliasType contactMechanismAliasType, String alias, BasePK createdBy) {
 
-        var partyContactMechanismAlias = PartyContactMechanismAliasFactory.getInstance().create(session,
+        var partyContactMechanismAlias = PartyContactMechanismAliasFactory.getInstance().create(
                 party, contactMechanism, contactMechanismAliasType, alias, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyContactMechanismAlias.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2877,7 +2877,7 @@ public class ContactControl
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            partyContactMechanismAliases = PartyContactMechanismAliasFactory.getInstance().getEntitiesFromQuery(session,
+            partyContactMechanismAliases = PartyContactMechanismAliasFactory.getInstance().getEntitiesFromQuery(
                     entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -2919,7 +2919,7 @@ public class ContactControl
             ps.setLong(1, contactMechanism.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            partyContactMechanismAliases = PartyContactMechanismAliasFactory.getInstance().getEntitiesFromQuery(session,
+            partyContactMechanismAliases = PartyContactMechanismAliasFactory.getInstance().getEntitiesFromQuery(
                     entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -2963,7 +2963,7 @@ public class ContactControl
             ps.setString(3, alias);
             ps.setLong(4, Session.MAX_TIME);
             
-            partyContactMechanismAlias = PartyContactMechanismAliasFactory.getInstance().getEntityFromQuery(session,
+            partyContactMechanismAlias = PartyContactMechanismAliasFactory.getInstance().getEntityFromQuery(
                     entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -3028,7 +3028,7 @@ public class ContactControl
         }
 
         var partyContactMechanismPurpose = PartyContactMechanismPurposeFactory.getInstance().create();
-        var partyContactMechanismPurposeDetail = PartyContactMechanismPurposeDetailFactory.getInstance().create(session,
+        var partyContactMechanismPurposeDetail = PartyContactMechanismPurposeDetailFactory.getInstance().create(
                 partyContactMechanismPurpose, partyContactMechanism, contactMechanismPurpose, isDefault, sortOrder,
                 session.getStartTime(), Session.MAX_TIME);
         
@@ -3140,7 +3140,7 @@ public class ContactControl
             ps.setLong(1, partyContactMechanism.getPrimaryKey().getEntityId());
             ps.setLong(2, contactMechanismPurpose.getPrimaryKey().getEntityId());
             
-            partyContactMechanismPurpose = PartyContactMechanismPurposeFactory.getInstance().getEntityFromQuery(session,
+            partyContactMechanismPurpose = PartyContactMechanismPurposeFactory.getInstance().getEntityFromQuery(
                     entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -3179,7 +3179,7 @@ public class ContactControl
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             ps.setLong(2, contactMechanismPurpose.getPrimaryKey().getEntityId());
             
-            partyContactMechanismPurposes = PartyContactMechanismPurposeFactory.getInstance().getEntitiesFromQuery(session,
+            partyContactMechanismPurposes = PartyContactMechanismPurposeFactory.getInstance().getEntitiesFromQuery(
                     entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -3227,7 +3227,7 @@ public class ContactControl
             
             ps.setLong(1, partyContactMechanism.getPrimaryKey().getEntityId());
             
-            partyContactMechanismAliases = PartyContactMechanismPurposeFactory.getInstance().getEntitiesFromQuery(session,
+            partyContactMechanismAliases = PartyContactMechanismPurposeFactory.getInstance().getEntitiesFromQuery(
                     entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -3292,7 +3292,7 @@ public class ContactControl
                 }
             }
             
-            partyContactMechanismPurposeDetail = PartyContactMechanismPurposeDetailFactory.getInstance().create(session,
+            partyContactMechanismPurposeDetail = PartyContactMechanismPurposeDetailFactory.getInstance().create(
                     partyContactMechanismPurposePK, partyContactMechanism.getPrimaryKey(), contactMechanismPurpose.getPrimaryKey(),
                     isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
@@ -3914,7 +3914,7 @@ public class ContactControl
     
     public PostalAddressFormatDescription createPostalAddressFormatDescription(PostalAddressFormat postalAddressFormat,
             Language language, String description, BasePK createdBy) {
-        var postalAddressFormatDescription = PostalAddressFormatDescriptionFactory.getInstance().create(session,
+        var postalAddressFormatDescription = PostalAddressFormatDescriptionFactory.getInstance().create(
                 postalAddressFormat, language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(postalAddressFormat.getPrimaryKey(), EventTypes.MODIFY, postalAddressFormatDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -4081,7 +4081,7 @@ public class ContactControl
             String prefix, Boolean alwaysIncludePrefix, String suffix, Boolean alwaysIncludeSuffix, Boolean collapseIfEmpty,
             BasePK createdBy) {
         var postalAddressLine = PostalAddressLineFactory.getInstance().create();
-        var postalAddressLineDetail = PostalAddressLineDetailFactory.getInstance().create(session,
+        var postalAddressLineDetail = PostalAddressLineDetailFactory.getInstance().create(
                 postalAddressLine, postalAddressFormat, postalAddressLineSortOrder, prefix, alwaysIncludePrefix, suffix,
                 alwaysIncludeSuffix, collapseIfEmpty, session.getStartTime(), Session.MAX_TIME);
         
@@ -4258,7 +4258,7 @@ public class ContactControl
             Integer postalAddressLineElementSortOrder, PostalAddressElementType postalAddressElementType, String prefix,
             Boolean alwaysIncludePrefix, String suffix, Boolean alwaysIncludeSuffix, BasePK createdBy) {
 
-        var postalAddressLineElement = PostalAddressLineElementFactory.getInstance().create(session,
+        var postalAddressLineElement = PostalAddressLineElementFactory.getInstance().create(
                 postalAddressLine, postalAddressLineElementSortOrder, postalAddressElementType, prefix, alwaysIncludePrefix, suffix,
                 alwaysIncludeSuffix, session.getStartTime(), Session.MAX_TIME);
         

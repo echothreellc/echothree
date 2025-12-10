@@ -418,7 +418,7 @@ public class ChainControl
     }
 
     private void updateChainKindFromValue(ChainKindDetailValue chainKindDetailValue, boolean checkDefault, BasePK updatedBy) {
-        var chainKind = ChainKindFactory.getInstance().getEntityFromPK(session,
+        var chainKind = ChainKindFactory.getInstance().getEntityFromPK(
                 EntityPermission.READ_WRITE, chainKindDetailValue.getChainKindPK());
         var chainKindDetail = chainKind.getActiveDetailForUpdate();
 
@@ -656,7 +656,7 @@ public class ChainControl
         }
 
         var chainType = ChainTypeFactory.getInstance().create();
-        var chainTypeDetail = ChainTypeDetailFactory.getInstance().create(session, chainType, chainKind, chainTypeName, isDefault, sortOrder,
+        var chainTypeDetail = ChainTypeDetailFactory.getInstance().create( chainType, chainKind, chainTypeName, isDefault, sortOrder,
                 session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
@@ -1107,7 +1107,7 @@ public class ChainControl
     public ChainEntityRoleType createChainEntityRoleType(ChainType chainType, String chainEntityRoleTypeName, EntityType entityType, Integer sortOrder,
             BasePK createdBy) {
         var chainEntityRoleType = ChainEntityRoleTypeFactory.getInstance().create();
-        var chainEntityRoleTypeDetail = ChainEntityRoleTypeDetailFactory.getInstance().create(session, chainEntityRoleType, chainType,
+        var chainEntityRoleTypeDetail = ChainEntityRoleTypeDetailFactory.getInstance().create( chainEntityRoleType, chainType,
                 chainEntityRoleTypeName, entityType, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
@@ -1421,7 +1421,7 @@ public class ChainControl
         }
 
         var chain = ChainFactory.getInstance().create();
-        var chainDetail = ChainDetailFactory.getInstance().create(session, chain, chainType, chainName, chainInstanceSequence, isDefault, sortOrder,
+        var chainDetail = ChainDetailFactory.getInstance().create( chain, chainType, chainName, chainInstanceSequence, isDefault, sortOrder,
                 session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
@@ -1889,7 +1889,7 @@ public class ChainControl
         }
 
         var chainActionSet = ChainActionSetFactory.getInstance().create();
-        var chainActionSetDetail = ChainActionSetDetailFactory.getInstance().create(session, chainActionSet, chain, chainActionSetName,
+        var chainActionSetDetail = ChainActionSetDetailFactory.getInstance().create( chainActionSet, chain, chainActionSetName,
                 isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
@@ -2478,7 +2478,7 @@ public class ChainControl
     }
 
     private void updateChainActionTypeFromValue(ChainActionTypeDetailValue chainActionTypeDetailValue, boolean checkDefault, BasePK updatedBy) {
-        var chainActionType = ChainActionTypeFactory.getInstance().getEntityFromPK(session,
+        var chainActionType = ChainActionTypeFactory.getInstance().getEntityFromPK(
                 EntityPermission.READ_WRITE, chainActionTypeDetailValue.getChainActionTypePK());
         var chainActionTypeDetail = chainActionType.getActiveDetailForUpdate();
 
@@ -3613,7 +3613,7 @@ public class ChainControl
     
     public ChainInstanceEntityRole createChainInstanceEntityRole(ChainInstance chainInstance, ChainEntityRoleType chainEntityRoleType,
             EntityInstance entityInstance, BasePK createdBy) {
-        var chainInstanceEntityRole = ChainInstanceEntityRoleFactory.getInstance().create(session, chainInstance, chainEntityRoleType,
+        var chainInstanceEntityRole = ChainInstanceEntityRoleFactory.getInstance().create( chainInstance, chainEntityRoleType,
                 entityInstance, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(chainInstance.getPrimaryKey(), EventTypes.MODIFY, chainInstanceEntityRole.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -3659,7 +3659,7 @@ public class ChainControl
             ps.setLong(2, chainEntityRoleType.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            chainInstanceEntityRole = ChainInstanceEntityRoleFactory.getInstance().getEntityFromQuery(session,
+            chainInstanceEntityRole = ChainInstanceEntityRoleFactory.getInstance().getEntityFromQuery(
                     EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -3692,7 +3692,7 @@ public class ChainControl
             ps.setLong(2, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            chainInstanceEntityRoles = ChainInstanceEntityRoleFactory.getInstance().getEntitiesFromQuery(session,
+            chainInstanceEntityRoles = ChainInstanceEntityRoleFactory.getInstance().getEntitiesFromQuery(
                     entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -3734,7 +3734,7 @@ public class ChainControl
             ps.setLong(1, chainInstance.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            chainInstanceEntityRoles = ChainInstanceEntityRoleFactory.getInstance().getEntitiesFromQuery(session,
+            chainInstanceEntityRoles = ChainInstanceEntityRoleFactory.getInstance().getEntitiesFromQuery(
                     entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -3774,7 +3774,7 @@ public class ChainControl
             ps.setLong(1, chainEntityRoleType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            chainInstanceEntityRoles = ChainInstanceEntityRoleFactory.getInstance().getEntitiesFromQuery(session, entityPermission, ps);
+            chainInstanceEntityRoles = ChainInstanceEntityRoleFactory.getInstance().getEntitiesFromQuery( entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3813,7 +3813,7 @@ public class ChainControl
             ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            chainInstanceEntityRoles = ChainInstanceEntityRoleFactory.getInstance().getEntitiesFromQuery(session,
+            chainInstanceEntityRoles = ChainInstanceEntityRoleFactory.getInstance().getEntitiesFromQuery(
                     entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);

@@ -556,7 +556,7 @@ public class ReturnPolicyControl
     }
 
     private void updateReturnKindFromValue(ReturnKindDetailValue returnKindDetailValue, boolean checkDefault, BasePK updatedBy) {
-        var returnKind = ReturnKindFactory.getInstance().getEntityFromPK(session,
+        var returnKind = ReturnKindFactory.getInstance().getEntityFromPK(
                 EntityPermission.READ_WRITE, returnKindDetailValue.getReturnKindPK());
         var returnKindDetail = returnKind.getActiveDetailForUpdate();
         
@@ -796,7 +796,7 @@ public class ReturnPolicyControl
         }
 
         var returnPolicy = ReturnPolicyFactory.getInstance().create();
-        var returnPolicyDetail = ReturnPolicyDetailFactory.getInstance().create(session,
+        var returnPolicyDetail = ReturnPolicyDetailFactory.getInstance().create(
                 returnPolicy, returnKind, returnPolicyName, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
         
@@ -1569,7 +1569,7 @@ public class ReturnPolicyControl
         }
 
         var returnReason = ReturnReasonFactory.getInstance().create();
-        var returnReasonDetail = ReturnReasonDetailFactory.getInstance().create(session,
+        var returnReasonDetail = ReturnReasonDetailFactory.getInstance().create(
                 returnReason, returnKind, returnReasonName, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
         
@@ -2336,7 +2336,7 @@ public class ReturnPolicyControl
         }
 
         var returnType = ReturnTypeFactory.getInstance().create();
-        var returnTypeDetail = ReturnTypeDetailFactory.getInstance().create(session,
+        var returnTypeDetail = ReturnTypeDetailFactory.getInstance().create(
                 returnType, returnKind, returnTypeName, returnSequence, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
         

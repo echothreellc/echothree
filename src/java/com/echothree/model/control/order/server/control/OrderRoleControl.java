@@ -103,7 +103,7 @@ public class OrderRoleControl
             ps.setLong(1, orderRoleType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             
-            orderRoleTypeDescription = OrderRoleTypeDescriptionFactory.getInstance().getEntityFromQuery(session,
+            orderRoleTypeDescription = OrderRoleTypeDescriptionFactory.getInstance().getEntityFromQuery(
                     EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);

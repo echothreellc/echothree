@@ -412,7 +412,7 @@ public class IconControl
     }
     
     private void updateIconUsageTypeFromValue(IconUsageTypeDetailValue iconUsageTypeDetailValue, boolean checkDefault, BasePK updatedBy) {
-        var iconUsageType = IconUsageTypeFactory.getInstance().getEntityFromPK(session,
+        var iconUsageType = IconUsageTypeFactory.getInstance().getEntityFromPK(
                 EntityPermission.READ_WRITE, iconUsageTypeDetailValue.getIconUsageTypePK());
         var iconUsageTypeDetail = iconUsageType.getActiveDetailForUpdate();
         

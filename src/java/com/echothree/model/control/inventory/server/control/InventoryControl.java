@@ -134,7 +134,7 @@ public class InventoryControl
         }
 
         var inventoryLocationGroup = InventoryLocationGroupFactory.getInstance().create();
-        var inventoryLocationGroupDetail = InventoryLocationGroupDetailFactory.getInstance().create(session,
+        var inventoryLocationGroupDetail = InventoryLocationGroupDetailFactory.getInstance().create(
                 inventoryLocationGroup, warehouseParty, inventoryLocationGroupName, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
         
@@ -906,7 +906,7 @@ public class InventoryControl
         }
 
         var inventoryCondition = InventoryConditionFactory.getInstance().create();
-        var inventoryConditionDetail = InventoryConditionDetailFactory.getInstance().create(session,
+        var inventoryConditionDetail = InventoryConditionDetailFactory.getInstance().create(
                 inventoryCondition, inventoryConditionName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
@@ -1729,7 +1729,7 @@ public class InventoryControl
     
     private void updateInventoryConditionUseFromValue(InventoryConditionUseValue inventoryConditionUseValue, boolean checkDefault,
             BasePK updatedBy) {
-        var inventoryConditionUse = InventoryConditionUseFactory.getInstance().getEntityFromPK(session,
+        var inventoryConditionUse = InventoryConditionUseFactory.getInstance().getEntityFromPK(
                 EntityPermission.READ_WRITE, inventoryConditionUseValue.getPrimaryKey());
         
         inventoryConditionUse.setThruTime(session.getStartTime());
@@ -1809,7 +1809,7 @@ public class InventoryControl
     public InventoryConditionGlAccount createInventoryConditionGlAccount(InventoryCondition inventoryCondition,
             ItemAccountingCategory itemAccountingCategory, GlAccount inventoryGlAccount, GlAccount salesGlAccount,
             GlAccount returnsGlAccount, GlAccount cogsGlAccount, GlAccount returnsCogsGlAccount, BasePK createdBy) {
-        var inventoryConditionGlAccount = InventoryConditionGlAccountFactory.getInstance().create(session,
+        var inventoryConditionGlAccount = InventoryConditionGlAccountFactory.getInstance().create(
                 inventoryCondition, itemAccountingCategory, inventoryGlAccount, salesGlAccount, returnsGlAccount, cogsGlAccount,
                 returnsCogsGlAccount, session.getStartTime(), Session.MAX_TIME);
         
@@ -2057,7 +2057,7 @@ public class InventoryControl
             ps.setLong(3, inventoryCondition.getPrimaryKey().getEntityId());
             ps.setLong(4, Session.MAX_TIME);
             
-            partyInventoryLevel = PartyInventoryLevelFactory.getInstance().getEntityFromQuery(session,
+            partyInventoryLevel = PartyInventoryLevelFactory.getInstance().getEntityFromQuery(
                     entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);

@@ -446,7 +446,7 @@ public class RatingControl
         }
 
         var ratingTypeListItem = RatingTypeListItemFactory.getInstance().create();
-        var ratingTypeListItemDetail = RatingTypeListItemDetailFactory.getInstance().create(session,
+        var ratingTypeListItemDetail = RatingTypeListItemDetailFactory.getInstance().create(
                 ratingTypeListItem, ratingType, ratingTypeListItemName, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
         
@@ -740,7 +740,7 @@ public class RatingControl
     
     public RatingTypeListItemDescription createRatingTypeListItemDescription(RatingTypeListItem ratingTypeListItem, Language language,
             String description, BasePK createdBy) {
-        var ratingTypeListItemDescription = RatingTypeListItemDescriptionFactory.getInstance().create(session,
+        var ratingTypeListItemDescription = RatingTypeListItemDescriptionFactory.getInstance().create(
                 ratingTypeListItem, language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(ratingTypeListItem.getPrimaryKey(), EventTypes.MODIFY, ratingTypeListItemDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);

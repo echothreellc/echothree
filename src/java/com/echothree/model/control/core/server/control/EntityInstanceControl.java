@@ -367,7 +367,7 @@ public class EntityInstanceControl
 
                         if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                             // Convert to R/W
-                            entityInstance = EntityInstanceFactory.getInstance().getEntityFromPK(session,
+                            entityInstance = EntityInstanceFactory.getInstance().getEntityFromPK(
                                     EntityPermission.READ_WRITE, entityInstance.getPrimaryKey());
                         }
                     }

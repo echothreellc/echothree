@@ -66,7 +66,7 @@ public class ShippingControl
     public ShippingMethod createShippingMethod(String shippingMethodName, Selector geoCodeSelector, Selector itemSelector, Integer sortOrder,
             BasePK createdBy) {
         var shippingMethod = ShippingMethodFactory.getInstance().create();
-        var shippingMethodDetail = ShippingMethodDetailFactory.getInstance().create(session,
+        var shippingMethodDetail = ShippingMethodDetailFactory.getInstance().create(
                 shippingMethod, shippingMethodName, geoCodeSelector, itemSelector, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
         
@@ -488,7 +488,7 @@ public class ShippingControl
     
     public ShippingMethodCarrierService createShippingMethodCarrierService(ShippingMethod shippingMethod, CarrierService carrierService,
             BasePK createdBy) {
-        var shippingMethodCarrierService = ShippingMethodCarrierServiceFactory.getInstance().create(session,
+        var shippingMethodCarrierService = ShippingMethodCarrierServiceFactory.getInstance().create(
                 shippingMethod, carrierService, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(shippingMethod.getPrimaryKey(), EventTypes.MODIFY, shippingMethodCarrierService.getPrimaryKey(),

@@ -2143,7 +2143,7 @@ public class InvoiceControl
     
     public InvoiceLineTypeDescription createInvoiceLineTypeDescription(InvoiceLineType invoiceLineType, Language language,
             String description, BasePK createdBy) {
-        var invoiceLineTypeDescription = InvoiceLineTypeDescriptionFactory.getInstance().create(session,
+        var invoiceLineTypeDescription = InvoiceLineTypeDescriptionFactory.getInstance().create(
                 invoiceLineType, language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(invoiceLineType.getPrimaryKey(), EventTypes.MODIFY, invoiceLineTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);

@@ -69,7 +69,7 @@ public class PaymentMethodTypeControl
         }
 
         var paymentMethodType = PaymentMethodTypeFactory.getInstance().create();
-        var paymentMethodTypeDetail = PaymentMethodTypeDetailFactory.getInstance().create(session,
+        var paymentMethodTypeDetail = PaymentMethodTypeDetailFactory.getInstance().create(
                 paymentMethodType, paymentMethodTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W

@@ -56,7 +56,7 @@ public class OfferNameElementControl
     public OfferNameElement createOfferNameElement(String offerNameElementName, Integer offset, Integer length,
             String validationPattern, BasePK createdBy) {
         var offerNameElement = OfferNameElementFactory.getInstance().create();
-        var offerNameElementDetail = OfferNameElementDetailFactory.getInstance().create(session,
+        var offerNameElementDetail = OfferNameElementDetailFactory.getInstance().create(
                 offerNameElement, offerNameElementName, offset, length, validationPattern, session.getStartTime(),
                 Session.MAX_TIME);
         
@@ -229,7 +229,7 @@ public class OfferNameElementControl
     
     public OfferNameElementDescription createOfferNameElementDescription(OfferNameElement offerNameElement, Language language,
             String description, BasePK createdBy) {
-        var offerNameElementDescription = OfferNameElementDescriptionFactory.getInstance().create(session,
+        var offerNameElementDescription = OfferNameElementDescriptionFactory.getInstance().create(
                 offerNameElement, language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(offerNameElement.getPrimaryKey(), EventTypes.MODIFY,

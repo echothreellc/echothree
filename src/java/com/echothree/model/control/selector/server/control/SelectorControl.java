@@ -423,7 +423,7 @@ public class SelectorControl
     }
 
     private void updateSelectorKindFromValue(SelectorKindDetailValue selectorKindDetailValue, boolean checkDefault, BasePK updatedBy) {
-        var selectorKind = SelectorKindFactory.getInstance().getEntityFromPK(session,
+        var selectorKind = SelectorKindFactory.getInstance().getEntityFromPK(
                 EntityPermission.READ_WRITE, selectorKindDetailValue.getSelectorKindPK());
         var selectorKindDetail = selectorKind.getActiveDetailForUpdate();
 
@@ -660,7 +660,7 @@ public class SelectorControl
         }
 
         var selectorType = SelectorTypeFactory.getInstance().create();
-        var selectorTypeDetail = SelectorTypeDetailFactory.getInstance().create(session, selectorType, selectorKind, selectorTypeName, isDefault, sortOrder,
+        var selectorTypeDetail = SelectorTypeDetailFactory.getInstance().create( selectorType, selectorKind, selectorTypeName, isDefault, sortOrder,
                 session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
@@ -1173,7 +1173,7 @@ public class SelectorControl
     
     public SelectorBooleanTypeDescription createSelectorBooleanTypeDescription(SelectorBooleanType selectorBooleanType,
             Language language, String description) {
-        var selectorBooleanTypeDescription = SelectorBooleanTypeDescriptionFactory.getInstance().create(session,
+        var selectorBooleanTypeDescription = SelectorBooleanTypeDescriptionFactory.getInstance().create(
                 selectorBooleanType, language, description);
         
         return selectorBooleanTypeDescription;
@@ -1222,7 +1222,7 @@ public class SelectorControl
     
     public SelectorComparisonType createSelectorComparisonType(String selectorComparisonTypeName, Boolean isDefault,
             Integer sortOrder) {
-        var selectorComparisonType = SelectorComparisonTypeFactory.getInstance().create(session,
+        var selectorComparisonType = SelectorComparisonTypeFactory.getInstance().create(
                 selectorComparisonTypeName, isDefault, sortOrder);
         
         return selectorComparisonType;
@@ -1512,7 +1512,7 @@ public class SelectorControl
     
     public SelectorTextSearchType createSelectorTextSearchType(String selectorTextSearchTypeName, Boolean isDefault,
             Integer sortOrder) {
-        var selectorTextSearchType = SelectorTextSearchTypeFactory.getInstance().create(session,
+        var selectorTextSearchType = SelectorTextSearchTypeFactory.getInstance().create(
                 selectorTextSearchTypeName, isDefault, sortOrder);
         
         return selectorTextSearchType;
@@ -1908,7 +1908,7 @@ public class SelectorControl
     }
     
     private void updateSelectorFromValue(SelectorDetailValue selectorDetailValue, boolean checkDefault, BasePK updatedBy) {
-        var selector = SelectorFactory.getInstance().getEntityFromPK(session,
+        var selector = SelectorFactory.getInstance().getEntityFromPK(
                 EntityPermission.READ_WRITE, selectorDetailValue.getSelectorPK());
         var selectorDetail = selector.getActiveDetailForUpdate();
         
@@ -2833,7 +2833,7 @@ public class SelectorControl
     
     public SelectorNodeWorkflowStep createSelectorNodeWorkflowStep(SelectorNode selectorNode, WorkflowStep workflowStep,
             BasePK createdBy) {
-        var selectorNodeWorkflowStep = SelectorNodeWorkflowStepFactory.getInstance().create(session,
+        var selectorNodeWorkflowStep = SelectorNodeWorkflowStepFactory.getInstance().create(
                 selectorNode, workflowStep, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
@@ -2962,7 +2962,7 @@ public class SelectorControl
     
     public SelectorNodeEntityListItem createSelectorNodeEntityListItem(SelectorNode selectorNode, EntityListItem entityListItem,
             BasePK createdBy) {
-        var selectorNodeEntityListItem = SelectorNodeEntityListItemFactory.getInstance().create(session,
+        var selectorNodeEntityListItem = SelectorNodeEntityListItemFactory.getInstance().create(
                 selectorNode, entityListItem, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
@@ -3091,7 +3091,7 @@ public class SelectorControl
     
     public SelectorNodeResponsibilityType createSelectorNodeResponsibilityType(SelectorNode selectorNode, ResponsibilityType responsibilityType,
             BasePK createdBy) {
-        var selectorNodeResponsibilityType = SelectorNodeResponsibilityTypeFactory.getInstance().create(session,
+        var selectorNodeResponsibilityType = SelectorNodeResponsibilityTypeFactory.getInstance().create(
                 selectorNode, responsibilityType, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
@@ -3220,7 +3220,7 @@ public class SelectorControl
     
     public SelectorNodeTrainingClass createSelectorNodeTrainingClass(SelectorNode selectorNode, TrainingClass trainingClass,
             BasePK createdBy) {
-        var selectorNodeTrainingClass = SelectorNodeTrainingClassFactory.getInstance().create(session,
+        var selectorNodeTrainingClass = SelectorNodeTrainingClassFactory.getInstance().create(
                 selectorNode, trainingClass, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
@@ -3349,7 +3349,7 @@ public class SelectorControl
     
     public SelectorNodeSkillType createSelectorNodeSkillType(SelectorNode selectorNode, SkillType skillType,
             BasePK createdBy) {
-        var selectorNodeSkillType = SelectorNodeSkillTypeFactory.getInstance().create(session,
+        var selectorNodeSkillType = SelectorNodeSkillTypeFactory.getInstance().create(
                 selectorNode, skillType, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
@@ -3478,7 +3478,7 @@ public class SelectorControl
     
     public SelectorNodeItemCategory createSelectorNodeItemCategory(SelectorNode selectorNode, ItemCategory itemCategory,
             Boolean checkParents, BasePK createdBy) {
-        var selectorNodeItemCategory = SelectorNodeItemCategoryFactory.getInstance().create(session,
+        var selectorNodeItemCategory = SelectorNodeItemCategoryFactory.getInstance().create(
                 selectorNode, itemCategory, checkParents, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
@@ -3608,7 +3608,7 @@ public class SelectorControl
     
     public SelectorNodeItemAccountingCategory createSelectorNodeItemAccountingCategory(SelectorNode selectorNode,
             ItemAccountingCategory itemAccountingCategory, Boolean checkParents, BasePK createdBy) {
-        var selectorNodeItemAccountingCategory = SelectorNodeItemAccountingCategoryFactory.getInstance().create(session,
+        var selectorNodeItemAccountingCategory = SelectorNodeItemAccountingCategoryFactory.getInstance().create(
                 selectorNode, itemAccountingCategory, checkParents, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
@@ -3740,7 +3740,7 @@ public class SelectorControl
     
     public SelectorNodeItemPurchasingCategory createSelectorNodeItemPurchasingCategory(SelectorNode selectorNode,
             ItemPurchasingCategory itemPurchasingCategory, Boolean checkParents, BasePK createdBy) {
-        var selectorNodeItemPurchasingCategory = SelectorNodeItemPurchasingCategoryFactory.getInstance().create(session,
+        var selectorNodeItemPurchasingCategory = SelectorNodeItemPurchasingCategoryFactory.getInstance().create(
                 selectorNode, itemPurchasingCategory, checkParents, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
@@ -3872,7 +3872,7 @@ public class SelectorControl
     
     public SelectorNodeGeoCode createSelectorNodeGeoCode(SelectorNode selectorNode, GeoCode geoCode,
             BasePK createdBy) {
-        var selectorNodeGeoCode = SelectorNodeGeoCodeFactory.getInstance().create(session,
+        var selectorNodeGeoCode = SelectorNodeGeoCodeFactory.getInstance().create(
                 selectorNode, geoCode, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
@@ -4009,7 +4009,7 @@ public class SelectorControl
     
     public SelectorNodePaymentMethod createSelectorNodePaymentMethod(SelectorNode selectorNode, PaymentMethod paymentMethod,
             BasePK createdBy) {
-        var selectorNodePaymentMethod = SelectorNodePaymentMethodFactory.getInstance().create(session,
+        var selectorNodePaymentMethod = SelectorNodePaymentMethodFactory.getInstance().create(
                 selectorNode, paymentMethod, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
@@ -4138,7 +4138,7 @@ public class SelectorControl
     
     public SelectorNodePaymentProcessor createSelectorNodePaymentProcessor(SelectorNode selectorNode, PaymentProcessor paymentProcessor,
             BasePK createdBy) {
-        var selectorNodePaymentProcessor = SelectorNodePaymentProcessorFactory.getInstance().create(session,
+        var selectorNodePaymentProcessor = SelectorNodePaymentProcessorFactory.getInstance().create(
                 selectorNode, paymentProcessor, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,

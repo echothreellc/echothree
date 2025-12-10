@@ -398,7 +398,7 @@ public class EntityAliasControl
 
     public EntityAliasTypeDescription createEntityAliasTypeDescription(EntityAliasType entityAliasType, Language language,
             String description, BasePK createdBy) {
-        var entityAliasTypeDescription = EntityAliasTypeDescriptionFactory.getInstance().create(session,
+        var entityAliasTypeDescription = EntityAliasTypeDescriptionFactory.getInstance().create(
                 entityAliasType, language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(entityAliasType.getPrimaryKey(), EventTypes.MODIFY, entityAliasTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -759,7 +759,7 @@ public class EntityAliasControl
 
     public void updateEntityAliasFromValue(EntityAliasValue entityAliasValue, BasePK updatedBy) {
         if(entityAliasValue.hasBeenModified()) {
-            var entityAlias = EntityAliasFactory.getInstance().getEntityFromValue(session, EntityPermission.READ_WRITE, entityAliasValue);
+            var entityAlias = EntityAliasFactory.getInstance().getEntityFromValue(EntityPermission.READ_WRITE, entityAliasValue);
             var entityAliasType = entityAlias.getEntityAliasType();
             var entityInstance = entityAlias.getEntityInstance();
 

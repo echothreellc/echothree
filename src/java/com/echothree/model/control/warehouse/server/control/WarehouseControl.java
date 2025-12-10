@@ -325,7 +325,7 @@ public class WarehouseControl
     }
 
     private void updateWarehouseTypeFromValue(WarehouseTypeDetailValue warehouseTypeDetailValue, boolean checkDefault, BasePK updatedBy) {
-        var warehouseType = WarehouseTypeFactory.getInstance().getEntityFromPK(session,
+        var warehouseType = WarehouseTypeFactory.getInstance().getEntityFromPK(
                 EntityPermission.READ_WRITE, warehouseTypeDetailValue.getWarehouseTypePK());
         var warehouseTypeDetail = warehouseType.getActiveDetailForUpdate();
 
@@ -1359,7 +1359,7 @@ public class WarehouseControl
     public LocationNameElement createLocationNameElement(LocationType locationType, String locationNameElementName, Integer offset,
             Integer length, String validationPattern, BasePK createdBy) {
         var locationNameElement = LocationNameElementFactory.getInstance().create();
-        var locationNameElementDetail = LocationNameElementDetailFactory.getInstance().create(session,
+        var locationNameElementDetail = LocationNameElementDetailFactory.getInstance().create(
                 locationNameElement, locationType, locationNameElementName, offset, length, validationPattern, session.getStartTime(),
                 Session.MAX_TIME);
         
@@ -1543,7 +1543,7 @@ public class WarehouseControl
     
     public LocationNameElementDescription createLocationNameElementDescription(LocationNameElement locationNameElement, Language language,
             String description, BasePK createdBy) {
-        var locationNameElementDescription = LocationNameElementDescriptionFactory.getInstance().create(session,
+        var locationNameElementDescription = LocationNameElementDescriptionFactory.getInstance().create(
                 locationNameElement, language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(locationNameElement.getPrimaryKey(), EventTypes.MODIFY, locationNameElementDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);

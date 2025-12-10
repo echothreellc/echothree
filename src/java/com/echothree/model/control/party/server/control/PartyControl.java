@@ -694,7 +694,7 @@ public class PartyControl
             ps.setLong(1, partyTypeUseType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             
-            partyTypeUseTypeDescription = PartyTypeUseTypeDescriptionFactory.getInstance().getEntityFromQuery(session,
+            partyTypeUseTypeDescription = PartyTypeUseTypeDescriptionFactory.getInstance().getEntityFromQuery(
                     EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -908,7 +908,7 @@ public class PartyControl
     }
     
     public boolean validPersonalTitlePK(PersonalTitlePK personalTitlePK) {
-        return PersonalTitleFactory.getInstance().validPK(session, personalTitlePK);
+        return PersonalTitleFactory.getInstance().validPK(personalTitlePK);
     }
     
     public PersonalTitlePK convertPersonalTitleIdToPK(String personalTitleId) {
@@ -919,7 +919,7 @@ public class PartyControl
     
     public PersonalTitle convertPersonalTitleIdToEntity(String personalTitleId, EntityPermission entityPermission) {
         var personalTitlePK = convertPersonalTitleIdToPK(personalTitleId);
-        var personalTitle = personalTitlePK == null? null: PersonalTitleFactory.getInstance().getEntityFromPK(session,
+        var personalTitle = personalTitlePK == null? null: PersonalTitleFactory.getInstance().getEntityFromPK(
                 entityPermission, personalTitlePK);
         
         return personalTitle;
@@ -1179,7 +1179,7 @@ public class PartyControl
     }
     
     public boolean validNameSuffixPK(NameSuffixPK nameSuffixPK) {
-        return NameSuffixFactory.getInstance().validPK(session, nameSuffixPK);
+        return NameSuffixFactory.getInstance().validPK(nameSuffixPK);
     }
     
     public NameSuffixPK convertNameSuffixIdToPK(String nameSuffixId) {
@@ -1190,7 +1190,7 @@ public class PartyControl
     
     public NameSuffix convertNameSuffixIdToEntity(String nameSuffixId, EntityPermission entityPermission) {
         var nameSuffixPK = convertNameSuffixIdToPK(nameSuffixId);
-        var nameSuffix = nameSuffixPK == null? null: NameSuffixFactory.getInstance().getEntityFromPK(session,
+        var nameSuffix = nameSuffixPK == null? null: NameSuffixFactory.getInstance().getEntityFromPK(
                 entityPermission, nameSuffixPK);
         
         return nameSuffix;
@@ -1777,7 +1777,7 @@ public class PartyControl
     
     public DateTimeFormatDescription createDateTimeFormatDescription(DateTimeFormat dateTimeFormat, Language language,
             String description, BasePK createdBy) {
-        var dateTimeFormatDescription = DateTimeFormatDescriptionFactory.getInstance().create(session,
+        var dateTimeFormatDescription = DateTimeFormatDescriptionFactory.getInstance().create(
                 dateTimeFormat, language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(dateTimeFormat.getPrimaryKey(), EventTypes.MODIFY, dateTimeFormatDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2704,7 +2704,7 @@ public class PartyControl
             ps.setLong(1, partyRelationshipType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             
-            partyRelationshipTypeDescription = PartyRelationshipTypeDescriptionFactory.getInstance().getEntityFromQuery(session,
+            partyRelationshipTypeDescription = PartyRelationshipTypeDescriptionFactory.getInstance().getEntityFromQuery(
                     EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -4920,7 +4920,7 @@ public class PartyControl
     public PartyTypeLockoutPolicy createPartyTypeLockoutPolicy(PartyType partyType, Integer lockoutFailureCount,
             Long resetFailureCountTime, Boolean manualLockoutReset, Long lockoutInactiveTime, BasePK createdBy) {
         var partyTypeLockoutPolicy = PartyTypeLockoutPolicyFactory.getInstance().create();
-        var partyTypeLockoutPolicyDetail = PartyTypeLockoutPolicyDetailFactory.getInstance().create(session,
+        var partyTypeLockoutPolicyDetail = PartyTypeLockoutPolicyDetailFactory.getInstance().create(
                 partyTypeLockoutPolicy, partyType, lockoutFailureCount, resetFailureCountTime, manualLockoutReset,
                 lockoutInactiveTime, session.getStartTime(), Session.MAX_TIME);
         
@@ -5005,7 +5005,7 @@ public class PartyControl
             var manualLockoutReset = partyTypeLockoutPolicyDetailValue.getManualLockoutReset();
             var lockoutInactiveTime = partyTypeLockoutPolicyDetailValue.getLockoutInactiveTime();
             
-            partyTypeLockoutPolicyDetail = PartyTypeLockoutPolicyDetailFactory.getInstance().create(session,
+            partyTypeLockoutPolicyDetail = PartyTypeLockoutPolicyDetailFactory.getInstance().create(
                     partyTypeLockoutPolicyPK, partyTypePK, lockoutFailureCount, resetFailureCountTime, manualLockoutReset,
                     lockoutInactiveTime, session.getStartTime(), Session.MAX_TIME);
             
@@ -5035,14 +5035,14 @@ public class PartyControl
             Integer requiredDigitCount, Integer requiredLetterCount, Integer requiredUpperCaseCount, Integer requiredLowerCaseCount,
             Integer maximumRepeated, Integer minimumCharacterTypes, BasePK createdBy) {
         var partyTypePasswordStringPolicy = PartyTypePasswordStringPolicyFactory.getInstance().create();
-        var partyTypePasswordStringPolicyDetail = PartyTypePasswordStringPolicyDetailFactory.getInstance().create(session,
+        var partyTypePasswordStringPolicyDetail = PartyTypePasswordStringPolicyDetailFactory.getInstance().create(
                 partyTypePasswordStringPolicy, partyType, forceChangeAfterCreate, forceChangeAfterReset, allowChange, passwordHistory,
                 minimumPasswordLifetime, maximumPasswordLifetime, expirationWarningTime, expiredLoginsPermitted, minimumLength,
                 maximumLength, requiredDigitCount, requiredLetterCount, requiredUpperCaseCount, requiredLowerCaseCount,
                 maximumRepeated, minimumCharacterTypes, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
-        partyTypePasswordStringPolicy = PartyTypePasswordStringPolicyFactory.getInstance().getEntityFromPK(session,
+        partyTypePasswordStringPolicy = PartyTypePasswordStringPolicyFactory.getInstance().getEntityFromPK(
                 EntityPermission.READ_WRITE, partyTypePasswordStringPolicy.getPrimaryKey());
         partyTypePasswordStringPolicy.setActiveDetail(partyTypePasswordStringPolicyDetail);
         partyTypePasswordStringPolicy.setLastDetail(partyTypePasswordStringPolicyDetail);
@@ -5134,7 +5134,7 @@ public class PartyControl
             var maximumRepeated = partyTypePasswordStringPolicyDetailValue.getMaximumRepeated();
             var minimumCharacterTypes = partyTypePasswordStringPolicyDetailValue.getMinimumCharacterTypes();
             
-            partyTypePasswordStringPolicyDetail = PartyTypePasswordStringPolicyDetailFactory.getInstance().create(session,
+            partyTypePasswordStringPolicyDetail = PartyTypePasswordStringPolicyDetailFactory.getInstance().create(
                     partyTypePasswordStringPolicyPK, partyTypePK, forceChangeAfterCreate, forceChangeAfterReset, allowChange, passwordHistory,
                     minimumPasswordLifetime, maximumPasswordLifetime, expirationWarningTime, expiredLoginsPermitted, minimumLength,
                     maximumLength, requiredDigitCount, requiredLetterCount, requiredUpperCaseCount, requiredLowerCaseCount,
@@ -5343,7 +5343,7 @@ public class PartyControl
     }
     
     private void updateGenderFromValue(GenderDetailValue genderDetailValue, boolean checkDefault, BasePK updatedBy) {
-        var gender = GenderFactory.getInstance().getEntityFromPK(session,
+        var gender = GenderFactory.getInstance().getEntityFromPK(
                 EntityPermission.READ_WRITE, genderDetailValue.getGenderPK());
         var genderDetail = gender.getActiveDetailForUpdate();
         
@@ -5765,7 +5765,7 @@ public class PartyControl
     }
     
     private void updateMoodFromValue(MoodDetailValue moodDetailValue, boolean checkDefault, BasePK updatedBy) {
-        var mood = MoodFactory.getInstance().getEntityFromPK(session,
+        var mood = MoodFactory.getInstance().getEntityFromPK(
                 EntityPermission.READ_WRITE, moodDetailValue.getMoodPK());
         var moodDetail = mood.getActiveDetailForUpdate();
         

@@ -69,7 +69,7 @@ public class PaymentProcessorTypeControl
         }
 
         var paymentProcessorType = PaymentProcessorTypeFactory.getInstance().create();
-        var paymentProcessorTypeDetail = PaymentProcessorTypeDetailFactory.getInstance().create(session,
+        var paymentProcessorTypeDetail = PaymentProcessorTypeDetailFactory.getInstance().create(
                 paymentProcessorType, paymentProcessorTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W

@@ -67,7 +67,7 @@ public class PaymentProcessorTypeActionControl
         }
 
         var paymentProcessorTypeAction = PaymentProcessorTypeActionFactory.getInstance().create();
-        var paymentProcessorTypeActionDetail = PaymentProcessorTypeActionDetailFactory.getInstance().create(session,
+        var paymentProcessorTypeActionDetail = PaymentProcessorTypeActionDetailFactory.getInstance().create(
                 paymentProcessorTypeAction, paymentProcessorType, paymentProcessorActionType, isDefault, sortOrder,
                 session.getStartTime(), Session.MAX_TIME);
 

@@ -294,7 +294,7 @@ public class SubscriptionControl
     }
 
     private void updateSubscriptionKindFromValue(SubscriptionKindDetailValue subscriptionKindDetailValue, boolean checkDefault, BasePK updatedBy) {
-        var subscriptionKind = SubscriptionKindFactory.getInstance().getEntityFromPK(session,
+        var subscriptionKind = SubscriptionKindFactory.getInstance().getEntityFromPK(
                 EntityPermission.READ_WRITE, subscriptionKindDetailValue.getSubscriptionKindPK());
         var subscriptionKindDetail = subscriptionKind.getActiveDetailForUpdate();
 
@@ -532,7 +532,7 @@ public class SubscriptionControl
         }
 
         var subscriptionType = SubscriptionTypeFactory.getInstance().create();
-        var subscriptionTypeDetail = SubscriptionTypeDetailFactory.getInstance().create(session,
+        var subscriptionTypeDetail = SubscriptionTypeDetailFactory.getInstance().create(
                 subscriptionType, subscriptionKind, subscriptionTypeName, subscriptionSequence, isDefault, sortOrder,
                 session.getStartTime(), Session.MAX_TIME);
         
@@ -819,7 +819,7 @@ public class SubscriptionControl
     
     public SubscriptionTypeDescription createSubscriptionTypeDescription(SubscriptionType subscriptionType, Language language,
             String description, BasePK createdBy) {
-        var subscriptionTypeDescription = SubscriptionTypeDescriptionFactory.getInstance().create(session,
+        var subscriptionTypeDescription = SubscriptionTypeDescriptionFactory.getInstance().create(
                 subscriptionType, language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(subscriptionType.getPrimaryKey(), EventTypes.MODIFY,
@@ -854,7 +854,7 @@ public class SubscriptionControl
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            subscriptionTypeDescription = SubscriptionTypeDescriptionFactory.getInstance().getEntityFromQuery(session,
+            subscriptionTypeDescription = SubscriptionTypeDescriptionFactory.getInstance().getEntityFromQuery(
                     entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -906,7 +906,7 @@ public class SubscriptionControl
             ps.setLong(1, subscriptionType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            subscriptionTypeDescriptions = SubscriptionTypeDescriptionFactory.getInstance().getEntitiesFromQuery(session,
+            subscriptionTypeDescriptions = SubscriptionTypeDescriptionFactory.getInstance().getEntitiesFromQuery(
                     entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);

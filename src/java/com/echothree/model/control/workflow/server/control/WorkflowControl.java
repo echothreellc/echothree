@@ -1866,7 +1866,7 @@ public class WorkflowControl
     
     public WorkflowEntranceDescription createWorkflowEntranceDescription(WorkflowEntrance workflowEntrance, Language language,
             String description, BasePK createdBy) {
-        var workflowEntranceDescription = WorkflowEntranceDescriptionFactory.getInstance().create(session,
+        var workflowEntranceDescription = WorkflowEntranceDescriptionFactory.getInstance().create(
                 workflowEntrance, language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(workflowEntrance.getLastDetail().getWorkflowPK(), EventTypes.MODIFY, workflowEntranceDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2273,7 +2273,7 @@ public class WorkflowControl
     
     public WorkflowEntrancePartyType createWorkflowEntrancePartyType(WorkflowEntrance workflowEntrance, PartyType partyType,
             BasePK createdBy) {
-        var workflowEntrancePartyType = WorkflowEntrancePartyTypeFactory.getInstance().create(session,
+        var workflowEntrancePartyType = WorkflowEntrancePartyTypeFactory.getInstance().create(
                 workflowEntrance, partyType, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(workflowEntrance.getLastDetail().getWorkflowPK(), EventTypes.MODIFY, workflowEntrancePartyType.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2422,7 +2422,7 @@ public class WorkflowControl
     
     public WorkflowEntranceSecurityRole createWorkflowEntranceSecurityRole(WorkflowEntrancePartyType workflowEntrancePartyType, SecurityRole securityRole,
             BasePK createdBy) {
-        var workflowEntranceSecurityRole = WorkflowEntranceSecurityRoleFactory.getInstance().create(session,
+        var workflowEntranceSecurityRole = WorkflowEntranceSecurityRoleFactory.getInstance().create(
                 workflowEntrancePartyType, securityRole, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(workflowEntrancePartyType.getWorkflowEntrance().getLastDetail().getWorkflowPK(), EventTypes.MODIFY, workflowEntranceSecurityRole.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -3233,7 +3233,7 @@ public class WorkflowControl
     
     public WorkflowDestinationSelector createWorkflowDestinationSelector(WorkflowDestination workflowDestination, Selector selector,
             BasePK createdBy) {
-        var workflowDestinationSelector = WorkflowDestinationSelectorFactory.getInstance().create(session,
+        var workflowDestinationSelector = WorkflowDestinationSelectorFactory.getInstance().create(
                 workflowDestination, selector, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(workflowDestination.getLastDetail().getWorkflowStep().getLastDetail().getWorkflowPK(), EventTypes.MODIFY, workflowDestinationSelector.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -3432,7 +3432,7 @@ public class WorkflowControl
     
     public WorkflowDestinationPartyType createWorkflowDestinationPartyType(WorkflowDestination workflowDestination, PartyType partyType,
             BasePK createdBy) {
-        var workflowDestinationPartyType = WorkflowDestinationPartyTypeFactory.getInstance().create(session,
+        var workflowDestinationPartyType = WorkflowDestinationPartyTypeFactory.getInstance().create(
                 workflowDestination, partyType, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(workflowDestination.getLastDetail().getWorkflowStep().getLastDetail().getWorkflowPK(), EventTypes.MODIFY, workflowDestinationPartyType.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -3589,7 +3589,7 @@ public class WorkflowControl
     
     public WorkflowDestinationSecurityRole createWorkflowDestinationSecurityRole(WorkflowDestinationPartyType workflowDestinationPartyType, SecurityRole securityRole,
             BasePK createdBy) {
-        var workflowDestinationSecurityRole = WorkflowDestinationSecurityRoleFactory.getInstance().create(session,
+        var workflowDestinationSecurityRole = WorkflowDestinationSecurityRoleFactory.getInstance().create(
                 workflowDestinationPartyType, securityRole, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(workflowDestinationPartyType.getWorkflowDestination().getLastDetail().getWorkflowStep().getLastDetail().getWorkflowPK(), EventTypes.MODIFY, workflowDestinationSecurityRole.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -3737,7 +3737,7 @@ public class WorkflowControl
     
     public WorkflowDestinationStep createWorkflowDestinationStep(WorkflowDestination workflowDestination, WorkflowStep workflowStep,
             BasePK createdBy) {
-        var workflowDestinationStep = WorkflowDestinationStepFactory.getInstance().create(session,
+        var workflowDestinationStep = WorkflowDestinationStepFactory.getInstance().create(
                 workflowDestination, workflowStep, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(workflowDestination.getLastDetail().getWorkflowStep().getLastDetail().getWorkflowPK(), EventTypes.MODIFY, workflowDestinationStep.getPrimaryKey(), EventTypes.CREATE, createdBy);

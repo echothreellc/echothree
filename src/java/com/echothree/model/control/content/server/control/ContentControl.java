@@ -483,7 +483,7 @@ public class ContentControl
         }
 
         var contentPageLayout = ContentPageLayoutFactory.getInstance().create();
-        var contentPageLayoutDetail = ContentPageLayoutDetailFactory.getInstance().create(session,
+        var contentPageLayoutDetail = ContentPageLayoutDetailFactory.getInstance().create(
                 contentPageLayout, contentPageLayoutName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
@@ -1043,7 +1043,7 @@ public class ContentControl
     
     public ContentCollection createContentCollection(String contentCollectionName, OfferUse defaultOfferUse, BasePK createdBy) {
         var contentCollection = ContentCollectionFactory.getInstance().create();
-        var contentCollectionDetail = ContentCollectionDetailFactory.getInstance().create(session,
+        var contentCollectionDetail = ContentCollectionDetailFactory.getInstance().create(
                 contentCollection, contentCollectionName, defaultOfferUse, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
@@ -3686,7 +3686,7 @@ public class ContentControl
 
     public ContentCatalogItemFixedPrice createContentCatalogItemFixedPrice(ContentCatalogItem contentCatalogItem, Long unitPrice,
             BasePK createdBy) {
-        var contentCatalogItemFixedPrice = ContentCatalogItemFixedPriceFactory.getInstance().create(session,
+        var contentCatalogItemFixedPrice = ContentCatalogItemFixedPriceFactory.getInstance().create(
                 contentCatalogItem, unitPrice, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(contentCatalogItem.getPrimaryKey(), EventTypes.MODIFY, contentCatalogItemFixedPrice.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -3776,7 +3776,7 @@ public class ContentControl
 
     public ContentCatalogItemVariablePrice createContentCatalogItemVariablePrice(ContentCatalogItem contentCatalogItem, Long minimumUnitPrice,
             Long maximumUnitPrice, Long unitPriceIncrement, BasePK createdBy) {
-        var contentCatalogItemVariablePrice = ContentCatalogItemVariablePriceFactory.getInstance().create(session,
+        var contentCatalogItemVariablePrice = ContentCatalogItemVariablePriceFactory.getInstance().create(
                 contentCatalogItem, minimumUnitPrice, maximumUnitPrice, unitPriceIncrement, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(contentCatalogItem.getPrimaryKey(), EventTypes.MODIFY, contentCatalogItemVariablePrice.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -4379,7 +4379,7 @@ public class ContentControl
     public ContentCategoryDescription createContentCategoryDescription(ContentCategory contentCategory, Language language,
             String description, BasePK createdBy) {
 
-        var contentCategoryDescription = ContentCategoryDescriptionFactory.getInstance().create(session,
+        var contentCategoryDescription = ContentCategoryDescriptionFactory.getInstance().create(
                 contentCategory, language, description, session.getStartTime(),
                 Session.MAX_TIME);
         
@@ -4557,7 +4557,7 @@ public class ContentControl
             isDefault = true;
         }
 
-        var contentCategoryItem = ContentCategoryItemFactory.getInstance().create(session,
+        var contentCategoryItem = ContentCategoryItemFactory.getInstance().create(
                 contentCategory, contentCatalogItem, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
         
@@ -5292,7 +5292,7 @@ public class ContentControl
             ps.setLong(1, contentCollection.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            contentWebAddresses = ContentWebAddressFactory.getInstance().getEntitiesFromQuery(session,entityPermission, ps);
+            contentWebAddresses = ContentWebAddressFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }

@@ -289,7 +289,7 @@ public class AssociateControl
     }
     
     private void updateAssociateProgramFromValue(AssociateProgramDetailValue associateProgramDetailValue, boolean checkDefault, BasePK updatedBy) {
-        var associateProgram = AssociateProgramFactory.getInstance().getEntityFromPK(session,
+        var associateProgram = AssociateProgramFactory.getInstance().getEntityFromPK(
                 EntityPermission.READ_WRITE, associateProgramDetailValue.getAssociateProgramPK());
         var associateProgramDetail = associateProgram.getActiveDetailForUpdate();
         
@@ -693,7 +693,7 @@ public class AssociateControl
     }
     
     public void updateAssociateFromValue(AssociateDetailValue associateDetailValue, boolean checkDefault, BasePK updatedBy) {
-        var associate = AssociateFactory.getInstance().getEntityFromPK(session,
+        var associate = AssociateFactory.getInstance().getEntityFromPK(
                 EntityPermission.READ_WRITE, associateDetailValue.getAssociatePK());
         var associateDetail = associate.getActiveDetailForUpdate();
         
@@ -759,7 +759,7 @@ public class AssociateControl
         }
 
         var associatePartyContactMechanism = AssociatePartyContactMechanismFactory.getInstance().create();
-        var associatePartyContactMechanismDetail = AssociatePartyContactMechanismDetailFactory.getInstance().create(session,
+        var associatePartyContactMechanismDetail = AssociatePartyContactMechanismDetailFactory.getInstance().create(
                 associatePartyContactMechanism, associate, associatePartyContactMechanismName, partyContactMechanism, isDefault, sortOrder,
                 session.getStartTime(), Session.MAX_TIME);
         
@@ -1005,7 +1005,7 @@ public class AssociateControl
     
     private void updateAssociatePartyContactMechanismFromValue(AssociatePartyContactMechanismDetailValue associatePartyContactMechanismDetailValue,
             boolean checkDefault, BasePK updatedBy) {
-        var associatePartyContactMechanism = AssociatePartyContactMechanismFactory.getInstance().getEntityFromPK(session,
+        var associatePartyContactMechanism = AssociatePartyContactMechanismFactory.getInstance().getEntityFromPK(
                 EntityPermission.READ_WRITE, associatePartyContactMechanismDetailValue.getAssociatePartyContactMechanismPK());
         var associatePartyContactMechanismDetail = associatePartyContactMechanism.getActiveDetailForUpdate();
         
@@ -1036,7 +1036,7 @@ public class AssociateControl
             }
         }
         
-        associatePartyContactMechanismDetail = AssociatePartyContactMechanismDetailFactory.getInstance().create(session,
+        associatePartyContactMechanismDetail = AssociatePartyContactMechanismDetailFactory.getInstance().create(
                 associatePartyContactMechanismPK, associatePK, associatePartyContactMechanismName, partyContactMechanismPK, isDefault, sortOrder,
                 session.getStartTime(), Session.MAX_TIME);
         
@@ -1112,7 +1112,7 @@ public class AssociateControl
             AssociatePartyContactMechanism associatePartyContactMechanism, EntityInstance targetEntityInstance, Long associateReferralTime,
             BasePK createdBy) {
         var associateReferral = AssociateReferralFactory.getInstance().create();
-        var associateReferralDetail = AssociateReferralDetailFactory.getInstance().create(session,
+        var associateReferralDetail = AssociateReferralDetailFactory.getInstance().create(
                 associateReferral, associateReferralName, associate, associatePartyContactMechanism, targetEntityInstance,
                 associateReferralTime, session.getStartTime(), Session.MAX_TIME);
         
@@ -1317,7 +1317,7 @@ public class AssociateControl
     
     public void updateAssociateReferralFromValue(AssociateReferralDetailValue associateReferralDetailValue,
             boolean checkDefault, BasePK updatedBy) {
-        var associateReferral = AssociateReferralFactory.getInstance().getEntityFromPK(session,
+        var associateReferral = AssociateReferralFactory.getInstance().getEntityFromPK(
                 EntityPermission.READ_WRITE, associateReferralDetailValue.getAssociateReferralPK());
         var associateReferralDetail = associateReferral.getActiveDetailForUpdate();
         

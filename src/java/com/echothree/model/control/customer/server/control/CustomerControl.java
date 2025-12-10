@@ -927,7 +927,7 @@ public class CustomerControl
             isDefault = true;
         }
 
-        var customerTypePaymentMethod = CustomerTypePaymentMethodFactory.getInstance().create(session, customerType, paymentMethod,
+        var customerTypePaymentMethod = CustomerTypePaymentMethodFactory.getInstance().create( customerType, paymentMethod,
                 defaultSelectionPriority, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(customerType.getPrimaryKey(), EventTypes.MODIFY, customerTypePaymentMethod.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -1220,7 +1220,7 @@ public class CustomerControl
             isDefault = true;
         }
 
-        var customerTypeShippingMethod = CustomerTypeShippingMethodFactory.getInstance().create(session, customerType, shippingMethod,
+        var customerTypeShippingMethod = CustomerTypeShippingMethodFactory.getInstance().create( customerType, shippingMethod,
                 defaultSelectionPriority, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(customerType.getPrimaryKey(), EventTypes.MODIFY, customerTypeShippingMethod.getPrimaryKey(), EventTypes.CREATE, createdBy);

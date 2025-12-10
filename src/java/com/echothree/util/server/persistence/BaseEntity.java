@@ -47,17 +47,9 @@ public abstract class BaseEntity {
             throw new PersistenceReadOnlyException(READ_ONLY_EXCEPTION);
     }
     
-    public void store() {
-        store(ThreadSession.currentSession());
-    }
+    public abstract void store();
     
-    public abstract void store(Session session);
-    
-    public void remove() {
-        remove(ThreadSession.currentSession());
-    }
-    
-    public abstract void remove(Session session);
+    public abstract void remove();
     
     public abstract BasePK getPrimaryKey();
     

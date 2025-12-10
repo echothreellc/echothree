@@ -22,7 +22,6 @@ import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.common.transfer.Limit;
-import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.valuecache.ValueCache;
 import com.echothree.util.server.persistence.valuecache.ValueCacheProviderImpl;
@@ -38,12 +37,13 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.spi.CDI;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jooq.DSLContext;
 
-@CommandScope
+@RequestScoped
 public class Session {
     
     private static final String GET_INSTANCE = "getInstance";

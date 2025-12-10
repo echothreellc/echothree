@@ -613,7 +613,7 @@ public class IndexControl
         }
 
         var indexField = IndexFieldFactory.getInstance().create();
-        var indexFieldDetail = IndexFieldDetailFactory.getInstance().create(session, indexField, indexType, indexFieldName, isDefault, sortOrder,
+        var indexFieldDetail = IndexFieldDetailFactory.getInstance().create( indexField, indexType, indexFieldName, isDefault, sortOrder,
                 session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W

@@ -596,7 +596,7 @@ public class WishlistControl
         }
 
         var wishlistPriority = WishlistPriorityFactory.getInstance().create();
-        var wishlistPriorityDetail = WishlistPriorityDetailFactory.getInstance().create(session,
+        var wishlistPriorityDetail = WishlistPriorityDetailFactory.getInstance().create(
                 wishlistPriority, wishlistType, wishlistPriorityName, isDefault, sortOrder, session.getStartTime(),
                 Session.MAX_TIME);
         
@@ -914,7 +914,7 @@ public class WishlistControl
     
     public WishlistPriorityDescription createWishlistPriorityDescription(WishlistPriority wishlistPriority,
             Language language, String description, BasePK createdBy) {
-        var wishlistPriorityDescription = WishlistPriorityDescriptionFactory.getInstance().create(session,
+        var wishlistPriorityDescription = WishlistPriorityDescriptionFactory.getInstance().create(
                 wishlistPriority, language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(wishlistPriority.getPrimaryKey(), EventTypes.MODIFY, wishlistPriorityDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);

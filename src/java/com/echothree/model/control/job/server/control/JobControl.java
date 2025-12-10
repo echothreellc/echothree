@@ -213,7 +213,7 @@ public class JobControl
     }
     
     public void updateJobFromValue(JobDetailValue jobDetailValue, BasePK updatedBy) {
-        var job = JobFactory.getInstance().getEntityFromPK(session,
+        var job = JobFactory.getInstance().getEntityFromPK(
                 EntityPermission.READ_WRITE, jobDetailValue.getJobPK());
         var jobDetail = job.getActiveDetailForUpdate();
         
@@ -254,7 +254,7 @@ public class JobControl
     
     public JobDescription createJobDescription(Job job, Language language,
             String description, BasePK createdBy) {
-        var jobDescription = JobDescriptionFactory.getInstance().create(session,
+        var jobDescription = JobDescriptionFactory.getInstance().create(
                 job, language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(job.getPrimaryKey(), EventTypes.MODIFY, jobDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);

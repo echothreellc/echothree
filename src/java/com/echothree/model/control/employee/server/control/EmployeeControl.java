@@ -257,7 +257,7 @@ public class EmployeeControl
         }
 
         var responsibilityType = ResponsibilityTypeFactory.getInstance().create();
-        var responsibilityTypeDetail = ResponsibilityTypeDetailFactory.getInstance().create(session,
+        var responsibilityTypeDetail = ResponsibilityTypeDetailFactory.getInstance().create(
                 responsibilityType, responsibilityTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
@@ -505,7 +505,7 @@ public class EmployeeControl
     
     public ResponsibilityTypeDescription createResponsibilityTypeDescription(ResponsibilityType responsibilityType,
             Language language, String description, BasePK createdBy) {
-        var responsibilityTypeDescription = ResponsibilityTypeDescriptionFactory.getInstance().create(session,
+        var responsibilityTypeDescription = ResponsibilityTypeDescriptionFactory.getInstance().create(
                 responsibilityType, language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(responsibilityType.getPrimaryKey(), EventTypes.MODIFY, responsibilityTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -683,7 +683,7 @@ public class EmployeeControl
         }
 
         var skillType = SkillTypeFactory.getInstance().create();
-        var skillTypeDetail = SkillTypeDetailFactory.getInstance().create(session,
+        var skillTypeDetail = SkillTypeDetailFactory.getInstance().create(
                 skillType, skillTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
@@ -930,7 +930,7 @@ public class EmployeeControl
     
     public SkillTypeDescription createSkillTypeDescription(SkillType skillType,
             Language language, String description, BasePK createdBy) {
-        var skillTypeDescription = SkillTypeDescriptionFactory.getInstance().create(session,
+        var skillTypeDescription = SkillTypeDescriptionFactory.getInstance().create(
                 skillType, language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(skillType.getPrimaryKey(), EventTypes.MODIFY, skillTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2282,7 +2282,7 @@ public class EmployeeControl
         }
 
         var terminationReason = TerminationReasonFactory.getInstance().create();
-        var terminationReasonDetail = TerminationReasonDetailFactory.getInstance().create(session,
+        var terminationReasonDetail = TerminationReasonDetailFactory.getInstance().create(
                 terminationReason, terminationReasonName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
@@ -2530,7 +2530,7 @@ public class EmployeeControl
     
     public TerminationReasonDescription createTerminationReasonDescription(TerminationReason terminationReason,
             Language language, String description, BasePK createdBy) {
-        var terminationReasonDescription = TerminationReasonDescriptionFactory.getInstance().create(session,
+        var terminationReasonDescription = TerminationReasonDescriptionFactory.getInstance().create(
                 terminationReason, language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(terminationReason.getPrimaryKey(), EventTypes.MODIFY, terminationReasonDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -2708,7 +2708,7 @@ public class EmployeeControl
         }
 
         var terminationType = TerminationTypeFactory.getInstance().create();
-        var terminationTypeDetail = TerminationTypeDetailFactory.getInstance().create(session,
+        var terminationTypeDetail = TerminationTypeDetailFactory.getInstance().create(
                 terminationType, terminationTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
@@ -2956,7 +2956,7 @@ public class EmployeeControl
     
     public TerminationTypeDescription createTerminationTypeDescription(TerminationType terminationType,
             Language language, String description, BasePK createdBy) {
-        var terminationTypeDescription = TerminationTypeDescriptionFactory.getInstance().create(session,
+        var terminationTypeDescription = TerminationTypeDescriptionFactory.getInstance().create(
                 terminationType, language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(terminationType.getPrimaryKey(), EventTypes.MODIFY, terminationTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
