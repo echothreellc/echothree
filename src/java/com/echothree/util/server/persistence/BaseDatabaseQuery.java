@@ -95,7 +95,7 @@ public abstract class BaseDatabaseQuery<R extends BaseDatabaseResult> {
 
                             factoryInstance = getInstanceMethod.invoke(null);
                             pkConstructor = pkType.getDeclaredConstructor(Long.class);
-                            getEntityFromPkMethod = factoryType.getDeclaredMethod("getEntityFromPK", Session.class, EntityPermission.class, pkType);
+                            getEntityFromPkMethod = factoryType.getDeclaredMethod("getEntityFromPK", EntityPermission.class, pkType);
                         } catch(ClassNotFoundException | IllegalAccessException | InvocationTargetException ex) {
                             throw new PersistenceDatabaseException(ex);
                         }
@@ -169,7 +169,7 @@ public abstract class BaseDatabaseQuery<R extends BaseDatabaseResult> {
                                     } else if(superclass.equals(BaseEntity.class)) {
                                         var pk = databaseResultMethod.pkConstructor.newInstance(rs.getLong(columnIndex));
 
-                                        param = databaseResultMethod.getEntityFromPkMethod.invoke(databaseResultMethod.factoryInstance, session, entityPermission, pk);
+                                        param = databaseResultMethod.getEntityFromPkMethod.invoke(databaseResultMethod.factoryInstance, entityPermission, pk);
                                     }
                                 }
 
