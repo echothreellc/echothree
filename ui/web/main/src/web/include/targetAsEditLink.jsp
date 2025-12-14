@@ -1,7 +1,7 @@
 <%@ include file="taglibs.jsp" %>
 
 <c:if test="${targetForEditSetupComplete == null}">
-    <et:checkSecurityRoles securityRoles="Item.Edit:ItemDescription.Edit:ComponentVendor.Edit:EntityType.Edit" />
+    <et:checkSecurityRoles securityRoles="Item.Edit:ItemDescription.Edit:ComponentVendor.Edit:EntityType.Edit:EntityAttribute.Edit" />
     <c:set var="targetForEditSetupComplete" value="true"/>
 </c:if>
 
@@ -40,17 +40,26 @@
             </c:url>
         </c:when>
         <c:when test="${entityInstance.entityNames.target == 'ComponentVendor'}">
-            <et:hasSecurityRole securityRole="ItemDescription.Edit">
+            <et:hasSecurityRole securityRole="ComponentVendor.Edit">
                 <c:url var="targetUrl" value="/action/Core/ComponentVendor/Edit">
                     <c:param name="ComponentVendorName" value="${entityInstance.entityNames.names.map.ComponentVendorName}" />
                 </c:url>
             </et:hasSecurityRole>
         </c:when>
         <c:when test="${entityInstance.entityNames.target == 'EntityType'}">
-            <et:hasSecurityRole securityRole="ItemDescription.Edit">
+            <et:hasSecurityRole securityRole="EntityType.Edit">
                 <c:url var="targetUrl" value="/action/Core/EntityType/Edit">
                     <c:param name="ComponentVendorName" value="${entityInstance.entityNames.names.map.ComponentVendorName}" />
                     <c:param name="EntityTypeName" value="${entityInstance.entityNames.names.map.EntityTypeName}" />
+                </c:url>
+            </et:hasSecurityRole>
+        </c:when>
+        <c:when test="${entityInstance.entityNames.target == 'EntityAttribute'}">
+            <et:hasSecurityRole securityRole="EntityAttribute.Edit">
+                <c:url var="targetUrl" value="/action/Core/EntityAttribute/Edit">
+                    <c:param name="ComponentVendorName" value="${entityInstance.entityNames.names.map.ComponentVendorName}" />
+                    <c:param name="EntityTypeName" value="${entityInstance.entityNames.names.map.EntityTypeName}" />
+                    <c:param name="EntityAttributeName" value="${entityInstance.entityNames.names.map.EntityAttributeName}" />
                 </c:url>
             </et:hasSecurityRole>
         </c:when>

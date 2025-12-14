@@ -289,6 +289,9 @@
             <searchType searchTypeName="EMPLOYEE" isDefault="true" sortOrder="1">
                 <searchTypeDescription languageIsoName="en" description="Employee" />
             </searchType>
+            <searchType searchTypeName="IDENTIFY" isDefault="false" sortOrder="1">
+                <searchTypeDescription languageIsoName="en" description="Identify" />
+            </searchType>
             <searchSortOrder searchSortOrderName="SCORE" isDefault="true" sortOrder="1">
                 <searchSortOrderDescription languageIsoName="en" description="Score" />
             </searchSortOrder>

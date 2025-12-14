@@ -1053,13 +1053,13 @@ public class CoreControl
     public EntityAttributeDetailValue getEntityAttributeDetailValueByNameForUpdate(EntityType entityType, String entityAttributeName) {
         return getEntityAttributeDetailValueForUpdate(getEntityAttributeByNameForUpdate(entityType, entityAttributeName));
     }
-    
+
     private List<EntityAttribute> getEntityAttributesByEntityType(EntityType entityType, EntityPermission entityPermission) {
         List<EntityAttribute> entityAttributes;
-        
+
         try {
             String query = null;
-            
+
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
                 query = "SELECT _ALL_ " +
                         "FROM entityattributes, entityattributedetails " +
@@ -1076,25 +1076,70 @@ public class CoreControl
             }
 
             var ps = entityAttributeFactory.prepareStatement(query);
-            
+
             ps.setLong(1, entityType.getPrimaryKey().getEntityId());
-            
+
             entityAttributes = entityAttributeFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
-        
+
         return entityAttributes;
     }
-    
+
     public List<EntityAttribute> getEntityAttributesByEntityType(EntityType entityType) {
         return getEntityAttributesByEntityType(entityType, EntityPermission.READ_ONLY);
     }
-    
+
     public List<EntityAttribute> getEntityAttributesByEntityTypeForUpdate(EntityType entityType) {
         return getEntityAttributesByEntityType(entityType, EntityPermission.READ_WRITE);
     }
-    
+
+    private List<EntityAttribute> getEntityAttributesByName(String entityAttributeName, EntityPermission entityPermission) {
+        List<EntityAttribute> entityAttributes;
+
+        try {
+            String query = null;
+
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM entityattributes " +
+                        "JOIN entityattributedetails ON ena_activedetailid = enadt_entityattributedetailid " +
+                        "JOIN entitytypes ON enadt_ent_entitytypeid = ent_entitytypeid " +
+                        "JOIN entitytypedetails ON ent_lastdetailid = entdt_entitytypedetailid " +
+                        "JOIN componentvendors ON entdt_cvnd_componentvendorid = cvnd_componentvendorid " +
+                        "JOIN componentvendordetails ON cvnd_lastdetailid = cvndd_componentvendordetailid " +
+                        "WHERE enadt_entityattributename = ? " +
+                        "ORDER BY cvndd_componentvendorname, entdt_sortorder, entdt_entitytypename, enadt_sortorder, enadt_entityattributename " +
+                        "_LIMIT_";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM entityattributes " +
+                        "JOIN entityattributedetails ON ena_activedetailid = enadt_entityattributedetailid " +
+                        "WHERE enadt_entityattributename = ? " +
+                        "FOR UPDATE";
+            }
+
+            var ps = entityAttributeFactory.prepareStatement(query);
+
+            ps.setString(1, entityAttributeName);
+
+            entityAttributes = entityAttributeFactory.getEntitiesFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return entityAttributes;
+    }
+
+    public List<EntityAttribute> getEntityAttributesByName(String entityAttributeName) {
+        return getEntityAttributesByName(entityAttributeName, EntityPermission.READ_ONLY);
+    }
+
+    public List<EntityAttribute> getEntityAttributesByNameForUpdate(String entityAttributeName) {
+        return getEntityAttributesByName(entityAttributeName, EntityPermission.READ_WRITE);
+    }
+
     private List<EntityAttribute> getEntityAttributesByEntityTypeAndEntityAttributeType(EntityType entityType,
             EntityAttributeType entityAttributeType, EntityPermission entityPermission) {
         List<EntityAttribute> entityAttributes;
