@@ -1,7 +1,7 @@
 <%@ include file="taglibs.jsp" %>
 
 <c:if test="${targetForReviewSetupComplete == null}">
-    <et:checkSecurityRoles securityRoles="Employee.Review:Customer.Review:Company.Review:Division.Review:Department.Review:Vendor.Review:VendorItem.Review:Carrier.Review:Warehouse.Review:CommunicationEvent.Review:PartyTrainingClass.Review:TrainingClass.Review:PartyContactList.Review" />
+    <et:checkSecurityRoles securityRoles="Employee.Review:Customer.Review:Company.Review:Division.Review:Department.Review:Vendor.Review:VendorItem.Review:Carrier.Review:Warehouse.Review:CommunicationEvent.Review:PartyTrainingClass.Review:TrainingClass.Review:PartyContactList.Review:ComponentVendor.Review:EntityType.Review" />
     <c:set var="targetForReviewSetupComplete" value="true"/>
 </c:if>
 
@@ -152,15 +152,19 @@
             </c:url>
         </c:when>
         <c:when test="${entityInstance.entityNames.target == 'ComponentVendor'}">
-            <c:url var="targetUrl" value="/action/Core/ComponentVendor/Review">
-                <c:param name="ComponentVendorName" value="${entityInstance.entityNames.names.map.ComponentVendorName}" />
-            </c:url>
+            <et:hasSecurityRole securityRole="ComponentVendor.Review">
+                <c:url var="targetUrl" value="/action/Core/ComponentVendor/Review">
+                    <c:param name="ComponentVendorName" value="${entityInstance.entityNames.names.map.ComponentVendorName}" />
+                </c:url>
+            </et:hasSecurityRole>
         </c:when>
         <c:when test="${entityInstance.entityNames.target == 'EntityType'}">
-            <c:url var="targetUrl" value="/action/Core/EntityType/Review">
-                <c:param name="ComponentVendorName" value="${entityInstance.entityNames.names.map.ComponentVendorName}" />
-                <c:param name="EntityTypeName" value="${entityInstance.entityNames.names.map.EntityTypeName}" />
-            </c:url>
+            <et:hasSecurityRole securityRole="EntityType.Review">
+                <c:url var="targetUrl" value="/action/Core/EntityType/Review">
+                    <c:param name="ComponentVendorName" value="${entityInstance.entityNames.names.map.ComponentVendorName}" />
+                    <c:param name="EntityTypeName" value="${entityInstance.entityNames.names.map.EntityTypeName}" />
+                </c:url>
+            </et:hasSecurityRole>
         </c:when>
     </c:choose>
 </c:if>
