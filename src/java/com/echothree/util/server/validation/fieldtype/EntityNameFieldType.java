@@ -39,43 +39,43 @@ public class EntityNameFieldType
     
     @Override
     public String validate() {
-        var length = fieldValue.length();
-        var hadErrors = false;
-
-        var minimumValue = fieldDefinition.getMinimumValue();
-        if(length < (minimumValue == null? defaultMinimumLength: minimumValue)) {
-            validationMessages.add(fieldName, new Message(Validator.ERROR_MINIMUM_LENGTH, minimumValue == null? defaultMinimumLengthLong: minimumValue));
-            hadErrors = true;
-        }
-
-        var maximumValue = fieldDefinition.getMaximumValue();
-        if(length > (maximumValue == null? defaultMaximumLength: maximumValue)) {
-            validationMessages.add(fieldName, new Message(Validator.ERROR_MAXIMUM_LENGTH, maximumValue == null? defaultMaximumLengthLong: maximumValue));
-            hadErrors = true;
-        }
-
-        var m = Patterns.EntityName.matcher(fieldValue);
-        if(!m.matches()) {
-            validationMessages.add(fieldName, new Message(Validator.ERROR_INVALID_FORMAT));
-            hadErrors = true;
-        }
-        
-        return hadErrors? null: fieldValue;
+        return !isValidName(validationMessages, fieldName, fieldDefinition.getMinimumValue(), fieldDefinition.getMaximumValue(), fieldValue)? null: fieldValue;
     }
 
     // Abbreviated implementation used by the Identify UC
     public static boolean isValidName(String fieldValue) {
-        var length = fieldValue.length();
-        var validName = true;
+        return isValidName(null, null, null, null, fieldValue);
+    }
 
-        if(length < defaultMinimumLength) {
-            validName = false;
-        } else if(length > defaultMaximumLength) {
-            validName = false;
-        } else {
-            var m = Patterns.EntityName.matcher(fieldValue);
-            if(!m.matches()) {
-                validName = false;
+    private static boolean isValidName(Messages validationMessages, String fieldName, Long minimumValue, Long maximumValue, String fieldValue) {
+        var length = fieldValue.length();
+        var errorMinimumLength = false;
+        var errorMaximumLength = false;
+        var errorInvalidFormat = false;
+
+        if(length < (minimumValue == null? defaultMinimumLength: minimumValue)) {
+            errorMinimumLength = true;
+        }
+
+        if(length > (maximumValue == null? defaultMaximumLength: maximumValue)) {
+            errorMaximumLength = true;
+        }
+
+        var m = Patterns.EntityName.matcher(fieldValue);
+        if(!m.matches()) {
+            errorInvalidFormat = true;
+        }
+
+        var validName = !(errorMinimumLength || errorMaximumLength || errorInvalidFormat);
+        if(!validName && validationMessages != null) {
+            if(errorMinimumLength) {
+                validationMessages.add(fieldName, new Message(Validator.ERROR_MINIMUM_LENGTH, minimumValue == null? defaultMinimumLengthLong: minimumValue));
+            }
+            if(errorMaximumLength) {
+                validationMessages.add(fieldName, new Message(Validator.ERROR_MAXIMUM_LENGTH, maximumValue == null? defaultMaximumLengthLong: maximumValue));
+            }
+            if(errorInvalidFormat) {
+                validationMessages.add(fieldName, new Message(Validator.ERROR_INVALID_FORMAT));
             }
         }
 
