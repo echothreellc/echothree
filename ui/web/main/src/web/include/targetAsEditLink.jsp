@@ -39,6 +39,11 @@
                 <c:param name="MimeTypeName" value="${entityInstance.entityNames.names.map.MimeTypeName}" />
             </c:url>
         </c:when>
+        <c:when test="${entityInstance.entityNames.target == 'ComponentVendor'}">
+            <c:url var="targetUrl" value="/action/Core/ComponentVendor/Edit">
+                <c:param name="ComponentVendorName" value="${entityInstance.entityNames.names.map.ComponentVendorName}" />
+            </c:url>
+        </c:when>
     </c:choose>
 </c:if>
 
