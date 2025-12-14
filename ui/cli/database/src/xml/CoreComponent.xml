@@ -904,6 +904,10 @@
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index3">
+                            <indexColumn name="EntityAttributeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
                             <indexColumn name="EntityAttributeTypeId" />
                             <indexColumn name="ThruTime" />
                         </index>

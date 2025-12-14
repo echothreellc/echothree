@@ -20,6 +20,7 @@ import com.echothree.model.control.communication.server.control.CommunicationCon
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.server.control.ComponentControl;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.control.EntityTypeControl;
 import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.forum.common.ForumConstants;
@@ -201,6 +202,11 @@ public class EntityDescriptionUtils {
                     var entityType = entityTypeControl.getEntityTypeByEntityInstance(entityInstance);
 
                     description = entityType == null ? null : entityTypeControl.getBestEntityTypeDescription(entityType, getLanguage(userVisit));
+                } else if(entityTypeName.equals(EntityTypes.EntityAttribute.name())) {
+                    var entityAttributeControl = Session.getModelController(CoreControl.class);
+                    var entityAttribute = entityAttributeControl.getEntityAttributeByEntityInstance(entityInstance);
+
+                    description = entityAttribute == null ? null : entityAttributeControl.getBestEntityAttributeDescription(entityAttribute, getLanguage(userVisit));
                 }
             }
         }
