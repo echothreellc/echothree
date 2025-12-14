@@ -21,6 +21,7 @@ public enum Names {
     CommunicationEventName,
     ComponentVendorName,
     ContactListName,
+    EntityAttributeName,
     EntityTypeName,
     ForumGroupName,
     ForumMessageName,
