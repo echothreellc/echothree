@@ -27,6 +27,7 @@ public enum Targets {
     Division,
     Employee,
     EntityAttribute,
+    EntityListItem,
     EntityType,
     Forum,
     ForumGroup,

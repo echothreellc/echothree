@@ -1890,6 +1890,10 @@
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index4">
+                            <indexColumn name="EntityListItemName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
                             <indexColumn name="EntityAttributeId" />
                             <indexColumn name="IsDefault" />
                             <indexColumn name="ThruTime" />
