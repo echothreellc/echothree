@@ -16,10 +16,10 @@
 
 package com.echothree.util.server.validation.fieldtype;
 
-import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.form.BaseForm;
 import com.echothree.util.common.message.Message;
 import com.echothree.util.common.message.Messages;
+import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.server.validation.Patterns;
 import com.echothree.util.server.validation.Validator;
 
@@ -61,6 +61,25 @@ public class EntityNameFieldType
         }
         
         return hadErrors? null: fieldValue;
+    }
+
+    // Abbreviated implementation used by the Identify UC
+    public static boolean isValidName(String fieldValue) {
+        var length = fieldValue.length();
+        var validName = true;
+
+        if(length < defaultMinimumLength) {
+            validName = false;
+        } else if(length > defaultMaximumLength) {
+            validName = false;
+        } else {
+            var m = Patterns.EntityName.matcher(fieldValue);
+            if(!m.matches()) {
+                validName = false;
+            }
+        }
+
+        return validName;
     }
     
 }

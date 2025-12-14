@@ -59,6 +59,7 @@ import com.echothree.util.server.persistence.EntityNamesUtils;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.persistence.translator.EntityInstanceAndNames;
 import com.echothree.util.server.string.NameCleaner;
+import com.echothree.util.server.validation.fieldtype.EntityNameFieldType;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -666,47 +667,49 @@ public class IdentifyCommand
         var entityInstances = new HashSet<EntityInstanceTransfer>();
         var target = form.getTarget();
         var party = getParty();
-        
-        // Compile a list of all possible EntityInstances that the target may refer to.
-        checkSequenceTypes(party, entityInstances, target); // uses EEA
-        if(!hasExecutionErrors()) {
-            checkItems(party, entityInstances, target); // uses EEA
-        }
-        if(!hasExecutionErrors()) {
-            checkCompanies(party, entityInstances, target); // uses EEA
-        }
-        if(!hasExecutionErrors()) {
-            checkDivisions(party, entityInstances, target); // uses EEA
-        }
-        if(!hasExecutionErrors()) {
-            checkDepartments(party, entityInstances, target); // uses EEA
-        }
-        if(!hasExecutionErrors()) {
-            checkWarehouses(party, entityInstances, target); // uses EEA
-        }
-        if(!hasExecutionErrors()) {
-            checkLocations(party, entityInstances, target); // uses EEA
-        }
-        if(!hasExecutionErrors()) {
-            checkEmployees(party, entityInstances, target); // uses EEA
-        }
-        if(!hasExecutionErrors()) {
-            checkCustomers(party, entityInstances, target); // uses EEA
-        }
-        if(!hasExecutionErrors()) {
-            checkVendors(party, entityInstances, target); // uses EEA
-        }
-        if(!hasExecutionErrors()) {
-            checkVendorItems(party, entityInstances, target); // uses EEA
-        }
-        if(!hasExecutionErrors()) {
-            checkComponentVendors(party, entityInstances, target); // uses EEA
-        }
-        if(!hasExecutionErrors()) {
-            checkEntityTypes(party, entityInstances, target); // uses EEA
-        }
-        if(!hasExecutionErrors()) {
-            checkEntityAttributes(party, entityInstances, target); // uses EEA
+
+        if(EntityNameFieldType.isValidName(target)) {
+            // Compile a list of all possible EntityInstances that the target may refer to.
+            checkSequenceTypes(party, entityInstances, target); // uses EEA
+            if(!hasExecutionErrors()) {
+                checkItems(party, entityInstances, target); // uses EEA
+            }
+            if(!hasExecutionErrors()) {
+                checkCompanies(party, entityInstances, target); // uses EEA
+            }
+            if(!hasExecutionErrors()) {
+                checkDivisions(party, entityInstances, target); // uses EEA
+            }
+            if(!hasExecutionErrors()) {
+                checkDepartments(party, entityInstances, target); // uses EEA
+            }
+            if(!hasExecutionErrors()) {
+                checkWarehouses(party, entityInstances, target); // uses EEA
+            }
+            if(!hasExecutionErrors()) {
+                checkLocations(party, entityInstances, target); // uses EEA
+            }
+            if(!hasExecutionErrors()) {
+                checkEmployees(party, entityInstances, target); // uses EEA
+            }
+            if(!hasExecutionErrors()) {
+                checkCustomers(party, entityInstances, target); // uses EEA
+            }
+            if(!hasExecutionErrors()) {
+                checkVendors(party, entityInstances, target); // uses EEA
+            }
+            if(!hasExecutionErrors()) {
+                checkVendorItems(party, entityInstances, target); // uses EEA
+            }
+            if(!hasExecutionErrors()) {
+                checkComponentVendors(party, entityInstances, target); // uses EEA
+            }
+            if(!hasExecutionErrors()) {
+                checkEntityTypes(party, entityInstances, target); // uses EEA
+            }
+            if(!hasExecutionErrors()) {
+                checkEntityAttributes(party, entityInstances, target); // uses EEA
+            }
         }
 
         var nameResult = new NameCleaner().getCleansedName(target);
