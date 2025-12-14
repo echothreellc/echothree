@@ -203,10 +203,15 @@ public class EntityDescriptionUtils {
 
                     description = entityType == null ? null : entityTypeControl.getBestEntityTypeDescription(entityType, getLanguage(userVisit));
                 } else if(entityTypeName.equals(EntityTypes.EntityAttribute.name())) {
-                    var entityAttributeControl = Session.getModelController(CoreControl.class);
-                    var entityAttribute = entityAttributeControl.getEntityAttributeByEntityInstance(entityInstance);
+                    var coreControl = Session.getModelController(CoreControl.class);
+                    var entityAttribute = coreControl.getEntityAttributeByEntityInstance(entityInstance);
 
-                    description = entityAttribute == null ? null : entityAttributeControl.getBestEntityAttributeDescription(entityAttribute, getLanguage(userVisit));
+                    description = entityAttribute == null ? null : coreControl.getBestEntityAttributeDescription(entityAttribute, getLanguage(userVisit));
+                } else if(entityTypeName.equals(EntityTypes.EntityListItem.name())) {
+                    var coreControl = Session.getModelController(CoreControl.class);
+                    var entityListItem = coreControl.getEntityListItemByEntityInstance(entityInstance);
+
+                    description = entityListItem == null ? null : coreControl.getBestEntityListItemDescription(entityListItem, getLanguage(userVisit));
                 }
             }
         }

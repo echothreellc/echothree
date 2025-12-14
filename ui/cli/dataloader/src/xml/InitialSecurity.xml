@@ -5580,6 +5580,9 @@
             <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Entity List Item Description" />
             </securityRole>
+            <securityRole securityRoleName="Search" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Entity List Item Search" />
+            </securityRole>
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="EntityIntegerRange" parentSecurityRoleGroupName="CoreComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Entity Integer Range" />
@@ -9441,6 +9444,7 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityListItem" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityListItem" securityRoleName="Choices" />
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityListItem" securityRoleName="Description" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="EntityListItem" securityRoleName="Search" />
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityIntegerRange" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityIntegerRange" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityIntegerRange" securityRoleName="Delete" />

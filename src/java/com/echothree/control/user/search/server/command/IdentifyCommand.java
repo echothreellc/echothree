@@ -26,6 +26,7 @@ import com.echothree.model.control.core.common.transfer.EntityTypeTransfer;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.core.server.search.ComponentVendorSearchEvaluator;
 import com.echothree.model.control.core.server.search.EntityAttributeSearchEvaluator;
+import com.echothree.model.control.core.server.search.EntityListItemSearchEvaluator;
 import com.echothree.model.control.core.server.search.EntityTypeSearchEvaluator;
 import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.customer.server.search.CustomerSearchEvaluator;
@@ -59,6 +60,7 @@ import com.echothree.util.server.persistence.EntityNamesUtils;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.persistence.translator.EntityInstanceAndNames;
 import com.echothree.util.server.string.NameCleaner;
+import com.echothree.util.server.validation.fieldtype.EntityNameFieldType;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -296,6 +298,18 @@ public class IdentifyCommand
             var entityAttributes = coreControl.getEntityAttributesByName(target);
 
             entityAttributes.stream().map((entityAttribute) -> entityInstanceControl.getEntityInstanceByBasePK(entityAttribute.getPrimaryKey())).map((entityInstance) -> EntityNamesUtils.getInstance().getEntityNames(entityInstance)).forEach((entityInstanceAndNames) -> {
+                entityInstances.add(fillInEntityInstance(entityInstanceAndNames));
+            });
+        }
+    }
+
+    private void checkEntityListItems(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
+        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
+                SecurityRoleGroups.EntityListItem.name(), SecurityRoles.Search.name())) {
+            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+            var entityListItems = coreControl.getEntityListItemsByName(target);
+
+            entityListItems.stream().map((entityListItem) -> entityInstanceControl.getEntityInstanceByBasePK(entityListItem.getPrimaryKey())).map((entityInstance) -> EntityNamesUtils.getInstance().getEntityNames(entityInstance)).forEach((entityInstanceAndNames) -> {
                 entityInstances.add(fillInEntityInstance(entityInstanceAndNames));
             });
         }
@@ -646,6 +660,45 @@ public class IdentifyCommand
         }
     }
 
+    private void executeEntityListItemSearch(final UserVisit userVisit, final Set<EntityInstanceTransfer> entityInstances,
+            final SearchLogic searchLogic, final SearchKind searchKind, final SearchType searchType,
+            final String q) {
+        var componentVendorSearchEvaluator = new EntityListItemSearchEvaluator(userVisit, null, searchType,
+                searchLogic.getDefaultSearchDefaultOperator(null),
+                searchLogic.getDefaultSearchSortOrder(null, searchKind),
+                searchLogic.getDefaultSearchSortDirection(null),
+                null);
+
+        componentVendorSearchEvaluator.setQ(null, q);
+
+        // Avoid using the real ExecutionErrorAccumulator in order to avoid either throwing an Exception or
+        // accumulating errors for this UC.
+        var dummyExecutionErrorAccumulator = new DummyExecutionErrorAccumulator();
+        componentVendorSearchEvaluator.execute(dummyExecutionErrorAccumulator);
+
+        if(!dummyExecutionErrorAccumulator.hasExecutionErrors()) {
+            addSearchResults(userVisit, searchType, entityInstances);
+        }
+    }
+
+    private void searchEntityListItems(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
+        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
+                SecurityRoleGroups.EntityListItem.name(), SecurityRoles.Search.name())) {
+            var searchLogic = SearchLogic.getInstance();
+            var searchKind = searchLogic.getSearchKindByName(this, SearchKinds.ENTITY_TYPE.name());
+
+            if(!hasExecutionErrors()) {
+                var searchType = searchLogic.getSearchTypeByName(this, searchKind, SearchTypes.IDENTIFY.name());
+
+                if(!hasExecutionErrors()) {
+                    var userVisit = getUserVisit();
+
+                    executeEntityListItemSearch(userVisit, entityInstances, searchLogic, searchKind, searchType, target);
+                }
+            }
+        }
+    }
+
     // Add results from any of the BaseSearchEvaluators to the entityInstances.
     private void addSearchResults(final UserVisit userVisit, final SearchType searchType,
             final Set<EntityInstanceTransfer> entityInstances) {
@@ -666,47 +719,52 @@ public class IdentifyCommand
         var entityInstances = new HashSet<EntityInstanceTransfer>();
         var target = form.getTarget();
         var party = getParty();
-        
-        // Compile a list of all possible EntityInstances that the target may refer to.
-        checkSequenceTypes(party, entityInstances, target); // uses EEA
-        if(!hasExecutionErrors()) {
-            checkItems(party, entityInstances, target); // uses EEA
-        }
-        if(!hasExecutionErrors()) {
-            checkCompanies(party, entityInstances, target); // uses EEA
-        }
-        if(!hasExecutionErrors()) {
-            checkDivisions(party, entityInstances, target); // uses EEA
-        }
-        if(!hasExecutionErrors()) {
-            checkDepartments(party, entityInstances, target); // uses EEA
-        }
-        if(!hasExecutionErrors()) {
-            checkWarehouses(party, entityInstances, target); // uses EEA
-        }
-        if(!hasExecutionErrors()) {
-            checkLocations(party, entityInstances, target); // uses EEA
-        }
-        if(!hasExecutionErrors()) {
-            checkEmployees(party, entityInstances, target); // uses EEA
-        }
-        if(!hasExecutionErrors()) {
-            checkCustomers(party, entityInstances, target); // uses EEA
-        }
-        if(!hasExecutionErrors()) {
-            checkVendors(party, entityInstances, target); // uses EEA
-        }
-        if(!hasExecutionErrors()) {
-            checkVendorItems(party, entityInstances, target); // uses EEA
-        }
-        if(!hasExecutionErrors()) {
-            checkComponentVendors(party, entityInstances, target); // uses EEA
-        }
-        if(!hasExecutionErrors()) {
-            checkEntityTypes(party, entityInstances, target); // uses EEA
-        }
-        if(!hasExecutionErrors()) {
-            checkEntityAttributes(party, entityInstances, target); // uses EEA
+
+        if(EntityNameFieldType.isValidName(target)) {
+            // Compile a list of all possible EntityInstances that the target may refer to.
+            checkSequenceTypes(party, entityInstances, target); // uses EEA
+            if(!hasExecutionErrors()) {
+                checkItems(party, entityInstances, target); // uses EEA
+            }
+            if(!hasExecutionErrors()) {
+                checkCompanies(party, entityInstances, target); // uses EEA
+            }
+            if(!hasExecutionErrors()) {
+                checkDivisions(party, entityInstances, target); // uses EEA
+            }
+            if(!hasExecutionErrors()) {
+                checkDepartments(party, entityInstances, target); // uses EEA
+            }
+            if(!hasExecutionErrors()) {
+                checkWarehouses(party, entityInstances, target); // uses EEA
+            }
+            if(!hasExecutionErrors()) {
+                checkLocations(party, entityInstances, target); // uses EEA
+            }
+            if(!hasExecutionErrors()) {
+                checkEmployees(party, entityInstances, target); // uses EEA
+            }
+            if(!hasExecutionErrors()) {
+                checkCustomers(party, entityInstances, target); // uses EEA
+            }
+            if(!hasExecutionErrors()) {
+                checkVendors(party, entityInstances, target); // uses EEA
+            }
+            if(!hasExecutionErrors()) {
+                checkVendorItems(party, entityInstances, target); // uses EEA
+            }
+            if(!hasExecutionErrors()) {
+                checkComponentVendors(party, entityInstances, target); // uses EEA
+            }
+            if(!hasExecutionErrors()) {
+                checkEntityTypes(party, entityInstances, target); // uses EEA
+            }
+            if(!hasExecutionErrors()) {
+                checkEntityAttributes(party, entityInstances, target); // uses EEA
+            }
+            if(!hasExecutionErrors()) {
+                checkEntityListItems(party, entityInstances, target); // uses EEA
+            }
         }
 
         var nameResult = new NameCleaner().getCleansedName(target);
@@ -733,6 +791,9 @@ public class IdentifyCommand
         }
         if(!hasExecutionErrors()) {
             searchEntityAttributes(party, entityInstances, target); // uses EEA
+        }
+        if(!hasExecutionErrors()) {
+            searchEntityListItems(party, entityInstances, target); // uses EEA
         }
 
         result.setEntityInstances(entityInstances);

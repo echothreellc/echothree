@@ -2627,13 +2627,13 @@ public class CoreControl
     public EntityListItemDetailValue getEntityListItemDetailValueByNameForUpdate(EntityAttribute entityAttribute, String entityListItemName) {
         return getEntityListItemDetailValueForUpdate(getEntityListItemByNameForUpdate(entityAttribute, entityListItemName));
     }
-    
+
     private List<EntityListItem> getEntityListItems(EntityAttribute entityAttribute, EntityPermission entityPermission) {
         List<EntityListItem> entityListItems;
-        
+
         try {
             String query = null;
-            
+
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
                 query = "SELECT _ALL_ " +
                         "FROM entitylistitems, entitylistitemdetails " +
@@ -2648,23 +2648,62 @@ public class CoreControl
             }
 
             var ps = entityListItemFactory.prepareStatement(query);
-            
+
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
-            
+
             entityListItems = entityListItemFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
-        
+
         return entityListItems;
     }
-    
+
     public List<EntityListItem> getEntityListItems(EntityAttribute entityAttribute) {
         return getEntityListItems(entityAttribute, EntityPermission.READ_ONLY);
     }
-    
+
     public List<EntityListItem> getEntityListItemsForUpdate(EntityAttribute entityAttribute) {
         return getEntityListItems(entityAttribute, EntityPermission.READ_WRITE);
+    }
+
+    private List<EntityListItem> getEntityListItemsByName(String entityListItemName, EntityPermission entityPermission) {
+        List<EntityListItem> entityListItems;
+
+        try {
+            String query = null;
+
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM entitylistitems, entitylistitemdetails " +
+                        "WHERE eli_activedetailid = elidt_entitylistitemdetailid AND elidt_entitylistitemname = ? " +
+                        "ORDER BY elidt_sortorder, elidt_entitylistitemname " +
+                        "_LIMIT_";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM entitylistitems, entitylistitemdetails " +
+                        "WHERE eli_activedetailid = elidt_entitylistitemdetailid AND elidt_entitylistitemname = ? " +
+                        "FOR UPDATE";
+            }
+
+            var ps = entityListItemFactory.prepareStatement(query);
+
+            ps.setString(1, entityListItemName);
+
+            entityListItems = entityListItemFactory.getEntitiesFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return entityListItems;
+    }
+
+    public List<EntityListItem> getEntityListItemsByName(String entityListItemName) {
+        return getEntityListItemsByName(entityListItemName, EntityPermission.READ_ONLY);
+    }
+
+    public List<EntityListItem> getEntityListItemsByNameForUpdate(String entityListItemName) {
+        return getEntityListItemsByName(entityListItemName, EntityPermission.READ_WRITE);
     }
 
     public long countEntityListItems(EntityAttribute entityAttribute) {

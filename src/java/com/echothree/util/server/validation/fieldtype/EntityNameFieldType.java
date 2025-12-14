@@ -16,10 +16,10 @@
 
 package com.echothree.util.server.validation.fieldtype;
 
-import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.form.BaseForm;
 import com.echothree.util.common.message.Message;
 import com.echothree.util.common.message.Messages;
+import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.server.validation.Patterns;
 import com.echothree.util.server.validation.Validator;
 
@@ -39,28 +39,47 @@ public class EntityNameFieldType
     
     @Override
     public String validate() {
-        var length = fieldValue.length();
-        var hadErrors = false;
+        return !isValidName(validationMessages, fieldName, fieldDefinition.getMinimumValue(), fieldDefinition.getMaximumValue(), fieldValue)? null: fieldValue;
+    }
 
-        var minimumValue = fieldDefinition.getMinimumValue();
+    // Abbreviated implementation used by the Identify UC
+    public static boolean isValidName(String fieldValue) {
+        return isValidName(null, null, null, null, fieldValue);
+    }
+
+    private static boolean isValidName(Messages validationMessages, String fieldName, Long minimumValue, Long maximumValue, String fieldValue) {
+        var length = fieldValue.length();
+        var errorMinimumLength = false;
+        var errorMaximumLength = false;
+        var errorInvalidFormat = false;
+
         if(length < (minimumValue == null? defaultMinimumLength: minimumValue)) {
-            validationMessages.add(fieldName, new Message(Validator.ERROR_MINIMUM_LENGTH, minimumValue == null? defaultMinimumLengthLong: minimumValue));
-            hadErrors = true;
+            errorMinimumLength = true;
         }
 
-        var maximumValue = fieldDefinition.getMaximumValue();
         if(length > (maximumValue == null? defaultMaximumLength: maximumValue)) {
-            validationMessages.add(fieldName, new Message(Validator.ERROR_MAXIMUM_LENGTH, maximumValue == null? defaultMaximumLengthLong: maximumValue));
-            hadErrors = true;
+            errorMaximumLength = true;
         }
 
         var m = Patterns.EntityName.matcher(fieldValue);
         if(!m.matches()) {
-            validationMessages.add(fieldName, new Message(Validator.ERROR_INVALID_FORMAT));
-            hadErrors = true;
+            errorInvalidFormat = true;
         }
-        
-        return hadErrors? null: fieldValue;
+
+        var validName = !(errorMinimumLength || errorMaximumLength || errorInvalidFormat);
+        if(!validName && validationMessages != null) {
+            if(errorMinimumLength) {
+                validationMessages.add(fieldName, new Message(Validator.ERROR_MINIMUM_LENGTH, minimumValue == null? defaultMinimumLengthLong: minimumValue));
+            }
+            if(errorMaximumLength) {
+                validationMessages.add(fieldName, new Message(Validator.ERROR_MAXIMUM_LENGTH, maximumValue == null? defaultMaximumLengthLong: maximumValue));
+            }
+            if(errorInvalidFormat) {
+                validationMessages.add(fieldName, new Message(Validator.ERROR_INVALID_FORMAT));
+            }
+        }
+
+        return validName;
     }
     
 }
