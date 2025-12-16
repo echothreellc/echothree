@@ -14,14 +14,14 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.sequence.common.form;
+package com.echothree.control.user.sequence.common.result;
 
-import com.echothree.control.user.sequence.common.spec.SequenceUniversalSpec;
+import com.echothree.util.common.command.BaseResult;
 
-public interface SetSequenceValueForm
-        extends SequenceUniversalSpec {
-    
+public interface GetSequenceValueResult
+        extends BaseResult {
+
     String getValue();
     void setValue(String value);
-
+    
 }

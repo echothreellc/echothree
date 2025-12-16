@@ -16,14 +16,14 @@
 
 package com.echothree.control.user.sequence.server.command;
 
-import com.echothree.control.user.sequence.common.form.SetSequenceValueForm;
+import com.echothree.control.user.sequence.common.form.GetSequenceValueForm;
+import com.echothree.control.user.sequence.common.result.SequenceResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceLogic;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
@@ -35,17 +35,17 @@ import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
-public class SetSequenceValueCommand
-        extends BaseSimpleCommand<SetSequenceValueForm> {
+public class GetSequenceValueCommand
+        extends BaseSimpleCommand<GetSequenceValueForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                       new SecurityRoleDefinition(SecurityRoleGroups.SequenceValue.name(), SecurityRoles.Set.name())
+                       new SecurityRoleDefinition(SecurityRoleGroups.SequenceValue.name(), SecurityRoles.Get.name())
                ))
        ));
 
@@ -53,13 +53,12 @@ public class SetSequenceValueCommand
                  new FieldDefinition("SequenceTypeName", FieldType.ENTITY_NAME, false, null, null),
                  new FieldDefinition("SequenceName", FieldType.ENTITY_NAME, false, null, null),
                  new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
-                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null),
-                 new FieldDefinition("Value", FieldType.STRING, true, 1L, 40L)
+                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
          );
     }
-    
+
     /** Creates a new instance of SetSequenceValueCommand */
-    public SetSequenceValueCommand() {
+    public GetSequenceValueCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
 
@@ -71,25 +70,16 @@ public class SetSequenceValueCommand
 
     @Override
     protected BaseResult execute() {
+        var result = SequenceResultFactory.getGetSequenceValueResult();
         var sequence = sequenceLogic.getSequenceByUniversalSpec(this, form, false);
 
         if(!hasExecutionErrors()) {
-            var value = form.getValue();
+            var sequenceValue = sequenceControl.getSequenceValue(sequence);
 
-            if(value.length() == sequence.getLastDetail().getMask().length()) {
-                var sequenceValue = sequenceControl.getSequenceValueForUpdate(sequence);
-
-                if(sequenceValue == null) {
-                    sequenceControl.createSequenceValue(sequence, value);
-                } else {
-                    sequenceValue.setValue(value);
-                }
-            } else {
-                addExecutionError(ExecutionErrors.InvalidValueLength.name());
-            }
+            result.setValue(sequenceValue.getValue());
         }
 
-        return null;
+        return result;
     }
     
 }

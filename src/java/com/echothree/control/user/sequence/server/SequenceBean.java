@@ -233,10 +233,20 @@ public class SequenceBean
     // -------------------------------------------------------------------------
     //    Sequence Values
     // -------------------------------------------------------------------------
-    
+
     @Override
     public CommandResult setSequenceValue(UserVisitPK userVisitPK, SetSequenceValueForm form) {
         return CDI.current().select(SetSequenceValueCommand.class).get().run(userVisitPK, form);
     }
-    
+
+    @Override
+    public CommandResult getSequenceValue(UserVisitPK userVisitPK, GetSequenceValueForm form) {
+        return CDI.current().select(GetSequenceValueCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult getNextSequenceValue(UserVisitPK userVisitPK, GetNextSequenceValueForm form) {
+        return CDI.current().select(GetNextSequenceValueCommand.class).get().run(userVisitPK, form);
+    }
+
 }
