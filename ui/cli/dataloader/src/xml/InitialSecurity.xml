@@ -2146,6 +2146,18 @@
                 <securityRoleDescription languageIsoName="en" description="Sequence Description" />
             </securityRole>
         </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="SequenceValue" parentSecurityRoleGroupName="SequenceComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Sequence" />
+            <securityRole securityRoleName="Set" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Sequence Value Set" />
+            </securityRole>
+            <securityRole securityRoleName="Get" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Sequence Value Get" />
+            </securityRole>
+            <securityRole securityRoleName="GetNext" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Sequence Value Get Next" />
+            </securityRole>
+        </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="ShippingComponent" parentSecurityRoleGroupName="ROOT" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Shipping Component" />
         </securityRoleGroup>
@@ -8650,6 +8662,9 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="Sequence" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Sequence" securityRoleName="Choices" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Sequence" securityRoleName="Description" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="SequenceValue" securityRoleName="Set" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="SequenceValue" securityRoleName="Get" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="SequenceValue" securityRoleName="GetNext" />
             <partySecurityRoleTemplateRole securityRoleGroupName="ShipmentTypeShippingMethod" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Shipping" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="ShippingMethod" securityRoleName="Create" />

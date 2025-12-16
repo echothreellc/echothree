@@ -323,6 +323,7 @@ public enum SecurityRoleGroups {
     SequenceChecksumType,
     SequenceEncoderType,
     SequenceType,
+    SequenceValue,
     Server,
     ServerService,
     Service,

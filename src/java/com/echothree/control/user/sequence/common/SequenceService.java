@@ -130,5 +130,9 @@ public interface SequenceService
     // -------------------------------------------------------------------------
     
     CommandResult setSequenceValue(UserVisitPK userVisitPK, SetSequenceValueForm form);
-    
+
+    CommandResult getSequenceValue(UserVisitPK userVisitPK, GetSequenceValueForm form);
+
+    CommandResult getNextSequenceValue(UserVisitPK userVisitPK, GetNextSequenceValueForm form);
+
 }
