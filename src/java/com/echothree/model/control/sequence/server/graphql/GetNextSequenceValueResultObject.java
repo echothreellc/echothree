@@ -36,9 +36,8 @@ public class GetNextSequenceValueResultObject
 
     @GraphQLField
     @GraphQLDescription("value")
-    @GraphQLNonNull
     public String getValue() {
-        return result.getValue();
+        return result == null ? null : result.getValue();
     }
 
 }

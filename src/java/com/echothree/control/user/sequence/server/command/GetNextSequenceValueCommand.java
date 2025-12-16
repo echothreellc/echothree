@@ -45,7 +45,7 @@ public class GetNextSequenceValueCommand
        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                       new SecurityRoleDefinition(SecurityRoleGroups.Sequence.name(), SecurityRoles.Edit.name())
+                       new SecurityRoleDefinition(SecurityRoleGroups.SequenceValue.name(), SecurityRoles.GetNext.name())
                ))
        ));
 
