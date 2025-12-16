@@ -197,6 +197,7 @@ import com.echothree.control.user.sequence.common.result.CreateSequenceResult;
 import com.echothree.control.user.sequence.common.result.CreateSequenceTypeResult;
 import com.echothree.control.user.sequence.common.result.EditSequenceResult;
 import com.echothree.control.user.sequence.common.result.EditSequenceTypeResult;
+import com.echothree.control.user.sequence.common.result.GetNextSequenceValueResult;
 import com.echothree.control.user.shipment.common.ShipmentUtil;
 import com.echothree.control.user.shipment.common.result.CreateFreeOnBoardResult;
 import com.echothree.control.user.shipment.common.result.EditFreeOnBoardResult;
@@ -256,6 +257,7 @@ import com.echothree.model.control.search.server.graphql.SearchItemsResultObject
 import com.echothree.model.control.search.server.graphql.SearchShippingMethodsResultObject;
 import com.echothree.model.control.search.server.graphql.SearchVendorsResultObject;
 import com.echothree.model.control.search.server.graphql.SearchWarehousesResultObject;
+import com.echothree.model.control.sequence.server.graphql.GetNextSequenceValueResultObject;
 import com.echothree.util.common.command.EditMode;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLID;
@@ -1871,8 +1873,9 @@ public interface GraphQlMutations {
     @GraphQLRelayMutation
     @GraphQLName("setSequenceValue")
     static MutationResultObject setSequenceValue(final DataFetchingEnvironment env,
-            @GraphQLName("sequenceTypeName") @GraphQLNonNull final String sequenceTypeName,
-            @GraphQLName("sequenceName") @GraphQLNonNull final String sequenceName,
+            @GraphQLName("sequenceTypeName") final String sequenceTypeName,
+            @GraphQLName("sequenceName") final String sequenceName,
+            @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("value") @GraphQLNonNull final String value) {
         var mutationResultObject = new MutationResultObject();
 
@@ -1881,10 +1884,40 @@ public interface GraphQlMutations {
 
             commandForm.setSequenceTypeName(sequenceTypeName);
             commandForm.setSequenceName(sequenceName);
+            commandForm.setUuid(id);
             commandForm.setValue(value);
 
             var commandResult = SequenceUtil.getHome().setSequenceValue(BaseGraphQl.getUserVisitPK(env), commandForm);
             mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    @GraphQLName("nextSequenceValue")
+    static GetNextSequenceValueResultObject nextSequenceValue(final DataFetchingEnvironment env,
+            @GraphQLName("sequenceTypeName") final String sequenceTypeName,
+            @GraphQLName("sequenceName") final String sequenceName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        var mutationResultObject = new GetNextSequenceValueResultObject();
+
+        try {
+            var commandForm = SequenceUtil.getHome().getGetNextSequenceValueForm();
+
+            commandForm.setSequenceTypeName(sequenceTypeName);
+            commandForm.setSequenceName(sequenceName);
+            commandForm.setUuid(id);
+
+            var commandResult = SequenceUtil.getHome().getNextSequenceValue(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                mutationResultObject.setGetNextSequenceValueResult((GetNextSequenceValueResult)commandResult.getExecutionResult().getResult());
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }

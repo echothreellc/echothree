@@ -319,6 +319,7 @@ import com.echothree.control.user.selector.server.command.GetSelectorTypeCommand
 import com.echothree.control.user.selector.server.command.GetSelectorTypesCommand;
 import com.echothree.control.user.selector.server.command.GetSelectorsCommand;
 import com.echothree.control.user.sequence.common.SequenceUtil;
+import com.echothree.control.user.sequence.common.result.GetSequenceValueResult;
 import com.echothree.control.user.sequence.server.command.GetSequenceChecksumTypeCommand;
 import com.echothree.control.user.sequence.server.command.GetSequenceChecksumTypesCommand;
 import com.echothree.control.user.sequence.server.command.GetSequenceCommand;
@@ -579,6 +580,7 @@ import com.echothree.model.control.security.server.graphql.SecurityRoleObject;
 import com.echothree.model.control.selector.server.graphql.SelectorKindObject;
 import com.echothree.model.control.selector.server.graphql.SelectorObject;
 import com.echothree.model.control.selector.server.graphql.SelectorTypeObject;
+import com.echothree.model.control.sequence.server.graphql.GetSequenceValueResultObject;
 import com.echothree.model.control.sequence.server.graphql.SequenceChecksumTypeObject;
 import com.echothree.model.control.sequence.server.graphql.SequenceEncoderTypeObject;
 import com.echothree.model.control.sequence.server.graphql.SequenceObject;
@@ -2328,7 +2330,7 @@ public interface GraphQlQueries {
 
         return data;
     }
-    
+
     @GraphQLField
     @GraphQLName("sequence")
     static SequenceObject sequence(final DataFetchingEnvironment env,
@@ -2350,6 +2352,33 @@ public interface GraphQlQueries {
         }
 
         return sequence == null ? null : new SequenceObject(sequence);
+    }
+
+    @GraphQLField
+    @GraphQLName("sequenceValue")
+    static GetSequenceValueResultObject sequenceValue(final DataFetchingEnvironment env,
+            @GraphQLName("sequenceTypeName") final String sequenceTypeName,
+            @GraphQLName("sequenceName") final String sequenceName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        GetSequenceValueResultObject result = null;
+
+        try {
+            var commandForm = SequenceUtil.getHome().getGetSequenceValueForm();
+
+            commandForm.setSequenceTypeName(sequenceTypeName);
+            commandForm.setSequenceName(sequenceName);
+            commandForm.setUuid(id);
+
+            var commandResult = SequenceUtil.getHome().getSequenceValue(BaseGraphQl.getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                result = new GetSequenceValueResultObject((GetSequenceValueResult)commandResult.getExecutionResult().getResult());
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return result;
     }
 
     @GraphQLField

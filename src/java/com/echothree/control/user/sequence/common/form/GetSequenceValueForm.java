@@ -18,10 +18,9 @@ package com.echothree.control.user.sequence.common.form;
 
 import com.echothree.control.user.sequence.common.spec.SequenceUniversalSpec;
 
-public interface SetSequenceValueForm
+public interface GetSequenceValueForm
         extends SequenceUniversalSpec {
     
-    String getValue();
-    void setValue(String value);
+    // Nothing additional beyond SequenceUniversalSpec
 
 }
