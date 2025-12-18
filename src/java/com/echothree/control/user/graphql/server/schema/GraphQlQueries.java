@@ -11028,17 +11028,19 @@ public interface GraphQlQueries {
         CountingPaginatedData<TransactionTypeObject> data;
 
         try {
-            var accountingControl = Session.getModelController(AccountingControl.class);
-            var totalCount = accountingControl.countTransactionTypes();
+            var commandForm = AccountingUtil.getHome().getGetTransactionTypesForm();
+            var command = CDI.current().select(GetTransactionTypesCommand.class).get();
 
-            try(var objectLimiter = new ObjectLimiter(env, TransactionTypeConstants.COMPONENT_VENDOR_NAME, TransactionTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var commandForm = AccountingUtil.getHome().getGetTransactionTypesForm();
-                var entities = CDI.current().select(GetTransactionTypesCommand.class).get().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, TransactionTypeConstants.COMPONENT_VENDOR_NAME, TransactionTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
 
-                if(entities == null) {
-                    data = Connections.emptyConnection();
-                } else {
-                    var transactionTypes = entities.stream().map(TransactionTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+                    var transactionTypes = entities.stream()
+                            .map(TransactionTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, transactionTypes);
                 }
