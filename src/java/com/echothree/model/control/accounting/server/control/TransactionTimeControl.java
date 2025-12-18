@@ -202,7 +202,8 @@ public class TransactionTimeControl
                 "SELECT _ALL_ " +
                 "FROM transactiontimetypes, transactiontimetypedetails " +
                 "WHERE txntimtyp_activedetailid = txntimtypdt_transactiontimetypedetailid " +
-                "ORDER BY txntimtypdt_sortorder, txntimtypdt_transactiontimetypename");
+                "ORDER BY txntimtypdt_sortorder, txntimtypdt_transactiontimetypename " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
                 "FROM transactiontimetypes, transactiontimetypedetails " +
