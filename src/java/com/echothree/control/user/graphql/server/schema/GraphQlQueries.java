@@ -418,7 +418,6 @@ import com.echothree.control.user.workflow.server.command.GetWorkflowStepTypeCom
 import com.echothree.control.user.workflow.server.command.GetWorkflowStepTypesCommand;
 import com.echothree.control.user.workflow.server.command.GetWorkflowStepsCommand;
 import com.echothree.control.user.workflow.server.command.GetWorkflowsCommand;
-import com.echothree.model.control.accounting.server.control.TransactionTimeControl;
 import com.echothree.model.control.accounting.server.graphql.CurrencyObject;
 import com.echothree.model.control.accounting.server.graphql.GlAccountCategoryObject;
 import com.echothree.model.control.accounting.server.graphql.GlAccountClassObject;
@@ -10976,17 +10975,19 @@ public interface GraphQlQueries {
         CountingPaginatedData<TransactionTimeTypeObject> data;
 
         try {
-            var transactionTimeControl = Session.getModelController(TransactionTimeControl.class);
-            var totalCount = transactionTimeControl.countTransactionTimeTypes();
+            var commandForm = AccountingUtil.getHome().getGetTransactionTimeTypesForm();
+            var command = CDI.current().select(GetTransactionTimeTypesCommand.class).get();
 
-            try(var objectLimiter = new ObjectLimiter(env, TransactionTimeTypeConstants.COMPONENT_VENDOR_NAME, TransactionTimeTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var commandForm = AccountingUtil.getHome().getGetTransactionTimeTypesForm();
-                var entities = CDI.current().select(GetTransactionTimeTypesCommand.class).get().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, TransactionTimeTypeConstants.COMPONENT_VENDOR_NAME, TransactionTimeTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
 
-                if(entities == null) {
-                    data = Connections.emptyConnection();
-                } else {
-                    var transactionTimeTypes = entities.stream().map(TransactionTimeTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+                    var transactionTimeTypes = entities.stream()
+                            .map(TransactionTimeTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, transactionTimeTypes);
                 }
