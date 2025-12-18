@@ -594,7 +594,6 @@ import com.echothree.model.control.tag.server.graphql.TagScopeEntityTypeObject;
 import com.echothree.model.control.tag.server.graphql.TagScopeObject;
 import com.echothree.model.control.term.server.graphql.TermObject;
 import com.echothree.model.control.term.server.graphql.TermTypeObject;
-import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.uom.server.graphql.UnitOfMeasureKindObject;
 import com.echothree.model.control.uom.server.graphql.UnitOfMeasureKindUseObject;
 import com.echothree.model.control.uom.server.graphql.UnitOfMeasureKindUseTypeObject;
@@ -6133,16 +6132,16 @@ public interface GraphQlQueries {
         CountingPaginatedData<UnitOfMeasureKindUseTypeObject> data;
 
         try {
-            var uomControl = Session.getModelController(UomControl.class);
-            var totalCount = uomControl.countUnitOfMeasureKindUseType();
+            var commandForm = UomUtil.getHome().getGetUnitOfMeasureKindUseTypesForm();
+            var command = CDI.current().select(GetUnitOfMeasureKindUseTypesCommand.class).get();
 
-            try(var objectLimiter = new ObjectLimiter(env, UnitOfMeasureKindUseTypeConstants.COMPONENT_VENDOR_NAME, UnitOfMeasureKindUseTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var commandForm = UomUtil.getHome().getGetUnitOfMeasureKindUseTypesForm();
-                var entities = CDI.current().select(GetUnitOfMeasureKindUseTypesCommand.class).get().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, UnitOfMeasureKindUseTypeConstants.COMPONENT_VENDOR_NAME, UnitOfMeasureKindUseTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
 
-                if(entities == null) {
-                    data = Connections.emptyConnection();
-                } else {
                     var objects = entities.stream()
                             .map(UnitOfMeasureKindUseTypeObject::new)
                             .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
