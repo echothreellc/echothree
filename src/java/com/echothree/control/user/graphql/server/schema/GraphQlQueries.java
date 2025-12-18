@@ -418,7 +418,6 @@ import com.echothree.control.user.workflow.server.command.GetWorkflowStepTypeCom
 import com.echothree.control.user.workflow.server.command.GetWorkflowStepTypesCommand;
 import com.echothree.control.user.workflow.server.command.GetWorkflowStepsCommand;
 import com.echothree.control.user.workflow.server.command.GetWorkflowsCommand;
-import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.accounting.server.control.TransactionTimeControl;
 import com.echothree.model.control.accounting.server.graphql.CurrencyObject;
 import com.echothree.model.control.accounting.server.graphql.GlAccountCategoryObject;
@@ -11197,17 +11196,19 @@ public interface GraphQlQueries {
         CountingPaginatedData<TransactionGroupObject> data;
 
         try {
-            var accountingControl = Session.getModelController(AccountingControl.class);
-            var totalCount = accountingControl.countTransactionGroups();
+            var commandForm = AccountingUtil.getHome().getGetTransactionGroupsForm();
+            var command = CDI.current().select(GetTransactionGroupsCommand.class).get();
 
-            try(var objectLimiter = new ObjectLimiter(env, TransactionGroupConstants.COMPONENT_VENDOR_NAME, TransactionGroupConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var commandForm = AccountingUtil.getHome().getGetTransactionGroupsForm();
-                var entities = CDI.current().select(GetTransactionGroupsCommand.class).get().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, TransactionGroupConstants.COMPONENT_VENDOR_NAME, TransactionGroupConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
 
-                if(entities == null) {
-                    data = Connections.emptyConnection();
-                } else {
-                    var transactionGroups = entities.stream().map(TransactionGroupObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+                    var transactionGroups = entities.stream()
+                            .map(TransactionGroupObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, transactionGroups);
                 }
