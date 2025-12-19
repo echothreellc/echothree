@@ -1754,10 +1754,11 @@ public interface GraphQlMutations {
     static MutationResultWithIdObject createSequence(final DataFetchingEnvironment env,
             @GraphQLName("sequenceTypeName") @GraphQLNonNull final String sequenceTypeName,
             @GraphQLName("sequenceName") @GraphQLNonNull final String sequenceName,
+            @GraphQLName("mask") @GraphQLNonNull final String mask,
             @GraphQLName("chunkSize") final String chunkSize,
             @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
             @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
-            @GraphQLName("value") @GraphQLNonNull final String value,
+            @GraphQLName("value") final String value,
             @GraphQLName("description") final String description) {
         var mutationResultObject = new MutationResultWithIdObject();
 
@@ -1766,6 +1767,7 @@ public interface GraphQlMutations {
 
             commandForm.setSequenceName(sequenceName);
             commandForm.setSequenceTypeName(sequenceTypeName);
+            commandForm.setMask(mask);
             commandForm.setChunkSize(chunkSize);
             commandForm.setIsDefault(isDefault);
             commandForm.setSortOrder(sortOrder);
