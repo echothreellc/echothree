@@ -1,5 +1,24 @@
 # Changelog
 
+## 2025-12-21-01
+
+* Apache Lucene 10.3.2 Upgrade [1648](https://gitlab.echothree.com/echothree/echothree/-/issues/1648)
+* cucumber-java8/cucumber-junit 7.33.0 Upgrade [1649](https://gitlab.echothree.com/echothree/echothree/-/issues/1649)
+* unitOfMeasureKindUseTypes Query Needs Updated [1653](https://gitlab.echothree.com/echothree/echothree/-/issues/1653)
+* transactionTypes Query Needs Updated [1654](https://gitlab.echothree.com/echothree/echothree/-/issues/1654)
+* transactionGroups Query Needs Updated [1655](https://gitlab.echothree.com/echothree/echothree/-/issues/1655)
+* ClassGraph 4.8.184 Upgrade [1663](https://gitlab.echothree.com/echothree/echothree/-/issues/1663)
+* Inject Session Into Factories [1667](https://gitlab.echothree.com/echothree/echothree/-/issues/1667)
+* Stop Passing Session Into Factories [1668](https://gitlab.echothree.com/echothree/echothree/-/issues/1668)
+* Extend Identify UC to Search Component Vendors [1669](https://gitlab.echothree.com/echothree/echothree/-/issues/1669)
+* Extend Identify UC to Search Entity Types [1670](https://gitlab.echothree.com/echothree/echothree/-/issues/1670)
+* Extend Identify UC to Search Entity Attributes [1671](https://gitlab.echothree.com/echothree/echothree/-/issues/1671)
+* Extend Identify UC to Search Entity List Items [1672](https://gitlab.echothree.com/echothree/echothree/-/issues/1672)
+* BaseDatabaseQuery Fails Calling getDeclaredMethod(...) for getEntityFromPK(...) [1685](https://gitlab.echothree.com/echothree/echothree/-/issues/1685)
+* Add Queries and Mutations for Get, Set, and Get Next Ops for Sequence Values [1686](https://gitlab.echothree.com/echothree/echothree/-/issues/1686)
+* Convert GetTransactionTimeTypes UC to Use BasePaginatedMultipleEntitiesCommand [1687](https://gitlab.echothree.com/echothree/echothree/-/issues/1687)
+* createSequence Mutation Missing Mask Parameter, Value Should Be Optional [1688](https://gitlab.echothree.com/echothree/echothree/-/issues/1688)
+
 ## 2025-12-07-01
 
 * Convert GetOfferNameElements UC to Use BasePaginatedMultipleEntitiesCommand [1127](https://gitlab.echothree.com/echothree/echothree/-/issues/1127)
