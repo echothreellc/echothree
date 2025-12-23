@@ -5,7 +5,7 @@ Echo Three, LLC (https://www.echothree.com/).
 
 Contributors and Copyright holders:
 
-* Copyright 2002-2025 Echo Three, LLC
+* Copyright 2002-2026 Echo Three, LLC
 
 # Third-Party Works Included in the Echo Three Repository
 
