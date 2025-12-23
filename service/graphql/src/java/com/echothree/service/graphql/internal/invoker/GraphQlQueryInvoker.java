@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 // Copyright 2016 Yurii Rashkovskii and Contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
