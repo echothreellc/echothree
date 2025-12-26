@@ -25,6 +25,7 @@ import com.echothree.model.control.core.common.transfer.EntityInstanceTransfer;
 import com.echothree.model.control.core.common.transfer.EntityTypeTransfer;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.core.server.search.ComponentVendorSearchEvaluator;
+import com.echothree.model.control.core.server.search.EntityAttributeGroupSearchEvaluator;
 import com.echothree.model.control.core.server.search.EntityAttributeSearchEvaluator;
 import com.echothree.model.control.core.server.search.EntityListItemSearchEvaluator;
 import com.echothree.model.control.core.server.search.EntityTypeSearchEvaluator;
@@ -312,6 +313,21 @@ public class IdentifyCommand
             entityListItems.stream().map((entityListItem) -> entityInstanceControl.getEntityInstanceByBasePK(entityListItem.getPrimaryKey())).map((entityInstance) -> EntityNamesUtils.getInstance().getEntityNames(entityInstance)).forEach((entityInstanceAndNames) -> {
                 entityInstances.add(fillInEntityInstance(entityInstanceAndNames));
             });
+        }
+    }
+
+    private void checkEntityAttributeGroups(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
+        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
+                SecurityRoleGroups.EntityAttributeGroup.name(), SecurityRoles.Search.name())) {
+            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+            var entityAttributeGroup = coreControl.getEntityAttributeGroupByName(target);
+
+            if(entityAttributeGroup != null) {
+                var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(entityAttributeGroup.getPrimaryKey());
+                var entityInstanceAndNames = EntityNamesUtils.getInstance().getEntityNames(entityInstance);
+
+                entityInstances.add(fillInEntityInstance(entityInstanceAndNames));
+            }
         }
     }
 
@@ -699,6 +715,45 @@ public class IdentifyCommand
         }
     }
 
+    private void executeEntityAttributeGroupSearch(final UserVisit userVisit, final Set<EntityInstanceTransfer> entityInstances,
+            final SearchLogic searchLogic, final SearchKind searchKind, final SearchType searchType,
+            final String q) {
+        var componentVendorSearchEvaluator = new EntityAttributeGroupSearchEvaluator(userVisit, null, searchType,
+                searchLogic.getDefaultSearchDefaultOperator(null),
+                searchLogic.getDefaultSearchSortOrder(null, searchKind),
+                searchLogic.getDefaultSearchSortDirection(null),
+                null);
+
+        componentVendorSearchEvaluator.setQ(null, q);
+
+        // Avoid using the real ExecutionErrorAccumulator in order to avoid either throwing an Exception or
+        // accumulating errors for this UC.
+        var dummyExecutionErrorAccumulator = new DummyExecutionErrorAccumulator();
+        componentVendorSearchEvaluator.execute(dummyExecutionErrorAccumulator);
+
+        if(!dummyExecutionErrorAccumulator.hasExecutionErrors()) {
+            addSearchResults(userVisit, searchType, entityInstances);
+        }
+    }
+
+    private void searchEntityAttributeGroups(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
+        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
+                SecurityRoleGroups.EntityAttributeGroup.name(), SecurityRoles.Search.name())) {
+            var searchLogic = SearchLogic.getInstance();
+            var searchKind = searchLogic.getSearchKindByName(this, SearchKinds.ENTITY_TYPE.name());
+
+            if(!hasExecutionErrors()) {
+                var searchType = searchLogic.getSearchTypeByName(this, searchKind, SearchTypes.IDENTIFY.name());
+
+                if(!hasExecutionErrors()) {
+                    var userVisit = getUserVisit();
+
+                    executeEntityAttributeGroupSearch(userVisit, entityInstances, searchLogic, searchKind, searchType, target);
+                }
+            }
+        }
+    }
+
     // Add results from any of the BaseSearchEvaluators to the entityInstances.
     private void addSearchResults(final UserVisit userVisit, final SearchType searchType,
             final Set<EntityInstanceTransfer> entityInstances) {
@@ -765,6 +820,9 @@ public class IdentifyCommand
             if(!hasExecutionErrors()) {
                 checkEntityListItems(party, entityInstances, target); // uses EEA
             }
+            if(!hasExecutionErrors()) {
+                checkEntityAttributeGroups(party, entityInstances, target); // uses EEA
+            }
         }
 
         var nameResult = new NameCleaner().getCleansedName(target);
@@ -794,6 +852,9 @@ public class IdentifyCommand
         }
         if(!hasExecutionErrors()) {
             searchEntityListItems(party, entityInstances, target); // uses EEA
+        }
+        if(!hasExecutionErrors()) {
+            searchEntityAttributeGroups(party, entityInstances, target); // uses EEA
         }
 
         result.setEntityInstances(entityInstances);
