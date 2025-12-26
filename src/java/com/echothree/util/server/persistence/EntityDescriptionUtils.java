@@ -212,6 +212,11 @@ public class EntityDescriptionUtils {
                     var entityListItem = coreControl.getEntityListItemByEntityInstance(entityInstance);
 
                     description = entityListItem == null ? null : coreControl.getBestEntityListItemDescription(entityListItem, getLanguage(userVisit));
+                } else if(entityTypeName.equals(EntityTypes.EntityAttributeGroup.name())) {
+                    var coreControl = Session.getModelController(CoreControl.class);
+                    var entityAttributeGroup = coreControl.getEntityAttributeGroupByEntityInstance(entityInstance);
+
+                    description = entityAttributeGroup == null ? null : coreControl.getBestEntityAttributeGroupDescription(entityAttributeGroup, getLanguage(userVisit));
                 }
             }
         }

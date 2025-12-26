@@ -29,6 +29,7 @@ import com.echothree.model.data.communication.server.factory.CommunicationEventF
 import com.echothree.model.data.contactlist.common.pk.PartyContactListPK;
 import com.echothree.model.data.contactlist.server.factory.PartyContactListFactory;
 import com.echothree.model.data.core.common.pk.ComponentVendorPK;
+import com.echothree.model.data.core.common.pk.EntityAttributeGroupPK;
 import com.echothree.model.data.core.common.pk.EntityAttributePK;
 import com.echothree.model.data.core.common.pk.EntityListItemPK;
 import com.echothree.model.data.core.common.pk.EntityTypePK;
@@ -36,6 +37,7 @@ import com.echothree.model.data.core.common.pk.MimeTypePK;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.factory.ComponentVendorFactory;
 import com.echothree.model.data.core.server.factory.EntityAttributeFactory;
+import com.echothree.model.data.core.server.factory.EntityAttributeGroupFactory;
 import com.echothree.model.data.core.server.factory.EntityListItemFactory;
 import com.echothree.model.data.core.server.factory.EntityTypeFactory;
 import com.echothree.model.data.core.server.factory.MimeTypeFactory;
@@ -299,6 +301,17 @@ public class EntityNamesUtils {
             names.put(Names.EntityListItemName.name(), entityListItemDetail.getEntityListItemName());
 
             return new EntityNames(Targets.EntityListItem.name(), names);
+        });
+
+        nameTranslators.put(EntityTypes.EntityAttributeGroup.name(), (final EntityInstance entityInstance) -> {
+            var entityAttributeGroup = EntityAttributeGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY,
+                    new EntityAttributeGroupPK(entityInstance.getEntityUniqueId()));
+            var names = new MapWrapper<String>(1);
+            var entityAttributeGroupDetail = entityAttributeGroup.getLastDetail();
+
+            names.put(Names.EntityAttributeGroupName.name(), entityAttributeGroupDetail.getEntityAttributeGroupName());
+
+            return new EntityNames(Targets.EntityAttributeGroup.name(), names);
         });
 
         nameTranslators = Collections.unmodifiableMap(nameTranslators);

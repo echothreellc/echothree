@@ -1,7 +1,7 @@
 <%@ include file="taglibs.jsp" %>
 
 <c:if test="${targetForEditSetupComplete == null}">
-    <et:checkSecurityRoles securityRoles="Item.Edit:ItemDescription.Edit:ComponentVendor.Edit:EntityType.Edit:EntityAttribute.Edit:EntityListItem.Edit" />
+    <et:checkSecurityRoles securityRoles="Item.Edit:ItemDescription.Edit:ComponentVendor.Edit:EntityType.Edit:EntityAttribute.Edit:EntityListItem.Edit:EntityAttributeGroup.Edit" />
     <c:set var="targetForEditSetupComplete" value="true"/>
 </c:if>
 
@@ -70,6 +70,13 @@
                     <c:param name="EntityTypeName" value="${entityInstance.entityNames.names.map.EntityTypeName}" />
                     <c:param name="EntityAttributeName" value="${entityInstance.entityNames.names.map.EntityAttributeName}" />
                     <c:param name="EntityListItemName" value="${entityInstance.entityNames.names.map.EntityListItemName}" />
+                </c:url>
+            </et:hasSecurityRole>
+        </c:when>
+        <c:when test="${entityInstance.entityNames.target == 'EntityAttributeGroup'}">
+            <et:hasSecurityRole securityRole="EntityAttributeGroup.Edit">
+                <c:url var="targetUrl" value="/action/Core/EntityAttributeGroup/Edit">
+                    <c:param name="EntityAttributeGroupName" value="${entityInstance.entityNames.names.map.EntityAttributeGroupName}" />
                 </c:url>
             </et:hasSecurityRole>
         </c:when>
