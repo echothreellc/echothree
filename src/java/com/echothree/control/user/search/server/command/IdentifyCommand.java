@@ -23,8 +23,10 @@ import com.echothree.model.control.core.common.CoreProperties;
 import com.echothree.model.control.core.common.transfer.ComponentVendorTransfer;
 import com.echothree.model.control.core.common.transfer.EntityInstanceTransfer;
 import com.echothree.model.control.core.common.transfer.EntityTypeTransfer;
+import com.echothree.model.control.core.server.control.EntityAliasControl;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.core.server.search.ComponentVendorSearchEvaluator;
+import com.echothree.model.control.core.server.search.EntityAliasTypeSearchEvaluator;
 import com.echothree.model.control.core.server.search.EntityAttributeGroupSearchEvaluator;
 import com.echothree.model.control.core.server.search.EntityAttributeSearchEvaluator;
 import com.echothree.model.control.core.server.search.EntityListItemSearchEvaluator;
@@ -62,12 +64,11 @@ import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.persistence.translator.EntityInstanceAndNames;
 import com.echothree.util.server.string.NameCleaner;
 import com.echothree.util.server.validation.fieldtype.EntityNameFieldType;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class IdentifyCommand
@@ -76,15 +77,18 @@ public class IdentifyCommand
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Target", FieldType.STRING, true, null, null)
-                ));
+        );
     }
     
     /** Creates a new instance of IdentifyCommand */
     public IdentifyCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
     }
+
+    @Inject
+    EntityAliasControl entityAliasControl;
 
     @Override
     protected void setupSession() {
@@ -287,6 +291,18 @@ public class IdentifyCommand
             var entityTypes = entityTypeControl.getEntityTypesByName(target);
 
             entityTypes.stream().map((entityType) -> entityInstanceControl.getEntityInstanceByBasePK(entityType.getPrimaryKey())).map((entityInstance) -> EntityNamesUtils.getInstance().getEntityNames(entityInstance)).forEach((entityInstanceAndNames) -> {
+                entityInstances.add(fillInEntityInstance(entityInstanceAndNames));
+            });
+        }
+    }
+
+    private void checkEntityAliasTypes(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
+        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
+                SecurityRoleGroups.EntityAliasType.name(), SecurityRoles.Search.name())) {
+            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+            var entityAliasTypes = entityAliasControl.getEntityAliasTypesByName(target);
+
+            entityAliasTypes.stream().map((entityAliasType) -> entityInstanceControl.getEntityInstanceByBasePK(entityAliasType.getPrimaryKey())).map((entityInstance) -> EntityNamesUtils.getInstance().getEntityNames(entityInstance)).forEach((entityInstanceAndNames) -> {
                 entityInstances.add(fillInEntityInstance(entityInstanceAndNames));
             });
         }
@@ -637,6 +653,45 @@ public class IdentifyCommand
         }
     }
 
+    private void executeEntityAliasTypeSearch(final UserVisit userVisit, final Set<EntityInstanceTransfer> entityInstances,
+            final SearchLogic searchLogic, final SearchKind searchKind, final SearchType searchType,
+            final String q) {
+        var componentVendorSearchEvaluator = new EntityAliasTypeSearchEvaluator(userVisit, null, searchType,
+                searchLogic.getDefaultSearchDefaultOperator(null),
+                searchLogic.getDefaultSearchSortOrder(null, searchKind),
+                searchLogic.getDefaultSearchSortDirection(null),
+                null);
+
+        componentVendorSearchEvaluator.setQ(null, q);
+
+        // Avoid using the real ExecutionErrorAccumulator in order to avoid either throwing an Exception or
+        // accumulating errors for this UC.
+        var dummyExecutionErrorAccumulator = new DummyExecutionErrorAccumulator();
+        componentVendorSearchEvaluator.execute(dummyExecutionErrorAccumulator);
+
+        if(!dummyExecutionErrorAccumulator.hasExecutionErrors()) {
+            addSearchResults(userVisit, searchType, entityInstances);
+        }
+    }
+
+    private void searchEntityAliasTypes(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
+        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, party,
+                SecurityRoleGroups.EntityAliasType.name(), SecurityRoles.Search.name())) {
+            var searchLogic = SearchLogic.getInstance();
+            var searchKind = searchLogic.getSearchKindByName(this, SearchKinds.ENTITY_TYPE.name());
+
+            if(!hasExecutionErrors()) {
+                var searchType = searchLogic.getSearchTypeByName(this, searchKind, SearchTypes.IDENTIFY.name());
+
+                if(!hasExecutionErrors()) {
+                    var userVisit = getUserVisit();
+
+                    executeEntityAliasTypeSearch(userVisit, entityInstances, searchLogic, searchKind, searchType, target);
+                }
+            }
+        }
+    }
+
     private void executeEntityAttributeSearch(final UserVisit userVisit, final Set<EntityInstanceTransfer> entityInstances,
             final SearchLogic searchLogic, final SearchKind searchKind, final SearchType searchType,
             final String q) {
@@ -815,6 +870,9 @@ public class IdentifyCommand
                 checkEntityTypes(party, entityInstances, target); // uses EEA
             }
             if(!hasExecutionErrors()) {
+                checkEntityAliasTypes(party, entityInstances, target); // uses EEA
+            }
+            if(!hasExecutionErrors()) {
                 checkEntityAttributes(party, entityInstances, target); // uses EEA
             }
             if(!hasExecutionErrors()) {
@@ -846,6 +904,9 @@ public class IdentifyCommand
         }
         if(!hasExecutionErrors()) {
             searchEntityTypes(party, entityInstances, target); // uses EEA
+        }
+        if(!hasExecutionErrors()) {
+            searchEntityAliasTypes(party, entityInstances, target); // uses EEA
         }
         if(!hasExecutionErrors()) {
             searchEntityAttributes(party, entityInstances, target); // uses EEA

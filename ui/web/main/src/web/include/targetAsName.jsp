@@ -75,6 +75,9 @@
         <c:when test="${entityInstance.entityNames.target == 'EntityType'}">
             <c:set var="targetNames" value="${entityInstance.entityNames.names.map.ComponentVendorName}, ${entityInstance.entityNames.names.map.EntityTypeName}" />
         </c:when>
+        <c:when test="${entityInstance.entityNames.target == 'EntityAliasType'}">
+            <c:set var="targetNames" value="${entityInstance.entityNames.names.map.ComponentVendorName}, ${entityInstance.entityNames.names.map.EntityTypeName}, ${entityInstance.entityNames.names.map.EntityAliasTypeName}" />
+        </c:when>
         <c:when test="${entityInstance.entityNames.target == 'EntityAttribute'}">
             <c:set var="targetNames" value="${entityInstance.entityNames.names.map.ComponentVendorName}, ${entityInstance.entityNames.names.map.EntityTypeName}, ${entityInstance.entityNames.names.map.EntityAttributeName}" />
         </c:when>

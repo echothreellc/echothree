@@ -1,7 +1,7 @@
 <%@ include file="taglibs.jsp" %>
 
 <c:if test="${targetForEditSetupComplete == null}">
-    <et:checkSecurityRoles securityRoles="Item.Edit:ItemDescription.Edit:ComponentVendor.Edit:EntityType.Edit:EntityAttribute.Edit:EntityListItem.Edit:EntityAttributeGroup.Edit" />
+    <et:checkSecurityRoles securityRoles="Item.Edit:ItemDescription.Edit:ComponentVendor.Edit:EntityType.Edit:EntityAliasType.Edit:EntityAttribute.Edit:EntityListItem.Edit:EntityAttributeGroup.Edit" />
     <c:set var="targetForEditSetupComplete" value="true"/>
 </c:if>
 
@@ -51,6 +51,15 @@
                 <c:url var="targetUrl" value="/action/Core/EntityType/Edit">
                     <c:param name="ComponentVendorName" value="${entityInstance.entityNames.names.map.ComponentVendorName}" />
                     <c:param name="EntityTypeName" value="${entityInstance.entityNames.names.map.EntityTypeName}" />
+                </c:url>
+            </et:hasSecurityRole>
+        </c:when>
+        <c:when test="${entityInstance.entityNames.target == 'EntityAliasType'}">
+            <et:hasSecurityRole securityRole="EntityAliasType.Edit">
+                <c:url var="targetUrl" value="/action/Core/EntityAliasType/Edit">
+                    <c:param name="ComponentVendorName" value="${entityInstance.entityNames.names.map.ComponentVendorName}" />
+                    <c:param name="EntityTypeName" value="${entityInstance.entityNames.names.map.EntityTypeName}" />
+                    <c:param name="EntityAliasTypeName" value="${entityInstance.entityNames.names.map.EntityAliasTypeName}" />
                 </c:url>
             </et:hasSecurityRole>
         </c:when>

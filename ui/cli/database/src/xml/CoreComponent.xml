@@ -689,11 +689,15 @@
                             <indexColumn name="EntityAliasTypeName" />
                             <indexColumn name="ThruTime" />
                         </index>
-                        <index type="Multiple" name="Index3">
-                            <indexColumn name="EntityTypeId" />
+                        <index type="Unique" name="Index3">
+                            <indexColumn name="EntityAliasTypeName" />
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index4">
+                            <indexColumn name="EntityTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
                             <indexColumn name="IsDefault" />
                             <indexColumn name="ThruTime" />
                         </index>
