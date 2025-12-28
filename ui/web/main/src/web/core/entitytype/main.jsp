@@ -93,6 +93,11 @@
                             <c:param name="EntityTypeName" value="${entityType.entityTypeName}" />
                         </c:url>
                         <a href="${entityAttributesUrl}">Entity Attributes</a>
+                        <c:url var="entityAliasTypesUrl" value="/action/Core/EntityAliasType/Main">
+                            <c:param name="ComponentVendorName" value="${entityType.componentVendor.componentVendorName}" />
+                            <c:param name="EntityTypeName" value="${entityType.entityTypeName}" />
+                        </c:url>
+                        <a href="${entityAliasTypesUrl}">Entity Alias Types</a>
                         <c:url var="commentTypesUrl" value="/action/Core/CommentType/Main">
                             <c:param name="ComponentVendorName" value="${entityType.componentVendor.componentVendorName}" />
                             <c:param name="EntityTypeName" value="${entityType.entityTypeName}" />
