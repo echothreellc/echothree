@@ -21,6 +21,7 @@ import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.server.control.ComponentControl;
 import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityAliasControl;
 import com.echothree.model.control.core.server.control.EntityTypeControl;
 import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.forum.common.ForumConstants;
@@ -202,6 +203,11 @@ public class EntityDescriptionUtils {
                     var entityType = entityTypeControl.getEntityTypeByEntityInstance(entityInstance);
 
                     description = entityType == null ? null : entityTypeControl.getBestEntityTypeDescription(entityType, getLanguage(userVisit));
+                } else if(entityTypeName.equals(EntityTypes.EntityAliasType.name())) {
+                    var entityAliasControl = Session.getModelController(EntityAliasControl.class);
+                    var entityAliasType = entityAliasControl.getEntityAliasTypeByEntityInstance(entityInstance);
+
+                    description = entityAliasType == null ? null : entityAliasControl.getBestEntityAliasTypeDescription(entityAliasType, getLanguage(userVisit));
                 } else if(entityTypeName.equals(EntityTypes.EntityAttribute.name())) {
                     var coreControl = Session.getModelController(CoreControl.class);
                     var entityAttribute = coreControl.getEntityAttributeByEntityInstance(entityInstance);

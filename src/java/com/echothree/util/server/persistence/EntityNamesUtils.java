@@ -29,6 +29,7 @@ import com.echothree.model.data.communication.server.factory.CommunicationEventF
 import com.echothree.model.data.contactlist.common.pk.PartyContactListPK;
 import com.echothree.model.data.contactlist.server.factory.PartyContactListFactory;
 import com.echothree.model.data.core.common.pk.ComponentVendorPK;
+import com.echothree.model.data.core.common.pk.EntityAliasTypePK;
 import com.echothree.model.data.core.common.pk.EntityAttributeGroupPK;
 import com.echothree.model.data.core.common.pk.EntityAttributePK;
 import com.echothree.model.data.core.common.pk.EntityListItemPK;
@@ -36,6 +37,7 @@ import com.echothree.model.data.core.common.pk.EntityTypePK;
 import com.echothree.model.data.core.common.pk.MimeTypePK;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.factory.ComponentVendorFactory;
+import com.echothree.model.data.core.server.factory.EntityAliasTypeFactory;
 import com.echothree.model.data.core.server.factory.EntityAttributeFactory;
 import com.echothree.model.data.core.server.factory.EntityAttributeGroupFactory;
 import com.echothree.model.data.core.server.factory.EntityListItemFactory;
@@ -274,6 +276,19 @@ public class EntityNamesUtils {
             names.put(Names.EntityTypeName.name(), entityTypeDetail.getEntityTypeName());
 
             return new EntityNames(Targets.EntityType.name(), names);
+        });
+
+        nameTranslators.put(EntityTypes.EntityAliasType.name(), (final EntityInstance entityInstance) -> {
+            var entityAliasType = EntityAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY,
+                    new EntityAliasTypePK(entityInstance.getEntityUniqueId()));
+            var names = new MapWrapper<String>(3);
+            var entityAliasTypeDetail = entityAliasType.getLastDetail();
+
+            names.put(Names.ComponentVendorName.name(), entityAliasTypeDetail.getEntityType().getLastDetail().getComponentVendor().getLastDetail().getComponentVendorName());
+            names.put(Names.EntityTypeName.name(), entityAliasTypeDetail.getEntityType().getLastDetail().getEntityTypeName());
+            names.put(Names.EntityAliasTypeName.name(), entityAliasTypeDetail.getEntityAliasTypeName());
+
+            return new EntityNames(Targets.EntityAliasType.name(), names);
         });
 
         nameTranslators.put(EntityTypes.EntityAttribute.name(), (final EntityInstance entityInstance) -> {

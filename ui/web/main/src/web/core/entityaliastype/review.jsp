@@ -88,10 +88,21 @@
             </c:choose>
             <br />
             <fmt:message key="label.entityAliasTypeName" />: ${entityAliasType.entityAliasTypeName}<br />
-            <fmt:message key="label.entityAliasTypeType" />: ${entityAliasType.entityAliasTypeType.description}<br />
+            <br />
+            <fmt:message key="label.validationPattern" />:
+            <c:choose>
+                <c:when test="${entityAliasType.validationPattern != null}">
+                    <c:out value="${entityAliasType.validationPattern}" />
+                </c:when>
+                <c:otherwise>
+                    <i><fmt:message key="phrase.notSet" /></i>
+                </c:otherwise>
+            </c:choose>
+            <br />
+            <br />
             <fmt:message key="label.isDefault" />:
             <c:choose>
-                <c:when test="${entityType.isDefault}">
+                <c:when test="${entityAliasType.isDefault}">
                     <fmt:message key="phrase.yes" />
                 </c:when>
                 <c:otherwise>

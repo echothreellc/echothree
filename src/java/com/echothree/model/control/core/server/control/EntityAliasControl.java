@@ -38,6 +38,7 @@ import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.sql.SQLException;
@@ -48,7 +49,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import com.echothree.util.server.cdi.CommandScope;
+import javax.inject.Inject;
 
 @CommandScope
 public class EntityAliasControl
@@ -63,6 +64,12 @@ public class EntityAliasControl
     //   Entity Alias Types
     // --------------------------------------------------------------------------------
 
+    @Inject
+    EntityAliasTypeFactory entityAliasTypeFactory;
+    
+    @Inject
+    EntityAliasTypeDetailFactory entityAliasTypeDetailFactory;
+    
     public EntityAliasType createEntityAliasType(EntityType entityType, String entityAliasTypeName,
             String validationPattern, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var defaultEntityAliasType = getDefaultEntityAliasType(entityType);
@@ -77,12 +84,12 @@ public class EntityAliasControl
             isDefault = true;
         }
 
-        var entityAliasType = EntityAliasTypeFactory.getInstance().create();
-        var entityAliasTypeDetail = EntityAliasTypeDetailFactory.getInstance().create(entityAliasType, entityType,
+        var entityAliasType = entityAliasTypeFactory.create();
+        var entityAliasTypeDetail = entityAliasTypeDetailFactory.create(entityAliasType, entityType,
                 entityAliasTypeName, validationPattern, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
-        entityAliasType = EntityAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+        entityAliasType = entityAliasTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                 entityAliasType.getPrimaryKey());
         entityAliasType.setActiveDetail(entityAliasTypeDetail);
         entityAliasType.setLastDetail(entityAliasTypeDetail);
@@ -97,7 +104,7 @@ public class EntityAliasControl
     public EntityAliasType getEntityAliasTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new EntityAliasTypePK(entityInstance.getEntityUniqueId());
 
-        return EntityAliasTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return entityAliasTypeFactory.getEntityFromPK(entityPermission, pk);
     }
 
     public EntityAliasType getEntityAliasTypeByEntityInstance(EntityInstance entityInstance) {
@@ -109,7 +116,7 @@ public class EntityAliasControl
     }
 
     public EntityAliasType getEntityAliasTypeByPK(EntityAliasTypePK pk) {
-        return EntityAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+        return entityAliasTypeFactory.getEntityFromPK(EntityPermission.READ_ONLY, pk);
     }
 
     public long countEntityAliasTypesByEntityType(EntityType entityType) {
@@ -139,12 +146,12 @@ public class EntityAliasControl
                         "FOR UPDATE";
             }
 
-            var ps = EntityAliasTypeFactory.getInstance().prepareStatement(query);
+            var ps = entityAliasTypeFactory.prepareStatement(query);
 
             ps.setLong(1, entityType.getPrimaryKey().getEntityId());
             ps.setString(2, entityAliasTypeName);
 
-            entityAliasType = EntityAliasTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            entityAliasType = entityAliasTypeFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -190,7 +197,7 @@ public class EntityAliasControl
     }
 
     private EntityAliasType getDefaultEntityAliasType(EntityPermission entityPermission, EntityType entityType) {
-        return EntityAliasTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultEntityAliasTypeQueries,
+        return entityAliasTypeFactory.getEntityFromQuery(entityPermission, getDefaultEntityAliasTypeQueries,
                 entityType);
     }
 
@@ -227,11 +234,11 @@ public class EntityAliasControl
                         "FOR UPDATE";
             }
 
-            var ps = EntityAliasTypeFactory.getInstance().prepareStatement(query);
+            var ps = entityAliasTypeFactory.prepareStatement(query);
 
             ps.setLong(1, entityType.getPrimaryKey().getEntityId());
 
-            entityAliasTypes = EntityAliasTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            entityAliasTypes = entityAliasTypeFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -245,6 +252,51 @@ public class EntityAliasControl
 
     public List<EntityAliasType> getEntityAliasTypesByEntityTypeForUpdate(EntityType entityType) {
         return getEntityAliasTypesByEntityType(entityType, EntityPermission.READ_WRITE);
+    }
+
+    private List<EntityAliasType> getEntityAliasTypesByName(String entityAliasTypeName, EntityPermission entityPermission) {
+        List<EntityAliasType> entityAliasTypes;
+
+        try {
+            String query = null;
+
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM entityaliastypes " +
+                        "JOIN entityaliastypedetails ON eniat_activedetailid = eniatdt_entityaliastypedetailid " +
+                        "JOIN entitytypes ON eniatdt_ent_entitytypeid = ent_entitytypeid " +
+                        "JOIN entitytypedetails ON ent_lastdetailid = entdt_entitytypedetailid " +
+                        "JOIN componentvendors ON entdt_cvnd_componentvendorid = cvnd_componentvendorid " +
+                        "JOIN componentvendordetails ON cvnd_lastdetailid = cvndd_componentvendordetailid " +
+                        "WHERE eniatdt_entityaliastypename = ? " +
+                        "ORDER BY cvndd_componentvendorname, entdt_sortorder, entdt_entitytypename, eniatdt_sortorder, eniatdt_entityaliastypename " +
+                        "_LIMIT_";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM entityaliastypes " +
+                        "JOIN entityaliastypedetails ON eniat_activedetailid = eniatdt_entityaliastypedetailid " +
+                        "WHERE eniatdt_entityaliastypename = ? " +
+                        "FOR UPDATE";
+            }
+
+            var ps = entityAliasTypeFactory.prepareStatement(query);
+
+            ps.setString(1, entityAliasTypeName);
+
+            entityAliasTypes = entityAliasTypeFactory.getEntitiesFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return entityAliasTypes;
+    }
+
+    public List<EntityAliasType> getEntityAliasTypesByName(String entityAliasTypeName) {
+        return getEntityAliasTypesByName(entityAliasTypeName, EntityPermission.READ_ONLY);
+    }
+
+    public List<EntityAliasType> getEntityAliasTypesByNameForUpdate(String entityAliasTypeName) {
+        return getEntityAliasTypesByName(entityAliasTypeName, EntityPermission.READ_WRITE);
     }
 
     public EntityAliasTypeTransfer getEntityAliasTypeTransfer(UserVisit userVisit, EntityAliasType entityAliasType, EntityInstance entityInstance) {
@@ -267,7 +319,7 @@ public class EntityAliasControl
 
     private void updateEntityAliasTypeFromValue(EntityAliasTypeDetailValue entityAliasTypeDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(entityAliasTypeDetailValue.hasBeenModified()) {
-            var entityAliasType = EntityAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var entityAliasType = entityAliasTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     entityAliasTypeDetailValue.getEntityAliasTypePK());
             var entityAliasTypeDetail = entityAliasType.getActiveDetailForUpdate();
 
@@ -298,7 +350,7 @@ public class EntityAliasControl
                 }
             }
 
-            entityAliasTypeDetail = EntityAliasTypeDetailFactory.getInstance().create(entityAliasTypePK, entityTypePK,
+            entityAliasTypeDetail = entityAliasTypeDetailFactory.create(entityAliasTypePK, entityTypePK,
                     entityAliasTypeName, validationPattern, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             entityAliasType.setActiveDetail(entityAliasTypeDetail);
@@ -396,9 +448,12 @@ public class EntityAliasControl
     //   Entity Alias Type Descriptions
     // --------------------------------------------------------------------------------
 
+    @Inject
+    private EntityAliasTypeDescriptionFactory entityAliasTypeDescriptionFactory;
+    
     public EntityAliasTypeDescription createEntityAliasTypeDescription(EntityAliasType entityAliasType, Language language,
             String description, BasePK createdBy) {
-        var entityAliasTypeDescription = EntityAliasTypeDescriptionFactory.getInstance().create(
+        var entityAliasTypeDescription = entityAliasTypeDescriptionFactory.create(
                 entityAliasType, language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(entityAliasType.getPrimaryKey(), EventTypes.MODIFY, entityAliasTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -424,13 +479,13 @@ public class EntityAliasControl
                         "FOR UPDATE";
             }
 
-            var ps = EntityAliasTypeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = entityAliasTypeDescriptionFactory.prepareStatement(query);
 
             ps.setLong(1, entityAliasType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
 
-            entityAliasTypeDescription = EntityAliasTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            entityAliasTypeDescription = entityAliasTypeDescriptionFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -473,12 +528,12 @@ public class EntityAliasControl
                         "FOR UPDATE";
             }
 
-            var ps = EntityAliasTypeDescriptionFactory.getInstance().prepareStatement(query);
+            var ps = entityAliasTypeDescriptionFactory.prepareStatement(query);
 
             ps.setLong(1, entityAliasType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
 
-            entityAliasTypeDescriptions = EntityAliasTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            entityAliasTypeDescriptions = entityAliasTypeDescriptionFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -529,7 +584,7 @@ public class EntityAliasControl
 
     public void updateEntityAliasTypeDescriptionFromValue(EntityAliasTypeDescriptionValue entityAliasTypeDescriptionValue, BasePK updatedBy) {
         if(entityAliasTypeDescriptionValue.hasBeenModified()) {
-            var entityAliasTypeDescription = EntityAliasTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var entityAliasTypeDescription = entityAliasTypeDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     entityAliasTypeDescriptionValue.getPrimaryKey());
 
             entityAliasTypeDescription.setThruTime(session.getStartTime());
@@ -539,7 +594,7 @@ public class EntityAliasControl
             var language = entityAliasTypeDescription.getLanguage();
             var description = entityAliasTypeDescriptionValue.getDescription();
 
-            entityAliasTypeDescription = EntityAliasTypeDescriptionFactory.getInstance().create(entityAliasType, language,
+            entityAliasTypeDescription = entityAliasTypeDescriptionFactory.create(entityAliasType, language,
                     description, session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(entityAliasType.getPrimaryKey(), EventTypes.MODIFY, entityAliasTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -564,9 +619,12 @@ public class EntityAliasControl
     //   Entity Aliases
     // --------------------------------------------------------------------------------
 
+    @Inject
+    EntityAliasFactory entityAliasFactory;
+    
     public EntityAlias createEntityAlias(EntityInstance entityInstance, EntityAliasType entityAliasType, String alias,
             BasePK createdBy) {
-        var entityAlias = EntityAliasFactory.getInstance().create(entityInstance, entityAliasType,
+        var entityAlias = entityAliasFactory.create(entityInstance, entityAliasType,
                 alias, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(entityInstance, EventTypes.MODIFY, entityAliasType.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -613,7 +671,7 @@ public class EntityAliasControl
     }
 
     public List<EntityAlias> getEntityAliasHistory(EntityInstance entityInstance, EntityAliasType entityAliasType) {
-        return EntityAliasFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityAliasHistoryQueries,
+        return entityAliasFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityAliasHistoryQueries,
                 entityInstance, entityAliasType);
     }
 
@@ -635,13 +693,13 @@ public class EntityAliasControl
                         "FOR UPDATE";
             }
 
-            var ps = EntityAliasFactory.getInstance().prepareStatement(query);
+            var ps = entityAliasFactory.prepareStatement(query);
 
             ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(2, entityAliasType.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
 
-            entityAlias = EntityAliasFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            entityAlias = entityAliasFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -684,12 +742,12 @@ public class EntityAliasControl
                         "FOR UPDATE";
             }
 
-            var ps = EntityAliasFactory.getInstance().prepareStatement(query);
+            var ps = entityAliasFactory.prepareStatement(query);
 
             ps.setLong(1, entityAliasType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
 
-            entityAliases = EntityAliasFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            entityAliases = entityAliasFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -723,12 +781,12 @@ public class EntityAliasControl
                         "FOR UPDATE";
             }
 
-            var ps = EntityAliasFactory.getInstance().prepareStatement(query);
+            var ps = entityAliasFactory.prepareStatement(query);
 
             ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
 
-            entityAliases = EntityAliasFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            entityAliases = entityAliasFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -759,14 +817,14 @@ public class EntityAliasControl
 
     public void updateEntityAliasFromValue(EntityAliasValue entityAliasValue, BasePK updatedBy) {
         if(entityAliasValue.hasBeenModified()) {
-            var entityAlias = EntityAliasFactory.getInstance().getEntityFromValue(EntityPermission.READ_WRITE, entityAliasValue);
+            var entityAlias = entityAliasFactory.getEntityFromValue(EntityPermission.READ_WRITE, entityAliasValue);
             var entityAliasType = entityAlias.getEntityAliasType();
             var entityInstance = entityAlias.getEntityInstance();
 
             entityAlias.setThruTime(session.getStartTime());
             entityAlias.store();
 
-            EntityAliasFactory.getInstance().create(entityInstance, entityAliasType, entityAliasValue.getAlias(), session.getStartTime(),
+            entityAliasFactory.create(entityInstance, entityAliasType, entityAliasValue.getAlias(), session.getStartTime(),
                     Session.MAX_TIME);
 
             sendEvent(entityInstance, EventTypes.MODIFY, entityAliasType.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -800,7 +858,7 @@ public class EntityAliasControl
         EntityAlias entityAlias;
 
         try {
-            var ps = EntityAliasFactory.getInstance().prepareStatement(
+            var ps = entityAliasFactory.prepareStatement(
                     "SELECT _ALL_ " +
                             "FROM entityaliases " +
                             "WHERE enial_eniat_entityaliastypeid = ? AND enial_alias = ? AND enial_thrutime = ?");
@@ -809,7 +867,7 @@ public class EntityAliasControl
             ps.setString(2, alias);
             ps.setLong(3, Session.MAX_TIME);
 
-            entityAlias = EntityAliasFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+            entityAlias = entityAliasFactory.getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
