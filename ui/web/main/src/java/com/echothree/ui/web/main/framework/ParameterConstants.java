@@ -452,5 +452,7 @@ public interface ParameterConstants {
     String GRAPHQL_OPERATION_NAME = "operationName";
     String WAREHOUSE_TYPE_NAME = "WarehouseTypeName";
     String ORIGINAL_WAREHOUSE_TYPE_NAME = "OriginalWarehouseTypeName";
-    
+    String ENTITY_ALIAS_TYPE_NAME = "EntityAliasTypeName";
+    String ORIGINAL_ENTITY_ALIAS_TYPE_NAME = "OriginalEntityAliasTypeName";
+
 }
