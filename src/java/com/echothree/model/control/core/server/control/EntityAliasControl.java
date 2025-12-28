@@ -268,14 +268,14 @@ public class EntityAliasControl
                         "JOIN entitytypedetails ON ent_lastdetailid = entdt_entitytypedetailid " +
                         "JOIN componentvendors ON entdt_cvnd_componentvendorid = cvnd_componentvendorid " +
                         "JOIN componentvendordetails ON cvnd_lastdetailid = cvndd_componentvendordetailid " +
-                        "WHERE eniatdt_entityaliastypeniatme = ? " +
-                        "ORDER BY cvndd_componentvendorname, entdt_sortorder, entdt_entitytypeniatme, eniatdt_sortorder, eniatdt_entityaliastypeniatme " +
+                        "WHERE eniatdt_entityaliastypename = ? " +
+                        "ORDER BY cvndd_componentvendorname, entdt_sortorder, entdt_entitytypename, eniatdt_sortorder, eniatdt_entityaliastypename " +
                         "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM entityaliastypes " +
                         "JOIN entityaliastypedetails ON eniat_activedetailid = eniatdt_entityaliastypedetailid " +
-                        "WHERE eniatdt_entityaliastypeniatme = ? " +
+                        "WHERE eniatdt_entityaliastypename = ? " +
                         "FOR UPDATE";
             }
 
