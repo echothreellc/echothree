@@ -63,12 +63,12 @@ public class EntityAliasTypeTransfer
         this.validationPattern = validationPattern;
     }
 
-    public boolean isDefault() {
+    public boolean getIsDefault() {
         return isDefault;
     }
 
-    public void setDefault(final boolean aDefault) {
-        isDefault = aDefault;
+    public void setIsDefault(final boolean isDefault) {
+        this.isDefault = isDefault;
     }
 
     public Integer getSortOrder() {
