@@ -1096,5 +1096,9 @@ public interface AttributeConstants {
     String WAREHOUSE_TYPE = "warehouseType";
     String WAREHOUSE_TYPES = "warehouseTypes";
     String WAREHOUSE_TYPE_COUNT = "warehouseTypeCount";
+    String ENTITY_ALIAS_TYPE = "entityAliasType";
+    String ENTITY_ALIAS_TYPE_DESCRIPTION = "entityAliasTypeDescription";
+    String ENTITY_ALIAS_TYPE_DESCRIPTIONS = "entityAliasTypeDescriptions";
+    String ENTITY_ALIAS_TYPE_NAME = "entityAliasTypeName";
 
 }
