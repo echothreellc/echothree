@@ -26,6 +26,7 @@ public enum Targets {
     Department,
     Division,
     Employee,
+    EntityAliasType,
     EntityAttribute,
     EntityAttributeGroup,
     EntityListItem,
