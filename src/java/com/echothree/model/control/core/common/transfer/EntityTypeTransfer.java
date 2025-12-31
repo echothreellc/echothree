@@ -38,6 +38,7 @@ public final class EntityTypeTransfer
     
     private Long indexTypesCount;
     private ListWrapper<IndexTypeTransfer> indexTypes;
+    private ListWrapper<EntityAliasTypeTransfer> entityAliasTypes;
     private ListWrapper<EntityAttributeTransfer> entityAttributes;
     private ListWrapper<CommentTypeTransfer> commentTypes;
     private ListWrapper<RatingTypeTransfer> ratingTypes;
@@ -182,6 +183,14 @@ public final class EntityTypeTransfer
      */
     public void setIndexTypes(ListWrapper<IndexTypeTransfer> indexTypes) {
         this.indexTypes = indexTypes;
+    }
+
+    public ListWrapper<EntityAliasTypeTransfer> getEntityAliasTypes() {
+        return entityAliasTypes;
+    }
+
+    public void setEntityAliasTypes(final ListWrapper<EntityAliasTypeTransfer> entityAliasTypes) {
+        this.entityAliasTypes = entityAliasTypes;
     }
 
     public ListWrapper<EntityAttributeTransfer> getEntityAttributes() {

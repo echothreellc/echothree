@@ -22,6 +22,7 @@ import com.echothree.model.control.core.common.CoreProperties;
 import com.echothree.model.control.core.common.transfer.EntityTypeTransfer;
 import com.echothree.model.control.core.server.control.ComponentControl;
 import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityAliasControl;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.core.server.control.EntityTypeControl;
 import com.echothree.model.control.index.server.control.IndexControl;
@@ -34,24 +35,46 @@ import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.common.transfer.ListWrapper;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.UnitOfMeasureUtils;
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 @RequestScoped
 public class EntityTypeTransferCache
         extends BaseCoreTransferCache<EntityType, EntityTypeTransfer> {
 
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
-    ComponentControl componentControl = Session.getModelController(ComponentControl.class);
-    CommentControl commentControl; // As-needed
-    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-    EntityTypeControl entityTypeControl = Session.getModelController(EntityTypeControl.class);
-    IndexControl indexControl; // As-needed
-    MessageControl messageControl; // As-needed
-    RatingControl ratingControl; // As-needed
-    UomControl uomControl = Session.getModelController(UomControl.class);
-    UnitOfMeasureKind timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
+    @Inject
+    CoreControl coreControl;
+
+    @Inject
+    ComponentControl componentControl;
+
+    @Inject
+    CommentControl commentControl;
+
+    @Inject
+    EntityAliasControl entityAliasControl;
+
+    @Inject
+    EntityInstanceControl entityInstanceControl;
+
+    @Inject
+    EntityTypeControl entityTypeControl;
+
+    @Inject
+    IndexControl indexControl;
+
+    @Inject
+    MessageControl messageControl;
+
+    @Inject
+    RatingControl ratingControl;
+
+    @Inject
+    UomControl uomControl;
+
+    UnitOfMeasureKind timeUnitOfMeasureKind;
     UnitOfMeasureUtils unitOfMeasureUtils = UnitOfMeasureUtils.getInstance();
 
     TransferProperties transferProperties;
@@ -67,6 +90,7 @@ public class EntityTypeTransferCache
 
     boolean includeIndexTypesCount;
     boolean includeIndexTypes;
+    boolean includeEntityAliasTypes;
     boolean includeEntityAttributes;
     boolean includeCommentTypes;
     boolean includeRatingTypes;
@@ -99,29 +123,19 @@ public class EntityTypeTransferCache
         if(options != null) {
             includeIndexTypesCount = options.contains(CoreOptions.EntityTypeIncludeIndexTypesCount);
             includeIndexTypes = options.contains(CoreOptions.EntityTypeIncludeIndexTypes);
+            includeEntityAliasTypes = options.contains(CoreOptions.EntityTypeIncludeEntityAliasTypes);
             includeEntityAttributes = options.contains(CoreOptions.EntityTypeIncludeEntityAttributes);
             includeCommentTypes = options.contains(CoreOptions.EntityTypeIncludeCommentTypes);
             includeRatingTypes = options.contains(CoreOptions.EntityTypeIncludeRatingTypes);
             includeMessageTypes = options.contains(CoreOptions.EntityTypeIncludeMessageTypes);
             includeEntityInstancesCount = options.contains(CoreOptions.EntityTypeIncludeEntityInstancesCount);
             includeEntityInstances = options.contains(CoreOptions.EntityTypeIncludeEntityInstances);
-
-            if(includeCommentTypes) {
-                commentControl = Session.getModelController(CommentControl.class);
-            }
-
-            if(includeIndexTypesCount || includeIndexTypes) {
-                indexControl = Session.getModelController(IndexControl.class);
-            }
-
-            if(includeMessageTypes) {
-                messageControl = Session.getModelController(MessageControl.class);
-            }
-
-            if(includeRatingTypes) {
-                ratingControl = Session.getModelController(RatingControl.class);
-            }
         }
+    }
+
+    @PostConstruct
+    public void setup() {
+        timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
     }
     
     public EntityTypeTransfer getEntityTypeTransfer(UserVisit userVisit, EntityType entityType) {
@@ -178,6 +192,10 @@ public class EntityTypeTransferCache
 
             if(includeIndexTypes) {
                 entityTypeTransfer.setIndexTypes(new ListWrapper<>(indexControl.getIndexTypeTransfersByEntityType(userVisit, entityType)));
+            }
+
+            if(includeEntityAliasTypes) {
+                entityTypeTransfer.setEntityAliasTypes(new ListWrapper<>(entityAliasControl.getEntityAliasTypeTransfersByEntityType(userVisit, entityType, null)));
             }
 
             if(includeEntityAttributes) {

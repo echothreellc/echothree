@@ -815,6 +815,10 @@ public class EntityAliasControl
         return entityAliasTransfers;
     }
 
+    public List<EntityAliasTransfer> getEntityAliasTransfersByEntityInstance(UserVisit userVisit, EntityInstance entityInstance) {
+        return getEntityAliasTransfers(userVisit, getEntityAliasesByEntityInstance(entityInstance));
+    }
+
     public void updateEntityAliasFromValue(EntityAliasValue entityAliasValue, BasePK updatedBy) {
         if(entityAliasValue.hasBeenModified()) {
             var entityAlias = entityAliasFactory.getEntityFromValue(EntityPermission.READ_WRITE, entityAliasValue);
