@@ -195,7 +195,7 @@ public class EntityTypeTransferCache
             }
 
             if(includeEntityAliasTypes) {
-                entityTypeTransfer.setEntityAliasTypes(new ListWrapper<>(entityAliasControl.getEntityAliasTypeTransfersByEntityType(userVisit, entityType, null)));
+                entityTypeTransfer.setEntityAliasTypes(new ListWrapper<>(entityAliasControl.getEntityAliasTypeTransfersByEntityType(userVisit, entityType)));
             }
 
             if(includeEntityAttributes) {

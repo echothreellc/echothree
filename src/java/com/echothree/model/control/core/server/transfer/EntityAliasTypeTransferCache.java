@@ -73,7 +73,7 @@ public class EntityAliasTypeTransferCache
         setIncludeEntityInstance(!filterEntityInstance);
     }
     
-    public EntityAliasTypeTransfer getEntityAliasTypeTransfer(final UserVisit userVisit, final EntityAliasType entityAliasType, final EntityInstance entityInstance) {
+    public EntityAliasTypeTransfer getEntityAliasTypeTransfer(final UserVisit userVisit, final EntityAliasType entityAliasType) {
         var entityAliasTypeTransfer = get(entityAliasType);
         
         if(entityAliasTypeTransfer == null) {
@@ -88,11 +88,7 @@ public class EntityAliasTypeTransferCache
             entityAliasTypeTransfer = new EntityAliasTypeTransfer(entityTypeTransfer, entityAliasTypeName,
                     validationPattern, isDefault, sortOrder, description);
 
-            if(entityInstance == null) {
-                put(userVisit, entityAliasType, entityAliasTypeTransfer);
-            } else {
-                setupEntityInstance(userVisit, entityAliasType, null, entityAliasTypeTransfer);
-            }
+            put(userVisit, entityAliasType, entityAliasTypeTransfer);
         }
         return entityAliasTypeTransfer;
     }

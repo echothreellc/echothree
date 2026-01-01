@@ -22,14 +22,14 @@ public class EntityAliasTransfer
         extends BaseTransfer {
     
     private EntityAliasTypeTransfer entityAliasType;
-    private String attribute;
+    private String alias;
     private EntityInstanceTransfer entityInstance;
     
-    /** Creates a new instance of EntityAttributeTransfer */
-    public EntityAliasTransfer(EntityAliasTypeTransfer entityAliasType, String attribute,
+    /** Creates a new instance of EntityAliasTransfer */
+    public EntityAliasTransfer(EntityAliasTypeTransfer entityAliasType, String alias,
             EntityInstanceTransfer entityInstance) {
         this.entityAliasType = entityAliasType;
-        this.attribute = attribute;
+        this.alias = alias;
         this.entityInstance = entityInstance;
     }
     
@@ -41,12 +41,12 @@ public class EntityAliasTransfer
         this.entityAliasType = entityAliasType;
     }
     
-    public String getAttribute() {
-        return attribute;
+    public String getAlias() {
+        return alias;
     }
     
-    public void setAttribute(String attribute) {
-        this.attribute = attribute;
+    public void setAlias(String alias) {
+        this.alias = alias;
     }
     
     @Override
