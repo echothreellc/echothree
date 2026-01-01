@@ -18,7 +18,7 @@ package com.echothree.util.common.transfer;
 
 public interface BaseOptions {
 
-    String BaseIncludeEntityAliasTypes      = "BaseIncludeEntityAliasTypes";
+    String BaseIncludeEntityAliases         = "BaseIncludeEntityAliases";
     String BaseIncludeEntityAttributeGroups = "BaseIncludeEntityAttributeGroups";
     String BaseIncludeTagScopes             = "BaseIncludeTagScopes";
     

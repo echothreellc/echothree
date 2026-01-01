@@ -90,7 +90,7 @@ public class EntityAliasTypeControl
 
                         entityAliasTypeResultTransfers.add(new EntityAliasTypeResultTransfer(entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
                                 entityTypeDetail.getEntityTypeName(), entityAliasTypeDetail.getEntityAliasTypeName(),
-                                includeEntityAliasType ? entityAliasControl.getEntityAliasTypeTransfer(userVisit, entityAliasType, null) : null));
+                                includeEntityAliasType ? entityAliasControl.getEntityAliasTypeTransfer(userVisit, entityAliasType) : null));
                     }
                 } catch (SQLException se) {
                     throw new PersistenceDatabaseException(se);
@@ -123,7 +123,7 @@ public class EntityAliasTypeControl
 
                         entityAliasTypeResultTransfers.add(new EntityAliasTypeResultTransfer(entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
                                 entityTypeDetail.getEntityTypeName(), entityAliasTypeDetail.getEntityAliasTypeName(),
-                                includeEntityAliasType ? entityAliasControl.getEntityAliasTypeTransfer(userVisit, entityAliasType, null) : null));
+                                includeEntityAliasType ? entityAliasControl.getEntityAliasTypeTransfer(userVisit, entityAliasType) : null));
                     }
                 } catch (SQLException se) {
                     throw new PersistenceDatabaseException(se);

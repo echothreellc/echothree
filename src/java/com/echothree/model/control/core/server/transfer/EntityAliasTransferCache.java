@@ -40,8 +40,7 @@ public class EntityAliasTransferCache
         var entityAliasTransfer = get(entityAlias);
         
         if(entityAliasTransfer == null) {
-            var entityInstance = entityAlias.getEntityInstance();
-            var entityAliasType = entityAliasControl.getEntityAliasTypeTransfer(userVisit, entityAlias.getEntityAliasType(), entityInstance);
+            var entityAliasType = entityAliasControl.getEntityAliasTypeTransfer(userVisit, entityAlias.getEntityAliasType());
             var alias = entityAlias.getAlias();
             var entityInstanceTransfer = entityInstanceControl.getEntityInstanceTransfer(userVisit, entityAlias.getEntityInstance(), false, false, false, false);
             

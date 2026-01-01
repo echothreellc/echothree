@@ -142,7 +142,7 @@ public class EditEntityAliasTypeDescriptionCommand
     public void fillInResult(EditEntityAliasTypeDescriptionResult result, EntityAliasTypeDescription entityAliasTypeDescription) {
         var entityAliasControl = Session.getModelController(EntityAliasControl.class);
 
-        result.setEntityAliasTypeDescription(entityAliasControl.getEntityAliasTypeDescriptionTransfer(getUserVisit(), entityAliasTypeDescription, null));
+        result.setEntityAliasTypeDescription(entityAliasControl.getEntityAliasTypeDescriptionTransfer(getUserVisit(), entityAliasTypeDescription));
     }
 
     @Override
