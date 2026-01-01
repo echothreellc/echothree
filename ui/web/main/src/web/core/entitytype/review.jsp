@@ -136,7 +136,14 @@
                                     <et:appearance appearance="${entityAliasType.entityInstance.entityAppearance.appearance}"><c:out value="${entityAliasType.description}" /></et:appearance>
                                 </display:column>
                                 <display:column titleKey="columnTitle.validationPattern">
-                                    <c:out value="${entityAliasType.validationPattern}" />
+                                    <c:choose>
+                                        <c:when test="${entityAliasType.validationPattern != null}">
+                                            <c:out value="${entityAliasType.validationPattern}" />
+                                        </c:when>
+                                        <c:otherwise>
+                                            <i><fmt:message key="phrase.notSet" /></i>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </display:column>
                                 <display:column titleKey="columnTitle.default">
                                     <c:choose>
