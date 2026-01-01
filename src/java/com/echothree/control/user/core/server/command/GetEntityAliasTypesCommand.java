@@ -99,7 +99,7 @@ public class GetEntityAliasTypesCommand
         if(entities != null) {
             var entityAliasControl = Session.getModelController(EntityAliasControl.class);
 
-            result.setEntityAliasTypes(entityAliasControl.getEntityAliasTypeTransfers(getUserVisit(), entities, null));
+            result.setEntityAliasTypes(entityAliasControl.getEntityAliasTypeTransfers(getUserVisit(), entities));
         }
 
         return result;

@@ -62,6 +62,7 @@ public class ReviewAction
         commandForm.setEntityTypeName(request.getParameter(ParameterConstants.ENTITY_TYPE_NAME));
 
         Set<String> options = new HashSet<>();
+        options.add(CoreOptions.EntityTypeIncludeEntityAliasTypes);
         options.add(CoreOptions.EntityTypeIncludeEntityAttributes);
         options.add(CoreOptions.EntityTypeIncludeCommentTypes);
         options.add(CoreOptions.EntityTypeIncludeRatingTypes);

@@ -107,7 +107,7 @@ public class EditEntityAliasTypeCommand
     public void fillInResult(EditEntityAliasTypeResult result, EntityAliasType entityAliasType) {
         var entityAliasControl = Session.getModelController(EntityAliasControl.class);
 
-        result.setEntityAliasType(entityAliasControl.getEntityAliasTypeTransfer(getUserVisit(), entityAliasType, null));
+        result.setEntityAliasType(entityAliasControl.getEntityAliasTypeTransfer(getUserVisit(), entityAliasType));
     }
 
     @Override

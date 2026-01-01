@@ -89,7 +89,7 @@ public class GetEntityAliasTypeDescriptionCommand
                         var entityAliasTypeDescription = entityAliasControl.getEntityAliasTypeDescription(entityAliasType, language);
 
                         if(entityAliasTypeDescription != null) {
-                            result.setEntityAliasTypeDescription(entityAliasControl.getEntityAliasTypeDescriptionTransfer(getUserVisit(), entityAliasTypeDescription, null));
+                            result.setEntityAliasTypeDescription(entityAliasControl.getEntityAliasTypeDescriptionTransfer(getUserVisit(), entityAliasTypeDescription));
                         } else {
                             addExecutionError(ExecutionErrors.UnknownEntityAliasTypeDescription.name(), componentVendorName, entityTypeName, entityAliasTypeName,
                                     languageIsoName);

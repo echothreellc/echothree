@@ -82,7 +82,7 @@ public class GetEntityAliasTypeDescriptionsCommand
                 if(entityAliasType != null) {
                     var userVisit = getUserVisit();
                     
-                    result.setEntityAliasType(entityAliasControl.getEntityAliasTypeTransfer(userVisit, entityAliasType, null));
+                    result.setEntityAliasType(entityAliasControl.getEntityAliasTypeTransfer(userVisit, entityAliasType));
                     result.setEntityAliasTypeDescriptions(entityAliasControl.getEntityAliasTypeDescriptionTransfersByEntityAliasType(userVisit, entityAliasType, null));
                 } else {
                     addExecutionError(ExecutionErrors.UnknownEntityAliasTypeName.name(), entityAliasTypeName);

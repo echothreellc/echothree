@@ -299,22 +299,22 @@ public class EntityAliasControl
         return getEntityAliasTypesByName(entityAliasTypeName, EntityPermission.READ_WRITE);
     }
 
-    public EntityAliasTypeTransfer getEntityAliasTypeTransfer(UserVisit userVisit, EntityAliasType entityAliasType, EntityInstance entityInstance) {
-        return entityAliasTypeTransferCache.getEntityAliasTypeTransfer(userVisit, entityAliasType, entityInstance);
+    public EntityAliasTypeTransfer getEntityAliasTypeTransfer(UserVisit userVisit, EntityAliasType entityAliasType) {
+        return entityAliasTypeTransferCache.getEntityAliasTypeTransfer(userVisit, entityAliasType);
     }
 
-    public List<EntityAliasTypeTransfer> getEntityAliasTypeTransfers(UserVisit userVisit, Collection<EntityAliasType> entityAliasTypes, EntityInstance entityInstance) {
+    public List<EntityAliasTypeTransfer> getEntityAliasTypeTransfers(UserVisit userVisit, Collection<EntityAliasType> entityAliasTypes) {
         List<EntityAliasTypeTransfer> entityAliasTypeTransfers = new ArrayList<>(entityAliasTypes.size());
 
         entityAliasTypes.forEach((entityAliasType) ->
-                entityAliasTypeTransfers.add(entityAliasTypeTransferCache.getEntityAliasTypeTransfer(userVisit, entityAliasType, entityInstance))
+                entityAliasTypeTransfers.add(entityAliasTypeTransferCache.getEntityAliasTypeTransfer(userVisit, entityAliasType))
         );
 
         return entityAliasTypeTransfers;
     }
 
-    public List<EntityAliasTypeTransfer> getEntityAliasTypeTransfersByEntityType(UserVisit userVisit, EntityType entityType, EntityInstance entityInstance) {
-        return getEntityAliasTypeTransfers(userVisit, getEntityAliasTypesByEntityType(entityType), entityInstance);
+    public List<EntityAliasTypeTransfer> getEntityAliasTypeTransfersByEntityType(UserVisit userVisit, EntityType entityType) {
+        return getEntityAliasTypeTransfers(userVisit, getEntityAliasTypesByEntityType(entityType));
     }
 
     private void updateEntityAliasTypeFromValue(EntityAliasTypeDetailValue entityAliasTypeDetailValue, boolean checkDefault, BasePK updatedBy) {
@@ -566,8 +566,8 @@ public class EntityAliasControl
         return description;
     }
 
-    public EntityAliasTypeDescriptionTransfer getEntityAliasTypeDescriptionTransfer(UserVisit userVisit, EntityAliasTypeDescription entityAliasTypeDescription, EntityInstance entityInstance) {
-        return entityAliasTypeDescriptionTransferCache.getEntityAliasTypeDescriptionTransfer(userVisit, entityAliasTypeDescription, entityInstance);
+    public EntityAliasTypeDescriptionTransfer getEntityAliasTypeDescriptionTransfer(UserVisit userVisit, EntityAliasTypeDescription entityAliasTypeDescription) {
+        return entityAliasTypeDescriptionTransferCache.getEntityAliasTypeDescriptionTransfer(userVisit, entityAliasTypeDescription);
     }
 
     public List<EntityAliasTypeDescriptionTransfer> getEntityAliasTypeDescriptionTransfersByEntityAliasType(UserVisit userVisit,
@@ -576,7 +576,7 @@ public class EntityAliasControl
         List<EntityAliasTypeDescriptionTransfer> entityAliasTypeDescriptionTransfers = new ArrayList<>(entityAliasTypeDescriptions.size());
 
         entityAliasTypeDescriptions.forEach((entityAliasTypeDescription) ->
-                entityAliasTypeDescriptionTransfers.add(entityAliasTypeDescriptionTransferCache.getEntityAliasTypeDescriptionTransfer(userVisit, entityAliasTypeDescription, entityInstance))
+                entityAliasTypeDescriptionTransfers.add(entityAliasTypeDescriptionTransferCache.getEntityAliasTypeDescriptionTransfer(userVisit, entityAliasTypeDescription))
         );
 
         return entityAliasTypeDescriptionTransfers;
@@ -813,6 +813,10 @@ public class EntityAliasControl
         );
 
         return entityAliasTransfers;
+    }
+
+    public List<EntityAliasTransfer> getEntityAliasTransfersByEntityInstance(UserVisit userVisit, EntityInstance entityInstance) {
+        return getEntityAliasTransfers(userVisit, getEntityAliasesByEntityInstance(entityInstance));
     }
 
     public void updateEntityAliasFromValue(EntityAliasValue entityAliasValue, BasePK updatedBy) {

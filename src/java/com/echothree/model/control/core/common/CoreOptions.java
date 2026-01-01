@@ -60,6 +60,7 @@ public interface CoreOptions {
 
     String EntityTypeIncludeIndexTypes = "EntityTypeIncludeIndexTypes";
     String EntityTypeIncludeIndexTypesCount = "EntityTypeIncludeIndexTypesCount";
+    String EntityTypeIncludeEntityAliasTypes = "EntityTypeIncludeEntityAliasTypes";
     String EntityTypeIncludeEntityAttributes = "EntityTypeIncludeEntityAttributes";
     String EntityTypeIncludeCommentTypes = "EntityTypeIncludeCommentTypes";
     String EntityTypeIncludeRatingTypes = "EntityTypeIncludeRatingTypes";

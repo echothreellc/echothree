@@ -76,7 +76,7 @@ public class GetEntityAliasTypeCommand
         var result = CoreResultFactory.getGetEntityAliasTypeResult();
 
         if(entityAliasType != null) {
-            result.setEntityAliasType(entityAliasControl.getEntityAliasTypeTransfer(getUserVisit(), entityAliasType, null));
+            result.setEntityAliasType(entityAliasControl.getEntityAliasTypeTransfer(getUserVisit(), entityAliasType));
         }
         
         return result;

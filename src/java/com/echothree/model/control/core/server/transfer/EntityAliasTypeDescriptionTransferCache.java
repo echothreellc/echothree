@@ -35,11 +35,11 @@ public class EntityAliasTypeDescriptionTransferCache
         super();
     }
     
-    public EntityAliasTypeDescriptionTransfer getEntityAliasTypeDescriptionTransfer(final UserVisit userVisit, final EntityAliasTypeDescription entityAliasTypeDescription, final EntityInstance entityInstance) {
+    public EntityAliasTypeDescriptionTransfer getEntityAliasTypeDescriptionTransfer(final UserVisit userVisit, final EntityAliasTypeDescription entityAliasTypeDescription) {
         var entityAliasTypeDescriptionTransfer = get(entityAliasTypeDescription);
         
         if(entityAliasTypeDescriptionTransfer == null) {
-            var entityAliasTypeTransfer = entityInstance == null ? entityAliasControl.getEntityAliasTypeTransfer(userVisit, entityAliasTypeDescription.getEntityAliasType(), entityInstance) : null;
+            var entityAliasTypeTransfer = entityAliasControl.getEntityAliasTypeTransfer(userVisit, entityAliasTypeDescription.getEntityAliasType());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, entityAliasTypeDescription.getLanguage());
             
             entityAliasTypeDescriptionTransfer = new EntityAliasTypeDescriptionTransfer(languageTransfer, entityAliasTypeTransfer, entityAliasTypeDescription.getDescription());
