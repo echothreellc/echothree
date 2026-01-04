@@ -16,12 +16,13 @@
 
 package com.echothree.control.user.core.common.result;
 
+import com.echothree.control.user.core.common.spec.EntityTypeSpec;
 import com.echothree.model.control.core.common.transfer.EntityInstanceTransfer;
 import com.echothree.util.common.command.BaseResult;
 import java.util.List;
 
 public interface GetEntityInstancesResult
-        extends BaseResult {
+        extends EntityTypeSpec, BaseResult {
     
     List<EntityInstanceTransfer> getEntityInstances();
     void setEntityInstances(List<EntityInstanceTransfer> entityInstances);

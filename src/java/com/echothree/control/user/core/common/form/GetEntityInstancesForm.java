@@ -16,15 +16,11 @@
 
 package com.echothree.control.user.core.common.form;
 
-import com.echothree.util.common.form.BaseForm;
+import com.echothree.control.user.core.common.spec.EntityTypeSpec;
 
 public interface GetEntityInstancesForm
-        extends BaseForm {
+        extends EntityTypeSpec {
     
-    String getComponentVendorName();
-    void setComponentVendorName(String componentVendorName);
-    
-    String getEntityTypeName();
-    void setEntityTypeName(String entityTypeName);
+    // Nothing additional beyond EntityTypeSpec
     
 }
