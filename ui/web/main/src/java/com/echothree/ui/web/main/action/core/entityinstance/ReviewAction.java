@@ -17,8 +17,9 @@
 package com.echothree.ui.web.main.action.core.entityinstance;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.result.GetEntityInstancesResult;
+import com.echothree.control.user.core.common.result.GetEntityInstanceResult;
 import com.echothree.model.control.core.common.CoreOptions;
+import com.echothree.model.control.core.common.transfer.EntityInstanceTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -27,6 +28,7 @@ import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
 import com.echothree.view.client.web.struts.sslext.config.SecureActionMapping;
+import java.util.HashSet;
 import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -35,42 +37,57 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
 @SproutAction(
-    path = "/Core/EntityInstance/Main",
+    path = "/Core/EntityInstance/Review",
     mappingClass = SecureActionMapping.class,
     properties = {
         @SproutProperty(property = "secure", value = "true")
     },
     forwards = {
-        @SproutForward(name = "Display", path = "/core/entityinstance/main.jsp")
+        @SproutForward(name = "Display", path = "/core/entityinstance/review.jsp")
     }
 )
-public class MainAction
+public class ReviewAction
         extends MainBaseAction<ActionForm> {
     
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        var componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
-        var entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
-        var commandForm = CoreUtil.getHome().getGetEntityInstancesForm();
+        var commandForm = CoreUtil.getHome().getGetEntityInstanceForm();
 
-        commandForm.setComponentVendorName(componentVendorName);
-        commandForm.setEntityTypeName(entityTypeName);
+        commandForm.setEntityRef(request.getParameter(ParameterConstants.ENTITY_REF));
 
         commandForm.setOptions(Set.of(
+                CoreOptions.EntityAttributeGroupIncludeEntityAttributes,
+                CoreOptions.EntityAttributeIncludeValue,
+                CoreOptions.EntityStringAttributeIncludeString,
+                CoreOptions.EntityInstanceIncludeNames,
+                CoreOptions.EntityInstanceIncludeEntityAttributeGroups,
+                CoreOptions.EntityInstanceIncludeTagScopes,
                 CoreOptions.EntityInstanceIncludeEntityAppearance,
                 CoreOptions.AppearanceIncludeTextDecorations,
                 CoreOptions.AppearanceIncludeTextTransformations
         ));
 
-        var commandResult = CoreUtil.getHome().getEntityInstances(getUserVisitPK(request), commandForm);
-        var executionResult = commandResult.getExecutionResult();
-        var result = (GetEntityInstancesResult)executionResult.getResult();
+        var commandResult = CoreUtil.getHome().getEntityInstance(getUserVisitPK(request), commandForm);
 
-        request.setAttribute(AttributeConstants.ENTITY_TYPE, result.getEntityType());
-        request.setAttribute(AttributeConstants.ENTITY_INSTANCES, result.getEntityInstances());
+        EntityInstanceTransfer entityInstance = null;
+        if(!commandResult.hasErrors()) {
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetEntityInstanceResult)executionResult.getResult();
+            
+            entityInstance = result.getEntityInstance();
+        }
 
-        return mapping.findForward(ForwardConstants.DISPLAY);
+        String forwardKey;
+        if(entityInstance == null) {
+            forwardKey = ForwardConstants.ERROR_404;
+        } else {
+            saveToken(request); // Required for EntityInstanceIncludeTagScopes and tagScopes.jsp
+            request.setAttribute(AttributeConstants.ENTITY_INSTANCE, entityInstance);
+            forwardKey = ForwardConstants.DISPLAY;
+        }
+
+        return mapping.findForward(forwardKey);
     }
     
 }
