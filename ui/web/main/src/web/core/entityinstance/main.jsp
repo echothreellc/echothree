@@ -39,7 +39,9 @@
         </div>
         <div id="Content">
             <display:table name="entityInstances" id="entityInstance" class="displaytag">
-                <display:column property="entityRef" titleKey="columnTitle.entity" />
+                <display:column titleKey="columnTitle.entity">
+                    <et:appearance appearance="${entityInstance.entityAppearance.appearance}"><c:out value="${entityInstance.entityRef}" /></et:appearance>
+                </display:column>
                 <display:column titleKey="columnTitle.description">
                     <c:out value="${entityInstance.description}" />
                 </display:column>

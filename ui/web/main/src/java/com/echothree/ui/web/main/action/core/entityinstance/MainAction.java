@@ -18,6 +18,8 @@ package com.echothree.ui.web.main.action.core.entityinstance;
 
 import com.echothree.control.user.core.common.CoreUtil;
 import com.echothree.control.user.core.common.result.GetEntityInstancesResult;
+import com.echothree.model.control.core.common.CoreOptions;
+import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -25,7 +27,7 @@ import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
 import com.echothree.view.client.web.struts.sslext.config.SecureActionMapping;
-import javax.naming.NamingException;
+import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
@@ -47,30 +49,29 @@ public class MainAction
     
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
-    throws Exception {
-        String forwardKey;
-        
-        try {
-            var componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
-            var entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
-            var getEntityInstancesForm = CoreUtil.getHome().getGetEntityInstancesForm();
-            
-            getEntityInstancesForm.setComponentVendorName(componentVendorName);
-            getEntityInstancesForm.setEntityTypeName(entityTypeName);
+            throws Exception {
+        var componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
+        var entityTypeName = request.getParameter(ParameterConstants.ENTITY_TYPE_NAME);
+        var commandForm = CoreUtil.getHome().getGetEntityInstancesForm();
 
-            var commandResult = CoreUtil.getHome().getEntityInstances(getUserVisitPK(request), getEntityInstancesForm);
-            var executionResult = commandResult.getExecutionResult();
-            var getEntityInstancesResult = (GetEntityInstancesResult)executionResult.getResult();
-            
-            request.setAttribute("componentVendorName", componentVendorName); // TODO: pull from result
-            request.setAttribute("entityTypeName", entityTypeName); // TODO: pull from result
-            request.setAttribute("entityInstances", getEntityInstancesResult.getEntityInstances());
-            forwardKey = ForwardConstants.DISPLAY;
-        } catch (NamingException ne) {
-            forwardKey = ForwardConstants.ERROR_500;
-        }
-        
-        return mapping.findForward(forwardKey);
+        commandForm.setComponentVendorName(componentVendorName);
+        commandForm.setEntityTypeName(entityTypeName);
+
+        commandForm.setOptions(Set.of(
+                CoreOptions.EntityInstanceIncludeEntityAppearance,
+                CoreOptions.AppearanceIncludeTextDecorations,
+                CoreOptions.AppearanceIncludeTextTransformations
+        ));
+
+        var commandResult = CoreUtil.getHome().getEntityInstances(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetEntityInstancesResult)executionResult.getResult();
+
+        request.setAttribute(AttributeConstants.COMPONENT_VENDOR_NAME, result.getComponentVendorName());
+        request.setAttribute(AttributeConstants.ENTITY_TYPE_NAME, result.getEntityTypeName());
+        request.setAttribute(AttributeConstants.ENTITY_INSTANCES, result.getEntityInstances());
+
+        return mapping.findForward(ForwardConstants.DISPLAY);
     }
     
 }
