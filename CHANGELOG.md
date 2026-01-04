@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-01-04-01
+
+* Add UI for Maintaining Entity Alias Types [1115](https://gitlab.echothree.com/echothree/echothree/-/issues/1115)
+* 2026 Copyright Update [1623](https://gitlab.echothree.com/echothree/echothree/-/issues/1623)
+* Java Uuid Generator 5.2.0 Upgrade [1662](https://gitlab.echothree.com/echothree/echothree/-/issues/1662)
+* Extend Identify UC to Search Entity Attribute Groups [1673](https://gitlab.echothree.com/echothree/echothree/-/issues/1673)
+* Extend Identify UC to Search Entity Alias Types [1681](https://gitlab.echothree.com/echothree/echothree/-/issues/1681)
+* Add Entity Alias Types to Entity Type Review Page [1689](https://gitlab.echothree.com/echothree/echothree/-/issues/1689)
+* Add Entity Instance Review Page [1690](https://gitlab.echothree.com/echothree/echothree/-/issues/1690)
+
 ## 2025-12-21-01
 
 * Apache Lucene 10.3.2 Upgrade [1648](https://gitlab.echothree.com/echothree/echothree/-/issues/1648)
