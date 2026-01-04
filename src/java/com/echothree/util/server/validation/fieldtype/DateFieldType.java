@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -45,7 +45,7 @@ public class DateFieldType
         LocalDate localDate = null;
         
         if(fieldValue.equalsIgnoreCase("TODAY")) {
-            var zonedDateTime = ZonedDateTime.ofInstant(Instant.ofEpochMilli(getSession().START_TIME), zoneId);
+            var zonedDateTime = ZonedDateTime.ofInstant(Instant.ofEpochMilli(getSession().getStartTime()), zoneId);
             
             localDate = LocalDate.of(zonedDateTime.getYear(), zonedDateTime.getMonth(), zonedDateTime.getDayOfMonth());
         } else {

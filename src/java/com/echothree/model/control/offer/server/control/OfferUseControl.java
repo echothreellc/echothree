@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -34,9 +34,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import javax.enterprise.context.RequestScoped;
+import com.echothree.util.server.cdi.CommandScope;
 
-@RequestScoped
+@CommandScope
 public class OfferUseControl
         extends BaseOfferControl {
 
@@ -52,7 +52,7 @@ public class OfferUseControl
     public OfferUse createOfferUse(Offer offer, Use use, Sequence salesOrderSequence, BasePK createdBy) {
         var offerUse = OfferUseFactory.getInstance().create();
         var offerUseDetail = OfferUseDetailFactory.getInstance().create(offerUse, offer, use, salesOrderSequence,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         offerUse = OfferUseFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, offerUse.getPrimaryKey());
@@ -298,7 +298,7 @@ public class OfferUseControl
                     offerUseDetailValue.getOfferUsePK());
             var offerUseDetail = offerUse.getActiveDetailForUpdate();
 
-            offerUseDetail.setThruTime(session.START_TIME_LONG);
+            offerUseDetail.setThruTime(session.getStartTime());
             offerUseDetail.store();
 
             var offerUsePK = offerUseDetail.getOfferUsePK();
@@ -307,7 +307,7 @@ public class OfferUseControl
             var sequencePK = offerUseDetailValue.getSalesOrderSequencePK();
 
             offerUseDetail = OfferUseDetailFactory.getInstance().create(offerUsePK, offerPK, usePK, sequencePK,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             offerUse.setActiveDetail(offerUseDetail);
             offerUse.setLastDetail(offerUseDetail);
@@ -322,7 +322,7 @@ public class OfferUseControl
         sourceControl.deleteSourcesByOfferUse(offerUse, deletedBy);
 
         var offerUseDetail = offerUse.getLastDetailForUpdate();
-        offerUseDetail.setThruTime(session.START_TIME_LONG);
+        offerUseDetail.setThruTime(session.getStartTime());
         offerUse.setActiveDetail(null);
         offerUse.store();
 

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -130,10 +130,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import javax.enterprise.context.RequestScoped;
+import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
-@RequestScoped
+@CommandScope
 public class UserControl
         extends BaseModelControl {
 
@@ -221,7 +221,7 @@ public class UserControl
         
         userKey = userKeyFactory.create();
         var userKeyDetail = userKeyDetailFactory.create(userKey, userKeyName, (Party)null, (PartyRelationship)null,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         userKey = userKeyFactory.getEntityFromPK(EntityPermission.READ_WRITE, userKey.getPrimaryKey());
@@ -229,7 +229,7 @@ public class UserControl
         userKey.setLastDetail(userKeyDetail);
         userKey.store();
         
-        createUserKeyStatus(userKey, session.START_TIME_LONG);
+        createUserKeyStatus(userKey, session.getStartTime());
         
         return userKey;
     }
@@ -355,14 +355,14 @@ public class UserControl
         var userKey = userKeyFactory.getEntityFromPK(EntityPermission.READ_WRITE, userKeyPK);
         var userKeyDetail = userKey.getLastDetailForUpdate();
         
-        userKeyDetail.setThruTime(session.START_TIME_LONG);
+        userKeyDetail.setThruTime(session.getStartTime());
         userKeyDetail.store();
 
         var partyPK = userKeyDetailValue.getPartyPK();
         var partyRelationshipPK = userKeyDetailValue.getPartyRelationshipPK();
         
         userKeyDetail = userKeyDetailFactory.create(userKeyPK, userKeyDetail.getUserKeyName(), partyPK, partyRelationshipPK,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         userKey.setActiveDetail(userKeyDetail);
         userKey.setLastDetail(userKeyDetail);
@@ -385,7 +385,7 @@ public class UserControl
 
     public List<UserKey> getInactiveUserKeys(Long inactiveTime) {
         return userKeyFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, getInactiveUserKeysQueries,
-                session.START_TIME, inactiveTime);
+                session.getStartTime(), inactiveTime);
     }
 
     public void removeUserKey(final UserKey userKey) {
@@ -506,7 +506,7 @@ public class UserControl
     public UserVisitGroup createUserVisitGroup(String userVisitGroupName, BasePK createdBy) {
         var userVisitGroup = userVisitGroupFactory.create();
         var userVisitGroupDetail = userVisitGroupDetailFactory.create(userVisitGroup, userVisitGroupName,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         userVisitGroup = userVisitGroupFactory.getEntityFromPK(EntityPermission.READ_WRITE,
@@ -595,7 +595,8 @@ public class UserControl
             query = "SELECT _ALL_ " +
                     "FROM uservisitgroups, uservisitgroupdetails " +
                     "WHERE uvisgrp_activedetailid = uvisgrpdt_uservisitgroupdetailid " +
-                    "ORDER BY uvisgrpdt_uservisitgroupname";
+                    "ORDER BY uvisgrpdt_uservisitgroupname " +
+                    "_LIMIT_";
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
             query = "SELECT _ALL_ " +
                     "FROM uservisitgroups, uservisitgroupdetails " +
@@ -694,8 +695,8 @@ public class UserControl
         }
 
         var userVisit = userVisitFactory.create(userVisitGroup, userKey, preferredLanguage, preferredCurrency,
-                preferredTimeZone, preferredDateTimeFormat, session.START_TIME_LONG, offerUse, associateReferral, retainUntilTime,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                preferredTimeZone, preferredDateTimeFormat, session.getStartTime(), offerUse, associateReferral, retainUntilTime,
+                session.getStartTime(), Session.MAX_TIME);
 
         createUserVisitStatus(userVisit);
 
@@ -777,7 +778,7 @@ public class UserControl
     public void deleteUserVisit(UserVisit userVisit) {
         removeUserVisitStatusByUserVisit(userVisit);
         
-        userVisit.setThruTime(session.START_TIME_LONG);
+        userVisit.setThruTime(session.getStartTime());
         userVisit.store();
     }
 
@@ -986,7 +987,7 @@ public class UserControl
         var partyDetail = party.getLastDetail();
         
         if(userSession != null) {
-            userSession.setThruTime(session.START_TIME_LONG);
+            userSession.setThruTime(session.getStartTime());
             userSession.store();
         }
         
@@ -1034,7 +1035,7 @@ public class UserControl
 
     public List<UserVisit> getAbandonedUserVisits(Long abandonedTime) {
         return userVisitFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, getAbandonedUserVisitsQueries,
-                Session.MAX_TIME, session.START_TIME, abandonedTime);
+                Session.MAX_TIME, session.getStartTime(), abandonedTime);
     }
 
     private static final Map<EntityPermission, String> getUserVisitsByUserVisitGroupQueries;
@@ -1115,7 +1116,7 @@ public class UserControl
 
     public List<UserVisit> getInvalidatedUserVisits() {
         return userVisitFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, getInvalidatedUserVisitsQueries,
-                session.START_TIME, Session.MAX_TIME);
+                session.getStartTime(), Session.MAX_TIME);
     }
 
     // --------------------------------------------------------------------------------
@@ -1196,7 +1197,7 @@ public class UserControl
         var retainUserVisitsTime = partyTypeAuditPolicy == null? null: partyTypeAuditPolicy.getLastDetail().getRetainUserVisitsTime();
         
         if(retainUserVisitsTime != null) {
-            var retainUntilTime = session.START_TIME + retainUserVisitsTime;
+            var retainUntilTime = session.getStartTime() + retainUserVisitsTime;
             var currentRetainUntilTime = userVisit.getRetainUntilTime();
             
             if(currentRetainUntilTime == null || (retainUntilTime > currentRetainUntilTime)) {
@@ -1204,7 +1205,7 @@ public class UserControl
             }
         }
         
-        return userSessionFactory.create(userVisit, party, partyRelationship, identityVerifiedTime, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        return userSessionFactory.create(userVisit, party, partyRelationship, identityVerifiedTime, session.getStartTime(), Session.MAX_TIME);
     }
     
     private static final Map<EntityPermission, String> getUserSessionsByPartyQueries;
@@ -1313,7 +1314,7 @@ public class UserControl
     }
     
     public void deleteUserSession(UserSession userSession) {
-        userSession.setThruTime(session.START_TIME_LONG);
+        userSession.setThruTime(session.getStartTime());
         userSession.store();
     }
 
@@ -1350,7 +1351,7 @@ public class UserControl
 
         var recoveryQuestion = recoveryQuestionFactory.create();
         var recoveryQuestionDetail = recoveryQuestionDetailFactory.create(recoveryQuestion,
-                recoveryQuestionName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                recoveryQuestionName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         recoveryQuestion = recoveryQuestionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
@@ -1545,7 +1546,7 @@ public class UserControl
                      recoveryQuestionDetailValue.getRecoveryQuestionPK());
             var recoveryQuestionDetail = recoveryQuestion.getActiveDetailForUpdate();
             
-            recoveryQuestionDetail.setThruTime(session.START_TIME_LONG);
+            recoveryQuestionDetail.setThruTime(session.getStartTime());
             recoveryQuestionDetail.store();
 
             var recoveryQuestionPK = recoveryQuestionDetail.getRecoveryQuestionPK();
@@ -1570,7 +1571,7 @@ public class UserControl
             }
             
             recoveryQuestionDetail = recoveryQuestionDetailFactory.create(recoveryQuestionPK,
-                    recoveryQuestionName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    recoveryQuestionName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             recoveryQuestion.setActiveDetail(recoveryQuestionDetail);
             recoveryQuestion.setLastDetail(recoveryQuestionDetail);
@@ -1588,7 +1589,7 @@ public class UserControl
         deleteRecoveryAnswersByRecoveryQuestion(recoveryQuestion, deletedBy);
 
         var recoveryQuestionDetail = recoveryQuestion.getLastDetailForUpdate();
-        recoveryQuestionDetail.setThruTime(session.START_TIME_LONG);
+        recoveryQuestionDetail.setThruTime(session.getStartTime());
         recoveryQuestion.setActiveDetail(null);
         recoveryQuestion.store();
         
@@ -1625,8 +1626,8 @@ public class UserControl
     
     public RecoveryQuestionDescription createRecoveryQuestionDescription(RecoveryQuestion recoveryQuestion, Language language,
             String description, BasePK createdBy) {
-        var recoveryQuestionDescription = recoveryQuestionDescriptionFactory.create(session,
-                recoveryQuestion, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var recoveryQuestionDescription = recoveryQuestionDescriptionFactory.create(
+                recoveryQuestion, language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(recoveryQuestion.getPrimaryKey(), EventTypes.MODIFY, recoveryQuestionDescription.getPrimaryKey(),
                 null, createdBy);
@@ -1759,7 +1760,7 @@ public class UserControl
             var recoveryQuestionDescription = recoveryQuestionDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      recoveryQuestionDescriptionValue.getPrimaryKey());
             
-            recoveryQuestionDescription.setThruTime(session.START_TIME_LONG);
+            recoveryQuestionDescription.setThruTime(session.getStartTime());
             recoveryQuestionDescription.store();
 
             var recoveryQuestion = recoveryQuestionDescription.getRecoveryQuestion();
@@ -1767,7 +1768,7 @@ public class UserControl
             var description = recoveryQuestionDescriptionValue.getDescription();
             
             recoveryQuestionDescription = recoveryQuestionDescriptionFactory.create(recoveryQuestion, language,
-                    description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(recoveryQuestion.getPrimaryKey(), EventTypes.MODIFY, recoveryQuestionDescription.getPrimaryKey(),
                     null, updatedBy);
@@ -1775,7 +1776,7 @@ public class UserControl
     }
     
     public void deleteRecoveryQuestionDescription(RecoveryQuestionDescription recoveryQuestionDescription, BasePK deletedBy) {
-        recoveryQuestionDescription.setThruTime(session.START_TIME_LONG);
+        recoveryQuestionDescription.setThruTime(session.getStartTime());
         
         sendEvent(recoveryQuestionDescription.getRecoveryQuestionPK(), EventTypes.MODIFY,
                 recoveryQuestionDescription.getPrimaryKey(), null, deletedBy);
@@ -1802,7 +1803,7 @@ public class UserControl
     public RecoveryAnswer createRecoveryAnswer(Party party, RecoveryQuestion recoveryQuestion, String answer, BasePK createdBy) {
         var recoveryAnswer = recoveryAnswerFactory.create();
         var recoveryAnswerDetail = recoveryAnswerDetailFactory.create(recoveryAnswer,
-                party, recoveryQuestion, answer, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                party, recoveryQuestion, answer, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         recoveryAnswer = recoveryAnswerFactory.getEntityFromPK(EntityPermission.READ_WRITE, recoveryAnswer.getPrimaryKey());
@@ -1914,7 +1915,7 @@ public class UserControl
             var recoveryAnswer = recoveryAnswerFactory.getEntityFromPK(EntityPermission.READ_WRITE, recoveryAnswerDetailValue.getRecoveryAnswerPK());
             var recoveryAnswerDetail = recoveryAnswer.getActiveDetailForUpdate();
 
-            recoveryAnswerDetail.setThruTime(session.START_TIME_LONG);
+            recoveryAnswerDetail.setThruTime(session.getStartTime());
             recoveryAnswerDetail.store();
 
             var recoveryAnswerPK = recoveryAnswerDetail.getRecoveryAnswerPK();
@@ -1923,7 +1924,7 @@ public class UserControl
             var answer = recoveryAnswerDetailValue.getAnswer();
 
             recoveryAnswerDetail = recoveryAnswerDetailFactory.create(recoveryAnswerPK, partyPK, recoveryQuestionPK, answer,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             recoveryAnswer.setActiveDetail(recoveryAnswerDetail);
             recoveryAnswer.setLastDetail(recoveryAnswerDetail);
@@ -1934,7 +1935,7 @@ public class UserControl
     
     public void deleteRecoveryAnswer(RecoveryAnswer recoveryAnswer, BasePK deletedBy) {
         var recoveryAnswerDetail = recoveryAnswer.getLastDetailForUpdate();
-        recoveryAnswerDetail.setThruTime(session.START_TIME_LONG);
+        recoveryAnswerDetail.setThruTime(session.getStartTime());
         recoveryAnswer.setActiveDetail(null);
         recoveryAnswer.store();
         
@@ -2027,7 +2028,7 @@ public class UserControl
             ps.setLong(1, sequenceEncoderType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             
-            sequenceEncoderTypeDescription = userLoginPasswordEncoderTypeDescriptionFactory.getEntityFromQuery(session,
+            sequenceEncoderTypeDescription = userLoginPasswordEncoderTypeDescriptionFactory.getEntityFromQuery(
                     EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -2149,7 +2150,7 @@ public class UserControl
     
     public UserLoginPassword createUserLoginPassword(Party party, UserLoginPasswordType userLoginPasswordType, BasePK createdBy) {
         var userLoginPassword = userLoginPasswordFactory.create(party, userLoginPasswordType,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, userLoginPassword.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -2247,7 +2248,7 @@ public class UserControl
     public void deleteUserLoginPassword(UserLoginPassword userLoginPassword, BasePK deletedBy) {
         var userLoginPasswordTypeName = userLoginPassword.getUserLoginPasswordType().getUserLoginPasswordTypeName();
         
-        userLoginPassword.setThruTime(session.START_TIME_LONG);
+        userLoginPassword.setThruTime(session.getStartTime());
         userLoginPassword.store();
         
         if(userLoginPasswordTypeName.equals(UserConstants.UserLoginPasswordType_STRING) ||
@@ -2293,8 +2294,8 @@ public class UserControl
             // UserLoginPasswordEncoderType_TEXT requires no further action.
         }
 
-        var userLoginPasswordString = userLoginPasswordStringFactory.create(session,
-                userLoginPassword, salt, password, changedTime, wasReset, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var userLoginPasswordString = userLoginPasswordStringFactory.create(
+                userLoginPassword, salt, password, changedTime, wasReset, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(userLoginPassword.getPartyPK(), EventTypes.MODIFY, userLoginPasswordString.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -2370,7 +2371,7 @@ public class UserControl
             var userLoginPasswordString = userLoginPasswordStringFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      userLoginPasswordStringValue.getPrimaryKey());
             
-            userLoginPasswordString.setThruTime(session.START_TIME_LONG);
+            userLoginPasswordString.setThruTime(session.getStartTime());
             userLoginPasswordString.store();
 
             var userLoginPassword = userLoginPasswordString.getUserLoginPassword();
@@ -2398,14 +2399,14 @@ public class UserControl
             }
             
             userLoginPasswordString = userLoginPasswordStringFactory.create(userLoginPasswordPK, salt, password, changedTime, wasReset,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(userLoginPasswordString.getUserLoginPassword().getPartyPK(), EventTypes.MODIFY, userLoginPasswordString.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteUserLoginPasswordString(UserLoginPasswordString userLoginPasswordString, BasePK deletedBy) {
-        userLoginPasswordString.setThruTime(session.START_TIME_LONG);
+        userLoginPasswordString.setThruTime(session.getStartTime());
         userLoginPasswordString.store();
         
         sendEvent(userLoginPasswordString.getUserLoginPassword().getPartyPK(), EventTypes.MODIFY, userLoginPasswordString.getPrimaryKey(), EventTypes.DELETE, deletedBy);
@@ -2419,8 +2420,8 @@ public class UserControl
     protected UserLoginFactory userLoginFactory;
     
     public UserLogin createUserLogin(Party party, String username, BasePK createdBy) {
-        var userLogin = userLoginFactory.create(party, username, session.START_TIME_LONG,
-                Session.MAX_TIME_LONG);
+        var userLogin = userLoginFactory.create(party, username, session.getStartTime(),
+                Session.MAX_TIME);
         
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, userLogin.getPrimaryKey(), null, createdBy);
         
@@ -2528,14 +2529,14 @@ public class UserControl
             var userLogin = userLoginFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     userLoginValue.getPrimaryKey());
             
-            userLogin.setThruTime(session.START_TIME_LONG);
+            userLogin.setThruTime(session.getStartTime());
             userLogin.store();
 
             var partyPK = userLogin.getPartyPK(); // Not updated
             var username = userLoginValue.getUsername();
             
-            userLogin = userLoginFactory.create(partyPK, username, session.START_TIME_LONG,
-                    Session.MAX_TIME_LONG);
+            userLogin = userLoginFactory.create(partyPK, username, session.getStartTime(),
+                    Session.MAX_TIME);
             
             sendEvent(partyPK, EventTypes.MODIFY, userLogin.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -2548,7 +2549,7 @@ public class UserControl
         deleteRecoveryAnswerByParty(party, deletedBy);
         removeUserLoginStatusByParty(party);
         
-        userLogin.setThruTime(session.START_TIME_LONG);
+        userLogin.setThruTime(session.getStartTime());
         
         sendEvent(userLogin.getPartyPK(), EventTypes.MODIFY, userLogin.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
@@ -2593,7 +2594,7 @@ public class UserControl
             
             ps.setLong(1, party.getPrimaryKey().getEntityId());
             
-            userLoginStatus = userLoginStatusFactory.getEntityFromQuery(session,entityPermission, ps);
+            userLoginStatus = userLoginStatusFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }

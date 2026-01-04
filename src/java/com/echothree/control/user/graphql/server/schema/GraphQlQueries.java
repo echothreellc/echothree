@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -319,6 +319,7 @@ import com.echothree.control.user.selector.server.command.GetSelectorTypeCommand
 import com.echothree.control.user.selector.server.command.GetSelectorTypesCommand;
 import com.echothree.control.user.selector.server.command.GetSelectorsCommand;
 import com.echothree.control.user.sequence.common.SequenceUtil;
+import com.echothree.control.user.sequence.common.result.GetSequenceValueResult;
 import com.echothree.control.user.sequence.server.command.GetSequenceChecksumTypeCommand;
 import com.echothree.control.user.sequence.server.command.GetSequenceChecksumTypesCommand;
 import com.echothree.control.user.sequence.server.command.GetSequenceCommand;
@@ -417,8 +418,6 @@ import com.echothree.control.user.workflow.server.command.GetWorkflowStepTypeCom
 import com.echothree.control.user.workflow.server.command.GetWorkflowStepTypesCommand;
 import com.echothree.control.user.workflow.server.command.GetWorkflowStepsCommand;
 import com.echothree.control.user.workflow.server.command.GetWorkflowsCommand;
-import com.echothree.model.control.accounting.server.control.AccountingControl;
-import com.echothree.model.control.accounting.server.control.TransactionTimeControl;
 import com.echothree.model.control.accounting.server.graphql.CurrencyObject;
 import com.echothree.model.control.accounting.server.graphql.GlAccountCategoryObject;
 import com.echothree.model.control.accounting.server.graphql.GlAccountClassObject;
@@ -478,7 +477,6 @@ import com.echothree.model.control.filter.server.graphql.FilterKindObject;
 import com.echothree.model.control.filter.server.graphql.FilterObject;
 import com.echothree.model.control.filter.server.graphql.FilterStepObject;
 import com.echothree.model.control.filter.server.graphql.FilterTypeObject;
-import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.geo.server.graphql.GeoCodeObject;
 import com.echothree.model.control.geo.server.graphql.GeoCodeScopeObject;
 import com.echothree.model.control.geo.server.graphql.GeoCodeTypeObject;
@@ -494,7 +492,6 @@ import com.echothree.model.control.inventory.server.graphql.InventoryAdjustmentT
 import com.echothree.model.control.inventory.server.graphql.InventoryConditionObject;
 import com.echothree.model.control.inventory.server.graphql.InventoryTransactionTypeObject;
 import com.echothree.model.control.inventory.server.graphql.LotObject;
-import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.item.server.graphql.ItemAliasChecksumTypeObject;
 import com.echothree.model.control.item.server.graphql.ItemAliasObject;
 import com.echothree.model.control.item.server.graphql.ItemAliasTypeObject;
@@ -527,7 +524,6 @@ import com.echothree.model.control.offer.server.graphql.UseTypeObject;
 import com.echothree.model.control.order.server.graphql.OrderPriorityObject;
 import com.echothree.model.control.order.server.graphql.OrderTimeTypeObject;
 import com.echothree.model.control.order.server.graphql.OrderTypeObject;
-import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.party.server.graphql.CompanyObject;
 import com.echothree.model.control.party.server.graphql.DateTimeFormatObject;
 import com.echothree.model.control.party.server.graphql.DepartmentObject;
@@ -582,6 +578,7 @@ import com.echothree.model.control.security.server.graphql.SecurityRoleObject;
 import com.echothree.model.control.selector.server.graphql.SelectorKindObject;
 import com.echothree.model.control.selector.server.graphql.SelectorObject;
 import com.echothree.model.control.selector.server.graphql.SelectorTypeObject;
+import com.echothree.model.control.sequence.server.graphql.GetSequenceValueResultObject;
 import com.echothree.model.control.sequence.server.graphql.SequenceChecksumTypeObject;
 import com.echothree.model.control.sequence.server.graphql.SequenceEncoderTypeObject;
 import com.echothree.model.control.sequence.server.graphql.SequenceObject;
@@ -593,15 +590,12 @@ import com.echothree.model.control.tag.server.graphql.EntityTagObject;
 import com.echothree.model.control.tag.server.graphql.TagObject;
 import com.echothree.model.control.tag.server.graphql.TagScopeEntityTypeObject;
 import com.echothree.model.control.tag.server.graphql.TagScopeObject;
-import com.echothree.model.control.term.server.control.TermControl;
 import com.echothree.model.control.term.server.graphql.TermObject;
 import com.echothree.model.control.term.server.graphql.TermTypeObject;
-import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.uom.server.graphql.UnitOfMeasureKindObject;
 import com.echothree.model.control.uom.server.graphql.UnitOfMeasureKindUseObject;
 import com.echothree.model.control.uom.server.graphql.UnitOfMeasureKindUseTypeObject;
 import com.echothree.model.control.uom.server.graphql.UnitOfMeasureTypeObject;
-import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.user.server.graphql.RecoveryQuestionObject;
 import com.echothree.model.control.user.server.graphql.UserLoginObject;
 import com.echothree.model.control.user.server.graphql.UserSessionObject;
@@ -798,7 +792,9 @@ import com.echothree.model.data.item.server.entity.ItemWeightType;
 import com.echothree.model.data.item.server.entity.RelatedItem;
 import com.echothree.model.data.item.server.entity.RelatedItemType;
 import com.echothree.model.data.offer.common.OfferConstants;
+import com.echothree.model.data.offer.common.OfferNameElementConstants;
 import com.echothree.model.data.offer.common.UseConstants;
+import com.echothree.model.data.offer.common.UseNameElementConstants;
 import com.echothree.model.data.offer.common.UseTypeConstants;
 import com.echothree.model.data.offer.server.entity.Offer;
 import com.echothree.model.data.offer.server.entity.OfferItem;
@@ -834,6 +830,9 @@ import com.echothree.model.data.party.server.entity.PartyDivision;
 import com.echothree.model.data.party.server.entity.PartyType;
 import com.echothree.model.data.party.server.entity.RoleType;
 import com.echothree.model.data.party.server.entity.TimeZone;
+import com.echothree.model.data.payment.common.PaymentMethodTypeConstants;
+import com.echothree.model.data.payment.common.PaymentProcessorConstants;
+import com.echothree.model.data.payment.common.PaymentProcessorTypeConstants;
 import com.echothree.model.data.payment.server.entity.PaymentMethodType;
 import com.echothree.model.data.payment.server.entity.PaymentProcessor;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorActionType;
@@ -2328,7 +2327,7 @@ public interface GraphQlQueries {
 
         return data;
     }
-    
+
     @GraphQLField
     @GraphQLName("sequence")
     static SequenceObject sequence(final DataFetchingEnvironment env,
@@ -2350,6 +2349,33 @@ public interface GraphQlQueries {
         }
 
         return sequence == null ? null : new SequenceObject(sequence);
+    }
+
+    @GraphQLField
+    @GraphQLName("sequenceValue")
+    static GetSequenceValueResultObject sequenceValue(final DataFetchingEnvironment env,
+            @GraphQLName("sequenceTypeName") final String sequenceTypeName,
+            @GraphQLName("sequenceName") final String sequenceName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        GetSequenceValueResultObject result = null;
+
+        try {
+            var commandForm = SequenceUtil.getHome().getGetSequenceValueForm();
+
+            commandForm.setSequenceTypeName(sequenceTypeName);
+            commandForm.setSequenceName(sequenceName);
+            commandForm.setUuid(id);
+
+            var commandResult = SequenceUtil.getHome().getSequenceValue(BaseGraphQl.getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                result = new GetSequenceValueResultObject((GetSequenceValueResult)commandResult.getExecutionResult().getResult());
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return result;
     }
 
     @GraphQLField
@@ -3556,29 +3582,34 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("offerNameElements")
-    static Collection<OfferNameElementObject> offerNameElements(final DataFetchingEnvironment env) {
-        Collection<OfferNameElement> offerNameElements;
-        Collection<OfferNameElementObject> offerNameElementObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<OfferNameElementObject> offerNameElements(final DataFetchingEnvironment env) {
+        CountingPaginatedData<OfferNameElementObject> data;
 
         try {
             var commandForm = OfferUtil.getHome().getGetOfferNameElementsForm();
+            var command = CDI.current().select(GetOfferNameElementsCommand.class).get();
 
-            offerNameElements = CDI.current().select(GetOfferNameElementsCommand.class).get().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, OfferNameElementConstants.COMPONENT_VENDOR_NAME, OfferNameElementConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var offerNameElementObjects = entities.stream()
+                            .map(OfferNameElementObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, offerNameElementObjects);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(offerNameElements == null) {
-            offerNameElementObjects = emptyList();
-        } else {
-            offerNameElementObjects = new ArrayList<>(offerNameElements.size());
-
-            offerNameElements.stream()
-                    .map(OfferNameElementObject::new)
-                    .forEachOrdered(offerNameElementObjects::add);
-        }
-
-        return offerNameElementObjects;
+        return data;
     }
 
     @GraphQLField
@@ -3604,29 +3635,34 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("useNameElements")
-    static Collection<UseNameElementObject> useNameElements(final DataFetchingEnvironment env) {
-        Collection<UseNameElement> useNameElements;
-        Collection<UseNameElementObject> useNameElementObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<UseNameElementObject> useNameElements(final DataFetchingEnvironment env) {
+        CountingPaginatedData<UseNameElementObject> data;
 
         try {
             var commandForm = OfferUtil.getHome().getGetUseNameElementsForm();
+            var command = CDI.current().select(GetUseNameElementsCommand.class).get();
 
-            useNameElements = CDI.current().select(GetUseNameElementsCommand.class).get().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, UseNameElementConstants.COMPONENT_VENDOR_NAME, UseNameElementConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var useNameElementObjects = entities.stream()
+                            .map(UseNameElementObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, useNameElementObjects);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(useNameElements == null) {
-            useNameElementObjects = emptyList();
-        } else {
-            useNameElementObjects = new ArrayList<>(useNameElements.size());
-
-            useNameElements.stream()
-                    .map(UseNameElementObject::new)
-                    .forEachOrdered(useNameElementObjects::add);
-        }
-
-        return useNameElementObjects;
+        return data;
     }
 
     @GraphQLField
@@ -3854,29 +3890,34 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("paymentProcessors")
-    static Collection<PaymentProcessorObject> paymentProcessors(final DataFetchingEnvironment env) {
-        Collection<PaymentProcessor> paymentProcessors;
-        Collection<PaymentProcessorObject> paymentProcessorObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<PaymentProcessorObject> paymentProcessors(final DataFetchingEnvironment env) {
+        CountingPaginatedData<PaymentProcessorObject> data;
 
         try {
             var commandForm = PaymentUtil.getHome().getGetPaymentProcessorsForm();
+            var command = CDI.current().select(GetPaymentProcessorsCommand.class).get();
 
-            paymentProcessors = CDI.current().select(GetPaymentProcessorsCommand.class).get().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, PaymentProcessorConstants.COMPONENT_VENDOR_NAME, PaymentProcessorConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var paymentProcessors = entities.stream()
+                            .map(PaymentProcessorObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, paymentProcessors);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(paymentProcessors == null) {
-            paymentProcessorObjects = emptyList();
-        } else {
-            paymentProcessorObjects = new ArrayList<>(paymentProcessors.size());
-
-            paymentProcessors.stream()
-                    .map(PaymentProcessorObject::new)
-                    .forEachOrdered(paymentProcessorObjects::add);
-        }
-
-        return paymentProcessorObjects;
+        return data;
     }
 
     @GraphQLField
@@ -3902,29 +3943,34 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("paymentProcessorTypes")
-    static Collection<PaymentProcessorTypeObject> paymentProcessorTypes(final DataFetchingEnvironment env) {
-        Collection<PaymentProcessorType> paymentProcessorTypes;
-        Collection<PaymentProcessorTypeObject> paymentProcessorTypeObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<PaymentProcessorTypeObject> paymentProcessorTypes(final DataFetchingEnvironment env) {
+        CountingPaginatedData<PaymentProcessorTypeObject> data;
 
         try {
             var commandForm = PaymentUtil.getHome().getGetPaymentProcessorTypesForm();
+            var command = CDI.current().select(GetPaymentProcessorTypesCommand.class).get();
 
-            paymentProcessorTypes = CDI.current().select(GetPaymentProcessorTypesCommand.class).get().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, PaymentProcessorTypeConstants.COMPONENT_VENDOR_NAME, PaymentProcessorTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var paymentProcessorTypes = entities.stream()
+                            .map(PaymentProcessorTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, paymentProcessorTypes);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(paymentProcessorTypes == null) {
-            paymentProcessorTypeObjects = emptyList();
-        } else {
-            paymentProcessorTypeObjects = new ArrayList<>(paymentProcessorTypes.size());
-
-            paymentProcessorTypes.stream()
-                    .map(PaymentProcessorTypeObject::new)
-                    .forEachOrdered(paymentProcessorTypeObjects::add);
-        }
-
-        return paymentProcessorTypeObjects;
+        return data;
     }
 
     @GraphQLField
@@ -3950,29 +3996,34 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("paymentMethodTypes")
-    static Collection<PaymentMethodTypeObject> paymentMethodTypes(final DataFetchingEnvironment env) {
-        Collection<PaymentMethodType> paymentMethodTypes;
-        Collection<PaymentMethodTypeObject> paymentMethodTypeObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<PaymentMethodTypeObject> paymentMethodTypes(final DataFetchingEnvironment env) {
+        CountingPaginatedData<PaymentMethodTypeObject> data;
 
         try {
             var commandForm = PaymentUtil.getHome().getGetPaymentMethodTypesForm();
+            var command = CDI.current().select(GetPaymentMethodTypesCommand.class).get();
 
-            paymentMethodTypes = CDI.current().select(GetPaymentMethodTypesCommand.class).get().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, PaymentMethodTypeConstants.COMPONENT_VENDOR_NAME, PaymentMethodTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var paymentMethodTypes = entities.stream()
+                            .map(PaymentMethodTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, paymentMethodTypes);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(paymentMethodTypes == null) {
-            paymentMethodTypeObjects = emptyList();
-        } else {
-            paymentMethodTypeObjects = new ArrayList<>(paymentMethodTypes.size());
-
-            paymentMethodTypes.stream()
-                    .map(PaymentMethodTypeObject::new)
-                    .forEachOrdered(paymentMethodTypeObjects::add);
-        }
-
-        return paymentMethodTypeObjects;
+        return data;
     }
 
     @GraphQLField
@@ -5757,29 +5808,34 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("mimeTypeUsageTypes")
-    static Collection<MimeTypeUsageTypeObject> mimeTypeUsageTypes(final DataFetchingEnvironment env) {
-        Collection<MimeTypeUsageType> mimeTypeUsageTypes;
-        Collection<MimeTypeUsageTypeObject> mimeTypeUsageTypeObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<MimeTypeUsageTypeObject> mimeTypeUsageTypes(final DataFetchingEnvironment env) {
+        CountingPaginatedData<MimeTypeUsageTypeObject> data;
 
         try {
             var commandForm = CoreUtil.getHome().getGetMimeTypeUsageTypesForm();
+            var command = CDI.current().select(GetMimeTypeUsageTypesCommand.class).get();
 
-            mimeTypeUsageTypes = CDI.current().select(GetMimeTypeUsageTypesCommand.class).get().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, com.echothree.model.data.core.common.MimeTypeUsageTypeConstants.COMPONENT_VENDOR_NAME, com.echothree.model.data.core.common.MimeTypeUsageTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var mimeTypeUsageTypes = entities.stream()
+                            .map(MimeTypeUsageTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, mimeTypeUsageTypes);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(mimeTypeUsageTypes == null) {
-            mimeTypeUsageTypeObjects = emptyList();
-        } else {
-            mimeTypeUsageTypeObjects = new ArrayList<>(mimeTypeUsageTypes.size());
-
-            mimeTypeUsageTypes.stream()
-                    .map(MimeTypeUsageTypeObject::new)
-                    .forEachOrdered(mimeTypeUsageTypeObjects::add);
-        }
-
-        return mimeTypeUsageTypeObjects;
+        return data;
     }
 
     @GraphQLField
@@ -6074,16 +6130,16 @@ public interface GraphQlQueries {
         CountingPaginatedData<UnitOfMeasureKindUseTypeObject> data;
 
         try {
-            var uomControl = Session.getModelController(UomControl.class);
-            var totalCount = uomControl.countUnitOfMeasureKindUseType();
+            var commandForm = UomUtil.getHome().getGetUnitOfMeasureKindUseTypesForm();
+            var command = CDI.current().select(GetUnitOfMeasureKindUseTypesCommand.class).get();
 
-            try(var objectLimiter = new ObjectLimiter(env, UnitOfMeasureKindUseTypeConstants.COMPONENT_VENDOR_NAME, UnitOfMeasureKindUseTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var commandForm = UomUtil.getHome().getGetUnitOfMeasureKindUseTypesForm();
-                var entities = CDI.current().select(GetUnitOfMeasureKindUseTypesCommand.class).get().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, UnitOfMeasureKindUseTypeConstants.COMPONENT_VENDOR_NAME, UnitOfMeasureKindUseTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
 
-                if(entities == null) {
-                    data = Connections.emptyConnection();
-                } else {
                     var objects = entities.stream()
                             .map(UnitOfMeasureKindUseTypeObject::new)
                             .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
@@ -6870,17 +6926,19 @@ public interface GraphQlQueries {
         CountingPaginatedData<UserVisitGroupObject> data;
 
         try {
-            var userControl = Session.getModelController(UserControl.class);
-            var totalCount = userControl.countUserVisitGroups();
+            var commandForm = UserUtil.getHome().getGetUserVisitGroupsForm();
+            var command = CDI.current().select(GetUserVisitGroupsCommand.class).get();
 
-            try(var objectLimiter = new ObjectLimiter(env, UserVisitGroupConstants.COMPONENT_VENDOR_NAME, UserVisitGroupConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var commandForm = UserUtil.getHome().getGetUserVisitGroupsForm();
-                var entities = CDI.current().select(GetUserVisitGroupsCommand.class).get().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, UserVisitGroupConstants.COMPONENT_VENDOR_NAME, UserVisitGroupConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
 
-                if(entities == null) {
-                    data = Connections.emptyConnection();
-                } else {
-                    var userVisitGroups = entities.stream().map(UserVisitGroupObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+                    var userVisitGroups = entities.stream()
+                            .map(UserVisitGroupObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, userVisitGroups);
                 }
@@ -7581,17 +7639,19 @@ public interface GraphQlQueries {
         CountingPaginatedData<RoleTypeObject> data;
 
         try {
-            var partyControl = Session.getModelController(PartyControl.class);
-            var totalCount = partyControl.countRoleTypes();
+            var commandForm = PartyUtil.getHome().getGetRoleTypesForm();
+            var command = CDI.current().select(GetRoleTypesCommand.class).get();
 
-            try(var objectLimiter = new ObjectLimiter(env, RoleTypeConstants.COMPONENT_VENDOR_NAME, RoleTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var commandForm = PartyUtil.getHome().getGetRoleTypesForm();
-                var entities = CDI.current().select(GetRoleTypesCommand.class).get().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, RoleTypeConstants.COMPONENT_VENDOR_NAME, RoleTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
 
-                if(entities == null) {
-                    data = Connections.emptyConnection();
-                } else {
-                    var roleTypes = entities.stream().map(RoleTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+                    var roleTypes = entities.stream()
+                            .map(RoleTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, roleTypes);
                 }
@@ -7797,17 +7857,19 @@ public interface GraphQlQueries {
         CountingPaginatedData<PartyObject> data;
 
         try {
-            var partyControl = Session.getModelController(PartyControl.class);
-            var totalCount = partyControl.countParties();
+            var commandForm = PartyUtil.getHome().getGetPartiesForm();
+            var command = CDI.current().select(GetPartiesCommand.class).get();
 
-            try(var objectLimiter = new ObjectLimiter(env, PartyConstants.COMPONENT_VENDOR_NAME, PartyConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var commandForm = PartyUtil.getHome().getGetPartiesForm();
-                var entities = CDI.current().select(GetPartiesCommand.class).get().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, PartyConstants.COMPONENT_VENDOR_NAME, PartyConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
 
-                if(entities == null) {
-                    data = Connections.emptyConnection();
-                } else {
-                    var parties = entities.stream().map(PartyObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+                    var parties = entities.stream()
+                            .map(PartyObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, parties);
                 }
@@ -7850,17 +7912,19 @@ public interface GraphQlQueries {
         CountingPaginatedData<CompanyObject> data;
 
         try {
-            var partyControl = Session.getModelController(PartyControl.class);
-            var totalCount = partyControl.countPartyCompanies();
+            var commandForm = PartyUtil.getHome().getGetCompaniesForm();
+            var command = CDI.current().select(GetCompaniesCommand.class).get();
 
-            try(var objectLimiter = new ObjectLimiter(env, PartyCompanyConstants.COMPONENT_VENDOR_NAME, PartyCompanyConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var commandForm = PartyUtil.getHome().getGetCompaniesForm();
-                var entities = CDI.current().select(GetCompaniesCommand.class).get().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, PartyCompanyConstants.COMPONENT_VENDOR_NAME, PartyCompanyConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
 
-                if(entities == null) {
-                    data = Connections.emptyConnection();
-                } else {
-                    var companies = entities.stream().map(CompanyObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+                    var companies = entities.stream()
+                            .map(CompanyObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, companies);
                 }
@@ -9727,17 +9791,19 @@ public interface GraphQlQueries {
         CountingPaginatedData<ItemWeightTypeObject> data;
 
         try {
-            var itemControl = Session.getModelController(ItemControl.class);
-            var totalCount = itemControl.countItemWeightTypes();
+            var commandForm = ItemUtil.getHome().getGetItemWeightTypesForm();
+            var command = CDI.current().select(GetItemWeightTypesCommand.class).get();
 
-            try(var objectLimiter = new ObjectLimiter(env, ItemWeightTypeConstants.COMPONENT_VENDOR_NAME, ItemWeightTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var commandForm = ItemUtil.getHome().getGetItemWeightTypesForm();
-                var entities = CDI.current().select(GetItemWeightTypesCommand.class).get().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, ItemWeightTypeConstants.COMPONENT_VENDOR_NAME, ItemWeightTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
 
-                if(entities == null) {
-                    data = Connections.emptyConnection();
-                } else {
-                    var itemWeightTypes = entities.stream().map(ItemWeightTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+                    var itemWeightTypes = entities.stream()
+                            .map(ItemWeightTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, itemWeightTypes);
                 }
@@ -9778,17 +9844,19 @@ public interface GraphQlQueries {
         CountingPaginatedData<ItemVolumeTypeObject> data;
 
         try {
-            var itemControl = Session.getModelController(ItemControl.class);
-            var totalCount = itemControl.countItemVolumeTypes();
+            var commandForm = ItemUtil.getHome().getGetItemVolumeTypesForm();
+            var command = CDI.current().select(GetItemVolumeTypesCommand.class).get();
 
-            try(var objectLimiter = new ObjectLimiter(env, ItemVolumeTypeConstants.COMPONENT_VENDOR_NAME, ItemVolumeTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var commandForm = ItemUtil.getHome().getGetItemVolumeTypesForm();
-                var entities = CDI.current().select(GetItemVolumeTypesCommand.class).get().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, ItemVolumeTypeConstants.COMPONENT_VENDOR_NAME, ItemVolumeTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
 
-                if(entities == null) {
-                    data = Connections.emptyConnection();
-                } else {
-                    var itemVolumeTypes = entities.stream().map(ItemVolumeTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+                    var itemVolumeTypes = entities.stream()
+                            .map(ItemVolumeTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, itemVolumeTypes);
                 }
@@ -10224,17 +10292,19 @@ public interface GraphQlQueries {
         CountingPaginatedData<TermTypeObject> data;
 
         try {
-            var termControl = Session.getModelController(TermControl.class);
-            var totalCount = termControl.countTermTypes();
+            var commandForm = TermUtil.getHome().getGetTermTypesForm();
+            var command = CDI.current().select(GetTermTypesCommand.class).get();
 
-            try(var objectLimiter = new ObjectLimiter(env, TermTypeConstants.COMPONENT_VENDOR_NAME, TermTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var commandForm = TermUtil.getHome().getGetTermTypesForm();
-                var entities = CDI.current().select(GetTermTypesCommand.class).get().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, TermTypeConstants.COMPONENT_VENDOR_NAME, TermTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
 
-                if(entities == null) {
-                    data = Connections.emptyConnection();
-                } else {
-                    var termTypes = entities.stream().map(TermTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+                    var termTypes = entities.stream()
+                            .map(TermTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, termTypes);
                 }
@@ -10275,17 +10345,19 @@ public interface GraphQlQueries {
         CountingPaginatedData<TermObject> data;
 
         try {
-            var termControl = Session.getModelController(TermControl.class);
-            var totalCount = termControl.countTerms();
+            var commandForm = TermUtil.getHome().getGetTermsForm();
+            var command = CDI.current().select(GetTermsCommand.class).get();
 
-            try(var objectLimiter = new ObjectLimiter(env, TermConstants.COMPONENT_VENDOR_NAME, TermConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var commandForm = TermUtil.getHome().getGetTermsForm();
-                var entities = CDI.current().select(GetTermsCommand.class).get().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, TermConstants.COMPONENT_VENDOR_NAME, TermConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
 
-                if(entities == null) {
-                    data = Connections.emptyConnection();
-                } else {
-                    var terms = entities.stream().map(TermObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+                    var terms = entities.stream()
+                            .map(TermObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, terms);
                 }
@@ -10903,17 +10975,19 @@ public interface GraphQlQueries {
         CountingPaginatedData<TransactionTimeTypeObject> data;
 
         try {
-            var transactionTimeControl = Session.getModelController(TransactionTimeControl.class);
-            var totalCount = transactionTimeControl.countTransactionTimeTypes();
+            var commandForm = AccountingUtil.getHome().getGetTransactionTimeTypesForm();
+            var command = CDI.current().select(GetTransactionTimeTypesCommand.class).get();
 
-            try(var objectLimiter = new ObjectLimiter(env, TransactionTimeTypeConstants.COMPONENT_VENDOR_NAME, TransactionTimeTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var commandForm = AccountingUtil.getHome().getGetTransactionTimeTypesForm();
-                var entities = CDI.current().select(GetTransactionTimeTypesCommand.class).get().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, TransactionTimeTypeConstants.COMPONENT_VENDOR_NAME, TransactionTimeTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
 
-                if(entities == null) {
-                    data = Connections.emptyConnection();
-                } else {
-                    var transactionTimeTypes = entities.stream().map(TransactionTimeTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+                    var transactionTimeTypes = entities.stream()
+                            .map(TransactionTimeTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, transactionTimeTypes);
                 }
@@ -10954,17 +11028,19 @@ public interface GraphQlQueries {
         CountingPaginatedData<TransactionTypeObject> data;
 
         try {
-            var accountingControl = Session.getModelController(AccountingControl.class);
-            var totalCount = accountingControl.countTransactionTypes();
+            var commandForm = AccountingUtil.getHome().getGetTransactionTypesForm();
+            var command = CDI.current().select(GetTransactionTypesCommand.class).get();
 
-            try(var objectLimiter = new ObjectLimiter(env, TransactionTypeConstants.COMPONENT_VENDOR_NAME, TransactionTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var commandForm = AccountingUtil.getHome().getGetTransactionTypesForm();
-                var entities = CDI.current().select(GetTransactionTypesCommand.class).get().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, TransactionTypeConstants.COMPONENT_VENDOR_NAME, TransactionTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
 
-                if(entities == null) {
-                    data = Connections.emptyConnection();
-                } else {
-                    var transactionTypes = entities.stream().map(TransactionTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+                    var transactionTypes = entities.stream()
+                            .map(TransactionTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, transactionTypes);
                 }
@@ -11121,17 +11197,19 @@ public interface GraphQlQueries {
         CountingPaginatedData<TransactionGroupObject> data;
 
         try {
-            var accountingControl = Session.getModelController(AccountingControl.class);
-            var totalCount = accountingControl.countTransactionGroups();
+            var commandForm = AccountingUtil.getHome().getGetTransactionGroupsForm();
+            var command = CDI.current().select(GetTransactionGroupsCommand.class).get();
 
-            try(var objectLimiter = new ObjectLimiter(env, TransactionGroupConstants.COMPONENT_VENDOR_NAME, TransactionGroupConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var commandForm = AccountingUtil.getHome().getGetTransactionGroupsForm();
-                var entities = CDI.current().select(GetTransactionGroupsCommand.class).get().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, TransactionGroupConstants.COMPONENT_VENDOR_NAME, TransactionGroupConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
 
-                if(entities == null) {
-                    data = Connections.emptyConnection();
-                } else {
-                    var transactionGroups = entities.stream().map(TransactionGroupObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+                    var transactionGroups = entities.stream()
+                            .map(TransactionGroupObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, transactionGroups);
                 }

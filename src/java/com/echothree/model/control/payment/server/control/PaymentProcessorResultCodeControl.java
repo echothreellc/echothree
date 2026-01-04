@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -39,9 +39,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import javax.enterprise.context.RequestScoped;
+import com.echothree.util.server.cdi.CommandScope;
 
-@RequestScoped
+@CommandScope
 public class PaymentProcessorResultCodeControl
         extends BasePaymentControl {
 
@@ -69,8 +69,8 @@ public class PaymentProcessorResultCodeControl
         }
 
         var paymentProcessorResultCode = PaymentProcessorResultCodeFactory.getInstance().create();
-        var paymentProcessorResultCodeDetail = PaymentProcessorResultCodeDetailFactory.getInstance().create(session,
-                paymentProcessorResultCode, paymentProcessorResultCodeName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var paymentProcessorResultCodeDetail = PaymentProcessorResultCodeDetailFactory.getInstance().create(
+                paymentProcessorResultCode, paymentProcessorResultCodeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         paymentProcessorResultCode = PaymentProcessorResultCodeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, paymentProcessorResultCode.getPrimaryKey());
@@ -241,7 +241,7 @@ public class PaymentProcessorResultCodeControl
                     paymentProcessorResultCodeDetailValue.getPaymentProcessorResultCodePK());
             var paymentProcessorResultCodeDetail = paymentProcessorResultCode.getActiveDetailForUpdate();
 
-            paymentProcessorResultCodeDetail.setThruTime(session.START_TIME_LONG);
+            paymentProcessorResultCodeDetail.setThruTime(session.getStartTime());
             paymentProcessorResultCodeDetail.store();
 
             var paymentProcessorResultCodePK = paymentProcessorResultCodeDetail.getPaymentProcessorResultCodePK();
@@ -266,7 +266,7 @@ public class PaymentProcessorResultCodeControl
             }
 
             paymentProcessorResultCodeDetail = PaymentProcessorResultCodeDetailFactory.getInstance().create(paymentProcessorResultCodePK,
-                    paymentProcessorResultCodeName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    paymentProcessorResultCodeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             paymentProcessorResultCode.setActiveDetail(paymentProcessorResultCodeDetail);
             paymentProcessorResultCode.setLastDetail(paymentProcessorResultCodeDetail);
@@ -287,7 +287,7 @@ public class PaymentProcessorResultCodeControl
         deletePaymentProcessorResultCodeDescriptionsByPaymentProcessorResultCode(paymentProcessorResultCode, deletedBy);
 
         var paymentProcessorResultCodeDetail = paymentProcessorResultCode.getLastDetailForUpdate();
-        paymentProcessorResultCodeDetail.setThruTime(session.START_TIME_LONG);
+        paymentProcessorResultCodeDetail.setThruTime(session.getStartTime());
         paymentProcessorResultCodeDetail.store();
         paymentProcessorResultCode.setActiveDetail(null);
 
@@ -318,7 +318,7 @@ public class PaymentProcessorResultCodeControl
     public PaymentProcessorResultCodeDescription createPaymentProcessorResultCodeDescription(final PaymentProcessorResultCode paymentProcessorResultCode,
             final Language language, final String description, final BasePK createdBy) {
         var paymentProcessorResultCodeDescription = PaymentProcessorResultCodeDescriptionFactory.getInstance().create(paymentProcessorResultCode,
-                language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(paymentProcessorResultCode.getPrimaryKey(), EventTypes.MODIFY, paymentProcessorResultCodeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -427,7 +427,7 @@ public class PaymentProcessorResultCodeControl
         if(paymentProcessorResultCodeDescriptionValue.hasBeenModified()) {
             var paymentProcessorResultCodeDescription = PaymentProcessorResultCodeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, paymentProcessorResultCodeDescriptionValue.getPrimaryKey());
 
-            paymentProcessorResultCodeDescription.setThruTime(session.START_TIME_LONG);
+            paymentProcessorResultCodeDescription.setThruTime(session.getStartTime());
             paymentProcessorResultCodeDescription.store();
 
             var paymentProcessorResultCode = paymentProcessorResultCodeDescription.getPaymentProcessorResultCode();
@@ -435,14 +435,14 @@ public class PaymentProcessorResultCodeControl
             var description = paymentProcessorResultCodeDescriptionValue.getDescription();
 
             paymentProcessorResultCodeDescription = PaymentProcessorResultCodeDescriptionFactory.getInstance().create(paymentProcessorResultCode, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(paymentProcessorResultCode.getPrimaryKey(), EventTypes.MODIFY, paymentProcessorResultCodeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deletePaymentProcessorResultCodeDescription(final PaymentProcessorResultCodeDescription paymentProcessorResultCodeDescription, final BasePK deletedBy) {
-        paymentProcessorResultCodeDescription.setThruTime(session.START_TIME_LONG);
+        paymentProcessorResultCodeDescription.setThruTime(session.getStartTime());
 
         sendEvent(paymentProcessorResultCodeDescription.getPaymentProcessorResultCodePK(), EventTypes.MODIFY, paymentProcessorResultCodeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 

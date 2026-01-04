@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -38,9 +38,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import javax.enterprise.context.RequestScoped;
+import com.echothree.util.server.cdi.CommandScope;
 
-@RequestScoped
+@CommandScope
 public class UseNameElementControl
         extends BaseOfferControl {
 
@@ -56,9 +56,9 @@ public class UseNameElementControl
     public UseNameElement createUseNameElement(String useNameElementName, Integer offset,
             Integer length, String validationPattern, BasePK createdBy) {
         var useNameElement = UseNameElementFactory.getInstance().create();
-        var useNameElementDetail = UseNameElementDetailFactory.getInstance().create(session,
-                useNameElement, useNameElementName, offset, length, validationPattern, session.START_TIME_LONG,
-                Session.MAX_TIME_LONG);
+        var useNameElementDetail = UseNameElementDetailFactory.getInstance().create(
+                useNameElement, useNameElementName, offset, length, validationPattern, session.getStartTime(),
+                Session.MAX_TIME);
 
         // Convert to R/W
         useNameElement = UseNameElementFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -147,7 +147,8 @@ public class UseNameElementControl
             query = "SELECT _ALL_ " +
                     "FROM usenameelements, usenameelementdetails " +
                     "WHERE usene_activedetailid = usenedt_usenameelementdetailid " +
-                    "ORDER BY usenedt_offset";
+                    "ORDER BY usenedt_offset " +
+                    "_LIMIT_";
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
             query = "SELECT _ALL_ " +
                     "FROM usenameelements, usenameelementdetails " +
@@ -192,7 +193,7 @@ public class UseNameElementControl
                     useNameElementDetailValue.getUseNameElementPK());
             var useNameElementDetail = useNameElement.getActiveDetailForUpdate();
 
-            useNameElementDetail.setThruTime(session.START_TIME_LONG);
+            useNameElementDetail.setThruTime(session.getStartTime());
             useNameElementDetail.store();
 
             var useNameElementPK = useNameElementDetail.getUseNameElementPK();
@@ -202,7 +203,7 @@ public class UseNameElementControl
             var validationPattern = useNameElementDetailValue.getValidationPattern();
 
             useNameElementDetail = UseNameElementDetailFactory.getInstance().create(useNameElementPK,
-                    useNameElementName, offset, length, validationPattern, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    useNameElementName, offset, length, validationPattern, session.getStartTime(), Session.MAX_TIME);
 
             useNameElement.setActiveDetail(useNameElementDetail);
             useNameElement.setLastDetail(useNameElementDetail);
@@ -215,7 +216,7 @@ public class UseNameElementControl
         deleteUseNameElementDescriptionsByUseNameElement(useNameElement, deletedBy);
 
         var useNameElementDetail = useNameElement.getLastDetailForUpdate();
-        useNameElementDetail.setThruTime(session.START_TIME_LONG);
+        useNameElementDetail.setThruTime(session.getStartTime());
         useNameElement.setActiveDetail(null);
         useNameElement.store();
 
@@ -228,8 +229,8 @@ public class UseNameElementControl
 
     public UseNameElementDescription createUseNameElementDescription(UseNameElement useNameElement, Language language,
             String description, BasePK createdBy) {
-        var useNameElementDescription = UseNameElementDescriptionFactory.getInstance().create(session,
-                useNameElement, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var useNameElementDescription = UseNameElementDescriptionFactory.getInstance().create(
+                useNameElement, language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(useNameElement.getPrimaryKey(), EventTypes.MODIFY,
                 useNameElementDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -308,7 +309,7 @@ public class UseNameElementControl
             ps.setLong(1, useNameElement.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
 
-            useNameElementDescriptions = UseNameElementDescriptionFactory.getInstance().getEntitiesFromQuery(session,
+            useNameElementDescriptions = UseNameElementDescriptionFactory.getInstance().getEntitiesFromQuery(
                     entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -364,7 +365,7 @@ public class UseNameElementControl
             var useNameElementDescription = UseNameElementDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     useNameElementDescriptionValue.getPrimaryKey());
 
-            useNameElementDescription.setThruTime(session.START_TIME_LONG);
+            useNameElementDescription.setThruTime(session.getStartTime());
             useNameElementDescription.store();
 
             var useNameElement = useNameElementDescription.getUseNameElement();
@@ -372,7 +373,7 @@ public class UseNameElementControl
             var description = useNameElementDescriptionValue.getDescription();
 
             useNameElementDescription = UseNameElementDescriptionFactory.getInstance().create(useNameElement,
-                    language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    language, description, session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(useNameElement.getPrimaryKey(), EventTypes.MODIFY,
                     useNameElementDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -380,7 +381,7 @@ public class UseNameElementControl
     }
 
     public void deleteUseNameElementDescription(UseNameElementDescription useNameElementDescription, BasePK deletedBy) {
-        useNameElementDescription.setThruTime(session.START_TIME_LONG);
+        useNameElementDescription.setThruTime(session.getStartTime());
 
         sendEvent(useNameElementDescription.getUseNameElementPK(), EventTypes.MODIFY,
                 useNameElementDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);

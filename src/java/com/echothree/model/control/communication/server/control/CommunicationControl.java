@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -98,10 +98,10 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
-import javax.enterprise.context.RequestScoped;
+import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
-@RequestScoped
+@CommandScope
 public class CommunicationControl
         extends BaseModelControl {
     
@@ -162,8 +162,8 @@ public class CommunicationControl
         }
 
         var communicationEventPurpose = CommunicationEventPurposeFactory.getInstance().create();
-        var communicationEventPurposeDetail = CommunicationEventPurposeDetailFactory.getInstance().create(session,
-                communicationEventPurpose, communicationEventPurposeName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var communicationEventPurposeDetail = CommunicationEventPurposeDetailFactory.getInstance().create(
+                communicationEventPurpose, communicationEventPurposeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         communicationEventPurpose = CommunicationEventPurposeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, communicationEventPurpose.getPrimaryKey());
@@ -337,7 +337,7 @@ public class CommunicationControl
                      communicationEventPurposeDetailValue.getCommunicationEventPurposePK());
             var communicationEventPurposeDetail = communicationEventPurpose.getActiveDetailForUpdate();
             
-            communicationEventPurposeDetail.setThruTime(session.START_TIME_LONG);
+            communicationEventPurposeDetail.setThruTime(session.getStartTime());
             communicationEventPurposeDetail.store();
 
             var communicationEventPurposePK = communicationEventPurposeDetail.getCommunicationEventPurposePK();
@@ -362,7 +362,7 @@ public class CommunicationControl
             }
             
             communicationEventPurposeDetail = CommunicationEventPurposeDetailFactory.getInstance().create(communicationEventPurposePK,
-                    communicationEventPurposeName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    communicationEventPurposeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             communicationEventPurpose.setActiveDetail(communicationEventPurposeDetail);
             communicationEventPurpose.setLastDetail(communicationEventPurposeDetail);
@@ -379,7 +379,7 @@ public class CommunicationControl
         deleteCommunicationEventPurposeDescriptionsByCommunicationEventPurpose(communicationEventPurpose, deletedBy);
 
         var communicationEventPurposeDetail = communicationEventPurpose.getLastDetailForUpdate();
-        communicationEventPurposeDetail.setThruTime(session.START_TIME_LONG);
+        communicationEventPurposeDetail.setThruTime(session.getStartTime());
         communicationEventPurpose.setActiveDetail(null);
         communicationEventPurpose.store();
         
@@ -409,8 +409,8 @@ public class CommunicationControl
     
     public CommunicationEventPurposeDescription createCommunicationEventPurposeDescription(CommunicationEventPurpose communicationEventPurpose,
             Language language, String description, BasePK createdBy) {
-        var communicationEventPurposeDescription = CommunicationEventPurposeDescriptionFactory.getInstance().create(session,
-                communicationEventPurpose, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var communicationEventPurposeDescription = CommunicationEventPurposeDescriptionFactory.getInstance().create(
+                communicationEventPurpose, language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(communicationEventPurpose.getPrimaryKey(), EventTypes.MODIFY, communicationEventPurposeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -540,7 +540,7 @@ public class CommunicationControl
         if(communicationEventPurposeDescriptionValue.hasBeenModified()) {
             var communicationEventPurposeDescription = CommunicationEventPurposeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, communicationEventPurposeDescriptionValue.getPrimaryKey());
             
-            communicationEventPurposeDescription.setThruTime(session.START_TIME_LONG);
+            communicationEventPurposeDescription.setThruTime(session.getStartTime());
             communicationEventPurposeDescription.store();
 
             var communicationEventPurpose = communicationEventPurposeDescription.getCommunicationEventPurpose();
@@ -548,14 +548,14 @@ public class CommunicationControl
             var description = communicationEventPurposeDescriptionValue.getDescription();
             
             communicationEventPurposeDescription = CommunicationEventPurposeDescriptionFactory.getInstance().create(communicationEventPurpose, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(communicationEventPurpose.getPrimaryKey(), EventTypes.MODIFY, communicationEventPurposeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteCommunicationEventPurposeDescription(CommunicationEventPurposeDescription communicationEventPurposeDescription, BasePK deletedBy) {
-        communicationEventPurposeDescription.setThruTime(session.START_TIME_LONG);
+        communicationEventPurposeDescription.setThruTime(session.getStartTime());
         
         sendEvent(communicationEventPurposeDescription.getCommunicationEventPurposePK(), EventTypes.MODIFY, communicationEventPurposeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
@@ -588,7 +588,7 @@ public class CommunicationControl
             
             ps.setString(1, communicationEventRoleTypeName);
             
-            communicationEventRoleType = CommunicationEventRoleTypeFactory.getInstance().getEntityFromQuery(session,
+            communicationEventRoleType = CommunicationEventRoleTypeFactory.getInstance().getEntityFromQuery(
                     EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -633,7 +633,7 @@ public class CommunicationControl
             ps.setLong(1, communicationEventRoleType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             
-            communicationEventRoleTypeDescription = CommunicationEventRoleTypeDescriptionFactory.getInstance().getEntityFromQuery(session,
+            communicationEventRoleTypeDescription = CommunicationEventRoleTypeDescriptionFactory.getInstance().getEntityFromQuery(
                     EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -679,7 +679,7 @@ public class CommunicationControl
             
             ps.setString(1, communicationEventTypeName);
             
-            communicationEventType = CommunicationEventTypeFactory.getInstance().getEntityFromQuery(session,
+            communicationEventType = CommunicationEventTypeFactory.getInstance().getEntityFromQuery(
                     EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -724,7 +724,7 @@ public class CommunicationControl
             ps.setLong(1, communicationEventType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             
-            communicationEventTypeDescription = CommunicationEventTypeDescriptionFactory.getInstance().getEntityFromQuery(session,
+            communicationEventTypeDescription = CommunicationEventTypeDescriptionFactory.getInstance().getEntityFromQuery(
                     EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -771,10 +771,10 @@ public class CommunicationControl
             CommunicationEvent originalCommunicationEvent, CommunicationEvent parentCommunicationEvent,
             PartyContactMechanism partyContactMechanism, Document document, BasePK createdBy) {
         var communicationEvent = CommunicationEventFactory.getInstance().create();
-        var communicationEventDetail = CommunicationEventDetailFactory.getInstance().create(session,
+        var communicationEventDetail = CommunicationEventDetailFactory.getInstance().create(
                 communicationEvent, communicationEventName, communicationEventType, communicationSource, communicationEventPurpose,
                 originalCommunicationEvent, parentCommunicationEvent, partyContactMechanism, document,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         communicationEvent = CommunicationEventFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -920,8 +920,8 @@ public class CommunicationControl
     
     public CommunicationEventRole createCommunicationEventRole(CommunicationEvent communicationEvent, Party party,
             CommunicationEventRoleType communicationEventRoleType, BasePK createdBy) {
-        var communicationEventRole = CommunicationEventRoleFactory.getInstance().create(session,
-                communicationEvent, party, communicationEventRoleType, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var communicationEventRole = CommunicationEventRoleFactory.getInstance().create(
+                communicationEvent, party, communicationEventRoleType, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(communicationEvent.getPrimaryKey(), EventTypes.MODIFY,
                 communicationEventRole.getPrimaryKey(), null, createdBy);
@@ -1072,7 +1072,7 @@ public class CommunicationControl
     }
     
     public void deleteCommunicationEventRole(CommunicationEventRole communicationEventRole, BasePK deletedBy) {
-        communicationEventRole.setThruTime(session.START_TIME_LONG);
+        communicationEventRole.setThruTime(session.getStartTime());
         
         sendEvent(communicationEventRole.getCommunicationEventPK(), EventTypes.MODIFY,
                 communicationEventRole.getPrimaryKey(), null, deletedBy);
@@ -1098,7 +1098,7 @@ public class CommunicationControl
             
             ps.setString(1, communicationSourceTypeName);
             
-            communicationSourceType = CommunicationSourceTypeFactory.getInstance().getEntityFromQuery(session,
+            communicationSourceType = CommunicationSourceTypeFactory.getInstance().getEntityFromQuery(
                     EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -1143,7 +1143,7 @@ public class CommunicationControl
             ps.setLong(1, communicationSourceType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             
-            communicationSourceTypeDescription = CommunicationSourceTypeDescriptionFactory.getInstance().getEntityFromQuery(session,
+            communicationSourceTypeDescription = CommunicationSourceTypeDescriptionFactory.getInstance().getEntityFromQuery(
                     EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -1176,9 +1176,9 @@ public class CommunicationControl
     public CommunicationSource createCommunicationSource(String communicationSourceName, CommunicationSourceType communicationSourceType,
             Integer sortOrder, BasePK createdBy) {
         var communicationSource = CommunicationSourceFactory.getInstance().create();
-        var communicationSourceDetail = CommunicationSourceDetailFactory.getInstance().create(session,
-                communicationSource, communicationSourceName, communicationSourceType, sortOrder, session.START_TIME_LONG,
-                Session.MAX_TIME_LONG);
+        var communicationSourceDetail = CommunicationSourceDetailFactory.getInstance().create(
+                communicationSource, communicationSourceName, communicationSourceType, sortOrder, session.getStartTime(),
+                Session.MAX_TIME);
         
         // Convert to R/W
         communicationSource = CommunicationSourceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, communicationSource.getPrimaryKey());
@@ -1332,7 +1332,7 @@ public class CommunicationControl
                      communicationSourceDetailValue.getCommunicationSourcePK());
             var communicationSourceDetail = communicationSource.getActiveDetailForUpdate();
             
-            communicationSourceDetail.setThruTime(session.START_TIME_LONG);
+            communicationSourceDetail.setThruTime(session.getStartTime());
             communicationSourceDetail.store();
 
             var communicationSourcePK = communicationSourceDetail.getCommunicationSourcePK();
@@ -1341,7 +1341,7 @@ public class CommunicationControl
             var sortOrder = communicationSourceDetailValue.getSortOrder();
             
             communicationSourceDetail = CommunicationSourceDetailFactory.getInstance().create(communicationSourcePK,
-                    communicationSourceName, communicationSourceTypePK, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    communicationSourceName, communicationSourceTypePK, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             communicationSource.setActiveDetail(communicationSourceDetail);
             communicationSource.setLastDetail(communicationSourceDetail);
@@ -1355,7 +1355,7 @@ public class CommunicationControl
         deleteCommunicationEmailSourceByCommunicationSource(communicationSource, deletedBy);
 
         var communicationSourceDetail = communicationSource.getLastDetailForUpdate();
-        communicationSourceDetail.setThruTime(session.START_TIME_LONG);
+        communicationSourceDetail.setThruTime(session.getStartTime());
         communicationSource.setActiveDetail(null);
         communicationSource.store();
         
@@ -1368,8 +1368,8 @@ public class CommunicationControl
     
     public CommunicationSourceDescription createCommunicationSourceDescription(CommunicationSource communicationSource,
             Language language, String description, BasePK createdBy) {
-        var communicationSourceDescription = CommunicationSourceDescriptionFactory.getInstance().create(session,
-                communicationSource, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var communicationSourceDescription = CommunicationSourceDescriptionFactory.getInstance().create(
+                communicationSource, language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(communicationSource.getPrimaryKey(), EventTypes.MODIFY, communicationSourceDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1499,7 +1499,7 @@ public class CommunicationControl
         if(communicationSourceDescriptionValue.hasBeenModified()) {
             var communicationSourceDescription = CommunicationSourceDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, communicationSourceDescriptionValue.getPrimaryKey());
             
-            communicationSourceDescription.setThruTime(session.START_TIME_LONG);
+            communicationSourceDescription.setThruTime(session.getStartTime());
             communicationSourceDescription.store();
 
             var communicationSource = communicationSourceDescription.getCommunicationSource();
@@ -1507,14 +1507,14 @@ public class CommunicationControl
             var description = communicationSourceDescriptionValue.getDescription();
             
             communicationSourceDescription = CommunicationSourceDescriptionFactory.getInstance().create(communicationSource, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(communicationSource.getPrimaryKey(), EventTypes.MODIFY, communicationSourceDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteCommunicationSourceDescription(CommunicationSourceDescription communicationSourceDescription, BasePK deletedBy) {
-        communicationSourceDescription.setThruTime(session.START_TIME_LONG);
+        communicationSourceDescription.setThruTime(session.getStartTime());
         
         sendEvent(communicationSourceDescription.getCommunicationSourcePK(), EventTypes.MODIFY, communicationSourceDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
@@ -1535,9 +1535,9 @@ public class CommunicationControl
     public CommunicationEmailSource createCommunicationEmailSource(CommunicationSource communicationSource, Server server,
             String username, String password, WorkEffortScope receiveWorkEffortScope, WorkEffortScope sendWorkEffortScope,
             Selector reviewEmployeeSelector, BasePK createdBy) {
-        var communicationEmailSource = CommunicationEmailSourceFactory.getInstance().create(session,
+        var communicationEmailSource = CommunicationEmailSourceFactory.getInstance().create(
                 communicationSource, server, username, encodeCommunicationEmailSourcePassword(password), receiveWorkEffortScope,
-                sendWorkEffortScope, reviewEmployeeSelector, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                sendWorkEffortScope, reviewEmployeeSelector, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(communicationSource.getPrimaryKey(), EventTypes.MODIFY, communicationEmailSource.getPrimaryKey(), null, createdBy);
         
@@ -1609,7 +1609,7 @@ public class CommunicationControl
             var communicationEmailSource = CommunicationEmailSourceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      communicationEmailSourceValue.getPrimaryKey());
             
-            communicationEmailSource.setThruTime(session.START_TIME_LONG);
+            communicationEmailSource.setThruTime(session.getStartTime());
             communicationEmailSource.store();
 
             var communicationSource = communicationEmailSource.getCommunicationSource();
@@ -1620,9 +1620,9 @@ public class CommunicationControl
             var sendWorkEffortScopePK = communicationEmailSourceValue.getSendWorkEffortScopePK();
             var reviewEmployeeSelectorPK = communicationEmailSourceValue.getReviewEmployeeSelectorPK();
             
-            communicationEmailSource = CommunicationEmailSourceFactory.getInstance().create(session,
+            communicationEmailSource = CommunicationEmailSourceFactory.getInstance().create(
                     communicationSource.getPrimaryKey(), serverPK, username, password, receiveWorkEffortScopePK,
-                    sendWorkEffortScopePK, reviewEmployeeSelectorPK, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    sendWorkEffortScopePK, reviewEmployeeSelectorPK, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(communicationSource.getPrimaryKey(), EventTypes.MODIFY,
                     communicationEmailSource.getPrimaryKey(), null, updatedBy);
@@ -1630,7 +1630,7 @@ public class CommunicationControl
     }
     
     public void deleteCommunicationEmailSource(CommunicationEmailSource communicationEmailSource, BasePK deletedBy) {
-        communicationEmailSource.setThruTime(session.START_TIME_LONG);
+        communicationEmailSource.setThruTime(session.getStartTime());
         
         sendEvent(communicationEmailSource.getCommunicationSource().getPrimaryKey(), EventTypes.MODIFY,
                 communicationEmailSource.getPrimaryKey(), null, deletedBy);

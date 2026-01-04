@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -298,7 +298,7 @@ public class EntityAliasTypeLogic
                 final var queuedEntities = new ArrayList<QueuedEntityValue>(entityAliases.size());
 
                 for(final var entityAlias : entityAliases) {
-                    queuedEntities.add(new QueuedEntityValue(queueTypePK, entityAlias.getEntityInstancePK(), session.START_TIME_LONG));
+                    queuedEntities.add(new QueuedEntityValue(queueTypePK, entityAlias.getEntityInstancePK(), session.getStartTime()));
                 }
 
                 queueControl.createQueuedEntities(queuedEntities);

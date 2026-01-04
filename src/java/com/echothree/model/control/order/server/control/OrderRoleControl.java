@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -40,9 +40,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.enterprise.context.RequestScoped;
+import com.echothree.util.server.cdi.CommandScope;
 
-@RequestScoped
+@CommandScope
 public class OrderRoleControl
         extends BaseOrderControl {
 
@@ -103,7 +103,7 @@ public class OrderRoleControl
             ps.setLong(1, orderRoleType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             
-            orderRoleTypeDescription = OrderRoleTypeDescriptionFactory.getInstance().getEntityFromQuery(session,
+            orderRoleTypeDescription = OrderRoleTypeDescriptionFactory.getInstance().getEntityFromQuery(
                     EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -138,7 +138,7 @@ public class OrderRoleControl
     }
 
     public OrderRole createOrderRole(Order order, Party party, OrderRoleType orderRoleType, BasePK createdBy) {
-        var orderRole = OrderRoleFactory.getInstance().create(order, party, orderRoleType, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var orderRole = OrderRoleFactory.getInstance().create(order, party, orderRoleType, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(order.getPrimaryKey(), EventTypes.MODIFY, orderRole.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -274,7 +274,7 @@ public class OrderRoleControl
     }
 
     public void deleteOrderRole(OrderRole orderRole, BasePK deletedBy) {
-        orderRole.setThruTime(session.START_TIME_LONG);
+        orderRole.setThruTime(session.getStartTime());
 
         sendEvent(orderRole.getOrderPK(), EventTypes.MODIFY, orderRole.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }

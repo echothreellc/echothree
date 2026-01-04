@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ public class ItemEntityInstancesByItemAliasTypeQuery
     }
     
     public List<ItemEntityInstanceResult> execute(final ItemAliasTypePK itemAliasTypePK) {
-        return super.execute(itemAliasTypePK, Session.MAX_TIME_LONG, ComponentVendors.ECHO_THREE.name(), EntityTypes.Item.name());
+        return super.execute(itemAliasTypePK, Session.MAX_TIME, ComponentVendors.ECHO_THREE.name(), EntityTypes.Item.name());
     }
 
 }

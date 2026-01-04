@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,78 +21,74 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.control.sequence.server.logic.SequenceLogic;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
-@RequestScoped
+@Dependent
 public class SetSequenceValueCommand
         extends BaseSimpleCommand<SetSequenceValueForm> {
-    
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
-       COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
-                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
-                    new SecurityRoleDefinition(SecurityRoleGroups.Sequence.name(), SecurityRoles.Edit.name())
-                    )))
-                )));
+       COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
+               new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+               new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
+                       new SecurityRoleDefinition(SecurityRoleGroups.SequenceValue.name(), SecurityRoles.Set.name())
+               ))
+       ));
 
-         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("SequenceTypeName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("SequenceName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("Value", FieldType.STRING, true, 1L, 40L)
-                ));
+         FORM_FIELD_DEFINITIONS = List.of(
+                 new FieldDefinition("SequenceTypeName", FieldType.ENTITY_NAME, false, null, null),
+                 new FieldDefinition("SequenceName", FieldType.ENTITY_NAME, false, null, null),
+                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null),
+                 new FieldDefinition("Value", FieldType.STRING, true, 1L, 40L)
+         );
     }
     
     /** Creates a new instance of SetSequenceValueCommand */
     public SetSequenceValueCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
-    
+
+    @Inject
+    SequenceControl sequenceControl;
+
+    @Inject
+    SequenceLogic sequenceLogic;
+
     @Override
     protected BaseResult execute() {
-        var sequenceControl = Session.getModelController(SequenceControl.class);
-        var sequenceTypeName = form.getSequenceTypeName();
-        var sequenceType = sequenceControl.getSequenceTypeByName(sequenceTypeName);
-        
-        if(sequenceType != null) {
-            var sequenceName = form.getSequenceName();
-            var sequence = sequenceControl.getSequenceByName(sequenceType, sequenceName);
-            
-            if(sequence != null) {
-                var value = form.getValue();
-                if(value.length() == sequence.getLastDetail().getMask().length()) {
-                    var sequenceValue = sequenceControl.getSequenceValueForUpdate(sequence);
-                    
-                    if(sequenceValue == null) {
-                        sequenceControl.createSequenceValue(sequence, value);
-                    } else {
-                        sequenceValue.setValue(value);
-                    }
+        var sequence = sequenceLogic.getSequenceByUniversalSpec(this, form, false);
+
+        if(!hasExecutionErrors()) {
+            var value = form.getValue();
+
+            if(value.length() == sequence.getLastDetail().getMask().length()) {
+                var sequenceValue = sequenceControl.getSequenceValueForUpdate(sequence);
+
+                if(sequenceValue == null) {
+                    sequenceControl.createSequenceValue(sequence, value);
                 } else {
-                    addExecutionError(ExecutionErrors.InvalidValueLength.name());
+                    sequenceValue.setValue(value);
                 }
             } else {
-                addExecutionError(ExecutionErrors.UnknownSequenceName.name(), sequenceName);
+                addExecutionError(ExecutionErrors.InvalidValueLength.name());
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownSequenceTypeName.name(), sequenceTypeName);
         }
-        
+
         return null;
     }
     

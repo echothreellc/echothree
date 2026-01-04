@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -84,10 +84,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.enterprise.context.RequestScoped;
+import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
-@RequestScoped
+@CommandScope
 public class EventControl
         extends BaseCoreControl {
 
@@ -402,7 +402,7 @@ public class EventControl
     public EventGroup createEventGroup(String eventGroupName, BasePK createdBy) {
         var eventGroup = eventGroupFactory.create();
         var eventGroupDetail = eventGroupDetailFactory.create(eventGroup, eventGroupName,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         eventGroup = eventGroupFactory.getEntityFromPK(EntityPermission.READ_WRITE,
@@ -855,7 +855,7 @@ public class EventControl
     protected EntityVisitFactory entityVisitFactory;
     
     public EntityVisit createEntityVisit(final EntityInstance entityInstance, final EntityInstance visitedEntityInstance) {
-        return entityVisitFactory.create(entityInstance, visitedEntityInstance, session.START_TIME_LONG);
+        return entityVisitFactory.create(entityInstance, visitedEntityInstance, session.getStartTime());
     }
 
     private static final Map<EntityPermission, String> getEntityVisitQueries;
@@ -914,9 +914,9 @@ public class EventControl
     public EventSubscriber createEventSubscriber(String eventSubscriberName, EntityInstance entityInstance, String description,
             Integer sortOrder, BasePK createdBy) {
         var eventSubscriber = eventSubscriberFactory.create();
-        var eventSubscriberDetail = eventSubscriberDetailFactory.create(session,
-                eventSubscriber, eventSubscriberName, entityInstance, description, sortOrder, session.START_TIME_LONG,
-                Session.MAX_TIME_LONG);
+        var eventSubscriberDetail = eventSubscriberDetailFactory.create(
+                eventSubscriber, eventSubscriberName, entityInstance, description, sortOrder, session.getStartTime(),
+                Session.MAX_TIME);
 
         // Convert to R/W
         eventSubscriber = eventSubscriberFactory.getEntityFromPK(EntityPermission.READ_WRITE,
@@ -1026,7 +1026,7 @@ public class EventControl
         removeQueuedSubscriberEventsByEventSubscriber(eventSubscriber);
 
         var eventSubscriberDetail = eventSubscriber.getLastDetailForUpdate();
-        eventSubscriberDetail.setThruTime(session.START_TIME_LONG);
+        eventSubscriberDetail.setThruTime(session.getStartTime());
         eventSubscriber.setActiveDetail(null);
         eventSubscriber.store();
 
@@ -1115,8 +1115,8 @@ public class EventControl
     
     public EventSubscriberEventType createEventSubscriberEventType(EventSubscriber eventSubscriber, EventType eventType,
             BasePK createdBy) {
-        var eventSubscriberEventType = eventSubscriberEventTypeFactory.create(session,
-                eventSubscriber, eventType, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var eventSubscriberEventType = eventSubscriberEventTypeFactory.create(
+                eventSubscriber, eventType, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(eventSubscriber.getPrimaryKey(), EventTypes.MODIFY, eventSubscriberEventType.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -1172,8 +1172,8 @@ public class EventControl
     
     public EventSubscriberEntityType createEventSubscriberEntityType(EventSubscriber eventSubscriber, EntityType entityType,
             EventType eventType, BasePK createdBy) {
-        var eventSubscriberEntityType = eventSubscriberEntityTypeFactory.create(session,
-                eventSubscriber, entityType, eventType, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var eventSubscriberEntityType = eventSubscriberEntityTypeFactory.create(
+                eventSubscriber, entityType, eventType, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(eventSubscriber.getPrimaryKey(), EventTypes.MODIFY, eventSubscriberEntityType.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -1231,8 +1231,8 @@ public class EventControl
     
     public EventSubscriberEntityInstance createEventSubscriberEntityInstance(EventSubscriber eventSubscriber,
             EntityInstance entityInstance, EventType eventType, BasePK createdBy) {
-        var eventSubscriberEntityInstance = eventSubscriberEntityInstanceFactory.create(session,
-                eventSubscriber, entityInstance, eventType, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var eventSubscriberEntityInstance = eventSubscriberEntityInstanceFactory.create(
+                eventSubscriber, entityInstance, eventType, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(eventSubscriber.getPrimaryKey(), EventTypes.MODIFY, eventSubscriberEntityInstance.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -1285,6 +1285,25 @@ public class EventControl
     //   Utilities
     // --------------------------------------------------------------------------------
 
+    @Inject
+    EventTopic eventTopic;
+
+//    Caused by: java.lang.NullPointerException: Cannot invoke "java.sql.Connection.prepareStatement(String)" because "this.connection" is null
+//    at deployment.echothree.ear.echothree-server.jar//com.echothree.util.server.persistence.Session.prepareStatement(Session.java:255)
+//    at deployment.echothree.ear.echothree-server.jar//com.echothree.util.server.persistence.Session.prepareStatement(Session.java:282)
+//    at deployment.echothree.ear.echothree-server.jar//com.echothree.util.server.persistence.Session.queryForLong(Session.java:359)
+//    at deployment.echothree.ear.echothree-server.jar//com.echothree.model.control.index.server.control.IndexControl.countIndexTypesByEntityType(IndexControl.java:143)
+//    at deployment.echothree.ear.echothree-server.jar//com.echothree.model.control.index.server.control.IndexControl.isEntityTypeUsedByIndexTypes(IndexControl.java:151)
+//    at deployment.echothree.ear.echothree-server.jar//com.echothree.model.control.index.server.control.IndexControl$Proxy$_$$_WeldClientProxy.isEntityTypeUsedByIndexTypes(Unknown Source)
+//    at deployment.echothree.ear.echothree-server.jar//com.echothree.model.control.core.server.control.EventControl.queueEntityInstanceToIndexing(EventControl.java:1292)
+//    at deployment.echothree.ear.echothree-server.jar//com.echothree.model.control.core.server.control.EventControl.sendEvent(EventControl.java:1439)
+//    at deployment.echothree.ear.echothree-server.jar//com.echothree.model.control.core.server.control.EventControl.sendEvent(EventControl.java:1460)
+//    at deployment.echothree.ear.echothree-server.jar//com.echothree.model.control.core.server.control.EventControl$Proxy$_$$_WeldClientProxy.sendEvent(Unknown Source)
+//    at deployment.echothree.ear.echothree-server.jar//com.echothree.util.server.control.BaseModelControl.sendEvent(BaseModelControl.java:89)
+//    at deployment.echothree.ear.echothree-server.jar//com.echothree.model.control.offer.server.control.OfferNameElementControl.updateOfferNameElementFromValue(OfferNameElementControl.java:211)
+
+// https://stackoverflow.com/questions/26514456/removing-specific-cdi-managed-beans-from-session
+
     private void queueEntityInstanceToIndexing(final EntityInstance entityInstance) {
         if(indexControl.isEntityTypeUsedByIndexTypes(entityInstance.getEntityType())) {
             try {
@@ -1334,16 +1353,14 @@ public class EventControl
         Event event = null;
 
         if(CoreDebugFlags.LogSentEvents) {
-            var entityInstanceUtils = EntityInstanceUtils.getInstance();
-
-            getLog().info("entityInstance = " + entityInstanceUtils.getEntityRefByEntityInstance(entityInstance)
+            getLog().info("entityInstance = " + EntityInstanceUtils.getEntityRefByEntityInstance(entityInstance)
                     + ", eventType = " + eventType.getEventTypeName()
-                    + ", relatedEntityInstance = " + entityInstanceUtils.getEntityRefByEntityInstance(relatedEntityInstance)
+                    + ", relatedEntityInstance = " + EntityInstanceUtils.getEntityRefByEntityInstance(relatedEntityInstance)
                     + ", relatedEventType = " + (relatedEventType == null ? "(null)" : relatedEventType.getEventTypeName())
-                    + ", createdByEntityInstance = " + entityInstanceUtils.getEntityRefByEntityInstance(createdByEntityInstance));
+                    + ", createdByEntityInstance = " + EntityInstanceUtils.getEntityRefByEntityInstance(createdByEntityInstance));
         }
 
-        final var eventTime = session.START_TIME_LONG;
+        final var eventTime = session.getStartTime();
         final var entityTime = createOrGetEntityTime(entityInstance, eventTime);
         var shouldClearCache = false;
         var shouldQueueEntityInstanceToIndexing = false;
@@ -1425,7 +1442,7 @@ public class EventControl
                 pruneEvents(entityInstance, eventType, maximumHistory);
             }
 
-            EventTopic.getInstance().sendEvent(event);
+            eventTopic.sendEvent(event);
 
             SentEventEventBus.eventBus.post(new SentEvent(event));
         }

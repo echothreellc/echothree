@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -47,10 +47,10 @@ import com.echothree.util.server.persistence.Session;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.enterprise.context.RequestScoped;
+import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
-@RequestScoped
+@CommandScope
 public class JobControl
         extends BaseModelControl {
     
@@ -76,7 +76,7 @@ public class JobControl
     public Job createJob(String jobName, Party runAsParty, Integer sortOrder, BasePK createdBy) {
         var job = JobFactory.getInstance().create();
         var jobDetail = JobDetailFactory.getInstance().create(job, jobName, runAsParty, sortOrder,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         job = JobFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, job.getPrimaryKey());
@@ -213,11 +213,11 @@ public class JobControl
     }
     
     public void updateJobFromValue(JobDetailValue jobDetailValue, BasePK updatedBy) {
-        var job = JobFactory.getInstance().getEntityFromPK(session,
+        var job = JobFactory.getInstance().getEntityFromPK(
                 EntityPermission.READ_WRITE, jobDetailValue.getJobPK());
         var jobDetail = job.getActiveDetailForUpdate();
         
-        jobDetail.setThruTime(session.START_TIME_LONG);
+        jobDetail.setThruTime(session.getStartTime());
         jobDetail.store();
 
         var jobPK = jobDetail.getJobPK();
@@ -226,7 +226,7 @@ public class JobControl
         var sortOrder = jobDetailValue.getSortOrder();
         
         jobDetail = JobDetailFactory.getInstance().create(jobPK, jobName, runAsPartyPK, sortOrder,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         job.setActiveDetail(jobDetail);
         job.setLastDetail(jobDetail);
@@ -239,7 +239,7 @@ public class JobControl
         deleteJobDescriptionsByJob(job, deletedBy);
 
         var jobDetail = job.getLastDetailForUpdate();
-        jobDetail.setThruTime(session.START_TIME_LONG);
+        jobDetail.setThruTime(session.getStartTime());
         job.setActiveDetail(null);
         job.store();
         
@@ -254,8 +254,8 @@ public class JobControl
     
     public JobDescription createJobDescription(Job job, Language language,
             String description, BasePK createdBy) {
-        var jobDescription = JobDescriptionFactory.getInstance().create(session,
-                job, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var jobDescription = JobDescriptionFactory.getInstance().create(
+                job, language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(job.getPrimaryKey(), EventTypes.MODIFY, jobDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -385,7 +385,7 @@ public class JobControl
             var jobDescription = JobDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      jobDescriptionValue.getPrimaryKey());
             
-            jobDescription.setThruTime(session.START_TIME_LONG);
+            jobDescription.setThruTime(session.getStartTime());
             jobDescription.store();
 
             var job = jobDescription.getJob();
@@ -393,14 +393,14 @@ public class JobControl
             var description = jobDescriptionValue.getDescription();
             
             jobDescription = JobDescriptionFactory.getInstance().create(job, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(job.getPrimaryKey(), EventTypes.MODIFY, jobDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteJobDescription(JobDescription jobDescription, BasePK deletedBy) {
-        jobDescription.setThruTime(session.START_TIME_LONG);
+        jobDescription.setThruTime(session.getStartTime());
         
         sendEvent(jobDescription.getJobPK(), EventTypes.MODIFY, jobDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         

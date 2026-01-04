@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,17 +16,12 @@
 
 package com.echothree.control.user.sequence.common.form;
 
-import com.echothree.util.common.form.BaseForm;
+import com.echothree.control.user.sequence.common.spec.SequenceUniversalSpec;
 
 public interface SetSequenceValueForm
-        extends BaseForm {
-    
-    String getSequenceTypeName();
-    void setSequenceTypeName(String sequenceTypeName);
-    
-    String getSequenceName();
-    void setSequenceName(String sequenceName);
+        extends SequenceUniversalSpec {
     
     String getValue();
     void setValue(String value);
+
 }

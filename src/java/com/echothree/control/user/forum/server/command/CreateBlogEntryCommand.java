@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -26,7 +26,6 @@ import com.echothree.model.control.icon.common.IconConstants;
 import com.echothree.model.control.icon.server.control.IconControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.user.server.control.UserControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
@@ -37,9 +36,9 @@ import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.Dependent;
 
-@RequestScoped
+@Dependent
 public class CreateBlogEntryCommand
         extends BaseSimpleCommand<CreateBlogEntryForm> {
     
@@ -156,7 +155,7 @@ public class CreateBlogEntryCommand
                                                                             if(forumMimeType != null) {
                                                                                 var title = form.getTitle();
                                                                                 var rawPostedTime = form.getPostedTime();
-                                                                                var postedTime = rawPostedTime == null? session.START_TIME_LONG: Long.valueOf(rawPostedTime);
+                                                                                var postedTime = rawPostedTime == null? session.getStartTime(): Long.valueOf(rawPostedTime);
                                                                                 var sortOrder = Integer.valueOf(form.getSortOrder());
                                                                                 var content = form.getContent();
                                                                                 BasePK createdBy = getPartyPK();

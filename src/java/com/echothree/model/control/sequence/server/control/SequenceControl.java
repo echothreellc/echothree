@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -74,10 +74,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import javax.enterprise.context.RequestScoped;
+import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
-@RequestScoped
+@CommandScope
 public class SequenceControl
         extends BaseModelControl {
     
@@ -130,7 +130,7 @@ public class SequenceControl
         var sequenceType = SequenceTypeFactory.getInstance().create();
         var sequenceTypeDetail = SequenceTypeDetailFactory.getInstance().create(sequenceType,
                 sequenceTypeName, prefix, suffix, sequenceEncoderType, sequenceChecksumType, chunkSize, isDefault, sortOrder,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         sequenceType = SequenceTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, sequenceType.getPrimaryKey());
@@ -398,11 +398,11 @@ public class SequenceControl
 
     private void updateSequenceTypeFromValue(SequenceTypeDetailValue sequenceTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
-        var sequenceType = SequenceTypeFactory.getInstance().getEntityFromPK(session,
+        var sequenceType = SequenceTypeFactory.getInstance().getEntityFromPK(
                 EntityPermission.READ_WRITE, sequenceTypeDetailValue.getSequenceTypePK());
         var sequenceTypeDetail = sequenceType.getActiveDetailForUpdate();
         
-        sequenceTypeDetail.setThruTime(session.START_TIME_LONG);
+        sequenceTypeDetail.setThruTime(session.getStartTime());
         sequenceTypeDetail.store();
 
         var sequenceTypePK = sequenceTypeDetail.getSequenceTypePK();
@@ -432,8 +432,8 @@ public class SequenceControl
         }
         
         sequenceTypeDetail = SequenceTypeDetailFactory.getInstance().create(sequenceTypePK, sequenceTypeName, prefix,
-                suffix, sequenceEncoderTypePK, sequenceChecksumTypePK, chunkSize, isDefault, sortOrder, session.START_TIME_LONG,
-                Session.MAX_TIME_LONG);
+                suffix, sequenceEncoderTypePK, sequenceChecksumTypePK, chunkSize, isDefault, sortOrder, session.getStartTime(),
+                Session.MAX_TIME);
         
         sequenceType.setActiveDetail(sequenceTypeDetail);
         sequenceType.setLastDetail(sequenceTypeDetail);
@@ -451,7 +451,7 @@ public class SequenceControl
         deleteSequenceTypeDescriptionsBySequenceType(sequenceType, deletedBy);
 
         var sequenceTypeDetail = sequenceType.getLastDetailForUpdate();
-        sequenceTypeDetail.setThruTime(session.START_TIME_LONG);
+        sequenceTypeDetail.setThruTime(session.getStartTime());
         sequenceType.setActiveDetail(null);
         sequenceType.store();
         
@@ -480,8 +480,8 @@ public class SequenceControl
     // --------------------------------------------------------------------------------
     
     public SequenceTypeDescription createSequenceTypeDescription(SequenceType sequenceType, Language language, String description, BasePK createdBy) {
-        var sequenceTypeDescription = SequenceTypeDescriptionFactory.getInstance().create(sequenceType, language, description, session.START_TIME_LONG,
-                Session.MAX_TIME_LONG);
+        var sequenceTypeDescription = SequenceTypeDescriptionFactory.getInstance().create(sequenceType, language, description, session.getStartTime(),
+                Session.MAX_TIME);
         
         sendEvent(sequenceType.getPrimaryKey(), EventTypes.MODIFY, sequenceTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -610,21 +610,21 @@ public class SequenceControl
         if(sequenceTypeDescriptionValue.hasBeenModified()) {
             var sequenceTypeDescription = SequenceTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, sequenceTypeDescriptionValue.getPrimaryKey());
             
-            sequenceTypeDescription.setThruTime(session.START_TIME_LONG);
+            sequenceTypeDescription.setThruTime(session.getStartTime());
             sequenceTypeDescription.store();
 
             var sequenceType = sequenceTypeDescription.getSequenceType();
             var language = sequenceTypeDescription.getLanguage();
             var description = sequenceTypeDescriptionValue.getDescription();
             
-            sequenceTypeDescription = SequenceTypeDescriptionFactory.getInstance().create(sequenceType, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+            sequenceTypeDescription = SequenceTypeDescriptionFactory.getInstance().create(sequenceType, language, description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(sequenceType.getPrimaryKey(), EventTypes.MODIFY, sequenceTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteSequenceTypeDescription(SequenceTypeDescription sequenceTypeDescription, BasePK deletedBy) {
-        sequenceTypeDescription.setThruTime(session.START_TIME_LONG);
+        sequenceTypeDescription.setThruTime(session.getStartTime());
         
         sendEvent(sequenceTypeDescription.getSequenceTypePK(), EventTypes.MODIFY, sequenceTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
@@ -931,7 +931,7 @@ public class SequenceControl
 
         var sequence = SequenceFactory.getInstance().create();
         var sequenceDetail = SequenceDetailFactory.getInstance().create(sequence, sequenceType, sequenceName,
-                mask, chunkSize, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                mask, chunkSize, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         sequence = SequenceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, sequence.getPrimaryKey());
@@ -1167,11 +1167,11 @@ public class SequenceControl
 
     private void updateSequenceFromValue(SequenceDetailValue sequenceDetailValue, boolean checkDefault,
             BasePK updatedBy) {
-        var sequence = SequenceFactory.getInstance().getEntityFromPK(session,
+        var sequence = SequenceFactory.getInstance().getEntityFromPK(
                 EntityPermission.READ_WRITE, sequenceDetailValue.getSequencePK());
         var sequenceDetail = sequence.getActiveDetailForUpdate();
         
-        sequenceDetail.setThruTime(session.START_TIME_LONG);
+        sequenceDetail.setThruTime(session.getStartTime());
         sequenceDetail.store();
 
         var sequencePK = sequenceDetail.getSequencePK();
@@ -1200,7 +1200,7 @@ public class SequenceControl
         }
         
         sequenceDetail = SequenceDetailFactory.getInstance().create(sequencePK, sequenceTypePK, sequenceName, mask,
-                chunkSize, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                chunkSize, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         sequence.setActiveDetail(sequenceDetail);
         sequence.setLastDetail(sequenceDetail);
@@ -1225,7 +1225,7 @@ public class SequenceControl
         
         deleteSequenceDescriptionsBySequence(sequence, deletedBy);
         
-        sequenceDetail.setThruTime(session.START_TIME_LONG);
+        sequenceDetail.setThruTime(session.getStartTime());
         sequence.setActiveDetail(null);
         sequence.store();
         
@@ -1264,7 +1264,7 @@ public class SequenceControl
 
     public SequenceDescription createSequenceDescription(Sequence sequence, Language language, String description, BasePK createdBy) {
         var sequenceDescription = SequenceDescriptionFactory.getInstance().create(sequence, language,
-                description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(sequence.getPrimaryKey(), EventTypes.MODIFY, sequenceDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1393,21 +1393,21 @@ public class SequenceControl
         if(sequenceDescriptionValue.hasBeenModified()) {
             var sequenceDescription = SequenceDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, sequenceDescriptionValue.getPrimaryKey());
             
-            sequenceDescription.setThruTime(session.START_TIME_LONG);
+            sequenceDescription.setThruTime(session.getStartTime());
             sequenceDescription.store();
 
             var sequence = sequenceDescription.getSequence();
             var language = sequenceDescription.getLanguage();
             var description = sequenceDescriptionValue.getDescription();
             
-            sequenceDescription = SequenceDescriptionFactory.getInstance().create(sequence, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+            sequenceDescription = SequenceDescriptionFactory.getInstance().create(sequence, language, description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(sequence.getPrimaryKey(), EventTypes.MODIFY, sequenceDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteSequenceDescription(SequenceDescription sequenceDescription, BasePK deletedBy) {
-        sequenceDescription.setThruTime(session.START_TIME_LONG);
+        sequenceDescription.setThruTime(session.getStartTime());
         
         sendEvent(sequenceDescription.getSequencePK(), EventTypes.MODIFY, sequenceDescription.getPrimaryKey(), null, deletedBy);
     }
@@ -1447,11 +1447,11 @@ public class SequenceControl
         return sequenceValue;
     }
     
-    public SequenceValue getSequenceValueForUpdateInSession(Session sequenceSession, Sequence sequence) {
+    public SequenceValue getSequenceValueForUpdate(Sequence sequence) {
         SequenceValue sequenceValue;
         
         try {
-            var ps = sequenceSession.prepareStatement(SequenceValueFactory.class,
+            var ps = session.prepareStatement(SequenceValueFactory.class,
                     "SELECT _ALL_ " +
                     "FROM sequencevalues " +
                     "WHERE sqv_sq_sequenceid = ? " +
@@ -1459,16 +1459,12 @@ public class SequenceControl
             
             ps.setLong(1, sequence.getPrimaryKey().getEntityId());
             
-            sequenceValue = SequenceValueFactory.getInstance().getEntityFromQuery(sequenceSession, EntityPermission.READ_WRITE, ps);
+            sequenceValue = SequenceValueFactory.getInstance().getEntityFromQuery(EntityPermission.READ_WRITE, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
         
         return sequenceValue;
     }
-    
-    public SequenceValue getSequenceValueForUpdate(Sequence sequence) {
-        return getSequenceValueForUpdateInSession(session, sequence);
-    }
-    
+
 }

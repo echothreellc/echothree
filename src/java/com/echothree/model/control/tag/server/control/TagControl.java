@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -56,9 +56,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import javax.enterprise.context.RequestScoped;
+import com.echothree.util.server.cdi.CommandScope;
 
-@RequestScoped
+@CommandScope
 public class TagControl
         extends BaseTagControl {
     
@@ -86,7 +86,7 @@ public class TagControl
 
         var tagScope = TagScopeFactory.getInstance().create();
         var tagScopeDetail = TagScopeDetailFactory.getInstance().create(tagScope,
-                tagScopeName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                tagScopeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         tagScope = TagScopeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -341,7 +341,7 @@ public class TagControl
                      tagScopeDetailValue.getTagScopePK());
             var tagScopeDetail = tagScope.getActiveDetailForUpdate();
             
-            tagScopeDetail.setThruTime(session.START_TIME_LONG);
+            tagScopeDetail.setThruTime(session.getStartTime());
             tagScopeDetail.store();
 
             var tagScopePK = tagScopeDetail.getTagScopePK();
@@ -366,7 +366,7 @@ public class TagControl
             }
             
             tagScopeDetail = TagScopeDetailFactory.getInstance().create(tagScopePK, tagScopeName,
-                    isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             tagScope.setActiveDetail(tagScopeDetail);
             tagScope.setLastDetail(tagScopeDetail);
@@ -385,7 +385,7 @@ public class TagControl
         deleteTagsByTagScope(tagScope, deletedBy);
 
         var tagScopeDetail = tagScope.getLastDetailForUpdate();
-        tagScopeDetail.setThruTime(session.START_TIME_LONG);
+        tagScopeDetail.setThruTime(session.getStartTime());
         tagScope.setActiveDetail(null);
         tagScope.store();
         
@@ -417,7 +417,7 @@ public class TagControl
             BasePK createdBy) {
         var tagScopeDescription = TagScopeDescriptionFactory.getInstance().create(tagScope,
                 language, description,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(tagScope.getPrimaryKey(), EventTypes.MODIFY, tagScopeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -549,7 +549,7 @@ public class TagControl
             var tagScopeDescription = TagScopeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      tagScopeDescriptionValue.getPrimaryKey());
             
-            tagScopeDescription.setThruTime(session.START_TIME_LONG);
+            tagScopeDescription.setThruTime(session.getStartTime());
             tagScopeDescription.store();
 
             var tagScope = tagScopeDescription.getTagScope();
@@ -557,14 +557,14 @@ public class TagControl
             var description = tagScopeDescriptionValue.getDescription();
             
             tagScopeDescription = TagScopeDescriptionFactory.getInstance().create(tagScope, language,
-                    description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(tagScope.getPrimaryKey(), EventTypes.MODIFY, tagScopeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteTagScopeDescription(TagScopeDescription tagScopeDescription, BasePK deletedBy) {
-        tagScopeDescription.setThruTime(session.START_TIME_LONG);
+        tagScopeDescription.setThruTime(session.getStartTime());
         
         sendEvent(tagScopeDescription.getTagScopePK(), EventTypes.MODIFY, tagScopeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
@@ -583,7 +583,7 @@ public class TagControl
     
     public TagScopeEntityType createTagScopeEntityType(TagScope tagScope, EntityType entityType, BasePK createdBy) {
         var tagScopeEntityType = TagScopeEntityTypeFactory.getInstance().create(tagScope, entityType,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(tagScope.getPrimaryKey(), EventTypes.MODIFY, tagScopeEntityType.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -766,7 +766,7 @@ public class TagControl
     }
     
     public void deleteTagScopeEntityType(TagScopeEntityType tagScopeEntityType, BasePK deletedBy) {
-        tagScopeEntityType.setThruTime(session.START_TIME_LONG);
+        tagScopeEntityType.setThruTime(session.getStartTime());
         
         sendEvent(tagScopeEntityType.getTagScopePK(), EventTypes.MODIFY, tagScopeEntityType.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
@@ -791,8 +791,8 @@ public class TagControl
     
     public Tag createTag(TagScope tagScope, String tagName, BasePK createdBy) {
         var tag = TagFactory.getInstance().create();
-        var tagDetail = TagDetailFactory.getInstance().create(tag, tagScope, tagName, session.START_TIME_LONG,
-                Session.MAX_TIME_LONG);
+        var tagDetail = TagDetailFactory.getInstance().create(tag, tagScope, tagName, session.getStartTime(),
+                Session.MAX_TIME);
         
         // Convert to R/W
         tag = TagFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -821,7 +821,7 @@ public class TagControl
                 FROM tags, tagdetails, entitytags
                 WHERE t_activedetailid = tdt_tagdetailid AND tdt_ts_tagscopeid = ?
                 AND t_tagid = et_t_tagid AND et_taggedentityinstanceid = ? AND et_thrutime = ?
-                """, tagScope, taggedEntityInstance, Session.MAX_TIME_LONG);
+                """, tagScope, taggedEntityInstance, Session.MAX_TIME);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.Tag */
@@ -1027,15 +1027,15 @@ public class TagControl
                      tagDetailValue.getTagPK());
             var tagDetail = tag.getActiveDetailForUpdate();
             
-            tagDetail.setThruTime(session.START_TIME_LONG);
+            tagDetail.setThruTime(session.getStartTime());
             tagDetail.store();
 
             var tagPK = tagDetail.getTagPK(); // Not updated
             var tagScopePK = tagDetail.getTagScopePK(); // Not updated
             var tagName = tagDetailValue.getTagName();
             
-            tagDetail = TagDetailFactory.getInstance().create(tagPK, tagScopePK, tagName, session.START_TIME_LONG,
-                    Session.MAX_TIME_LONG);
+            tagDetail = TagDetailFactory.getInstance().create(tagPK, tagScopePK, tagName, session.getStartTime(),
+                    Session.MAX_TIME);
             
             tag.setActiveDetail(tagDetail);
             tag.setLastDetail(tagDetail);
@@ -1048,7 +1048,7 @@ public class TagControl
         deleteEntityTagsByTag(tag, deletedBy);
 
         var tagDetail = tag.getLastDetailForUpdate();
-        tagDetail.setThruTime(session.START_TIME_LONG);
+        tagDetail.setThruTime(session.getStartTime());
         tag.setActiveDetail(null);
         tag.store();
         
@@ -1070,7 +1070,7 @@ public class TagControl
     // --------------------------------------------------------------------------------
     
     public EntityTag createEntityTag(EntityInstance taggedEntityInstance, Tag tag, BasePK createdBy) {
-        var entityTag = EntityTagFactory.getInstance().create(taggedEntityInstance, tag, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var entityTag = EntityTagFactory.getInstance().create(taggedEntityInstance, tag, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(taggedEntityInstance, EventTypes.MODIFY, entityTag.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1082,7 +1082,7 @@ public class TagControl
                 "SELECT COUNT(*) " +
                 "FROM entitytags " +
                 "WHERE et_t_tagid = ? AND et_thrutime = ?",
-                tag, Session.MAX_TIME_LONG);
+                tag, Session.MAX_TIME);
     }
 
     public long countEntityTagsByTagScopeAndEntityInstance(final TagScope tagScope, final EntityInstance taggedEntityInstance) {
@@ -1091,7 +1091,7 @@ public class TagControl
                 "FROM tags, tagdetails, entitytags " +
                 "WHERE t_activedetailid = tdt_tagdetailid AND tdt_ts_tagscopeid = ? " +
                 "AND t_tagid = et_t_tagid AND et_taggedentityinstanceid = ? AND et_thrutime = ?",
-                tagScope, taggedEntityInstance, Session.MAX_TIME_LONG);
+                tagScope, taggedEntityInstance, Session.MAX_TIME);
     }
 
     private EntityTag getEntityTag(EntityInstance taggedEntityInstance, Tag tag, EntityPermission entityPermission) {
@@ -1250,7 +1250,7 @@ public class TagControl
     public void deleteEntityTag(EntityTag entityTag, BasePK deletedBy) {
         var taggedEntityInstance = entityTag.getTaggedEntityInstance();
 
-        entityTag.setThruTime(session.START_TIME_LONG);
+        entityTag.setThruTime(session.getStartTime());
         entityTag.store();
         
         sendEvent(taggedEntityInstance, EventTypes.MODIFY, entityTag.getPrimaryKey(), EventTypes.DELETE, deletedBy);

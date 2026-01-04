@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -31,9 +31,9 @@ import com.echothree.util.server.persistence.Session;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.enterprise.context.RequestScoped;
+import com.echothree.util.server.cdi.CommandScope;
 
-@RequestScoped
+@CommandScope
 public class PartyEntityTypeControl
         extends BasePartyControl {
 
@@ -47,7 +47,7 @@ public class PartyEntityTypeControl
     // --------------------------------------------------------------------------------
 
     public PartyEntityType createPartyEntityType(Party party, EntityType entityType, Boolean confirmDelete, BasePK createdBy) {
-        var partyEntityType = PartyEntityTypeFactory.getInstance().create(party, entityType, confirmDelete, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var partyEntityType = PartyEntityTypeFactory.getInstance().create(party, entityType, confirmDelete, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyEntityType.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -161,21 +161,21 @@ public class PartyEntityTypeControl
         if(partyEntityTypeValue.hasBeenModified()) {
             var partyEntityType = PartyEntityTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, partyEntityTypeValue.getPrimaryKey());
 
-            partyEntityType.setThruTime(session.START_TIME_LONG);
+            partyEntityType.setThruTime(session.getStartTime());
             partyEntityType.store();
 
             var partyPK = partyEntityType.getPartyPK(); // Not updated
             var entityTypePK = partyEntityType.getEntityTypePK(); // Not updated
             var confirmDelete = partyEntityTypeValue.getConfirmDelete();
 
-            partyEntityType = PartyEntityTypeFactory.getInstance().create(partyPK, entityTypePK, confirmDelete, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+            partyEntityType = PartyEntityTypeFactory.getInstance().create(partyPK, entityTypePK, confirmDelete, session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(partyPK, EventTypes.MODIFY, partyEntityType.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deletePartyEntityType(PartyEntityType partyEntityType, BasePK deletedBy) {
-        partyEntityType.setThruTime(session.START_TIME_LONG);
+        partyEntityType.setThruTime(session.getStartTime());
 
         sendEvent(partyEntityType.getPartyPK(), EventTypes.MODIFY, partyEntityType.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }

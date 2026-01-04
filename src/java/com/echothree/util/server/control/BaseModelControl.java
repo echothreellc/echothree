@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -26,17 +26,16 @@ import com.echothree.model.data.core.server.entity.Event;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.BaseEntity;
 import com.echothree.util.server.persistence.Session;
-import com.echothree.util.server.persistence.ThreadSession;
 import java.sql.Connection;
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 public abstract class BaseModelControl {
-    
+
+    @Inject
     protected Session session;
-    protected Connection connection;
-    private Log log;
 
     @Inject
     protected EntityInstanceControl entityInstanceControl;
@@ -49,21 +48,17 @@ public abstract class BaseModelControl {
 
     @Inject
     protected WorkflowControl workflowControl;
-    
+
+    private Log log;
+
     /** Creates a new instance of BaseModelControl */
     protected BaseModelControl() {
-        this.session = ThreadSession.currentSession();
-        this.connection = session.getConnection();
     }
-    
-    public Session getSession() {
-        return session;
+
+    @PostConstruct
+    public void init() {
     }
-    
-    public Connection getConnection() {
-        return connection;
-    }
-    
+
     protected Log getLog() {
         if(log == null) {
             log = LogFactory.getLog(this.getClass());

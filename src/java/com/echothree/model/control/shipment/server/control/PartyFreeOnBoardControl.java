@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -30,9 +30,9 @@ import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.sql.SQLException;
 import java.util.List;
-import javax.enterprise.context.RequestScoped;
+import com.echothree.util.server.cdi.CommandScope;
 
-@RequestScoped
+@CommandScope
 public class PartyFreeOnBoardControl
         extends BaseShipmentControl {
 
@@ -46,8 +46,8 @@ public class PartyFreeOnBoardControl
     // --------------------------------------------------------------------------------
 
     public PartyFreeOnBoard createPartyFreeOnBoard(Party party, FreeOnBoard freeOnBoard, BasePK createdBy) {
-        var partyFreeOnBoard = PartyFreeOnBoardFactory.getInstance().create(party, freeOnBoard, session.START_TIME_LONG,
-                Session.MAX_TIME_LONG);
+        var partyFreeOnBoard = PartyFreeOnBoardFactory.getInstance().create(party, freeOnBoard, session.getStartTime(),
+                Session.MAX_TIME);
 
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyFreeOnBoard.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -155,21 +155,21 @@ public class PartyFreeOnBoardControl
             var partyFreeOnBoard = PartyFreeOnBoardFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     partyFreeOnBoardValue.getPrimaryKey());
 
-            partyFreeOnBoard.setThruTime(session.START_TIME_LONG);
+            partyFreeOnBoard.setThruTime(session.getStartTime());
             partyFreeOnBoard.store();
 
             var partyPK = partyFreeOnBoard.getPartyPK(); // Not updated
             var freeOnBoardPK = partyFreeOnBoardValue.getFreeOnBoardPK();
 
-            partyFreeOnBoard = PartyFreeOnBoardFactory.getInstance().create(partyPK, freeOnBoardPK, session.START_TIME_LONG,
-                    Session.MAX_TIME_LONG);
+            partyFreeOnBoard = PartyFreeOnBoardFactory.getInstance().create(partyPK, freeOnBoardPK, session.getStartTime(),
+                    Session.MAX_TIME);
 
             sendEvent(partyPK, EventTypes.MODIFY, partyFreeOnBoard.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deletePartyFreeOnBoard(PartyFreeOnBoard partyFreeOnBoard, BasePK deletedBy) {
-        partyFreeOnBoard.setThruTime(session.START_TIME_LONG);
+        partyFreeOnBoard.setThruTime(session.getStartTime());
 
         sendEvent(partyFreeOnBoard.getPartyPK(), EventTypes.MODIFY, partyFreeOnBoard.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }

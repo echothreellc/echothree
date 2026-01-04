@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -52,9 +52,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import javax.enterprise.context.RequestScoped;
+import com.echothree.util.server.cdi.CommandScope;
 
-@RequestScoped
+@CommandScope
 public class TextControl
         extends BaseCoreControl {
 
@@ -81,8 +81,8 @@ public class TextControl
         }
 
         var textDecoration = TextDecorationFactory.getInstance().create();
-        var textDecorationDetail = TextDecorationDetailFactory.getInstance().create(textDecoration, textDecorationName, isDefault, sortOrder, session.START_TIME_LONG,
-                Session.MAX_TIME_LONG);
+        var textDecorationDetail = TextDecorationDetailFactory.getInstance().create(textDecoration, textDecorationName, isDefault, sortOrder, session.getStartTime(),
+                Session.MAX_TIME);
 
         // Convert to R/W
         textDecoration = TextDecorationFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, textDecoration.getPrimaryKey());
@@ -281,7 +281,7 @@ public class TextControl
                     textDecorationDetailValue.getTextDecorationPK());
             var textDecorationDetail = textDecoration.getActiveDetailForUpdate();
 
-            textDecorationDetail.setThruTime(session.START_TIME_LONG);
+            textDecorationDetail.setThruTime(session.getStartTime());
             textDecorationDetail.store();
 
             var textDecorationPK = textDecorationDetail.getTextDecorationPK(); // Not updated
@@ -305,8 +305,8 @@ public class TextControl
                 }
             }
 
-            textDecorationDetail = TextDecorationDetailFactory.getInstance().create(textDecorationPK, textDecorationName, isDefault, sortOrder, session.START_TIME_LONG,
-                    Session.MAX_TIME_LONG);
+            textDecorationDetail = TextDecorationDetailFactory.getInstance().create(textDecorationPK, textDecorationName, isDefault, sortOrder, session.getStartTime(),
+                    Session.MAX_TIME);
 
             textDecoration.setActiveDetail(textDecorationDetail);
             textDecoration.setLastDetail(textDecorationDetail);
@@ -326,7 +326,7 @@ public class TextControl
         appearanceControl.deleteAppearanceTextDecorationsByTextDecoration(textDecoration, deletedBy);
         deleteTextDecorationDescriptionsByTextDecoration(textDecoration, deletedBy);
 
-        textDecorationDetail.setThruTime(session.START_TIME_LONG);
+        textDecorationDetail.setThruTime(session.getStartTime());
         textDecoration.setActiveDetail(null);
         textDecoration.store();
 
@@ -371,7 +371,7 @@ public class TextControl
 
     public TextDecorationDescription createTextDecorationDescription(TextDecoration textDecoration, Language language, String description, BasePK createdBy) {
         var textDecorationDescription = TextDecorationDescriptionFactory.getInstance().create(textDecoration, language, description,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(textDecoration.getPrimaryKey(), EventTypes.MODIFY, textDecorationDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -484,7 +484,7 @@ public class TextControl
             var textDecorationDescription = TextDecorationDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     textDecorationDescriptionValue.getPrimaryKey());
 
-            textDecorationDescription.setThruTime(session.START_TIME_LONG);
+            textDecorationDescription.setThruTime(session.getStartTime());
             textDecorationDescription.store();
 
             var textDecoration = textDecorationDescription.getTextDecoration();
@@ -492,14 +492,14 @@ public class TextControl
             var description = textDecorationDescriptionValue.getDescription();
 
             textDecorationDescription = TextDecorationDescriptionFactory.getInstance().create(textDecoration, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(textDecoration.getPrimaryKey(), EventTypes.MODIFY, textDecorationDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteTextDecorationDescription(TextDecorationDescription textDecorationDescription, BasePK deletedBy) {
-        textDecorationDescription.setThruTime(session.START_TIME_LONG);
+        textDecorationDescription.setThruTime(session.getStartTime());
 
         sendEvent(textDecorationDescription.getTextDecorationPK(), EventTypes.MODIFY, textDecorationDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
@@ -531,8 +531,8 @@ public class TextControl
         }
 
         var textTransformation = TextTransformationFactory.getInstance().create();
-        var textTransformationDetail = TextTransformationDetailFactory.getInstance().create(textTransformation, textTransformationName, isDefault, sortOrder, session.START_TIME_LONG,
-                Session.MAX_TIME_LONG);
+        var textTransformationDetail = TextTransformationDetailFactory.getInstance().create(textTransformation, textTransformationName, isDefault, sortOrder, session.getStartTime(),
+                Session.MAX_TIME);
 
         // Convert to R/W
         textTransformation = TextTransformationFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, textTransformation.getPrimaryKey());
@@ -731,7 +731,7 @@ public class TextControl
                     textTransformationDetailValue.getTextTransformationPK());
             var textTransformationDetail = textTransformation.getActiveDetailForUpdate();
 
-            textTransformationDetail.setThruTime(session.START_TIME_LONG);
+            textTransformationDetail.setThruTime(session.getStartTime());
             textTransformationDetail.store();
 
             var textTransformationPK = textTransformationDetail.getTextTransformationPK(); // Not updated
@@ -755,8 +755,8 @@ public class TextControl
                 }
             }
 
-            textTransformationDetail = TextTransformationDetailFactory.getInstance().create(textTransformationPK, textTransformationName, isDefault, sortOrder, session.START_TIME_LONG,
-                    Session.MAX_TIME_LONG);
+            textTransformationDetail = TextTransformationDetailFactory.getInstance().create(textTransformationPK, textTransformationName, isDefault, sortOrder, session.getStartTime(),
+                    Session.MAX_TIME);
 
             textTransformation.setActiveDetail(textTransformationDetail);
             textTransformation.setLastDetail(textTransformationDetail);
@@ -776,7 +776,7 @@ public class TextControl
         appearanceControl.deleteAppearanceTextTransformationsByTextTransformation(textTransformation, deletedBy);
         deleteTextTransformationDescriptionsByTextTransformation(textTransformation, deletedBy);
 
-        textTransformationDetail.setThruTime(session.START_TIME_LONG);
+        textTransformationDetail.setThruTime(session.getStartTime());
         textTransformation.setActiveDetail(null);
         textTransformation.store();
 
@@ -821,7 +821,7 @@ public class TextControl
 
     public TextTransformationDescription createTextTransformationDescription(TextTransformation textTransformation, Language language, String description, BasePK createdBy) {
         var textTransformationDescription = TextTransformationDescriptionFactory.getInstance().create(textTransformation, language, description,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(textTransformation.getPrimaryKey(), EventTypes.MODIFY, textTransformationDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -934,7 +934,7 @@ public class TextControl
             var textTransformationDescription = TextTransformationDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     textTransformationDescriptionValue.getPrimaryKey());
 
-            textTransformationDescription.setThruTime(session.START_TIME_LONG);
+            textTransformationDescription.setThruTime(session.getStartTime());
             textTransformationDescription.store();
 
             var textTransformation = textTransformationDescription.getTextTransformation();
@@ -942,14 +942,14 @@ public class TextControl
             var description = textTransformationDescriptionValue.getDescription();
 
             textTransformationDescription = TextTransformationDescriptionFactory.getInstance().create(textTransformation, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(textTransformation.getPrimaryKey(), EventTypes.MODIFY, textTransformationDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteTextTransformationDescription(TextTransformationDescription textTransformationDescription, BasePK deletedBy) {
-        textTransformationDescription.setThruTime(session.START_TIME_LONG);
+        textTransformationDescription.setThruTime(session.getStartTime());
 
         sendEvent(textTransformationDescription.getTextTransformationPK(), EventTypes.MODIFY, textTransformationDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 

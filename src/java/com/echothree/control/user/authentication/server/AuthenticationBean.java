@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -26,10 +26,10 @@ import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.server.persistence.Session;
-import com.echothree.util.server.persistence.ThreadUtils;
+import com.echothree.util.server.cdi.CommandScopeExtension;
 import javax.ejb.Stateless;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @Stateless
 public class AuthenticationBean
@@ -53,17 +53,25 @@ public class AuthenticationBean
     public CommandResult getJobUserVisit(GetJobUserVisitForm form) {
         return CDI.current().select(GetJobUserVisitCommand.class).get().run(null, form);
     }
-    
+
+    @Inject
+    UserControl userControl;
+
+    @Inject
+    PartyControl partyControl;
+
     @Override
     public UserVisitPK getDataLoaderUserVisit() {
-        var preservedState = ThreadUtils.preserveState();
+        if(CommandScopeExtension.getCommandScopeContext().isActive()) {
+            CommandScopeExtension.getCommandScopeContext().push();
+        } else {
+            CommandScopeExtension.getCommandScopeContext().activate();
+        }
 
         UserVisitPK userVisitPK = null;
         
         try {
-            var userControl = Session.getModelController(UserControl.class);
             var userVisit = userControl.createUserVisit(null, null, null, null, null, null, null, null);
-            var partyControl = Session.getModelController(PartyControl.class);
             var party = partyControl.getPartyByName(PartyNames.DATA_LOADER.name());
             
             if(party == null) {
@@ -83,10 +91,8 @@ public class AuthenticationBean
         } catch (PersistenceDatabaseException pde) {
             throw pde;
         } finally {
-            ThreadUtils.close();
+            CommandScopeExtension.getCommandScopeContext().pop();
         }
-
-        ThreadUtils.restoreState(preservedState);
 
         return userVisitPK;
     }

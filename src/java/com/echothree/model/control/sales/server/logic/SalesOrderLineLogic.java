@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -308,12 +308,12 @@ public class SalesOrderLineLogic
 
                 // Check Item's SalesOrderStartTime and SalesOrderEndTime.
                 var salesOrderStartTime = itemDetail.getSalesOrderStartTime();
-                if(salesOrderStartTime != null && session.START_TIME < salesOrderStartTime) {
+                if(salesOrderStartTime != null && session.getStartTime() < salesOrderStartTime) {
                     handleExecutionError(CurrentTimeBeforeSalesOrderStartTimeException.class, eea, ExecutionErrors.CurrentTimeBeforeSalesOrderStartTime.name());
                 }
 
                 var salesOrderEndTime = itemDetail.getSalesOrderEndTime();
-                if(salesOrderEndTime != null && session.START_TIME > salesOrderEndTime) {
+                if(salesOrderEndTime != null && session.getStartTime() > salesOrderEndTime) {
                     handleExecutionError(CurrentTimeAfterSalesOrderEndTimeException.class, eea, ExecutionErrors.CurrentTimeAfterSalesOrderEndTime.name());
                 }
 

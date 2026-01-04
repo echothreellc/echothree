@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,6 +20,8 @@ import com.echothree.model.control.communication.server.control.CommunicationCon
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.server.control.ComponentControl;
+import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityAliasControl;
 import com.echothree.model.control.core.server.control.EntityTypeControl;
 import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.forum.common.ForumConstants;
@@ -201,6 +203,26 @@ public class EntityDescriptionUtils {
                     var entityType = entityTypeControl.getEntityTypeByEntityInstance(entityInstance);
 
                     description = entityType == null ? null : entityTypeControl.getBestEntityTypeDescription(entityType, getLanguage(userVisit));
+                } else if(entityTypeName.equals(EntityTypes.EntityAliasType.name())) {
+                    var entityAliasControl = Session.getModelController(EntityAliasControl.class);
+                    var entityAliasType = entityAliasControl.getEntityAliasTypeByEntityInstance(entityInstance);
+
+                    description = entityAliasType == null ? null : entityAliasControl.getBestEntityAliasTypeDescription(entityAliasType, getLanguage(userVisit));
+                } else if(entityTypeName.equals(EntityTypes.EntityAttribute.name())) {
+                    var coreControl = Session.getModelController(CoreControl.class);
+                    var entityAttribute = coreControl.getEntityAttributeByEntityInstance(entityInstance);
+
+                    description = entityAttribute == null ? null : coreControl.getBestEntityAttributeDescription(entityAttribute, getLanguage(userVisit));
+                } else if(entityTypeName.equals(EntityTypes.EntityListItem.name())) {
+                    var coreControl = Session.getModelController(CoreControl.class);
+                    var entityListItem = coreControl.getEntityListItemByEntityInstance(entityInstance);
+
+                    description = entityListItem == null ? null : coreControl.getBestEntityListItemDescription(entityListItem, getLanguage(userVisit));
+                } else if(entityTypeName.equals(EntityTypes.EntityAttributeGroup.name())) {
+                    var coreControl = Session.getModelController(CoreControl.class);
+                    var entityAttributeGroup = coreControl.getEntityAttributeGroupByEntityInstance(entityInstance);
+
+                    description = entityAttributeGroup == null ? null : coreControl.getBestEntityAttributeGroupDescription(entityAttributeGroup, getLanguage(userVisit));
                 }
             }
         }

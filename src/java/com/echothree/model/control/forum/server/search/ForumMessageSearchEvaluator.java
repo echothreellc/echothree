@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -86,7 +86,7 @@ public class ForumMessageSearchEvaluator
                     Session.MAX_TIME, forum, ComponentVendors.ECHO_THREE.name(), EntityTypes.ForumMessage.name());
         } else {
             entityInstancePKHolder = getEntityInstancePKHolderFromQuery(ps,
-                    Session.MAX_TIME, forum, ComponentVendors.ECHO_THREE.name(), EntityTypes.ForumMessage.name(), session.START_TIME);
+                    Session.MAX_TIME, forum, ComponentVendors.ECHO_THREE.name(), EntityTypes.ForumMessage.name(), session.getStartTime());
         }
 
         return entityInstancePKHolder;
@@ -111,7 +111,7 @@ public class ForumMessageSearchEvaluator
                     forumMessageType, ComponentVendors.ECHO_THREE.name(), EntityTypes.ForumMessage.name());
         } else {
             entityInstancePKHolder = getEntityInstancePKHolderFromQuery(ps,
-                    forumMessageType, ComponentVendors.ECHO_THREE.name(), EntityTypes.ForumMessage.name(),  session.START_TIME);
+                    forumMessageType, ComponentVendors.ECHO_THREE.name(), EntityTypes.ForumMessage.name(),  session.getStartTime());
         }
 
         return entityInstancePKHolder;

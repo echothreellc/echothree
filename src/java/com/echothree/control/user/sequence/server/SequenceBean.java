@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -233,10 +233,20 @@ public class SequenceBean
     // -------------------------------------------------------------------------
     //    Sequence Values
     // -------------------------------------------------------------------------
-    
+
     @Override
     public CommandResult setSequenceValue(UserVisitPK userVisitPK, SetSequenceValueForm form) {
         return CDI.current().select(SetSequenceValueCommand.class).get().run(userVisitPK, form);
     }
-    
+
+    @Override
+    public CommandResult getSequenceValue(UserVisitPK userVisitPK, GetSequenceValueForm form) {
+        return CDI.current().select(GetSequenceValueCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult getNextSequenceValue(UserVisitPK userVisitPK, GetNextSequenceValueForm form) {
+        return CDI.current().select(GetNextSequenceValueCommand.class).get().run(userVisitPK, form);
+    }
+
 }

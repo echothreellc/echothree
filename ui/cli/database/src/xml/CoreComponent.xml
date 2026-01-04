@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE database SYSTEM "DatabaseDefinition.dtd">
 <!--                                                                                  -->
-<!-- Copyright 2002-2025 Echo Three, LLC                                              -->
+<!-- Copyright 2002-2026 Echo Three, LLC                                              -->
 <!--                                                                                  -->
 <!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
 <!-- you may not use this file except in compliance with the License.                 -->
@@ -689,11 +689,15 @@
                             <indexColumn name="EntityAliasTypeName" />
                             <indexColumn name="ThruTime" />
                         </index>
-                        <index type="Multiple" name="Index3">
-                            <indexColumn name="EntityTypeId" />
+                        <index type="Unique" name="Index3">
+                            <indexColumn name="EntityAliasTypeName" />
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index4">
+                            <indexColumn name="EntityTypeId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
                             <indexColumn name="IsDefault" />
                             <indexColumn name="ThruTime" />
                         </index>
@@ -904,6 +908,10 @@
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index3">
+                            <indexColumn name="EntityAttributeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
                             <indexColumn name="EntityAttributeTypeId" />
                             <indexColumn name="ThruTime" />
                         </index>
@@ -1886,6 +1894,10 @@
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index4">
+                            <indexColumn name="EntityListItemName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index5">
                             <indexColumn name="EntityAttributeId" />
                             <indexColumn name="IsDefault" />
                             <indexColumn name="ThruTime" />

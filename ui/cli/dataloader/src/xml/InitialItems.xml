@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--                                                                                  -->
-<!-- Copyright 2002-2025 Echo Three, LLC                                              -->
+<!-- Copyright 2002-2026 Echo Three, LLC                                              -->
 <!--                                                                                  -->
 <!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
 <!-- you may not use this file except in compliance with the License.                 -->
@@ -412,8 +412,8 @@
         <item itemName="MINIMAL" itemTypeName="REGULAR" itemUseTypeName="REGULAR" itemCategoryName="DEFAULT" itemAccountingCategoryName="DEFAULT"
         itemPurchasingCategoryName="DEFAULT" itemDeliveryTypeName="PHYSICAL" itemInventoryTypeName="INVENTORY" inventorySerialized="false" shippingChargeExempt="false"
         allowClubDiscounts="true" allowCouponDiscounts="true" allowAssociatePayments="true" itemStatus="NEW_ACTIVE" unitOfMeasureKindName="BASIC" itemPriceTypeName="FIXED"
-        companyName="TEST_COMPANY" salesOrderStartTime="11/1/2019" salesOrderEndTime="11/30/2025" purchaseOrderStartTime="11/15/2019 8:00 AM"
-        purchaseOrderEndTime="12/01/2025 5:00 PM">
+        companyName="TEST_COMPANY" salesOrderStartTime="11/1/2019" salesOrderEndTime="11/30/2030" purchaseOrderStartTime="11/15/2019 8:00 AM"
+        purchaseOrderEndTime="12/01/2030 5:00 PM">
             <itemUnitOfMeasureType unitOfMeasureTypeName="EACH" isDefault="true" sortOrder="1" />
             <itemAlias unitOfMeasureTypeName="EACH" itemAliasTypeName="ADDTL_ITEM_NAME" alias="TEST_OTHER" />
             <itemDescription itemDescriptionTypeName="DEFAULT_DESCRIPTION" languageIsoName="en" stringDescription="Test Item (Default)" />

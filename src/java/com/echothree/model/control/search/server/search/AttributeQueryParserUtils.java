@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -161,7 +161,7 @@ public class AttributeQueryParserUtils
         ZonedDateTime zdt = null;
         
         if(fieldValue.equalsIgnoreCase("TODAY")) {
-            zdt = ZonedDateTime.ofInstant(Instant.ofEpochMilli(ThreadSession.currentSession().START_TIME), zoneId);
+            zdt = ZonedDateTime.ofInstant(Instant.ofEpochMilli(ThreadSession.currentSession().getStartTime()), zoneId);
         } else {
             var javaShortDateFormat = DateTimeFormatter.ofPattern(dateTimeFormatDetail.getJavaShortDateFormat()).withZone(zoneId);
 
@@ -183,7 +183,7 @@ public class AttributeQueryParserUtils
         Long result = null;
         
         if(fieldValue.equalsIgnoreCase("NOW")) {
-            result = ThreadSession.currentSession().START_TIME_LONG;
+            result = ThreadSession.currentSession().getStartTime();
         } else {
             var dateTimeFormatDetail = getUserControl().getPreferredDateTimeFormatFromUserVisit(userVisit).getLastDetail();
             var zoneId = ZoneId.of(getUserControl().getPreferredTimeZoneFromUserVisit(userVisit).getLastDetail().getJavaTimeZoneName());

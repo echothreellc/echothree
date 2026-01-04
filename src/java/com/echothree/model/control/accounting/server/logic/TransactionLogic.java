@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -76,7 +76,7 @@ public class TransactionLogic
         var transaction = accountingControl.createTransaction(groupParty, transactionType, createdBy);
 
         TransactionTimeLogic.getInstance().createTransactionTime(null, transaction, TransactionTimeTypes.TRANSACTION_TIME.name(),
-                transactionTime == null ? session.START_TIME_LONG : transactionTime, createdBy);
+                transactionTime == null ? session.getStartTime() : transactionTime, createdBy);
 
         return transaction;
     }

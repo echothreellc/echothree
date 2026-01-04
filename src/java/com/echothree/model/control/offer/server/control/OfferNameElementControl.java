@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -38,9 +38,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import javax.enterprise.context.RequestScoped;
+import com.echothree.util.server.cdi.CommandScope;
 
-@RequestScoped
+@CommandScope
 public class OfferNameElementControl
         extends BaseOfferControl {
 
@@ -56,9 +56,9 @@ public class OfferNameElementControl
     public OfferNameElement createOfferNameElement(String offerNameElementName, Integer offset, Integer length,
             String validationPattern, BasePK createdBy) {
         var offerNameElement = OfferNameElementFactory.getInstance().create();
-        var offerNameElementDetail = OfferNameElementDetailFactory.getInstance().create(session,
-                offerNameElement, offerNameElementName, offset, length, validationPattern, session.START_TIME_LONG,
-                Session.MAX_TIME_LONG);
+        var offerNameElementDetail = OfferNameElementDetailFactory.getInstance().create(
+                offerNameElement, offerNameElementName, offset, length, validationPattern, session.getStartTime(),
+                Session.MAX_TIME);
         
         // Convert to R/W
         offerNameElement = OfferNameElementFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -147,7 +147,8 @@ public class OfferNameElementControl
             query = "SELECT _ALL_ " +
                     "FROM offernameelements, offernameelementdetails " +
                     "WHERE ofrne_activedetailid = ofrnedt_offernameelementdetailid " +
-                    "ORDER BY ofrnedt_offset";
+                    "ORDER BY ofrnedt_offset " +
+                    "_LIMIT_";
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
             query = "SELECT _ALL_ " +
                     "FROM offernameelements, offernameelementdetails " +
@@ -192,7 +193,7 @@ public class OfferNameElementControl
                      offerNameElementDetailValue.getOfferNameElementPK());
             var offerNameElementDetail = offerNameElement.getActiveDetailForUpdate();
             
-            offerNameElementDetail.setThruTime(session.START_TIME_LONG);
+            offerNameElementDetail.setThruTime(session.getStartTime());
             offerNameElementDetail.store();
 
             var offerNameElementPK = offerNameElementDetail.getOfferNameElementPK();
@@ -202,7 +203,7 @@ public class OfferNameElementControl
             var validationPattern = offerNameElementDetailValue.getValidationPattern();
             
             offerNameElementDetail = OfferNameElementDetailFactory.getInstance().create(offerNameElementPK,
-                    offerNameElementName, offset, length, validationPattern, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    offerNameElementName, offset, length, validationPattern, session.getStartTime(), Session.MAX_TIME);
             
             offerNameElement.setActiveDetail(offerNameElementDetail);
             offerNameElement.setLastDetail(offerNameElementDetail);
@@ -215,7 +216,7 @@ public class OfferNameElementControl
         deleteOfferNameElementDescriptionsByOfferNameElement(offerNameElement, deletedBy);
 
         var offerNameElementDetail = offerNameElement.getLastDetailForUpdate();
-        offerNameElementDetail.setThruTime(session.START_TIME_LONG);
+        offerNameElementDetail.setThruTime(session.getStartTime());
         offerNameElement.setActiveDetail(null);
         offerNameElement.store();
         
@@ -228,8 +229,8 @@ public class OfferNameElementControl
     
     public OfferNameElementDescription createOfferNameElementDescription(OfferNameElement offerNameElement, Language language,
             String description, BasePK createdBy) {
-        var offerNameElementDescription = OfferNameElementDescriptionFactory.getInstance().create(session,
-                offerNameElement, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var offerNameElementDescription = OfferNameElementDescriptionFactory.getInstance().create(
+                offerNameElement, language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(offerNameElement.getPrimaryKey(), EventTypes.MODIFY,
                 offerNameElementDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -363,7 +364,7 @@ public class OfferNameElementControl
             var offerNameElementDescription = OfferNameElementDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      offerNameElementDescriptionValue.getPrimaryKey());
             
-            offerNameElementDescription.setThruTime(session.START_TIME_LONG);
+            offerNameElementDescription.setThruTime(session.getStartTime());
             offerNameElementDescription.store();
 
             var offerNameElement = offerNameElementDescription.getOfferNameElement();
@@ -371,7 +372,7 @@ public class OfferNameElementControl
             var description = offerNameElementDescriptionValue.getDescription();
             
             offerNameElementDescription = OfferNameElementDescriptionFactory.getInstance().create(offerNameElement,
-                    language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    language, description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(offerNameElement.getPrimaryKey(), EventTypes.MODIFY,
                     offerNameElementDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
@@ -379,7 +380,7 @@ public class OfferNameElementControl
     }
     
     public void deleteOfferNameElementDescription(OfferNameElementDescription offerNameElementDescription, BasePK deletedBy) {
-        offerNameElementDescription.setThruTime(session.START_TIME_LONG);
+        offerNameElementDescription.setThruTime(session.getStartTime());
         
         sendEvent(offerNameElementDescription.getOfferNameElementPK(), EventTypes.MODIFY,
                 offerNameElementDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);

@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -52,10 +52,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import javax.enterprise.context.RequestScoped;
+import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
-@RequestScoped
+@CommandScope
 public class QueueControl
         extends BaseModelControl {
     
@@ -95,8 +95,8 @@ public class QueueControl
         }
 
         var queueType = QueueTypeFactory.getInstance().create();
-        var queueTypeDetail = QueueTypeDetailFactory.getInstance().create(queueType, queueTypeName, isDefault, sortOrder, session.START_TIME_LONG,
-                Session.MAX_TIME_LONG);
+        var queueTypeDetail = QueueTypeDetailFactory.getInstance().create(queueType, queueTypeName, isDefault, sortOrder, session.getStartTime(),
+                Session.MAX_TIME);
 
         // Convert to R/W
         queueType = QueueTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, queueType.getPrimaryKey());
@@ -295,7 +295,7 @@ public class QueueControl
                      queueTypeDetailValue.getQueueTypePK());
             var queueTypeDetail = queueType.getActiveDetailForUpdate();
 
-            queueTypeDetail.setThruTime(session.START_TIME_LONG);
+            queueTypeDetail.setThruTime(session.getStartTime());
             queueTypeDetail.store();
 
             var queueTypePK = queueTypeDetail.getQueueTypePK(); // Not updated
@@ -319,8 +319,8 @@ public class QueueControl
                 }
             }
 
-            queueTypeDetail = QueueTypeDetailFactory.getInstance().create(queueTypePK, queueTypeName, isDefault, sortOrder, session.START_TIME_LONG,
-                    Session.MAX_TIME_LONG);
+            queueTypeDetail = QueueTypeDetailFactory.getInstance().create(queueTypePK, queueTypeName, isDefault, sortOrder, session.getStartTime(),
+                    Session.MAX_TIME);
 
             queueType.setActiveDetail(queueTypeDetail);
             queueType.setLastDetail(queueTypeDetail);
@@ -339,7 +339,7 @@ public class QueueControl
         removeQueuedEntitiesByQueueType(queueType);
         deleteQueueTypeDescriptionsByQueueType(queueType, deletedBy);
 
-        queueTypeDetail.setThruTime(session.START_TIME_LONG);
+        queueTypeDetail.setThruTime(session.getStartTime());
         queueType.setActiveDetail(null);
         queueType.store();
 
@@ -384,7 +384,7 @@ public class QueueControl
 
     public QueueTypeDescription createQueueTypeDescription(QueueType queueType, Language language, String description, BasePK createdBy) {
         var queueTypeDescription = QueueTypeDescriptionFactory.getInstance().create(queueType, language, description,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(queueType.getPrimaryKey(), EventTypes.MODIFY, queueTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -497,7 +497,7 @@ public class QueueControl
             var queueTypeDescription = QueueTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     queueTypeDescriptionValue.getPrimaryKey());
 
-            queueTypeDescription.setThruTime(session.START_TIME_LONG);
+            queueTypeDescription.setThruTime(session.getStartTime());
             queueTypeDescription.store();
 
             var queueType = queueTypeDescription.getQueueType();
@@ -505,14 +505,14 @@ public class QueueControl
             var description = queueTypeDescriptionValue.getDescription();
 
             queueTypeDescription = QueueTypeDescriptionFactory.getInstance().create(queueType, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(queueType.getPrimaryKey(), EventTypes.MODIFY, queueTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteQueueTypeDescription(QueueTypeDescription queueTypeDescription, BasePK deletedBy) {
-        queueTypeDescription.setThruTime(session.START_TIME_LONG);
+        queueTypeDescription.setThruTime(session.getStartTime());
 
         sendEvent(queueTypeDescription.getQueueTypePK(), EventTypes.MODIFY, queueTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
@@ -531,7 +531,7 @@ public class QueueControl
     // --------------------------------------------------------------------------------
     
     public QueuedEntity createQueuedEntity(QueueType queueType, EntityInstance entityInstance) {
-        return QueuedEntityFactory.getInstance().create(queueType, entityInstance, session.START_TIME_LONG);
+        return QueuedEntityFactory.getInstance().create(queueType, entityInstance, session.getStartTime());
     }
 
     public void createQueuedEntities(Collection<QueuedEntityValue> queuedEntities) {

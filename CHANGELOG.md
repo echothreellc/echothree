@@ -1,5 +1,61 @@
 # Changelog
 
+## 2026-01-04-01
+
+* Add UI for Maintaining Entity Alias Types [1115](https://gitlab.echothree.com/echothree/echothree/-/issues/1115)
+* 2026 Copyright Update [1623](https://gitlab.echothree.com/echothree/echothree/-/issues/1623)
+* Java Uuid Generator 5.2.0 Upgrade [1662](https://gitlab.echothree.com/echothree/echothree/-/issues/1662)
+* Extend Identify UC to Search Entity Attribute Groups [1673](https://gitlab.echothree.com/echothree/echothree/-/issues/1673)
+* Extend Identify UC to Search Entity Alias Types [1681](https://gitlab.echothree.com/echothree/echothree/-/issues/1681)
+* Add Entity Alias Types to Entity Type Review Page [1689](https://gitlab.echothree.com/echothree/echothree/-/issues/1689)
+* Add Entity Instance Review Page [1690](https://gitlab.echothree.com/echothree/echothree/-/issues/1690)
+
+## 2025-12-21-01
+
+* Apache Lucene 10.3.2 Upgrade [1648](https://gitlab.echothree.com/echothree/echothree/-/issues/1648)
+* cucumber-java8/cucumber-junit 7.33.0 Upgrade [1649](https://gitlab.echothree.com/echothree/echothree/-/issues/1649)
+* unitOfMeasureKindUseTypes Query Needs Updated [1653](https://gitlab.echothree.com/echothree/echothree/-/issues/1653)
+* transactionTypes Query Needs Updated [1654](https://gitlab.echothree.com/echothree/echothree/-/issues/1654)
+* transactionGroups Query Needs Updated [1655](https://gitlab.echothree.com/echothree/echothree/-/issues/1655)
+* ClassGraph 4.8.184 Upgrade [1663](https://gitlab.echothree.com/echothree/echothree/-/issues/1663)
+* Inject Session Into Factories [1667](https://gitlab.echothree.com/echothree/echothree/-/issues/1667)
+* Stop Passing Session Into Factories [1668](https://gitlab.echothree.com/echothree/echothree/-/issues/1668)
+* Extend Identify UC to Search Component Vendors [1669](https://gitlab.echothree.com/echothree/echothree/-/issues/1669)
+* Extend Identify UC to Search Entity Types [1670](https://gitlab.echothree.com/echothree/echothree/-/issues/1670)
+* Extend Identify UC to Search Entity Attributes [1671](https://gitlab.echothree.com/echothree/echothree/-/issues/1671)
+* Extend Identify UC to Search Entity List Items [1672](https://gitlab.echothree.com/echothree/echothree/-/issues/1672)
+* BaseDatabaseQuery Fails Calling getDeclaredMethod(...) for getEntityFromPK(...) [1685](https://gitlab.echothree.com/echothree/echothree/-/issues/1685)
+* Add Queries and Mutations for Get, Set, and Get Next Ops for Sequence Values [1686](https://gitlab.echothree.com/echothree/echothree/-/issues/1686)
+* Convert GetTransactionTimeTypes UC to Use BasePaginatedMultipleEntitiesCommand [1687](https://gitlab.echothree.com/echothree/echothree/-/issues/1687)
+* createSequence Mutation Missing Mask Parameter, Value Should Be Optional [1688](https://gitlab.echothree.com/echothree/echothree/-/issues/1688)
+
+## 2025-12-07-01
+
+* Convert GetOfferNameElements UC to Use BasePaginatedMultipleEntitiesCommand [1127](https://gitlab.echothree.com/echothree/echothree/-/issues/1127)
+* Convert GetUseNameElements UC to Use BasePaginatedMultipleEntitiesCommand [1134](https://gitlab.echothree.com/echothree/echothree/-/issues/1134)
+* Convert GetMimeTypeUsageTypes UC to Use BasePaginatedMultipleEntitiesCommand [1151](https://gitlab.echothree.com/echothree/echothree/-/issues/1151)
+* Convert GetCompanies UC to Use BasePaginatedMultipleEntitiesCommand [1155](https://gitlab.echothree.com/echothree/echothree/-/issues/1155)
+* Convert GetParties UC to Use BasePaginatedMultipleEntitiesCommand [1164](https://gitlab.echothree.com/echothree/echothree/-/issues/1164)
+* Convert GetPaymentProcessorTypes UC to Use BasePaginatedMultipleEntitiesCommand [1170](https://gitlab.echothree.com/echothree/echothree/-/issues/1170)
+* Convert GetPaymentMethodTypes UC to Use BasePaginatedMultipleEntitiesCommand [1174](https://gitlab.echothree.com/echothree/echothree/-/issues/1174)
+* Convert GetPaymentProcessors UC to Use BasePaginatedMultipleEntitiesCommand [1175](https://gitlab.echothree.com/echothree/echothree/-/issues/1175)
+* Convert GetTermTypes UC to Use BasePaginatedMultipleEntitiesCommand [1177](https://gitlab.echothree.com/echothree/echothree/-/issues/1177)
+* Convert GetTerms UC to Use BasePaginatedMultipleEntitiesCommand [1178](https://gitlab.echothree.com/echothree/echothree/-/issues/1178)
+* ICU4J 78.1 Upgrade [1638](https://gitlab.echothree.com/echothree/echothree/-/issues/1638)
+* Guava 33.5.0-jre Upgrade [1640](https://gitlab.echothree.com/echothree/echothree/-/issues/1640)
+* jOOQ 3.20.9 Upgrade [1647](https://gitlab.echothree.com/echothree/echothree/-/issues/1647)
+* Use @Resource for KafkaConnectionFactory [1651](https://gitlab.echothree.com/echothree/echothree/-/issues/1651)
+* kafka-clients 4.1.1 Upgrade [1652](https://gitlab.echothree.com/echothree/echothree/-/issues/1652)
+* Convert GetUserVisitGroups UC to Use BasePaginatedMultipleEntitiesCommand [1656](https://gitlab.echothree.com/echothree/echothree/-/issues/1656)
+* Convert GetRoleTypes UC to Use BasePaginatedMultipleEntitiesCommand [1657](https://gitlab.echothree.com/echothree/echothree/-/issues/1657)
+* Convert GetItemWeightTypes UC to Use BasePaginatedMultipleEntitiesCommand [1658](https://gitlab.echothree.com/echothree/echothree/-/issues/1658)
+* Convert GetItemVolumeTypes UC to Use BasePaginatedMultipleEntitiesCommand [1659](https://gitlab.echothree.com/echothree/echothree/-/issues/1659)
+* Switch User Commands from RequestScoped to Dependent [1660](https://gitlab.echothree.com/echothree/echothree/-/issues/1660)
+* Add Stackable Command Scope for CDI [1661](https://gitlab.echothree.com/echothree/echothree/-/issues/1661)
+* getDataLoaderUserVisit() Throwing ContextNotActiveException [1664](https://gitlab.echothree.com/echothree/echothree/-/issues/1664)
+* Move Session and Caches Into CommandScope [1665](https://gitlab.echothree.com/echothree/echothree/-/issues/1665)
+* Extend "minimal" Item's End Times [1666](https://gitlab.echothree.com/echothree/echothree/-/issues/1666)
+
 ## 2025-11-23-01
 
 * Convert GetTimeZones UC to Use BasePaginatedMultipleEntitiesCommand [1161](https://gitlab.echothree.com/echothree/echothree/-/issues/1161)

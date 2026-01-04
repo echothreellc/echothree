@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -54,9 +54,9 @@ import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.Dependent;
 
-@RequestScoped
+@Dependent
 public class CreateItemCommand
         extends BaseSimpleCommand<CreateItemForm> {
     
@@ -254,15 +254,15 @@ public class CreateItemCommand
                                                                 if(!hasExecutionErrors() && WorkflowSecurityLogic.getInstance().checkAddEntityToWorkflow(this, itemStatus, createdBy)) {
                                                                     var shippingChargeExempt = Boolean.valueOf(form.getShippingChargeExempt());
                                                                     var strShippingStartTime = form.getShippingStartTime();
-                                                                    var shippingStartTime = strShippingStartTime == null ? session.START_TIME_LONG : Long.valueOf(strShippingStartTime);
+                                                                    var shippingStartTime = strShippingStartTime == null ? session.getStartTime() : Long.valueOf(strShippingStartTime);
                                                                     var strShippingEndTime = form.getShippingEndTime();
                                                                     var shippingEndTime = strShippingEndTime == null ? null : Long.valueOf(strShippingEndTime);
                                                                     var strSalesOrderStartTime = form.getSalesOrderStartTime();
-                                                                    var salesOrderStartTime = strSalesOrderStartTime == null ? session.START_TIME_LONG : Long.valueOf(strSalesOrderStartTime);
+                                                                    var salesOrderStartTime = strSalesOrderStartTime == null ? session.getStartTime() : Long.valueOf(strSalesOrderStartTime);
                                                                     var strSalesOrderEndTime = form.getSalesOrderEndTime();
                                                                     var salesOrderEndTime = strSalesOrderEndTime == null ? null : Long.valueOf(strSalesOrderEndTime);
                                                                     var strPurchaseOrderStartTime = form.getPurchaseOrderStartTime();
-                                                                    var purchaseOrderStartTime = isKitOrStyle ? null : strPurchaseOrderStartTime == null ? session.START_TIME_LONG : Long.valueOf(strPurchaseOrderStartTime);
+                                                                    var purchaseOrderStartTime = isKitOrStyle ? null : strPurchaseOrderStartTime == null ? session.getStartTime() : Long.valueOf(strPurchaseOrderStartTime);
                                                                     var strPurchaseOrderEndTime = form.getPurchaseOrderEndTime();
                                                                     var purchaseOrderEndTime = isKitOrStyle ? null : strPurchaseOrderEndTime == null ? null : Long.valueOf(strPurchaseOrderEndTime);
                                                                     var allowClubDiscounts = Boolean.valueOf(form.getAllowClubDiscounts());

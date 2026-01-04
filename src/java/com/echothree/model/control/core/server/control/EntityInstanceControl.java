@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -51,9 +51,9 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import javax.enterprise.context.RequestScoped;
+import com.echothree.util.server.cdi.CommandScope;
 
-@RequestScoped
+@CommandScope
 public class EntityInstanceControl
         extends BaseCoreControl {
 
@@ -367,7 +367,7 @@ public class EntityInstanceControl
 
                         if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                             // Convert to R/W
-                            entityInstance = EntityInstanceFactory.getInstance().getEntityFromPK(session,
+                            entityInstance = EntityInstanceFactory.getInstance().getEntityFromPK(
                                     EntityPermission.READ_WRITE, entityInstance.getPrimaryKey());
                         }
                     }

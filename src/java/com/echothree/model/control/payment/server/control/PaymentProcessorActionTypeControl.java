@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -39,9 +39,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import javax.enterprise.context.RequestScoped;
+import com.echothree.util.server.cdi.CommandScope;
 
-@RequestScoped
+@CommandScope
 public class PaymentProcessorActionTypeControl
         extends BasePaymentControl {
 
@@ -69,8 +69,8 @@ public class PaymentProcessorActionTypeControl
         }
 
         var paymentProcessorActionType = PaymentProcessorActionTypeFactory.getInstance().create();
-        var paymentProcessorActionTypeDetail = PaymentProcessorActionTypeDetailFactory.getInstance().create(session,
-                paymentProcessorActionType, paymentProcessorActionTypeName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var paymentProcessorActionTypeDetail = PaymentProcessorActionTypeDetailFactory.getInstance().create(
+                paymentProcessorActionType, paymentProcessorActionTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         paymentProcessorActionType = PaymentProcessorActionTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, paymentProcessorActionType.getPrimaryKey());
@@ -241,7 +241,7 @@ public class PaymentProcessorActionTypeControl
                     paymentProcessorActionTypeDetailValue.getPaymentProcessorActionTypePK());
             var paymentProcessorActionTypeDetail = paymentProcessorActionType.getActiveDetailForUpdate();
 
-            paymentProcessorActionTypeDetail.setThruTime(session.START_TIME_LONG);
+            paymentProcessorActionTypeDetail.setThruTime(session.getStartTime());
             paymentProcessorActionTypeDetail.store();
 
             var paymentProcessorActionTypePK = paymentProcessorActionTypeDetail.getPaymentProcessorActionTypePK();
@@ -266,7 +266,7 @@ public class PaymentProcessorActionTypeControl
             }
 
             paymentProcessorActionTypeDetail = PaymentProcessorActionTypeDetailFactory.getInstance().create(paymentProcessorActionTypePK,
-                    paymentProcessorActionTypeName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    paymentProcessorActionTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             paymentProcessorActionType.setActiveDetail(paymentProcessorActionTypeDetail);
             paymentProcessorActionType.setLastDetail(paymentProcessorActionTypeDetail);
@@ -289,7 +289,7 @@ public class PaymentProcessorActionTypeControl
         deletePaymentProcessorActionTypeDescriptionsByPaymentProcessorActionType(paymentProcessorActionType, deletedBy);
 
         var paymentProcessorActionTypeDetail = paymentProcessorActionType.getLastDetailForUpdate();
-        paymentProcessorActionTypeDetail.setThruTime(session.START_TIME_LONG);
+        paymentProcessorActionTypeDetail.setThruTime(session.getStartTime());
         paymentProcessorActionTypeDetail.store();
         paymentProcessorActionType.setActiveDetail(null);
 
@@ -320,7 +320,7 @@ public class PaymentProcessorActionTypeControl
     public PaymentProcessorActionTypeDescription createPaymentProcessorActionTypeDescription(final PaymentProcessorActionType paymentProcessorActionType,
             final Language language, final String description, final BasePK createdBy) {
         var paymentProcessorActionTypeDescription = PaymentProcessorActionTypeDescriptionFactory.getInstance().create(paymentProcessorActionType,
-                language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(paymentProcessorActionType.getPrimaryKey(), EventTypes.MODIFY, paymentProcessorActionTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -429,7 +429,7 @@ public class PaymentProcessorActionTypeControl
         if(paymentProcessorActionTypeDescriptionValue.hasBeenModified()) {
             var paymentProcessorActionTypeDescription = PaymentProcessorActionTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, paymentProcessorActionTypeDescriptionValue.getPrimaryKey());
 
-            paymentProcessorActionTypeDescription.setThruTime(session.START_TIME_LONG);
+            paymentProcessorActionTypeDescription.setThruTime(session.getStartTime());
             paymentProcessorActionTypeDescription.store();
 
             var paymentProcessorActionType = paymentProcessorActionTypeDescription.getPaymentProcessorActionType();
@@ -437,14 +437,14 @@ public class PaymentProcessorActionTypeControl
             var description = paymentProcessorActionTypeDescriptionValue.getDescription();
 
             paymentProcessorActionTypeDescription = PaymentProcessorActionTypeDescriptionFactory.getInstance().create(paymentProcessorActionType, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(paymentProcessorActionType.getPrimaryKey(), EventTypes.MODIFY, paymentProcessorActionTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deletePaymentProcessorActionTypeDescription(final PaymentProcessorActionTypeDescription paymentProcessorActionTypeDescription, final BasePK deletedBy) {
-        paymentProcessorActionTypeDescription.setThruTime(session.START_TIME_LONG);
+        paymentProcessorActionTypeDescription.setThruTime(session.getStartTime());
 
         sendEvent(paymentProcessorActionTypeDescription.getPaymentProcessorActionTypePK(), EventTypes.MODIFY, paymentProcessorActionTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 

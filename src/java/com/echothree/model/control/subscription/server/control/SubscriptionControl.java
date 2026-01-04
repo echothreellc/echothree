@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -76,10 +76,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import javax.enterprise.context.RequestScoped;
+import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
-@RequestScoped
+@CommandScope
 public class SubscriptionControl
         extends BaseModelControl {
     
@@ -129,7 +129,7 @@ public class SubscriptionControl
 
         var subscriptionKind = SubscriptionKindFactory.getInstance().create();
         var subscriptionKindDetail = SubscriptionKindDetailFactory.getInstance().create(subscriptionKind, subscriptionKindName, isDefault, sortOrder,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         subscriptionKind = SubscriptionKindFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -294,11 +294,11 @@ public class SubscriptionControl
     }
 
     private void updateSubscriptionKindFromValue(SubscriptionKindDetailValue subscriptionKindDetailValue, boolean checkDefault, BasePK updatedBy) {
-        var subscriptionKind = SubscriptionKindFactory.getInstance().getEntityFromPK(session,
+        var subscriptionKind = SubscriptionKindFactory.getInstance().getEntityFromPK(
                 EntityPermission.READ_WRITE, subscriptionKindDetailValue.getSubscriptionKindPK());
         var subscriptionKindDetail = subscriptionKind.getActiveDetailForUpdate();
 
-        subscriptionKindDetail.setThruTime(session.START_TIME_LONG);
+        subscriptionKindDetail.setThruTime(session.getStartTime());
         subscriptionKindDetail.store();
 
         var subscriptionKindPK = subscriptionKindDetail.getSubscriptionKindPK();
@@ -322,8 +322,8 @@ public class SubscriptionControl
             }
         }
 
-        subscriptionKindDetail = SubscriptionKindDetailFactory.getInstance().create(subscriptionKindPK, subscriptionKindName, isDefault, sortOrder, session.START_TIME_LONG,
-                Session.MAX_TIME_LONG);
+        subscriptionKindDetail = SubscriptionKindDetailFactory.getInstance().create(subscriptionKindPK, subscriptionKindName, isDefault, sortOrder, session.getStartTime(),
+                Session.MAX_TIME);
 
         subscriptionKind.setActiveDetail(subscriptionKindDetail);
         subscriptionKind.setLastDetail(subscriptionKindDetail);
@@ -340,7 +340,7 @@ public class SubscriptionControl
         deleteSubscriptionKindDescriptionsBySubscriptionKind(subscriptionKind, deletedBy);
 
         var subscriptionKindDetail = subscriptionKind.getLastDetailForUpdate();
-        subscriptionKindDetail.setThruTime(session.START_TIME_LONG);
+        subscriptionKindDetail.setThruTime(session.getStartTime());
         subscriptionKind.setActiveDetail(null);
         subscriptionKind.store();
 
@@ -371,7 +371,7 @@ public class SubscriptionControl
     public SubscriptionKindDescription createSubscriptionKindDescription(SubscriptionKind subscriptionKind, Language language, String description,
             BasePK createdBy) {
         var subscriptionKindDescription = SubscriptionKindDescriptionFactory.getInstance().create(subscriptionKind,
-                language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(subscriptionKind.getPrimaryKey(), EventTypes.MODIFY, subscriptionKindDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -484,7 +484,7 @@ public class SubscriptionControl
             var subscriptionKindDescription = SubscriptionKindDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      subscriptionKindDescriptionValue.getPrimaryKey());
 
-            subscriptionKindDescription.setThruTime(session.START_TIME_LONG);
+            subscriptionKindDescription.setThruTime(session.getStartTime());
             subscriptionKindDescription.store();
 
             var subscriptionKind = subscriptionKindDescription.getSubscriptionKind();
@@ -492,14 +492,14 @@ public class SubscriptionControl
             var description = subscriptionKindDescriptionValue.getDescription();
 
             subscriptionKindDescription = SubscriptionKindDescriptionFactory.getInstance().create(subscriptionKind, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(subscriptionKind.getPrimaryKey(), EventTypes.MODIFY, subscriptionKindDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteSubscriptionKindDescription(SubscriptionKindDescription subscriptionKindDescription, BasePK deletedBy) {
-        subscriptionKindDescription.setThruTime(session.START_TIME_LONG);
+        subscriptionKindDescription.setThruTime(session.getStartTime());
 
         sendEvent(subscriptionKindDescription.getSubscriptionKindPK(), EventTypes.MODIFY, subscriptionKindDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
@@ -532,9 +532,9 @@ public class SubscriptionControl
         }
 
         var subscriptionType = SubscriptionTypeFactory.getInstance().create();
-        var subscriptionTypeDetail = SubscriptionTypeDetailFactory.getInstance().create(session,
+        var subscriptionTypeDetail = SubscriptionTypeDetailFactory.getInstance().create(
                 subscriptionType, subscriptionKind, subscriptionTypeName, subscriptionSequence, isDefault, sortOrder,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         subscriptionType = SubscriptionTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -734,7 +734,7 @@ public class SubscriptionControl
                      subscriptionTypeDetailValue.getSubscriptionTypePK());
             var subscriptionTypeDetail = subscriptionType.getActiveDetailForUpdate();
             
-            subscriptionTypeDetail.setThruTime(session.START_TIME_LONG);
+            subscriptionTypeDetail.setThruTime(session.getStartTime());
             subscriptionTypeDetail.store();
 
             var subscriptionTypePK = subscriptionTypeDetail.getSubscriptionTypePK(); // Not updated
@@ -762,8 +762,8 @@ public class SubscriptionControl
             }
             
             subscriptionTypeDetail = SubscriptionTypeDetailFactory.getInstance().create(subscriptionTypePK,
-                    subscriptionKindPK, subscriptionTypeName, subscriptionSequencePK, isDefault, sortOrder, session.START_TIME_LONG,
-                    Session.MAX_TIME_LONG);
+                    subscriptionKindPK, subscriptionTypeName, subscriptionSequencePK, isDefault, sortOrder, session.getStartTime(),
+                    Session.MAX_TIME);
             
             subscriptionType.setActiveDetail(subscriptionTypeDetail);
             subscriptionType.setLastDetail(subscriptionTypeDetail);
@@ -788,7 +788,7 @@ public class SubscriptionControl
             clubControl.deleteClubBySubscriptionType(subscriptionType, deletedBy);
         }
         
-        subscriptionTypeDetail.setThruTime(session.START_TIME_LONG);
+        subscriptionTypeDetail.setThruTime(session.getStartTime());
         subscriptionType.setActiveDetail(null);
         subscriptionType.store();
         
@@ -819,8 +819,8 @@ public class SubscriptionControl
     
     public SubscriptionTypeDescription createSubscriptionTypeDescription(SubscriptionType subscriptionType, Language language,
             String description, BasePK createdBy) {
-        var subscriptionTypeDescription = SubscriptionTypeDescriptionFactory.getInstance().create(session,
-                subscriptionType, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var subscriptionTypeDescription = SubscriptionTypeDescriptionFactory.getInstance().create(
+                subscriptionType, language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(subscriptionType.getPrimaryKey(), EventTypes.MODIFY,
                 subscriptionTypeDescription.getPrimaryKey(), null, createdBy);
@@ -854,7 +854,7 @@ public class SubscriptionControl
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            subscriptionTypeDescription = SubscriptionTypeDescriptionFactory.getInstance().getEntityFromQuery(session,
+            subscriptionTypeDescription = SubscriptionTypeDescriptionFactory.getInstance().getEntityFromQuery(
                     entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -906,7 +906,7 @@ public class SubscriptionControl
             ps.setLong(1, subscriptionType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            subscriptionTypeDescriptions = SubscriptionTypeDescriptionFactory.getInstance().getEntitiesFromQuery(session,
+            subscriptionTypeDescriptions = SubscriptionTypeDescriptionFactory.getInstance().getEntitiesFromQuery(
                     entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -967,7 +967,7 @@ public class SubscriptionControl
             var subscriptionTypeDescription = SubscriptionTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      subscriptionTypeDescriptionValue.getPrimaryKey());
             
-            subscriptionTypeDescription.setThruTime(session.START_TIME_LONG);
+            subscriptionTypeDescription.setThruTime(session.getStartTime());
             subscriptionTypeDescription.store();
 
             var subscriptionType = subscriptionTypeDescription.getSubscriptionType();
@@ -975,7 +975,7 @@ public class SubscriptionControl
             var description = subscriptionTypeDescriptionValue.getDescription();
             
             subscriptionTypeDescription = SubscriptionTypeDescriptionFactory.getInstance().create(subscriptionType,
-                    language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    language, description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(subscriptionType.getPrimaryKey(), EventTypes.MODIFY, subscriptionTypeDescription.getPrimaryKey(),
                     null, updatedBy);
@@ -983,7 +983,7 @@ public class SubscriptionControl
     }
     
     public void deleteSubscriptionTypeDescription(SubscriptionTypeDescription subscriptionTypeDescription, BasePK deletedBy) {
-        subscriptionTypeDescription.setThruTime(session.START_TIME_LONG);
+        subscriptionTypeDescription.setThruTime(session.getStartTime());
         
         sendEvent(subscriptionTypeDescription.getSubscriptionTypePK(), EventTypes.MODIFY,
                 subscriptionTypeDescription.getPrimaryKey(), null, deletedBy);
@@ -1004,7 +1004,7 @@ public class SubscriptionControl
     public SubscriptionTypeChain createSubscriptionTypeChain(SubscriptionType subscriptionType, Chain chain, Long remainingTime,
             BasePK createdBy) {
         var subscriptionTypeChain = SubscriptionTypeChainFactory.getInstance().create(subscriptionType,
-                chain, remainingTime, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                chain, remainingTime, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(subscriptionType.getPrimaryKey(), EventTypes.MODIFY, subscriptionTypeChain.getPrimaryKey(),
                 null, createdBy);
@@ -1165,7 +1165,7 @@ public class SubscriptionControl
             var subscriptionTypeChain = SubscriptionTypeChainFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      subscriptionTypeChainValue.getPrimaryKey());
             
-            subscriptionTypeChain.setThruTime(session.START_TIME_LONG);
+            subscriptionTypeChain.setThruTime(session.getStartTime());
             subscriptionTypeChain.store();
 
             var subscriptionTypePK = subscriptionTypeChain.getSubscriptionTypePK(); // Not updated
@@ -1173,7 +1173,7 @@ public class SubscriptionControl
             var remainingTime = subscriptionTypeChainValue.getRemainingTime();
             
             subscriptionTypeChain = SubscriptionTypeChainFactory.getInstance().create(subscriptionTypePK, chainPK,
-                    remainingTime, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    remainingTime, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(subscriptionTypeChain.getSubscriptionTypePK(), EventTypes.MODIFY,
                     subscriptionTypeChain.getPrimaryKey(), null, updatedBy);
@@ -1183,7 +1183,7 @@ public class SubscriptionControl
     public void deleteSubscriptionTypeChain(SubscriptionTypeChain subscriptionTypeChain, BasePK deletedBy) {
         // TODO: delete any running chains
         
-        subscriptionTypeChain.setThruTime(session.START_TIME_LONG);
+        subscriptionTypeChain.setThruTime(session.getStartTime());
         
         sendEvent(subscriptionTypeChain.getSubscriptionTypePK(), EventTypes.MODIFY,
                 subscriptionTypeChain.getPrimaryKey(), null, deletedBy);
@@ -1214,7 +1214,7 @@ public class SubscriptionControl
         var subscription = SubscriptionFactory.getInstance().create();
         var subscriptionDetail = SubscriptionDetailFactory.getInstance().create(subscription,
                 SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence), subscriptionType, party, startTime, endTime,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         subscription = SubscriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -1417,7 +1417,7 @@ public class SubscriptionControl
                      subscriptionDetailValue.getSubscriptionPK());
             var subscriptionDetail = subscription.getActiveDetailForUpdate();
             
-            subscriptionDetail.setThruTime(session.START_TIME_LONG);
+            subscriptionDetail.setThruTime(session.getStartTime());
             subscriptionDetail.store();
 
             var subscriptionPK = subscriptionDetail.getSubscriptionPK(); // Not updated
@@ -1428,7 +1428,7 @@ public class SubscriptionControl
             var endTime = subscriptionDetailValue.getEndTime();
             
             subscriptionDetail = SubscriptionDetailFactory.getInstance().create(subscriptionPK, subscriptionName,
-                    subscriptionTypePK, partyPK, startTime, endTime, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    subscriptionTypePK, partyPK, startTime, endTime, session.getStartTime(), Session.MAX_TIME);
             
             subscription.setActiveDetail(subscriptionDetail);
             subscription.setLastDetail(subscriptionDetail);
@@ -1441,7 +1441,7 @@ public class SubscriptionControl
         // TODO: Chain cleanup
 
         var subscriptionDetail = subscription.getLastDetailForUpdate();
-        subscriptionDetail.setThruTime(session.START_TIME_LONG);
+        subscriptionDetail.setThruTime(session.getStartTime());
         subscription.setActiveDetail(null);
         subscription.store();
         

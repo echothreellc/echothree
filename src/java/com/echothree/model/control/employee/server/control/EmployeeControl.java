@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -166,10 +166,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import javax.enterprise.context.RequestScoped;
+import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
-@RequestScoped
+@CommandScope
 public class EmployeeControl
         extends BaseModelControl {
     
@@ -257,8 +257,8 @@ public class EmployeeControl
         }
 
         var responsibilityType = ResponsibilityTypeFactory.getInstance().create();
-        var responsibilityTypeDetail = ResponsibilityTypeDetailFactory.getInstance().create(session,
-                responsibilityType, responsibilityTypeName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var responsibilityTypeDetail = ResponsibilityTypeDetailFactory.getInstance().create(
+                responsibilityType, responsibilityTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         responsibilityType = ResponsibilityTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, responsibilityType.getPrimaryKey());
@@ -432,7 +432,7 @@ public class EmployeeControl
                      responsibilityTypeDetailValue.getResponsibilityTypePK());
             var responsibilityTypeDetail = responsibilityType.getActiveDetailForUpdate();
             
-            responsibilityTypeDetail.setThruTime(session.START_TIME_LONG);
+            responsibilityTypeDetail.setThruTime(session.getStartTime());
             responsibilityTypeDetail.store();
 
             var responsibilityTypePK = responsibilityTypeDetail.getResponsibilityTypePK();
@@ -457,7 +457,7 @@ public class EmployeeControl
             }
             
             responsibilityTypeDetail = ResponsibilityTypeDetailFactory.getInstance().create(responsibilityTypePK,
-                    responsibilityTypeName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    responsibilityTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             responsibilityType.setActiveDetail(responsibilityTypeDetail);
             responsibilityType.setLastDetail(responsibilityTypeDetail);
@@ -475,7 +475,7 @@ public class EmployeeControl
         deletePartyResponsibilitiesByResponsibilityType(responsibilityType, deletedBy);
 
         var responsibilityTypeDetail = responsibilityType.getLastDetailForUpdate();
-        responsibilityTypeDetail.setThruTime(session.START_TIME_LONG);
+        responsibilityTypeDetail.setThruTime(session.getStartTime());
         responsibilityType.setActiveDetail(null);
         responsibilityType.store();
         
@@ -505,8 +505,8 @@ public class EmployeeControl
     
     public ResponsibilityTypeDescription createResponsibilityTypeDescription(ResponsibilityType responsibilityType,
             Language language, String description, BasePK createdBy) {
-        var responsibilityTypeDescription = ResponsibilityTypeDescriptionFactory.getInstance().create(session,
-                responsibilityType, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var responsibilityTypeDescription = ResponsibilityTypeDescriptionFactory.getInstance().create(
+                responsibilityType, language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(responsibilityType.getPrimaryKey(), EventTypes.MODIFY, responsibilityTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -636,7 +636,7 @@ public class EmployeeControl
         if(responsibilityTypeDescriptionValue.hasBeenModified()) {
             var responsibilityTypeDescription = ResponsibilityTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, responsibilityTypeDescriptionValue.getPrimaryKey());
             
-            responsibilityTypeDescription.setThruTime(session.START_TIME_LONG);
+            responsibilityTypeDescription.setThruTime(session.getStartTime());
             responsibilityTypeDescription.store();
 
             var responsibilityType = responsibilityTypeDescription.getResponsibilityType();
@@ -644,14 +644,14 @@ public class EmployeeControl
             var description = responsibilityTypeDescriptionValue.getDescription();
             
             responsibilityTypeDescription = ResponsibilityTypeDescriptionFactory.getInstance().create(responsibilityType, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(responsibilityType.getPrimaryKey(), EventTypes.MODIFY, responsibilityTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteResponsibilityTypeDescription(ResponsibilityTypeDescription responsibilityTypeDescription, BasePK deletedBy) {
-        responsibilityTypeDescription.setThruTime(session.START_TIME_LONG);
+        responsibilityTypeDescription.setThruTime(session.getStartTime());
         
         sendEvent(responsibilityTypeDescription.getResponsibilityTypePK(), EventTypes.MODIFY, responsibilityTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
@@ -683,8 +683,8 @@ public class EmployeeControl
         }
 
         var skillType = SkillTypeFactory.getInstance().create();
-        var skillTypeDetail = SkillTypeDetailFactory.getInstance().create(session,
-                skillType, skillTypeName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var skillTypeDetail = SkillTypeDetailFactory.getInstance().create(
+                skillType, skillTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         skillType = SkillTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, skillType.getPrimaryKey());
@@ -857,7 +857,7 @@ public class EmployeeControl
                      skillTypeDetailValue.getSkillTypePK());
             var skillTypeDetail = skillType.getActiveDetailForUpdate();
             
-            skillTypeDetail.setThruTime(session.START_TIME_LONG);
+            skillTypeDetail.setThruTime(session.getStartTime());
             skillTypeDetail.store();
 
             var skillTypePK = skillTypeDetail.getSkillTypePK();
@@ -882,7 +882,7 @@ public class EmployeeControl
             }
             
             skillTypeDetail = SkillTypeDetailFactory.getInstance().create(skillTypePK,
-                    skillTypeName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    skillTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             skillType.setActiveDetail(skillTypeDetail);
             skillType.setLastDetail(skillTypeDetail);
@@ -900,7 +900,7 @@ public class EmployeeControl
         deletePartySkillsBySkillType(skillType, deletedBy);
 
         var skillTypeDetail = skillType.getLastDetailForUpdate();
-        skillTypeDetail.setThruTime(session.START_TIME_LONG);
+        skillTypeDetail.setThruTime(session.getStartTime());
         skillType.setActiveDetail(null);
         skillType.store();
         
@@ -930,8 +930,8 @@ public class EmployeeControl
     
     public SkillTypeDescription createSkillTypeDescription(SkillType skillType,
             Language language, String description, BasePK createdBy) {
-        var skillTypeDescription = SkillTypeDescriptionFactory.getInstance().create(session,
-                skillType, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var skillTypeDescription = SkillTypeDescriptionFactory.getInstance().create(
+                skillType, language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(skillType.getPrimaryKey(), EventTypes.MODIFY, skillTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1061,7 +1061,7 @@ public class EmployeeControl
         if(skillTypeDescriptionValue.hasBeenModified()) {
             var skillTypeDescription = SkillTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, skillTypeDescriptionValue.getPrimaryKey());
             
-            skillTypeDescription.setThruTime(session.START_TIME_LONG);
+            skillTypeDescription.setThruTime(session.getStartTime());
             skillTypeDescription.store();
 
             var skillType = skillTypeDescription.getSkillType();
@@ -1069,14 +1069,14 @@ public class EmployeeControl
             var description = skillTypeDescriptionValue.getDescription();
             
             skillTypeDescription = SkillTypeDescriptionFactory.getInstance().create(skillType, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(skillType.getPrimaryKey(), EventTypes.MODIFY, skillTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteSkillTypeDescription(SkillTypeDescription skillTypeDescription, BasePK deletedBy) {
-        skillTypeDescription.setThruTime(session.START_TIME_LONG);
+        skillTypeDescription.setThruTime(session.getStartTime());
         
         sendEvent(skillTypeDescription.getSkillTypePK(), EventTypes.MODIFY, skillTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
@@ -1109,7 +1109,7 @@ public class EmployeeControl
 
         var leaveType = LeaveTypeFactory.getInstance().create();
         var leaveTypeDetail = LeaveTypeDetailFactory.getInstance().create(leaveType,
-                leaveTypeName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                leaveTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         leaveType = LeaveTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -1287,7 +1287,7 @@ public class EmployeeControl
                      leaveTypeDetailValue.getLeaveTypePK());
             var leaveTypeDetail = leaveType.getActiveDetailForUpdate();
 
-            leaveTypeDetail.setThruTime(session.START_TIME_LONG);
+            leaveTypeDetail.setThruTime(session.getStartTime());
             leaveTypeDetail.store();
 
             var leaveTypePK = leaveTypeDetail.getLeaveTypePK(); // Not updated
@@ -1312,7 +1312,7 @@ public class EmployeeControl
             }
 
             leaveTypeDetail = LeaveTypeDetailFactory.getInstance().create(leaveTypePK, leaveTypeName, isDefault,
-                    sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             leaveType.setActiveDetail(leaveTypeDetail);
             leaveType.setLastDetail(leaveTypeDetail);
@@ -1329,7 +1329,7 @@ public class EmployeeControl
         deleteLeaveTypeDescriptionsByLeaveType(leaveType, deletedBy);
 
         var leaveTypeDetail = leaveType.getLastDetailForUpdate();
-        leaveTypeDetail.setThruTime(session.START_TIME_LONG);
+        leaveTypeDetail.setThruTime(session.getStartTime());
         leaveType.setActiveDetail(null);
         leaveType.store();
 
@@ -1360,7 +1360,7 @@ public class EmployeeControl
     public LeaveTypeDescription createLeaveTypeDescription(LeaveType leaveType,
             Language language, String description, BasePK createdBy) {
         var leaveTypeDescription = LeaveTypeDescriptionFactory.getInstance().create(leaveType,
-                language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(leaveType.getPrimaryKey(), EventTypes.MODIFY, leaveTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -1476,7 +1476,7 @@ public class EmployeeControl
             var leaveTypeDescription = LeaveTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     leaveTypeDescriptionValue.getPrimaryKey());
 
-            leaveTypeDescription.setThruTime(session.START_TIME_LONG);
+            leaveTypeDescription.setThruTime(session.getStartTime());
             leaveTypeDescription.store();
 
             var leaveType = leaveTypeDescription.getLeaveType();
@@ -1484,14 +1484,14 @@ public class EmployeeControl
             var description = leaveTypeDescriptionValue.getDescription();
 
             leaveTypeDescription = LeaveTypeDescriptionFactory.getInstance().create(leaveType, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(leaveType.getPrimaryKey(), EventTypes.MODIFY, leaveTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteLeaveTypeDescription(LeaveTypeDescription leaveTypeDescription, BasePK deletedBy) {
-        leaveTypeDescription.setThruTime(session.START_TIME_LONG);
+        leaveTypeDescription.setThruTime(session.getStartTime());
 
         sendEvent(leaveTypeDescription.getLeaveTypePK(), EventTypes.MODIFY, leaveTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
@@ -1524,7 +1524,7 @@ public class EmployeeControl
 
         var leaveReason = LeaveReasonFactory.getInstance().create();
         var leaveReasonDetail = LeaveReasonDetailFactory.getInstance().create(leaveReason,
-                leaveReasonName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                leaveReasonName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         leaveReason = LeaveReasonFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -1702,7 +1702,7 @@ public class EmployeeControl
                      leaveReasonDetailValue.getLeaveReasonPK());
             var leaveReasonDetail = leaveReason.getActiveDetailForUpdate();
 
-            leaveReasonDetail.setThruTime(session.START_TIME_LONG);
+            leaveReasonDetail.setThruTime(session.getStartTime());
             leaveReasonDetail.store();
 
             var leaveReasonPK = leaveReasonDetail.getLeaveReasonPK(); // Not updated
@@ -1727,7 +1727,7 @@ public class EmployeeControl
             }
 
             leaveReasonDetail = LeaveReasonDetailFactory.getInstance().create(leaveReasonPK, leaveReasonName, isDefault,
-                    sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             leaveReason.setActiveDetail(leaveReasonDetail);
             leaveReason.setLastDetail(leaveReasonDetail);
@@ -1744,7 +1744,7 @@ public class EmployeeControl
         deleteLeaveReasonDescriptionsByLeaveReason(leaveReason, deletedBy);
 
         var leaveReasonDetail = leaveReason.getLastDetailForUpdate();
-        leaveReasonDetail.setThruTime(session.START_TIME_LONG);
+        leaveReasonDetail.setThruTime(session.getStartTime());
         leaveReason.setActiveDetail(null);
         leaveReason.store();
 
@@ -1775,7 +1775,7 @@ public class EmployeeControl
     public LeaveReasonDescription createLeaveReasonDescription(LeaveReason leaveReason,
             Language language, String description, BasePK createdBy) {
         var leaveReasonDescription = LeaveReasonDescriptionFactory.getInstance().create(leaveReason,
-                language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                language, description, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(leaveReason.getPrimaryKey(), EventTypes.MODIFY, leaveReasonDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -1891,7 +1891,7 @@ public class EmployeeControl
             var leaveReasonDescription = LeaveReasonDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     leaveReasonDescriptionValue.getPrimaryKey());
 
-            leaveReasonDescription.setThruTime(session.START_TIME_LONG);
+            leaveReasonDescription.setThruTime(session.getStartTime());
             leaveReasonDescription.store();
 
             var leaveReason = leaveReasonDescription.getLeaveReason();
@@ -1899,14 +1899,14 @@ public class EmployeeControl
             var description = leaveReasonDescriptionValue.getDescription();
 
             leaveReasonDescription = LeaveReasonDescriptionFactory.getInstance().create(leaveReason, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(leaveReason.getPrimaryKey(), EventTypes.MODIFY, leaveReasonDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteLeaveReasonDescription(LeaveReasonDescription leaveReasonDescription, BasePK deletedBy) {
-        leaveReasonDescription.setThruTime(session.START_TIME_LONG);
+        leaveReasonDescription.setThruTime(session.getStartTime());
 
         sendEvent(leaveReasonDescription.getLeaveReasonPK(), EventTypes.MODIFY, leaveReasonDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
@@ -1937,7 +1937,7 @@ public class EmployeeControl
             Long totalTime, BasePK createdBy) {
         var leave = LeaveFactory.getInstance().create();
         var leaveDetail = LeaveDetailFactory.getInstance().create(leave, leaveName, party, companyParty, leaveType, leaveReason, startTime, endTime,
-                totalTime, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                totalTime, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         leave = LeaveFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, leave.getPrimaryKey());
@@ -2211,7 +2211,7 @@ public class EmployeeControl
                      leaveDetailValue.getLeavePK());
             var leaveDetail = leave.getActiveDetailForUpdate();
 
-            leaveDetail.setThruTime(session.START_TIME_LONG);
+            leaveDetail.setThruTime(session.getStartTime());
             leaveDetail.store();
 
             var leavePK = leaveDetail.getLeavePK(); // Not updated
@@ -2225,7 +2225,7 @@ public class EmployeeControl
             var leaveReasonPK = leaveDetailValue.getLeaveReasonPK();
 
             leaveDetail = LeaveDetailFactory.getInstance().create(leavePK, leaveName, partyPK, companyPartyPK, leaveTypePK, leaveReasonPK, startTime,
-                    endTime, totalTime, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    endTime, totalTime, session.getStartTime(), Session.MAX_TIME);
 
             leave.setActiveDetail(leaveDetail);
             leave.setLastDetail(leaveDetail);
@@ -2237,7 +2237,7 @@ public class EmployeeControl
 
     public void deleteLeave(Leave leave, BasePK deletedBy) {
         var leaveDetail = leave.getLastDetailForUpdate();
-        leaveDetail.setThruTime(session.START_TIME_LONG);
+        leaveDetail.setThruTime(session.getStartTime());
         leaveDetail.store();
         leave.setActiveDetail(null);
 
@@ -2282,8 +2282,8 @@ public class EmployeeControl
         }
 
         var terminationReason = TerminationReasonFactory.getInstance().create();
-        var terminationReasonDetail = TerminationReasonDetailFactory.getInstance().create(session,
-                terminationReason, terminationReasonName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var terminationReasonDetail = TerminationReasonDetailFactory.getInstance().create(
+                terminationReason, terminationReasonName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         terminationReason = TerminationReasonFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, terminationReason.getPrimaryKey());
@@ -2457,7 +2457,7 @@ public class EmployeeControl
                      terminationReasonDetailValue.getTerminationReasonPK());
             var terminationReasonDetail = terminationReason.getActiveDetailForUpdate();
             
-            terminationReasonDetail.setThruTime(session.START_TIME_LONG);
+            terminationReasonDetail.setThruTime(session.getStartTime());
             terminationReasonDetail.store();
 
             var terminationReasonPK = terminationReasonDetail.getTerminationReasonPK();
@@ -2482,7 +2482,7 @@ public class EmployeeControl
             }
             
             terminationReasonDetail = TerminationReasonDetailFactory.getInstance().create(terminationReasonPK,
-                    terminationReasonName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    terminationReasonName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             terminationReason.setActiveDetail(terminationReasonDetail);
             terminationReason.setLastDetail(terminationReasonDetail);
@@ -2500,7 +2500,7 @@ public class EmployeeControl
         deleteEmploymentsByTerminationReason(terminationReason, deletedBy);
 
         var terminationReasonDetail = terminationReason.getLastDetailForUpdate();
-        terminationReasonDetail.setThruTime(session.START_TIME_LONG);
+        terminationReasonDetail.setThruTime(session.getStartTime());
         terminationReason.setActiveDetail(null);
         terminationReason.store();
         
@@ -2530,8 +2530,8 @@ public class EmployeeControl
     
     public TerminationReasonDescription createTerminationReasonDescription(TerminationReason terminationReason,
             Language language, String description, BasePK createdBy) {
-        var terminationReasonDescription = TerminationReasonDescriptionFactory.getInstance().create(session,
-                terminationReason, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var terminationReasonDescription = TerminationReasonDescriptionFactory.getInstance().create(
+                terminationReason, language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(terminationReason.getPrimaryKey(), EventTypes.MODIFY, terminationReasonDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -2661,7 +2661,7 @@ public class EmployeeControl
         if(terminationReasonDescriptionValue.hasBeenModified()) {
             var terminationReasonDescription = TerminationReasonDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, terminationReasonDescriptionValue.getPrimaryKey());
             
-            terminationReasonDescription.setThruTime(session.START_TIME_LONG);
+            terminationReasonDescription.setThruTime(session.getStartTime());
             terminationReasonDescription.store();
 
             var terminationReason = terminationReasonDescription.getTerminationReason();
@@ -2669,14 +2669,14 @@ public class EmployeeControl
             var description = terminationReasonDescriptionValue.getDescription();
             
             terminationReasonDescription = TerminationReasonDescriptionFactory.getInstance().create(terminationReason, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(terminationReason.getPrimaryKey(), EventTypes.MODIFY, terminationReasonDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteTerminationReasonDescription(TerminationReasonDescription terminationReasonDescription, BasePK deletedBy) {
-        terminationReasonDescription.setThruTime(session.START_TIME_LONG);
+        terminationReasonDescription.setThruTime(session.getStartTime());
         
         sendEvent(terminationReasonDescription.getTerminationReasonPK(), EventTypes.MODIFY, terminationReasonDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
@@ -2708,8 +2708,8 @@ public class EmployeeControl
         }
 
         var terminationType = TerminationTypeFactory.getInstance().create();
-        var terminationTypeDetail = TerminationTypeDetailFactory.getInstance().create(session,
-                terminationType, terminationTypeName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var terminationTypeDetail = TerminationTypeDetailFactory.getInstance().create(
+                terminationType, terminationTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         terminationType = TerminationTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, terminationType.getPrimaryKey());
@@ -2883,7 +2883,7 @@ public class EmployeeControl
                      terminationTypeDetailValue.getTerminationTypePK());
             var terminationTypeDetail = terminationType.getActiveDetailForUpdate();
             
-            terminationTypeDetail.setThruTime(session.START_TIME_LONG);
+            terminationTypeDetail.setThruTime(session.getStartTime());
             terminationTypeDetail.store();
 
             var terminationTypePK = terminationTypeDetail.getTerminationTypePK();
@@ -2908,7 +2908,7 @@ public class EmployeeControl
             }
             
             terminationTypeDetail = TerminationTypeDetailFactory.getInstance().create(terminationTypePK,
-                    terminationTypeName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    terminationTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             terminationType.setActiveDetail(terminationTypeDetail);
             terminationType.setLastDetail(terminationTypeDetail);
@@ -2926,7 +2926,7 @@ public class EmployeeControl
         deleteEmploymentsByTerminationType(terminationType, deletedBy);
 
         var terminationTypeDetail = terminationType.getLastDetailForUpdate();
-        terminationTypeDetail.setThruTime(session.START_TIME_LONG);
+        terminationTypeDetail.setThruTime(session.getStartTime());
         terminationType.setActiveDetail(null);
         terminationType.store();
         
@@ -2956,8 +2956,8 @@ public class EmployeeControl
     
     public TerminationTypeDescription createTerminationTypeDescription(TerminationType terminationType,
             Language language, String description, BasePK createdBy) {
-        var terminationTypeDescription = TerminationTypeDescriptionFactory.getInstance().create(session,
-                terminationType, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var terminationTypeDescription = TerminationTypeDescriptionFactory.getInstance().create(
+                terminationType, language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(terminationType.getPrimaryKey(), EventTypes.MODIFY, terminationTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -3087,7 +3087,7 @@ public class EmployeeControl
         if(terminationTypeDescriptionValue.hasBeenModified()) {
             var terminationTypeDescription = TerminationTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, terminationTypeDescriptionValue.getPrimaryKey());
             
-            terminationTypeDescription.setThruTime(session.START_TIME_LONG);
+            terminationTypeDescription.setThruTime(session.getStartTime());
             terminationTypeDescription.store();
 
             var terminationType = terminationTypeDescription.getTerminationType();
@@ -3095,14 +3095,14 @@ public class EmployeeControl
             var description = terminationTypeDescriptionValue.getDescription();
             
             terminationTypeDescription = TerminationTypeDescriptionFactory.getInstance().create(terminationType, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(terminationType.getPrimaryKey(), EventTypes.MODIFY, terminationTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteTerminationTypeDescription(TerminationTypeDescription terminationTypeDescription, BasePK deletedBy) {
-        terminationTypeDescription.setThruTime(session.START_TIME_LONG);
+        terminationTypeDescription.setThruTime(session.getStartTime());
         
         sendEvent(terminationTypeDescription.getTerminationTypePK(), EventTypes.MODIFY, terminationTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
@@ -3133,7 +3133,7 @@ public class EmployeeControl
             TerminationType terminationType, TerminationReason terminationReason, BasePK createdBy) {
         var employment = EmploymentFactory.getInstance().create();
         var employmentDetail = EmploymentDetailFactory.getInstance().create(employment, employmentName, party, companyParty, startTime,
-                endTime, terminationType, terminationReason, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                endTime, terminationType, terminationReason, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         employment = EmploymentFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, employment.getPrimaryKey());
@@ -3373,7 +3373,7 @@ public class EmployeeControl
                      employmentDetailValue.getEmploymentPK());
             var employmentDetail = employment.getActiveDetailForUpdate();
 
-            employmentDetail.setThruTime(session.START_TIME_LONG);
+            employmentDetail.setThruTime(session.getStartTime());
             employmentDetail.store();
 
             var employmentPK = employmentDetail.getEmploymentPK(); // Not updated
@@ -3386,7 +3386,7 @@ public class EmployeeControl
             var terminationReasonPK = employmentDetailValue.getTerminationReasonPK();
 
             employmentDetail = EmploymentDetailFactory.getInstance().create(employmentPK, employmentName, partyPK, companyPartyPK, startTime, endTime,
-                    terminationTypePK, terminationReasonPK, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    terminationTypePK, terminationReasonPK, session.getStartTime(), Session.MAX_TIME);
 
             employment.setActiveDetail(employmentDetail);
             employment.setLastDetail(employmentDetail);
@@ -3398,7 +3398,7 @@ public class EmployeeControl
 
     public void deleteEmployment(Employment employment, BasePK deletedBy) {
         var employmentDetail = employment.getLastDetailForUpdate();
-        employmentDetail.setThruTime(session.START_TIME_LONG);
+        employmentDetail.setThruTime(session.getStartTime());
         employmentDetail.store();
         employment.setActiveDetail(null);
 
@@ -3444,7 +3444,7 @@ public class EmployeeControl
 
         var employeeType = EmployeeTypeFactory.getInstance().create();
         var employeeTypeDetail = EmployeeTypeDetailFactory.getInstance().create(employeeType,
-                employeeTypeName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                employeeTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         employeeType = EmployeeTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -3646,7 +3646,7 @@ public class EmployeeControl
                      employeeTypeDetailValue.getEmployeeTypePK());
             var employeeTypeDetail = employeeType.getActiveDetailForUpdate();
             
-            employeeTypeDetail.setThruTime(session.START_TIME_LONG);
+            employeeTypeDetail.setThruTime(session.getStartTime());
             employeeTypeDetail.store();
 
             var employeeTypePK = employeeTypeDetail.getEmployeeTypePK();
@@ -3671,7 +3671,7 @@ public class EmployeeControl
             }
             
             employeeTypeDetail = EmployeeTypeDetailFactory.getInstance().create(employeeTypePK, employeeTypeName,
-                    isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             employeeType.setActiveDetail(employeeTypeDetail);
             employeeType.setLastDetail(employeeTypeDetail);
@@ -3688,7 +3688,7 @@ public class EmployeeControl
         deleteEmployeeTypeDescriptionsByEmployeeType(employeeType, deletedBy);
 
         var employeeTypeDetail = employeeType.getLastDetailForUpdate();
-        employeeTypeDetail.setThruTime(session.START_TIME_LONG);
+        employeeTypeDetail.setThruTime(session.getStartTime());
         employeeType.setActiveDetail(null);
         employeeType.store();
         
@@ -3720,7 +3720,7 @@ public class EmployeeControl
             BasePK createdBy) {
         var employeeTypeDescription = EmployeeTypeDescriptionFactory.getInstance().create(employeeType,
                 language, description,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(employeeType.getPrimaryKey(), EventTypes.MODIFY, employeeTypeDescription.getPrimaryKey(),
                 null, createdBy);
@@ -3856,7 +3856,7 @@ public class EmployeeControl
             var employeeTypeDescription = EmployeeTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      employeeTypeDescriptionValue.getPrimaryKey());
             
-            employeeTypeDescription.setThruTime(session.START_TIME_LONG);
+            employeeTypeDescription.setThruTime(session.getStartTime());
             employeeTypeDescription.store();
 
             var employeeType = employeeTypeDescription.getEmployeeType();
@@ -3864,7 +3864,7 @@ public class EmployeeControl
             var description = employeeTypeDescriptionValue.getDescription();
             
             employeeTypeDescription = EmployeeTypeDescriptionFactory.getInstance().create(employeeType, language,
-                    description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(employeeType.getPrimaryKey(), EventTypes.MODIFY, employeeTypeDescription.getPrimaryKey(),
                     null, updatedBy);
@@ -3872,7 +3872,7 @@ public class EmployeeControl
     }
     
     public void deleteEmployeeTypeDescription(EmployeeTypeDescription employeeTypeDescription, BasePK deletedBy) {
-        employeeTypeDescription.setThruTime(session.START_TIME_LONG);
+        employeeTypeDescription.setThruTime(session.getStartTime());
         
         sendEvent(employeeTypeDescription.getEmployeeTypePK(), EventTypes.MODIFY,
                 employeeTypeDescription.getPrimaryKey(), null, deletedBy);
@@ -3892,7 +3892,7 @@ public class EmployeeControl
     
     public PartyEmployee createPartyEmployee(Party party, String partyEmployeeName, EmployeeType employeeType, BasePK createdBy) {
         var partyEmployee = PartyEmployeeFactory.getInstance().create(party, partyEmployeeName, employeeType,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyEmployee.getPrimaryKey(), null, createdBy);
         
@@ -4094,22 +4094,22 @@ public class EmployeeControl
         if(partyEmployeeValue.hasBeenModified()) {
             var partyEmployee = PartyEmployeeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, partyEmployeeValue.getPrimaryKey());
 
-            partyEmployee.setThruTime(session.START_TIME_LONG);
+            partyEmployee.setThruTime(session.getStartTime());
             partyEmployee.store();
 
             var partyPK = partyEmployee.getPartyPK(); // Not updated
             var partyEmployeeName = partyEmployeeValue.getPartyEmployeeName();
             var employeeTypePK = partyEmployeeValue.getEmployeeTypePK();
 
-            partyEmployee = PartyEmployeeFactory.getInstance().create(partyPK, partyEmployeeName, employeeTypePK, session.START_TIME_LONG,
-                    Session.MAX_TIME_LONG);
+            partyEmployee = PartyEmployeeFactory.getInstance().create(partyPK, partyEmployeeName, employeeTypePK, session.getStartTime(),
+                    Session.MAX_TIME);
 
             sendEvent(partyPK, EventTypes.MODIFY, partyEmployee.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deletePartyEmployee(PartyEmployee partyEmployee, BasePK deletedBy) {
-        partyEmployee.setThruTime(session.START_TIME_LONG);
+        partyEmployee.setThruTime(session.getStartTime());
         
         sendEvent(partyEmployee.getPartyPK(), EventTypes.MODIFY, partyEmployee.getPrimaryKey(), null, deletedBy);
     }
@@ -4128,7 +4128,7 @@ public class EmployeeControl
     
     public PartyResponsibility createPartyResponsibility(Party party, ResponsibilityType responsibilityType, BasePK createdBy) {
         var partyResponsibility = PartyResponsibilityFactory.getInstance().create(party, responsibilityType,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyResponsibility.getPrimaryKey(), null, createdBy);
         
@@ -4291,7 +4291,7 @@ public class EmployeeControl
     }
     
     public void deletePartyResponsibility(PartyResponsibility partyResponsibility, BasePK deletedBy) {
-        partyResponsibility.setThruTime(session.START_TIME_LONG);
+        partyResponsibility.setThruTime(session.getStartTime());
         
         sendEvent(partyResponsibility.getPartyPK(), EventTypes.MODIFY, partyResponsibility.getPrimaryKey(), null, deletedBy);
     }
@@ -4318,7 +4318,7 @@ public class EmployeeControl
     
     public PartySkill createPartySkill(Party party, SkillType skillType, BasePK createdBy) {
         var partySkill = PartySkillFactory.getInstance().create(party, skillType,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partySkill.getPrimaryKey(), null, createdBy);
         
@@ -4481,7 +4481,7 @@ public class EmployeeControl
     }
     
     public void deletePartySkill(PartySkill partySkill, BasePK deletedBy) {
-        partySkill.setThruTime(session.START_TIME_LONG);
+        partySkill.setThruTime(session.getStartTime());
         
         sendEvent(partySkill.getPartyPK(), EventTypes.MODIFY, partySkill.getPrimaryKey(), null, deletedBy);
     }

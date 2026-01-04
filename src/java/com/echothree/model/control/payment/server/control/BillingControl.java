@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -48,9 +48,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import javax.enterprise.context.RequestScoped;
+import com.echothree.util.server.cdi.CommandScope;
 
-@RequestScoped
+@CommandScope
 public class BillingControl
         extends BasePaymentControl {
 
@@ -175,7 +175,7 @@ public class BillingControl
     public BillingAccount createBillingAccount(String billingAccountName, Currency currency, String reference, String description, BasePK createdBy) {
         var billingAccount = BillingAccountFactory.getInstance().create();
         var billingAccountDetail = BillingAccountDetailFactory.getInstance().create(billingAccount,
-                billingAccountName, currency, reference, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                billingAccountName, currency, reference, description, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         billingAccount = BillingAccountFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -465,7 +465,7 @@ public class BillingControl
     public BillingAccountRole createBillingAccountRole(BillingAccount billingAccount, Party party, PartyContactMechanism partyContactMechanism,
             BillingAccountRoleType billingAccountRoleType, BasePK createdBy) {
         var billingAccountRole = BillingAccountRoleFactory.getInstance().create(billingAccount, party, partyContactMechanism,
-                billingAccountRoleType, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                billingAccountRoleType, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(billingAccount.getPrimaryKey(), EventTypes.MODIFY, billingAccountRole.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -630,7 +630,7 @@ public class BillingControl
             var billingAccountRole = BillingAccountRoleFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      billingAccountRoleValue.getPrimaryKey());
             
-            billingAccountRole.setThruTime(session.START_TIME_LONG);
+            billingAccountRole.setThruTime(session.getStartTime());
             billingAccountRole.store();
 
             var billingAccountPK = billingAccountRole.getBillingAccountPK(); // Not updated
@@ -639,14 +639,14 @@ public class BillingControl
             var billingAccountRoleTypePK = billingAccountRole.getBillingAccountRoleTypePK(); // Not updated
             
             billingAccountRole = BillingAccountRoleFactory.getInstance().create(billingAccountPK, partyPK, partyContactMechanismPK, billingAccountRoleTypePK,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(billingAccountPK, EventTypes.MODIFY, billingAccountRole.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteBillingAccountRole(BillingAccountRole billingAccountRole, BasePK deletedBy) {
-        billingAccountRole.setThruTime(session.START_TIME_LONG);
+        billingAccountRole.setThruTime(session.getStartTime());
         
         sendEvent(billingAccountRole.getBillingAccountPK(), EventTypes.MODIFY, billingAccountRole.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }

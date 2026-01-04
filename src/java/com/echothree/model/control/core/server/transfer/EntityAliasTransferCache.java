@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -40,8 +40,7 @@ public class EntityAliasTransferCache
         var entityAliasTransfer = get(entityAlias);
         
         if(entityAliasTransfer == null) {
-            var entityInstance = entityAlias.getEntityInstance();
-            var entityAliasType = entityAliasControl.getEntityAliasTypeTransfer(userVisit, entityAlias.getEntityAliasType(), entityInstance);
+            var entityAliasType = entityAliasControl.getEntityAliasTypeTransfer(userVisit, entityAlias.getEntityAliasType());
             var alias = entityAlias.getAlias();
             var entityInstanceTransfer = entityInstanceControl.getEntityInstanceTransfer(userVisit, entityAlias.getEntityInstance(), false, false, false, false);
             

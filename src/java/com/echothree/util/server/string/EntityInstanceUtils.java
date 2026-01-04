@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,21 +18,11 @@ package com.echothree.util.server.string;
 
 import com.echothree.model.data.core.server.entity.EntityInstance;
 
-public class EntityInstanceUtils {
+public final class EntityInstanceUtils {
 
-    private EntityInstanceUtils() {
-        super();
-    }
-    
-    private static class EntityInstanceUtilsHolder {
-        static EntityInstanceUtils instance = new EntityInstanceUtils();
-    }
-    
-    public static EntityInstanceUtils getInstance() {
-        return EntityInstanceUtilsHolder.instance;
-    }
+    private EntityInstanceUtils() {}
 
-    public String getEntityRefByEntityInstance(final EntityInstance entityInstance) {
+    public static String getEntityRefByEntityInstance(final EntityInstance entityInstance) {
         if(entityInstance == null) {
             return null;
         } else {

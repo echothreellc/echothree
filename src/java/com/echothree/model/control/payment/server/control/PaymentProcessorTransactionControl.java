@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -35,9 +35,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import javax.enterprise.context.RequestScoped;
+import com.echothree.util.server.cdi.CommandScope;
 
-@RequestScoped
+@CommandScope
 public class PaymentProcessorTransactionControl
         extends BasePaymentControl {
 
@@ -55,9 +55,9 @@ public class PaymentProcessorTransactionControl
             final PaymentProcessorResultCode paymentProcessorResultCode, final BasePK createdBy) {
 
         var paymentProcessorTransaction = PaymentProcessorTransactionFactory.getInstance().create();
-        var paymentProcessorTransactionDetail = PaymentProcessorTransactionDetailFactory.getInstance().create(session,
+        var paymentProcessorTransactionDetail = PaymentProcessorTransactionDetailFactory.getInstance().create(
                 paymentProcessorTransaction, paymentProcessorTransactionName, paymentProcessor, paymentProcessorActionType,
-                paymentProcessorResultCode, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                paymentProcessorResultCode, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         paymentProcessorTransaction = PaymentProcessorTransactionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, paymentProcessorTransaction.getPrimaryKey());
@@ -263,7 +263,7 @@ public class PaymentProcessorTransactionControl
                     paymentProcessorTransactionDetailValue.getPaymentProcessorTransactionPK());
             var paymentProcessorTransactionDetail = paymentProcessorTransaction.getActiveDetailForUpdate();
 
-            paymentProcessorTransactionDetail.setThruTime(session.START_TIME_LONG);
+            paymentProcessorTransactionDetail.setThruTime(session.getStartTime());
             paymentProcessorTransactionDetail.store();
 
             var paymentProcessorTransactionPK = paymentProcessorTransactionDetail.getPaymentProcessorTransactionPK(); // R/O
@@ -274,7 +274,7 @@ public class PaymentProcessorTransactionControl
 
             paymentProcessorTransactionDetail = PaymentProcessorTransactionDetailFactory.getInstance().create(paymentProcessorTransactionPK,
                     paymentProcessorTransactionName, paymentProcessorPK, paymentProcessorActionTypePK, paymentProcessorResultCodePK,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             paymentProcessorTransaction.setActiveDetail(paymentProcessorTransactionDetail);
             paymentProcessorTransaction.setLastDetail(paymentProcessorTransactionDetail);
@@ -289,7 +289,7 @@ public class PaymentProcessorTransactionControl
         paymentProcessorTransactionCodeControl.deletePaymentProcessorTransactionCodesByPaymentProcessorTransaction(paymentProcessorTransaction, deletedBy);
 
         var paymentProcessorTransactionDetail = paymentProcessorTransaction.getLastDetailForUpdate();
-        paymentProcessorTransactionDetail.setThruTime(session.START_TIME_LONG);
+        paymentProcessorTransactionDetail.setThruTime(session.getStartTime());
         paymentProcessorTransactionDetail.store();
         paymentProcessorTransaction.setActiveDetail(null);
 

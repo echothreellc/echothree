@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -25,7 +25,6 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityType;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -33,14 +32,14 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
-@RequestScoped
+@Dependent
 public class GetEntityInstancesCommand
         extends BasePaginatedMultipleEntitiesCommand<EntityInstance, GetEntityInstancesForm> {
 
@@ -66,6 +65,9 @@ public class GetEntityInstancesCommand
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
+    @Inject
+    EntityInstanceControl entityInstanceControl;
+
     EntityType entityType;
 
     @Override
@@ -78,8 +80,6 @@ public class GetEntityInstancesCommand
 
     @Override
     protected Long getTotalEntities() {
-        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-
         return hasExecutionErrors() ? null : entityInstanceControl.countEntityInstancesByEntityType(entityType);
     }
 
@@ -88,8 +88,6 @@ public class GetEntityInstancesCommand
         Collection<EntityInstance> entities = null;
 
         if(!hasExecutionErrors()) {
-            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-
             entities = entityInstanceControl.getEntityInstancesByEntityType(entityType);
         }
 
@@ -101,8 +99,7 @@ public class GetEntityInstancesCommand
         var result = CoreResultFactory.getGetEntityInstancesResult();
 
         if(entities != null) {
-            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-
+            result.setEntityType(entityTypeControl.getEntityTypeTransfer(getUserVisit(), entityType));
             result.setEntityInstances(entityInstanceControl.getEntityInstanceTransfers(getUserVisit(), entities,
                     false, false, false, false));
         }

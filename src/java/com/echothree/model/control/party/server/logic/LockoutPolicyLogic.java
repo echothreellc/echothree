@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -43,7 +43,7 @@ public class LockoutPolicyLogic {
             var resetFailureCountTime = policyDetail.getResetFailureCountTime();
             
             if(resetFailureCountTime != null && userLoginStatus.getFailureCount() != 0) {
-                if(session.START_TIME - userLoginStatus.getLastFailureTime() > resetFailureCountTime) {
+                if(session.getStartTime() - userLoginStatus.getLastFailureTime() > resetFailureCountTime) {
                     userLoginStatus.setFailureCount(0);
                 }
             }
@@ -68,7 +68,7 @@ public class LockoutPolicyLogic {
         var lockoutInactiveTime = policyDetail.getLockoutInactiveTime();
         var lastLoginTime = userLoginStatus.getLastLoginTime();
         
-        if(lockoutInactiveTime != null && lastLoginTime != null && session.START_TIME - userLoginStatus.getLastLoginTime() >= lockoutInactiveTime) {
+        if(lockoutInactiveTime != null && lastLoginTime != null && session.getStartTime() - userLoginStatus.getLastLoginTime() >= lockoutInactiveTime) {
             ema.addExecutionError(ExecutionErrors.LockoutInactiveTimeExceeded.name());
         }
     }

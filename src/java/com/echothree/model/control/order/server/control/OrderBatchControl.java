@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -28,9 +28,9 @@ import com.echothree.util.server.persistence.Session;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import javax.enterprise.context.RequestScoped;
+import com.echothree.util.server.cdi.CommandScope;
 
-@RequestScoped
+@CommandScope
 public class OrderBatchControl
         extends BaseOrderControl {
 
@@ -44,7 +44,7 @@ public class OrderBatchControl
     // --------------------------------------------------------------------------------
 
     public OrderBatch createOrderBatch(Batch batch, Currency currency, Long count, Long amount, BasePK createdBy) {
-        var orderBatch = OrderBatchFactory.getInstance().create(batch, currency, count, amount, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var orderBatch = OrderBatchFactory.getInstance().create(batch, currency, count, amount, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(batch.getPrimaryKey(), EventTypes.MODIFY, orderBatch.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -70,7 +70,7 @@ public class OrderBatchControl
 
     private OrderBatch getOrderBatch(Batch batch, EntityPermission entityPermission) {
         return OrderBatchFactory.getInstance().getEntityFromQuery(entityPermission, getOrderBatchQueries,
-                batch, Session.MAX_TIME_LONG);
+                batch, Session.MAX_TIME);
     }
 
     public OrderBatch getOrderBatch(Batch batch) {
@@ -94,7 +94,7 @@ public class OrderBatchControl
             var orderBatch = OrderBatchFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     orderBatchValue.getPrimaryKey());
 
-            orderBatch.setThruTime(session.START_TIME_LONG);
+            orderBatch.setThruTime(session.getStartTime());
             orderBatch.store();
 
             var batchPK = orderBatch.getBatchPK(); // Not updated
@@ -102,14 +102,14 @@ public class OrderBatchControl
             var count = orderBatchValue.getCount();
             var amount = orderBatchValue.getAmount();
 
-            orderBatch = OrderBatchFactory.getInstance().create(batchPK, currencyPK, count, amount, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+            orderBatch = OrderBatchFactory.getInstance().create(batchPK, currencyPK, count, amount, session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(batchPK, EventTypes.MODIFY, orderBatch.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteOrderBatch(OrderBatch orderBatch, BasePK deletedBy) {
-        orderBatch.setThruTime(session.START_TIME_LONG);
+        orderBatch.setThruTime(session.getStartTime());
 
         sendEvent(orderBatch.getBatchPK(), EventTypes.MODIFY, orderBatch.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }

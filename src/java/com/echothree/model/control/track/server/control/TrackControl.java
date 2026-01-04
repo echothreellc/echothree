@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -61,10 +61,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import javax.enterprise.context.RequestScoped;
+import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
-@RequestScoped
+@CommandScope
 public class TrackControl
         extends BaseModelControl {
     
@@ -114,7 +114,7 @@ public class TrackControl
 
         var track = TrackFactory.getInstance().create();
         var trackDetail = TrackDetailFactory.getInstance().create(track, trackName, valueSha1Hash, value,
-                isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         track = TrackFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, track.getPrimaryKey());
@@ -367,7 +367,7 @@ public class TrackControl
                      trackDetailValue.getTrackPK());
             var trackDetail = track.getActiveDetailForUpdate();
 
-            trackDetail.setThruTime(session.START_TIME_LONG);
+            trackDetail.setThruTime(session.getStartTime());
             trackDetail.store();
 
             var trackPK = trackDetail.getTrackPK(); // Not updated
@@ -394,7 +394,7 @@ public class TrackControl
             }
 
             trackDetail = TrackDetailFactory.getInstance().create(trackPK, trackName, valueSha1Hash, value, isDefault,
-                    sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             track.setActiveDetail(trackDetail);
             track.setLastDetail(trackDetail);
@@ -413,7 +413,7 @@ public class TrackControl
         deleteUserVisitTracksByTrack(track);
         deleteTrackDescriptionsByTrack(track, deletedBy);
 
-        trackDetail.setThruTime(session.START_TIME_LONG);
+        trackDetail.setThruTime(session.getStartTime());
         track.setActiveDetail(null);
         track.store();
 
@@ -458,7 +458,7 @@ public class TrackControl
 
     public TrackDescription createTrackDescription(Track track, Language language, String description, BasePK createdBy) {
         var trackDescription = TrackDescriptionFactory.getInstance().create(track, language, description,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(track.getPrimaryKey(), EventTypes.MODIFY, trackDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -571,7 +571,7 @@ public class TrackControl
             var trackDescription = TrackDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     trackDescriptionValue.getPrimaryKey());
 
-            trackDescription.setThruTime(session.START_TIME_LONG);
+            trackDescription.setThruTime(session.getStartTime());
             trackDescription.store();
 
             var track = trackDescription.getTrack();
@@ -579,14 +579,14 @@ public class TrackControl
             var description = trackDescriptionValue.getDescription();
 
             trackDescription = TrackDescriptionFactory.getInstance().create(track, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(track.getPrimaryKey(), EventTypes.MODIFY, trackDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteTrackDescription(TrackDescription trackDescription, BasePK deletedBy) {
-        trackDescription.setThruTime(session.START_TIME_LONG);
+        trackDescription.setThruTime(session.getStartTime());
 
         sendEvent(trackDescription.getTrackPK(), EventTypes.MODIFY, trackDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
@@ -616,7 +616,7 @@ public class TrackControl
 
     public UserVisitTrack createUserVisitTrack(UserVisit userVisit, Integer userVisitTrackSequence, Long time, Track track) {
         var userVisitTrack = UserVisitTrackFactory.getInstance().create(userVisit, userVisitTrackSequence, time, track,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         return userVisitTrack;
     }
@@ -731,7 +731,7 @@ public class TrackControl
     }
     
     public void deleteUserVisitTrack(UserVisitTrack userVisitTrack) {
-        userVisitTrack.setThruTime(session.START_TIME_LONG);
+        userVisitTrack.setThruTime(session.getStartTime());
         userVisitTrack.store();
     }
     

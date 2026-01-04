@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,9 +24,9 @@ import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.search.common.SearchKinds;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.Dependent;
 
-@RequestScoped
+@Dependent
 public class GetOfferResultsFacetCommand
         extends BaseGetResultsFacetCommand<GetOfferResultsFacetForm, GetOfferResultsFacetResult> {
 

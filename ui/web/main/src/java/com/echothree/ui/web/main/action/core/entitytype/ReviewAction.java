@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -62,6 +62,7 @@ public class ReviewAction
         commandForm.setEntityTypeName(request.getParameter(ParameterConstants.ENTITY_TYPE_NAME));
 
         Set<String> options = new HashSet<>();
+        options.add(CoreOptions.EntityTypeIncludeEntityAliasTypes);
         options.add(CoreOptions.EntityTypeIncludeEntityAttributes);
         options.add(CoreOptions.EntityTypeIncludeCommentTypes);
         options.add(CoreOptions.EntityTypeIncludeRatingTypes);

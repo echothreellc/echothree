@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -68,9 +68,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.Dependent;
 
-@RequestScoped
+@Dependent
 public class UpdateIndexesCommand
         extends BaseSimpleCommand<UpdateIndexesForm> {
     
@@ -258,7 +258,7 @@ public class UpdateIndexesCommand
                 var indexersMap = new HashMap<EntityType, List<BaseIndexer<?>>>(toIntExact(indexControl.countIndexes()));
 
                 try {
-                    var exitTime = session.START_TIME + MAXIMUM_MILLISECONDS;
+                    var exitTime = session.getStartTime() + MAXIMUM_MILLISECONDS;
 
                     setLimits();
 

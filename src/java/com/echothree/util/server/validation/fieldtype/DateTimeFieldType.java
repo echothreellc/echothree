@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,14 +16,14 @@
 
 package com.echothree.util.server.validation.fieldtype;
 
-import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.form.BaseForm;
 import com.echothree.util.common.message.Message;
 import com.echothree.util.common.message.Messages;
+import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.server.validation.Validator;
 import java.time.LocalDate;
-import java.time.ZonedDateTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
@@ -40,7 +40,7 @@ public class DateTimeFieldType
         String result = null;
 
         if(fieldValue.equalsIgnoreCase("NOW")) {
-            result = getSession().START_TIME_LONG.toString();
+            result = String.valueOf(getSession().getStartTime());
         } else {
             var dateTimeFormatDetail = getPreferredDateTimeFormat().getLastDetail();
             var zoneId = ZoneId.of(getPreferredTimeZone().getLastDetail().getJavaTimeZoneName());

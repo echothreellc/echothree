@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ package com.echothree.util.server.transfer;
 
 import com.echothree.model.control.comment.common.transfer.CommentListWrapper;
 import com.echothree.model.control.comment.server.control.CommentControl;
-import com.echothree.model.control.core.common.transfer.EntityAliasTypeTransfer;
+import com.echothree.model.control.core.common.transfer.EntityAliasTransfer;
 import com.echothree.model.control.core.common.transfer.EntityAttributeGroupTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.control.EntityAliasControl;
@@ -76,7 +76,7 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
     boolean includeEntityVisit;
     boolean includeNames;
     boolean includeUuid;
-    boolean includeEntityAliasTypes;
+    boolean includeEntityAliases;
     boolean includeEntityAttributeGroups;
     boolean includeTagScopes;
     
@@ -87,7 +87,7 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
         
         var options = session.getOptions();
         if(options != null) {
-            includeEntityAliasTypes = options.contains(BaseOptions.BaseIncludeEntityAliasTypes);
+            includeEntityAliases = options.contains(BaseOptions.BaseIncludeEntityAliases);
             includeEntityAttributeGroups = options.contains(BaseOptions.BaseIncludeEntityAttributeGroups);
             includeTagScopes = options.contains(BaseOptions.BaseIncludeTagScopes);
         }
@@ -198,31 +198,31 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
     }
 
     /**
-     * Returns the includeEntityAliasTypes.
-     * @return the includeEntityAliasTypes
+     * Returns the includeEntityAliases.
+     * @return the includeEntityAliases
      */
-    protected boolean getIncludeEntityAliasTypes() {
-        return includeEntityAliasTypes;
+    protected boolean getIncludeEntityAliases() {
+        return includeEntityAliases;
     }
 
     /**
-     * Sets the includeEntityAliasTypes.
-     * @param includeEntityAliasTypes the includeEntityAliasTypes to set
+     * Sets the includeEntityAliases.
+     * @param includeEntityAliases the includeEntityAliases to set
      */
-    protected void setIncludeEntityAliasTypes(boolean includeEntityAliasTypes) {
-        this.includeEntityAliasTypes = includeEntityAliasTypes;
+    protected void setIncludeEntityAliases(boolean includeEntityAliases) {
+        this.includeEntityAliases = includeEntityAliases;
     }
 
-    protected void setupEntityAliasTypes(final UserVisit userVisit, EntityInstance entityInstance, V transfer) {
+    protected void setupEntityAliases(final UserVisit userVisit, EntityInstance entityInstance, V transfer) {
         var entityAliasControl = Session.getModelController(EntityAliasControl.class);
-        var entityAliasTypeTransfers = entityAliasControl.getEntityAliasTypeTransfersByEntityType(userVisit, entityInstance.getEntityType(), entityInstance);
-        var mapWrapper = new MapWrapper<EntityAliasTypeTransfer>(entityAliasTypeTransfers.size());
+        var entityAliasTransfers = entityAliasControl.getEntityAliasTransfersByEntityInstance(userVisit, entityInstance);
+        var mapWrapper = new MapWrapper<EntityAliasTransfer>(entityAliasTransfers.size());
 
-        entityAliasTypeTransfers.forEach((entityAliasTypeTransfer) -> {
-            mapWrapper.put(entityAliasTypeTransfer.getEntityAliasTypeName(), entityAliasTypeTransfer);
+        entityAliasTransfers.forEach((entityAliasTransfer) -> {
+            mapWrapper.put(entityAliasTransfer.getEntityAliasType().getEntityAliasTypeName(), entityAliasTransfer);
         });
 
-        transfer.setEntityAliasTypes(mapWrapper);
+        transfer.setEntityAliases(mapWrapper);
     }
 
     /**
@@ -382,9 +382,9 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
             transfer.setEntityInstance(entityInstanceControl.getEntityInstanceTransfer(userVisit, entityInstance, includeEntityAppearance,
                     includeEntityVisit, includeNames, includeUuid));
 
-            if(includeEntityAliasTypes || includeEntityAttributeGroups || includeTagScopes) {
-                if(includeEntityAliasTypes) {
-                    setupEntityAliasTypes(userVisit, entityInstance, transfer);
+            if(includeEntityAliases || includeEntityAttributeGroups || includeTagScopes) {
+                if(includeEntityAliases) {
+                    setupEntityAliases(userVisit, entityInstance, transfer);
                 }
 
                 if(includeEntityAttributeGroups) {

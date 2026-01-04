@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -63,9 +63,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import javax.enterprise.context.RequestScoped;
+import com.echothree.util.server.cdi.CommandScope;
 
-@RequestScoped
+@CommandScope
 public class ServerControl
         extends BaseCoreControl {
 
@@ -92,8 +92,8 @@ public class ServerControl
         }
 
         var protocol = ProtocolFactory.getInstance().create();
-        var protocolDetail = ProtocolDetailFactory.getInstance().create(protocol, protocolName, isDefault, sortOrder, session.START_TIME_LONG,
-                Session.MAX_TIME_LONG);
+        var protocolDetail = ProtocolDetailFactory.getInstance().create(protocol, protocolName, isDefault, sortOrder, session.getStartTime(),
+                Session.MAX_TIME);
 
         // Convert to R/W
         protocol = ProtocolFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -267,7 +267,7 @@ public class ServerControl
                     protocolDetailValue.getProtocolPK());
             var protocolDetail = protocol.getActiveDetailForUpdate();
 
-            protocolDetail.setThruTime(session.START_TIME_LONG);
+            protocolDetail.setThruTime(session.getStartTime());
             protocolDetail.store();
 
             var protocolPK = protocolDetail.getProtocolPK(); // Not updated
@@ -291,8 +291,8 @@ public class ServerControl
                 }
             }
 
-            protocolDetail = ProtocolDetailFactory.getInstance().create(protocolPK, protocolName, isDefault, sortOrder, session.START_TIME_LONG,
-                    Session.MAX_TIME_LONG);
+            protocolDetail = ProtocolDetailFactory.getInstance().create(protocolPK, protocolName, isDefault, sortOrder, session.getStartTime(),
+                    Session.MAX_TIME);
 
             protocol.setActiveDetail(protocolDetail);
             protocol.setLastDetail(protocolDetail);
@@ -311,7 +311,7 @@ public class ServerControl
         deleteServicesByProtocol(protocol, deletedBy);
         deleteProtocolDescriptionsByProtocol(protocol, deletedBy);
 
-        protocolDetail.setThruTime(session.START_TIME_LONG);
+        protocolDetail.setThruTime(session.getStartTime());
         protocol.setActiveDetail(null);
         protocol.store();
 
@@ -356,7 +356,7 @@ public class ServerControl
 
     public ProtocolDescription createProtocolDescription(Protocol protocol, Language language, String description, BasePK createdBy) {
         var protocolDescription = ProtocolDescriptionFactory.getInstance().create(protocol, language, description,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(protocol.getPrimaryKey(), EventTypes.MODIFY, protocolDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -469,7 +469,7 @@ public class ServerControl
             var protocolDescription = ProtocolDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     protocolDescriptionValue.getPrimaryKey());
 
-            protocolDescription.setThruTime(session.START_TIME_LONG);
+            protocolDescription.setThruTime(session.getStartTime());
             protocolDescription.store();
 
             var protocol = protocolDescription.getProtocol();
@@ -477,14 +477,14 @@ public class ServerControl
             var description = protocolDescriptionValue.getDescription();
 
             protocolDescription = ProtocolDescriptionFactory.getInstance().create(protocol, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(protocol.getPrimaryKey(), EventTypes.MODIFY, protocolDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteProtocolDescription(ProtocolDescription protocolDescription, BasePK deletedBy) {
-        protocolDescription.setThruTime(session.START_TIME_LONG);
+        protocolDescription.setThruTime(session.getStartTime());
 
         sendEvent(protocolDescription.getProtocolPK(), EventTypes.MODIFY, protocolDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
@@ -517,7 +517,7 @@ public class ServerControl
 
         var service = ServiceFactory.getInstance().create();
         var serviceDetail = ServiceDetailFactory.getInstance().create(service, serviceName, port, protocol, isDefault, sortOrder,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         service = ServiceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -724,7 +724,7 @@ public class ServerControl
                     serviceDetailValue.getServicePK());
             var serviceDetail = service.getActiveDetailForUpdate();
 
-            serviceDetail.setThruTime(session.START_TIME_LONG);
+            serviceDetail.setThruTime(session.getStartTime());
             serviceDetail.store();
 
             var servicePK = serviceDetail.getServicePK(); // Not updated
@@ -750,8 +750,8 @@ public class ServerControl
                 }
             }
 
-            serviceDetail = ServiceDetailFactory.getInstance().create(servicePK, serviceName, port, protocolPK, isDefault, sortOrder, session.START_TIME_LONG,
-                    Session.MAX_TIME_LONG);
+            serviceDetail = ServiceDetailFactory.getInstance().create(servicePK, serviceName, port, protocolPK, isDefault, sortOrder, session.getStartTime(),
+                    Session.MAX_TIME);
 
             service.setActiveDetail(serviceDetail);
             service.setLastDetail(serviceDetail);
@@ -770,7 +770,7 @@ public class ServerControl
         deleteServerServicesByService(service, deletedBy);
         deleteServiceDescriptionsByService(service, deletedBy);
 
-        serviceDetail.setThruTime(session.START_TIME_LONG);
+        serviceDetail.setThruTime(session.getStartTime());
         service.setActiveDetail(null);
         service.store();
 
@@ -819,7 +819,7 @@ public class ServerControl
 
     public ServiceDescription createServiceDescription(Service service, Language language, String description, BasePK createdBy) {
         var serviceDescription = ServiceDescriptionFactory.getInstance().create(service, language, description,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(service.getPrimaryKey(), EventTypes.MODIFY, serviceDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -932,7 +932,7 @@ public class ServerControl
             var serviceDescription = ServiceDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     serviceDescriptionValue.getPrimaryKey());
 
-            serviceDescription.setThruTime(session.START_TIME_LONG);
+            serviceDescription.setThruTime(session.getStartTime());
             serviceDescription.store();
 
             var service = serviceDescription.getService();
@@ -940,14 +940,14 @@ public class ServerControl
             var description = serviceDescriptionValue.getDescription();
 
             serviceDescription = ServiceDescriptionFactory.getInstance().create(service, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(service.getPrimaryKey(), EventTypes.MODIFY, serviceDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteServiceDescription(ServiceDescription serviceDescription, BasePK deletedBy) {
-        serviceDescription.setThruTime(session.START_TIME_LONG);
+        serviceDescription.setThruTime(session.getStartTime());
 
         sendEvent(serviceDescription.getServicePK(), EventTypes.MODIFY, serviceDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
@@ -979,8 +979,8 @@ public class ServerControl
         }
 
         var server = ServerFactory.getInstance().create();
-        var serverDetail = ServerDetailFactory.getInstance().create(server, serverName, isDefault, sortOrder, session.START_TIME_LONG,
-                Session.MAX_TIME_LONG);
+        var serverDetail = ServerDetailFactory.getInstance().create(server, serverName, isDefault, sortOrder, session.getStartTime(),
+                Session.MAX_TIME);
 
         // Convert to R/W
         server = ServerFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, server.getPrimaryKey());
@@ -1153,7 +1153,7 @@ public class ServerControl
                     serverDetailValue.getServerPK());
             var serverDetail = server.getActiveDetailForUpdate();
 
-            serverDetail.setThruTime(session.START_TIME_LONG);
+            serverDetail.setThruTime(session.getStartTime());
             serverDetail.store();
 
             var serverPK = serverDetail.getServerPK(); // Not updated
@@ -1177,8 +1177,8 @@ public class ServerControl
                 }
             }
 
-            serverDetail = ServerDetailFactory.getInstance().create(serverPK, serverName, isDefault, sortOrder, session.START_TIME_LONG,
-                    Session.MAX_TIME_LONG);
+            serverDetail = ServerDetailFactory.getInstance().create(serverPK, serverName, isDefault, sortOrder, session.getStartTime(),
+                    Session.MAX_TIME);
 
             server.setActiveDetail(serverDetail);
             server.setLastDetail(serverDetail);
@@ -1197,7 +1197,7 @@ public class ServerControl
         deleteServerServicesByServer(server, deletedBy);
         deleteServerDescriptionsByServer(server, deletedBy);
 
-        serverDetail.setThruTime(session.START_TIME_LONG);
+        serverDetail.setThruTime(session.getStartTime());
         server.setActiveDetail(null);
         server.store();
 
@@ -1242,7 +1242,7 @@ public class ServerControl
 
     public ServerDescription createServerDescription(Server server, Language language, String description, BasePK createdBy) {
         var serverDescription = ServerDescriptionFactory.getInstance().create(server, language, description,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(server.getPrimaryKey(), EventTypes.MODIFY, serverDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -1355,7 +1355,7 @@ public class ServerControl
             var serverDescription = ServerDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     serverDescriptionValue.getPrimaryKey());
 
-            serverDescription.setThruTime(session.START_TIME_LONG);
+            serverDescription.setThruTime(session.getStartTime());
             serverDescription.store();
 
             var server = serverDescription.getServer();
@@ -1363,14 +1363,14 @@ public class ServerControl
             var description = serverDescriptionValue.getDescription();
 
             serverDescription = ServerDescriptionFactory.getInstance().create(server, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(server.getPrimaryKey(), EventTypes.MODIFY, serverDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteServerDescription(ServerDescription serverDescription, BasePK deletedBy) {
-        serverDescription.setThruTime(session.START_TIME_LONG);
+        serverDescription.setThruTime(session.getStartTime());
 
         sendEvent(serverDescription.getServerPK(), EventTypes.MODIFY, serverDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
@@ -1389,7 +1389,7 @@ public class ServerControl
     // --------------------------------------------------------------------------------
 
     public ServerService createServerService(Server server, Service service, BasePK createdBy) {
-        var serverService = ServerServiceFactory.getInstance().create(server, service, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var serverService = ServerServiceFactory.getInstance().create(server, service, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(server.getPrimaryKey(), EventTypes.MODIFY, serverService.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -1518,7 +1518,7 @@ public class ServerControl
 
         scaleControl.deleteScalesByServerService(serverService, deletedBy);
 
-        serverService.setThruTime(session.START_TIME_LONG);
+        serverService.setThruTime(session.getStartTime());
 
         sendEvent(serverService.getServerPK(), EventTypes.MODIFY, serverService.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 

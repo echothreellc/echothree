@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -189,7 +189,7 @@ public class PartyTrainingClassLogic
 
             if(preparedWorkEffort != null) {
                 var requiredCompletionTime = trainingClass.getLastDetail().getRequiredCompletionTime();
-                var requiredTime = requiredCompletionTime == null ? null : session.START_TIME + requiredCompletionTime;
+                var requiredTime = requiredCompletionTime == null ? null : session.getStartTime() + requiredCompletionTime;
 
                 workEffort = WorkEffortLogic.getInstance().createWorkEffort(preparedWorkEffort, entityInstance, createdBy);
 

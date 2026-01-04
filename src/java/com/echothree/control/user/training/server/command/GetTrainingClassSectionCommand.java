@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,7 +24,6 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.control.training.server.logic.PartyTrainingClassSessionLogic;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -37,9 +36,9 @@ import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.Dependent;
 
-@RequestScoped
+@Dependent
 public class GetTrainingClassSectionCommand
         extends BaseSimpleCommand<GetTrainingClassSectionForm> {
     
@@ -103,7 +102,7 @@ public class GetTrainingClassSectionCommand
 
                         if(partyTrainingClassSessionStatus != null) {
                             var partyTrainingClassSessionSection = trainingControl.createPartyTrainingClassSessionSection(partyTrainingClassSession,
-                                    trainingClassSection, session.START_TIME_LONG, null, partyPK);
+                                    trainingClassSection, session.getStartTime(), null, partyPK);
 
                             PartyTrainingClassSessionLogic.getInstance().updatePartyTrainingClassSessionStatus(session, partyTrainingClassSessionStatus,
                                     partyTrainingClassSessionSection, null, null);

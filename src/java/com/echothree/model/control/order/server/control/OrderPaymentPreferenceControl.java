@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -34,9 +34,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import javax.enterprise.context.RequestScoped;
+import com.echothree.util.server.cdi.CommandScope;
 
-@RequestScoped
+@CommandScope
 public class OrderPaymentPreferenceControl
         extends BaseOrderControl {
 
@@ -53,7 +53,7 @@ public class OrderPaymentPreferenceControl
             PartyPaymentMethod partyPaymentMethod, Boolean wasPresent, Long maximumAmount, Integer sortOrder, BasePK createdBy) {
         var orderPaymentPreference = OrderPaymentPreferenceFactory.getInstance().create();
         var orderPaymentPreferenceDetail = OrderPaymentPreferenceDetailFactory.getInstance().create(orderPaymentPreference, order,
-                orderPaymentPreferenceSequence, paymentMethod, partyPaymentMethod, wasPresent, maximumAmount, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                orderPaymentPreferenceSequence, paymentMethod, partyPaymentMethod, wasPresent, maximumAmount, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         orderPaymentPreference = OrderPaymentPreferenceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -284,7 +284,7 @@ public class OrderPaymentPreferenceControl
                     orderPaymentPreferenceDetailValue.getOrderPaymentPreferencePK());
             var orderPaymentPreferenceDetail = orderPaymentPreference.getActiveDetailForUpdate();
 
-            orderPaymentPreferenceDetail.setThruTime(session.START_TIME_LONG);
+            orderPaymentPreferenceDetail.setThruTime(session.getStartTime());
             orderPaymentPreferenceDetail.store();
 
             var orderPaymentPreferencePK = orderPaymentPreferenceDetail.getOrderPaymentPreferencePK(); // Not updated
@@ -297,8 +297,8 @@ public class OrderPaymentPreferenceControl
             var sortOrder = orderPaymentPreferenceDetailValue.getSortOrder();
 
             orderPaymentPreferenceDetail = OrderPaymentPreferenceDetailFactory.getInstance().create(orderPaymentPreferencePK, orderPK,
-                    orderPaymentPreferenceSequence, paymentMethodPK, partyPaymentMethodPK, wasPresent, maximumAmount, sortOrder, session.START_TIME_LONG,
-                    Session.MAX_TIME_LONG);
+                    orderPaymentPreferenceSequence, paymentMethodPK, partyPaymentMethodPK, wasPresent, maximumAmount, sortOrder, session.getStartTime(),
+                    Session.MAX_TIME);
 
             orderPaymentPreference.setActiveDetail(orderPaymentPreferenceDetail);
             orderPaymentPreference.setLastDetail(orderPaymentPreferenceDetail);
@@ -310,7 +310,7 @@ public class OrderPaymentPreferenceControl
     public void deleteOrderPaymentPreference(OrderPaymentPreference orderPaymentPreference, BasePK deletedBy) {
         var orderPaymentPreferenceDetail = orderPaymentPreference.getLastDetailForUpdate();
 
-        orderPaymentPreferenceDetail.setThruTime(session.START_TIME_LONG);
+        orderPaymentPreferenceDetail.setThruTime(session.getStartTime());
         orderPaymentPreference.setActiveDetail(null);
         orderPaymentPreference.store();
 

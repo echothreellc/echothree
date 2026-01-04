@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -121,10 +121,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import javax.enterprise.context.RequestScoped;
+import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
-@RequestScoped
+@CommandScope
 public class CampaignControl
         extends BaseModelControl {
     
@@ -198,7 +198,7 @@ public class CampaignControl
 
         var campaign = CampaignFactory.getInstance().create();
         var campaignDetail = CampaignDetailFactory.getInstance().create(campaign, campaignName, valueSha1Hash, value,
-                isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         campaign = CampaignFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, campaign.getPrimaryKey());
@@ -451,7 +451,7 @@ public class CampaignControl
                      campaignDetailValue.getCampaignPK());
             var campaignDetail = campaign.getActiveDetailForUpdate();
 
-            campaignDetail.setThruTime(session.START_TIME_LONG);
+            campaignDetail.setThruTime(session.getStartTime());
             campaignDetail.store();
 
             var campaignPK = campaignDetail.getCampaignPK(); // Not updated
@@ -478,7 +478,7 @@ public class CampaignControl
             }
 
             campaignDetail = CampaignDetailFactory.getInstance().create(campaignPK, campaignName, valueSha1Hash, value, isDefault,
-                    sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             campaign.setActiveDetail(campaignDetail);
             campaign.setLastDetail(campaignDetail);
@@ -497,7 +497,7 @@ public class CampaignControl
         deleteUserVisitCampaignsByCampaign(campaign);
         deleteCampaignDescriptionsByCampaign(campaign, deletedBy);
 
-        campaignDetail.setThruTime(session.START_TIME_LONG);
+        campaignDetail.setThruTime(session.getStartTime());
         campaign.setActiveDetail(null);
         campaign.store();
 
@@ -542,7 +542,7 @@ public class CampaignControl
 
     public CampaignDescription createCampaignDescription(Campaign campaign, Language language, String description, BasePK createdBy) {
         var campaignDescription = CampaignDescriptionFactory.getInstance().create(campaign, language, description,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(campaign.getPrimaryKey(), EventTypes.MODIFY, campaignDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -655,7 +655,7 @@ public class CampaignControl
             var campaignDescription = CampaignDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     campaignDescriptionValue.getPrimaryKey());
 
-            campaignDescription.setThruTime(session.START_TIME_LONG);
+            campaignDescription.setThruTime(session.getStartTime());
             campaignDescription.store();
 
             var campaign = campaignDescription.getCampaign();
@@ -663,14 +663,14 @@ public class CampaignControl
             var description = campaignDescriptionValue.getDescription();
 
             campaignDescription = CampaignDescriptionFactory.getInstance().create(campaign, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(campaign.getPrimaryKey(), EventTypes.MODIFY, campaignDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteCampaignDescription(CampaignDescription campaignDescription, BasePK deletedBy) {
-        campaignDescription.setThruTime(session.START_TIME_LONG);
+        campaignDescription.setThruTime(session.getStartTime());
 
         sendEvent(campaignDescription.getCampaignPK(), EventTypes.MODIFY, campaignDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
@@ -712,7 +712,7 @@ public class CampaignControl
 
         var campaignSource = CampaignSourceFactory.getInstance().create();
         var campaignSourceDetail = CampaignSourceDetailFactory.getInstance().create(campaignSource, campaignSourceName, valueSha1Hash, value,
-                isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         campaignSource = CampaignSourceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, campaignSource.getPrimaryKey());
@@ -965,7 +965,7 @@ public class CampaignControl
                      campaignSourceDetailValue.getCampaignSourcePK());
             var campaignSourceDetail = campaignSource.getActiveDetailForUpdate();
 
-            campaignSourceDetail.setThruTime(session.START_TIME_LONG);
+            campaignSourceDetail.setThruTime(session.getStartTime());
             campaignSourceDetail.store();
 
             var campaignSourcePK = campaignSourceDetail.getCampaignSourcePK(); // Not updated
@@ -992,7 +992,7 @@ public class CampaignControl
             }
 
             campaignSourceDetail = CampaignSourceDetailFactory.getInstance().create(campaignSourcePK, campaignSourceName, valueSha1Hash, value, isDefault,
-                    sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             campaignSource.setActiveDetail(campaignSourceDetail);
             campaignSource.setLastDetail(campaignSourceDetail);
@@ -1011,7 +1011,7 @@ public class CampaignControl
         deleteUserVisitCampaignsByCampaignSource(campaignSource);
         deleteCampaignSourceDescriptionsByCampaignSource(campaignSource, deletedBy);
 
-        campaignSourceDetail.setThruTime(session.START_TIME_LONG);
+        campaignSourceDetail.setThruTime(session.getStartTime());
         campaignSource.setActiveDetail(null);
         campaignSource.store();
 
@@ -1056,7 +1056,7 @@ public class CampaignControl
 
     public CampaignSourceDescription createCampaignSourceDescription(CampaignSource campaignSource, Language language, String description, BasePK createdBy) {
         var campaignSourceDescription = CampaignSourceDescriptionFactory.getInstance().create(campaignSource, language, description,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(campaignSource.getPrimaryKey(), EventTypes.MODIFY, campaignSourceDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -1169,7 +1169,7 @@ public class CampaignControl
             var campaignSourceDescription = CampaignSourceDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     campaignSourceDescriptionValue.getPrimaryKey());
 
-            campaignSourceDescription.setThruTime(session.START_TIME_LONG);
+            campaignSourceDescription.setThruTime(session.getStartTime());
             campaignSourceDescription.store();
 
             var campaignSource = campaignSourceDescription.getCampaignSource();
@@ -1177,14 +1177,14 @@ public class CampaignControl
             var description = campaignSourceDescriptionValue.getDescription();
 
             campaignSourceDescription = CampaignSourceDescriptionFactory.getInstance().create(campaignSource, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(campaignSource.getPrimaryKey(), EventTypes.MODIFY, campaignSourceDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteCampaignSourceDescription(CampaignSourceDescription campaignSourceDescription, BasePK deletedBy) {
-        campaignSourceDescription.setThruTime(session.START_TIME_LONG);
+        campaignSourceDescription.setThruTime(session.getStartTime());
 
         sendEvent(campaignSourceDescription.getCampaignSourcePK(), EventTypes.MODIFY, campaignSourceDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
@@ -1226,7 +1226,7 @@ public class CampaignControl
 
         var campaignMedium = CampaignMediumFactory.getInstance().create();
         var campaignMediumDetail = CampaignMediumDetailFactory.getInstance().create(campaignMedium, campaignMediumName, valueSha1Hash, value,
-                isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         campaignMedium = CampaignMediumFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, campaignMedium.getPrimaryKey());
@@ -1479,7 +1479,7 @@ public class CampaignControl
                      campaignMediumDetailValue.getCampaignMediumPK());
             var campaignMediumDetail = campaignMedium.getActiveDetailForUpdate();
 
-            campaignMediumDetail.setThruTime(session.START_TIME_LONG);
+            campaignMediumDetail.setThruTime(session.getStartTime());
             campaignMediumDetail.store();
 
             var campaignMediumPK = campaignMediumDetail.getCampaignMediumPK(); // Not updated
@@ -1506,7 +1506,7 @@ public class CampaignControl
             }
 
             campaignMediumDetail = CampaignMediumDetailFactory.getInstance().create(campaignMediumPK, campaignMediumName, valueSha1Hash, value, isDefault,
-                    sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             campaignMedium.setActiveDetail(campaignMediumDetail);
             campaignMedium.setLastDetail(campaignMediumDetail);
@@ -1525,7 +1525,7 @@ public class CampaignControl
         deleteUserVisitCampaignsByCampaignMedium(campaignMedium);
         deleteCampaignMediumDescriptionsByCampaignMedium(campaignMedium, deletedBy);
 
-        campaignMediumDetail.setThruTime(session.START_TIME_LONG);
+        campaignMediumDetail.setThruTime(session.getStartTime());
         campaignMedium.setActiveDetail(null);
         campaignMedium.store();
 
@@ -1570,7 +1570,7 @@ public class CampaignControl
 
     public CampaignMediumDescription createCampaignMediumDescription(CampaignMedium campaignMedium, Language language, String description, BasePK createdBy) {
         var campaignMediumDescription = CampaignMediumDescriptionFactory.getInstance().create(campaignMedium, language, description,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(campaignMedium.getPrimaryKey(), EventTypes.MODIFY, campaignMediumDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -1683,7 +1683,7 @@ public class CampaignControl
             var campaignMediumDescription = CampaignMediumDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     campaignMediumDescriptionValue.getPrimaryKey());
 
-            campaignMediumDescription.setThruTime(session.START_TIME_LONG);
+            campaignMediumDescription.setThruTime(session.getStartTime());
             campaignMediumDescription.store();
 
             var campaignMedium = campaignMediumDescription.getCampaignMedium();
@@ -1691,14 +1691,14 @@ public class CampaignControl
             var description = campaignMediumDescriptionValue.getDescription();
 
             campaignMediumDescription = CampaignMediumDescriptionFactory.getInstance().create(campaignMedium, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(campaignMedium.getPrimaryKey(), EventTypes.MODIFY, campaignMediumDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteCampaignMediumDescription(CampaignMediumDescription campaignMediumDescription, BasePK deletedBy) {
-        campaignMediumDescription.setThruTime(session.START_TIME_LONG);
+        campaignMediumDescription.setThruTime(session.getStartTime());
 
         sendEvent(campaignMediumDescription.getCampaignMediumPK(), EventTypes.MODIFY, campaignMediumDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
@@ -1740,7 +1740,7 @@ public class CampaignControl
 
         var campaignTerm = CampaignTermFactory.getInstance().create();
         var campaignTermDetail = CampaignTermDetailFactory.getInstance().create(campaignTerm, campaignTermName, valueSha1Hash, value,
-                isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         campaignTerm = CampaignTermFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, campaignTerm.getPrimaryKey());
@@ -1993,7 +1993,7 @@ public class CampaignControl
                      campaignTermDetailValue.getCampaignTermPK());
             var campaignTermDetail = campaignTerm.getActiveDetailForUpdate();
 
-            campaignTermDetail.setThruTime(session.START_TIME_LONG);
+            campaignTermDetail.setThruTime(session.getStartTime());
             campaignTermDetail.store();
 
             var campaignTermPK = campaignTermDetail.getCampaignTermPK(); // Not updated
@@ -2020,7 +2020,7 @@ public class CampaignControl
             }
 
             campaignTermDetail = CampaignTermDetailFactory.getInstance().create(campaignTermPK, campaignTermName, valueSha1Hash, value, isDefault,
-                    sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             campaignTerm.setActiveDetail(campaignTermDetail);
             campaignTerm.setLastDetail(campaignTermDetail);
@@ -2039,7 +2039,7 @@ public class CampaignControl
         deleteUserVisitCampaignsByCampaignTerm(campaignTerm);
         deleteCampaignTermDescriptionsByCampaignTerm(campaignTerm, deletedBy);
 
-        campaignTermDetail.setThruTime(session.START_TIME_LONG);
+        campaignTermDetail.setThruTime(session.getStartTime());
         campaignTerm.setActiveDetail(null);
         campaignTerm.store();
 
@@ -2084,7 +2084,7 @@ public class CampaignControl
 
     public CampaignTermDescription createCampaignTermDescription(CampaignTerm campaignTerm, Language language, String description, BasePK createdBy) {
         var campaignTermDescription = CampaignTermDescriptionFactory.getInstance().create(campaignTerm, language, description,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(campaignTerm.getPrimaryKey(), EventTypes.MODIFY, campaignTermDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -2197,7 +2197,7 @@ public class CampaignControl
             var campaignTermDescription = CampaignTermDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     campaignTermDescriptionValue.getPrimaryKey());
 
-            campaignTermDescription.setThruTime(session.START_TIME_LONG);
+            campaignTermDescription.setThruTime(session.getStartTime());
             campaignTermDescription.store();
 
             var campaignTerm = campaignTermDescription.getCampaignTerm();
@@ -2205,14 +2205,14 @@ public class CampaignControl
             var description = campaignTermDescriptionValue.getDescription();
 
             campaignTermDescription = CampaignTermDescriptionFactory.getInstance().create(campaignTerm, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(campaignTerm.getPrimaryKey(), EventTypes.MODIFY, campaignTermDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteCampaignTermDescription(CampaignTermDescription campaignTermDescription, BasePK deletedBy) {
-        campaignTermDescription.setThruTime(session.START_TIME_LONG);
+        campaignTermDescription.setThruTime(session.getStartTime());
 
         sendEvent(campaignTermDescription.getCampaignTermPK(), EventTypes.MODIFY, campaignTermDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
@@ -2254,7 +2254,7 @@ public class CampaignControl
 
         var campaignContent = CampaignContentFactory.getInstance().create();
         var campaignContentDetail = CampaignContentDetailFactory.getInstance().create(campaignContent, campaignContentName, valueSha1Hash, value,
-                isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         campaignContent = CampaignContentFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, campaignContent.getPrimaryKey());
@@ -2507,7 +2507,7 @@ public class CampaignControl
                      campaignContentDetailValue.getCampaignContentPK());
             var campaignContentDetail = campaignContent.getActiveDetailForUpdate();
 
-            campaignContentDetail.setThruTime(session.START_TIME_LONG);
+            campaignContentDetail.setThruTime(session.getStartTime());
             campaignContentDetail.store();
 
             var campaignContentPK = campaignContentDetail.getCampaignContentPK(); // Not updated
@@ -2534,7 +2534,7 @@ public class CampaignControl
             }
 
             campaignContentDetail = CampaignContentDetailFactory.getInstance().create(campaignContentPK, campaignContentName, valueSha1Hash, value, isDefault,
-                    sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             campaignContent.setActiveDetail(campaignContentDetail);
             campaignContent.setLastDetail(campaignContentDetail);
@@ -2553,7 +2553,7 @@ public class CampaignControl
         deleteUserVisitCampaignsByCampaignContent(campaignContent);
         deleteCampaignContentDescriptionsByCampaignContent(campaignContent, deletedBy);
 
-        campaignContentDetail.setThruTime(session.START_TIME_LONG);
+        campaignContentDetail.setThruTime(session.getStartTime());
         campaignContent.setActiveDetail(null);
         campaignContent.store();
 
@@ -2598,7 +2598,7 @@ public class CampaignControl
 
     public CampaignContentDescription createCampaignContentDescription(CampaignContent campaignContent, Language language, String description, BasePK createdBy) {
         var campaignContentDescription = CampaignContentDescriptionFactory.getInstance().create(campaignContent, language, description,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(campaignContent.getPrimaryKey(), EventTypes.MODIFY, campaignContentDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -2711,7 +2711,7 @@ public class CampaignControl
             var campaignContentDescription = CampaignContentDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     campaignContentDescriptionValue.getPrimaryKey());
 
-            campaignContentDescription.setThruTime(session.START_TIME_LONG);
+            campaignContentDescription.setThruTime(session.getStartTime());
             campaignContentDescription.store();
 
             var campaignContent = campaignContentDescription.getCampaignContent();
@@ -2719,14 +2719,14 @@ public class CampaignControl
             var description = campaignContentDescriptionValue.getDescription();
 
             campaignContentDescription = CampaignContentDescriptionFactory.getInstance().create(campaignContent, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(campaignContent.getPrimaryKey(), EventTypes.MODIFY, campaignContentDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteCampaignContentDescription(CampaignContentDescription campaignContentDescription, BasePK deletedBy) {
-        campaignContentDescription.setThruTime(session.START_TIME_LONG);
+        campaignContentDescription.setThruTime(session.getStartTime());
 
         sendEvent(campaignContentDescription.getCampaignContentPK(), EventTypes.MODIFY, campaignContentDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
@@ -2758,7 +2758,7 @@ public class CampaignControl
     public UserVisitCampaign createUserVisitCampaign(UserVisit userVisit, Integer userVisitCampaignSequence, Long time, Campaign campaign,
             CampaignSource campaignSource, CampaignMedium campaignMedium, CampaignTerm campaignTerm, CampaignContent campaignContent) {
         var userVisitCampaign = UserVisitCampaignFactory.getInstance().create(userVisit, userVisitCampaignSequence, time, campaign,
-                campaignSource, campaignMedium, campaignTerm, campaignContent, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                campaignSource, campaignMedium, campaignTerm, campaignContent, session.getStartTime(), Session.MAX_TIME);
 
         return userVisitCampaign;
     }
@@ -2961,7 +2961,7 @@ public class CampaignControl
     }
     
     public void deleteUserVisitCampaign(UserVisitCampaign userVisitCampaign) {
-        userVisitCampaign.setThruTime(session.START_TIME_LONG);
+        userVisitCampaign.setThruTime(session.getStartTime());
         userVisitCampaign.store();
     }
     

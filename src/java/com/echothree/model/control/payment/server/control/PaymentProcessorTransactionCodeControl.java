@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -31,9 +31,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import javax.enterprise.context.RequestScoped;
+import com.echothree.util.server.cdi.CommandScope;
 
-@RequestScoped
+@CommandScope
 public class PaymentProcessorTransactionCodeControl
         extends BasePaymentControl {
 
@@ -49,7 +49,7 @@ public class PaymentProcessorTransactionCodeControl
     public PaymentProcessorTransactionCode createPaymentProcessorTransactionCode(final PaymentProcessorTransaction paymentProcessorTransaction,
             final PaymentProcessorTypeCode paymentProcessorTypeCode, final BasePK createdBy) {
         var paymentProcessorTransactionCode = PaymentProcessorTransactionCodeFactory.getInstance().create(paymentProcessorTransaction,
-                paymentProcessorTypeCode, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                paymentProcessorTypeCode, session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(paymentProcessorTransaction.getPrimaryKey(), EventTypes.MODIFY, paymentProcessorTransactionCode.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -176,7 +176,7 @@ public class PaymentProcessorTransactionCodeControl
     }
 
     public void deletePaymentProcessorTransactionCode(final PaymentProcessorTransactionCode paymentProcessorTransactionCode, final BasePK deletedBy) {
-        paymentProcessorTransactionCode.setThruTime(session.START_TIME_LONG);
+        paymentProcessorTransactionCode.setThruTime(session.getStartTime());
 
         sendEvent(paymentProcessorTransactionCode.getPaymentProcessorTransactionPK(), EventTypes.MODIFY, paymentProcessorTransactionCode.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 

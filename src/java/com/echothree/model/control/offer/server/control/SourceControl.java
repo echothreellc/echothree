@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -37,9 +37,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import javax.enterprise.context.RequestScoped;
+import com.echothree.util.server.cdi.CommandScope;
 
-@RequestScoped
+@CommandScope
 public class SourceControl
         extends BaseOfferControl {
 
@@ -67,7 +67,7 @@ public class SourceControl
 
         var source = SourceFactory.getInstance().create();
         var sourceDetail = SourceDetailFactory.getInstance().create(source, sourceName, offerUse, isDefault,
-                sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         source = SourceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, source.getPrimaryKey());
@@ -310,7 +310,7 @@ public class SourceControl
                     sourceDetailValue.getSourcePK());
             var sourceDetail = source.getActiveDetailForUpdate();
 
-            sourceDetail.setThruTime(session.START_TIME_LONG);
+            sourceDetail.setThruTime(session.getStartTime());
             sourceDetail.store();
 
             var sourcePK = sourceDetail.getSourcePK(); // Do not update
@@ -336,7 +336,7 @@ public class SourceControl
             }
 
             sourceDetail = SourceDetailFactory.getInstance().create(sourcePK, sourceName, offerUse.getPrimaryKey(), isDefault,
-                    sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             source.setActiveDetail(sourceDetail);
             source.setLastDetail(sourceDetail);
@@ -352,7 +352,7 @@ public class SourceControl
 
     public void deleteSource(Source source, BasePK deletedBy) {
         var sourceDetail = source.getLastDetailForUpdate();
-        sourceDetail.setThruTime(session.START_TIME_LONG);
+        sourceDetail.setThruTime(session.getStartTime());
         source.setActiveDetail(null);
         source.store();
 

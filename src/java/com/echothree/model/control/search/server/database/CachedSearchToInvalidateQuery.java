@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@ public class CachedSearchToInvalidateQuery
     }
     
     public List<CachedSearchToInvalidateResult> execute(Index index) {
-        return super.execute(index, Session.MAX_TIME_LONG);
+        return super.execute(index, Session.MAX_TIME);
     }
     
 }

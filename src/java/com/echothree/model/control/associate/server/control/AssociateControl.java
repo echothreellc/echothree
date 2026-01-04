@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -68,10 +68,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import javax.enterprise.context.RequestScoped;
+import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
-@RequestScoped
+@CommandScope
 public class AssociateControl
         extends BaseModelControl {
     
@@ -121,7 +121,7 @@ public class AssociateControl
         var associateProgram = AssociateProgramFactory.getInstance().create();
         var associateProgramDetail = AssociateProgramDetailFactory.getInstance().create(associateProgram,
                 associateProgramName, associateSequence, associateContactMechanismSequence, associateReferralSequence,
-                itemIndirectSalePercent, itemDirectSalePercent, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                itemIndirectSalePercent, itemDirectSalePercent, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         associateProgram = AssociateProgramFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -289,11 +289,11 @@ public class AssociateControl
     }
     
     private void updateAssociateProgramFromValue(AssociateProgramDetailValue associateProgramDetailValue, boolean checkDefault, BasePK updatedBy) {
-        var associateProgram = AssociateProgramFactory.getInstance().getEntityFromPK(session,
+        var associateProgram = AssociateProgramFactory.getInstance().getEntityFromPK(
                 EntityPermission.READ_WRITE, associateProgramDetailValue.getAssociateProgramPK());
         var associateProgramDetail = associateProgram.getActiveDetailForUpdate();
         
-        associateProgramDetail.setThruTime(session.START_TIME_LONG);
+        associateProgramDetail.setThruTime(session.getStartTime());
         associateProgramDetail.store();
 
         var associateProgramPK = associateProgramDetail.getAssociateProgramPK();
@@ -324,8 +324,8 @@ public class AssociateControl
         
         associateProgramDetail = AssociateProgramDetailFactory.getInstance().create(associateProgramPK,
                 associateProgramName, associateSequencePK, associatePartyContactMechanismSequencePK, associateReferralSequencePK,
-                itemIndirectSalePercent, itemDirectSalePercent, isDefault, sortOrder, session.START_TIME_LONG,
-                Session.MAX_TIME_LONG);
+                itemIndirectSalePercent, itemDirectSalePercent, isDefault, sortOrder, session.getStartTime(),
+                Session.MAX_TIME);
         
         associateProgram.setActiveDetail(associateProgramDetail);
         associateProgram.setLastDetail(associateProgramDetail);
@@ -343,7 +343,7 @@ public class AssociateControl
         deleteAssociatesByAssociateProgram(associateProgram, deletedBy);
 
         var associateProgramDetail = associateProgram.getLastDetailForUpdate();
-        associateProgramDetail.setThruTime(session.START_TIME_LONG);
+        associateProgramDetail.setThruTime(session.getStartTime());
         associateProgram.setActiveDetail(null);
         associateProgram.store();
         
@@ -374,7 +374,7 @@ public class AssociateControl
     public AssociateProgramDescription createAssociateProgramDescription(AssociateProgram associateProgram, Language language, String description,
             BasePK createdBy) {
         var associateProgramDescription = AssociateProgramDescriptionFactory.getInstance().create(associateProgram,
-                language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(associateProgram.getPrimaryKey(), EventTypes.MODIFY, associateProgramDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -504,7 +504,7 @@ public class AssociateControl
             var associateProgramDescription = AssociateProgramDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      associateProgramDescriptionValue.getPrimaryKey());
             
-            associateProgramDescription.setThruTime(session.START_TIME_LONG);
+            associateProgramDescription.setThruTime(session.getStartTime());
             associateProgramDescription.store();
 
             var associateProgram = associateProgramDescription.getAssociateProgram();
@@ -512,14 +512,14 @@ public class AssociateControl
             var description = associateProgramDescriptionValue.getDescription();
             
             associateProgramDescription = AssociateProgramDescriptionFactory.getInstance().create(associateProgram, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(associateProgram.getPrimaryKey(), EventTypes.MODIFY, associateProgramDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteAssociateProgramDescription(AssociateProgramDescription associateProgramDescription, BasePK deletedBy) {
-        associateProgramDescription.setThruTime(session.START_TIME_LONG);
+        associateProgramDescription.setThruTime(session.getStartTime());
         
         sendEvent(associateProgramDescription.getAssociateProgramPK(), EventTypes.MODIFY, associateProgramDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
@@ -541,7 +541,7 @@ public class AssociateControl
             MimeType summaryMimeType, String summary, BasePK createdBy) {
         var associate = AssociateFactory.getInstance().create();
         var associateDetail = AssociateDetailFactory.getInstance().create(associate, associateProgram,
-                associateName, party, description, summaryMimeType, summary, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                associateName, party, description, summaryMimeType, summary, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         associate = AssociateFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -693,11 +693,11 @@ public class AssociateControl
     }
     
     public void updateAssociateFromValue(AssociateDetailValue associateDetailValue, boolean checkDefault, BasePK updatedBy) {
-        var associate = AssociateFactory.getInstance().getEntityFromPK(session,
+        var associate = AssociateFactory.getInstance().getEntityFromPK(
                 EntityPermission.READ_WRITE, associateDetailValue.getAssociatePK());
         var associateDetail = associate.getActiveDetailForUpdate();
         
-        associateDetail.setThruTime(session.START_TIME_LONG);
+        associateDetail.setThruTime(session.getStartTime());
         associateDetail.store();
 
         var associatePK = associateDetail.getAssociatePK(); // Not updated
@@ -709,7 +709,7 @@ public class AssociateControl
         var summary = associateDetailValue.getSummary();
         
         associateDetail = AssociateDetailFactory.getInstance().create(associatePK, associateProgramPK, associateName,
-                partyPK, description, summaryMimeTypePK, summary, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                partyPK, description, summaryMimeTypePK, summary, session.getStartTime(), Session.MAX_TIME);
         
         associate.setActiveDetail(associateDetail);
         associate.setLastDetail(associateDetail);
@@ -723,7 +723,7 @@ public class AssociateControl
         deleteAssociateReferralsByAssociate(associate, deletedBy);
 
         var associateDetail = associate.getLastDetailForUpdate();
-        associateDetail.setThruTime(session.START_TIME_LONG);
+        associateDetail.setThruTime(session.getStartTime());
         associate.setActiveDetail(null);
         associate.store();
         
@@ -759,9 +759,9 @@ public class AssociateControl
         }
 
         var associatePartyContactMechanism = AssociatePartyContactMechanismFactory.getInstance().create();
-        var associatePartyContactMechanismDetail = AssociatePartyContactMechanismDetailFactory.getInstance().create(session,
+        var associatePartyContactMechanismDetail = AssociatePartyContactMechanismDetailFactory.getInstance().create(
                 associatePartyContactMechanism, associate, associatePartyContactMechanismName, partyContactMechanism, isDefault, sortOrder,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         associatePartyContactMechanism = AssociatePartyContactMechanismFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -1005,11 +1005,11 @@ public class AssociateControl
     
     private void updateAssociatePartyContactMechanismFromValue(AssociatePartyContactMechanismDetailValue associatePartyContactMechanismDetailValue,
             boolean checkDefault, BasePK updatedBy) {
-        var associatePartyContactMechanism = AssociatePartyContactMechanismFactory.getInstance().getEntityFromPK(session,
+        var associatePartyContactMechanism = AssociatePartyContactMechanismFactory.getInstance().getEntityFromPK(
                 EntityPermission.READ_WRITE, associatePartyContactMechanismDetailValue.getAssociatePartyContactMechanismPK());
         var associatePartyContactMechanismDetail = associatePartyContactMechanism.getActiveDetailForUpdate();
         
-        associatePartyContactMechanismDetail.setThruTime(session.START_TIME_LONG);
+        associatePartyContactMechanismDetail.setThruTime(session.getStartTime());
         associatePartyContactMechanismDetail.store();
 
         var associatePartyContactMechanismPK = associatePartyContactMechanismDetail.getAssociatePartyContactMechanismPK(); // Not updated
@@ -1036,9 +1036,9 @@ public class AssociateControl
             }
         }
         
-        associatePartyContactMechanismDetail = AssociatePartyContactMechanismDetailFactory.getInstance().create(session,
+        associatePartyContactMechanismDetail = AssociatePartyContactMechanismDetailFactory.getInstance().create(
                 associatePartyContactMechanismPK, associatePK, associatePartyContactMechanismName, partyContactMechanismPK, isDefault, sortOrder,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         associatePartyContactMechanism.setActiveDetail(associatePartyContactMechanismDetail);
         associatePartyContactMechanism.setLastDetail(associatePartyContactMechanismDetail);
@@ -1055,7 +1055,7 @@ public class AssociateControl
         deleteAssociateReferralsByAssociatePartyContactMechanism(associatePartyContactMechanism, deletedBy);
 
         var associatePartyContactMechanismDetail = associatePartyContactMechanism.getLastDetailForUpdate();
-        associatePartyContactMechanismDetail.setThruTime(session.START_TIME_LONG);
+        associatePartyContactMechanismDetail.setThruTime(session.getStartTime());
         associatePartyContactMechanism.setActiveDetail(null);
         associatePartyContactMechanism.store();
         
@@ -1112,9 +1112,9 @@ public class AssociateControl
             AssociatePartyContactMechanism associatePartyContactMechanism, EntityInstance targetEntityInstance, Long associateReferralTime,
             BasePK createdBy) {
         var associateReferral = AssociateReferralFactory.getInstance().create();
-        var associateReferralDetail = AssociateReferralDetailFactory.getInstance().create(session,
+        var associateReferralDetail = AssociateReferralDetailFactory.getInstance().create(
                 associateReferral, associateReferralName, associate, associatePartyContactMechanism, targetEntityInstance,
-                associateReferralTime, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                associateReferralTime, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         associateReferral = AssociateReferralFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -1317,11 +1317,11 @@ public class AssociateControl
     
     public void updateAssociateReferralFromValue(AssociateReferralDetailValue associateReferralDetailValue,
             boolean checkDefault, BasePK updatedBy) {
-        var associateReferral = AssociateReferralFactory.getInstance().getEntityFromPK(session,
+        var associateReferral = AssociateReferralFactory.getInstance().getEntityFromPK(
                 EntityPermission.READ_WRITE, associateReferralDetailValue.getAssociateReferralPK());
         var associateReferralDetail = associateReferral.getActiveDetailForUpdate();
         
-        associateReferralDetail.setThruTime(session.START_TIME_LONG);
+        associateReferralDetail.setThruTime(session.getStartTime());
         associateReferralDetail.store();
 
         var associateReferralPK = associateReferralDetail.getAssociateReferralPK(); // Not updated
@@ -1333,7 +1333,7 @@ public class AssociateControl
         
         associateReferralDetail = AssociateReferralDetailFactory.getInstance().create(associateReferralPK,
                 associateReferralName, associatePK, associatePartyContactMechanismPK, targetEntityInstancePK, associateReferralTime,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         associateReferral.setActiveDetail(associateReferralDetail);
         associateReferral.setLastDetail(associateReferralDetail);
@@ -1344,7 +1344,7 @@ public class AssociateControl
     
     public void deleteAssociateReferral(AssociateReferral associateReferral, BasePK deletedBy) {
         var associateReferralDetail = associateReferral.getLastDetailForUpdate();
-        associateReferralDetail.setThruTime(session.START_TIME_LONG);
+        associateReferralDetail.setThruTime(session.getStartTime());
         associateReferral.setActiveDetail(null);
         associateReferral.store();
         

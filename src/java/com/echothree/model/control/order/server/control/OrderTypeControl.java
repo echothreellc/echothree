@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -44,9 +44,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import javax.enterprise.context.RequestScoped;
+import com.echothree.util.server.cdi.CommandScope;
 
-@RequestScoped
+@CommandScope
 public class OrderTypeControl
         extends BaseOrderControl {
 
@@ -75,8 +75,8 @@ public class OrderTypeControl
 
         var orderType = OrderTypeFactory.getInstance().create();
         var orderTypeDetail = OrderTypeDetailFactory.getInstance().create(orderType, orderTypeName, orderSequenceType,
-                orderWorkflow, orderWorkflowEntrance, isDefault, sortOrder, session.START_TIME_LONG,
-                Session.MAX_TIME_LONG);
+                orderWorkflow, orderWorkflowEntrance, isDefault, sortOrder, session.getStartTime(),
+                Session.MAX_TIME);
 
         // Convert to R/W
         orderType = OrderTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -282,7 +282,7 @@ public class OrderTypeControl
                      orderTypeDetailValue.getOrderTypePK());
             var orderTypeDetail = orderType.getActiveDetailForUpdate();
 
-            orderTypeDetail.setThruTime(session.START_TIME_LONG);
+            orderTypeDetail.setThruTime(session.getStartTime());
             orderTypeDetail.store();
 
             var orderTypePK = orderTypeDetail.getOrderTypePK(); // Not updated
@@ -310,7 +310,7 @@ public class OrderTypeControl
             }
 
             orderTypeDetail = OrderTypeDetailFactory.getInstance().create(orderTypePK, orderTypeName, orderSequenceTypePK,
-                    orderWorkflowPK, orderWorkflowEntrancePK, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    orderWorkflowPK, orderWorkflowEntrancePK, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             orderType.setActiveDetail(orderTypeDetail);
             orderType.setLastDetail(orderTypeDetail);
@@ -331,7 +331,7 @@ public class OrderTypeControl
         orderAliasControl.deleteOrderAliasTypesByOrderType(orderType, deletedBy);
         // TODO: deleteOrdersByOrderType(orderType, deletedBy);
 
-        orderTypeDetail.setThruTime(session.START_TIME_LONG);
+        orderTypeDetail.setThruTime(session.getStartTime());
         orderType.setActiveDetail(null);
         orderType.store();
 
@@ -375,7 +375,7 @@ public class OrderTypeControl
 
     public OrderTypeDescription createOrderTypeDescription(OrderType orderType, Language language, String description, BasePK createdBy) {
         var orderTypeDescription = OrderTypeDescriptionFactory.getInstance().create(orderType, language, description,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(orderType.getPrimaryKey(), EventTypes.MODIFY, orderTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -488,7 +488,7 @@ public class OrderTypeControl
             var orderTypeDescription = OrderTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     orderTypeDescriptionValue.getPrimaryKey());
 
-            orderTypeDescription.setThruTime(session.START_TIME_LONG);
+            orderTypeDescription.setThruTime(session.getStartTime());
             orderTypeDescription.store();
 
             var orderType = orderTypeDescription.getOrderType();
@@ -496,14 +496,14 @@ public class OrderTypeControl
             var description = orderTypeDescriptionValue.getDescription();
 
             orderTypeDescription = OrderTypeDescriptionFactory.getInstance().create(orderType, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(orderType.getPrimaryKey(), EventTypes.MODIFY, orderTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteOrderTypeDescription(OrderTypeDescription orderTypeDescription, BasePK deletedBy) {
-        orderTypeDescription.setThruTime(session.START_TIME_LONG);
+        orderTypeDescription.setThruTime(session.getStartTime());
 
         sendEvent(orderTypeDescription.getOrderTypePK(), EventTypes.MODIFY, orderTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 

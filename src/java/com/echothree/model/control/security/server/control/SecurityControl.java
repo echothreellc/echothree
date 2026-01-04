@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -101,10 +101,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import javax.enterprise.context.RequestScoped;
+import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
-@RequestScoped
+@CommandScope
 public class SecurityControl
         extends BaseModelControl {
     
@@ -169,9 +169,9 @@ public class SecurityControl
         }
 
         var securityRoleGroup = securityRoleGroupFactory.create();
-        var securityRoleGroupDetail = securityRoleGroupDetailFactory.create(session,
-                securityRoleGroup, securityRoleGroupName, parentSecurityRoleGroup, isDefault, sortOrder, session.START_TIME_LONG,
-                Session.MAX_TIME_LONG);
+        var securityRoleGroupDetail = securityRoleGroupDetailFactory.create(
+                securityRoleGroup, securityRoleGroupName, parentSecurityRoleGroup, isDefault, sortOrder, session.getStartTime(),
+                Session.MAX_TIME);
         
         // Convert to R/W
         securityRoleGroup = securityRoleGroupFactory.getEntityFromPK(EntityPermission.READ_WRITE,
@@ -443,7 +443,7 @@ public class SecurityControl
                      securityRoleGroupDetailValue.getSecurityRoleGroupPK());
             var securityRoleGroupDetail = securityRoleGroup.getActiveDetailForUpdate();
             
-            securityRoleGroupDetail.setThruTime(session.START_TIME_LONG);
+            securityRoleGroupDetail.setThruTime(session.getStartTime());
             securityRoleGroupDetail.store();
 
             var securityRoleGroupPK = securityRoleGroupDetail.getSecurityRoleGroupPK();
@@ -469,8 +469,8 @@ public class SecurityControl
             }
             
             securityRoleGroupDetail = securityRoleGroupDetailFactory.create(securityRoleGroupPK,
-                    securityRoleGroupName, parentSecurityRoleGroupPK, isDefault, sortOrder, session.START_TIME_LONG,
-                    Session.MAX_TIME_LONG);
+                    securityRoleGroupName, parentSecurityRoleGroupPK, isDefault, sortOrder, session.getStartTime(),
+                    Session.MAX_TIME);
             
             securityRoleGroup.setActiveDetail(securityRoleGroupDetail);
             securityRoleGroup.setLastDetail(securityRoleGroupDetail);
@@ -490,7 +490,7 @@ public class SecurityControl
         deleteSecurityRolesBySecurityRoleGroup(securityRoleGroup, deletedBy);
         deleteSecurityRoleGroupDescriptionsBySecurityRoleGroup(securityRoleGroup, deletedBy);
         
-        securityRoleGroupDetail.setThruTime(session.START_TIME_LONG);
+        securityRoleGroupDetail.setThruTime(session.getStartTime());
         securityRoleGroup.setActiveDetail(null);
         securityRoleGroup.store();
 
@@ -541,8 +541,8 @@ public class SecurityControl
     protected SecurityRoleGroupDescriptionFactory securityRoleGroupDescriptionFactory;
     
     public SecurityRoleGroupDescription createSecurityRoleGroupDescription(SecurityRoleGroup securityRoleGroup, Language language, String description, BasePK createdBy) {
-        var securityRoleGroupDescription = securityRoleGroupDescriptionFactory.create(securityRoleGroup, language, description, session.START_TIME_LONG,
-                Session.MAX_TIME_LONG);
+        var securityRoleGroupDescription = securityRoleGroupDescriptionFactory.create(securityRoleGroup, language, description, session.getStartTime(),
+                Session.MAX_TIME);
         
         sendEvent(securityRoleGroup.getPrimaryKey(), EventTypes.MODIFY, securityRoleGroupDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -671,7 +671,7 @@ public class SecurityControl
         if(securityRoleGroupDescriptionValue.hasBeenModified()) {
             var securityRoleGroupDescription = securityRoleGroupDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE, securityRoleGroupDescriptionValue.getPrimaryKey());
             
-            securityRoleGroupDescription.setThruTime(session.START_TIME_LONG);
+            securityRoleGroupDescription.setThruTime(session.getStartTime());
             securityRoleGroupDescription.store();
 
             var securityRoleGroup = securityRoleGroupDescription.getSecurityRoleGroup();
@@ -679,14 +679,14 @@ public class SecurityControl
             var description = securityRoleGroupDescriptionValue.getDescription();
             
             securityRoleGroupDescription = securityRoleGroupDescriptionFactory.create(securityRoleGroup, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(securityRoleGroup.getPrimaryKey(), EventTypes.MODIFY, securityRoleGroupDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteSecurityRoleGroupDescription(SecurityRoleGroupDescription securityRoleGroupDescription, BasePK deletedBy) {
-        securityRoleGroupDescription.setThruTime(session.START_TIME_LONG);
+        securityRoleGroupDescription.setThruTime(session.getStartTime());
         
         sendEvent(securityRoleGroupDescription.getSecurityRoleGroupPK(), EventTypes.MODIFY, securityRoleGroupDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
@@ -725,9 +725,9 @@ public class SecurityControl
         }
 
         var securityRole = securityRoleFactory.create();
-        var securityRoleDetail = securityRoleDetailFactory.create(session,
-                securityRole, securityRoleGroup, securityRoleName, isDefault, sortOrder, session.START_TIME_LONG,
-                Session.MAX_TIME_LONG);
+        var securityRoleDetail = securityRoleDetailFactory.create(
+                securityRole, securityRoleGroup, securityRoleName, isDefault, sortOrder, session.getStartTime(),
+                Session.MAX_TIME);
         
         // Convert to R/W
         securityRole = securityRoleFactory.getEntityFromPK(EntityPermission.READ_WRITE,
@@ -969,7 +969,7 @@ public class SecurityControl
                      securityRoleDetailValue.getSecurityRolePK());
             var securityRoleDetail = securityRole.getActiveDetailForUpdate();
             
-            securityRoleDetail.setThruTime(session.START_TIME_LONG);
+            securityRoleDetail.setThruTime(session.getStartTime());
             securityRoleDetail.store();
 
             var securityRolePK = securityRoleDetail.getSecurityRolePK();
@@ -996,7 +996,7 @@ public class SecurityControl
             }
             
             securityRoleDetail = securityRoleDetailFactory.create(securityRolePK, securityRoleGroupPK,
-                    securityRoleName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    securityRoleName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             securityRole.setActiveDetail(securityRoleDetail);
             securityRole.setLastDetail(securityRoleDetail);
@@ -1017,7 +1017,7 @@ public class SecurityControl
         deleteSecurityRoleDescriptionsBySecurityRole(securityRole, deletedBy);
 
         var securityRoleDetail = securityRole.getLastDetailForUpdate();
-        securityRoleDetail.setThruTime(session.START_TIME_LONG);
+        securityRoleDetail.setThruTime(session.getStartTime());
         securityRole.setActiveDetail(null);
         securityRole.store();
         
@@ -1058,8 +1058,8 @@ public class SecurityControl
     protected SecurityRoleDescriptionFactory securityRoleDescriptionFactory;
     
     public SecurityRoleDescription createSecurityRoleDescription(SecurityRole securityRole, Language language, String description, BasePK createdBy) {
-        var securityRoleDescription = securityRoleDescriptionFactory.create(securityRole, language, description, session.START_TIME_LONG,
-                Session.MAX_TIME_LONG);
+        var securityRoleDescription = securityRoleDescriptionFactory.create(securityRole, language, description, session.getStartTime(),
+                Session.MAX_TIME);
         
         sendEvent(securityRole.getPrimaryKey(), EventTypes.MODIFY, securityRoleDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1188,7 +1188,7 @@ public class SecurityControl
         if(securityRoleDescriptionValue.hasBeenModified()) {
             var securityRoleDescription = securityRoleDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE, securityRoleDescriptionValue.getPrimaryKey());
             
-            securityRoleDescription.setThruTime(session.START_TIME_LONG);
+            securityRoleDescription.setThruTime(session.getStartTime());
             securityRoleDescription.store();
 
             var securityRole = securityRoleDescription.getSecurityRole();
@@ -1196,14 +1196,14 @@ public class SecurityControl
             var description = securityRoleDescriptionValue.getDescription();
             
             securityRoleDescription = securityRoleDescriptionFactory.create(securityRole, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(securityRole.getPrimaryKey(), EventTypes.MODIFY, securityRoleDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteSecurityRoleDescription(SecurityRoleDescription securityRoleDescription, BasePK deletedBy) {
-        securityRoleDescription.setThruTime(session.START_TIME_LONG);
+        securityRoleDescription.setThruTime(session.getStartTime());
         
         sendEvent(securityRoleDescription.getSecurityRolePK(), EventTypes.MODIFY, securityRoleDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
@@ -1226,7 +1226,7 @@ public class SecurityControl
     
     public SecurityRolePartyType createSecurityRolePartyType(SecurityRole securityRole, PartyType partyType, Selector partySelector, BasePK createdBy) {
         var securityRolePartyType = securityRolePartyTypeFactory.create(securityRole, partyType, partySelector,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(securityRole.getPrimaryKey(), EventTypes.MODIFY, securityRolePartyType.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1358,22 +1358,22 @@ public class SecurityControl
             var securityRolePartyType = securityRolePartyTypeFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                     securityRolePartyTypeValue.getPrimaryKey());
             
-            securityRolePartyType.setThruTime(session.START_TIME_LONG);
+            securityRolePartyType.setThruTime(session.getStartTime());
             securityRolePartyType.store();
 
             var securityRolePK = securityRolePartyType.getSecurityRolePK();
             var partyTypePK = securityRolePartyType.getPartyTypePK();
             var partySelectorPK = securityRolePartyTypeValue.getPartySelectorPK();
             
-            securityRolePartyType = securityRolePartyTypeFactory.create(securityRolePK, partyTypePK, partySelectorPK, session.START_TIME_LONG,
-                    Session.MAX_TIME_LONG);
+            securityRolePartyType = securityRolePartyTypeFactory.create(securityRolePK, partyTypePK, partySelectorPK, session.getStartTime(),
+                    Session.MAX_TIME);
             
             sendEvent(securityRolePK, EventTypes.MODIFY, securityRolePartyType.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteSecurityRolePartyType(SecurityRolePartyType securityRolePartyType, BasePK deletedBy) {
-        securityRolePartyType.setThruTime(session.START_TIME_LONG);
+        securityRolePartyType.setThruTime(session.getStartTime());
         
         sendEvent(securityRolePartyType.getSecurityRolePK(), EventTypes.MODIFY, securityRolePartyType.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
@@ -1422,7 +1422,7 @@ public class SecurityControl
 
         var partySecurityRoleTemplate = partySecurityRoleTemplateFactory.create();
         var partySecurityRoleTemplateDetail = partySecurityRoleTemplateDetailFactory.create(partySecurityRoleTemplate,
-                partySecurityRoleTemplateName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                partySecurityRoleTemplateName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         partySecurityRoleTemplate = partySecurityRoleTemplateFactory.getEntityFromPK(EntityPermission.READ_WRITE,
@@ -1602,7 +1602,7 @@ public class SecurityControl
                      partySecurityRoleTemplateDetailValue.getPartySecurityRoleTemplatePK());
             var partySecurityRoleTemplateDetail = partySecurityRoleTemplate.getActiveDetailForUpdate();
             
-            partySecurityRoleTemplateDetail.setThruTime(session.START_TIME_LONG);
+            partySecurityRoleTemplateDetail.setThruTime(session.getStartTime());
             partySecurityRoleTemplateDetail.store();
 
             var partySecurityRoleTemplatePK = partySecurityRoleTemplateDetail.getPartySecurityRoleTemplatePK();
@@ -1627,7 +1627,7 @@ public class SecurityControl
             }
             
             partySecurityRoleTemplateDetail = partySecurityRoleTemplateDetailFactory.create(partySecurityRoleTemplatePK, partySecurityRoleTemplateName,
-                    isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             partySecurityRoleTemplate.setActiveDetail(partySecurityRoleTemplateDetail);
             partySecurityRoleTemplate.setLastDetail(partySecurityRoleTemplateDetail);
@@ -1646,7 +1646,7 @@ public class SecurityControl
         PartySecurityRoleTemplateLogic.getInstance().deletePartySecurityRoleTemplateTrainingClassByPartySecurityRoleTemplate(partySecurityRoleTemplate, deletedBy);
 
         var partySecurityRoleTemplateDetail = partySecurityRoleTemplate.getLastDetailForUpdate();
-        partySecurityRoleTemplateDetail.setThruTime(session.START_TIME_LONG);
+        partySecurityRoleTemplateDetail.setThruTime(session.getStartTime());
         partySecurityRoleTemplate.setActiveDetail(null);
         partySecurityRoleTemplate.store();
         
@@ -1679,8 +1679,8 @@ public class SecurityControl
     
     public PartySecurityRoleTemplateDescription createPartySecurityRoleTemplateDescription(PartySecurityRoleTemplate partySecurityRoleTemplate,
             Language language, String description, BasePK createdBy) {
-        var partySecurityRoleTemplateDescription = partySecurityRoleTemplateDescriptionFactory.create(session,
-                partySecurityRoleTemplate, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var partySecurityRoleTemplateDescription = partySecurityRoleTemplateDescriptionFactory.create(
+                partySecurityRoleTemplate, language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(partySecurityRoleTemplate.getPrimaryKey(), EventTypes.MODIFY, partySecurityRoleTemplateDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1814,22 +1814,22 @@ public class SecurityControl
             var partySecurityRoleTemplateDescription = partySecurityRoleTemplateDescriptionFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      partySecurityRoleTemplateDescriptionValue.getPrimaryKey());
             
-            partySecurityRoleTemplateDescription.setThruTime(session.START_TIME_LONG);
+            partySecurityRoleTemplateDescription.setThruTime(session.getStartTime());
             partySecurityRoleTemplateDescription.store();
 
             var partySecurityRoleTemplate = partySecurityRoleTemplateDescription.getPartySecurityRoleTemplate();
             var language = partySecurityRoleTemplateDescription.getLanguage();
             var description = partySecurityRoleTemplateDescriptionValue.getDescription();
             
-            partySecurityRoleTemplateDescription = partySecurityRoleTemplateDescriptionFactory.create(session,
-                    partySecurityRoleTemplate, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+            partySecurityRoleTemplateDescription = partySecurityRoleTemplateDescriptionFactory.create(
+                    partySecurityRoleTemplate, language, description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(partySecurityRoleTemplate.getPrimaryKey(), EventTypes.MODIFY, partySecurityRoleTemplateDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deletePartySecurityRoleTemplateDescription(PartySecurityRoleTemplateDescription partySecurityRoleTemplateDescription, BasePK deletedBy) {
-        partySecurityRoleTemplateDescription.setThruTime(session.START_TIME_LONG);
+        partySecurityRoleTemplateDescription.setThruTime(session.getStartTime());
         
         sendEvent(partySecurityRoleTemplateDescription.getPartySecurityRoleTemplatePK(), EventTypes.MODIFY, partySecurityRoleTemplateDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
@@ -1852,7 +1852,7 @@ public class SecurityControl
     public PartySecurityRoleTemplateRole createPartySecurityRoleTemplateRole(PartySecurityRoleTemplate partySecurityRoleTemplate, SecurityRole securityRole,
             BasePK createdBy) {
         var partySecurityRoleTemplateRole = partySecurityRoleTemplateRoleFactory.create(partySecurityRoleTemplate,
-                securityRole, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                securityRole, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(partySecurityRoleTemplate.getPrimaryKey(), EventTypes.MODIFY, partySecurityRoleTemplateRole.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1883,7 +1883,7 @@ public class SecurityControl
             ps.setLong(2, securityRole.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            partySecurityRoleTemplateRole = partySecurityRoleTemplateRoleFactory.getEntityFromQuery(session,
+            partySecurityRoleTemplateRole = partySecurityRoleTemplateRoleFactory.getEntityFromQuery(
                     entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -2003,7 +2003,7 @@ public class SecurityControl
     }
     
     public void deletePartySecurityRoleTemplateRole(PartySecurityRoleTemplateRole partySecurityRoleTemplateRole, BasePK deletedBy) {
-        partySecurityRoleTemplateRole.setThruTime(session.START_TIME_LONG);
+        partySecurityRoleTemplateRole.setThruTime(session.getStartTime());
         partySecurityRoleTemplateRole.store();
         
         sendEvent(partySecurityRoleTemplateRole.getPartySecurityRoleTemplatePK(), EventTypes.MODIFY, partySecurityRoleTemplateRole.getPrimaryKey(), EventTypes.DELETE, deletedBy);
@@ -2019,7 +2019,7 @@ public class SecurityControl
     public PartySecurityRoleTemplateTrainingClass createPartySecurityRoleTemplateTrainingClass(PartySecurityRoleTemplate partySecurityRoleTemplate,
             TrainingClass trainingClass, BasePK createdBy) {
         var partySecurityRoleTemplateTrainingClass = partySecurityRoleTemplateTrainingClassFactory.create(partySecurityRoleTemplate,
-                trainingClass, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                trainingClass, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(partySecurityRoleTemplate.getPrimaryKey(), EventTypes.MODIFY, partySecurityRoleTemplateTrainingClass.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -2050,7 +2050,7 @@ public class SecurityControl
             ps.setLong(2, trainingClass.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            partySecurityRoleTemplateTrainingClass = partySecurityRoleTemplateTrainingClassFactory.getEntityFromQuery(session,
+            partySecurityRoleTemplateTrainingClass = partySecurityRoleTemplateTrainingClassFactory.getEntityFromQuery(
                     entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -2175,7 +2175,7 @@ public class SecurityControl
     }
     
     public void deletePartySecurityRoleTemplateTrainingClass(PartySecurityRoleTemplateTrainingClass partySecurityRoleTemplateTrainingClass, BasePK deletedBy) {
-        partySecurityRoleTemplateTrainingClass.setThruTime(session.START_TIME_LONG);
+        partySecurityRoleTemplateTrainingClass.setThruTime(session.getStartTime());
         partySecurityRoleTemplateTrainingClass.store();
         
         sendEvent(partySecurityRoleTemplateTrainingClass.getPartySecurityRoleTemplatePK(), EventTypes.MODIFY, partySecurityRoleTemplateTrainingClass.getPrimaryKey(), EventTypes.DELETE, deletedBy);
@@ -2190,7 +2190,7 @@ public class SecurityControl
     
     public PartySecurityRoleTemplateUse createPartySecurityRoleTemplateUse(Party party, PartySecurityRoleTemplate partySecurityRoleTemplate, BasePK createdBy) {
         var partySecurityRoleTemplateUse = partySecurityRoleTemplateUseFactory.create(party, partySecurityRoleTemplate,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partySecurityRoleTemplate.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -2243,14 +2243,14 @@ public class SecurityControl
             var partySecurityRoleTemplateUse = partySecurityRoleTemplateUseFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      partySecurityRoleTemplateUsePK);
 
-            partySecurityRoleTemplateUse.setThruTime(session.START_TIME_LONG);
+            partySecurityRoleTemplateUse.setThruTime(session.getStartTime());
             partySecurityRoleTemplateUse.store();
 
             var partyPK = partySecurityRoleTemplateUse.getPartyPK();
             var partySecurityRoleTemplatePK = partySecurityRoleTemplateUseValue.getPartySecurityRoleTemplatePK();
 
             partySecurityRoleTemplateUse = partySecurityRoleTemplateUseFactory.create(partyPK,
-                    partySecurityRoleTemplatePK, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    partySecurityRoleTemplatePK, session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(partyPK, EventTypes.MODIFY, partySecurityRoleTemplateUse.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
 
@@ -2294,7 +2294,7 @@ public class SecurityControl
     }
     
     public void deletePartySecurityRoleTemplateUse(PartySecurityRoleTemplateUse partySecurityRoleTemplateUse, BasePK deletedBy) {
-        partySecurityRoleTemplateUse.setThruTime(session.START_TIME_LONG);
+        partySecurityRoleTemplateUse.setThruTime(session.getStartTime());
         
         sendEvent(partySecurityRoleTemplateUse.getPartySecurityRoleTemplatePK(), EventTypes.MODIFY, partySecurityRoleTemplateUse.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
@@ -2350,7 +2350,7 @@ public class SecurityControl
     
     public PartySecurityRole createPartySecurityRole(Party party, SecurityRole securityRole, BasePK createdBy) {
         var partySecurityRole = partySecurityRoleFactory.create(party, securityRole,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partySecurityRole.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -2395,7 +2395,7 @@ public class SecurityControl
                 "SELECT COUNT(*) " +
                 "FROM partysecurityroles " +
                 "WHERE psrol_par_partyid = ? AND psrol_srol_securityroleid = ? AND psrol_thrutime = ?",
-                partyPK, securityRolePK, Session.MAX_TIME_LONG) == 1;
+                partyPK, securityRolePK, Session.MAX_TIME) == 1;
     }
     
     private List<PartySecurityRole> getPartySecurityRoles(Party party, EntityPermission entityPermission) {
@@ -2471,7 +2471,7 @@ public class SecurityControl
     }
     
     public void deletePartySecurityRole(PartySecurityRole partySecurityRole, BasePK deletedBy) {
-        partySecurityRole.setThruTime(session.START_TIME_LONG);
+        partySecurityRole.setThruTime(session.getStartTime());
         partySecurityRole.store();
         
         sendEvent(partySecurityRole.getParty().getPrimaryKey(), EventTypes.MODIFY, partySecurityRole.getPrimaryKey(), EventTypes.DELETE, deletedBy);
@@ -2497,7 +2497,7 @@ public class SecurityControl
     public PartyEntitySecurityRole createPartyEntitySecurityRole(Party party, EntityInstance entityInstance, SecurityRole securityRole,
             BasePK createdBy) {
         var partyEntitySecurityRole = partyEntitySecurityRoleFactory.create(party, entityInstance,
-                securityRole, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                securityRole, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyEntitySecurityRole.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -2544,7 +2544,7 @@ public class SecurityControl
                 "SELECT COUNT(*) " +
                 "FROM partyentitysecurityroles " +
                 "WHERE pensrol_par_partyid = ? AND pensrol_eni_entityinstanceid = ? AND pensrol_srol_securityroleid = ? AND pensrol_thrutime = ?",
-                partyPK, entityInstancePK, securityRolePK, Session.MAX_TIME_LONG) == 1;
+                partyPK, entityInstancePK, securityRolePK, Session.MAX_TIME) == 1;
     }
     
     private List<PartyEntitySecurityRole> getPartyEntitySecurityRolesByParty(Party party, EntityPermission entityPermission) {
@@ -2673,7 +2673,7 @@ public class SecurityControl
     }
     
     public void deletePartyEntitySecurityRole(PartyEntitySecurityRole partyEntitySecurityRole, BasePK deletedBy) {
-        partyEntitySecurityRole.setThruTime(session.START_TIME_LONG);
+        partyEntitySecurityRole.setThruTime(session.getStartTime());
         partyEntitySecurityRole.store();
         
         sendEvent(partyEntitySecurityRole.getParty().getPrimaryKey(), EventTypes.MODIFY, partyEntitySecurityRole.getPrimaryKey(), EventTypes.DELETE, deletedBy);

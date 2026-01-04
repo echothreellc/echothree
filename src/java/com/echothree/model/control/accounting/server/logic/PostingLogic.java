@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -89,7 +89,7 @@ public class PostingLogic {
         var partyControl = Session.getModelController(PartyControl.class);
         var periodControl = Session.getModelController(PeriodControl.class);
 
-        var postedTime = session.START_TIME_LONG;
+        var postedTime = session.getStartTime();
         var periods = periodControl.getContainingPeriodsUsingNames(PeriodConstants.PeriodKind_FISCAL, postedTime);
         var transactionGlEntries = accountingControl.getTransactionGlEntriesByTransaction(transaction);
         transactionGlEntries.forEach((transactionGlEntry) ->

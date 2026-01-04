@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -36,9 +36,9 @@ import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.Dependent;
 
-@RequestScoped
+@Dependent
 public class CreatePartyTrainingClassCommand
         extends BaseSimpleCommand<CreatePartyTrainingClassForm> {
     
@@ -81,11 +81,11 @@ public class CreatePartyTrainingClassCommand
                 var strCompletedTime = form.getCompletedTime();
                 var completedTime = strCompletedTime == null ? null : Long.valueOf(strCompletedTime);
 
-                if(completedTime == null || completedTime < session.START_TIME) {
+                if(completedTime == null || completedTime < session.getStartTime()) {
                     var strValidUntilTime = form.getValidUntilTime();
                     var validUntilTime = strValidUntilTime == null ? null : Long.valueOf(strValidUntilTime);
 
-                    if(validUntilTime == null || validUntilTime > session.START_TIME) {
+                    if(validUntilTime == null || validUntilTime > session.getStartTime()) {
                         var partyTrainingClassLogic = PartyTrainingClassLogic.getInstance();
                         var preparedPartyTrainingClass = partyTrainingClassLogic.preparePartyTrainingClass(this, party, trainingClass,
                                 completedTime, validUntilTime);

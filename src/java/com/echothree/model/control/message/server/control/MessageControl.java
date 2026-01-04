@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -76,10 +76,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import javax.enterprise.context.RequestScoped;
+import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
-@RequestScoped
+@CommandScope
 public class MessageControl
         extends BaseModelControl {
     
@@ -124,7 +124,7 @@ public class MessageControl
             Integer sortOrder, BasePK createdBy) {
         var messageType = MessageTypeFactory.getInstance().create();
         var messageTypeDetail = MessageTypeDetailFactory.getInstance().create(messageType, entityType,
-                messageTypeName, mimeTypeUsageType, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                messageTypeName, mimeTypeUsageType, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         messageType = MessageTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -245,7 +245,7 @@ public class MessageControl
                      messageTypeDetailValue.getMessageTypePK());
             var messageTypeDetail = messageType.getActiveDetailForUpdate();
             
-            messageTypeDetail.setThruTime(session.START_TIME_LONG);
+            messageTypeDetail.setThruTime(session.getStartTime());
             messageTypeDetail.store();
 
             var messageTypePK = messageTypeDetail.getMessageTypePK(); // Not updated
@@ -255,7 +255,7 @@ public class MessageControl
             var sortOrder = messageTypeDetailValue.getSortOrder();
             
             messageTypeDetail = MessageTypeDetailFactory.getInstance().create(messageTypePK, entityTypePK, messageTypeName,
-                    mimeTypeUsageTypePK, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    mimeTypeUsageTypePK, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             messageType.setActiveDetail(messageTypeDetail);
             messageType.setLastDetail(messageTypeDetail);
@@ -268,7 +268,7 @@ public class MessageControl
         deleteMessageTypeDescriptionsByMessageType(messageType, deletedBy);
 
         var messageTypeDetail = messageType.getLastDetailForUpdate();
-        messageTypeDetail.setThruTime(session.START_TIME_LONG);
+        messageTypeDetail.setThruTime(session.getStartTime());
         messageType.setActiveDetail(null);
         messageType.store();
         
@@ -292,7 +292,7 @@ public class MessageControl
     public MessageTypeDescription createMessageTypeDescription(MessageType messageType, Language language, String description,
             BasePK createdBy) {
         var messageTypeDescription = MessageTypeDescriptionFactory.getInstance().create(messageType,
-                language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(messageType.getPrimaryKey(), EventTypes.MODIFY, messageTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -422,7 +422,7 @@ public class MessageControl
             var messageTypeDescription = MessageTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      messageTypeDescriptionValue.getPrimaryKey());
             
-            messageTypeDescription.setThruTime(session.START_TIME_LONG);
+            messageTypeDescription.setThruTime(session.getStartTime());
             messageTypeDescription.store();
 
             var messageType = messageTypeDescription.getMessageType();
@@ -430,14 +430,14 @@ public class MessageControl
             var description = messageTypeDescriptionValue.getDescription();
             
             messageTypeDescription = MessageTypeDescriptionFactory.getInstance().create(messageType, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(messageType.getPrimaryKey(), EventTypes.MODIFY, messageTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteMessageTypeDescription(MessageTypeDescription messageTypeDescription, BasePK deletedBy) {
-        messageTypeDescription.setThruTime(session.START_TIME_LONG);
+        messageTypeDescription.setThruTime(session.getStartTime());
         
         sendEvent(messageTypeDescription.getMessageTypePK(), EventTypes.MODIFY, messageTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
@@ -471,7 +471,7 @@ public class MessageControl
 
         var message = MessageFactory.getInstance().create();
         var messageDetail = MessageDetailFactory.getInstance().create(message, messageType, messageName,
-                includeByDefault, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                includeByDefault, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         message = MessageFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -670,7 +670,7 @@ public class MessageControl
                     messageDetailValue.getMessagePK());
             var messageDetail = message.getActiveDetailForUpdate();
             
-            messageDetail.setThruTime(session.START_TIME_LONG);
+            messageDetail.setThruTime(session.getStartTime());
             messageDetail.store();
 
             var messagePK = messageDetail.getMessagePK();
@@ -698,7 +698,7 @@ public class MessageControl
             }
             
             messageDetail = MessageDetailFactory.getInstance().create(messagePK, messageTypePK, messageName,
-                    includeByDefault, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    includeByDefault, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             message.setActiveDetail(messageDetail);
             message.setLastDetail(messageDetail);
@@ -719,7 +719,7 @@ public class MessageControl
         deleteMessageClobsByMessage(message, deletedBy);
 
         var messageDetail = message.getLastDetailForUpdate();
-        messageDetail.setThruTime(session.START_TIME_LONG);
+        messageDetail.setThruTime(session.getStartTime());
         message.setActiveDetail(null);
         message.store();
         
@@ -760,7 +760,7 @@ public class MessageControl
     
     public MessageDescription createMessageDescription(Message message, Language language, String description, BasePK createdBy) {
         var messageDescription = MessageDescriptionFactory.getInstance().create(message,
-                language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                language, description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(message.getPrimaryKey(), EventTypes.MODIFY, messageDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -889,21 +889,21 @@ public class MessageControl
         if(messageDescriptionValue.hasBeenModified()) {
             var messageDescription = MessageDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, messageDescriptionValue.getPrimaryKey());
             
-            messageDescription.setThruTime(session.START_TIME_LONG);
+            messageDescription.setThruTime(session.getStartTime());
             messageDescription.store();
 
             var message = messageDescription.getMessage();
             var language = messageDescription.getLanguage();
             var description = messageDescriptionValue.getDescription();
             
-            messageDescription = MessageDescriptionFactory.getInstance().create(message, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+            messageDescription = MessageDescriptionFactory.getInstance().create(message, language, description, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(message.getPrimaryKey(), EventTypes.MODIFY, messageDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteMessageDescription(MessageDescription messageDescription, BasePK deletedBy) {
-        messageDescription.setThruTime(session.START_TIME_LONG);
+        messageDescription.setThruTime(session.getStartTime());
         
         sendEvent(messageDescription.getMessagePK(), EventTypes.MODIFY, messageDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
@@ -923,7 +923,7 @@ public class MessageControl
     
     public MessageString createMessageString(Message message, Language language, String string, BasePK createdBy) {
         var messageString = MessageStringFactory.getInstance().create(message, language, string,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(messageString.getMessagePK(), EventTypes.MODIFY, messageString.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1038,7 +1038,7 @@ public class MessageControl
             var messageString = MessageStringFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     messageStringValue.getPrimaryKey());
             
-            messageString.setThruTime(session.START_TIME_LONG);
+            messageString.setThruTime(session.getStartTime());
             messageString.store();
 
             var messagePK = messageString.getMessagePK(); // Not updated
@@ -1046,14 +1046,14 @@ public class MessageControl
             var string = messageStringValue.getString();
             
             messageString = MessageStringFactory.getInstance().create(messagePK, languagePK, string,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(messagePK, EventTypes.MODIFY, messageString.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteMessageString(MessageString messageString, BasePK deletedBy) {
-        messageString.setThruTime(session.START_TIME_LONG);
+        messageString.setThruTime(session.getStartTime());
         
         sendEvent(messageString.getMessagePK(), EventTypes.MODIFY, messageString.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
@@ -1074,7 +1074,7 @@ public class MessageControl
     
     public MessageBlob createMessageBlob(Message message, Language language, MimeType mimeType, ByteArray blob, BasePK createdBy) {
         var messageBlob = MessageBlobFactory.getInstance().create(message, language, mimeType, blob,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(messageBlob.getMessagePK(), EventTypes.MODIFY, messageBlob.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1189,7 +1189,7 @@ public class MessageControl
             var messageBlob = MessageBlobFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     messageBlobValue.getPrimaryKey());
             
-            messageBlob.setThruTime(session.START_TIME_LONG);
+            messageBlob.setThruTime(session.getStartTime());
             messageBlob.store();
 
             var messagePK = messageBlob.getMessagePK(); // Not updated
@@ -1198,14 +1198,14 @@ public class MessageControl
             var blob = messageBlobValue.getBlob();
             
             messageBlob = MessageBlobFactory.getInstance().create(messagePK, languagePK, mimeTypePK, blob,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(messagePK, EventTypes.MODIFY, messageBlob.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteMessageBlob(MessageBlob messageBlob, BasePK deletedBy) {
-        messageBlob.setThruTime(session.START_TIME_LONG);
+        messageBlob.setThruTime(session.getStartTime());
         
         sendEvent(messageBlob.getMessagePK(), EventTypes.MODIFY, messageBlob.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
@@ -1226,7 +1226,7 @@ public class MessageControl
     
     public MessageClob createMessageClob(Message message, Language language, MimeType mimeType, String clob, BasePK createdBy) {
         var messageClob = MessageClobFactory.getInstance().create(message, language, mimeType, clob,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(messageClob.getMessagePK(), EventTypes.MODIFY, messageClob.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1341,7 +1341,7 @@ public class MessageControl
             var messageClob = MessageClobFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     messageClobValue.getPrimaryKey());
             
-            messageClob.setThruTime(session.START_TIME_LONG);
+            messageClob.setThruTime(session.getStartTime());
             messageClob.store();
 
             var messagePK = messageClob.getMessagePK(); // Not updated
@@ -1350,14 +1350,14 @@ public class MessageControl
             var clob = messageClobValue.getClob();
             
             messageClob = MessageClobFactory.getInstance().create(messagePK, languagePK, mimeTypePK, clob,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(messagePK, EventTypes.MODIFY, messageClob.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteMessageClob(MessageClob messageClob, BasePK deletedBy) {
-        messageClob.setThruTime(session.START_TIME_LONG);
+        messageClob.setThruTime(session.getStartTime());
         
         sendEvent(messageClob.getMessagePK(), EventTypes.MODIFY, messageClob.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
@@ -1378,7 +1378,7 @@ public class MessageControl
     
     public EntityMessage createEntityMessage(EntityInstance entityInstance, Message message, BasePK createdBy) {
         var entityMessage = EntityMessageFactory.getInstance().create(entityInstance, message,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(message.getPrimaryKey(), EventTypes.MODIFY, entityMessage.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1526,7 +1526,7 @@ public class MessageControl
     }
     
     public void deleteEntityMessage(EntityMessage entityMessage, BasePK deletedBy) {
-        entityMessage.setThruTime(session.START_TIME_LONG);
+        entityMessage.setThruTime(session.getStartTime());
         
         sendEvent(entityMessage.getMessagePK(), EventTypes.MODIFY, entityMessage.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         

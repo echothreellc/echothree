@@ -1,7 +1,7 @@
 <%@ page pageEncoding="UTF-8" contentType="text/html;charset=UTF-8" %>
 
 <!--                                                                                  -->
-<!-- Copyright 2002-2025 Echo Three, LLC                                              -->
+<!-- Copyright 2002-2026 Echo Three, LLC                                              -->
 <!--                                                                                  -->
 <!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
 <!-- you may not use this file except in compliance with the License.                 -->
@@ -93,6 +93,11 @@
                             <c:param name="EntityTypeName" value="${entityType.entityTypeName}" />
                         </c:url>
                         <a href="${entityAttributesUrl}">Entity Attributes</a>
+                        <c:url var="entityAliasTypesUrl" value="/action/Core/EntityAliasType/Main">
+                            <c:param name="ComponentVendorName" value="${entityType.componentVendor.componentVendorName}" />
+                            <c:param name="EntityTypeName" value="${entityType.entityTypeName}" />
+                        </c:url>
+                        <a href="${entityAliasTypesUrl}">Entity Alias Types</a>
                         <c:url var="commentTypesUrl" value="/action/Core/CommentType/Main">
                             <c:param name="ComponentVendorName" value="${entityType.componentVendor.componentVendorName}" />
                             <c:param name="EntityTypeName" value="${entityType.entityTypeName}" />

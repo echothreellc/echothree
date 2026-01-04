@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,14 +23,15 @@ import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.server.control.CommandControl;
 import com.echothree.model.control.core.server.control.ComponentControl;
 import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.control.EntityAliasControl;
 import com.echothree.model.control.core.server.control.EntityTypeControl;
 import com.echothree.model.control.core.server.control.EventControl;
-import com.echothree.model.control.license.server.logic.LicenseCheckLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.server.logic.SecurityRoleLogic;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.user.server.logic.UserSessionLogic;
 import com.echothree.model.data.accounting.server.entity.Currency;
+import com.echothree.model.data.core.server.entity.EntityAlias;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.Event;
 import com.echothree.model.data.party.common.pk.PartyPK;
@@ -54,6 +55,7 @@ import com.echothree.util.common.message.Messages;
 import com.echothree.util.common.message.SecurityMessages;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.common.transfer.BaseTransfer;
+import com.echothree.util.server.cdi.CommandScopeExtension;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.message.ExecutionWarningAccumulator;
 import com.echothree.util.server.message.MessageUtils;
@@ -61,7 +63,6 @@ import com.echothree.util.server.message.SecurityMessageAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.persistence.ThreadSession;
-import com.echothree.util.server.persistence.ThreadUtils;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.Future;
 import javax.ejb.AsyncResult;
@@ -76,7 +77,6 @@ public abstract class BaseCommand
 
     private final CommandSecurityDefinition commandSecurityDefinition;
 
-    private ThreadUtils.PreservedState preservedState;
     protected Session session;
 
     private UserVisitPK userVisitPK;
@@ -313,7 +313,7 @@ public abstract class BaseCommand
                 var identityVerifiedTime = userSession.getIdentityVerifiedTime();
 
                 if(identityVerifiedTime != null) {
-                    var timeSinceLastCommand = session.START_TIME - userVisit.getLastCommandTime();
+                    var timeSinceLastCommand = session.getStartTime() - userVisit.getLastCommandTime();
 
                     // If it has been > 15 minutes since their last command, invalidate the UserSession.
                     if(timeSinceLastCommand > 15 * 60 * 1000) {
@@ -481,7 +481,6 @@ public abstract class BaseCommand
     }
 
     protected void setupSession() {
-        preservedState = ThreadUtils.preserveState();
         initSession();
     }
 
@@ -491,11 +490,7 @@ public abstract class BaseCommand
     }
 
     protected void teardownSession() {
-        ThreadUtils.close();
         session = null;
-
-        ThreadUtils.restoreState(preservedState);
-        preservedState = null;
     }
 
     public Future<CommandResult> runAsync(UserVisitPK userVisitPK) {
@@ -510,6 +505,11 @@ public abstract class BaseCommand
 
         this.userVisitPK = userVisitPK;
 
+        if(CommandScopeExtension.getCommandScopeContext().isActive()) {
+            CommandScopeExtension.getCommandScopeContext().push();
+        } else {
+            CommandScopeExtension.getCommandScopeContext().activate();
+        }
         setupSession();
 
         SecurityResult securityResult;
@@ -559,7 +559,7 @@ public abstract class BaseCommand
                 if(getUserVisitForUpdate() == null) {
                     getLog().error("Command not logged, unknown userVisit");
                 } else {
-                    userVisit.setLastCommandTime(Math.max(session.START_TIME, userVisit.getLastCommandTime()));
+                    userVisit.setLastCommandTime(Math.max(session.getStartTime(), userVisit.getLastCommandTime()));
 
                     // TODO: Check PartyTypeAuditPolicy to see if the command should be logged
                     if(logCommand) {
@@ -592,8 +592,9 @@ public abstract class BaseCommand
                                     var hasExecutionErrors = executionResult.getHasErrors();
 
                                     userVisitStatus.setUserVisitCommandSequence(userVisitCommandSequence);
+                                    userVisitStatus.store();
 
-                                    userControl.createUserVisitCommand(userVisit, userVisitCommandSequence, party, command, session.START_TIME_LONG,
+                                    userControl.createUserVisitCommand(userVisit, userVisitCommandSequence, party, command, session.getStartTime(),
                                             System.currentTimeMillis(), hadSecurityErrors, hadValidationErrors, hasExecutionErrors);
                                 } else {
                                     getLog().error("Command not logged, unknown userVisitStatus for " + userVisit.getPrimaryKey());
@@ -609,6 +610,7 @@ public abstract class BaseCommand
             }
         } finally {
             teardownSession();
+            CommandScopeExtension.getCommandScopeContext().pop();
         }
 
         // The Session for this Thread must NOT be utilized by anything after teardownSession() has been called.

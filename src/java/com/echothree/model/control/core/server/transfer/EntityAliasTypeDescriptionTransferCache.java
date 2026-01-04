@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -35,11 +35,11 @@ public class EntityAliasTypeDescriptionTransferCache
         super();
     }
     
-    public EntityAliasTypeDescriptionTransfer getEntityAliasTypeDescriptionTransfer(final UserVisit userVisit, final EntityAliasTypeDescription entityAliasTypeDescription, final EntityInstance entityInstance) {
+    public EntityAliasTypeDescriptionTransfer getEntityAliasTypeDescriptionTransfer(final UserVisit userVisit, final EntityAliasTypeDescription entityAliasTypeDescription) {
         var entityAliasTypeDescriptionTransfer = get(entityAliasTypeDescription);
         
         if(entityAliasTypeDescriptionTransfer == null) {
-            var entityAliasTypeTransfer = entityInstance == null ? entityAliasControl.getEntityAliasTypeTransfer(userVisit, entityAliasTypeDescription.getEntityAliasType(), entityInstance) : null;
+            var entityAliasTypeTransfer = entityAliasControl.getEntityAliasTypeTransfer(userVisit, entityAliasTypeDescription.getEntityAliasType());
             var languageTransfer = partyControl.getLanguageTransfer(userVisit, entityAliasTypeDescription.getLanguage());
             
             entityAliasTypeDescriptionTransfer = new EntityAliasTypeDescriptionTransfer(languageTransfer, entityAliasTypeTransfer, entityAliasTypeDescription.getDescription());

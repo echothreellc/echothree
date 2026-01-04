@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -43,10 +43,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import javax.enterprise.context.RequestScoped;
+import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
-@RequestScoped
+@CommandScope
 public class LicenseControl
         extends BaseModelControl {
     
@@ -83,8 +83,8 @@ public class LicenseControl
         }
 
         var licenseType = LicenseTypeFactory.getInstance().create();
-        var licenseTypeDetail = LicenseTypeDetailFactory.getInstance().create(licenseType, licenseTypeName, isDefault, sortOrder, session.START_TIME_LONG,
-                Session.MAX_TIME_LONG);
+        var licenseTypeDetail = LicenseTypeDetailFactory.getInstance().create(licenseType, licenseTypeName, isDefault, sortOrder, session.getStartTime(),
+                Session.MAX_TIME);
 
         // Convert to R/W
         licenseType = LicenseTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, licenseType.getPrimaryKey());
@@ -265,7 +265,7 @@ public class LicenseControl
                      licenseTypeDetailValue.getLicenseTypePK());
             var licenseTypeDetail = licenseType.getActiveDetailForUpdate();
 
-            licenseTypeDetail.setThruTime(session.START_TIME_LONG);
+            licenseTypeDetail.setThruTime(session.getStartTime());
             licenseTypeDetail.store();
 
             var licenseTypePK = licenseTypeDetail.getLicenseTypePK(); // Not updated
@@ -289,8 +289,8 @@ public class LicenseControl
                 }
             }
 
-            licenseTypeDetail = LicenseTypeDetailFactory.getInstance().create(licenseTypePK, licenseTypeName, isDefault, sortOrder, session.START_TIME_LONG,
-                    Session.MAX_TIME_LONG);
+            licenseTypeDetail = LicenseTypeDetailFactory.getInstance().create(licenseTypePK, licenseTypeName, isDefault, sortOrder, session.getStartTime(),
+                    Session.MAX_TIME);
 
             licenseType.setActiveDetail(licenseTypeDetail);
             licenseType.setLastDetail(licenseTypeDetail);
@@ -308,7 +308,7 @@ public class LicenseControl
 
         deleteLicenseTypeDescriptionsByLicenseType(licenseType, deletedBy);
 
-        licenseTypeDetail.setThruTime(session.START_TIME_LONG);
+        licenseTypeDetail.setThruTime(session.getStartTime());
         licenseType.setActiveDetail(null);
         licenseType.store();
 
@@ -353,7 +353,7 @@ public class LicenseControl
 
     public LicenseTypeDescription createLicenseTypeDescription(LicenseType licenseType, Language language, String description, BasePK createdBy) {
         var licenseTypeDescription = LicenseTypeDescriptionFactory.getInstance().create(licenseType, language, description,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(licenseType.getPrimaryKey(), EventTypes.MODIFY, licenseTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -466,7 +466,7 @@ public class LicenseControl
             var licenseTypeDescription = LicenseTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     licenseTypeDescriptionValue.getPrimaryKey());
 
-            licenseTypeDescription.setThruTime(session.START_TIME_LONG);
+            licenseTypeDescription.setThruTime(session.getStartTime());
             licenseTypeDescription.store();
 
             var licenseType = licenseTypeDescription.getLicenseType();
@@ -474,14 +474,14 @@ public class LicenseControl
             var description = licenseTypeDescriptionValue.getDescription();
 
             licenseTypeDescription = LicenseTypeDescriptionFactory.getInstance().create(licenseType, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(licenseType.getPrimaryKey(), EventTypes.MODIFY, licenseTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteLicenseTypeDescription(LicenseTypeDescription licenseTypeDescription, BasePK deletedBy) {
-        licenseTypeDescription.setThruTime(session.START_TIME_LONG);
+        licenseTypeDescription.setThruTime(session.getStartTime());
 
         sendEvent(licenseTypeDescription.getLicenseTypePK(), EventTypes.MODIFY, licenseTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 

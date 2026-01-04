@@ -1,7 +1,7 @@
 <%@ page pageEncoding="UTF-8" contentType="text/html;charset=UTF-8" %>
 
 <!--                                                                                  -->
-<!-- Copyright 2002-2025 Echo Three, LLC                                              -->
+<!-- Copyright 2002-2026 Echo Three, LLC                                              -->
 <!--                                                                                  -->
 <!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
 <!-- you may not use this file except in compliance with the License.                 -->
@@ -20,7 +20,7 @@
 
 <html:html xhtml="true">
     <head>
-        <title>Entity Instances</title>
+        <title><fmt:message key="pageTitle.entityInstances" /></title>
         <html:base/>
         <%@ include file="../../include/environment.jsp" %>
     </head>
@@ -28,18 +28,32 @@
         <div id="Header">
             <h2>
                 <a href="<c:url value="/action/Portal" />"><fmt:message key="navigation.portal" /></a> &gt;&gt;
-                <a href="<c:url value="/action/Core/Main" />">Core</a> &gt;&gt;
-                <a href="<c:url value="/action/Core/ComponentVendor/Main" />">Component Vendors</a> &gt;&gt;
+                <a href="<c:url value="/action/Core/Main" />"><fmt:message key="navigation.core" /></a> &gt;&gt;
+                <a href="<c:url value="/action/Core/ComponentVendor/Main" />"><fmt:message key="navigation.componentVendors" /></a> &gt;&gt;
                 <c:url var="entityTypesUrl" value="/action/Core/EntityType/Main">
-                    <c:param name="ComponentVendorName" value="${componentVendorName}" />
+                    <c:param name="ComponentVendorName" value="${entityType.componentVendor.componentVendorName}" />
                 </c:url>
-                <a href="${entityTypesUrl}">Entity Types</a> &gt;&gt;
-                Entity Instances
+                <a href="${entityTypesUrl}"><fmt:message key="navigation.entityTypes" /></a> &gt;&gt;
+                <fmt:message key="navigation.entityInstances" />
             </h2>
         </div>
         <div id="Content">
+            <et:checkSecurityRoles securityRoles="EntityInstance.Review" />
+            <et:hasSecurityRole securityRole="EntityInstance.Review" var="includeReviewUrl" />
             <display:table name="entityInstances" id="entityInstance" class="displaytag">
-                <display:column property="entityRef" titleKey="columnTitle.entity" />
+                <display:column titleKey="columnTitle.entity">
+                    <c:choose>
+                        <c:when test="${includeReviewUrl}">
+                            <c:url var="reviewUrl" value="/action/Core/EntityInstance/Review">
+                                <c:param name="EntityRef" value="${entityInstance.entityRef}" />
+                            </c:url>
+                            <a href="${reviewUrl}"> <et:appearance appearance="${entityInstance.entityAppearance.appearance}"><c:out value="${entityInstance.entityRef}" /></et:appearance></a>
+                        </c:when>
+                        <c:otherwise>
+                            <et:appearance appearance="${entityInstance.entityAppearance.appearance}"><c:out value="${entityInstance.entityRef}" /></et:appearance>
+                        </c:otherwise>
+                    </c:choose>
+                </display:column>
                 <display:column titleKey="columnTitle.description">
                     <c:out value="${entityInstance.description}" />
                 </display:column>

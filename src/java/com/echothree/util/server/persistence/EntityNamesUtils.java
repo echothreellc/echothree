@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -29,10 +29,18 @@ import com.echothree.model.data.communication.server.factory.CommunicationEventF
 import com.echothree.model.data.contactlist.common.pk.PartyContactListPK;
 import com.echothree.model.data.contactlist.server.factory.PartyContactListFactory;
 import com.echothree.model.data.core.common.pk.ComponentVendorPK;
+import com.echothree.model.data.core.common.pk.EntityAliasTypePK;
+import com.echothree.model.data.core.common.pk.EntityAttributeGroupPK;
+import com.echothree.model.data.core.common.pk.EntityAttributePK;
+import com.echothree.model.data.core.common.pk.EntityListItemPK;
 import com.echothree.model.data.core.common.pk.EntityTypePK;
 import com.echothree.model.data.core.common.pk.MimeTypePK;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.factory.ComponentVendorFactory;
+import com.echothree.model.data.core.server.factory.EntityAliasTypeFactory;
+import com.echothree.model.data.core.server.factory.EntityAttributeFactory;
+import com.echothree.model.data.core.server.factory.EntityAttributeGroupFactory;
+import com.echothree.model.data.core.server.factory.EntityListItemFactory;
 import com.echothree.model.data.core.server.factory.EntityTypeFactory;
 import com.echothree.model.data.core.server.factory.MimeTypeFactory;
 import com.echothree.model.data.forum.common.pk.ForumGroupPK;
@@ -268,6 +276,57 @@ public class EntityNamesUtils {
             names.put(Names.EntityTypeName.name(), entityTypeDetail.getEntityTypeName());
 
             return new EntityNames(Targets.EntityType.name(), names);
+        });
+
+        nameTranslators.put(EntityTypes.EntityAliasType.name(), (final EntityInstance entityInstance) -> {
+            var entityAliasType = EntityAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY,
+                    new EntityAliasTypePK(entityInstance.getEntityUniqueId()));
+            var names = new MapWrapper<String>(3);
+            var entityAliasTypeDetail = entityAliasType.getLastDetail();
+
+            names.put(Names.ComponentVendorName.name(), entityAliasTypeDetail.getEntityType().getLastDetail().getComponentVendor().getLastDetail().getComponentVendorName());
+            names.put(Names.EntityTypeName.name(), entityAliasTypeDetail.getEntityType().getLastDetail().getEntityTypeName());
+            names.put(Names.EntityAliasTypeName.name(), entityAliasTypeDetail.getEntityAliasTypeName());
+
+            return new EntityNames(Targets.EntityAliasType.name(), names);
+        });
+
+        nameTranslators.put(EntityTypes.EntityAttribute.name(), (final EntityInstance entityInstance) -> {
+            var entityAttribute = EntityAttributeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY,
+                    new EntityAttributePK(entityInstance.getEntityUniqueId()));
+            var names = new MapWrapper<String>(3);
+            var entityAttributeDetail = entityAttribute.getLastDetail();
+
+            names.put(Names.ComponentVendorName.name(), entityAttributeDetail.getEntityType().getLastDetail().getComponentVendor().getLastDetail().getComponentVendorName());
+            names.put(Names.EntityTypeName.name(), entityAttributeDetail.getEntityType().getLastDetail().getEntityTypeName());
+            names.put(Names.EntityAttributeName.name(), entityAttributeDetail.getEntityAttributeName());
+
+            return new EntityNames(Targets.EntityAttribute.name(), names);
+        });
+
+        nameTranslators.put(EntityTypes.EntityListItem.name(), (final EntityInstance entityInstance) -> {
+            var entityListItem = EntityListItemFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY,
+                    new EntityListItemPK(entityInstance.getEntityUniqueId()));
+            var names = new MapWrapper<String>(4);
+            var entityListItemDetail = entityListItem.getLastDetail();
+
+            names.put(Names.ComponentVendorName.name(), entityListItemDetail.getEntityAttribute().getLastDetail().getEntityType().getLastDetail().getEntityType().getLastDetail().getComponentVendor().getLastDetail().getComponentVendorName());
+            names.put(Names.EntityTypeName.name(), entityListItemDetail.getEntityAttribute().getLastDetail().getEntityType().getLastDetail().getEntityTypeName());
+            names.put(Names.EntityAttributeName.name(), entityListItemDetail.getEntityAttribute().getLastDetail().getEntityAttributeName());
+            names.put(Names.EntityListItemName.name(), entityListItemDetail.getEntityListItemName());
+
+            return new EntityNames(Targets.EntityListItem.name(), names);
+        });
+
+        nameTranslators.put(EntityTypes.EntityAttributeGroup.name(), (final EntityInstance entityInstance) -> {
+            var entityAttributeGroup = EntityAttributeGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY,
+                    new EntityAttributeGroupPK(entityInstance.getEntityUniqueId()));
+            var names = new MapWrapper<String>(1);
+            var entityAttributeGroupDetail = entityAttributeGroup.getLastDetail();
+
+            names.put(Names.EntityAttributeGroupName.name(), entityAttributeGroupDetail.getEntityAttributeGroupName());
+
+            return new EntityNames(Targets.EntityAttributeGroup.name(), names);
         });
 
         nameTranslators = Collections.unmodifiableMap(nameTranslators);

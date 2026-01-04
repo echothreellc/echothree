@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -30,15 +30,16 @@ import com.echothree.model.data.search.server.factory.CachedExecutedSearchResult
 import com.echothree.model.data.search.server.factory.SearchResultFactory;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import static java.lang.Math.toIntExact;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
-@RequestScoped
+@CommandScope
 public class EntityAliasTypeControl
         extends BaseCoreControl {
 
@@ -51,8 +52,13 @@ public class EntityAliasTypeControl
     //   Entity Alias Type Searches
     // --------------------------------------------------------------------------------
 
+    @Inject
+    SearchControl searchControl;
+
+    @Inject
+    EntityAliasControl entityAliasControl;
+
     public List<EntityAliasTypeResultTransfer> getEntityAliasTypeResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
-        var searchControl = Session.getModelController(SearchControl.class);
         var search = userVisitSearch.getSearch();
         var cachedSearch = search.getCachedSearch();
         List<EntityAliasTypeResultTransfer> entityAliasTypeResultTransfers;
@@ -67,7 +73,6 @@ public class EntityAliasTypeControl
             entityAliasTypeResultTransfers = new ArrayList<>(toIntExact(searchControl.countSearchResults(search)));
 
             try {
-                var entityAliasControl = Session.getModelController(EntityAliasControl.class);
                 var ps = SearchResultFactory.getInstance().prepareStatement(
                         "SELECT eni_entityuniqueid "
                                 + "FROM searchresults, entityinstances "
@@ -85,7 +90,7 @@ public class EntityAliasTypeControl
 
                         entityAliasTypeResultTransfers.add(new EntityAliasTypeResultTransfer(entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
                                 entityTypeDetail.getEntityTypeName(), entityAliasTypeDetail.getEntityAliasTypeName(),
-                                includeEntityAliasType ? entityAliasControl.getEntityAliasTypeTransfer(userVisit, entityAliasType, null) : null));
+                                includeEntityAliasType ? entityAliasControl.getEntityAliasTypeTransfer(userVisit, entityAliasType) : null));
                     }
                 } catch (SQLException se) {
                     throw new PersistenceDatabaseException(se);
@@ -101,7 +106,6 @@ public class EntityAliasTypeControl
             session.copyLimit(SearchResultConstants.ENTITY_TYPE_NAME, CachedExecutedSearchResultConstants.ENTITY_TYPE_NAME);
 
             try {
-                var entityAliasControl = Session.getModelController(EntityAliasControl.class);
                 var ps = CachedExecutedSearchResultFactory.getInstance().prepareStatement(
                         "SELECT eni_entityuniqueid "
                                 + "FROM cachedexecutedsearchresults, entityinstances "
@@ -119,7 +123,7 @@ public class EntityAliasTypeControl
 
                         entityAliasTypeResultTransfers.add(new EntityAliasTypeResultTransfer(entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
                                 entityTypeDetail.getEntityTypeName(), entityAliasTypeDetail.getEntityAliasTypeName(),
-                                includeEntityAliasType ? entityAliasControl.getEntityAliasTypeTransfer(userVisit, entityAliasType, null) : null));
+                                includeEntityAliasType ? entityAliasControl.getEntityAliasTypeTransfer(userVisit, entityAliasType) : null));
                     }
                 } catch (SQLException se) {
                     throw new PersistenceDatabaseException(se);
@@ -133,7 +137,6 @@ public class EntityAliasTypeControl
     }
 
     public List<EntityAliasTypeObject> getEntityAliasTypeObjectsFromUserVisitSearch(UserVisitSearch userVisitSearch) {
-        var entityAliasControl = Session.getModelController(EntityAliasControl.class);
         var searchControl = Session.getModelController(SearchControl.class);
         var entityAliasTypeObjects = new ArrayList<EntityAliasTypeObject>();
 

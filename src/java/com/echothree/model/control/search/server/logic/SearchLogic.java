@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -285,7 +285,7 @@ public class SearchLogic
                         handleExecutionError(DuplicateSearchResultActionException.class, eea, ExecutionErrors.DuplicateSearchResultAction.name(),
                                 searchKindName, searchTypeName, searchResultActionTypeName, basePK.getEntityRef());
                     } else {
-                        searchControl.createSearchResultAction(search, searchResultActionType, getSession().START_TIME_LONG, entityInstance, createdBy);
+                        searchControl.createSearchResultAction(search, searchResultActionType, getSession().getStartTime(), entityInstance, createdBy);
                     }
                 }
             }

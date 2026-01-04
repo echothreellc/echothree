@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -42,9 +42,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import javax.enterprise.context.RequestScoped;
+import com.echothree.util.server.cdi.CommandScope;
 
-@RequestScoped
+@CommandScope
 public class CacheEntryControl
         extends BaseCoreControl {
 
@@ -155,7 +155,7 @@ public class CacheEntryControl
         if(cacheEntry != null) {
             var validUntilTime = cacheEntry.getValidUntilTime();
 
-            if(validUntilTime != null && validUntilTime < session.START_TIME) {
+            if(validUntilTime != null && validUntilTime < session.getStartTime()) {
                 removeCacheEntry(cacheEntry);
             } else {
                 cacheEntryTransfer = getCacheEntryTransfer(userVisit, cacheEntry);

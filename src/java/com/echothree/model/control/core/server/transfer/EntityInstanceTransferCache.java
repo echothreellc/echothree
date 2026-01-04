@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ import com.echothree.model.control.core.server.control.AppearanceControl;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.core.server.control.EntityTypeControl;
 import com.echothree.model.control.core.server.control.EventControl;
+import com.echothree.model.control.item.common.ItemOptions;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
@@ -30,14 +31,20 @@ import com.echothree.util.server.persistence.EntityDescriptionUtils;
 import com.echothree.util.server.persistence.EntityNamesUtils;
 import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 @RequestScoped
 public class EntityInstanceTransferCache
         extends BaseCoreTransferCache<EntityInstance, EntityInstanceTransfer> {
 
-    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-    EntityTypeControl entityTypeControl = Session.getModelController(EntityTypeControl.class);
-    EventControl eventControl = Session.getModelController(EventControl.class);
+    @Inject
+    EntityInstanceControl entityInstanceControl;
+
+    @Inject
+    EntityTypeControl entityTypeControl;
+
+    @Inject
+    EventControl eventControl;
 
     boolean includeEntityAppearance;
     boolean includeEntityVisit;
@@ -61,8 +68,10 @@ public class EntityInstanceTransferCache
             includeEntityVisit = options.contains(CoreOptions.EntityInstanceIncludeEntityVisit);
             includeNames = options.contains(CoreOptions.EntityInstanceIncludeNames);
             includeUuidIfAvailable = options.contains(CoreOptions.EntityInstanceIncludeUuidIfAvailable);
+            setIncludeEntityAttributeGroups(options.contains(CoreOptions.EntityInstanceIncludeEntityAttributeGroups));
+            setIncludeTagScopes(options.contains(CoreOptions.EntityInstanceIncludeTagScopes));
         }
-        
+
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
             var properties = transferProperties.getProperties(EntityInstanceTransfer.class);
@@ -75,6 +84,8 @@ public class EntityInstanceTransferCache
                 filterDescription = !properties.contains(CoreProperties.DESCRIPTION);
             }
         }
+
+        setIncludeEntityInstance(true);
     }
 
     public EntityInstanceTransfer getEntityInstanceTransfer(final UserVisit userVisit, EntityInstance entityInstance, final boolean includeEntityAppearance,
@@ -108,7 +119,7 @@ public class EntityInstanceTransferCache
             
             entityInstanceTransfer = new EntityInstanceTransfer(entityTypeTransfer, entityUniqueId, uuid, entityRef,
                     entityTimeTransfer, description);
-            put(userVisit, entityInstance, entityInstanceTransfer);
+            put(userVisit, entityInstance, entityInstanceTransfer, entityInstance);
 
             if(includeEntityAppearance || this.includeEntityAppearance) {
                 var appearanceControl = Session.getModelController(AppearanceControl.class);

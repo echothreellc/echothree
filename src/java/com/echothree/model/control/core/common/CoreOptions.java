@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -41,6 +41,8 @@ public interface CoreOptions {
     String EntityInstanceIncludeEntityVisit = "EntityInstanceIncludeEntityVisit";
     String EntityInstanceIncludeNames = "EntityInstanceIncludeNames";
     String EntityInstanceIncludeUuidIfAvailable = "EntityInstanceIncludeUuidIfAvailable";
+    String EntityInstanceIncludeEntityAttributeGroups = "EntityInstanceIncludeEntityAttributeGroups";
+    String EntityInstanceIncludeTagScopes = "EntityInstanceIncludeTagScopes";
 
     String EntityListItemIncludeEntityAttributeGroups = "EntityListItemIncludeEntityAttributeGroups";
     String EntityListItemIncludeTagScopes = "EntityListItemIncludeTagScopes";
@@ -60,6 +62,7 @@ public interface CoreOptions {
 
     String EntityTypeIncludeIndexTypes = "EntityTypeIncludeIndexTypes";
     String EntityTypeIncludeIndexTypesCount = "EntityTypeIncludeIndexTypesCount";
+    String EntityTypeIncludeEntityAliasTypes = "EntityTypeIncludeEntityAliasTypes";
     String EntityTypeIncludeEntityAttributes = "EntityTypeIncludeEntityAttributes";
     String EntityTypeIncludeCommentTypes = "EntityTypeIncludeCommentTypes";
     String EntityTypeIncludeRatingTypes = "EntityTypeIncludeRatingTypes";

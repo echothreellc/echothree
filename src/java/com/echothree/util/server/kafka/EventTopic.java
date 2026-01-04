@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -25,27 +25,25 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import fish.payara.cloud.connectors.kafka.api.KafkaConnectionFactory;
 import java.nio.charset.StandardCharsets;
+import javax.annotation.Resource;
+import javax.enterprise.context.ApplicationScoped;
 import org.apache.http.HttpHeaders;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.header.Headers;
 import org.apache.kafka.common.header.internals.RecordHeader;
 import org.apache.kafka.common.header.internals.RecordHeaders;
 
+@ApplicationScoped
 public class EventTopic {
+
+    @Resource(name = "java:/KafkaConnectionFactory")
+    KafkaConnectionFactory kafkaConnectionFactory;
 
     private static final String TOPIC = "echothree-events-json";
 
-    private static final EventTopic instance = new EventTopic();
+    private final Gson gson = new GsonBuilder().serializeNulls().create();
 
-    public static EventTopic getInstance() {
-        return instance;
-    }
-
-    KafkaConnectionFactory kafkaConnectionFactory = KafkaConnectionFactoryResource.getInstance().getKafkaConnectionFactory();
-    EntityInstanceUtils entityInstanceUtils = EntityInstanceUtils.getInstance();
-    Gson gson = new GsonBuilder().serializeNulls().create();
-
-    Headers HEADERS_JSON = new RecordHeaders()
+    private final Headers HEADERS_JSON = new RecordHeaders()
             .add(new RecordHeader(HttpHeaders.CONTENT_TYPE, MediaType.JSON_UTF_8.toString().getBytes(StandardCharsets.UTF_8)));
 
     protected EventTopic() {}
@@ -59,13 +57,13 @@ public class EventTopic {
                     var eventTime = event.getEventTime();
                     var eventTimeSequence = event.getEventTimeSequence();
                     var entityInstance = entityInstanceControl.ensureUuidForEntityInstance(event.getEntityInstance(), false);
-                    var entityRef = entityInstanceUtils.getEntityRefByEntityInstance(entityInstance);
+                    var entityRef = EntityInstanceUtils.getEntityRefByEntityInstance(entityInstance);
                     var id = entityInstance.getUuid();
                     var eventTypeName = event.getEventType().getEventTypeName();
-                    var relatedEntityRef = entityInstanceUtils.getEntityRefByEntityInstance(event.getRelatedEntityInstance());
+                    var relatedEntityRef = EntityInstanceUtils.getEntityRefByEntityInstance(event.getRelatedEntityInstance());
                     var relatedEventType = event.getRelatedEventType();
                     var relatedEventTypeName = relatedEventType == null ? null : relatedEventType.getEventTypeName();
-                    var createdByEntityRef = entityInstanceUtils.getEntityRefByEntityInstance(event.getCreatedBy());
+                    var createdByEntityRef = EntityInstanceUtils.getEntityRefByEntityInstance(event.getCreatedBy());
 
 //                    var value = "eventId = " + eventId
 //                            + ", eventTime = " + eventTime

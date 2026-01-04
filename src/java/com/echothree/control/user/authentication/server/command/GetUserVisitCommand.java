@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,9 +22,9 @@ import com.echothree.model.data.user.server.entity.UserKey;
 import com.echothree.model.data.user.server.entity.UserKeyDetail;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.Dependent;
 
-@RequestScoped
+@Dependent
 public class GetUserVisitCommand
         extends BaseSimpleCommand<GetUserVisitForm> {
     
@@ -51,7 +51,7 @@ public class GetUserVisitCommand
             userKeyName = userKeyDetail.getUserKeyName();
         } else {
             userKey = userKeyDetail.getUserKey();
-            userControl.getUserKeyStatusForUpdate(userKey).setLastSeenTime(session.START_TIME_LONG);
+            userControl.getUserKeyStatusForUpdate(userKey).setLastSeenTime(session.getStartTime());
         }
         
         setUserVisitPK(userControl.createUserVisit(userKey, null, null, null, null, null, null, null).getPrimaryKey());

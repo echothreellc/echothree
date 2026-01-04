@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -31,20 +31,16 @@ public interface BaseFactory<PK extends BasePK, BE extends BaseEntity> {
     
     String getEntityTypeName();
 
-    public void store(Session session, BE entity);
-    
-    void store(Session session, Collection<BE> entities);
+    void store(BE entity);
     
     void store(Collection<BE> entities);
     
-    public void remove(Session session, BE entity);
+    void remove(BE entity);
     
-    public void remove(Session session, PK pk);
+    void remove(PK pk);
     
-    public void remove(Session session, Collection<PK> pks);
+    void remove(Collection<PK> pks);
     
-    public void remove(Collection<PK> pks);
-    
-    public boolean validPK(Session session, PK pk);
+    boolean validPK(PK pk);
     
 }

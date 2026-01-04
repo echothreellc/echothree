@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -31,9 +31,9 @@ import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.Dependent;
 
-@RequestScoped
+@Dependent
 public class StartJobCommand
         extends BaseSimpleCommand<StartJobForm> {
     
@@ -64,7 +64,7 @@ public class StartJobCommand
         if(job != null) {
             var jobStatus = jobControl.getJobStatusForUpdate(job);
             
-            jobStatus.setLastStartTime(session.START_TIME);
+            jobStatus.setLastStartTime(session.getStartTime());
             jobStatus.setLastEndTime(null);
         } else {
             addExecutionError(ExecutionErrors.UnknownJobName.name(), jobName);

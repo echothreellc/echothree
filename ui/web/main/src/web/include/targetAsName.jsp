@@ -75,6 +75,18 @@
         <c:when test="${entityInstance.entityNames.target == 'EntityType'}">
             <c:set var="targetNames" value="${entityInstance.entityNames.names.map.ComponentVendorName}, ${entityInstance.entityNames.names.map.EntityTypeName}" />
         </c:when>
+        <c:when test="${entityInstance.entityNames.target == 'EntityAliasType'}">
+            <c:set var="targetNames" value="${entityInstance.entityNames.names.map.ComponentVendorName}, ${entityInstance.entityNames.names.map.EntityTypeName}, ${entityInstance.entityNames.names.map.EntityAliasTypeName}" />
+        </c:when>
+        <c:when test="${entityInstance.entityNames.target == 'EntityAttribute'}">
+            <c:set var="targetNames" value="${entityInstance.entityNames.names.map.ComponentVendorName}, ${entityInstance.entityNames.names.map.EntityTypeName}, ${entityInstance.entityNames.names.map.EntityAttributeName}" />
+        </c:when>
+        <c:when test="${entityInstance.entityNames.target == 'EntityListItem'}">
+            <c:set var="targetNames" value="${entityInstance.entityNames.names.map.ComponentVendorName}, ${entityInstance.entityNames.names.map.EntityTypeName}, ${entityInstance.entityNames.names.map.EntityAttributeName}, ${entityInstance.entityNames.names.map.EntityListItemName}" />
+        </c:when>
+        <c:when test="${entityInstance.entityNames.target == 'EntityAttributeGroup'}">
+            <c:set var="targetNames" value="${entityInstance.entityNames.names.map.EntityAttributeGroupName}" />
+        </c:when>
     </c:choose>
 </c:if>
 

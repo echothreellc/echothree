@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,13 +16,18 @@
 
 package com.echothree.control.user.core.common.result;
 
+import com.echothree.control.user.core.common.spec.EntityTypeSpec;
 import com.echothree.model.control.core.common.transfer.EntityInstanceTransfer;
+import com.echothree.model.control.core.common.transfer.EntityTypeTransfer;
 import com.echothree.util.common.command.BaseResult;
 import java.util.List;
 
 public interface GetEntityInstancesResult
         extends BaseResult {
-    
+
+    EntityTypeTransfer getEntityType();
+    void setEntityType(EntityTypeTransfer entityType);
+
     List<EntityInstanceTransfer> getEntityInstances();
     void setEntityInstances(List<EntityInstanceTransfer> entityInstances);
     

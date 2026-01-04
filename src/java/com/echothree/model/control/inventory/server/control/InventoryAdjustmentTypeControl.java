@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -41,9 +41,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import javax.enterprise.context.RequestScoped;
+import com.echothree.util.server.cdi.CommandScope;
 
-@RequestScoped
+@CommandScope
 public class InventoryAdjustmentTypeControl
         extends BaseInventoryControl {
 
@@ -72,7 +72,7 @@ public class InventoryAdjustmentTypeControl
 
         var inventoryAdjustmentType = InventoryAdjustmentTypeFactory.getInstance().create();
         var inventoryAdjustmentTypeDetail = InventoryAdjustmentTypeDetailFactory.getInstance().create(inventoryAdjustmentType,
-                inventoryAdjustmentTypeName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                inventoryAdjustmentTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         inventoryAdjustmentType = InventoryAdjustmentTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -278,7 +278,7 @@ public class InventoryAdjustmentTypeControl
                      inventoryAdjustmentTypeDetailValue.getInventoryAdjustmentTypePK());
             var inventoryAdjustmentTypeDetail = inventoryAdjustmentType.getActiveDetailForUpdate();
 
-            inventoryAdjustmentTypeDetail.setThruTime(session.START_TIME_LONG);
+            inventoryAdjustmentTypeDetail.setThruTime(session.getStartTime());
             inventoryAdjustmentTypeDetail.store();
 
             var inventoryAdjustmentTypePK = inventoryAdjustmentTypeDetail.getInventoryAdjustmentTypePK(); // Not updated
@@ -303,7 +303,7 @@ public class InventoryAdjustmentTypeControl
             }
 
             inventoryAdjustmentTypeDetail = InventoryAdjustmentTypeDetailFactory.getInstance().create(inventoryAdjustmentTypePK,
-                    inventoryAdjustmentTypeName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    inventoryAdjustmentTypeName, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             inventoryAdjustmentType.setActiveDetail(inventoryAdjustmentTypeDetail);
             inventoryAdjustmentType.setLastDetail(inventoryAdjustmentTypeDetail);
@@ -322,7 +322,7 @@ public class InventoryAdjustmentTypeControl
         deleteInventoryAdjustmentTypeDescriptionsByInventoryAdjustmentType(inventoryAdjustmentType, deletedBy);
         // TODO: deleteInventoryTransactionsByInventoryAdjustmentType(inventoryAdjustmentType, deletedBy);
 
-        inventoryAdjustmentTypeDetail.setThruTime(session.START_TIME_LONG);
+        inventoryAdjustmentTypeDetail.setThruTime(session.getStartTime());
         inventoryAdjustmentType.setActiveDetail(null);
         inventoryAdjustmentType.store();
 
@@ -366,7 +366,7 @@ public class InventoryAdjustmentTypeControl
 
     public InventoryAdjustmentTypeDescription createInventoryAdjustmentTypeDescription(InventoryAdjustmentType inventoryAdjustmentType, Language language, String description, BasePK createdBy) {
         var inventoryAdjustmentTypeDescription = InventoryAdjustmentTypeDescriptionFactory.getInstance().create(inventoryAdjustmentType, language, description,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
 
         sendEvent(inventoryAdjustmentType.getPrimaryKey(), EventTypes.MODIFY, inventoryAdjustmentTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
@@ -479,7 +479,7 @@ public class InventoryAdjustmentTypeControl
             var inventoryAdjustmentTypeDescription = InventoryAdjustmentTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                     inventoryAdjustmentTypeDescriptionValue.getPrimaryKey());
 
-            inventoryAdjustmentTypeDescription.setThruTime(session.START_TIME_LONG);
+            inventoryAdjustmentTypeDescription.setThruTime(session.getStartTime());
             inventoryAdjustmentTypeDescription.store();
 
             var inventoryAdjustmentType = inventoryAdjustmentTypeDescription.getInventoryAdjustmentType();
@@ -487,14 +487,14 @@ public class InventoryAdjustmentTypeControl
             var description = inventoryAdjustmentTypeDescriptionValue.getDescription();
 
             inventoryAdjustmentTypeDescription = InventoryAdjustmentTypeDescriptionFactory.getInstance().create(inventoryAdjustmentType, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
 
             sendEvent(inventoryAdjustmentType.getPrimaryKey(), EventTypes.MODIFY, inventoryAdjustmentTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteInventoryAdjustmentTypeDescription(InventoryAdjustmentTypeDescription inventoryAdjustmentTypeDescription, BasePK deletedBy) {
-        inventoryAdjustmentTypeDescription.setThruTime(session.START_TIME_LONG);
+        inventoryAdjustmentTypeDescription.setThruTime(session.getStartTime());
 
         sendEvent(inventoryAdjustmentTypeDescription.getInventoryAdjustmentTypePK(), EventTypes.MODIFY, inventoryAdjustmentTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 

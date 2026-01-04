@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -51,9 +51,9 @@ import com.echothree.util.server.string.DateUtils;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.Dependent;
 
-@RequestScoped
+@Dependent
 public class EditItemCommand
         extends BaseAbstractEditCommand<ItemSpec, ItemEdit, EditItemResult, Item, Item> {
     
@@ -274,15 +274,15 @@ public class EditItemCommand
         var itemDetailValue = itemControl.getItemDetailValueForUpdate(item);
         var shippingChargeExempt = Boolean.valueOf(edit.getShippingChargeExempt());
         var strShippingStartTime = edit.getShippingStartTime();
-        var shippingStartTime = strShippingStartTime == null? session.START_TIME_LONG: Long.valueOf(strShippingStartTime);
+        var shippingStartTime = strShippingStartTime == null? session.getStartTime(): Long.valueOf(strShippingStartTime);
         var strShippingEndTime = edit.getShippingEndTime();
         var shippingEndTime = strShippingEndTime == null? null: Long.valueOf(strShippingEndTime);
         var strSalesOrderStartTime = edit.getSalesOrderStartTime();
-        var salesOrderStartTime = strSalesOrderStartTime == null? session.START_TIME_LONG: Long.valueOf(strSalesOrderStartTime);
+        var salesOrderStartTime = strSalesOrderStartTime == null? session.getStartTime(): Long.valueOf(strSalesOrderStartTime);
         var strSalesOrderEndTime = edit.getSalesOrderEndTime();
         var salesOrderEndTime = strSalesOrderEndTime == null? null: Long.valueOf(strSalesOrderEndTime);
         var strPurchaseOrderStartTime = edit.getPurchaseOrderStartTime();
-        var purchaseOrderStartTime = isKit? null: strPurchaseOrderStartTime == null? session.START_TIME_LONG: Long.valueOf(strPurchaseOrderStartTime);
+        var purchaseOrderStartTime = isKit? null: strPurchaseOrderStartTime == null? session.getStartTime(): Long.valueOf(strPurchaseOrderStartTime);
         var strPurchaseOrderEndTime = edit.getPurchaseOrderEndTime();
         var purchaseOrderEndTime = isKit? null: strPurchaseOrderEndTime == null? null: Long.valueOf(strPurchaseOrderEndTime);
         var allowClubDiscounts = Boolean.valueOf(edit.getAllowClubDiscounts());

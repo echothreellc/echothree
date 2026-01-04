@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -197,6 +197,7 @@ import com.echothree.control.user.sequence.common.result.CreateSequenceResult;
 import com.echothree.control.user.sequence.common.result.CreateSequenceTypeResult;
 import com.echothree.control.user.sequence.common.result.EditSequenceResult;
 import com.echothree.control.user.sequence.common.result.EditSequenceTypeResult;
+import com.echothree.control.user.sequence.common.result.GetNextSequenceValueResult;
 import com.echothree.control.user.shipment.common.ShipmentUtil;
 import com.echothree.control.user.shipment.common.result.CreateFreeOnBoardResult;
 import com.echothree.control.user.shipment.common.result.EditFreeOnBoardResult;
@@ -256,6 +257,7 @@ import com.echothree.model.control.search.server.graphql.SearchItemsResultObject
 import com.echothree.model.control.search.server.graphql.SearchShippingMethodsResultObject;
 import com.echothree.model.control.search.server.graphql.SearchVendorsResultObject;
 import com.echothree.model.control.search.server.graphql.SearchWarehousesResultObject;
+import com.echothree.model.control.sequence.server.graphql.GetNextSequenceValueResultObject;
 import com.echothree.util.common.command.EditMode;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLID;
@@ -1752,10 +1754,11 @@ public interface GraphQlMutations {
     static MutationResultWithIdObject createSequence(final DataFetchingEnvironment env,
             @GraphQLName("sequenceTypeName") @GraphQLNonNull final String sequenceTypeName,
             @GraphQLName("sequenceName") @GraphQLNonNull final String sequenceName,
+            @GraphQLName("mask") @GraphQLNonNull final String mask,
             @GraphQLName("chunkSize") final String chunkSize,
             @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
             @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
-            @GraphQLName("value") @GraphQLNonNull final String value,
+            @GraphQLName("value") final String value,
             @GraphQLName("description") final String description) {
         var mutationResultObject = new MutationResultWithIdObject();
 
@@ -1764,6 +1767,7 @@ public interface GraphQlMutations {
 
             commandForm.setSequenceName(sequenceName);
             commandForm.setSequenceTypeName(sequenceTypeName);
+            commandForm.setMask(mask);
             commandForm.setChunkSize(chunkSize);
             commandForm.setIsDefault(isDefault);
             commandForm.setSortOrder(sortOrder);
@@ -1871,8 +1875,9 @@ public interface GraphQlMutations {
     @GraphQLRelayMutation
     @GraphQLName("setSequenceValue")
     static MutationResultObject setSequenceValue(final DataFetchingEnvironment env,
-            @GraphQLName("sequenceTypeName") @GraphQLNonNull final String sequenceTypeName,
-            @GraphQLName("sequenceName") @GraphQLNonNull final String sequenceName,
+            @GraphQLName("sequenceTypeName") final String sequenceTypeName,
+            @GraphQLName("sequenceName") final String sequenceName,
+            @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("value") @GraphQLNonNull final String value) {
         var mutationResultObject = new MutationResultObject();
 
@@ -1881,10 +1886,40 @@ public interface GraphQlMutations {
 
             commandForm.setSequenceTypeName(sequenceTypeName);
             commandForm.setSequenceName(sequenceName);
+            commandForm.setUuid(id);
             commandForm.setValue(value);
 
             var commandResult = SequenceUtil.getHome().setSequenceValue(BaseGraphQl.getUserVisitPK(env), commandForm);
             mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    @GraphQLName("nextSequenceValue")
+    static GetNextSequenceValueResultObject nextSequenceValue(final DataFetchingEnvironment env,
+            @GraphQLName("sequenceTypeName") final String sequenceTypeName,
+            @GraphQLName("sequenceName") final String sequenceName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        var mutationResultObject = new GetNextSequenceValueResultObject();
+
+        try {
+            var commandForm = SequenceUtil.getHome().getGetNextSequenceValueForm();
+
+            commandForm.setSequenceTypeName(sequenceTypeName);
+            commandForm.setSequenceName(sequenceName);
+            commandForm.setUuid(id);
+
+            var commandResult = SequenceUtil.getHome().getNextSequenceValue(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                mutationResultObject.setGetNextSequenceValueResult((GetNextSequenceValueResult)commandResult.getExecutionResult().getResult());
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }

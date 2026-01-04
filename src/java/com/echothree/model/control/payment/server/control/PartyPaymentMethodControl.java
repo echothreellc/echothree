@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -58,9 +58,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import javax.enterprise.context.RequestScoped;
+import com.echothree.util.server.cdi.CommandScope;
 
-@RequestScoped
+@CommandScope
 public class PartyPaymentMethodControl
         extends BasePaymentControl {
 
@@ -100,7 +100,7 @@ public class PartyPaymentMethodControl
 
         var partyPaymentMethod = PartyPaymentMethodFactory.getInstance().create();
         var partyPaymentMethodDetail = PartyPaymentMethodDetailFactory.getInstance().create(partyPaymentMethod, partyPaymentMethodName,
-                party, description, paymentMethod, deleteWhenUnused, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                party, description, paymentMethod, deleteWhenUnused, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         partyPaymentMethod = PartyPaymentMethodFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, partyPaymentMethod.getPrimaryKey());
@@ -309,7 +309,7 @@ public class PartyPaymentMethodControl
                      partyPaymentMethodDetailValue.getPartyPaymentMethodPK());
             var partyPaymentMethodDetail = partyPaymentMethod.getActiveDetailForUpdate();
 
-            partyPaymentMethodDetail.setThruTime(session.START_TIME_LONG);
+            partyPaymentMethodDetail.setThruTime(session.getStartTime());
             partyPaymentMethodDetail.store();
 
             var partyPaymentMethodPK = partyPaymentMethodDetail.getPartyPaymentMethodPK(); // Not updated
@@ -338,7 +338,7 @@ public class PartyPaymentMethodControl
             }
 
             partyPaymentMethodDetail = PartyPaymentMethodDetailFactory.getInstance().create(partyPaymentMethodPK, partyPaymentMethodName, party.getPrimaryKey(),
-                    description, paymentMethodPK, deleteWhenUnused, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    description, paymentMethodPK, deleteWhenUnused, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
 
             partyPaymentMethod.setActiveDetail(partyPaymentMethodDetail);
             partyPaymentMethod.setLastDetail(partyPaymentMethodDetail);
@@ -357,7 +357,7 @@ public class PartyPaymentMethodControl
         orderPaymentPreferenceControl.deleteOrderPaymentPreferencesByPartyPaymentMethod(partyPaymentMethod, deletedBy);
         
         var partyPaymentMethodDetail = partyPaymentMethod.getLastDetailForUpdate();
-        partyPaymentMethodDetail.setThruTime(session.START_TIME_LONG);
+        partyPaymentMethodDetail.setThruTime(session.getStartTime());
         partyPaymentMethod.setActiveDetail(null);
         partyPaymentMethod.store();
 
@@ -416,10 +416,10 @@ public class PartyPaymentMethodControl
             String middleName, String middleNameSdx, String lastName, String lastNameSdx, NameSuffix nameSuffix, String name,
             PartyContactMechanism billingPartyContactMechanism, String issuerName, PartyContactMechanism issuerPartyContactMechanism,
             BasePK createdBy) {
-        var partyPaymentMethodCreditCard = PartyPaymentMethodCreditCardFactory.getInstance().create(session,
+        var partyPaymentMethodCreditCard = PartyPaymentMethodCreditCardFactory.getInstance().create(
                 partyPaymentMethod, encodePartyPaymentMethodCreditCardNumber(number), expirationMonth, expirationYear, personalTitle,
                 firstName, firstNameSdx, middleName, middleNameSdx, lastName, lastNameSdx, nameSuffix, name, billingPartyContactMechanism,
-                issuerName, issuerPartyContactMechanism, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                issuerName, issuerPartyContactMechanism, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(partyPaymentMethod.getPrimaryKey(), EventTypes.MODIFY,
                 partyPaymentMethodCreditCard.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -482,7 +482,7 @@ public class PartyPaymentMethodControl
             ps.setLong(1, partyPaymentMethod.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            partyPaymentMethodCreditCard = PartyPaymentMethodCreditCardFactory.getInstance().getEntityFromQuery(session,
+            partyPaymentMethodCreditCard = PartyPaymentMethodCreditCardFactory.getInstance().getEntityFromQuery(
                     entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -526,7 +526,7 @@ public class PartyPaymentMethodControl
             ps.setLong(1, billingPartyContactMechanism.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            partyPaymentMethodCreditCards = PartyPaymentMethodCreditCardFactory.getInstance().getEntitiesFromQuery(session,
+            partyPaymentMethodCreditCards = PartyPaymentMethodCreditCardFactory.getInstance().getEntitiesFromQuery(
                     entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -570,7 +570,7 @@ public class PartyPaymentMethodControl
             ps.setLong(1, issuerPartyContactMechanism.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            partyPaymentMethodCreditCards = PartyPaymentMethodCreditCardFactory.getInstance().getEntitiesFromQuery(session,
+            partyPaymentMethodCreditCards = PartyPaymentMethodCreditCardFactory.getInstance().getEntitiesFromQuery(
                     entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -618,7 +618,7 @@ public class PartyPaymentMethodControl
             var partyPaymentMethodCreditCard = PartyPaymentMethodCreditCardFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      partyPaymentMethodCreditCardValue.getPrimaryKey());
             
-            partyPaymentMethodCreditCard.setThruTime(session.START_TIME_LONG);
+            partyPaymentMethodCreditCard.setThruTime(session.getStartTime());
             partyPaymentMethodCreditCard.store();
 
             var partyPaymentMethodPK = partyPaymentMethodCreditCard.getPartyPaymentMethodPK(); // Not updated
@@ -640,7 +640,7 @@ public class PartyPaymentMethodControl
             
             partyPaymentMethodCreditCard = PartyPaymentMethodCreditCardFactory.getInstance().create(partyPaymentMethodPK, number, expirationMonth,
                     expirationYear, personalTitlePK, firstName, firstNameSdx, middleName, middleNameSdx, lastName, lastNameSdx, nameSuffixPK, name,
-                    billingPartyContactMechanismPK, issuerName, issuerPartyContactMechanismPK, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    billingPartyContactMechanismPK, issuerName, issuerPartyContactMechanismPK, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(partyPaymentMethodPK, EventTypes.MODIFY, partyPaymentMethodCreditCard.getPrimaryKey(),
                     EventTypes.MODIFY, updatedBy);
@@ -648,7 +648,7 @@ public class PartyPaymentMethodControl
     }
     
     public void deletePartyPaymentMethodCreditCard(PartyPaymentMethodCreditCard partyPaymentMethodCreditCard, BasePK deletedBy) {
-        partyPaymentMethodCreditCard.setThruTime(session.START_TIME_LONG);
+        partyPaymentMethodCreditCard.setThruTime(session.getStartTime());
         
         sendEvent(partyPaymentMethodCreditCard.getPartyPaymentMethodPK(), EventTypes.MODIFY, partyPaymentMethodCreditCard.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
@@ -678,9 +678,9 @@ public class PartyPaymentMethodControl
     
     public PartyPaymentMethodCreditCardSecurityCode createPartyPaymentMethodCreditCardSecurityCode(PartyPaymentMethod partyPaymentMethod,
             String securityCode, BasePK createdBy) {
-        var partyPaymentMethodCreditCardSecurityCode = PartyPaymentMethodCreditCardSecurityCodeFactory.getInstance().create(session,
-                partyPaymentMethod, encodePartyPaymentMethodCreditCardSecurityCodeSecurityCode(securityCode), session.START_TIME_LONG,
-                Session.MAX_TIME_LONG);
+        var partyPaymentMethodCreditCardSecurityCode = PartyPaymentMethodCreditCardSecurityCodeFactory.getInstance().create(
+                partyPaymentMethod, encodePartyPaymentMethodCreditCardSecurityCodeSecurityCode(securityCode), session.getStartTime(),
+                Session.MAX_TIME);
         
         sendEvent(partyPaymentMethod.getPrimaryKey(), EventTypes.MODIFY,
                 partyPaymentMethodCreditCardSecurityCode.getPrimaryKey(), EventTypes.CREATE, createdBy);
@@ -711,7 +711,7 @@ public class PartyPaymentMethodControl
             ps.setLong(1, partyPaymentMethod.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            partyPaymentMethodCreditCardSecurityCode = PartyPaymentMethodCreditCardSecurityCodeFactory.getInstance().getEntityFromQuery(session,
+            partyPaymentMethodCreditCardSecurityCode = PartyPaymentMethodCreditCardSecurityCodeFactory.getInstance().getEntityFromQuery(
                     entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -762,14 +762,14 @@ public class PartyPaymentMethodControl
             var partyPaymentMethodCreditCardSecurityCode = PartyPaymentMethodCreditCardSecurityCodeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      partyPaymentMethodCreditCardSecurityCodeValue.getPrimaryKey());
             
-            partyPaymentMethodCreditCardSecurityCode.setThruTime(session.START_TIME_LONG);
+            partyPaymentMethodCreditCardSecurityCode.setThruTime(session.getStartTime());
             partyPaymentMethodCreditCardSecurityCode.store();
 
             var partyPaymentMethodPK = partyPaymentMethodCreditCardSecurityCode.getPartyPaymentMethodPK(); // Not updated
             var securityCode = partyPaymentMethodCreditCardSecurityCodeValue.getSecurityCode();
             
-            partyPaymentMethodCreditCardSecurityCode = PartyPaymentMethodCreditCardSecurityCodeFactory.getInstance().create(session,
-                    partyPaymentMethodPK, securityCode, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+            partyPaymentMethodCreditCardSecurityCode = PartyPaymentMethodCreditCardSecurityCodeFactory.getInstance().create(
+                    partyPaymentMethodPK, securityCode, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(partyPaymentMethodPK, EventTypes.MODIFY, partyPaymentMethodCreditCardSecurityCode.getPrimaryKey(),
                     EventTypes.MODIFY, updatedBy);
@@ -778,7 +778,7 @@ public class PartyPaymentMethodControl
     
     public void deletePartyPaymentMethodCreditCardSecurityCode(PartyPaymentMethodCreditCardSecurityCode partyPaymentMethodCreditCardSecurityCode,
             BasePK deletedBy) {
-        partyPaymentMethodCreditCardSecurityCode.setThruTime(session.START_TIME_LONG);
+        partyPaymentMethodCreditCardSecurityCode.setThruTime(session.getStartTime());
         
         sendEvent(partyPaymentMethodCreditCardSecurityCode.getPartyPaymentMethodPK(), EventTypes.MODIFY,
                 partyPaymentMethodCreditCardSecurityCode.getPrimaryKey(), EventTypes.DELETE, deletedBy);
@@ -790,8 +790,8 @@ public class PartyPaymentMethodControl
     
     public PartyPaymentMethodContactMechanism createPartyPaymentMethodContactMechanism(PartyPaymentMethod partyPaymentMethod,
             PartyContactMechanismPurpose partyContactMechanismPurpose, BasePK createdBy) {
-        var partyPaymentMethodContactMechanism = PartyPaymentMethodContactMechanismFactory.getInstance().create(session,
-                partyPaymentMethod, partyContactMechanismPurpose, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        var partyPaymentMethodContactMechanism = PartyPaymentMethodContactMechanismFactory.getInstance().create(
+                partyPaymentMethod, partyContactMechanismPurpose, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(partyPaymentMethod.getPrimaryKey(), EventTypes.MODIFY, partyPaymentMethodContactMechanism.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -824,7 +824,7 @@ public class PartyPaymentMethodControl
             ps.setLong(2, partyContactMechanismPurpose.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            partyPaymentMethodContactMechanism = PartyPaymentMethodContactMechanismFactory.getInstance().getEntityFromQuery(session,
+            partyPaymentMethodContactMechanism = PartyPaymentMethodContactMechanismFactory.getInstance().getEntityFromQuery(
                     entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -866,7 +866,7 @@ public class PartyPaymentMethodControl
             ps.setLong(1, partyPaymentMethod.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            partyPaymentMethodContactMechanisms = PartyPaymentMethodContactMechanismFactory.getInstance().getEntitiesFromQuery(session,
+            partyPaymentMethodContactMechanisms = PartyPaymentMethodContactMechanismFactory.getInstance().getEntitiesFromQuery(
                     entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -906,7 +906,7 @@ public class PartyPaymentMethodControl
             ps.setLong(1, partyContactMechanismPurpose.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            partyPaymentMethodContactMechanisms = PartyPaymentMethodContactMechanismFactory.getInstance().getEntitiesFromQuery(session,
+            partyPaymentMethodContactMechanisms = PartyPaymentMethodContactMechanismFactory.getInstance().getEntitiesFromQuery(
                     entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);

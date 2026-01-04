@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -231,7 +231,7 @@ public class PartyTrainingClassSessionLogic
             final TrainingClassPage trainingClassPage, final BasePK createdBy) {
         var trainingControl = Session.getModelController(TrainingControl.class);
         var partyTrainingClassSessionPage = trainingControl.createPartyTrainingClassSessionPage(partyTrainingClassSession,
-                trainingClassPage, session.START_TIME_LONG, null, createdBy);
+                trainingClassPage, session.getStartTime(), null, createdBy);
 
         return partyTrainingClassSessionPage;
     }

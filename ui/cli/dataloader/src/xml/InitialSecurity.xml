@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--                                                                                  -->
-<!-- Copyright 2002-2025 Echo Three, LLC                                              -->
+<!-- Copyright 2002-2026 Echo Three, LLC                                              -->
 <!--                                                                                  -->
 <!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
 <!-- you may not use this file except in compliance with the License.                 -->
@@ -2144,6 +2144,18 @@
             </securityRole>
             <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Sequence Description" />
+            </securityRole>
+        </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="SequenceValue" parentSecurityRoleGroupName="SequenceComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Sequence" />
+            <securityRole securityRoleName="Set" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Sequence Value Set" />
+            </securityRole>
+            <securityRole securityRoleName="Get" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Sequence Value Get" />
+            </securityRole>
+            <securityRole securityRoleName="GetNext" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Sequence Value Get Next" />
             </securityRole>
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="ShippingComponent" parentSecurityRoleGroupName="ROOT" isDefault="false" sortOrder="1">
@@ -5580,6 +5592,9 @@
             <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Entity List Item Description" />
             </securityRole>
+            <securityRole securityRoleName="Search" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Entity List Item Search" />
+            </securityRole>
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="EntityIntegerRange" parentSecurityRoleGroupName="CoreComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Entity Integer Range" />
@@ -8647,6 +8662,9 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="Sequence" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Sequence" securityRoleName="Choices" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Sequence" securityRoleName="Description" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="SequenceValue" securityRoleName="Set" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="SequenceValue" securityRoleName="Get" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="SequenceValue" securityRoleName="GetNext" />
             <partySecurityRoleTemplateRole securityRoleGroupName="ShipmentTypeShippingMethod" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Shipping" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="ShippingMethod" securityRoleName="Create" />
@@ -9441,6 +9459,7 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityListItem" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityListItem" securityRoleName="Choices" />
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityListItem" securityRoleName="Description" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="EntityListItem" securityRoleName="Search" />
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityIntegerRange" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityIntegerRange" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityIntegerRange" securityRoleName="Delete" />

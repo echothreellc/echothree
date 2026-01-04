@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -44,9 +44,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import javax.enterprise.context.RequestScoped;
+import com.echothree.util.server.cdi.CommandScope;
 
-@RequestScoped
+@CommandScope
 public class UseTypeControl
         extends BaseOfferControl {
 
@@ -74,7 +74,7 @@ public class UseTypeControl
 
         var useType = UseTypeFactory.getInstance().create();
         var useTypeDetail = UseTypeDetailFactory.getInstance().create(useType, useTypeName, isDefault, sortOrder,
-                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                session.getStartTime(), Session.MAX_TIME);
         
         // Convert to R/W
         useType = UseTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, useType.getPrimaryKey());
@@ -275,7 +275,7 @@ public class UseTypeControl
                      useTypeDetailValue.getUseTypePK());
             var useTypeDetail = useType.getActiveDetailForUpdate();
             
-            useTypeDetail.setThruTime(session.START_TIME_LONG);
+            useTypeDetail.setThruTime(session.getStartTime());
             useTypeDetail.store();
 
             var useTypePK = useTypeDetail.getUseTypePK();
@@ -300,7 +300,7 @@ public class UseTypeControl
             }
             
             useTypeDetail = UseTypeDetailFactory.getInstance().create(useTypePK, useTypeName, isDefault, sortOrder,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             useType.setActiveDetail(useTypeDetail);
             useType.setLastDetail(useTypeDetail);
@@ -320,7 +320,7 @@ public class UseTypeControl
         useControl.deleteUsesByUseType(useType, deletedBy);
 
         var useTypeDetail = useType.getLastDetailForUpdate();
-        useTypeDetail.setThruTime(session.START_TIME_LONG);
+        useTypeDetail.setThruTime(session.getStartTime());
         useType.setActiveDetail(null);
         useType.store();
         
@@ -350,7 +350,7 @@ public class UseTypeControl
     
     public UseTypeDescription createUseTypeDescription(UseType useType, Language language, String description, BasePK createdBy) {
         var useTypeDescription = UseTypeDescriptionFactory.getInstance().create(useType, language,
-                description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                description, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(useType.getPrimaryKey(), EventTypes.MODIFY, useTypeDescription.getPrimaryKey(),
                 EventTypes.CREATE, createdBy);
@@ -481,7 +481,7 @@ public class UseTypeControl
             var useTypeDescription = UseTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      useTypeDescriptionValue.getPrimaryKey());
             
-            useTypeDescription.setThruTime(session.START_TIME_LONG);
+            useTypeDescription.setThruTime(session.getStartTime());
             useTypeDescription.store();
 
             var useType = useTypeDescription.getUseType();
@@ -489,7 +489,7 @@ public class UseTypeControl
             var description = useTypeDescriptionValue.getDescription();
             
             useTypeDescription = UseTypeDescriptionFactory.getInstance().create(useType, language, description,
-                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(useType.getPrimaryKey(), EventTypes.MODIFY, useTypeDescription.getPrimaryKey(),
                     EventTypes.MODIFY, updatedBy);
@@ -497,7 +497,7 @@ public class UseTypeControl
     }
     
     public void deleteUseTypeDescription(UseTypeDescription useTypeDescription, BasePK deletedBy) {
-        useTypeDescription.setThruTime(session.START_TIME_LONG);
+        useTypeDescription.setThruTime(session.getStartTime());
         
         sendEvent(useTypeDescription.getUseTypePK(), EventTypes.MODIFY,
                 useTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);

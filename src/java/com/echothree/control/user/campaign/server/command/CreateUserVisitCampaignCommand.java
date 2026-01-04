@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,7 +23,6 @@ import com.echothree.model.data.campaign.server.entity.CampaignContent;
 import com.echothree.model.data.campaign.server.entity.CampaignMedium;
 import com.echothree.model.data.campaign.server.entity.CampaignSource;
 import com.echothree.model.data.campaign.server.entity.CampaignTerm;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -35,9 +34,9 @@ import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.Dependent;
 
-@RequestScoped
+@Dependent
 public class CreateUserVisitCampaignCommand
         extends BaseSimpleCommand<CreateUserVisitCampaignForm> {
     
@@ -171,7 +170,7 @@ public class CreateUserVisitCampaignCommand
                 }
             }
             
-            campaignControl.createUserVisitCampaign(getUserVisit(), session.START_TIME_LONG, campaign, campaignSource, campaignMedium, campaignTerm,
+            campaignControl.createUserVisitCampaign(getUserVisit(), session.getStartTime(), campaign, campaignSource, campaignMedium, campaignTerm,
                     campaignContent);
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());

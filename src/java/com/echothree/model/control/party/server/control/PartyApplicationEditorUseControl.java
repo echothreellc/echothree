@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2025 Echo Three, LLC
+// Copyright 2002-2026 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -34,9 +34,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.enterprise.context.RequestScoped;
+import com.echothree.util.server.cdi.CommandScope;
 
-@RequestScoped
+@CommandScope
 public class PartyApplicationEditorUseControl
         extends BasePartyControl {
 
@@ -53,7 +53,7 @@ public class PartyApplicationEditorUseControl
             ApplicationEditor applicationEditor, Integer preferredHeight, Integer preferredWidth, BasePK createdBy) {
         var partyApplicationEditorUse = PartyApplicationEditorUseFactory.getInstance().create();
         var partyApplicationEditorUseDetail = PartyApplicationEditorUseDetailFactory.getInstance().create(partyApplicationEditorUse,
-                party, applicationEditorUse, applicationEditor, preferredHeight, preferredWidth, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                party, applicationEditorUse, applicationEditor, preferredHeight, preferredWidth, session.getStartTime(), Session.MAX_TIME);
 
         // Convert to R/W
         partyApplicationEditorUse = PartyApplicationEditorUseFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, partyApplicationEditorUse.getPrimaryKey());
@@ -240,7 +240,7 @@ public class PartyApplicationEditorUseControl
                     partyApplicationEditorUseDetailValue.getPartyApplicationEditorUsePK());
             var partyApplicationEditorUseDetail = partyApplicationEditorUse.getActiveDetailForUpdate();
 
-            partyApplicationEditorUseDetail.setThruTime(session.START_TIME_LONG);
+            partyApplicationEditorUseDetail.setThruTime(session.getStartTime());
             partyApplicationEditorUseDetail.store();
 
             var partyApplicationEditorUsePK = partyApplicationEditorUseDetail.getPartyApplicationEditorUsePK(); // Not updated
@@ -251,7 +251,7 @@ public class PartyApplicationEditorUseControl
             var preferredWidth = partyApplicationEditorUseDetailValue.getPreferredWidth();
 
             partyApplicationEditorUseDetail = PartyApplicationEditorUseDetailFactory.getInstance().create(partyApplicationEditorUsePK, partyPK,
-                    applicationEditorUsePK, applicationEditorPK, preferredHeight, preferredWidth, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    applicationEditorUsePK, applicationEditorPK, preferredHeight, preferredWidth, session.getStartTime(), Session.MAX_TIME);
 
             partyApplicationEditorUse.setActiveDetail(partyApplicationEditorUseDetail);
             partyApplicationEditorUse.setLastDetail(partyApplicationEditorUseDetail);
@@ -263,7 +263,7 @@ public class PartyApplicationEditorUseControl
     public void deletePartyApplicationEditorUse(PartyApplicationEditorUse partyApplicationEditorUse, BasePK deletedBy) {
         var partyApplicationEditorUseDetail = partyApplicationEditorUse.getLastDetailForUpdate();
 
-        partyApplicationEditorUseDetail.setThruTime(session.START_TIME_LONG);
+        partyApplicationEditorUseDetail.setThruTime(session.getStartTime());
         partyApplicationEditorUse.setActiveDetail(null);
         partyApplicationEditorUse.store();
 
