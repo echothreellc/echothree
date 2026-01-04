@@ -99,11 +99,7 @@ public class GetEntityInstancesCommand
         var result = CoreResultFactory.getGetEntityInstancesResult();
 
         if(entities != null) {
-            var entityTypeDetail = entityType.getLastDetail();
-
-            result.setComponentVendorName(entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName());
-            result.setEntityTypeName(entityTypeDetail.getEntityTypeName());
-
+            result.setEntityType(entityTypeControl.getEntityTypeTransfer(getUserVisit(), entityType));
             result.setEntityInstances(entityInstanceControl.getEntityInstanceTransfers(getUserVisit(), entities,
                     false, false, false, false));
         }

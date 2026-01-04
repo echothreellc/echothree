@@ -20,7 +20,7 @@
 
 <html:html xhtml="true">
     <head>
-        <title>Entity Instances</title>
+        <title><fmt:message key="pageTitle.entityInstances" /></title>
         <html:base/>
         <%@ include file="../../include/environment.jsp" %>
     </head>
@@ -28,13 +28,13 @@
         <div id="Header">
             <h2>
                 <a href="<c:url value="/action/Portal" />"><fmt:message key="navigation.portal" /></a> &gt;&gt;
-                <a href="<c:url value="/action/Core/Main" />">Core</a> &gt;&gt;
-                <a href="<c:url value="/action/Core/ComponentVendor/Main" />">Component Vendors</a> &gt;&gt;
+                <a href="<c:url value="/action/Core/Main" />"><fmt:message key="navigation.core" /></a> &gt;&gt;
+                <a href="<c:url value="/action/Core/ComponentVendor/Main" />"><fmt:message key="navigation.componentVendors" /></a> &gt;&gt;
                 <c:url var="entityTypesUrl" value="/action/Core/EntityType/Main">
-                    <c:param name="ComponentVendorName" value="${componentVendorName}" />
+                    <c:param name="ComponentVendorName" value="${entityType.componentVendor.componentVendorName}" />
                 </c:url>
-                <a href="${entityTypesUrl}">Entity Types</a> &gt;&gt;
-                Entity Instances
+                <a href="${entityTypesUrl}"><fmt:message key="navigation.entityTypes" /></a> &gt;&gt;
+                <fmt:message key="navigation.entityInstances" />
             </h2>
         </div>
         <div id="Content">

@@ -67,8 +67,7 @@ public class MainAction
         var executionResult = commandResult.getExecutionResult();
         var result = (GetEntityInstancesResult)executionResult.getResult();
 
-        request.setAttribute(AttributeConstants.COMPONENT_VENDOR_NAME, result.getComponentVendorName());
-        request.setAttribute(AttributeConstants.ENTITY_TYPE_NAME, result.getEntityTypeName());
+        request.setAttribute(AttributeConstants.ENTITY_TYPE, result.getEntityType());
         request.setAttribute(AttributeConstants.ENTITY_INSTANCES, result.getEntityInstances());
 
         return mapping.findForward(ForwardConstants.DISPLAY);
