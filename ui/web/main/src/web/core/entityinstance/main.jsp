@@ -38,9 +38,21 @@
             </h2>
         </div>
         <div id="Content">
+            <et:checkSecurityRoles securityRoles="EntityInstance.Review" />
+            <et:hasSecurityRole securityRole="EntityInstance.Review" var="includeReviewUrl" />
             <display:table name="entityInstances" id="entityInstance" class="displaytag">
                 <display:column titleKey="columnTitle.entity">
-                    <et:appearance appearance="${entityInstance.entityAppearance.appearance}"><c:out value="${entityInstance.entityRef}" /></et:appearance>
+                    <c:choose>
+                        <c:when test="${includeReviewUrl}">
+                            <c:url var="reviewUrl" value="/action/Core/EntityInstance/Review">
+                                <c:param name="EntityRef" value="${entityInstance.entityRef}" />
+                            </c:url>
+                            <a href="${reviewUrl}"> <et:appearance appearance="${entityInstance.entityAppearance.appearance}"><c:out value="${entityInstance.entityRef}" /></et:appearance></a>
+                        </c:when>
+                        <c:otherwise>
+                            <et:appearance appearance="${entityInstance.entityAppearance.appearance}"><c:out value="${entityInstance.entityRef}" /></et:appearance>
+                        </c:otherwise>
+                    </c:choose>
                 </display:column>
                 <display:column titleKey="columnTitle.description">
                     <c:out value="${entityInstance.description}" />

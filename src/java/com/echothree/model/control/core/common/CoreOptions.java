@@ -41,6 +41,8 @@ public interface CoreOptions {
     String EntityInstanceIncludeEntityVisit = "EntityInstanceIncludeEntityVisit";
     String EntityInstanceIncludeNames = "EntityInstanceIncludeNames";
     String EntityInstanceIncludeUuidIfAvailable = "EntityInstanceIncludeUuidIfAvailable";
+    String EntityInstanceIncludeEntityAttributeGroups = "EntityInstanceIncludeEntityAttributeGroups";
+    String EntityInstanceIncludeTagScopes = "EntityInstanceIncludeTagScopes";
 
     String EntityListItemIncludeEntityAttributeGroups = "EntityListItemIncludeEntityAttributeGroups";
     String EntityListItemIncludeTagScopes = "EntityListItemIncludeTagScopes";
