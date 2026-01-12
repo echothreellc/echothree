@@ -86,6 +86,7 @@ public class ReviewAction
         if(partyContactMechanism == null) {
             forwardKey = ForwardConstants.ERROR_404;
         } else {
+            saveToken(request); // Required for ContactMechanismIncludeTagScopes and tagScopes.jsp
             request.setAttribute(AttributeConstants.PARTY_CONTACT_MECHANISM, partyContactMechanism);
             BaseCompanyContactMechanismAction.setupCompany(request, partyName);
             forwardKey = ForwardConstants.DISPLAY;

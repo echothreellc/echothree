@@ -82,6 +82,7 @@ public class ReviewAction
         if(forumThread == null) {
             forwardKey = ForwardConstants.ERROR_404;
         } else {
+            saveToken(request); // Required for ForumThreadIncludeTagScopes and tagScopes.jsp
             request.setAttribute(AttributeConstants.FORUM_THREAD, forumThread);
             forwardKey = ForwardConstants.DISPLAY;
         }

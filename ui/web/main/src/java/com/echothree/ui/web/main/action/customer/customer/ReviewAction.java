@@ -119,9 +119,10 @@ public class ReviewAction
             forwardKey = ForwardConstants.ERROR_404;
         } else {
             var wishlists = result.getWishlists();
-            
+
+            saveToken(request); // Required for CustomerIncludeTagScopes and tagScopes.jsp
             request.setAttribute(AttributeConstants.CUSTOMER, customer);
-            request.setAttribute(AttributeConstants.WISHLISTS, wishlists.isEmpty() ? null: wishlists);
+            request.setAttribute(AttributeConstants.WISHLISTS, wishlists.isEmpty() ? null : wishlists);
             forwardKey = ForwardConstants.DISPLAY;
         }
         

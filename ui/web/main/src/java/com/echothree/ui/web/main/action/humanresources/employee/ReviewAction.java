@@ -113,6 +113,7 @@ public class ReviewAction
         if(employee == null) {
             forwardKey = ForwardConstants.ERROR_404;
         } else {
+            saveToken(request); // Required for EmployeeIncludeTagScopes and tagScopes.jsp
             request.setAttribute(AttributeConstants.EMPLOYEE, employee);
             setupPartyType(request);
             forwardKey = ForwardConstants.DISPLAY;

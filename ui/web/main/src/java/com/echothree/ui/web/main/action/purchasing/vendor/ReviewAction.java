@@ -110,6 +110,7 @@ public class ReviewAction
         if(vendor == null) {
             forwardKey = ForwardConstants.ERROR_404;
         } else {
+            saveToken(request); // Required for VendorIncludeTagScopes and tagScopes.jsp
             request.setAttribute(AttributeConstants.VENDOR, vendor);
             forwardKey = ForwardConstants.DISPLAY;
         }

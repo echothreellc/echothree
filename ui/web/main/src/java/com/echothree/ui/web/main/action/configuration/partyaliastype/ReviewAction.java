@@ -84,6 +84,7 @@ public class ReviewAction
         if(partyAliasType == null) {
             forwardKey = ForwardConstants.ERROR_404;
         } else {
+            saveToken(request); // Required for PartyAliasTypeIncludeTagScopes and tagScopes.jsp
             request.setAttribute(AttributeConstants.PARTY_ALIAS_TYPE, partyAliasType);
             forwardKey = ForwardConstants.DISPLAY;
         }

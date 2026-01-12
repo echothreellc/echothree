@@ -106,6 +106,7 @@ public class ReviewAction
             var item = result.getItem();
 
             if(item != null) {
+                saveToken(request); // Required for ItemIncludeTagScopes and tagScopes.jsp
                 request.setAttribute(AttributeConstants.ITEM, item);
                 forwardKey = ForwardConstants.DISPLAY;
             }

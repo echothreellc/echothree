@@ -80,6 +80,7 @@ public class ReviewAction
         if(contentWebAddress == null) {
             forwardKey = ForwardConstants.ERROR_404;
         } else {
+            saveToken(request); // Required for ContentWebAddressIncludeTagScopes and tagScopes.jsp
             request.setAttribute(AttributeConstants.CONTENT_WEB_ADDRESS, contentWebAddress);
             forwardKey = ForwardConstants.DISPLAY;
         }

@@ -84,6 +84,7 @@ public class ReviewAction
         if(entityListItem == null) {
             forwardKey = ForwardConstants.ERROR_404;
         } else {
+            saveToken(request); // Required for EntityListItemIncludeTagScopes and tagScopes.jsp
             request.setAttribute(AttributeConstants.ENTITY_LIST_ITEM, entityListItem);
             forwardKey = ForwardConstants.DISPLAY;
         }
