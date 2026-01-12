@@ -73,6 +73,7 @@ public class ItemDescriptionReviewAction
             var itemDescription = result.getItemDescription();
 
             if(itemDescription != null) {
+                saveToken(request); // Required for ItemDescriptionIncludeTagScopes and tagScopes.jsp
                 request.setAttribute(AttributeConstants.ITEM_DESCRIPTION, itemDescription);
                 forwardKey = ForwardConstants.DISPLAY;
             }

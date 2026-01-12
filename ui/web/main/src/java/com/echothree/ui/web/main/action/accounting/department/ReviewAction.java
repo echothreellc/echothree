@@ -82,6 +82,7 @@ public class ReviewAction
         if(department == null) {
             forwardKey = ForwardConstants.ERROR_404;
         } else {
+            saveToken(request); // Required for DepartmentIncludeTagScopes and tagScopes.jsp
             request.setAttribute(AttributeConstants.DEPARTMENT, department);
             forwardKey = ForwardConstants.DISPLAY;
         }

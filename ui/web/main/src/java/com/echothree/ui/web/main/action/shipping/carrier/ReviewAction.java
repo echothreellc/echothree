@@ -79,8 +79,8 @@ public class ReviewAction
         var carrier = result.getCarrier();
 
         if(carrier != null) {
+            saveToken(request); // Required for CarrierIncludeTagScopes and tagScopes.jsp
             request.setAttribute(AttributeConstants.CARRIER, carrier);
-
             forwardKey = ForwardConstants.DISPLAY;
         } else {
             forwardKey = ForwardConstants.ERROR_404;

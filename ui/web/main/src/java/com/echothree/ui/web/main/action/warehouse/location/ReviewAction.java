@@ -89,7 +89,8 @@ public class ReviewAction
             request.setAttribute(AttributeConstants.LOCATION_NAME_ELEMENTS, locationNameElements.isEmpty()? null: locationNameElements);
             request.setAttribute(AttributeConstants.LOCATION_VOLUME, result.getLocationVolume());
             request.setAttribute(AttributeConstants.LOCATION_CAPACITIES, locationCapacities.isEmpty()? null: locationCapacities);
-            
+
+            saveToken(request); // Required for LocationIncludeTagScopes and tagScopes.jsp
             forwardKey = ForwardConstants.DISPLAY;
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;

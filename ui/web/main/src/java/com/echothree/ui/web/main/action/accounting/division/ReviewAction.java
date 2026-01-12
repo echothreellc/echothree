@@ -81,6 +81,7 @@ public class ReviewAction
         if(division == null) {
             forwardKey = ForwardConstants.ERROR_404;
         } else {
+            saveToken(request); // Required for DivisionIncludeTagScopes and tagScopes.jsp
             request.setAttribute(AttributeConstants.DIVISION, division);
             forwardKey = ForwardConstants.DISPLAY;
         }

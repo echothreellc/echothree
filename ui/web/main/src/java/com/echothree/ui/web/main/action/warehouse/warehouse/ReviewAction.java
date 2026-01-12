@@ -94,8 +94,8 @@ public class ReviewAction
         var warehouse = result.getWarehouse();
 
         if(warehouse != null) {
+            saveToken(request); // Required for WarehouseIncludeTagScopes and tagScopes.jsp
             request.setAttribute(AttributeConstants.WAREHOUSE, warehouse);
-
             forwardKey = ForwardConstants.DISPLAY;
         } else {
             forwardKey = ForwardConstants.ERROR_404;
