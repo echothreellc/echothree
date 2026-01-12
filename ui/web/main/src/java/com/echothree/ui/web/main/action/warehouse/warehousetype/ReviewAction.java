@@ -75,8 +75,8 @@ public class ReviewAction
         var warehouseType = result.getWarehouseType();
 
         if(warehouseType != null) {
+            saveToken(request); // Required for WarehouseTypeIncludeTagScopes and tagScopes.jsp
             request.setAttribute(AttributeConstants.WAREHOUSE_TYPE, warehouseType);
-
             forwardKey = ForwardConstants.DISPLAY;
         } else {
             forwardKey = ForwardConstants.ERROR_404;
