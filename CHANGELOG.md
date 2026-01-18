@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-01-18-01
+
+* Add Saving CRSF Tokens to  Actions For Pages That Include Tag Scopes [1695](https://gitlab.echothree.com/echothree/echothree/-/issues/1695)
+
 ## 2026-01-04-01
 
 * Add UI for Maintaining Entity Alias Types [1115](https://gitlab.echothree.com/echothree/echothree/-/issues/1115)
