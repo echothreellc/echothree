@@ -100,9 +100,9 @@ public class EditFilterAdjustmentPercentCommand
             var filterAdjustment = filterControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName);
             
             if(filterAdjustment != null) {
-                var filterAdjustmentTypeName = filterAdjustment.getLastDetail().getFilterAdjustmentType().getFilterAdjustmentTypeName();
+                var filterAdjustmentType = filterAdjustment.getLastDetail().getFilterAdjustmentType();
                 
-                if(filterAdjustmentTypeName.equals(FilterAdjustmentTypes.PERCENT.name())) {
+                if(filterAdjustmentType != null && filterAdjustmentType.getFilterAdjustmentTypeName().equals(FilterAdjustmentTypes.PERCENT.name())) {
                     var uomControl = Session.getModelController(UomControl.class);
                     var unitOfMeasureName = spec.getUnitOfMeasureName();
                     String unitOfMeasureKindName = null;
@@ -188,7 +188,7 @@ public class EditFilterAdjustmentPercentCommand
                         addExecutionError(ExecutionErrors.InvalidUnitOfMeasureSpecification.name(), unitOfMeasureName);
                     }
                 } else {
-                    addExecutionError(ExecutionErrors.InvalidFilterAdjustmentType.name(), filterAdjustmentTypeName);
+                    addExecutionError(ExecutionErrors.InvalidFilterAdjustmentType.name());
                 }
             } else {
                 addExecutionError(ExecutionErrors.UnknownFilterAdjustmentName.name(), filterAdjustmentName);

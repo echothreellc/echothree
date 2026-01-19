@@ -116,9 +116,9 @@ public class EditFilterAdjustmentFixedAmountCommand
             var filterAdjustment = filterControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName);
             
             if(filterAdjustment != null) {
-                var filterAdjustmentTypeName = filterAdjustment.getLastDetail().getFilterAdjustmentType().getFilterAdjustmentTypeName();
+                var filterAdjustmentType = filterAdjustment.getLastDetail().getFilterAdjustmentType();
                 
-                if(filterAdjustmentTypeName.equals(FilterAdjustmentTypes.FIXED_AMOUNT.name())) {
+                if(filterAdjustmentType != null && filterAdjustmentType.getFilterAdjustmentTypeName().equals(FilterAdjustmentTypes.FIXED_AMOUNT.name())) {
                     var uomControl = Session.getModelController(UomControl.class);
                     var unitOfMeasureName = spec.getUnitOfMeasureName();
                     String unitOfMeasureKindName = null;
@@ -209,7 +209,7 @@ public class EditFilterAdjustmentFixedAmountCommand
                         addExecutionError(ExecutionErrors.InvalidUnitOfMeasureSpecification.name(), unitOfMeasureName);
                     }
                 } else {
-                    addExecutionError(ExecutionErrors.InvalidFilterAdjustmentType.name(), filterAdjustmentTypeName);
+                    addExecutionError(ExecutionErrors.InvalidFilterAdjustmentType.name());
                 }
             } else {
                 addExecutionError(ExecutionErrors.UnknownFilterAdjustmentName.name(), filterAdjustmentName);
