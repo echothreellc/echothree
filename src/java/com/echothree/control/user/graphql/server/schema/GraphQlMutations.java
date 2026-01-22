@@ -970,6 +970,7 @@ public interface GraphQlMutations {
             var commandForm = SelectorUtil.getHome().getDeleteSelectorForm();
 
             commandForm.setSelectorKindName(selectorKindName);
+            commandForm.setSelectorTypeName(selectorTypeName);
             commandForm.setSelectorName(selectorName);
 
             var commandResult = SelectorUtil.getHome().deleteSelector(BaseGraphQl.getUserVisitPK(env), commandForm);
@@ -986,8 +987,7 @@ public interface GraphQlMutations {
     static MutationResultWithIdObject editSelector(final DataFetchingEnvironment env,
             @GraphQLName("selectorKindName") @GraphQLNonNull final String selectorKindName,
             @GraphQLName("selectorTypeName") @GraphQLNonNull final String selectorTypeName,
-            @GraphQLName("originalSelectorName") final String originalSelectorName,
-            @GraphQLName("id") @GraphQLID final String id,
+            @GraphQLName("originalSelectorName") @GraphQLNonNull final String originalSelectorName,
             @GraphQLName("selectorName") final String selectorName,
             @GraphQLName("isDefault") final String isDefault,
             @GraphQLName("sortOrder") final String sortOrder,
@@ -1000,7 +1000,6 @@ public interface GraphQlMutations {
             spec.setSelectorKindName(selectorKindName);
             spec.setSelectorTypeName(selectorTypeName);
             spec.setSelectorName(originalSelectorName);
-            spec.setUuid(id);
 
             var commandForm = SelectorUtil.getHome().getEditSelectorForm();
 
@@ -1092,6 +1091,7 @@ public interface GraphQlMutations {
             var commandForm = FilterUtil.getHome().getDeleteFilterForm();
 
             commandForm.setFilterKindName(filterKindName);
+            commandForm.setFilterTypeName(filterTypeName);
             commandForm.setFilterName(filterName);
 
             var commandResult = FilterUtil.getHome().deleteFilter(BaseGraphQl.getUserVisitPK(env), commandForm);
@@ -1108,10 +1108,9 @@ public interface GraphQlMutations {
     static MutationResultWithIdObject editFilter(final DataFetchingEnvironment env,
             @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName,
             @GraphQLName("filterTypeName") @GraphQLNonNull final String filterTypeName,
-            @GraphQLName("originalFilterName") final String originalFilterName,
-            @GraphQLName("id") @GraphQLID final String id,
+            @GraphQLName("originalFilterName") @GraphQLNonNull final String originalFilterName,
             @GraphQLName("filterName") final String filterName,
-            @GraphQLName("initialFilterAdjustmentName") @GraphQLNonNull final String initialFilterAdjustmentName,
+            @GraphQLName("initialFilterAdjustmentName") final String initialFilterAdjustmentName,
             @GraphQLName("filterItemSelectorName") final String filterItemSelectorName,
             @GraphQLName("isDefault") final String isDefault,
             @GraphQLName("sortOrder") final String sortOrder,
@@ -1124,7 +1123,6 @@ public interface GraphQlMutations {
             spec.setFilterKindName(filterKindName);
             spec.setFilterTypeName(filterTypeName);
             spec.setFilterName(originalFilterName);
-            spec.setUuid(id);
 
             var commandForm = FilterUtil.getHome().getEditFilterForm();
 
@@ -1217,8 +1215,9 @@ public interface GraphQlMutations {
             var commandForm = FilterUtil.getHome().getDeleteFilterStepForm();
 
             commandForm.setFilterKindName(filterKindName);
-            commandForm.setFilterStepName(filterStepName);
+            commandForm.setFilterTypeName(filterTypeName);
             commandForm.setFilterName(filterName);
+            commandForm.setFilterStepName(filterStepName);
 
             var commandResult = FilterUtil.getHome().deleteFilterStep(BaseGraphQl.getUserVisitPK(env), commandForm);
             mutationResultObject.setCommandResult(commandResult);
@@ -1235,8 +1234,7 @@ public interface GraphQlMutations {
             @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName,
             @GraphQLName("filterTypeName") @GraphQLNonNull final String filterTypeName,
             @GraphQLName("filterName") @GraphQLNonNull final String filterName,
-            @GraphQLName("originalFilterStepName") final String originalFilterStepName,
-            @GraphQLName("id") @GraphQLID final String id,
+            @GraphQLName("originalFilterStepName") @GraphQLNonNull final String originalFilterStepName,
             @GraphQLName("filterStepName") final String filterStepName,
             @GraphQLName("filterItemSelectorName") final String filterItemSelectorName,
             @GraphQLName("description") final String description) {
@@ -1249,7 +1247,6 @@ public interface GraphQlMutations {
             spec.setFilterTypeName(filterTypeName);
             spec.setFilterName(filterName);
             spec.setFilterStepName(originalFilterStepName);
-            spec.setUuid(id);
 
             var commandForm = FilterUtil.getHome().getEditFilterStepForm();
 
@@ -1351,8 +1348,7 @@ public interface GraphQlMutations {
     @GraphQLRelayMutation
     static MutationResultWithIdObject editFilterAdjustment(final DataFetchingEnvironment env,
             @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName,
-            @GraphQLName("originalFilterAdjustmentName") final String originalFilterAdjustmentName,
-            @GraphQLName("id") @GraphQLID final String id,
+            @GraphQLName("originalFilterAdjustmentName") @GraphQLNonNull final String originalFilterAdjustmentName,
             @GraphQLName("filterAdjustmentName") final String filterAdjustmentName,
             @GraphQLName("filterAdjustmentSourceName") final String filterAdjustmentSourceName,
             @GraphQLName("isDefault") final String isDefault,
@@ -1365,7 +1361,6 @@ public interface GraphQlMutations {
 
             spec.setFilterKindName(filterKindName);
             spec.setFilterAdjustmentName(originalFilterAdjustmentName);
-            spec.setUuid(id);
 
             var commandForm = FilterUtil.getHome().getEditFilterAdjustmentForm();
 
@@ -1478,7 +1473,7 @@ public interface GraphQlMutations {
             @GraphQLName("unitOfMeasureKindName") final String unitOfMeasureKindName,
             @GraphQLName("unitOfMeasureTypeName") final String unitOfMeasureTypeName,
             @GraphQLName("currencyIsoName") @GraphQLNonNull final String currencyIsoName,
-            @GraphQLName("amount") @GraphQLNonNull final String amount) {
+            @GraphQLName("amount") final String amount) {
         var mutationResultObject = new MutationResultObject();
 
         try {
@@ -1592,7 +1587,7 @@ public interface GraphQlMutations {
             @GraphQLName("unitOfMeasureKindName") final String unitOfMeasureKindName,
             @GraphQLName("unitOfMeasureTypeName") final String unitOfMeasureTypeName,
             @GraphQLName("currencyIsoName") @GraphQLNonNull final String currencyIsoName,
-            @GraphQLName("unitAmount") @GraphQLNonNull final String unitAmount) {
+            @GraphQLName("unitAmount") final String unitAmount) {
         var mutationResultObject = new MutationResultObject();
 
         try {
@@ -1706,7 +1701,7 @@ public interface GraphQlMutations {
             @GraphQLName("unitOfMeasureKindName") final String unitOfMeasureKindName,
             @GraphQLName("unitOfMeasureTypeName") final String unitOfMeasureTypeName,
             @GraphQLName("currencyIsoName") @GraphQLNonNull final String currencyIsoName,
-            @GraphQLName("percent") @GraphQLNonNull final String percent) {
+            @GraphQLName("percent") final String percent) {
         var mutationResultObject = new MutationResultObject();
 
         try {
