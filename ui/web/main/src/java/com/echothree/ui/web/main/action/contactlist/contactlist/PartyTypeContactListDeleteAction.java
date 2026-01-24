@@ -47,7 +47,7 @@ public class PartyTypeContactListDeleteAction
         extends MainBaseDeleteAction<PartyTypeContactListDeleteActionForm> {
 
     @Override
-    public String getEntityTypeName() {
+    public String getEntityTypeName(final PartyTypeContactListDeleteActionForm actionForm) {
         return EntityTypes.PartyTypeContactList.name();
     }
     
