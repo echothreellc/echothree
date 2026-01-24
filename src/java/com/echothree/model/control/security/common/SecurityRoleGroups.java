@@ -122,6 +122,7 @@ public enum SecurityRoleGroups {
     EntityType,
     EntityTag,
     Event,
+    EventType,
     FilterAdjustmentSource,
     FilterAdjustmentType,
     Filter,

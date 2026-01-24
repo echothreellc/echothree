@@ -73,6 +73,9 @@
             <entityType entityTypeName="Party" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Party" />
             </entityType>
+            <entityType entityTypeName="EventType" keepAllHistory="false" isExtensible="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Event Type" />
+            </entityType>
             <entityType entityTypeName="EntityType" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Entity Type" />
             </entityType>

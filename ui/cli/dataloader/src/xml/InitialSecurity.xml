@@ -604,6 +604,18 @@
                 <securityRoleDescription languageIsoName="en" description="Event List" />
             </securityRole>
         </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="EventType" parentSecurityRoleGroupName="CoreComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Event Type" />
+            <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Event Type List" />
+            </securityRole>
+            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Event Type Review" />
+            </securityRole>
+            <securityRole securityRoleName="Choices" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Event Type Choices" />
+            </securityRole>
+        </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="FilterComponent" parentSecurityRoleGroupName="ROOT" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Filter Component" />
         </securityRoleGroup>
@@ -8114,6 +8126,9 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityAttributeGroup" securityRoleName="Search" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Event" securityRoleName="Send" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Event" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="EventType" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="EventType" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="EventType" securityRoleName="Choices" />
             <partySecurityRoleTemplateRole securityRoleGroupName="FilterKind" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="FilterKind" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="FilterKind" securityRoleName="Delete" />
