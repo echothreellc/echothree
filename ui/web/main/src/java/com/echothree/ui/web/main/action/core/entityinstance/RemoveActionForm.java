@@ -19,8 +19,8 @@ package com.echothree.ui.web.main.action.core.entityinstance;
 import com.echothree.ui.web.main.framework.MainBaseDeleteActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 
-@SproutForm(name="EntityInstanceDelete")
-public class DeleteActionForm
+@SproutForm(name="EntityInstanceRemove")
+public class RemoveActionForm
         extends MainBaseDeleteActionForm {
 
     private String componentVendorName;

@@ -95,15 +95,15 @@
                                 </c:url>
                                 <a href="${deleteUrl}">Delete</a>
                             </et:hasSecurityRole>
+                            <et:hasSecurityRole securityRole="EntityInstance.Remove">
+                                <c:url var="deleteUrl" value="/action/Core/EntityInstance/Remove">
+                                    <c:param name="ComponentVendorName" value="${entityInstance.entityType.componentVendor.componentVendorName}" />
+                                    <c:param name="EntityTypeName" value="${entityInstance.entityType.entityTypeName}" />
+                                    <c:param name="EntityRef" value="${entityInstance.entityRef}" />
+                                </c:url>
+                                <a href="${deleteUrl}">Remove</a>
+                            </et:hasSecurityRole>
                         </c:if>
-                        <et:hasSecurityRole securityRole="EntityInstance.Remove">
-                            <c:url var="deleteUrl" value="/action/Core/EntityInstance/Remove">
-                                <c:param name="ComponentVendorName" value="${entityInstance.entityType.componentVendor.componentVendorName}" />
-                                <c:param name="EntityTypeName" value="${entityInstance.entityType.entityTypeName}" />
-                                <c:param name="EntityRef" value="${entityInstance.entityRef}" />
-                            </c:url>
-                            <a href="${deleteUrl}">Remove</a>
-                        </et:hasSecurityRole>
                     </display:column>
                 </c:if>
                 <display:column>
