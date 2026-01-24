@@ -80,20 +80,22 @@
                 </display:column>
                 <c:if test="${linksInFirstRow && entityInstance.entityType.componentVendor.componentVendorName != 'ECHO_THREE'}">
                     <display:column>
-                        <et:hasSecurityRole securityRole="Event.Send">
-                            <c:url var="sendUrl" value="/action/Core/Event/Send">
-                                <c:param name="EntityRef" value="${entityInstance.entityRef}" />
-                            </c:url>
-                            <a href="${sendUrl}">Send Event</a>
-                        </et:hasSecurityRole>
-                        <et:hasSecurityRole securityRole="EntityInstance.Delete">
-                            <c:url var="deleteUrl" value="/action/Core/EntityInstance/Delete">
-                                <c:param name="ComponentVendorName" value="${entityInstance.entityType.componentVendor.componentVendorName}" />
-                                <c:param name="EntityTypeName" value="${entityInstance.entityType.entityTypeName}" />
-                                <c:param name="EntityRef" value="${entityInstance.entityRef}" />
-                            </c:url>
-                            <a href="${deleteUrl}">Delete</a>
-                        </et:hasSecurityRole>
+                        <c:if test="${entityInstance.entityTime.deletedTime == null}">
+                            <et:hasSecurityRole securityRole="Event.Send">
+                                <c:url var="sendUrl" value="/action/Core/Event/Send">
+                                    <c:param name="EntityRef" value="${entityInstance.entityRef}" />
+                                </c:url>
+                                <a href="${sendUrl}">Send Event</a>
+                            </et:hasSecurityRole>
+                            <et:hasSecurityRole securityRole="EntityInstance.Delete">
+                                <c:url var="deleteUrl" value="/action/Core/EntityInstance/Delete">
+                                    <c:param name="ComponentVendorName" value="${entityInstance.entityType.componentVendor.componentVendorName}" />
+                                    <c:param name="EntityTypeName" value="${entityInstance.entityType.entityTypeName}" />
+                                    <c:param name="EntityRef" value="${entityInstance.entityRef}" />
+                                </c:url>
+                                <a href="${deleteUrl}">Delete</a>
+                            </et:hasSecurityRole>
+                        </c:if>
                         <et:hasSecurityRole securityRole="EntityInstance.Remove">
                             <c:url var="deleteUrl" value="/action/Core/EntityInstance/Remove">
                                 <c:param name="ComponentVendorName" value="${entityInstance.entityType.componentVendor.componentVendorName}" />
