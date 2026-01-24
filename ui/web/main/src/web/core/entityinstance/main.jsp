@@ -107,7 +107,7 @@
                     </display:column>
                 </c:if>
                 <display:column>
-                    <c:if test="${entityInstance.entityTime != null}">
+                    <c:if test="${entityInstance.entityTime.deletedTime == null}">
                         <c:url var="eventsUrl" value="/action/Core/Event/Main">
                             <c:param name="EntityRef" value="${entityInstance.entityRef}" />
                         </c:url>
