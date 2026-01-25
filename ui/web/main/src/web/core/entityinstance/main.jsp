@@ -83,6 +83,8 @@
                         <c:if test="${entityInstance.entityTime.deletedTime == null}">
                             <et:hasSecurityRole securityRole="Event.Send">
                                 <c:url var="sendUrl" value="/action/Core/Event/Send">
+                                    <c:param name="ComponentVendorName" value="${entityInstance.entityType.componentVendor.componentVendorName}" />
+                                    <c:param name="EntityTypeName" value="${entityInstance.entityType.entityTypeName}" />
                                     <c:param name="EntityRef" value="${entityInstance.entityRef}" />
                                 </c:url>
                                 <a href="${sendUrl}">Send Event</a>
