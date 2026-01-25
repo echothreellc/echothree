@@ -53,6 +53,25 @@
                 </c:if>
             </et:hasSecurityRole>
             <display:table name="entityInstances" id="entityInstance" class="displaytag">
+                <display:column media="html">
+                    <c:if test="${entityInstance.entityTime.deletedTime == null}">
+                        <c:choose>
+                            <c:when test="${entityInstance.entityVisit == null}">
+                                New
+                            </c:when>
+                            <c:otherwise>
+                                <c:choose>
+                                    <c:when test="${entityInstance.entityVisit.unformattedVisitedTime >= entityInstance.entityTime.unformattedModifiedTime}">
+                                        Unchanged
+                                    </c:when>
+                                    <c:otherwise>
+                                        Updated
+                                    </c:otherwise>
+                                </c:choose>
+                            </c:otherwise>
+                        </c:choose>
+                    </c:if>
+                </display:column>
                 <display:column titleKey="columnTitle.entity">
                     <c:choose>
                         <c:when test="${includeReviewUrl}">

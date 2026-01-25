@@ -59,6 +59,7 @@ public class MainAction
 
         commandForm.setOptions(Set.of(
                 CoreOptions.EntityInstanceIncludeEntityAppearance,
+                CoreOptions.EntityInstanceIncludeEntityVisit,
                 CoreOptions.AppearanceIncludeTextDecorations,
                 CoreOptions.AppearanceIncludeTextTransformations
         ));
