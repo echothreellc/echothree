@@ -47,7 +47,7 @@ public class CustomerTypeContactListDeleteAction
         extends MainBaseDeleteAction<CustomerTypeContactListDeleteActionForm> {
 
     @Override
-    public String getEntityTypeName() {
+    public String getEntityTypeName(final CustomerTypeContactListDeleteActionForm actionForm) {
         return EntityTypes.CustomerTypeContactList.name();
     }
     

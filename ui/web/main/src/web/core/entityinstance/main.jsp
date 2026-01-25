@@ -38,9 +38,40 @@
             </h2>
         </div>
         <div id="Content">
-            <et:checkSecurityRoles securityRoles="EntityInstance.Review" />
+            <et:checkSecurityRoles securityRoles="EntityInstance.Review:EntityInstance.Create:EntityInstance.Delete:EntityInstance.Remove:Event.Send" />
             <et:hasSecurityRole securityRole="EntityInstance.Review" var="includeReviewUrl" />
+            <et:hasSecurityRole securityRoles="EntityInstance.Delete:EntityInstance.Remove:Event.Send">
+                <c:set var="linksInFirstRow" value="true" />
+            </et:hasSecurityRole>
+            <et:hasSecurityRole securityRole="EntityInstance.Create">
+                <c:if test="${entityType.componentVendor.componentVendorName != 'ECHO_THREE'}">
+                    <c:url var="createUrl" value="/action/Core/EntityInstance/Create">
+                        <c:param name="ComponentVendorName" value="${entityType.componentVendor.componentVendorName}" />
+                        <c:param name="EntityTypeName" value="${entityType.entityTypeName}" />
+                    </c:url>
+                    <p><a href="${createUrl}">Create Entity Instance.</a></p>
+                </c:if>
+            </et:hasSecurityRole>
             <display:table name="entityInstances" id="entityInstance" class="displaytag">
+                <display:column media="html">
+                    <c:if test="${entityInstance.entityTime.deletedTime == null}">
+                        <c:choose>
+                            <c:when test="${entityInstance.entityVisit == null}">
+                                New
+                            </c:when>
+                            <c:otherwise>
+                                <c:choose>
+                                    <c:when test="${entityInstance.entityVisit.unformattedVisitedTime >= entityInstance.entityTime.unformattedModifiedTime}">
+                                        Unchanged
+                                    </c:when>
+                                    <c:otherwise>
+                                        Updated
+                                    </c:otherwise>
+                                </c:choose>
+                            </c:otherwise>
+                        </c:choose>
+                    </c:if>
+                </display:column>
                 <display:column titleKey="columnTitle.entity">
                     <c:choose>
                         <c:when test="${includeReviewUrl}">
@@ -66,8 +97,38 @@
                 <display:column titleKey="columnTitle.deleted">
                     <c:out value="${entityInstance.entityTime.deletedTime}" />
                 </display:column>
+                <c:if test="${linksInFirstRow && entityInstance.entityType.componentVendor.componentVendorName != 'ECHO_THREE'}">
+                    <display:column>
+                        <c:if test="${entityInstance.entityTime.deletedTime == null}">
+                            <et:hasSecurityRole securityRole="Event.Send">
+                                <c:url var="sendUrl" value="/action/Core/Event/Send">
+                                    <c:param name="ComponentVendorName" value="${entityInstance.entityType.componentVendor.componentVendorName}" />
+                                    <c:param name="EntityTypeName" value="${entityInstance.entityType.entityTypeName}" />
+                                    <c:param name="EntityRef" value="${entityInstance.entityRef}" />
+                                </c:url>
+                                <a href="${sendUrl}">Send Event</a>
+                            </et:hasSecurityRole>
+                            <et:hasSecurityRole securityRole="EntityInstance.Delete">
+                                <c:url var="deleteUrl" value="/action/Core/EntityInstance/Delete">
+                                    <c:param name="ComponentVendorName" value="${entityInstance.entityType.componentVendor.componentVendorName}" />
+                                    <c:param name="EntityTypeName" value="${entityInstance.entityType.entityTypeName}" />
+                                    <c:param name="EntityRef" value="${entityInstance.entityRef}" />
+                                </c:url>
+                                <a href="${deleteUrl}">Delete</a>
+                            </et:hasSecurityRole>
+                            <et:hasSecurityRole securityRole="EntityInstance.Remove">
+                                <c:url var="deleteUrl" value="/action/Core/EntityInstance/Remove">
+                                    <c:param name="ComponentVendorName" value="${entityInstance.entityType.componentVendor.componentVendorName}" />
+                                    <c:param name="EntityTypeName" value="${entityInstance.entityType.entityTypeName}" />
+                                    <c:param name="EntityRef" value="${entityInstance.entityRef}" />
+                                </c:url>
+                                <a href="${deleteUrl}">Remove</a>
+                            </et:hasSecurityRole>
+                        </c:if>
+                    </display:column>
+                </c:if>
                 <display:column>
-                    <c:if test="${entityInstance.entityTime != null}">
+                    <c:if test="${entityInstance.entityTime.deletedTime == null}">
                         <c:url var="eventsUrl" value="/action/Core/Event/Main">
                             <c:param name="EntityRef" value="${entityInstance.entityRef}" />
                         </c:url>

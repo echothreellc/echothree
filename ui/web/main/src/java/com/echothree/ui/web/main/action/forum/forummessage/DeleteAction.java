@@ -51,7 +51,7 @@ public class DeleteAction
         extends MainBaseDeleteAction<DeleteActionForm> {
     
     @Override
-    public String getEntityTypeName() {
+    public String getEntityTypeName(final DeleteActionForm actionForm) {
         return EntityTypes.ForumMessage.name();
     }
     

@@ -47,7 +47,7 @@ public class DescriptionDeleteAction
         extends MainBaseDeleteAction<DescriptionDeleteActionForm> {
 
     @Override
-    public String getEntityTypeName() {
+    public String getEntityTypeName(final DescriptionDeleteActionForm actionForm) {
         return EntityTypes.ApplicationDescription.name();
     }
     

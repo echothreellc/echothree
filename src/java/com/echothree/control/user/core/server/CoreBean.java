@@ -384,7 +384,22 @@ public class CoreBean
     public CommandResult createEventType(UserVisitPK userVisitPK, CreateEventTypeForm form) {
         return CDI.current().select(CreateEventTypeCommand.class).get().run(userVisitPK, form);
     }
-    
+
+    @Override
+    public CommandResult getEventType(UserVisitPK userVisitPK, GetEventTypeForm form) {
+        return CDI.current().select(GetEventTypeCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult getEventTypes(UserVisitPK userVisitPK, GetEventTypesForm form) {
+        return CDI.current().select(GetEventTypesCommand.class).get().run(userVisitPK, form);
+    }
+
+    @Override
+    public CommandResult getEventTypeChoices(UserVisitPK userVisitPK, GetEventTypeChoicesForm form) {
+        return CDI.current().select(GetEventTypeChoicesCommand.class).get().run(userVisitPK, form);
+    }
+
     // -------------------------------------------------------------------------
     //   Event Type Descriptions
     // -------------------------------------------------------------------------

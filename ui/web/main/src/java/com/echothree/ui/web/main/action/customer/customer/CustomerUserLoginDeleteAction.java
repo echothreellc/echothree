@@ -51,7 +51,7 @@ public class CustomerUserLoginDeleteAction
         extends MainBaseDeleteAction<CustomerUserLoginDeleteActionForm> {
     
     @Override
-    public String getEntityTypeName() {
+    public String getEntityTypeName(final CustomerUserLoginDeleteActionForm actionForm) {
         return EntityTypes.UserLogin.name();
     }
     

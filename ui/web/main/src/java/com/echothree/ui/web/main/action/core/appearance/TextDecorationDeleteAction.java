@@ -47,7 +47,7 @@ public class TextDecorationDeleteAction
         extends MainBaseDeleteAction<TextDecorationDeleteActionForm> {
 
     @Override
-    public String getEntityTypeName() {
+    public String getEntityTypeName(final TextDecorationDeleteActionForm actionForm) {
         return EntityTypes.AppearanceTextDecoration.name();
     }
     

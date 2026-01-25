@@ -198,7 +198,13 @@ public interface CoreService
     // -------------------------------------------------------------------------
     
     CommandResult createEventType(UserVisitPK userVisitPK, CreateEventTypeForm form);
-    
+
+    CommandResult getEventType(UserVisitPK userVisitPK, GetEventTypeForm form);
+
+    CommandResult getEventTypes(UserVisitPK userVisitPK, GetEventTypesForm form);
+
+    CommandResult getEventTypeChoices(UserVisitPK userVisitPK, GetEventTypeChoicesForm form);
+
     // -------------------------------------------------------------------------
     //   Event Type Descriptions
     // -------------------------------------------------------------------------

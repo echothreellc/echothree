@@ -98,6 +98,8 @@ import com.echothree.control.user.core.server.command.GetEntityInstanceCommand;
 import com.echothree.control.user.core.server.command.GetEntityInstancesCommand;
 import com.echothree.control.user.core.server.command.GetEntityTypeCommand;
 import com.echothree.control.user.core.server.command.GetEntityTypesCommand;
+import com.echothree.control.user.core.server.command.GetEventTypeCommand;
+import com.echothree.control.user.core.server.command.GetEventTypesCommand;
 import com.echothree.control.user.core.server.command.GetFontStyleCommand;
 import com.echothree.control.user.core.server.command.GetFontStylesCommand;
 import com.echothree.control.user.core.server.command.GetFontWeightCommand;
@@ -457,6 +459,7 @@ import com.echothree.model.control.core.server.graphql.EntityAttributeObject;
 import com.echothree.model.control.core.server.graphql.EntityAttributeTypeObject;
 import com.echothree.model.control.core.server.graphql.EntityInstanceObject;
 import com.echothree.model.control.core.server.graphql.EntityTypeObject;
+import com.echothree.model.control.core.server.graphql.EventTypeObject;
 import com.echothree.model.control.core.server.graphql.FontStyleObject;
 import com.echothree.model.control.core.server.graphql.FontWeightObject;
 import com.echothree.model.control.core.server.graphql.MimeTypeFileExtensionObject;
@@ -694,6 +697,7 @@ import com.echothree.model.data.core.common.EntityAttributeGroupConstants;
 import com.echothree.model.data.core.common.EntityAttributeTypeConstants;
 import com.echothree.model.data.core.common.EntityInstanceConstants;
 import com.echothree.model.data.core.common.EntityTypeConstants;
+import com.echothree.model.data.core.common.EventTypeConstants;
 import com.echothree.model.data.core.common.FontStyleConstants;
 import com.echothree.model.data.core.common.FontWeightConstants;
 import com.echothree.model.data.core.common.MimeTypeConstants;
@@ -710,6 +714,7 @@ import com.echothree.model.data.core.server.entity.EntityAttributeGroup;
 import com.echothree.model.data.core.server.entity.EntityAttributeType;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityType;
+import com.echothree.model.data.core.server.entity.EventType;
 import com.echothree.model.data.core.server.entity.FontStyle;
 import com.echothree.model.data.core.server.entity.FontWeight;
 import com.echothree.model.data.core.server.entity.MimeType;
@@ -4166,6 +4171,59 @@ public interface GraphQlQueries {
                             .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, appearances);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("eventType")
+    static EventTypeObject eventType(final DataFetchingEnvironment env,
+            @GraphQLName("eventTypeName") final String eventTypeName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        EventType eventType;
+
+        try {
+            var commandForm = CoreUtil.getHome().getGetEventTypeForm();
+
+            commandForm.setEventTypeName(eventTypeName);
+            commandForm.setUuid(id);
+
+            eventType = CDI.current().select(GetEventTypeCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return eventType == null ? null : new EventTypeObject(eventType);
+    }
+
+    @GraphQLField
+    @GraphQLName("eventTypes")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<EventTypeObject> eventTypes(final DataFetchingEnvironment env) {
+        CountingPaginatedData<EventTypeObject> data;
+
+        try {
+            var commandForm = CoreUtil.getHome().getGetEventTypesForm();
+            var command = CDI.current().select(GetEventTypesCommand.class).get();
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, EventTypeConstants.COMPONENT_VENDOR_NAME, EventTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var eventTypes = entities.stream()
+                            .map(EventTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, eventTypes);
                 }
             }
         } catch (NamingException ex) {
