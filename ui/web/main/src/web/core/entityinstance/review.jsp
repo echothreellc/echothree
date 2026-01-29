@@ -55,6 +55,10 @@
                 <c:param name="EntityRef" value="${entityInstance.entityRef}" />
             </c:url>
 
+            <c:forEach items="${entityInstance.comments.list}" var="comments">
+                <h2><c:out value="${comments.commentType.description}" /> Comments</h2>
+                <br />
+            </c:forEach>
 
             <c:set var="tagScopes" scope="request" value="${entityInstance.tagScopes}" />
             <c:set var="entityAttributeGroups" scope="request" value="${entityInstance.entityAttributeGroups}" />
