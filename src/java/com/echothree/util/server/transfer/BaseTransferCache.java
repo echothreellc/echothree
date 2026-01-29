@@ -31,6 +31,7 @@ import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
+import com.echothree.model.data.comment.server.entity.CommentType;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.DateTimeFormat;
@@ -53,18 +54,29 @@ import com.echothree.util.server.string.PercentUtils;
 import com.echothree.util.server.string.UnitOfMeasureUtils;
 import java.util.HashMap;
 import java.util.Map;
+import javax.inject.Inject;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTransfer> {
     
     private Log log = null;
-    
+
+    @Inject
+    protected UserControl userControl;
+
+    @Inject
+    protected CommentControl commentControl;
+
+    @Inject
+    protected RatingControl ratingControl;
+
+    @Inject
+    protected WorkEffortControl workEffortControl;
+
     protected Session session;
     protected Map<K, V> transferCache;
     
-    private UomControl uomControl;
-    private UserControl userControl;
     private Party party;
     private Language language;
     private Currency currency;
@@ -117,22 +129,6 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
         return transferCache.get(key);
     }
     
-    protected UomControl getUomControl() {
-        if(uomControl == null) {
-            uomControl = Session.getModelController(UomControl.class);
-        }
-        
-        return uomControl;
-    }
-    
-    protected UserControl getUserControl() {
-        if(userControl == null) {
-            userControl = Session.getModelController(UserControl.class);
-        }
-        
-        return userControl;
-    }
-
     protected PartyPK getPartyPK(final UserVisit userVisit) {
         if(party == null) {
             getParty(userVisit);
@@ -143,7 +139,7 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
 
     protected Party getParty(final UserVisit userVisit) {
         if(party == null) {
-            party = getUserControl().getPartyFromUserVisit(userVisit);
+            party = userControl.getPartyFromUserVisit(userVisit);
         }
 
         return party;
@@ -151,7 +147,7 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
 
     protected Language getLanguage(final UserVisit userVisit) {
         if(language == null) {
-            language = getUserControl().getPreferredLanguageFromUserVisit(userVisit);
+            language = userControl.getPreferredLanguageFromUserVisit(userVisit);
         }
         
         return language;
@@ -159,7 +155,7 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
     
     protected Currency getCurrency(final UserVisit userVisit) {
         if(currency == null) {
-            currency = getUserControl().getPreferredCurrencyFromUserVisit(userVisit);
+            currency = userControl.getPreferredCurrencyFromUserVisit(userVisit);
         }
         
         return currency;
@@ -167,7 +163,7 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
     
     protected TimeZone getTimeZone(final UserVisit userVisit) {
         if(timeZone == null) {
-            timeZone = getUserControl().getPreferredTimeZoneFromUserVisit(userVisit);
+            timeZone = userControl.getPreferredTimeZoneFromUserVisit(userVisit);
         }
         
         return timeZone;
@@ -175,7 +171,7 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
     
     protected DateTimeFormat getDateTimeFormat(final UserVisit userVisit) {
         if(dateTimeFormat == null) {
-            dateTimeFormat = getUserControl().getPreferredDateTimeFormatFromUserVisit(userVisit);
+            dateTimeFormat = userControl.getPreferredDateTimeFormatFromUserVisit(userVisit);
         }
         
         return dateTimeFormat;
@@ -398,25 +394,37 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
         }
     }
 
-    protected EntityInstance setupComments(final UserVisit userVisit, final K commentedEntity, EntityInstance commentedEntityInstance, final V transfer, final String commentTypeName) {
-        var commentControl = Session.getModelController(CommentControl.class);
-        
+    protected EntityInstance setupAllCommentTypes(final UserVisit userVisit, final K commentedEntity, EntityInstance commentedEntityInstance,
+            final V transfer) {
+        for(var commentType: commentControl.getCommentTypes(commentedEntityInstance.getEntityType())) {
+            setupComments(userVisit, commentedEntity, commentedEntityInstance, transfer, commentType);
+        }
+
+        return commentedEntityInstance;
+    }
+
+    protected EntityInstance setupComments(final UserVisit userVisit, final K commentedEntity, EntityInstance commentedEntityInstance,
+            final V transfer, final String commentTypeName) {
+        var commentType = commentControl.getCommentTypeByName(commentedEntityInstance.getEntityType(), commentTypeName);
+
+        return setupComments(userVisit, commentedEntity, commentedEntityInstance, transfer, commentType);
+    }
+
+    protected EntityInstance setupComments(final UserVisit userVisit, final K commentedEntity, EntityInstance commentedEntityInstance,
+        final V transfer, final CommentType commentType) {
         if(commentedEntityInstance == null) {
             var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             
             commentedEntityInstance = entityInstanceControl.getEntityInstanceByBasePK(commentedEntity.getPrimaryKey());
         }
 
-        var commentType = commentControl.getCommentTypeByName(commentedEntityInstance.getEntityType(), commentTypeName);
-        transfer.addComments(commentTypeName, new CommentListWrapper(commentControl.getCommentTypeTransfer(userVisit, commentType),
+        transfer.addComments(commentType.getLastDetail().getCommentTypeName(), new CommentListWrapper(commentControl.getCommentTypeTransfer(userVisit, commentType),
                 commentControl.getCommentTransfersByCommentedEntityInstanceAndCommentType(userVisit, commentedEntityInstance, commentType)));
         
         return commentedEntityInstance;
     }
 
     protected EntityInstance setupRatings(final UserVisit userVisit, final K ratedEntity, EntityInstance ratedEntityInstance, final V transfer, final String ratingTypeName) {
-        var ratingControl = Session.getModelController(RatingControl.class);
-        
         if(ratedEntityInstance == null) {
             var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             
@@ -431,8 +439,6 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
     }
 
     protected EntityInstance setupOwnedWorkEfforts(final UserVisit userVisit, final K baseEntity, EntityInstance owningEntityInstance, final V transfer) {
-        var workEffortControl = Session.getModelController(WorkEffortControl.class);
-        
         if(owningEntityInstance == null) {
             var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             
