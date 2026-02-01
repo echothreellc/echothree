@@ -83,7 +83,7 @@
                                 <c:set var="entityInstance" scope="request" value="${comment.commentedByEntityInstance}" />
                                 <jsp:include page="../../include/targetAsReviewLink.jsp" />
                             </display:column>
-                            <c:if test="${commentList.commentType.workflowEntrance != null}">
+                            <c:if test="${comments.commentType.workflowEntrance != null}">
                                 <display:column titleKey="columnTitle.status">
                                     <c:url var="statusUrl" value="/action/Core/EntityInstance/CommentStatus">
                                         <c:param name="EntityRef" value="${entityInstance.entityRef}" />
