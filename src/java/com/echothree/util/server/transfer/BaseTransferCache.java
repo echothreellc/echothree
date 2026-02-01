@@ -27,7 +27,6 @@ import com.echothree.model.control.rating.common.transfer.RatingListWrapper;
 import com.echothree.model.control.rating.server.control.RatingControl;
 import com.echothree.model.control.tag.common.transfer.TagScopeTransfer;
 import com.echothree.model.control.tag.server.control.TagControl;
-import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
@@ -67,6 +66,9 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
 
     @Inject
     protected CommentControl commentControl;
+
+    @Inject
+    protected EntityInstanceControl entityInstanceControl;
 
     @Inject
     protected RatingControl ratingControl;
@@ -366,8 +368,6 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
     }
 
     protected void setupEntityInstance(final UserVisit userVisit, final K baseEntity, EntityInstance entityInstance, final V transfer) {
-        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-
         if(entityInstance == null) {
             entityInstance = entityInstanceControl.getEntityInstanceByBasePK(baseEntity.getPrimaryKey());
         }
@@ -396,7 +396,10 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
 
     protected EntityInstance setupAllCommentTypes(final UserVisit userVisit, final K commentedEntity, EntityInstance commentedEntityInstance,
             final V transfer) {
-        for(var commentType: commentControl.getCommentTypes(commentedEntityInstance.getEntityType())) {
+        var entityType = commentedEntityInstance.getEntityType();
+        var commentTypes = commentControl.getCommentTypes(entityType);
+
+        for(var commentType: commentTypes) {
             setupComments(userVisit, commentedEntity, commentedEntityInstance, transfer, commentType);
         }
 
@@ -413,21 +416,20 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
     protected EntityInstance setupComments(final UserVisit userVisit, final K commentedEntity, EntityInstance commentedEntityInstance,
         final V transfer, final CommentType commentType) {
         if(commentedEntityInstance == null) {
-            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-            
             commentedEntityInstance = entityInstanceControl.getEntityInstanceByBasePK(commentedEntity.getPrimaryKey());
         }
 
-        transfer.addComments(commentType.getLastDetail().getCommentTypeName(), new CommentListWrapper(commentControl.getCommentTypeTransfer(userVisit, commentType),
-                commentControl.getCommentTransfersByCommentedEntityInstanceAndCommentType(userVisit, commentedEntityInstance, commentType)));
+        var commentTypeTransfer = commentControl.getCommentTypeTransfer(userVisit, commentType);
+        var commentTypeName = commentTypeTransfer.getCommentTypeName();
+        var commentTransfers = commentControl.getCommentTransfersByCommentedEntityInstanceAndCommentType(userVisit, commentedEntityInstance, commentType);
+        var commentListWrapper = new CommentListWrapper(commentTypeTransfer, commentTransfers);
+        transfer.addComments(commentTypeName, commentListWrapper);
         
         return commentedEntityInstance;
     }
 
     protected EntityInstance setupRatings(final UserVisit userVisit, final K ratedEntity, EntityInstance ratedEntityInstance, final V transfer, final String ratingTypeName) {
         if(ratedEntityInstance == null) {
-            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-            
             ratedEntityInstance = entityInstanceControl.getEntityInstanceByBasePK(ratedEntity.getPrimaryKey());
         }
 
@@ -440,8 +442,6 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
 
     protected EntityInstance setupOwnedWorkEfforts(final UserVisit userVisit, final K baseEntity, EntityInstance owningEntityInstance, final V transfer) {
         if(owningEntityInstance == null) {
-            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-            
             owningEntityInstance = entityInstanceControl.getEntityInstanceByBasePK(baseEntity.getPrimaryKey());
         }
         
