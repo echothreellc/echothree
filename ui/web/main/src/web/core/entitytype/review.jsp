@@ -38,7 +38,8 @@
             </h2>
         </div>
         <div id="Content">
-            <et:checkSecurityRoles securityRoles="ComponentVendor.Review:EntityAliasType.List:EntityAttribute.List:CommentType.List:RatingType.List:MessageType.List:EntityInstance.List:Event.List" />
+            <et:checkSecurityRoles securityRoles="EntityInstance.Review:ComponentVendor.Review:EntityAliasType.List:EntityAttribute.List:CommentType.List:RatingType.List:MessageType.List:EntityInstance.List:Event.List" />
+            <et:hasSecurityRole securityRole="EntityInstance.Review" var="includeEntityInstanceReviewUrl" />
             <c:choose>
                 <c:when test="${entityType.description != null}">
                     <p><font size="+2"><b><et:appearance appearance="${entityType.entityInstance.entityAppearance.appearance}"><c:out value="${entityType.description}" /></et:appearance></b></font></p>
@@ -572,7 +573,19 @@
                     </c:when>
                     <c:otherwise>
                         <display:table name="entityType.entityInstances.list" id="entityInstance" class="displaytag">
-                            <display:column property="entityRef" titleKey="columnTitle.entity" />
+                            <display:column titleKey="columnTitle.entity">
+                                <c:choose>
+                                    <c:when test="${includeEntityInstanceReviewUrl}">
+                                        <c:url var="entityInstanceUrl" value="/action/Core/EntityInstance/Review">
+                                            <c:param name="EntityRef" value="${entityInstance.entityRef}" />
+                                        </c:url>
+                                        <a href="${entityInstanceUrl}"><c:out value="${entityInstance.entityRef}" /></a>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <c:out value="${entityInstance.entityRef}" />
+                                    </c:otherwise>
+                                </c:choose>
+                            </display:column>
                             <display:column titleKey="columnTitle.description">
                                 <c:out value="${entityInstance.description}" />
                             </display:column>

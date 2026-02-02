@@ -18,6 +18,7 @@ package com.echothree.ui.web.main.action.core.entityinstance;
 
 import com.echothree.control.user.core.common.CoreUtil;
 import com.echothree.control.user.core.common.result.GetEntityInstanceResult;
+import com.echothree.model.control.comment.common.CommentOptions;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.core.common.transfer.EntityInstanceTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
@@ -28,7 +29,6 @@ import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
 import com.echothree.view.client.web.struts.sslext.config.SecureActionMapping;
-import java.util.HashSet;
 import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -57,12 +57,15 @@ public class ReviewAction
         commandForm.setEntityRef(request.getParameter(ParameterConstants.ENTITY_REF));
 
         commandForm.setOptions(Set.of(
+                CommentOptions.CommentIncludeClob,
+                CommentOptions.CommentIncludeWorkflowStep,
                 CoreOptions.EntityAttributeGroupIncludeEntityAttributes,
                 CoreOptions.EntityAttributeIncludeValue,
                 CoreOptions.EntityStringAttributeIncludeString,
                 CoreOptions.EntityInstanceIncludeNames,
                 CoreOptions.EntityInstanceIncludeEntityAttributeGroups,
                 CoreOptions.EntityInstanceIncludeTagScopes,
+                CoreOptions.EntityInstanceIncludeComments,
                 CoreOptions.EntityInstanceIncludeEntityAppearance,
                 CoreOptions.AppearanceIncludeTextDecorations,
                 CoreOptions.AppearanceIncludeTextTransformations

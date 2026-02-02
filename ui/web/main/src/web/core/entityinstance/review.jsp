@@ -55,6 +55,68 @@
                 <c:param name="EntityRef" value="${entityInstance.entityRef}" />
             </c:url>
 
+            <jsp:useBean id="entityInstance" scope="request" type="com.echothree.model.control.core.common.transfer.EntityInstanceTransfer"/>
+            <c:forEach items="${entityInstance.comments.list}" var="comments">
+                <h2><c:out value="${comments.commentType.description}" /> Comments</h2>
+                <c:url var="addUrl" value="/action/Core/EntityInstance/CommentAdd">
+                    <c:param name="EntityRef" value="${entityInstance.entityRef}" />
+                    <c:param name="CommentTypeName" value="${comments.commentType.commentTypeName}" />
+                </c:url>
+                <p><a href="${addUrl}">Add <c:out value="${comments.commentType.description}" /> Comment.</a></p>
+                <c:choose>
+                    <c:when test='${comments.size == 0}'>
+                        <br />
+                    </c:when>
+                    <c:otherwise>
+                        <et:checkSecurityRoles securityRoles="Event.List" />
+                        <display:table name="${comments.list}" id="comment" class="displaytag">
+                            <display:column titleKey="columnTitle.dateTime">
+                                <c:out value="${comment.entityInstance.entityTime.createdTime}" />
+                            </display:column>
+                            <display:column titleKey="columnTitle.comment">
+                                <c:if test='${comment.description != null}'>
+                                    <b><c:out value="${comment.description}" /></b><br />
+                                </c:if>
+                                <et:out value="${comment.clob}" mimeTypeName="${comment.mimeType.mimeTypeName}" />
+                            </display:column>
+                            <display:column titleKey="columnTitle.enteredBy">
+                                <c:set var="entityInstance" scope="request" value="${comment.commentedByEntityInstance}" />
+                                <jsp:include page="../../include/targetAsReviewLink.jsp" />
+                            </display:column>
+                            <c:if test="${comments.commentType.workflowEntrance != null}">
+                                <display:column titleKey="columnTitle.status">
+                                    <c:url var="statusUrl" value="/action/Core/EntityInstance/CommentStatus">
+                                        <c:param name="EntityRef" value="${entityInstance.entityRef}" />
+                                        <c:param name="CommentName" value="${comment.commentName}" />
+                                    </c:url>
+                                    <a href="${statusUrl}"><c:out value="${comment.commentStatus.workflowStep.description}" /></a>
+                                </display:column>
+                            </c:if>
+                            <display:column>
+                                <c:url var="editUrl" value="/action/Core/EntityInstance/CommentEdit">
+                                    <c:param name="EntityRef" value="${entityInstance.entityRef}" />
+                                    <c:param name="CommentName" value="${comment.commentName}" />
+                                </c:url>
+                                <a href="${editUrl}">Edit</a>
+                                <c:url var="deleteUrl" value="/action/Core/EntityInstance/CommentDelete">
+                                    <c:param name="EntityRef" value="${entityInstance.entityRef}" />
+                                    <c:param name="CommentName" value="${comment.commentName}" />
+                                </c:url>
+                                <a href="${deleteUrl}">Delete</a>
+                            </display:column>
+                            <et:hasSecurityRole securityRole="Event.List">
+                                <display:column>
+                                    <c:url var="eventsUrl" value="/action/Core/Event/Main">
+                                        <c:param name="EntityRef" value="${comment.entityInstance.entityRef}" />
+                                    </c:url>
+                                    <a href="${eventsUrl}">Events</a>
+                                </display:column>
+                            </et:hasSecurityRole>
+                        </display:table>
+                    </c:otherwise>
+                </c:choose>
+                <br />
+            </c:forEach>
 
             <c:set var="tagScopes" scope="request" value="${entityInstance.tagScopes}" />
             <c:set var="entityAttributeGroups" scope="request" value="${entityInstance.entityAttributeGroups}" />

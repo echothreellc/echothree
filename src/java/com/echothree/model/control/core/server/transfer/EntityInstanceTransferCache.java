@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.core.server.transfer;
 
+import com.echothree.model.control.comment.common.CommentConstants;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.core.common.CoreProperties;
 import com.echothree.model.control.core.common.transfer.EntityInstanceTransfer;
@@ -46,6 +47,7 @@ public class EntityInstanceTransferCache
     @Inject
     EventControl eventControl;
 
+    boolean includeComments;
     boolean includeEntityAppearance;
     boolean includeEntityVisit;
     boolean includeNames;
@@ -64,6 +66,7 @@ public class EntityInstanceTransferCache
         
         var options = session.getOptions();
         if(options != null) {
+            includeComments = options.contains(CoreOptions.EntityInstanceIncludeComments);
             includeEntityAppearance = options.contains(CoreOptions.EntityInstanceIncludeEntityAppearance);
             includeEntityVisit = options.contains(CoreOptions.EntityInstanceIncludeEntityVisit);
             includeNames = options.contains(CoreOptions.EntityInstanceIncludeNames);
@@ -121,6 +124,10 @@ public class EntityInstanceTransferCache
                     entityTimeTransfer, description);
             put(userVisit, entityInstance, entityInstanceTransfer, entityInstance);
 
+            if(includeComments) {
+                setupAllCommentTypes(userVisit, null, entityInstance, entityInstanceTransfer);
+            }
+
             if(includeEntityAppearance || this.includeEntityAppearance) {
                 var appearanceControl = Session.getModelController(AppearanceControl.class);
                 var entityAppearance = appearanceControl.getEntityAppearance(entityInstance);
@@ -130,7 +137,7 @@ public class EntityInstanceTransferCache
 
             if(includeEntityVisit || this.includeEntityVisit) {
                 // visitingParty could be null
-                var visitingParty = getUserControl().getPartyFromUserVisit(userVisit);
+                var visitingParty = userControl.getPartyFromUserVisit(userVisit);
                 var visitingEntityInstance = visitingParty == null ? null : entityInstanceControl.getEntityInstanceByBasePK(visitingParty.getPrimaryKey());
 
                 // visitingEntityInstance = the entityInstance parameter

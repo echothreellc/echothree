@@ -37,6 +37,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetEntityInstanceCommand
@@ -64,11 +65,15 @@ public class GetEntityInstanceCommand
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
+    @Inject
+    EntityInstanceControl entityInstanceControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
     @Override
     protected EntityInstance getEntity() {
-        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form);
-
-        return entityInstance;
+        return entityInstanceLogic.getEntityInstance(this, form);
     }
 
     @Override
@@ -76,10 +81,10 @@ public class GetEntityInstanceCommand
         var result = CoreResultFactory.getGetEntityInstanceResult();
 
         if(entityInstance != null) {
-            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+            var entityInstanceTransfer = entityInstanceControl.getEntityInstanceTransfer(getUserVisit(), entityInstance,
+                    false, false, false, false);
 
-            result.setEntityInstance(entityInstanceControl.getEntityInstanceTransfer(getUserVisit(), entityInstance,
-                    false, false, false, false));
+            result.setEntityInstance(entityInstanceTransfer);
         }
 
         return result;
