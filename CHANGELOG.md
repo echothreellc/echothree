@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-02-01-01
+
+* Entity Instance Add, Send Event, Delete, Remove Actions and Pages [1691](https://gitlab.echothree.com/echothree/echothree/-/issues/1691)
+* Add Comments to Entity Instance Review Page [1692](https://gitlab.echothree.com/echothree/echothree/-/issues/1692)
+* Incorrect Parameters for Selector and Filter Mutations [1717](https://gitlab.echothree.com/echothree/echothree/-/issues/1717)
+
 ## 2026-01-18-01
 
 * Add Saving CRSF Tokens to  Actions For Pages That Include Tag Scopes [1695](https://gitlab.echothree.com/echothree/echothree/-/issues/1695)
