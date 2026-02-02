@@ -61,11 +61,24 @@
         <div id="Content">
             <c:choose>
                 <c:when test="${entityInstance != null}">
-                    <et:checkSecurityRoles securityRoles="ComponentVendor.Review:EntityType.Review:EntityAppearance.Create:Appearance.Review:EntityAppearance.Edit:EntityAppearance.Delete" />
+                    <et:checkSecurityRoles securityRoles="EntityInstance.Review:ComponentVendor.Review:EntityType.Review:EntityAppearance.Create:Appearance.Review:EntityAppearance.Edit:EntityAppearance.Delete" />
+                    <et:hasSecurityRole securityRole="EntityInstance.Review" var="includeEntityInstanceReviewUrl" />
                     <et:hasSecurityRole securityRole="ComponentVendor.Review" var="includeComponentVendorReviewUrl" />
                     <et:hasSecurityRole securityRole="EntityType.Review" var="includeEntityTypeReviewUrl" />
                     <et:hasSecurityRole securityRole="Appearance.Review" var="includeAppearanceReviewUrl" />
-                    Entity: <c:out value="${entityInstance.entityRef}" /><br />
+                    Entity:
+                    <c:choose>
+                        <c:when test="${includeEntityInstanceReviewUrl}">
+                            <c:url var="entityInstanceUrl" value="/action/Core/EntityInstance/Review">
+                                <c:param name="EntityRef" value="${entityInstance.entityRef}" />
+                            </c:url>
+                            <a href="${entityInstanceUrl}"><c:out value="${entityInstance.entityRef}" /></a>
+                        </c:when>
+                        <c:otherwise>
+                            <c:out value="${entityInstance.entityRef}" />
+                        </c:otherwise>
+                    </c:choose>
+                    <br />
                     Component Vendor:
                     <c:choose>
                         <c:when test="${includeComponentVendorReviewUrl}">
