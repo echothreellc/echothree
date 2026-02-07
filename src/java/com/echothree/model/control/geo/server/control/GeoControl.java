@@ -3824,7 +3824,8 @@ public class GeoControl
                         "FROM geocodedatetimeformats, datetimeformats, datetimeformatdetails " +
                         "WHERE geodtf_geo_geocodeid = ? AND geodtf_thrutime = ? " +
                         "AND geodtf_dtf_datetimeformatid = dtf_datetimeformatid AND dtf_lastdetailid = dtfdt_datetimeformatdetailid " +
-                        "ORDER BY dtfdt_sortorder, dtfdt_datetimeformatname";
+                        "ORDER BY dtfdt_sortorder, dtfdt_datetimeformatname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM geocodedatetimeformats " +
@@ -3864,7 +3865,8 @@ public class GeoControl
                         "FROM geocodedatetimeformats, geocodes, geocodedetails " +
                         "WHERE geodtf_dtf_datetimeformatid = ? AND geodtf_thrutime = ? " +
                         "AND geodtf_geo_geocodeid = geo_geocodeid AND geo_lastdetailid = geodt_geocodedetailid " +
-                        "ORDER BY geodt_sortorder, geodt_geocodename";
+                        "ORDER BY geodt_sortorder, geodt_geocodename " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM geocodedatetimeformats " +
