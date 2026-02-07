@@ -153,6 +153,8 @@ import com.echothree.control.user.geo.server.command.GetGeoCodeLanguageCommand;
 import com.echothree.control.user.geo.server.command.GetGeoCodeLanguagesCommand;
 import com.echothree.control.user.geo.server.command.GetGeoCodeScopeCommand;
 import com.echothree.control.user.geo.server.command.GetGeoCodeScopesCommand;
+import com.echothree.control.user.geo.server.command.GetGeoCodeTimeZoneCommand;
+import com.echothree.control.user.geo.server.command.GetGeoCodeTimeZonesCommand;
 import com.echothree.control.user.geo.server.command.GetGeoCodeTypeCommand;
 import com.echothree.control.user.geo.server.command.GetGeoCodeTypesCommand;
 import com.echothree.control.user.inventory.common.InventoryUtil;
@@ -491,6 +493,7 @@ import com.echothree.model.control.geo.server.graphql.GeoCodeDateTimeFormatObjec
 import com.echothree.model.control.geo.server.graphql.GeoCodeLanguageObject;
 import com.echothree.model.control.geo.server.graphql.GeoCodeObject;
 import com.echothree.model.control.geo.server.graphql.GeoCodeScopeObject;
+import com.echothree.model.control.geo.server.graphql.GeoCodeTimeZoneObject;
 import com.echothree.model.control.geo.server.graphql.GeoCodeTypeObject;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
@@ -753,12 +756,14 @@ import com.echothree.model.data.geo.common.GeoCodeCurrencyConstants;
 import com.echothree.model.data.geo.common.GeoCodeDateTimeFormatConstants;
 import com.echothree.model.data.geo.common.GeoCodeLanguageConstants;
 import com.echothree.model.data.geo.common.GeoCodeScopeConstants;
+import com.echothree.model.data.geo.common.GeoCodeTimeZoneConstants;
 import com.echothree.model.data.geo.common.GeoCodeTypeConstants;
 import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.geo.server.entity.GeoCodeCurrency;
 import com.echothree.model.data.geo.server.entity.GeoCodeDateTimeFormat;
 import com.echothree.model.data.geo.server.entity.GeoCodeLanguage;
 import com.echothree.model.data.geo.server.entity.GeoCodeScope;
+import com.echothree.model.data.geo.server.entity.GeoCodeTimeZone;
 import com.echothree.model.data.geo.server.entity.GeoCodeType;
 import com.echothree.model.data.inventory.common.AllocationPriorityConstants;
 import com.echothree.model.data.inventory.common.InventoryAdjustmentTypeConstants;
@@ -11072,6 +11077,64 @@ public interface GraphQlQueries {
 
                     var transactionTypes = entities.stream()
                             .map(GeoCodeCurrencyObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, transactionTypes);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("geoCodeTimeZone")
+    static GeoCodeTimeZoneObject geoCodeTimeZone(final DataFetchingEnvironment env,
+            @GraphQLName("geoCodeName") @GraphQLNonNull final String geoCodeName,
+            @GraphQLName("javaTimeZoneName") @GraphQLNonNull final String javaTimeZoneName) {
+        GeoCodeTimeZone geoCodeTimeZone;
+
+        try {
+            var commandForm = GeoUtil.getHome().getGetGeoCodeTimeZoneForm();
+
+            commandForm.setGeoCodeName(geoCodeName);
+            commandForm.setJavaTimeZoneName(javaTimeZoneName);
+
+            geoCodeTimeZone = CDI.current().select(GetGeoCodeTimeZoneCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return geoCodeTimeZone == null ? null : new GeoCodeTimeZoneObject(geoCodeTimeZone);
+    }
+
+    @GraphQLField
+    @GraphQLName("geoCodeTimeZones")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<GeoCodeTimeZoneObject> geoCodeTimeZones(final DataFetchingEnvironment env,
+            @GraphQLName("geoCodeName") final String geoCodeName,
+            @GraphQLName("javaTimeZoneName") final String javaTimeZoneName) {
+        CountingPaginatedData<GeoCodeTimeZoneObject> data;
+
+        try {
+            var commandForm = GeoUtil.getHome().getGetGeoCodeTimeZonesForm();
+            var command = CDI.current().select(GetGeoCodeTimeZonesCommand.class).get();
+
+            commandForm.setGeoCodeName(geoCodeName);
+            commandForm.setJavaTimeZoneName(javaTimeZoneName);
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, GeoCodeTimeZoneConstants.COMPONENT_VENDOR_NAME, GeoCodeTimeZoneConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var transactionTypes = entities.stream()
+                            .map(GeoCodeTimeZoneObject::new)
                             .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, transactionTypes);
