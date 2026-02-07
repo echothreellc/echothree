@@ -3104,7 +3104,23 @@ public class GeoControl
         
         return geoCodeCurrency;
     }
-    
+
+    public long countGeoCodeCurrenciesByGeoCode(GeoCode geoCode) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM geocodecurrencies " +
+                        "WHERE geocur_geo_geocodeid = ? AND geocur_thrutime = ?",
+                geoCode, Session.MAX_TIME);
+    }
+
+    public long countGeoCodeCurrenciesByCurrency(Currency currency) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM geocodecurrencies " +
+                        "WHERE geocur_cur_currencyid = ? AND geocur_thrutime = ?",
+                currency, Session.MAX_TIME);
+    }
+
     private GeoCodeCurrency getGeoCodeCurrency(GeoCode geoCode, Currency currency, EntityPermission entityPermission) {
         GeoCodeCurrency geoCodeCurrency;
         
@@ -3195,7 +3211,6 @@ public class GeoControl
         
         return geoCodeCurrency == null? null: geoCodeCurrency.getGeoCodeCurrencyValue().clone();
     }
-    
     private List<GeoCodeCurrency> getGeoCodeCurrenciesByGeoCode(GeoCode geoCode, EntityPermission entityPermission) {
         List<GeoCodeCurrency> geoCodeCurrencies;
         
@@ -3207,7 +3222,8 @@ public class GeoControl
                         "FROM geocodecurrencies, currencies " +
                         "WHERE geocur_geo_geocodeid = ? AND geocur_thrutime = ? " +
                         "AND geocur_cur_currencyid = cur_currencyid " +
-                        "ORDER BY cur_sortorder, cur_currencyisoname";
+                        "ORDER BY cur_sortorder, cur_currencyisoname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM geocodecurrencies " +
@@ -3247,7 +3263,8 @@ public class GeoControl
                         "FROM geocodecurrencies, geocodes, geocodedetails " +
                         "WHERE geocur_cur_currencyid = ? AND geocur_thrutime = ? " +
                         "AND geocur_geo_geocodeid = geo_geocodeid AND geo_lastdetailid = geodt_geocodedetailid " +
-                        "ORDER BY geodt_sortorder, geodt_geocodename";
+                        "ORDER BY geodt_sortorder, geodt_geocodename " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM geocodecurrencies " +
