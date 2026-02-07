@@ -23,40 +23,38 @@ import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.geo.server.entity.GeoCodeCurrency;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetGeoCodeCurrencyCommand
-        extends BaseSimpleCommand<GetGeoCodeCurrencyForm> {
+        extends BaseSingleEntityCommand<GeoCodeCurrency, GetGeoCodeCurrencyForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.GeoCodeCurrency.name(), SecurityRoles.Review.name())
-                        )))
-                )));
+                        ))
+                ));
         
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("GeoCodeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("CurrencyIsoName", FieldType.ENTITY_NAME, true, null, null)
-                ));
+                );
     }
     
     /** Creates a new instance of GetGeoCodeCurrencyCommand */
@@ -64,24 +62,26 @@ public class GetGeoCodeCurrencyCommand
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
+    @Inject
+    GeoControl geoControl;
+
+    @Inject
+    AccountingControl accountingControl;
+
     @Override
-    protected BaseResult execute() {
-        var geoControl = Session.getModelController(GeoControl.class);
-        var result = GeoResultFactory.getGetGeoCodeCurrencyResult();
+    protected GeoCodeCurrency getEntity() {
         var geoCodeName = form.getGeoCodeName();
         var geoCode = geoControl.getGeoCodeByName(geoCodeName);
-        
+        GeoCodeCurrency geoCodeCurrency = null;
+
         if(geoCode != null) {
-            var accountingControl = Session.getModelController(AccountingControl.class);
             var currencyIsoName = form.getCurrencyIsoName();
             var currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
-            
+
             if(currency != null) {
-                var geoCodeCurrency = geoControl.getGeoCodeCurrencyForUpdate(geoCode, currency);
-                
-                if(geoCodeCurrency != null) {
-                    result.setGeoCodeCurrency(geoControl.getGeoCodeCurrencyTransfer(getUserVisit(), geoCodeCurrency));
-                } else {
+                geoCodeCurrency = geoControl.getGeoCodeCurrencyForUpdate(geoCode, currency);
+
+                if(geoCodeCurrency == null) {
                     addExecutionError(ExecutionErrors.UnknownGeoCodeCurrency.name(), geoCodeName, currencyIsoName);
                 }
             } else {
@@ -90,7 +90,18 @@ public class GetGeoCodeCurrencyCommand
         } else {
             addExecutionError(ExecutionErrors.UnknownGeoCodeName.name(), geoCodeName);
         }
-        
+
+        return geoCodeCurrency;
+    }
+
+    @Override
+    protected BaseResult getResult(GeoCodeCurrency geoCodeCurrency) {
+        var result = GeoResultFactory.getGetGeoCodeCurrencyResult();
+
+        if(geoCodeCurrency != null) {
+            result.setGeoCodeCurrency(geoControl.getGeoCodeCurrencyTransfer(getUserVisit(), geoCodeCurrency));
+        }
+
         return result;
     }
     
