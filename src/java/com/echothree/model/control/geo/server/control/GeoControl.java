@@ -3681,6 +3681,9 @@ public class GeoControl
     //   Geo Code Date Time Formats
     // --------------------------------------------------------------------------------
     
+    @Inject
+    GeoCodeDateTimeFormatFactory geoCodeDateTimeFormatFactory;
+    
     public GeoCodeDateTimeFormat createGeoCodeDateTimeFormat(GeoCode geoCode, DateTimeFormat dateTimeFormat, Boolean isDefault,
             Integer sortOrder, BasePK createdBy) {
         var defaultGeoCodeDateTimeFormat = getDefaultGeoCodeDateTimeFormat(geoCode);
@@ -3695,14 +3698,30 @@ public class GeoControl
             isDefault = true;
         }
 
-        var geoCodeDateTimeFormat = GeoCodeDateTimeFormatFactory.getInstance().create(geoCode,
+        var geoCodeDateTimeFormat = geoCodeDateTimeFormatFactory.create(geoCode,
                 dateTimeFormat, isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
         
         sendEvent(geoCode.getPrimaryKey(), EventTypes.MODIFY, geoCodeDateTimeFormat.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return geoCodeDateTimeFormat;
     }
-    
+
+    public long countGeoCodeDateTimeFormatsByGeoCode(GeoCode geoCode) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM geocodedatetimeformats " +
+                        "WHERE geodtf_geo_geocodeid = ? AND geodtf_thrutime = ?",
+                geoCode, Session.MAX_TIME);
+    }
+
+    public long countGeoCodeDateTimeFormatsByDateTimeFormat(DateTimeFormat dateTimeFormat) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM geocodedatetimeformats " +
+                        "WHERE geodtf_dtf_datetimeformatid = ? AND geodtf_thrutime = ?",
+                dateTimeFormat, Session.MAX_TIME);
+    }
+
     private GeoCodeDateTimeFormat getGeoCodeDateTimeFormat(GeoCode geoCode, DateTimeFormat dateTimeFormat, EntityPermission entityPermission) {
         GeoCodeDateTimeFormat geoCodeDateTimeFormat;
         
@@ -3720,13 +3739,13 @@ public class GeoControl
                         "FOR UPDATE";
             }
 
-            var ps = GeoCodeDateTimeFormatFactory.getInstance().prepareStatement(query);
+            var ps = geoCodeDateTimeFormatFactory.prepareStatement(query);
             
             ps.setLong(1, geoCode.getPrimaryKey().getEntityId());
             ps.setLong(2, dateTimeFormat.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            geoCodeDateTimeFormat = GeoCodeDateTimeFormatFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            geoCodeDateTimeFormat = geoCodeDateTimeFormatFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3767,12 +3786,12 @@ public class GeoControl
                         "FOR UPDATE";
             }
 
-            var ps = GeoCodeDateTimeFormatFactory.getInstance().prepareStatement(query);
+            var ps = geoCodeDateTimeFormatFactory.prepareStatement(query);
             
             ps.setLong(1, geoCode.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            geoCodeDateTimeFormat = GeoCodeDateTimeFormatFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            geoCodeDateTimeFormat = geoCodeDateTimeFormatFactory.getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3813,12 +3832,12 @@ public class GeoControl
                         "FOR UPDATE";
             }
 
-            var ps = GeoCodeDateTimeFormatFactory.getInstance().prepareStatement(query);
+            var ps = geoCodeDateTimeFormatFactory.prepareStatement(query);
             
             ps.setLong(1, geoCode.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            geoCodeDateTimeFormats = GeoCodeDateTimeFormatFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            geoCodeDateTimeFormats = geoCodeDateTimeFormatFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3853,12 +3872,12 @@ public class GeoControl
                         "FOR UPDATE";
             }
 
-            var ps = GeoCodeDateTimeFormatFactory.getInstance().prepareStatement(query);
+            var ps = geoCodeDateTimeFormatFactory.prepareStatement(query);
             
             ps.setLong(1, dateTimeFormat.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            geoCodeDateTimeFormats = GeoCodeDateTimeFormatFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            geoCodeDateTimeFormats = geoCodeDateTimeFormatFactory.getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -3901,7 +3920,7 @@ public class GeoControl
     private void updateGeoCodeDateTimeFormatFromValue(GeoCodeDateTimeFormatValue geoCodeDateTimeFormatValue, boolean checkDefault,
             BasePK updatedBy) {
         if(geoCodeDateTimeFormatValue.hasBeenModified()) {
-            var geoCodeDateTimeFormat = GeoCodeDateTimeFormatFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            var geoCodeDateTimeFormat = geoCodeDateTimeFormatFactory.getEntityFromPK(EntityPermission.READ_WRITE,
                      geoCodeDateTimeFormatValue.getPrimaryKey());
             
             geoCodeDateTimeFormat.setThruTime(session.getStartTime());
@@ -3929,7 +3948,7 @@ public class GeoControl
                 }
             }
             
-            geoCodeDateTimeFormat = GeoCodeDateTimeFormatFactory.getInstance().create(geoCodePK, dateTimeFormatPK,
+            geoCodeDateTimeFormat = geoCodeDateTimeFormatFactory.create(geoCodePK, dateTimeFormatPK,
                     isDefault, sortOrder, session.getStartTime(), Session.MAX_TIME);
             
             sendEvent(geoCodePK, EventTypes.MODIFY, geoCodeDateTimeFormat.getPrimaryKey(), EventTypes.MODIFY, updatedBy);

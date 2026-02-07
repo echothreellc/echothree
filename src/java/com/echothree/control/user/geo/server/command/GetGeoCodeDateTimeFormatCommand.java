@@ -23,66 +23,68 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.geo.server.entity.GeoCodeDateTimeFormat;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetGeoCodeDateTimeFormatCommand
-        extends BaseSimpleCommand<GetGeoCodeDateTimeFormatForm> {
+        extends BaseSingleEntityCommand<GeoCodeDateTimeFormat, GetGeoCodeDateTimeFormatForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.GeoCodeDateTimeFormat.name(), SecurityRoles.Review.name())
-                        )))
-                )));
+                        ))
+                ));
         
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("GeoCodeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("DateTimeFormatName", FieldType.ENTITY_NAME, true, null, null)
-                ));
+                );
     }
     
     /** Creates a new instance of GetGeoCodeDateTimeFormatCommand */
     public GetGeoCodeDateTimeFormatCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
-    
+
+    @Inject
+    GeoControl geoControl;
+
+    @Inject
+    PartyControl partyControl;
+
     @Override
-    protected BaseResult execute() {
-        var geoControl = Session.getModelController(GeoControl.class);
-        var result = GeoResultFactory.getGetGeoCodeDateTimeFormatResult();
+    protected GeoCodeDateTimeFormat getEntity() {
         var geoCodeName = form.getGeoCodeName();
         var geoCode = geoControl.getGeoCodeByName(geoCodeName);
-        
+        GeoCodeDateTimeFormat geoCodeDateTimeFormat = null;
+
         if(geoCode != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var dateTimeFormatName = form.getDateTimeFormatName();
             var dateTimeFormat = partyControl.getDateTimeFormatByName(dateTimeFormatName);
-            
+
             if(dateTimeFormat != null) {
-                var geoCodeDateTimeFormat = geoControl.getGeoCodeDateTimeFormatForUpdate(geoCode, dateTimeFormat);
-                
-                if(geoCodeDateTimeFormat != null) {
-                    result.setGeoCodeDateTimeFormat(geoControl.getGeoCodeDateTimeFormatTransfer(getUserVisit(), geoCodeDateTimeFormat));
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownGeoCodeDateTimeFormat.name(), geoCodeName, dateTimeFormatName);
+                geoCodeDateTimeFormat = geoControl.getGeoCodeDateTimeFormatForUpdate(geoCode, dateTimeFormat);
+
+                if(geoCodeDateTimeFormat == null) {
+                    addExecutionError(ExecutionErrors.UnknownGeoCodeDateTimeFormat.name(),
+                            geoCode.getLastDetail().getGeoCodeName(),
+                            dateTimeFormat.getLastDetail().getDateTimeFormatName());
                 }
             } else {
                 addExecutionError(ExecutionErrors.UnknownDateTimeFormatName.name(), dateTimeFormatName);
@@ -90,7 +92,18 @@ public class GetGeoCodeDateTimeFormatCommand
         } else {
             addExecutionError(ExecutionErrors.UnknownGeoCodeName.name(), geoCodeName);
         }
-        
+
+        return geoCodeDateTimeFormat;
+    }
+
+    @Override
+    protected BaseResult getResult(GeoCodeDateTimeFormat geoCodeDateTimeFormat) {
+        var result = GeoResultFactory.getGetGeoCodeDateTimeFormatResult();
+
+        if(geoCodeDateTimeFormat != null) {
+            result.setGeoCodeDateTimeFormat(geoControl.getGeoCodeDateTimeFormatTransfer(getUserVisit(), geoCodeDateTimeFormat));
+        }
+
         return result;
     }
     
