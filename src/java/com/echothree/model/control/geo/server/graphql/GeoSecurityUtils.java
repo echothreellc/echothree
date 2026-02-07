@@ -17,6 +17,8 @@
 package com.echothree.model.control.geo.server.graphql;
 
 import com.echothree.control.user.geo.server.command.GetGeoCodeCommand;
+import com.echothree.control.user.geo.server.command.GetGeoCodeDateTimeFormatCommand;
+import com.echothree.control.user.geo.server.command.GetGeoCodeDateTimeFormatsCommand;
 import com.echothree.control.user.geo.server.command.GetGeoCodeScopeCommand;
 import com.echothree.control.user.geo.server.command.GetGeoCodeScopesCommand;
 import com.echothree.control.user.geo.server.command.GetGeoCodeTypeCommand;
@@ -44,6 +46,14 @@ public interface GeoSecurityUtils {
 
     static boolean getHasGeoCodeAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetGeoCodeCommand.class);
+    }
+
+    static boolean getHasGeoCodeDateTimeFormatAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetGeoCodeDateTimeFormatCommand.class);
+    }
+
+    static boolean getHasGeoCodeDateTimeFormatsAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetGeoCodeDateTimeFormatsCommand.class);
     }
 
 }
