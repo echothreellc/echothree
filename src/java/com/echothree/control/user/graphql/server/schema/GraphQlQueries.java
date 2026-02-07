@@ -145,6 +145,8 @@ import com.echothree.control.user.filter.server.command.GetFilterTypesCommand;
 import com.echothree.control.user.filter.server.command.GetFiltersCommand;
 import com.echothree.control.user.geo.common.GeoUtil;
 import com.echothree.control.user.geo.server.command.GetGeoCodeCommand;
+import com.echothree.control.user.geo.server.command.GetGeoCodeDateTimeFormatCommand;
+import com.echothree.control.user.geo.server.command.GetGeoCodeDateTimeFormatsCommand;
 import com.echothree.control.user.geo.server.command.GetGeoCodeScopeCommand;
 import com.echothree.control.user.geo.server.command.GetGeoCodeScopesCommand;
 import com.echothree.control.user.geo.server.command.GetGeoCodeTypeCommand;
@@ -480,6 +482,7 @@ import com.echothree.model.control.filter.server.graphql.FilterKindObject;
 import com.echothree.model.control.filter.server.graphql.FilterObject;
 import com.echothree.model.control.filter.server.graphql.FilterStepObject;
 import com.echothree.model.control.filter.server.graphql.FilterTypeObject;
+import com.echothree.model.control.geo.server.graphql.GeoCodeDateTimeFormatObject;
 import com.echothree.model.control.geo.server.graphql.GeoCodeObject;
 import com.echothree.model.control.geo.server.graphql.GeoCodeScopeObject;
 import com.echothree.model.control.geo.server.graphql.GeoCodeTypeObject;
@@ -740,9 +743,11 @@ import com.echothree.model.data.filter.server.entity.FilterAdjustmentType;
 import com.echothree.model.data.filter.server.entity.FilterKind;
 import com.echothree.model.data.filter.server.entity.FilterStep;
 import com.echothree.model.data.filter.server.entity.FilterType;
+import com.echothree.model.data.geo.common.GeoCodeDateTimeFormatConstants;
 import com.echothree.model.data.geo.common.GeoCodeScopeConstants;
 import com.echothree.model.data.geo.common.GeoCodeTypeConstants;
 import com.echothree.model.data.geo.server.entity.GeoCode;
+import com.echothree.model.data.geo.server.entity.GeoCodeDateTimeFormat;
 import com.echothree.model.data.geo.server.entity.GeoCodeScope;
 import com.echothree.model.data.geo.server.entity.GeoCodeType;
 import com.echothree.model.data.inventory.common.AllocationPriorityConstants;
@@ -10951,6 +10956,64 @@ public interface GraphQlQueries {
         }
 
         return geoCode == null ? null : new GeoCodeObject(geoCode);
+    }
+
+    @GraphQLField
+    @GraphQLName("geoCodeDateTimeFormat")
+    static GeoCodeDateTimeFormatObject geoCodeDateTimeFormat(final DataFetchingEnvironment env,
+            @GraphQLName("geoCodeName") @GraphQLNonNull final String geoCodeName,
+            @GraphQLName("dateTimeFormatName") @GraphQLNonNull final String dateTimeFormatName) {
+        GeoCodeDateTimeFormat geoCodeDateTimeFormat;
+
+        try {
+            var commandForm = GeoUtil.getHome().getGetGeoCodeDateTimeFormatForm();
+
+            commandForm.setGeoCodeName(geoCodeName);
+            commandForm.setDateTimeFormatName(dateTimeFormatName);
+
+            geoCodeDateTimeFormat = CDI.current().select(GetGeoCodeDateTimeFormatCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return geoCodeDateTimeFormat == null ? null : new GeoCodeDateTimeFormatObject(geoCodeDateTimeFormat);
+    }
+
+    @GraphQLField
+    @GraphQLName("geoCodeDateTimeFormats")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<GeoCodeDateTimeFormatObject> geoCodeDateTimeFormats(final DataFetchingEnvironment env,
+            @GraphQLName("geoCodeName") final String geoCodeName,
+            @GraphQLName("dateTimeFormatName") final String dateTimeFormatName) {
+        CountingPaginatedData<GeoCodeDateTimeFormatObject> data;
+
+        try {
+            var commandForm = GeoUtil.getHome().getGetGeoCodeDateTimeFormatsForm();
+            var command = CDI.current().select(GetGeoCodeDateTimeFormatsCommand.class).get();
+
+            commandForm.setGeoCodeName(geoCodeName);
+            commandForm.setDateTimeFormatName(dateTimeFormatName);
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, GeoCodeDateTimeFormatConstants.COMPONENT_VENDOR_NAME, GeoCodeDateTimeFormatConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var transactionTypes = entities.stream()
+                            .map(GeoCodeDateTimeFormatObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, transactionTypes);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
     }
 
     @GraphQLField
