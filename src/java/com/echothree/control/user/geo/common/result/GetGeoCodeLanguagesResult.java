@@ -30,6 +30,9 @@ public interface GetGeoCodeLanguagesResult
     
     LanguageTransfer getLanguage();
     void setLanguage(LanguageTransfer language);
+
+    Long getGeoCodeLanguageCount();
+    void setGeoCodeLanguageCount(Long geoCodeLanguageCount);
     
     List<GeoCodeLanguageTransfer> getGeoCodeLanguages();
     void setGeoCodeLanguages(List<GeoCodeLanguageTransfer> geoCodeLanguages);

@@ -28,6 +28,7 @@ import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.geo.common.GeoCodeCurrencyConstants;
 import com.echothree.model.data.geo.common.GeoCodeDateTimeFormatConstants;
+import com.echothree.model.data.geo.common.GeoCodeLanguageConstants;
 import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.geo.server.entity.GeoCodeDetail;
 import com.echothree.util.server.persistence.Session;
@@ -132,7 +133,27 @@ public class GeoCodeObject
     }
 
     @GraphQLField
-    @GraphQLDescription("geo code date time formats")
+    @GraphQLDescription("geo code languages")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<GeoCodeLanguageObject> getGeoCodeLanguages(final DataFetchingEnvironment env) {
+        if(GeoSecurityUtils.getHasGeoCodeLanguagesAccess(env)) {
+            var geoControl = Session.getModelController(GeoControl.class);
+            var totalCount = geoControl.countGeoCodeLanguagesByGeoCode(geoCode);
+
+            try(var objectLimiter = new ObjectLimiter(env, GeoCodeLanguageConstants.COMPONENT_VENDOR_NAME, GeoCodeLanguageConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = geoControl.getGeoCodeLanguagesByGeoCode(geoCode);
+                var items = entities.stream().map(GeoCodeLanguageObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, items);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
+
+    @GraphQLField
+    @GraphQLDescription("geo code currencies")
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<GeoCodeCurrencyObject> getGeoCodeCurrenCurrencies(final DataFetchingEnvironment env) {

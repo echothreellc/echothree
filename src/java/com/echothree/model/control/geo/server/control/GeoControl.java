@@ -2805,7 +2805,23 @@ public class GeoControl
         
         return geoCodeLanguage;
     }
-    
+
+    public long countGeoCodeLanguagesByGeoCode(GeoCode geoCode) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM geocodelanguages " +
+                        "WHERE geol_geo_geocodeid = ? AND geol_thrutime = ?",
+                geoCode, Session.MAX_TIME);
+    }
+
+    public long countGeoCodeLanguagesByLanguage(Language language) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM geocodelanguages " +
+                        "WHERE geol_lang_languageid = ? AND geol_thrutime = ?",
+                language, Session.MAX_TIME);
+    }
+
     private GeoCodeLanguage getGeoCodeLanguage(GeoCode geoCode, Language language, EntityPermission entityPermission) {
         GeoCodeLanguage geoCodeLanguage;
         
@@ -2908,7 +2924,8 @@ public class GeoControl
                         "FROM geocodelanguages, languages " +
                         "WHERE geol_geo_geocodeid = ? AND geol_thrutime = ? " +
                         "AND geol_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                        "ORDER BY lang_sortorder, lang_languageisoname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM geocodelanguages " +
@@ -2948,7 +2965,8 @@ public class GeoControl
                         "FROM geocodelanguages, geocodes, geocodedetails " +
                         "WHERE geol_lang_languageid = ? AND geol_thrutime = ? " +
                         "AND geol_geo_geocodeid = geo_geocodeid AND geo_lastdetailid = geodt_geocodedetailid " +
-                        "ORDER BY geodt_sortorder, geodt_geocodename";
+                        "ORDER BY geodt_sortorder, geodt_geocodename " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM geocodelanguages " +
