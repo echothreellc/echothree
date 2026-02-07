@@ -21,6 +21,8 @@ import com.echothree.control.user.geo.server.command.GetGeoCodeCurrenciesCommand
 import com.echothree.control.user.geo.server.command.GetGeoCodeCurrencyCommand;
 import com.echothree.control.user.geo.server.command.GetGeoCodeDateTimeFormatCommand;
 import com.echothree.control.user.geo.server.command.GetGeoCodeDateTimeFormatsCommand;
+import com.echothree.control.user.geo.server.command.GetGeoCodeLanguageCommand;
+import com.echothree.control.user.geo.server.command.GetGeoCodeLanguagesCommand;
 import com.echothree.control.user.geo.server.command.GetGeoCodeScopeCommand;
 import com.echothree.control.user.geo.server.command.GetGeoCodeScopesCommand;
 import com.echothree.control.user.geo.server.command.GetGeoCodeTypeCommand;
@@ -48,6 +50,14 @@ public interface GeoSecurityUtils {
 
     static boolean getHasGeoCodeAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetGeoCodeCommand.class);
+    }
+
+    static boolean getHasGeoCodeLanguageAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetGeoCodeLanguageCommand.class);
+    }
+
+    static boolean getHasGeoCodeLanguagesAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetGeoCodeLanguagesCommand.class);
     }
 
     static boolean getHasGeoCodeCurrencyAccess(final DataFetchingEnvironment env) {
