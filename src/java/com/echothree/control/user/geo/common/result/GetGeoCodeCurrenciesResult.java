@@ -30,7 +30,10 @@ public interface GetGeoCodeCurrenciesResult
     
     CurrencyTransfer getCurrency();
     void setCurrency(CurrencyTransfer currency);
-    
+
+    Long getGeoCodeCurrencyCount();
+    void setGeoCodeCurrencyCount(Long geoCodeCurrencyCount);
+
     List<GeoCodeCurrencyTransfer> getGeoCodeCurrencies();
     void setGeoCodeCurrencies(List<GeoCodeCurrencyTransfer> geoCodeCurrencies);
     

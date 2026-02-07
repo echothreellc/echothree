@@ -26,6 +26,7 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.geo.server.entity.GeoCodeCurrency;
+import com.echothree.model.data.geo.server.factory.GeoCodeCurrencyFactory;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -140,6 +141,10 @@ public class GetGeoCodeCurrenciesCommand
                 result.setGeoCode(geoControl.getGeoCodeTransfer(userVisit, geoCode));
             } else {
                 result.setCurrency(accountingControl.getCurrencyTransfer(userVisit, currency));
+            }
+
+            if(session.hasLimit(GeoCodeCurrencyFactory.class)) {
+                result.setGeoCodeCurrencyCount(getTotalEntities());
             }
 
             result.setGeoCodeCurrencies(geoControl.getGeoCodeCurrencyTransfers(userVisit, entities));
