@@ -123,6 +123,7 @@ import com.echothree.model.data.party.server.entity.TimeZone;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
@@ -137,7 +138,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Pattern;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
@@ -3438,7 +3438,23 @@ public class GeoControl
         
         return geoCodeTimeZone;
     }
-    
+
+    public long countGeoCodeTimeZonesByGeoCode(GeoCode geoCode) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM geocodetimezones " +
+                        "WHERE geotz_geo_geocodeid = ? AND geotz_thrutime = ?",
+                geoCode, Session.MAX_TIME);
+    }
+
+    public long countGeoCodeTimeZonesByTimeZone(TimeZone timeZone) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM geocodetimezones " +
+                        "WHERE geotz_tz_timezoneid = ? AND geotz_thrutime = ?",
+                timeZone, Session.MAX_TIME);
+    }
+
     private GeoCodeTimeZone getGeoCodeTimeZone(GeoCode geoCode, TimeZone timeZone, EntityPermission entityPermission) {
         GeoCodeTimeZone geoCodeTimeZone;
         
@@ -3541,7 +3557,8 @@ public class GeoControl
                         "FROM geocodetimezones, timezones, timezonedetails " +
                         "WHERE geotz_geo_geocodeid = ? AND geotz_thrutime = ? " +
                         "AND geotz_tz_timezoneid = tz_timezoneid AND tz_lastdetailid = tzdt_timezonedetailid " +
-                        "ORDER BY tzdt_sortorder, tzdt_javatimezonename";
+                        "ORDER BY tzdt_sortorder, tzdt_javatimezonename " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM geocodetimezones " +
@@ -3581,7 +3598,8 @@ public class GeoControl
                         "FROM geocodetimezones, geocodes, geocodedetails " +
                         "WHERE geotz_tz_timeZoneid = ? AND geotz_thrutime = ? " +
                         "AND geotz_geo_geocodeid = geo_geocodeid AND geo_lastdetailid = geodt_geocodedetailid " +
-                        "ORDER BY geodt_sortorder, geodt_geocodename";
+                        "ORDER BY geodt_sortorder, geodt_geocodename " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM geocodetimezones " +

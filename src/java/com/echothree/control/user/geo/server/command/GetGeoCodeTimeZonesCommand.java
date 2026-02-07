@@ -23,40 +23,42 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.geo.server.entity.GeoCode;
+import com.echothree.model.data.geo.server.entity.GeoCodeTimeZone;
+import com.echothree.model.data.geo.server.factory.GeoCodeTimeZoneFactory;
+import com.echothree.model.data.party.server.entity.TimeZone;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetGeoCodeTimeZonesCommand
-        extends BaseSimpleCommand<GetGeoCodeTimeZonesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<GeoCodeTimeZone, GetGeoCodeTimeZonesForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.GeoCodeTimeZone.name(), SecurityRoles.List.name())
-                        )))
-                )));
+                        ))
+                ));
         
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("GeoCodeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("JavaTimeZoneName", FieldType.TIME_ZONE_NAME, false, null, null)
-                ));
+                );
     }
     
     /** Creates a new instance of GetGeoCodeTimeZonesCommand */
@@ -64,39 +66,90 @@ public class GetGeoCodeTimeZonesCommand
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
+    @Inject
+    GeoControl geoControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    GeoCode geoCode;
+    TimeZone timeZone;
+
     @Override
-    protected BaseResult execute() {
-        var geoControl = Session.getModelController(GeoControl.class);
-        var result = GeoResultFactory.getGetGeoCodeTimeZonesResult();
+    protected void handleForm() {
         var geoCodeName = form.getGeoCodeName();
         var javaTimeZoneName = form.getJavaTimeZoneName();
-        var parameterCount = (geoCodeName != null? 1: 0) + (javaTimeZoneName != null? 1: 0);
-        
+        var parameterCount = (geoCodeName != null ? 1 : 0) + (javaTimeZoneName != null ? 1 : 0);
+
         if(parameterCount == 1) {
             if(geoCodeName != null) {
-                var geoCode = geoControl.getGeoCodeByName(geoCodeName);
-                
-                if(geoCode != null) {
-                    result.setGeoCode(geoControl.getGeoCodeTransfer(getUserVisit(), geoCode));
-                    result.setGeoCodeTimeZones(geoControl.getGeoCodeTimeZoneTransfersByGeoCode(getUserVisit(), geoCode));
-                } else {
+                geoCode = geoControl.getGeoCodeByName(geoCodeName);
+
+                if(geoCode == null) {
                     addExecutionError(ExecutionErrors.UnknownGeoCodeName.name(), geoCodeName);
                 }
-            } else if(javaTimeZoneName != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
-                var timeZone = partyControl.getTimeZoneByJavaName(javaTimeZoneName);
-                
-                if(timeZone != null) {
-                    result.setTimeZone(partyControl.getTimeZoneTransfer(getUserVisit(), timeZone));
-                    result.setGeoCodeTimeZones(geoControl.getGeoCodeTimeZoneTransfersByTimeZone(getUserVisit(), timeZone));
-                } else {
+            } else {
+                timeZone = partyControl.getTimeZoneByJavaName(javaTimeZoneName);
+
+                if(timeZone == null) {
                     addExecutionError(ExecutionErrors.UnknownJavaTimeZoneName.name(), javaTimeZoneName);
                 }
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());
         }
-        
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        Long totalEntities = null;
+
+        if(!hasExecutionErrors()) {
+            if(geoCode != null) {
+                totalEntities = geoControl.countGeoCodeTimeZonesByGeoCode(geoCode);
+            } else {
+                totalEntities = geoControl.countGeoCodeTimeZonesByTimeZone(timeZone);
+            }
+        }
+
+        return totalEntities;
+    }
+
+    @Override
+    protected Collection<GeoCodeTimeZone> getEntities() {
+        Collection<GeoCodeTimeZone> entities = null;
+
+        if(!hasExecutionErrors()) {
+            if(geoCode != null) {
+                entities = geoControl.getGeoCodeTimeZonesByGeoCode(geoCode);
+            } else {
+                entities = geoControl.getGeoCodeTimeZonesByTimeZone(timeZone);
+            }
+        }
+
+        return entities;
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<GeoCodeTimeZone> entities) {
+        var result = GeoResultFactory.getGetGeoCodeTimeZonesResult();
+
+        if(entities != null) {
+            var userVisit = getUserVisit();
+
+            if(geoCode != null) {
+                result.setGeoCode(geoControl.getGeoCodeTransfer(userVisit, geoCode));
+            } else {
+                result.setTimeZone(partyControl.getTimeZoneTransfer(userVisit, timeZone));
+            }
+
+            if(session.hasLimit(GeoCodeTimeZoneFactory.class)) {
+                result.setGeoCodeTimeZoneCount(getTotalEntities());
+            }
+
+            result.setGeoCodeTimeZones(geoControl.getGeoCodeTimeZoneTransfers(userVisit, entities));
+        }
+
         return result;
     }
     

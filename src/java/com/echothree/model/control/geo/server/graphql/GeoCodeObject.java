@@ -29,6 +29,7 @@ import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.geo.common.GeoCodeCurrencyConstants;
 import com.echothree.model.data.geo.common.GeoCodeDateTimeFormatConstants;
 import com.echothree.model.data.geo.common.GeoCodeLanguageConstants;
+import com.echothree.model.data.geo.common.GeoCodeTimeZoneConstants;
 import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.geo.server.entity.GeoCodeDetail;
 import com.echothree.util.server.persistence.Session;
@@ -156,7 +157,7 @@ public class GeoCodeObject
     @GraphQLDescription("geo code currencies")
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
-    public CountingPaginatedData<GeoCodeCurrencyObject> getGeoCodeCurrenCurrencies(final DataFetchingEnvironment env) {
+    public CountingPaginatedData<GeoCodeCurrencyObject> getGeoCodeCurrencies(final DataFetchingEnvironment env) {
         if(GeoSecurityUtils.getHasGeoCodeCurrenciesAccess(env)) {
             var geoControl = Session.getModelController(GeoControl.class);
             var totalCount = geoControl.countGeoCodeCurrenciesByGeoCode(geoCode);
@@ -164,6 +165,26 @@ public class GeoCodeObject
             try(var objectLimiter = new ObjectLimiter(env, GeoCodeCurrencyConstants.COMPONENT_VENDOR_NAME, GeoCodeCurrencyConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var entities = geoControl.getGeoCodeCurrenciesByGeoCode(geoCode);
                 var items = entities.stream().map(GeoCodeCurrencyObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, items);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
+
+    @GraphQLField
+    @GraphQLDescription("geo code time zones")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<GeoCodeTimeZoneObject> getGeoCodeTimeZones(final DataFetchingEnvironment env) {
+        if(GeoSecurityUtils.getHasGeoCodeTimeZonesAccess(env)) {
+            var geoControl = Session.getModelController(GeoControl.class);
+            var totalCount = geoControl.countGeoCodeTimeZonesByGeoCode(geoCode);
+
+            try(var objectLimiter = new ObjectLimiter(env, GeoCodeTimeZoneConstants.COMPONENT_VENDOR_NAME, GeoCodeTimeZoneConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = geoControl.getGeoCodeTimeZonesByGeoCode(geoCode);
+                var items = entities.stream().map(GeoCodeTimeZoneObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                 return new CountedObjects<>(objectLimiter, items);
             }

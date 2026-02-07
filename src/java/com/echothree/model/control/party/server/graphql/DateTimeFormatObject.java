@@ -207,7 +207,6 @@ public class DateTimeFormatObject
         return partyControl.getBestDateTimeFormatDescription(dateTimeFormat, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
 
-
     @GraphQLField
     @GraphQLDescription("geo code date time formats")
     @GraphQLNonNull
