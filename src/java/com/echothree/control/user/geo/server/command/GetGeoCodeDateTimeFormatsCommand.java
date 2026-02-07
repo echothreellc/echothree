@@ -25,6 +25,8 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.geo.server.entity.GeoCodeDateTimeFormat;
+import com.echothree.model.data.geo.server.factory.GeoCodeCurrencyFactory;
+import com.echothree.model.data.geo.server.factory.GeoCodeDateTimeFormatFactory;
 import com.echothree.model.data.party.server.entity.DateTimeFormat;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -140,6 +142,10 @@ public class GetGeoCodeDateTimeFormatsCommand
                 result.setGeoCode(geoControl.getGeoCodeTransfer(userVisit, geoCode));
             } else {
                 result.setDateTimeFormat(partyControl.getDateTimeFormatTransfer(userVisit, dateTimeFormat));
+            }
+
+            if(session.hasLimit(GeoCodeDateTimeFormatFactory.class)) {
+                result.setGeoCodeDateTimeFormatCount(getTotalEntities());
             }
 
             result.setGeoCodeDateTimeFormats(geoControl.getGeoCodeDateTimeFormatTransfers(userVisit, entities));

@@ -26,13 +26,10 @@ import com.echothree.model.control.graphql.server.graphql.count.CountingPaginate
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.user.server.control.UserControl;
-import com.echothree.model.control.vendor.server.control.VendorControl;
-import com.echothree.model.control.vendor.server.graphql.VendorItemObject;
-import com.echothree.model.control.vendor.server.graphql.VendorSecurityUtils;
+import com.echothree.model.data.geo.common.GeoCodeCurrencyConstants;
 import com.echothree.model.data.geo.common.GeoCodeDateTimeFormatConstants;
 import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.geo.server.entity.GeoCodeDetail;
-import com.echothree.model.data.vendor.common.VendorItemConstants;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
@@ -132,6 +129,26 @@ public class GeoCodeObject
             case CITY -> null;
             case ZIP_CODE -> null;
         };
+    }
+
+    @GraphQLField
+    @GraphQLDescription("geo code date time formats")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<GeoCodeCurrencyObject> getGeoCodeCurrenCurrencies(final DataFetchingEnvironment env) {
+        if(GeoSecurityUtils.getHasGeoCodeCurrenciesAccess(env)) {
+            var geoControl = Session.getModelController(GeoControl.class);
+            var totalCount = geoControl.countGeoCodeCurrenciesByGeoCode(geoCode);
+
+            try(var objectLimiter = new ObjectLimiter(env, GeoCodeCurrencyConstants.COMPONENT_VENDOR_NAME, GeoCodeCurrencyConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = geoControl.getGeoCodeCurrenciesByGeoCode(geoCode);
+                var items = entities.stream().map(GeoCodeCurrencyObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, items);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
     }
 
     @GraphQLField

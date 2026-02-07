@@ -17,16 +17,28 @@
 package com.echothree.model.control.accounting.server.graphql;
 
 import com.echothree.model.control.accounting.server.control.AccountingControl;
+import com.echothree.model.control.geo.server.control.GeoControl;
+import com.echothree.model.control.geo.server.graphql.GeoCodeCurrencyObject;
+import com.echothree.model.control.geo.server.graphql.GeoSecurityUtils;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
+import com.echothree.model.data.geo.common.GeoCodeCurrencyConstants;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 @GraphQLDescription("currency object")
 @GraphQLName("Currency")
@@ -163,6 +175,26 @@ public class CurrencyObject
         var userControl = Session.getModelController(UserControl.class);
 
         return accountingControl.getBestCurrencyDescription(currency, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
+    }
+
+    @GraphQLField
+    @GraphQLDescription("geo code currencies")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<GeoCodeCurrencyObject> getGeoCodeCurrencies(final DataFetchingEnvironment env) {
+        if(GeoSecurityUtils.getHasGeoCodeCurrenciesAccess(env)) {
+            var geoControl = Session.getModelController(GeoControl.class);
+            var totalCount = geoControl.countGeoCodeCurrenciesByCurrency(currency);
+
+            try(var objectLimiter = new ObjectLimiter(env, GeoCodeCurrencyConstants.COMPONENT_VENDOR_NAME, GeoCodeCurrencyConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = geoControl.getGeoCodeCurrenciesByCurrency(currency);
+                var items = entities.stream().map(GeoCodeCurrencyObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, items);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
     }
 
 }
