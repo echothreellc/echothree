@@ -2404,7 +2404,23 @@ public class GeoControl
         
         return geoCodeAlias;
     }
-    
+
+    public long countGeoCodeAliasesByGeoCode(GeoCode geoCode) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM geocodealiases " +
+                        "WHERE geoa_geo_geocodeid = ? AND geoa_thrutime = ?",
+                geoCode, Session.MAX_TIME);
+    }
+
+    public long countGeoCodeAliasesByGeoCodeAliasType(GeoCodeAliasType geoCodeAliasType) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM geocodealiases " +
+                        "WHERE geoa_geoat_geocodealiastypeid = ? AND geoa_thrutime = ?",
+                geoCodeAliasType, Session.MAX_TIME);
+    }
+
     private static final Map<EntityPermission, String> getGeoCodeAliasQueries;
 
     static {
