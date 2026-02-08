@@ -30,6 +30,7 @@ import com.echothree.model.data.geo.common.GeoCodeAliasConstants;
 import com.echothree.model.data.geo.common.GeoCodeCurrencyConstants;
 import com.echothree.model.data.geo.common.GeoCodeDateTimeFormatConstants;
 import com.echothree.model.data.geo.common.GeoCodeLanguageConstants;
+import com.echothree.model.data.geo.common.GeoCodeRelationshipConstants;
 import com.echothree.model.data.geo.common.GeoCodeTimeZoneConstants;
 import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.geo.server.entity.GeoCodeDetail;
@@ -151,6 +152,38 @@ public class GeoCodeObject
             }
         } else {
             return Connections.emptyConnection();
+        }
+    }
+
+    @GraphQLField
+    @GraphQLDescription("from geo code relationships")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<GeoCodeRelationshipObject> getFromGeoCodeRelationships(final DataFetchingEnvironment env) {
+        var geoControl = Session.getModelController(GeoControl.class);
+        var totalCount = geoControl.countGeoCodeRelationshipsByFromGeoCode(geoCode);
+
+        try(var objectLimiter = new ObjectLimiter(env, GeoCodeRelationshipConstants.COMPONENT_VENDOR_NAME, GeoCodeRelationshipConstants.ENTITY_TYPE_NAME, totalCount)) {
+            var entities = geoControl.getGeoCodeRelationshipsByFromGeoCode(geoCode);
+            var items = entities.stream().map(GeoCodeRelationshipObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+            return new CountedObjects<>(objectLimiter, items);
+        }
+    }
+
+    @GraphQLField
+    @GraphQLDescription("to geo code relationships")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<GeoCodeRelationshipObject> getToGeoCodeRelationships(final DataFetchingEnvironment env) {
+        var geoControl = Session.getModelController(GeoControl.class);
+        var totalCount = geoControl.countGeoCodeRelationshipsByToGeoCode(geoCode);
+
+        try(var objectLimiter = new ObjectLimiter(env, GeoCodeRelationshipConstants.COMPONENT_VENDOR_NAME, GeoCodeRelationshipConstants.ENTITY_TYPE_NAME, totalCount)) {
+            var entities = geoControl.getGeoCodeRelationshipsByToGeoCode(geoCode);
+            var items = entities.stream().map(GeoCodeRelationshipObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+            return new CountedObjects<>(objectLimiter, items);
         }
     }
 
