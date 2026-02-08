@@ -1449,7 +1449,15 @@ public class GeoControl
         
         return geoCodeAliasType;
     }
-    
+
+    public long countGeoCodeAliasTypesByGeoCodeType(GeoCodeType geoCodeType) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM geocodealiastypes, geocodealiastypedetails " +
+                        "WHERE geoat_activedetailid = geoatdt_geocodealiastypedetailid AND geoatdt_geot_geocodetypeid = ?",
+                geoCodeType);
+    }
+
     private GeoCodeAliasType getGeoCodeAliasTypeByName(GeoCodeType geoCodeType, String geoCodeAliasTypeName, EntityPermission entityPermission) {
         GeoCodeAliasType geoCodeAliasType;
         
@@ -1552,7 +1560,8 @@ public class GeoControl
                 query = "SELECT _ALL_ " +
                         "FROM geocodealiastypes, geocodealiastypedetails " +
                         "WHERE geoat_activedetailid = geoatdt_geocodealiastypedetailid AND geoatdt_geot_geocodetypeid = ? " +
-                        "ORDER BY geoatdt_sortorder, geoatdt_geocodealiastypename";
+                        "ORDER BY geoatdt_sortorder, geoatdt_geocodealiastypename " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM geocodealiastypes, geocodealiastypedetails " +
@@ -1623,18 +1632,21 @@ public class GeoControl
     public GeoCodeAliasTypeTransfer getGeoCodeAliasTypeTransfer(UserVisit userVisit, GeoCodeAliasType geoCodeAliasType) {
         return geoCodeAliasTypeTransferCache.getGeoCodeAliasTypeTransfer(userVisit, geoCodeAliasType);
     }
-    
-    public List<GeoCodeAliasTypeTransfer> getGeoCodeAliasTypeTransfers(UserVisit userVisit, GeoCodeType geoCodeType) {
-        var geoCodeAliasTypes = getGeoCodeAliasTypes(geoCodeType);
+
+    public List<GeoCodeAliasTypeTransfer> getGeoCodeAliasTypeTransfers(UserVisit userVisit, Collection<GeoCodeAliasType> geoCodeAliasTypes) {
         List<GeoCodeAliasTypeTransfer> geoCodeAliasTypeTransfers = new ArrayList<>(geoCodeAliasTypes.size());
-        
+
         geoCodeAliasTypes.forEach((geoCodeAliasType) ->
                 geoCodeAliasTypeTransfers.add(geoCodeAliasTypeTransferCache.getGeoCodeAliasTypeTransfer(userVisit, geoCodeAliasType))
         );
-        
+
         return geoCodeAliasTypeTransfers;
     }
-    
+
+    public List<GeoCodeAliasTypeTransfer> getGeoCodeAliasTypeTransfers(UserVisit userVisit, GeoCodeType geoCodeType) {
+        return getGeoCodeAliasTypeTransfers(userVisit, getGeoCodeAliasTypes(geoCodeType));
+    }
+
     public GeoCodeAliasTypeChoicesBean getGeoCodeAliasTypeChoices(String defaultGeoCodeAliasTypeChoice, Language language,
             boolean allowNullChoice, GeoCodeType geoCodeType) {
         var geoCodeAliasTypes = getGeoCodeAliasTypes(geoCodeType);

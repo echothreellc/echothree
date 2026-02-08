@@ -144,6 +144,8 @@ import com.echothree.control.user.filter.server.command.GetFilterTypeCommand;
 import com.echothree.control.user.filter.server.command.GetFilterTypesCommand;
 import com.echothree.control.user.filter.server.command.GetFiltersCommand;
 import com.echothree.control.user.geo.common.GeoUtil;
+import com.echothree.control.user.geo.server.command.GetGeoCodeAliasTypeCommand;
+import com.echothree.control.user.geo.server.command.GetGeoCodeAliasTypesCommand;
 import com.echothree.control.user.geo.server.command.GetGeoCodeCommand;
 import com.echothree.control.user.geo.server.command.GetGeoCodeCurrenciesCommand;
 import com.echothree.control.user.geo.server.command.GetGeoCodeCurrencyCommand;
@@ -488,6 +490,7 @@ import com.echothree.model.control.filter.server.graphql.FilterKindObject;
 import com.echothree.model.control.filter.server.graphql.FilterObject;
 import com.echothree.model.control.filter.server.graphql.FilterStepObject;
 import com.echothree.model.control.filter.server.graphql.FilterTypeObject;
+import com.echothree.model.control.geo.server.graphql.GeoCodeAliasTypeObject;
 import com.echothree.model.control.geo.server.graphql.GeoCodeCurrencyObject;
 import com.echothree.model.control.geo.server.graphql.GeoCodeDateTimeFormatObject;
 import com.echothree.model.control.geo.server.graphql.GeoCodeLanguageObject;
@@ -752,6 +755,7 @@ import com.echothree.model.data.filter.server.entity.FilterAdjustmentType;
 import com.echothree.model.data.filter.server.entity.FilterKind;
 import com.echothree.model.data.filter.server.entity.FilterStep;
 import com.echothree.model.data.filter.server.entity.FilterType;
+import com.echothree.model.data.geo.common.GeoCodeAliasTypeConstants;
 import com.echothree.model.data.geo.common.GeoCodeCurrencyConstants;
 import com.echothree.model.data.geo.common.GeoCodeDateTimeFormatConstants;
 import com.echothree.model.data.geo.common.GeoCodeLanguageConstants;
@@ -759,6 +763,7 @@ import com.echothree.model.data.geo.common.GeoCodeScopeConstants;
 import com.echothree.model.data.geo.common.GeoCodeTimeZoneConstants;
 import com.echothree.model.data.geo.common.GeoCodeTypeConstants;
 import com.echothree.model.data.geo.server.entity.GeoCode;
+import com.echothree.model.data.geo.server.entity.GeoCodeAliasType;
 import com.echothree.model.data.geo.server.entity.GeoCodeCurrency;
 import com.echothree.model.data.geo.server.entity.GeoCodeDateTimeFormat;
 import com.echothree.model.data.geo.server.entity.GeoCodeLanguage;
@@ -10890,6 +10895,62 @@ public interface GraphQlQueries {
                             .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, geoCodeTypes);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("geoCodeAliasType")
+    static GeoCodeAliasTypeObject geoCodeAliasType(final DataFetchingEnvironment env,
+            @GraphQLName("geoCodeTypeName") @GraphQLNonNull final String geoCodeTypeName,
+            @GraphQLName("geoCodeAliasTypeName") @GraphQLNonNull final String geoCodeAliasTypeName) {
+        GeoCodeAliasType geoCodeAliasType;
+
+        try {
+            var commandForm = GeoUtil.getHome().getGetGeoCodeAliasTypeForm();
+
+            commandForm.setGeoCodeTypeName(geoCodeTypeName);
+            commandForm.setGeoCodeAliasTypeName(geoCodeAliasTypeName);
+
+            geoCodeAliasType = CDI.current().select(GetGeoCodeAliasTypeCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return geoCodeAliasType == null ? null : new GeoCodeAliasTypeObject(geoCodeAliasType);
+    }
+
+    @GraphQLField
+    @GraphQLName("geoCodeAliasTypes")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<GeoCodeAliasTypeObject> geoCodeAliasTypes(final DataFetchingEnvironment env,
+            @GraphQLName("geoCodeTypeName") @GraphQLNonNull final String geoCodeTypeName) {
+        CountingPaginatedData<GeoCodeAliasTypeObject> data;
+
+        try {
+            var commandForm = GeoUtil.getHome().getGetGeoCodeAliasTypesForm();
+            var command = CDI.current().select(GetGeoCodeAliasTypesCommand.class).get();
+
+            commandForm.setGeoCodeTypeName(geoCodeTypeName);
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, GeoCodeAliasTypeConstants.COMPONENT_VENDOR_NAME, GeoCodeAliasTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var geoCodeAliasTypes = entities.stream()
+                            .map(GeoCodeAliasTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, geoCodeAliasTypes);
                 }
             }
         } catch (NamingException ex) {
