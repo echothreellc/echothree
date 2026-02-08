@@ -18,8 +18,14 @@ package com.echothree.model.control.geo.server.graphql;
 
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.user.server.control.UserControl;
+import com.echothree.model.data.geo.common.GeoCodeAliasTypeConstants;
 import com.echothree.model.data.geo.server.entity.GeoCodeType;
 import com.echothree.model.data.geo.server.entity.GeoCodeTypeDetail;
 import com.echothree.util.server.persistence.Session;
@@ -27,7 +33,10 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 @GraphQLDescription("geo code type object")
 @GraphQLName("GeoCodeType")
@@ -89,6 +98,26 @@ public class GeoCodeTypeObject
         var userControl = Session.getModelController(UserControl.class);
 
         return geoControl.getBestGeoCodeTypeDescription(geoCodeType, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
+    }
+
+    @GraphQLField
+    @GraphQLDescription("geo code languages")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<GeoCodeAliasTypeObject> getGeoCodeAliasTypes(final DataFetchingEnvironment env) {
+        if(GeoSecurityUtils.getHasGeoCodeAliasTypesAccess(env)) {
+            var geoControl = Session.getModelController(GeoControl.class);
+            var totalCount = geoControl.countGeoCodeAliasTypesByGeoCodeType(geoCodeType);
+
+            try(var objectLimiter = new ObjectLimiter(env, GeoCodeAliasTypeConstants.COMPONENT_VENDOR_NAME, GeoCodeAliasTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = geoControl.getGeoCodeAliasTypes(geoCodeType);
+                var items = entities.stream().map(GeoCodeAliasTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, items);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
     }
 
 }
