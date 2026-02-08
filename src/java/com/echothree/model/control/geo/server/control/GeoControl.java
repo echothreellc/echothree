@@ -2705,7 +2705,8 @@ public class GeoControl
         queryMap.put(EntityPermission.READ_ONLY,
                 "SELECT _ALL_ " +
                 "FROM geocoderelationships " +
-                "WHERE geor_fromgeocodeid = ? AND geor_thrutime = ?");
+                "WHERE geor_fromgeocodeid = ? AND geor_thrutime = ? " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
                 "FROM geocoderelationships " +
@@ -2758,7 +2759,8 @@ public class GeoControl
         queryMap.put(EntityPermission.READ_ONLY,
                 "SELECT _ALL_ " +
                 "FROM geocoderelationships " +
-                "WHERE geor_togeocodeid = ? AND geor_thrutime = ?");
+                "WHERE geor_togeocodeid = ? AND geor_thrutime = ? " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
                 "FROM geocoderelationships " +
