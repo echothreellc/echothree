@@ -26,6 +26,7 @@ import com.echothree.model.control.graphql.server.graphql.count.CountingPaginate
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.user.server.control.UserControl;
+import com.echothree.model.data.geo.common.GeoCodeAliasConstants;
 import com.echothree.model.data.geo.common.GeoCodeCurrencyConstants;
 import com.echothree.model.data.geo.common.GeoCodeDateTimeFormatConstants;
 import com.echothree.model.data.geo.common.GeoCodeLanguageConstants;
@@ -131,6 +132,26 @@ public class GeoCodeObject
             case CITY -> null;
             case ZIP_CODE -> null;
         };
+    }
+
+    @GraphQLField
+    @GraphQLDescription("geo code aliases")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<GeoCodeAliasObject> getGeoCodeAliases(final DataFetchingEnvironment env) {
+        if(GeoSecurityUtils.getHasGeoCodeAliasesAccess(env)) {
+            var geoControl = Session.getModelController(GeoControl.class);
+            var totalCount = geoControl.countGeoCodeAliasesByGeoCode(geoCode);
+
+            try(var objectLimiter = new ObjectLimiter(env, GeoCodeAliasConstants.COMPONENT_VENDOR_NAME, GeoCodeAliasConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = geoControl.getGeoCodeAliasesByGeoCode(geoCode);
+                var items = entities.stream().map(GeoCodeAliasObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, items);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
     }
 
     @GraphQLField
