@@ -144,8 +144,10 @@ import com.echothree.control.user.filter.server.command.GetFilterTypeCommand;
 import com.echothree.control.user.filter.server.command.GetFilterTypesCommand;
 import com.echothree.control.user.filter.server.command.GetFiltersCommand;
 import com.echothree.control.user.geo.common.GeoUtil;
+import com.echothree.control.user.geo.server.command.GetGeoCodeAliasCommand;
 import com.echothree.control.user.geo.server.command.GetGeoCodeAliasTypeCommand;
 import com.echothree.control.user.geo.server.command.GetGeoCodeAliasTypesCommand;
+import com.echothree.control.user.geo.server.command.GetGeoCodeAliasesCommand;
 import com.echothree.control.user.geo.server.command.GetGeoCodeCommand;
 import com.echothree.control.user.geo.server.command.GetGeoCodeCurrenciesCommand;
 import com.echothree.control.user.geo.server.command.GetGeoCodeCurrencyCommand;
@@ -490,6 +492,7 @@ import com.echothree.model.control.filter.server.graphql.FilterKindObject;
 import com.echothree.model.control.filter.server.graphql.FilterObject;
 import com.echothree.model.control.filter.server.graphql.FilterStepObject;
 import com.echothree.model.control.filter.server.graphql.FilterTypeObject;
+import com.echothree.model.control.geo.server.graphql.GeoCodeAliasObject;
 import com.echothree.model.control.geo.server.graphql.GeoCodeAliasTypeObject;
 import com.echothree.model.control.geo.server.graphql.GeoCodeCurrencyObject;
 import com.echothree.model.control.geo.server.graphql.GeoCodeDateTimeFormatObject;
@@ -755,6 +758,7 @@ import com.echothree.model.data.filter.server.entity.FilterAdjustmentType;
 import com.echothree.model.data.filter.server.entity.FilterKind;
 import com.echothree.model.data.filter.server.entity.FilterStep;
 import com.echothree.model.data.filter.server.entity.FilterType;
+import com.echothree.model.data.geo.common.GeoCodeAliasConstants;
 import com.echothree.model.data.geo.common.GeoCodeAliasTypeConstants;
 import com.echothree.model.data.geo.common.GeoCodeCurrencyConstants;
 import com.echothree.model.data.geo.common.GeoCodeDateTimeFormatConstants;
@@ -763,6 +767,7 @@ import com.echothree.model.data.geo.common.GeoCodeScopeConstants;
 import com.echothree.model.data.geo.common.GeoCodeTimeZoneConstants;
 import com.echothree.model.data.geo.common.GeoCodeTypeConstants;
 import com.echothree.model.data.geo.server.entity.GeoCode;
+import com.echothree.model.data.geo.server.entity.GeoCodeAlias;
 import com.echothree.model.data.geo.server.entity.GeoCodeAliasType;
 import com.echothree.model.data.geo.server.entity.GeoCodeCurrency;
 import com.echothree.model.data.geo.server.entity.GeoCodeDateTimeFormat;
@@ -11032,6 +11037,62 @@ public interface GraphQlQueries {
         }
 
         return geoCode == null ? null : new GeoCodeObject(geoCode);
+    }
+
+    @GraphQLField
+    @GraphQLName("geoCodeAlias")
+    static GeoCodeAliasObject geoCodeAlias(final DataFetchingEnvironment env,
+            @GraphQLName("geoCodeName") @GraphQLNonNull final String geoCodeName,
+            @GraphQLName("geoCodeAliasTypeName") @GraphQLNonNull final String geoCodeAliasTypeName) {
+        GeoCodeAlias geoCodeAlias;
+
+        try {
+            var commandForm = GeoUtil.getHome().getGetGeoCodeAliasForm();
+
+            commandForm.setGeoCodeName(geoCodeName);
+            commandForm.setGeoCodeAliasTypeName(geoCodeAliasTypeName);
+
+            geoCodeAlias = CDI.current().select(GetGeoCodeAliasCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return geoCodeAlias == null ? null : new GeoCodeAliasObject(geoCodeAlias);
+    }
+
+    @GraphQLField
+    @GraphQLName("geoCodeAliases")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<GeoCodeAliasObject> geoCodeAliases(final DataFetchingEnvironment env,
+            @GraphQLName("geoCodeName") @GraphQLNonNull final String geoCodeName) {
+        CountingPaginatedData<GeoCodeAliasObject> data;
+
+        try {
+            var commandForm = GeoUtil.getHome().getGetGeoCodeAliasesForm();
+            var command = CDI.current().select(GetGeoCodeAliasesCommand.class).get();
+
+            commandForm.setGeoCodeName(geoCodeName);
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, GeoCodeAliasConstants.COMPONENT_VENDOR_NAME, GeoCodeAliasConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var geoCodeAliass = entities.stream()
+                            .map(GeoCodeAliasObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, geoCodeAliass);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
     }
 
     @GraphQLField

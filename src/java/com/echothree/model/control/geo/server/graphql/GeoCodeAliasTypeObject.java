@@ -18,8 +18,14 @@ package com.echothree.model.control.geo.server.graphql;
 
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.user.server.control.UserControl;
+import com.echothree.model.data.geo.common.GeoCodeAliasConstants;
 import com.echothree.model.data.geo.server.entity.GeoCodeAliasType;
 import com.echothree.model.data.geo.server.entity.GeoCodeAliasTypeDetail;
 import com.echothree.util.server.persistence.Session;
@@ -27,7 +33,11 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
+import java.util.ArrayList;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 @GraphQLDescription("geo code alias type object")
 @GraphQLName("GeoCodeAliasType")
@@ -87,6 +97,26 @@ public class GeoCodeAliasTypeObject
         var userControl = Session.getModelController(UserControl.class);
 
         return geoControl.getBestGeoCodeAliasTypeDescription(geoCodeAliasType, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
+    }
+
+    @GraphQLField
+    @GraphQLDescription("geo code aliases")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<GeoCodeAliasObject> getGeoCodeAliases(final DataFetchingEnvironment env) {
+        if(GeoSecurityUtils.getHasGeoCodeAliasesAccess(env)) {
+            var geoControl = Session.getModelController(GeoControl.class);
+            var totalCount = geoControl.countGeoCodeAliasesByGeoCodeAliasType(geoCodeAliasType);
+
+            try(var objectLimiter = new ObjectLimiter(env, GeoCodeAliasConstants.COMPONENT_VENDOR_NAME, GeoCodeAliasConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = geoControl.getGeoCodeAliasesByGeoCodeAliasType(geoCodeAliasType);
+                var items = entities.stream().map(GeoCodeAliasObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, items);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
     }
 
 }
