@@ -37,6 +37,7 @@ import com.echothree.model.data.party.server.entity.DateTimeFormat;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.TimeZone;
+import com.echothree.model.data.rating.server.entity.RatingType;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.TransferOptionDependencyException;
@@ -428,18 +429,40 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
         return commentedEntityInstance;
     }
 
-    protected EntityInstance setupRatings(final UserVisit userVisit, final K ratedEntity, EntityInstance ratedEntityInstance, final V transfer, final String ratingTypeName) {
-        if(ratedEntityInstance == null) {
-            ratedEntityInstance = entityInstanceControl.getEntityInstanceByBasePK(ratedEntity.getPrimaryKey());
-        }
+    protected EntityInstance setupAllRatingTypes(final UserVisit userVisit, final K ratedEntity, EntityInstance ratedEntityInstance,
+            final V transfer) {
+        var entityType = ratedEntityInstance.getEntityType();
+        var ratingTypes = ratingControl.getRatingTypes(entityType);
 
-        var ratingType = ratingControl.getRatingTypeByName(ratedEntityInstance.getEntityType(), ratingTypeName);
-        transfer.addRatings(ratingTypeName, new RatingListWrapper(ratingControl.getRatingTypeTransfer(userVisit, ratingType),
-                ratingControl.getRatingTransfersByRatedEntityInstanceAndRatingType(userVisit, ratedEntityInstance, ratingType)));
+        for(var ratingType: ratingTypes) {
+            setupRatings(userVisit, ratedEntity, ratedEntityInstance, transfer, ratingType);
+        }
 
         return ratedEntityInstance;
     }
 
+    protected EntityInstance setupRatings(final UserVisit userVisit, final K ratedEntity, EntityInstance ratedEntityInstance,
+            final V transfer, final String ratingTypeName) {
+        var ratingType = ratingControl.getRatingTypeByName(ratedEntityInstance.getEntityType(), ratingTypeName);
+
+        return setupRatings(userVisit, ratedEntity, ratedEntityInstance, transfer, ratingType);
+    }
+
+    protected EntityInstance setupRatings(final UserVisit userVisit, final K ratedEntity, EntityInstance ratedEntityInstance,
+            final V transfer, final RatingType ratingType) {
+        if(ratedEntityInstance == null) {
+            ratedEntityInstance = entityInstanceControl.getEntityInstanceByBasePK(ratedEntity.getPrimaryKey());
+        }
+
+        var ratingTypeTransfer = ratingControl.getRatingTypeTransfer(userVisit, ratingType);
+        var ratingTypeName = ratingTypeTransfer.getRatingTypeName();
+        var ratingTransfers = ratingControl.getRatingTransfersByRatedEntityInstanceAndRatingType(userVisit, ratedEntityInstance, ratingType);
+        var ratingListWrapper = new RatingListWrapper(ratingTypeTransfer, ratingTransfers);
+        transfer.addRatings(ratingTypeName, ratingListWrapper);
+
+        return ratedEntityInstance;
+    }
+    
     protected EntityInstance setupOwnedWorkEfforts(final UserVisit userVisit, final K baseEntity, EntityInstance owningEntityInstance, final V transfer) {
         if(owningEntityInstance == null) {
             owningEntityInstance = entityInstanceControl.getEntityInstanceByBasePK(baseEntity.getPrimaryKey());

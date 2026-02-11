@@ -16,15 +16,12 @@
 
 package com.echothree.model.control.core.server.transfer;
 
-import com.echothree.model.control.comment.common.CommentConstants;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.core.common.CoreProperties;
 import com.echothree.model.control.core.common.transfer.EntityInstanceTransfer;
 import com.echothree.model.control.core.server.control.AppearanceControl;
-import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.core.server.control.EntityTypeControl;
 import com.echothree.model.control.core.server.control.EventControl;
-import com.echothree.model.control.item.common.ItemOptions;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
@@ -39,15 +36,13 @@ public class EntityInstanceTransferCache
         extends BaseCoreTransferCache<EntityInstance, EntityInstanceTransfer> {
 
     @Inject
-    EntityInstanceControl entityInstanceControl;
-
-    @Inject
     EntityTypeControl entityTypeControl;
 
     @Inject
     EventControl eventControl;
 
     boolean includeComments;
+    boolean includeRatings;
     boolean includeEntityAppearance;
     boolean includeEntityVisit;
     boolean includeNames;
@@ -67,6 +62,7 @@ public class EntityInstanceTransferCache
         var options = session.getOptions();
         if(options != null) {
             includeComments = options.contains(CoreOptions.EntityInstanceIncludeComments);
+            includeRatings = options.contains(CoreOptions.EntityInstanceIncludeRatings);
             includeEntityAppearance = options.contains(CoreOptions.EntityInstanceIncludeEntityAppearance);
             includeEntityVisit = options.contains(CoreOptions.EntityInstanceIncludeEntityVisit);
             includeNames = options.contains(CoreOptions.EntityInstanceIncludeNames);
@@ -126,6 +122,10 @@ public class EntityInstanceTransferCache
 
             if(includeComments) {
                 setupAllCommentTypes(userVisit, null, entityInstance, entityInstanceTransfer);
+            }
+
+            if(includeRatings) {
+                setupAllRatingTypes(userVisit, null, entityInstance, entityInstanceTransfer);
             }
 
             if(includeEntityAppearance || this.includeEntityAppearance) {

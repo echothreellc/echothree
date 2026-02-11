@@ -38,6 +38,7 @@ public interface CoreOptions {
     String EntityAttributeIncludeValue = "EntityAttributeIncludeValue";
 
     String EntityInstanceIncludeComments = "EntityInstanceIncludeComments";
+    String EntityInstanceIncludeRatings = "EntityInstanceIncludeRatings";
     String EntityInstanceIncludeEntityAppearance = "EntityInstanceIncludeEntityAppearance";
     String EntityInstanceIncludeEntityVisit = "EntityInstanceIncludeEntityVisit";
     String EntityInstanceIncludeNames = "EntityInstanceIncludeNames";
