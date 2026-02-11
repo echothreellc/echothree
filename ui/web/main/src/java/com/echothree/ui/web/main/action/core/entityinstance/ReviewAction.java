@@ -66,6 +66,7 @@ public class ReviewAction
                 CoreOptions.EntityInstanceIncludeEntityAttributeGroups,
                 CoreOptions.EntityInstanceIncludeTagScopes,
                 CoreOptions.EntityInstanceIncludeComments,
+                CoreOptions.EntityInstanceIncludeRatings,
                 CoreOptions.EntityInstanceIncludeEntityAppearance,
                 CoreOptions.AppearanceIncludeTextDecorations,
                 CoreOptions.AppearanceIncludeTextTransformations
