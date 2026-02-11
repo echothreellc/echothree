@@ -18,6 +18,8 @@
 
 <%@ include file="../../include/taglibs.jsp" %>
 
+<jsp:useBean id="entityInstance" scope="request" type="com.echothree.model.control.core.common.transfer.EntityInstanceTransfer"/>
+
 <html:html xhtml="true">
     <head>
         <title>
@@ -55,7 +57,6 @@
                 <c:param name="EntityRef" value="${entityInstance.entityRef}" />
             </c:url>
 
-            <jsp:useBean id="entityInstance" scope="request" type="com.echothree.model.control.core.common.transfer.EntityInstanceTransfer"/>
             <c:forEach items="${entityInstance.comments.list}" var="comments">
                 <h2><c:out value="${comments.commentType.description}" /> Comments</h2>
                 <c:url var="addUrl" value="/action/Core/EntityInstance/CommentAdd">
@@ -80,8 +81,10 @@
                                 <et:out value="${comment.clob}" mimeTypeName="${comment.mimeType.mimeTypeName}" />
                             </display:column>
                             <display:column titleKey="columnTitle.enteredBy">
+                                <c:set var="savedEntityInstance" scope="request" value="${entityInstance}" />
                                 <c:set var="entityInstance" scope="request" value="${comment.commentedByEntityInstance}" />
                                 <jsp:include page="../../include/targetAsReviewLink.jsp" />
+                                <c:set var="entityInstance" scope="request" value="${savedEntityInstance}" />
                             </display:column>
                             <c:if test="${comments.commentType.workflowEntrance != null}">
                                 <display:column titleKey="columnTitle.status">
@@ -108,6 +111,58 @@
                                 <display:column>
                                     <c:url var="eventsUrl" value="/action/Core/Event/Main">
                                         <c:param name="EntityRef" value="${comment.entityInstance.entityRef}" />
+                                    </c:url>
+                                    <a href="${eventsUrl}">Events</a>
+                                </display:column>
+                            </et:hasSecurityRole>
+                        </display:table>
+                    </c:otherwise>
+                </c:choose>
+                <br />
+            </c:forEach>
+
+            <c:forEach items="${entityInstance.ratings.list}" var="ratings">
+                <h2><c:out value="${ratings.ratingType.description}" /> Ratings</h2>
+                <c:url var="addUrl" value="/action/Core/EntityInstance/RatingAdd">
+                    <c:param name="EntityRef" value="${entityInstance.entityRef}" />
+                    <c:param name="RatingTypeName" value="${ratings.ratingType.ratingTypeName}" />
+                </c:url>
+                <p><a href="${addUrl}">Add <c:out value="${ratings.ratingType.description}" /> Rating.</a></p>
+                <c:choose>
+                    <c:when test='${ratings.size == 0}'>
+                        <br />
+                    </c:when>
+                    <c:otherwise>
+                        <et:checkSecurityRoles securityRoles="Event.List" />
+                        <display:table name="${ratings.list}" id="rating" class="displaytag">
+                            <display:column titleKey="columnTitle.dateTime">
+                                <c:out value="${rating.entityInstance.entityTime.createdTime}" />
+                            </display:column>
+                            <display:column titleKey="columnTitle.rating">
+                                <c:out value="${rating.ratingTypeListItem.description}" />
+                            </display:column>
+                            <display:column titleKey="columnTitle.enteredBy">
+                                <c:set var="savedEntityInstance" scope="request" value="${entityInstance}" />
+                                <c:set var="entityInstance" scope="request" value="${rating.ratedByEntityInstance}" />
+                                <jsp:include page="../../include/targetAsReviewLink.jsp" />
+                                <c:set var="entityInstance" scope="request" value="${savedEntityInstance}" />
+                            </display:column>
+                            <display:column>
+                                <c:url var="editUrl" value="/action/Core/EntityInstance/RatingEdit">
+                                    <c:param name="EntityRef" value="${entityInstance.entityRef}" />
+                                    <c:param name="RatingName" value="${rating.ratingName}" />
+                                </c:url>
+                                <a href="${editUrl}">Edit</a>
+                                <c:url var="deleteUrl" value="/action/Core/EntityInstance/RatingDelete">
+                                    <c:param name="EntityRef" value="${entityInstance.entityRef}" />
+                                    <c:param name="RatingName" value="${rating.ratingName}" />
+                                </c:url>
+                                <a href="${deleteUrl}">Delete</a>
+                            </display:column>
+                            <et:hasSecurityRole securityRole="Event.List">
+                                <display:column>
+                                    <c:url var="eventsUrl" value="/action/Core/Event/Main">
+                                        <c:param name="EntityRef" value="${rating.entityInstance.entityRef}" />
                                     </c:url>
                                     <a href="${eventsUrl}">Events</a>
                                 </display:column>

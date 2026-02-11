@@ -453,7 +453,14 @@
                         </c:when>
                         <c:otherwise>
                             <display:table name="entityType.ratingTypes.list" id="ratingType" class="displaytag">
-                                <display:column property="ratingTypeName" titleKey="columnTitle.name" />
+                                <display:column titleKey="columnTitle.name">
+                                    <c:url var="reviewUrl" value="/action/Core/RatingType/Review">
+                                        <c:param name="ComponentVendorName" value="${ratingType.entityType.componentVendor.componentVendorName}" />
+                                        <c:param name="EntityTypeName" value="${ratingType.entityType.entityTypeName}" />
+                                        <c:param name="RatingTypeName" value="${ratingType.ratingTypeName}" />
+                                    </c:url>
+                                    <a href="${reviewUrl}"><c:out value="${ratingType.ratingTypeName}" /></a>
+                                </display:column>
                                 <display:column titleKey="columnTitle.description">
                                     <c:out value="${ratingType.description}" />
                                 </display:column>

@@ -1021,7 +1021,8 @@ public class RatingControl
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
                 query = "SELECT _ALL_ " +
                         "FROM ratings, ratingdetails " +
-                        "WHERE rtg_activedetailid = rtgdt_ratingdetailid AND rtgdt_ratedentityinstanceid = ?";
+                        "WHERE rtg_activedetailid = rtgdt_ratingdetailid AND rtgdt_ratedentityinstanceid = ? " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM ratings, ratingdetails " +
@@ -1059,7 +1060,8 @@ public class RatingControl
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
                 query = "SELECT _ALL_ " +
                         "FROM ratings, ratingdetails " +
-                        "WHERE rtg_activedetailid = rtgdt_ratingdetailid AND rtgdt_ratedbyentityinstanceid = ?";
+                        "WHERE rtg_activedetailid = rtgdt_ratingdetailid AND rtgdt_ratedbyentityinstanceid = ? " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM ratings, ratingdetails " +
@@ -1096,7 +1098,8 @@ public class RatingControl
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
                 query = "SELECT _ALL_ " +
                         "FROM ratings, ratingdetails " +
-                        "WHERE rtg_activedetailid = rtgdt_ratingdetailid AND rtgdt_rtgtypli_ratingtypelistitemid = ?";
+                        "WHERE rtg_activedetailid = rtgdt_ratingdetailid AND rtgdt_rtgtypli_ratingtypelistitemid = ? " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM ratings, ratingdetails " +
@@ -1137,7 +1140,8 @@ public class RatingControl
                         "WHERE rtg_activedetailid = rtgdt_ratingdetailid " +
                         "AND rtgdt_ratedentityinstanceid = ? AND rtgdt_rtgtypli_ratingtypelistitemid = rtgtypli_ratingtypelistitemid " +
                         "AND rtgtypli_activedetailid = rtgtyplidt_ratingtypelistitemdetailid AND rtgtyplidt_rtgtyp_ratingtypeid = ? " +
-                        "ORDER BY rtgtyplidt_sortorder, rtgtyplidt_ratingtypelistitemname";
+                        "ORDER BY rtgtyplidt_sortorder, rtgtyplidt_ratingtypelistitemname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM ratings, ratingdetails, ratingtypelistitems, ratingtypelistitemdetails " +
