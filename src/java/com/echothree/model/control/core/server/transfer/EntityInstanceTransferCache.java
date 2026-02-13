@@ -67,6 +67,7 @@ public class EntityInstanceTransferCache
             includeEntityVisit = options.contains(CoreOptions.EntityInstanceIncludeEntityVisit);
             includeNames = options.contains(CoreOptions.EntityInstanceIncludeNames);
             includeUuidIfAvailable = options.contains(CoreOptions.EntityInstanceIncludeUuidIfAvailable);
+            setIncludeEntityAliases(options.contains(CoreOptions.EntityInstanceIncludeEntityAliases));
             setIncludeEntityAttributeGroups(options.contains(CoreOptions.EntityInstanceIncludeEntityAttributeGroups));
             setIncludeTagScopes(options.contains(CoreOptions.EntityInstanceIncludeTagScopes));
         }
