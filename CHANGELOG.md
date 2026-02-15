@@ -1,5 +1,18 @@
 # Changelog
 
+## 2026-02-15-01
+
+* Add Ratings to Entity Instance Review Page [1693](https://gitlab.echothree.com/echothree/echothree/-/issues/1693)
+* Add Entity Aliases to Entity Instance Review Page [1694](https://gitlab.echothree.com/echothree/echothree/-/issues/1694)
+* Add Geo Code Alias Type Object and Queries [1696](https://gitlab.echothree.com/echothree/echothree/-/issues/1696)
+* Add Geo Code Alias Object and Queries [1697](https://gitlab.echothree.com/echothree/echothree/-/issues/1697)
+* Add Geo Code Relationship Object and Referencing Fields [1698](https://gitlab.echothree.com/echothree/echothree/-/issues/1698)
+* Add Geo Code Language Object and Queries [1699](https://gitlab.echothree.com/echothree/echothree/-/issues/1699)
+* Add Geo Code Currency Object and Queries [1700](https://gitlab.echothree.com/echothree/echothree/-/issues/1700)
+* Add Geo Code Time Zone Object and Queries [1701](https://gitlab.echothree.com/echothree/echothree/-/issues/1701)
+* Add Geo Code Date Time Format Object and Queries [1702](https://gitlab.echothree.com/echothree/echothree/-/issues/1702)
+* jOOQ 3.20.11 Upgrade [1721](https://gitlab.echothree.com/echothree/echothree/-/issues/1721)
+
 ## 2026-02-01-01
 
 * Entity Instance Add, Send Event, Delete, Remove Actions and Pages [1691](https://gitlab.echothree.com/echothree/echothree/-/issues/1691)
