@@ -85,6 +85,8 @@ import com.echothree.control.user.filter.common.result.EditFilterAdjustmentPerce
 import com.echothree.control.user.filter.common.result.EditFilterAdjustmentResult;
 import com.echothree.control.user.filter.common.result.EditFilterResult;
 import com.echothree.control.user.filter.common.result.EditFilterStepResult;
+import com.echothree.control.user.geo.common.GeoUtil;
+import com.echothree.control.user.geo.common.result.EditGeoCodeLanguageResult;
 import com.echothree.control.user.inventory.common.InventoryUtil;
 import com.echothree.control.user.inventory.common.result.CreateAllocationPriorityResult;
 import com.echothree.control.user.inventory.common.result.CreateInventoryAdjustmentTypeResult;
@@ -14439,6 +14441,101 @@ public interface GraphQlMutations {
                 commandForm.setEditMode(EditMode.UPDATE);
 
                 commandResult = AccountingUtil.getHome().editTransactionTimeType(BaseGraphQl.getUserVisitPK(env), commandForm);
+            }
+
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject createGeoCodeLanguage(final DataFetchingEnvironment env,
+            @GraphQLName("geoCodeName") @GraphQLNonNull final String geoCodeName,
+            @GraphQLName("languageIsoName") @GraphQLNonNull final String languageIsoName,
+            @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
+            @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = GeoUtil.getHome().getCreateGeoCodeLanguageForm();
+
+            commandForm.setGeoCodeName(geoCodeName);
+            commandForm.setLanguageIsoName(languageIsoName);
+            commandForm.setIsDefault(isDefault);
+            commandForm.setSortOrder(sortOrder);
+
+            var commandResult = GeoUtil.getHome().createGeoCodeLanguage(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject deleteGeoCodeLanguage(final DataFetchingEnvironment env,
+            @GraphQLName("geoCodeName") @GraphQLNonNull final String geoCodeName,
+            @GraphQLName("languageIsoName") @GraphQLNonNull final String languageIsoName) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = GeoUtil.getHome().getDeleteGeoCodeLanguageForm();
+
+            commandForm.setGeoCodeName(geoCodeName);
+            commandForm.setLanguageIsoName(languageIsoName);
+
+            var commandResult = GeoUtil.getHome().deleteGeoCodeLanguage(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject editGeoCodeLanguage(final DataFetchingEnvironment env,
+            @GraphQLName("geoCodeName") @GraphQLNonNull final String geoCodeName,
+            @GraphQLName("languageIsoName") @GraphQLNonNull final String languageIsoName,
+            @GraphQLName("isDefault") final String isDefault,
+            @GraphQLName("sortOrder") final String sortOrder) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var spec = GeoUtil.getHome().getGeoCodeLanguageSpec();
+
+            spec.setGeoCodeName(geoCodeName);
+            spec.setLanguageIsoName(languageIsoName);
+
+            var commandForm = GeoUtil.getHome().getEditGeoCodeLanguageForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = GeoUtil.getHome().editGeoCodeLanguage(BaseGraphQl.getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditGeoCodeLanguageResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                if(arguments.containsKey("isDefault"))
+                    edit.setIsDefault(isDefault);
+                if(arguments.containsKey("sortOrder"))
+                    edit.setSortOrder(sortOrder);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = GeoUtil.getHome().editGeoCodeLanguage(BaseGraphQl.getUserVisitPK(env), commandForm);
             }
 
             mutationResultObject.setCommandResult(commandResult);
