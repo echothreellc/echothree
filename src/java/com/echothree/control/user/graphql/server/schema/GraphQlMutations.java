@@ -87,6 +87,7 @@ import com.echothree.control.user.filter.common.result.EditFilterResult;
 import com.echothree.control.user.filter.common.result.EditFilterStepResult;
 import com.echothree.control.user.geo.common.GeoUtil;
 import com.echothree.control.user.geo.common.result.EditGeoCodeCurrencyResult;
+import com.echothree.control.user.geo.common.result.EditGeoCodeDateTimeFormatResult;
 import com.echothree.control.user.geo.common.result.EditGeoCodeLanguageResult;
 import com.echothree.control.user.geo.common.result.EditGeoCodeTimeZoneResult;
 import com.echothree.control.user.inventory.common.InventoryUtil;
@@ -14728,6 +14729,101 @@ public interface GraphQlMutations {
                 commandForm.setEditMode(EditMode.UPDATE);
 
                 commandResult = GeoUtil.getHome().editGeoCodeTimeZone(BaseGraphQl.getUserVisitPK(env), commandForm);
+            }
+
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+    
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject createGeoCodeDateTimeFormat(final DataFetchingEnvironment env,
+            @GraphQLName("geoCodeName") @GraphQLNonNull final String geoCodeName,
+            @GraphQLName("dataTimeFormatName") @GraphQLNonNull final String dataTimeFormatName,
+            @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
+            @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = GeoUtil.getHome().getCreateGeoCodeDateTimeFormatForm();
+
+            commandForm.setGeoCodeName(geoCodeName);
+            commandForm.setDateTimeFormatName(dataTimeFormatName);
+            commandForm.setIsDefault(isDefault);
+            commandForm.setSortOrder(sortOrder);
+
+            var commandResult = GeoUtil.getHome().createGeoCodeDateTimeFormat(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject deleteGeoCodeDateTimeFormat(final DataFetchingEnvironment env,
+            @GraphQLName("geoCodeName") @GraphQLNonNull final String geoCodeName,
+            @GraphQLName("dataTimeFormatName") @GraphQLNonNull final String dataTimeFormatName) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = GeoUtil.getHome().getDeleteGeoCodeDateTimeFormatForm();
+
+            commandForm.setGeoCodeName(geoCodeName);
+            commandForm.setDateTimeFormatName(dataTimeFormatName);
+
+            var commandResult = GeoUtil.getHome().deleteGeoCodeDateTimeFormat(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject editGeoCodeDateTimeFormat(final DataFetchingEnvironment env,
+            @GraphQLName("geoCodeName") @GraphQLNonNull final String geoCodeName,
+            @GraphQLName("dataTimeFormatName") @GraphQLNonNull final String dataTimeFormatName,
+            @GraphQLName("isDefault") final String isDefault,
+            @GraphQLName("sortOrder") final String sortOrder) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var spec = GeoUtil.getHome().getGeoCodeDateTimeFormatSpec();
+
+            spec.setGeoCodeName(geoCodeName);
+            spec.setDateTimeFormatName(dataTimeFormatName);
+
+            var commandForm = GeoUtil.getHome().getEditGeoCodeDateTimeFormatForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = GeoUtil.getHome().editGeoCodeDateTimeFormat(BaseGraphQl.getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditGeoCodeDateTimeFormatResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                if(arguments.containsKey("isDefault"))
+                    edit.setIsDefault(isDefault);
+                if(arguments.containsKey("sortOrder"))
+                    edit.setSortOrder(sortOrder);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = GeoUtil.getHome().editGeoCodeDateTimeFormat(BaseGraphQl.getUserVisitPK(env), commandForm);
             }
 
             mutationResultObject.setCommandResult(commandResult);
