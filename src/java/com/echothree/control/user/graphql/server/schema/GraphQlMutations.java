@@ -86,6 +86,7 @@ import com.echothree.control.user.filter.common.result.EditFilterAdjustmentResul
 import com.echothree.control.user.filter.common.result.EditFilterResult;
 import com.echothree.control.user.filter.common.result.EditFilterStepResult;
 import com.echothree.control.user.geo.common.GeoUtil;
+import com.echothree.control.user.geo.common.result.EditGeoCodeCurrencyResult;
 import com.echothree.control.user.geo.common.result.EditGeoCodeLanguageResult;
 import com.echothree.control.user.inventory.common.InventoryUtil;
 import com.echothree.control.user.inventory.common.result.CreateAllocationPriorityResult;
@@ -14545,5 +14546,100 @@ public interface GraphQlMutations {
 
         return mutationResultObject;
     }
-    
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject createGeoCodeCurrency(final DataFetchingEnvironment env,
+            @GraphQLName("geoCodeName") @GraphQLNonNull final String geoCodeName,
+            @GraphQLName("currencyIsoName") @GraphQLNonNull final String currencyIsoName,
+            @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
+            @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = GeoUtil.getHome().getCreateGeoCodeCurrencyForm();
+
+            commandForm.setGeoCodeName(geoCodeName);
+            commandForm.setCurrencyIsoName(currencyIsoName);
+            commandForm.setIsDefault(isDefault);
+            commandForm.setSortOrder(sortOrder);
+
+            var commandResult = GeoUtil.getHome().createGeoCodeCurrency(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject deleteGeoCodeCurrency(final DataFetchingEnvironment env,
+            @GraphQLName("geoCodeName") @GraphQLNonNull final String geoCodeName,
+            @GraphQLName("currencyIsoName") @GraphQLNonNull final String currencyIsoName) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = GeoUtil.getHome().getDeleteGeoCodeCurrencyForm();
+
+            commandForm.setGeoCodeName(geoCodeName);
+            commandForm.setCurrencyIsoName(currencyIsoName);
+
+            var commandResult = GeoUtil.getHome().deleteGeoCodeCurrency(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject editGeoCodeCurrency(final DataFetchingEnvironment env,
+            @GraphQLName("geoCodeName") @GraphQLNonNull final String geoCodeName,
+            @GraphQLName("currencyIsoName") @GraphQLNonNull final String currencyIsoName,
+            @GraphQLName("isDefault") final String isDefault,
+            @GraphQLName("sortOrder") final String sortOrder) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var spec = GeoUtil.getHome().getGeoCodeCurrencySpec();
+
+            spec.setGeoCodeName(geoCodeName);
+            spec.setCurrencyIsoName(currencyIsoName);
+
+            var commandForm = GeoUtil.getHome().getEditGeoCodeCurrencyForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = GeoUtil.getHome().editGeoCodeCurrency(BaseGraphQl.getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditGeoCodeCurrencyResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                if(arguments.containsKey("isDefault"))
+                    edit.setIsDefault(isDefault);
+                if(arguments.containsKey("sortOrder"))
+                    edit.setSortOrder(sortOrder);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = GeoUtil.getHome().editGeoCodeCurrency(BaseGraphQl.getUserVisitPK(env), commandForm);
+            }
+
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
 }
