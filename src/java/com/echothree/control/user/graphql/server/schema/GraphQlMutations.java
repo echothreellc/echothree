@@ -87,6 +87,7 @@ import com.echothree.control.user.filter.common.result.EditFilterResult;
 import com.echothree.control.user.filter.common.result.EditFilterStepResult;
 import com.echothree.control.user.geo.common.GeoUtil;
 import com.echothree.control.user.geo.common.result.CreateGeoCodeAliasTypeResult;
+import com.echothree.control.user.geo.common.result.EditGeoCodeAliasResult;
 import com.echothree.control.user.geo.common.result.EditGeoCodeAliasTypeResult;
 import com.echothree.control.user.geo.common.result.EditGeoCodeCurrencyResult;
 import com.echothree.control.user.geo.common.result.EditGeoCodeDateTimeFormatResult;
@@ -247,6 +248,7 @@ import com.echothree.control.user.workflow.common.result.EditWorkflowStepResult;
 import com.echothree.model.control.graphql.server.graphql.MutationResultObject;
 import com.echothree.model.control.graphql.server.graphql.MutationResultWithIdObject;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
+import static com.echothree.model.control.index.common.IndexFields.unitOfMeasureTypeName;
 import com.echothree.model.control.sales.server.graphql.CreateSalesOrderLineResultObject;
 import com.echothree.model.control.sales.server.graphql.CreateSalesOrderResultObject;
 import com.echothree.model.control.search.server.graphql.SearchComponentVendorsResultObject;
@@ -14955,5 +14957,94 @@ public interface GraphQlMutations {
 
         return mutationResultObject;
     }
-    
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject createGeoCodeAlias(final DataFetchingEnvironment env,
+            @GraphQLName("geoCodeName") @GraphQLNonNull final String geoCodeName,
+            @GraphQLName("geoCodeAliasTypeName") @GraphQLNonNull final String geoCodeAliasTypeName,
+            @GraphQLName("alias") @GraphQLNonNull final String alias) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = GeoUtil.getHome().getCreateGeoCodeAliasForm();
+
+            commandForm.setGeoCodeName(geoCodeName);
+            commandForm.setGeoCodeAliasTypeName(geoCodeAliasTypeName);
+            commandForm.setAlias(alias);
+
+            var commandResult = GeoUtil.getHome().createGeoCodeAlias(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject editGeoCodeAlias(final DataFetchingEnvironment env,
+            @GraphQLName("geoCodeName") @GraphQLNonNull final String geoCodeName,
+            @GraphQLName("geoCodeAliasTypeName") @GraphQLNonNull final String geoCodeAliasTypeName,
+            @GraphQLName("alias") final String alias) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var spec = GeoUtil.getHome().getGeoCodeAliasSpec();
+
+            spec.setGeoCodeName(geoCodeName);
+            spec.setGeoCodeAliasTypeName(geoCodeAliasTypeName);
+
+            var commandForm = GeoUtil.getHome().getEditGeoCodeAliasForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = GeoUtil.getHome().editGeoCodeAlias(BaseGraphQl.getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditGeoCodeAliasResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                if(arguments.containsKey("alias"))
+                    edit.setAlias(alias);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = GeoUtil.getHome().editGeoCodeAlias(BaseGraphQl.getUserVisitPK(env), commandForm);
+            }
+
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject deleteGeoCodeAlias(final DataFetchingEnvironment env,
+            @GraphQLName("geoCodeName") @GraphQLNonNull final String geoCodeName,
+            @GraphQLName("geoCodeAliasTypeName") @GraphQLNonNull final String geoCodeAliasTypeName) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = GeoUtil.getHome().getDeleteGeoCodeAliasForm();
+
+            commandForm.setGeoCodeName(geoCodeName);
+            commandForm.setGeoCodeAliasTypeName(geoCodeAliasTypeName);
+
+            mutationResultObject.setCommandResult(GeoUtil.getHome().deleteGeoCodeAlias(BaseGraphQl.getUserVisitPK(env), commandForm));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
 }
