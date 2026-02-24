@@ -17,15 +17,16 @@
 package com.echothree.control.user.geo.server.command;
 
 import com.echothree.control.user.geo.common.form.CreateGeoCodeAliasTypeForm;
+import com.echothree.control.user.geo.common.result.GeoResultFactory;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.geo.server.entity.GeoCodeAliasType;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -69,15 +70,18 @@ public class CreateGeoCodeAliasTypeCommand
     
     @Override
     protected BaseResult execute() {
+        var result = GeoResultFactory.getCreateGeoCodeAliasTypeResult();
         var geoControl = Session.getModelController(GeoControl.class);
         var geoCodeTypeName = form.getGeoCodeTypeName();
         var geoCodeType = geoControl.getGeoCodeTypeByName(geoCodeTypeName);
+        GeoCodeAliasType geoCodeAliasType = null;
 
         if(geoCodeType != null) {
             var geoAliasTypeName = form.getGeoCodeAliasTypeName();
-            var geoAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, geoAliasTypeName);
 
-            if(geoAliasType == null) {
+            geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, geoAliasTypeName);
+
+            if(geoCodeAliasType == null) {
                 var createdBy = getPartyPK();
                 var validationPattern = form.getValidationPattern();
                 var isRequired = Boolean.valueOf(form.getIsRequired());
@@ -85,10 +89,10 @@ public class CreateGeoCodeAliasTypeCommand
                 var sortOrder = Integer.valueOf(form.getSortOrder());
                 var description = form.getDescription();
 
-                geoAliasType = geoControl.createGeoCodeAliasType(geoCodeType, geoAliasTypeName, validationPattern, isRequired, isDefault, sortOrder, createdBy);
+                geoCodeAliasType = geoControl.createGeoCodeAliasType(geoCodeType, geoAliasTypeName, validationPattern, isRequired, isDefault, sortOrder, createdBy);
 
                 if(description != null) {
-                    geoControl.createGeoCodeAliasTypeDescription(geoAliasType, getPreferredLanguage(), description, createdBy);
+                    geoControl.createGeoCodeAliasTypeDescription(geoCodeAliasType, getPreferredLanguage(), description, createdBy);
                 }
             } else {
                 addExecutionError(ExecutionErrors.DuplicateGeoCodeAliasTypeName.name(), geoCodeTypeName, geoAliasTypeName);
@@ -97,7 +101,15 @@ public class CreateGeoCodeAliasTypeCommand
             addExecutionError(ExecutionErrors.UnknownGeoCodeTypeName.name(), geoCodeTypeName);
         }
 
-        return null;
+        if(geoCodeAliasType != null) {
+            var lastGeoCodeAliasTypeDetail = geoCodeAliasType.getLastDetail();
+
+            result.setGeoCodeTypeName(lastGeoCodeAliasTypeDetail.getGeoCodeType().getLastDetail().getGeoCodeTypeName());
+            result.setGeoCodeAliasTypeName(lastGeoCodeAliasTypeDetail.getGeoCodeAliasTypeName());
+            result.setEntityRef(geoCodeAliasType.getPrimaryKey().getEntityRef());
+        }
+
+        return result;
     }
     
 }
