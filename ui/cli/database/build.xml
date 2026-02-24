@@ -38,6 +38,12 @@
         <property name="ui.cli.database.jarfile" value="${ui.cli.database.jardir}/database.jar" />
 
         <path id="runtime.classpath">
+            <file file="${build.lib.dir}/jooq.jar"/>
+            <file file="${build.lib.dir}/jooq-codegen.jar"/>
+            <file file="${build.lib.dir}/jooq-meta.jar"/>
+            <file file="${build.lib.dir}/jakarta.xml.bind-api.jar"/>
+            <file file="${build.lib.dir}/r2dbc-spi.jar"/>
+            <file file="${build.lib.dir}/reactive-streams.jar"/>
             <file file="${build.lib.dir}/mysql-connector-j.jar"/>
             <file file="${build.lib.dir}/guava.jar"/>
             <file file="${build.lib.dir}/commons-cli.jar"/>
@@ -129,7 +135,24 @@
             <arg value="${ui.cli.database.generateddir}"/>
         </java>
     </target>
-        
+
+    <target name="GenerateJooq" depends="jar">
+        <java classpathref="runtime.classpath"
+              classname="com.echothree.ui.cli.database.Database"
+              fork="true">
+            <arg value="--jooq"/>
+            <arg value="--generated"/>
+            <arg value="${ui.cli.database.generateddir}"/>
+        </java>
+        <java classpathref="runtime.classpath"
+              classname="org.jooq.codegen.GenerationTool"
+              fork="true">
+            <sysproperty key="org.jooq.no-logo" value="true" />
+            <sysproperty key="org.jooq.no-tips" value="true" />
+            <arg value="${metadata.dir}/jooq-config.xml"/>
+        </java>
+    </target>
+
     <target name="GenerateDatabase" depends="jar">
         <java classpathref="runtime.classpath"
               classname="com.echothree.ui.cli.database.Database"
@@ -194,6 +217,7 @@
         <echo>+ Available targets for database utilities: +</echo>
         <echo>+                                           +</echo>
         <echo>+        ant GenerateJava                   +</echo>
+        <echo>+        ant GenerateJooq                   +</echo>
         <echo>+        ant GenerateDatabase               +</echo>
         <echo>+        ant SetCharacterSetAndCollation    +</echo>
         <echo>+        ant RegenerateDatabase             +</echo>
