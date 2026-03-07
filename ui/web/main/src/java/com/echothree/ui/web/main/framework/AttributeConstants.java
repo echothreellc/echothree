@@ -1021,7 +1021,7 @@ public interface AttributeConstants {
     String COLORS = "colors";
     String COLOR_DESCRIPTION = "colorDescription";
     String COLOR_DESCRIPTIONS = "colorDescriptions";
-    String APPLICATION = "application";
+    String THIS_APPLICATION = "thisApplication";
     String APPLICATIONS = "applications";
     String APPLICATION_DESCRIPTION = "applicationDescription";
     String APPLICATION_DESCRIPTIONS = "applicationDescriptions";

@@ -60,7 +60,7 @@ public class DescriptionAction
             var result = (GetApplicationDescriptionsResult) executionResult.getResult();
             var applicationTransfer = result.getApplication();
 
-            request.setAttribute(AttributeConstants.APPLICATION, applicationTransfer);
+            request.setAttribute(AttributeConstants.THIS_APPLICATION, applicationTransfer);
             request.setAttribute(AttributeConstants.APPLICATION_DESCRIPTIONS, result.getApplicationDescriptions());
             forwardKey = ForwardConstants.DISPLAY;
         } else {
