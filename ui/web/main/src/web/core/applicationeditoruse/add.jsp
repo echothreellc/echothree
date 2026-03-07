@@ -31,7 +31,7 @@
                 <a href="<c:url value="/action/Core/Main" />"><fmt:message key="navigation.core" /></a> &gt;&gt;
                 <a href="<c:url value="/action/Core/Application/Main" />"><fmt:message key="navigation.applications" /></a> &gt;&gt;
                 <c:url var="applicationEditorUsesUrl" value="/action/Core/ApplicationEditorUse/Main">
-                    <c:param name="ApplicationName" value="${application.applicationName}" />
+                    <c:param name="ApplicationName" value="${thisApplication.applicationName}" />
                 </c:url>
                 <a href="${applicationEditorUsesUrl}"><fmt:message key="navigation.applicationEditorUses" /></a> &gt;&gt;
                 Add

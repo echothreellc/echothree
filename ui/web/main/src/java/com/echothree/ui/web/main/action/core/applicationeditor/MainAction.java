@@ -58,7 +58,7 @@ public class MainAction
             var executionResult = commandResult.getExecutionResult();
             var result = (GetApplicationEditorsResult)executionResult.getResult();
             
-            request.setAttribute(AttributeConstants.APPLICATION, result.getApplication());
+            request.setAttribute(AttributeConstants.THIS_APPLICATION, result.getApplication());
             request.setAttribute(AttributeConstants.APPLICATION_EDITORS, result.getApplicationEditors());
             forwardKey = ForwardConstants.DISPLAY;
         } else {

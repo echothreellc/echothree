@@ -68,7 +68,7 @@ public class AddAction
             var executionResult = commandResult.getExecutionResult();
             var result = (GetApplicationResult)executionResult.getResult();
             
-            request.setAttribute(AttributeConstants.APPLICATION, result.getApplication());
+            request.setAttribute(AttributeConstants.THIS_APPLICATION, result.getApplication());
         }
     }
     
