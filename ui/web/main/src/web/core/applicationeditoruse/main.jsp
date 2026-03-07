@@ -37,7 +37,7 @@
             <et:checkSecurityRoles securityRoles="Event.List:ApplicationEditorUse.Create:ApplicationEditorUse.Edit:ApplicationEditorUse.Delete:ApplicationEditorUse.Review:ApplicationEditorUse.Description:ApplicationEditor.Review" />
             <et:hasSecurityRole securityRole="ApplicationEditorUse.Create">
                 <c:url var="addUrl" value="/action/Core/ApplicationEditorUse/Add">
-                    <c:param name="ApplicationName" value="${application.applicationName}" />
+                    <c:param name="ApplicationName" value="${thisApplication.applicationName}" />
                 </c:url>
                 <p><a href="${addUrl}">Add Application Editor Use.</a></p>
             </et:hasSecurityRole>
