@@ -26,6 +26,9 @@ public interface GetCountiesResult
     
     StateTransfer getState();
     void setState(StateTransfer state);
+
+    Long getCountyCount();
+    void setCountyCount(Long countyCount);
     
     List<CountyTransfer> getCounties();
     void setCounties(List<CountyTransfer> counties);
