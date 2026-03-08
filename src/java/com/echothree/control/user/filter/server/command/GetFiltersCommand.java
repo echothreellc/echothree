@@ -26,22 +26,21 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.filter.server.entity.Filter;
 import com.echothree.model.data.filter.server.entity.FilterType;
 import com.echothree.model.data.filter.server.factory.FilterFactory;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetFiltersCommand
-        extends BaseMultipleEntitiesCommand<Filter, GetFiltersForm> {
+        extends BasePaginatedMultipleEntitiesCommand<Filter, GetFiltersForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -65,14 +64,26 @@ public class GetFiltersCommand
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
+    @Inject
+    FilterControl filterControl;
+
+    @Inject
+    FilterTypeLogic filterTypeLogic;
+
     FilterType filterType;
+    
+    @Override
+    protected void handleForm() {
+        filterType = filterTypeLogic.getFilterTypeByName(this, form.getFilterKindName(), form.getFilterTypeName());
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return hasExecutionErrors() ? null : filterControl.countFiltersByFilterType(filterType);
+    }
 
     @Override
     protected Collection<Filter> getEntities() {
-        var filterControl = Session.getModelController(FilterControl.class);
-
-        filterType = FilterTypeLogic.getInstance().getFilterTypeByName(this, form.getFilterKindName(), form.getFilterTypeName());
-
         return hasExecutionErrors() ? null : filterControl.getFilters(filterType);
     }
 
@@ -81,10 +92,8 @@ public class GetFiltersCommand
         var result = FilterResultFactory.getGetFiltersResult();
 
         if(entities != null) {
-            var filterControl = Session.getModelController(FilterControl.class);
-
             if(session.hasLimit(FilterFactory.class)) {
-                result.setFilterCount(filterControl.countFiltersByFilterType(filterType));
+                result.setFilterCount(getTotalEntities());
             }
 
             result.setFilterType(filterControl.getFilterTypeTransfer(getUserVisit(), filterType));
