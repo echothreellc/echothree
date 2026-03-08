@@ -748,6 +748,7 @@ import com.echothree.model.data.employee.common.PartyEmployeeConstants;
 import com.echothree.model.data.employee.server.entity.PartyEmployee;
 import com.echothree.model.data.filter.common.FilterAdjustmentTypeConstants;
 import com.echothree.model.data.filter.common.FilterKindConstants;
+import com.echothree.model.data.filter.common.FilterTypeConstants;
 import com.echothree.model.data.filter.server.entity.Filter;
 import com.echothree.model.data.filter.server.entity.FilterAdjustment;
 import com.echothree.model.data.filter.server.entity.FilterAdjustmentAmount;
@@ -2839,32 +2840,37 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("filterTypes")
-    static Collection<FilterTypeObject> filterTypes(final DataFetchingEnvironment env,
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<FilterTypeObject> filterTypes(final DataFetchingEnvironment env,
             @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName) {
-        Collection<FilterType> filterTypes;
-        Collection<FilterTypeObject> filterTypeObjects;
+        CountingPaginatedData<FilterTypeObject> data;
 
         try {
             var commandForm = FilterUtil.getHome().getGetFilterTypesForm();
+            var command = CDI.current().select(GetFilterTypesCommand.class).get();
 
             commandForm.setFilterKindName(filterKindName);
 
-            filterTypes = CDI.current().select(GetFilterTypesCommand.class).get().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, FilterTypeConstants.COMPONENT_VENDOR_NAME, FilterTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var filterTypes = entities.stream()
+                            .map(FilterTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, filterTypes);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(filterTypes == null) {
-            filterTypeObjects = emptyList();
-        } else {
-            filterTypeObjects = new ArrayList<>(filterTypes.size());
-
-            filterTypes.stream()
-                    .map(FilterTypeObject::new)
-                    .forEachOrdered(filterTypeObjects::add);
-        }
-
-        return filterTypeObjects;
+        return data;
     }
 
     @GraphQLField
