@@ -26,8 +26,6 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 
@@ -38,14 +36,14 @@ public class CreateEmploymentCommand
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("CompanyName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("StartTime", FieldType.DATE_TIME, true, null, null),
                 new FieldDefinition("EndTime", FieldType.DATE_TIME, false, null, null),
                 new FieldDefinition("TerminationTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("TerminationReasonName", FieldType.ENTITY_NAME, false, null, null)
-                ));
+                );
     }
     
     /** Creates a new instance of CreateEmploymentCommand */

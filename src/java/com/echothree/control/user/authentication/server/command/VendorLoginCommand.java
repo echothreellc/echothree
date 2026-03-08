@@ -28,8 +28,6 @@ import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 
@@ -41,11 +39,11 @@ public class VendorLoginCommand
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Username", FieldType.STRING, true, 1L, 80L),
                 new FieldDefinition("Password", FieldType.STRING, true, 1L, 40L),
                 new FieldDefinition("RemoteInet4Address", FieldType.INET_4_ADDRESS, false, null, null)
-                ));
+                );
     }
     
     /** Creates a new instance of VendorLoginCommand */

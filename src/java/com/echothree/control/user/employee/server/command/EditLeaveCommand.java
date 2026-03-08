@@ -47,8 +47,6 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.DateUtils;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 
@@ -61,18 +59,18 @@ public class EditLeaveCommand
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
 
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                     new SecurityRoleDefinition(SecurityRoleGroups.Leave.name(), SecurityRoles.Edit.name())
-                    )))
-                )));
-        
-        SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("LeaveName", FieldType.ENTITY_NAME, true, null, null)
+                    ))
                 ));
+        
+        SPEC_FIELD_DEFINITIONS = List.of(
+                new FieldDefinition("LeaveName", FieldType.ENTITY_NAME, true, null, null)
+                );
 
-        EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CompanyName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("StartTime", FieldType.DATE_TIME, true, null, null),
                 new FieldDefinition("EndTime", FieldType.DATE_TIME, false, null, null),
@@ -80,7 +78,7 @@ public class EditLeaveCommand
                 new FieldDefinition("TotalTimeUnitOfMeasureTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("LeaveTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LeaveReasonName", FieldType.ENTITY_NAME, true, null, null)
-                ));
+                );
     }
 
     /** Creates a new instance of EditLeaveCommand */

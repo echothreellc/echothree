@@ -43,8 +43,6 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import org.apache.commons.codec.language.Soundex;
@@ -60,24 +58,24 @@ public class EditContactPostalAddressCommand
     private final static List<FieldDefinition> editOtherFieldDefinitions;
     
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.CUSTOMER.name(), null),
                 new PartyTypeDefinition(PartyTypes.VENDOR.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ContactMechanism.name(), SecurityRoles.Edit.name())
-                        )))
-                )));
+                        ))
+                ));
 
-        SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("ContactMechanismName", FieldType.ENTITY_NAME, true, null, null)
-                ));
+                );
         
         // customerFormFieldDefinitions differs from otherFormFieldDefinitions in that when the PartyType
         // executing this command = CUSTOMER, FirstName and LastName are required fields. For all other
         // PartyTypes, that requirement is relaxed.
-        editCustomerFieldDefinitions = Collections.unmodifiableList(Arrays.asList(
+        editCustomerFieldDefinitions = List.of(
                 new FieldDefinition("PersonalTitleId", FieldType.ID, false, null, null),
                 new FieldDefinition("FirstName", FieldType.STRING, true, 1L, 20L),
                 new FieldDefinition("MiddleName", FieldType.STRING, false, 1L, 20L),
@@ -95,9 +93,9 @@ public class EditContactPostalAddressCommand
                 new FieldDefinition("IsCommercial", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("AllowSolicitation", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                ));
+                );
         
-        editOtherFieldDefinitions = Collections.unmodifiableList(Arrays.asList(
+        editOtherFieldDefinitions = List.of(
                 new FieldDefinition("PersonalTitleId", FieldType.ID, false, null, null),
                 new FieldDefinition("FirstName", FieldType.STRING, false, 1L, 20L),
                 new FieldDefinition("MiddleName", FieldType.STRING, false, 1L, 20L),
@@ -115,7 +113,7 @@ public class EditContactPostalAddressCommand
                 new FieldDefinition("IsCommercial", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("AllowSolicitation", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                ));
+                );
     }
 
     /** Creates a new instance of EditContactPostalAddressCommand */

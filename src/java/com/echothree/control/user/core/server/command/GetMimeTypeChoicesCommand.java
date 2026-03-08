@@ -31,8 +31,6 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 
@@ -43,7 +41,7 @@ public class GetMimeTypeChoicesCommand
    private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("DefaultMimeTypeChoice", FieldType.MIME_TYPE, false, null, null),
                 new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("MimeTypeUsageTypeName", FieldType.ENTITY_NAME, false, null, null),
@@ -56,7 +54,7 @@ public class GetMimeTypeChoicesCommand
                 new FieldDefinition("CommentName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("DocumentTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("DocumentName", FieldType.ENTITY_NAME, false, null, null)
-                ));
+                );
     }
 
     /** Creates a new instance of GetMimeTypeChoicesCommand */

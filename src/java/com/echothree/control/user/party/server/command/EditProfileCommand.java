@@ -42,8 +42,6 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.DateUtils;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 
@@ -56,11 +54,11 @@ public class EditProfileCommand
     private final static List<FieldDefinition> otherEditFieldDefinitions;
     
     static {
-        SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null)
-                ));
+                );
         
-        customerEditFieldDefinitions = Collections.unmodifiableList(Arrays.asList(
+        customerEditFieldDefinitions = List.of(
                 new FieldDefinition("Nickname", FieldType.STRING, true, 1L, 40L),
                 new FieldDefinition("IconName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("Pronunciation", FieldType.STRING, false, 1L, 200L),
@@ -75,9 +73,9 @@ public class EditProfileCommand
                 new FieldDefinition("Bio", FieldType.STRING, false, 1L, 512L),
                 new FieldDefinition("SignatureMimeTypeName", FieldType.MIME_TYPE, false, null, null),
                 new FieldDefinition("Signature", FieldType.STRING, false, 1L, 512L)
-                ));
+                );
         
-        otherEditFieldDefinitions = Collections.unmodifiableList(Arrays.asList(
+        otherEditFieldDefinitions = List.of(
                 new FieldDefinition("Nickname", FieldType.STRING, false, 1L, 40L),
                 new FieldDefinition("IconName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("Pronunciation", FieldType.STRING, false, 1L, 200L),
@@ -92,7 +90,7 @@ public class EditProfileCommand
                 new FieldDefinition("Bio", FieldType.STRING, false, 1L, 512L),
                 new FieldDefinition("SignatureMimeTypeName", FieldType.MIME_TYPE, false, null, null),
                 new FieldDefinition("Signature", FieldType.STRING, false, 1L, 512L)
-                ));
+                );
     }
     
     /** Creates a new instance of EditProfileCommand */
