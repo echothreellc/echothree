@@ -26,6 +26,9 @@ public interface GetCitiesResult
     
     StateTransfer getState();
     void setState(StateTransfer state);
+
+    Long getCityCount();
+    void setCityCount(Long cityCount);
     
     List<CityTransfer> getCities();
     void setCities(List<CityTransfer> cities);
