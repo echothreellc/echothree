@@ -44,8 +44,6 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import org.apache.commons.codec.language.Soundex;
 import javax.enterprise.context.Dependent;
@@ -59,19 +57,19 @@ public class EditPartyPaymentMethodCommand
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
     
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.CUSTOMER.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                     new SecurityRoleDefinition(SecurityRoleGroups.PartyPaymentMethod.name(), SecurityRoles.Edit.name())
-                    )))
-                )));
-
-        SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("PartyPaymentMethodName", FieldType.ENTITY_NAME, true, null, null)
+                    ))
                 ));
+
+        SPEC_FIELD_DEFINITIONS = List.of(
+                new FieldDefinition("PartyPaymentMethodName", FieldType.ENTITY_NAME, true, null, null)
+                );
         
-        EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L),
                 new FieldDefinition("DeleteWhenUnused", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
@@ -89,7 +87,7 @@ public class EditPartyPaymentMethodCommand
                 new FieldDefinition("BillingContactMechanismName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("IssuerName", FieldType.STRING, false, 1L, 60L),
                 new FieldDefinition("IssuerContactMechanismName", FieldType.ENTITY_NAME, false, null, null)
-                ));
+                );
     }
     
     /** Creates a new instance of EditPartyPaymentMethodCommand */

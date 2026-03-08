@@ -34,8 +34,6 @@ import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.PercentUtils;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 
@@ -47,14 +45,14 @@ public class EditItemCountryOfOriginCommand
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
     
     static {
-        SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("CountryName", FieldType.ENTITY_NAME, true, null, null)
-                ));
+                );
         
-        EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Percent", FieldType.FRACTIONAL_PERCENT, true, null, null)
-                ));
+                );
     }
     
     /** Creates a new instance of EditItemCountryOfOriginCommand */

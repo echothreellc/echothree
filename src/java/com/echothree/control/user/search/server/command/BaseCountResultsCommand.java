@@ -25,8 +25,6 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public abstract class BaseCountResultsCommand<F extends BaseCountResultsForm, R extends BaseCountResultsResult>
@@ -35,9 +33,9 @@ public abstract class BaseCountResultsCommand<F extends BaseCountResultsForm, R 
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("SearchTypeName", FieldType.ENTITY_NAME, true, null, null)
-                ));
+                );
     }
 
     /** Creates a new instance of BaseCountResultsCommand */

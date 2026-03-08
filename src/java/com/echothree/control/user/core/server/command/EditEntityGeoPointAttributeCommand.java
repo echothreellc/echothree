@@ -38,8 +38,6 @@ import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.persistence.PersistenceUtils;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 
@@ -57,14 +55,14 @@ public class EditEntityGeoPointAttributeCommand
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), null)
         ));
 
-        SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null),
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityAttributeUuid", FieldType.UUID, false, null, null)
-                ));
+                );
         
-        EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Latitude", FieldType.LATITUDE, true, null, null),
                 new FieldDefinition("Longitude", FieldType.LONGITUDE, true, null, null),
                 new FieldDefinition("Elevation", FieldType.UNSIGNED_LONG, false, null, null),
@@ -72,7 +70,7 @@ public class EditEntityGeoPointAttributeCommand
                 new FieldDefinition("Altitude", FieldType.UNSIGNED_LONG, false, null, null),
                 new FieldDefinition("AltitudeUnitOfMeasureTypeName", FieldType.ENTITY_NAME, false, null, null)
 
-                ));
+                );
     }
     
     /** Creates a new instance of EditEntityGeoPointAttributeCommand */

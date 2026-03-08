@@ -31,8 +31,6 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 
@@ -44,17 +42,17 @@ public class GetPurchaseInvoiceStatusChoicesCommand
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                     new SecurityRoleDefinition(SecurityRoleGroups.PurchaseInvoiceStatus.name(), SecurityRoles.Choices.name())
-                    )))
-                )));
+                    ))
+                ));
         
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        FORM_FIELD_DEFINITIONS = List.of(
             new FieldDefinition("InvoiceName", FieldType.ENTITY_NAME, false, null, null),
             new FieldDefinition("DefaultInvoiceStatusChoice", FieldType.ENTITY_NAME, false, null, null),
             new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
-        ));
+        );
     }
     
     /** Creates a new instance of GetPurchaseInvoiceStatusChoicesCommand */

@@ -36,8 +36,6 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.Validator;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 
@@ -49,21 +47,21 @@ public class CreateCommunicationSourceCommand
     private final static List<FieldDefinition> formEmailFieldDefinitions;
     
     static {
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        FORM_FIELD_DEFINITIONS = List.of(
             new FieldDefinition("CommunicationSourceName", FieldType.ENTITY_NAME, true, null, null),
             new FieldDefinition("CommunicationSourceTypeName", FieldType.ENTITY_NAME, true, null, null),
             new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
             new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-        ));
+        );
         
-        formEmailFieldDefinitions = Collections.unmodifiableList(Arrays.asList(
+        formEmailFieldDefinitions = List.of(
             new FieldDefinition("ServerName", FieldType.HOST_NAME, true, null, 40L),
             new FieldDefinition("Username", FieldType.STRING, true, 1L, 80L),
             new FieldDefinition("Password", FieldType.STRING, true, 1L, 40L),
             new FieldDefinition("ReceiveWorkEffortScopeName", FieldType.ENTITY_NAME, true, null, null),
             new FieldDefinition("SendWorkEffortScopeName", FieldType.ENTITY_NAME, true, null, null),
             new FieldDefinition("ReviewEmployeeSelectorName", FieldType.ENTITY_NAME, false, null, null)
-        ));
+        );
     }
     
     /** Creates a new instance of CreateCommunicationSourceCommand */

@@ -26,8 +26,6 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 
@@ -38,7 +36,7 @@ public class CreateUnitOfMeasureTypeCommand
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("UnitOfMeasureKindName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("UnitOfMeasureTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("SymbolPositionName", FieldType.ENTITY_NAME, true, null, null),
@@ -48,7 +46,7 @@ public class CreateUnitOfMeasureTypeCommand
                 new FieldDefinition("SingularDescription", FieldType.STRING, false, 1L, 132L),
                 new FieldDefinition("PluralDescription", FieldType.STRING, false, 1L, 132L),
                 new FieldDefinition("Symbol", FieldType.STRING, false, 1L, 20L)
-                ));
+                );
     }
     
     /** Creates a new instance of CreateUnitOfMeasureTypeCommand */

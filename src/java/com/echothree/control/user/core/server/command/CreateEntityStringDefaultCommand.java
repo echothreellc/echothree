@@ -27,8 +27,6 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 
@@ -45,7 +43,7 @@ public class CreateEntityStringDefaultCommand
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), null)
         ));
 
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null),
                 new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, false, null, null),
@@ -54,7 +52,7 @@ public class CreateEntityStringDefaultCommand
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("LanguageUuid", FieldType.UUID, false, null, null),
                 new FieldDefinition("StringAttribute", FieldType.STRING, true, 1L, 512L)
-                ));
+                );
     }
     
     /** Creates a new instance of CreateEntityStringDefaultCommand */

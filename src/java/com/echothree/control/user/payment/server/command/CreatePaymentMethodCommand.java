@@ -40,8 +40,6 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.Validator;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 
@@ -55,14 +53,14 @@ public class CreatePaymentMethodCommand
     private final static List<FieldDefinition> formCreditCardFieldDefinitions;
     
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.PaymentMethod.name(), SecurityRoles.Create.name())
-                        )))
-                )));
+                        ))
+                ));
 
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PaymentMethodName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("PaymentMethodTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("PaymentProcessorName", FieldType.ENTITY_NAME, false, null, null),
@@ -71,13 +69,13 @@ public class CreatePaymentMethodCommand
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                ));
+                );
         
-        formCheckFieldDefinitions = Collections.unmodifiableList(Arrays.asList(
+        formCheckFieldDefinitions = List.of(
                 new FieldDefinition("HoldDays", FieldType.UNSIGNED_INTEGER, true, null, null)
-                ));
+                );
         
-        formCreditCardFieldDefinitions = Collections.unmodifiableList(Arrays.asList(
+        formCreditCardFieldDefinitions = List.of(
                 new FieldDefinition("RequestNameOnCard", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("RequireNameOnCard", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("CheckCardNumber", FieldType.BOOLEAN, true, null, null),
@@ -94,7 +92,7 @@ public class CreatePaymentMethodCommand
                 new FieldDefinition("RequireBilling", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("RequestIssuer", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("RequireIssuer", FieldType.BOOLEAN, true, null, null)
-                ));
+                );
     }
     
     /** Creates a new instance of CreatePaymentMethodCommand */

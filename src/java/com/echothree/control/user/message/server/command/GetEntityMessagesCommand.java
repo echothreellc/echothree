@@ -27,8 +27,6 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 
@@ -39,13 +37,13 @@ public class GetEntityMessagesCommand
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        FORM_FIELD_DEFINITIONS = List.of(
             new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
             new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, true, null, null),
             new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null),
             new FieldDefinition("MessageTypeName", FieldType.ENTITY_NAME, false, null, null),
             new FieldDefinition("MessageName", FieldType.TAG, false, null, null)
-        ));
+        );
     }
     
     /** Creates a new instance of GetEntityMessagesCommand */
