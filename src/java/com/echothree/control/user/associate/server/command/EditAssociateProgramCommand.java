@@ -35,7 +35,6 @@ import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.PercentUtils;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 
@@ -47,21 +46,21 @@ public class EditAssociateProgramCommand
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
     
     static {
-        List<FieldDefinition> temp = new ArrayList<>(1);
-        temp.add(new FieldDefinition("AssociateProgramName", FieldType.ENTITY_NAME, true, null, null));
-        SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(temp);
+        SPEC_FIELD_DEFINITIONS = List.of(
+                new FieldDefinition("AssociateProgramName", FieldType.ENTITY_NAME, true, null, null)
+                );
         
-        temp = new ArrayList<>(4);
-        temp.add(new FieldDefinition("AssociateProgramName", FieldType.ENTITY_NAME, true, null, null));
-        temp.add(new FieldDefinition("AssociateSequenceName", FieldType.ENTITY_NAME, false, null, null));
-        temp.add(new FieldDefinition("AssociatePartyContactMechanismSequenceName", FieldType.ENTITY_NAME, false, null, null));
-        temp.add(new FieldDefinition("AssociateReferralSequenceName", FieldType.ENTITY_NAME, false, null, null));
-        temp.add(new FieldDefinition("ItemIndirectSalePercent", FieldType.FRACTIONAL_PERCENT, false, null, null));
-        temp.add(new FieldDefinition("ItemDirectSalePercent", FieldType.FRACTIONAL_PERCENT, false, null, null));
-        temp.add(new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null));
-        temp.add(new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null));
-        temp.add(new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L));
-        EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(temp);
+        EDIT_FIELD_DEFINITIONS = List.of(
+                new FieldDefinition("AssociateProgramName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("AssociateSequenceName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("AssociatePartyContactMechanismSequenceName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("AssociateReferralSequenceName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("ItemIndirectSalePercent", FieldType.FRACTIONAL_PERCENT, false, null, null),
+                new FieldDefinition("ItemDirectSalePercent", FieldType.FRACTIONAL_PERCENT, false, null, null),
+                new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
+                new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
+                );
     }
     
     /** Creates a new instance of EditAssociateProgramCommand */

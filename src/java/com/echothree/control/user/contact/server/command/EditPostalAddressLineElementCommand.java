@@ -31,7 +31,6 @@ import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 
@@ -43,20 +42,20 @@ public class EditPostalAddressLineElementCommand
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
     
     static {
-        List<FieldDefinition> temp = new ArrayList<>(3);
-        temp.add(new FieldDefinition("PostalAddressFormatName", FieldType.ENTITY_NAME, true, null, null));
-        temp.add(new FieldDefinition("PostalAddressLineSortOrder", FieldType.SIGNED_INTEGER, true, null, null));
-        temp.add(new FieldDefinition("PostalAddressLineElementSortOrder", FieldType.SIGNED_INTEGER, true, null, null));
-        SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(temp);
+        SPEC_FIELD_DEFINITIONS = List.of(
+                new FieldDefinition("PostalAddressFormatName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("PostalAddressLineSortOrder", FieldType.SIGNED_INTEGER, true, null, null),
+                new FieldDefinition("PostalAddressLineElementSortOrder", FieldType.SIGNED_INTEGER, true, null, null)
+                );
         
-        temp = new ArrayList<>(6);
-        temp.add(new FieldDefinition("PostalAddressLineElementSortOrder", FieldType.SIGNED_INTEGER, true, null, null));
-        temp.add(new FieldDefinition("PostalAddressElementTypeName", FieldType.ENTITY_NAME, true, null, null));
-        temp.add(new FieldDefinition("Prefix", FieldType.STRING, false, 1L, 10L));
-        temp.add(new FieldDefinition("AlwaysIncludePrefix", FieldType.BOOLEAN, true, null, null));
-        temp.add(new FieldDefinition("Suffix", FieldType.STRING, false, 1L, 10L));
-        temp.add(new FieldDefinition("AlwaysIncludeSuffix", FieldType.BOOLEAN, true, null, null));
-        EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(temp);
+        EDIT_FIELD_DEFINITIONS = List.of(
+                new FieldDefinition("PostalAddressLineElementSortOrder", FieldType.SIGNED_INTEGER, true, null, null),
+                new FieldDefinition("PostalAddressElementTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("Prefix", FieldType.STRING, false, 1L, 10L),
+                new FieldDefinition("AlwaysIncludePrefix", FieldType.BOOLEAN, true, null, null),
+                new FieldDefinition("Suffix", FieldType.STRING, false, 1L, 10L),
+                new FieldDefinition("AlwaysIncludeSuffix", FieldType.BOOLEAN, true, null, null)
+                );
     }
     
     /** Creates a new instance of EditPostalAddressLineElementCommand */

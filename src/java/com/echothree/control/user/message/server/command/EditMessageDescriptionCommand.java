@@ -32,7 +32,6 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 
@@ -44,16 +43,16 @@ public class EditMessageDescriptionCommand
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
     
     static {
-        List<FieldDefinition> temp = new ArrayList<>(4);
-        temp.add(new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, true, null, null));
-        temp.add(new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null));
-        temp.add(new FieldDefinition("MessageName", FieldType.ENTITY_NAME, true, null, null));
-        temp.add(new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null));
-        SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(temp);
+        SPEC_FIELD_DEFINITIONS = List.of(
+                new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null),
+                new FieldDefinition("MessageName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
+                );
         
-        temp = new ArrayList<>(1);
-        temp.add(new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L));
-        EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(temp);
+        EDIT_FIELD_DEFINITIONS = List.of(
+                new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
+                );
     }
     
     /** Creates a new instance of EditMessageDescriptionCommand */

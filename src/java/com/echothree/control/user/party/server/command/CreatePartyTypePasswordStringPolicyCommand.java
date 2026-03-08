@@ -28,8 +28,6 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 
@@ -40,7 +38,7 @@ public class CreatePartyTypePasswordStringPolicyCommand
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ForceChangeAfterCreate", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("ForceChangeAfterReset", FieldType.BOOLEAN, true, null, null),
@@ -61,7 +59,7 @@ public class CreatePartyTypePasswordStringPolicyCommand
                 new FieldDefinition("RequiredLowerCaseCount", FieldType.UNSIGNED_INTEGER, false, null, null),
                 new FieldDefinition("MaximumRepeated", FieldType.UNSIGNED_INTEGER, false, null, null),
                 new FieldDefinition("MinimumCharacterTypes", FieldType.UNSIGNED_INTEGER, false, null, null)
-                ));
+                );
     }
     
     /** Creates a new instance of CreatePartyTypePasswordStringPolicyCommand */

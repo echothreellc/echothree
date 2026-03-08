@@ -55,8 +55,6 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.Validator;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 
@@ -79,7 +77,7 @@ public class CreateSelectorNodeCommand
     private final static List<FieldDefinition> geoCodeFormFieldDefinitions;
     
     static {
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("SelectorKindName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("SelectorTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("SelectorName", FieldType.ENTITY_NAME, true, null, null),
@@ -88,65 +86,65 @@ public class CreateSelectorNodeCommand
                 new FieldDefinition("SelectorNodeTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("Negate", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                ));
+                );
         
-        booleanFormFieldDefinitions = Collections.unmodifiableList(Arrays.asList(
+        booleanFormFieldDefinitions = List.of(
                 new FieldDefinition("SelectorBooleanTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LeftSelectorNodeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("RightSelectorNodeName", FieldType.ENTITY_NAME, true, null, null)
-                ));
+                );
         
-        entityListItemFormFieldDefinitions = Collections.unmodifiableList(Arrays.asList(
+        entityListItemFormFieldDefinitions = List.of(
                 new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null),
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("EntityListItemName", FieldType.ENTITY_NAME, true, null, null)
-                ));
+                );
         
-        responsibilityTypeFormFieldDefinitions = Collections.unmodifiableList(Arrays.asList(
+        responsibilityTypeFormFieldDefinitions = List.of(
                 new FieldDefinition("ResponsibilityTypeName", FieldType.ENTITY_NAME, true, null, null)
-                ));
+                );
         
-        skillTypeFormFieldDefinitions = Collections.unmodifiableList(Arrays.asList(
+        skillTypeFormFieldDefinitions = List.of(
                 new FieldDefinition("SkillTypeName", FieldType.ENTITY_NAME, true, null, null)
-                ));
+                );
         
-        trainingClassFormFieldDefinitions = Collections.unmodifiableList(Arrays.asList(
+        trainingClassFormFieldDefinitions = List.of(
                 new FieldDefinition("TrainingClassName", FieldType.ENTITY_NAME, true, null, null)
-                ));
+                );
         
-        workflowStepFormFieldDefinitions = Collections.unmodifiableList(Arrays.asList(
+        workflowStepFormFieldDefinitions = List.of(
                 new FieldDefinition("WorkflowName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("WorkflowStepName", FieldType.ENTITY_NAME, true, null, null)
-                ));
+                );
         
-        itemCategoryFormFieldDefinitions = Collections.unmodifiableList(Arrays.asList(
+        itemCategoryFormFieldDefinitions = List.of(
                 new FieldDefinition("ItemCategoryName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("CheckParents", FieldType.BOOLEAN, true, null, null)
-                ));
+                );
         
-        itemAccountingCategoryFormFieldDefinitions = Collections.unmodifiableList(Arrays.asList(
+        itemAccountingCategoryFormFieldDefinitions = List.of(
                 new FieldDefinition("ItemAccountingCategoryName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("CheckParents", FieldType.BOOLEAN, true, null, null)
-                ));
+                );
         
-        itemPurchasingCategoryFormFieldDefinitions = Collections.unmodifiableList(Arrays.asList(
+        itemPurchasingCategoryFormFieldDefinitions = List.of(
                 new FieldDefinition("ItemPurchasingCategoryName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("CheckParents", FieldType.BOOLEAN, true, null, null)
-                ));
+                );
         
-        paymentMethodFormFieldDefinitions = Collections.unmodifiableList(Arrays.asList(
+        paymentMethodFormFieldDefinitions = List.of(
                 new FieldDefinition("PaymentMethodName", FieldType.ENTITY_NAME, true, null, null)
-                ));
+                );
         
-        paymentProcessorFormFieldDefinitions = Collections.unmodifiableList(Arrays.asList(
+        paymentProcessorFormFieldDefinitions = List.of(
                 new FieldDefinition("PaymentProcessorName", FieldType.ENTITY_NAME, true, null, null)
-                ));
+                );
         
-        geoCodeFormFieldDefinitions = Collections.unmodifiableList(Arrays.asList(
+        geoCodeFormFieldDefinitions = List.of(
                 new FieldDefinition("GeoCodeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("CountryName", FieldType.ENTITY_NAME, false, null, null)
-                ));
+                );
     }
     
     /** Creates a new instance of CreateSelectorNodeCommand */

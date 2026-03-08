@@ -18,20 +18,16 @@ package com.echothree.control.user.party.server.command;
 
 import com.echothree.control.user.party.common.edit.GenderDescriptionEdit;
 import com.echothree.control.user.party.common.edit.PartyEditFactory;
-import com.echothree.control.user.party.common.form.EditGenderDescriptionForm;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.control.user.party.common.spec.GenderDescriptionSpec;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.persistence.Session;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 
@@ -43,14 +39,14 @@ public class EditGenderDescriptionCommand
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
     
     static {
-        List<FieldDefinition> temp = new ArrayList<>(2);
-        temp.add(new FieldDefinition("GenderName", FieldType.ENTITY_NAME, true, null, null));
-        temp.add(new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null));
-        SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(temp);
+        SPEC_FIELD_DEFINITIONS = List.of(
+                new FieldDefinition("GenderName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
+        );
         
-        temp = new ArrayList<>(1);
-        temp.add(new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L));
-        EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(temp);
+        EDIT_FIELD_DEFINITIONS = List.of(
+                new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
+        );
     }
     
     /** Creates a new instance of EditGenderDescriptionCommand */

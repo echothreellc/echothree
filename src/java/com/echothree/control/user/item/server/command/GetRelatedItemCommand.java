@@ -28,8 +28,6 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 
@@ -41,11 +39,11 @@ public class GetRelatedItemCommand
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        FORM_FIELD_DEFINITIONS = List.of(
             new FieldDefinition("RelatedItemTypeName", FieldType.ENTITY_NAME, true, null, null),
             new FieldDefinition("FromItemName", FieldType.ENTITY_NAME, true, null, null),
             new FieldDefinition("ToItemName", FieldType.ENTITY_NAME, true, null, null)
-        ));
+        );
     }
     
     /** Creates a new instance of GetRelatedItemCommand */

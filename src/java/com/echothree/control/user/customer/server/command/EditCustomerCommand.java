@@ -48,8 +48,6 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import org.apache.commons.codec.language.Soundex;
 import javax.enterprise.context.Dependent;
@@ -62,11 +60,11 @@ public class EditCustomerCommand
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
     
     static {
-        SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CustomerName", FieldType.ENTITY_NAME, true, null, null)
-                ));
+                );
         
-        EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CustomerTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("CancellationPolicyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("ReturnPolicyName", FieldType.ENTITY_NAME, false, null, null),
@@ -88,7 +86,7 @@ public class EditCustomerCommand
                 new FieldDefinition("RequireReference", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("AllowReferenceDuplicates", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("ReferenceValidationPattern", FieldType.REGULAR_EXPRESSION, false, null, null)
-                ));
+                );
     }
     
     /** Creates a new instance of EditCustomerCommand */

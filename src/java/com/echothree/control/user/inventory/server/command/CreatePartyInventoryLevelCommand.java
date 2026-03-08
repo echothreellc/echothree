@@ -27,8 +27,6 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 
@@ -39,7 +37,7 @@ public class CreatePartyInventoryLevelCommand
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("CompanyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("WarehouseName", FieldType.ENTITY_NAME, false, null, null),
@@ -51,7 +49,7 @@ public class CreatePartyInventoryLevelCommand
                 new FieldDefinition("MaximumInventory", FieldType.UNSIGNED_LONG, false, null, null),
                 new FieldDefinition("ReorderQuantityUnitOfMeasureTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("ReorderQuantity", FieldType.UNSIGNED_LONG, false, null, null)
-                ));
+                );
     }
     
     /** Creates a new instance of CreatePartyInventoryLevelCommand */

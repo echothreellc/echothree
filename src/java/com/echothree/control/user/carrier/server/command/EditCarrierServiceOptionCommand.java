@@ -41,8 +41,6 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 
@@ -55,20 +53,20 @@ public class EditCarrierServiceOptionCommand
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
     
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.CarrierServiceOption.name(), SecurityRoles.Edit.name())
-                        )))
-                )));
+                        ))
+                ));
 
-        SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CarrierName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("CarrierServiceName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("CarrierOptionName", FieldType.ENTITY_NAME, true, null, null)
-                ));
+                );
         
-        EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("IsRecommended", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("IsRequired", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("RecommendedGeoCodeSelectorName", FieldType.ENTITY_NAME, false, null, null),
@@ -79,7 +77,7 @@ public class EditCarrierServiceOptionCommand
                 new FieldDefinition("RequiredOrderSelectorName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("RecommendedShipmentSelectorName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("RequiredShipmentSelectorName", FieldType.ENTITY_NAME, false, null, null)
-                ));
+                );
     }
     
     /** Creates a new instance of EditCarrierServiceOptionCommand */

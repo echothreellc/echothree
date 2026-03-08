@@ -29,8 +29,6 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 
@@ -44,7 +42,7 @@ public class CreateProfileCommand
     static {
         // If a Customer is creating their Profile, then Nickname is a required field. Otherwise, it, along with all the other
         // fields, are optional.
-        customerFormFieldDefinitions = Collections.unmodifiableList(Arrays.asList(
+        customerFormFieldDefinitions = List.of(
                 new FieldDefinition("Nickname", FieldType.STRING, true, 1L, 40L),
                 new FieldDefinition("IconName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("Pronunciation", FieldType.STRING, false, 1L, 200L),
@@ -59,9 +57,9 @@ public class CreateProfileCommand
                 new FieldDefinition("Bio", FieldType.STRING, false, 1L, 512L),
                 new FieldDefinition("SignatureMimeTypeName", FieldType.MIME_TYPE, false, null, null),
                 new FieldDefinition("Signature", FieldType.STRING, false, 1L, 512L)
-                ));
+                );
         
-        otherFormFieldDefinitions = Collections.unmodifiableList(Arrays.asList(
+        otherFormFieldDefinitions = List.of(
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("Nickname", FieldType.STRING, false, 1L, 40L),
                 new FieldDefinition("IconName", FieldType.ENTITY_NAME, false, null, null),
@@ -77,7 +75,7 @@ public class CreateProfileCommand
                 new FieldDefinition("Bio", FieldType.STRING, false, 1L, 512L),
                 new FieldDefinition("SignatureMimeTypeName", FieldType.MIME_TYPE, false, null, null),
                 new FieldDefinition("Signature", FieldType.STRING, false, 1L, 512L)
-                ));
+                );
     }
     
     /** Creates a new instance of CreateProfileCommand */

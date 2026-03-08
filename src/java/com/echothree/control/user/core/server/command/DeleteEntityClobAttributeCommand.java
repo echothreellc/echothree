@@ -30,8 +30,6 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 
@@ -48,14 +46,14 @@ public class DeleteEntityClobAttributeCommand
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), null)
         ));
 
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null),
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityAttributeUuid", FieldType.UUID, false, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("LanguageUuid", FieldType.UUID, false, null, null)
-                ));
+                );
     }
     
     /** Creates a new instance of DeleteEntityClobAttributeCommand */
