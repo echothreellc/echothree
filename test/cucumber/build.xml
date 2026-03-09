@@ -69,6 +69,7 @@
             <compilerarg value="-XDcompilePolicy=simple"/>
             <compilerarg value="--should-stop=ifError=FLOW" />
             <compilerarg value="-Xplugin:ErrorProne -Xep:DeadException:ERROR" />
+            <compilerarg value="-XDaddTypeAnnotationsToSymbol=true"/>
             <compilerarg value="-J--add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED"/>
             <compilerarg value="-J--add-exports=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED"/>
             <compilerarg value="-J--add-exports=jdk.compiler/com.sun.tools.javac.main=ALL-UNNAMED"/>
