@@ -23,7 +23,9 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.geo.server.entity.GeoCode;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.geo.server.entity.GeoCodeScope;
+import com.echothree.model.data.geo.server.factory.GeoCodeFactory;
+import com.echothree.model.data.item.server.factory.ItemFactory;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -32,10 +34,10 @@ import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetCitiesCommand
@@ -65,11 +67,14 @@ public class GetCitiesCommand
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
+    @Inject
+    GeoControl geoControl;
+
     GeoCode stateGeoCode;
+    GeoCodeScope citiesGeoCodeScope;
 
     @Override
     protected Collection<GeoCode> getEntities() {
-        var geoControl = Session.getModelController(GeoControl.class);
         var countryName = form.getCountryName();
         var countryGeoCode = geoControl.getCountryByAlias(countryName);
         Collection<GeoCode> cityGeoCodes = null;
@@ -80,7 +85,9 @@ public class GetCitiesCommand
             stateGeoCode = geoControl.getStateByAlias(countryGeoCode, stateName);
 
             if(stateGeoCode != null) {
-                cityGeoCodes = geoControl.getCitiesByState(stateGeoCode);
+                citiesGeoCodeScope = geoControl.getCitiesGeoCodeScope(stateGeoCode);
+
+                cityGeoCodes = geoControl.getCitiesByState(citiesGeoCodeScope);
             } else {
                 addExecutionError(ExecutionErrors.UnknownStateName.name(), stateName);
             }
@@ -96,10 +103,14 @@ public class GetCitiesCommand
         var result = GeoResultFactory.getGetCitiesResult();
 
         if(entities != null) {
-            var geoControl = Session.getModelController(GeoControl.class);
             var userVisit = getUserVisit();
 
             result.setState(geoControl.getStateTransfer(userVisit, stateGeoCode));
+
+            if(session.hasLimit(GeoCodeFactory.class)) {
+                result.setCityCount(geoControl.countGeoCodesByGeoCodeScope(citiesGeoCodeScope));
+            }
+
             result.setCities(geoControl.getCityTransfers(getUserVisit(), entities));
         }
 

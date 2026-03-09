@@ -227,11 +227,13 @@ public class GeoControl
         
         return countryTransfers;
     }
+
+    public GeoCodeScope getCountriesGeoCodeScope() {
+        return getGeoCodeScopeByName(GeoCodeScopes.COUNTRIES.name());
+    }
     
-    public List<GeoCode> getCountries() {
-        var geoCodeScope = getGeoCodeScopeByName(GeoCodeScopes.COUNTRIES.name());
-        
-        return getGeoCodesByGeoCodeScope(geoCodeScope);
+    public List<GeoCode> getCountries(GeoCodeScope countriesGeoCodeScope) {
+        return getGeoCodesByGeoCodeScope(countriesGeoCodeScope);
     }
 
     public StateTransfer getStateTransfer(UserVisit userVisit, GeoCode geoCode) {
@@ -247,17 +249,21 @@ public class GeoControl
         
         return stateTransfers;
     }
-    
-    public List<GeoCode> getStatesByCountry(GeoCode countryGeoCode) {
+
+    public GeoCodeScope getStatesGeoCodeScope(GeoCode countryGeoCode) {
         var countryGeoCodeAliasType = getGeoCodeAliasTypeByName(countryGeoCode.getLastDetail().getGeoCodeType(), GeoCodeAliasTypes.ISO_2_LETTER.name());
         var countryGeoCodeAlias = getGeoCodeAlias(countryGeoCode, countryGeoCodeAliasType);
         var countryIso2Letter = countryGeoCodeAlias.getAlias();
         var geoCodeScopeName = countryIso2Letter + "_STATES";
-        var geoCodeScope = getGeoCodeScopeByName(geoCodeScopeName);
+
+        return getGeoCodeScopeByName(geoCodeScopeName);
+    }
+
+    public List<GeoCode> getStatesByCountry(GeoCodeScope statesGeoCodeScope) {
         List<GeoCode> states;
 
-        if(geoCodeScope != null) {
-            states = getGeoCodesByGeoCodeScope(geoCodeScope);
+        if(statesGeoCodeScope != null) {
+            states = getGeoCodesByGeoCodeScope(statesGeoCodeScope);
         } else {
             states = new ArrayList<>();
         }
@@ -278,34 +284,38 @@ public class GeoControl
         
         return countyTransfers;
     }
-    
-    public List<GeoCode> getCountiesByState(GeoCode stateGeoCode) {
+
+    public GeoCodeScope getCountiesGeoCodeScope(GeoCode stateGeoCode) {
         var stateGeoCodeAliasType = getGeoCodeAliasTypeByName(stateGeoCode.getLastDetail().getGeoCodeType(), GeoCodeAliasTypes.POSTAL_2_LETTER.name());
         var stateGeoCodeAlias = getGeoCodeAlias(stateGeoCode, stateGeoCodeAliasType);
         var statePostal2Letter = stateGeoCodeAlias.getAlias();
-        
+
         var countryGeoCodeType = getGeoCodeTypeByName(GeoCodeTypes.COUNTRY.name());
         var stateRelationships = getGeoCodeRelationshipsByFromGeoCode(stateGeoCode);
         GeoCode countryGeoCode = null;
         for(var geoCodeRelationship : stateRelationships) {
             var toGeoCode = geoCodeRelationship.getToGeoCode();
-            
+
             if(toGeoCode.getLastDetail().getGeoCodeType().equals(countryGeoCodeType)) {
                 countryGeoCode = toGeoCode;
                 break;
             }
         }
-        
+
         var countryGeoCodeAliasType = getGeoCodeAliasTypeByName(countryGeoCode.getLastDetail().getGeoCodeType(), GeoCodeAliasTypes.ISO_2_LETTER.name());
         var countryGeoCodeAlias = getGeoCodeAlias(countryGeoCode, countryGeoCodeAliasType);
         var countryIso2Letter = countryGeoCodeAlias.getAlias();
-        
+
         var geoCodeScopeName = countryIso2Letter + "_" + statePostal2Letter + "_COUNTIES";
-        var geoCodeScope = getGeoCodeScopeByName(geoCodeScopeName);
+
+        return getGeoCodeScopeByName(geoCodeScopeName);
+    }
+
+    public List<GeoCode> getCountiesByState(GeoCodeScope countiesGeoCodeScope) {
         List<GeoCode> counties;
         
-        if(geoCodeScope != null) {
-            counties = getGeoCodesByGeoCodeScope(geoCodeScope);
+        if(countiesGeoCodeScope != null) {
+            counties = getGeoCodesByGeoCodeScope(countiesGeoCodeScope);
         } else {
             counties = new ArrayList<>();
         }
@@ -326,34 +336,38 @@ public class GeoControl
         
         return cityTransfers;
     }
-    
-    public List<GeoCode> getCitiesByState(GeoCode stateGeoCode) {
+
+    public GeoCodeScope getCitiesGeoCodeScope(GeoCode stateGeoCode) {
         var stateGeoCodeAliasType = getGeoCodeAliasTypeByName(stateGeoCode.getLastDetail().getGeoCodeType(), GeoCodeAliasTypes.POSTAL_2_LETTER.name());
         var stateGeoCodeAlias = getGeoCodeAlias(stateGeoCode, stateGeoCodeAliasType);
         var statePostal2Letter = stateGeoCodeAlias.getAlias();
-        
+
         var countryGeoCodeType = getGeoCodeTypeByName(GeoCodeTypes.COUNTRY.name());
         var stateRelationships = getGeoCodeRelationshipsByFromGeoCode(stateGeoCode);
         GeoCode countryGeoCode = null;
         for(var geoCodeRelationship : stateRelationships) {
             var toGeoCode = geoCodeRelationship.getToGeoCode();
-            
+
             if(toGeoCode.getLastDetail().getGeoCodeType().equals(countryGeoCodeType)) {
                 countryGeoCode = toGeoCode;
                 break;
             }
         }
-        
+
         var countryGeoCodeAliasType = getGeoCodeAliasTypeByName(countryGeoCode.getLastDetail().getGeoCodeType(), GeoCodeAliasTypes.ISO_2_LETTER.name());
         var countryGeoCodeAlias = getGeoCodeAlias(countryGeoCode, countryGeoCodeAliasType);
         var countryIso2Letter = countryGeoCodeAlias.getAlias();
-        
+
         var geoCodeScopeName = countryIso2Letter + "_" + statePostal2Letter + "_CITIES";
-        var geoCodeScope = getGeoCodeScopeByName(geoCodeScopeName);
+
+        return getGeoCodeScopeByName(geoCodeScopeName);
+    }
+
+    public List<GeoCode> getCitiesByState(GeoCodeScope citiesGeoCodeScope) {
         List<GeoCode> cities;
         
-        if(geoCodeScope != null) {
-            cities = getGeoCodesByGeoCodeScope(geoCodeScope);
+        if(citiesGeoCodeScope != null) {
+            cities = getGeoCodesByGeoCodeScope(citiesGeoCodeScope);
         } else {
             cities = new ArrayList<>();
         }
@@ -374,17 +388,21 @@ public class GeoControl
         
         return postalCodeTransfers;
     }
-    
-    public List<GeoCode> getPostalCodesByCountry(GeoCode countryGeoCode) {
+
+    public GeoCodeScope getPostalCodesGeoCodeScope(GeoCode countryGeoCode) {
         var countryGeoCodeAliasType = getGeoCodeAliasTypeByName(countryGeoCode.getLastDetail().getGeoCodeType(), GeoCodeAliasTypes.ISO_2_LETTER.name());
         var countryGeoCodeAlias = getGeoCodeAlias(countryGeoCode, countryGeoCodeAliasType);
         var countryIso2Letter = countryGeoCodeAlias.getAlias();
         var geoCodeScopeName = countryIso2Letter + "_ZIP_CODES";
-        var geoCodeScope = getGeoCodeScopeByName(geoCodeScopeName);
+
+        return getGeoCodeScopeByName(geoCodeScopeName);
+    }
+
+    public List<GeoCode> getPostalCodesByCountry(GeoCodeScope postalCodeGeoCodeScope) {
         List<GeoCode> postalCodeTransfers;
 
-        if(geoCodeScope != null) {
-            postalCodeTransfers = getGeoCodesByGeoCodeScope(geoCodeScope);
+        if(postalCodeGeoCodeScope != null) {
+            postalCodeTransfers = getGeoCodesByGeoCodeScope(postalCodeGeoCodeScope);
         } else {
             postalCodeTransfers = new ArrayList<>();
         }
@@ -873,7 +891,8 @@ public class GeoControl
                 query = "SELECT _ALL_ " +
                         "FROM geocodetypedescriptions, languages " +
                         "WHERE geotd_geot_geocodetypeid = ? AND geotd_thrutime = ? AND geotd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                        "ORDER BY lang_sortorder, lang_languageisoname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM geocodetypedescriptions " +
@@ -1323,7 +1342,8 @@ public class GeoControl
                 query = "SELECT _ALL_ " +
                         "FROM geocodescopedescriptions, languages " +
                         "WHERE geosd_geos_geocodescopeid = ? AND geosd_thrutime = ? AND geosd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                        "ORDER BY lang_sortorder, lang_languageisoname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM geocodescopedescriptions " +
@@ -1600,7 +1620,8 @@ public class GeoControl
                         "FROM geocodealiastypes, geocodealiastypedetails " +
                         "WHERE geoat_activedetailid = geoatdt_geocodealiastypedetailid AND geoatdt_geot_geocodetypeid = ? " +
                         "AND geoatdt_isdefault = 0 " +
-                        "ORDER BY geoatdt_sortorder, geoatdt_geocodealiastypename";
+                        "ORDER BY geoatdt_sortorder, geoatdt_geocodealiastypename " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM geocodealiastypes, geocodealiastypedetails " +
@@ -1831,7 +1852,8 @@ public class GeoControl
                 query = "SELECT _ALL_ " +
                         "FROM geocodealiastypedescriptions, languages " +
                         "WHERE geoatd_geoat_geocodealiastypeid = ? AND geoatd_thrutime = ? AND geoatd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                        "ORDER BY lang_sortorder, lang_languageisoname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM geocodealiastypedescriptions " +
@@ -2090,7 +2112,8 @@ public class GeoControl
                 query = "SELECT _ALL_ " +
                         "FROM geocodes, geocodedetails " +
                         "WHERE geo_activedetailid = geodt_geocodedetailid AND geodt_geos_geocodescopeid = ? " +
-                        "ORDER BY geodt_sortorder, geodt_geocodename";
+                        "ORDER BY geodt_sortorder, geodt_geocodename " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM geocodes, geocodedetails " +
@@ -2299,7 +2322,8 @@ public class GeoControl
                 query = "SELECT _ALL_ " +
                         "FROM geocodedescriptions, languages " +
                         "WHERE geod_geo_geocodeid = ? AND geod_thrutime = ? AND geod_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                        "ORDER BY lang_sortorder, lang_languageisoname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM geocodedescriptions " +

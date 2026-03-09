@@ -26,7 +26,10 @@ public interface GetStatesResult
     
     CountryTransfer getCountry();
     void setCountry(CountryTransfer country);
-    
+
+    Long getStateCount();
+    void setStateCount(Long stateCount);
+
     List<StateTransfer> getStates();
     void setStates(List<StateTransfer> states);
     
