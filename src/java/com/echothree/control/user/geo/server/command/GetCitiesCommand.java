@@ -30,7 +30,7 @@ import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -41,7 +41,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetCitiesCommand
-        extends BaseMultipleEntitiesCommand<GeoCode, GetCitiesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<GeoCode, GetCitiesForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -74,10 +74,9 @@ public class GetCitiesCommand
     GeoCodeScope citiesGeoCodeScope;
 
     @Override
-    protected Collection<GeoCode> getEntities() {
+    protected void handleForm() {
         var countryName = form.getCountryName();
         var countryGeoCode = geoControl.getCountryByAlias(countryName);
-        Collection<GeoCode> cityGeoCodes = null;
 
         if(countryGeoCode != null) {
             var stateName = form.getStateName();
@@ -86,16 +85,22 @@ public class GetCitiesCommand
 
             if(stateGeoCode != null) {
                 citiesGeoCodeScope = geoControl.getCitiesGeoCodeScope(stateGeoCode);
-
-                cityGeoCodes = geoControl.getCitiesByState(citiesGeoCodeScope);
             } else {
                 addExecutionError(ExecutionErrors.UnknownStateName.name(), stateName);
             }
         } else {
             addExecutionError(ExecutionErrors.UnknownCountryName.name(), countryName);
         }
+    }
 
-        return cityGeoCodes;
+    @Override
+    protected Long getTotalEntities() {
+        return citiesGeoCodeScope == null ? null : geoControl.countGeoCodesByGeoCodeScope(citiesGeoCodeScope);
+    }
+
+    @Override
+    protected Collection<GeoCode> getEntities() {
+        return citiesGeoCodeScope == null ? null : geoControl.getCitiesByState(citiesGeoCodeScope);
     }
 
     @Override
@@ -108,7 +113,7 @@ public class GetCitiesCommand
             result.setState(geoControl.getStateTransfer(userVisit, stateGeoCode));
 
             if(session.hasLimit(GeoCodeFactory.class)) {
-                result.setCityCount(geoControl.countGeoCodesByGeoCodeScope(citiesGeoCodeScope));
+                result.setCityCount(getTotalEntities());
             }
 
             result.setCities(geoControl.getCityTransfers(getUserVisit(), entities));
