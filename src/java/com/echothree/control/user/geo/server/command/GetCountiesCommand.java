@@ -29,7 +29,7 @@ import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -40,7 +40,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetCountiesCommand
-        extends BaseMultipleEntitiesCommand<GeoCode, GetCountiesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<GeoCode, GetCountiesForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -73,10 +73,9 @@ public class GetCountiesCommand
     GeoCodeScope countiesGeoCodeScope;
 
     @Override
-    protected Collection<GeoCode> getEntities() {
+    protected void handleForm() {
         var countryName = form.getCountryName();
         var countryGeoCode = geoControl.getCountryByAlias(countryName);
-        Collection<GeoCode> countyGeoCodes = null;
 
         if(countryGeoCode != null) {
             var stateName = form.getStateName();
@@ -85,16 +84,22 @@ public class GetCountiesCommand
 
             if(stateGeoCode != null) {
                 countiesGeoCodeScope = geoControl.getCountiesGeoCodeScope(stateGeoCode);
-
-                countyGeoCodes = geoControl.getCountiesByState(countiesGeoCodeScope);
             } else {
                 addExecutionError(ExecutionErrors.UnknownStateName.name(), stateName);
             }
         } else {
             addExecutionError(ExecutionErrors.UnknownCountryName.name(), countryName);
         }
+    }
 
-        return countyGeoCodes;
+    @Override
+    protected Long getTotalEntities() {
+        return countiesGeoCodeScope == null ? null : geoControl.countGeoCodesByGeoCodeScope(countiesGeoCodeScope);
+    }
+
+    @Override
+    protected Collection<GeoCode> getEntities() {
+        return countiesGeoCodeScope == null ? null : geoControl.getCountiesByState(countiesGeoCodeScope);
     }
 
     @Override
@@ -107,7 +112,7 @@ public class GetCountiesCommand
             result.setState(geoControl.getStateTransfer(userVisit, stateGeoCode));
 
             if(session.hasLimit(GeoCodeFactory.class)) {
-                result.setCountyCount(geoControl.countGeoCodesByGeoCodeScope(countiesGeoCodeScope));
+                result.setCountyCount(getTotalEntities());
             }
 
             result.setCounties(geoControl.getCountyTransfers(userVisit, entities));
