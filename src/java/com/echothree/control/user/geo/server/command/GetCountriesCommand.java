@@ -27,7 +27,7 @@ import com.echothree.model.data.geo.server.entity.GeoCodeScope;
 import com.echothree.model.data.geo.server.factory.GeoCodeFactory;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -38,7 +38,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetCountriesCommand
-        extends BaseMultipleEntitiesCommand<GeoCode, GetCountriesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<GeoCode, GetCountriesForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -50,11 +50,10 @@ public class GetCountriesCommand
                 new PartyTypeDefinition(PartyTypes.VENDOR.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.Country.name(), SecurityRoles.List.name())
-                        ))
-                ));
+                ))
+        ));
 
-        FORM_FIELD_DEFINITIONS = List.of(
-                );
+        FORM_FIELD_DEFINITIONS = List.of();
     }
 
     /** Creates a new instance of GetCountriesCommand */
@@ -68,10 +67,18 @@ public class GetCountriesCommand
     GeoCodeScope countriesGeoCodeScope;
 
     @Override
-    protected Collection<GeoCode> getEntities() {
+    protected void handleForm() {
         countriesGeoCodeScope = geoControl.getCountriesGeoCodeScope();
+    }
 
-        return geoControl.getCountries(countriesGeoCodeScope);
+    @Override
+    protected Long getTotalEntities() {
+        return countriesGeoCodeScope == null ? null : geoControl.countGeoCodesByGeoCodeScope(countriesGeoCodeScope);
+    }
+
+    @Override
+    protected Collection<GeoCode> getEntities() {
+        return countriesGeoCodeScope == null ? null : geoControl.getCountries(countriesGeoCodeScope);
     }
 
     @Override
@@ -80,7 +87,7 @@ public class GetCountriesCommand
 
         if(entities != null) {
             if(session.hasLimit(GeoCodeFactory.class)) {
-                result.setCountryCount(geoControl.countGeoCodesByGeoCodeScope(countriesGeoCodeScope));
+                result.setCountryCount(getTotalEntities());
             }
 
             result.setCountries(geoControl.getCountryTransfers(getUserVisit(), entities));
