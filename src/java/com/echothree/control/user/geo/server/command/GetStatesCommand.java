@@ -29,7 +29,7 @@ import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -40,7 +40,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetStatesCommand
-        extends BaseMultipleEntitiesCommand<GeoCode, GetStatesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<GeoCode, GetStatesForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -72,21 +72,26 @@ public class GetStatesCommand
     GeoCodeScope statesGeoCodeScope;
 
     @Override
-    protected Collection<GeoCode> getEntities() {
+    protected void handleForm() {
         var countryName = form.getCountryName();
-        Collection<GeoCode> stateGeoCodes = null;
 
         countryGeoCode = geoControl.getCountryByAlias(countryName);
 
         if(countryGeoCode != null) {
             statesGeoCodeScope = geoControl.getStatesGeoCodeScope(countryGeoCode);
-
-            stateGeoCodes = geoControl.getStatesByCountry(statesGeoCodeScope);
         } else {
             addExecutionError(ExecutionErrors.UnknownCountryName.name(), countryName);
         }
+    }
 
-        return stateGeoCodes;
+    @Override
+    protected Long getTotalEntities() {
+        return statesGeoCodeScope == null ? null : geoControl.countGeoCodesByGeoCodeScope(statesGeoCodeScope);
+    }
+
+    @Override
+    protected Collection<GeoCode> getEntities() {
+        return statesGeoCodeScope == null ? null : geoControl.getStatesByCountry(statesGeoCodeScope);
     }
 
     @Override
@@ -99,11 +104,10 @@ public class GetStatesCommand
             result.setCountry(geoControl.getCountryTransfer(userVisit, countryGeoCode));
 
             if(session.hasLimit(GeoCodeFactory.class)) {
-                result.setStateCount(geoControl.countGeoCodesByGeoCodeScope(statesGeoCodeScope));
+                result.setStateCount(getTotalEntities());
             }
 
             result.setStates(geoControl.getStateTransfers(userVisit, entities));
-
         }
 
         return result;
