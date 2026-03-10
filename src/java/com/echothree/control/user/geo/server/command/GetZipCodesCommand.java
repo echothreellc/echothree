@@ -29,7 +29,7 @@ import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -40,7 +40,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetZipCodesCommand
-        extends BaseMultipleEntitiesCommand<GeoCode, GetZipCodesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<GeoCode, GetZipCodesForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -72,21 +72,26 @@ public class GetZipCodesCommand
     GeoCodeScope postalCodeGeoCodeScope;
 
     @Override
-    protected Collection<GeoCode> getEntities() {
+    protected void handleForm() {
         var countryName = form.getCountryName();
-        Collection<GeoCode> postalCodeGeoCodes = null;
 
         countryGeoCode = geoControl.getCountryByAlias(countryName);
 
         if(countryGeoCode != null) {
             postalCodeGeoCodeScope = geoControl.getPostalCodesGeoCodeScope(countryGeoCode);
-
-            postalCodeGeoCodes = geoControl.getPostalCodesByCountry(postalCodeGeoCodeScope);
         } else {
             addExecutionError(ExecutionErrors.UnknownCountryName.name(), countryName);
         }
+    }
 
-        return postalCodeGeoCodes;
+    @Override
+    protected Long getTotalEntities() {
+        return postalCodeGeoCodeScope == null ? null : geoControl.countGeoCodesByGeoCodeScope(postalCodeGeoCodeScope);
+    }
+
+    @Override
+    protected Collection<GeoCode> getEntities() {
+        return postalCodeGeoCodeScope == null ? null : geoControl.getPostalCodesByCountry(postalCodeGeoCodeScope);
     }
 
     @Override
@@ -99,7 +104,7 @@ public class GetZipCodesCommand
             result.setCountry(geoControl.getCountryTransfer(userVisit, countryGeoCode));
 
             if(session.hasLimit(GeoCodeFactory.class)) {
-                result.setPostalCodeCount(geoControl.countGeoCodesByGeoCodeScope(postalCodeGeoCodeScope));
+                result.setPostalCodeCount(getTotalEntities());
             }
 
             result.setPostalCodes(geoControl.getPostalCodeTransfers(userVisit, entities));
