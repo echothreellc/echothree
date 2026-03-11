@@ -124,15 +124,13 @@ public class GeoCodeCountryObject
 
     @GraphQLField
     @GraphQLDescription("postal code length")
-    @GraphQLNonNull
-    public int getPostalCodeLength() {
+    public Integer getPostalCodeLength() {
         return geoCodeCountry.getPostalCodeLength();
     }
 
     @GraphQLField
     @GraphQLDescription("postal code geo code length")
-    @GraphQLNonNull
-    public int getPostalCodeGeoCodeLength() {
+    public Integer getPostalCodeGeoCodeLength() {
         return geoCodeCountry.getPostalCodeGeoCodeLength();
     }
 
