@@ -144,6 +144,8 @@ import com.echothree.control.user.filter.server.command.GetFilterTypeCommand;
 import com.echothree.control.user.filter.server.command.GetFilterTypesCommand;
 import com.echothree.control.user.filter.server.command.GetFiltersCommand;
 import com.echothree.control.user.geo.common.GeoUtil;
+import com.echothree.control.user.geo.server.command.GetCitiesCommand;
+import com.echothree.control.user.geo.server.command.GetCityCommand;
 import com.echothree.control.user.geo.server.command.GetCountiesCommand;
 import com.echothree.control.user.geo.server.command.GetCountriesCommand;
 import com.echothree.control.user.geo.server.command.GetCountryCommand;
@@ -11558,6 +11560,64 @@ public interface GraphQlQueries {
         try {
             var commandForm = GeoUtil.getHome().getGetCountiesForm();
             var command = CDI.current().select(GetCountiesCommand.class).get();
+
+            commandForm.setCountryName(countryName);
+            commandForm.setStateName(stateName);
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, GeoCodeConstants.COMPONENT_VENDOR_NAME, GeoCodeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var geoCodeAliasTypes = entities.stream()
+                            .map(GeoCodeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, geoCodeAliasTypes);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("city")
+    static GeoCodeObject city(final DataFetchingEnvironment env,
+            @GraphQLName("stateGeoCodeName") @GraphQLNonNull final String stateGeoCodeName,
+            @GraphQLName("cityName") @GraphQLNonNull final String cityName) {
+        GeoCode geoCode;
+
+        try {
+            var commandForm = GeoUtil.getHome().getGetCityForm();
+
+            commandForm.setStateGeoCodeName(stateGeoCodeName);
+            commandForm.setCityName(cityName);
+
+            geoCode = CDI.current().select(GetCityCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return geoCode == null ? null : new GeoCodeObject(geoCode);
+    }
+
+    @GraphQLField
+    @GraphQLName("cities")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<GeoCodeObject> cities(final DataFetchingEnvironment env,
+            @GraphQLName("countryName") @GraphQLNonNull final String countryName,
+            @GraphQLName("stateName") @GraphQLNonNull final String stateName) {
+        CountingPaginatedData<GeoCodeObject> data;
+
+        try {
+            var commandForm = GeoUtil.getHome().getGetCitiesForm();
+            var command = CDI.current().select(GetCitiesCommand.class).get();
 
             commandForm.setCountryName(countryName);
             commandForm.setStateName(stateName);
