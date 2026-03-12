@@ -105,6 +105,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import com.echothree.util.server.cdi.CommandScope;
+import java.util.stream.Collectors;
 
 @CommandScope
 public class InventoryControl
@@ -154,8 +155,8 @@ public class InventoryControl
                 "SELECT COUNT(*) " +
                 "FROM inventorylocationgroups, inventorylocationgroupdetails " +
                 "WHERE invlocgrp_inventorylocationgroupid = invlocgrpdt_invlocgrp_inventorylocationgroupid " +
-                "AND invlocgrpdt_warehousepartyid = ? AND invlocgrpdt_thrutime = ?",
-                warehouseParty, Session.MAX_TIME);
+                "AND invlocgrpdt_warehousepartyid = ?",
+                warehouseParty);
     }
 
     private InventoryLocationGroup getInventoryLocationGroupByName(Party warehouseParty, String inventoryLocationGroupName, EntityPermission entityPermission) {
@@ -300,17 +301,8 @@ public class InventoryControl
     }
     
     public List<InventoryLocationGroupTransfer> getInventoryLocationGroupTransfers(UserVisit userVisit, Collection<InventoryLocationGroup> inventoryLocationGroups) {
-        List<InventoryLocationGroupTransfer> inventoryLocationGroupTransfers = null;
-
-        if(inventoryLocationGroups != null) {
-            inventoryLocationGroupTransfers = new ArrayList<>(inventoryLocationGroups.size());
-
-            for(var inventoryLocationGroup : inventoryLocationGroups) {
-                inventoryLocationGroupTransfers.add(inventoryLocationGroupTransferCache.getTransfer(userVisit, inventoryLocationGroup));
-            }
-        }
-
-        return inventoryLocationGroupTransfers;
+        return inventoryLocationGroups.stream().map(inventoryLocationGroup ->
+                inventoryLocationGroupTransferCache.getTransfer(userVisit, inventoryLocationGroup)).collect(Collectors.toCollection(() -> new ArrayList<>(inventoryLocationGroups.size())));
     }
 
     public List<InventoryLocationGroupTransfer> getInventoryLocationGroupTransfersByWarehouseParty(UserVisit userVisit, Party warehouseParty) {
