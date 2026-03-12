@@ -105,6 +105,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import com.echothree.util.server.cdi.CommandScope;
 
 @CommandScope
 public class WarehouseControl
@@ -1047,21 +1048,24 @@ public class WarehouseControl
         return locationTypeTransferCache.getLocationTypeTransfer(userVisit, locationType);
     }
     
-    public List<LocationTypeTransfer> getLocationTypeTransfersByWarehouseParty(UserVisit userVisit, Party warehouseParty) {
-        var locationTypes = getLocationTypesByWarehouseParty(warehouseParty);
+    public List<LocationTypeTransfer> getLocationTypeTransfers(UserVisit userVisit, Collection<LocationType> locationTypes) {
         List<LocationTypeTransfer> locationTypeTransfers = null;
-        
+
         if(locationTypes != null) {
             locationTypeTransfers = new ArrayList<>(locationTypes.size());
-            
+
             for(var locationType : locationTypes) {
                 locationTypeTransfers.add(locationTypeTransferCache.getLocationTypeTransfer(userVisit, locationType));
             }
         }
-        
+
         return locationTypeTransfers;
     }
-    
+
+    public List<LocationTypeTransfer> getLocationTypeTransfersByWarehouseParty(UserVisit userVisit, Party warehouseParty) {
+        return getLocationTypeTransfers(userVisit, getLocationTypesByWarehouseParty(warehouseParty));
+    }
+
     public LocationTypeChoicesBean getLocationTypeChoicesByWarehouseParty(String defaultLocationTypeChoice, Language language,
             boolean allowNullChoice, Party warehouseParty) {
         var locationTypes = getLocationTypesByWarehouseParty(warehouseParty);
