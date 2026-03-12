@@ -148,7 +148,16 @@ public class InventoryControl
         
         return inventoryLocationGroup;
     }
-    
+
+    public long countInventoryLocationGroupsByWarehouseParty(Party warehouseParty) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM inventorylocationgroups, inventorylocationgroupdetails " +
+                "WHERE invlocgrp_inventorylocationgroupid = invlocgrpdt_invlocgrp_inventorylocationgroupid " +
+                "AND invlocgrpdt_warehousepartyid = ? AND invlocgrpdt_thrutime = ?",
+                warehouseParty, Session.MAX_TIME);
+    }
+
     private InventoryLocationGroup getInventoryLocationGroupByName(Party warehouseParty, String inventoryLocationGroupName, EntityPermission entityPermission) {
         InventoryLocationGroup inventoryLocationGroup;
         
@@ -290,19 +299,24 @@ public class InventoryControl
         return inventoryLocationGroupTransferCache.getTransfer(userVisit, inventoryLocationGroup);
     }
     
-    public List<InventoryLocationGroupTransfer> getInventoryLocationGroupTransfersByWarehouseParty(UserVisit userVisit, Party warehouseParty) {
-        var inventoryLocationGroups = getInventoryLocationGroupsByWarehouseParty(warehouseParty);
+    public List<InventoryLocationGroupTransfer> getInventoryLocationGroupTransfers(UserVisit userVisit, Collection<InventoryLocationGroup> inventoryLocationGroups) {
         List<InventoryLocationGroupTransfer> inventoryLocationGroupTransfers = null;
-        
+
         if(inventoryLocationGroups != null) {
             inventoryLocationGroupTransfers = new ArrayList<>(inventoryLocationGroups.size());
-            
+
             for(var inventoryLocationGroup : inventoryLocationGroups) {
                 inventoryLocationGroupTransfers.add(inventoryLocationGroupTransferCache.getTransfer(userVisit, inventoryLocationGroup));
             }
         }
-        
+
         return inventoryLocationGroupTransfers;
+    }
+
+    public List<InventoryLocationGroupTransfer> getInventoryLocationGroupTransfersByWarehouseParty(UserVisit userVisit, Party warehouseParty) {
+        var inventoryLocationGroups = getInventoryLocationGroupsByWarehouseParty(warehouseParty);
+
+        return getInventoryLocationGroupTransfers(userVisit, inventoryLocationGroups);
     }
     
     public InventoryLocationGroupChoicesBean getInventoryLocationGroupChoicesByWarehouseParty(String defaultInventoryLocationGroupChoice,
