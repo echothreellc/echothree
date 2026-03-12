@@ -898,7 +898,16 @@ public class WarehouseControl
         
         return locationType;
     }
-    
+
+    public long countLocationTypesByWarehouseParty(Party warehouseParty) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM locationtypes, locationtypedetails " +
+                "WHERE loctyp_locationtypeid = loctypdt_loctyp_locationtypeid AND loctypdt_warehousepartyid = ? " +
+                "AND loctypdt_thrutime = ?",
+                warehouseParty, Session.MAX_TIME);
+    }
+
     private LocationType getLocationTypeByName(Party warehouseParty, String locationTypeName, EntityPermission entityPermission) {
         LocationType locationType;
         
@@ -1038,19 +1047,22 @@ public class WarehouseControl
         return locationTypeTransferCache.getLocationTypeTransfer(userVisit, locationType);
     }
     
-    public List<LocationTypeTransfer> getLocationTypeTransfersByWarehouseParty(UserVisit userVisit, Party warehouseParty) {
-        var locationTypes = getLocationTypesByWarehouseParty(warehouseParty);
+    public List<LocationTypeTransfer> getLocationTypeTransfers(UserVisit userVisit, Collection<LocationType> locationTypes) {
         List<LocationTypeTransfer> locationTypeTransfers = null;
-        
+
         if(locationTypes != null) {
             locationTypeTransfers = new ArrayList<>(locationTypes.size());
-            
+
             for(var locationType : locationTypes) {
                 locationTypeTransfers.add(locationTypeTransferCache.getLocationTypeTransfer(userVisit, locationType));
             }
         }
-        
+
         return locationTypeTransfers;
+    }
+
+    public List<LocationTypeTransfer> getLocationTypeTransfersByWarehouseParty(UserVisit userVisit, Party warehouseParty) {
+        return getLocationTypeTransfers(userVisit, getLocationTypesByWarehouseParty(warehouseParty));
     }
     
     public LocationTypeChoicesBean getLocationTypeChoicesByWarehouseParty(String defaultLocationTypeChoice, Language language,
