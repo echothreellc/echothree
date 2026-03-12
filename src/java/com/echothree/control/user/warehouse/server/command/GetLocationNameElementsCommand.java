@@ -22,22 +22,26 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.warehouse.server.entity.LocationNameElement;
+import com.echothree.model.data.warehouse.server.entity.LocationType;
+import com.echothree.model.data.warehouse.server.entity.Warehouse;
+import com.echothree.model.data.warehouse.server.factory.LocationNameElementFactory;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetLocationNameElementsCommand
-        extends BaseSimpleCommand<GetLocationNameElementsForm> {
+        extends BasePaginatedMultipleEntitiesCommand<LocationNameElement, GetLocationNameElementsForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -53,39 +57,66 @@ public class GetLocationNameElementsCommand
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("WarehouseName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LocationTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+            );
     }
     
     /** Creates a new instance of GetLocationNameElementsCommand */
     public GetLocationNameElementsCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    @Inject
+    WarehouseControl warehouseControl;
+
+    private Warehouse warehouse;
+    private LocationType locationType;
+
     @Override
-    protected BaseResult execute() {
-        var warehouseControl = Session.getModelController(WarehouseControl.class);
-        var result = WarehouseResultFactory.getGetLocationNameElementsResult();
+    protected void handleForm() {
         var warehouseName = form.getWarehouseName();
-        var warehouse = warehouseControl.getWarehouseByName(warehouseName);
-        
+
+        warehouse = warehouseControl.getWarehouseByName(warehouseName);
+
         if(warehouse != null) {
             var warehouseParty = warehouse.getParty();
             var locationTypeName = form.getLocationTypeName();
-            var locationType = warehouseControl.getLocationTypeByName(warehouseParty, locationTypeName);
-            
-            result.setWarehouse(warehouseControl.getWarehouseTransfer(getUserVisit(), warehouse));
-            
-            if(locationType != null) {
-                result.setLocationType(warehouseControl.getLocationTypeTransfer(getUserVisit(), locationType));
-                result.setLocationNameElements(warehouseControl.getLocationNameElementTransfersByLocationType(getUserVisit(), locationType));
-            } else {
+
+            locationType = warehouseControl.getLocationTypeByName(warehouseParty, locationTypeName);
+
+            if(locationType == null) {
                 addExecutionError(ExecutionErrors.UnknownLocationTypeName.name(), locationTypeName);
             }
         } else {
             addExecutionError(ExecutionErrors.UnknownWarehouseName.name(), warehouseName);
         }
-        
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return locationType == null ? null : warehouseControl.countLocationNameElementsByLocationType(locationType);
+    }
+
+    @Override
+    protected Collection<LocationNameElement> getEntities() {
+        return locationType == null ? null : warehouseControl.getLocationNameElementsByLocationType(locationType);
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<LocationNameElement> entities) {
+        var result = WarehouseResultFactory.getGetLocationNameElementsResult();
+
+        if(entities != null) {
+            result.setWarehouse(warehouseControl.getWarehouseTransfer(getUserVisit(), warehouse));
+            result.setLocationType(warehouseControl.getLocationTypeTransfer(getUserVisit(), locationType));
+
+            if(session.hasLimit(LocationNameElementFactory.class)) {
+                result.setLocationNameElementCount(getTotalEntities());
+            }
+
+            result.setLocationNameElements(warehouseControl.getLocationNameElementTransfers(getUserVisit(), entities));
+        }
+
         return result;
     }
-    
+
 }
