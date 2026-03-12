@@ -106,6 +106,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import com.echothree.util.server.cdi.CommandScope;
+import java.util.stream.Collectors;
 
 @CommandScope
 public class WarehouseControl
@@ -1049,17 +1050,8 @@ public class WarehouseControl
     }
     
     public List<LocationTypeTransfer> getLocationTypeTransfers(UserVisit userVisit, Collection<LocationType> locationTypes) {
-        List<LocationTypeTransfer> locationTypeTransfers = null;
-
-        if(locationTypes != null) {
-            locationTypeTransfers = new ArrayList<>(locationTypes.size());
-
-            for(var locationType : locationTypes) {
-                locationTypeTransfers.add(locationTypeTransferCache.getLocationTypeTransfer(userVisit, locationType));
-            }
-        }
-
-        return locationTypeTransfers;
+        return locationTypes.stream().map(locationType ->
+                locationTypeTransferCache.getLocationTypeTransfer(userVisit, locationType)).collect(Collectors.toCollection(() -> new ArrayList<>(locationTypes.size())));
     }
 
     public List<LocationTypeTransfer> getLocationTypeTransfersByWarehouseParty(UserVisit userVisit, Party warehouseParty) {
@@ -1503,13 +1495,8 @@ public class WarehouseControl
     }
 
     public List<LocationNameElementTransfer> getLocationNameElementTransfers(UserVisit userVisit, Collection<LocationNameElement> locationNameElements) {
-        List<LocationNameElementTransfer> locationNameElementTransfers = new ArrayList<>(locationNameElements.size());
-
-        locationNameElements.forEach((locationNameElement) ->
-                locationNameElementTransfers.add(locationNameElementTransferCache.getLocationNameElementTransfer(userVisit, locationNameElement))
-        );
-
-        return locationNameElementTransfers;
+        return locationNameElements.stream().map(locationNameElement ->
+                locationNameElementTransferCache.getLocationNameElementTransfer(userVisit, locationNameElement)).collect(Collectors.toCollection(() -> new ArrayList<>(locationNameElements.size())));
     }
 
     public List<LocationNameElementTransfer> getLocationNameElementTransfersByLocationType(UserVisit userVisit, LocationType locationType) {
@@ -1996,20 +1983,14 @@ public class WarehouseControl
     public LocationTransfer getLocationTransfer(UserVisit userVisit, Location location) {
         return locationTransferCache.getLocationTransfer(userVisit, location);
     }
-    
+
+    public List<LocationTransfer> getLocationTransfers(UserVisit userVisit, Collection<Location> locations) {
+        return locations.stream().map(location ->
+                locationTransferCache.getLocationTransfer(userVisit, location)).collect(Collectors.toCollection(() -> new ArrayList<>(locations.size())));
+    }
+
     public List<LocationTransfer> getLocationTransfersByWarehouseParty(UserVisit userVisit, Party warehouseParty) {
-        var locations = getLocationsByWarehouseParty(warehouseParty);
-        List<LocationTransfer> locationTransfers = null;
-        
-        if(locations != null) {
-            locationTransfers = new ArrayList<>(locations.size());
-            
-            for(var location : locations) {
-                locationTransfers.add(locationTransferCache.getLocationTransfer(userVisit, location));
-            }
-        }
-        
-        return locationTransfers;
+        return getLocationTransfers(userVisit, getLocationsByWarehouseParty(warehouseParty));
     }
     
     public LocationChoicesBean getLocationChoicesByWarehouseParty(String defaultLocationChoice, Language language, Party warehouseParty) {
