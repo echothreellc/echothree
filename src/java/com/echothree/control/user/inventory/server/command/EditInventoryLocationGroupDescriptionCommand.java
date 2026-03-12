@@ -22,7 +22,10 @@ import com.echothree.control.user.inventory.common.form.EditInventoryLocationGro
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
 import com.echothree.control.user.inventory.common.spec.InventoryLocationGroupDescriptionSpec;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -31,6 +34,9 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,11 +45,19 @@ import javax.enterprise.context.Dependent;
 @Dependent
 public class EditInventoryLocationGroupDescriptionCommand
         extends BaseEditCommand<InventoryLocationGroupDescriptionSpec, InventoryLocationGroupDescriptionEdit> {
-    
+
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
     
     static {
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
+                        new SecurityRoleDefinition(SecurityRoleGroups.InventoryLocationGroup.name(), SecurityRoles.Description.name())
+                ))
+        ));
+
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("WarehouseName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("InventoryLocationGroupName", FieldType.ENTITY_NAME, true, null, null),
@@ -57,7 +71,7 @@ public class EditInventoryLocationGroupDescriptionCommand
     
     /** Creates a new instance of EditInventoryLocationGroupDescriptionCommand */
     public EditInventoryLocationGroupDescriptionCommand() {
-        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override
