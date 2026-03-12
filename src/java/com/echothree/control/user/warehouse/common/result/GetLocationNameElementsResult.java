@@ -30,7 +30,10 @@ public interface GetLocationNameElementsResult
     
     LocationTypeTransfer getLocationType();
     void setLocationType(LocationTypeTransfer locationType);
-    
+
+    Long getLocationNameElementCount();
+    void setLocationNameElementCount(Long locationNameElementCount);
+
     List<LocationNameElementTransfer> getLocationNameElements();
     void setLocationNameElements(List<LocationNameElementTransfer> locationNameElements);
     
