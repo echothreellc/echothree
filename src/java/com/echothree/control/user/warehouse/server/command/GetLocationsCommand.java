@@ -22,22 +22,26 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.party.server.entity.Party;
+import com.echothree.model.data.warehouse.server.entity.Location;
+import com.echothree.model.data.warehouse.server.entity.Warehouse;
+import com.echothree.model.data.warehouse.server.factory.LocationFactory;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetLocationsCommand
-        extends BaseSimpleCommand<GetLocationsForm> {
+        extends BasePaginatedMultipleEntitiesCommand<Location, GetLocationsForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -60,23 +64,50 @@ public class GetLocationsCommand
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
+    @Inject
+    WarehouseControl warehouseControl;
+
+    private Warehouse warehouse;
+    private Party warehouseParty;
+
     @Override
-    protected BaseResult execute() {
-        var warehouseControl = Session.getModelController(WarehouseControl.class);
-        var result = WarehouseResultFactory.getGetLocationsResult();
+    protected void handleForm() {
         var warehouseName = form.getWarehouseName();
-        var warehouse = warehouseControl.getWarehouseByName(warehouseName);
-        
+
+        warehouse = warehouseControl.getWarehouseByName(warehouseName);
+
         if(warehouse != null) {
-            var warehouseParty = warehouse.getParty();
-            
-            result.setWarehouse(warehouseControl.getWarehouseTransfer(getUserVisit(), warehouse));
-            result.setLocations(warehouseControl.getLocationTransfersByWarehouseParty(getUserVisit(), warehouseParty));
+            warehouseParty = warehouse.getParty();
         } else {
             addExecutionError(ExecutionErrors.UnknownWarehouseName.name(), warehouseName);
         }
-        
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return warehouseParty == null ? null : warehouseControl.countLocationsByWarehouseParty(warehouseParty);
+    }
+
+    @Override
+    protected Collection<Location> getEntities() {
+        return warehouseParty == null ? null : warehouseControl.getLocationsByWarehouseParty(warehouseParty);
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<Location> entities) {
+        var result = WarehouseResultFactory.getGetLocationsResult();
+
+        if(entities != null) {
+            result.setWarehouse(warehouseControl.getWarehouseTransfer(getUserVisit(), warehouse));
+
+            if(session.hasLimit(LocationFactory.class)) {
+                result.setLocationCount(getTotalEntities());
+            }
+
+            result.setLocations(warehouseControl.getLocationTransfers(getUserVisit(), entities));
+        }
+
         return result;
     }
-    
+
 }
