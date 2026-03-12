@@ -21,6 +21,9 @@ import com.echothree.control.user.inventory.common.result.InventoryResultFactory
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.inventory.common.workflow.InventoryLocationGroupStatusConstants;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.party.common.PartyTypes;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -29,6 +32,9 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
@@ -36,22 +42,30 @@ import javax.enterprise.context.Dependent;
 @Dependent
 public class CreateInventoryLocationGroupCommand
         extends BaseSimpleCommand<CreateInventoryLocationGroupForm> {
-    
+
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
+                        new SecurityRoleDefinition(SecurityRoleGroups.InventoryLocationGroup.name(), SecurityRoles.Create.name())
+                ))
+        ));
+
         FORM_FIELD_DEFINITIONS = List.of(
-        new FieldDefinition("WarehouseName", FieldType.ENTITY_NAME, true, null, null),
-        new FieldDefinition("InventoryLocationGroupName", FieldType.ENTITY_NAME, true, null, null),
-        new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
-        new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
-        new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
+                new FieldDefinition("WarehouseName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("InventoryLocationGroupName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
+                new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         );
     }
     
     /** Creates a new instance of CreateInventoryLocationGroupCommand */
     public CreateInventoryLocationGroupCommand() {
-        super(null, FORM_FIELD_DEFINITIONS, false);
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

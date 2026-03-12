@@ -886,6 +886,36 @@
                 <securityRoleDescription languageIsoName="en" description="Inventory Condition Use Type List" />
             </securityRole>
         </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="InventoryLocationGroup" parentSecurityRoleGroupName="InventoryComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Inventory Location Group" />
+            <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Inventory Location Group Create" />
+            </securityRole>
+            <securityRole securityRoleName="Edit" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Inventory Location Group Edit" />
+            </securityRole>
+            <securityRole securityRoleName="Delete" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Inventory Location Group Delete" />
+            </securityRole>
+            <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Inventory Location Group List" />
+            </securityRole>
+            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Inventory Location Group Review" />
+            </securityRole>
+            <securityRole securityRoleName="Choices" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Inventory Location Group Choices" />
+            </securityRole>
+            <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Inventory Location Group Description" />
+            </securityRole>
+        </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="InventoryLocationGroupStatus" parentSecurityRoleGroupName="InventoryComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Inventory Location Group Status" />
+            <securityRole securityRoleName="Choices" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Inventory Location Group Status Choices" />
+            </securityRole>
+        </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="PartyInventoryLevel" parentSecurityRoleGroupName="InventoryComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Party Inventory Level" />
             <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
@@ -8204,6 +8234,14 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="InventoryCondition" securityRoleName="Choices" />
             <partySecurityRoleTemplateRole securityRoleGroupName="InventoryCondition" securityRoleName="Description" />
             <partySecurityRoleTemplateRole securityRoleGroupName="InventoryConditionUseType" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="InventoryLocationGroup" securityRoleName="Create" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="InventoryLocationGroup" securityRoleName="Edit" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="InventoryLocationGroup" securityRoleName="Delete" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="InventoryLocationGroup" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="InventoryLocationGroup" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="InventoryLocationGroup" securityRoleName="Choices" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="InventoryLocationGroup" securityRoleName="Description" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="InventoryLocationGroupStatus" securityRoleName="Choices" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PartyInventoryLevel" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PartyInventoryLevel" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="PartyInventoryLevel" securityRoleName="Delete" />
