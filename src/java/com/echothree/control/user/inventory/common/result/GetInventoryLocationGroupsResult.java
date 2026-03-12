@@ -27,6 +27,9 @@ public interface GetInventoryLocationGroupsResult
     WarehouseTransfer getWarehouse();
     void setWarehouse(WarehouseTransfer warehouse);
     
+    Long getInventoryLocationGroupCount();
+    void setInventoryLocationGroupCount(Long inventoryLocationGroupCount);
+
     List<InventoryLocationGroupTransfer> getInventoryLocationGroups();
     void setInventoryLocationGroups(List<InventoryLocationGroupTransfer> inventoryInventoryLocationGroupGroups);
     
