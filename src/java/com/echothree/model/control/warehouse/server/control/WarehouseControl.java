@@ -92,6 +92,7 @@ import com.echothree.model.data.warehouse.server.value.WarehouseValue;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
@@ -903,9 +904,9 @@ public class WarehouseControl
         return session.queryForLong(
                 "SELECT COUNT(*) " +
                 "FROM locationtypes, locationtypedetails " +
-                "WHERE loctyp_locationtypeid = loctypdt_loctyp_locationtypeid AND loctypdt_warehousepartyid = ? " +
-                "AND loctypdt_thrutime = ?",
-                warehouseParty, Session.MAX_TIME);
+                "WHERE loctyp_locationtypeid = loctypdt_loctyp_locationtypeid " +
+                "AND loctypdt_warehousepartyid = ?",
+                warehouseParty);
     }
 
     private LocationType getLocationTypeByName(Party warehouseParty, String locationTypeName, EntityPermission entityPermission) {
@@ -1064,7 +1065,7 @@ public class WarehouseControl
     public List<LocationTypeTransfer> getLocationTypeTransfersByWarehouseParty(UserVisit userVisit, Party warehouseParty) {
         return getLocationTypeTransfers(userVisit, getLocationTypesByWarehouseParty(warehouseParty));
     }
-    
+
     public LocationTypeChoicesBean getLocationTypeChoicesByWarehouseParty(String defaultLocationTypeChoice, Language language,
             boolean allowNullChoice, Party warehouseParty) {
         var locationTypes = getLocationTypesByWarehouseParty(warehouseParty);
@@ -1385,7 +1386,16 @@ public class WarehouseControl
         
         return locationNameElement;
     }
-    
+
+    public long countLocationNameElementsByLocationType(LocationType locationType) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM locationnameelements, locationnameelementdetails " +
+                "WHERE lne_activedetailid = lnedet_locationnameelementdetailid " +
+                "AND lnedet_lt_locationtypeid = ?",
+                locationType);
+    }
+
     private LocationNameElement getLocationNameElementByName(LocationType locationType, String locationNameElementName, EntityPermission entityPermission) {
         LocationNameElement locationNameElement;
         
@@ -1491,18 +1501,21 @@ public class WarehouseControl
     public LocationNameElementTransfer getLocationNameElementTransfer(UserVisit userVisit, LocationNameElement locationNameElement) {
         return locationNameElementTransferCache.getLocationNameElementTransfer(userVisit, locationNameElement);
     }
-    
-    public List<LocationNameElementTransfer> getLocationNameElementTransfersByLocationType(UserVisit userVisit, LocationType locationType) {
-        var locationNameElements = getLocationNameElementsByLocationType(locationType);
+
+    public List<LocationNameElementTransfer> getLocationNameElementTransfers(UserVisit userVisit, Collection<LocationNameElement> locationNameElements) {
         List<LocationNameElementTransfer> locationNameElementTransfers = new ArrayList<>(locationNameElements.size());
-        
+
         locationNameElements.forEach((locationNameElement) ->
                 locationNameElementTransfers.add(locationNameElementTransferCache.getLocationNameElementTransfer(userVisit, locationNameElement))
         );
-        
+
         return locationNameElementTransfers;
     }
-    
+
+    public List<LocationNameElementTransfer> getLocationNameElementTransfersByLocationType(UserVisit userVisit, LocationType locationType) {
+        return getLocationNameElementTransfers(userVisit, getLocationNameElementsByLocationType(locationType));
+    }
+
     public void updateLocationNameElementFromValue(LocationNameElementDetailValue locationNameElementDetailValue, BasePK updatedBy) {
         if(locationNameElementDetailValue.hasBeenModified()) {
             var locationNameElement = LocationNameElementFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
