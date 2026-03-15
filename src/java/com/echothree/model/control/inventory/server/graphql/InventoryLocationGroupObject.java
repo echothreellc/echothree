@@ -18,10 +18,12 @@ package com.echothree.model.control.inventory.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
+import com.echothree.model.control.inventory.common.workflow.InventoryLocationGroupStatusConstants;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.warehouse.server.graphql.WarehouseObject;
 import com.echothree.model.control.warehouse.server.graphql.WarehouseSecurityUtils;
+import com.echothree.model.control.workflow.server.graphql.WorkflowEntityStatusObject;
 import com.echothree.model.data.inventory.server.entity.InventoryLocationGroup;
 import com.echothree.model.data.inventory.server.entity.InventoryLocationGroupDetail;
 import com.echothree.util.server.persistence.Session;
@@ -91,5 +93,11 @@ public class InventoryLocationGroupObject
 
         return inventoryControl.getBestInventoryLocationGroupDescription(inventoryLocationGroup, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
-    
+
+    @GraphQLField
+    @GraphQLDescription("inventory location group status")
+    public WorkflowEntityStatusObject getInventoryLocationGroupStatus(final DataFetchingEnvironment env) {
+        return getWorkflowEntityStatusObject(env, InventoryLocationGroupStatusConstants.Workflow_INVENTORY_LOCATION_GROUP_STATUS);
+    }
+
 }
