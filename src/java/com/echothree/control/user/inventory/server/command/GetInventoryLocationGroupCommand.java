@@ -24,21 +24,23 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
+import com.echothree.model.control.warehouse.server.logic.WarehouseLogic;
+import com.echothree.model.data.inventory.server.entity.InventoryLocationGroup;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetInventoryLocationGroupCommand
-        extends BaseSimpleCommand<GetInventoryLocationGroupForm> {
+        extends BaseSingleEntityCommand<InventoryLocationGroup, GetInventoryLocationGroupForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -61,32 +63,46 @@ public class GetInventoryLocationGroupCommand
     public GetInventoryLocationGroupCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    @Inject
+    WarehouseControl warehouseControl;
+
+    @Inject
+    InventoryControl inventoryControl;
+
+    @Inject
+    WarehouseLogic warehouseLogic;
+
     @Override
-    protected BaseResult execute() {
-        var warehouseControl = Session.getModelController(WarehouseControl.class);
-        var result = InventoryResultFactory.getGetInventoryLocationGroupResult();
-        var warehouseName = form.getWarehouseName();
-        var warehouse = warehouseControl.getWarehouseByName(warehouseName);
-        
-        if(warehouse != null) {
-            var inventoryControl = Session.getModelController(InventoryControl.class);
+    protected InventoryLocationGroup getEntity() {
+        var warehouse = warehouseLogic.getWarehouseByName(this, form.getWarehouseName(), null, null, false);
+        InventoryLocationGroup entity = null;
+
+        if(!hasExecutionErrors()) {
             var warehouseParty = warehouse.getParty();
             var inventoryLocationGroupName = form.getInventoryLocationGroupName();
-            var inventoryLocationGroup = inventoryControl.getInventoryLocationGroupByName(warehouseParty, inventoryLocationGroupName);
-            
-            if(inventoryLocationGroup != null) {
-                result.setInventoryLocationGroup(inventoryControl.getInventoryLocationGroupTransfer(getUserVisit(), inventoryLocationGroup));
-                
-                sendEvent(inventoryLocationGroup.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+
+            entity = inventoryControl.getInventoryLocationGroupByName(warehouseParty, inventoryLocationGroupName);
+
+            if(entity != null) {
+                sendEvent(entity.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             } else {
-                addExecutionError(ExecutionErrors.UnknownInventoryLocationGroupName.name(), inventoryLocationGroupName);
+                addExecutionError(ExecutionErrors.UnknownInventoryLocationGroupName.name(), warehouse.getWarehouseName(), inventoryLocationGroupName);
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownWarehouseName.name(), warehouseName);
         }
-        
+
+        return entity;
+    }
+
+    @Override
+    protected BaseResult getResult(InventoryLocationGroup entity) {
+        var result = InventoryResultFactory.getGetInventoryLocationGroupResult();
+
+        if(entity != null) {
+            result.setInventoryLocationGroup(inventoryControl.getInventoryLocationGroupTransfer(getUserVisit(), entity));
+        }
+
         return result;
     }
-    
+
 }

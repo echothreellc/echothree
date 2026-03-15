@@ -16,16 +16,32 @@
 
 package com.echothree.model.control.warehouse.server.graphql;
 
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
+import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.graphql.InventoryLocationGroupObject;
+import com.echothree.model.control.inventory.server.graphql.InventorySecurityUtils;
 import com.echothree.model.control.party.server.graphql.BasePartyObject;
+import com.echothree.model.control.vendor.server.control.VendorControl;
+import com.echothree.model.control.vendor.server.graphql.VendorItemObject;
+import com.echothree.model.control.vendor.server.graphql.VendorSecurityUtils;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
+import com.echothree.model.data.inventory.common.InventoryLocationGroupConstants;
 import com.echothree.model.data.party.server.entity.Party;
+import com.echothree.model.data.vendor.common.VendorItemConstants;
 import com.echothree.model.data.warehouse.server.entity.Warehouse;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 @GraphQLDescription("warehouse object")
 @GraphQLName("Warehouse")
@@ -63,7 +79,6 @@ public class WarehouseObject
 
     @GraphQLField
     @GraphQLDescription("warehouse type")
-    @GraphQLNonNull
     public WarehouseTypeObject getWarehouseType(final DataFetchingEnvironment env) {
         return WarehouseSecurityUtils.getHasWarehouseTypeAccess(env) ?
                 new WarehouseTypeObject(getWarehouse().getWarehouseType()) : null;
@@ -81,6 +96,27 @@ public class WarehouseObject
     @GraphQLNonNull
     public int getSortOrder() {
         return getWarehouse().getSortOrder();
+    }
+
+    @GraphQLField
+    @GraphQLDescription("inventory location groups")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<InventoryLocationGroupObject> getInventoryLocationGroups(final DataFetchingEnvironment env) {
+        if(InventorySecurityUtils.getHasInventoryLocationGroupsAccess(env)) {
+            var inventoryControl = Session.getModelController(InventoryControl.class);
+            var warehouseParty = getWarehouse().getParty();
+            var totalCount = inventoryControl.countInventoryLocationGroupsByWarehouseParty(warehouseParty);
+
+            try(var objectLimiter = new ObjectLimiter(env, InventoryLocationGroupConstants.COMPONENT_VENDOR_NAME, InventoryLocationGroupConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = inventoryControl.getInventoryLocationGroupsByWarehouseParty(warehouseParty);
+                var items = entities.stream().map(InventoryLocationGroupObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, items);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
     }
 
 }
