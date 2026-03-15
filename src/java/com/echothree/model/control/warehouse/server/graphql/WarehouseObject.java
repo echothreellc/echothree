@@ -25,13 +25,10 @@ import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.inventory.server.graphql.InventoryLocationGroupObject;
 import com.echothree.model.control.inventory.server.graphql.InventorySecurityUtils;
 import com.echothree.model.control.party.server.graphql.BasePartyObject;
-import com.echothree.model.control.vendor.server.control.VendorControl;
-import com.echothree.model.control.vendor.server.graphql.VendorItemObject;
-import com.echothree.model.control.vendor.server.graphql.VendorSecurityUtils;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.data.inventory.common.InventoryLocationGroupConstants;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.vendor.common.VendorItemConstants;
+import com.echothree.model.data.warehouse.common.LocationTypeConstants;
 import com.echothree.model.data.warehouse.server.entity.Warehouse;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
@@ -111,6 +108,27 @@ public class WarehouseObject
             try(var objectLimiter = new ObjectLimiter(env, InventoryLocationGroupConstants.COMPONENT_VENDOR_NAME, InventoryLocationGroupConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var entities = inventoryControl.getInventoryLocationGroupsByWarehouseParty(warehouseParty);
                 var items = entities.stream().map(InventoryLocationGroupObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, items);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
+
+    @GraphQLField
+    @GraphQLDescription("location types")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<LocationTypeObject> getLocationTypes(final DataFetchingEnvironment env) {
+        if(WarehouseSecurityUtils.getHasLocationTypesAccess(env)) {
+            var warehouseControl = Session.getModelController(WarehouseControl.class);
+            var warehouseParty = getWarehouse().getParty();
+            var totalCount = warehouseControl.countLocationTypesByWarehouseParty(warehouseParty);
+
+            try(var objectLimiter = new ObjectLimiter(env, LocationTypeConstants.COMPONENT_VENDOR_NAME, LocationTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = warehouseControl.getLocationTypesByWarehouseParty(warehouseParty);
+                var items = entities.stream().map(LocationTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                 return new CountedObjects<>(objectLimiter, items);
             }

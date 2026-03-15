@@ -16,6 +16,8 @@
 
 package com.echothree.model.control.warehouse.server.graphql;
 
+import com.echothree.control.user.warehouse.server.command.GetLocationTypeCommand;
+import com.echothree.control.user.warehouse.server.command.GetLocationTypesCommand;
 import com.echothree.control.user.warehouse.server.command.GetWarehouseCommand;
 import com.echothree.control.user.warehouse.server.command.GetWarehouseTypeCommand;
 import com.echothree.control.user.warehouse.server.command.GetWarehouseTypesCommand;
@@ -39,6 +41,14 @@ public interface WarehouseSecurityUtils {
 
     static boolean getHasWarehouseTypesAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetWarehouseTypesCommand.class);
+    }
+
+    static boolean getHasLocationTypeAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetLocationTypeCommand.class);
+    }
+
+    static boolean getHasLocationTypesAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetLocationTypesCommand.class);
     }
 
 }
