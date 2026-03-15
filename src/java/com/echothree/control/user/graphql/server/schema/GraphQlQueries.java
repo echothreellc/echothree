@@ -401,6 +401,8 @@ import com.echothree.control.user.vendor.server.command.GetVendorTypeCommand;
 import com.echothree.control.user.vendor.server.command.GetVendorTypesCommand;
 import com.echothree.control.user.vendor.server.command.GetVendorsCommand;
 import com.echothree.control.user.warehouse.common.WarehouseUtil;
+import com.echothree.control.user.warehouse.server.command.GetLocationTypeCommand;
+import com.echothree.control.user.warehouse.server.command.GetLocationTypesCommand;
 import com.echothree.control.user.warehouse.server.command.GetLocationUseTypeCommand;
 import com.echothree.control.user.warehouse.server.command.GetLocationUseTypesCommand;
 import com.echothree.control.user.warehouse.server.command.GetWarehouseCommand;
@@ -641,6 +643,7 @@ import com.echothree.model.control.vendor.server.graphql.VendorItemCostObject;
 import com.echothree.model.control.vendor.server.graphql.VendorItemObject;
 import com.echothree.model.control.vendor.server.graphql.VendorObject;
 import com.echothree.model.control.vendor.server.graphql.VendorTypeObject;
+import com.echothree.model.control.warehouse.server.graphql.LocationTypeObject;
 import com.echothree.model.control.warehouse.server.graphql.LocationUseTypeObject;
 import com.echothree.model.control.warehouse.server.graphql.WarehouseObject;
 import com.echothree.model.control.warehouse.server.graphql.WarehouseTypeObject;
@@ -966,9 +969,11 @@ import com.echothree.model.data.vendor.server.entity.Vendor;
 import com.echothree.model.data.vendor.server.entity.VendorItem;
 import com.echothree.model.data.vendor.server.entity.VendorItemCost;
 import com.echothree.model.data.vendor.server.entity.VendorType;
+import com.echothree.model.data.warehouse.common.LocationTypeConstants;
 import com.echothree.model.data.warehouse.common.LocationUseTypeConstants;
 import com.echothree.model.data.warehouse.common.WarehouseConstants;
 import com.echothree.model.data.warehouse.common.WarehouseTypeConstants;
+import com.echothree.model.data.warehouse.server.entity.LocationType;
 import com.echothree.model.data.warehouse.server.entity.LocationUseType;
 import com.echothree.model.data.warehouse.server.entity.Warehouse;
 import com.echothree.model.data.warehouse.server.entity.WarehouseType;
@@ -8375,6 +8380,62 @@ public interface GraphQlQueries {
                             .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, inventoryLocationGroups);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("locationType")
+    static LocationTypeObject locationType(final DataFetchingEnvironment env,
+            @GraphQLName("warehouseName") final String warehouseName,
+            @GraphQLName("locationTypeName") final String locationTypeName) {
+        LocationType locationType;
+
+        try {
+            var commandForm = WarehouseUtil.getHome().getGetLocationTypeForm();
+
+            commandForm.setWarehouseName(warehouseName);
+            commandForm.setLocationTypeName(locationTypeName);
+
+            locationType = CDI.current().select(GetLocationTypeCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return locationType == null ? null : new LocationTypeObject(locationType);
+    }
+
+    @GraphQLField
+    @GraphQLName("locationTypes")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<LocationTypeObject> locationTypes(final DataFetchingEnvironment env,
+            @GraphQLName("warehouseName") final String warehouseName) {
+        CountingPaginatedData<LocationTypeObject> data;
+
+        try {
+            var commandForm = WarehouseUtil.getHome().getGetLocationTypesForm();
+            var command = CDI.current().select(GetLocationTypesCommand.class).get();
+
+            commandForm.setWarehouseName(warehouseName);
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, LocationTypeConstants.COMPONENT_VENDOR_NAME, LocationTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var locationTypes = entities.stream()
+                            .map(LocationTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, locationTypes);
                 }
             }
         } catch (NamingException ex) {
