@@ -30,6 +30,9 @@ public interface GetWorkflowSelectorKindsResult
     
     SelectorKindTransfer getSelectorKind();
     void setSelectorKind(SelectorKindTransfer selectorKind);
+
+    Long getWorkflowSelectorKindCount();
+    void setWorkflowSelectorKindCount(Long workflowSelectorKindCount);
     
     List<WorkflowSelectorKindTransfer> getWorkflowSelectorKinds();
     void setWorkflowSelectorKinds(List<WorkflowSelectorKindTransfer> workflowSelectorKinds);
