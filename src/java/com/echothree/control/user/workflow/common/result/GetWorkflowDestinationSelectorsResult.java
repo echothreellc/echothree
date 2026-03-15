@@ -26,7 +26,10 @@ public interface GetWorkflowDestinationSelectorsResult
     
     WorkflowDestinationTransfer getWorkflowDestination();
     void setWorkflowDestination(WorkflowDestinationTransfer workflowDestination);
-    
+
+    Long getWorkflowDestinationSelectorCount();
+    void setWorkflowDestinationSelectorCount(Long workflowDestinationSelectorCount);
+
     List<WorkflowDestinationSelectorTransfer> getWorkflowDestinationSelectors();
     void setWorkflowDestinationSelectors(List<WorkflowDestinationSelectorTransfer> workflowDestinationSelectors);
     

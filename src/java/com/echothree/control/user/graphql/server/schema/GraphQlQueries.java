@@ -994,6 +994,7 @@ import com.echothree.model.data.workflow.common.WorkflowConstants;
 import com.echothree.model.data.workflow.common.WorkflowDestinationConstants;
 import com.echothree.model.data.workflow.common.WorkflowDestinationPartyTypeConstants;
 import com.echothree.model.data.workflow.common.WorkflowDestinationSecurityRoleConstants;
+import com.echothree.model.data.workflow.common.WorkflowDestinationSelectorConstants;
 import com.echothree.model.data.workflow.common.WorkflowDestinationStepConstants;
 import com.echothree.model.data.workflow.common.WorkflowEntityStatusConstants;
 import com.echothree.model.data.workflow.common.WorkflowEntityTypeConstants;
@@ -2019,36 +2020,41 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("workflowDestinationSelectors")
-    static Collection<WorkflowDestinationSelectorObject> workflowDestinationSelectors(final DataFetchingEnvironment env,
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<WorkflowDestinationSelectorObject> workflowDestinationSelectors(final DataFetchingEnvironment env,
             @GraphQLName("workflowName") @GraphQLNonNull final String workflowName,
             @GraphQLName("workflowStepName") @GraphQLNonNull final String workflowStepName,
             @GraphQLName("workflowDestinationName") @GraphQLNonNull final String workflowDestinationName) {
-        Collection<WorkflowDestinationSelector> workflowDestinationSelectors;
-        Collection<WorkflowDestinationSelectorObject> workflowDestinationSelectorObjects;
+        CountingPaginatedData<WorkflowDestinationSelectorObject> data;
 
         try {
             var commandForm = WorkflowUtil.getHome().getGetWorkflowDestinationSelectorsForm();
+            var command = CDI.current().select(GetWorkflowDestinationSelectorsCommand.class).get();
 
             commandForm.setWorkflowName(workflowName);
             commandForm.setWorkflowStepName(workflowStepName);
             commandForm.setWorkflowDestinationName(workflowDestinationName);
 
-            workflowDestinationSelectors = CDI.current().select(GetWorkflowDestinationSelectorsCommand.class).get().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, WorkflowDestinationSelectorConstants.COMPONENT_VENDOR_NAME, WorkflowDestinationSelectorConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var workflowDestinationSelectors = entities.stream()
+                            .map(WorkflowDestinationSelectorObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, workflowDestinationSelectors);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(workflowDestinationSelectors == null) {
-            workflowDestinationSelectorObjects = emptyList();
-        } else {
-            workflowDestinationSelectorObjects = new ArrayList<>(workflowDestinationSelectors.size());
-
-            workflowDestinationSelectors.stream()
-                    .map(WorkflowDestinationSelectorObject::new)
-                    .forEachOrdered(workflowDestinationSelectorObjects::add);
-        }
-
-        return workflowDestinationSelectorObjects;
+        return data;
     }
 
     @GraphQLField
