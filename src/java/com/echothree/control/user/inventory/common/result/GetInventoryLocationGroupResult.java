@@ -21,7 +21,7 @@ import com.echothree.util.common.command.BaseResult;
 
 public interface GetInventoryLocationGroupResult
         extends BaseResult {
-    
+
     InventoryLocationGroupTransfer getInventoryLocationGroup();
     void setInventoryLocationGroup(InventoryLocationGroupTransfer inventoryLocationGroup);
     
