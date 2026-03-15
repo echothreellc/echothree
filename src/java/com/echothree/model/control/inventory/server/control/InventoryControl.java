@@ -154,7 +154,7 @@ public class InventoryControl
         return session.queryForLong(
                 "SELECT COUNT(*) " +
                 "FROM inventorylocationgroups, inventorylocationgroupdetails " +
-                "WHERE invlocgrp_inventorylocationgroupid = invlocgrpdt_invlocgrp_inventorylocationgroupid " +
+                "WHERE invlocgrp_activedetailid = invlocgrpdt_inventorylocationgroupdetailid " +
                 "AND invlocgrpdt_warehousepartyid = ?",
                 warehouseParty);
     }
@@ -168,13 +168,13 @@ public class InventoryControl
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
                 query = "SELECT _ALL_ " +
                         "FROM inventorylocationgroups, inventorylocationgroupdetails " +
-                        "WHERE invlocgrp_inventorylocationgroupid = invlocgrpdt_invlocgrp_inventorylocationgroupid " +
-                        "AND invlocgrpdt_warehousepartyid = ? AND invlocgrpdt_inventorylocationgroupname = ? AND invlocgrpdt_thrutime = ?";
+                        "WHERE invlocgrp_activedetailid = invlocgrpdt_inventorylocationgroupdetailid " +
+                        "AND invlocgrpdt_warehousepartyid = ? AND invlocgrpdt_inventorylocationgroupname = ?";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM inventorylocationgroups, inventorylocationgroupdetails " +
-                        "WHERE invlocgrp_inventorylocationgroupid = invlocgrpdt_invlocgrp_inventorylocationgroupid " +
-                        "AND invlocgrpdt_warehousepartyid = ? AND invlocgrpdt_inventorylocationgroupname = ? AND invlocgrpdt_thrutime = ? " +
+                        "WHERE invlocgrp_activedetailid = invlocgrpdt_inventorylocationgroupdetailid " +
+                        "AND invlocgrpdt_warehousepartyid = ? AND invlocgrpdt_inventorylocationgroupname = ? " +
                         "FOR UPDATE";
             }
 
@@ -182,8 +182,7 @@ public class InventoryControl
             
             ps.setLong(1, warehouseParty.getPrimaryKey().getEntityId());
             ps.setString(2, inventoryLocationGroupName);
-            ps.setLong(3, Session.MAX_TIME);
-            
+
             inventoryLocationGroup = InventoryLocationGroupFactory.getInstance().getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -219,21 +218,20 @@ public class InventoryControl
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
                 query = "SELECT _ALL_ " +
                         "FROM inventorylocationgroups, inventorylocationgroupdetails " +
-                        "WHERE invlocgrp_inventorylocationgroupid = invlocgrpdt_invlocgrp_inventorylocationgroupid " +
-                        "AND invlocgrpdt_warehousepartyid = ? AND invlocgrpdt_isdefault = 1 AND invlocgrpdt_thrutime = ?";
+                        "WHERE invlocgrp_activedetailid = invlocgrpdt_inventorylocationgroupdetailid " +
+                        "AND invlocgrpdt_warehousepartyid = ? AND invlocgrpdt_isdefault = 1";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM inventorylocationgroups, inventorylocationgroupdetails " +
-                        "WHERE invlocgrp_inventorylocationgroupid = invlocgrpdt_invlocgrp_inventorylocationgroupid " +
-                        "AND invlocgrpdt_warehousepartyid = ? AND invlocgrpdt_isdefault = 1 AND invlocgrpdt_thrutime = ? " +
+                        "WHERE invlocgrp_activedetailid = invlocgrpdt_inventorylocationgroupdetailid " +
+                        "AND invlocgrpdt_warehousepartyid = ? AND invlocgrpdt_isdefault = 1 " +
                         "FOR UPDATE";
             }
 
             var ps = InventoryLocationGroupFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, warehouseParty.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
+
             inventoryLocationGroup = InventoryLocationGroupFactory.getInstance().getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -263,23 +261,22 @@ public class InventoryControl
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
                 query = "SELECT _ALL_ " +
                         "FROM inventorylocationgroups, inventorylocationgroupdetails " +
-                        "WHERE invlocgrp_inventorylocationgroupid = invlocgrpdt_invlocgrp_inventorylocationgroupid " +
-                        "AND invlocgrpdt_warehousepartyid = ? AND invlocgrpdt_thrutime = ? " +
+                        "WHERE invlocgrp_activedetailid = invlocgrpdt_inventorylocationgroupdetailid " +
+                        "AND invlocgrpdt_warehousepartyid = ? " +
                         "ORDER BY invlocgrpdt_sortorder, invlocgrpdt_inventorylocationgroupname " +
                         "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM inventorylocationgroups, inventorylocationgroupdetails " +
-                        "WHERE invlocgrp_inventorylocationgroupid = invlocgrpdt_invlocgrp_inventorylocationgroupid " +
-                        "AND invlocgrpdt_warehousepartyid = ? AND invlocgrpdt_thrutime = ? " +
+                        "WHERE invlocgrp_activedetailid = invlocgrpdt_inventorylocationgroupdetailid " +
+                        "AND invlocgrpdt_warehousepartyid = ? " +
                         "FOR UPDATE";
             }
 
             var ps = InventoryLocationGroupFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, warehouseParty.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
+
             inventoryLocationGroups = InventoryLocationGroupFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
