@@ -229,8 +229,10 @@ import com.echothree.control.user.vendor.common.result.EditVendorItemResult;
 import com.echothree.control.user.vendor.common.result.EditVendorResult;
 import com.echothree.control.user.vendor.common.result.EditVendorTypeResult;
 import com.echothree.control.user.warehouse.common.WarehouseUtil;
+import com.echothree.control.user.warehouse.common.result.CreateLocationTypeResult;
 import com.echothree.control.user.warehouse.common.result.CreateWarehouseResult;
 import com.echothree.control.user.warehouse.common.result.CreateWarehouseTypeResult;
+import com.echothree.control.user.warehouse.common.result.EditLocationTypeResult;
 import com.echothree.control.user.warehouse.common.result.EditWarehouseResult;
 import com.echothree.control.user.warehouse.common.result.EditWarehouseTypeResult;
 import com.echothree.control.user.wishlist.common.WishlistUtil;
@@ -10543,6 +10545,117 @@ public interface GraphQlMutations {
             commandForm.setInventoryLocationGroupStatusChoice(inventoryLocationGroupStatusChoice);
 
             mutationResultObject.setCommandResult(InventoryUtil.getHome().setInventoryLocationGroupStatus(BaseGraphQl.getUserVisitPK(env), commandForm));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultWithIdObject createLocationType(final DataFetchingEnvironment env,
+            @GraphQLName("warehouseName") @GraphQLNonNull final String warehouseName,
+            @GraphQLName("locationTypeName") @GraphQLNonNull final String locationTypeName,
+            @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
+            @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var commandForm = WarehouseUtil.getHome().getCreateLocationTypeForm();
+
+            commandForm.setWarehouseName(warehouseName);
+            commandForm.setLocationTypeName(locationTypeName);
+            commandForm.setIsDefault(isDefault);
+            commandForm.setSortOrder(sortOrder);
+            commandForm.setDescription(description);
+
+            var commandResult = WarehouseUtil.getHome().createLocationType(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                var result = (CreateLocationTypeResult)commandResult.getExecutionResult().getResult();
+
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject deleteLocationType(final DataFetchingEnvironment env,
+            @GraphQLName("warehouseName") @GraphQLNonNull final String warehouseName,
+            @GraphQLName("locationTypeName") @GraphQLNonNull final String locationTypeName) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = WarehouseUtil.getHome().getDeleteLocationTypeForm();
+
+            commandForm.setWarehouseName(warehouseName);
+            commandForm.setLocationTypeName(locationTypeName);
+
+            var commandResult = WarehouseUtil.getHome().deleteLocationType(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultWithIdObject editLocationType(final DataFetchingEnvironment env,
+            @GraphQLName("warehouseName") @GraphQLNonNull final String warehouseName,
+            @GraphQLName("originalLocationTypeName") @GraphQLNonNull final String originalLocationTypeName,
+            @GraphQLName("locationTypeName") final String locationTypeName,
+            @GraphQLName("isDefault") final String isDefault,
+            @GraphQLName("sortOrder") final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var spec = WarehouseUtil.getHome().getLocationTypeSpec();
+
+            spec.setWarehouseName(warehouseName);
+            spec.setLocationTypeName(originalLocationTypeName);
+
+            var commandForm = WarehouseUtil.getHome().getEditLocationTypeForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = WarehouseUtil.getHome().editLocationType(BaseGraphQl.getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditLocationTypeResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                mutationResultObject.setEntityInstance(result.getLocationType().getEntityInstance());
+
+                if(arguments.containsKey("locationTypeName"))
+                    edit.setLocationTypeName(locationTypeName);
+                if(arguments.containsKey("isDefault"))
+                    edit.setIsDefault(isDefault);
+                if(arguments.containsKey("sortOrder"))
+                    edit.setSortOrder(sortOrder);
+                if(arguments.containsKey("description"))
+                    edit.setDescription(description);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = WarehouseUtil.getHome().editLocationType(BaseGraphQl.getUserVisitPK(env), commandForm);
+            }
+
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
