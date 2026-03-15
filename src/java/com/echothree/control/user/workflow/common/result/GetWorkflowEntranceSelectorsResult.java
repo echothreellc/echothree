@@ -30,6 +30,9 @@ public interface GetWorkflowEntranceSelectorsResult
     
     WorkflowEntranceTransfer getWorkflowEntrance();
     void setWorkflowEntrance(WorkflowEntranceTransfer workflowEntrance);
+
+    Long getWorkflowEntranceSelectorCount();
+    void setWorkflowEntranceSelectorCount(Long workflowEntranceSelectorCount);
     
     List<WorkflowEntranceSelectorTransfer> getWorkflowEntranceSelectors();
     void setWorkflowEntranceSelectors(List<WorkflowEntranceSelectorTransfer> workflowEntranceSelectors);
