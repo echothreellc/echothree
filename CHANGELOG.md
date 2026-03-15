@@ -1,5 +1,78 @@
 # Changelog
 
+## 2026-03-15-01
+
+* Add Workflow Entrance Selectors Mutations [659](https://gitlab.echothree.com/echothree/echothree/-/issues/659)
+* Add Workflow Selector Kind Mutations [667](https://gitlab.echothree.com/echothree/echothree/-/issues/667)
+* Add Workflow Destination Selector Mutations [681](https://gitlab.echothree.com/echothree/echothree/-/issues/681)
+* Add Location Object and Queries [729](https://gitlab.echothree.com/echothree/echothree/-/issues/729)
+* Add Location Mutations [730](https://gitlab.echothree.com/echothree/echothree/-/issues/730)
+* Add Inventory Location Group Object and Queries [1069](https://gitlab.echothree.com/echothree/echothree/-/issues/1069)
+* Add Location Type Object and Queries [1070](https://gitlab.echothree.com/echothree/echothree/-/issues/1070)
+* Add Location Name Element Object and Queries [1071](https://gitlab.echothree.com/echothree/echothree/-/issues/1071)
+* Add Location Type Mutations [1072](https://gitlab.echothree.com/echothree/echothree/-/issues/1072)
+* Add Location Name Element Mutations [1073](https://gitlab.echothree.com/echothree/echothree/-/issues/1073)
+* Add Inventory Location Group Mutations [1074](https://gitlab.echothree.com/echothree/echothree/-/issues/1074)
+* Convert GetCities UC to Use BasePaginatedMultipleEntitiesCommand [1179](https://gitlab.echothree.com/echothree/echothree/-/issues/1179)
+* Convert GetCounties UC to Use BasePaginatedMultipleEntitiesCommand [1180](https://gitlab.echothree.com/echothree/echothree/-/issues/1180)
+* Convert GetStates UC to Use BasePaginatedMultipleEntitiesCommand [1182](https://gitlab.echothree.com/echothree/echothree/-/issues/1182)
+* Convert GetCountries UC to Use BasePaginatedMultipleEntitiesCommand [1184](https://gitlab.echothree.com/echothree/echothree/-/issues/1184)
+* Convert GetZipCodes UC to Use BasePaginatedMultipleEntitiesCommand [1185](https://gitlab.echothree.com/echothree/echothree/-/issues/1185)
+* Convert GetWorkflowSelectorKinds UC to Use BasePaginatedMultipleEntitiesCommand [1228](https://gitlab.echothree.com/echothree/echothree/-/issues/1228)
+* Convert GetWorkflowEntranceSelectors UC to Use BasePaginatedMultipleEntitiesCommand [1233](https://gitlab.echothree.com/echothree/echothree/-/issues/1233)
+* Convert GetWorkflowDestinationSelectors UC to Use BasePaginatedMultipleEntitiesCommand [1237](https://gitlab.echothree.com/echothree/echothree/-/issues/1237)
+* Convert GetFilterTypes UC to Use BasePaginatedMultipleEntitiesCommand [1244](https://gitlab.echothree.com/echothree/echothree/-/issues/1244)
+* Convert GetFilters UC to Use BasePaginatedMultipleEntitiesCommand [1249](https://gitlab.echothree.com/echothree/echothree/-/issues/1249)
+* Apache Lucene 10.4.0 Upgrade [1723](https://gitlab.echothree.com/echothree/echothree/-/issues/1723)
+* Error Listing Applications [1724](https://gitlab.echothree.com/echothree/echothree/-/issues/1724)
+* Convert Command Security and Field Definitions to Use List.of(...) [1725](https://gitlab.echothree.com/echothree/echothree/-/issues/1725)
+* Add Counts to Results of Getting Geo Codes By Scope UCs [1726](https://gitlab.echothree.com/echothree/echothree/-/issues/1726)
+* Error Prone 2.48.0 Upgrade [1727](https://gitlab.echothree.com/echothree/echothree/-/issues/1727)
+* Add Country Queries [1728](https://gitlab.echothree.com/echothree/echothree/-/issues/1728)
+* Add Zip Code Queries [1729](https://gitlab.echothree.com/echothree/echothree/-/issues/1729)
+* Add State Queries [1730](https://gitlab.echothree.com/echothree/echothree/-/issues/1730)
+* Add County Queries [1731](https://gitlab.echothree.com/echothree/echothree/-/issues/1731)
+* Add City Queries [1732](https://gitlab.echothree.com/echothree/echothree/-/issues/1732)
+* Add filterItemSelector Field to Filter Step object [1733](https://gitlab.echothree.com/echothree/echothree/-/issues/1733)
+* Convert GetInventoryLocationGroups UC to Use BasePaginatedMultipleEntitiesCommand [1734](https://gitlab.echothree.com/echothree/echothree/-/issues/1734)
+* Convert GetLocationTypes UC to Use BasePaginatedMultipleEntitiesCommand [1735](https://gitlab.echothree.com/echothree/echothree/-/issues/1735)
+* Convert GetLocationNameElements UC to Use BasePaginatedMultipleEntitiesCommand [1736](https://gitlab.echothree.com/echothree/echothree/-/issues/1736)
+* Convert GetLocations UC to Use BasePaginatedMultipleEntitiesCommand [1737](https://gitlab.echothree.com/echothree/echothree/-/issues/1737)
+* Add Security to InventoryLocationGroup UCs [1738](https://gitlab.echothree.com/echothree/echothree/-/issues/1738)
+
+## 2026-03-01-01
+
+* Add Geo Code Alias Type Mutations [1703](https://gitlab.echothree.com/echothree/echothree/-/issues/1703)
+* Add Geo Code Alias Mutations [1704](https://gitlab.echothree.com/echothree/echothree/-/issues/1704)
+* Add Geo Code Language Mutations [1705](https://gitlab.echothree.com/echothree/echothree/-/issues/1705)
+* Add Geo Code Currency Mutations [1706](https://gitlab.echothree.com/echothree/echothree/-/issues/1706)
+* Add Geo Code Time Zone Mutations [1707](https://gitlab.echothree.com/echothree/echothree/-/issues/1707)
+* Add Geo Code Date Time Format Mutations [1708](https://gitlab.echothree.com/echothree/echothree/-/issues/1708)
+* ICU4J 78.2 Upgrade [1722](https://gitlab.echothree.com/echothree/echothree/-/issues/1722)
+
+## 2026-02-15-01
+
+* Add Ratings to Entity Instance Review Page [1693](https://gitlab.echothree.com/echothree/echothree/-/issues/1693)
+* Add Entity Aliases to Entity Instance Review Page [1694](https://gitlab.echothree.com/echothree/echothree/-/issues/1694)
+* Add Geo Code Alias Type Object and Queries [1696](https://gitlab.echothree.com/echothree/echothree/-/issues/1696)
+* Add Geo Code Alias Object and Queries [1697](https://gitlab.echothree.com/echothree/echothree/-/issues/1697)
+* Add Geo Code Relationship Object and Referencing Fields [1698](https://gitlab.echothree.com/echothree/echothree/-/issues/1698)
+* Add Geo Code Language Object and Queries [1699](https://gitlab.echothree.com/echothree/echothree/-/issues/1699)
+* Add Geo Code Currency Object and Queries [1700](https://gitlab.echothree.com/echothree/echothree/-/issues/1700)
+* Add Geo Code Time Zone Object and Queries [1701](https://gitlab.echothree.com/echothree/echothree/-/issues/1701)
+* Add Geo Code Date Time Format Object and Queries [1702](https://gitlab.echothree.com/echothree/echothree/-/issues/1702)
+* jOOQ 3.20.11 Upgrade [1721](https://gitlab.echothree.com/echothree/echothree/-/issues/1721)
+
+## 2026-02-01-01
+
+* Entity Instance Add, Send Event, Delete, Remove Actions and Pages [1691](https://gitlab.echothree.com/echothree/echothree/-/issues/1691)
+* Add Comments to Entity Instance Review Page [1692](https://gitlab.echothree.com/echothree/echothree/-/issues/1692)
+* Incorrect Parameters for Selector and Filter Mutations [1717](https://gitlab.echothree.com/echothree/echothree/-/issues/1717)
+
+## 2026-01-18-01
+
+* Add Saving CRSF Tokens to  Actions For Pages That Include Tag Scopes [1695](https://gitlab.echothree.com/echothree/echothree/-/issues/1695)
+
 ## 2026-01-04-01
 
 * Add UI for Maintaining Entity Alias Types [1115](https://gitlab.echothree.com/echothree/echothree/-/issues/1115)

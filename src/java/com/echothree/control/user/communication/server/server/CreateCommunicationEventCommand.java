@@ -49,8 +49,6 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.io.ByteArrayInputStream;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
@@ -64,11 +62,11 @@ public class CreateCommunicationEventCommand
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CommunicationSourceName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("CommunicationEventTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ClobDocument", FieldType.STRING, false, null, null)
-                ));
+                );
     }
     
     /** Creates a new instance of CreateCommunicationEventCommand */

@@ -899,7 +899,7 @@
                     <c:url var="addUrl" value="/action/Item/ItemAlias/Add">
                         <c:param name="ItemName" value="${item.itemName}" />
                     </c:url>
-                    <a href="${addUrl}">Add Item Alias.</a></p>
+                    <p><a href="${addUrl}">Add Item Alias.</a></p>
                 </et:hasSecurityRole>
                 <c:choose>
                     <c:when test="${item.itemAliases.size == 0}">

@@ -80,6 +80,7 @@ public class ReviewAction
         if(contentCollection == null) {
             forwardKey = ForwardConstants.ERROR_404;
         } else {
+            saveToken(request); // Required for ContentCollectionIncludeTagScopes and tagScopes.jsp
             request.setAttribute(AttributeConstants.CONTENT_COLLECTION, contentCollection);
             forwardKey = ForwardConstants.DISPLAY;
         }

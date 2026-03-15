@@ -26,8 +26,7 @@ import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.List;
 import javax.enterprise.context.Dependent;
 
 @Dependent
@@ -37,12 +36,12 @@ public class ClearEmployeeResultsCommand
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
 
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.Employee.name(), SecurityRoles.Search.name())
-                        )))
-                )));
+                ))
+        ));
     }
 
     /** Creates a new instance of ClearEmployeeResultsCommand */

@@ -19,6 +19,8 @@ package com.echothree.model.control.filter.server.graphql;
 import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
+import com.echothree.model.control.selector.server.graphql.SelectorObject;
+import com.echothree.model.control.selector.server.graphql.SelectorSecurityUtils;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.filter.server.entity.FilterStep;
 import com.echothree.model.data.filter.server.entity.FilterStepDetail;
@@ -29,7 +31,7 @@ import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.schema.DataFetchingEnvironment;
 
-@GraphQLDescription("filterStep object")
+@GraphQLDescription("filter step object")
 @GraphQLName("FilterStep")
 public class FilterStepObject
         extends BaseEntityInstanceObject {
@@ -65,21 +67,17 @@ public class FilterStepObject
         return getFilterStepDetail().getFilterStepName();
     }
 
-//    @GraphQLField
-//    @GraphQLDescription("filter item selector")
-//    public SelectorObject getFilterItemSelector(final DataFetchingEnvironment env) {
-//        SelectorObject result;
-//
-//        if(SelectorSecurityUtils.getHasSelectorAccess(env)) {
-//            var selector = getFilterStepDetail().getFilterItemSelector();
-//
-//            result = selector == null ? null : new SelectorObject(selector);
-//        } else {
-//            result = null;
-//        }
-//
-//        return result;
-//    }
+    @GraphQLField
+    @GraphQLDescription("filter item selector")
+    public SelectorObject getFilterItemSelector(final DataFetchingEnvironment env) {
+        if(SelectorSecurityUtils.getHasSelectorAccess(env)) {
+            var selector = getFilterStepDetail().getFilterItemSelector();
+
+            return selector == null ? null : new SelectorObject(selector);
+        } else {
+            return null;
+        }
+    }
 
     @GraphQLField
     @GraphQLDescription("description")

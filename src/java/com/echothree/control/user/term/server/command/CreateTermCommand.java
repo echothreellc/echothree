@@ -29,8 +29,6 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.Validator;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 
@@ -43,25 +41,25 @@ public class CreateTermCommand
     private final static List<FieldDefinition> dateDrivenFieldDefinitions;
     
     static {
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("TermName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("TermTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
-                ));
+                );
         
-        standardFieldDefinitions = Collections.unmodifiableList(Arrays.asList(
+        standardFieldDefinitions = List.of(
                 new FieldDefinition("NetDueDays", FieldType.UNSIGNED_INTEGER, true, null, null),
                 new FieldDefinition("DiscountPercentage", FieldType.FRACTIONAL_PERCENT, true, null, null),
                 new FieldDefinition("DiscountDays", FieldType.UNSIGNED_INTEGER, true, null, null)
-                ));
+                );
         
-        dateDrivenFieldDefinitions = Collections.unmodifiableList(Arrays.asList(
+        dateDrivenFieldDefinitions = List.of(
                 new FieldDefinition("NetDueDayOfMonth", FieldType.UNSIGNED_INTEGER, true, null, null),
                 new FieldDefinition("DueNextMonthDays", FieldType.UNSIGNED_INTEGER, true, null, null),
                 new FieldDefinition("DiscountPercentage", FieldType.FRACTIONAL_PERCENT, true, null, null),
                 new FieldDefinition("DiscountBeforeDayOfMonth", FieldType.UNSIGNED_INTEGER, true, null, null)
-                ));
+                );
     }
     
     /** Creates a new instance of CreateTermCommand */

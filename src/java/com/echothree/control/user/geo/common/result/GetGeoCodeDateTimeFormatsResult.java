@@ -30,7 +30,10 @@ public interface GetGeoCodeDateTimeFormatsResult
     
     DateTimeFormatTransfer getDateTimeFormat();
     void setDateTimeFormat(DateTimeFormatTransfer dateTimeFormat);
-    
+
+    Long getGeoCodeDateTimeFormatCount();
+    void setGeoCodeDateTimeFormatCount(Long geoCodeDateTimeFormatCount);
+
     List<GeoCodeDateTimeFormatTransfer> getGeoCodeDateTimeFormats();
     void setGeoCodeDateTimeFormats(List<GeoCodeDateTimeFormatTransfer> geoCodeDateTimeFormats);
     

@@ -45,8 +45,6 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.Validator;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 
@@ -61,14 +59,14 @@ public class CreateChainActionCommand
     private final static List<FieldDefinition> chainActionSetFormFieldDefinitions;
     
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                     new SecurityRoleDefinition(SecurityRoleGroups.ChainAction.name(), SecurityRoles.Create.name())
-                    )))
-                )));
+                    ))
+                ));
 
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ChainKindName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ChainTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ChainName", FieldType.ENTITY_NAME, true, null, null),
@@ -77,21 +75,21 @@ public class CreateChainActionCommand
                 new FieldDefinition("ChainActionTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                ));
+                );
         
-        letterFormFieldDefinitions = Collections.unmodifiableList(Arrays.asList(
+        letterFormFieldDefinitions = List.of(
                 new FieldDefinition("LetterName", FieldType.ENTITY_NAME, true, null, null)
-                ));
+                );
         
-        surveyFormFieldDefinitions = Collections.unmodifiableList(Arrays.asList(
+        surveyFormFieldDefinitions = List.of(
                 new FieldDefinition("SurveyName", FieldType.ENTITY_NAME, true, null, null)
-                ));
+                );
         
-        chainActionSetFormFieldDefinitions = Collections.unmodifiableList(Arrays.asList(
+        chainActionSetFormFieldDefinitions = List.of(
                 new FieldDefinition("NextChainActionSetName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("DelayTime", FieldType.UNSIGNED_LONG, true, null, null),
                 new FieldDefinition("DelayTimeUnitOfMeasureTypeName", FieldType.ENTITY_NAME, true, null, null)
-                ));
+                );
     }
     
     /** Creates a new instance of CreateChainActionCommand */

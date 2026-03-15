@@ -30,6 +30,9 @@ public interface GetGeoCodeTimeZonesResult
     
     TimeZoneTransfer getTimeZone();
     void setTimeZone(TimeZoneTransfer timeZone);
+
+    Long getGeoCodeTimeZoneCount();
+    void setGeoCodeTimeZoneCount(Long geoCodeTimeZoneCount);
     
     List<GeoCodeTimeZoneTransfer> getGeoCodeTimeZones();
     void setGeoCodeTimeZones(List<GeoCodeTimeZoneTransfer> geoCodeTimeZones);

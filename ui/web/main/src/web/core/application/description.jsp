@@ -35,7 +35,7 @@
         </div>
         <div id="Content">
             <c:url var="addUrl" value="/action/Core/Application/DescriptionAdd">
-                <c:param name="ApplicationName" value="${application.applicationName}" />
+                <c:param name="ApplicationName" value="${thisApplication.applicationName}" />
             </c:url>
             <p><a href="${addUrl}">Add Description.</a></p>
             <display:table name="applicationDescriptions" id="applicationDescription" class="displaytag">

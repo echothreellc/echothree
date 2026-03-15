@@ -67,7 +67,7 @@ public class ReviewAction
         if(application == null) {
             forwardKey = ForwardConstants.ERROR_404;
         } else {
-            request.setAttribute(AttributeConstants.APPLICATION, application);
+            request.setAttribute(AttributeConstants.THIS_APPLICATION, application);
             forwardKey = ForwardConstants.DISPLAY;
         }
         

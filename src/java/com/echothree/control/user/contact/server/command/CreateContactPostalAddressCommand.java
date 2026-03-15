@@ -48,8 +48,6 @@ import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.Validator;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import org.apache.commons.codec.language.Soundex;
@@ -64,59 +62,59 @@ public class CreateContactPostalAddressCommand
     private final static List<FieldDefinition> otherFormFieldDefinitions;
     
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.CUSTOMER.name(), null),
                 new PartyTypeDefinition(PartyTypes.VENDOR.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ContactMechanism.name(), SecurityRoles.Create.name())
-                        )))
-                )));
+                        ))
+                ));
 
         // customerFormFieldDefinitions differs from otherFormFieldDefinitions in that when the PartyType
         // executing this command = CUSTOMER, FirstName and LastName are required fields. For all other
         // PartyTypes, that requirement is relaxed.
-        List<FieldDefinition> temp = new ArrayList<>(17);
-        temp.add(new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null));
-        temp.add(new FieldDefinition("PersonalTitleId", FieldType.ID, false, null, null));
-        temp.add(new FieldDefinition("FirstName", FieldType.STRING, true, 1L, 20L));
-        temp.add(new FieldDefinition("MiddleName", FieldType.STRING, false, 1L, 20L));
-        temp.add(new FieldDefinition("LastName", FieldType.STRING, true, 1L, 20L));
-        temp.add(new FieldDefinition("NameSuffixId", FieldType.ID, false, null, null));
-        temp.add(new FieldDefinition("CompanyName", FieldType.STRING, false, 1L, 60L));
-        temp.add(new FieldDefinition("Attention", FieldType.STRING, false, 1L, 60L));
-        temp.add(new FieldDefinition("Address1", FieldType.STRING, true, 1L, 40L));
-        temp.add(new FieldDefinition("Address2", FieldType.STRING, false, 1L, 40L));
-        temp.add(new FieldDefinition("Address3", FieldType.STRING, false, 1L, 40L));
-        temp.add(new FieldDefinition("City", FieldType.STRING, false, 1L, 30L));
-        temp.add(new FieldDefinition("State", FieldType.STRING, false, 1L, 30L));
-        temp.add(new FieldDefinition("PostalCode", FieldType.STRING, false, 1L, 15L));
-        temp.add(new FieldDefinition("CountryName", FieldType.ENTITY_NAME, true, null, null));
-        temp.add(new FieldDefinition("IsCommercial", FieldType.BOOLEAN, true, null, null));
-        temp.add(new FieldDefinition("AllowSolicitation", FieldType.BOOLEAN, true, null, null));
-        temp.add(new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L));
-        customerFormFieldDefinitions = Collections.unmodifiableList(temp);
+        customerFormFieldDefinitions = List.of(
+                new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("PersonalTitleId", FieldType.ID, false, null, null),
+                new FieldDefinition("FirstName", FieldType.STRING, true, 1L, 20L),
+                new FieldDefinition("MiddleName", FieldType.STRING, false, 1L, 20L),
+                new FieldDefinition("LastName", FieldType.STRING, true, 1L, 20L),
+                new FieldDefinition("NameSuffixId", FieldType.ID, false, null, null),
+                new FieldDefinition("CompanyName", FieldType.STRING, false, 1L, 60L),
+                new FieldDefinition("Attention", FieldType.STRING, false, 1L, 60L),
+                new FieldDefinition("Address1", FieldType.STRING, true, 1L, 40L),
+                new FieldDefinition("Address2", FieldType.STRING, false, 1L, 40L),
+                new FieldDefinition("Address3", FieldType.STRING, false, 1L, 40L),
+                new FieldDefinition("City", FieldType.STRING, false, 1L, 30L),
+                new FieldDefinition("State", FieldType.STRING, false, 1L, 30L),
+                new FieldDefinition("PostalCode", FieldType.STRING, false, 1L, 15L),
+                new FieldDefinition("CountryName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("IsCommercial", FieldType.BOOLEAN, true, null, null),
+                new FieldDefinition("AllowSolicitation", FieldType.BOOLEAN, true, null, null),
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
+                );
         
-        temp = new ArrayList<>(17);
-        temp.add(new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null));
-        temp.add(new FieldDefinition("PersonalTitleId", FieldType.ID, false, null, null));
-        temp.add(new FieldDefinition("FirstName", FieldType.STRING, false, 1L, 20L));
-        temp.add(new FieldDefinition("MiddleName", FieldType.STRING, false, 1L, 20L));
-        temp.add(new FieldDefinition("LastName", FieldType.STRING, false, 1L, 20L));
-        temp.add(new FieldDefinition("NameSuffixId", FieldType.ID, false, null, null));
-        temp.add(new FieldDefinition("CompanyName", FieldType.STRING, false, 1L, 60L));
-        temp.add(new FieldDefinition("Attention", FieldType.STRING, false, 1L, 60L));
-        temp.add(new FieldDefinition("Address1", FieldType.STRING, true, 1L, 40L));
-        temp.add(new FieldDefinition("Address2", FieldType.STRING, false, 1L, 40L));
-        temp.add(new FieldDefinition("Address3", FieldType.STRING, false, 1L, 40L));
-        temp.add(new FieldDefinition("City", FieldType.STRING, false, 1L, 30L));
-        temp.add(new FieldDefinition("State", FieldType.STRING, false, 1L, 30L));
-        temp.add(new FieldDefinition("PostalCode", FieldType.STRING, false, 1L, 15L));
-        temp.add(new FieldDefinition("CountryName", FieldType.ENTITY_NAME, true, null, null));
-        temp.add(new FieldDefinition("IsCommercial", FieldType.BOOLEAN, true, null, null));
-        temp.add(new FieldDefinition("AllowSolicitation", FieldType.BOOLEAN, true, null, null));
-        temp.add(new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L));
-        otherFormFieldDefinitions = Collections.unmodifiableList(temp);
+        otherFormFieldDefinitions = List.of(
+                new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("PersonalTitleId", FieldType.ID, false, null, null),
+                new FieldDefinition("FirstName", FieldType.STRING, false, 1L, 20L),
+                new FieldDefinition("MiddleName", FieldType.STRING, false, 1L, 20L),
+                new FieldDefinition("LastName", FieldType.STRING, false, 1L, 20L),
+                new FieldDefinition("NameSuffixId", FieldType.ID, false, null, null),
+                new FieldDefinition("CompanyName", FieldType.STRING, false, 1L, 60L),
+                new FieldDefinition("Attention", FieldType.STRING, false, 1L, 60L),
+                new FieldDefinition("Address1", FieldType.STRING, true, 1L, 40L),
+                new FieldDefinition("Address2", FieldType.STRING, false, 1L, 40L),
+                new FieldDefinition("Address3", FieldType.STRING, false, 1L, 40L),
+                new FieldDefinition("City", FieldType.STRING, false, 1L, 30L),
+                new FieldDefinition("State", FieldType.STRING, false, 1L, 30L),
+                new FieldDefinition("PostalCode", FieldType.STRING, false, 1L, 15L),
+                new FieldDefinition("CountryName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("IsCommercial", FieldType.BOOLEAN, true, null, null),
+                new FieldDefinition("AllowSolicitation", FieldType.BOOLEAN, true, null, null),
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
+                );
     }
     
     /** Creates a new instance of CreateContactPostalAddressCommand */

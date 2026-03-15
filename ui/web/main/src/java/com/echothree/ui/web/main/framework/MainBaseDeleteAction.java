@@ -33,11 +33,11 @@ import org.apache.struts.action.ActionMapping;
 public abstract class MainBaseDeleteAction<A extends MainBaseDeleteActionForm>
         extends MainBaseAction<A> {
     
-    protected String getComponentVendorName() {
+    protected String getComponentVendorName(final A actionForm) {
         return ComponentVendors.ECHO_THREE.name();
     }
     
-    protected abstract String getEntityTypeName();
+    protected abstract String getEntityTypeName(final A actionForm);
     
     protected abstract void setupParameters(final A actionForm, final HttpServletRequest request);
     
@@ -45,7 +45,8 @@ public abstract class MainBaseDeleteAction<A extends MainBaseDeleteActionForm>
             throws NamingException;
     
     @Override
-    protected void setupForwardParameters(final A actionForm, final Map<String, String> parameters) {
+    protected void setupForwardParameters(final A actionForm, final Map<String, String> parameters)
+            throws NamingException {
         // Optional, possibly nothing.
     }
     
@@ -53,8 +54,8 @@ public abstract class MainBaseDeleteAction<A extends MainBaseDeleteActionForm>
             throws NamingException {
         var commandForm = PartyUtil.getHome().getGetPartyEntityTypeForm();
         
-        commandForm.setComponentVendorName(getComponentVendorName());
-        commandForm.setEntityTypeName(getEntityTypeName());
+        commandForm.setComponentVendorName(getComponentVendorName(actionForm));
+        commandForm.setEntityTypeName(getEntityTypeName(actionForm));
 
         var commandResult = PartyUtil.getHome().getPartyEntityType(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
@@ -68,7 +69,7 @@ public abstract class MainBaseDeleteAction<A extends MainBaseDeleteActionForm>
         return partyEntityType;
     }
     
-    protected void clearConfirmDelete(final HttpServletRequest request)
+    protected void clearConfirmDelete(final A actionForm, final HttpServletRequest request)
             throws NamingException {
         var commandForm = PartyUtil.getHome().getEditPartyEntityTypeForm();
         var spec = PartyUtil.getHome().getPartyEntityTypeSpec();
@@ -76,8 +77,8 @@ public abstract class MainBaseDeleteAction<A extends MainBaseDeleteActionForm>
         commandForm.setSpec(spec);
         commandForm.setEditMode(EditMode.LOCK);
 
-        spec.setComponentVendorName(getComponentVendorName());
-        spec.setEntityTypeName(getEntityTypeName());
+        spec.setComponentVendorName(getComponentVendorName(actionForm));
+        spec.setEntityTypeName(getEntityTypeName(actionForm));
 
         var commandResult = PartyUtil.getHome().editPartyEntityType(getUserVisitPK(request), commandForm);
         
@@ -121,7 +122,7 @@ public abstract class MainBaseDeleteAction<A extends MainBaseDeleteActionForm>
                         var confirmDelete = actionForm.getConfirmDelete();
 
                         if(confirmDelete == null || (confirmDelete != null && !confirmDelete)) {
-                            clearConfirmDelete(request);
+                            clearConfirmDelete(actionForm, request);
                         }
                     }
                 }

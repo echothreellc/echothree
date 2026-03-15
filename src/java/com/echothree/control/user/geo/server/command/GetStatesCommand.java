@@ -23,42 +23,41 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.geo.server.entity.GeoCode;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.geo.server.entity.GeoCodeScope;
+import com.echothree.model.data.geo.server.factory.GeoCodeFactory;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetStatesCommand
-        extends BaseMultipleEntitiesCommand<GeoCode, GetStatesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<GeoCode, GetStatesForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.CUSTOMER.name(), null),
                 new PartyTypeDefinition(PartyTypes.VENDOR.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.State.name(), SecurityRoles.List.name())
-                        )))
-                )));
-
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("CountryName", FieldType.ENTITY_NAME, true, null, null)
+                        ))
                 ));
+
+        FORM_FIELD_DEFINITIONS = List.of(
+                new FieldDefinition("CountryName", FieldType.ENTITY_NAME, true, null, null)
+                );
     }
     
     /** Creates a new instance of GetStatesCommand */
@@ -66,23 +65,33 @@ public class GetStatesCommand
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
+    @Inject
+    GeoControl geoControl;
+
     GeoCode countryGeoCode;
+    GeoCodeScope statesGeoCodeScope;
 
     @Override
-    protected Collection<GeoCode> getEntities() {
-        var geoControl = Session.getModelController(GeoControl.class);
+    protected void handleForm() {
         var countryName = form.getCountryName();
-        Collection<GeoCode> stateGeoCodes = null;
 
         countryGeoCode = geoControl.getCountryByAlias(countryName);
 
         if(countryGeoCode != null) {
-            stateGeoCodes = geoControl.getStatesByCountry(countryGeoCode);
+            statesGeoCodeScope = geoControl.getStatesGeoCodeScope(countryGeoCode);
         } else {
             addExecutionError(ExecutionErrors.UnknownCountryName.name(), countryName);
         }
+    }
 
-        return stateGeoCodes;
+    @Override
+    protected Long getTotalEntities() {
+        return statesGeoCodeScope == null ? null : geoControl.countGeoCodesByGeoCodeScope(statesGeoCodeScope);
+    }
+
+    @Override
+    protected Collection<GeoCode> getEntities() {
+        return statesGeoCodeScope == null ? null : geoControl.getStatesByCountry(statesGeoCodeScope);
     }
 
     @Override
@@ -90,12 +99,15 @@ public class GetStatesCommand
         var result = GeoResultFactory.getGetStatesResult();
 
         if(entities != null) {
-            var geoControl = Session.getModelController(GeoControl.class);
             var userVisit = getUserVisit();
 
             result.setCountry(geoControl.getCountryTransfer(userVisit, countryGeoCode));
-            result.setStates(geoControl.getStateTransfers(userVisit, entities));
 
+            if(session.hasLimit(GeoCodeFactory.class)) {
+                result.setStateCount(getTotalEntities());
+            }
+
+            result.setStates(geoControl.getStateTransfers(userVisit, entities));
         }
 
         return result;

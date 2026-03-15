@@ -28,7 +28,7 @@
             </display:column>
             <c:if test="${comments.commentType.workflowEntrance != null}">
                 <display:column titleKey="columnTitle.status">
-                    <c:url var="statusUrl" value="/action/Item/Item/CommentStatus">
+                    <c:url var="statusUrl" value="/action/${commonUrl}/CommentStatus">
                         <c:param name="ItemName" value="${item.itemName}" />
                         <c:param name="CommentName" value="${comment.commentName}" />
                     </c:url>

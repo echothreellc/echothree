@@ -16,6 +16,14 @@
 
 package com.echothree.model.control.warehouse.server.graphql;
 
+import com.echothree.control.user.warehouse.server.command.GetLocationCommand;
+import com.echothree.control.user.warehouse.server.command.GetLocationNameElementCommand;
+import com.echothree.control.user.warehouse.server.command.GetLocationNameElementsCommand;
+import com.echothree.control.user.warehouse.server.command.GetLocationTypeCommand;
+import com.echothree.control.user.warehouse.server.command.GetLocationTypesCommand;
+import com.echothree.control.user.warehouse.server.command.GetLocationUseTypeCommand;
+import com.echothree.control.user.warehouse.server.command.GetLocationUseTypesCommand;
+import com.echothree.control.user.warehouse.server.command.GetLocationsCommand;
 import com.echothree.control.user.warehouse.server.command.GetWarehouseCommand;
 import com.echothree.control.user.warehouse.server.command.GetWarehouseTypeCommand;
 import com.echothree.control.user.warehouse.server.command.GetWarehouseTypesCommand;
@@ -39,6 +47,38 @@ public interface WarehouseSecurityUtils {
 
     static boolean getHasWarehouseTypesAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetWarehouseTypesCommand.class);
+    }
+
+    static boolean getHasLocationTypeAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetLocationTypeCommand.class);
+    }
+
+    static boolean getHasLocationTypesAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetLocationTypesCommand.class);
+    }
+
+    static boolean getHasLocationNameElementAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetLocationNameElementCommand.class);
+    }
+
+    static boolean getHasLocationNameElementsAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetLocationNameElementsCommand.class);
+    }
+
+    static boolean getHasLocationUseTypeAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetLocationUseTypeCommand.class);
+    }
+
+    static boolean getHasLocationUseTypesAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetLocationUseTypesCommand.class);
+    }
+
+    static boolean getHasLocationAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetLocationCommand.class);
+    }
+
+    static boolean getHasLocationsAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetLocationsCommand.class);
     }
 
 }

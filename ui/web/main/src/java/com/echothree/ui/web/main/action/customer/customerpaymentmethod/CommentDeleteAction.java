@@ -51,7 +51,7 @@ public class CommentDeleteAction
         extends MainBaseDeleteAction<CommentDeleteActionForm> {
     
     @Override
-    public String getEntityTypeName() {
+    public String getEntityTypeName(final CommentDeleteActionForm actionForm) {
         return EntityTypes.Comment.name();
     }
     

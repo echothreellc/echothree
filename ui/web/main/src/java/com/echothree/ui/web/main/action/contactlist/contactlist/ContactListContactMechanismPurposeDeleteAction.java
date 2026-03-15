@@ -47,7 +47,7 @@ public class ContactListContactMechanismPurposeDeleteAction
         extends MainBaseDeleteAction<ContactListContactMechanismPurposeDeleteActionForm> {
 
     @Override
-    public String getEntityTypeName() {
+    public String getEntityTypeName(final ContactListContactMechanismPurposeDeleteActionForm actionForm) {
         return EntityTypes.ContactListContactMechanismPurpose.name();
     }
     

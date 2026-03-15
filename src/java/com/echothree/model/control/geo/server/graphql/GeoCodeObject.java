@@ -19,8 +19,19 @@ package com.echothree.model.control.geo.server.graphql;
 import com.echothree.model.control.geo.common.GeoCodeTypes;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.user.server.control.UserControl;
+import com.echothree.model.data.geo.common.GeoCodeAliasConstants;
+import com.echothree.model.data.geo.common.GeoCodeCurrencyConstants;
+import com.echothree.model.data.geo.common.GeoCodeDateTimeFormatConstants;
+import com.echothree.model.data.geo.common.GeoCodeLanguageConstants;
+import com.echothree.model.data.geo.common.GeoCodeRelationshipConstants;
+import com.echothree.model.data.geo.common.GeoCodeTimeZoneConstants;
 import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.geo.server.entity.GeoCodeDetail;
 import com.echothree.util.server.persistence.Session;
@@ -28,7 +39,10 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 @GraphQLDescription("geo code object")
 @GraphQLName("GeoCode")
@@ -119,6 +133,138 @@ public class GeoCodeObject
             case CITY -> null;
             case ZIP_CODE -> null;
         };
+    }
+
+    @GraphQLField
+    @GraphQLDescription("geo code aliases")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<GeoCodeAliasObject> getGeoCodeAliases(final DataFetchingEnvironment env) {
+        if(GeoSecurityUtils.getHasGeoCodeAliasesAccess(env)) {
+            var geoControl = Session.getModelController(GeoControl.class);
+            var totalCount = geoControl.countGeoCodeAliasesByGeoCode(geoCode);
+
+            try(var objectLimiter = new ObjectLimiter(env, GeoCodeAliasConstants.COMPONENT_VENDOR_NAME, GeoCodeAliasConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = geoControl.getGeoCodeAliasesByGeoCode(geoCode);
+                var items = entities.stream().map(GeoCodeAliasObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, items);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
+
+    @GraphQLField
+    @GraphQLDescription("from geo code relationships")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<GeoCodeRelationshipObject> getFromGeoCodeRelationships(final DataFetchingEnvironment env) {
+        var geoControl = Session.getModelController(GeoControl.class);
+        var totalCount = geoControl.countGeoCodeRelationshipsByFromGeoCode(geoCode);
+
+        try(var objectLimiter = new ObjectLimiter(env, GeoCodeRelationshipConstants.COMPONENT_VENDOR_NAME, GeoCodeRelationshipConstants.ENTITY_TYPE_NAME, totalCount)) {
+            var entities = geoControl.getGeoCodeRelationshipsByFromGeoCode(geoCode);
+            var items = entities.stream().map(GeoCodeRelationshipObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+            return new CountedObjects<>(objectLimiter, items);
+        }
+    }
+
+    @GraphQLField
+    @GraphQLDescription("to geo code relationships")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<GeoCodeRelationshipObject> getToGeoCodeRelationships(final DataFetchingEnvironment env) {
+        var geoControl = Session.getModelController(GeoControl.class);
+        var totalCount = geoControl.countGeoCodeRelationshipsByToGeoCode(geoCode);
+
+        try(var objectLimiter = new ObjectLimiter(env, GeoCodeRelationshipConstants.COMPONENT_VENDOR_NAME, GeoCodeRelationshipConstants.ENTITY_TYPE_NAME, totalCount)) {
+            var entities = geoControl.getGeoCodeRelationshipsByToGeoCode(geoCode);
+            var items = entities.stream().map(GeoCodeRelationshipObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+            return new CountedObjects<>(objectLimiter, items);
+        }
+    }
+
+    @GraphQLField
+    @GraphQLDescription("geo code languages")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<GeoCodeLanguageObject> getGeoCodeLanguages(final DataFetchingEnvironment env) {
+        if(GeoSecurityUtils.getHasGeoCodeLanguagesAccess(env)) {
+            var geoControl = Session.getModelController(GeoControl.class);
+            var totalCount = geoControl.countGeoCodeLanguagesByGeoCode(geoCode);
+
+            try(var objectLimiter = new ObjectLimiter(env, GeoCodeLanguageConstants.COMPONENT_VENDOR_NAME, GeoCodeLanguageConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = geoControl.getGeoCodeLanguagesByGeoCode(geoCode);
+                var items = entities.stream().map(GeoCodeLanguageObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, items);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
+
+    @GraphQLField
+    @GraphQLDescription("geo code currencies")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<GeoCodeCurrencyObject> getGeoCodeCurrencies(final DataFetchingEnvironment env) {
+        if(GeoSecurityUtils.getHasGeoCodeCurrenciesAccess(env)) {
+            var geoControl = Session.getModelController(GeoControl.class);
+            var totalCount = geoControl.countGeoCodeCurrenciesByGeoCode(geoCode);
+
+            try(var objectLimiter = new ObjectLimiter(env, GeoCodeCurrencyConstants.COMPONENT_VENDOR_NAME, GeoCodeCurrencyConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = geoControl.getGeoCodeCurrenciesByGeoCode(geoCode);
+                var items = entities.stream().map(GeoCodeCurrencyObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, items);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
+
+    @GraphQLField
+    @GraphQLDescription("geo code time zones")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<GeoCodeTimeZoneObject> getGeoCodeTimeZones(final DataFetchingEnvironment env) {
+        if(GeoSecurityUtils.getHasGeoCodeTimeZonesAccess(env)) {
+            var geoControl = Session.getModelController(GeoControl.class);
+            var totalCount = geoControl.countGeoCodeTimeZonesByGeoCode(geoCode);
+
+            try(var objectLimiter = new ObjectLimiter(env, GeoCodeTimeZoneConstants.COMPONENT_VENDOR_NAME, GeoCodeTimeZoneConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = geoControl.getGeoCodeTimeZonesByGeoCode(geoCode);
+                var items = entities.stream().map(GeoCodeTimeZoneObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, items);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
+
+    @GraphQLField
+    @GraphQLDescription("geo code date time formats")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<GeoCodeDateTimeFormatObject> getGeoCodeDateTimeFormats(final DataFetchingEnvironment env) {
+        if(GeoSecurityUtils.getHasGeoCodeDateTimeFormatsAccess(env)) {
+            var geoControl = Session.getModelController(GeoControl.class);
+            var totalCount = geoControl.countGeoCodeDateTimeFormatsByGeoCode(geoCode);
+
+            try(var objectLimiter = new ObjectLimiter(env, GeoCodeDateTimeFormatConstants.COMPONENT_VENDOR_NAME, GeoCodeDateTimeFormatConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = geoControl.getGeoCodeDateTimeFormatsByGeoCode(geoCode);
+                var items = entities.stream().map(GeoCodeDateTimeFormatObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, items);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
     }
 
 }

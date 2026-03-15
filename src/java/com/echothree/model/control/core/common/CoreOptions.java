@@ -37,10 +37,13 @@ public interface CoreOptions {
     String EntityAttributeIncludeDefault = "EntityAttributeIncludeDefault";
     String EntityAttributeIncludeValue = "EntityAttributeIncludeValue";
 
+    String EntityInstanceIncludeComments = "EntityInstanceIncludeComments";
+    String EntityInstanceIncludeRatings = "EntityInstanceIncludeRatings";
     String EntityInstanceIncludeEntityAppearance = "EntityInstanceIncludeEntityAppearance";
     String EntityInstanceIncludeEntityVisit = "EntityInstanceIncludeEntityVisit";
     String EntityInstanceIncludeNames = "EntityInstanceIncludeNames";
     String EntityInstanceIncludeUuidIfAvailable = "EntityInstanceIncludeUuidIfAvailable";
+    String EntityInstanceIncludeEntityAliases = "EntityInstanceIncludeEntityAliases";
     String EntityInstanceIncludeEntityAttributeGroups = "EntityInstanceIncludeEntityAttributeGroups";
     String EntityInstanceIncludeTagScopes = "EntityInstanceIncludeTagScopes";
 

@@ -96,6 +96,7 @@ public class ReviewAction
         if(company == null) {
             forwardKey = ForwardConstants.ERROR_404;
         } else {
+            saveToken(request); // Required for CompanyIncludeTagScopes and tagScopes.jsp
             request.setAttribute(AttributeConstants.COMPANY, company);
             forwardKey = ForwardConstants.DISPLAY;
         }

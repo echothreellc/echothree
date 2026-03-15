@@ -25,8 +25,6 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 
@@ -37,11 +35,11 @@ public class CreateSelectorComparisonTypeCommand
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        FORM_FIELD_DEFINITIONS = List.of(
             new FieldDefinition("SelectorComparisonTypeName", FieldType.ENTITY_NAME, true, null, null),
             new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
             new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
-        ));
+        );
     }
     
     /** Creates a new instance of CreateSelectorComparisonTypeCommand */

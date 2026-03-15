@@ -49,7 +49,7 @@ public class RatingDeleteAction
         extends MainBaseDeleteAction<RatingDeleteActionForm> {
     
     @Override
-    public String getEntityTypeName() {
+    public String getEntityTypeName(final RatingDeleteActionForm actionForm) {
         return EntityTypes.Rating.name();
     }
     

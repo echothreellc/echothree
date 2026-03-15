@@ -20,6 +20,7 @@ import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.common.choice.EventGroupStatusChoicesBean;
+import com.echothree.model.control.core.common.choice.EventTypeChoicesBean;
 import com.echothree.model.control.core.common.transfer.EntityTimeTransfer;
 import com.echothree.model.control.core.common.transfer.EntityVisitTransfer;
 import com.echothree.model.control.core.common.transfer.EventGroupTransfer;
@@ -37,6 +38,7 @@ import com.echothree.model.control.queue.server.logic.QueuedEntityLogic;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
+import com.echothree.model.data.core.common.pk.EventTypePK;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityTime;
 import com.echothree.model.data.core.server.entity.EntityType;
@@ -72,6 +74,7 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.kafka.EventTopic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
@@ -84,7 +87,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
@@ -548,9 +550,29 @@ public class EventControl
     protected EventTypeFactory eventTypeFactory;
     
     public EventType createEventType(String eventTypeName) {
-        var eventType = eventTypeFactory.create(eventTypeName);
+        return eventTypeFactory.create(eventTypeName);
+    }
 
-        return eventType;
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.EventType */
+    public EventType getEventTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new EventTypePK(entityInstance.getEntityUniqueId());
+
+        return eventTypeFactory.getEntityFromPK(entityPermission, pk);
+    }
+
+    public EventType getEventTypeByEntityInstance(EntityInstance entityInstance) {
+        return getEventTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public EventType getEventTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getEventTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countEventTypes() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM eventtypes
+                        """);
     }
 
     public EventType getEventTypeByName(String eventTypeName) {
@@ -597,8 +619,55 @@ public class EventControl
         return eventTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
 
+    public EventTypeChoicesBean getEventTypeChoices(String defaultEventTypeChoice, Language language,
+            boolean allowNullChoice) {
+        var eventTypes = getEventTypes();
+        var size = eventTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
+        String defaultValue = null;
+
+        if(allowNullChoice) {
+            labels.add("");
+            values.add("");
+
+            if(defaultEventTypeChoice == null) {
+                defaultValue = "";
+            }
+        }
+
+        for(var eventType : eventTypes) {
+            var label = getBestEventTypeDescription(eventType, language);
+            var value = eventType.getEventTypeName();
+
+            labels.add(label == null? value: label);
+            values.add(value);
+
+            var usingDefaultChoice = defaultEventTypeChoice != null && defaultEventTypeChoice.equals(value);
+            if(usingDefaultChoice || (defaultValue == null)) {
+                defaultValue = value;
+            }
+        }
+
+        return new EventTypeChoicesBean(labels, values, defaultValue);
+    }
+    
     public EventTypeTransfer getEventTypeTransfer(UserVisit userVisit, EventType eventType) {
         return eventTypeTransferCache.getEventTypeTransfer(userVisit, eventType);
+    }
+
+    public List<EventTypeTransfer> getEventTypeTransfers(UserVisit userVisit, Collection<EventType> eventTypes) {
+        List<EventTypeTransfer> eventTypeTransfers = new ArrayList<>(eventTypes.size());
+
+        eventTypes.forEach((eventType) ->
+                eventTypeTransfers.add(eventTypeTransferCache.getEventTypeTransfer(userVisit, eventType))
+        );
+
+        return eventTypeTransfers;
+    }
+
+    public List<EventTypeTransfer> getEventTypeTransfers(UserVisit userVisit) {
+        return getEventTypeTransfers(userVisit, getEventTypes());
     }
 
     // --------------------------------------------------------------------------------

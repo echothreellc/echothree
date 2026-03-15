@@ -18,7 +18,6 @@ package com.echothree.control.user.warehouse.server.command;
 
 import com.echothree.control.user.warehouse.common.edit.LocationNameElementDescriptionEdit;
 import com.echothree.control.user.warehouse.common.edit.WarehouseEditFactory;
-import com.echothree.control.user.warehouse.common.form.EditLocationNameElementDescriptionForm;
 import com.echothree.control.user.warehouse.common.result.WarehouseResultFactory;
 import com.echothree.control.user.warehouse.common.spec.LocationNameElementDescriptionSpec;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -26,7 +25,6 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -37,8 +35,6 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 
@@ -58,16 +54,16 @@ public class EditLocationNameElementDescriptionCommand
                 ))
         ));
 
-        List<FieldDefinition> temp = new ArrayList<>(4);
-        temp.add(new FieldDefinition("WarehouseName", FieldType.ENTITY_NAME, true, null, null));
-        temp.add(new FieldDefinition("LocationTypeName", FieldType.ENTITY_NAME, true, null, null));
-        temp.add(new FieldDefinition("LocationNameElementName", FieldType.ENTITY_NAME, true, null, null));
-        temp.add(new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null));
-        SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(temp);
+        SPEC_FIELD_DEFINITIONS = List.of(
+                new FieldDefinition("WarehouseName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("LocationTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("LocationNameElementName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
+        );
         
-        temp = new ArrayList<>(1);
-        temp.add(new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L));
-        EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(temp);
+        EDIT_FIELD_DEFINITIONS = List.of(
+                new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
+        );
     }
     
     /** Creates a new instance of EditLocationNameElementDescriptionCommand */

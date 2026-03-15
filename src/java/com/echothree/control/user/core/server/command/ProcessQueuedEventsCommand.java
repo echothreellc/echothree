@@ -24,9 +24,8 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import javax.enterprise.context.Dependent;
 
@@ -37,9 +36,9 @@ public class ProcessQueuedEventsCommand
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null)
-                )));
+        ));
     }
     
     /** Creates a new instance of ProcessQueuedEventsCommand */

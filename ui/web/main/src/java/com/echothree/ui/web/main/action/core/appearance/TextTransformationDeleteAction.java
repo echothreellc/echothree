@@ -47,7 +47,7 @@ public class TextTransformationDeleteAction
         extends MainBaseDeleteAction<TextTransformationDeleteActionForm> {
 
     @Override
-    public String getEntityTypeName() {
+    public String getEntityTypeName(final TextTransformationDeleteActionForm actionForm) {
         return EntityTypes.AppearanceTextTransformation.name();
     }
     

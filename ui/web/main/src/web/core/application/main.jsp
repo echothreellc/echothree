@@ -44,33 +44,33 @@
             <et:hasSecurityRole securityRoles="Application.Edit:Application.Description:Application.Delete">
                 <c:set var="linksInSecondRow" value="true" />
             </et:hasSecurityRole>
-            <display:table name="applications" id="application" class="displaytag">
+            <display:table name="applications" id="thisApplication" class="displaytag">
                 <display:column titleKey="columnTitle.name">
                     <c:choose>
                         <c:when test="${includeReviewUrl}">
                             <c:url var="reviewUrl" value="/action/Core/Application/Review">
-                                <c:param name="ApplicationName" value="${application.applicationName}" />
+                                <c:param name="ApplicationName" value="${thisApplication.applicationName}" />
                             </c:url>
-                            <a href="${reviewUrl}"><c:out value="${application.applicationName}" /></a>
+                            <a href="${reviewUrl}"><c:out value="${thisApplication.applicationName}" /></a>
                         </c:when>
                         <c:otherwise>
-                            <c:out value="${application.applicationName}" />
+                            <c:out value="${thisApplication.applicationName}" />
                         </c:otherwise>
                     </c:choose>
                 </display:column>
                 <display:column titleKey="columnTitle.description">
-                    <c:out value="${application.description}" />
+                    <c:out value="${thisApplication.description}" />
                 </display:column>
                 <display:column property="sortOrder" titleKey="columnTitle.sortOrder" />
                 <display:column titleKey="columnTitle.default">
                     <c:choose>
-                        <c:when test="${application.isDefault}">
+                        <c:when test="${thisApplication.isDefault}">
                             Default
                         </c:when>
                         <c:otherwise>
                             <et:hasSecurityRole securityRole="Application.Edit">
                                 <c:url var="setDefaultUrl" value="/action/Core/Application/SetDefault">
-                                    <c:param name="ApplicationName" value="${application.applicationName}" />
+                                    <c:param name="ApplicationName" value="${thisApplication.applicationName}" />
                                 </c:url>
                                 <a href="${setDefaultUrl}">Set Default</a>
                             </et:hasSecurityRole>
@@ -81,13 +81,13 @@
                     <display:column>
                         <et:hasSecurityRole securityRole="ApplicationEditor.List">
                             <c:url var="applicationEditorsUrl" value="/action/Core/ApplicationEditor/Main">
-                                <c:param name="ApplicationName" value="${application.applicationName}" />
+                                <c:param name="ApplicationName" value="${thisApplication.applicationName}" />
                             </c:url>
                             <a href="${applicationEditorsUrl}">Editors</a>
                         </et:hasSecurityRole>
                         <et:hasSecurityRole securityRole="ApplicationEditorUse.List">
                             <c:url var="applicationEditorUsesUrl" value="/action/Core/ApplicationEditorUse/Main">
-                                <c:param name="ApplicationName" value="${application.applicationName}" />
+                                <c:param name="ApplicationName" value="${thisApplication.applicationName}" />
                             </c:url>
                             <a href="${applicationEditorUsesUrl}">Editor Uses</a>
                         </et:hasSecurityRole>
@@ -96,19 +96,19 @@
                         </c:if>
                         <et:hasSecurityRole securityRole="Application.Edit">
                             <c:url var="editUrl" value="/action/Core/Application/Edit">
-                                <c:param name="OriginalApplicationName" value="${application.applicationName}" />
+                                <c:param name="OriginalApplicationName" value="${thisApplication.applicationName}" />
                             </c:url>
                             <a href="${editUrl}">Edit</a>
                         </et:hasSecurityRole>
                         <et:hasSecurityRole securityRole="Application.Description">
                             <c:url var="descriptionsUrl" value="/action/Core/Application/Description">
-                                <c:param name="ApplicationName" value="${application.applicationName}" />
+                                <c:param name="ApplicationName" value="${thisApplication.applicationName}" />
                             </c:url>
                             <a href="${descriptionsUrl}">Descriptions</a>
                         </et:hasSecurityRole>
                         <et:hasSecurityRole securityRole="Application.Delete">
                             <c:url var="deleteUrl" value="/action/Core/Application/Delete">
-                                <c:param name="ApplicationName" value="${application.applicationName}" />
+                                <c:param name="ApplicationName" value="${thisApplication.applicationName}" />
                             </c:url>
                             <a href="${deleteUrl}">Delete</a>
                         </et:hasSecurityRole>
@@ -117,7 +117,7 @@
                 <et:hasSecurityRole securityRole="Event.List">
                     <display:column>
                         <c:url var="eventsUrl" value="/action/Core/Event/Main">
-                            <c:param name="EntityRef" value="${application.entityInstance.entityRef}" />
+                            <c:param name="EntityRef" value="${thisApplication.entityInstance.entityRef}" />
                         </c:url>
                         <a href="${eventsUrl}">Events</a>
                     </display:column>

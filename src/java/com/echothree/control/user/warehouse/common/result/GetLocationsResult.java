@@ -26,6 +26,9 @@ public interface GetLocationsResult
     
     WarehouseTransfer getWarehouse();
     void setWarehouse(WarehouseTransfer warehouse);
+
+    Long getLocationCount();
+    void setLocationCount(Long locationCount);
     
     List<LocationTransfer> getLocations();
     void setLocations(List<LocationTransfer> locations);

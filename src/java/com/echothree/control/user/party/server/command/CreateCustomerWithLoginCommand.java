@@ -57,8 +57,6 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.Validator;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import org.apache.commons.codec.language.Soundex;
 import javax.enterprise.context.Dependent;
@@ -75,7 +73,7 @@ public class CreateCustomerWithLoginCommand
         // customerFormFieldDefinitions differs from otherFormFieldDefinitions in that when the PartyType
         // executing this command is null, or equal to CUSTOMER, FirstName and LastName are required fields.
         // For all other PartyTypes, that requirement is relaxed.
-        customerFormFieldDefinitions = Collections.unmodifiableList(Arrays.asList(
+        customerFormFieldDefinitions = List.of(
                 new FieldDefinition("CustomerTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("CancellationPolicyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("ReturnPolicyName", FieldType.ENTITY_NAME, false, null, null),
@@ -102,9 +100,9 @@ public class CreateCustomerWithLoginCommand
                 new FieldDefinition("Answer", FieldType.STRING, true, 1L, 40L),
                 new FieldDefinition("CustomerStatusChoice", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("CustomerCreditStatusChoice", FieldType.ENTITY_NAME, false, null, null)
-                ));
+                );
         
-        otherFormFieldDefinitions = Collections.unmodifiableList(Arrays.asList(
+        otherFormFieldDefinitions = List.of(
                 new FieldDefinition("CustomerTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("CancellationPolicyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("ReturnPolicyName", FieldType.ENTITY_NAME, false, null, null),
@@ -131,7 +129,7 @@ public class CreateCustomerWithLoginCommand
                 new FieldDefinition("Answer", FieldType.STRING, true, 1L, 40L),
                 new FieldDefinition("CustomerStatusChoice", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("CustomerCreditStatusChoice", FieldType.ENTITY_NAME, false, null, null)
-                ));
+                );
     }
     
     /** Creates a new instance of CreateCustomerWithLoginCommand */

@@ -16,9 +16,21 @@
 
 package com.echothree.model.control.geo.server.graphql;
 
+import com.echothree.control.user.geo.server.command.GetGeoCodeAliasCommand;
+import com.echothree.control.user.geo.server.command.GetGeoCodeAliasTypeCommand;
+import com.echothree.control.user.geo.server.command.GetGeoCodeAliasTypesCommand;
+import com.echothree.control.user.geo.server.command.GetGeoCodeAliasesCommand;
 import com.echothree.control.user.geo.server.command.GetGeoCodeCommand;
+import com.echothree.control.user.geo.server.command.GetGeoCodeCurrenciesCommand;
+import com.echothree.control.user.geo.server.command.GetGeoCodeCurrencyCommand;
+import com.echothree.control.user.geo.server.command.GetGeoCodeDateTimeFormatCommand;
+import com.echothree.control.user.geo.server.command.GetGeoCodeDateTimeFormatsCommand;
+import com.echothree.control.user.geo.server.command.GetGeoCodeLanguageCommand;
+import com.echothree.control.user.geo.server.command.GetGeoCodeLanguagesCommand;
 import com.echothree.control.user.geo.server.command.GetGeoCodeScopeCommand;
 import com.echothree.control.user.geo.server.command.GetGeoCodeScopesCommand;
+import com.echothree.control.user.geo.server.command.GetGeoCodeTimeZoneCommand;
+import com.echothree.control.user.geo.server.command.GetGeoCodeTimeZonesCommand;
 import com.echothree.control.user.geo.server.command.GetGeoCodeTypeCommand;
 import com.echothree.control.user.geo.server.command.GetGeoCodeTypesCommand;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
@@ -34,6 +46,22 @@ public interface GeoSecurityUtils {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetGeoCodeTypesCommand.class);
     }
 
+    static boolean getHasGeoCodeAliasTypeAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetGeoCodeAliasTypeCommand.class);
+    }
+
+    static boolean getHasGeoCodeAliasTypesAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetGeoCodeAliasTypesCommand.class);
+    }
+
+    static boolean getHasGeoCodeAliasAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetGeoCodeAliasCommand.class);
+    }
+
+    static boolean getHasGeoCodeAliasesAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetGeoCodeAliasesCommand.class);
+    }
+
     static boolean getHasGeoCodeScopeAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetGeoCodeScopeCommand.class);
     }
@@ -44,6 +72,38 @@ public interface GeoSecurityUtils {
 
     static boolean getHasGeoCodeAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetGeoCodeCommand.class);
+    }
+
+    static boolean getHasGeoCodeLanguageAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetGeoCodeLanguageCommand.class);
+    }
+
+    static boolean getHasGeoCodeLanguagesAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetGeoCodeLanguagesCommand.class);
+    }
+
+    static boolean getHasGeoCodeCurrencyAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetGeoCodeCurrencyCommand.class);
+    }
+
+    static boolean getHasGeoCodeCurrenciesAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetGeoCodeCurrenciesCommand.class);
+    }
+
+    static boolean getHasGeoCodeTimeZoneAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetGeoCodeTimeZoneCommand.class);
+    }
+
+    static boolean getHasGeoCodeTimeZonesAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetGeoCodeTimeZonesCommand.class);
+    }
+
+    static boolean getHasGeoCodeDateTimeFormatAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetGeoCodeDateTimeFormatCommand.class);
+    }
+
+    static boolean getHasGeoCodeDateTimeFormatsAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetGeoCodeDateTimeFormatsCommand.class);
     }
 
 }

@@ -108,7 +108,9 @@ public class CreateFilterAdjustmentAmountCommand
         var filterAdjustment = FilterAdjustmentLogic.getInstance().getFilterAdjustmentByName(this, filterKindName, filterAdjustmentName);
 
         if(!hasExecutionErrors()) {
-            if(filterAdjustment.getLastDetail().getFilterAdjustmentType().getFilterAdjustmentTypeName().equals(FilterAdjustmentTypes.AMOUNT.name())) {
+            var filterAdjustmentType = filterAdjustment.getLastDetail().getFilterAdjustmentType();
+
+            if(filterAdjustmentType != null && filterAdjustmentType.getFilterAdjustmentTypeName().equals(FilterAdjustmentTypes.AMOUNT.name())) {
                 var unitOfMeasureName = form.getUnitOfMeasureName();
                 var unitOfMeasureKindName = form.getUnitOfMeasureKindName();
                 var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();

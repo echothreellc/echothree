@@ -47,7 +47,7 @@ public class EntityAttributeGroupDeleteAction
         extends MainBaseDeleteAction<EntityAttributeGroupDeleteActionForm> {
 
     @Override
-    public String getEntityTypeName() {
+    public String getEntityTypeName(final EntityAttributeGroupDeleteActionForm actionForm) {
         return EntityTypes.EntityAttributeEntityAttributeGroup.name();
     }
     

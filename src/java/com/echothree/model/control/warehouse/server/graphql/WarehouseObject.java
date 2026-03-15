@@ -16,16 +16,30 @@
 
 package com.echothree.model.control.warehouse.server.graphql;
 
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
+import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.graphql.InventoryLocationGroupObject;
+import com.echothree.model.control.inventory.server.graphql.InventorySecurityUtils;
 import com.echothree.model.control.party.server.graphql.BasePartyObject;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
+import com.echothree.model.data.inventory.common.InventoryLocationGroupConstants;
 import com.echothree.model.data.party.server.entity.Party;
+import com.echothree.model.data.warehouse.common.LocationConstants;
+import com.echothree.model.data.warehouse.common.LocationTypeConstants;
 import com.echothree.model.data.warehouse.server.entity.Warehouse;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 @GraphQLDescription("warehouse object")
 @GraphQLName("Warehouse")
@@ -63,7 +77,6 @@ public class WarehouseObject
 
     @GraphQLField
     @GraphQLDescription("warehouse type")
-    @GraphQLNonNull
     public WarehouseTypeObject getWarehouseType(final DataFetchingEnvironment env) {
         return WarehouseSecurityUtils.getHasWarehouseTypeAccess(env) ?
                 new WarehouseTypeObject(getWarehouse().getWarehouseType()) : null;
@@ -81,6 +94,69 @@ public class WarehouseObject
     @GraphQLNonNull
     public int getSortOrder() {
         return getWarehouse().getSortOrder();
+    }
+
+    @GraphQLField
+    @GraphQLDescription("inventory location groups")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<InventoryLocationGroupObject> getInventoryLocationGroups(final DataFetchingEnvironment env) {
+        if(InventorySecurityUtils.getHasInventoryLocationGroupsAccess(env)) {
+            var inventoryControl = Session.getModelController(InventoryControl.class);
+            var warehouseParty = getWarehouse().getParty();
+            var totalCount = inventoryControl.countInventoryLocationGroupsByWarehouseParty(warehouseParty);
+
+            try(var objectLimiter = new ObjectLimiter(env, InventoryLocationGroupConstants.COMPONENT_VENDOR_NAME, InventoryLocationGroupConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = inventoryControl.getInventoryLocationGroupsByWarehouseParty(warehouseParty);
+                var items = entities.stream().map(InventoryLocationGroupObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, items);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
+
+    @GraphQLField
+    @GraphQLDescription("location types")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<LocationTypeObject> getLocationTypes(final DataFetchingEnvironment env) {
+        if(WarehouseSecurityUtils.getHasLocationTypesAccess(env)) {
+            var warehouseControl = Session.getModelController(WarehouseControl.class);
+            var warehouseParty = getWarehouse().getParty();
+            var totalCount = warehouseControl.countLocationTypesByWarehouseParty(warehouseParty);
+
+            try(var objectLimiter = new ObjectLimiter(env, LocationTypeConstants.COMPONENT_VENDOR_NAME, LocationTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = warehouseControl.getLocationTypesByWarehouseParty(warehouseParty);
+                var items = entities.stream().map(LocationTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, items);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
+
+    @GraphQLField
+    @GraphQLDescription("locations")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<LocationObject> getLocations(final DataFetchingEnvironment env) {
+        if(WarehouseSecurityUtils.getHasLocationsAccess(env)) {
+            var warehouseControl = Session.getModelController(WarehouseControl.class);
+            var warehouseParty = getWarehouse().getParty();
+            var totalCount = warehouseControl.countLocationsByWarehouseParty(warehouseParty);
+
+            try(var objectLimiter = new ObjectLimiter(env, LocationConstants.COMPONENT_VENDOR_NAME, LocationConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = warehouseControl.getLocationsByWarehouseParty(warehouseParty);
+                var items = entities.stream().map(LocationObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, items);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
     }
 
 }

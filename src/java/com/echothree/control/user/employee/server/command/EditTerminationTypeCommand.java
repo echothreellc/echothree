@@ -37,7 +37,6 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 
@@ -57,16 +56,16 @@ public class EditTerminationTypeCommand
                 ))
         ));
 
-        List<FieldDefinition> temp = new ArrayList<>(1);
-        temp.add(new FieldDefinition("TerminationTypeName", FieldType.ENTITY_NAME, true, null, null));
-        SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(temp);
+        SPEC_FIELD_DEFINITIONS = List.of(
+                new FieldDefinition("TerminationTypeName", FieldType.ENTITY_NAME, true, null, null)
+                );
         
-        temp = new ArrayList<>(4);
-        temp.add(new FieldDefinition("TerminationTypeName", FieldType.ENTITY_NAME, true, null, null));
-        temp.add(new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null));
-        temp.add(new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null));
-        temp.add(new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L));
-        EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(temp);
+        EDIT_FIELD_DEFINITIONS = List.of(
+                new FieldDefinition("TerminationTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
+                new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
+                );
     }
     
     /** Creates a new instance of EditTerminationTypeCommand */

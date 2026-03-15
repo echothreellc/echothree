@@ -46,7 +46,7 @@ public class DeleteAction
         extends MainBaseDeleteAction<DeleteActionForm> {
 
     @Override
-    public String getEntityTypeName() {
+    public String getEntityTypeName(final DeleteActionForm actionForm) {
         return EntityTypes.Application.name();
     }
     
@@ -66,7 +66,7 @@ public class DeleteAction
         var executionResult = commandResult.getExecutionResult();
         var result = (GetApplicationResult)executionResult.getResult();
         
-        request.setAttribute(AttributeConstants.APPLICATION, result.getApplication());
+        request.setAttribute(AttributeConstants.THIS_APPLICATION, result.getApplication());
     }
     
     @Override

@@ -75,6 +75,7 @@ public class ReviewAction
             var itemHarmonizedTariffScheduleCode = result.getItemHarmonizedTariffScheduleCode();
 
             if(itemHarmonizedTariffScheduleCode != null) {
+                saveToken(request); // Required for ItemHarmonizedTariffScheduleCodeIncludeTagScopes and tagScopes.jsp
                 request.setAttribute(AttributeConstants.ITEM_HARMONIZED_TARIFF_SCHEDULE_CODE, itemHarmonizedTariffScheduleCode);
                 forwardKey = ForwardConstants.DISPLAY;
             }

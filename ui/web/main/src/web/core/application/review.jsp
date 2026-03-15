@@ -22,7 +22,7 @@
     <head>
         <title>
             <fmt:message key="pageTitle.application">
-                <fmt:param value="${application.applicationName}" />
+                <fmt:param value="${thisApplication.applicationName}" />
             </fmt:message>
         </title>
         <html:base/>
@@ -35,26 +35,26 @@
                 <a href="<c:url value="/action/Core/Main" />"><fmt:message key="navigation.core" /></a> &gt;&gt;
                 <a href="<c:url value="/action/Core/Application/Main" />"><fmt:message key="navigation.applications" /></a> &gt;&gt;
                 <fmt:message key="navigation.application">
-                    <fmt:param value="${application.applicationName}" />
+                    <fmt:param value="${thisApplication.applicationName}" />
                 </fmt:message>
             </h2>
         </div>
         <div id="Content">
             <c:choose>
-                <c:when test="${application.applicationName != application.description}">
-                    <p><font size="+2"><b><c:out value="${application.description}" /></b></font></p>
-                    <p><font size="+1"><c:out value="${application.applicationName}" /></font></p>
+                <c:when test="${thisApplication.applicationName != thisApplication.description}">
+                    <p><font size="+2"><b><c:out value="${thisApplication.description}" /></b></font></p>
+                    <p><font size="+1"><c:out value="${thisApplication.applicationName}" /></font></p>
                 </c:when>
                 <c:otherwise>
-                    <p><font size="+2"><b><c:out value="${application.applicationName}" /></b></font></p>
+                    <p><font size="+2"><b><c:out value="${thisApplication.applicationName}" /></b></font></p>
                 </c:otherwise>
             </c:choose>
             <br />
-            Application Name: ${application.applicationName}<br />
+            Application Name: ${thisApplication.applicationName}<br />
             <br />
             <br />            
             <br />
-            <c:set var="entityInstance" scope="request" value="${application.entityInstance}" />
+            <c:set var="entityInstance" scope="request" value="${thisApplication.entityInstance}" />
             <jsp:include page="../../include/entityInstance.jsp" />
         </div>
         <jsp:include page="../../include/userSession.jsp" />

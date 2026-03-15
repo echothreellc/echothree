@@ -22,7 +22,10 @@ import java.util.List;
 
 public interface GetCountriesResult
         extends BaseResult {
-    
+
+    Long getCountryCount();
+    void setCountryCount(Long countryCount);
+
     List<CountryTransfer> getCountries();
     void setCountries(List<CountryTransfer> countries);
     

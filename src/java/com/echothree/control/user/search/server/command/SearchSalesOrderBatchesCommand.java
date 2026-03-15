@@ -35,8 +35,6 @@ import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import com.google.common.base.Splitter;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 
@@ -47,7 +45,7 @@ public class SearchSalesOrderBatchesCommand
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("SearchTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("BatchName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("CurrencyIsoName", FieldType.ENTITY_NAME, false, null, null),
@@ -58,7 +56,7 @@ public class SearchSalesOrderBatchesCommand
                 new FieldDefinition("CreatedSince", FieldType.DATE_TIME, false, null, null),
                 new FieldDefinition("ModifiedSince", FieldType.DATE_TIME, false, null, null),
                 new FieldDefinition("Fields", FieldType.STRING, false, null, null)
-                ));
+                );
     }
 
     /** Creates a new instance of SearchSalesOrderBatchesCommand */

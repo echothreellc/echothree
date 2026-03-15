@@ -93,7 +93,7 @@ public class EditAction
     
     @Override
     protected void setupTransferForForm(HttpServletRequest request, EditActionForm actionForm, EditApplicationResult result) {
-        request.setAttribute(AttributeConstants.APPLICATION, result.getApplication());
+        request.setAttribute(AttributeConstants.THIS_APPLICATION, result.getApplication());
     }
 
 }

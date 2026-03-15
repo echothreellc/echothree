@@ -47,7 +47,7 @@ public class TranslationDeleteAction
         extends MainBaseDeleteAction<TranslationDeleteActionForm> {
 
     @Override
-    public String getEntityTypeName() {
+    public String getEntityTypeName(final TranslationDeleteActionForm actionForm) {
         return EntityTypes.TrainingClassPageTranslation.name();
     }
     

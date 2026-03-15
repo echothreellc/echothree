@@ -98,6 +98,8 @@ import com.echothree.control.user.core.server.command.GetEntityInstanceCommand;
 import com.echothree.control.user.core.server.command.GetEntityInstancesCommand;
 import com.echothree.control.user.core.server.command.GetEntityTypeCommand;
 import com.echothree.control.user.core.server.command.GetEntityTypesCommand;
+import com.echothree.control.user.core.server.command.GetEventTypeCommand;
+import com.echothree.control.user.core.server.command.GetEventTypesCommand;
 import com.echothree.control.user.core.server.command.GetFontStyleCommand;
 import com.echothree.control.user.core.server.command.GetFontStylesCommand;
 import com.echothree.control.user.core.server.command.GetFontWeightCommand;
@@ -142,11 +144,33 @@ import com.echothree.control.user.filter.server.command.GetFilterTypeCommand;
 import com.echothree.control.user.filter.server.command.GetFilterTypesCommand;
 import com.echothree.control.user.filter.server.command.GetFiltersCommand;
 import com.echothree.control.user.geo.common.GeoUtil;
+import com.echothree.control.user.geo.server.command.GetCitiesCommand;
+import com.echothree.control.user.geo.server.command.GetCityCommand;
+import com.echothree.control.user.geo.server.command.GetCountiesCommand;
+import com.echothree.control.user.geo.server.command.GetCountriesCommand;
+import com.echothree.control.user.geo.server.command.GetCountryCommand;
+import com.echothree.control.user.geo.server.command.GetCountyCommand;
+import com.echothree.control.user.geo.server.command.GetGeoCodeAliasCommand;
+import com.echothree.control.user.geo.server.command.GetGeoCodeAliasTypeCommand;
+import com.echothree.control.user.geo.server.command.GetGeoCodeAliasTypesCommand;
+import com.echothree.control.user.geo.server.command.GetGeoCodeAliasesCommand;
 import com.echothree.control.user.geo.server.command.GetGeoCodeCommand;
+import com.echothree.control.user.geo.server.command.GetGeoCodeCurrenciesCommand;
+import com.echothree.control.user.geo.server.command.GetGeoCodeCurrencyCommand;
+import com.echothree.control.user.geo.server.command.GetGeoCodeDateTimeFormatCommand;
+import com.echothree.control.user.geo.server.command.GetGeoCodeDateTimeFormatsCommand;
+import com.echothree.control.user.geo.server.command.GetGeoCodeLanguageCommand;
+import com.echothree.control.user.geo.server.command.GetGeoCodeLanguagesCommand;
 import com.echothree.control.user.geo.server.command.GetGeoCodeScopeCommand;
 import com.echothree.control.user.geo.server.command.GetGeoCodeScopesCommand;
+import com.echothree.control.user.geo.server.command.GetGeoCodeTimeZoneCommand;
+import com.echothree.control.user.geo.server.command.GetGeoCodeTimeZonesCommand;
 import com.echothree.control.user.geo.server.command.GetGeoCodeTypeCommand;
 import com.echothree.control.user.geo.server.command.GetGeoCodeTypesCommand;
+import com.echothree.control.user.geo.server.command.GetStateCommand;
+import com.echothree.control.user.geo.server.command.GetStatesCommand;
+import com.echothree.control.user.geo.server.command.GetZipCodeCommand;
+import com.echothree.control.user.geo.server.command.GetZipCodesCommand;
 import com.echothree.control.user.inventory.common.InventoryUtil;
 import com.echothree.control.user.inventory.server.command.GetAllocationPrioritiesCommand;
 import com.echothree.control.user.inventory.server.command.GetAllocationPriorityCommand;
@@ -154,6 +178,8 @@ import com.echothree.control.user.inventory.server.command.GetInventoryAdjustmen
 import com.echothree.control.user.inventory.server.command.GetInventoryAdjustmentTypesCommand;
 import com.echothree.control.user.inventory.server.command.GetInventoryConditionCommand;
 import com.echothree.control.user.inventory.server.command.GetInventoryConditionsCommand;
+import com.echothree.control.user.inventory.server.command.GetInventoryLocationGroupCommand;
+import com.echothree.control.user.inventory.server.command.GetInventoryLocationGroupsCommand;
 import com.echothree.control.user.inventory.server.command.GetInventoryTransactionTypeCommand;
 import com.echothree.control.user.inventory.server.command.GetInventoryTransactionTypesCommand;
 import com.echothree.control.user.inventory.server.command.GetLotCommand;
@@ -375,8 +401,14 @@ import com.echothree.control.user.vendor.server.command.GetVendorTypeCommand;
 import com.echothree.control.user.vendor.server.command.GetVendorTypesCommand;
 import com.echothree.control.user.vendor.server.command.GetVendorsCommand;
 import com.echothree.control.user.warehouse.common.WarehouseUtil;
+import com.echothree.control.user.warehouse.server.command.GetLocationCommand;
+import com.echothree.control.user.warehouse.server.command.GetLocationNameElementCommand;
+import com.echothree.control.user.warehouse.server.command.GetLocationNameElementsCommand;
+import com.echothree.control.user.warehouse.server.command.GetLocationTypeCommand;
+import com.echothree.control.user.warehouse.server.command.GetLocationTypesCommand;
 import com.echothree.control.user.warehouse.server.command.GetLocationUseTypeCommand;
 import com.echothree.control.user.warehouse.server.command.GetLocationUseTypesCommand;
+import com.echothree.control.user.warehouse.server.command.GetLocationsCommand;
 import com.echothree.control.user.warehouse.server.command.GetWarehouseCommand;
 import com.echothree.control.user.warehouse.server.command.GetWarehouseTypeCommand;
 import com.echothree.control.user.warehouse.server.command.GetWarehouseTypesCommand;
@@ -457,6 +489,7 @@ import com.echothree.model.control.core.server.graphql.EntityAttributeObject;
 import com.echothree.model.control.core.server.graphql.EntityAttributeTypeObject;
 import com.echothree.model.control.core.server.graphql.EntityInstanceObject;
 import com.echothree.model.control.core.server.graphql.EntityTypeObject;
+import com.echothree.model.control.core.server.graphql.EventTypeObject;
 import com.echothree.model.control.core.server.graphql.FontStyleObject;
 import com.echothree.model.control.core.server.graphql.FontWeightObject;
 import com.echothree.model.control.core.server.graphql.MimeTypeFileExtensionObject;
@@ -477,8 +510,14 @@ import com.echothree.model.control.filter.server.graphql.FilterKindObject;
 import com.echothree.model.control.filter.server.graphql.FilterObject;
 import com.echothree.model.control.filter.server.graphql.FilterStepObject;
 import com.echothree.model.control.filter.server.graphql.FilterTypeObject;
+import com.echothree.model.control.geo.server.graphql.GeoCodeAliasObject;
+import com.echothree.model.control.geo.server.graphql.GeoCodeAliasTypeObject;
+import com.echothree.model.control.geo.server.graphql.GeoCodeCurrencyObject;
+import com.echothree.model.control.geo.server.graphql.GeoCodeDateTimeFormatObject;
+import com.echothree.model.control.geo.server.graphql.GeoCodeLanguageObject;
 import com.echothree.model.control.geo.server.graphql.GeoCodeObject;
 import com.echothree.model.control.geo.server.graphql.GeoCodeScopeObject;
+import com.echothree.model.control.geo.server.graphql.GeoCodeTimeZoneObject;
 import com.echothree.model.control.geo.server.graphql.GeoCodeTypeObject;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
@@ -490,6 +529,7 @@ import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.inventory.server.graphql.AllocationPriorityObject;
 import com.echothree.model.control.inventory.server.graphql.InventoryAdjustmentTypeObject;
 import com.echothree.model.control.inventory.server.graphql.InventoryConditionObject;
+import com.echothree.model.control.inventory.server.graphql.InventoryLocationGroupObject;
 import com.echothree.model.control.inventory.server.graphql.InventoryTransactionTypeObject;
 import com.echothree.model.control.inventory.server.graphql.LotObject;
 import com.echothree.model.control.item.server.graphql.ItemAliasChecksumTypeObject;
@@ -606,6 +646,9 @@ import com.echothree.model.control.vendor.server.graphql.VendorItemCostObject;
 import com.echothree.model.control.vendor.server.graphql.VendorItemObject;
 import com.echothree.model.control.vendor.server.graphql.VendorObject;
 import com.echothree.model.control.vendor.server.graphql.VendorTypeObject;
+import com.echothree.model.control.warehouse.server.graphql.LocationNameElementObject;
+import com.echothree.model.control.warehouse.server.graphql.LocationObject;
+import com.echothree.model.control.warehouse.server.graphql.LocationTypeObject;
 import com.echothree.model.control.warehouse.server.graphql.LocationUseTypeObject;
 import com.echothree.model.control.warehouse.server.graphql.WarehouseObject;
 import com.echothree.model.control.warehouse.server.graphql.WarehouseTypeObject;
@@ -694,6 +737,7 @@ import com.echothree.model.data.core.common.EntityAttributeGroupConstants;
 import com.echothree.model.data.core.common.EntityAttributeTypeConstants;
 import com.echothree.model.data.core.common.EntityInstanceConstants;
 import com.echothree.model.data.core.common.EntityTypeConstants;
+import com.echothree.model.data.core.common.EventTypeConstants;
 import com.echothree.model.data.core.common.FontStyleConstants;
 import com.echothree.model.data.core.common.FontWeightConstants;
 import com.echothree.model.data.core.common.MimeTypeConstants;
@@ -710,6 +754,7 @@ import com.echothree.model.data.core.server.entity.EntityAttributeGroup;
 import com.echothree.model.data.core.server.entity.EntityAttributeType;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityType;
+import com.echothree.model.data.core.server.entity.EventType;
 import com.echothree.model.data.core.server.entity.FontStyle;
 import com.echothree.model.data.core.server.entity.FontWeight;
 import com.echothree.model.data.core.server.entity.MimeType;
@@ -724,7 +769,9 @@ import com.echothree.model.data.customer.server.entity.CustomerType;
 import com.echothree.model.data.employee.common.PartyEmployeeConstants;
 import com.echothree.model.data.employee.server.entity.PartyEmployee;
 import com.echothree.model.data.filter.common.FilterAdjustmentTypeConstants;
+import com.echothree.model.data.filter.common.FilterConstants;
 import com.echothree.model.data.filter.common.FilterKindConstants;
+import com.echothree.model.data.filter.common.FilterTypeConstants;
 import com.echothree.model.data.filter.server.entity.Filter;
 import com.echothree.model.data.filter.server.entity.FilterAdjustment;
 import com.echothree.model.data.filter.server.entity.FilterAdjustmentAmount;
@@ -735,19 +782,34 @@ import com.echothree.model.data.filter.server.entity.FilterAdjustmentType;
 import com.echothree.model.data.filter.server.entity.FilterKind;
 import com.echothree.model.data.filter.server.entity.FilterStep;
 import com.echothree.model.data.filter.server.entity.FilterType;
+import com.echothree.model.data.geo.common.GeoCodeAliasConstants;
+import com.echothree.model.data.geo.common.GeoCodeAliasTypeConstants;
+import com.echothree.model.data.geo.common.GeoCodeConstants;
+import com.echothree.model.data.geo.common.GeoCodeCurrencyConstants;
+import com.echothree.model.data.geo.common.GeoCodeDateTimeFormatConstants;
+import com.echothree.model.data.geo.common.GeoCodeLanguageConstants;
 import com.echothree.model.data.geo.common.GeoCodeScopeConstants;
+import com.echothree.model.data.geo.common.GeoCodeTimeZoneConstants;
 import com.echothree.model.data.geo.common.GeoCodeTypeConstants;
 import com.echothree.model.data.geo.server.entity.GeoCode;
+import com.echothree.model.data.geo.server.entity.GeoCodeAlias;
+import com.echothree.model.data.geo.server.entity.GeoCodeAliasType;
+import com.echothree.model.data.geo.server.entity.GeoCodeCurrency;
+import com.echothree.model.data.geo.server.entity.GeoCodeDateTimeFormat;
+import com.echothree.model.data.geo.server.entity.GeoCodeLanguage;
 import com.echothree.model.data.geo.server.entity.GeoCodeScope;
+import com.echothree.model.data.geo.server.entity.GeoCodeTimeZone;
 import com.echothree.model.data.geo.server.entity.GeoCodeType;
 import com.echothree.model.data.inventory.common.AllocationPriorityConstants;
 import com.echothree.model.data.inventory.common.InventoryAdjustmentTypeConstants;
 import com.echothree.model.data.inventory.common.InventoryConditionConstants;
+import com.echothree.model.data.inventory.common.InventoryLocationGroupConstants;
 import com.echothree.model.data.inventory.common.InventoryTransactionTypeConstants;
 import com.echothree.model.data.inventory.common.LotConstants;
 import com.echothree.model.data.inventory.server.entity.AllocationPriority;
 import com.echothree.model.data.inventory.server.entity.InventoryAdjustmentType;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;
+import com.echothree.model.data.inventory.server.entity.InventoryLocationGroup;
 import com.echothree.model.data.inventory.server.entity.InventoryTransactionType;
 import com.echothree.model.data.inventory.server.entity.Lot;
 import com.echothree.model.data.item.common.ItemAliasChecksumTypeConstants;
@@ -912,9 +974,15 @@ import com.echothree.model.data.vendor.server.entity.Vendor;
 import com.echothree.model.data.vendor.server.entity.VendorItem;
 import com.echothree.model.data.vendor.server.entity.VendorItemCost;
 import com.echothree.model.data.vendor.server.entity.VendorType;
+import com.echothree.model.data.warehouse.common.LocationConstants;
+import com.echothree.model.data.warehouse.common.LocationNameElementConstants;
+import com.echothree.model.data.warehouse.common.LocationTypeConstants;
 import com.echothree.model.data.warehouse.common.LocationUseTypeConstants;
 import com.echothree.model.data.warehouse.common.WarehouseConstants;
 import com.echothree.model.data.warehouse.common.WarehouseTypeConstants;
+import com.echothree.model.data.warehouse.server.entity.Location;
+import com.echothree.model.data.warehouse.server.entity.LocationNameElement;
+import com.echothree.model.data.warehouse.server.entity.LocationType;
 import com.echothree.model.data.warehouse.server.entity.LocationUseType;
 import com.echothree.model.data.warehouse.server.entity.Warehouse;
 import com.echothree.model.data.warehouse.server.entity.WarehouseType;
@@ -926,13 +994,16 @@ import com.echothree.model.data.workflow.common.WorkflowConstants;
 import com.echothree.model.data.workflow.common.WorkflowDestinationConstants;
 import com.echothree.model.data.workflow.common.WorkflowDestinationPartyTypeConstants;
 import com.echothree.model.data.workflow.common.WorkflowDestinationSecurityRoleConstants;
+import com.echothree.model.data.workflow.common.WorkflowDestinationSelectorConstants;
 import com.echothree.model.data.workflow.common.WorkflowDestinationStepConstants;
 import com.echothree.model.data.workflow.common.WorkflowEntityStatusConstants;
 import com.echothree.model.data.workflow.common.WorkflowEntityTypeConstants;
 import com.echothree.model.data.workflow.common.WorkflowEntranceConstants;
 import com.echothree.model.data.workflow.common.WorkflowEntrancePartyTypeConstants;
 import com.echothree.model.data.workflow.common.WorkflowEntranceSecurityRoleConstants;
+import com.echothree.model.data.workflow.common.WorkflowEntranceSelectorConstants;
 import com.echothree.model.data.workflow.common.WorkflowEntranceStepConstants;
+import com.echothree.model.data.workflow.common.WorkflowSelectorKindConstants;
 import com.echothree.model.data.workflow.common.WorkflowStepConstants;
 import com.echothree.model.data.workflow.common.WorkflowStepTypeConstants;
 import com.echothree.model.data.workflow.server.entity.Workflow;
@@ -1534,34 +1605,39 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("workflowSelectorKinds")
-    static Collection<WorkflowSelectorKindObject> workflowSelectorKinds(final DataFetchingEnvironment env,
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<WorkflowSelectorKindObject> workflowSelectorKinds(final DataFetchingEnvironment env,
             @GraphQLName("workflowName") final String workflowName,
             @GraphQLName("selectorKindName") final String selectorKindName) {
-        Collection<WorkflowSelectorKind> workflowSelectorKinds;
-        Collection<WorkflowSelectorKindObject> workflowSelectorKindObjects;
+        CountingPaginatedData<WorkflowSelectorKindObject> data;
 
         try {
             var commandForm = WorkflowUtil.getHome().getGetWorkflowSelectorKindsForm();
+            var command = CDI.current().select(GetWorkflowSelectorKindsCommand.class).get();
 
             commandForm.setWorkflowName(workflowName);
             commandForm.setSelectorKindName(selectorKindName);
 
-            workflowSelectorKinds = CDI.current().select(GetWorkflowSelectorKindsCommand.class).get().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, WorkflowSelectorKindConstants.COMPONENT_VENDOR_NAME, WorkflowSelectorKindConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var workflowSelectorKinds = entities.stream()
+                            .map(WorkflowSelectorKindObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, workflowSelectorKinds);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(workflowSelectorKinds == null) {
-            workflowSelectorKindObjects = emptyList();
-        } else {
-            workflowSelectorKindObjects = new ArrayList<>(workflowSelectorKinds.size());
-
-            workflowSelectorKinds.stream()
-                    .map(WorkflowSelectorKindObject::new)
-                    .forEachOrdered(workflowSelectorKindObjects::add);
-        }
-
-        return workflowSelectorKindObjects;
+        return data;
     }
 
     @GraphQLField
@@ -1944,36 +2020,41 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("workflowDestinationSelectors")
-    static Collection<WorkflowDestinationSelectorObject> workflowDestinationSelectors(final DataFetchingEnvironment env,
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<WorkflowDestinationSelectorObject> workflowDestinationSelectors(final DataFetchingEnvironment env,
             @GraphQLName("workflowName") @GraphQLNonNull final String workflowName,
             @GraphQLName("workflowStepName") @GraphQLNonNull final String workflowStepName,
             @GraphQLName("workflowDestinationName") @GraphQLNonNull final String workflowDestinationName) {
-        Collection<WorkflowDestinationSelector> workflowDestinationSelectors;
-        Collection<WorkflowDestinationSelectorObject> workflowDestinationSelectorObjects;
+        CountingPaginatedData<WorkflowDestinationSelectorObject> data;
 
         try {
             var commandForm = WorkflowUtil.getHome().getGetWorkflowDestinationSelectorsForm();
+            var command = CDI.current().select(GetWorkflowDestinationSelectorsCommand.class).get();
 
             commandForm.setWorkflowName(workflowName);
             commandForm.setWorkflowStepName(workflowStepName);
             commandForm.setWorkflowDestinationName(workflowDestinationName);
 
-            workflowDestinationSelectors = CDI.current().select(GetWorkflowDestinationSelectorsCommand.class).get().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, WorkflowDestinationSelectorConstants.COMPONENT_VENDOR_NAME, WorkflowDestinationSelectorConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var workflowDestinationSelectors = entities.stream()
+                            .map(WorkflowDestinationSelectorObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, workflowDestinationSelectors);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(workflowDestinationSelectors == null) {
-            workflowDestinationSelectorObjects = emptyList();
-        } else {
-            workflowDestinationSelectorObjects = new ArrayList<>(workflowDestinationSelectors.size());
-
-            workflowDestinationSelectors.stream()
-                    .map(WorkflowDestinationSelectorObject::new)
-                    .forEachOrdered(workflowDestinationSelectorObjects::add);
-        }
-
-        return workflowDestinationSelectorObjects;
+        return data;
     }
 
     @GraphQLField
@@ -2245,34 +2326,39 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("workflowEntranceSelectors")
-    static Collection<WorkflowEntranceSelectorObject> workflowEntranceSelectors(final DataFetchingEnvironment env,
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<WorkflowEntranceSelectorObject> workflowEntranceSelectors(final DataFetchingEnvironment env,
             @GraphQLName("workflowName") @GraphQLNonNull final String workflowName,
             @GraphQLName("workflowEntranceName") @GraphQLNonNull final String workflowEntranceName) {
-        Collection<WorkflowEntranceSelector> workflowEntranceSelectors;
-        Collection<WorkflowEntranceSelectorObject> workflowEntranceSelectorObjects;
+        CountingPaginatedData<WorkflowEntranceSelectorObject> data;
 
         try {
             var commandForm = WorkflowUtil.getHome().getGetWorkflowEntranceSelectorsForm();
+            var command = CDI.current().select(GetWorkflowEntranceSelectorsCommand.class).get();
 
             commandForm.setWorkflowName(workflowName);
             commandForm.setWorkflowEntranceName(workflowEntranceName);
 
-            workflowEntranceSelectors = CDI.current().select(GetWorkflowEntranceSelectorsCommand.class).get().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, WorkflowEntranceSelectorConstants.COMPONENT_VENDOR_NAME, WorkflowEntranceSelectorConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var workflowEntranceSelectors = entities.stream()
+                            .map(WorkflowEntranceSelectorObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, workflowEntranceSelectors);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(workflowEntranceSelectors == null) {
-            workflowEntranceSelectorObjects = emptyList();
-        } else {
-            workflowEntranceSelectorObjects = new ArrayList<>(workflowEntranceSelectors.size());
-
-            workflowEntranceSelectors.stream()
-                    .map(WorkflowEntranceSelectorObject::new)
-                    .forEachOrdered(workflowEntranceSelectorObjects::add);
-        }
-
-        return workflowEntranceSelectorObjects;
+        return data;
     }
 
     @GraphQLField
@@ -2804,32 +2890,37 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("filterTypes")
-    static Collection<FilterTypeObject> filterTypes(final DataFetchingEnvironment env,
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<FilterTypeObject> filterTypes(final DataFetchingEnvironment env,
             @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName) {
-        Collection<FilterType> filterTypes;
-        Collection<FilterTypeObject> filterTypeObjects;
+        CountingPaginatedData<FilterTypeObject> data;
 
         try {
             var commandForm = FilterUtil.getHome().getGetFilterTypesForm();
+            var command = CDI.current().select(GetFilterTypesCommand.class).get();
 
             commandForm.setFilterKindName(filterKindName);
 
-            filterTypes = CDI.current().select(GetFilterTypesCommand.class).get().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, FilterTypeConstants.COMPONENT_VENDOR_NAME, FilterTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var filterTypes = entities.stream()
+                            .map(FilterTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, filterTypes);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(filterTypes == null) {
-            filterTypeObjects = emptyList();
-        } else {
-            filterTypeObjects = new ArrayList<>(filterTypes.size());
-
-            filterTypes.stream()
-                    .map(FilterTypeObject::new)
-                    .forEachOrdered(filterTypeObjects::add);
-        }
-
-        return filterTypeObjects;
+        return data;
     }
 
     @GraphQLField
@@ -2859,34 +2950,39 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("filters")
-    static Collection<FilterObject> filters(final DataFetchingEnvironment env,
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<FilterObject> filters(final DataFetchingEnvironment env,
             @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName,
             @GraphQLName("filterTypeName") @GraphQLNonNull final String filterTypeName) {
-        Collection<Filter> filters;
-        Collection<FilterObject> filterObjects;
+        CountingPaginatedData<FilterObject> data;
 
         try {
             var commandForm = FilterUtil.getHome().getGetFiltersForm();
+            var command = CDI.current().select(GetFiltersCommand.class).get();
 
             commandForm.setFilterKindName(filterKindName);
             commandForm.setFilterTypeName(filterTypeName);
 
-            filters = CDI.current().select(GetFiltersCommand.class).get().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, FilterConstants.COMPONENT_VENDOR_NAME, FilterConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var filters = entities.stream()
+                            .map(FilterObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, filters);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(filters == null) {
-            filterObjects = emptyList();
-        } else {
-            filterObjects = new ArrayList<>(filters.size());
-
-            filters.stream()
-                    .map(FilterObject::new)
-                    .forEachOrdered(filterObjects::add);
-        }
-
-        return filterObjects;
+        return data;
     }
 
     @GraphQLField
@@ -4166,6 +4262,59 @@ public interface GraphQlQueries {
                             .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, appearances);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("eventType")
+    static EventTypeObject eventType(final DataFetchingEnvironment env,
+            @GraphQLName("eventTypeName") final String eventTypeName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        EventType eventType;
+
+        try {
+            var commandForm = CoreUtil.getHome().getGetEventTypeForm();
+
+            commandForm.setEventTypeName(eventTypeName);
+            commandForm.setUuid(id);
+
+            eventType = CDI.current().select(GetEventTypeCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return eventType == null ? null : new EventTypeObject(eventType);
+    }
+
+    @GraphQLField
+    @GraphQLName("eventTypes")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<EventTypeObject> eventTypes(final DataFetchingEnvironment env) {
+        CountingPaginatedData<EventTypeObject> data;
+
+        try {
+            var commandForm = CoreUtil.getHome().getGetEventTypesForm();
+            var command = CDI.current().select(GetEventTypesCommand.class).get();
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, EventTypeConstants.COMPONENT_VENDOR_NAME, EventTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var eventTypes = entities.stream()
+                            .map(EventTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, eventTypes);
                 }
             }
         } catch (NamingException ex) {
@@ -8212,6 +8361,234 @@ public interface GraphQlQueries {
     }
 
     @GraphQLField
+    @GraphQLName("inventoryLocationGroup")
+    static InventoryLocationGroupObject inventoryLocationGroup(final DataFetchingEnvironment env,
+            @GraphQLName("warehouseName") final String warehouseName,
+            @GraphQLName("inventoryLocationGroupName") final String inventoryLocationGroupName) {
+        InventoryLocationGroup inventoryLocationGroup;
+
+        try {
+            var commandForm = InventoryUtil.getHome().getGetInventoryLocationGroupForm();
+
+            commandForm.setWarehouseName(warehouseName);
+            commandForm.setInventoryLocationGroupName(inventoryLocationGroupName);
+
+            inventoryLocationGroup = CDI.current().select(GetInventoryLocationGroupCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return inventoryLocationGroup == null ? null : new InventoryLocationGroupObject(inventoryLocationGroup);
+    }
+
+    @GraphQLField
+    @GraphQLName("inventoryLocationGroups")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<InventoryLocationGroupObject> inventoryLocationGroups(final DataFetchingEnvironment env,
+            @GraphQLName("warehouseName") final String warehouseName) {
+        CountingPaginatedData<InventoryLocationGroupObject> data;
+
+        try {
+            var commandForm = InventoryUtil.getHome().getGetInventoryLocationGroupsForm();
+            var command = CDI.current().select(GetInventoryLocationGroupsCommand.class).get();
+
+            commandForm.setWarehouseName(warehouseName);
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, InventoryLocationGroupConstants.COMPONENT_VENDOR_NAME, InventoryLocationGroupConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var inventoryLocationGroups = entities.stream()
+                            .map(InventoryLocationGroupObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, inventoryLocationGroups);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("locationType")
+    static LocationTypeObject locationType(final DataFetchingEnvironment env,
+            @GraphQLName("warehouseName") final String warehouseName,
+            @GraphQLName("locationTypeName") final String locationTypeName) {
+        LocationType locationType;
+
+        try {
+            var commandForm = WarehouseUtil.getHome().getGetLocationTypeForm();
+
+            commandForm.setWarehouseName(warehouseName);
+            commandForm.setLocationTypeName(locationTypeName);
+
+            locationType = CDI.current().select(GetLocationTypeCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return locationType == null ? null : new LocationTypeObject(locationType);
+    }
+
+    @GraphQLField
+    @GraphQLName("locationTypes")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<LocationTypeObject> locationTypes(final DataFetchingEnvironment env,
+            @GraphQLName("warehouseName") final String warehouseName) {
+        CountingPaginatedData<LocationTypeObject> data;
+
+        try {
+            var commandForm = WarehouseUtil.getHome().getGetLocationTypesForm();
+            var command = CDI.current().select(GetLocationTypesCommand.class).get();
+
+            commandForm.setWarehouseName(warehouseName);
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, LocationTypeConstants.COMPONENT_VENDOR_NAME, LocationTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var locationTypes = entities.stream()
+                            .map(LocationTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, locationTypes);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("locationNameElement")
+    static LocationNameElementObject locationNameElement(final DataFetchingEnvironment env,
+            @GraphQLName("warehouseName") final String warehouseName,
+            @GraphQLName("locationTypeName") final String locationTypeName,
+            @GraphQLName("locationNameElementName") final String locationNameElementName) {
+        LocationNameElement locationNameElement;
+
+        try {
+            var commandForm = WarehouseUtil.getHome().getGetLocationNameElementForm();
+
+            commandForm.setWarehouseName(warehouseName);
+            commandForm.setLocationTypeName(locationTypeName);
+            commandForm.setLocationNameElementName(locationNameElementName);
+
+            locationNameElement = CDI.current().select(GetLocationNameElementCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return locationNameElement == null ? null : new LocationNameElementObject(locationNameElement);
+    }
+
+    @GraphQLField
+    @GraphQLName("locationNameElements")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<LocationNameElementObject> locationNameElements(final DataFetchingEnvironment env,
+            @GraphQLName("warehouseName") final String warehouseName,
+            @GraphQLName("locationTypeName") final String locationTypeName) {
+        CountingPaginatedData<LocationNameElementObject> data;
+
+        try {
+            var commandForm = WarehouseUtil.getHome().getGetLocationNameElementsForm();
+            var command = CDI.current().select(GetLocationNameElementsCommand.class).get();
+
+            commandForm.setWarehouseName(warehouseName);
+            commandForm.setLocationTypeName(locationTypeName);
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, LocationNameElementConstants.COMPONENT_VENDOR_NAME, LocationNameElementConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var locationNameElements = entities.stream()
+                            .map(LocationNameElementObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, locationNameElements);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("location")
+    static LocationObject location(final DataFetchingEnvironment env,
+            @GraphQLName("warehouseName") final String warehouseName,
+            @GraphQLName("locationName") final String locationName) {
+        Location location;
+
+        try {
+            var commandForm = WarehouseUtil.getHome().getGetLocationForm();
+
+            commandForm.setWarehouseName(warehouseName);
+            commandForm.setLocationName(locationName);
+
+            location = CDI.current().select(GetLocationCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return location == null ? null : new LocationObject(location);
+    }
+
+    @GraphQLField
+    @GraphQLName("locations")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<LocationObject> locations(final DataFetchingEnvironment env,
+            @GraphQLName("warehouseName") final String warehouseName) {
+        CountingPaginatedData<LocationObject> data;
+
+        try {
+            var commandForm = WarehouseUtil.getHome().getGetLocationsForm();
+            var command = CDI.current().select(GetLocationsCommand.class).get();
+
+            commandForm.setWarehouseName(warehouseName);
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, LocationConstants.COMPONENT_VENDOR_NAME, LocationConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var locations = entities.stream()
+                            .map(LocationObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, locations);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
     @GraphQLName("cancellationKind")
     static CancellationKindObject cancellationKind(final DataFetchingEnvironment env,
             @GraphQLName("cancellationKindName") final String cancellationKindName,
@@ -10822,6 +11199,62 @@ public interface GraphQlQueries {
     }
 
     @GraphQLField
+    @GraphQLName("geoCodeAliasType")
+    static GeoCodeAliasTypeObject geoCodeAliasType(final DataFetchingEnvironment env,
+            @GraphQLName("geoCodeTypeName") @GraphQLNonNull final String geoCodeTypeName,
+            @GraphQLName("geoCodeAliasTypeName") @GraphQLNonNull final String geoCodeAliasTypeName) {
+        GeoCodeAliasType geoCodeAliasType;
+
+        try {
+            var commandForm = GeoUtil.getHome().getGetGeoCodeAliasTypeForm();
+
+            commandForm.setGeoCodeTypeName(geoCodeTypeName);
+            commandForm.setGeoCodeAliasTypeName(geoCodeAliasTypeName);
+
+            geoCodeAliasType = CDI.current().select(GetGeoCodeAliasTypeCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return geoCodeAliasType == null ? null : new GeoCodeAliasTypeObject(geoCodeAliasType);
+    }
+
+    @GraphQLField
+    @GraphQLName("geoCodeAliasTypes")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<GeoCodeAliasTypeObject> geoCodeAliasTypes(final DataFetchingEnvironment env,
+            @GraphQLName("geoCodeTypeName") @GraphQLNonNull final String geoCodeTypeName) {
+        CountingPaginatedData<GeoCodeAliasTypeObject> data;
+
+        try {
+            var commandForm = GeoUtil.getHome().getGetGeoCodeAliasTypesForm();
+            var command = CDI.current().select(GetGeoCodeAliasTypesCommand.class).get();
+
+            commandForm.setGeoCodeTypeName(geoCodeTypeName);
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, GeoCodeAliasTypeConstants.COMPONENT_VENDOR_NAME, GeoCodeAliasTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var geoCodeAliasTypes = entities.stream()
+                            .map(GeoCodeAliasTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, geoCodeAliasTypes);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
     @GraphQLName("geoCodeScope")
     static GeoCodeScopeObject geoCodeScope(final DataFetchingEnvironment env,
             @GraphQLName("geoCodeScopeName") final String geoCodeScopeName,
@@ -10893,6 +11326,587 @@ public interface GraphQlQueries {
         }
 
         return geoCode == null ? null : new GeoCodeObject(geoCode);
+    }
+
+    @GraphQLField
+    @GraphQLName("geoCodeAlias")
+    static GeoCodeAliasObject geoCodeAlias(final DataFetchingEnvironment env,
+            @GraphQLName("geoCodeName") @GraphQLNonNull final String geoCodeName,
+            @GraphQLName("geoCodeAliasTypeName") @GraphQLNonNull final String geoCodeAliasTypeName) {
+        GeoCodeAlias geoCodeAlias;
+
+        try {
+            var commandForm = GeoUtil.getHome().getGetGeoCodeAliasForm();
+
+            commandForm.setGeoCodeName(geoCodeName);
+            commandForm.setGeoCodeAliasTypeName(geoCodeAliasTypeName);
+
+            geoCodeAlias = CDI.current().select(GetGeoCodeAliasCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return geoCodeAlias == null ? null : new GeoCodeAliasObject(geoCodeAlias);
+    }
+
+    @GraphQLField
+    @GraphQLName("geoCodeAliases")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<GeoCodeAliasObject> geoCodeAliases(final DataFetchingEnvironment env,
+            @GraphQLName("geoCodeName") @GraphQLNonNull final String geoCodeName) {
+        CountingPaginatedData<GeoCodeAliasObject> data;
+
+        try {
+            var commandForm = GeoUtil.getHome().getGetGeoCodeAliasesForm();
+            var command = CDI.current().select(GetGeoCodeAliasesCommand.class).get();
+
+            commandForm.setGeoCodeName(geoCodeName);
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, GeoCodeAliasConstants.COMPONENT_VENDOR_NAME, GeoCodeAliasConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var geoCodeAliass = entities.stream()
+                            .map(GeoCodeAliasObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, geoCodeAliass);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("geoCodeLanguage")
+    static GeoCodeLanguageObject geoCodeLanguage(final DataFetchingEnvironment env,
+            @GraphQLName("geoCodeName") @GraphQLNonNull final String geoCodeName,
+            @GraphQLName("languageIsoName") @GraphQLNonNull final String languageIsoName) {
+        GeoCodeLanguage geoCodeLanguage;
+
+        try {
+            var commandForm = GeoUtil.getHome().getGetGeoCodeLanguageForm();
+
+            commandForm.setGeoCodeName(geoCodeName);
+            commandForm.setLanguageIsoName(languageIsoName);
+
+            geoCodeLanguage = CDI.current().select(GetGeoCodeLanguageCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return geoCodeLanguage == null ? null : new GeoCodeLanguageObject(geoCodeLanguage);
+    }
+
+    @GraphQLField
+    @GraphQLName("geoCodeLanguages")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<GeoCodeLanguageObject> geoCodeLanguages(final DataFetchingEnvironment env,
+            @GraphQLName("geoCodeName") final String geoCodeName,
+            @GraphQLName("languageIsoName") final String languageIsoName) {
+        CountingPaginatedData<GeoCodeLanguageObject> data;
+
+        try {
+            var commandForm = GeoUtil.getHome().getGetGeoCodeLanguagesForm();
+            var command = CDI.current().select(GetGeoCodeLanguagesCommand.class).get();
+
+            commandForm.setGeoCodeName(geoCodeName);
+            commandForm.setLanguageIsoName(languageIsoName);
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, GeoCodeLanguageConstants.COMPONENT_VENDOR_NAME, GeoCodeLanguageConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var transactionTypes = entities.stream()
+                            .map(GeoCodeLanguageObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, transactionTypes);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("geoCodeCurrency")
+    static GeoCodeCurrencyObject geoCodeCurrency(final DataFetchingEnvironment env,
+            @GraphQLName("geoCodeName") @GraphQLNonNull final String geoCodeName,
+            @GraphQLName("currencyIsoName") @GraphQLNonNull final String currencyIsoName) {
+        GeoCodeCurrency geoCodeCurrency;
+
+        try {
+            var commandForm = GeoUtil.getHome().getGetGeoCodeCurrencyForm();
+
+            commandForm.setGeoCodeName(geoCodeName);
+            commandForm.setCurrencyIsoName(currencyIsoName);
+
+            geoCodeCurrency = CDI.current().select(GetGeoCodeCurrencyCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return geoCodeCurrency == null ? null : new GeoCodeCurrencyObject(geoCodeCurrency);
+    }
+
+    @GraphQLField
+    @GraphQLName("geoCodeCurrencies")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<GeoCodeCurrencyObject> geoCodeCurrencies(final DataFetchingEnvironment env,
+            @GraphQLName("geoCodeName") final String geoCodeName,
+            @GraphQLName("currencyIsoName") final String currencyIsoName) {
+        CountingPaginatedData<GeoCodeCurrencyObject> data;
+
+        try {
+            var commandForm = GeoUtil.getHome().getGetGeoCodeCurrenciesForm();
+            var command = CDI.current().select(GetGeoCodeCurrenciesCommand.class).get();
+
+            commandForm.setGeoCodeName(geoCodeName);
+            commandForm.setCurrencyIsoName(currencyIsoName);
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, GeoCodeCurrencyConstants.COMPONENT_VENDOR_NAME, GeoCodeCurrencyConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var transactionTypes = entities.stream()
+                            .map(GeoCodeCurrencyObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, transactionTypes);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("geoCodeTimeZone")
+    static GeoCodeTimeZoneObject geoCodeTimeZone(final DataFetchingEnvironment env,
+            @GraphQLName("geoCodeName") @GraphQLNonNull final String geoCodeName,
+            @GraphQLName("javaTimeZoneName") @GraphQLNonNull final String javaTimeZoneName) {
+        GeoCodeTimeZone geoCodeTimeZone;
+
+        try {
+            var commandForm = GeoUtil.getHome().getGetGeoCodeTimeZoneForm();
+
+            commandForm.setGeoCodeName(geoCodeName);
+            commandForm.setJavaTimeZoneName(javaTimeZoneName);
+
+            geoCodeTimeZone = CDI.current().select(GetGeoCodeTimeZoneCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return geoCodeTimeZone == null ? null : new GeoCodeTimeZoneObject(geoCodeTimeZone);
+    }
+
+    @GraphQLField
+    @GraphQLName("geoCodeTimeZones")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<GeoCodeTimeZoneObject> geoCodeTimeZones(final DataFetchingEnvironment env,
+            @GraphQLName("geoCodeName") final String geoCodeName,
+            @GraphQLName("javaTimeZoneName") final String javaTimeZoneName) {
+        CountingPaginatedData<GeoCodeTimeZoneObject> data;
+
+        try {
+            var commandForm = GeoUtil.getHome().getGetGeoCodeTimeZonesForm();
+            var command = CDI.current().select(GetGeoCodeTimeZonesCommand.class).get();
+
+            commandForm.setGeoCodeName(geoCodeName);
+            commandForm.setJavaTimeZoneName(javaTimeZoneName);
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, GeoCodeTimeZoneConstants.COMPONENT_VENDOR_NAME, GeoCodeTimeZoneConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var transactionTypes = entities.stream()
+                            .map(GeoCodeTimeZoneObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, transactionTypes);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("geoCodeDateTimeFormat")
+    static GeoCodeDateTimeFormatObject geoCodeDateTimeFormat(final DataFetchingEnvironment env,
+            @GraphQLName("geoCodeName") @GraphQLNonNull final String geoCodeName,
+            @GraphQLName("dateTimeFormatName") @GraphQLNonNull final String dateTimeFormatName) {
+        GeoCodeDateTimeFormat geoCodeDateTimeFormat;
+
+        try {
+            var commandForm = GeoUtil.getHome().getGetGeoCodeDateTimeFormatForm();
+
+            commandForm.setGeoCodeName(geoCodeName);
+            commandForm.setDateTimeFormatName(dateTimeFormatName);
+
+            geoCodeDateTimeFormat = CDI.current().select(GetGeoCodeDateTimeFormatCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return geoCodeDateTimeFormat == null ? null : new GeoCodeDateTimeFormatObject(geoCodeDateTimeFormat);
+    }
+
+    @GraphQLField
+    @GraphQLName("geoCodeDateTimeFormats")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<GeoCodeDateTimeFormatObject> geoCodeDateTimeFormats(final DataFetchingEnvironment env,
+            @GraphQLName("geoCodeName") final String geoCodeName,
+            @GraphQLName("dateTimeFormatName") final String dateTimeFormatName) {
+        CountingPaginatedData<GeoCodeDateTimeFormatObject> data;
+
+        try {
+            var commandForm = GeoUtil.getHome().getGetGeoCodeDateTimeFormatsForm();
+            var command = CDI.current().select(GetGeoCodeDateTimeFormatsCommand.class).get();
+
+            commandForm.setGeoCodeName(geoCodeName);
+            commandForm.setDateTimeFormatName(dateTimeFormatName);
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, GeoCodeDateTimeFormatConstants.COMPONENT_VENDOR_NAME, GeoCodeDateTimeFormatConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var transactionTypes = entities.stream()
+                            .map(GeoCodeDateTimeFormatObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, transactionTypes);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("country")
+    static GeoCodeObject country(final DataFetchingEnvironment env,
+            @GraphQLName("geoCodeName") final String geoCodeName,
+            @GraphQLName("countryName") final String countryName,
+            @GraphQLName("iso3Number") final String iso3Number,
+            @GraphQLName("iso3Letter") final String iso3Letter,
+            @GraphQLName("iso2Letter") final String iso2Letter,
+            @GraphQLName("alias") final String alias) {
+        GeoCode geoCode;
+
+        try {
+            var commandForm = GeoUtil.getHome().getGetCountryForm();
+
+            commandForm.setGeoCodeName(geoCodeName);
+            commandForm.setCountryName(countryName);
+            commandForm.setIso3Number(iso3Number);
+            commandForm.setIso3Letter(iso3Letter);
+            commandForm.setIso2Letter(iso2Letter);
+            commandForm.setAlias(alias);
+
+            geoCode = CDI.current().select(GetCountryCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return geoCode == null ? null : new GeoCodeObject(geoCode);
+    }
+
+    @GraphQLField
+    @GraphQLName("countries")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<GeoCodeObject> countries(final DataFetchingEnvironment env) {
+        CountingPaginatedData<GeoCodeObject> data;
+
+        try {
+            var commandForm = GeoUtil.getHome().getGetCountriesForm();
+            var command = CDI.current().select(GetCountriesCommand.class).get();
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, GeoCodeConstants.COMPONENT_VENDOR_NAME, GeoCodeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var geoCodeAliasTypes = entities.stream()
+                            .map(GeoCodeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, geoCodeAliasTypes);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("zipCode")
+    static GeoCodeObject zipCode(final DataFetchingEnvironment env,
+            @GraphQLName("countryGeoCodeName") @GraphQLNonNull final String countryGeoCodeName,
+            @GraphQLName("zipCodeName") @GraphQLNonNull final String zipCodeName) {
+        GeoCode geoCode;
+
+        try {
+            var commandForm = GeoUtil.getHome().getGetZipCodeForm();
+
+            commandForm.setCountryGeoCodeName(countryGeoCodeName);
+            commandForm.setZipCodeName(zipCodeName);
+
+            geoCode = CDI.current().select(GetZipCodeCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return geoCode == null ? null : new GeoCodeObject(geoCode);
+    }
+
+    @GraphQLField
+    @GraphQLName("zipCodes")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<GeoCodeObject> zipCodes(final DataFetchingEnvironment env,
+            @GraphQLName("countryName") @GraphQLNonNull final String countryName) {
+        CountingPaginatedData<GeoCodeObject> data;
+
+        try {
+            var commandForm = GeoUtil.getHome().getGetZipCodesForm();
+            var command = CDI.current().select(GetZipCodesCommand.class).get();
+
+            commandForm.setCountryName(countryName);
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, GeoCodeConstants.COMPONENT_VENDOR_NAME, GeoCodeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var geoCodeAliasTypes = entities.stream()
+                            .map(GeoCodeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, geoCodeAliasTypes);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("state")
+    static GeoCodeObject state(final DataFetchingEnvironment env,
+            @GraphQLName("countryGeoCodeName") @GraphQLNonNull final String countryGeoCodeName,
+            @GraphQLName("stateName") final String stateName,
+            @GraphQLName("postal2Letter") final String postal2Letter) {
+        GeoCode geoCode;
+
+        try {
+            var commandForm = GeoUtil.getHome().getGetStateForm();
+
+            commandForm.setCountryGeoCodeName(countryGeoCodeName);
+            commandForm.setStateName(stateName);
+            commandForm.setPostal2Letter(postal2Letter);
+
+            geoCode = CDI.current().select(GetStateCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return geoCode == null ? null : new GeoCodeObject(geoCode);
+    }
+
+    @GraphQLField
+    @GraphQLName("states")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<GeoCodeObject> states(final DataFetchingEnvironment env,
+            @GraphQLName("countryName") @GraphQLNonNull final String countryName) {
+        CountingPaginatedData<GeoCodeObject> data;
+
+        try {
+            var commandForm = GeoUtil.getHome().getGetStatesForm();
+            var command = CDI.current().select(GetStatesCommand.class).get();
+
+            commandForm.setCountryName(countryName);
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, GeoCodeConstants.COMPONENT_VENDOR_NAME, GeoCodeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var geoCodeAliasTypes = entities.stream()
+                            .map(GeoCodeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, geoCodeAliasTypes);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("county")
+    static GeoCodeObject county(final DataFetchingEnvironment env,
+            @GraphQLName("stateGeoCodeName") @GraphQLNonNull final String stateGeoCodeName,
+            @GraphQLName("countyName") final String countyName,
+            @GraphQLName("countyNumber") final String countyNumber) {
+        GeoCode geoCode;
+
+        try {
+            var commandForm = GeoUtil.getHome().getGetCountyForm();
+
+            commandForm.setStateGeoCodeName(stateGeoCodeName);
+            commandForm.setCountyName(countyName);
+            commandForm.setCountyNumber(countyNumber);
+
+            geoCode = CDI.current().select(GetCountyCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return geoCode == null ? null : new GeoCodeObject(geoCode);
+    }
+
+    @GraphQLField
+    @GraphQLName("counties")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<GeoCodeObject> counties(final DataFetchingEnvironment env,
+            @GraphQLName("countryName") @GraphQLNonNull final String countryName,
+            @GraphQLName("stateName") @GraphQLNonNull final String stateName) {
+        CountingPaginatedData<GeoCodeObject> data;
+
+        try {
+            var commandForm = GeoUtil.getHome().getGetCountiesForm();
+            var command = CDI.current().select(GetCountiesCommand.class).get();
+
+            commandForm.setCountryName(countryName);
+            commandForm.setStateName(stateName);
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, GeoCodeConstants.COMPONENT_VENDOR_NAME, GeoCodeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var geoCodeAliasTypes = entities.stream()
+                            .map(GeoCodeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, geoCodeAliasTypes);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("city")
+    static GeoCodeObject city(final DataFetchingEnvironment env,
+            @GraphQLName("stateGeoCodeName") @GraphQLNonNull final String stateGeoCodeName,
+            @GraphQLName("cityName") @GraphQLNonNull final String cityName) {
+        GeoCode geoCode;
+
+        try {
+            var commandForm = GeoUtil.getHome().getGetCityForm();
+
+            commandForm.setStateGeoCodeName(stateGeoCodeName);
+            commandForm.setCityName(cityName);
+
+            geoCode = CDI.current().select(GetCityCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return geoCode == null ? null : new GeoCodeObject(geoCode);
+    }
+
+    @GraphQLField
+    @GraphQLName("cities")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<GeoCodeObject> cities(final DataFetchingEnvironment env,
+            @GraphQLName("countryName") @GraphQLNonNull final String countryName,
+            @GraphQLName("stateName") @GraphQLNonNull final String stateName) {
+        CountingPaginatedData<GeoCodeObject> data;
+
+        try {
+            var commandForm = GeoUtil.getHome().getGetCitiesForm();
+            var command = CDI.current().select(GetCitiesCommand.class).get();
+
+            commandForm.setCountryName(countryName);
+            commandForm.setStateName(stateName);
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, GeoCodeConstants.COMPONENT_VENDOR_NAME, GeoCodeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var geoCodeAliasTypes = entities.stream()
+                            .map(GeoCodeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, geoCodeAliasTypes);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
     }
 
     @GraphQLField

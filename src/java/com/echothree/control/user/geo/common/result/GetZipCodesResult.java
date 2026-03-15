@@ -26,7 +26,10 @@ public interface GetZipCodesResult
     
     CountryTransfer getCountry();
     void setCountry(CountryTransfer country);
-    
+
+    Long getPostalCodeCount();
+    void setPostalCodeCount(Long postalCodeCount);
+
     List<PostalCodeTransfer> getPostalCodes();
     void setPostalCodes(List<PostalCodeTransfer> postalCodes);
     

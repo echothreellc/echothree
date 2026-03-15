@@ -85,14 +85,24 @@ import com.echothree.control.user.filter.common.result.EditFilterAdjustmentPerce
 import com.echothree.control.user.filter.common.result.EditFilterAdjustmentResult;
 import com.echothree.control.user.filter.common.result.EditFilterResult;
 import com.echothree.control.user.filter.common.result.EditFilterStepResult;
+import com.echothree.control.user.geo.common.GeoUtil;
+import com.echothree.control.user.geo.common.result.CreateGeoCodeAliasTypeResult;
+import com.echothree.control.user.geo.common.result.EditGeoCodeAliasResult;
+import com.echothree.control.user.geo.common.result.EditGeoCodeAliasTypeResult;
+import com.echothree.control.user.geo.common.result.EditGeoCodeCurrencyResult;
+import com.echothree.control.user.geo.common.result.EditGeoCodeDateTimeFormatResult;
+import com.echothree.control.user.geo.common.result.EditGeoCodeLanguageResult;
+import com.echothree.control.user.geo.common.result.EditGeoCodeTimeZoneResult;
 import com.echothree.control.user.inventory.common.InventoryUtil;
 import com.echothree.control.user.inventory.common.result.CreateAllocationPriorityResult;
 import com.echothree.control.user.inventory.common.result.CreateInventoryAdjustmentTypeResult;
 import com.echothree.control.user.inventory.common.result.CreateInventoryConditionResult;
+import com.echothree.control.user.inventory.common.result.CreateInventoryLocationGroupResult;
 import com.echothree.control.user.inventory.common.result.CreateInventoryTransactionTypeResult;
 import com.echothree.control.user.inventory.common.result.EditAllocationPriorityResult;
 import com.echothree.control.user.inventory.common.result.EditInventoryAdjustmentTypeResult;
 import com.echothree.control.user.inventory.common.result.EditInventoryConditionResult;
+import com.echothree.control.user.inventory.common.result.EditInventoryLocationGroupResult;
 import com.echothree.control.user.inventory.common.result.EditInventoryTransactionTypeResult;
 import com.echothree.control.user.item.common.ItemUtil;
 import com.echothree.control.user.item.common.result.CreateItemAliasTypeResult;
@@ -219,8 +229,14 @@ import com.echothree.control.user.vendor.common.result.EditVendorItemResult;
 import com.echothree.control.user.vendor.common.result.EditVendorResult;
 import com.echothree.control.user.vendor.common.result.EditVendorTypeResult;
 import com.echothree.control.user.warehouse.common.WarehouseUtil;
+import com.echothree.control.user.warehouse.common.result.CreateLocationNameElementResult;
+import com.echothree.control.user.warehouse.common.result.CreateLocationResult;
+import com.echothree.control.user.warehouse.common.result.CreateLocationTypeResult;
 import com.echothree.control.user.warehouse.common.result.CreateWarehouseResult;
 import com.echothree.control.user.warehouse.common.result.CreateWarehouseTypeResult;
+import com.echothree.control.user.warehouse.common.result.EditLocationNameElementResult;
+import com.echothree.control.user.warehouse.common.result.EditLocationResult;
+import com.echothree.control.user.warehouse.common.result.EditLocationTypeResult;
 import com.echothree.control.user.warehouse.common.result.EditWarehouseResult;
 import com.echothree.control.user.warehouse.common.result.EditWarehouseTypeResult;
 import com.echothree.control.user.wishlist.common.WishlistUtil;
@@ -970,6 +986,7 @@ public interface GraphQlMutations {
             var commandForm = SelectorUtil.getHome().getDeleteSelectorForm();
 
             commandForm.setSelectorKindName(selectorKindName);
+            commandForm.setSelectorTypeName(selectorTypeName);
             commandForm.setSelectorName(selectorName);
 
             var commandResult = SelectorUtil.getHome().deleteSelector(BaseGraphQl.getUserVisitPK(env), commandForm);
@@ -986,8 +1003,7 @@ public interface GraphQlMutations {
     static MutationResultWithIdObject editSelector(final DataFetchingEnvironment env,
             @GraphQLName("selectorKindName") @GraphQLNonNull final String selectorKindName,
             @GraphQLName("selectorTypeName") @GraphQLNonNull final String selectorTypeName,
-            @GraphQLName("originalSelectorName") final String originalSelectorName,
-            @GraphQLName("id") @GraphQLID final String id,
+            @GraphQLName("originalSelectorName") @GraphQLNonNull final String originalSelectorName,
             @GraphQLName("selectorName") final String selectorName,
             @GraphQLName("isDefault") final String isDefault,
             @GraphQLName("sortOrder") final String sortOrder,
@@ -1000,7 +1016,6 @@ public interface GraphQlMutations {
             spec.setSelectorKindName(selectorKindName);
             spec.setSelectorTypeName(selectorTypeName);
             spec.setSelectorName(originalSelectorName);
-            spec.setUuid(id);
 
             var commandForm = SelectorUtil.getHome().getEditSelectorForm();
 
@@ -1092,6 +1107,7 @@ public interface GraphQlMutations {
             var commandForm = FilterUtil.getHome().getDeleteFilterForm();
 
             commandForm.setFilterKindName(filterKindName);
+            commandForm.setFilterTypeName(filterTypeName);
             commandForm.setFilterName(filterName);
 
             var commandResult = FilterUtil.getHome().deleteFilter(BaseGraphQl.getUserVisitPK(env), commandForm);
@@ -1108,10 +1124,9 @@ public interface GraphQlMutations {
     static MutationResultWithIdObject editFilter(final DataFetchingEnvironment env,
             @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName,
             @GraphQLName("filterTypeName") @GraphQLNonNull final String filterTypeName,
-            @GraphQLName("originalFilterName") final String originalFilterName,
-            @GraphQLName("id") @GraphQLID final String id,
+            @GraphQLName("originalFilterName") @GraphQLNonNull final String originalFilterName,
             @GraphQLName("filterName") final String filterName,
-            @GraphQLName("initialFilterAdjustmentName") @GraphQLNonNull final String initialFilterAdjustmentName,
+            @GraphQLName("initialFilterAdjustmentName") final String initialFilterAdjustmentName,
             @GraphQLName("filterItemSelectorName") final String filterItemSelectorName,
             @GraphQLName("isDefault") final String isDefault,
             @GraphQLName("sortOrder") final String sortOrder,
@@ -1124,7 +1139,6 @@ public interface GraphQlMutations {
             spec.setFilterKindName(filterKindName);
             spec.setFilterTypeName(filterTypeName);
             spec.setFilterName(originalFilterName);
-            spec.setUuid(id);
 
             var commandForm = FilterUtil.getHome().getEditFilterForm();
 
@@ -1217,8 +1231,9 @@ public interface GraphQlMutations {
             var commandForm = FilterUtil.getHome().getDeleteFilterStepForm();
 
             commandForm.setFilterKindName(filterKindName);
-            commandForm.setFilterStepName(filterStepName);
+            commandForm.setFilterTypeName(filterTypeName);
             commandForm.setFilterName(filterName);
+            commandForm.setFilterStepName(filterStepName);
 
             var commandResult = FilterUtil.getHome().deleteFilterStep(BaseGraphQl.getUserVisitPK(env), commandForm);
             mutationResultObject.setCommandResult(commandResult);
@@ -1235,8 +1250,7 @@ public interface GraphQlMutations {
             @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName,
             @GraphQLName("filterTypeName") @GraphQLNonNull final String filterTypeName,
             @GraphQLName("filterName") @GraphQLNonNull final String filterName,
-            @GraphQLName("originalFilterStepName") final String originalFilterStepName,
-            @GraphQLName("id") @GraphQLID final String id,
+            @GraphQLName("originalFilterStepName") @GraphQLNonNull final String originalFilterStepName,
             @GraphQLName("filterStepName") final String filterStepName,
             @GraphQLName("filterItemSelectorName") final String filterItemSelectorName,
             @GraphQLName("description") final String description) {
@@ -1249,7 +1263,6 @@ public interface GraphQlMutations {
             spec.setFilterTypeName(filterTypeName);
             spec.setFilterName(filterName);
             spec.setFilterStepName(originalFilterStepName);
-            spec.setUuid(id);
 
             var commandForm = FilterUtil.getHome().getEditFilterStepForm();
 
@@ -1351,8 +1364,7 @@ public interface GraphQlMutations {
     @GraphQLRelayMutation
     static MutationResultWithIdObject editFilterAdjustment(final DataFetchingEnvironment env,
             @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName,
-            @GraphQLName("originalFilterAdjustmentName") final String originalFilterAdjustmentName,
-            @GraphQLName("id") @GraphQLID final String id,
+            @GraphQLName("originalFilterAdjustmentName") @GraphQLNonNull final String originalFilterAdjustmentName,
             @GraphQLName("filterAdjustmentName") final String filterAdjustmentName,
             @GraphQLName("filterAdjustmentSourceName") final String filterAdjustmentSourceName,
             @GraphQLName("isDefault") final String isDefault,
@@ -1365,7 +1377,6 @@ public interface GraphQlMutations {
 
             spec.setFilterKindName(filterKindName);
             spec.setFilterAdjustmentName(originalFilterAdjustmentName);
-            spec.setUuid(id);
 
             var commandForm = FilterUtil.getHome().getEditFilterAdjustmentForm();
 
@@ -1478,7 +1489,7 @@ public interface GraphQlMutations {
             @GraphQLName("unitOfMeasureKindName") final String unitOfMeasureKindName,
             @GraphQLName("unitOfMeasureTypeName") final String unitOfMeasureTypeName,
             @GraphQLName("currencyIsoName") @GraphQLNonNull final String currencyIsoName,
-            @GraphQLName("amount") @GraphQLNonNull final String amount) {
+            @GraphQLName("amount") final String amount) {
         var mutationResultObject = new MutationResultObject();
 
         try {
@@ -1592,7 +1603,7 @@ public interface GraphQlMutations {
             @GraphQLName("unitOfMeasureKindName") final String unitOfMeasureKindName,
             @GraphQLName("unitOfMeasureTypeName") final String unitOfMeasureTypeName,
             @GraphQLName("currencyIsoName") @GraphQLNonNull final String currencyIsoName,
-            @GraphQLName("unitAmount") @GraphQLNonNull final String unitAmount) {
+            @GraphQLName("unitAmount") final String unitAmount) {
         var mutationResultObject = new MutationResultObject();
 
         try {
@@ -1706,7 +1717,7 @@ public interface GraphQlMutations {
             @GraphQLName("unitOfMeasureKindName") final String unitOfMeasureKindName,
             @GraphQLName("unitOfMeasureTypeName") final String unitOfMeasureTypeName,
             @GraphQLName("currencyIsoName") @GraphQLNonNull final String currencyIsoName,
-            @GraphQLName("percent") @GraphQLNonNull final String percent) {
+            @GraphQLName("percent") final String percent) {
         var mutationResultObject = new MutationResultObject();
 
         try {
@@ -10143,7 +10154,6 @@ public interface GraphQlMutations {
         return mutationResultObject;
     }
 
-
     @GraphQLField
     @GraphQLRelayMutation
     static MutationResultWithIdObject createWarehouseType(final DataFetchingEnvironment env,
@@ -10404,6 +10414,519 @@ public interface GraphQlMutations {
             commandForm.setUuid(id);
 
             mutationResultObject.setCommandResult(WarehouseUtil.getHome().deleteWarehouse(BaseGraphQl.getUserVisitPK(env), commandForm));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultWithIdObject createInventoryLocationGroup(final DataFetchingEnvironment env,
+            @GraphQLName("warehouseName") @GraphQLNonNull final String warehouseName,
+            @GraphQLName("inventoryLocationGroupName") @GraphQLNonNull final String inventoryLocationGroupName,
+            @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
+            @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var commandForm = InventoryUtil.getHome().getCreateInventoryLocationGroupForm();
+
+            commandForm.setWarehouseName(warehouseName);
+            commandForm.setInventoryLocationGroupName(inventoryLocationGroupName);
+            commandForm.setIsDefault(isDefault);
+            commandForm.setSortOrder(sortOrder);
+            commandForm.setDescription(description);
+
+            var commandResult = InventoryUtil.getHome().createInventoryLocationGroup(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                var result = (CreateInventoryLocationGroupResult)commandResult.getExecutionResult().getResult();
+
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject deleteInventoryLocationGroup(final DataFetchingEnvironment env,
+            @GraphQLName("warehouseName") @GraphQLNonNull final String warehouseName,
+            @GraphQLName("inventoryLocationGroupName") @GraphQLNonNull final String inventoryLocationGroupName) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = InventoryUtil.getHome().getDeleteInventoryLocationGroupForm();
+
+            commandForm.setWarehouseName(warehouseName);
+            commandForm.setInventoryLocationGroupName(inventoryLocationGroupName);
+
+            var commandResult = InventoryUtil.getHome().deleteInventoryLocationGroup(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultWithIdObject editInventoryLocationGroup(final DataFetchingEnvironment env,
+            @GraphQLName("warehouseName") @GraphQLNonNull final String warehouseName,
+            @GraphQLName("originalInventoryLocationGroupName") @GraphQLNonNull final String originalInventoryLocationGroupName,
+            @GraphQLName("inventoryLocationGroupName") final String inventoryLocationGroupName,
+            @GraphQLName("isDefault") final String isDefault,
+            @GraphQLName("sortOrder") final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var spec = InventoryUtil.getHome().getInventoryLocationGroupSpec();
+
+            spec.setWarehouseName(warehouseName);
+            spec.setInventoryLocationGroupName(originalInventoryLocationGroupName);
+
+            var commandForm = InventoryUtil.getHome().getEditInventoryLocationGroupForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = InventoryUtil.getHome().editInventoryLocationGroup(BaseGraphQl.getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditInventoryLocationGroupResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                mutationResultObject.setEntityInstance(result.getInventoryLocationGroup().getEntityInstance());
+
+                if(arguments.containsKey("inventoryLocationGroupName"))
+                    edit.setInventoryLocationGroupName(inventoryLocationGroupName);
+                if(arguments.containsKey("isDefault"))
+                    edit.setIsDefault(isDefault);
+                if(arguments.containsKey("sortOrder"))
+                    edit.setSortOrder(sortOrder);
+                if(arguments.containsKey("description"))
+                    edit.setDescription(description);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = InventoryUtil.getHome().editInventoryLocationGroup(BaseGraphQl.getUserVisitPK(env), commandForm);
+            }
+
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    @GraphQLName("setInventoryLocationGroupStatus")
+    static MutationResultObject setInventoryLocationGroupStatus(final DataFetchingEnvironment env,
+            @GraphQLName("warehouseName") @GraphQLNonNull final String warehouseName,
+            @GraphQLName("inventoryLocationGroupName") @GraphQLNonNull final String inventoryLocationGroupName,
+            @GraphQLName("inventoryLocationGroupStatusChoice") @GraphQLNonNull final String inventoryLocationGroupStatusChoice) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = InventoryUtil.getHome().getSetInventoryLocationGroupStatusForm();
+
+            commandForm.setWarehouseName(warehouseName);
+            commandForm.setInventoryLocationGroupName(inventoryLocationGroupName);
+            commandForm.setInventoryLocationGroupStatusChoice(inventoryLocationGroupStatusChoice);
+
+            mutationResultObject.setCommandResult(InventoryUtil.getHome().setInventoryLocationGroupStatus(BaseGraphQl.getUserVisitPK(env), commandForm));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultWithIdObject createLocationType(final DataFetchingEnvironment env,
+            @GraphQLName("warehouseName") @GraphQLNonNull final String warehouseName,
+            @GraphQLName("locationTypeName") @GraphQLNonNull final String locationTypeName,
+            @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
+            @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var commandForm = WarehouseUtil.getHome().getCreateLocationTypeForm();
+
+            commandForm.setWarehouseName(warehouseName);
+            commandForm.setLocationTypeName(locationTypeName);
+            commandForm.setIsDefault(isDefault);
+            commandForm.setSortOrder(sortOrder);
+            commandForm.setDescription(description);
+
+            var commandResult = WarehouseUtil.getHome().createLocationType(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                var result = (CreateLocationTypeResult)commandResult.getExecutionResult().getResult();
+
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject deleteLocationType(final DataFetchingEnvironment env,
+            @GraphQLName("warehouseName") @GraphQLNonNull final String warehouseName,
+            @GraphQLName("locationTypeName") @GraphQLNonNull final String locationTypeName) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = WarehouseUtil.getHome().getDeleteLocationTypeForm();
+
+            commandForm.setWarehouseName(warehouseName);
+            commandForm.setLocationTypeName(locationTypeName);
+
+            var commandResult = WarehouseUtil.getHome().deleteLocationType(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultWithIdObject editLocationType(final DataFetchingEnvironment env,
+            @GraphQLName("warehouseName") @GraphQLNonNull final String warehouseName,
+            @GraphQLName("originalLocationTypeName") @GraphQLNonNull final String originalLocationTypeName,
+            @GraphQLName("locationTypeName") final String locationTypeName,
+            @GraphQLName("isDefault") final String isDefault,
+            @GraphQLName("sortOrder") final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var spec = WarehouseUtil.getHome().getLocationTypeSpec();
+
+            spec.setWarehouseName(warehouseName);
+            spec.setLocationTypeName(originalLocationTypeName);
+
+            var commandForm = WarehouseUtil.getHome().getEditLocationTypeForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = WarehouseUtil.getHome().editLocationType(BaseGraphQl.getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditLocationTypeResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                mutationResultObject.setEntityInstance(result.getLocationType().getEntityInstance());
+
+                if(arguments.containsKey("locationTypeName"))
+                    edit.setLocationTypeName(locationTypeName);
+                if(arguments.containsKey("isDefault"))
+                    edit.setIsDefault(isDefault);
+                if(arguments.containsKey("sortOrder"))
+                    edit.setSortOrder(sortOrder);
+                if(arguments.containsKey("description"))
+                    edit.setDescription(description);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = WarehouseUtil.getHome().editLocationType(BaseGraphQl.getUserVisitPK(env), commandForm);
+            }
+
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultWithIdObject createLocation(final DataFetchingEnvironment env,
+            @GraphQLName("warehouseName") @GraphQLNonNull final String warehouseName,
+            @GraphQLName("locationName") @GraphQLNonNull final String locationName,
+            @GraphQLName("locationTypeName") @GraphQLNonNull final String locationTypeName,
+            @GraphQLName("locationUseTypeName") @GraphQLNonNull final String locationUseTypeName,
+            @GraphQLName("velocity") @GraphQLNonNull final String velocity,
+            @GraphQLName("inventoryLocationGroupName") @GraphQLNonNull final String inventoryLocationGroupName,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var commandForm = WarehouseUtil.getHome().getCreateLocationForm();
+
+            commandForm.setWarehouseName(warehouseName);
+            commandForm.setLocationName(locationName);
+            commandForm.setLocationTypeName(locationTypeName);
+            commandForm.setLocationUseTypeName(locationUseTypeName);
+            commandForm.setVelocity(velocity);
+            commandForm.setInventoryLocationGroupName(inventoryLocationGroupName);
+            commandForm.setDescription(description);
+
+            var commandResult = WarehouseUtil.getHome().createLocation(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                var result = (CreateLocationResult)commandResult.getExecutionResult().getResult();
+
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject deleteLocation(final DataFetchingEnvironment env,
+            @GraphQLName("warehouseName") @GraphQLNonNull final String warehouseName,
+            @GraphQLName("locationName") @GraphQLNonNull final String locationName) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = WarehouseUtil.getHome().getDeleteLocationForm();
+
+            commandForm.setWarehouseName(warehouseName);
+            commandForm.setLocationName(locationName);
+
+            var commandResult = WarehouseUtil.getHome().deleteLocation(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultWithIdObject editLocation(final DataFetchingEnvironment env,
+            @GraphQLName("warehouseName") @GraphQLNonNull final String warehouseName,
+            @GraphQLName("originalLocationName") @GraphQLNonNull final String originalLocationName,
+            @GraphQLName("locationName") final String locationName,
+            @GraphQLName("locationTypeName") final String locationTypeName,
+            @GraphQLName("locationUseTypeName") final String locationUseTypeName,
+            @GraphQLName("velocity") final String velocity,
+            @GraphQLName("inventoryLocationGroupName") final String inventoryLocationGroupName,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var spec = WarehouseUtil.getHome().getLocationSpec();
+
+            spec.setWarehouseName(warehouseName);
+            spec.setLocationName(originalLocationName);
+
+            var commandForm = WarehouseUtil.getHome().getEditLocationForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = WarehouseUtil.getHome().editLocation(BaseGraphQl.getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditLocationResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                mutationResultObject.setEntityInstance(result.getLocation().getEntityInstance());
+
+                if(arguments.containsKey("locationName"))
+                    edit.setLocationName(locationName);
+                if(arguments.containsKey("locationTypeName"))
+                    edit.setLocationTypeName(locationTypeName);
+                if(arguments.containsKey("locationUseTypeName"))
+                    edit.setLocationUseTypeName(locationUseTypeName);
+                if(arguments.containsKey("velocity"))
+                    edit.setVelocity(velocity);
+                if(arguments.containsKey("inventoryLocationGroupName"))
+                    edit.setInventoryLocationGroupName(inventoryLocationGroupName);
+                if(arguments.containsKey("description"))
+                    edit.setDescription(description);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = WarehouseUtil.getHome().editLocation(BaseGraphQl.getUserVisitPK(env), commandForm);
+            }
+
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    @GraphQLName("setLocationStatus")
+    static MutationResultObject setLocationStatus(final DataFetchingEnvironment env,
+            @GraphQLName("warehouseName") @GraphQLNonNull final String warehouseName,
+            @GraphQLName("locationName") @GraphQLNonNull final String locationName,
+            @GraphQLName("locationStatusChoice") @GraphQLNonNull final String locationStatusChoice) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = WarehouseUtil.getHome().getSetLocationStatusForm();
+
+            commandForm.setWarehouseName(warehouseName);
+            commandForm.setLocationName(locationName);
+            commandForm.setLocationStatusChoice(locationStatusChoice);
+
+            mutationResultObject.setCommandResult(WarehouseUtil.getHome().setLocationStatus(BaseGraphQl.getUserVisitPK(env), commandForm));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultWithIdObject createLocationNameElement(final DataFetchingEnvironment env,
+            @GraphQLName("warehouseName") @GraphQLNonNull final String warehouseName,
+            @GraphQLName("locationTypeName") @GraphQLNonNull final String locationTypeName,
+            @GraphQLName("locationNameElementName") @GraphQLNonNull final String locationNameElementName,
+            @GraphQLName("offset") @GraphQLNonNull final String offset,
+            @GraphQLName("length") @GraphQLNonNull final String length,
+            @GraphQLName("validationPattern") final String validationPattern,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var commandForm = WarehouseUtil.getHome().getCreateLocationNameElementForm();
+
+            commandForm.setWarehouseName(warehouseName);
+            commandForm.setLocationTypeName(locationTypeName);
+            commandForm.setLocationNameElementName(locationNameElementName);
+            commandForm.setOffset(offset);
+            commandForm.setLength(length);
+            commandForm.setValidationPattern(validationPattern);
+            commandForm.setDescription(description);
+
+            var commandResult = WarehouseUtil.getHome().createLocationNameElement(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                var result = (CreateLocationNameElementResult)commandResult.getExecutionResult().getResult();
+
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject deleteLocationNameElement(final DataFetchingEnvironment env,
+            @GraphQLName("warehouseName") @GraphQLNonNull final String warehouseName,
+            @GraphQLName("locationTypeName") @GraphQLNonNull final String locationTypeName,
+            @GraphQLName("locationNameElementName") @GraphQLNonNull final String locationNameElementName) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = WarehouseUtil.getHome().getDeleteLocationNameElementForm();
+
+            commandForm.setWarehouseName(warehouseName);
+            commandForm.setLocationTypeName(locationTypeName);
+            commandForm.setLocationNameElementName(locationNameElementName);
+
+            var commandResult = WarehouseUtil.getHome().deleteLocationNameElement(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultWithIdObject editLocationNameElement(final DataFetchingEnvironment env,
+            @GraphQLName("warehouseName") @GraphQLNonNull final String warehouseName,
+            @GraphQLName("locationTypeName") @GraphQLNonNull final String locationTypeName,
+            @GraphQLName("originalLocationNameElementName") @GraphQLNonNull final String originalLocationNameElementName,
+            @GraphQLName("locationNameElementName") final String locationNameElementName,
+            @GraphQLName("offset") final String offset,
+            @GraphQLName("length") final String length,
+            @GraphQLName("validationPattern") final String validationPattern,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var spec = WarehouseUtil.getHome().getLocationNameElementSpec();
+
+            spec.setWarehouseName(warehouseName);
+            spec.setLocationTypeName(locationTypeName);
+            spec.setLocationNameElementName(originalLocationNameElementName);
+
+            var commandForm = WarehouseUtil.getHome().getEditLocationNameElementForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = WarehouseUtil.getHome().editLocationNameElement(BaseGraphQl.getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditLocationNameElementResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                mutationResultObject.setEntityInstance(result.getLocationNameElement().getEntityInstance());
+
+                if(arguments.containsKey("locationNameElementName"))
+                    edit.setLocationNameElementName(locationNameElementName);
+                if(arguments.containsKey("offset"))
+                    edit.setOffset(offset);
+                if(arguments.containsKey("length"))
+                    edit.setLength(length);
+                if(arguments.containsKey("validationPattern"))
+                    edit.setValidationPattern(validationPattern);
+                if(arguments.containsKey("description"))
+                    edit.setDescription(description);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = WarehouseUtil.getHome().editLocationNameElement(BaseGraphQl.getUserVisitPK(env), commandForm);
+            }
+
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -13484,6 +14007,49 @@ public interface GraphQlMutations {
 
     @GraphQLField
     @GraphQLRelayMutation
+    static MutationResultObject createWorkflowSelectorKind(final DataFetchingEnvironment env,
+            @GraphQLName("workflowName") @GraphQLNonNull final String workflowName,
+            @GraphQLName("selectorKindName") @GraphQLNonNull final String selectorKindName) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = WorkflowUtil.getHome().getCreateWorkflowSelectorKindForm();
+
+            commandForm.setWorkflowName(workflowName);
+            commandForm.setSelectorKindName(selectorKindName);
+
+            var commandResult = WorkflowUtil.getHome().createWorkflowSelectorKind(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject deleteWorkflowSelectorKind(final DataFetchingEnvironment env,
+            @GraphQLName("workflowName") @GraphQLNonNull final String workflowName,
+            @GraphQLName("selectorKindName") @GraphQLNonNull final String selectorKindName) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = WorkflowUtil.getHome().getDeleteWorkflowSelectorKindForm();
+
+            commandForm.setWorkflowName(workflowName);
+            commandForm.setSelectorKindName(selectorKindName);
+
+            mutationResultObject.setCommandResult(WorkflowUtil.getHome().deleteWorkflowSelectorKind(BaseGraphQl.getUserVisitPK(env), commandForm));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
     static MutationResultWithIdObject createWorkflowStep(final DataFetchingEnvironment env,
             @GraphQLName("workflowName") @GraphQLNonNull final String workflowName,
             @GraphQLName("workflowStepName") @GraphQLNonNull final String workflowStepName,
@@ -13708,6 +14274,53 @@ public interface GraphQlMutations {
             commandForm.setUuid(id);
 
             mutationResultObject.setCommandResult(WorkflowUtil.getHome().deleteWorkflowEntrance(BaseGraphQl.getUserVisitPK(env), commandForm));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject createWorkflowEntranceSelector(final DataFetchingEnvironment env,
+            @GraphQLName("workflowName") @GraphQLNonNull final String workflowName,
+            @GraphQLName("workflowEntranceName") @GraphQLNonNull final String workflowEntranceName,
+            @GraphQLName("selectorName") @GraphQLNonNull final String selectorName) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = WorkflowUtil.getHome().getCreateWorkflowEntranceSelectorForm();
+
+            commandForm.setWorkflowName(workflowName);
+            commandForm.setWorkflowEntranceName(workflowEntranceName);
+            commandForm.setSelectorName(selectorName);
+
+            var commandResult = WorkflowUtil.getHome().createWorkflowEntranceSelector(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject deleteWorkflowEntranceSelector(final DataFetchingEnvironment env,
+            @GraphQLName("workflowName") @GraphQLNonNull final String workflowName,
+            @GraphQLName("workflowEntranceName") @GraphQLNonNull final String workflowEntranceName,
+            @GraphQLName("selectorName") @GraphQLNonNull final String selectorName) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = WorkflowUtil.getHome().getDeleteWorkflowEntranceSelectorForm();
+
+            commandForm.setWorkflowName(workflowName);
+            commandForm.setWorkflowEntranceName(workflowEntranceName);
+            commandForm.setSelectorName(selectorName);
+
+            mutationResultObject.setCommandResult(WorkflowUtil.getHome().deleteWorkflowEntranceSelector(BaseGraphQl.getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -13977,6 +14590,57 @@ public interface GraphQlMutations {
             commandForm.setUuid(id);
 
             mutationResultObject.setCommandResult(WorkflowUtil.getHome().deleteWorkflowDestination(BaseGraphQl.getUserVisitPK(env), commandForm));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject createWorkflowDestinationSelector(final DataFetchingEnvironment env,
+            @GraphQLName("workflowName") @GraphQLNonNull final String workflowName,
+            @GraphQLName("workflowStepName") @GraphQLNonNull final String workflowStepName,
+            @GraphQLName("workflowDestinationName") @GraphQLNonNull final String workflowDestinationName,
+            @GraphQLName("selectorName") @GraphQLNonNull final String selectorName) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = WorkflowUtil.getHome().getCreateWorkflowDestinationSelectorForm();
+
+            commandForm.setWorkflowName(workflowName);
+            commandForm.setWorkflowStepName(workflowStepName);
+            commandForm.setWorkflowDestinationName(workflowDestinationName);
+            commandForm.setSelectorName(selectorName);
+
+            var commandResult = WorkflowUtil.getHome().createWorkflowDestinationSelector(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject deleteWorkflowDestinationSelector(final DataFetchingEnvironment env,
+            @GraphQLName("workflowName") @GraphQLNonNull final String workflowName,
+            @GraphQLName("workflowStepName") @GraphQLNonNull final String workflowStepName,
+            @GraphQLName("workflowDestinationName") @GraphQLNonNull final String workflowDestinationName,
+            @GraphQLName("selectorName") @GraphQLNonNull final String selectorName) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = WorkflowUtil.getHome().getDeleteWorkflowDestinationSelectorForm();
+
+            commandForm.setWorkflowName(workflowName);
+            commandForm.setWorkflowStepName(workflowStepName);
+            commandForm.setWorkflowDestinationName(workflowDestinationName);
+            commandForm.setSelectorName(selectorName);
+
+            mutationResultObject.setCommandResult(WorkflowUtil.getHome().deleteWorkflowDestinationSelector(BaseGraphQl.getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -14453,5 +15117,594 @@ public interface GraphQlMutations {
 
         return mutationResultObject;
     }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject createGeoCodeLanguage(final DataFetchingEnvironment env,
+            @GraphQLName("geoCodeName") @GraphQLNonNull final String geoCodeName,
+            @GraphQLName("languageIsoName") @GraphQLNonNull final String languageIsoName,
+            @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
+            @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = GeoUtil.getHome().getCreateGeoCodeLanguageForm();
+
+            commandForm.setGeoCodeName(geoCodeName);
+            commandForm.setLanguageIsoName(languageIsoName);
+            commandForm.setIsDefault(isDefault);
+            commandForm.setSortOrder(sortOrder);
+
+            var commandResult = GeoUtil.getHome().createGeoCodeLanguage(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject deleteGeoCodeLanguage(final DataFetchingEnvironment env,
+            @GraphQLName("geoCodeName") @GraphQLNonNull final String geoCodeName,
+            @GraphQLName("languageIsoName") @GraphQLNonNull final String languageIsoName) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = GeoUtil.getHome().getDeleteGeoCodeLanguageForm();
+
+            commandForm.setGeoCodeName(geoCodeName);
+            commandForm.setLanguageIsoName(languageIsoName);
+
+            var commandResult = GeoUtil.getHome().deleteGeoCodeLanguage(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject editGeoCodeLanguage(final DataFetchingEnvironment env,
+            @GraphQLName("geoCodeName") @GraphQLNonNull final String geoCodeName,
+            @GraphQLName("languageIsoName") @GraphQLNonNull final String languageIsoName,
+            @GraphQLName("isDefault") final String isDefault,
+            @GraphQLName("sortOrder") final String sortOrder) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var spec = GeoUtil.getHome().getGeoCodeLanguageSpec();
+
+            spec.setGeoCodeName(geoCodeName);
+            spec.setLanguageIsoName(languageIsoName);
+
+            var commandForm = GeoUtil.getHome().getEditGeoCodeLanguageForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = GeoUtil.getHome().editGeoCodeLanguage(BaseGraphQl.getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditGeoCodeLanguageResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                if(arguments.containsKey("isDefault"))
+                    edit.setIsDefault(isDefault);
+                if(arguments.containsKey("sortOrder"))
+                    edit.setSortOrder(sortOrder);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = GeoUtil.getHome().editGeoCodeLanguage(BaseGraphQl.getUserVisitPK(env), commandForm);
+            }
+
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject createGeoCodeCurrency(final DataFetchingEnvironment env,
+            @GraphQLName("geoCodeName") @GraphQLNonNull final String geoCodeName,
+            @GraphQLName("currencyIsoName") @GraphQLNonNull final String currencyIsoName,
+            @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
+            @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = GeoUtil.getHome().getCreateGeoCodeCurrencyForm();
+
+            commandForm.setGeoCodeName(geoCodeName);
+            commandForm.setCurrencyIsoName(currencyIsoName);
+            commandForm.setIsDefault(isDefault);
+            commandForm.setSortOrder(sortOrder);
+
+            var commandResult = GeoUtil.getHome().createGeoCodeCurrency(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject deleteGeoCodeCurrency(final DataFetchingEnvironment env,
+            @GraphQLName("geoCodeName") @GraphQLNonNull final String geoCodeName,
+            @GraphQLName("currencyIsoName") @GraphQLNonNull final String currencyIsoName) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = GeoUtil.getHome().getDeleteGeoCodeCurrencyForm();
+
+            commandForm.setGeoCodeName(geoCodeName);
+            commandForm.setCurrencyIsoName(currencyIsoName);
+
+            var commandResult = GeoUtil.getHome().deleteGeoCodeCurrency(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject editGeoCodeCurrency(final DataFetchingEnvironment env,
+            @GraphQLName("geoCodeName") @GraphQLNonNull final String geoCodeName,
+            @GraphQLName("currencyIsoName") @GraphQLNonNull final String currencyIsoName,
+            @GraphQLName("isDefault") final String isDefault,
+            @GraphQLName("sortOrder") final String sortOrder) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var spec = GeoUtil.getHome().getGeoCodeCurrencySpec();
+
+            spec.setGeoCodeName(geoCodeName);
+            spec.setCurrencyIsoName(currencyIsoName);
+
+            var commandForm = GeoUtil.getHome().getEditGeoCodeCurrencyForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = GeoUtil.getHome().editGeoCodeCurrency(BaseGraphQl.getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditGeoCodeCurrencyResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                if(arguments.containsKey("isDefault"))
+                    edit.setIsDefault(isDefault);
+                if(arguments.containsKey("sortOrder"))
+                    edit.setSortOrder(sortOrder);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = GeoUtil.getHome().editGeoCodeCurrency(BaseGraphQl.getUserVisitPK(env), commandForm);
+            }
+
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject createGeoCodeTimeZone(final DataFetchingEnvironment env,
+            @GraphQLName("geoCodeName") @GraphQLNonNull final String geoCodeName,
+            @GraphQLName("javaTimeZoneName") @GraphQLNonNull final String javaTimeZoneName,
+            @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
+            @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = GeoUtil.getHome().getCreateGeoCodeTimeZoneForm();
+
+            commandForm.setGeoCodeName(geoCodeName);
+            commandForm.setJavaTimeZoneName(javaTimeZoneName);
+            commandForm.setIsDefault(isDefault);
+            commandForm.setSortOrder(sortOrder);
+
+            var commandResult = GeoUtil.getHome().createGeoCodeTimeZone(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject deleteGeoCodeTimeZone(final DataFetchingEnvironment env,
+            @GraphQLName("geoCodeName") @GraphQLNonNull final String geoCodeName,
+            @GraphQLName("javaTimeZoneName") @GraphQLNonNull final String javaTimeZoneName) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = GeoUtil.getHome().getDeleteGeoCodeTimeZoneForm();
+
+            commandForm.setGeoCodeName(geoCodeName);
+            commandForm.setJavaTimeZoneName(javaTimeZoneName);
+
+            var commandResult = GeoUtil.getHome().deleteGeoCodeTimeZone(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject editGeoCodeTimeZone(final DataFetchingEnvironment env,
+            @GraphQLName("geoCodeName") @GraphQLNonNull final String geoCodeName,
+            @GraphQLName("javaTimeZoneName") @GraphQLNonNull final String javaTimeZoneName,
+            @GraphQLName("isDefault") final String isDefault,
+            @GraphQLName("sortOrder") final String sortOrder) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var spec = GeoUtil.getHome().getGeoCodeTimeZoneSpec();
+
+            spec.setGeoCodeName(geoCodeName);
+            spec.setJavaTimeZoneName(javaTimeZoneName);
+
+            var commandForm = GeoUtil.getHome().getEditGeoCodeTimeZoneForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = GeoUtil.getHome().editGeoCodeTimeZone(BaseGraphQl.getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditGeoCodeTimeZoneResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                if(arguments.containsKey("isDefault"))
+                    edit.setIsDefault(isDefault);
+                if(arguments.containsKey("sortOrder"))
+                    edit.setSortOrder(sortOrder);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = GeoUtil.getHome().editGeoCodeTimeZone(BaseGraphQl.getUserVisitPK(env), commandForm);
+            }
+
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
     
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject createGeoCodeDateTimeFormat(final DataFetchingEnvironment env,
+            @GraphQLName("geoCodeName") @GraphQLNonNull final String geoCodeName,
+            @GraphQLName("dataTimeFormatName") @GraphQLNonNull final String dataTimeFormatName,
+            @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
+            @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = GeoUtil.getHome().getCreateGeoCodeDateTimeFormatForm();
+
+            commandForm.setGeoCodeName(geoCodeName);
+            commandForm.setDateTimeFormatName(dataTimeFormatName);
+            commandForm.setIsDefault(isDefault);
+            commandForm.setSortOrder(sortOrder);
+
+            var commandResult = GeoUtil.getHome().createGeoCodeDateTimeFormat(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject deleteGeoCodeDateTimeFormat(final DataFetchingEnvironment env,
+            @GraphQLName("geoCodeName") @GraphQLNonNull final String geoCodeName,
+            @GraphQLName("dataTimeFormatName") @GraphQLNonNull final String dataTimeFormatName) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = GeoUtil.getHome().getDeleteGeoCodeDateTimeFormatForm();
+
+            commandForm.setGeoCodeName(geoCodeName);
+            commandForm.setDateTimeFormatName(dataTimeFormatName);
+
+            var commandResult = GeoUtil.getHome().deleteGeoCodeDateTimeFormat(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject editGeoCodeDateTimeFormat(final DataFetchingEnvironment env,
+            @GraphQLName("geoCodeName") @GraphQLNonNull final String geoCodeName,
+            @GraphQLName("dataTimeFormatName") @GraphQLNonNull final String dataTimeFormatName,
+            @GraphQLName("isDefault") final String isDefault,
+            @GraphQLName("sortOrder") final String sortOrder) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var spec = GeoUtil.getHome().getGeoCodeDateTimeFormatSpec();
+
+            spec.setGeoCodeName(geoCodeName);
+            spec.setDateTimeFormatName(dataTimeFormatName);
+
+            var commandForm = GeoUtil.getHome().getEditGeoCodeDateTimeFormatForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = GeoUtil.getHome().editGeoCodeDateTimeFormat(BaseGraphQl.getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditGeoCodeDateTimeFormatResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                if(arguments.containsKey("isDefault"))
+                    edit.setIsDefault(isDefault);
+                if(arguments.containsKey("sortOrder"))
+                    edit.setSortOrder(sortOrder);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = GeoUtil.getHome().editGeoCodeDateTimeFormat(BaseGraphQl.getUserVisitPK(env), commandForm);
+            }
+
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultWithIdObject createGeoCodeAliasType(final DataFetchingEnvironment env,
+            @GraphQLName("geoCodeTypeName") @GraphQLNonNull final String geoCodeTypeName,
+            @GraphQLName("geoCodeAliasTypeName") @GraphQLNonNull final String geoCodeAliasTypeName,
+            @GraphQLName("validationPattern") final String validationPattern,
+            @GraphQLName("isRequired") @GraphQLNonNull final String isRequired,
+            @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
+            @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var commandForm = GeoUtil.getHome().getCreateGeoCodeAliasTypeForm();
+
+            commandForm.setGeoCodeTypeName(geoCodeTypeName);
+            commandForm.setGeoCodeAliasTypeName(geoCodeAliasTypeName);
+            commandForm.setValidationPattern(validationPattern);
+            commandForm.setIsRequired(isRequired);
+            commandForm.setIsDefault(isDefault);
+            commandForm.setSortOrder(sortOrder);
+            commandForm.setDescription(description);
+
+            var commandResult = GeoUtil.getHome().createGeoCodeAliasType(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                var result = (CreateGeoCodeAliasTypeResult)commandResult.getExecutionResult().getResult();
+
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultWithIdObject editGeoCodeAliasType(final DataFetchingEnvironment env,
+            @GraphQLName("geoCodeTypeName") @GraphQLNonNull final String geoCodeTypeName,
+            @GraphQLName("originalGeoCodeAliasTypeName") @GraphQLNonNull final String originalGeoCodeAliasTypeName,
+            @GraphQLName("geoCodeAliasTypeName") final String geoCodeAliasTypeName,
+            @GraphQLName("validationPattern") final String validationPattern,
+            @GraphQLName("isRequired") final String isRequired,
+            @GraphQLName("isDefault") final String isDefault,
+            @GraphQLName("sortOrder") final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var spec = GeoUtil.getHome().getGeoCodeAliasTypeSpec();
+
+            spec.setGeoCodeTypeName(geoCodeTypeName);
+            spec.setGeoCodeAliasTypeName(originalGeoCodeAliasTypeName);
+
+            var commandForm = GeoUtil.getHome().getEditGeoCodeAliasTypeForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = GeoUtil.getHome().editGeoCodeAliasType(BaseGraphQl.getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditGeoCodeAliasTypeResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                mutationResultObject.setEntityInstance(result.getGeoCodeAliasType().getEntityInstance());
+
+                if(arguments.containsKey("geoCodeAliasTypeName"))
+                    edit.setGeoCodeAliasTypeName(geoCodeAliasTypeName);
+                if(arguments.containsKey("validationPattern"))
+                    edit.setValidationPattern(validationPattern);
+                if(arguments.containsKey("isRequired"))
+                    edit.setIsRequired(isRequired);
+                if(arguments.containsKey("isDefault"))
+                    edit.setIsDefault(isDefault);
+                if(arguments.containsKey("sortOrder"))
+                    edit.setSortOrder(sortOrder);
+                if(arguments.containsKey("description"))
+                    edit.setDescription(description);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = GeoUtil.getHome().editGeoCodeAliasType(BaseGraphQl.getUserVisitPK(env), commandForm);
+            }
+
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject deleteGeoCodeAliasType(final DataFetchingEnvironment env,
+            @GraphQLName("geoCodeTypeName") @GraphQLNonNull final String geoCodeTypeName,
+            @GraphQLName("geoCodeAliasTypeName") @GraphQLNonNull final String geoCodeAliasTypeName) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = GeoUtil.getHome().getDeleteGeoCodeAliasTypeForm();
+
+            commandForm.setGeoCodeTypeName(geoCodeTypeName);
+            commandForm.setGeoCodeAliasTypeName(geoCodeAliasTypeName);
+
+            mutationResultObject.setCommandResult(GeoUtil.getHome().deleteGeoCodeAliasType(BaseGraphQl.getUserVisitPK(env), commandForm));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject createGeoCodeAlias(final DataFetchingEnvironment env,
+            @GraphQLName("geoCodeName") @GraphQLNonNull final String geoCodeName,
+            @GraphQLName("geoCodeAliasTypeName") @GraphQLNonNull final String geoCodeAliasTypeName,
+            @GraphQLName("alias") @GraphQLNonNull final String alias) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = GeoUtil.getHome().getCreateGeoCodeAliasForm();
+
+            commandForm.setGeoCodeName(geoCodeName);
+            commandForm.setGeoCodeAliasTypeName(geoCodeAliasTypeName);
+            commandForm.setAlias(alias);
+
+            var commandResult = GeoUtil.getHome().createGeoCodeAlias(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject editGeoCodeAlias(final DataFetchingEnvironment env,
+            @GraphQLName("geoCodeName") @GraphQLNonNull final String geoCodeName,
+            @GraphQLName("geoCodeAliasTypeName") @GraphQLNonNull final String geoCodeAliasTypeName,
+            @GraphQLName("alias") final String alias) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var spec = GeoUtil.getHome().getGeoCodeAliasSpec();
+
+            spec.setGeoCodeName(geoCodeName);
+            spec.setGeoCodeAliasTypeName(geoCodeAliasTypeName);
+
+            var commandForm = GeoUtil.getHome().getEditGeoCodeAliasForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = GeoUtil.getHome().editGeoCodeAlias(BaseGraphQl.getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditGeoCodeAliasResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                if(arguments.containsKey("alias"))
+                    edit.setAlias(alias);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = GeoUtil.getHome().editGeoCodeAlias(BaseGraphQl.getUserVisitPK(env), commandForm);
+            }
+
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject deleteGeoCodeAlias(final DataFetchingEnvironment env,
+            @GraphQLName("geoCodeName") @GraphQLNonNull final String geoCodeName,
+            @GraphQLName("geoCodeAliasTypeName") @GraphQLNonNull final String geoCodeAliasTypeName) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = GeoUtil.getHome().getDeleteGeoCodeAliasForm();
+
+            commandForm.setGeoCodeName(geoCodeName);
+            commandForm.setGeoCodeAliasTypeName(geoCodeAliasTypeName);
+
+            mutationResultObject.setCommandResult(GeoUtil.getHome().deleteGeoCodeAlias(BaseGraphQl.getUserVisitPK(env), commandForm));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
 }

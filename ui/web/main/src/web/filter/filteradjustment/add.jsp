@@ -68,7 +68,7 @@
                         <td>
                             <html:select property="filterAdjustmentTypeChoice">
                                 <html:optionsCollection property="filterAdjustmentTypeChoices" />
-                            </html:select> (*)
+                            </html:select>
                             <et:validationErrors id="errorMessage" property="FilterAdjustmentTypeName">
                                 <p><c:out value="${errorMessage}" /></p>
                             </et:validationErrors>

@@ -27,6 +27,9 @@ public interface GetGeoCodeAliasesResult
     GeoCodeTransfer getGeoCode();
     void setGeoCode(GeoCodeTransfer geoCode);
     
+    Long getGeoCodeAliasCount();
+    void setGeoCodeAliasCount(Long geoCodeAliasCount);
+
     List<GeoCodeAliasTransfer> getGeoCodeAliases();
     void setGeoCodeAliases(List<GeoCodeAliasTransfer> geoAliass);
     
