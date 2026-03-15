@@ -1383,8 +1383,8 @@ public class WarehouseControl
         return session.queryForLong(
                 "SELECT COUNT(*) " +
                 "FROM locationnameelements, locationnameelementdetails " +
-                "WHERE lne_activedetailid = lnedet_locationnameelementdetailid " +
-                "AND lnedet_lt_locationtypeid = ?",
+                "WHERE locne_activedetailid = locnedt_locationnameelementdetailid " +
+                "AND locnedt_loctyp_locationtypeid = ?",
                 locationType);
     }
 
@@ -1397,13 +1397,13 @@ public class WarehouseControl
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
                 query = "SELECT _ALL_ " +
                         "FROM locationnameelements, locationnameelementdetails " +
-                        "WHERE locne_locationnameelementid = locnedt_locne_locationnameelementid AND locnedt_loctyp_locationtypeid = ? " +
-                        "AND locnedt_locationnameelementname = ? AND locnedt_thrutime = ?";
+                        "WHERE locne_activedetailid = locnedt_locationnameelementdetailid AND locnedt_loctyp_locationtypeid = ? " +
+                        "AND locnedt_locationnameelementname = ?";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM locationnameelements, locationnameelementdetails " +
-                        "WHERE locne_locationnameelementid = locnedt_locne_locationnameelementid AND locnedt_loctyp_locationtypeid = ? " +
-                        "AND locnedt_locationnameelementname = ? AND locnedt_thrutime = ? " +
+                        "WHERE locne_activedetailid = locnedt_locationnameelementdetailid AND locnedt_loctyp_locationtypeid = ? " +
+                        "AND locnedt_locationnameelementname = ? " +
                         "FOR UPDATE";
             }
 
@@ -1411,8 +1411,7 @@ public class WarehouseControl
             
             ps.setLong(1, locationType.getPrimaryKey().getEntityId());
             ps.setString(2, locationNameElementName);
-            ps.setLong(3, Session.MAX_TIME);
-            
+
             locationNameElement = LocationNameElementFactory.getInstance().getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -1446,23 +1445,20 @@ public class WarehouseControl
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
                 query = "SELECT _ALL_ " +
                         "FROM locationnameelements, locationnameelementdetails " +
-                        "WHERE locne_locationnameelementid = locnedt_locne_locationnameelementid AND locnedt_loctyp_locationtypeid = ? " +
-                        "AND locnedt_thrutime = ? " +
+                        "WHERE locne_activedetailid = locnedt_locationnameelementdetailid AND locnedt_loctyp_locationtypeid = ? " +
                         "ORDER BY locnedt_offset " +
                         "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM locationnameelements, locationnameelementdetails " +
-                        "WHERE locne_locationnameelementid = locnedt_locne_locationnameelementid AND locnedt_loctyp_locationtypeid = ? " +
-                        "AND locnedt_thrutime = ? " +
+                        "WHERE locne_activedetailid = locnedt_locationnameelementdetailid AND locnedt_loctyp_locationtypeid = ? " +
                         "FOR UPDATE";
             }
 
             var ps = LocationNameElementFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, locationType.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
+
             locationNameElements = LocationNameElementFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
