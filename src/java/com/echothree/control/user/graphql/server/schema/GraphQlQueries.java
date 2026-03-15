@@ -178,6 +178,8 @@ import com.echothree.control.user.inventory.server.command.GetInventoryAdjustmen
 import com.echothree.control.user.inventory.server.command.GetInventoryAdjustmentTypesCommand;
 import com.echothree.control.user.inventory.server.command.GetInventoryConditionCommand;
 import com.echothree.control.user.inventory.server.command.GetInventoryConditionsCommand;
+import com.echothree.control.user.inventory.server.command.GetInventoryLocationGroupCommand;
+import com.echothree.control.user.inventory.server.command.GetInventoryLocationGroupsCommand;
 import com.echothree.control.user.inventory.server.command.GetInventoryTransactionTypeCommand;
 import com.echothree.control.user.inventory.server.command.GetInventoryTransactionTypesCommand;
 import com.echothree.control.user.inventory.server.command.GetLotCommand;
@@ -518,9 +520,11 @@ import com.echothree.model.control.graphql.server.graphql.count.CountingPaginate
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import static com.echothree.model.control.graphql.server.util.BaseGraphQl.getUserVisitPK;
 import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
+import static com.echothree.model.control.index.common.IndexFields.partyName;
 import com.echothree.model.control.inventory.server.graphql.AllocationPriorityObject;
 import com.echothree.model.control.inventory.server.graphql.InventoryAdjustmentTypeObject;
 import com.echothree.model.control.inventory.server.graphql.InventoryConditionObject;
+import com.echothree.model.control.inventory.server.graphql.InventoryLocationGroupObject;
 import com.echothree.model.control.inventory.server.graphql.InventoryTransactionTypeObject;
 import com.echothree.model.control.inventory.server.graphql.LotObject;
 import com.echothree.model.control.item.server.graphql.ItemAliasChecksumTypeObject;
@@ -791,11 +795,13 @@ import com.echothree.model.data.geo.server.entity.GeoCodeType;
 import com.echothree.model.data.inventory.common.AllocationPriorityConstants;
 import com.echothree.model.data.inventory.common.InventoryAdjustmentTypeConstants;
 import com.echothree.model.data.inventory.common.InventoryConditionConstants;
+import com.echothree.model.data.inventory.common.InventoryLocationGroupConstants;
 import com.echothree.model.data.inventory.common.InventoryTransactionTypeConstants;
 import com.echothree.model.data.inventory.common.LotConstants;
 import com.echothree.model.data.inventory.server.entity.AllocationPriority;
 import com.echothree.model.data.inventory.server.entity.InventoryAdjustmentType;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;
+import com.echothree.model.data.inventory.server.entity.InventoryLocationGroup;
 import com.echothree.model.data.inventory.server.entity.InventoryTransactionType;
 import com.echothree.model.data.inventory.server.entity.Lot;
 import com.echothree.model.data.item.common.ItemAliasChecksumTypeConstants;
@@ -8313,6 +8319,62 @@ public interface GraphQlQueries {
                             .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, locationUseTypes);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("inventoryLocationGroup")
+    static InventoryLocationGroupObject inventoryLocationGroup(final DataFetchingEnvironment env,
+            @GraphQLName("warehouseName") final String warehouseName,
+            @GraphQLName("inventoryLocationGroupName") final String inventoryLocationGroupName) {
+        InventoryLocationGroup inventoryLocationGroup;
+
+        try {
+            var commandForm = InventoryUtil.getHome().getGetInventoryLocationGroupForm();
+
+            commandForm.setWarehouseName(warehouseName);
+            commandForm.setInventoryLocationGroupName(inventoryLocationGroupName);
+
+            inventoryLocationGroup = CDI.current().select(GetInventoryLocationGroupCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return inventoryLocationGroup == null ? null : new InventoryLocationGroupObject(inventoryLocationGroup);
+    }
+
+    @GraphQLField
+    @GraphQLName("inventoryLocationGroups")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<InventoryLocationGroupObject> inventoryLocationGroups(final DataFetchingEnvironment env,
+            @GraphQLName("warehouseName") final String warehouseName) {
+        CountingPaginatedData<InventoryLocationGroupObject> data;
+
+        try {
+            var commandForm = InventoryUtil.getHome().getGetInventoryLocationGroupsForm();
+            var command = CDI.current().select(GetInventoryLocationGroupsCommand.class).get();
+
+            commandForm.setWarehouseName(warehouseName);
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, InventoryLocationGroupConstants.COMPONENT_VENDOR_NAME, InventoryLocationGroupConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var inventoryLocationGroups = entities.stream()
+                            .map(InventoryLocationGroupObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, inventoryLocationGroups);
                 }
             }
         } catch (NamingException ex) {
