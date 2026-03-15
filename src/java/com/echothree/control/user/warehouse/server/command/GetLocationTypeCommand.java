@@ -23,22 +23,23 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.control.warehouse.server.logic.WarehouseLogic;
+import com.echothree.model.data.warehouse.server.entity.LocationType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetLocationTypeCommand
-        extends BaseSimpleCommand<GetLocationTypeForm> {
+        extends BaseSingleEntityCommand<LocationType, GetLocationTypeForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -52,8 +53,8 @@ public class GetLocationTypeCommand
         ));
 
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("WarehouseName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("LocationTypeName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("WarehouseName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("LocationTypeName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
     
@@ -61,30 +62,42 @@ public class GetLocationTypeCommand
     public GetLocationTypeCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    @Inject
+    WarehouseControl warehouseControl;
+
+    @Inject
+    WarehouseLogic warehouseLogic;
+
     @Override
-    protected BaseResult execute() {
-        var warehouseControl = Session.getModelController(WarehouseControl.class);
-        var result = WarehouseResultFactory.getGetLocationTypeResult();
-        var warehouseName = form.getWarehouseName();
-        var warehouse = warehouseControl.getWarehouseByName(warehouseName);
-        
-        if(warehouse != null) {
+    protected LocationType getEntity() {
+        var warehouse = warehouseLogic.getWarehouseByName(this, form.getWarehouseName(), null, null, false);
+        LocationType entity = null;
+
+        if(!hasExecutionErrors()) {
             var warehouseParty = warehouse.getParty();
             var locationTypeName = form.getLocationTypeName();
-            var locationType = warehouseControl.getLocationTypeByName(warehouseParty, locationTypeName);
-            
-            if(locationType != null) {
-                result.setLocationType(warehouseControl.getLocationTypeTransfer(getUserVisit(), locationType));
-                
-                sendEvent(locationType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+
+            entity = warehouseControl.getLocationTypeByName(warehouseParty, locationTypeName);
+
+            if(entity != null) {
+                sendEvent(entity.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             } else {
-                addExecutionError(ExecutionErrors.UnknownLocationTypeName.name(), locationTypeName);
+                addExecutionError(ExecutionErrors.UnknownLocationTypeName.name(), warehouse.getWarehouseName(), locationTypeName);
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownWarehouseName.name(), warehouseName);
         }
-        
+
+        return entity;
+    }
+
+    @Override
+    protected BaseResult getResult(LocationType entity) {
+        var result = WarehouseResultFactory.getGetLocationTypeResult();
+
+        if(entity != null) {
+            result.setLocationType(warehouseControl.getLocationTypeTransfer(getUserVisit(), entity));
+        }
+
         return result;
     }
     
