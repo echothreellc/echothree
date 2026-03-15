@@ -14291,6 +14291,53 @@ public interface GraphQlMutations {
 
     @GraphQLField
     @GraphQLRelayMutation
+    static MutationResultObject createWorkflowEntranceSelector(final DataFetchingEnvironment env,
+            @GraphQLName("workflowName") @GraphQLNonNull final String workflowName,
+            @GraphQLName("workflowEntranceName") @GraphQLNonNull final String workflowEntranceName,
+            @GraphQLName("selectorName") @GraphQLNonNull final String selectorName) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = WorkflowUtil.getHome().getCreateWorkflowEntranceSelectorForm();
+
+            commandForm.setWorkflowName(workflowName);
+            commandForm.setWorkflowEntranceName(workflowEntranceName);
+            commandForm.setSelectorName(selectorName);
+
+            var commandResult = WorkflowUtil.getHome().createWorkflowEntranceSelector(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject deleteWorkflowEntranceSelector(final DataFetchingEnvironment env,
+            @GraphQLName("workflowName") @GraphQLNonNull final String workflowName,
+            @GraphQLName("workflowEntranceName") @GraphQLNonNull final String workflowEntranceName,
+            @GraphQLName("selectorName") @GraphQLNonNull final String selectorName) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = WorkflowUtil.getHome().getDeleteWorkflowEntranceSelectorForm();
+
+            commandForm.setWorkflowName(workflowName);
+            commandForm.setWorkflowEntranceName(workflowEntranceName);
+            commandForm.setSelectorName(selectorName);
+
+            mutationResultObject.setCommandResult(WorkflowUtil.getHome().deleteWorkflowEntranceSelector(BaseGraphQl.getUserVisitPK(env), commandForm));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
     static MutationResultObject createWorkflowEntrancePartyType(final DataFetchingEnvironment env,
             @GraphQLName("workflowName") @GraphQLNonNull final String workflowName,
             @GraphQLName("workflowEntranceName") @GraphQLNonNull final String workflowEntranceName,
