@@ -17,9 +17,15 @@
 package com.echothree.model.control.warehouse.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
+import com.echothree.model.data.warehouse.common.LocationNameElementConstants;
 import com.echothree.model.data.warehouse.server.entity.LocationType;
 import com.echothree.model.data.warehouse.server.entity.LocationTypeDetail;
 import com.echothree.util.server.persistence.Session;
@@ -27,7 +33,10 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 @GraphQLDescription("location type object")
 @GraphQLName("LocationType")
@@ -89,5 +98,25 @@ public class LocationTypeObject
 
         return warehouseControl.getBestLocationTypeDescription(locationType, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
-    
+
+    @GraphQLField
+    @GraphQLDescription("location name elements")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<LocationNameElementObject> getLocationNameElements(final DataFetchingEnvironment env) {
+        if(WarehouseSecurityUtils.getHasLocationNameElementsAccess(env)) {
+            var warehouseControl = Session.getModelController(WarehouseControl.class);
+            var totalCount = warehouseControl.countLocationNameElementsByLocationType(locationType);
+
+            try(var objectLimiter = new ObjectLimiter(env, LocationNameElementConstants.COMPONENT_VENDOR_NAME, LocationNameElementConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = warehouseControl.getLocationNameElementsByLocationType(locationType);
+                var items = entities.stream().map(LocationNameElementObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, items);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
+
 }
