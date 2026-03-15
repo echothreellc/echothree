@@ -526,7 +526,6 @@ import com.echothree.model.control.graphql.server.graphql.count.CountingPaginate
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import static com.echothree.model.control.graphql.server.util.BaseGraphQl.getUserVisitPK;
 import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
-import static com.echothree.model.control.index.common.IndexFields.partyName;
 import com.echothree.model.control.inventory.server.graphql.AllocationPriorityObject;
 import com.echothree.model.control.inventory.server.graphql.InventoryAdjustmentTypeObject;
 import com.echothree.model.control.inventory.server.graphql.InventoryConditionObject;
@@ -1001,6 +1000,7 @@ import com.echothree.model.data.workflow.common.WorkflowEntityTypeConstants;
 import com.echothree.model.data.workflow.common.WorkflowEntranceConstants;
 import com.echothree.model.data.workflow.common.WorkflowEntrancePartyTypeConstants;
 import com.echothree.model.data.workflow.common.WorkflowEntranceSecurityRoleConstants;
+import com.echothree.model.data.workflow.common.WorkflowEntranceSelectorConstants;
 import com.echothree.model.data.workflow.common.WorkflowEntranceStepConstants;
 import com.echothree.model.data.workflow.common.WorkflowStepConstants;
 import com.echothree.model.data.workflow.common.WorkflowStepTypeConstants;
@@ -2314,34 +2314,39 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("workflowEntranceSelectors")
-    static Collection<WorkflowEntranceSelectorObject> workflowEntranceSelectors(final DataFetchingEnvironment env,
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<WorkflowEntranceSelectorObject> workflowEntranceSelectors(final DataFetchingEnvironment env,
             @GraphQLName("workflowName") @GraphQLNonNull final String workflowName,
             @GraphQLName("workflowEntranceName") @GraphQLNonNull final String workflowEntranceName) {
-        Collection<WorkflowEntranceSelector> workflowEntranceSelectors;
-        Collection<WorkflowEntranceSelectorObject> workflowEntranceSelectorObjects;
+        CountingPaginatedData<WorkflowEntranceSelectorObject> data;
 
         try {
             var commandForm = WorkflowUtil.getHome().getGetWorkflowEntranceSelectorsForm();
+            var command = CDI.current().select(GetWorkflowEntranceSelectorsCommand.class).get();
 
             commandForm.setWorkflowName(workflowName);
             commandForm.setWorkflowEntranceName(workflowEntranceName);
 
-            workflowEntranceSelectors = CDI.current().select(GetWorkflowEntranceSelectorsCommand.class).get().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, WorkflowEntranceSelectorConstants.COMPONENT_VENDOR_NAME, WorkflowEntranceSelectorConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var workflowEntranceSelectors = entities.stream()
+                            .map(WorkflowEntranceSelectorObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, workflowEntranceSelectors);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(workflowEntranceSelectors == null) {
-            workflowEntranceSelectorObjects = emptyList();
-        } else {
-            workflowEntranceSelectorObjects = new ArrayList<>(workflowEntranceSelectors.size());
-
-            workflowEntranceSelectors.stream()
-                    .map(WorkflowEntranceSelectorObject::new)
-                    .forEachOrdered(workflowEntranceSelectorObjects::add);
-        }
-
-        return workflowEntranceSelectorObjects;
+        return data;
     }
 
     @GraphQLField
