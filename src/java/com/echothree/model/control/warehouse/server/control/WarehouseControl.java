@@ -1758,9 +1758,9 @@ public class WarehouseControl
     public long countLocationsByLocationUseType(Party warehouseParty, LocationUseType locationUseType) {
         return session.queryForLong(
                 "SELECT COUNT(*) " +
-                        "FROM locationdetails " +
-                        "WHERE locdt_warehousepartyid = ? AND locdt_locutyp_locationusetypeid = ? AND locdt_thrutime = ? ",
-                warehouseParty, locationUseType, Session.MAX_TIME);
+                        "FROM locations, locationdetails " +
+                        "WHERE loc_activedetailid = locdt_locationdetailid AND locdt_warehousepartyid = ? AND locdt_locutyp_locationusetypeid = ?",
+                warehouseParty, locationUseType);
     }
 
     private Location getLocationByName(Party warehouseParty, String locationName, EntityPermission entityPermission) {
@@ -1772,13 +1772,11 @@ public class WarehouseControl
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
                 query = "SELECT _ALL_ " +
                         "FROM locations, locationdetails " +
-                        "WHERE loc_locationid = locdt_loc_locationid AND locdt_warehousepartyid = ? AND locdt_locationname = ? " +
-                        "AND locdt_thrutime = ?";
+                        "WHERE loc_activedetailid = locdt_locationdetailid AND locdt_warehousepartyid = ? AND locdt_locationname = ?";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM locations, locationdetails " +
-                        "WHERE loc_locationid = locdt_loc_locationid AND locdt_warehousepartyid = ? AND locdt_locationname = ? " +
-                        "AND locdt_thrutime = ? " +
+                        "WHERE loc_activedetailid = locdt_locationdetailid AND locdt_warehousepartyid = ? AND locdt_locationname = ? " +
                         "FOR UPDATE";
             }
 
@@ -1786,8 +1784,7 @@ public class WarehouseControl
             
             ps.setLong(1, warehouseParty.getPrimaryKey().getEntityId());
             ps.setString(2, locationName);
-            ps.setLong(3, Session.MAX_TIME);
-            
+
             location = LocationFactory.getInstance().getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -1821,20 +1818,19 @@ public class WarehouseControl
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
                 query = "SELECT _ALL_ " +
                         "FROM locations, locationdetails " +
-                        "WHERE loc_locationid = locdt_loc_locationid AND locdt_warehousepartyid = ? AND locdt_thrutime = ? " +
+                        "WHERE loc_activedetailid = locdt_locationdetailid AND locdt_warehousepartyid = ? " +
                         "ORDER BY locdt_locationname " +
                         "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM locations, locationdetails " +
-                        "WHERE loc_locationid = locdt_loc_locationid AND locdt_warehousepartyid = ? AND locdt_thrutime = ? " +
+                        "WHERE loc_activedetailid = locdt_locationdetailid AND locdt_warehousepartyid = ? " +
                         "FOR UPDATE";
             }
 
             var ps = LocationFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, warehouseParty.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
 
             locations = LocationFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
@@ -1900,21 +1896,20 @@ public class WarehouseControl
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
                 query = "SELECT _ALL_ " +
                         "FROM locations, locationdetails " +
-                        "WHERE loc_locationid = locdt_loc_locationid AND locdt_loctyp_locationtypeid = ? AND locdt_thrutime = ? " +
+                        "WHERE loc_activedetailid = locdt_locationdetailid AND locdt_loctyp_locationtypeid = ? " +
                         "ORDER BY locdt_locationname " +
                         "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM locations, locationdetails " +
-                        "WHERE loc_locationid = locdt_loc_locationid AND locdt_loctyp_locationtypeid = ? AND locdt_thrutime = ? " +
+                        "WHERE loc_activedetailid = locdt_locationdetailid AND locdt_loctyp_locationtypeid = ? " +
                         "FOR UPDATE";
             }
 
             var ps = LocationFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, locationType.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
+
             locations = LocationFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
@@ -1940,21 +1935,20 @@ public class WarehouseControl
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
                 query = "SELECT _ALL_ " +
                         "FROM locations, locationdetails " +
-                        "WHERE loc_locationid = locdt_loc_locationid AND locdt_invlocgrp_inventorylocationgroupid = ? AND locdt_thrutime = ? " +
+                        "WHERE loc_activedetailid = locdt_locationdetailid AND locdt_invlocgrp_inventorylocationgroupid = ? " +
                         "ORDER BY locdt_locationname " +
                         "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM locations, locationdetails " +
-                        "WHERE loc_locationid = locdt_loc_locationid AND locdt_invlocgrp_inventorylocationgroupid = ? AND locdt_thrutime = ? " +
+                        "WHERE loc_activedetailid = locdt_locationdetailid AND locdt_invlocgrp_inventorylocationgroupid = ? " +
                         "FOR UPDATE";
             }
 
             var ps = LocationFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, inventoryLocationGroup.getPrimaryKey().getEntityId());
-            ps.setLong(2, Session.MAX_TIME);
-            
+
             locations = LocationFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
