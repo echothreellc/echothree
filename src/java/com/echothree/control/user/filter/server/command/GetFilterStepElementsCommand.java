@@ -19,25 +19,28 @@ package com.echothree.control.user.filter.server.command;
 import com.echothree.control.user.filter.common.form.GetFilterStepElementsForm;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
 import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.logic.FilterStepLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.filter.server.entity.FilterStep;
+import com.echothree.model.data.filter.server.entity.FilterStepElement;
+import com.echothree.model.data.filter.server.factory.FilterStepElementFactory;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetFilterStepElementsCommand
-        extends BaseSimpleCommand<GetFilterStepElementsForm> {
+        extends BasePaginatedMultipleEntitiesCommand<FilterStepElement, GetFilterStepElementsForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -62,50 +65,48 @@ public class GetFilterStepElementsCommand
     public GetFilterStepElementsCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    @Inject
+    FilterControl filterControl;
+
+    @Inject
+    FilterStepLogic filterStepLogic;
+
+    private FilterStep filterStep;
+
     @Override
-    protected BaseResult execute() {
-        var filterControl = Session.getModelController(FilterControl.class);
+    protected void handleForm() {
+        filterStep = filterStepLogic.getFilterStepByName(this, form.getFilterKindName(), form.getFilterTypeName(),
+                form.getFilterName(), form.getFilterStepName());
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return hasExecutionErrors() ? null : filterControl.countFilterStepElementsByFilterStep(filterStep);
+    }
+
+    @Override
+    protected Collection<FilterStepElement> getEntities() {
+        return hasExecutionErrors() ? null : filterControl.getFilterStepElementsByFilterStep(filterStep);
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<FilterStepElement> entities) {
         var result = FilterResultFactory.getGetFilterStepElementsResult();
-        var filterKindName = form.getFilterKindName();
-        var filterKind = filterControl.getFilterKindByName(filterKindName);
-        
-        if(filterKind != null) {
+
+        if(entities != null) {
             var userVisit = getUserVisit();
-            var filterTypeName = form.getFilterTypeName();
-            var filterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
-            
-            result.setFilterKind(filterControl.getFilterKindTransfer(userVisit, filterKind));
-            
-            if(filterType != null) {
-                var filterName = form.getFilterName();
-                var filter = filterControl.getFilterByName(filterType, filterName);
-                
-                result.setFilterType(filterControl.getFilterTypeTransfer(userVisit, filterType));
-                
-                if(filter != null) {
-                    var filterStepName = form.getFilterStepName();
-                    var filterStep = filterControl.getFilterStepByName(filter, filterStepName);
-                    
-                    result.setFilter(filterControl.getFilterTransfer(userVisit, filter));
-                    
-                    if(filterStep != null) {
-                        result.setFilterStep(filterControl.getFilterStepTransfer(userVisit, filterStep));
-                        result.setFilterStepElements(filterControl.getFilterStepElementTransfersByFilterStep(userVisit, filterStep));
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownFilterStepName.name(), filterStepName);
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownFilterName.name(), filterName);
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownFilterTypeName.name(), filterTypeName);
+
+            result.setFilterStep(filterControl.getFilterStepTransfer(userVisit, filterStep));
+
+            if(session.hasLimit(FilterStepElementFactory.class)) {
+                result.setFilterStepElementCount(getTotalEntities());
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownFilterKindName.name(), filterKindName);
+
+            result.setFilterStepElements(filterControl.getFilterStepElementTransfers(userVisit, entities));
         }
-        
+
         return result;
     }
-    
+
 }
