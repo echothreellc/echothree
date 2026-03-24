@@ -127,7 +127,7 @@ public class GetFilterStepDestinationsCommand
     protected BaseResult getResult(Collection<FilterStepDestination> entities) {
         var result = FilterResultFactory.getGetFilterStepDestinationsResult();
 
-        if(!hasExecutionErrors()) {
+        if(entities != null) {
             var userVisit = getUserVisit();
 
             if(fromFilterStep != null) {
@@ -136,13 +136,11 @@ public class GetFilterStepDestinationsCommand
                 result.setToFilterStep(filterControl.getFilterStepTransfer(userVisit, toFilterStep));
             }
 
-            if(entities != null) {
-                if(session.hasLimit(FilterStepDestinationFactory.class)) {
-                    result.setFilterStepDestinationCount(getTotalEntities());
-                }
-
-                result.setFilterStepDestinations(filterControl.getFilterStepDestinationTransfers(userVisit, entities));
+            if(session.hasLimit(FilterStepDestinationFactory.class)) {
+                result.setFilterStepDestinationCount(getTotalEntities());
             }
+
+            result.setFilterStepDestinations(filterControl.getFilterStepDestinationTransfers(userVisit, entities));
         }
 
         return result;
