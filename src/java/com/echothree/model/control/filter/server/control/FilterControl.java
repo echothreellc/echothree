@@ -3702,7 +3702,31 @@ public class FilterControl
         
         return filterStepElement;
     }
-    
+
+    public long countFilterStepElementsByFilterStep(FilterStep filterStep) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM filterstepelements, filterstepelementdetails " +
+                        "WHERE fltstpedt_fltstp_filterstepid = ?",
+                filterStep);
+    }
+
+    public long countFilterStepElementsBySelector(Selector selector) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM filterstepelements, filterstepelementdetails " +
+                        "WHERE fltstpedt_filteritemselectorid = ?",
+                selector);
+    }
+
+    public long countFilterStepElementsByFilterAdjustment(FilterAdjustment filterAdjustment) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM filterstepelements, filterstepelementdetails " +
+                        "WHERE fltstpedt_flta_filteradjustmentid = ?",
+                filterAdjustment);
+    }
+
     private FilterStepElement getFilterStepElementByName(FilterStep filterStep, String filterStepElementName,
             EntityPermission entityPermission) {
         FilterStepElement filterStepElement;
@@ -3761,7 +3785,8 @@ public class FilterControl
                 query = "SELECT _ALL_ " +
                         "FROM filterstepelements, filterstepelementdetails " +
                         "WHERE fltstpe_activedetailid = fltstpedt_filterstepelementdetailid AND fltstpedt_fltstp_filterstepid = ? " +
-                        "ORDER BY fltstpedt_filterstepelementname";
+                        "ORDER BY fltstpedt_filterstepelementname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM filterstepelements, filterstepelementdetails " +
@@ -3805,22 +3830,6 @@ public class FilterControl
     
     public FilterStepElementTransfer getFilterStepElementTransfer(UserVisit userVisit, FilterStepElement filterStepElement) {
         return filterStepElementTransferCache.getTransfer(userVisit, filterStepElement);
-    }
-    
-    public long countFilterStepElementsBySelector(Selector selector) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM filterstepelementdetails " +
-                "WHERE fltstpedt_filteritemselectorid = ? AND fltstpedt_thrutime = ?",
-                selector, Session.MAX_TIME);
-    }
-    
-    public long countFilterStepElementsByFilterAdjustment(FilterAdjustment filterAdjustment) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM filterstepelementdetails " +
-                "WHERE fltstpedt_flta_filteradjustmentid = ? AND fltstpedt_thrutime = ?",
-                filterAdjustment, Session.MAX_TIME);
     }
     
     public void updateFilterStepElementFromValue(FilterStepElementDetailValue filterStepElementDetailValue, BasePK updatedBy) {
