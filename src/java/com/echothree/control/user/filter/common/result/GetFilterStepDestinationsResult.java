@@ -41,8 +41,11 @@ public interface GetFilterStepDestinationsResult
     
     FilterStepTransfer getFilterToStep();
     void setToFilterStep(FilterStepTransfer toFilterStep);
-    
+
+    Long getFilterStepDestinationCount();
+    void setFilterStepDestinationCount(Long filterStepDestinationCount);
+
     List<FilterStepDestinationTransfer> getFilterStepDestinations();
     void setFilterStepDestinations(List<FilterStepDestinationTransfer> filterStepDestinations);
-    
+
 }
