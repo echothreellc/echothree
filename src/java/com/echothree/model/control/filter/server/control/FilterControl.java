@@ -67,6 +67,7 @@ import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.filter.common.pk.FilterAdjustmentPK;
 import com.echothree.model.data.filter.common.pk.FilterKindPK;
 import com.echothree.model.data.filter.common.pk.FilterPK;
+import com.echothree.model.data.filter.common.pk.FilterStepElementPK;
 import com.echothree.model.data.filter.common.pk.FilterStepPK;
 import com.echothree.model.data.filter.common.pk.FilterTypePK;
 import com.echothree.model.data.filter.server.entity.Filter;
@@ -138,6 +139,7 @@ import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
@@ -149,7 +151,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
@@ -3707,7 +3708,7 @@ public class FilterControl
         return session.queryForLong(
                 "SELECT COUNT(*) " +
                         "FROM filterstepelements, filterstepelementdetails " +
-                        "WHERE fltstpedt_fltstp_filterstepid = ?",
+                        "WHERE fltstpe_activedetailid = fltstpedt_filterstepelementdetailid AND fltstpedt_fltstp_filterstepid = ?",
                 filterStep);
     }
 
@@ -3715,7 +3716,7 @@ public class FilterControl
         return session.queryForLong(
                 "SELECT COUNT(*) " +
                         "FROM filterstepelements, filterstepelementdetails " +
-                        "WHERE fltstpedt_filteritemselectorid = ?",
+                        "WHERE fltstpe_activedetailid = fltstpedt_filterstepelementdetailid AND fltstpedt_filteritemselectorid = ?",
                 selector);
     }
 
@@ -3723,11 +3724,26 @@ public class FilterControl
         return session.queryForLong(
                 "SELECT COUNT(*) " +
                         "FROM filterstepelements, filterstepelementdetails " +
-                        "WHERE fltstpedt_flta_filteradjustmentid = ?",
+                        "WHERE fltstpe_activedetailid = fltstpedt_filterstepelementdetailid AND fltstpedt_flta_filteradjustmentid = ?",
                 filterAdjustment);
     }
 
-    private FilterStepElement getFilterStepElementByName(FilterStep filterStep, String filterStepElementName,
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.FilterStepElement */
+    public FilterStepElement getFilterStepElementByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new FilterStepElementPK(entityInstance.getEntityUniqueId());
+
+        return FilterStepElementFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public FilterStepElement getFilterStepElementByEntityInstance(EntityInstance entityInstance) {
+        return getFilterStepElementByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public FilterStepElement getFilterStepElementByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getFilterStepElementByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public FilterStepElement getFilterStepElementByName(FilterStep filterStep, String filterStepElementName,
             EntityPermission entityPermission) {
         FilterStepElement filterStepElement;
         
@@ -3785,8 +3801,7 @@ public class FilterControl
                 query = "SELECT _ALL_ " +
                         "FROM filterstepelements, filterstepelementdetails " +
                         "WHERE fltstpe_activedetailid = fltstpedt_filterstepelementdetailid AND fltstpedt_fltstp_filterstepid = ? " +
-                        "ORDER BY fltstpedt_filterstepelementname " +
-                        "_LIMIT_";
+                        "ORDER BY fltstpedt_filterstepelementname";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM filterstepelements, filterstepelementdetails " +
