@@ -31,12 +31,12 @@
                 <a href="<c:url value="/action/Filter/Main" />">Filters</a> &gt;&gt;
                 <a href="<c:url value="/action/Filter/FilterKind/Main" />">Kinds</a> &gt;&gt;
                 <c:url var="filterTypesUrl" value="/action/Filter/FilterType/Main">
-                    <c:param name="FilterKindName" value="${filterEntranceStep.filterStep.filter.filterType.filterKind.filterKindName}" />
+                    <c:param name="FilterKindName" value="${filter.filterType.filterKind.filterKindName}" />
                 </c:url>
                 <a href="${filterTypesUrl}">Types</a> &gt;&gt;
                 <c:url var="filtersUrl" value="/action/Filter/Filter/Main">
-                    <c:param name="FilterKindName" value="${filterEntranceStep.filterStep.filter.filterType.filterKind.filterKindName}" />
-                    <c:param name="FilterTypeName" value="${filterEntranceStep.filterStep.filter.filterType.filterTypeName}" />
+                    <c:param name="FilterKindName" value="${filter.filterType.filterKind.filterKindName}" />
+                    <c:param name="FilterTypeName" value="${filter.filterType.filterTypeName}" />
                 </c:url>
                 <a href="${filtersUrl}">Filters</a> &gt;&gt;
                 Entrance Steps
@@ -44,9 +44,9 @@
         </div>
         <div id="Content">
             <c:url var="addUrl" value="/action/Filter/FilterEntranceStep/Add">
-                <c:param name="FilterKindName" value="${filterEntranceStep.filterStep.filter.filterType.filterKind.filterKindName}" />
-                <c:param name="FilterTypeName" value="${filterEntranceStep.filterStep.filter.filterType.filterTypeName}" />
-                <c:param name="FilterName" value="${filterEntranceStep.filterStep.filter.filterName}" />
+                <c:param name="FilterKindName" value="${filter.filterType.filterKind.filterKindName}" />
+                <c:param name="FilterTypeName" value="${filter.filterType.filterTypeName}" />
+                <c:param name="FilterName" value="${filter.filterName}" />
             </c:url>
             <p><a href="${addUrl}">Add Entrance Step.</a></p>
             <display:table name="filterEntranceSteps" id="filterEntranceStep" class="displaytag">
