@@ -3505,7 +3505,23 @@ public class FilterControl
         
         return filterStepDestination;
     }
-    
+
+    public long countFilterStepDestinationsByFromFilterStep(FilterStep fromFilterStep) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM filterstepdestinations " +
+                        "WHERE fltstpdn_fromfilterstepid = ? AND fltstpdn_thrutime = ?",
+                fromFilterStep, Session.MAX_TIME);
+    }
+
+    public long countFilterStepDestinationsByToFilterStep(FilterStep toFilterStep) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM filterstepdestinations " +
+                        "WHERE fltstpdn_tofilterstepid = ? AND fltstpdn_thrutime = ?",
+                toFilterStep, Session.MAX_TIME);
+    }
+
     private FilterStepDestination getFilterStepDestination(FilterStep fromFilterStep, FilterStep toFilterStep,
             EntityPermission entityPermission) {
         FilterStepDestination filterStepDestination;
@@ -3557,7 +3573,8 @@ public class FilterControl
                         "FROM filterstepdestinations, filterstepdetails " +
                         "WHERE fltstpdn_fromfilterstepid = ? AND fltstpdn_thrutime = ? " +
                         "AND fltstpdn_tofilterstepid = fltstpdt_fltstp_filterstepid AND fltstpdt_thrutime = ? " +
-                        "ORDER BY fltstpdt_filterstepname";
+                        "ORDER BY fltstpdt_filterstepname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM filterstepdestinations " +
@@ -3600,7 +3617,8 @@ public class FilterControl
                         "FROM filterstepdestinations, filterstepdetails " +
                         "WHERE fltstpdn_tofilterstepid = ? AND fltstpdn_thrutime = ? " +
                         "AND fltstpdn_tofilterstepid = fltstpdt_fltstp_filterstepid AND fltstpdt_thrutime = ? " +
-                        "ORDER BY fltstpdt_filterstepname";
+                        "ORDER BY fltstpdt_filterstepname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM filterstepdestinations " +
@@ -3630,22 +3648,6 @@ public class FilterControl
     
     public List<FilterStepDestination> getFilterStepDestinationsByToFilterStepForUpdate(FilterStep toFilterStep) {
         return getFilterStepDestinationsByToFilterStep(toFilterStep, EntityPermission.READ_WRITE);
-    }
-    
-    public long countFilterStepDestinationsByFromFilterStep(FilterStep fromFilterStep) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM filterstepdestinations " +
-                "WHERE fltstpdn_fromfilterstepid = ? AND fltstpdn_thrutime = ?",
-                fromFilterStep, Session.MAX_TIME);
-    }
-    
-    public long countFilterStepDestinationsByToFilterStep(FilterStep toFilterStep) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM filterstepdestinations " +
-                "WHERE fltstpdn_tofilterstepid = ? AND fltstpdn_thrutime = ?",
-                toFilterStep, Session.MAX_TIME);
     }
     
     public List<FilterStepDestinationTransfer> getFilterStepDestinationTransfers(UserVisit userVisit, Collection<FilterStepDestination> filterStepDestinations) {
