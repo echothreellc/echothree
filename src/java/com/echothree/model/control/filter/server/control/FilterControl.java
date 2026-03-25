@@ -3314,7 +3314,24 @@ public class FilterControl
         
         return filterEntranceStep;
     }
-    
+
+    public long countFilterEntranceStepsByFilter(Filter filter) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM filterentrancesteps " +
+                        "WHERE fltens_flt_filterid = ? AND fltens_thrutime = ?",
+                filter, Session.MAX_TIME);
+    }
+
+    public long countFilterEntranceStepsByFilterStep(FilterStep filterStep) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM filterentrancesteps " +
+                        "WHERE fltens_fltstp_filterstepid = ? AND fltens_thrutime = ?",
+                filterStep, Session.MAX_TIME);
+    }
+
+
     private FilterEntranceStep getFilterEntranceStep(Filter filter, FilterStep filterStep, EntityPermission entityPermission) {
         FilterEntranceStep filterEntranceStep;
         
@@ -3365,7 +3382,8 @@ public class FilterControl
                         "FROM filterentrancesteps, filterstepdetails " +
                         "WHERE fltens_flt_filterid = ? AND fltens_thrutime = ? " +
                         "AND fltens_fltstp_filterstepid = fltstpdt_fltstp_filterstepid AND fltstpdt_thrutime = ? " +
-                        "ORDER BY fltstpdt_filterstepname";
+                        "ORDER BY fltstpdt_filterstepname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM filterentrancesteps " +
@@ -3408,7 +3426,8 @@ public class FilterControl
                         "FROM filterentrancesteps, filterstepdetails" +
                         "WHERE fltens_fltstp_filterstepid = ? AND fltens_thrutime = ? " +
                         "AND fltens_fltstp_filterstepid = fltstpdt_fltstp_filterstepid AND fltstpdt_thrutime = ? " +
-                        "ORDER BY fltstpdt_filterstepname";
+                        "ORDER BY fltstpdt_filterstepname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM filterentrancesteps " +

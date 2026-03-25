@@ -17,23 +17,18 @@
 package com.echothree.control.user.filter.common.result;
 
 import com.echothree.model.control.filter.common.transfer.FilterEntranceStepTransfer;
-import com.echothree.model.control.filter.common.transfer.FilterKindTransfer;
 import com.echothree.model.control.filter.common.transfer.FilterTransfer;
-import com.echothree.model.control.filter.common.transfer.FilterTypeTransfer;
 import com.echothree.util.common.command.BaseResult;
 import java.util.List;
 
 public interface GetFilterEntranceStepsResult
         extends BaseResult {
     
-    FilterKindTransfer getFilterKind();
-    void setFilterKind(FilterKindTransfer filterKind);
-    
-    FilterTypeTransfer getFilterType();
-    void setFilterType(FilterTypeTransfer filterType);
-    
     FilterTransfer getFilter();
     void setFilter(FilterTransfer filter);
+
+    Long getFilterEntranceStepCount();
+    void setFilterEntranceStepCount(Long filterEntranceStepCount);
     
     List<FilterEntranceStepTransfer> getFilterEntranceSteps();
     void setFilterEntranceSteps(List<FilterEntranceStepTransfer> filterEntranceSteps);
