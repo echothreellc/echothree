@@ -27,15 +27,6 @@ import java.util.List;
 public interface GetFilterStepDestinationsResult
         extends BaseResult {
     
-    FilterKindTransfer getFilterKind();
-    void setFilterKind(FilterKindTransfer filterKind);
-    
-    FilterTypeTransfer getFilterType();
-    void setFilterType(FilterTypeTransfer filterType);
-    
-    FilterTransfer getFilter();
-    void setFilter(FilterTransfer filter);
-    
     FilterStepTransfer getFromFilterStep();
     void setFromFilterStep(FilterStepTransfer fromFilterStep);
     
