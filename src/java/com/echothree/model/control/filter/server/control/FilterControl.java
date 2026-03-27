@@ -1412,6 +1412,14 @@ public class FilterControl
         return filterAdjustment;
     }
 
+    public long countFilterAdjustmentsByFilterKind(FilterKind filterKind) {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM filteradjustments, filteradjustmentdetails
+                WHERE flta_activedetailid = fltadt_filteradjustmentdetailid AND fltadt_fltk_filterkindid = ?
+                """, filterKind);
+    }
+
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.FilterAdjustment */
     public FilterAdjustment getFilterAdjustmentByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new FilterAdjustmentPK(entityInstance.getEntityUniqueId());
