@@ -93,18 +93,22 @@ import com.echothree.control.user.core.common.spec.EntityAttributeGroupSpec;
 import com.echothree.control.user.core.common.spec.EntityAttributeUniversalSpec;
 import com.echothree.control.user.core.common.spec.EntityListItemUniversalSpec;
 import com.echothree.control.user.core.common.spec.EntityTypeSpec;
+import com.echothree.control.user.filter.common.edit.FilterAdjustmentEdit;
 import com.echothree.control.user.filter.common.edit.FilterEdit;
 import com.echothree.control.user.filter.common.edit.FilterKindEdit;
 import com.echothree.control.user.filter.common.edit.FilterStepEdit;
 import com.echothree.control.user.filter.common.edit.FilterTypeEdit;
+import com.echothree.control.user.filter.common.form.CreateFilterAdjustmentForm;
 import com.echothree.control.user.filter.common.form.CreateFilterForm;
 import com.echothree.control.user.filter.common.form.CreateFilterKindForm;
 import com.echothree.control.user.filter.common.form.CreateFilterStepForm;
 import com.echothree.control.user.filter.common.form.CreateFilterTypeForm;
+import com.echothree.control.user.filter.common.form.DeleteFilterAdjustmentForm;
 import com.echothree.control.user.filter.common.form.DeleteFilterForm;
 import com.echothree.control.user.filter.common.form.DeleteFilterKindForm;
 import com.echothree.control.user.filter.common.form.DeleteFilterStepForm;
 import com.echothree.control.user.filter.common.form.DeleteFilterTypeForm;
+import com.echothree.control.user.filter.common.spec.FilterAdjustmentSpec;
 import com.echothree.control.user.filter.common.spec.FilterKindSpec;
 import com.echothree.control.user.filter.common.spec.FilterSpec;
 import com.echothree.control.user.filter.common.spec.FilterStepSpec;
@@ -464,6 +468,11 @@ public class BasePersona {
     public FilterKindSpec filterKindSpec;
     public FilterKindEdit filterKindEdit;
 
+    public CreateFilterAdjustmentForm createFilterAdjustmentForm;
+    public DeleteFilterAdjustmentForm deleteFilterAdjustmentForm;
+    public FilterAdjustmentSpec filterAdjustmentSpec;
+    public FilterAdjustmentEdit filterAdjustmentEdit;
+
     public CreateFilterTypeForm createFilterTypeForm;
     public DeleteFilterTypeForm deleteFilterTypeForm;
     public FilterTypeSpec filterTypeSpec;
@@ -480,6 +489,7 @@ public class BasePersona {
     public FilterStepEdit filterStepEdit;
 
     public String lastFilterKindName;
+    public String lastFilterAdjustmentName;
     public String lastFilterTypeName;
     public String lastFilterName;
     public String lastFilterStepName;
