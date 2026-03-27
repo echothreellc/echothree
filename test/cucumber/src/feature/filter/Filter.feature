@@ -16,7 +16,7 @@ Feature: Employee filter
     When the user begins entering a new filter
     And the user sets the filter's filter kind name to PRICE
     And the user sets the filter's filter type name to OFFER_ITEM_PRICE
-    And the user sets the filter's name to TEST_FILTER_TYPE
+    And the user sets the filter's name to TEST_FILTER
     And the user sets the filter's initial filter adjustment name to "EXAMPLE_ITEM_PRICE"
     And the user sets the filter's filter item selector name to "ACTIVE_ITEM"
     And the user sets the filter's sort order to "1"
