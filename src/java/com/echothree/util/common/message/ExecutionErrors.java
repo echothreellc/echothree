@@ -2096,6 +2096,7 @@ public enum ExecutionErrors {
     UnknownFirstHarmonizedTariffScheduleCodeUnitName,
     UnknownSecondHarmonizedTariffScheduleCodeUnitName,
     CannotRelateToSelf,
+    SelfReferentialFilterStepDestination,
     UnknownAllocationPriorityName,
     DuplicateAllocationPriorityName,
     DuplicateAllocationPriorityDescription,

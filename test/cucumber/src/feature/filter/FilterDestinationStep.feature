@@ -71,6 +71,17 @@ Feature: Employee filter step
     And the user adds the new filter step destination
     Then the execution error DuplicateFilterStepDestination should occur
 
+  Scenario: Existing employee attempts to add a self referential filter step destination
+    Given the employee Test begins using the application
+    When the user begins entering a new filter step destination
+    And the user sets the filter step destination's filter kind name to PRICE
+    And the user sets the filter step destination's filter type name to OFFER_ITEM_PRICE
+    And the user sets the filter step destination's filter name to EXAMPLE_OFFER_ITEM_PRICE_FILTER
+    And the user sets the filter step destination's from filter step name to EXAMPLE_FILTER_STEP_1
+    And the user sets the filter step destination's to filter step name to EXAMPLE_FILTER_STEP_1
+    And the user adds the new filter step destination
+    Then the execution error SelfReferentialFilterStepDestination should occur
+
   Scenario: Existing employee adds filter steps, filter step destination, and attempts deleting the filter step while in-use
     Given the employee Test begins using the application
     When the user begins entering a new filter step
