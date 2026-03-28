@@ -101,11 +101,13 @@ import com.echothree.control.user.filter.common.edit.FilterTypeEdit;
 import com.echothree.control.user.filter.common.form.CreateFilterAdjustmentForm;
 import com.echothree.control.user.filter.common.form.CreateFilterForm;
 import com.echothree.control.user.filter.common.form.CreateFilterKindForm;
+import com.echothree.control.user.filter.common.form.CreateFilterStepDestinationForm;
 import com.echothree.control.user.filter.common.form.CreateFilterStepForm;
 import com.echothree.control.user.filter.common.form.CreateFilterTypeForm;
 import com.echothree.control.user.filter.common.form.DeleteFilterAdjustmentForm;
 import com.echothree.control.user.filter.common.form.DeleteFilterForm;
 import com.echothree.control.user.filter.common.form.DeleteFilterKindForm;
+import com.echothree.control.user.filter.common.form.DeleteFilterStepDestinationForm;
 import com.echothree.control.user.filter.common.form.DeleteFilterStepForm;
 import com.echothree.control.user.filter.common.form.DeleteFilterTypeForm;
 import com.echothree.control.user.filter.common.spec.FilterAdjustmentSpec;
@@ -487,6 +489,9 @@ public class BasePersona {
     public DeleteFilterStepForm deleteFilterStepForm;
     public FilterStepSpec filterStepSpec;
     public FilterStepEdit filterStepEdit;
+
+    public CreateFilterStepDestinationForm createFilterStepDestinationForm;
+    public DeleteFilterStepDestinationForm deleteFilterStepDestinationForm;
 
     public String lastFilterKindName;
     public String lastFilterAdjustmentName;
