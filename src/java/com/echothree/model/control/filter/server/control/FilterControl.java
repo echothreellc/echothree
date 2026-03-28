@@ -1458,7 +1458,8 @@ public class FilterControl
                 query = "SELECT _ALL_ " +
                         "FROM filteradjustments, filteradjustmentdetails " +
                         "WHERE flta_activedetailid = fltadt_filteradjustmentdetailid AND fltadt_fltk_filterkindid = ? " +
-                        "ORDER BY fltadt_filteradjustmentname";
+                        "ORDER BY fltadt_filteradjustmentname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM filteradjustments, filteradjustmentdetails " +
