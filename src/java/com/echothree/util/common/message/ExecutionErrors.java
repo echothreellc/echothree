@@ -2370,6 +2370,7 @@ public enum ExecutionErrors {
     DuplicateInventoryAdjustmentTypeDescription,
     UnknownInventoryAdjustmentTypeDescription,
     UnknownDefaultInventoryAdjustmentType,
+    CannotDeleteFilterTypeInUse,
     CannotDeleteFilterKindInUse,
 
 }

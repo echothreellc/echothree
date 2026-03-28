@@ -476,6 +476,7 @@ public class FilterControl
     }
 
     public void deleteFilterKind(FilterKind filterKind, BasePK deletedBy) {
+        deleteFilterTypesByFilterKind(filterKind, deletedBy);
         deleteFilterKindDescriptionsByFilterKind(filterKind, deletedBy);
 
         var filterKindDetail = filterKind.getLastDetailForUpdate();
@@ -916,6 +917,7 @@ public class FilterControl
     }
 
     public void deleteFilterType(FilterType filterType, BasePK deletedBy) {
+        deleteFiltersByFilterType(filterType, deletedBy);
         deleteFilterTypeDescriptionsByFilterType(filterType, deletedBy);
 
         var filterTypeDetail = filterType.getLastDetailForUpdate();
@@ -2738,7 +2740,15 @@ public class FilterControl
         
         sendEvent(filter.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
-    
+
+    public void deleteFiltersByFilterType(FilterType filterType, BasePK deletedBy) {
+        var filters = getFiltersForUpdate(filterType);
+
+        filters.forEach((filter) ->
+                deleteFilter(filter, deletedBy)
+        );
+    }
+
     // --------------------------------------------------------------------------------
     //   Filter Descriptions
     // --------------------------------------------------------------------------------
