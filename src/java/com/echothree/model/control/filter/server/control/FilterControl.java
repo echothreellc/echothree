@@ -476,6 +476,7 @@ public class FilterControl
     }
 
     public void deleteFilterKind(FilterKind filterKind, BasePK deletedBy) {
+        deleteFilterTypesByFilterKind(filterKind, deletedBy);
         deleteFilterKindDescriptionsByFilterKind(filterKind, deletedBy);
 
         var filterKindDetail = filterKind.getLastDetailForUpdate();
@@ -916,6 +917,7 @@ public class FilterControl
     }
 
     public void deleteFilterType(FilterType filterType, BasePK deletedBy) {
+        deleteFiltersByFilterType(filterType, deletedBy);
         deleteFilterTypeDescriptionsByFilterType(filterType, deletedBy);
 
         var filterTypeDetail = filterType.getLastDetailForUpdate();
@@ -1410,6 +1412,14 @@ public class FilterControl
         sendEvent(filterAdjustment.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return filterAdjustment;
+    }
+
+    public long countFilterAdjustmentsByFilterKind(FilterKind filterKind) {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM filteradjustments, filteradjustmentdetails
+                WHERE flta_activedetailid = fltadt_filteradjustmentdetailid AND fltadt_fltk_filterkindid = ?
+                """, filterKind);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.FilterAdjustment */
@@ -2730,7 +2740,15 @@ public class FilterControl
         
         sendEvent(filter.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
-    
+
+    public void deleteFiltersByFilterType(FilterType filterType, BasePK deletedBy) {
+        var filters = getFiltersForUpdate(filterType);
+
+        filters.forEach((filter) ->
+                deleteFilter(filter, deletedBy)
+        );
+    }
+
     // --------------------------------------------------------------------------------
     //   Filter Descriptions
     // --------------------------------------------------------------------------------

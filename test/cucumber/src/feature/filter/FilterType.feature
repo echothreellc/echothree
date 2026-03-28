@@ -45,3 +45,41 @@ Feature: Employee filter type
     And the user sets the filter type to be the default
     And the user adds the new filter type
     Then the execution error DuplicateFilterTypeName should occur
+
+  Scenario: Existing employee adds a filter type, filter, and attempts deleting the filter type while in-use
+    Given the employee Test begins using the application
+    When the user begins entering a new filter type
+    And the user sets the filter type's filter kind name to PRICE
+    And the user sets the filter type's name to TEST_FILTER_TYPE
+    And the user sets the filter type's sort order to "1"
+    And the user sets the filter type to be the default
+    And the user sets the filter type's description to "Test Filter Type"
+    And the user adds the new filter type
+    Then no error should occur
+    When the user begins entering a new filter
+    And the user sets the filter's filter kind name to PRICE
+    And the user sets the filter's filter type name to TEST_FILTER_TYPE
+    And the user sets the filter's name to TEST_FILTER
+    And the user sets the filter's initial filter adjustment name to "EXAMPLE_ITEM_PRICE"
+    And the user sets the filter's filter item selector name to "ACTIVE_ITEM"
+    And the user sets the filter's sort order to "1"
+    And the user sets the filter to be the default
+    And the user sets the filter's description to "Test Filter"
+    And the user adds the new filter
+    Then no error should occur
+    When the user begins deleting a filter type
+    And the user sets the filter type's filter kind name to PRICE
+    And the user sets the filter type's name to the last filter type added
+    And the user deletes the filter type
+    Then the execution error CannotDeleteFilterTypeInUse should occur
+    When the user begins deleting a filter
+    And the user sets the filter's filter kind name to PRICE
+    And the user sets the filter's filter type name to TEST_FILTER_TYPE
+    And the user sets the filter's name to the last filter added
+    And the user deletes the filter
+    Then no error should occur
+    When the user begins deleting a filter type
+    And the user sets the filter type's filter kind name to PRICE
+    And the user sets the filter type's name to the last filter type added
+    And the user deletes the filter type
+    Then no error should occur

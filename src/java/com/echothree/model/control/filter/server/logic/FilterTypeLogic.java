@@ -21,6 +21,7 @@ import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
+import com.echothree.model.control.filter.common.exception.CannotDeleteFilterTypeInUseException;
 import com.echothree.model.control.filter.common.exception.DuplicateFilterTypeNameException;
 import com.echothree.model.control.filter.common.exception.UnknownDefaultFilterKindException;
 import com.echothree.model.control.filter.common.exception.UnknownDefaultFilterTypeException;
@@ -38,6 +39,7 @@ import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.ParameterUtils;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class FilterTypeLogic
@@ -50,6 +52,9 @@ public class FilterTypeLogic
     public static FilterTypeLogic getInstance() {
         return CDI.current().select(FilterTypeLogic.class).get();
     }
+
+    @Inject
+    FilterControl filterControl;
 
     public FilterType createFilterType(final ExecutionErrorAccumulator eea, final String filterKindName, final String filterTypeName,
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description, final BasePK createdBy) {
@@ -65,7 +70,6 @@ public class FilterTypeLogic
 
     public FilterType createFilterType(final ExecutionErrorAccumulator eea, final FilterKind filterKind, final String filterTypeName,
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description, final BasePK createdBy) {
-        var filterControl = Session.getModelController(FilterControl.class);
         var filterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
 
         if(filterType == null) {
@@ -82,7 +86,6 @@ public class FilterTypeLogic
 
     public FilterType getFilterTypeByName(final ExecutionErrorAccumulator eea, final FilterKind filterKind, final String filterTypeName,
             final EntityPermission entityPermission) {
-        var filterControl = Session.getModelController(FilterControl.class);
         var filterType = filterControl.getFilterTypeByName(filterKind, filterTypeName, entityPermission);
 
         if(filterType == null) {
@@ -123,7 +126,6 @@ public class FilterTypeLogic
 
     public FilterType getFilterTypeByUniversalSpec(final ExecutionErrorAccumulator eea, final FilterTypeUniversalSpec universalSpec,
             final boolean allowDefault, final EntityPermission entityPermission) {
-        var filterControl = Session.getModelController(FilterControl.class);
         var filterKindName = universalSpec.getFilterKindName();
         var filterTypeName = universalSpec.getFilterTypeName();
         var nameParameterCount= ParameterUtils.getInstance().countNonNullParameters(filterKindName, filterTypeName);
@@ -188,8 +190,14 @@ public class FilterTypeLogic
 
     public void deleteFilterType(final ExecutionErrorAccumulator eea, final FilterType filterType,
             final BasePK deletedBy) {
-        var filterControl = Session.getModelController(FilterControl.class);
+        var filterCount = filterControl.countFiltersByFilterType(filterType);
 
-        filterControl.deleteFilterType(filterType, deletedBy);
+        if(filterCount == 0) {
+            filterControl.deleteFilterType(filterType, deletedBy);
+        } else {
+            handleExecutionError(CannotDeleteFilterTypeInUseException.class, eea, ExecutionErrors.CannotDeleteFilterTypeInUse.name(),
+                    filterType.getLastDetail().getFilterKind().getLastDetail().getFilterKindName(),
+                    filterType.getLastDetail().getFilterTypeName());
+        }
     }
 }
