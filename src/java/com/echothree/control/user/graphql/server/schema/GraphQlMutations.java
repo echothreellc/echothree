@@ -1184,6 +1184,58 @@ public interface GraphQlMutations {
 
     @GraphQLField
     @GraphQLRelayMutation
+    static MutationResultObject createFilterEntranceStep(final DataFetchingEnvironment env,
+            @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName,
+            @GraphQLName("filterTypeName") @GraphQLNonNull final String filterTypeName,
+            @GraphQLName("filterName") @GraphQLNonNull final String filterName,
+            @GraphQLName("filterStepName") @GraphQLNonNull final String filterStepName) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = FilterUtil.getHome().getCreateFilterEntranceStepForm();
+
+            commandForm.setFilterKindName(filterKindName);
+            commandForm.setFilterTypeName(filterTypeName);
+            commandForm.setFilterName(filterName);
+            commandForm.setFilterStepName(filterStepName);
+
+            var commandResult = FilterUtil.getHome().createFilterEntranceStep(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject deleteFilterEntranceStep(final DataFetchingEnvironment env,
+            @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName,
+            @GraphQLName("filterTypeName") @GraphQLNonNull final String filterTypeName,
+            @GraphQLName("filterName") @GraphQLNonNull final String filterName,
+            @GraphQLName("filterStepName") @GraphQLNonNull final String filterStepName) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = FilterUtil.getHome().getDeleteFilterEntranceStepForm();
+
+            commandForm.setFilterKindName(filterKindName);
+            commandForm.setFilterTypeName(filterTypeName);
+            commandForm.setFilterName(filterName);
+            commandForm.setFilterStepName(filterStepName);
+
+            var commandResult = FilterUtil.getHome().deleteFilterEntranceStep(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+    
+    @GraphQLField
+    @GraphQLRelayMutation
     static MutationResultWithIdObject createFilterStep(final DataFetchingEnvironment env,
             @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName,
             @GraphQLName("filterTypeName") @GraphQLNonNull final String filterTypeName,

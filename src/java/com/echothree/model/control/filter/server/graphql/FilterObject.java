@@ -18,10 +18,17 @@ package com.echothree.model.control.filter.server.graphql;
 
 import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.selector.server.graphql.SelectorObject;
 import com.echothree.model.control.selector.server.graphql.SelectorSecurityUtils;
 import com.echothree.model.control.user.server.control.UserControl;
+import com.echothree.model.data.filter.common.FilterEntranceStepConstants;
+import com.echothree.model.data.filter.common.FilterStepConstants;
 import com.echothree.model.data.filter.server.entity.Filter;
 import com.echothree.model.data.filter.server.entity.FilterDetail;
 import com.echothree.util.server.persistence.Session;
@@ -29,9 +36,11 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 @GraphQLDescription("filter object")
 @GraphQLName("Filter")
@@ -116,22 +125,44 @@ public class FilterObject
     }
 
     @GraphQLField
-    @GraphQLDescription("filter steps")
-    public Collection<FilterStepObject> getFilterSteps(final DataFetchingEnvironment env) {
-        Collection<FilterStepObject> filterStepObjects = null;
+    @GraphQLDescription("filter entrance steps")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<FilterEntranceStepObject> getFilterEntranceSteps(final DataFetchingEnvironment env) {
+        if(FilterSecurityUtils.getHasFilterEntranceStepsAccess(env)) {
+            var filterControl = Session.getModelController(FilterControl.class);
+            var totalCount = filterControl.countFilterEntranceStepsByFilter(filter);
 
+            try(var objectLimiter = new ObjectLimiter(env, FilterEntranceStepConstants.COMPONENT_VENDOR_NAME, FilterEntranceStepConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = filterControl.getFilterEntranceStepsByFilter(filter);
+                var unitOfMeasureTypes = entities.stream().map(FilterEntranceStepObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, unitOfMeasureTypes);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
+
+
+    @GraphQLField
+    @GraphQLDescription("filter steps")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<FilterStepObject> getFilterSteps(final DataFetchingEnvironment env) {
         if(FilterSecurityUtils.getHasFilterStepsAccess(env)) {
             var filterControl = Session.getModelController(FilterControl.class);
-            var filterSteps = filterControl.getFilterStepsByFilter(filter);
+            var totalCount = filterControl.countFilterStepsByFilter(filter);
 
-            filterStepObjects = new ArrayList<>(filterSteps.size());
+            try(var objectLimiter = new ObjectLimiter(env, FilterStepConstants.COMPONENT_VENDOR_NAME, FilterStepConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = filterControl.getFilterStepsByFilter(filter);
+                var unitOfMeasureTypes = entities.stream().map(FilterStepObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
-            filterSteps.stream()
-                    .map(FilterStepObject::new)
-                    .forEachOrdered(filterStepObjects::add);
+                return new CountedObjects<>(objectLimiter, unitOfMeasureTypes);
+            }
+        } else {
+            return Connections.emptyConnection();
         }
-
-        return filterStepObjects;
     }
 
 }
