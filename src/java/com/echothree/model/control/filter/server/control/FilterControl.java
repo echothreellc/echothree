@@ -2072,7 +2072,15 @@ public class FilterControl
         
         return filterAdjustmentPercent;
     }
-    
+
+    public long countFilterAdjustmentPercentsByFilterAdjustment(FilterAdjustment filterAdjustment) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM filteradjustmentpercents
+                        WHERE fltap_flta_filteradjustmentid = ? AND fltap_thrutime = ?
+                        """, filterAdjustment, Session.MAX_TIME);
+    }
+
     private List<FilterAdjustmentPercent> getFilterAdjustmentPercents(FilterAdjustment filterAdjustment,
             EntityPermission entityPermission) {
         List<FilterAdjustmentPercent> filterAdjustmentPercents;
@@ -2087,7 +2095,8 @@ public class FilterControl
                         "AND fltap_uomt_unitofmeasuretypeid = uomtdt_uomt_unitofmeasuretypeid AND uomtdt_thrutime = ? " +
                         "AND uomtdt_uomk_unitofmeasurekindid = uomkdt_uomk_unitofmeasurekindid AND uomkdt_thrutime = ? " +
                         "AND fltap_cur_currencyid = cur_currencyid " +
-                        "ORDER BY uomkdt_sortorder, uomtdt_sortorder, cur_sortorder";
+                        "ORDER BY uomkdt_sortorder, uomtdt_sortorder, cur_sortorder " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM filteradjustmentpercents " +
@@ -2120,7 +2129,7 @@ public class FilterControl
     public List<FilterAdjustmentPercent> getFilterAdjustmentPercentsForUpdate(FilterAdjustment filterAdjustment) {
         return getFilterAdjustmentPercents(filterAdjustment, EntityPermission.READ_WRITE);
     }
-    
+
     private FilterAdjustmentPercent getFilterAdjustmentPercent(FilterAdjustment filterAdjustment, UnitOfMeasureType unitOfMeasureType,
             Currency currency, EntityPermission entityPermission) {
         FilterAdjustmentPercent filterAdjustmentPercent;

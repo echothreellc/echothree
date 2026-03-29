@@ -26,7 +26,10 @@ public interface GetFilterAdjustmentPercentsResult
     
     FilterAdjustmentTransfer getFilterAdjustment();
     void setFilterAdjustment(FilterAdjustmentTransfer filterAdjustment);
-    
+
+    Long getFilterAdjustmentPercentCount();
+    void setFilterAdjustmentPercentCount(Long filterAdjustmentPercentCount);
+
     List<FilterAdjustmentPercentTransfer> getFilterAdjustmentPercents();
     void setFilterAdjustmentPercents(List<FilterAdjustmentPercentTransfer> filterAdjustmentPercents);
     
