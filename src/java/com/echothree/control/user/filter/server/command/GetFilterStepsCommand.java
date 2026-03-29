@@ -25,23 +25,22 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.filter.server.entity.Filter;
 import com.echothree.model.data.filter.server.entity.FilterStep;
-import com.echothree.model.data.filter.server.factory.FilterFactory;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.filter.server.factory.FilterStepFactory;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetFilterStepsCommand
-        extends BaseMultipleEntitiesCommand<FilterStep, GetFilterStepsForm> {
+        extends BasePaginatedMultipleEntitiesCommand<FilterStep, GetFilterStepsForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -66,15 +65,27 @@ public class GetFilterStepsCommand
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
+    @Inject
+    FilterControl filterControl;
+
+    @Inject
+    FilterLogic filterLogic;
+
     Filter filter;
 
     @Override
-    protected Collection<FilterStep> getEntities() {
-        var filterControl = Session.getModelController(FilterControl.class);
-
-        filter = FilterLogic.getInstance().getFilterByName(this, form.getFilterKindName(), form.getFilterTypeName(),
+    protected void handleForm() {
+        filter = filterLogic.getFilterByName(this, form.getFilterKindName(), form.getFilterTypeName(),
                 form.getFilterName());
+    }
 
+    @Override
+    protected Long getTotalEntities() {
+        return hasExecutionErrors() ? null : filterControl.countFilterStepsByFilter(filter);
+    }
+
+    @Override
+    protected Collection<FilterStep> getEntities() {
         return hasExecutionErrors() ? null : filterControl.getFilterStepsByFilter(filter);
     }
 
@@ -83,14 +94,14 @@ public class GetFilterStepsCommand
         var result = FilterResultFactory.getGetFilterStepsResult();
 
         if(entities != null) {
-            var filterControl = Session.getModelController(FilterControl.class);
+            var userVisit = getUserVisit();
+            result.setFilter(filterControl.getFilterTransfer(userVisit, filter));
 
-            if(session.hasLimit(FilterFactory.class)) {
-                result.setFilterStepCount(filterControl.countFilterStepsByFilter(filter));
+            if(session.hasLimit(FilterStepFactory.class)) {
+                result.setFilterStepCount(getTotalEntities());
             }
 
-            result.setFilter(filterControl.getFilterTransfer(getUserVisit(), filter));
-            result.setFilterSteps(filterControl.getFilterStepTransfers(getUserVisit(), entities));
+            result.setFilterSteps(filterControl.getFilterStepTransfers(userVisit, entities));
         }
 
         return result;
