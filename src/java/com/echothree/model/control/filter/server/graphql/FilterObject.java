@@ -144,7 +144,6 @@ public class FilterObject
         }
     }
 
-
     @GraphQLField
     @GraphQLDescription("filter steps")
     @GraphQLNonNull
