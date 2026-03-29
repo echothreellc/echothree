@@ -26,23 +26,23 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.filter.server.entity.FilterAdjustment;
 import com.echothree.model.data.filter.server.entity.FilterAdjustmentPercent;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.filter.server.factory.FilterAdjustmentPercentFactory;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetFilterAdjustmentPercentsCommand
-        extends BaseMultipleEntitiesCommand<FilterAdjustmentPercent, GetFilterAdjustmentPercentsForm> {
+        extends BasePaginatedMultipleEntitiesCommand<FilterAdjustmentPercent, GetFilterAdjustmentPercentsForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -66,22 +66,35 @@ public class GetFilterAdjustmentPercentsCommand
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
+    @Inject
+    FilterControl filterControl;
+
+    @Inject
+    FilterAdjustmentLogic filterAdjustmentLogic;
+
     FilterAdjustment filterAdjustment;
 
     @Override
-    protected Collection<FilterAdjustmentPercent> getEntities() {
-        var filterControl = Session.getModelController(FilterControl.class);
+    protected void handleForm() {
         var filterKindName = form.getFilterKindName();
         var filterAdjustmentName = form.getFilterAdjustmentName();
 
-        filterAdjustment = FilterAdjustmentLogic.getInstance().getFilterAdjustmentByName(this, filterKindName, filterAdjustmentName);
+        filterAdjustment = filterAdjustmentLogic.getFilterAdjustmentByName(this, filterKindName, filterAdjustmentName);
 
         if(!hasExecutionErrors()) {
             if(!filterAdjustment.getLastDetail().getFilterAdjustmentType().getFilterAdjustmentTypeName().equals(FilterAdjustmentTypes.PERCENT.name())) {
                 addExecutionError(ExecutionErrors.InvalidFilterAdjustmentType.name());
             }
         }
+    }
 
+    @Override
+    protected Long getTotalEntities() {
+        return hasExecutionErrors() ? null : filterControl.countFilterAdjustmentPercentsByFilterAdjustment(filterAdjustment);
+    }
+
+    @Override
+    protected Collection<FilterAdjustmentPercent> getEntities() {
         return hasExecutionErrors() ? null : filterControl.getFilterAdjustmentPercents(filterAdjustment);
     }
 
@@ -90,10 +103,15 @@ public class GetFilterAdjustmentPercentsCommand
         var result = FilterResultFactory.getGetFilterAdjustmentPercentsResult();
 
         if(entities != null) {
-            var filterControl = Session.getModelController(FilterControl.class);
+            var userVisit = getUserVisit();
 
-            result.setFilterAdjustment(filterControl.getFilterAdjustmentTransfer(getUserVisit(), filterAdjustment));
-            result.setFilterAdjustmentPercents(filterControl.getFilterAdjustmentPercentTransfers(getUserVisit(), entities));
+            result.setFilterAdjustment(filterControl.getFilterAdjustmentTransfer(userVisit, filterAdjustment));
+
+            if(session.hasLimit(FilterAdjustmentPercentFactory.class)) {
+                result.setFilterAdjustmentPercentCount(getTotalEntities());
+            }
+
+            result.setFilterAdjustmentPercents(filterControl.getFilterAdjustmentPercentTransfers(userVisit, entities));
         }
 
         return result;
