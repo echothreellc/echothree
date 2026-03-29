@@ -1233,7 +1233,7 @@ public interface GraphQlMutations {
 
         return mutationResultObject;
     }
-    
+
     @GraphQLField
     @GraphQLRelayMutation
     static MutationResultWithIdObject createFilterStep(final DataFetchingEnvironment env,
@@ -1344,6 +1344,62 @@ public interface GraphQlMutations {
                 commandResult = FilterUtil.getHome().editFilterStep(BaseGraphQl.getUserVisitPK(env), commandForm);
             }
 
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject createFilterStepDestination(final DataFetchingEnvironment env,
+            @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName,
+            @GraphQLName("filterTypeName") @GraphQLNonNull final String filterTypeName,
+            @GraphQLName("filterName") @GraphQLNonNull final String filterName,
+            @GraphQLName("fromFilterStepName") @GraphQLNonNull final String fromFilterStepName,
+            @GraphQLName("toFilterStepName") @GraphQLNonNull final String toFilterStepName) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = FilterUtil.getHome().getCreateFilterStepDestinationForm();
+
+            commandForm.setFilterKindName(filterKindName);
+            commandForm.setFilterTypeName(filterTypeName);
+            commandForm.setFilterName(filterName);
+            commandForm.setFromFilterStepName(fromFilterStepName);
+            commandForm.setToFilterStepName(toFilterStepName);
+
+            var commandResult = FilterUtil.getHome().createFilterStepDestination(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject deleteFilterStepDestination(final DataFetchingEnvironment env,
+            @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName,
+            @GraphQLName("filterTypeName") @GraphQLNonNull final String filterTypeName,
+            @GraphQLName("filterName") @GraphQLNonNull final String filterName,
+            @GraphQLName("fromFilterStepName") @GraphQLNonNull final String fromFilterStepName,
+            @GraphQLName("toFilterStepName") @GraphQLNonNull final String toFilterStepName) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = FilterUtil.getHome().getDeleteFilterStepDestinationForm();
+
+            commandForm.setFilterKindName(filterKindName);
+            commandForm.setFilterTypeName(filterTypeName);
+            commandForm.setFilterName(filterName);
+            commandForm.setFromFilterStepName(fromFilterStepName);
+            commandForm.setToFilterStepName(toFilterStepName);
+
+            var commandResult = FilterUtil.getHome().deleteFilterStepDestination(BaseGraphQl.getUserVisitPK(env), commandForm);
             mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
