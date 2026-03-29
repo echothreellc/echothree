@@ -99,12 +99,14 @@ import com.echothree.control.user.filter.common.edit.FilterKindEdit;
 import com.echothree.control.user.filter.common.edit.FilterStepEdit;
 import com.echothree.control.user.filter.common.edit.FilterTypeEdit;
 import com.echothree.control.user.filter.common.form.CreateFilterAdjustmentForm;
+import com.echothree.control.user.filter.common.form.CreateFilterEntranceStepForm;
 import com.echothree.control.user.filter.common.form.CreateFilterForm;
 import com.echothree.control.user.filter.common.form.CreateFilterKindForm;
 import com.echothree.control.user.filter.common.form.CreateFilterStepDestinationForm;
 import com.echothree.control.user.filter.common.form.CreateFilterStepForm;
 import com.echothree.control.user.filter.common.form.CreateFilterTypeForm;
 import com.echothree.control.user.filter.common.form.DeleteFilterAdjustmentForm;
+import com.echothree.control.user.filter.common.form.DeleteFilterEntranceStepForm;
 import com.echothree.control.user.filter.common.form.DeleteFilterForm;
 import com.echothree.control.user.filter.common.form.DeleteFilterKindForm;
 import com.echothree.control.user.filter.common.form.DeleteFilterStepDestinationForm;
@@ -484,6 +486,9 @@ public class BasePersona {
     public DeleteFilterForm deleteFilterForm;
     public FilterSpec filterSpec;
     public FilterEdit filterEdit;
+
+    public CreateFilterEntranceStepForm createFilterEntranceStepForm;
+    public DeleteFilterEntranceStepForm deleteFilterEntranceStepForm;
 
     public CreateFilterStepForm createFilterStepForm;
     public DeleteFilterStepForm deleteFilterStepForm;
