@@ -172,6 +172,16 @@ public class FilterKindSteps implements En {
                     }
                 });
 
+        When("^the user sets the filter kind's new filter kind name to \"([^\"]*)\"$",
+                (String filterKindName) -> {
+                    var persona = CurrentPersona.persona;
+                    var filterKindEdit = persona.filterKindEdit;
+
+                    assertThat(filterKindEdit).isNotNull();
+
+                    filterKindEdit.setFilterKindName(filterKindName);
+                });
+
         When("^the user sets the filter kind to (be|not be) the default$",
                 (String isDefault) -> {
                     var persona = CurrentPersona.persona;
