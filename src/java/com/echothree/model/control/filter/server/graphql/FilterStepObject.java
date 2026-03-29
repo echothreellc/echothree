@@ -55,7 +55,7 @@ public class FilterStepObject
     }
 
     @GraphQLField
-    @GraphQLDescription("filterStep type")
+    @GraphQLDescription("filter")
     public FilterObject getFilter(final DataFetchingEnvironment env) {
         return FilterSecurityUtils.getHasFilterAccess(env) ? new FilterObject(getFilterStepDetail().getFilter()) : null;
     }
