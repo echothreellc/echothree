@@ -1,5 +1,28 @@
 # Changelog
 
+## 2026-03-29-01
+
+* GraphQL Objects and Mutations for Filter Step Elements [158](https://gitlab.echothree.com/echothree/echothree/-/work_items/158)
+* GraphQL Objects and Mutations for Filter Entrance Steps [159](https://gitlab.echothree.com/echothree/echothree/-/work_items/159)
+* GraphQL Objects and Mutations for Filter Step Destinations [196](https://gitlab.echothree.com/echothree/echothree/-/work_items/196)
+* Disallow Deleting the FilterKind If It's In Use [268](https://gitlab.echothree.com/echothree/echothree/-/work_items/268)
+* Disallow Deleting the FilterType If It's In Use [269](https://gitlab.echothree.com/echothree/echothree/-/work_items/269)
+* Convert GetFilterAdjustments UC to Use BasePaginatedMultipleEntitiesCommand [1243](https://gitlab.echothree.com/echothree/echothree/-/work_items/1243)
+* Convert GetFilterAdjustmentFixedAmounts UC to Use BasePaginatedMultipleEntitiesCommand [1245](https://gitlab.echothree.com/echothree/echothree/-/work_items/1245)
+* Convert GetFilterSteps UC to Use BasePaginatedMultipleEntitiesCommand [1246](https://gitlab.echothree.com/echothree/echothree/-/work_items/1246)
+* Convert GetFilterAdjustmentPercents UC to Use BasePaginatedMultipleEntitiesCommand [1247](https://gitlab.echothree.com/echothree/echothree/-/work_items/1247)
+* Convert GetFilterAdjustmentAmounts UC to Use BasePaginatedMultipleEntitiesCommand [1248](https://gitlab.echothree.com/echothree/echothree/-/work_items/1248)
+* Convert GetFilterStepElements UC to Use BasePaginatedMultipleEntitiesCommand [1739](https://gitlab.echothree.com/echothree/echothree/-/work_items/1739)
+* Convert GetFilterStepElement UC to Use BaseSingleEntityCommand [1740](https://gitlab.echothree.com/echothree/echothree/-/work_items/1740)
+* Convert GetFilterStepDestinations to Use BasePaginatedMultipleEntitiesCommand [1741](https://gitlab.echothree.com/echothree/echothree/-/work_items/1741)
+* Convert GetFilterEntranceSteps to Use BasePaginatedMultipleEntitiesCommand [1742](https://gitlab.echothree.com/echothree/echothree/-/work_items/1742)
+* Add GetFilterStepDestination UC [1743](https://gitlab.echothree.com/echothree/echothree/-/work_items/1743)
+* Add GetFilterEntranceStep UC [1744](https://gitlab.echothree.com/echothree/echothree/-/work_items/1744)
+* Incorrect Navigation Bar Links and Add Link for Filter Step Elements [1745](https://gitlab.echothree.com/echothree/echothree/-/work_items/1745)
+* Disallow Deleting the FilterStep If It's In Use [1746](https://gitlab.echothree.com/echothree/echothree/-/work_items/1746)
+* Add Filter Entrance Step Tests [1747](https://gitlab.echothree.com/echothree/echothree/-/work_items/1747)
+* Add Filter Step Element Tests [1748](https://gitlab.echothree.com/echothree/echothree/-/work_items/1748)
+
 ## 2026-03-15-01
 
 * Add Workflow Entrance Selectors Mutations [659](https://gitlab.echothree.com/echothree/echothree/-/issues/659)
