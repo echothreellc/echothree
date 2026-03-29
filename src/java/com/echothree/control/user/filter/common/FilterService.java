@@ -302,9 +302,11 @@ public interface FilterService
     // -------------------------------------------------------------------------
     
     CommandResult createFilterStepDestination(UserVisitPK userVisitPK, CreateFilterStepDestinationForm form);
-    
+
     CommandResult getFilterStepDestinations(UserVisitPK userVisitPK, GetFilterStepDestinationsForm form);
-    
+
+    CommandResult getFilterStepDestination(UserVisitPK userVisitPK, GetFilterStepDestinationForm form);
+
     CommandResult deleteFilterStepDestination(UserVisitPK userVisitPK, DeleteFilterStepDestinationForm form);
     
 }
