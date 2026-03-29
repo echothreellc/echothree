@@ -138,6 +138,8 @@ import com.echothree.control.user.filter.server.command.GetFilterAdjustmentsComm
 import com.echothree.control.user.filter.server.command.GetFilterCommand;
 import com.echothree.control.user.filter.server.command.GetFilterKindCommand;
 import com.echothree.control.user.filter.server.command.GetFilterKindsCommand;
+import com.echothree.control.user.filter.server.command.GetFilterEntranceStepCommand;
+import com.echothree.control.user.filter.server.command.GetFilterEntranceStepsCommand;
 import com.echothree.control.user.filter.server.command.GetFilterStepCommand;
 import com.echothree.control.user.filter.server.command.GetFilterStepsCommand;
 import com.echothree.control.user.filter.server.command.GetFilterTypeCommand;
@@ -506,6 +508,7 @@ import com.echothree.model.control.filter.server.graphql.FilterAdjustmentObject;
 import com.echothree.model.control.filter.server.graphql.FilterAdjustmentPercentObject;
 import com.echothree.model.control.filter.server.graphql.FilterAdjustmentSourceObject;
 import com.echothree.model.control.filter.server.graphql.FilterAdjustmentTypeObject;
+import com.echothree.model.control.filter.server.graphql.FilterEntranceStepObject;
 import com.echothree.model.control.filter.server.graphql.FilterKindObject;
 import com.echothree.model.control.filter.server.graphql.FilterObject;
 import com.echothree.model.control.filter.server.graphql.FilterStepObject;
@@ -770,6 +773,7 @@ import com.echothree.model.data.employee.common.PartyEmployeeConstants;
 import com.echothree.model.data.employee.server.entity.PartyEmployee;
 import com.echothree.model.data.filter.common.FilterAdjustmentTypeConstants;
 import com.echothree.model.data.filter.common.FilterConstants;
+import com.echothree.model.data.filter.common.FilterEntranceStepConstants;
 import com.echothree.model.data.filter.common.FilterKindConstants;
 import com.echothree.model.data.filter.common.FilterStepConstants;
 import com.echothree.model.data.filter.common.FilterTypeConstants;
@@ -780,6 +784,7 @@ import com.echothree.model.data.filter.server.entity.FilterAdjustmentFixedAmount
 import com.echothree.model.data.filter.server.entity.FilterAdjustmentPercent;
 import com.echothree.model.data.filter.server.entity.FilterAdjustmentSource;
 import com.echothree.model.data.filter.server.entity.FilterAdjustmentType;
+import com.echothree.model.data.filter.server.entity.FilterEntranceStep;
 import com.echothree.model.data.filter.server.entity.FilterKind;
 import com.echothree.model.data.filter.server.entity.FilterStep;
 import com.echothree.model.data.filter.server.entity.FilterType;
@@ -2977,6 +2982,70 @@ public interface GraphQlQueries {
                             .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, filters);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("filterEntranceStep")
+    static FilterEntranceStepObject filterEntranceStep(final DataFetchingEnvironment env,
+            @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName,
+            @GraphQLName("filterTypeName") @GraphQLNonNull final String filterTypeName,
+            @GraphQLName("filterName") @GraphQLNonNull final String filterName,
+            @GraphQLName("filterStepName") @GraphQLNonNull final String filterStepName) {
+        FilterEntranceStep filterEntranceStep;
+
+        try {
+            var commandForm = FilterUtil.getHome().getGetFilterEntranceStepForm();
+
+            commandForm.setFilterKindName(filterKindName);
+            commandForm.setFilterTypeName(filterTypeName);
+            commandForm.setFilterName(filterName);
+            commandForm.setFilterStepName(filterStepName);
+
+            filterEntranceStep = CDI.current().select(GetFilterEntranceStepCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return filterEntranceStep == null ? null : new FilterEntranceStepObject(filterEntranceStep);
+    }
+
+    @GraphQLField
+    @GraphQLName("filterEntranceSteps")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<FilterEntranceStepObject> filterEntranceSteps(final DataFetchingEnvironment env,
+            @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName,
+            @GraphQLName("filterTypeName") @GraphQLNonNull final String filterTypeName,
+            @GraphQLName("filterName") @GraphQLNonNull final String filterName) {
+        CountingPaginatedData<FilterEntranceStepObject> data;
+
+        try {
+            var commandForm = FilterUtil.getHome().getGetFilterEntranceStepsForm();
+            var command = CDI.current().select(GetFilterEntranceStepsCommand.class).get();
+
+            commandForm.setFilterKindName(filterKindName);
+            commandForm.setFilterTypeName(filterTypeName);
+            commandForm.setFilterName(filterName);
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, FilterEntranceStepConstants.COMPONENT_VENDOR_NAME, FilterEntranceStepConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var filterEntranceSteps = entities.stream()
+                            .map(FilterEntranceStepObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, filterEntranceSteps);
                 }
             }
         } catch (NamingException ex) {

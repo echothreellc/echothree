@@ -27,6 +27,8 @@ import com.echothree.control.user.filter.server.command.GetFilterAdjustmentSourc
 import com.echothree.control.user.filter.server.command.GetFilterAdjustmentTypeCommand;
 import com.echothree.control.user.filter.server.command.GetFilterAdjustmentsCommand;
 import com.echothree.control.user.filter.server.command.GetFilterCommand;
+import com.echothree.control.user.filter.server.command.GetFilterEntranceStepCommand;
+import com.echothree.control.user.filter.server.command.GetFilterEntranceStepsCommand;
 import com.echothree.control.user.filter.server.command.GetFilterKindCommand;
 import com.echothree.control.user.filter.server.command.GetFilterStepCommand;
 import com.echothree.control.user.filter.server.command.GetFilterStepsCommand;
@@ -104,6 +106,14 @@ public interface FilterSecurityUtils {
 
     static boolean getHasFilterStepAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetFilterStepCommand.class);
+    }
+
+    static boolean getHasFilterEntranceStepsAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetFilterEntranceStepsCommand.class);
+    }
+
+    static boolean getHasFilterEntranceStepAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetFilterEntranceStepCommand.class);
     }
 
 }
