@@ -78,12 +78,14 @@ import com.echothree.control.user.customer.common.result.EditCustomerTypeResult;
 import com.echothree.control.user.filter.common.FilterUtil;
 import com.echothree.control.user.filter.common.result.CreateFilterAdjustmentResult;
 import com.echothree.control.user.filter.common.result.CreateFilterResult;
+import com.echothree.control.user.filter.common.result.CreateFilterStepElementResult;
 import com.echothree.control.user.filter.common.result.CreateFilterStepResult;
 import com.echothree.control.user.filter.common.result.EditFilterAdjustmentAmountResult;
 import com.echothree.control.user.filter.common.result.EditFilterAdjustmentFixedAmountResult;
 import com.echothree.control.user.filter.common.result.EditFilterAdjustmentPercentResult;
 import com.echothree.control.user.filter.common.result.EditFilterAdjustmentResult;
 import com.echothree.control.user.filter.common.result.EditFilterResult;
+import com.echothree.control.user.filter.common.result.EditFilterStepElementResult;
 import com.echothree.control.user.filter.common.result.EditFilterStepResult;
 import com.echothree.control.user.geo.common.GeoUtil;
 import com.echothree.control.user.geo.common.result.CreateGeoCodeAliasTypeResult;
@@ -1342,6 +1344,135 @@ public interface GraphQlMutations {
                 commandForm.setEditMode(EditMode.UPDATE);
 
                 commandResult = FilterUtil.getHome().editFilterStep(BaseGraphQl.getUserVisitPK(env), commandForm);
+            }
+
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultWithIdObject createFilterStepElement(final DataFetchingEnvironment env,
+            @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName,
+            @GraphQLName("filterTypeName") @GraphQLNonNull final String filterTypeName,
+            @GraphQLName("filterName") @GraphQLNonNull final String filterName,
+            @GraphQLName("filterStepName") @GraphQLNonNull final String filterStepName,
+            @GraphQLName("filterStepElementName") @GraphQLNonNull final String filterStepElementName,
+            @GraphQLName("filterItemSelectorName") final String filterItemSelectorName,
+            @GraphQLName("filterAdjustmentName") @GraphQLNonNull final String filterAdjustmentName,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var commandForm = FilterUtil.getHome().getCreateFilterStepElementForm();
+
+            commandForm.setFilterKindName(filterKindName);
+            commandForm.setFilterTypeName(filterTypeName);
+            commandForm.setFilterName(filterName);
+            commandForm.setFilterStepName(filterStepName);
+            commandForm.setFilterStepElementName(filterStepElementName);
+            commandForm.setFilterItemSelectorName(filterItemSelectorName);
+            commandForm.setFilterAdjustmentName(filterAdjustmentName);
+            commandForm.setDescription(description);
+
+            var commandResult = FilterUtil.getHome().createFilterStepElement(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                var result = (CreateFilterStepElementResult)commandResult.getExecutionResult().getResult();
+
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject deleteFilterStepElement(final DataFetchingEnvironment env,
+            @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName,
+            @GraphQLName("filterTypeName") @GraphQLNonNull final String filterTypeName,
+            @GraphQLName("filterName") @GraphQLNonNull final String filterName,
+            @GraphQLName("filterStepName") @GraphQLNonNull final String filterStepName,
+            @GraphQLName("filterStepElementName") @GraphQLNonNull final String filterStepElementName) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = FilterUtil.getHome().getDeleteFilterStepElementForm();
+
+            commandForm.setFilterKindName(filterKindName);
+            commandForm.setFilterTypeName(filterTypeName);
+            commandForm.setFilterName(filterName);
+            commandForm.setFilterStepName(filterStepName);
+            commandForm.setFilterStepElementName(filterStepElementName);
+
+            var commandResult = FilterUtil.getHome().deleteFilterStepElement(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultWithIdObject editFilterStepElement(final DataFetchingEnvironment env,
+            @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName,
+            @GraphQLName("filterTypeName") @GraphQLNonNull final String filterTypeName,
+            @GraphQLName("filterName") @GraphQLNonNull final String filterName,
+            @GraphQLName("filterStepName") @GraphQLNonNull final String filterStepName,
+            @GraphQLName("originalFilterStepElementName") @GraphQLNonNull final String originalFilterStepElementName,
+            @GraphQLName("filterStepElementName") final String filterStepElementName,
+            @GraphQLName("filterItemSelectorName") final String filterItemSelectorName,
+            @GraphQLName("filterAdjustmentName") final String filterAdjustmentName,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var spec = FilterUtil.getHome().getFilterStepElementUniversalSpec();
+
+            spec.setFilterKindName(filterKindName);
+            spec.setFilterTypeName(filterTypeName);
+            spec.setFilterName(filterName);
+            spec.setFilterStepName(filterStepName);
+            spec.setFilterStepElementName(originalFilterStepElementName);
+
+            var commandForm = FilterUtil.getHome().getEditFilterStepElementForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = FilterUtil.getHome().editFilterStepElement(BaseGraphQl.getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditFilterStepElementResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                mutationResultObject.setEntityInstance(result.getFilterStepElement().getEntityInstance());
+
+                if(arguments.containsKey("filterStepElementName"))
+                    edit.setFilterStepElementName(filterStepElementName);
+                if(arguments.containsKey("filterItemSelectorName"))
+                    edit.setFilterItemSelectorName(filterItemSelectorName);
+                if(arguments.containsKey("filterAdjustmentName"))
+                    edit.setFilterAdjustmentName(filterAdjustmentName);
+                if(arguments.containsKey("description"))
+                    edit.setDescription(description);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = FilterUtil.getHome().editFilterStepElement(BaseGraphQl.getUserVisitPK(env), commandForm);
             }
 
             mutationResultObject.setCommandResult(commandResult);

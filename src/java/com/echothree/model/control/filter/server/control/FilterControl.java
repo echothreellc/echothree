@@ -3869,7 +3869,8 @@ public class FilterControl
                 query = "SELECT _ALL_ " +
                         "FROM filterstepelements, filterstepelementdetails " +
                         "WHERE fltstpe_activedetailid = fltstpedt_filterstepelementdetailid AND fltstpedt_fltstp_filterstepid = ? " +
-                        "ORDER BY fltstpedt_filterstepelementname";
+                        "ORDER BY fltstpedt_filterstepelementname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM filterstepelements, filterstepelementdetails " +

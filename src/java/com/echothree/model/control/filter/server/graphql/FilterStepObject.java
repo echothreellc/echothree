@@ -27,7 +27,9 @@ import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.selector.server.graphql.SelectorObject;
 import com.echothree.model.control.selector.server.graphql.SelectorSecurityUtils;
 import com.echothree.model.control.user.server.control.UserControl;
+import com.echothree.model.data.filter.common.FilterAdjustmentConstants;
 import com.echothree.model.data.filter.common.FilterStepDestinationConstants;
+import com.echothree.model.data.filter.common.FilterStepElementConstants;
 import com.echothree.model.data.filter.server.entity.FilterStep;
 import com.echothree.model.data.filter.server.entity.FilterStepDetail;
 import com.echothree.util.server.persistence.Session;
@@ -98,6 +100,26 @@ public class FilterStepObject
         return filterControl.getBestFilterStepDescription(filterStep, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
 
+    @GraphQLField
+    @GraphQLDescription("filter step elements")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<FilterStepElementObject> getFilterStepElements(final DataFetchingEnvironment env) {
+        if(FilterSecurityUtils.getHasFilterStepElementsAccess(env)) {
+            var filterControl = Session.getModelController(FilterControl.class);
+            var totalCount = filterControl.countFilterStepElementsByFilterStep(filterStep);
+
+            try(var objectLimiter = new ObjectLimiter(env, FilterStepElementConstants.COMPONENT_VENDOR_NAME, FilterStepElementConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = filterControl.getFilterStepElementsByFilterStep(filterStep);
+                var unitOfMeasureTypes = entities.stream().map(FilterStepElementObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, unitOfMeasureTypes);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
+    
     @GraphQLField
     @GraphQLDescription("from filter step destinations")
     @GraphQLNonNull
