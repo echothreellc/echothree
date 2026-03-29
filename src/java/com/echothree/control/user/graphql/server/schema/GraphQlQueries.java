@@ -141,6 +141,8 @@ import com.echothree.control.user.filter.server.command.GetFilterKindsCommand;
 import com.echothree.control.user.filter.server.command.GetFilterEntranceStepCommand;
 import com.echothree.control.user.filter.server.command.GetFilterEntranceStepsCommand;
 import com.echothree.control.user.filter.server.command.GetFilterStepCommand;
+import com.echothree.control.user.filter.server.command.GetFilterStepDestinationCommand;
+import com.echothree.control.user.filter.server.command.GetFilterStepDestinationsCommand;
 import com.echothree.control.user.filter.server.command.GetFilterStepsCommand;
 import com.echothree.control.user.filter.server.command.GetFilterTypeCommand;
 import com.echothree.control.user.filter.server.command.GetFilterTypesCommand;
@@ -511,6 +513,7 @@ import com.echothree.model.control.filter.server.graphql.FilterAdjustmentTypeObj
 import com.echothree.model.control.filter.server.graphql.FilterEntranceStepObject;
 import com.echothree.model.control.filter.server.graphql.FilterKindObject;
 import com.echothree.model.control.filter.server.graphql.FilterObject;
+import com.echothree.model.control.filter.server.graphql.FilterStepDestinationObject;
 import com.echothree.model.control.filter.server.graphql.FilterStepObject;
 import com.echothree.model.control.filter.server.graphql.FilterTypeObject;
 import com.echothree.model.control.geo.server.graphql.GeoCodeAliasObject;
@@ -776,6 +779,7 @@ import com.echothree.model.data.filter.common.FilterConstants;
 import com.echothree.model.data.filter.common.FilterEntranceStepConstants;
 import com.echothree.model.data.filter.common.FilterKindConstants;
 import com.echothree.model.data.filter.common.FilterStepConstants;
+import com.echothree.model.data.filter.common.FilterStepDestinationConstants;
 import com.echothree.model.data.filter.common.FilterTypeConstants;
 import com.echothree.model.data.filter.server.entity.Filter;
 import com.echothree.model.data.filter.server.entity.FilterAdjustment;
@@ -787,6 +791,7 @@ import com.echothree.model.data.filter.server.entity.FilterAdjustmentType;
 import com.echothree.model.data.filter.server.entity.FilterEntranceStep;
 import com.echothree.model.data.filter.server.entity.FilterKind;
 import com.echothree.model.data.filter.server.entity.FilterStep;
+import com.echothree.model.data.filter.server.entity.FilterStepDestination;
 import com.echothree.model.data.filter.server.entity.FilterType;
 import com.echothree.model.data.geo.common.GeoCodeAliasConstants;
 import com.echothree.model.data.geo.common.GeoCodeAliasTypeConstants;
@@ -3112,6 +3117,76 @@ public interface GraphQlQueries {
                             .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, filterSteps);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("filterStepDestination")
+    static FilterStepDestinationObject filterStepDestination(final DataFetchingEnvironment env,
+            @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName,
+            @GraphQLName("filterTypeName") @GraphQLNonNull final String filterTypeName,
+            @GraphQLName("filterName") @GraphQLNonNull final String filterName,
+            @GraphQLName("fromFilterStepName") @GraphQLNonNull final String fromFilterStepName,
+            @GraphQLName("toFilterStepName") @GraphQLNonNull final String toFilterStepName) {
+        FilterStepDestination filterStepDestination;
+
+        try {
+            var commandForm = FilterUtil.getHome().getGetFilterStepDestinationForm();
+
+            commandForm.setFilterKindName(filterKindName);
+            commandForm.setFilterTypeName(filterTypeName);
+            commandForm.setFilterName(filterName);
+            commandForm.setFromFilterStepName(fromFilterStepName);
+            commandForm.setToFilterStepName(toFilterStepName);
+
+            filterStepDestination = CDI.current().select(GetFilterStepDestinationCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return filterStepDestination == null ? null : new FilterStepDestinationObject(filterStepDestination);
+    }
+
+    @GraphQLField
+    @GraphQLName("filterStepDestinations")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<FilterStepDestinationObject> filterStepDestinations(final DataFetchingEnvironment env,
+            @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName,
+            @GraphQLName("filterTypeName") @GraphQLNonNull final String filterTypeName,
+            @GraphQLName("filterName") @GraphQLNonNull final String filterName,
+            @GraphQLName("fromFilterStepName") final String fromFilterStepName,
+            @GraphQLName("toFilterStepName") final String toFilterStepName) {
+        CountingPaginatedData<FilterStepDestinationObject> data;
+
+        try {
+            var commandForm = FilterUtil.getHome().getGetFilterStepDestinationsForm();
+            var command = CDI.current().select(GetFilterStepDestinationsCommand.class).get();
+
+            commandForm.setFilterKindName(filterKindName);
+            commandForm.setFilterTypeName(filterTypeName);
+            commandForm.setFilterName(filterName);
+            commandForm.setFromFilterStepName(fromFilterStepName);
+            commandForm.setToFilterStepName(toFilterStepName);
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, FilterStepDestinationConstants.COMPONENT_VENDOR_NAME, FilterStepDestinationConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var filterStepDestinations = entities.stream()
+                            .map(FilterStepDestinationObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, filterStepDestinations);
                 }
             }
         } catch (NamingException ex) {
