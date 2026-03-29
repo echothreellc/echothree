@@ -190,6 +190,16 @@ public class FilterAdjustmentSteps implements En {
                     }
                 });
 
+        When("^the user sets the filter adjustment's new filter adjustment name to \"([^\"]*)\"$",
+                (String filterAdjustmentName) -> {
+                    var persona = CurrentPersona.persona;
+                    var filterAdjustmentEdit = persona.filterAdjustmentEdit;
+
+                    assertThat(filterAdjustmentEdit).isNotNull();
+
+                    filterAdjustmentEdit.setFilterAdjustmentName(filterAdjustmentName);
+                });
+
         When("^the user sets the filter adjustment's filter adjustment source name to ([a-zA-Z0-9-_]*)$",
                 (String filterAdjustmentSourceName) -> {
                     var persona = CurrentPersona.persona;
