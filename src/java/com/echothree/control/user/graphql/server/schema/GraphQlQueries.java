@@ -771,6 +771,7 @@ import com.echothree.model.data.employee.server.entity.PartyEmployee;
 import com.echothree.model.data.filter.common.FilterAdjustmentTypeConstants;
 import com.echothree.model.data.filter.common.FilterConstants;
 import com.echothree.model.data.filter.common.FilterKindConstants;
+import com.echothree.model.data.filter.common.FilterStepConstants;
 import com.echothree.model.data.filter.common.FilterTypeConstants;
 import com.echothree.model.data.filter.server.entity.Filter;
 import com.echothree.model.data.filter.server.entity.FilterAdjustment;
@@ -3014,36 +3015,41 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("filterSteps")
-    static Collection<FilterStepObject> filterSteps(final DataFetchingEnvironment env,
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<FilterStepObject> filterSteps(final DataFetchingEnvironment env,
             @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName,
             @GraphQLName("filterTypeName") @GraphQLNonNull final String filterTypeName,
             @GraphQLName("filterName") @GraphQLNonNull final String filterName) {
-        Collection<FilterStep> filterSteps;
-        Collection<FilterStepObject> filterStepObjects;
+        CountingPaginatedData<FilterStepObject> data;
 
         try {
             var commandForm = FilterUtil.getHome().getGetFilterStepsForm();
+            var command = CDI.current().select(GetFilterStepsCommand.class).get();
 
             commandForm.setFilterKindName(filterKindName);
             commandForm.setFilterTypeName(filterTypeName);
             commandForm.setFilterName(filterName);
 
-            filterSteps = CDI.current().select(GetFilterStepsCommand.class).get().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, FilterStepConstants.COMPONENT_VENDOR_NAME, FilterStepConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var filterSteps = entities.stream()
+                            .map(FilterStepObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, filterSteps);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(filterSteps == null) {
-            filterStepObjects = emptyList();
-        } else {
-            filterStepObjects = new ArrayList<>(filterSteps.size());
-
-            filterSteps.stream()
-                    .map(FilterStepObject::new)
-                    .forEachOrdered(filterStepObjects::add);
-        }
-
-        return filterStepObjects;
+        return data;
     }
 
     @GraphQLField
