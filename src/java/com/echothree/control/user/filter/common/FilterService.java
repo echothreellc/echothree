@@ -290,9 +290,11 @@ public interface FilterService
     // -------------------------------------------------------------------------
     
     CommandResult createFilterEntranceStep(UserVisitPK userVisitPK, CreateFilterEntranceStepForm form);
-    
+
     CommandResult getFilterEntranceSteps(UserVisitPK userVisitPK, GetFilterEntranceStepsForm form);
-    
+
+    CommandResult getFilterEntranceStep(UserVisitPK userVisitPK, GetFilterEntranceStepForm form);
+
     CommandResult deleteFilterEntranceStep(UserVisitPK userVisitPK, DeleteFilterEntranceStepForm form);
     
     // -------------------------------------------------------------------------
