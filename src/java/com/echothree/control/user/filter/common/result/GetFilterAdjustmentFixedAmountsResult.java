@@ -26,7 +26,10 @@ public interface GetFilterAdjustmentFixedAmountsResult
     
     FilterAdjustmentTransfer getFilterAdjustment();
     void setFilterAdjustment(FilterAdjustmentTransfer filterAdjustment);
-    
+
+    Long getFilterAdjustmentFixedAmountCount();
+    void setFilterAdjustmentFixedAmountCount(Long filterAdjustmentFixedAmountCount);
+
     List<FilterAdjustmentFixedAmountTransfer> getFilterAdjustmentFixedAmounts();
     void setFilterAdjustmentFixedAmounts(List<FilterAdjustmentFixedAmountTransfer> filterAdjustmentFixedAmounts);
     

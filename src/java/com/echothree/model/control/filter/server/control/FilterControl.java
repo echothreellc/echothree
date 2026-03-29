@@ -1896,6 +1896,14 @@ public class FilterControl
         return filterAdjustmentFixedAmount;
     }
     
+    public long countFilterAdjustmentFixedAmountsByFilterAdjustment(FilterAdjustment filterAdjustment) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM filteradjustmentfixedamounts
+                        WHERE fltafa_flta_filteradjustmentid = ? AND fltafa_thrutime = ?
+                        """, filterAdjustment, Session.MAX_TIME);
+    }
+
     private List<FilterAdjustmentFixedAmount> getFilterAdjustmentFixedAmounts(FilterAdjustment filterAdjustment,
             EntityPermission entityPermission) {
         List<FilterAdjustmentFixedAmount> filterAdjustmentFixedAmounts;
@@ -1910,7 +1918,8 @@ public class FilterControl
                         "AND fltafa_uomt_unitofmeasuretypeid = uomtdt_uomt_unitofmeasuretypeid AND uomtdt_thrutime = ? " +
                         "AND uomtdt_uomk_unitofmeasurekindid = uomkdt_uomk_unitofmeasurekindid AND uomkdt_thrutime = ? " +
                         "AND fltafa_cur_currencyid = cur_currencyid " +
-                        "ORDER BY uomkdt_sortorder, uomtdt_sortorder, cur_sortorder";
+                        "ORDER BY uomkdt_sortorder, uomtdt_sortorder, cur_sortorder " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM filteradjustmentfixedamounts " +
