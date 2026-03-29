@@ -208,6 +208,16 @@ public class FilterSteps implements En {
                     }
                 });
 
+        When("^the user sets the filter's new filter name to \"([^\"]*)\"$",
+                (String filterName) -> {
+                    var persona = CurrentPersona.persona;
+                    var filterEdit = persona.filterEdit;
+
+                    assertThat(filterEdit).isNotNull();
+
+                    filterEdit.setFilterName(filterName);
+                });
+
         When("^the user sets the filter's initial filter adjustment name to \"([^\"]*)\"$",
                 (String initialFilterAdjustmentName) -> {
                     var persona = CurrentPersona.persona;
