@@ -591,12 +591,17 @@ public class FilterBean
     public CommandResult createFilterStepDestination(UserVisitPK userVisitPK, CreateFilterStepDestinationForm form) {
         return CDI.current().select(CreateFilterStepDestinationCommand.class).get().run(userVisitPK, form);
     }
-    
+
     @Override
     public CommandResult getFilterStepDestinations(UserVisitPK userVisitPK, GetFilterStepDestinationsForm form) {
         return CDI.current().select(GetFilterStepDestinationsCommand.class).get().run(userVisitPK, form);
     }
-    
+
+    @Override
+    public CommandResult getFilterStepDestination(UserVisitPK userVisitPK, GetFilterStepDestinationForm form) {
+        return CDI.current().select(GetFilterStepDestinationCommand.class).get().run(userVisitPK, form);
+    }
+
     @Override
     public CommandResult deleteFilterStepDestination(UserVisitPK userVisitPK, DeleteFilterStepDestinationForm form) {
         return CDI.current().select(DeleteFilterStepDestinationCommand.class).get().run(userVisitPK, form);
