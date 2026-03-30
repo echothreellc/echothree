@@ -18,7 +18,6 @@ package com.echothree.control.user.filter.server.command;
 
 import com.echothree.control.user.filter.common.edit.FilterEditFactory;
 import com.echothree.control.user.filter.common.edit.FilterTypeEdit;
-import com.echothree.control.user.filter.common.form.EditFilterTypeForm;
 import com.echothree.control.user.filter.common.result.EditFilterTypeResult;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
 import com.echothree.control.user.filter.common.spec.FilterTypeSpec;
@@ -28,18 +27,17 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.filter.server.entity.FilterKind;
 import com.echothree.model.data.filter.server.entity.FilterType;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditFilterTypeCommand
@@ -74,6 +72,9 @@ public class EditFilterTypeCommand
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
 
+    @Inject
+    FilterControl filterControl;
+
     @Override
     public EditFilterTypeResult getResult() {
         return FilterResultFactory.getEditFilterTypeResult();
@@ -88,7 +89,6 @@ public class EditFilterTypeCommand
 
     @Override
     public FilterType getEntity(EditFilterTypeResult result) {
-        var filterControl = Session.getModelController(FilterControl.class);
         FilterType filterType = null;
         var filterKindName = spec.getFilterKindName();
 
@@ -104,7 +104,8 @@ public class EditFilterTypeCommand
             }
 
             if(filterType == null) {
-                addExecutionError(ExecutionErrors.UnknownFilterTypeName.name(), filterKindName, filterTypeName);
+                addExecutionError(ExecutionErrors.UnknownFilterTypeName.name(),
+                        filterKind.getLastDetail().getFilterKindName(), filterTypeName);
             }
         } else {
             addExecutionError(ExecutionErrors.UnknownFilterKindName.name(), filterKindName);
@@ -120,14 +121,11 @@ public class EditFilterTypeCommand
 
     @Override
     public void fillInResult(EditFilterTypeResult result, FilterType filterType) {
-        var filterControl = Session.getModelController(FilterControl.class);
-
         result.setFilterType(filterControl.getFilterTypeTransfer(getUserVisit(), filterType));
     }
 
     @Override
     public void doLock(FilterTypeEdit edit, FilterType filterType) {
-        var filterControl = Session.getModelController(FilterControl.class);
         var filterTypeDescription = filterControl.getFilterTypeDescription(filterType, getPreferredLanguage());
         var filterTypeDetail = filterType.getLastDetail();
 
@@ -142,7 +140,6 @@ public class EditFilterTypeCommand
 
     @Override
     public void canUpdate(FilterType filterType) {
-        var filterControl = Session.getModelController(FilterControl.class);
         var filterKindDetail = filterKind.getLastDetail();
         var filterTypeName = edit.getFilterTypeName();
         var duplicateFilterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
@@ -154,7 +151,6 @@ public class EditFilterTypeCommand
 
     @Override
     public void doUpdate(FilterType filterType) {
-        var filterControl = Session.getModelController(FilterControl.class);
         var partyPK = getPartyPK();
         var filterTypeDetailValue = filterControl.getFilterTypeDetailValueForUpdate(filterType);
         var filterTypeDescription = filterControl.getFilterTypeDescriptionForUpdate(filterType, getPreferredLanguage());
