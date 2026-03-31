@@ -38,9 +38,9 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditFilterKindDescriptionCommand
@@ -55,18 +55,24 @@ public class EditFilterKindDescriptionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.FilterKind.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
 
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("FilterKindName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
 
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
-                );
+        );
     }
+
+    @Inject
+    FilterControl filterControl;
+
+    @Inject
+    PartyControl partyControl;
 
     /** Creates a new instance of EditFilterKindDescriptionCommand */
     public EditFilterKindDescriptionCommand() {
@@ -85,13 +91,11 @@ public class EditFilterKindDescriptionCommand
 
     @Override
     public FilterKindDescription getEntity(EditFilterKindDescriptionResult result) {
-        var filterControl = Session.getModelController(FilterControl.class);
         FilterKindDescription filterKindDescription = null;
         var filterKindName = spec.getFilterKindName();
         var filterKind = filterControl.getFilterKindByName(filterKindName);
 
         if(filterKind != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
 
@@ -122,8 +126,6 @@ public class EditFilterKindDescriptionCommand
 
     @Override
     public void fillInResult(EditFilterKindDescriptionResult result, FilterKindDescription filterKindDescription) {
-        var filterControl = Session.getModelController(FilterControl.class);
-
         result.setFilterKindDescription(filterControl.getFilterKindDescriptionTransfer(getUserVisit(), filterKindDescription));
     }
 
@@ -134,7 +136,6 @@ public class EditFilterKindDescriptionCommand
 
     @Override
     public void doUpdate(FilterKindDescription filterKindDescription) {
-        var filterControl = Session.getModelController(FilterControl.class);
         var filterKindDescriptionValue = filterControl.getFilterKindDescriptionValue(filterKindDescription);
 
         filterKindDescriptionValue.setDescription(edit.getDescription());
