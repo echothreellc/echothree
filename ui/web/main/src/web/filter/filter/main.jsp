@@ -96,7 +96,7 @@
                         <c:param name="FilterTypeName" value="${filter.filterType.filterTypeName}" />
                         <c:param name="FilterName" value="${filter.filterName}" />
                     </c:url>
-                    <a href="${editUrl}">Descriptions</a>
+                    <a href="${descriptionsUrl}">Descriptions</a>
                     <c:url var="deleteUrl" value="/action/Filter/Filter/Delete">
                         <c:param name="FilterKindName" value="${filter.filterType.filterKind.filterKindName}" />
                         <c:param name="FilterTypeName" value="${filter.filterType.filterTypeName}" />
