@@ -29,7 +29,7 @@
             <h2>
                 <a href="<c:url value="/action/Portal" />"><fmt:message key="navigation.portal" /></a> &gt;&gt;
                 <a href="<c:url value="/action/Purchasing/Main" />">Purchasing</a> &gt;&gt;
-                <a href="<c:url value="/action/Purchasing/VendorType/Main" />">Vendor Typees</a> &gt;&gt;
+                <a href="<c:url value="/action/Purchasing/VendorType/Main" />">Vendor Types</a> &gt;&gt;
                 <c:url var="descriptionsUrl" value="/action/Purchasing/VendorType/Description">
                     <c:param name="VendorTypeName" value="${vendorTypeName}" />
                 </c:url>

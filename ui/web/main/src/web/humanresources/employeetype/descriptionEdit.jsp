@@ -29,7 +29,7 @@
             <h2>
                 <a href="<c:url value="/action/Portal" />"><fmt:message key="navigation.portal" /></a> &gt;&gt;
                 <a href="<c:url value="/action/HumanResources/Main" />"><fmt:message key="navigation.humanResources" /></a> &gt;&gt;
-                <a href="<c:url value="/action/HumanResources/EmployeeType/Main" />">Employee Typees</a> &gt;&gt;
+                <a href="<c:url value="/action/HumanResources/EmployeeType/Main" />">Employee Types</a> &gt;&gt;
                 <c:url var="descriptionsUrl" value="/action/HumanResources/EmployeeType/Description">
                     <c:param name="EmployeeTypeName" value="${employeeTypeName}" />
                 </c:url>
