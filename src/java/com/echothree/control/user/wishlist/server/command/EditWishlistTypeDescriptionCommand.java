@@ -18,31 +18,30 @@ package com.echothree.control.user.wishlist.server.command;
 
 import com.echothree.control.user.wishlist.common.edit.WishlistEditFactory;
 import com.echothree.control.user.wishlist.common.edit.WishlistTypeDescriptionEdit;
-import com.echothree.control.user.wishlist.common.form.EditWishlistTypeDescriptionForm;
+import com.echothree.control.user.wishlist.common.result.EditWishlistTypeDescriptionResult;
 import com.echothree.control.user.wishlist.common.result.WishlistResultFactory;
 import com.echothree.control.user.wishlist.common.spec.WishlistTypeDescriptionSpec;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.wishlist.server.control.WishlistControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.model.control.wishlist.server.logic.WishlistTypeLogic;
+import com.echothree.model.data.wishlist.server.entity.WishlistType;
+import com.echothree.model.data.wishlist.server.entity.WishlistTypeDescription;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditWishlistTypeDescriptionCommand
-        extends BaseEditCommand<WishlistTypeDescriptionSpec, WishlistTypeDescriptionEdit> {
+        extends BaseAbstractEditCommand<WishlistTypeDescriptionSpec, WishlistTypeDescriptionEdit, EditWishlistTypeDescriptionResult, WishlistTypeDescription, WishlistType> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
@@ -65,73 +64,77 @@ public class EditWishlistTypeDescriptionCommand
             new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
         );
     }
-    
+
+    @Inject
+    WishlistControl wishlistControl;
+    @Inject
+    WishlistTypeLogic wishlistTypeLogic;
+    @Inject
+    LanguageLogic languageLogic;
+
     /** Creates a new instance of EditWishlistTypeDescriptionCommand */
     public EditWishlistTypeDescriptionCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var wishlistControl = Session.getModelController(WishlistControl.class);
-        var result = WishlistResultFactory.getEditWishlistTypeDescriptionResult();
+    public EditWishlistTypeDescriptionResult getResult() {
+        return WishlistResultFactory.getEditWishlistTypeDescriptionResult();
+    }
+
+    @Override
+    public WishlistTypeDescriptionEdit getEdit() {
+        return WishlistEditFactory.getWishlistTypeDescriptionEdit();
+    }
+
+    @Override
+    public WishlistTypeDescription getEntity(EditWishlistTypeDescriptionResult result) {
         var wishlistTypeName = spec.getWishlistTypeName();
-        var wishlistType = wishlistControl.getWishlistTypeByName(wishlistTypeName);
-        
-        if(wishlistType != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
+        var wishlistType = wishlistTypeLogic.getWishlistTypeByName(this, wishlistTypeName);
+        WishlistTypeDescription wishlistTypeDescription = null;
+
+        if(!hasExecutionErrors()) {
             var languageIsoName = spec.getLanguageIsoName();
-            var language = partyControl.getLanguageByIsoName(languageIsoName);
-            
-            if(language != null) {
-                if(editMode.equals(EditMode.LOCK)) {
-                    var wishlistTypeDescription = wishlistControl.getWishlistTypeDescription(wishlistType, language);
-                    
-                    if(wishlistTypeDescription != null) {
-                        result.setWishlistTypeDescription(wishlistControl.getWishlistTypeDescriptionTransfer(getUserVisit(), wishlistTypeDescription));
-                        
-                        if(lockEntity(wishlistType)) {
-                            var edit = WishlistEditFactory.getWishlistTypeDescriptionEdit();
-                            
-                            result.setEdit(edit);
-                            edit.setDescription(wishlistTypeDescription.getDescription());
-                        } else {
-                            addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                        }
-                        
-                        result.setEntityLock(getEntityLockTransfer(wishlistType));
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownWishlistTypeDescription.name());
-                    }
-                } else if(editMode.equals(EditMode.UPDATE)) {
-                    var wishlistTypeDescriptionValue = wishlistControl.getWishlistTypeDescriptionValueForUpdate(wishlistType, language);
-                    
-                    if(wishlistTypeDescriptionValue != null) {
-                        if(lockEntityForUpdate(wishlistType)) {
-                            try {
-                                var description = edit.getDescription();
-                                
-                                wishlistTypeDescriptionValue.setDescription(description);
-                                
-                                wishlistControl.updateWishlistTypeDescriptionFromValue(wishlistTypeDescriptionValue, getPartyPK());
-                            } finally {
-                                unlockEntity(wishlistType);
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.EntityLockStale.name());
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownWishlistTypeDescription.name());
-                    }
+            var language = languageLogic.getLanguageByName(this, languageIsoName);
+
+            if(!hasExecutionErrors()) {
+                if(editMode.equals(com.echothree.util.common.command.EditMode.LOCK) || editMode.equals(com.echothree.util.common.command.EditMode.ABANDON)) {
+                    wishlistTypeDescription = wishlistControl.getWishlistTypeDescription(wishlistType, language);
+                } else {
+                    wishlistTypeDescription = wishlistControl.getWishlistTypeDescriptionForUpdate(wishlistType, language);
                 }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);
+
+                if(wishlistTypeDescription == null) {
+                    addExecutionError(com.echothree.util.common.message.ExecutionErrors.UnknownWishlistTypeDescription.name(), wishlistTypeName, languageIsoName);
+                }
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownWishlistTypeName.name(), wishlistTypeName);
         }
-        
-        return result;
+
+        return wishlistTypeDescription;
+    }
+
+    @Override
+    public WishlistType getLockEntity(WishlistTypeDescription wishlistTypeDescription) {
+        return wishlistTypeDescription.getWishlistType();
+    }
+
+    @Override
+    public void fillInResult(EditWishlistTypeDescriptionResult result, WishlistTypeDescription wishlistTypeDescription) {
+        result.setWishlistTypeDescription(wishlistControl.getWishlistTypeDescriptionTransfer(getUserVisit(), wishlistTypeDescription));
+    }
+
+    @Override
+    public void doLock(WishlistTypeDescriptionEdit edit, WishlistTypeDescription wishlistTypeDescription) {
+        edit.setDescription(wishlistTypeDescription.getDescription());
+    }
+
+    @Override
+    public void doUpdate(WishlistTypeDescription wishlistTypeDescription) {
+        var wishlistTypeDescriptionValue = wishlistControl.getWishlistTypeDescriptionValue(wishlistTypeDescription);
+
+        wishlistTypeDescriptionValue.setDescription(edit.getDescription());
+
+        wishlistControl.updateWishlistTypeDescriptionFromValue(wishlistTypeDescriptionValue, getPartyPK());
     }
     
 }
