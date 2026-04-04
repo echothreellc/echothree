@@ -18,7 +18,7 @@ package com.echothree.control.user.workflow.server.command;
 
 import com.echothree.control.user.workflow.common.edit.WorkflowEditFactory;
 import com.echothree.control.user.workflow.common.edit.WorkflowEntranceDescriptionEdit;
-import com.echothree.control.user.workflow.common.form.EditWorkflowEntranceDescriptionForm;
+import com.echothree.control.user.workflow.common.result.EditWorkflowEntranceDescriptionResult;
 import com.echothree.control.user.workflow.common.result.WorkflowResultFactory;
 import com.echothree.control.user.workflow.common.spec.WorkflowEntranceDescriptionSpec;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -26,23 +26,23 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
+import com.echothree.model.data.workflow.server.entity.WorkflowEntranceDescription;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditWorkflowEntranceDescriptionCommand
-        extends BaseEditCommand<WorkflowEntranceDescriptionSpec, WorkflowEntranceDescriptionEdit> {
+        extends BaseAbstractEditCommand<WorkflowEntranceDescriptionSpec, WorkflowEntranceDescriptionEdit, EditWorkflowEntranceDescriptionResult, WorkflowEntranceDescription, WorkflowEntrance> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
@@ -53,97 +53,100 @@ public class EditWorkflowEntranceDescriptionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.WorkflowEntrance.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("WorkflowName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("WorkflowEntranceName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
-                );
+        );
     }
-    
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    WorkflowControl workflowControl;
+
     /** Creates a new instance of EditWorkflowEntranceDescriptionCommand */
     public EditWorkflowEntranceDescriptionCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var workflowControl = Session.getModelController(WorkflowControl.class);
-        var result = WorkflowResultFactory.getEditWorkflowEntranceDescriptionResult();
+    public EditWorkflowEntranceDescriptionResult getResult() {
+        return WorkflowResultFactory.getEditWorkflowEntranceDescriptionResult();
+    }
+
+    @Override
+    public WorkflowEntranceDescriptionEdit getEdit() {
+        return WorkflowEditFactory.getWorkflowEntranceDescriptionEdit();
+    }
+
+    @Override
+    public WorkflowEntranceDescription getEntity(EditWorkflowEntranceDescriptionResult result) {
+        WorkflowEntranceDescription workflowEntranceDescription = null;
         var workflowName = spec.getWorkflowName();
         var workflow = workflowControl.getWorkflowByName(workflowName);
-        
+
         if(workflow != null) {
             var workflowEntranceName = spec.getWorkflowEntranceName();
             var workflowEntrance = workflowControl.getWorkflowEntranceByName(workflow, workflowEntranceName);
-            
+
             if(workflowEntrance != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var languageIsoName = spec.getLanguageIsoName();
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
-                
+
                 if(language != null) {
                     if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                        var workflowEntranceDescription = workflowControl.getWorkflowEntranceDescription(workflowEntrance, language);
-                        
-                        if(workflowEntranceDescription != null) {
-                            if(editMode.equals(EditMode.LOCK)) {
-                                result.setWorkflowEntranceDescription(workflowControl.getWorkflowEntranceDescriptionTransfer(getUserVisit(), workflowEntranceDescription));
+                        workflowEntranceDescription = workflowControl.getWorkflowEntranceDescription(workflowEntrance, language);
+                    } else { // EditMode.UPDATE
+                        workflowEntranceDescription = workflowControl.getWorkflowEntranceDescriptionForUpdate(workflowEntrance, language);
+                    }
 
-                                if(lockEntity(workflowEntrance)) {
-                                    var edit = WorkflowEditFactory.getWorkflowEntranceDescriptionEdit();
-
-                                    result.setEdit(edit);
-                                    edit.setDescription(workflowEntranceDescription.getDescription());
-                                } else {
-                                    addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                                }
-
-                                result.setEntityLock(getEntityLockTransfer(workflowEntrance));
-                            } else { // EditMode.ABANDON
-                                unlockEntity(workflowEntrance);
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.UnknownWorkflowEntranceDescription.name());
-                        }
-                    } else if(editMode.equals(EditMode.UPDATE)) {
-                        var workflowEntranceDescriptionValue = workflowControl.getWorkflowEntranceDescriptionValueForUpdate(workflowEntrance, language);
-                        
-                        if(workflowEntranceDescriptionValue != null) {
-                            if(lockEntityForUpdate(workflowEntrance)) {
-                                try {
-                                    var description = edit.getDescription();
-                                    
-                                    workflowEntranceDescriptionValue.setDescription(description);
-                                    
-                                    workflowControl.updateWorkflowEntranceDescriptionFromValue(workflowEntranceDescriptionValue, getPartyPK());
-                                } finally {
-                                    unlockEntity(workflowEntrance);
-                                }
-                            } else {
-                                addExecutionError(ExecutionErrors.EntityLockStale.name());
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.UnknownWorkflowEntranceDescription.name());
-                        }
+                    if(workflowEntranceDescription == null) {
+                        addExecutionError(ExecutionErrors.UnknownWorkflowEntranceDescription.name(), workflowName, workflowEntranceName, languageIsoName);
                     }
                 } else {
                     addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);
                 }
             } else {
-                addExecutionError(ExecutionErrors.UnknownWorkflowEntranceName.name(), workflowEntranceName);
+                addExecutionError(ExecutionErrors.UnknownWorkflowEntranceName.name(), workflowName, workflowEntranceName);
             }
         } else {
             addExecutionError(ExecutionErrors.UnknownWorkflowName.name(), workflowName);
         }
-        
-        return result;
+
+        return workflowEntranceDescription;
+    }
+
+    @Override
+    public WorkflowEntrance getLockEntity(WorkflowEntranceDescription workflowEntranceDescription) {
+        return workflowEntranceDescription.getWorkflowEntrance();
+    }
+
+    @Override
+    public void fillInResult(EditWorkflowEntranceDescriptionResult result, WorkflowEntranceDescription workflowEntranceDescription) {
+        result.setWorkflowEntranceDescription(workflowControl.getWorkflowEntranceDescriptionTransfer(getUserVisit(), workflowEntranceDescription));
+    }
+
+    @Override
+    public void doLock(WorkflowEntranceDescriptionEdit edit, WorkflowEntranceDescription workflowEntranceDescription) {
+        edit.setDescription(workflowEntranceDescription.getDescription());
+    }
+
+    @Override
+    public void doUpdate(WorkflowEntranceDescription workflowEntranceDescription) {
+        var workflowEntranceDescriptionValue = workflowControl.getWorkflowEntranceDescriptionValue(workflowEntranceDescription);
+
+        workflowEntranceDescriptionValue.setDescription(edit.getDescription());
+
+        workflowControl.updateWorkflowEntranceDescriptionFromValue(workflowEntranceDescriptionValue, getPartyPK());
     }
     
 }
