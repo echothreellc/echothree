@@ -18,30 +18,31 @@ package com.echothree.control.user.selector.server.command;
 
 import com.echothree.control.user.selector.common.edit.SelectorEdit;
 import com.echothree.control.user.selector.common.edit.SelectorEditFactory;
-import com.echothree.control.user.selector.common.form.EditSelectorForm;
+import com.echothree.control.user.selector.common.result.EditSelectorResult;
 import com.echothree.control.user.selector.common.result.SelectorResultFactory;
 import com.echothree.control.user.selector.common.spec.SelectorSpec;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.selector.server.control.SelectorControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.command.BaseResult;
+import com.echothree.model.data.selector.server.entity.Selector;
+import com.echothree.model.data.selector.server.entity.SelectorType;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditSelectorCommand
-        extends BaseEditCommand<SelectorSpec, SelectorEdit> {
+        extends BaseAbstractEditCommand<SelectorSpec, SelectorEdit, EditSelectorResult, Selector, Selector> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
@@ -63,8 +64,6 @@ public class EditSelectorCommand
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("SelectorName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("InitialSelectorAdjustmentName", FieldType.ENTITY_NAME, false, null, null),
-                new FieldDefinition("SelectorItemSelectorName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
@@ -75,91 +74,41 @@ public class EditSelectorCommand
     public EditSelectorCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
+    @Inject
+    SelectorControl selectorControl;
+
     @Override
-    protected BaseResult execute() {
-        var selectorControl = Session.getModelController(SelectorControl.class);
-        var result = SelectorResultFactory.getEditSelectorResult();
+    public EditSelectorResult getResult() {
+        return SelectorResultFactory.getEditSelectorResult();
+    }
+
+    @Override
+    public SelectorEdit getEdit() {
+        return SelectorEditFactory.getSelectorEdit();
+    }
+
+    @Override
+    public Selector getEntity(EditSelectorResult result) {
+        Selector selector = null;
         var selectorKindName = spec.getSelectorKindName();
         var selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
-        
+
         if(selectorKind != null) {
             var selectorTypeName = spec.getSelectorTypeName();
             var selectorType = selectorControl.getSelectorTypeByName(selectorKind, selectorTypeName);
-            
+
             if(selectorType != null) {
-                if(editMode.equals(EditMode.LOCK)) {
-                    var selectorName = spec.getSelectorName();
-                    var selector = selectorControl.getSelectorByName(selectorType, selectorName);
-                    
-                    if(selector != null) {
-                        result.setSelector(selectorControl.getSelectorTransfer(getUserVisit(), selector));
-                        
-                        if(lockEntity(selector)) {
-                            var selectorDescription = selectorControl.getSelectorDescription(selector, getPreferredLanguage());
-                            var edit = SelectorEditFactory.getSelectorEdit();
-                            var selectorDetail = selector.getLastDetail();
-                            
-                            result.setEdit(edit);
-                            edit.setSelectorName(selectorDetail.getSelectorName());
-                            edit.setIsDefault(selectorDetail.getIsDefault().toString());
-                            edit.setSortOrder(selectorDetail.getSortOrder().toString());
-                            
-                            if(selectorDescription != null) {
-                                edit.setDescription(selectorDescription.getDescription());
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                        }
-                        
-                        result.setEntityLock(getEntityLockTransfer(selector));
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownSelectorName.name(), selectorName);
-                    }
-                } else if(editMode.equals(EditMode.UPDATE)) {
-                    var selectorName = spec.getSelectorName();
-                    var selector = selectorControl.getSelectorByNameForUpdate(selectorType, selectorName);
-                    
-                    if(selector != null) {
-                        selectorName = edit.getSelectorName();
-                        var duplicateSelector = selectorControl.getSelectorByName(selectorType, selectorName);
-                        
-                        if(duplicateSelector == null || selector.equals(duplicateSelector)) {
-                            if(lockEntityForUpdate(selector)) {
-                                try {
-                                    var partyPK = getPartyPK();
-                                    var selectorDetailValue = selectorControl.getSelectorDetailValueForUpdate(selector);
-                                    var selectorDescription = selectorControl.getSelectorDescriptionForUpdate(selector, getPreferredLanguage());
-                                    var description = edit.getDescription();
-                                    
-                                    selectorDetailValue.setSelectorName(edit.getSelectorName());
-                                    selectorDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
-                                    selectorDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
-                                    
-                                    selectorControl.updateSelectorFromValue(selectorDetailValue, partyPK);
-                                    
-                                    if(selectorDescription == null && description != null) {
-                                        selectorControl.createSelectorDescription(selector, getPreferredLanguage(), description, partyPK);
-                                    } else if(selectorDescription != null && description == null) {
-                                        selectorControl.deleteSelectorDescription(selectorDescription, partyPK);
-                                    } else if(selectorDescription != null && description != null) {
-                                        var selectorDescriptionValue = selectorControl.getSelectorDescriptionValue(selectorDescription);
-                                        
-                                        selectorDescriptionValue.setDescription(description);
-                                        selectorControl.updateSelectorDescriptionFromValue(selectorDescriptionValue, partyPK);
-                                    }
-                                } finally {
-                                    unlockEntity(selector);
-                                }
-                            } else {
-                                addExecutionError(ExecutionErrors.EntityLockStale.name());
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.DuplicateSelectorName.name(), selectorName);
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownSelectorName.name(), selectorName);
-                    }
+                var selectorName = spec.getSelectorName();
+
+                if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
+                    selector = selectorControl.getSelectorByName(selectorType, selectorName);
+                } else { // EditMode.UPDATE
+                    selector = selectorControl.getSelectorByNameForUpdate(selectorType, selectorName);
+                }
+
+                if(selector == null) {
+                    addExecutionError(ExecutionErrors.UnknownSelectorName.name(), selectorName);
                 }
             } else {
                 addExecutionError(ExecutionErrors.UnknownSelectorTypeName.name(), selectorTypeName);
@@ -167,8 +116,68 @@ public class EditSelectorCommand
         } else {
             addExecutionError(ExecutionErrors.UnknownSelectorKindName.name(), selectorKindName);
         }
-        
-        return result;
+
+        return selector;
+    }
+
+    @Override
+    public Selector getLockEntity(Selector selector) {
+        return selector;
+    }
+
+    @Override
+    public void fillInResult(EditSelectorResult result, Selector selector) {
+        result.setSelector(selectorControl.getSelectorTransfer(getUserVisit(), selector));
+    }
+
+    @Override
+    public void doLock(SelectorEdit edit, Selector selector) {
+        var selectorDescription = selectorControl.getSelectorDescription(selector, getPreferredLanguage());
+        var selectorDetail = selector.getLastDetail();
+
+        edit.setSelectorName(selectorDetail.getSelectorName());
+        edit.setIsDefault(selectorDetail.getIsDefault().toString());
+        edit.setSortOrder(selectorDetail.getSortOrder().toString());
+
+        if(selectorDescription != null) {
+            edit.setDescription(selectorDescription.getDescription());
+        }
+    }
+
+    @Override
+    public void canUpdate(Selector selector) {
+        var selectorType = selector.getLastDetail().getSelectorType();
+        var selectorName = edit.getSelectorName();
+        var duplicateSelector = selectorControl.getSelectorByName(selectorType, selectorName);
+
+        if(duplicateSelector != null && !selector.equals(duplicateSelector)) {
+            addExecutionError(ExecutionErrors.DuplicateSelectorName.name(), selectorName);
+        }
+    }
+
+    @Override
+    public void doUpdate(Selector selector) {
+        var partyPK = getPartyPK();
+        var selectorDetailValue = selectorControl.getSelectorDetailValueForUpdate(selector);
+        var selectorDescription = selectorControl.getSelectorDescriptionForUpdate(selector, getPreferredLanguage());
+        var description = edit.getDescription();
+
+        selectorDetailValue.setSelectorName(edit.getSelectorName());
+        selectorDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
+        selectorDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
+
+        selectorControl.updateSelectorFromValue(selectorDetailValue, partyPK);
+
+        if(selectorDescription == null && description != null) {
+            selectorControl.createSelectorDescription(selector, getPreferredLanguage(), description, partyPK);
+        } else if(selectorDescription != null && description == null) {
+            selectorControl.deleteSelectorDescription(selectorDescription, partyPK);
+        } else if(selectorDescription != null && description != null) {
+            var selectorDescriptionValue = selectorControl.getSelectorDescriptionValue(selectorDescription);
+
+            selectorDescriptionValue.setDescription(description);
+            selectorControl.updateSelectorDescriptionFromValue(selectorDescriptionValue, partyPK);
+        }
     }
     
 }
