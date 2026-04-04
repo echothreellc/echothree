@@ -18,7 +18,7 @@ package com.echothree.control.user.selector.server.command;
 
 import com.echothree.control.user.selector.common.edit.SelectorDescriptionEdit;
 import com.echothree.control.user.selector.common.edit.SelectorEditFactory;
-import com.echothree.control.user.selector.common.form.EditSelectorDescriptionForm;
+import com.echothree.control.user.selector.common.result.EditSelectorDescriptionResult;
 import com.echothree.control.user.selector.common.result.SelectorResultFactory;
 import com.echothree.control.user.selector.common.spec.SelectorDescriptionSpec;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -26,23 +26,23 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.selector.server.control.SelectorControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.command.BaseResult;
+import com.echothree.model.data.selector.server.entity.Selector;
+import com.echothree.model.data.selector.server.entity.SelectorDescription;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditSelectorDescriptionCommand
-        extends BaseEditCommand<SelectorDescriptionSpec, SelectorDescriptionEdit> {
+        extends BaseAbstractEditCommand<SelectorDescriptionSpec, SelectorDescriptionEdit, EditSelectorDescriptionResult, SelectorDescription, Selector> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
@@ -64,7 +64,7 @@ public class EditSelectorDescriptionCommand
         );
         
         EDIT_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
+                new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
         );
     }
     
@@ -72,67 +72,50 @@ public class EditSelectorDescriptionCommand
     public EditSelectorDescriptionCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    SelectorControl selectorControl;
+
     @Override
-    protected BaseResult execute() {
-        var selectorControl = Session.getModelController(SelectorControl.class);
-        var result = SelectorResultFactory.getEditSelectorDescriptionResult();
+    public EditSelectorDescriptionResult getResult() {
+        return SelectorResultFactory.getEditSelectorDescriptionResult();
+    }
+
+    @Override
+    public SelectorDescriptionEdit getEdit() {
+        return SelectorEditFactory.getSelectorDescriptionEdit();
+    }
+
+    @Override
+    public SelectorDescription getEntity(EditSelectorDescriptionResult result) {
+        SelectorDescription selectorDescription = null;
         var selectorKindName = spec.getSelectorKindName();
         var selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
-        
+
         if(selectorKind != null) {
             var selectorTypeName = spec.getSelectorTypeName();
             var selectorType = selectorControl.getSelectorTypeByName(selectorKind, selectorTypeName);
-            
+
             if(selectorType != null) {
                 var selectorName = spec.getSelectorName();
                 var selector = selectorControl.getSelectorByName(selectorType, selectorName);
-                
+
                 if(selector != null) {
-                    var partyControl = Session.getModelController(PartyControl.class);
                     var languageIsoName = spec.getLanguageIsoName();
                     var language = partyControl.getLanguageByIsoName(languageIsoName);
-                    
+
                     if(language != null) {
-                        if(editMode.equals(EditMode.LOCK)) {
-                            var selectorDescription = selectorControl.getSelectorDescription(selector, language);
-                            
-                            if(selectorDescription != null) {
-                                result.setSelectorDescription(selectorControl.getSelectorDescriptionTransfer(getUserVisit(), selectorDescription));
-                                
-                                if(lockEntity(selector)) {
-                                    var edit = SelectorEditFactory.getSelectorDescriptionEdit();
-                                    
-                                    result.setEdit(edit);
-                                    edit.setDescription(selectorDescription.getDescription());
-                                } else {
-                                    addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                                }
-                                
-                                result.setEntityLock(getEntityLockTransfer(selector));
-                            } else {
-                                addExecutionError(ExecutionErrors.UnknownSelectorDescription.name());
-                            }
-                        } else if(editMode.equals(EditMode.UPDATE)) {
-                            var selectorDescriptionValue = selectorControl.getSelectorDescriptionValueForUpdate(selector, language);
-                            
-                            if(selectorDescriptionValue != null) {
-                                if(lockEntityForUpdate(selector)) {
-                                    try {
-                                        var description = edit.getDescription();
-                                        
-                                        selectorDescriptionValue.setDescription(description);
-                                        
-                                        selectorControl.updateSelectorDescriptionFromValue(selectorDescriptionValue, getPartyPK());
-                                    } finally {
-                                        unlockEntity(selector);
-                                    }
-                                } else {
-                                    addExecutionError(ExecutionErrors.EntityLockStale.name());
-                                }
-                            } else {
-                                addExecutionError(ExecutionErrors.UnknownSelectorDescription.name());
-                            }
+                        if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
+                            selectorDescription = selectorControl.getSelectorDescription(selector, language);
+                        } else { // EditMode.UPDATE
+                            selectorDescription = selectorControl.getSelectorDescriptionForUpdate(selector, language);
+                        }
+
+                        if(selectorDescription == null) {
+                            addExecutionError(ExecutionErrors.UnknownSelectorDescription.name(), selectorKindName, selectorTypeName, selectorName, languageIsoName);
                         }
                     } else {
                         addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);
@@ -146,8 +129,32 @@ public class EditSelectorDescriptionCommand
         } else {
             addExecutionError(ExecutionErrors.UnknownSelectorKindName.name(), selectorKindName);
         }
-        
-        return result;
+
+        return selectorDescription;
     }
-    
+
+    @Override
+    public Selector getLockEntity(SelectorDescription selectorDescription) {
+        return selectorDescription.getSelector();
+    }
+
+    @Override
+    public void fillInResult(EditSelectorDescriptionResult result, SelectorDescription selectorDescription) {
+        result.setSelectorDescription(selectorControl.getSelectorDescriptionTransfer(getUserVisit(), selectorDescription));
+    }
+
+    @Override
+    public void doLock(SelectorDescriptionEdit edit, SelectorDescription selectorDescription) {
+        edit.setDescription(selectorDescription.getDescription());
+    }
+
+    @Override
+    public void doUpdate(SelectorDescription selectorDescription) {
+        var selectorDescriptionValue = selectorControl.getSelectorDescriptionValue(selectorDescription);
+
+        selectorDescriptionValue.setDescription(edit.getDescription());
+
+        selectorControl.updateSelectorDescriptionFromValue(selectorDescriptionValue, getPartyPK());
+    }
+
 }
