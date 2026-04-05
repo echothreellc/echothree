@@ -18,6 +18,7 @@ package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.edit.InventoryEditFactory;
 import com.echothree.control.user.inventory.common.edit.InventoryLocationGroupEdit;
+import com.echothree.control.user.inventory.common.result.EditInventoryLocationGroupResult;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
 import com.echothree.control.user.inventory.common.spec.InventoryLocationGroupSpec;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
@@ -25,22 +26,23 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
-import com.echothree.util.common.command.BaseResult;
+import com.echothree.model.data.inventory.server.entity.InventoryLocationGroup;
+import com.echothree.model.data.warehouse.server.entity.Warehouse;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditInventoryLocationGroupCommand
-        extends BaseEditCommand<InventoryLocationGroupSpec, InventoryLocationGroupEdit> {
+        extends BaseAbstractEditCommand<InventoryLocationGroupSpec, InventoryLocationGroupEdit, EditInventoryLocationGroupResult, InventoryLocationGroup, InventoryLocationGroup> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
@@ -66,101 +68,115 @@ public class EditInventoryLocationGroupCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         );
     }
-    
+
+    @Inject
+    InventoryControl inventoryControl;
+
+    @Inject
+    WarehouseControl warehouseControl;
+
     /** Creates a new instance of EditInventoryLocationGroupCommand */
     public EditInventoryLocationGroupCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var warehouseControl = Session.getModelController(WarehouseControl.class);
-        var result = InventoryResultFactory.getEditInventoryLocationGroupResult();
+    public EditInventoryLocationGroupResult getResult() {
+        return InventoryResultFactory.getEditInventoryLocationGroupResult();
+    }
+
+    @Override
+    public InventoryLocationGroupEdit getEdit() {
+        return InventoryEditFactory.getInventoryLocationGroupEdit();
+    }
+
+    Warehouse warehouse;
+
+    @Override
+    public InventoryLocationGroup getEntity(EditInventoryLocationGroupResult result) {
         var warehouseName = spec.getWarehouseName();
-        var warehouse = warehouseControl.getWarehouseByName(warehouseName);
-        
+        InventoryLocationGroup inventoryLocationGroup = null;
+
+        warehouse = warehouseControl.getWarehouseByName(warehouseName);
+
         if(warehouse != null) {
-            var inventoryControl = Session.getModelController(InventoryControl.class);
             var warehouseParty = warehouse.getParty();
-            
-            if(editMode.equals(EditMode.LOCK)) {
-                var inventoryLocationGroupName = spec.getInventoryLocationGroupName();
-                var inventoryLocationGroup = inventoryControl.getInventoryLocationGroupByName(warehouseParty, inventoryLocationGroupName);
-                
-                if(inventoryLocationGroup != null) {
-                    result.setInventoryLocationGroup(inventoryControl.getInventoryLocationGroupTransfer(getUserVisit(), inventoryLocationGroup));
-                    
-                    if(lockEntity(inventoryLocationGroup)) {
-                        var inventoryLocationGroupDescription = inventoryControl.getInventoryLocationGroupDescription(inventoryLocationGroup, getPreferredLanguage());
-                        var edit = InventoryEditFactory.getInventoryLocationGroupEdit();
-                        var inventoryLocationGroupDetail = inventoryLocationGroup.getLastDetail();
-                        
-                        result.setEdit(edit);
-                        edit.setInventoryLocationGroupName(inventoryLocationGroupDetail.getInventoryLocationGroupName());
-                        edit.setIsDefault(inventoryLocationGroupDetail.getIsDefault().toString());
-                        edit.setSortOrder(inventoryLocationGroupDetail.getSortOrder().toString());
-                        
-                        if(inventoryLocationGroupDescription != null) {
-                            edit.setDescription(inventoryLocationGroupDescription.getDescription());
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                    }
-                    
-                    result.setEntityLock(getEntityLockTransfer(inventoryLocationGroup));
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownInventoryLocationGroupName.name(), inventoryLocationGroupName);
-                }
-            } else if(editMode.equals(EditMode.UPDATE)) {
-                var inventoryLocationGroupName = spec.getInventoryLocationGroupName();
-                var inventoryLocationGroup = inventoryControl.getInventoryLocationGroupByNameForUpdate(warehouseParty, inventoryLocationGroupName);
-                
-                if(inventoryLocationGroup != null) {
-                    inventoryLocationGroupName = edit.getInventoryLocationGroupName();
-                    var duplicateInventoryLocationGroup = inventoryControl.getInventoryLocationGroupByName(warehouseParty, inventoryLocationGroupName);
-                    
-                    if(duplicateInventoryLocationGroup == null || inventoryLocationGroup.equals(duplicateInventoryLocationGroup)) {
-                        if(lockEntityForUpdate(inventoryLocationGroup)) {
-                            try {
-                                var partyPK = getPartyPK();
-                                var inventoryLocationGroupDetailValue = inventoryControl.getInventoryLocationGroupDetailValueForUpdate(inventoryLocationGroup);
-                                var inventoryLocationGroupDescription = inventoryControl.getInventoryLocationGroupDescriptionForUpdate(inventoryLocationGroup, getPreferredLanguage());
-                                var description = edit.getDescription();
-                                
-                                inventoryLocationGroupDetailValue.setInventoryLocationGroupName(edit.getInventoryLocationGroupName());
-                                inventoryLocationGroupDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
-                                inventoryLocationGroupDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
-                                
-                                inventoryControl.updateInventoryLocationGroupFromValue(inventoryLocationGroupDetailValue, partyPK);
-                                
-                                if(inventoryLocationGroupDescription == null && description != null) {
-                                    inventoryControl.createInventoryLocationGroupDescription(inventoryLocationGroup, getPreferredLanguage(), description, partyPK);
-                                } else if(inventoryLocationGroupDescription != null && description == null) {
-                                    inventoryControl.deleteInventoryLocationGroupDescription(inventoryLocationGroupDescription, partyPK);
-                                } else if(inventoryLocationGroupDescription != null && description != null) {
-                                    var inventoryLocationGroupDescriptionValue = inventoryControl.getInventoryLocationGroupDescriptionValue(inventoryLocationGroupDescription);
-                                    
-                                    inventoryLocationGroupDescriptionValue.setDescription(description);
-                                    inventoryControl.updateInventoryLocationGroupDescriptionFromValue(inventoryLocationGroupDescriptionValue, partyPK);
-                                }
-                            } finally {
-                                unlockEntity(inventoryLocationGroup);
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.EntityLockStale.name());
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.DuplicateInventoryLocationGroupName.name(), inventoryLocationGroupName);
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownInventoryLocationGroupName.name(), inventoryLocationGroupName);
-                }
+            var inventoryLocationGroupName = spec.getInventoryLocationGroupName();
+
+            if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
+                inventoryLocationGroup = inventoryControl.getInventoryLocationGroupByName(warehouseParty, inventoryLocationGroupName);
+            } else { // EditMode.UPDATE
+                inventoryLocationGroup = inventoryControl.getInventoryLocationGroupByNameForUpdate(warehouseParty, inventoryLocationGroupName);
+            }
+
+            if(inventoryLocationGroup == null) {
+                addExecutionError(ExecutionErrors.UnknownInventoryLocationGroupName.name(), warehouseName, inventoryLocationGroupName);
             }
         } else {
             addExecutionError(ExecutionErrors.UnknownWarehouseName.name(), warehouseName);
         }
-        
-        return result;
+
+        return inventoryLocationGroup;
+    }
+
+    @Override
+    public InventoryLocationGroup getLockEntity(InventoryLocationGroup inventoryLocationGroup) {
+        return inventoryLocationGroup;
+    }
+
+    @Override
+    public void fillInResult(EditInventoryLocationGroupResult result, InventoryLocationGroup inventoryLocationGroup) {
+        result.setInventoryLocationGroup(inventoryControl.getInventoryLocationGroupTransfer(getUserVisit(), inventoryLocationGroup));
+    }
+
+    @Override
+    public void doLock(InventoryLocationGroupEdit edit, InventoryLocationGroup inventoryLocationGroup) {
+        var inventoryLocationGroupDescription = inventoryControl.getInventoryLocationGroupDescription(inventoryLocationGroup, getPreferredLanguage());
+        var inventoryLocationGroupDetail = inventoryLocationGroup.getLastDetail();
+
+        edit.setInventoryLocationGroupName(inventoryLocationGroupDetail.getInventoryLocationGroupName());
+        edit.setIsDefault(inventoryLocationGroupDetail.getIsDefault().toString());
+        edit.setSortOrder(inventoryLocationGroupDetail.getSortOrder().toString());
+
+        if(inventoryLocationGroupDescription != null) {
+            edit.setDescription(inventoryLocationGroupDescription.getDescription());
+        }
+    }
+
+    @Override
+    public void canUpdate(InventoryLocationGroup inventoryLocationGroup) {
+        var warehouseParty = warehouse.getParty();
+        var inventoryLocationGroupName = edit.getInventoryLocationGroupName();
+        var duplicateInventoryLocationGroup = inventoryControl.getInventoryLocationGroupByName(warehouseParty, inventoryLocationGroupName);
+
+        if(duplicateInventoryLocationGroup != null && !inventoryLocationGroup.equals(duplicateInventoryLocationGroup)) {
+            addExecutionError(ExecutionErrors.DuplicateInventoryLocationGroupName.name(), inventoryLocationGroupName);
+        }
+    }
+
+    @Override
+    public void doUpdate(InventoryLocationGroup inventoryLocationGroup) {
+        var partyPK = getPartyPK();
+        var inventoryLocationGroupDetailValue = inventoryControl.getInventoryLocationGroupDetailValueForUpdate(inventoryLocationGroup);
+        var inventoryLocationGroupDescription = inventoryControl.getInventoryLocationGroupDescriptionForUpdate(inventoryLocationGroup, getPreferredLanguage());
+        var description = edit.getDescription();
+
+        inventoryLocationGroupDetailValue.setInventoryLocationGroupName(edit.getInventoryLocationGroupName());
+        inventoryLocationGroupDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
+        inventoryLocationGroupDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
+
+        inventoryControl.updateInventoryLocationGroupFromValue(inventoryLocationGroupDetailValue, partyPK);
+
+        if(inventoryLocationGroupDescription == null && description != null) {
+            inventoryControl.createInventoryLocationGroupDescription(inventoryLocationGroup, getPreferredLanguage(), description, partyPK);
+        } else if(inventoryLocationGroupDescription != null && description == null) {
+            inventoryControl.deleteInventoryLocationGroupDescription(inventoryLocationGroupDescription, partyPK);
+        } else if(inventoryLocationGroupDescription != null && description != null) {
+            var inventoryLocationGroupDescriptionValue = inventoryControl.getInventoryLocationGroupDescriptionValue(inventoryLocationGroupDescription);
+
+            inventoryLocationGroupDescriptionValue.setDescription(description);
+            inventoryControl.updateInventoryLocationGroupDescriptionFromValue(inventoryLocationGroupDescriptionValue, partyPK);
+        }
     }
     
 }
