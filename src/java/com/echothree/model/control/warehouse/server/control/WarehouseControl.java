@@ -1763,7 +1763,7 @@ public class WarehouseControl
                 warehouseParty, locationUseType);
     }
 
-    private Location getLocationByName(Party warehouseParty, String locationName, EntityPermission entityPermission) {
+    public Location getLocationByName(Party warehouseParty, String locationName, EntityPermission entityPermission) {
         Location location;
         
         try {
@@ -2107,7 +2107,7 @@ public class WarehouseControl
         return locationDescription;
     }
     
-    private LocationDescription getLocationDescription(Location location, Language language, EntityPermission entityPermission) {
+    public LocationDescription getLocationDescription(Location location, Language language, EntityPermission entityPermission) {
         LocationDescription locationDescription;
         
         try {
@@ -2276,7 +2276,7 @@ public class WarehouseControl
         return locationVolume;
     }
     
-    private LocationVolume getLocationVolume(Location location, EntityPermission entityPermission) {
+    public LocationVolume getLocationVolume(Location location, EntityPermission entityPermission) {
         LocationVolume locationVolume;
         
         try {
@@ -2424,7 +2424,7 @@ public class WarehouseControl
         return getLocationCapacitiesByLocation(location, EntityPermission.READ_WRITE);
     }
     
-    private LocationCapacity getLocationCapacity(Location location, UnitOfMeasureType unitOfMeasureType, EntityPermission entityPermission) {
+    public LocationCapacity getLocationCapacity(Location location, UnitOfMeasureType unitOfMeasureType, EntityPermission entityPermission) {
         LocationCapacity locationCapacity;
         
         try {
