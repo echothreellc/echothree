@@ -910,7 +910,7 @@ public class WarehouseControl
                 warehouseParty);
     }
 
-    private LocationType getLocationTypeByName(Party warehouseParty, String locationTypeName, EntityPermission entityPermission) {
+    public LocationType getLocationTypeByName(Party warehouseParty, String locationTypeName, EntityPermission entityPermission) {
         LocationType locationType;
         
         try {
@@ -1195,7 +1195,7 @@ public class WarehouseControl
         return locationTypeDescription;
     }
     
-    private LocationTypeDescription getLocationTypeDescription(LocationType locationType, Language language, EntityPermission entityPermission) {
+    public LocationTypeDescription getLocationTypeDescription(LocationType locationType, Language language, EntityPermission entityPermission) {
         LocationTypeDescription locationTypeDescription;
         
         try {
@@ -1383,7 +1383,7 @@ public class WarehouseControl
                 locationType);
     }
 
-    private LocationNameElement getLocationNameElementByName(LocationType locationType, String locationNameElementName, EntityPermission entityPermission) {
+    public LocationNameElement getLocationNameElementByName(LocationType locationType, String locationNameElementName, EntityPermission entityPermission) {
         LocationNameElement locationNameElement;
         
         try {
@@ -1554,7 +1554,7 @@ public class WarehouseControl
         return locationNameElementDescription;
     }
     
-    private LocationNameElementDescription getLocationNameElementDescription(LocationNameElement locationNameElement, Language language,
+    public LocationNameElementDescription getLocationNameElementDescription(LocationNameElement locationNameElement, Language language,
             EntityPermission entityPermission) {
         LocationNameElementDescription locationNameElementDescription;
         
