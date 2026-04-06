@@ -18,7 +18,7 @@ package com.echothree.control.user.vendor.server.command;
 
 import com.echothree.control.user.vendor.common.edit.ItemPurchasingCategoryDescriptionEdit;
 import com.echothree.control.user.vendor.common.edit.VendorEditFactory;
-import com.echothree.control.user.vendor.common.form.EditItemPurchasingCategoryDescriptionForm;
+import com.echothree.control.user.vendor.common.result.EditItemPurchasingCategoryDescriptionResult;
 import com.echothree.control.user.vendor.common.result.VendorResultFactory;
 import com.echothree.control.user.vendor.common.spec.ItemPurchasingCategoryDescriptionSpec;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -26,23 +26,23 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.vendor.server.control.VendorControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.vendor.server.entity.ItemPurchasingCategory;
+import com.echothree.model.data.vendor.server.entity.ItemPurchasingCategoryDescription;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
+import javax.inject.Inject;
 import javax.enterprise.context.Dependent;
 
 @Dependent
 public class EditItemPurchasingCategoryDescriptionCommand
-        extends BaseEditCommand<ItemPurchasingCategoryDescriptionSpec, ItemPurchasingCategoryDescriptionEdit> {
+        extends BaseAbstractEditCommand<ItemPurchasingCategoryDescriptionSpec, ItemPurchasingCategoryDescriptionEdit, EditItemPurchasingCategoryDescriptionResult, ItemPurchasingCategoryDescription, ItemPurchasingCategory> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
@@ -70,59 +70,39 @@ public class EditItemPurchasingCategoryDescriptionCommand
     public EditItemPurchasingCategoryDescriptionCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    VendorControl vendorControl;
+
     @Override
-    protected BaseResult execute() {
-        var vendorControl = Session.getModelController(VendorControl.class);
-        var result = VendorResultFactory.getEditItemPurchasingCategoryDescriptionResult();
+    public EditItemPurchasingCategoryDescriptionResult getResult() {
+        return VendorResultFactory.getEditItemPurchasingCategoryDescriptionResult();
+    }
+
+    @Override
+    public ItemPurchasingCategoryDescriptionEdit getEdit() {
+        return VendorEditFactory.getItemPurchasingCategoryDescriptionEdit();
+    }
+
+    @Override
+    public ItemPurchasingCategoryDescription getEntity(EditItemPurchasingCategoryDescriptionResult result) {
+        ItemPurchasingCategoryDescription itemPurchasingCategoryDescription = null;
         var itemPurchasingCategoryName = spec.getItemPurchasingCategoryName();
         var itemPurchasingCategory = vendorControl.getItemPurchasingCategoryByName(itemPurchasingCategoryName);
-        
+
         if(itemPurchasingCategory != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
-            
+
             if(language != null) {
-                if(editMode.equals(EditMode.LOCK)) {
-                    var itemPurchasingCategoryDescription = vendorControl.getItemPurchasingCategoryDescription(itemPurchasingCategory, language);
-                    
-                    if(itemPurchasingCategoryDescription != null) {
-                        result.setItemPurchasingCategoryDescription(vendorControl.getItemPurchasingCategoryDescriptionTransfer(getUserVisit(), itemPurchasingCategoryDescription));
-                        
-                        if(lockEntity(itemPurchasingCategory)) {
-                            var edit = VendorEditFactory.getItemPurchasingCategoryDescriptionEdit();
-                            
-                            result.setEdit(edit);
-                            edit.setDescription(itemPurchasingCategoryDescription.getDescription());
-                        } else {
-                            addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                        }
-                        
-                        result.setEntityLock(getEntityLockTransfer(itemPurchasingCategory));
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownItemPurchasingCategoryDescription.name());
-                    }
-                } else if(editMode.equals(EditMode.UPDATE)) {
-                    var itemPurchasingCategoryDescriptionValue = vendorControl.getItemPurchasingCategoryDescriptionValueForUpdate(itemPurchasingCategory, language);
-                    
-                    if(itemPurchasingCategoryDescriptionValue != null) {
-                        if(lockEntityForUpdate(itemPurchasingCategory)) {
-                            try {
-                                var description = edit.getDescription();
-                                
-                                itemPurchasingCategoryDescriptionValue.setDescription(description);
-                                
-                                vendorControl.updateItemPurchasingCategoryDescriptionFromValue(itemPurchasingCategoryDescriptionValue, getPartyPK());
-                            } finally {
-                                unlockEntity(itemPurchasingCategory);
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.EntityLockStale.name());
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownItemPurchasingCategoryDescription.name());
-                    }
+                itemPurchasingCategoryDescription = vendorControl.getItemPurchasingCategoryDescription(itemPurchasingCategory, language,
+                        editModeToEntityPermission(editMode));
+
+                if(itemPurchasingCategoryDescription == null) {
+                    addExecutionError(ExecutionErrors.UnknownItemPurchasingCategoryDescription.name(), itemPurchasingCategoryName, languageIsoName);
                 }
             } else {
                 addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);
@@ -130,8 +110,32 @@ public class EditItemPurchasingCategoryDescriptionCommand
         } else {
             addExecutionError(ExecutionErrors.UnknownItemPurchasingCategoryName.name(), itemPurchasingCategoryName);
         }
-        
-        return result;
+
+        return itemPurchasingCategoryDescription;
+    }
+
+    @Override
+    public ItemPurchasingCategory getLockEntity(ItemPurchasingCategoryDescription itemPurchasingCategoryDescription) {
+        return itemPurchasingCategoryDescription.getItemPurchasingCategory();
+    }
+
+    @Override
+    public void fillInResult(EditItemPurchasingCategoryDescriptionResult result, ItemPurchasingCategoryDescription itemPurchasingCategoryDescription) {
+        result.setItemPurchasingCategoryDescription(vendorControl.getItemPurchasingCategoryDescriptionTransfer(getUserVisit(), itemPurchasingCategoryDescription));
+    }
+
+    @Override
+    public void doLock(ItemPurchasingCategoryDescriptionEdit edit, ItemPurchasingCategoryDescription itemPurchasingCategoryDescription) {
+        edit.setDescription(itemPurchasingCategoryDescription.getDescription());
+    }
+
+    @Override
+    public void doUpdate(ItemPurchasingCategoryDescription itemPurchasingCategoryDescription) {
+        var itemPurchasingCategoryDescriptionValue = vendorControl.getItemPurchasingCategoryDescriptionValue(itemPurchasingCategoryDescription);
+
+        itemPurchasingCategoryDescriptionValue.setDescription(edit.getDescription());
+
+        vendorControl.updateItemPurchasingCategoryDescriptionFromValue(itemPurchasingCategoryDescriptionValue, getPartyPK());
     }
     
 }
