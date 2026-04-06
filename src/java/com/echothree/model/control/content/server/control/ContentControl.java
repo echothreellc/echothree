@@ -764,7 +764,7 @@ public class ContentControl
         return contentPageLayoutDescription;
     }
     
-    private ContentPageLayoutDescription getContentPageLayoutDescription(ContentPageLayout contentPageLayout, Language language, EntityPermission entityPermission) {
+    public ContentPageLayoutDescription getContentPageLayoutDescription(ContentPageLayout contentPageLayout, Language language, EntityPermission entityPermission) {
         ContentPageLayoutDescription contentPageLayoutDescription;
         
         try {
