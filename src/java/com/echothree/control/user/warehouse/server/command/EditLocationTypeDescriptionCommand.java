@@ -18,6 +18,7 @@ package com.echothree.control.user.warehouse.server.command;
 
 import com.echothree.control.user.warehouse.common.edit.LocationTypeDescriptionEdit;
 import com.echothree.control.user.warehouse.common.edit.WarehouseEditFactory;
+import com.echothree.control.user.warehouse.common.result.EditLocationTypeDescriptionResult;
 import com.echothree.control.user.warehouse.common.result.WarehouseResultFactory;
 import com.echothree.control.user.warehouse.common.spec.LocationTypeDescriptionSpec;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -25,23 +26,24 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
-import com.echothree.util.common.command.BaseResult;
+import com.echothree.model.data.warehouse.server.entity.LocationType;
+import com.echothree.model.data.warehouse.server.entity.LocationTypeDescription;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditLocationTypeDescriptionCommand
-        extends BaseEditCommand<LocationTypeDescriptionSpec, LocationTypeDescriptionEdit> {
-
+        extends BaseAbstractEditCommand<LocationTypeDescriptionSpec, LocationTypeDescriptionEdit, EditLocationTypeDescriptionResult, LocationTypeDescription, LocationType> {
+    
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
@@ -64,81 +66,86 @@ public class EditLocationTypeDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
         );
     }
-    
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    WarehouseControl warehouseControl;
+
     /** Creates a new instance of EditLocationTypeDescriptionCommand */
     public EditLocationTypeDescriptionCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override
-    protected BaseResult execute() {
-        var warehouseControl = Session.getModelController(WarehouseControl.class);
-        var result = WarehouseResultFactory.getEditLocationTypeDescriptionResult();
+    protected EditLocationTypeDescriptionResult getResult() {
+        return WarehouseResultFactory.getEditLocationTypeDescriptionResult();
+    }
+
+    @Override
+    protected LocationTypeDescriptionEdit getEdit() {
+        return WarehouseEditFactory.getLocationTypeDescriptionEdit();
+    }
+
+    @Override
+    protected LocationTypeDescription getEntity(EditLocationTypeDescriptionResult result) {
+        LocationTypeDescription locationTypeDescription = null;
         var warehouseName = spec.getWarehouseName();
         var warehouse = warehouseControl.getWarehouseByName(warehouseName);
-        
+
         if(warehouse != null) {
             var warehouseParty = warehouse.getParty();
             var locationTypeName = spec.getLocationTypeName();
             var locationType = warehouseControl.getLocationTypeByName(warehouseParty, locationTypeName);
-            
+
             if(locationType != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var languageIsoName = spec.getLanguageIsoName();
                 var language = partyControl.getLanguageByIsoName(languageIsoName);
-                
+
                 if(language != null) {
-                    if(editMode.equals(EditMode.LOCK)) {
-                        var locationTypeDescription = warehouseControl.getLocationTypeDescription(locationType, language);
-                        
-                        if(locationTypeDescription != null) {
-                            result.setLocationTypeDescription(warehouseControl.getLocationTypeDescriptionTransfer(getUserVisit(), locationTypeDescription));
-                            
-                            if(lockEntity(locationType)) {
-                                var edit = WarehouseEditFactory.getLocationTypeDescriptionEdit();
-                                
-                                result.setEdit(edit);
-                                edit.setDescription(locationTypeDescription.getDescription());
-                            } else {
-                                addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                            }
-                            
-                            result.setEntityLock(getEntityLockTransfer(locationType));
-                        } else {
-                            addExecutionError(ExecutionErrors.UnknownLocationTypeDescription.name());
-                        }
-                    } else if(editMode.equals(EditMode.UPDATE)) {
-                        var locationTypeDescriptionValue = warehouseControl.getLocationTypeDescriptionValueForUpdate(locationType, language);
-                        
-                        if(locationTypeDescriptionValue != null) {
-                            if(lockEntityForUpdate(locationType)) {
-                                try {
-                                    var description = edit.getDescription();
-                                    
-                                    locationTypeDescriptionValue.setDescription(description);
-                                    
-                                    warehouseControl.updateLocationTypeDescriptionFromValue(locationTypeDescriptionValue, getPartyPK());
-                                } finally {
-                                    unlockEntity(locationType);
-                                }
-                            } else {
-                                addExecutionError(ExecutionErrors.EntityLockStale.name());
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.UnknownLocationTypeDescription.name());
-                        }
+                    locationTypeDescription = warehouseControl.getLocationTypeDescription(locationType, language, editModeToEntityPermission(editMode));
+
+                    if(locationTypeDescription == null) {
+                        addExecutionError(ExecutionErrors.UnknownLocationTypeDescription.name(),
+                                warehouse.getWarehouseName(), locationType.getLastDetail().getLocationTypeName(),
+                                language.getLanguageIsoName());
                     }
                 } else {
                     addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);
                 }
             } else {
-                addExecutionError(ExecutionErrors.UnknownLocationTypeName.name(), locationTypeName);
+                addExecutionError(ExecutionErrors.UnknownLocationTypeName.name(), warehouse.getWarehouseName(), locationTypeName);
             }
         } else {
             addExecutionError(ExecutionErrors.UnknownWarehouseName.name(), warehouseName);
         }
-        
-        return result;
+
+        return locationTypeDescription;
+    }
+
+    @Override
+    protected LocationType getLockEntity(LocationTypeDescription locationTypeDescription) {
+        return locationTypeDescription.getLocationType();
+    }
+
+    @Override
+    protected void fillInResult(EditLocationTypeDescriptionResult result, LocationTypeDescription locationTypeDescription) {
+        result.setLocationTypeDescription(warehouseControl.getLocationTypeDescriptionTransfer(getUserVisit(), locationTypeDescription));
+    }
+
+    @Override
+    protected void doLock(LocationTypeDescriptionEdit edit, LocationTypeDescription locationTypeDescription) {
+        edit.setDescription(locationTypeDescription.getDescription());
+    }
+
+    @Override
+    protected void doUpdate(LocationTypeDescription locationTypeDescription) {
+        var locationTypeDescriptionValue = warehouseControl.getLocationTypeDescriptionValue(locationTypeDescription);
+
+        locationTypeDescriptionValue.setDescription(edit.getDescription());
+
+        warehouseControl.updateLocationTypeDescriptionFromValue(locationTypeDescriptionValue, getPartyPK());
     }
     
 }
