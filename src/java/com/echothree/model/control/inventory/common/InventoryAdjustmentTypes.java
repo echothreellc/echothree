@@ -17,7 +17,9 @@
 package com.echothree.model.control.inventory.common;
 
 public enum InventoryAdjustmentTypes {
-    
-    TEST_INVENTORY_TRANSACTION_TYPE,
+
+    SET,
+    PLUS,
+    MINUS,
     
 }

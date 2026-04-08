@@ -18,7 +18,7 @@ package com.echothree.control.user.wishlist.server.command;
 
 import com.echothree.control.user.wishlist.common.form.CreateWishlistLineForm;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
-import com.echothree.model.control.inventory.common.InventoryConstants;
+import com.echothree.model.control.inventory.common.InventoryConditionUseTypes;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.offer.server.control.OfferItemControl;
@@ -29,7 +29,6 @@ import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.wishlist.server.control.WishlistControl;
 import com.echothree.model.control.wishlist.server.logic.WishlistLogic;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -109,7 +108,7 @@ public class CreateWishlistLineCommand
                                     if(offerItem != null) {
                                         var inventoryControl = Session.getModelController(InventoryControl.class);
                                         var inventoryConditionName = form.getInventoryConditionName();
-                                        var inventoryConditionUseType = inventoryControl.getInventoryConditionUseTypeByName(InventoryConstants.InventoryConditionUseType_SALES_ORDER);
+                                        var inventoryConditionUseType = inventoryControl.getInventoryConditionUseTypeByName(InventoryConditionUseTypes.SALES_ORDER.name());
                                         InventoryCondition inventoryCondition = null;
                                         
                                         if(inventoryConditionName == null) {

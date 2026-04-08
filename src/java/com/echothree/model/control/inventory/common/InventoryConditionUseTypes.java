@@ -16,14 +16,10 @@
 
 package com.echothree.model.control.inventory.common;
 
-public interface InventoryConstants {
+public enum InventoryConditionUseTypes {
+
+    PURCHASE_ORDER,
+    SALES_ORDER,
+    RETURN,
     
-    String InventoryConditionUseType_PURCHASE_ORDER = "PURCHASE_ORDER";
-    String InventoryConditionUseType_SALES_ORDER    = "SALES_ORDER";
-    String InventoryConditionUseType_RETURN         = "RETURN";
-
-    String LotTimeType_MANUFACTURED = "MANUFACTURED";
-    String LotTimeType_RECEIVED = "RECEIVED";
-    String LotTimeType_EXPIRATION = "EXPIRATION";
-
 }
