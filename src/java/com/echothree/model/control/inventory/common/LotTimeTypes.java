@@ -16,9 +16,10 @@
 
 package com.echothree.model.control.inventory.common;
 
-public enum InventoryConditions {
-    
-    BEFORE_VALUE,
-    AFTER_VALUE
+public enum LotTimeTypes {
+
+    MANUFACTURED,
+    RECEIVED,
+    EXPIRATION,
     
 }

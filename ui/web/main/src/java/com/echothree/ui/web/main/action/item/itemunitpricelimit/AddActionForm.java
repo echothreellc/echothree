@@ -23,7 +23,7 @@ import com.echothree.control.user.inventory.common.result.GetInventoryConditionC
 import com.echothree.control.user.uom.common.UomUtil;
 import com.echothree.control.user.uom.common.result.GetUnitOfMeasureTypeChoicesResult;
 import com.echothree.model.control.accounting.common.choice.CurrencyChoicesBean;
-import com.echothree.model.control.inventory.common.InventoryConstants;
+import com.echothree.model.control.inventory.common.InventoryConditionUseType;
 import com.echothree.model.control.inventory.common.choice.InventoryConditionChoicesBean;
 import com.echothree.model.control.uom.common.choice.UnitOfMeasureTypeChoicesBean;
 import com.echothree.view.client.web.struts.BaseActionForm;
@@ -52,7 +52,7 @@ public class AddActionForm
         if(inventoryConditionChoices == null) {
             var form = InventoryUtil.getHome().getGetInventoryConditionChoicesForm();
 
-            form.setInventoryConditionUseTypeName(InventoryConstants.InventoryConditionUseType_PURCHASE_ORDER);
+            form.setInventoryConditionUseTypeName(InventoryConditionUseType.PURCHASE_ORDER.name());
             form.setDefaultInventoryConditionChoice(inventoryConditionChoice);
             form.setAllowNullChoice(String.valueOf(false));
 

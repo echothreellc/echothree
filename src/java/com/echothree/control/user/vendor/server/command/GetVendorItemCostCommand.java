@@ -18,7 +18,7 @@ package com.echothree.control.user.vendor.server.command;
 
 import com.echothree.control.user.vendor.common.form.GetVendorItemCostForm;
 import com.echothree.control.user.vendor.common.result.VendorResultFactory;
-import com.echothree.model.control.inventory.common.InventoryConstants;
+import com.echothree.model.control.inventory.common.InventoryConditionUseType;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
@@ -26,7 +26,6 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.vendor.server.control.VendorControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.vendor.server.entity.Vendor;
 import com.echothree.model.data.vendor.server.entity.VendorItemCost;
 import com.echothree.util.common.command.BaseResult;
@@ -113,7 +112,7 @@ public class GetVendorItemCostCommand
                     var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
 
                     if(inventoryCondition != null) {
-                        var inventoryConditionUseType = inventoryControl.getInventoryConditionUseTypeByName(InventoryConstants.InventoryConditionUseType_PURCHASE_ORDER);
+                        var inventoryConditionUseType = inventoryControl.getInventoryConditionUseTypeByName(InventoryConditionUseType.PURCHASE_ORDER.name());
                         var inventoryConditionUse = inventoryControl.getInventoryConditionUse(inventoryConditionUseType,
                                 inventoryCondition);
 
