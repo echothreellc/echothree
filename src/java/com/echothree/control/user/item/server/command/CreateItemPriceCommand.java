@@ -18,7 +18,7 @@ package com.echothree.control.user.item.server.command;
 
 import com.echothree.control.user.item.common.form.CreateItemPriceForm;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
-import com.echothree.model.control.inventory.common.InventoryConditionUseType;
+import com.echothree.model.control.inventory.common.InventoryConditionUseTypes;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.item.common.ItemPriceTypes;
 import com.echothree.model.control.item.server.control.ItemControl;
@@ -83,7 +83,7 @@ public class CreateItemPriceCommand
             var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
             
             if(inventoryCondition != null) {
-                var inventoryConditionUseType = inventoryControl.getInventoryConditionUseTypeByName(InventoryConditionUseType.SALES_ORDER.name());
+                var inventoryConditionUseType = inventoryControl.getInventoryConditionUseTypeByName(InventoryConditionUseTypes.SALES_ORDER.name());
                 var inventoryConditionUse = inventoryControl.getInventoryConditionUse(inventoryConditionUseType,
                         inventoryCondition);
                 

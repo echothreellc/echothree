@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.inventory.common;
 
-public enum InventoryConditionUseType {
+public enum InventoryConditionUseTypes {
 
     PURCHASE_ORDER,
     SALES_ORDER,

@@ -18,7 +18,7 @@ package com.echothree.control.user.wishlist.server.command;
 
 import com.echothree.control.user.wishlist.common.form.CreateWishlistLineForm;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
-import com.echothree.model.control.inventory.common.InventoryConditionUseType;
+import com.echothree.model.control.inventory.common.InventoryConditionUseTypes;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.offer.server.control.OfferItemControl;
@@ -108,7 +108,7 @@ public class CreateWishlistLineCommand
                                     if(offerItem != null) {
                                         var inventoryControl = Session.getModelController(InventoryControl.class);
                                         var inventoryConditionName = form.getInventoryConditionName();
-                                        var inventoryConditionUseType = inventoryControl.getInventoryConditionUseTypeByName(InventoryConditionUseType.SALES_ORDER.name());
+                                        var inventoryConditionUseType = inventoryControl.getInventoryConditionUseTypeByName(InventoryConditionUseTypes.SALES_ORDER.name());
                                         InventoryCondition inventoryCondition = null;
                                         
                                         if(inventoryConditionName == null) {

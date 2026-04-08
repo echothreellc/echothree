@@ -17,7 +17,7 @@
 package com.echothree.control.user.vendor.server.command;
 
 import com.echothree.control.user.vendor.common.form.DeleteVendorItemCostForm;
-import com.echothree.model.control.inventory.common.InventoryConditionUseType;
+import com.echothree.model.control.inventory.common.InventoryConditionUseTypes;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -81,7 +81,7 @@ public class DeleteVendorItemCostCommand
                 var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
                 
                 if(inventoryCondition != null) {
-                    var inventoryConditionUseType = inventoryControl.getInventoryConditionUseTypeByName(InventoryConditionUseType.PURCHASE_ORDER.name());
+                    var inventoryConditionUseType = inventoryControl.getInventoryConditionUseTypeByName(InventoryConditionUseTypes.PURCHASE_ORDER.name());
                     var inventoryConditionUse = inventoryControl.getInventoryConditionUse(inventoryConditionUseType,
                             inventoryCondition);
                     
