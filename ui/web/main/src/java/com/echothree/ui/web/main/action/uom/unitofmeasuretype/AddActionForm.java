@@ -153,7 +153,8 @@ public class AddActionForm
     @Override
     public void reset(ActionMapping mapping, HttpServletRequest request) {
         super.reset(mapping, request);
-        
+
+        suppressSymbolSeparator = false;
         isDefault = false;
     }
     

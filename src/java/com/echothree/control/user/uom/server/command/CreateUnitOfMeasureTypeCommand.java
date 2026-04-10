@@ -83,7 +83,7 @@ public class CreateUnitOfMeasureTypeCommand
                         unitOfMeasureType = uomControl.createUnitOfMeasureType(unitOfMeasureKind, unitOfMeasureTypeName,
                                 symbolPosition, suppressSymbolSeparator, isDefault, sortOrder, partyPK);
 
-                        if(descriptionCount == 2) {
+                        if(descriptionCount == 3) {
                             var language = getPreferredLanguage();
 
                             uomControl.createUnitOfMeasureTypeDescription(unitOfMeasureType, language, singularDescription,
@@ -104,7 +104,8 @@ public class CreateUnitOfMeasureTypeCommand
                     }
                 }
             } else {
-                addExecutionError(ExecutionErrors.DuplicateUnitOfMeasureTypeName.name(), unitOfMeasureTypeName);
+                addExecutionError(ExecutionErrors.DuplicateUnitOfMeasureTypeName.name(),
+                        unitOfMeasureKind.getLastDetail().getUnitOfMeasureKindName(), unitOfMeasureTypeName);
             }
         } else {
             addExecutionError(ExecutionErrors.UnknownUnitOfMeasureKindName.name(), unitOfMeasureKindName);

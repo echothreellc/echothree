@@ -74,6 +74,7 @@ public class AddAction
                     commandForm.setSortOrder(actionForm.getSortOrder());
                     commandForm.setSingularDescription(actionForm.getSingularDescription());
                     commandForm.setPluralDescription(actionForm.getPluralDescription());
+                    commandForm.setSymbol(actionForm.getSymbol());
 
                     var commandResult = UomUtil.getHome().createUnitOfMeasureType(getUserVisitPK(request), commandForm);
                     
