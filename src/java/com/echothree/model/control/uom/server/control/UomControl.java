@@ -81,6 +81,7 @@ import com.echothree.model.data.uom.server.value.UnitOfMeasureTypeWeightValue;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
@@ -89,7 +90,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
@@ -271,7 +271,7 @@ public class UomControl
         return getDefaultUnitOfMeasureKindForUpdate().getLastDetailForUpdate().getUnitOfMeasureKindDetailValue().clone();
     }
     
-    private UnitOfMeasureKind getUnitOfMeasureKindByName(String unitOfMeasureKindName, EntityPermission entityPermission) {
+    public UnitOfMeasureKind getUnitOfMeasureKindByName(String unitOfMeasureKindName, EntityPermission entityPermission) {
         UnitOfMeasureKind unitOfMeasureKind;
         
         try {
@@ -517,7 +517,7 @@ public class UomControl
         return unitOfMeasureKindDescription;
     }
     
-    private UnitOfMeasureKindDescription getUnitOfMeasureKindDescription(UnitOfMeasureKind unitOfMeasureKind, Language language, EntityPermission entityPermission) {
+    public UnitOfMeasureKindDescription getUnitOfMeasureKindDescription(UnitOfMeasureKind unitOfMeasureKind, Language language, EntityPermission entityPermission) {
         UnitOfMeasureKindDescription unitOfMeasureKindDescription;
         
         try {
@@ -813,7 +813,7 @@ public class UomControl
         return getDefaultUnitOfMeasureTypeForUpdate(unitOfMeasureKind).getLastDetailForUpdate().getUnitOfMeasureTypeDetailValue().clone();
     }
     
-    private UnitOfMeasureType getUnitOfMeasureTypeByName(UnitOfMeasureKind unitOfMeasureKind, String unitOfMeasureTypeName,
+    public UnitOfMeasureType getUnitOfMeasureTypeByName(UnitOfMeasureKind unitOfMeasureKind, String unitOfMeasureTypeName,
             EntityPermission entityPermission) {
         UnitOfMeasureType unitOfMeasureType;
         
@@ -1027,7 +1027,7 @@ public class UomControl
         return unitOfMeasureTypeDescription;
     }
     
-    private UnitOfMeasureTypeDescription getUnitOfMeasureTypeDescription(UnitOfMeasureType unitOfMeasureType, Language language, EntityPermission entityPermission) {
+    public UnitOfMeasureTypeDescription getUnitOfMeasureTypeDescription(UnitOfMeasureType unitOfMeasureType, Language language, EntityPermission entityPermission) {
         UnitOfMeasureTypeDescription unitOfMeasureTypeDescription;
         
         try {
@@ -1273,11 +1273,13 @@ public class UomControl
     public UnitOfMeasureTypeVolume getUnitOfMeasureTypeVolumeForUpdate(UnitOfMeasureType unitOfMeasureType) {
         return getUnitOfMeasureTypeVolume(unitOfMeasureType, EntityPermission.READ_WRITE);
     }
-    
-    public UnitOfMeasureTypeVolumeValue getUnitOfMeasureTypeVolumeValueForUpdate(UnitOfMeasureType unitOfMeasureType) {
-        var unitOfMeasureTypeVolume = getUnitOfMeasureTypeVolumeForUpdate(unitOfMeasureType);
-        
+
+    public UnitOfMeasureTypeVolumeValue getUnitOfMeasureTypeVolumeValue(UnitOfMeasureTypeVolume unitOfMeasureTypeVolume) {
         return unitOfMeasureTypeVolume == null? null: unitOfMeasureTypeVolume.getUnitOfMeasureTypeVolumeValue().clone();
+    }
+
+    public UnitOfMeasureTypeVolumeValue getUnitOfMeasureTypeVolumeValueForUpdate(UnitOfMeasureType unitOfMeasureType) {
+        return getUnitOfMeasureTypeVolumeValue(getUnitOfMeasureTypeVolumeForUpdate(unitOfMeasureType));
     }
     
     public UnitOfMeasureTypeVolumeTransfer getUnitOfMeasureTypeVolumeTransfer(UserVisit userVisit, UnitOfMeasureTypeVolume unitOfMeasureTypeVolume) {
@@ -1371,11 +1373,13 @@ public class UomControl
     public UnitOfMeasureTypeWeight getUnitOfMeasureTypeWeightForUpdate(UnitOfMeasureType unitOfMeasureType) {
         return getUnitOfMeasureTypeWeight(unitOfMeasureType, EntityPermission.READ_WRITE);
     }
-    
-    public UnitOfMeasureTypeWeightValue getUnitOfMeasureTypeWeightValueForUpdate(UnitOfMeasureType unitOfMeasureType) {
-        var unitOfMeasureTypeWeight = getUnitOfMeasureTypeWeightForUpdate(unitOfMeasureType);
-        
+
+    public UnitOfMeasureTypeWeightValue getUnitOfMeasureTypeWeightValue(UnitOfMeasureTypeWeight unitOfMeasureTypeWeight) {
         return unitOfMeasureTypeWeight == null? null: unitOfMeasureTypeWeight.getUnitOfMeasureTypeWeightValue().clone();
+    }
+
+    public UnitOfMeasureTypeWeightValue getUnitOfMeasureTypeWeightValueForUpdate(UnitOfMeasureType unitOfMeasureType) {
+        return getUnitOfMeasureTypeWeightValue(getUnitOfMeasureTypeWeightForUpdate(unitOfMeasureType));
     }
     
     public UnitOfMeasureTypeWeightTransfer getUnitOfMeasureTypeWeightTransfer(UserVisit userVisit, UnitOfMeasureTypeWeight unitOfMeasureTypeWeight) {
@@ -1431,7 +1435,7 @@ public class UomControl
         return unitOfMeasureEquivalent;
     }
     
-    private UnitOfMeasureEquivalent getUnitOfMeasureEquivalent(UnitOfMeasureType fromUnitOfMeasureType,
+    public UnitOfMeasureEquivalent getUnitOfMeasureEquivalent(UnitOfMeasureType fromUnitOfMeasureType,
             UnitOfMeasureType toUnitOfMeasureType, EntityPermission entityPermission) {
         UnitOfMeasureEquivalent unitOfMeasureEquivalent;
         
@@ -1472,13 +1476,15 @@ public class UomControl
             UnitOfMeasureType toUnitOfMeasureType) {
         return getUnitOfMeasureEquivalent(fromUnitOfMeasureType, toUnitOfMeasureType, EntityPermission.READ_WRITE);
     }
-    
+
+    public UnitOfMeasureEquivalentValue getUnitOfMeasureEquivalentValue(UnitOfMeasureEquivalent unitOfMeasureEquivalent) {
+        return unitOfMeasureEquivalent == null? null: unitOfMeasureEquivalent.getUnitOfMeasureEquivalentValue().clone();
+    }
+
     public UnitOfMeasureEquivalentValue getUnitOfMeasureEquivalentValueForUpdate(UnitOfMeasureType fromUnitOfMeasureType,
             UnitOfMeasureType toUnitOfMeasureType) {
-        var unitOfMeasureEquivalent = getUnitOfMeasureEquivalentForUpdate(fromUnitOfMeasureType,
-                toUnitOfMeasureType);
-        
-        return unitOfMeasureEquivalent == null? null: unitOfMeasureEquivalent.getUnitOfMeasureEquivalentValue().clone();
+        return getUnitOfMeasureEquivalentValue(getUnitOfMeasureEquivalentForUpdate(fromUnitOfMeasureType,
+                toUnitOfMeasureType));
     }
     
     private List<UnitOfMeasureEquivalent> getUnitOfMeasureEquivalentsByUnitOfMeasureKind(UnitOfMeasureKind unitOfMeasureKind,
@@ -1911,7 +1917,7 @@ public class UomControl
         return getUnitOfMeasureKindUseByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
     
-    private UnitOfMeasureKindUse getUnitOfMeasureKindUse(UnitOfMeasureKindUseType unitOfMeasureKindUseType,
+    public UnitOfMeasureKindUse getUnitOfMeasureKindUse(UnitOfMeasureKindUseType unitOfMeasureKindUseType,
             UnitOfMeasureKind unitOfMeasureKind, EntityPermission entityPermission) {
         UnitOfMeasureKindUse unitOfMeasureKindUse;
         
@@ -1953,10 +1959,14 @@ public class UomControl
             UnitOfMeasureKind unitOfMeasureKind) {
         return getUnitOfMeasureKindUse(unitOfMeasureKindUseType, unitOfMeasureKind, EntityPermission.READ_WRITE);
     }
-    
+
+    public UnitOfMeasureKindUseValue getUnitOfMeasureKindUseValue(UnitOfMeasureKindUse unitOfMeasureKindUse) {
+        return unitOfMeasureKindUse == null? null: unitOfMeasureKindUse.getUnitOfMeasureKindUseValue().clone();
+    }
+
     public UnitOfMeasureKindUseValue getUnitOfMeasureKindUseValueForUpdate(UnitOfMeasureKindUseType unitOfMeasureKindUseType,
             UnitOfMeasureKind unitOfMeasureKind) {
-        return getUnitOfMeasureKindUseForUpdate(unitOfMeasureKindUseType, unitOfMeasureKind).getUnitOfMeasureKindUseValue().clone();
+        return getUnitOfMeasureKindUseValue(getUnitOfMeasureKindUseForUpdate(unitOfMeasureKindUseType, unitOfMeasureKind));
     }
     
     private UnitOfMeasureKindUse getDefaultUnitOfMeasureKindUse(UnitOfMeasureKindUseType unitOfMeasureKindUseType,
