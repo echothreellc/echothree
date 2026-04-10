@@ -18,24 +18,25 @@ package com.echothree.control.user.uom.server.command;
 
 import com.echothree.control.user.uom.common.edit.UnitOfMeasureTypeEdit;
 import com.echothree.control.user.uom.common.edit.UomEditFactory;
-import com.echothree.control.user.uom.common.form.EditUnitOfMeasureTypeForm;
+import com.echothree.control.user.uom.common.result.EditUnitOfMeasureTypeResult;
 import com.echothree.control.user.uom.common.result.UomResultFactory;
 import com.echothree.control.user.uom.common.spec.UnitOfMeasureTypeSpec;
+import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.uom.server.control.UomControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.accounting.server.entity.SymbolPosition;
+import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
+import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
-import com.echothree.util.server.control.BaseEditCommand;
-import com.echothree.util.server.persistence.Session;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditUnitOfMeasureTypeCommand
-        extends BaseEditCommand<UnitOfMeasureTypeSpec, UnitOfMeasureTypeEdit> {
+        extends BaseAbstractEditCommand<UnitOfMeasureTypeSpec, UnitOfMeasureTypeEdit, EditUnitOfMeasureTypeResult, UnitOfMeasureType, UnitOfMeasureType> {
     
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
@@ -44,7 +45,7 @@ public class EditUnitOfMeasureTypeCommand
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("UnitOfMeasureKindName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("UnitOfMeasureTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("UnitOfMeasureTypeName", FieldType.ENTITY_NAME, true, null, null),
@@ -55,130 +56,151 @@ public class EditUnitOfMeasureTypeCommand
                 new FieldDefinition("SingularDescription", FieldType.STRING, false, 1L, 132L),
                 new FieldDefinition("PluralDescription", FieldType.STRING, false, 1L, 132L),
                 new FieldDefinition("Symbol", FieldType.STRING, true, 1L, 20L)
-                );
+        );
     }
-    
+
+    @Inject
+    AccountingControl accountingControl;
+    @Inject
+    UomControl uomControl;
+
     /** Creates a new instance of EditUnitOfMeasureTypeCommand */
     public EditUnitOfMeasureTypeCommand() {
         super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var uomControl = Session.getModelController(UomControl.class);
-        var result = UomResultFactory.getEditUnitOfMeasureTypeResult();
+    public EditUnitOfMeasureTypeResult getResult() {
+        return UomResultFactory.getEditUnitOfMeasureTypeResult();
+    }
+
+    @Override
+    public UnitOfMeasureTypeEdit getEdit() {
+        return UomEditFactory.getUnitOfMeasureTypeEdit();
+    }
+
+    UnitOfMeasureKind unitOfMeasureKind;
+
+    @Override
+    public UnitOfMeasureType getEntity(EditUnitOfMeasureTypeResult result) {
         var unitOfMeasureKindName = spec.getUnitOfMeasureKindName();
-        var unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
-        
+        UnitOfMeasureType unitOfMeasureType = null;
+
+        unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
+
         if(unitOfMeasureKind != null) {
-            if(editMode.equals(EditMode.LOCK)) {
-                var unitOfMeasureTypeName = spec.getUnitOfMeasureTypeName();
-                var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
-                
-                if(unitOfMeasureType != null) {
-                    result.setUnitOfMeasureType(uomControl.getUnitOfMeasureTypeTransfer(getUserVisit(), unitOfMeasureType));
-                    
-                    if(lockEntity(unitOfMeasureType)) {
-                        var unitOfMeasureTypeDescription = uomControl.getUnitOfMeasureTypeDescription(unitOfMeasureType, getPreferredLanguage());
-                        var edit = UomEditFactory.getUnitOfMeasureTypeEdit();
-                        var unitOfMeasureTypeDetail = unitOfMeasureType.getLastDetail();
-                        var symbolPositionDetail = unitOfMeasureTypeDetail.getSymbolPosition().getLastDetail();
-                        
-                        result.setEdit(edit);
-                        edit.setUnitOfMeasureTypeName(unitOfMeasureTypeDetail.getUnitOfMeasureTypeName());
-                        edit.setSymbolPositionName(symbolPositionDetail.getSymbolPositionName());
-                        edit.setSuppressSymbolSeparator(unitOfMeasureTypeDetail.getSuppressSymbolSeparator().toString());
-                        edit.setIsDefault(unitOfMeasureTypeDetail.getIsDefault().toString());
-                        edit.setSortOrder(unitOfMeasureTypeDetail.getSortOrder().toString());
-                        
-                        if(unitOfMeasureTypeDescription != null) {
-                            edit.setSingularDescription(unitOfMeasureTypeDescription.getSingularDescription());
-                            edit.setPluralDescription(unitOfMeasureTypeDescription.getPluralDescription());
-                            edit.setSymbol(unitOfMeasureTypeDescription.getSymbol());
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                    }
-                    
-                    result.setEntityLock(getEntityLockTransfer(unitOfMeasureType));
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownUnitOfMeasureTypeName.name(), unitOfMeasureTypeName);
-                }
-            } else if(editMode.equals(EditMode.UPDATE)) {
-                var unitOfMeasureTypeName = spec.getUnitOfMeasureTypeName();
-                var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByNameForUpdate(unitOfMeasureKind, unitOfMeasureTypeName);
-                
-                if(unitOfMeasureType != null) {
-                    unitOfMeasureTypeName = edit.getUnitOfMeasureTypeName();
-                    var duplicateUnitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
-                    
-                    if(duplicateUnitOfMeasureType == null || unitOfMeasureType.equals(duplicateUnitOfMeasureType)) {
-                        var singularDescription = edit.getSingularDescription();
-                        var pluralDescription = edit.getPluralDescription();
-                        var symbol = edit.getSymbol();
-                        var descriptionCount = (singularDescription == null ? 0 : 1) + (pluralDescription == null ? 0 : 1) + (symbol == null ? 0 : 1);
-                        
-                        if(descriptionCount == 0 || descriptionCount == 3) {
-                            if(lockEntityForUpdate(unitOfMeasureType)) {
-                                try {
-                                    var partyPK = getPartyPK();
-                                    var unitOfMeasureTypeDetailValue = uomControl.getUnitOfMeasureTypeDetailValueForUpdate(unitOfMeasureType);
-                                    var unitOfMeasureTypeDescription = uomControl.getUnitOfMeasureTypeDescriptionForUpdate(unitOfMeasureType, getPreferredLanguage());
-                                    
-                                    unitOfMeasureTypeDetailValue.setUnitOfMeasureTypeName(edit.getUnitOfMeasureTypeName());
-                                    unitOfMeasureTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
-                                    unitOfMeasureTypeDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
-                                    
-                                    uomControl.updateUnitOfMeasureTypeFromValue(unitOfMeasureTypeDetailValue, partyPK);
-                                    
-                                    if(unitOfMeasureTypeDescription == null && singularDescription != null) {
-                                        uomControl.createUnitOfMeasureTypeDescription(unitOfMeasureType, getPreferredLanguage(), singularDescription, pluralDescription, symbol, partyPK);
-                                    } else if(unitOfMeasureTypeDescription != null && singularDescription == null) {
-                                        uomControl.deleteUnitOfMeasureTypeDescription(unitOfMeasureTypeDescription, partyPK);
-                                    } else if(unitOfMeasureTypeDescription != null && singularDescription != null) {
-                                        var unitOfMeasureTypeDescriptionValue = uomControl.getUnitOfMeasureTypeDescriptionValue(unitOfMeasureTypeDescription);
-                                        
-                                        unitOfMeasureTypeDescriptionValue.setSingularDescription(singularDescription);
-                                        unitOfMeasureTypeDescriptionValue.setPluralDescription(pluralDescription);
-                                        unitOfMeasureTypeDescriptionValue.setSymbol(symbol);
-                                        uomControl.updateUnitOfMeasureTypeDescriptionFromValue(unitOfMeasureTypeDescriptionValue, partyPK);
-                                    }
-                                } finally {
-                                    unlockEntity(unitOfMeasureType);
-                                }
-                            } else {
-                                addExecutionError(ExecutionErrors.EntityLockStale.name());
-                            }
-                        } else {
-                            if(singularDescription == null) {
-                                addExecutionError(ExecutionErrors.MissingSingularDescription.name());
-                            }
-                            
-                            if(pluralDescription == null) {
-                                addExecutionError(ExecutionErrors.MissingPluralDescription.name());
-                            }
-                            
-                            if(symbol == null) {
-                                addExecutionError(ExecutionErrors.MissingSymbol.name());
-                            }
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.DuplicateUnitOfMeasureTypeName.name(), unitOfMeasureTypeName);
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownUnitOfMeasureTypeName.name(), unitOfMeasureTypeName);
-                }
-                
-                if(hasExecutionErrors()) {
-                    result.setUnitOfMeasureType(uomControl.getUnitOfMeasureTypeTransfer(getUserVisit(), unitOfMeasureType));
-                    result.setEntityLock(getEntityLockTransfer(unitOfMeasureType));
-                }
+            var unitOfMeasureTypeName = spec.getUnitOfMeasureTypeName();
+
+            unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName, editModeToEntityPermission(editMode));
+
+            if(unitOfMeasureType == null) {
+                addExecutionError(ExecutionErrors.UnknownUnitOfMeasureTypeName.name(),
+                        unitOfMeasureKind.getLastDetail().getUnitOfMeasureKindName(), unitOfMeasureTypeName);
             }
         } else {
             addExecutionError(ExecutionErrors.UnknownUnitOfMeasureKindName.name(), unitOfMeasureKindName);
         }
-        
-        return result;
+
+        return unitOfMeasureType;
     }
-    
+
+    @Override
+    public UnitOfMeasureType getLockEntity(UnitOfMeasureType unitOfMeasureType) {
+        return unitOfMeasureType;
+    }
+
+    @Override
+    public void fillInResult(EditUnitOfMeasureTypeResult result, UnitOfMeasureType unitOfMeasureType) {
+        result.setUnitOfMeasureType(uomControl.getUnitOfMeasureTypeTransfer(getUserVisit(), unitOfMeasureType));
+    }
+
+    @Override
+    public void doLock(UnitOfMeasureTypeEdit edit, UnitOfMeasureType unitOfMeasureType) {
+        var unitOfMeasureTypeDescription = uomControl.getUnitOfMeasureTypeDescription(unitOfMeasureType, getPreferredLanguage());
+        var unitOfMeasureTypeDetail = unitOfMeasureType.getLastDetail();
+        var symbolPosition = unitOfMeasureTypeDetail.getSymbolPosition();
+
+        edit.setUnitOfMeasureTypeName(unitOfMeasureTypeDetail.getUnitOfMeasureTypeName());
+        edit.setSymbolPositionName(symbolPosition == null ? null : symbolPosition.getLastDetail().getSymbolPositionName());
+        edit.setSuppressSymbolSeparator(unitOfMeasureTypeDetail.getSuppressSymbolSeparator().toString());
+        edit.setIsDefault(unitOfMeasureTypeDetail.getIsDefault().toString());
+        edit.setSortOrder(unitOfMeasureTypeDetail.getSortOrder().toString());
+
+        if(unitOfMeasureTypeDescription != null) {
+            edit.setSingularDescription(unitOfMeasureTypeDescription.getSingularDescription());
+            edit.setPluralDescription(unitOfMeasureTypeDescription.getPluralDescription());
+            edit.setSymbol(unitOfMeasureTypeDescription.getSymbol());
+        }
+    }
+
+    SymbolPosition symbolPosition;
+
+    @Override
+    public void canUpdate(UnitOfMeasureType unitOfMeasureType) {
+        var unitOfMeasureTypeName = edit.getUnitOfMeasureTypeName();
+        var duplicateUnitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
+
+        if(duplicateUnitOfMeasureType == null || unitOfMeasureType.equals(duplicateUnitOfMeasureType)) {
+            var symbolPositionName = edit.getSymbolPositionName();
+
+            symbolPosition = accountingControl.getSymbolPositionByName(symbolPositionName);
+
+            if(symbolPosition != null) {
+                var singularDescription = edit.getSingularDescription();
+                var pluralDescription = edit.getPluralDescription();
+                var symbol = edit.getSymbol();
+                var descriptionCount = (singularDescription == null ? 0 : 1) + (pluralDescription == null ? 0 : 1) + (symbol == null ? 0 : 1);
+
+                if(descriptionCount != 0 && descriptionCount != 3) {
+                    if(singularDescription == null) {
+                        addExecutionError(ExecutionErrors.MissingSingularDescription.name());
+                    }
+
+                    if(pluralDescription == null) {
+                        addExecutionError(ExecutionErrors.MissingPluralDescription.name());
+                    }
+
+                    if(symbol == null) {
+                        addExecutionError(ExecutionErrors.MissingSymbol.name());
+                    }
+                }
+            } else {
+                addExecutionError(ExecutionErrors.UnknownSymbolPositionName.name(), symbolPositionName);
+            }
+        } else {
+            addExecutionError(ExecutionErrors.DuplicateUnitOfMeasureTypeName.name(), unitOfMeasureTypeName);
+        }
+    }
+
+    @Override
+    public void doUpdate(UnitOfMeasureType unitOfMeasureType) {
+        var partyPK = getPartyPK();
+        var unitOfMeasureTypeDetailValue = uomControl.getUnitOfMeasureTypeDetailValueForUpdate(unitOfMeasureType);
+        var unitOfMeasureTypeDescription = uomControl.getUnitOfMeasureTypeDescriptionForUpdate(unitOfMeasureType, getPreferredLanguage());
+        var singularDescription = edit.getSingularDescription();
+        var pluralDescription = edit.getPluralDescription();
+        var symbol = edit.getSymbol();
+
+        unitOfMeasureTypeDetailValue.setUnitOfMeasureTypeName(edit.getUnitOfMeasureTypeName());
+        unitOfMeasureTypeDetailValue.setSymbolPositionPK(symbolPosition.getPrimaryKey());
+        unitOfMeasureTypeDetailValue.setSuppressSymbolSeparator(Boolean.valueOf(edit.getSuppressSymbolSeparator()));
+        unitOfMeasureTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
+        unitOfMeasureTypeDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
+
+        uomControl.updateUnitOfMeasureTypeFromValue(unitOfMeasureTypeDetailValue, partyPK);
+
+        if(unitOfMeasureTypeDescription == null && singularDescription != null) {
+            uomControl.createUnitOfMeasureTypeDescription(unitOfMeasureType, getPreferredLanguage(), singularDescription, pluralDescription, symbol, partyPK);
+        } else if(unitOfMeasureTypeDescription != null && singularDescription == null) {
+            uomControl.deleteUnitOfMeasureTypeDescription(unitOfMeasureTypeDescription, partyPK);
+        } else if(unitOfMeasureTypeDescription != null && singularDescription != null) {
+            var unitOfMeasureTypeDescriptionValue = uomControl.getUnitOfMeasureTypeDescriptionValue(unitOfMeasureTypeDescription);
+
+            unitOfMeasureTypeDescriptionValue.setSingularDescription(singularDescription);
+            unitOfMeasureTypeDescriptionValue.setPluralDescription(pluralDescription);
+            unitOfMeasureTypeDescriptionValue.setSymbol(symbol);
+            uomControl.updateUnitOfMeasureTypeDescriptionFromValue(unitOfMeasureTypeDescriptionValue, partyPK);
+        }
+    }
+
 }
