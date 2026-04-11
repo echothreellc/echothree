@@ -18,47 +18,57 @@ package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.edit.InventoryEditFactory;
 import com.echothree.control.user.inventory.common.edit.PartyInventoryLevelEdit;
-import com.echothree.control.user.inventory.common.form.EditPartyInventoryLevelForm;
 import com.echothree.control.user.inventory.common.result.EditPartyInventoryLevelResult;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
 import com.echothree.control.user.inventory.common.spec.PartyInventoryLevelSpec;
+import com.echothree.control.user.inventory.server.command.common.PartyInventoryLevelUtil;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
 import com.echothree.model.control.uom.server.util.Conversion;
-import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.data.inventory.server.entity.PartyInventoryLevel;
 import com.echothree.model.data.item.server.entity.Item;
-import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditPartyInventoryLevelCommand
         extends BaseAbstractEditCommand<PartyInventoryLevelSpec, PartyInventoryLevelEdit, EditPartyInventoryLevelResult, PartyInventoryLevel, Item> {
-    
+
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
     
     static {
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
+                        new SecurityRoleDefinition(SecurityRoleGroups.PartyInventoryLevel.name(), SecurityRoles.Edit.name())
+                ))
+        ));
+
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("CompanyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("WarehouseName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("InventoryConditionName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("MinimumInventoryUnitOfMeasureTypeName", FieldType.ENTITY_NAME, false, null, null),
@@ -67,12 +77,15 @@ public class EditPartyInventoryLevelCommand
                 new FieldDefinition("MaximumInventory", FieldType.UNSIGNED_LONG, false, null, null),
                 new FieldDefinition("ReorderQuantityUnitOfMeasureTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("ReorderQuantity", FieldType.UNSIGNED_LONG, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    PartyInventoryLevelUtil partyInventoryLevelUtil;
 
     /** Creates a new instance of EditPartyInventoryLevelCommand */
     public EditPartyInventoryLevelCommand() {
-        super(null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+        super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
 
     @Override
@@ -85,83 +98,20 @@ public class EditPartyInventoryLevelCommand
         return InventoryEditFactory.getPartyInventoryLevelEdit();
     }
 
-    // TODO: Duplicated from BasePartyInventoryLevelCommand
-    protected String getPartyTypeName(final Party party) {
-        return party.getLastDetail().getPartyType().getPartyTypeName();
-    }
-
-    protected Party getParty(final String partyName, final String companyName, final String warehouseName) {
-        Party party = null;
-
-        if(partyName != null || companyName != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
-
-            if(partyName != null) {
-                party = partyControl.getPartyByName(partyName);
-
-                if(party != null) {
-                    var partyTypeName = getPartyTypeName(party);
-
-                    if(!partyTypeName.equals(PartyTypes.COMPANY.name())
-                            && !partyTypeName.equals(PartyTypes.WAREHOUSE.name())) {
-                        party = null;
-                        addExecutionError(ExecutionErrors.InvalidPartyType.name());
-                    }
-                }  else {
-                    addExecutionError(ExecutionErrors.UnknownPartyName.name(), partyName);
-                }
-            } else if(companyName != null) {
-                var partyCompany = partyControl.getPartyCompanyByName(companyName);
-
-                if(partyCompany != null) {
-                    party = partyCompany.getParty();
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownCompanyName.name(), companyName);
-                }
-            }
-        } else if(warehouseName != null) {
-            var warehouseControl = Session.getModelController(WarehouseControl.class);
-            var warehouse = warehouseControl.getWarehouseByName(warehouseName);
-
-            if(warehouse != null) {
-                party = warehouse.getParty();
-            } else {
-                addExecutionError(ExecutionErrors.UnknownWarehouseName.name(), warehouseName);
-            }
-        }
-        return party;
-    }
-
-    protected Party getParty(PartyInventoryLevelSpec spec) {
-        var partyName = spec.getPartyName();
-        var companyName = spec.getCompanyName();
-        var warehouseName = spec.getWarehouseName();
-        var parameterCount = (partyName == null ? 0 : 1) + (companyName == null ? 0 : 1) + (warehouseName == null ? 0 : 1);
-        Party party = null;
-
-        if(parameterCount == 1) {
-            party = getParty(partyName, companyName, warehouseName);
-        }  else {
-            addExecutionError(ExecutionErrors.InvalidParameterCount.name());
-        }
-
-        return party;
-    }
-
     UnitOfMeasureKind unitOfMeasureKind;
 
     @Override
     public PartyInventoryLevel getEntity(EditPartyInventoryLevelResult result) {
         var itemControl = Session.getModelController(ItemControl.class);
         PartyInventoryLevel partyInventoryLevel = null;
-        var party = getParty(spec);
+        var party = partyInventoryLevelUtil.getParty(this, spec);
 
         if(party != null) {
             var itemName = spec.getItemName();
             var item = itemControl.getItemByName(itemName);
 
             if(item != null) {
-                var partyTypeName = getPartyTypeName(party);
+                var partyTypeName = partyInventoryLevelUtil.getPartyTypeName(party);
 
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.UPDATE)) {
                     unitOfMeasureKind = item.getLastDetail().getUnitOfMeasureKind();

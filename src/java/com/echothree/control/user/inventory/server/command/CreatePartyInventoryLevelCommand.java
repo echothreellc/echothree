@@ -17,26 +17,41 @@
 package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.CreatePartyInventoryLevelForm;
+import com.echothree.control.user.inventory.server.command.common.PartyInventoryLevelUtil;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreatePartyInventoryLevelCommand
-        extends BasePartyInventoryLevelCommand<CreatePartyInventoryLevelForm> {
-    
+        extends BaseSimpleCommand<CreatePartyInventoryLevelForm> {
+
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
+                        new SecurityRoleDefinition(SecurityRoleGroups.PartyInventoryLevel.name(), SecurityRoles.Create.name())
+                ))
+        ));
+
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("CompanyName", FieldType.ENTITY_NAME, false, null, null),
@@ -49,18 +64,21 @@ public class CreatePartyInventoryLevelCommand
                 new FieldDefinition("MaximumInventory", FieldType.UNSIGNED_LONG, false, null, null),
                 new FieldDefinition("ReorderQuantityUnitOfMeasureTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("ReorderQuantity", FieldType.UNSIGNED_LONG, false, null, null)
-                );
+        );
     }
-    
+
+    @Inject
+    PartyInventoryLevelUtil partyInventoryLevelUtil;
+
     /** Creates a new instance of CreatePartyInventoryLevelCommand */
     public CreatePartyInventoryLevelCommand() {
-        super(FORM_FIELD_DEFINITIONS);
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
     protected BaseResult execute() {
         var inventoryControl = Session.getModelController(InventoryControl.class);
-        var party = getParty(form);
+        var party = partyInventoryLevelUtil.getParty(this, form);
         
         if(party != null) {
             var itemControl = Session.getModelController(ItemControl.class);
@@ -68,7 +86,7 @@ public class CreatePartyInventoryLevelCommand
             var item = itemControl.getItemByName(itemName);
             
             if(item != null) {
-                var partyTypeName = getPartyTypeName(party);
+                var partyTypeName = partyInventoryLevelUtil.getPartyTypeName(party);
                 
                 if(partyTypeName.equals(PartyTypes.COMPANY.name())) {
                     if(!party.equals(item.getLastDetail().getCompanyParty())) {

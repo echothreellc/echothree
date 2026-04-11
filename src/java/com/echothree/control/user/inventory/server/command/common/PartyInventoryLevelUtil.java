@@ -14,32 +14,30 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.inventory.server.command;
+package com.echothree.control.user.inventory.server.command.common;
 
 import com.echothree.control.user.inventory.common.spec.PartyInventoryLevelSpec;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
-import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
-import java.util.List;
+import javax.enterprise.context.ApplicationScoped;
 
-public abstract class BasePartyInventoryLevelCommand<F
-        extends PartyInventoryLevelSpec> extends BaseSimpleCommand<F> {
-    
-    protected BasePartyInventoryLevelCommand(List<FieldDefinition> FORM_FIELD_DEFINITIONS) {
-        super(null, FORM_FIELD_DEFINITIONS, false);
+@ApplicationScoped
+public class PartyInventoryLevelUtil {
+
+    protected PartyInventoryLevelUtil() {
+        super();
     }
-    
-    protected String getPartyTypeName(final Party party) {
+
+    public String getPartyTypeName(final Party party) {
         return party.getLastDetail().getPartyType().getPartyTypeName();
     }
-    
-    protected Party getParty(final String partyName, final String companyName, final String warehouseName) {
+
+    public Party getParty(final ExecutionErrorAccumulator eea, final String partyName, final String companyName, final String warehouseName) {
         Party party = null;
         
         if(partyName != null || companyName != null) {
@@ -54,10 +52,10 @@ public abstract class BasePartyInventoryLevelCommand<F
                     if(!partyTypeName.equals(PartyTypes.COMPANY.name())
                     && !partyTypeName.equals(PartyTypes.WAREHOUSE.name())) {
                         party = null;
-                        addExecutionError(ExecutionErrors.InvalidPartyType.name());
+                        eea.addExecutionError(ExecutionErrors.InvalidPartyType.name());
                     }
                 }  else {
-                    addExecutionError(ExecutionErrors.UnknownPartyName.name(), partyName);
+                    eea.addExecutionError(ExecutionErrors.UnknownPartyName.name(), partyName);
                 }
             } else if(companyName != null) {
                 var partyCompany = partyControl.getPartyCompanyByName(companyName);
@@ -65,7 +63,7 @@ public abstract class BasePartyInventoryLevelCommand<F
                 if(partyCompany != null) {
                     party = partyCompany.getParty();
                 } else {
-                    addExecutionError(ExecutionErrors.UnknownCompanyName.name(), companyName);
+                    eea.addExecutionError(ExecutionErrors.UnknownCompanyName.name(), companyName);
                 }
             }
         } else if(warehouseName != null) {
@@ -75,13 +73,13 @@ public abstract class BasePartyInventoryLevelCommand<F
             if(warehouse != null) {
                 party = warehouse.getParty();
             } else {
-                addExecutionError(ExecutionErrors.UnknownWarehouseName.name(), warehouseName);
+                eea.addExecutionError(ExecutionErrors.UnknownWarehouseName.name(), warehouseName);
             }
         }
         return party;
     }
-    
-    protected Party getParty(PartyInventoryLevelSpec spec) {
+
+    public Party getParty(final ExecutionErrorAccumulator eea, PartyInventoryLevelSpec spec) {
         var partyName = spec.getPartyName();
         var companyName = spec.getCompanyName();
         var warehouseName = spec.getWarehouseName();
@@ -89,9 +87,9 @@ public abstract class BasePartyInventoryLevelCommand<F
         Party party = null;
         
         if(parameterCount == 1) {
-            party = getParty(partyName, companyName, warehouseName);
+            party = getParty(eea, partyName, companyName, warehouseName);
         }  else {
-            addExecutionError(ExecutionErrors.InvalidParameterCount.name());
+            eea.addExecutionError(ExecutionErrors.InvalidParameterCount.name());
         }
         
         return party;
