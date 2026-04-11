@@ -23,11 +23,17 @@ import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class PartyInventoryLevelUtil {
+
+    @Inject
+    PartyControl partyControl;
+    
+    @Inject
+    WarehouseControl warehouseControl;
 
     protected PartyInventoryLevelUtil() {
         super();
@@ -41,8 +47,6 @@ public class PartyInventoryLevelUtil {
         Party party = null;
         
         if(partyName != null || companyName != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
-            
             if(partyName != null) {
                 party = partyControl.getPartyByName(partyName);
                 
@@ -67,7 +71,6 @@ public class PartyInventoryLevelUtil {
                 }
             }
         } else if(warehouseName != null) {
-            var warehouseControl = Session.getModelController(WarehouseControl.class);
             var warehouse = warehouseControl.getWarehouseByName(warehouseName);
             
             if(warehouse != null) {

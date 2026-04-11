@@ -41,7 +41,6 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -81,6 +80,18 @@ public class EditPartyInventoryLevelCommand
     }
 
     @Inject
+    InventoryControl inventoryControl;
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    UomControl uomControl;
+
+    @Inject
+    UnitOfMeasureTypeLogic unitOfMeasureTypeLogic;
+
+    @Inject
     PartyInventoryLevelUtil partyInventoryLevelUtil;
 
     /** Creates a new instance of EditPartyInventoryLevelCommand */
@@ -102,7 +113,6 @@ public class EditPartyInventoryLevelCommand
 
     @Override
     public PartyInventoryLevel getEntity(EditPartyInventoryLevelResult result) {
-        var itemControl = Session.getModelController(ItemControl.class);
         PartyInventoryLevel partyInventoryLevel = null;
         var party = partyInventoryLevelUtil.getParty(this, spec);
 
@@ -124,7 +134,6 @@ public class EditPartyInventoryLevelCommand
                 }
 
                 if(!hasExecutionErrors()) {
-                    var inventoryControl = Session.getModelController(InventoryControl.class);
                     var inventoryConditionName = spec.getInventoryConditionName();
                     var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
 
@@ -157,15 +166,11 @@ public class EditPartyInventoryLevelCommand
 
     @Override
     public void fillInResult(EditPartyInventoryLevelResult result, PartyInventoryLevel partyInventoryLevel) {
-        var inventoryControl = Session.getModelController(InventoryControl.class);
-
         result.setPartyInventoryLevel(inventoryControl.getPartyInventoryLevelTransfer(getUserVisit(), partyInventoryLevel));
     }
 
     @Override
     public void doLock(PartyInventoryLevelEdit edit, PartyInventoryLevel partyInventoryLevel) {
-        var uomControl = Session.getModelController(UomControl.class);
-
         minimumInventory = partyInventoryLevel.getMinimumInventory();
         var minimumInventoryConversion = minimumInventory == null ? null : new Conversion(uomControl, unitOfMeasureKind, minimumInventory).convertToHighestUnitOfMeasureType();
 
@@ -189,8 +194,6 @@ public class EditPartyInventoryLevelCommand
 
     @Override
     public void canUpdate(PartyInventoryLevel partyInventoryLevel) {
-        var unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
-
         minimumInventory = unitOfMeasureTypeLogic.checkUnitOfMeasure(this, unitOfMeasureKind,
                 edit.getMinimumInventory(), edit.getMinimumInventoryUnitOfMeasureTypeName(),
                 null, ExecutionErrors.MissingRequiredMinimumInventory.name(), null, ExecutionErrors.MissingRequiredMinimumInventoryUnitOfMeasureTypeName.name(),
@@ -213,7 +216,6 @@ public class EditPartyInventoryLevelCommand
 
     @Override
     public void doUpdate(PartyInventoryLevel partyInventoryLevel) {
-        var inventoryControl = Session.getModelController(InventoryControl.class);
         var partyInventoryLevelValue = inventoryControl.getPartyInventoryLevelValue(partyInventoryLevel);
 
         partyInventoryLevelValue.setMinimumInventory(minimumInventory);

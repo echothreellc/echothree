@@ -31,7 +31,6 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -61,6 +60,12 @@ public class DeletePartyInventoryLevelCommand
     }
 
     @Inject
+    InventoryControl inventoryControl;
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
     PartyInventoryLevelUtil partyInventoryLevelUtil;
 
     /** Creates a new instance of DeletePartyInventoryLevelCommand */
@@ -70,11 +75,9 @@ public class DeletePartyInventoryLevelCommand
     
     @Override
     protected BaseResult execute() {
-        var inventoryControl = Session.getModelController(InventoryControl.class);
         var party = partyInventoryLevelUtil.getParty(this, form);
         
         if(party != null) {
-            var itemControl = Session.getModelController(ItemControl.class);
             var itemName = form.getItemName();
             var item = itemControl.getItemByName(itemName);
             

@@ -32,7 +32,6 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -68,6 +67,15 @@ public class CreatePartyInventoryLevelCommand
     }
 
     @Inject
+    InventoryControl inventoryControl;
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    UnitOfMeasureTypeLogic unitOfMeasureTypeLogic;
+
+    @Inject
     PartyInventoryLevelUtil partyInventoryLevelUtil;
 
     /** Creates a new instance of CreatePartyInventoryLevelCommand */
@@ -77,11 +85,9 @@ public class CreatePartyInventoryLevelCommand
     
     @Override
     protected BaseResult execute() {
-        var inventoryControl = Session.getModelController(InventoryControl.class);
         var party = partyInventoryLevelUtil.getParty(this, form);
         
         if(party != null) {
-            var itemControl = Session.getModelController(ItemControl.class);
             var itemName = form.getItemName();
             var item = itemControl.getItemByName(itemName);
             
@@ -99,7 +105,6 @@ public class CreatePartyInventoryLevelCommand
                     var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
                     
                     if(inventoryCondition != null) {
-                        var unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
                         var unitOfMeasureKind = item.getLastDetail().getUnitOfMeasureKind();
                         var minimumInventory = unitOfMeasureTypeLogic.checkUnitOfMeasure(this, unitOfMeasureKind,
                                 form.getMinimumInventory(), form.getMinimumInventoryUnitOfMeasureTypeName(),

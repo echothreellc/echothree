@@ -34,7 +34,6 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -64,6 +63,18 @@ public class GetPartyInventoryLevelCommand
     }
 
     @Inject
+    InventoryControl inventoryControl;
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    WarehouseControl warehouseControl;
+
+    @Inject
     PartyInventoryLevelUtil partyInventoryLevelUtil;
 
     /** Creates a new instance of GetPartyInventoryLevelCommand */
@@ -73,13 +84,10 @@ public class GetPartyInventoryLevelCommand
     
     @Override
     protected BaseResult execute() {
-        var inventoryControl = Session.getModelController(InventoryControl.class);
         var result = InventoryResultFactory.getGetPartyInventoryLevelResult();
         var party = partyInventoryLevelUtil.getParty(this, form);
         
         if(party != null) {
-            var itemControl = Session.getModelController(ItemControl.class);
-            var partyControl = Session.getModelController(PartyControl.class);
             var itemName = form.getItemName();
             var item = itemControl.getItemByName(itemName);
             var userVisit = getUserVisit();
@@ -89,8 +97,6 @@ public class GetPartyInventoryLevelCommand
             } else if(form.getCompanyName() != null) {
                 result.setCompany(partyControl.getCompanyTransfer(userVisit, party));
             } else if(form.getWarehouseName() != null) {
-                var warehouseControl = Session.getModelController(WarehouseControl.class);
-                
                 result.setWarehouse(warehouseControl.getWarehouseTransfer(userVisit, party));
             }
             

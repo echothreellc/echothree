@@ -35,7 +35,6 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -65,6 +64,18 @@ public class GetPartyInventoryLevelsCommand
     }
 
     @Inject
+    InventoryControl inventoryControl;
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    WarehouseControl warehouseControl;
+
+    @Inject
     PartyInventoryLevelUtil partyInventoryLevelUtil;
 
     /** Creates a new instance of GetPartyInventoryLevelsCommand */
@@ -84,12 +95,10 @@ public class GetPartyInventoryLevelsCommand
                 (itemName == null ? 0 : 1) + (inventoryConditionName == null ? 0 : 1);
         
         if(parameterCount == 1) {
-            var inventoryControl = Session.getModelController(InventoryControl.class);
             var userVisit = getUserVisit();
             List<PartyInventoryLevelTransfer> partyInventoryLevels = null;
             
             if(itemName != null) {
-                var itemControl = Session.getModelController(ItemControl.class);
                 var item = itemControl.getItemByName(itemName);
                 
                 if(item != null) {
@@ -111,8 +120,6 @@ public class GetPartyInventoryLevelsCommand
                 var party = partyInventoryLevelUtil.getParty(this, partyName, companyName, warehouseName);
                 
                 if(party != null) {
-                    var partyControl = Session.getModelController(PartyControl.class);
-                    
                     partyInventoryLevels = inventoryControl.getPartyInventoryLevelTransfersByParty(userVisit, party);
                     
                     if(partyName != null) {
@@ -120,8 +127,6 @@ public class GetPartyInventoryLevelsCommand
                     } else if(companyName != null) {
                         result.setCompany(partyControl.getCompanyTransfer(userVisit, party));
                     } else if(warehouseName != null) {
-                        var warehouseControl = Session.getModelController(WarehouseControl.class);
-                        
                         result.setWarehouse(warehouseControl.getWarehouseTransfer(userVisit, party));
                     }
                 }
