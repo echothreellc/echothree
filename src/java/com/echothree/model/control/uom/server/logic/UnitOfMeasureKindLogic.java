@@ -23,13 +23,16 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import javax.enterprise.inject.spi.CDI;
 
 @ApplicationScoped
 public class UnitOfMeasureKindLogic
     extends BaseLogic {
+
+    @Inject
+    UomControl uomControl;
 
     protected UnitOfMeasureKindLogic() {
         super();
@@ -40,7 +43,6 @@ public class UnitOfMeasureKindLogic
     }
 
     public UnitOfMeasureKind getUnitOfMeasureKindByName(final ExecutionErrorAccumulator eea, final String unitOfMeasureKindName) {
-        var uomControl = Session.getModelController(UomControl.class);
         var unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
 
         if(unitOfMeasureKind == null) {
@@ -51,16 +53,12 @@ public class UnitOfMeasureKindLogic
     }
 
     public void checkDeleteUnitOfMeasureKind(final ExecutionErrorAccumulator ema, final UnitOfMeasureKind unitOfMeasureKind) {
-        var uomControl = Session.getModelController(UomControl.class);
-        
         if(uomControl.countUnitOfMeasureKindUsesByUnitOfMeasureKind(unitOfMeasureKind) != 0) {
             ema.addExecutionError(ExecutionErrors.CannotDeleteUnitOfMeasureKindInUse.name(), unitOfMeasureKind.getLastDetail().getUnitOfMeasureKindName());
         }
     }
 
     public void deleteUnitOfMeasureKind(final UnitOfMeasureKind unitOfMeasureKind, final BasePK deletedBy) {
-        var uomControl = Session.getModelController(UomControl.class);
-
         uomControl.deleteUnitOfMeasureKind(unitOfMeasureKind, deletedBy);
     }
 

@@ -18,49 +18,76 @@ package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.GetPartyInventoryLevelForm;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
+import com.echothree.control.user.inventory.server.command.common.PartyInventoryLevelUtil;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.item.server.control.ItemControl;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.persistence.Session;
+import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetPartyInventoryLevelCommand
-        extends BasePartyInventoryLevelCommand<GetPartyInventoryLevelForm> {
-    
+        extends BaseSimpleCommand<GetPartyInventoryLevelForm> {
+
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
+                        new SecurityRoleDefinition(SecurityRoleGroups.PartyInventoryLevel.name(), SecurityRoles.Review.name())
+                ))
+        ));
+
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("CompanyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("WarehouseName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("InventoryConditionName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
-    
+
+    @Inject
+    InventoryControl inventoryControl;
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    WarehouseControl warehouseControl;
+
+    @Inject
+    PartyInventoryLevelUtil partyInventoryLevelUtil;
+
     /** Creates a new instance of GetPartyInventoryLevelCommand */
     public GetPartyInventoryLevelCommand() {
-        super(FORM_FIELD_DEFINITIONS);
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
     protected BaseResult execute() {
-        var inventoryControl = Session.getModelController(InventoryControl.class);
         var result = InventoryResultFactory.getGetPartyInventoryLevelResult();
-        var party = getParty(form);
+        var party = partyInventoryLevelUtil.getParty(this, form);
         
         if(party != null) {
-            var itemControl = Session.getModelController(ItemControl.class);
-            var partyControl = Session.getModelController(PartyControl.class);
             var itemName = form.getItemName();
             var item = itemControl.getItemByName(itemName);
             var userVisit = getUserVisit();
@@ -70,8 +97,6 @@ public class GetPartyInventoryLevelCommand
             } else if(form.getCompanyName() != null) {
                 result.setCompany(partyControl.getCompanyTransfer(userVisit, party));
             } else if(form.getWarehouseName() != null) {
-                var warehouseControl = Session.getModelController(WarehouseControl.class);
-                
                 result.setWarehouse(warehouseControl.getWarehouseTransfer(userVisit, party));
             }
             
