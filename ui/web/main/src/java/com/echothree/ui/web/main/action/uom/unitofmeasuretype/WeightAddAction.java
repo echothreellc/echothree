@@ -66,7 +66,9 @@ public class WeightAddAction
                     
                     if(unitOfMeasureKindName == null)
                         unitOfMeasureKindName = actionForm.getUnitOfMeasureKindName();
-                    
+                    if(unitOfMeasureTypeName == null)
+                        unitOfMeasureTypeName = actionForm.getUnitOfMeasureTypeName();
+
                     commandForm.setUnitOfMeasureKindName(unitOfMeasureKindName);
                     commandForm.setUnitOfMeasureTypeName(actionForm.getUnitOfMeasureTypeName());
                     commandForm.setWeight(actionForm.getWeight());
