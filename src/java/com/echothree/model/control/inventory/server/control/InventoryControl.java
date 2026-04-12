@@ -92,6 +92,7 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
@@ -104,7 +105,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import com.echothree.util.server.cdi.CommandScope;
 import java.util.stream.Collectors;
 
 @CommandScope
@@ -2034,7 +2034,31 @@ public class InventoryControl
         
         return partyInventoryLevel;
     }
-    
+
+    public long countPartyInventoryLevelsByItem(final Item item) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM partyinventorylevels
+                        WHERE parinvlvl_itm_itemid = ? AND parinvlvl_thrutime = ?
+                        """, item, Session.MAX_TIME);
+    }
+
+    public long countPartyInventoryLevelsByInventoryCondition(final InventoryCondition inventoryCondition) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM partyinventorylevels
+                        WHERE parinvlvl_invcon_inventoryconditionid = ? AND parinvlvl_thrutime = ?
+                        """, inventoryCondition, Session.MAX_TIME);
+    }
+
+    public long countPartyInventoryLevelsByParty(final Party party) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM partyinventorylevels
+                        WHERE parinvlvl_par_partyid = ? AND parinvlvl_thrutime = ?
+                        """, party, Session.MAX_TIME);
+    }
+
     private PartyInventoryLevel getPartyInventoryLevel(Party party, Item item, InventoryCondition inventoryCondition,
             EntityPermission entityPermission) {
         PartyInventoryLevel partyInventoryLevel;

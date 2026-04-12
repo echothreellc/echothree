@@ -20,17 +20,20 @@ import com.echothree.control.user.inventory.common.form.GetPartyInventoryLevelFo
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
 import com.echothree.control.user.inventory.server.command.common.PartyInventoryLevelUtil;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.logic.InventoryConditionLogic;
 import com.echothree.model.control.item.server.control.ItemControl;
+import com.echothree.model.control.item.server.logic.ItemLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
+import com.echothree.model.data.inventory.server.entity.PartyInventoryLevel;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -40,7 +43,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetPartyInventoryLevelCommand
-        extends BaseSimpleCommand<GetPartyInventoryLevelForm> {
+        extends BaseSingleEntityCommand<PartyInventoryLevel, GetPartyInventoryLevelForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -75,51 +78,53 @@ public class GetPartyInventoryLevelCommand
     WarehouseControl warehouseControl;
 
     @Inject
+    InventoryConditionLogic inventoryConditionLogic;
+
+    @Inject
+    ItemLogic itemLogic;
+
+    @Inject
     PartyInventoryLevelUtil partyInventoryLevelUtil;
 
     /** Creates a new instance of GetPartyInventoryLevelCommand */
     public GetPartyInventoryLevelCommand() {
-        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var result = InventoryResultFactory.getGetPartyInventoryLevelResult();
+    protected PartyInventoryLevel getEntity() {
+        PartyInventoryLevel partyInventoryLevel = null;
         var party = partyInventoryLevelUtil.getParty(this, form);
-        
-        if(party != null) {
+
+        if(!hasExecutionErrors()) {
             var itemName = form.getItemName();
-            var item = itemControl.getItemByName(itemName);
-            var userVisit = getUserVisit();
-            
-            if(form.getPartyName() != null) {
-                result.setParty(partyControl.getPartyTransfer(userVisit, party));
-            } else if(form.getCompanyName() != null) {
-                result.setCompany(partyControl.getCompanyTransfer(userVisit, party));
-            } else if(form.getWarehouseName() != null) {
-                result.setWarehouse(warehouseControl.getWarehouseTransfer(userVisit, party));
-            }
-            
-            if(item != null) {
+            var item = itemLogic.getItemByName(this, itemName);
+
+            if(!hasExecutionErrors()) {
                 var inventoryConditionName = form.getInventoryConditionName();
-                var inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
-                
-                if(inventoryCondition != null) {
-                    var partyInventoryLevel = inventoryControl.getPartyInventoryLevel(party, item, inventoryCondition);
-                    
-                    if(partyInventoryLevel != null) {
-                        result.setPartyInventoryLevel(inventoryControl.getPartyInventoryLevelTransfer(userVisit, partyInventoryLevel));
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownPartyInventoryLevel.name(), party.getLastDetail().getPartyName(), itemName, inventoryConditionName);
+                var inventoryCondition = inventoryConditionLogic.getInventoryConditionByName(this, inventoryConditionName);
+
+                if(!hasExecutionErrors()) {
+                    partyInventoryLevel = inventoryControl.getPartyInventoryLevel(party, item, inventoryCondition);
+
+                    if(partyInventoryLevel == null) {
+                        addExecutionError(ExecutionErrors.UnknownPartyInventoryLevel.name(), party.getLastDetail().getPartyName(), itemName, inventoryCondition.getLastDetail().getInventoryConditionName());
                     }
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownInventoryConditionName.name(), inventoryConditionName);
                 }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownItemName.name(), itemName);
             }
         }
-        
+
+        return partyInventoryLevel;
+    }
+
+    @Override
+    protected BaseResult getResult(PartyInventoryLevel partyInventoryLevel) {
+        var result = InventoryResultFactory.getGetPartyInventoryLevelResult();
+
+        if(!hasExecutionErrors()) {
+            result.setPartyInventoryLevel(inventoryControl.getPartyInventoryLevelTransfer(getUserVisit(), partyInventoryLevel));
+        }
+
         return result;
     }
     

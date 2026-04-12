@@ -43,6 +43,9 @@ public interface GetPartyInventoryLevelsResult
     InventoryConditionTransfer getInventoryCondition();
     void setInventoryCondition(InventoryConditionTransfer inventoryCondition);
     
+    Long getPartyInventoryLevelCount();
+    void setPartyInventoryLevelCount(Long partyInventoryLevelCount);
+
     List<PartyInventoryLevelTransfer> getPartyInventoryLevels();
     void setPartyInventoryLevels(List<PartyInventoryLevelTransfer> partyInventoryLevels);
     

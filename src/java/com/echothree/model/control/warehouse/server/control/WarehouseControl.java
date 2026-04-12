@@ -767,8 +767,9 @@ public class WarehouseControl
 
         for(var warehouse : partyCompanies) {
             var partyGroup = partyControl.getPartyGroup(warehouse.getParty());
+            var name = partyGroup == null ? null : partyGroup.getName();
 
-            var label = partyGroup.getName();
+            var label = name == null ? warehouse.getWarehouseName() : name;
             var value = warehouse.getWarehouseName();
 
             labels.add(label == null? value: label);
