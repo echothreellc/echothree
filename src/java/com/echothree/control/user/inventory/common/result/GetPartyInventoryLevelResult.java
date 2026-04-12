@@ -17,26 +17,10 @@
 package com.echothree.control.user.inventory.common.result;
 
 import com.echothree.model.control.inventory.common.transfer.PartyInventoryLevelTransfer;
-import com.echothree.model.control.item.common.transfer.ItemTransfer;
-import com.echothree.model.control.party.common.transfer.CompanyTransfer;
-import com.echothree.model.control.party.common.transfer.PartyTransfer;
-import com.echothree.model.control.warehouse.common.transfer.WarehouseTransfer;
 import com.echothree.util.common.command.BaseResult;
 
 public interface GetPartyInventoryLevelResult
         extends BaseResult {
-    
-    PartyTransfer getParty();
-    void setParty(PartyTransfer party);
-    
-    WarehouseTransfer getWarehouse();
-    void setWarehouse(WarehouseTransfer warehouse);
-    
-    CompanyTransfer getCompany();
-    void setCompany(CompanyTransfer company);
-    
-    ItemTransfer getItem();
-    void setItem(ItemTransfer item);
     
     PartyInventoryLevelTransfer getPartyInventoryLevel();
     void setPartyInventoryLevel(PartyInventoryLevelTransfer partyInventoryLevel);
