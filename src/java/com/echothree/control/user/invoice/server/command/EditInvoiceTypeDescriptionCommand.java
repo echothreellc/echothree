@@ -18,7 +18,7 @@ package com.echothree.control.user.invoice.server.command;
 
 import com.echothree.control.user.invoice.common.edit.InvoiceEditFactory;
 import com.echothree.control.user.invoice.common.edit.InvoiceTypeDescriptionEdit;
-import com.echothree.control.user.invoice.common.form.EditInvoiceTypeDescriptionForm;
+import com.echothree.control.user.invoice.common.result.EditInvoiceTypeDescriptionResult;
 import com.echothree.control.user.invoice.common.result.InvoiceResultFactory;
 import com.echothree.control.user.invoice.common.spec.InvoiceTypeDescriptionSpec;
 import com.echothree.model.control.invoice.server.control.InvoiceControl;
@@ -26,24 +26,23 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.invoice.server.entity.InvoiceType;
+import com.echothree.model.data.invoice.server.entity.InvoiceTypeDescription;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditInvoiceTypeDescriptionCommand
-        extends BaseEditCommand<InvoiceTypeDescriptionSpec, InvoiceTypeDescriptionEdit> {
-    
+        extends BaseAbstractEditCommand<InvoiceTypeDescriptionSpec, InvoiceTypeDescriptionEdit, EditInvoiceTypeDescriptionResult, InvoiceTypeDescription, InvoiceType> {
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
@@ -53,76 +52,56 @@ public class EditInvoiceTypeDescriptionCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.InvoiceType.name(), SecurityRoles.Description.name())
-                        ))
-                ));
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("InvoiceTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
-                );
+        );
     }
-    
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    InvoiceControl invoiceControl;
+
     /** Creates a new instance of EditInvoiceTypeDescriptionCommand */
     public EditInvoiceTypeDescriptionCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override
-    protected BaseResult execute() {
-        var invoiceControl = Session.getModelController(InvoiceControl.class);
-        var result = InvoiceResultFactory.getEditInvoiceTypeDescriptionResult();
+    public EditInvoiceTypeDescriptionResult getResult() {
+        return InvoiceResultFactory.getEditInvoiceTypeDescriptionResult();
+    }
+
+    @Override
+    public InvoiceTypeDescriptionEdit getEdit() {
+        return InvoiceEditFactory.getInvoiceTypeDescriptionEdit();
+    }
+
+    @Override
+    public InvoiceTypeDescription getEntity(EditInvoiceTypeDescriptionResult result) {
+        InvoiceTypeDescription invoiceTypeDescription = null;
         var invoiceTypeName = spec.getInvoiceTypeName();
         var invoiceType = invoiceControl.getInvoiceTypeByName(invoiceTypeName);
-        
+
         if(invoiceType != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var languageIsoName = spec.getLanguageIsoName();
             var language = partyControl.getLanguageByIsoName(languageIsoName);
-            
+
             if(language != null) {
-                if(editMode.equals(EditMode.LOCK)) {
-                    var invoiceTypeDescription = invoiceControl.getInvoiceTypeDescription(invoiceType, language);
-                    
-                    if(invoiceTypeDescription != null) {
-                        result.setInvoiceTypeDescription(invoiceControl.getInvoiceTypeDescriptionTransfer(getUserVisit(), invoiceTypeDescription));
-                        
-                        if(lockEntity(invoiceType)) {
-                            var edit = InvoiceEditFactory.getInvoiceTypeDescriptionEdit();
-                            
-                            result.setEdit(edit);
-                            edit.setDescription(invoiceTypeDescription.getDescription());
-                        } else {
-                            addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                        }
-                        
-                        result.setEntityLock(getEntityLockTransfer(invoiceType));
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownInvoiceTypeDescription.name());
-                    }
-                } else if(editMode.equals(EditMode.UPDATE)) {
-                    var invoiceTypeDescriptionValue = invoiceControl.getInvoiceTypeDescriptionValueForUpdate(invoiceType, language);
-                    
-                    if(invoiceTypeDescriptionValue != null) {
-                        if(lockEntityForUpdate(invoiceType)) {
-                            try {
-                                var description = edit.getDescription();
-                                
-                                invoiceTypeDescriptionValue.setDescription(description);
-                                
-                                invoiceControl.updateInvoiceTypeDescriptionFromValue(invoiceTypeDescriptionValue, getPartyPK());
-                            } finally {
-                                unlockEntity(invoiceType);
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.EntityLockStale.name());
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownInvoiceTypeDescription.name());
-                    }
+                invoiceTypeDescription = invoiceControl.getInvoiceTypeDescription(invoiceType, language,
+                        editModeToEntityPermission(editMode));
+
+                if(invoiceTypeDescription == null) {
+                    addExecutionError(ExecutionErrors.UnknownInvoiceTypeDescription.name(), invoiceTypeName, languageIsoName);
                 }
             } else {
                 addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);
@@ -130,8 +109,32 @@ public class EditInvoiceTypeDescriptionCommand
         } else {
             addExecutionError(ExecutionErrors.UnknownInvoiceTypeName.name(), invoiceTypeName);
         }
-        
-        return result;
+
+        return invoiceTypeDescription;
+    }
+
+    @Override
+    public InvoiceType getLockEntity(InvoiceTypeDescription invoiceTypeDescription) {
+        return invoiceTypeDescription.getInvoiceType();
+    }
+
+    @Override
+    public void fillInResult(EditInvoiceTypeDescriptionResult result, InvoiceTypeDescription invoiceTypeDescription) {
+        result.setInvoiceTypeDescription(invoiceControl.getInvoiceTypeDescriptionTransfer(getUserVisit(), invoiceTypeDescription));
+    }
+
+    @Override
+    public void doLock(InvoiceTypeDescriptionEdit edit, InvoiceTypeDescription invoiceTypeDescription) {
+        edit.setDescription(invoiceTypeDescription.getDescription());
+    }
+
+    @Override
+    public void doUpdate(InvoiceTypeDescription invoiceTypeDescription) {
+        var invoiceTypeDescriptionValue = invoiceControl.getInvoiceTypeDescriptionValue(invoiceTypeDescription);
+
+        invoiceTypeDescriptionValue.setDescription(edit.getDescription());
+
+        invoiceControl.updateInvoiceTypeDescriptionFromValue(invoiceTypeDescriptionValue, getPartyPK());
     }
     
 }

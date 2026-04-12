@@ -18,34 +18,34 @@ package com.echothree.control.user.filter.server.command;
 
 import com.echothree.control.user.filter.common.edit.FilterEditFactory;
 import com.echothree.control.user.filter.common.edit.FilterStepElementEdit;
-import com.echothree.control.user.filter.common.form.EditFilterStepElementForm;
+import com.echothree.control.user.filter.common.result.EditFilterStepElementResult;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
 import com.echothree.control.user.filter.common.spec.FilterStepElementSpec;
 import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.logic.FilterAdjustmentLogic;
+import com.echothree.model.control.filter.server.logic.FilterStepElementLogic;
+import com.echothree.model.control.filter.server.logic.FilterStepLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.selector.common.SelectorKinds;
 import com.echothree.model.control.selector.common.SelectorTypes;
-import com.echothree.model.control.selector.server.control.SelectorControl;
-import com.echothree.model.data.selector.server.entity.Selector;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
+import com.echothree.model.control.selector.server.logic.SelectorLogic;
+import com.echothree.model.data.filter.server.entity.FilterStepElement;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditFilterStepElementCommand
-        extends BaseEditCommand<FilterStepElementSpec, FilterStepElementEdit> {
+        extends BaseAbstractEditCommand<FilterStepElementSpec, FilterStepElementEdit, EditFilterStepElementResult, FilterStepElement, FilterStepElement> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
@@ -79,146 +79,120 @@ public class EditFilterStepElementCommand
     public EditFilterStepElementCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
+    @Inject
+    FilterControl filterControl;
+
+    @Inject
+    FilterStepLogic filterStepLogic;
+
+    @Inject
+    FilterStepElementLogic filterStepElementLogic;
+
+    @Inject
+    FilterAdjustmentLogic filterAdjustmentLogic;
+
+    @Inject
+    SelectorLogic selectorLogic;
+
     @Override
-    protected BaseResult execute() {
-        var filterControl = Session.getModelController(FilterControl.class);
-        var result = FilterResultFactory.getEditFilterStepElementResult();
-        var filterKindName = spec.getFilterKindName();
-        var filterKind = filterControl.getFilterKindByName(filterKindName);
-        
-        if(filterKind != null) {
-            var filterTypeName = spec.getFilterTypeName();
-            var filterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
-            
-            if(filterType != null) {
-                var filterName = spec.getFilterName();
-                var filter = filterControl.getFilterByName(filterType, filterName);
-                
-                if(filter != null) {
-                    var filterStepName = spec.getFilterStepName();
-                    var filterStep = filterControl.getFilterStepByName(filter, filterStepName);
-                    
-                    if(filterStep != null) {
-                        if(editMode.equals(EditMode.LOCK)) {
-                            var filterStepElementName = spec.getFilterStepElementName();
-                            var filterStepElement = filterControl.getFilterStepElementByName(filterStep, filterStepElementName);
-                            
-                            if(filterStepElement != null) {
-                                result.setFilterStepElement(filterControl.getFilterStepElementTransfer(getUserVisit(), filterStepElement));
-                                
-                                if(lockEntity(filterStepElement)) {
-                                    var filterStepElementDescription = filterControl.getFilterStepElementDescription(filterStepElement, getPreferredLanguage());
-                                    var edit = FilterEditFactory.getFilterStepElementEdit();
-                                    var filterStepElementDetail = filterStepElement.getLastDetail();
-                                    var filterItemSelector = filterStepElementDetail.getFilterItemSelector();
-                                    
-                                    result.setEdit(edit);
-                                    edit.setFilterStepElementName(filterStepElementDetail.getFilterStepElementName());
-                                    edit.setFilterItemSelectorName(filterItemSelector == null? null: filterItemSelector.getLastDetail().getSelectorName());
-                                    edit.setFilterAdjustmentName(filterStepElementDetail.getFilterAdjustment().getLastDetail().getFilterAdjustmentName());
-                                    
-                                    if(filterStepElementDescription != null) {
-                                        edit.setDescription(filterStepElementDescription.getDescription());
-                                    }
-                                } else {
-                                    addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                                }
-                                
-                                result.setEntityLock(getEntityLockTransfer(filterStepElement));
-                            } else {
-                                addExecutionError(ExecutionErrors.UnknownFilterStepElementName.name(), filterStepElementName);
-                            }
-                        } else if(editMode.equals(EditMode.UPDATE)) {
-                            var filterStepElementName = spec.getFilterStepElementName();
-                            var filterStepElement = filterControl.getFilterStepElementByNameForUpdate(filterStep, filterStepElementName);
-                            
-                            if(filterStepElement != null) {
-                                filterStepElementName = edit.getFilterStepElementName();
-                                var duplicateFilterStepElement = filterControl.getFilterStepElementByName(filterStep, filterStepElementName);
-                                
-                                if(duplicateFilterStepElement == null || filterStepElement.equals(duplicateFilterStepElement)) {
-                                    var filterItemSelectorName = edit.getFilterItemSelectorName();
-                                    Selector filterItemSelector = null;
-                                    
-                                    if(filterItemSelectorName != null) {
-                                        var selectorControl = Session.getModelController(SelectorControl.class);
-                                        var selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.ITEM.name());
-                                        
-                                        if(selectorKind != null) {
-                                            var selectorType = selectorControl.getSelectorTypeByName(selectorKind, SelectorTypes.FILTER.name());
-                                            
-                                            if(selectorType != null) {
-                                                filterItemSelector = selectorControl.getSelectorByName(selectorType, filterItemSelectorName);
-                                            } else {
-                                                addExecutionError(ExecutionErrors.UnknownSelectorTypeName.name(), SelectorTypes.FILTER.name());
-                                            }
-                                        } else {
-                                            addExecutionError(ExecutionErrors.UnknownSelectorKindName.name(), SelectorKinds.ITEM.name());
-                                        }
-                                    }
-                                    
-                                    if(filterItemSelectorName == null || filterItemSelector != null) {
-                                        var filterAdjustmentName = edit.getFilterAdjustmentName();
-                                        var filterAdjustment = filterAdjustmentName == null? null: filterControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName);
-                                        
-                                        if(filterAdjustmentName == null || filterAdjustment != null) {
-                                            if(lockEntityForUpdate(filterStepElement)) {
-                                                try {
-                                                    var partyPK = getPartyPK();
-                                                    var filterStepElementDetailValue = filterControl.getFilterStepElementDetailValueForUpdate(filterStepElement);
-                                                    var filterStepElementDescription = filterControl.getFilterStepElementDescriptionForUpdate(filterStepElement, getPreferredLanguage());
-                                                    var description = edit.getDescription();
-                                                    
-                                                    filterStepElementDetailValue.setFilterStepElementName(edit.getFilterStepElementName());
-                                                    filterStepElementDetailValue.setFilterItemSelectorPK(filterItemSelector == null? null: filterItemSelector.getPrimaryKey());
-                                                    filterStepElementDetailValue.setFilterAdjustmentPK(filterAdjustment.getPrimaryKey());
-                                                    
-                                                    filterControl.updateFilterStepElementFromValue(filterStepElementDetailValue, partyPK);
-                                                    
-                                                    if(filterStepElementDescription == null && description != null) {
-                                                        filterControl.createFilterStepElementDescription(filterStepElement, getPreferredLanguage(), description, partyPK);
-                                                    } else if(filterStepElementDescription != null && description == null) {
-                                                        filterControl.deleteFilterStepElementDescription(filterStepElementDescription, partyPK);
-                                                    } else if(filterStepElementDescription != null && description != null) {
-                                                        var filterStepElementDescriptionValue = filterControl.getFilterStepElementDescriptionValue(filterStepElementDescription);
-                                                        
-                                                        filterStepElementDescriptionValue.setDescription(description);
-                                                        filterControl.updateFilterStepElementDescriptionFromValue(filterStepElementDescriptionValue, partyPK);
-                                                    }
-                                                } finally {
-                                                    unlockEntity(filterStepElement);
-                                                }
-                                            } else {
-                                                addExecutionError(ExecutionErrors.EntityLockStale.name());
-                                            }
-                                        } else {
-                                            addExecutionError(ExecutionErrors.UnknownFilterAdjustmentName.name(), filterAdjustmentName);
-                                        }
-                                    } else {
-                                        addExecutionError(ExecutionErrors.UnknownFilterItemSelectorName.name(), filterItemSelectorName);
-                                    }
-                                } else {
-                                    addExecutionError(ExecutionErrors.DuplicateFilterStepElementName.name(), filterStepElementName);
-                                }
-                            } else {
-                                addExecutionError(ExecutionErrors.UnknownFilterStepElementName.name(), filterStepElementName);
-                            }
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownFilterStepName.name(), filterStepName);
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownFilterName.name(), filterName);
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownFilterTypeName.name(), filterTypeName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownFilterKindName.name(), filterKindName);
-        }
-        
-        return result;
+    protected EditFilterStepElementResult getResult() {
+        return FilterResultFactory.getEditFilterStepElementResult();
     }
-    
+
+    @Override
+    protected FilterStepElementEdit getEdit() {
+        return FilterEditFactory.getFilterStepElementEdit();
+    }
+
+    @Override
+    protected FilterStepElement getEntity(EditFilterStepElementResult result) {
+        var filterKindName = spec.getFilterKindName();
+        var filterTypeName = spec.getFilterTypeName();
+        var filterName = spec.getFilterName();
+        var filterStepName = spec.getFilterStepName();
+        var filterStep = filterStepLogic.getFilterStepByName(this, filterKindName, filterTypeName, filterName, filterStepName);
+        FilterStepElement filterStepElement = null;
+
+        if(!hasExecutionErrors()) {
+            var filterStepElementName = spec.getFilterStepElementName();
+
+            filterStepElement = filterStepElementLogic.getFilterStepElementByName(this, filterStep, filterStepElementName, editModeToEntityPermission(editMode));
+        }
+
+        return filterStepElement;
+    }
+
+    @Override
+    protected FilterStepElement getLockEntity(FilterStepElement filterStepElement) {
+        return filterStepElement;
+    }
+
+    @Override
+    protected void fillInResult(EditFilterStepElementResult result, FilterStepElement filterStepElement) {
+        result.setFilterStepElement(filterControl.getFilterStepElementTransfer(getUserVisit(), filterStepElement));
+    }
+
+    @Override
+    protected void doLock(FilterStepElementEdit edit, FilterStepElement filterStepElement) {
+        var filterStepElementDescription = filterControl.getFilterStepElementDescription(filterStepElement, getPreferredLanguage());
+        var filterStepElementDetail = filterStepElement.getLastDetail();
+        var filterItemSelector = filterStepElementDetail.getFilterItemSelector();
+
+        edit.setFilterStepElementName(filterStepElementDetail.getFilterStepElementName());
+        edit.setFilterItemSelectorName(filterItemSelector == null ? null : filterItemSelector.getLastDetail().getSelectorName());
+        edit.setFilterAdjustmentName(filterStepElementDetail.getFilterAdjustment().getLastDetail().getFilterAdjustmentName());
+
+        if(filterStepElementDescription != null) {
+            edit.setDescription(filterStepElementDescription.getDescription());
+        }
+    }
+
+    @Override
+    protected void canUpdate(FilterStepElement filterStepElement) {
+        var filterStep = filterStepElement.getLastDetail().getFilterStep();
+        var filterStepElementName = edit.getFilterStepElementName();
+        var duplicateFilterStepElement = filterControl.getFilterStepElementByName(filterStep, filterStepElementName);
+
+        if(duplicateFilterStepElement != null && !filterStepElement.equals(duplicateFilterStepElement)) {
+            addExecutionError(ExecutionErrors.DuplicateFilterStepElementName.name(), filterStepElementName);
+        }
+    }
+
+    @Override
+    protected void doUpdate(FilterStepElement filterStepElement) {
+        var filterItemSelectorName = edit.getFilterItemSelectorName();
+        var filterItemSelector = filterItemSelectorName == null ? null : selectorLogic.getSelectorByName(this, SelectorKinds.ITEM.name(), SelectorTypes.FILTER.name(), filterItemSelectorName);
+
+        if(!hasExecutionErrors()) {
+            var filterKind = filterStepElement.getLastDetail().getFilterStep().getLastDetail().getFilter().getLastDetail().getFilterType().getLastDetail().getFilterKind();
+            var filterAdjustmentName = edit.getFilterAdjustmentName();
+            var filterAdjustment = filterAdjustmentLogic.getFilterAdjustmentByName(this, filterKind, filterAdjustmentName);
+
+            if(!hasExecutionErrors()) {
+                var partyPK = getPartyPK();
+                var filterStepElementDetailValue = filterControl.getFilterStepElementDetailValueForUpdate(filterStepElement);
+                var filterStepElementDescription = filterControl.getFilterStepElementDescriptionForUpdate(filterStepElement, getPreferredLanguage());
+                var description = edit.getDescription();
+
+                filterStepElementDetailValue.setFilterStepElementName(edit.getFilterStepElementName());
+                filterStepElementDetailValue.setFilterItemSelectorPK(filterItemSelector == null ? null : filterItemSelector.getPrimaryKey());
+                filterStepElementDetailValue.setFilterAdjustmentPK(filterAdjustment.getPrimaryKey());
+
+                filterControl.updateFilterStepElementFromValue(filterStepElementDetailValue, partyPK);
+
+                if(filterStepElementDescription == null && description != null) {
+                    filterControl.createFilterStepElementDescription(filterStepElement, getPreferredLanguage(), description, partyPK);
+                } else if(filterStepElementDescription != null && description == null) {
+                    filterControl.deleteFilterStepElementDescription(filterStepElementDescription, partyPK);
+                } else if(filterStepElementDescription != null && description != null) {
+                    var filterStepElementDescriptionValue = filterControl.getFilterStepElementDescriptionValue(filterStepElementDescription);
+
+                    filterStepElementDescriptionValue.setDescription(description);
+                    filterControl.updateFilterStepElementDescriptionFromValue(filterStepElementDescriptionValue, partyPK);
+                }
+            }
+        }
+    }
+
 }

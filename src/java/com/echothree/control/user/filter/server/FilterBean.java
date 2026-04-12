@@ -572,12 +572,17 @@ public class FilterBean
     public CommandResult createFilterEntranceStep(UserVisitPK userVisitPK, CreateFilterEntranceStepForm form) {
         return CDI.current().select(CreateFilterEntranceStepCommand.class).get().run(userVisitPK, form);
     }
-    
+
     @Override
     public CommandResult getFilterEntranceSteps(UserVisitPK userVisitPK, GetFilterEntranceStepsForm form) {
         return CDI.current().select(GetFilterEntranceStepsCommand.class).get().run(userVisitPK, form);
     }
-    
+
+    @Override
+    public CommandResult getFilterEntranceStep(UserVisitPK userVisitPK, GetFilterEntranceStepForm form) {
+        return CDI.current().select(GetFilterEntranceStepCommand.class).get().run(userVisitPK, form);
+    }
+
     @Override
     public CommandResult deleteFilterEntranceStep(UserVisitPK userVisitPK, DeleteFilterEntranceStepForm form) {
         return CDI.current().select(DeleteFilterEntranceStepCommand.class).get().run(userVisitPK, form);
@@ -591,12 +596,17 @@ public class FilterBean
     public CommandResult createFilterStepDestination(UserVisitPK userVisitPK, CreateFilterStepDestinationForm form) {
         return CDI.current().select(CreateFilterStepDestinationCommand.class).get().run(userVisitPK, form);
     }
-    
+
     @Override
     public CommandResult getFilterStepDestinations(UserVisitPK userVisitPK, GetFilterStepDestinationsForm form) {
         return CDI.current().select(GetFilterStepDestinationsCommand.class).get().run(userVisitPK, form);
     }
-    
+
+    @Override
+    public CommandResult getFilterStepDestination(UserVisitPK userVisitPK, GetFilterStepDestinationForm form) {
+        return CDI.current().select(GetFilterStepDestinationCommand.class).get().run(userVisitPK, form);
+    }
+
     @Override
     public CommandResult deleteFilterStepDestination(UserVisitPK userVisitPK, DeleteFilterStepDestinationForm form) {
         return CDI.current().select(DeleteFilterStepDestinationCommand.class).get().run(userVisitPK, form);

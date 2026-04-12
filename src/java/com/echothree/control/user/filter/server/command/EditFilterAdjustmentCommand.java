@@ -18,30 +18,30 @@ package com.echothree.control.user.filter.server.command;
 
 import com.echothree.control.user.filter.common.edit.FilterAdjustmentEdit;
 import com.echothree.control.user.filter.common.edit.FilterEditFactory;
-import com.echothree.control.user.filter.common.form.EditFilterAdjustmentForm;
+import com.echothree.control.user.filter.common.result.EditFilterAdjustmentResult;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
 import com.echothree.control.user.filter.common.spec.FilterAdjustmentSpec;
 import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.filter.server.entity.FilterAdjustment;
+import com.echothree.model.data.filter.server.entity.FilterKind;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditFilterAdjustmentCommand
-        extends BaseEditCommand<FilterAdjustmentSpec, FilterAdjustmentEdit> {
+        extends BaseAbstractEditCommand<FilterAdjustmentSpec, FilterAdjustmentEdit, EditFilterAdjustmentResult, FilterAdjustment, FilterAdjustment> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
@@ -73,102 +73,117 @@ public class EditFilterAdjustmentCommand
     public EditFilterAdjustmentCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
+    @Inject
+    FilterControl filterControl;
+
     @Override
-    protected BaseResult execute() {
-        var filterControl = Session.getModelController(FilterControl.class);
-        var result = FilterResultFactory.getEditFilterAdjustmentResult();
+    public EditFilterAdjustmentResult getResult() {
+        return FilterResultFactory.getEditFilterAdjustmentResult();
+    }
+
+    @Override
+    public FilterAdjustmentEdit getEdit() {
+        return FilterEditFactory.getFilterAdjustmentEdit();
+    }
+
+    FilterKind filterKind;
+
+    @Override
+    public FilterAdjustment getEntity(EditFilterAdjustmentResult result) {
+        FilterAdjustment filterAdjustment = null;
         var filterKindName = spec.getFilterKindName();
-        var filterKind = filterControl.getFilterKindByName(filterKindName);
-        
+
+        filterKind = filterControl.getFilterKindByName(filterKindName);
+
         if(filterKind != null) {
-            if(editMode.equals(EditMode.LOCK)) {
-                var filterAdjustmentName = spec.getFilterAdjustmentName();
-                var filterAdjustment = filterControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName);
-                
-                if(filterAdjustment != null) {
-                    result.setFilterAdjustment(filterControl.getFilterAdjustmentTransfer(getUserVisit(), filterAdjustment));
-                    
-                    if(lockEntity(filterAdjustment)) {
-                        var filterAdjustmentDescription = filterControl.getFilterAdjustmentDescription(filterAdjustment, getPreferredLanguage());
-                        var edit = FilterEditFactory.getFilterAdjustmentEdit();
-                        var filterAdjustmentDetail = filterAdjustment.getLastDetail();
-                        
-                        result.setEdit(edit);
-                        edit.setFilterAdjustmentName(filterAdjustmentDetail.getFilterAdjustmentName());
-                        edit.setFilterAdjustmentSourceName(filterAdjustmentDetail.getFilterAdjustmentSource().getFilterAdjustmentSourceName());
-                        edit.setIsDefault(filterAdjustmentDetail.getIsDefault().toString());
-                        edit.setSortOrder(filterAdjustmentDetail.getSortOrder().toString());
-                        
-                        if(filterAdjustmentDescription != null) {
-                            edit.setDescription(filterAdjustmentDescription.getDescription());
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                    }
-                    
-                    result.setEntityLock(getEntityLockTransfer(filterAdjustment));
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownFilterAdjustmentName.name(), filterAdjustmentName);
-                }
-            } else if(editMode.equals(EditMode.UPDATE)) {
-                var filterAdjustmentName = spec.getFilterAdjustmentName();
-                var filterAdjustment = filterControl.getFilterAdjustmentByNameForUpdate(filterKind, filterAdjustmentName);
-                
-                if(filterAdjustment != null) {
-                    filterAdjustmentName = edit.getFilterAdjustmentName();
-                    var duplicateFilterAdjustment = filterControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName);
-                    
-                    if(duplicateFilterAdjustment == null || filterAdjustment.equals(duplicateFilterAdjustment)) {
-                        var filterAdjustmentSourceName = edit.getFilterAdjustmentSourceName();
-                        var filterAdjustmentSource = filterControl.getFilterAdjustmentSourceByName(filterAdjustmentSourceName);
-                        
-                        if(filterAdjustmentSource != null) {
-                            if(lockEntityForUpdate(filterAdjustment)) {
-                                try {
-                                    var partyPK = getPartyPK();
-                                    var filterAdjustmentDetailValue = filterControl.getFilterAdjustmentDetailValueForUpdate(filterAdjustment);
-                                    var filterAdjustmentDescription = filterControl.getFilterAdjustmentDescriptionForUpdate(filterAdjustment, getPreferredLanguage());
-                                    var description = edit.getDescription();
-                                    
-                                    filterAdjustmentDetailValue.setFilterAdjustmentName(edit.getFilterAdjustmentName());
-                                    filterAdjustmentDetailValue.setFilterAdjustmentSourcePK(filterAdjustmentSource.getPrimaryKey());
-                                    filterAdjustmentDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
-                                    filterAdjustmentDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
-                                    
-                                    filterControl.updateFilterAdjustmentFromValue(filterAdjustmentDetailValue, partyPK);
-                                    
-                                    if(filterAdjustmentDescription == null && description != null) {
-                                        filterControl.createFilterAdjustmentDescription(filterAdjustment, getPreferredLanguage(), description, partyPK);
-                                    } else if(filterAdjustmentDescription != null && description == null) {
-                                        filterControl.deleteFilterAdjustmentDescription(filterAdjustmentDescription, partyPK);
-                                    } else if(filterAdjustmentDescription != null && description != null) {
-                                        var filterAdjustmentDescriptionValue = filterControl.getFilterAdjustmentDescriptionValue(filterAdjustmentDescription);
-                                        
-                                        filterAdjustmentDescriptionValue.setDescription(description);
-                                        filterControl.updateFilterAdjustmentDescriptionFromValue(filterAdjustmentDescriptionValue, partyPK);
-                                    }
-                                } finally {
-                                    unlockEntity(filterAdjustment);
-                                }
-                            } else {
-                                addExecutionError(ExecutionErrors.EntityLockStale.name());
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.UnknownFilterAdjustmentSourceName.name(), filterAdjustmentSourceName);
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.DuplicateFilterAdjustmentName.name(), filterAdjustmentName);
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownFilterAdjustmentName.name(), filterAdjustmentName);
-                }
+            var filterAdjustmentName = spec.getFilterAdjustmentName();
+
+            if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
+                filterAdjustment = filterControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName);
+            } else { // EditMode.UPDATE
+                filterAdjustment = filterControl.getFilterAdjustmentByNameForUpdate(filterKind, filterAdjustmentName);
+            }
+
+            if(filterAdjustment == null) {
+                addExecutionError(ExecutionErrors.UnknownFilterAdjustmentName.name(),
+                        filterKind.getLastDetail().getFilterKindName(), filterAdjustmentName);
             }
         } else {
             addExecutionError(ExecutionErrors.UnknownFilterKindName.name(), filterKindName);
         }
-        
-        return result;
+
+        return filterAdjustment;
     }
-    
+
+    @Override
+    public FilterAdjustment getLockEntity(FilterAdjustment filterAdjustment) {
+        return filterAdjustment;
+    }
+
+    @Override
+    public void fillInResult(EditFilterAdjustmentResult result, FilterAdjustment filterAdjustment) {
+        result.setFilterAdjustment(filterControl.getFilterAdjustmentTransfer(getUserVisit(), filterAdjustment));
+    }
+
+    @Override
+    public void doLock(FilterAdjustmentEdit edit, FilterAdjustment filterAdjustment) {
+        var filterAdjustmentDescription = filterControl.getFilterAdjustmentDescription(filterAdjustment, getPreferredLanguage());
+        var filterAdjustmentDetail = filterAdjustment.getLastDetail();
+
+        edit.setFilterAdjustmentName(filterAdjustmentDetail.getFilterAdjustmentName());
+        edit.setFilterAdjustmentSourceName(filterAdjustmentDetail.getFilterAdjustmentSource().getFilterAdjustmentSourceName());
+        edit.setIsDefault(filterAdjustmentDetail.getIsDefault().toString());
+        edit.setSortOrder(filterAdjustmentDetail.getSortOrder().toString());
+
+        if(filterAdjustmentDescription != null) {
+            edit.setDescription(filterAdjustmentDescription.getDescription());
+        }
+    }
+
+    @Override
+    public void canUpdate(FilterAdjustment filterAdjustment) {
+        var filterAdjustmentName = edit.getFilterAdjustmentName();
+        var duplicateFilterAdjustment = filterControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName);
+
+        if(duplicateFilterAdjustment != null && !filterAdjustment.equals(duplicateFilterAdjustment)) {
+            addExecutionError(ExecutionErrors.DuplicateFilterAdjustmentName.name(), filterAdjustmentName);
+        } else {
+            var filterAdjustmentSourceName = edit.getFilterAdjustmentSourceName();
+            var filterAdjustmentSource = filterControl.getFilterAdjustmentSourceByName(filterAdjustmentSourceName);
+
+            if(filterAdjustmentSource == null) {
+                addExecutionError(ExecutionErrors.UnknownFilterAdjustmentSourceName.name(), filterAdjustmentSourceName);
+            }
+        }
+    }
+
+    @Override
+    public void doUpdate(FilterAdjustment filterAdjustment) {
+        var partyPK = getPartyPK();
+        var filterAdjustmentDetailValue = filterControl.getFilterAdjustmentDetailValueForUpdate(filterAdjustment);
+        var filterAdjustmentDescription = filterControl.getFilterAdjustmentDescriptionForUpdate(filterAdjustment, getPreferredLanguage());
+        var filterAdjustmentSourceName = edit.getFilterAdjustmentSourceName();
+        var filterAdjustmentSource = filterControl.getFilterAdjustmentSourceByName(filterAdjustmentSourceName);
+        var description = edit.getDescription();
+
+        filterAdjustmentDetailValue.setFilterAdjustmentName(edit.getFilterAdjustmentName());
+        filterAdjustmentDetailValue.setFilterAdjustmentSourcePK(filterAdjustmentSource.getPrimaryKey());
+        filterAdjustmentDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
+        filterAdjustmentDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
+
+        filterControl.updateFilterAdjustmentFromValue(filterAdjustmentDetailValue, partyPK);
+
+        if(filterAdjustmentDescription == null && description != null) {
+            filterControl.createFilterAdjustmentDescription(filterAdjustment, getPreferredLanguage(), description, partyPK);
+        } else if(filterAdjustmentDescription != null && description == null) {
+            filterControl.deleteFilterAdjustmentDescription(filterAdjustmentDescription, partyPK);
+        } else if(filterAdjustmentDescription != null && description != null) {
+            var filterAdjustmentDescriptionValue = filterControl.getFilterAdjustmentDescriptionValue(filterAdjustmentDescription);
+
+            filterAdjustmentDescriptionValue.setDescription(description);
+            filterControl.updateFilterAdjustmentDescriptionFromValue(filterAdjustmentDescriptionValue, partyPK);
+        }
+    }
+
 }

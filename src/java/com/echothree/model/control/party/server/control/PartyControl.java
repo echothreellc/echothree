@@ -3656,8 +3656,9 @@ public class PartyControl
         
         for(var partyCompany : partyCompanies) {
             var partyGroup = getPartyGroup(partyCompany.getParty());
-            
-            var label = partyGroup.getName();
+            var name = partyGroup == null ? null : partyGroup.getName();
+
+            var label = name == null ? partyCompany.getPartyCompanyName() : name;
             var value = partyCompany.getPartyCompanyName();
             
             labels.add(label == null? value: label);
@@ -4008,8 +4009,9 @@ public class PartyControl
         
         for(var partyDivision : partyDivisions) {
             var partyGroup = getPartyGroup(partyDivision.getParty());
-            
-            var label = partyGroup.getName();
+            var name = partyGroup == null ? null : partyGroup.getName();
+
+            var label = name == null ? partyDivision.getPartyDivisionName() : name;
             var value = partyDivision.getPartyDivisionName();
             
             labels.add(label == null? value: label);
@@ -4362,8 +4364,9 @@ public class PartyControl
 
         for(var partyDepartment : partyDepartments) {
             var partyGroup = getPartyGroup(partyDepartment.getParty());
-            
-            var label = partyGroup.getName();
+            var name = partyGroup == null ? null : partyGroup.getName();
+
+            var label = name == null ? partyDepartment.getPartyDepartmentName() : name;
             var value = partyDepartment.getPartyDepartmentName();
             
             labels.add(label == null? value: label);

@@ -30,18 +30,18 @@ import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetFilterAdjustmentsCommand
-        extends BaseMultipleEntitiesCommand<FilterAdjustment, GetFilterAdjustmentsForm> {
+        extends BasePaginatedMultipleEntitiesCommand<FilterAdjustment, GetFilterAdjustmentsForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -64,14 +64,26 @@ public class GetFilterAdjustmentsCommand
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
+    @Inject
+    FilterControl filterControl;
+
+    @Inject
+    FilterKindLogic filterKindLogic;
+
     FilterKind filterKind;
 
     @Override
+    protected void handleForm() {
+        filterKind = filterKindLogic.getFilterKindByName(this, form.getFilterKindName());
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return hasExecutionErrors() ? null : filterControl.countFilterAdjustmentsByFilterKind(filterKind);
+    }
+
+    @Override
     protected Collection<FilterAdjustment> getEntities() {
-        var filterControl = Session.getModelController(FilterControl.class);
-
-        filterKind = FilterKindLogic.getInstance().getFilterKindByName(this, form.getFilterKindName());
-
         return hasExecutionErrors() ? null : filterControl.getFilterAdjustmentsByFilterKind(filterKind);
     }
 
@@ -80,13 +92,12 @@ public class GetFilterAdjustmentsCommand
         var result = FilterResultFactory.getGetFilterAdjustmentsResult();
 
         if(entities != null) {
-            var filterControl = Session.getModelController(FilterControl.class);
+            result.setFilterKind(filterControl.getFilterKindTransfer(getUserVisit(), filterKind));
 
             if(session.hasLimit(FilterAdjustmentFactory.class)) {
-                result.setFilterAdjustmentCount(filterControl.countFilterTypesByFilterKind(filterKind));
+                result.setFilterAdjustmentCount(getTotalEntities());
             }
 
-            result.setFilterKind(filterControl.getFilterKindTransfer(getUserVisit(), filterKind));
             result.setFilterAdjustments(filterControl.getFilterAdjustmentTransfers(getUserVisit(), entities));
         }
 

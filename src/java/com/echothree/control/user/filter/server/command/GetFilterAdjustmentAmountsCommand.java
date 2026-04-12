@@ -26,23 +26,23 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.filter.server.entity.FilterAdjustment;
 import com.echothree.model.data.filter.server.entity.FilterAdjustmentAmount;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.filter.server.factory.FilterAdjustmentAmountFactory;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetFilterAdjustmentAmountsCommand
-        extends BaseMultipleEntitiesCommand<FilterAdjustmentAmount, GetFilterAdjustmentAmountsForm> {
+        extends BasePaginatedMultipleEntitiesCommand<FilterAdjustmentAmount, GetFilterAdjustmentAmountsForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -66,22 +66,35 @@ public class GetFilterAdjustmentAmountsCommand
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
+    @Inject
+    FilterControl filterControl;
+
+    @Inject
+    FilterAdjustmentLogic filterAdjustmentLogic;
+
     FilterAdjustment filterAdjustment;
 
     @Override
-    protected Collection<FilterAdjustmentAmount> getEntities() {
-        var filterControl = Session.getModelController(FilterControl.class);
+    protected void handleForm() {
         var filterKindName = form.getFilterKindName();
         var filterAdjustmentName = form.getFilterAdjustmentName();
 
-        filterAdjustment = FilterAdjustmentLogic.getInstance().getFilterAdjustmentByName(this, filterKindName, filterAdjustmentName);
+        filterAdjustment = filterAdjustmentLogic.getFilterAdjustmentByName(this, filterKindName, filterAdjustmentName);
 
         if(!hasExecutionErrors()) {
             if(!filterAdjustment.getLastDetail().getFilterAdjustmentType().getFilterAdjustmentTypeName().equals(FilterAdjustmentTypes.AMOUNT.name())) {
                 addExecutionError(ExecutionErrors.InvalidFilterAdjustmentType.name());
             }
         }
+    }
 
+    @Override
+    protected Long getTotalEntities() {
+        return hasExecutionErrors() ? null : filterControl.countFilterAdjustmentAmountsByFilterAdjustment(filterAdjustment);
+    }
+
+    @Override
+    protected Collection<FilterAdjustmentAmount> getEntities() {
         return hasExecutionErrors() ? null : filterControl.getFilterAdjustmentAmounts(filterAdjustment);
     }
 
@@ -90,10 +103,15 @@ public class GetFilterAdjustmentAmountsCommand
         var result = FilterResultFactory.getGetFilterAdjustmentAmountsResult();
 
         if(entities != null) {
-            var filterControl = Session.getModelController(FilterControl.class);
+            var userVisit = getUserVisit();
 
-            result.setFilterAdjustment(filterControl.getFilterAdjustmentTransfer(getUserVisit(), filterAdjustment));
-            result.setFilterAdjustmentAmounts(filterControl.getFilterAdjustmentAmountTransfers(getUserVisit(), entities));
+            result.setFilterAdjustment(filterControl.getFilterAdjustmentTransfer(userVisit, filterAdjustment));
+
+            if(session.hasLimit(FilterAdjustmentAmountFactory.class)) {
+                result.setFilterAdjustmentAmountCount(getTotalEntities());
+            }
+
+            result.setFilterAdjustmentAmounts(filterControl.getFilterAdjustmentAmountTransfers(userVisit, entities));
         }
 
         return result;

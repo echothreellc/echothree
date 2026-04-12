@@ -18,7 +18,7 @@ package com.echothree.control.user.vendor.server.command;
 
 import com.echothree.control.user.vendor.common.edit.VendorEditFactory;
 import com.echothree.control.user.vendor.common.edit.VendorItemEdit;
-import com.echothree.control.user.vendor.common.form.EditVendorItemForm;
+import com.echothree.control.user.vendor.common.result.EditVendorItemResult;
 import com.echothree.control.user.vendor.common.result.VendorResultFactory;
 import com.echothree.control.user.vendor.common.spec.VendorItemUniversalSpec;
 import com.echothree.model.control.cancellationpolicy.common.CancellationKinds;
@@ -32,23 +32,21 @@ import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.control.vendor.server.logic.VendorItemLogic;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
+import com.echothree.model.data.vendor.server.entity.VendorItem;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditVendorItemCommand
-        extends BaseEditCommand<VendorItemUniversalSpec, VendorItemEdit> {
+        extends BaseAbstractEditCommand<VendorItemUniversalSpec, VendorItemEdit, EditVendorItemResult, VendorItem, VendorItem> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
@@ -58,9 +56,9 @@ public class EditVendorItemCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.VendorItem.name(), SecurityRoles.Edit.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.VendorItem.name(), SecurityRoles.Edit.name())
+                ))
+        ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("VendorName", FieldType.ENTITY_NAME, false, null, null),
@@ -68,7 +66,7 @@ public class EditVendorItemCommand
                 new FieldDefinition("VendorItemName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("VendorItemName", FieldType.ENTITY_NAME, true, null, null),
@@ -76,103 +74,111 @@ public class EditVendorItemCommand
                 new FieldDefinition("Priority", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("CancellationPolicyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("ReturnPolicyName", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
-    
+
+    @Inject
+    CancellationPolicyControl cancellationPolicyControl;
+
+    @Inject
+    ReturnPolicyControl returnPolicyControl;
+
+    @Inject
+    VendorControl vendorControl;
+
+    @Inject
+    VendorItemLogic vendorItemLogic;
+
     /** Creates a new instance of EditVendorItemCommand */
     public EditVendorItemCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var vendorControl = Session.getModelController(VendorControl.class);
-        var result = VendorResultFactory.getEditVendorItemResult();
+    public EditVendorItemResult getResult() {
+        return VendorResultFactory.getEditVendorItemResult();
+    }
 
-        if(editMode.equals(EditMode.LOCK)) {
-            var vendorItem = VendorItemLogic.getInstance().getVendorItemByUniversalSpec(this, spec);
+    @Override
+    public VendorItemEdit getEdit() {
+        return VendorEditFactory.getVendorItemEdit();
+    }
 
-            if(!hasExecutionErrors()) {
-                result.setVendorItem(vendorControl.getVendorItemTransfer(getUserVisit(), vendorItem));
+    @Override
+    public VendorItem getEntity(EditVendorItemResult result) {
+        return vendorItemLogic.getVendorItemByUniversalSpec(this, spec, editModeToEntityPermission(editMode));
+    }
 
-                if(lockEntity(vendorItem)) {
-                    var edit = VendorEditFactory.getVendorItemEdit();
-                    var vendorItemDetail = vendorItem.getLastDetail();
-                    var cancellationPolicy = vendorItemDetail.getCancellationPolicy();
-                    var returnPolicy = vendorItemDetail.getReturnPolicy();
+    @Override
+    public VendorItem getLockEntity(VendorItem vendorItem) {
+        return vendorItem;
+    }
 
-                    result.setEdit(edit);
-                    edit.setVendorItemName(vendorItemDetail.getVendorItemName());
-                    edit.setDescription(vendorItemDetail.getDescription());
-                    edit.setPriority(vendorItemDetail.getPriority().toString());
-                    edit.setCancellationPolicyName(cancellationPolicy == null? null: cancellationPolicy.getLastDetail().getCancellationPolicyName());
-                    edit.setReturnPolicyName(returnPolicy == null? null: returnPolicy.getLastDetail().getReturnPolicyName());
-                } else {
-                    addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                }
+    @Override
+    public void fillInResult(EditVendorItemResult result, VendorItem vendorItem) {
+        result.setVendorItem(vendorControl.getVendorItemTransfer(getUserVisit(), vendorItem));
+    }
 
-                result.setEntityLock(getEntityLockTransfer(vendorItem));
-            }
-        } else if(editMode.equals(EditMode.UPDATE)) {
-            var vendorItem = VendorItemLogic.getInstance().getVendorItemByUniversalSpecForUpdate(this, spec);
+    @Override
+    public void doLock(VendorItemEdit edit, VendorItem vendorItem) {
+        var vendorItemDetail = vendorItem.getLastDetail();
+        var cancellationPolicy = vendorItemDetail.getCancellationPolicy();
+        var returnPolicy = vendorItemDetail.getReturnPolicy();
 
-            if(!hasExecutionErrors()) {
-                var vendorItemName = edit.getVendorItemName();
-                var duplicateVendorItem = vendorControl.getVendorItemByVendorPartyAndVendorItemName(vendorItem.getLastDetail().getVendorParty(), vendorItemName);
+        edit.setVendorItemName(vendorItemDetail.getVendorItemName());
+        edit.setDescription(vendorItemDetail.getDescription());
+        edit.setPriority(vendorItemDetail.getPriority().toString());
+        edit.setCancellationPolicyName(cancellationPolicy == null? null: cancellationPolicy.getLastDetail().getCancellationPolicyName());
+        edit.setReturnPolicyName(returnPolicy == null? null: returnPolicy.getLastDetail().getReturnPolicyName());
+    }
 
-                if(duplicateVendorItem == null || vendorItem.equals(duplicateVendorItem)) {
-                    var cancellationPolicyName = edit.getCancellationPolicyName();
-                    CancellationPolicy cancellationPolicy = null;
+    CancellationPolicy cancellationPolicy;
+    ReturnPolicy returnPolicy;
 
-                    if(cancellationPolicyName != null) {
-                        var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
-                        var cancellationKind = cancellationPolicyControl.getCancellationKindByName(CancellationKinds.VENDOR_CANCELLATION.name());
+    @Override
+    public void canUpdate(VendorItem vendorItem) {
+        var vendorItemName = edit.getVendorItemName();
+        var duplicateVendorItem = vendorControl.getVendorItemByVendorPartyAndVendorItemName(vendorItem.getLastDetail().getVendorParty(), vendorItemName);
 
-                        cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(cancellationKind, cancellationPolicyName);
-                    }
+        if(duplicateVendorItem == null || vendorItem.equals(duplicateVendorItem)) {
+            var cancellationPolicyName = edit.getCancellationPolicyName();
+            var returnPolicyName = edit.getReturnPolicyName();
 
-                    if(cancellationPolicyName == null || cancellationPolicy != null) {
-                        var returnPolicyName = edit.getReturnPolicyName();
-                        ReturnPolicy returnPolicy = null;
+            if(cancellationPolicyName != null) {
+                var cancellationKind = cancellationPolicyControl.getCancellationKindByName(CancellationKinds.VENDOR_CANCELLATION.name());
 
-                        if(returnPolicyName != null) {
-                            var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
-                            var returnKind = returnPolicyControl.getReturnKindByName(ReturnKinds.VENDOR_RETURN.name());
+                cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(cancellationKind, cancellationPolicyName);
 
-                            returnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName);
-                        }
-
-                        if(returnPolicyName == null || returnPolicy != null) {
-                            if(lockEntityForUpdate(vendorItem)) {
-                                try {
-                                    var vendorItemDetailValue = vendorControl.getVendorItemDetailValueForUpdate(vendorItem);
-
-                                    vendorItemDetailValue.setVendorItemName(edit.getVendorItemName());
-                                    vendorItemDetailValue.setDescription(edit.getDescription());
-                                    vendorItemDetailValue.setPriority(Integer.valueOf(edit.getPriority()));
-                                    vendorItemDetailValue.setCancellationPolicyPK(cancellationPolicy == null? null: cancellationPolicy.getPrimaryKey());
-                                    vendorItemDetailValue.setReturnPolicyPK(returnPolicy == null? null: returnPolicy.getPrimaryKey());
-
-                                    vendorControl.updateVendorItemFromValue(vendorItemDetailValue, getPartyPK());
-                                } finally {
-                                    unlockEntity(vendorItem);
-                                }
-                            } else {
-                                addExecutionError(ExecutionErrors.EntityLockStale.name());
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.UnknownReturnPolicyName.name(), returnPolicyName);
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownCancellationPolicyName.name(), cancellationPolicyName);
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.DuplicateVendorItemName.name(), vendorItemName);
+                if(cancellationPolicy == null) {
+                    addExecutionError(ExecutionErrors.UnknownCancellationPolicyName.name(), cancellationPolicyName);
                 }
             }
+
+            if(returnPolicyName != null) {
+                var returnKind = returnPolicyControl.getReturnKindByName(ReturnKinds.VENDOR_RETURN.name());
+
+                returnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName);
+
+                if(returnPolicy == null) {
+                    addExecutionError(ExecutionErrors.UnknownReturnPolicyName.name(), returnPolicyName);
+                }
+            }
+        } else {
+            addExecutionError(ExecutionErrors.DuplicateVendorItemName.name(), vendorItemName);
         }
+    }
 
-        return result;
+    @Override
+    public void doUpdate(VendorItem vendorItem) {
+        var vendorItemDetailValue = vendorControl.getVendorItemDetailValueForUpdate(vendorItem);
+
+        vendorItemDetailValue.setVendorItemName(edit.getVendorItemName());
+        vendorItemDetailValue.setDescription(edit.getDescription());
+        vendorItemDetailValue.setPriority(Integer.valueOf(edit.getPriority()));
+        vendorItemDetailValue.setCancellationPolicyPK(cancellationPolicy == null? null: cancellationPolicy.getPrimaryKey());
+        vendorItemDetailValue.setReturnPolicyPK(returnPolicy == null? null: returnPolicy.getPrimaryKey());
+
+        vendorControl.updateVendorItemFromValue(vendorItemDetailValue, getPartyPK());
     }
     
 }

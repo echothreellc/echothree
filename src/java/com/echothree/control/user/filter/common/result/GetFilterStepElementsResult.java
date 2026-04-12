@@ -27,17 +27,11 @@ import java.util.List;
 public interface GetFilterStepElementsResult
         extends BaseResult {
     
-    FilterKindTransfer getFilterKind();
-    void setFilterKind(FilterKindTransfer filterKind);
-    
-    FilterTypeTransfer getFilterType();
-    void setFilterType(FilterTypeTransfer filterType);
-    
-    FilterTransfer getFilter();
-    void setFilter(FilterTransfer filter);
-    
     FilterStepTransfer getFilterStep();
     void setFilterStep(FilterStepTransfer filterStep);
+
+    Long getFilterStepElementCount();
+    void setFilterStepElementCount(Long filterStepElementCount);
     
     List<FilterStepElementTransfer> getFilterStepElements();
     void setFilterStepElements(List<FilterStepElementTransfer> filterStepElements);

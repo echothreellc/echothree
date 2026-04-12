@@ -18,24 +18,23 @@ package com.echothree.control.user.uom.server.command;
 
 import com.echothree.control.user.uom.common.edit.UnitOfMeasureKindUseEdit;
 import com.echothree.control.user.uom.common.edit.UomEditFactory;
-import com.echothree.control.user.uom.common.form.EditUnitOfMeasureKindUseForm;
+import com.echothree.control.user.uom.common.result.EditUnitOfMeasureKindUseResult;
 import com.echothree.control.user.uom.common.result.UomResultFactory;
 import com.echothree.control.user.uom.common.spec.UnitOfMeasureKindUseSpec;
 import com.echothree.model.control.uom.server.control.UomControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
+import com.echothree.model.data.uom.server.entity.UnitOfMeasureKindUse;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
-import com.echothree.util.server.control.BaseEditCommand;
-import com.echothree.util.server.persistence.Session;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditUnitOfMeasureKindUseCommand
-        extends BaseEditCommand<UnitOfMeasureKindUseSpec, UnitOfMeasureKindUseEdit> {
+        extends BaseAbstractEditCommand<UnitOfMeasureKindUseSpec, UnitOfMeasureKindUseEdit, EditUnitOfMeasureKindUseResult, UnitOfMeasureKindUse, UnitOfMeasureKind> {
     
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
@@ -44,13 +43,16 @@ public class EditUnitOfMeasureKindUseCommand
         SPEC_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("UnitOfMeasureKindName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("UnitOfMeasureKindUseTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
-                );
+        );
     }
+    
+    @Inject
+    UomControl uomControl;
     
     /** Creates a new instance of EditUnitOfMeasureKindUseCommand */
     public EditUnitOfMeasureKindUseCommand() {
@@ -58,56 +60,30 @@ public class EditUnitOfMeasureKindUseCommand
     }
     
     @Override
-    protected BaseResult execute() {
-        var uomControl = Session.getModelController(UomControl.class);
-        var result = UomResultFactory.getEditUnitOfMeasureKindUseResult();
+    public EditUnitOfMeasureKindUseResult getResult() {
+        return UomResultFactory.getEditUnitOfMeasureKindUseResult();
+    }
+
+    @Override
+    public UnitOfMeasureKindUseEdit getEdit() {
+        return UomEditFactory.getUnitOfMeasureKindUseEdit();
+    }
+
+    @Override
+    public UnitOfMeasureKindUse getEntity(EditUnitOfMeasureKindUseResult result) {
+        UnitOfMeasureKindUse unitOfMeasureKindUse = null;
         var unitOfMeasureKindName = spec.getUnitOfMeasureKindName();
         var unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
-        
+
         if(unitOfMeasureKind != null) {
             var unitOfMeasureKindUseTypeName = spec.getUnitOfMeasureKindUseTypeName();
             var unitOfMeasureKindUseType = uomControl.getUnitOfMeasureKindUseTypeByName(unitOfMeasureKindUseTypeName);
-            
+
             if(unitOfMeasureKindUseType != null) {
-                if(editMode.equals(EditMode.LOCK)) {
-                    var unitOfMeasureKindUse = uomControl.getUnitOfMeasureKindUse(unitOfMeasureKindUseType, unitOfMeasureKind);
-                    
-                    if(unitOfMeasureKindUse != null) {
-                        result.setUnitOfMeasureKindUse(uomControl.getUnitOfMeasureKindUseTransfer(getUserVisit(), unitOfMeasureKindUse));
-                        
-                        if(lockEntity(unitOfMeasureKind)) {
-                            var edit = UomEditFactory.getUnitOfMeasureKindUseEdit();
-                            
-                            result.setEdit(edit);
-                            edit.setIsDefault(unitOfMeasureKindUse.getIsDefault().toString());
-                            edit.setSortOrder(unitOfMeasureKindUse.getSortOrder().toString());
-                        } else {
-                            addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                        }
-                        
-                        result.setEntityLock(getEntityLockTransfer(unitOfMeasureKind));
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownUnitOfMeasureKindUse.name());
-                    }
-                } else if(editMode.equals(EditMode.UPDATE)) {
-                    var unitOfMeasureKindUseValue = uomControl.getUnitOfMeasureKindUseValueForUpdate(unitOfMeasureKindUseType, unitOfMeasureKind);
-                    
-                    if(unitOfMeasureKindUseValue != null) {
-                        if(lockEntityForUpdate(unitOfMeasureKind)) {
-                            try {
-                                unitOfMeasureKindUseValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
-                                unitOfMeasureKindUseValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
-                                
-                                uomControl.updateUnitOfMeasureKindUseFromValue(unitOfMeasureKindUseValue, getPartyPK());
-                            } finally {
-                                unlockEntity(unitOfMeasureKind);
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.EntityLockStale.name());
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownUnitOfMeasureKindUse.name());
-                    }
+                unitOfMeasureKindUse = uomControl.getUnitOfMeasureKindUse(unitOfMeasureKindUseType, unitOfMeasureKind, editModeToEntityPermission(editMode));
+
+                if(unitOfMeasureKindUse == null) {
+                    addExecutionError(ExecutionErrors.UnknownUnitOfMeasureKindUse.name());
                 }
             } else {
                 addExecutionError(ExecutionErrors.UnknownUnitOfMeasureKindUseTypeName.name(), unitOfMeasureKindUseTypeName);
@@ -115,8 +91,34 @@ public class EditUnitOfMeasureKindUseCommand
         } else {
             addExecutionError(ExecutionErrors.UnknownUnitOfMeasureKindName.name(), unitOfMeasureKindName);
         }
-        
-        return result;
+
+        return unitOfMeasureKindUse;
     }
-    
+
+    @Override
+    public UnitOfMeasureKind getLockEntity(UnitOfMeasureKindUse unitOfMeasureKindUse) {
+        return unitOfMeasureKindUse.getUnitOfMeasureKind();
+    }
+
+    @Override
+    public void fillInResult(EditUnitOfMeasureKindUseResult result, UnitOfMeasureKindUse unitOfMeasureKindUse) {
+        result.setUnitOfMeasureKindUse(uomControl.getUnitOfMeasureKindUseTransfer(getUserVisit(), unitOfMeasureKindUse));
+    }
+
+    @Override
+    public void doLock(UnitOfMeasureKindUseEdit edit, UnitOfMeasureKindUse unitOfMeasureKindUse) {
+        edit.setIsDefault(unitOfMeasureKindUse.getIsDefault().toString());
+        edit.setSortOrder(unitOfMeasureKindUse.getSortOrder().toString());
+    }
+
+    @Override
+    public void doUpdate(UnitOfMeasureKindUse unitOfMeasureKindUse) {
+        var unitOfMeasureKindUseValue = uomControl.getUnitOfMeasureKindUseValue(unitOfMeasureKindUse);
+
+        unitOfMeasureKindUseValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
+        unitOfMeasureKindUseValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
+
+        uomControl.updateUnitOfMeasureKindUseFromValue(unitOfMeasureKindUseValue, getPartyPK());
+    }
+
 }

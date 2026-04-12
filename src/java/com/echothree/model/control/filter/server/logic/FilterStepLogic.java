@@ -21,6 +21,7 @@ import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
+import com.echothree.model.control.filter.common.exception.CannotDeleteFilterStepInUseException;
 import com.echothree.model.control.filter.common.exception.DuplicateFilterStepNameException;
 import com.echothree.model.control.filter.common.exception.UnknownDefaultFilterException;
 import com.echothree.model.control.filter.common.exception.UnknownDefaultFilterKindException;
@@ -41,10 +42,10 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.ParameterUtils;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class FilterStepLogic
@@ -57,6 +58,9 @@ public class FilterStepLogic
     public static FilterStepLogic getInstance() {
         return CDI.current().select(FilterStepLogic.class).get();
     }
+
+    @Inject
+    FilterControl filterControl;
 
     public FilterStep createFilterStep(final ExecutionErrorAccumulator eea, final String filterKindName,
             final String filterTypeName, final String filterName, final String filterStepName,
@@ -80,7 +84,6 @@ public class FilterStepLogic
 
     public FilterStep createFilterStep(final ExecutionErrorAccumulator eea, final Filter filter, final String filterStepName,
             final Selector filterItemSelector, final Language language, final String description, final BasePK createdBy) {
-        var filterControl = Session.getModelController(FilterControl.class);
         var filterStep = filterControl.getFilterStepByName(filter, filterStepName);
 
         if(filterStep == null) {
@@ -97,7 +100,6 @@ public class FilterStepLogic
 
     public FilterStep getFilterStepByName(final ExecutionErrorAccumulator eea, final Filter filter, final String filterStepName,
             final EntityPermission entityPermission) {
-        var filterControl = Session.getModelController(FilterControl.class);
         var filterStep = filterControl.getFilterStepByName(filter, filterStepName, entityPermission);
 
         if(filterStep == null) {
@@ -142,7 +144,6 @@ public class FilterStepLogic
 
     public FilterStep getFilterStepByUniversalSpec(final ExecutionErrorAccumulator eea, final FilterStepUniversalSpec universalSpec,
             final boolean allowDefault, final EntityPermission entityPermission) {
-        var filterControl = Session.getModelController(FilterControl.class);
         var filterKindName = universalSpec.getFilterKindName();
         var filterTypeName = universalSpec.getFilterTypeName();
         var filterName = universalSpec.getFilterName();
@@ -232,9 +233,17 @@ public class FilterStepLogic
     }
 
     public void deleteFilterStep(final ExecutionErrorAccumulator eea, final FilterStep filterStep, final BasePK deletedBy) {
-        var filterControl = Session.getModelController(FilterControl.class);
+        var filterEntranceStepCount = filterControl.countFilterEntranceStepsByFilterStep(filterStep);
+        var filterStepDestinationFromFilterStepCount = filterControl.countFilterStepDestinationsByFromFilterStep(filterStep);
+        var filterStepDestinationToFilterStepCount = filterControl.countFilterStepDestinationsByToFilterStep(filterStep);
+        var filterStepElementCount = filterControl.countFilterStepElementsByFilterStep(filterStep);
 
-        filterControl.deleteFilterStep(filterStep, deletedBy);
+        if(filterEntranceStepCount == 0 && filterStepDestinationFromFilterStepCount == 0
+                && filterStepDestinationToFilterStepCount == 0 && filterStepElementCount == 0) {
+            filterControl.deleteFilterStep(filterStep, deletedBy);
+        } else {
+            handleExecutionError(CannotDeleteFilterStepInUseException.class, eea, ExecutionErrors.CannotDeleteFilterStepInUse.name());
+        }
     }
 
 }

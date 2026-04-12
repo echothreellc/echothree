@@ -18,7 +18,7 @@ package com.echothree.control.user.filter.server.command;
 
 import com.echothree.control.user.filter.common.edit.FilterDescriptionEdit;
 import com.echothree.control.user.filter.common.edit.FilterEditFactory;
-import com.echothree.control.user.filter.common.form.EditFilterDescriptionForm;
+import com.echothree.control.user.filter.common.result.EditFilterDescriptionResult;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
 import com.echothree.control.user.filter.common.spec.FilterDescriptionSpec;
 import com.echothree.model.control.filter.server.control.FilterControl;
@@ -26,23 +26,23 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
+import com.echothree.model.data.filter.server.entity.Filter;
+import com.echothree.model.data.filter.server.entity.FilterDescription;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.common.command.EditMode;
+import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditFilterDescriptionCommand
-        extends BaseEditCommand<FilterDescriptionSpec, FilterDescriptionEdit> {
+        extends BaseAbstractEditCommand<FilterDescriptionSpec, FilterDescriptionEdit, EditFilterDescriptionResult, FilterDescription, Filter> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
@@ -67,87 +67,94 @@ public class EditFilterDescriptionCommand
                 new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
         );
     }
-    
+
+    @Inject
+    FilterControl filterControl;
+
+    @Inject
+    PartyControl partyControl;
+
     /** Creates a new instance of EditFilterDescriptionCommand */
     public EditFilterDescriptionCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override
-    protected BaseResult execute() {
-        var filterControl = Session.getModelController(FilterControl.class);
-        var result = FilterResultFactory.getEditFilterDescriptionResult();
+    public EditFilterDescriptionResult getResult() {
+        return FilterResultFactory.getEditFilterDescriptionResult();
+    }
+
+    @Override
+    public FilterDescriptionEdit getEdit() {
+        return FilterEditFactory.getFilterDescriptionEdit();
+    }
+
+    @Override
+    public FilterDescription getEntity(EditFilterDescriptionResult result) {
+        FilterDescription filterDescription = null;
         var filterKindName = spec.getFilterKindName();
         var filterKind = filterControl.getFilterKindByName(filterKindName);
-        
+
         if(filterKind != null) {
             var filterTypeName = spec.getFilterTypeName();
             var filterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
-            
+
             if(filterType != null) {
                 var filterName = spec.getFilterName();
                 var filter = filterControl.getFilterByName(filterType, filterName);
-                
+
                 if(filter != null) {
-                    var partyControl = Session.getModelController(PartyControl.class);
                     var languageIsoName = spec.getLanguageIsoName();
                     var language = partyControl.getLanguageByIsoName(languageIsoName);
-                    
+
                     if(language != null) {
-                        if(editMode.equals(EditMode.LOCK)) {
-                            var filterDescription = filterControl.getFilterDescription(filter, language);
-                            
-                            if(filterDescription != null) {
-                                result.setFilterDescription(filterControl.getFilterDescriptionTransfer(getUserVisit(), filterDescription));
-                                
-                                if(lockEntity(filter)) {
-                                    var edit = FilterEditFactory.getFilterDescriptionEdit();
-                                    
-                                    result.setEdit(edit);
-                                    edit.setDescription(filterDescription.getDescription());
-                                } else {
-                                    addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                                }
-                                
-                                result.setEntityLock(getEntityLockTransfer(filter));
-                            } else {
-                                addExecutionError(ExecutionErrors.UnknownFilterDescription.name());
-                            }
-                        } else if(editMode.equals(EditMode.UPDATE)) {
-                            var filterDescriptionValue = filterControl.getFilterDescriptionValueForUpdate(filter, language);
-                            
-                            if(filterDescriptionValue != null) {
-                                if(lockEntityForUpdate(filter)) {
-                                    try {
-                                        var description = edit.getDescription();
-                                        
-                                        filterDescriptionValue.setDescription(description);
-                                        
-                                        filterControl.updateFilterDescriptionFromValue(filterDescriptionValue, getPartyPK());
-                                    } finally {
-                                        unlockEntity(filter);
-                                    }
-                                } else {
-                                    addExecutionError(ExecutionErrors.EntityLockStale.name());
-                                }
-                            } else {
-                                addExecutionError(ExecutionErrors.UnknownFilterDescription.name());
-                            }
+                        if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
+                            filterDescription = filterControl.getFilterDescription(filter, language);
+                        } else { // EditMode.UPDATE
+                            filterDescription = filterControl.getFilterDescriptionForUpdate(filter, language);
+                        }
+
+                        if(filterDescription == null) {
+                            addExecutionError(ExecutionErrors.UnknownFilterDescription.name(), filterKindName, filterTypeName, filterName, languageIsoName);
                         }
                     } else {
                         addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);
                     }
                 } else {
-                    addExecutionError(ExecutionErrors.UnknownFilterName.name(), filterName);
+                    addExecutionError(ExecutionErrors.UnknownFilterName.name(), filterKindName, filterTypeName, filterName);
                 }
             } else {
-                addExecutionError(ExecutionErrors.UnknownFilterTypeName.name(), filterTypeName);
+                addExecutionError(ExecutionErrors.UnknownFilterTypeName.name(), filterKindName, filterTypeName);
             }
         } else {
             addExecutionError(ExecutionErrors.UnknownFilterKindName.name(), filterKindName);
         }
-        
-        return result;
+
+        return filterDescription;
+    }
+
+    @Override
+    public Filter getLockEntity(FilterDescription filterDescription) {
+        return filterDescription.getFilter();
+    }
+
+    @Override
+    public void fillInResult(EditFilterDescriptionResult result, FilterDescription filterDescription) {
+        result.setFilterDescription(filterControl.getFilterDescriptionTransfer(getUserVisit(), filterDescription));
+    }
+
+    @Override
+    public void doLock(FilterDescriptionEdit edit, FilterDescription filterDescription) {
+        edit.setDescription(filterDescription.getDescription());
+    }
+
+    @Override
+    public void doUpdate(FilterDescription filterDescription) {
+        var filterDescriptionValue = filterControl.getFilterDescriptionValue(filterDescription);
+
+        filterDescriptionValue.setDescription(edit.getDescription());
+
+        filterControl.updateFilterDescriptionFromValue(filterDescriptionValue, getPartyPK());
     }
     
 }

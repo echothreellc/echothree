@@ -14,11 +14,14 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.inventory.common;
+package com.echothree.model.control.warehouse.common;
 
-public enum InventoryConditions {
-    
-    BEFORE_VALUE,
-    AFTER_VALUE
+public enum LocationUseTypes {
+
+    BULK,
+    PICKING,
+    RETURNS,
+    STAGING,
+    SHRINK,
     
 }

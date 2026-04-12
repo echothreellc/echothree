@@ -62,10 +62,12 @@ public class DeleteUnitOfMeasureTypeCommand
                 if(!inUseError) {
                     uomControl.deleteUnitOfMeasureType(unitOfMeasureType, getPartyPK());
                 } else {
-                    addExecutionError(ExecutionErrors.CannotDeleteUnitOfMeasureKindInUse.name());
+                    addExecutionError(ExecutionErrors.CannotDeleteUnitOfMeasureKindInUse.name(),
+                            unitOfMeasureKind.getLastDetail().getUnitOfMeasureKindName());
                 }
             } else {
-                addExecutionError(ExecutionErrors.UnknownUnitOfMeasureTypeName.name(), unitOfMeasureTypeName);
+                addExecutionError(ExecutionErrors.UnknownUnitOfMeasureTypeName.name(),
+                        unitOfMeasureKind.getLastDetail().getUnitOfMeasureKindName(), unitOfMeasureTypeName);
             }
         } else {
             addExecutionError(ExecutionErrors.UnknownUnitOfMeasureKindName.name(), unitOfMeasureKindName);

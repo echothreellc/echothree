@@ -19,25 +19,28 @@ package com.echothree.control.user.filter.server.command;
 import com.echothree.control.user.filter.common.form.GetFilterEntranceStepsForm;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
 import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.logic.FilterLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.filter.server.entity.Filter;
+import com.echothree.model.data.filter.server.entity.FilterEntranceStep;
+import com.echothree.model.data.filter.server.factory.FilterEntranceStepFactory;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetFilterEntranceStepsCommand
-        extends BaseSimpleCommand<GetFilterEntranceStepsForm> {
+        extends BasePaginatedMultipleEntitiesCommand<FilterEntranceStep, GetFilterEntranceStepsForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -62,39 +65,45 @@ public class GetFilterEntranceStepsCommand
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
+    @Inject
+    FilterControl filterControl;
+
+    @Inject
+    FilterLogic filterLogic;
+
+    private Filter filter;
+
     @Override
-    protected BaseResult execute() {
-        var filterControl = Session.getModelController(FilterControl.class);
+    protected void handleForm() {
+        filter = filterLogic.getFilterByName(this, form.getFilterKindName(), form.getFilterTypeName(), form.getFilterName());
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return hasExecutionErrors() ? null : filterControl.countFilterEntranceStepsByFilter(filter);
+    }
+
+    @Override
+    protected Collection<FilterEntranceStep> getEntities() {
+        return hasExecutionErrors() ? null : filterControl.getFilterEntranceStepsByFilter(filter);
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<FilterEntranceStep> entities) {
         var result = FilterResultFactory.getGetFilterEntranceStepsResult();
-        var filterKindName = form.getFilterKindName();
-        var filterKind = filterControl.getFilterKindByName(filterKindName);
-        
-        if(filterKind != null) {
+
+        if(entities != null) {
             var userVisit = getUserVisit();
-            var filterTypeName = form.getFilterTypeName();
-            var filterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
-            
-            result.setFilterKind(filterControl.getFilterKindTransfer(userVisit, filterKind));
-            
-            if(filterType != null) {
-                var filterName = form.getFilterName();
-                var filter = filterControl.getFilterByName(filterType, filterName);
-                
-                result.setFilterType(filterControl.getFilterTypeTransfer(userVisit, filterType));
-                
-                if(filter != null) {
-                    result.setFilter(filterControl.getFilterTransfer(userVisit, filter));
-                    result.setFilterEntranceSteps(filterControl.getFilterEntranceStepTransfersByFilter(userVisit, filter));
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownFilterName.name(), filterName);
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownFilterTypeName.name(), filterTypeName);
+
+            result.setFilter(filterControl.getFilterTransfer(userVisit, filter));
+
+            if(session.hasLimit(FilterEntranceStepFactory.class)) {
+                result.setFilterEntranceStepCount(getTotalEntities());
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownFilterKindName.name(), filterKindName);
+
+            result.setFilterEntranceSteps(filterControl.getFilterEntranceStepTransfers(userVisit, entities));
         }
-        
+
         return result;
     }
     

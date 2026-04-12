@@ -86,12 +86,16 @@ public class CreateFilterStepDestinationCommand
                         var toFilterStep = filterControl.getFilterStepByName(filter, toFilterStepName);
                         
                         if(toFilterStep != null) {
-                            var filterStepDestination = filterControl.getFilterStepDestination(fromFilterStep, toFilterStep);
-                            
-                            if(filterStepDestination == null) {
-                                filterControl.createFilterStepDestination(fromFilterStep, toFilterStep, getPartyPK());
+                            if(!fromFilterStep.equals(toFilterStep)) {
+                                var filterStepDestination = filterControl.getFilterStepDestination(fromFilterStep, toFilterStep);
+
+                                if(filterStepDestination == null) {
+                                    filterControl.createFilterStepDestination(fromFilterStep, toFilterStep, getPartyPK());
+                                } else {
+                                    addExecutionError(ExecutionErrors.DuplicateFilterStepDestination.name());
+                                }
                             } else {
-                                addExecutionError(ExecutionErrors.DuplicateFilterStepDestination.name());
+                                addExecutionError(ExecutionErrors.SelfReferentialFilterStepDestination.name());
                             }
                         } else {
                             addExecutionError(ExecutionErrors.UnknownToFilterStepName.name(), toFilterStepName);

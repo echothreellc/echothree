@@ -767,8 +767,9 @@ public class WarehouseControl
 
         for(var warehouse : partyCompanies) {
             var partyGroup = partyControl.getPartyGroup(warehouse.getParty());
+            var name = partyGroup == null ? null : partyGroup.getName();
 
-            var label = partyGroup.getName();
+            var label = name == null ? warehouse.getWarehouseName() : name;
             var value = warehouse.getWarehouseName();
 
             labels.add(label == null? value: label);
@@ -910,7 +911,7 @@ public class WarehouseControl
                 warehouseParty);
     }
 
-    private LocationType getLocationTypeByName(Party warehouseParty, String locationTypeName, EntityPermission entityPermission) {
+    public LocationType getLocationTypeByName(Party warehouseParty, String locationTypeName, EntityPermission entityPermission) {
         LocationType locationType;
         
         try {
@@ -1195,7 +1196,7 @@ public class WarehouseControl
         return locationTypeDescription;
     }
     
-    private LocationTypeDescription getLocationTypeDescription(LocationType locationType, Language language, EntityPermission entityPermission) {
+    public LocationTypeDescription getLocationTypeDescription(LocationType locationType, Language language, EntityPermission entityPermission) {
         LocationTypeDescription locationTypeDescription;
         
         try {
@@ -1383,7 +1384,7 @@ public class WarehouseControl
                 locationType);
     }
 
-    private LocationNameElement getLocationNameElementByName(LocationType locationType, String locationNameElementName, EntityPermission entityPermission) {
+    public LocationNameElement getLocationNameElementByName(LocationType locationType, String locationNameElementName, EntityPermission entityPermission) {
         LocationNameElement locationNameElement;
         
         try {
@@ -1554,7 +1555,7 @@ public class WarehouseControl
         return locationNameElementDescription;
     }
     
-    private LocationNameElementDescription getLocationNameElementDescription(LocationNameElement locationNameElement, Language language,
+    public LocationNameElementDescription getLocationNameElementDescription(LocationNameElement locationNameElement, Language language,
             EntityPermission entityPermission) {
         LocationNameElementDescription locationNameElementDescription;
         
@@ -1763,7 +1764,7 @@ public class WarehouseControl
                 warehouseParty, locationUseType);
     }
 
-    private Location getLocationByName(Party warehouseParty, String locationName, EntityPermission entityPermission) {
+    public Location getLocationByName(Party warehouseParty, String locationName, EntityPermission entityPermission) {
         Location location;
         
         try {
@@ -2107,7 +2108,7 @@ public class WarehouseControl
         return locationDescription;
     }
     
-    private LocationDescription getLocationDescription(Location location, Language language, EntityPermission entityPermission) {
+    public LocationDescription getLocationDescription(Location location, Language language, EntityPermission entityPermission) {
         LocationDescription locationDescription;
         
         try {
@@ -2276,7 +2277,7 @@ public class WarehouseControl
         return locationVolume;
     }
     
-    private LocationVolume getLocationVolume(Location location, EntityPermission entityPermission) {
+    public LocationVolume getLocationVolume(Location location, EntityPermission entityPermission) {
         LocationVolume locationVolume;
         
         try {
@@ -2424,7 +2425,7 @@ public class WarehouseControl
         return getLocationCapacitiesByLocation(location, EntityPermission.READ_WRITE);
     }
     
-    private LocationCapacity getLocationCapacity(Location location, UnitOfMeasureType unitOfMeasureType, EntityPermission entityPermission) {
+    public LocationCapacity getLocationCapacity(Location location, UnitOfMeasureType unitOfMeasureType, EntityPermission entityPermission) {
         LocationCapacity locationCapacity;
         
         try {

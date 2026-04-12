@@ -226,6 +226,16 @@ public class FilterStepSteps implements En {
                     }
                 });
 
+        When("^the user sets the filter step's new filter step name to \"([^\"]*)\"$",
+                (String filterStepName) -> {
+                    var persona = CurrentPersona.persona;
+                    var filterStepEdit = persona.filterStepEdit;
+
+                    assertThat(filterStepEdit).isNotNull();
+
+                    filterStepEdit.setFilterStepName(filterStepName);
+                });
+
         When("^the user sets the filter step's filter item selector name to \"([^\"]*)\"$",
                 (String filterItemSelectorName) -> {
                     var persona = CurrentPersona.persona;

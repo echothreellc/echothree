@@ -14,16 +14,15 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.inventory.common;
+package com.echothree.control.user.filter.common.result;
 
-public interface InventoryConstants {
-    
-    String InventoryConditionUseType_PURCHASE_ORDER = "PURCHASE_ORDER";
-    String InventoryConditionUseType_SALES_ORDER    = "SALES_ORDER";
-    String InventoryConditionUseType_RETURN         = "RETURN";
+import com.echothree.control.user.filter.common.spec.FilterStepElementSpec;
+import com.echothree.util.common.command.BaseResult;
 
-    String LotTimeType_MANUFACTURED = "MANUFACTURED";
-    String LotTimeType_RECEIVED = "RECEIVED";
-    String LotTimeType_EXPIRATION = "EXPIRATION";
+public interface CreateFilterStepElementResult
+        extends FilterStepElementSpec, BaseResult {
+
+    String getEntityRef();
+    void setEntityRef(String entityRef);
 
 }

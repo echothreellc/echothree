@@ -1334,7 +1334,7 @@ public class VendorControl
         return getVendorItemCostByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
 
-    private VendorItemCost getVendorItemCost(VendorItem vendorItem, InventoryCondition inventoryCondition,
+    public VendorItemCost getVendorItemCost(VendorItem vendorItem, InventoryCondition inventoryCondition,
             UnitOfMeasureType unitOfMeasureType, EntityPermission entityPermission) {
         VendorItemCost vendorItemCost;
         
@@ -1942,7 +1942,7 @@ public class VendorControl
         return itemPurchasingCategoryDescription;
     }
     
-    private ItemPurchasingCategoryDescription getItemPurchasingCategoryDescription(ItemPurchasingCategory itemPurchasingCategory, Language language, EntityPermission entityPermission) {
+    public ItemPurchasingCategoryDescription getItemPurchasingCategoryDescription(ItemPurchasingCategory itemPurchasingCategory, Language language, EntityPermission entityPermission) {
         ItemPurchasingCategoryDescription itemPurchasingCategoryDescription;
         
         try {

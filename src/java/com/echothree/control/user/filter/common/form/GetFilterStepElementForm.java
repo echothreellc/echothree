@@ -16,10 +16,10 @@
 
 package com.echothree.control.user.filter.common.form;
 
-import com.echothree.control.user.filter.common.spec.FilterStepElementSpec;
+import com.echothree.control.user.filter.common.spec.FilterStepElementUniversalSpec;
 
 public interface GetFilterStepElementForm
-        extends FilterStepElementSpec {
+        extends FilterStepElementUniversalSpec {
     
     // Nothing additional beyond FilterStepElementSpec
     

@@ -29,7 +29,7 @@
             <h2>
                 <a href="<c:url value="/action/Portal" />"><fmt:message key="navigation.portal" /></a> &gt;&gt;
                 <a href="<c:url value="/action/Accounting/Main" />"><fmt:message key="navigation.accounting" /></a> &gt;&gt;
-                <a href="<c:url value="/action/Accounting/GlResourceType/Main" />">Gl Resource Typees</a> &gt;&gt;
+                <a href="<c:url value="/action/Accounting/GlResourceType/Main" />">Gl Resource Types</a> &gt;&gt;
                 <c:url var="descriptionsUrl" value="/action/Accounting/GlResourceType/Description">
                     <c:param name="GlResourceTypeName" value="${glResourceTypeName}" />
                 </c:url>

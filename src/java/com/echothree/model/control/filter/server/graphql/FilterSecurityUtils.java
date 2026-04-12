@@ -27,8 +27,14 @@ import com.echothree.control.user.filter.server.command.GetFilterAdjustmentSourc
 import com.echothree.control.user.filter.server.command.GetFilterAdjustmentTypeCommand;
 import com.echothree.control.user.filter.server.command.GetFilterAdjustmentsCommand;
 import com.echothree.control.user.filter.server.command.GetFilterCommand;
+import com.echothree.control.user.filter.server.command.GetFilterEntranceStepCommand;
+import com.echothree.control.user.filter.server.command.GetFilterEntranceStepsCommand;
 import com.echothree.control.user.filter.server.command.GetFilterKindCommand;
 import com.echothree.control.user.filter.server.command.GetFilterStepCommand;
+import com.echothree.control.user.filter.server.command.GetFilterStepDestinationCommand;
+import com.echothree.control.user.filter.server.command.GetFilterStepDestinationsCommand;
+import com.echothree.control.user.filter.server.command.GetFilterStepElementCommand;
+import com.echothree.control.user.filter.server.command.GetFilterStepElementsCommand;
 import com.echothree.control.user.filter.server.command.GetFilterStepsCommand;
 import com.echothree.control.user.filter.server.command.GetFilterTypeCommand;
 import com.echothree.control.user.filter.server.command.GetFilterTypesCommand;
@@ -104,6 +110,30 @@ public interface FilterSecurityUtils {
 
     static boolean getHasFilterStepAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetFilterStepCommand.class);
+    }
+
+    static boolean getHasFilterStepElementsAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetFilterStepElementsCommand.class);
+    }
+
+    static boolean getHasFilterStepElementAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetFilterStepElementCommand.class);
+    }
+
+    static boolean getHasFilterEntranceStepsAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetFilterEntranceStepsCommand.class);
+    }
+
+    static boolean getHasFilterEntranceStepAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetFilterEntranceStepCommand.class);
+    }
+
+    static boolean getHasFilterStepDestinationsAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetFilterStepDestinationsCommand.class);
+    }
+
+    static boolean getHasFilterStepDestinationAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetFilterStepDestinationCommand.class);
     }
 
 }

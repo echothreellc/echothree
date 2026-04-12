@@ -17,6 +17,7 @@
 package com.echothree.control.user.filter.server.command;
 
 import com.echothree.control.user.filter.common.form.CreateFilterStepElementForm;
+import com.echothree.control.user.filter.common.result.FilterResultFactory;
 import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -24,8 +25,8 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.selector.common.SelectorKinds;
 import com.echothree.model.control.selector.common.SelectorTypes;
 import com.echothree.model.control.selector.server.control.SelectorControl;
+import com.echothree.model.data.filter.server.entity.FilterStepElement;
 import com.echothree.model.data.selector.server.entity.Selector;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -72,9 +73,11 @@ public class CreateFilterStepElementCommand
     
     @Override
     protected BaseResult execute() {
+        var result = FilterResultFactory.getCreateFilterStepElementResult();
         var filterControl = Session.getModelController(FilterControl.class);
         var filterKindName = form.getFilterKindName();
         var filterKind = filterControl.getFilterKindByName(filterKindName);
+        FilterStepElement filterStepElement = null;
         
         if(filterKind != null) {
             var filterTypeName = form.getFilterTypeName();
@@ -90,7 +93,8 @@ public class CreateFilterStepElementCommand
                     
                     if(filterStep != null) {
                         var filterStepElementName = form.getFilterStepElementName();
-                        var filterStepElement = filterControl.getFilterStepElementByName(filterStep, filterStepElementName);
+
+                        filterStepElement = filterControl.getFilterStepElementByName(filterStep, filterStepElementName);
                         
                         if(filterStepElement == null) {
                             var filterItemSelectorName = form.getFilterItemSelectorName();
@@ -149,8 +153,22 @@ public class CreateFilterStepElementCommand
         } else {
             addExecutionError(ExecutionErrors.UnknownFilterKindName.name(), filterKindName);
         }
-        
-        return null;
+
+        if(filterStepElement != null) {
+            var filterStepElementDetail = filterStepElement.getLastDetail();
+            var filterStepDetail = filterStepElementDetail.getFilterStep().getLastDetail();
+            var filterDetail = filterStepDetail.getFilter().getLastDetail();
+            var filterTypeDetail = filterDetail.getFilterType().getLastDetail();
+
+            result.setEntityRef(filterStepElement.getPrimaryKey().getEntityRef());
+            result.setFilterKindName(filterTypeDetail.getFilterKind().getLastDetail().getFilterKindName());
+            result.setFilterTypeName(filterTypeDetail.getFilterTypeName());
+            result.setFilterName(filterDetail.getFilterName());
+            result.setFilterStepName(filterStepDetail.getFilterStepName());
+            result.setFilterStepElementName(filterStepElementDetail.getFilterStepElementName());
+        }
+
+        return result;
     }
     
 }

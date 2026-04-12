@@ -41,6 +41,7 @@ import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.ParameterUtils;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class FilterAdjustmentLogic
@@ -54,13 +55,25 @@ public class FilterAdjustmentLogic
         return CDI.current().select(FilterAdjustmentLogic.class).get();
     }
 
+    @Inject
+    FilterControl filterControl;
+
+    @Inject
+    FilterKindLogic filterKindLogic;
+
+    @Inject
+    FilterAdjustmentSourceLogic filterAdjustmentSourceLogic;
+
+    @Inject
+    FilterAdjustmentTypeLogic filterAdjustmentTypeLogic;
+
     public FilterAdjustment createFilterAdjustment(final ExecutionErrorAccumulator eea, final String filterKindName,
             final String filterAdjustmentName, final String filterAdjustmentSourceName, final String filterAdjustmentTypeName,
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description,
             final BasePK createdBy) {
-        var filterKind = FilterKindLogic.getInstance().getFilterKindByName(eea, filterKindName);
-        var filterAdjustmentSource = FilterAdjustmentSourceLogic.getInstance().getFilterAdjustmentSourceByName(eea, filterAdjustmentSourceName);
-        var filterAdjustmentType = filterAdjustmentTypeName == null ? null : FilterAdjustmentTypeLogic.getInstance().getFilterAdjustmentTypeByName(eea, filterAdjustmentTypeName);
+        var filterKind = filterKindLogic.getFilterKindByName(eea, filterKindName);
+        var filterAdjustmentSource = filterAdjustmentSourceLogic.getFilterAdjustmentSourceByName(eea, filterAdjustmentSourceName);
+        var filterAdjustmentType = filterAdjustmentTypeName == null ? null : filterAdjustmentTypeLogic.getFilterAdjustmentTypeByName(eea, filterAdjustmentTypeName);
         FilterAdjustment filterAdjustment = null;
 
         if(eea == null || !eea.hasExecutionErrors()) {
@@ -74,7 +87,6 @@ public class FilterAdjustmentLogic
     public FilterAdjustment createFilterAdjustment(final ExecutionErrorAccumulator eea, final FilterKind filterKind, final String filterAdjustmentName,
             final FilterAdjustmentSource filterAdjustmentSource, final FilterAdjustmentType filterAdjustmentType, final Boolean isDefault,
             final Integer sortOrder, final Language language, final String description, final BasePK createdBy) {
-        var filterControl = Session.getModelController(FilterControl.class);
         var filterAdjustment = filterControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName);
 
         if(filterAdjustment == null) {
@@ -92,7 +104,6 @@ public class FilterAdjustmentLogic
 
     public FilterAdjustment getFilterAdjustmentByName(final ExecutionErrorAccumulator eea, final FilterKind filterKind, final String filterAdjustmentName,
             final EntityPermission entityPermission) {
-        var filterControl = Session.getModelController(FilterControl.class);
         var filterAdjustment = filterControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName, entityPermission);
 
         if(filterAdjustment == null) {
@@ -113,7 +124,7 @@ public class FilterAdjustmentLogic
 
     public FilterAdjustment getFilterAdjustmentByName(final ExecutionErrorAccumulator eea, final String filterKindName, final String filterAdjustmentName,
             final EntityPermission entityPermission) {
-        var filterKind = FilterKindLogic.getInstance().getFilterKindByName(eea, filterKindName);
+        var filterKind = filterKindLogic.getFilterKindByName(eea, filterKindName);
         FilterAdjustment filterAdjustment = null;
 
         if(!eea.hasExecutionErrors()) {
@@ -199,8 +210,6 @@ public class FilterAdjustmentLogic
 
     public void deleteFilterAdjustment(final ExecutionErrorAccumulator eea, final FilterAdjustment filterAdjustment,
             final BasePK deletedBy) {
-        var filterControl = Session.getModelController(FilterControl.class);
-
         if(filterControl.countFiltersByFilterAdjustment(filterAdjustment) == 0
                 && filterControl.countFilterStepElementsByFilterAdjustment(filterAdjustment) == 0) {
             filterControl.deleteFilterAdjustment(filterAdjustment, deletedBy);
@@ -211,6 +220,5 @@ public class FilterAdjustmentLogic
                     filterAdjustmentDetail.getFilterKind().getLastDetail().getFilterKindName(),
                     filterAdjustmentDetail.getFilterAdjustmentName());
         }
-
     }
 }

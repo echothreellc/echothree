@@ -27,14 +27,20 @@ import com.echothree.util.common.exception.BaseException;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
 import com.google.common.base.Splitter;
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import javax.enterprise.inject.spi.CDI;
 
 @ApplicationScoped
 public class UnitOfMeasureTypeLogic
     extends BaseLogic {
+
+    @Inject
+    UomControl uomControl;
+
+    @Inject
+    UnitOfMeasureKindLogic unitOfMeasureKindLogic;
 
     protected UnitOfMeasureTypeLogic() {
         super();
@@ -46,7 +52,6 @@ public class UnitOfMeasureTypeLogic
     
     public UnitOfMeasureType getUnitOfMeasureTypeByName(final ExecutionErrorAccumulator eea, final UnitOfMeasureKind unitOfMeasureKind,
             final String unitOfMeasureTypeName) {
-        var uomControl = Session.getModelController(UomControl.class);
         var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
 
         if(unitOfMeasureType == null) {
@@ -59,7 +64,7 @@ public class UnitOfMeasureTypeLogic
 
     public UnitOfMeasureType getUnitOfMeasureTypeByName(final ExecutionErrorAccumulator eea, final String unitOfMeasureKindName,
             final String unitOfMeasureTypeName) {
-        var unitOfMeasureKind = UnitOfMeasureKindLogic.getInstance().getUnitOfMeasureKindByName(eea, unitOfMeasureKindName);
+        var unitOfMeasureKind = unitOfMeasureKindLogic.getUnitOfMeasureKindByName(eea, unitOfMeasureKindName);
         UnitOfMeasureType unitOfMeasureType = null;
 
         if(!hasExecutionErrors(eea)) {
@@ -99,7 +104,6 @@ public class UnitOfMeasureTypeLogic
         var parameterCount = (unitOfMeasureTypeName == null ? 0 : 1) + (value == null ? 0 : 1);
 
         if(parameterCount == 2) {
-            var uomControl = Session.getModelController(UomControl.class);
             var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
 
             if(unitOfMeasureType != null) {
@@ -131,7 +135,6 @@ public class UnitOfMeasureTypeLogic
         var parameterCount = (unitOfMeasureTypeName == null ? 0 : 1) + (value == null ? 0 : 1);
 
         if(parameterCount == 2) {
-            var uomControl = Session.getModelController(UomControl.class);
             var unitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(unitOfMeasureKindUseTypeName);
 
             if(unitOfMeasureKind != null) {
@@ -202,7 +205,6 @@ public class UnitOfMeasureTypeLogic
         StringUnitOfMeasure result = null;
         
         if(value != null) {
-            var uomControl = Session.getModelController(UomControl.class);
             var unitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(unitOfMeasureKindUseTypeName);
             
             if(unitOfMeasureKind != null) {

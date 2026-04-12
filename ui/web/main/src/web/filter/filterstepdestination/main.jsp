@@ -31,18 +31,18 @@
                 <a href="<c:url value="/action/Filter/Main" />">Filters</a> &gt;&gt;
                 <a href="<c:url value="/action/Filter/FilterKind/Main" />">Kinds</a> &gt;&gt;
                 <c:url var="filterTypesUrl" value="/action/Filter/FilterType/Main">
-                    <c:param name="FilterKindName" value="${filterKind.filterKindName}" />
+                    <c:param name="FilterKindName" value="${fromFilterStep.filter.filterType.filterKind.filterKindName}" />
                 </c:url>
                 <a href="${filterTypesUrl}">Types</a> &gt;&gt;
                 <c:url var="filtersUrl" value="/action/Filter/Filter/Main">
-                    <c:param name="FilterKindName" value="${filterKind.filterKindName}" />
-                    <c:param name="FilterTypeName" value="${filterType.filterTypeName}" />
+                    <c:param name="FilterKindName" value="${fromFilterStep.filter.filterType.filterKind.filterKindName}" />
+                    <c:param name="FilterTypeName" value="${fromFilterStep.filter.filterType.filterTypeName}" />
                 </c:url>
                 <a href="${filtersUrl}">Filters</a> &gt;&gt;
                 <c:url var="filterStepsUrl" value="/action/Filter/FilterStep/Main">
-                    <c:param name="FilterKindName" value="${filterKind.filterKindName}" />
-                    <c:param name="FilterTypeName" value="${filterType.filterTypeName}" />
-                    <c:param name="FilterName" value="${filter.filterName}" />
+                    <c:param name="FilterKindName" value="${fromFilterStep.filter.filterType.filterKind.filterKindName}" />
+                    <c:param name="FilterTypeName" value="${fromFilterStep.filter.filterType.filterTypeName}" />
+                    <c:param name="FilterName" value="${fromFilterStep.filter.filterName}" />
                 </c:url>
                 <a href="${filterStepsUrl}">Steps</a> &gt;&gt;
                 Destinations
@@ -50,9 +50,9 @@
         </div>
         <div id="Content">
             <c:url var="addUrl" value="/action/Filter/FilterStepDestination/Add">
-                <c:param name="FilterKindName" value="${filterKind.filterKindName}" />
-                <c:param name="FilterTypeName" value="${filterType.filterTypeName}" />
-                <c:param name="FilterName" value="${filter.filterName}" />
+                <c:param name="FilterKindName" value="${fromFilterStep.filter.filterType.filterKind.filterKindName}" />
+                <c:param name="FilterTypeName" value="${fromFilterStep.filter.filterType.filterTypeName}" />
+                <c:param name="FilterName" value="${fromFilterStep.filter.filterName}" />
                 <c:param name="FilterStepName" value="${fromFilterStep.filterStepName}" />
             </c:url>
             <p><a href="${addUrl}">Add Destination.</a></p>

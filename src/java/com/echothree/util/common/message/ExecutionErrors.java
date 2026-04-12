@@ -2096,6 +2096,7 @@ public enum ExecutionErrors {
     UnknownFirstHarmonizedTariffScheduleCodeUnitName,
     UnknownSecondHarmonizedTariffScheduleCodeUnitName,
     CannotRelateToSelf,
+    SelfReferentialFilterStepDestination,
     UnknownAllocationPriorityName,
     DuplicateAllocationPriorityName,
     DuplicateAllocationPriorityDescription,
@@ -2370,5 +2371,8 @@ public enum ExecutionErrors {
     DuplicateInventoryAdjustmentTypeDescription,
     UnknownInventoryAdjustmentTypeDescription,
     UnknownDefaultInventoryAdjustmentType,
+    CannotDeleteFilterStepInUse,
+    CannotDeleteFilterTypeInUse,
+    CannotDeleteFilterKindInUse,
 
 }

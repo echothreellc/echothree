@@ -190,6 +190,16 @@ public class FilterTypeSteps implements En {
                     }
                 });
 
+        When("^the user sets the filter type's new filter type name to \"([^\"]*)\"$",
+                (String filterTypeName) -> {
+                    var persona = CurrentPersona.persona;
+                    var filterTypeEdit = persona.filterTypeEdit;
+
+                    assertThat(filterTypeEdit).isNotNull();
+
+                    filterTypeEdit.setFilterTypeName(filterTypeName);
+                });
+
         When("^the user sets the filter type to (be|not be) the default$",
                 (String isDefault) -> {
                     var persona = CurrentPersona.persona;

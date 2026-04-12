@@ -26,23 +26,24 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.filter.server.entity.FilterAdjustment;
 import com.echothree.model.data.filter.server.entity.FilterAdjustmentFixedAmount;
+import com.echothree.model.data.filter.server.factory.FilterAdjustmentFixedAmountFactory;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetFilterAdjustmentFixedAmountsCommand
-        extends BaseMultipleEntitiesCommand<FilterAdjustmentFixedAmount, GetFilterAdjustmentFixedAmountsForm> {
+        extends BasePaginatedMultipleEntitiesCommand<FilterAdjustmentFixedAmount, GetFilterAdjustmentFixedAmountsForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -66,22 +67,35 @@ public class GetFilterAdjustmentFixedAmountsCommand
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
+    @Inject
+    FilterControl filterControl;
+
+    @Inject
+    FilterAdjustmentLogic filterAdjustmentLogic;
+
     FilterAdjustment filterAdjustment;
 
     @Override
-    protected Collection<FilterAdjustmentFixedAmount> getEntities() {
-        var filterControl = Session.getModelController(FilterControl.class);
+    protected void handleForm() {
         var filterKindName = form.getFilterKindName();
         var filterAdjustmentName = form.getFilterAdjustmentName();
 
-        filterAdjustment = FilterAdjustmentLogic.getInstance().getFilterAdjustmentByName(this, filterKindName, filterAdjustmentName);
+        filterAdjustment = filterAdjustmentLogic.getFilterAdjustmentByName(this, filterKindName, filterAdjustmentName);
 
         if(!hasExecutionErrors()) {
             if(!filterAdjustment.getLastDetail().getFilterAdjustmentType().getFilterAdjustmentTypeName().equals(FilterAdjustmentTypes.FIXED_AMOUNT.name())) {
                 addExecutionError(ExecutionErrors.InvalidFilterAdjustmentType.name());
             }
         }
+    }
 
+    @Override
+    protected Long getTotalEntities() {
+        return hasExecutionErrors() ? null : filterControl.countFilterAdjustmentFixedAmountsByFilterAdjustment(filterAdjustment);
+    }
+
+    @Override
+    protected Collection<FilterAdjustmentFixedAmount> getEntities() {
         return hasExecutionErrors() ? null : filterControl.getFilterAdjustmentFixedAmounts(filterAdjustment);
     }
 
@@ -90,10 +104,15 @@ public class GetFilterAdjustmentFixedAmountsCommand
         var result = FilterResultFactory.getGetFilterAdjustmentFixedAmountsResult();
 
         if(entities != null) {
-            var filterControl = Session.getModelController(FilterControl.class);
+            var userVisit = getUserVisit();
 
-            result.setFilterAdjustment(filterControl.getFilterAdjustmentTransfer(getUserVisit(), filterAdjustment));
-            result.setFilterAdjustmentFixedAmounts(filterControl.getFilterAdjustmentFixedAmountTransfers(getUserVisit(), entities));
+            result.setFilterAdjustment(filterControl.getFilterAdjustmentTransfer(userVisit, filterAdjustment));
+
+            if(session.hasLimit(FilterAdjustmentFixedAmountFactory.class)) {
+                result.setFilterAdjustmentFixedAmountCount(getTotalEntities());
+            }
+
+            result.setFilterAdjustmentFixedAmounts(filterControl.getFilterAdjustmentFixedAmountTransfers(userVisit, entities));
         }
 
         return result;

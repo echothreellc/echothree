@@ -67,6 +67,7 @@ import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.filter.common.pk.FilterAdjustmentPK;
 import com.echothree.model.data.filter.common.pk.FilterKindPK;
 import com.echothree.model.data.filter.common.pk.FilterPK;
+import com.echothree.model.data.filter.common.pk.FilterStepElementPK;
 import com.echothree.model.data.filter.common.pk.FilterStepPK;
 import com.echothree.model.data.filter.common.pk.FilterTypePK;
 import com.echothree.model.data.filter.server.entity.Filter;
@@ -138,6 +139,7 @@ import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
@@ -149,7 +151,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
@@ -475,6 +476,7 @@ public class FilterControl
     }
 
     public void deleteFilterKind(FilterKind filterKind, BasePK deletedBy) {
+        deleteFilterTypesByFilterKind(filterKind, deletedBy);
         deleteFilterKindDescriptionsByFilterKind(filterKind, deletedBy);
 
         var filterKindDetail = filterKind.getLastDetailForUpdate();
@@ -915,6 +917,7 @@ public class FilterControl
     }
 
     public void deleteFilterType(FilterType filterType, BasePK deletedBy) {
+        deleteFiltersByFilterType(filterType, deletedBy);
         deleteFilterTypeDescriptionsByFilterType(filterType, deletedBy);
 
         var filterTypeDetail = filterType.getLastDetailForUpdate();
@@ -1411,6 +1414,14 @@ public class FilterControl
         return filterAdjustment;
     }
 
+    public long countFilterAdjustmentsByFilterKind(FilterKind filterKind) {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM filteradjustments, filteradjustmentdetails
+                WHERE flta_activedetailid = fltadt_filteradjustmentdetailid AND fltadt_fltk_filterkindid = ?
+                """, filterKind);
+    }
+
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.FilterAdjustment */
     public FilterAdjustment getFilterAdjustmentByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new FilterAdjustmentPK(entityInstance.getEntityUniqueId());
@@ -1447,7 +1458,8 @@ public class FilterControl
                 query = "SELECT _ALL_ " +
                         "FROM filteradjustments, filteradjustmentdetails " +
                         "WHERE flta_activedetailid = fltadt_filteradjustmentdetailid AND fltadt_fltk_filterkindid = ? " +
-                        "ORDER BY fltadt_filteradjustmentname";
+                        "ORDER BY fltadt_filteradjustmentname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM filteradjustments, filteradjustmentdetails " +
@@ -1711,6 +1723,14 @@ public class FilterControl
         return filterAdjustmentAmount;
     }
     
+    public long countFilterAdjustmentAmountsByFilterAdjustment(FilterAdjustment filterAdjustment) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM filteradjustmentamounts
+                        WHERE fltaa_flta_filteradjustmentid = ? AND fltaa_thrutime = ?
+                        """, filterAdjustment, Session.MAX_TIME);
+    }
+
     private List<FilterAdjustmentAmount> getFilterAdjustmentAmounts(FilterAdjustment filterAdjustment,
             EntityPermission entityPermission) {
         List<FilterAdjustmentAmount> filterAdjustmentAmounts;
@@ -1725,7 +1745,8 @@ public class FilterControl
                         "AND fltaa_uomt_unitofmeasuretypeid = uomtdt_uomt_unitofmeasuretypeid AND uomtdt_thrutime = ? " +
                         "AND uomtdt_uomk_unitofmeasurekindid = uomkdt_uomk_unitofmeasurekindid AND uomkdt_thrutime = ? " +
                         "AND fltaa_cur_currencyid = cur_currencyid " +
-                        "ORDER BY uomkdt_sortorder, uomtdt_sortorder, cur_sortorder";
+                        "ORDER BY uomkdt_sortorder, uomtdt_sortorder, cur_sortorder " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM filteradjustmentamounts " +
@@ -1884,6 +1905,14 @@ public class FilterControl
         return filterAdjustmentFixedAmount;
     }
     
+    public long countFilterAdjustmentFixedAmountsByFilterAdjustment(FilterAdjustment filterAdjustment) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM filteradjustmentfixedamounts
+                        WHERE fltafa_flta_filteradjustmentid = ? AND fltafa_thrutime = ?
+                        """, filterAdjustment, Session.MAX_TIME);
+    }
+
     private List<FilterAdjustmentFixedAmount> getFilterAdjustmentFixedAmounts(FilterAdjustment filterAdjustment,
             EntityPermission entityPermission) {
         List<FilterAdjustmentFixedAmount> filterAdjustmentFixedAmounts;
@@ -1898,7 +1927,8 @@ public class FilterControl
                         "AND fltafa_uomt_unitofmeasuretypeid = uomtdt_uomt_unitofmeasuretypeid AND uomtdt_thrutime = ? " +
                         "AND uomtdt_uomk_unitofmeasurekindid = uomkdt_uomk_unitofmeasurekindid AND uomkdt_thrutime = ? " +
                         "AND fltafa_cur_currencyid = cur_currencyid " +
-                        "ORDER BY uomkdt_sortorder, uomtdt_sortorder, cur_sortorder";
+                        "ORDER BY uomkdt_sortorder, uomtdt_sortorder, cur_sortorder " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM filteradjustmentfixedamounts " +
@@ -2060,7 +2090,15 @@ public class FilterControl
         
         return filterAdjustmentPercent;
     }
-    
+
+    public long countFilterAdjustmentPercentsByFilterAdjustment(FilterAdjustment filterAdjustment) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM filteradjustmentpercents
+                        WHERE fltap_flta_filteradjustmentid = ? AND fltap_thrutime = ?
+                        """, filterAdjustment, Session.MAX_TIME);
+    }
+
     private List<FilterAdjustmentPercent> getFilterAdjustmentPercents(FilterAdjustment filterAdjustment,
             EntityPermission entityPermission) {
         List<FilterAdjustmentPercent> filterAdjustmentPercents;
@@ -2075,7 +2113,8 @@ public class FilterControl
                         "AND fltap_uomt_unitofmeasuretypeid = uomtdt_uomt_unitofmeasuretypeid AND uomtdt_thrutime = ? " +
                         "AND uomtdt_uomk_unitofmeasurekindid = uomkdt_uomk_unitofmeasurekindid AND uomkdt_thrutime = ? " +
                         "AND fltap_cur_currencyid = cur_currencyid " +
-                        "ORDER BY uomkdt_sortorder, uomtdt_sortorder, cur_sortorder";
+                        "ORDER BY uomkdt_sortorder, uomtdt_sortorder, cur_sortorder " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM filteradjustmentpercents " +
@@ -2108,7 +2147,7 @@ public class FilterControl
     public List<FilterAdjustmentPercent> getFilterAdjustmentPercentsForUpdate(FilterAdjustment filterAdjustment) {
         return getFilterAdjustmentPercents(filterAdjustment, EntityPermission.READ_WRITE);
     }
-    
+
     private FilterAdjustmentPercent getFilterAdjustmentPercent(FilterAdjustment filterAdjustment, UnitOfMeasureType unitOfMeasureType,
             Currency currency, EntityPermission entityPermission) {
         FilterAdjustmentPercent filterAdjustmentPercent;
@@ -2729,7 +2768,15 @@ public class FilterControl
         
         sendEvent(filter.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
-    
+
+    public void deleteFiltersByFilterType(FilterType filterType, BasePK deletedBy) {
+        var filters = getFiltersForUpdate(filterType);
+
+        filters.forEach((filter) ->
+                deleteFilter(filter, deletedBy)
+        );
+    }
+
     // --------------------------------------------------------------------------------
     //   Filter Descriptions
     // --------------------------------------------------------------------------------
@@ -3003,7 +3050,8 @@ public class FilterControl
                 query = "SELECT _ALL_ " +
                         "FROM filtersteps, filterstepdetails " +
                         "WHERE fltstp_activedetailid = fltstpdt_filterstepdetailid AND fltstpdt_flt_filterid = ? " +
-                        "ORDER BY fltstpdt_filterstepname";
+                        "ORDER BY fltstpdt_filterstepname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM filtersteps, filterstepdetails " +
@@ -3313,7 +3361,24 @@ public class FilterControl
         
         return filterEntranceStep;
     }
-    
+
+    public long countFilterEntranceStepsByFilter(Filter filter) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM filterentrancesteps " +
+                        "WHERE fltens_flt_filterid = ? AND fltens_thrutime = ?",
+                filter, Session.MAX_TIME);
+    }
+
+    public long countFilterEntranceStepsByFilterStep(FilterStep filterStep) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM filterentrancesteps " +
+                        "WHERE fltens_fltstp_filterstepid = ? AND fltens_thrutime = ?",
+                filterStep, Session.MAX_TIME);
+    }
+
+
     private FilterEntranceStep getFilterEntranceStep(Filter filter, FilterStep filterStep, EntityPermission entityPermission) {
         FilterEntranceStep filterEntranceStep;
         
@@ -3364,7 +3429,8 @@ public class FilterControl
                         "FROM filterentrancesteps, filterstepdetails " +
                         "WHERE fltens_flt_filterid = ? AND fltens_thrutime = ? " +
                         "AND fltens_fltstp_filterstepid = fltstpdt_fltstp_filterstepid AND fltstpdt_thrutime = ? " +
-                        "ORDER BY fltstpdt_filterstepname";
+                        "ORDER BY fltstpdt_filterstepname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM filterentrancesteps " +
@@ -3407,7 +3473,8 @@ public class FilterControl
                         "FROM filterentrancesteps, filterstepdetails" +
                         "WHERE fltens_fltstp_filterstepid = ? AND fltens_thrutime = ? " +
                         "AND fltens_fltstp_filterstepid = fltstpdt_fltstp_filterstepid AND fltstpdt_thrutime = ? " +
-                        "ORDER BY fltstpdt_filterstepname";
+                        "ORDER BY fltstpdt_filterstepname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM filterentrancesteps " +
@@ -3485,7 +3552,23 @@ public class FilterControl
         
         return filterStepDestination;
     }
-    
+
+    public long countFilterStepDestinationsByFromFilterStep(FilterStep fromFilterStep) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM filterstepdestinations " +
+                        "WHERE fltstpdn_fromfilterstepid = ? AND fltstpdn_thrutime = ?",
+                fromFilterStep, Session.MAX_TIME);
+    }
+
+    public long countFilterStepDestinationsByToFilterStep(FilterStep toFilterStep) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM filterstepdestinations " +
+                        "WHERE fltstpdn_tofilterstepid = ? AND fltstpdn_thrutime = ?",
+                toFilterStep, Session.MAX_TIME);
+    }
+
     private FilterStepDestination getFilterStepDestination(FilterStep fromFilterStep, FilterStep toFilterStep,
             EntityPermission entityPermission) {
         FilterStepDestination filterStepDestination;
@@ -3537,7 +3620,8 @@ public class FilterControl
                         "FROM filterstepdestinations, filterstepdetails " +
                         "WHERE fltstpdn_fromfilterstepid = ? AND fltstpdn_thrutime = ? " +
                         "AND fltstpdn_tofilterstepid = fltstpdt_fltstp_filterstepid AND fltstpdt_thrutime = ? " +
-                        "ORDER BY fltstpdt_filterstepname";
+                        "ORDER BY fltstpdt_filterstepname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM filterstepdestinations " +
@@ -3580,7 +3664,8 @@ public class FilterControl
                         "FROM filterstepdestinations, filterstepdetails " +
                         "WHERE fltstpdn_tofilterstepid = ? AND fltstpdn_thrutime = ? " +
                         "AND fltstpdn_tofilterstepid = fltstpdt_fltstp_filterstepid AND fltstpdt_thrutime = ? " +
-                        "ORDER BY fltstpdt_filterstepname";
+                        "ORDER BY fltstpdt_filterstepname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM filterstepdestinations " +
@@ -3610,22 +3695,6 @@ public class FilterControl
     
     public List<FilterStepDestination> getFilterStepDestinationsByToFilterStepForUpdate(FilterStep toFilterStep) {
         return getFilterStepDestinationsByToFilterStep(toFilterStep, EntityPermission.READ_WRITE);
-    }
-    
-    public long countFilterStepDestinationsByFromFilterStep(FilterStep fromFilterStep) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM filterstepdestinations " +
-                "WHERE fltstpdn_fromfilterstepid = ? AND fltstpdn_thrutime = ?",
-                fromFilterStep, Session.MAX_TIME);
-    }
-    
-    public long countFilterStepDestinationsByToFilterStep(FilterStep toFilterStep) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM filterstepdestinations " +
-                "WHERE fltstpdn_tofilterstepid = ? AND fltstpdn_thrutime = ?",
-                toFilterStep, Session.MAX_TIME);
     }
     
     public List<FilterStepDestinationTransfer> getFilterStepDestinationTransfers(UserVisit userVisit, Collection<FilterStepDestination> filterStepDestinations) {
@@ -3702,8 +3771,47 @@ public class FilterControl
         
         return filterStepElement;
     }
-    
-    private FilterStepElement getFilterStepElementByName(FilterStep filterStep, String filterStepElementName,
+
+    public long countFilterStepElementsByFilterStep(FilterStep filterStep) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM filterstepelements, filterstepelementdetails " +
+                        "WHERE fltstpe_activedetailid = fltstpedt_filterstepelementdetailid AND fltstpedt_fltstp_filterstepid = ?",
+                filterStep);
+    }
+
+    public long countFilterStepElementsBySelector(Selector selector) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM filterstepelements, filterstepelementdetails " +
+                        "WHERE fltstpe_activedetailid = fltstpedt_filterstepelementdetailid AND fltstpedt_filteritemselectorid = ?",
+                selector);
+    }
+
+    public long countFilterStepElementsByFilterAdjustment(FilterAdjustment filterAdjustment) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM filterstepelements, filterstepelementdetails " +
+                        "WHERE fltstpe_activedetailid = fltstpedt_filterstepelementdetailid AND fltstpedt_flta_filteradjustmentid = ?",
+                filterAdjustment);
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.FilterStepElement */
+    public FilterStepElement getFilterStepElementByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new FilterStepElementPK(entityInstance.getEntityUniqueId());
+
+        return FilterStepElementFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public FilterStepElement getFilterStepElementByEntityInstance(EntityInstance entityInstance) {
+        return getFilterStepElementByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public FilterStepElement getFilterStepElementByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getFilterStepElementByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public FilterStepElement getFilterStepElementByName(FilterStep filterStep, String filterStepElementName,
             EntityPermission entityPermission) {
         FilterStepElement filterStepElement;
         
@@ -3761,7 +3869,8 @@ public class FilterControl
                 query = "SELECT _ALL_ " +
                         "FROM filterstepelements, filterstepelementdetails " +
                         "WHERE fltstpe_activedetailid = fltstpedt_filterstepelementdetailid AND fltstpedt_fltstp_filterstepid = ? " +
-                        "ORDER BY fltstpedt_filterstepelementname";
+                        "ORDER BY fltstpedt_filterstepelementname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM filterstepelements, filterstepelementdetails " +
@@ -3805,22 +3914,6 @@ public class FilterControl
     
     public FilterStepElementTransfer getFilterStepElementTransfer(UserVisit userVisit, FilterStepElement filterStepElement) {
         return filterStepElementTransferCache.getTransfer(userVisit, filterStepElement);
-    }
-    
-    public long countFilterStepElementsBySelector(Selector selector) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM filterstepelementdetails " +
-                "WHERE fltstpedt_filteritemselectorid = ? AND fltstpedt_thrutime = ?",
-                selector, Session.MAX_TIME);
-    }
-    
-    public long countFilterStepElementsByFilterAdjustment(FilterAdjustment filterAdjustment) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM filterstepelementdetails " +
-                "WHERE fltstpedt_flta_filteradjustmentid = ? AND fltstpedt_thrutime = ?",
-                filterAdjustment, Session.MAX_TIME);
     }
     
     public void updateFilterStepElementFromValue(FilterStepElementDetailValue filterStepElementDetailValue, BasePK updatedBy) {

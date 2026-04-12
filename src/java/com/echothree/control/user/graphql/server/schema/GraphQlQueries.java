@@ -138,7 +138,13 @@ import com.echothree.control.user.filter.server.command.GetFilterAdjustmentsComm
 import com.echothree.control.user.filter.server.command.GetFilterCommand;
 import com.echothree.control.user.filter.server.command.GetFilterKindCommand;
 import com.echothree.control.user.filter.server.command.GetFilterKindsCommand;
+import com.echothree.control.user.filter.server.command.GetFilterEntranceStepCommand;
+import com.echothree.control.user.filter.server.command.GetFilterEntranceStepsCommand;
 import com.echothree.control.user.filter.server.command.GetFilterStepCommand;
+import com.echothree.control.user.filter.server.command.GetFilterStepDestinationCommand;
+import com.echothree.control.user.filter.server.command.GetFilterStepDestinationsCommand;
+import com.echothree.control.user.filter.server.command.GetFilterStepElementCommand;
+import com.echothree.control.user.filter.server.command.GetFilterStepElementsCommand;
 import com.echothree.control.user.filter.server.command.GetFilterStepsCommand;
 import com.echothree.control.user.filter.server.command.GetFilterTypeCommand;
 import com.echothree.control.user.filter.server.command.GetFilterTypesCommand;
@@ -506,8 +512,11 @@ import com.echothree.model.control.filter.server.graphql.FilterAdjustmentObject;
 import com.echothree.model.control.filter.server.graphql.FilterAdjustmentPercentObject;
 import com.echothree.model.control.filter.server.graphql.FilterAdjustmentSourceObject;
 import com.echothree.model.control.filter.server.graphql.FilterAdjustmentTypeObject;
+import com.echothree.model.control.filter.server.graphql.FilterEntranceStepObject;
 import com.echothree.model.control.filter.server.graphql.FilterKindObject;
 import com.echothree.model.control.filter.server.graphql.FilterObject;
+import com.echothree.model.control.filter.server.graphql.FilterStepDestinationObject;
+import com.echothree.model.control.filter.server.graphql.FilterStepElementObject;
 import com.echothree.model.control.filter.server.graphql.FilterStepObject;
 import com.echothree.model.control.filter.server.graphql.FilterTypeObject;
 import com.echothree.model.control.geo.server.graphql.GeoCodeAliasObject;
@@ -770,7 +779,11 @@ import com.echothree.model.data.employee.common.PartyEmployeeConstants;
 import com.echothree.model.data.employee.server.entity.PartyEmployee;
 import com.echothree.model.data.filter.common.FilterAdjustmentTypeConstants;
 import com.echothree.model.data.filter.common.FilterConstants;
+import com.echothree.model.data.filter.common.FilterEntranceStepConstants;
 import com.echothree.model.data.filter.common.FilterKindConstants;
+import com.echothree.model.data.filter.common.FilterStepConstants;
+import com.echothree.model.data.filter.common.FilterStepDestinationConstants;
+import com.echothree.model.data.filter.common.FilterStepElementConstants;
 import com.echothree.model.data.filter.common.FilterTypeConstants;
 import com.echothree.model.data.filter.server.entity.Filter;
 import com.echothree.model.data.filter.server.entity.FilterAdjustment;
@@ -779,8 +792,11 @@ import com.echothree.model.data.filter.server.entity.FilterAdjustmentFixedAmount
 import com.echothree.model.data.filter.server.entity.FilterAdjustmentPercent;
 import com.echothree.model.data.filter.server.entity.FilterAdjustmentSource;
 import com.echothree.model.data.filter.server.entity.FilterAdjustmentType;
+import com.echothree.model.data.filter.server.entity.FilterEntranceStep;
 import com.echothree.model.data.filter.server.entity.FilterKind;
 import com.echothree.model.data.filter.server.entity.FilterStep;
+import com.echothree.model.data.filter.server.entity.FilterStepDestination;
+import com.echothree.model.data.filter.server.entity.FilterStepElement;
 import com.echothree.model.data.filter.server.entity.FilterType;
 import com.echothree.model.data.geo.common.GeoCodeAliasConstants;
 import com.echothree.model.data.geo.common.GeoCodeAliasTypeConstants;
@@ -2986,6 +3002,70 @@ public interface GraphQlQueries {
     }
 
     @GraphQLField
+    @GraphQLName("filterEntranceStep")
+    static FilterEntranceStepObject filterEntranceStep(final DataFetchingEnvironment env,
+            @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName,
+            @GraphQLName("filterTypeName") @GraphQLNonNull final String filterTypeName,
+            @GraphQLName("filterName") @GraphQLNonNull final String filterName,
+            @GraphQLName("filterStepName") @GraphQLNonNull final String filterStepName) {
+        FilterEntranceStep filterEntranceStep;
+
+        try {
+            var commandForm = FilterUtil.getHome().getGetFilterEntranceStepForm();
+
+            commandForm.setFilterKindName(filterKindName);
+            commandForm.setFilterTypeName(filterTypeName);
+            commandForm.setFilterName(filterName);
+            commandForm.setFilterStepName(filterStepName);
+
+            filterEntranceStep = CDI.current().select(GetFilterEntranceStepCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return filterEntranceStep == null ? null : new FilterEntranceStepObject(filterEntranceStep);
+    }
+
+    @GraphQLField
+    @GraphQLName("filterEntranceSteps")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<FilterEntranceStepObject> filterEntranceSteps(final DataFetchingEnvironment env,
+            @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName,
+            @GraphQLName("filterTypeName") @GraphQLNonNull final String filterTypeName,
+            @GraphQLName("filterName") @GraphQLNonNull final String filterName) {
+        CountingPaginatedData<FilterEntranceStepObject> data;
+
+        try {
+            var commandForm = FilterUtil.getHome().getGetFilterEntranceStepsForm();
+            var command = CDI.current().select(GetFilterEntranceStepsCommand.class).get();
+
+            commandForm.setFilterKindName(filterKindName);
+            commandForm.setFilterTypeName(filterTypeName);
+            commandForm.setFilterName(filterName);
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, FilterEntranceStepConstants.COMPONENT_VENDOR_NAME, FilterEntranceStepConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var filterEntranceSteps = entities.stream()
+                            .map(FilterEntranceStepObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, filterEntranceSteps);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
     @GraphQLName("filterStep")
     static FilterStepObject filterStep(final DataFetchingEnvironment env,
             @GraphQLName("filterKindName") final String filterKindName,
@@ -3014,36 +3094,181 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("filterSteps")
-    static Collection<FilterStepObject> filterSteps(final DataFetchingEnvironment env,
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<FilterStepObject> filterSteps(final DataFetchingEnvironment env,
             @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName,
             @GraphQLName("filterTypeName") @GraphQLNonNull final String filterTypeName,
             @GraphQLName("filterName") @GraphQLNonNull final String filterName) {
-        Collection<FilterStep> filterSteps;
-        Collection<FilterStepObject> filterStepObjects;
+        CountingPaginatedData<FilterStepObject> data;
 
         try {
             var commandForm = FilterUtil.getHome().getGetFilterStepsForm();
+            var command = CDI.current().select(GetFilterStepsCommand.class).get();
 
             commandForm.setFilterKindName(filterKindName);
             commandForm.setFilterTypeName(filterTypeName);
             commandForm.setFilterName(filterName);
 
-            filterSteps = CDI.current().select(GetFilterStepsCommand.class).get().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, FilterStepConstants.COMPONENT_VENDOR_NAME, FilterStepConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var filterSteps = entities.stream()
+                            .map(FilterStepObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, filterSteps);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(filterSteps == null) {
-            filterStepObjects = emptyList();
-        } else {
-            filterStepObjects = new ArrayList<>(filterSteps.size());
+        return data;
+    }
 
-            filterSteps.stream()
-                    .map(FilterStepObject::new)
-                    .forEachOrdered(filterStepObjects::add);
+    @GraphQLField
+    @GraphQLName("filterStepElement")
+    static FilterStepElementObject filterStepElement(final DataFetchingEnvironment env,
+            @GraphQLName("filterKindName") final String filterKindName,
+            @GraphQLName("filterTypeName") final String filterTypeName,
+            @GraphQLName("filterName") final String filterName,
+            @GraphQLName("filterStepName") final String filterStepName,
+            @GraphQLName("filterStepElementName") final String filterStepElementName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        FilterStepElement filterStepElement;
+
+        try {
+            var commandForm = FilterUtil.getHome().getGetFilterStepElementForm();
+
+            commandForm.setFilterKindName(filterKindName);
+            commandForm.setFilterTypeName(filterTypeName);
+            commandForm.setFilterName(filterName);
+            commandForm.setFilterStepName(filterStepName);
+            commandForm.setFilterStepElementName(filterStepElementName);
+            commandForm.setUuid(id);
+
+            filterStepElement = CDI.current().select(GetFilterStepElementCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
         }
 
-        return filterStepObjects;
+        return filterStepElement == null ? null : new FilterStepElementObject(filterStepElement);
+    }
+
+    @GraphQLField
+    @GraphQLName("filterStepElements")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<FilterStepElementObject> filterStepElements(final DataFetchingEnvironment env,
+            @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName,
+            @GraphQLName("filterTypeName") @GraphQLNonNull final String filterTypeName,
+            @GraphQLName("filterName") @GraphQLNonNull final String filterName,
+            @GraphQLName("filterStepName") @GraphQLNonNull final String filterStepName) {
+        CountingPaginatedData<FilterStepElementObject> data;
+
+        try {
+            var commandForm = FilterUtil.getHome().getGetFilterStepElementsForm();
+            var command = CDI.current().select(GetFilterStepElementsCommand.class).get();
+
+            commandForm.setFilterKindName(filterKindName);
+            commandForm.setFilterTypeName(filterTypeName);
+            commandForm.setFilterName(filterName);
+            commandForm.setFilterStepName(filterStepName);
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, FilterStepElementConstants.COMPONENT_VENDOR_NAME, FilterStepElementConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var filterStepElements = entities.stream()
+                            .map(FilterStepElementObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, filterStepElements);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("filterStepDestination")
+    static FilterStepDestinationObject filterStepDestination(final DataFetchingEnvironment env,
+            @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName,
+            @GraphQLName("filterTypeName") @GraphQLNonNull final String filterTypeName,
+            @GraphQLName("filterName") @GraphQLNonNull final String filterName,
+            @GraphQLName("fromFilterStepName") @GraphQLNonNull final String fromFilterStepName,
+            @GraphQLName("toFilterStepName") @GraphQLNonNull final String toFilterStepName) {
+        FilterStepDestination filterStepDestination;
+
+        try {
+            var commandForm = FilterUtil.getHome().getGetFilterStepDestinationForm();
+
+            commandForm.setFilterKindName(filterKindName);
+            commandForm.setFilterTypeName(filterTypeName);
+            commandForm.setFilterName(filterName);
+            commandForm.setFromFilterStepName(fromFilterStepName);
+            commandForm.setToFilterStepName(toFilterStepName);
+
+            filterStepDestination = CDI.current().select(GetFilterStepDestinationCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return filterStepDestination == null ? null : new FilterStepDestinationObject(filterStepDestination);
+    }
+
+    @GraphQLField
+    @GraphQLName("filterStepDestinations")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<FilterStepDestinationObject> filterStepDestinations(final DataFetchingEnvironment env,
+            @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName,
+            @GraphQLName("filterTypeName") @GraphQLNonNull final String filterTypeName,
+            @GraphQLName("filterName") @GraphQLNonNull final String filterName,
+            @GraphQLName("fromFilterStepName") final String fromFilterStepName,
+            @GraphQLName("toFilterStepName") final String toFilterStepName) {
+        CountingPaginatedData<FilterStepDestinationObject> data;
+
+        try {
+            var commandForm = FilterUtil.getHome().getGetFilterStepDestinationsForm();
+            var command = CDI.current().select(GetFilterStepDestinationsCommand.class).get();
+
+            commandForm.setFilterKindName(filterKindName);
+            commandForm.setFilterTypeName(filterTypeName);
+            commandForm.setFilterName(filterName);
+            commandForm.setFromFilterStepName(fromFilterStepName);
+            commandForm.setToFilterStepName(toFilterStepName);
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, FilterStepDestinationConstants.COMPONENT_VENDOR_NAME, FilterStepDestinationConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var filterStepDestinations = entities.stream()
+                            .map(FilterStepDestinationObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, filterStepDestinations);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
     }
 
     @GraphQLField

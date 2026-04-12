@@ -464,7 +464,7 @@ public class InvoiceControl
         getInvoiceTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private InvoiceType getInvoiceTypeByName(String invoiceTypeName, EntityPermission entityPermission) {
+    public InvoiceType getInvoiceTypeByName(String invoiceTypeName, EntityPermission entityPermission) {
         return InvoiceTypeFactory.getInstance().getEntityFromQuery(entityPermission, getInvoiceTypeByNameQueries, invoiceTypeName);
     }
 
@@ -765,7 +765,7 @@ public class InvoiceControl
         return invoiceTypeDescription;
     }
     
-    private InvoiceTypeDescription getInvoiceTypeDescription(InvoiceType invoiceType, Language language, EntityPermission entityPermission) {
+    public InvoiceTypeDescription getInvoiceTypeDescription(InvoiceType invoiceType, Language language, EntityPermission entityPermission) {
         InvoiceTypeDescription invoiceTypeDescription;
         
         try {
@@ -1793,7 +1793,7 @@ public class InvoiceControl
         return invoiceLineType;
     }
     
-    private InvoiceLineType getInvoiceLineTypeByName(InvoiceType invoiceType, String invoiceLineTypeName,
+    public InvoiceLineType getInvoiceLineTypeByName(InvoiceType invoiceType, String invoiceLineTypeName,
             EntityPermission entityPermission) {
         InvoiceLineType invoiceLineType;
         
@@ -2151,7 +2151,7 @@ public class InvoiceControl
         return invoiceLineTypeDescription;
     }
     
-    private InvoiceLineTypeDescription getInvoiceLineTypeDescription(InvoiceLineType invoiceLineType, Language language,
+    public InvoiceLineTypeDescription getInvoiceLineTypeDescription(InvoiceLineType invoiceLineType, Language language,
             EntityPermission entityPermission) {
         InvoiceLineTypeDescription invoiceLineTypeDescription;
         

@@ -27,6 +27,9 @@ public interface GetFilterAdjustmentAmountsResult
     FilterAdjustmentTransfer getFilterAdjustment();
     void setFilterAdjustment(FilterAdjustmentTransfer filterAdjustment);
     
+    Long getFilterAdjustmentAmountCount();
+    void setFilterAdjustmentAmountCount(Long filterAdjustmentAmountCount);
+
     List<FilterAdjustmentAmountTransfer> getFilterAdjustmentAmounts();
     void setFilterAdjustmentAmounts(List<FilterAdjustmentAmountTransfer> filterAdjustmentAmounts);
     

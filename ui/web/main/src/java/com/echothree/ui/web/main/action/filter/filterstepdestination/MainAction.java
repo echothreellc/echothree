@@ -67,9 +67,6 @@ public class MainAction
             var executionResult = commandResult.getExecutionResult();
             var result = (GetFilterStepDestinationsResult)executionResult.getResult();
             
-            request.setAttribute(AttributeConstants.FILTER_KIND, result.getFilterKind());
-            request.setAttribute(AttributeConstants.FILTER_TYPE, result.getFilterType());
-            request.setAttribute(AttributeConstants.FILTER, result.getFilter());
             request.setAttribute(AttributeConstants.FROM_FILTER_STEP, result.getFromFilterStep());
             request.setAttribute(AttributeConstants.FILTER_STEP_DESTINATIONS, result.getFilterStepDestinations());
             forwardKey = ForwardConstants.DISPLAY;
