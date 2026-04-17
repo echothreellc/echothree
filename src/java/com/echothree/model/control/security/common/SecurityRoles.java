@@ -39,6 +39,7 @@ public enum SecurityRoles {
     FilterStep,
     FilterStepDestination,
     FilterStepElement,
+    ForceReindex,
     Get,
     GetNext,
     HarmonizedTariffScheduleCodeUse,

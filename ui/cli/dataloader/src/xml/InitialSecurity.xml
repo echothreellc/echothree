@@ -846,6 +846,9 @@
             <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Index Description" />
             </securityRole>
+            <securityRole securityRoleName="ForceReindex" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Force Reindex" />
+            </securityRole>
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="InventoryComponent" parentSecurityRoleGroupName="ROOT" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Inventory Component" />
@@ -8225,6 +8228,7 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="Index" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Index" securityRoleName="Choices" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Index" securityRoleName="Description" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Index" securityRoleName="ForceReindex" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Inventory" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="InventoryCondition" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="InventoryCondition" securityRoleName="Edit" />
