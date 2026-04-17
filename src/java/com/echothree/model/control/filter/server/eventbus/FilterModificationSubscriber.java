@@ -26,6 +26,7 @@ import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.Event;
 import com.echothree.model.data.filter.common.FilterStepConstants;
+import com.echothree.model.data.filter.common.FilterStepElementConstants;
 import com.echothree.util.server.persistence.PersistenceUtils;
 import com.echothree.util.server.persistence.Session;
 import com.google.common.eventbus.Subscribe;
@@ -35,7 +36,7 @@ public class FilterModificationSubscriber
         extends BaseEventSubscriber {
 
     @Subscribe
-    public void receiveSentEvent(SentEvent se) {
+    public void receiveSentFilterStepEvent(SentEvent se) {
         decodeEventAndApply(se, touchFilterIfFilterStep);
     }
 
@@ -50,6 +51,26 @@ public class FilterModificationSubscriber
 
             eventControl.sendEvent(filterStep.getLastDetail().getFilter().getPrimaryKey(), EventTypes.TOUCH,
                     filterStep.getPrimaryKey(), eventType,
+                    PersistenceUtils.getInstance().getBasePKFromEntityInstance(event.getCreatedBy()));
+        }
+    };
+
+    @Subscribe
+    public void receiveSentFilterStepElementEvent(SentEvent se) {
+        decodeEventAndApply(se, touchFilterIfFilterStepElement);
+    }
+
+    private static final Function5Arity<Event, EntityInstance, EventTypes, String, String>
+            touchFilterIfFilterStepElement = (event, entityInstance, eventType, componentVendorName, entityTypeName) -> {
+        if(FilterStepElementConstants.COMPONENT_VENDOR_NAME.equals(componentVendorName)
+                && FilterStepElementConstants.ENTITY_TYPE_NAME.equals(entityTypeName)
+                && (eventType == EventTypes.MODIFY || eventType == EventTypes.TOUCH)) {
+            var eventControl = Session.getModelController(EventControl.class);
+            var filterControl = Session.getModelController(FilterControl.class);
+            var filterStepElement = filterControl.getFilterStepElementByEntityInstance(entityInstance);
+
+            eventControl.sendEvent(filterStepElement.getLastDetail().getFilterStep().getLastDetail().getFilter().getPrimaryKey(), EventTypes.TOUCH,
+                    filterStepElement.getPrimaryKey(), eventType,
                     PersistenceUtils.getInstance().getBasePKFromEntityInstance(event.getCreatedBy()));
         }
     };
