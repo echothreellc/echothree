@@ -2075,7 +2075,7 @@ public class ContentControl
                         "FROM contentpages, contentpagedetails, contentsections, contentsectiondetails " +
                         "WHERE cntp_activedetailid = cntpdt_contentpagedetailid AND cntpdt_cntpl_contentpagelayoutid = ? " +
                         "AND cntpdt_cnts_contentsectionid = cnts_contentsectionid AND cnts_lastdetailid = cntsdt_contentsectiondetailid " +
-                        "ORDER BY ccntsdt_sortorder, cntsdt_contentsectionname, ntpdt_sortorder, cntpdt_contentpagename " +
+                        "ORDER BY ccntsdt_sortorder, cntsdt_contentsectionname, cntpdt_sortorder, cntpdt_contentpagename " +
                         "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
