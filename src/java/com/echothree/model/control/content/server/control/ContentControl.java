@@ -68,6 +68,7 @@ import com.echothree.model.control.content.server.transfer.ContentWebAddressDesc
 import com.echothree.model.control.content.server.transfer.ContentWebAddressTransferCache;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.item.common.ItemPriceTypes;
+import com.echothree.model.control.order.server.control.OrderControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.content.common.pk.ContentCatalogItemFixedPricePK;
 import com.echothree.model.data.content.common.pk.ContentCatalogItemPK;
@@ -181,6 +182,7 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.common.persistence.type.ByteArray;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
@@ -194,7 +196,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
@@ -205,7 +206,10 @@ public class ContentControl
     protected ContentControl() {
         super();
     }
-    
+
+    @Inject
+    OrderControl orderControl;
+
     // --------------------------------------------------------------------------------
     //   Content Transfer Caches
     // --------------------------------------------------------------------------------
@@ -3098,11 +3102,12 @@ public class ContentControl
 
     public void deleteContentCatalog(ContentCatalog contentCatalog, BasePK deletedBy) {
         // ContentLogic not used since everything is being deleted from the ContentCatalog anyway.
-        // Items are deleted separately to avoid duplicate keye errors due to the pricing for the same item
+        // Items are deleted separately to avoid duplicate key errors due to the pricing for the same item
         // being adjusted multiple times.
         deleteContentCatalogItemsByContentCatalog(contentCatalog, deletedBy);
         deleteContentCategoriesByContentCatalog(contentCatalog, deletedBy);
         deleteContentCatalogDescriptionsByContentCatalog(contentCatalog, deletedBy);
+        orderControl.deleteOrderContentCatalogsByContentCatalog(contentCatalog, deletedBy);
 
         var contentCatalogDetail = contentCatalog.getLastDetailForUpdate();
         contentCatalogDetail.setThruTime(session.getStartTime());
