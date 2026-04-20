@@ -892,6 +892,7 @@ import com.echothree.model.data.party.common.DateTimeFormatConstants;
 import com.echothree.model.data.party.common.LanguageConstants;
 import com.echothree.model.data.party.common.NameSuffixConstants;
 import com.echothree.model.data.party.common.PartyCompanyConstants;
+import com.echothree.model.data.party.common.PartyDepartmentConstants;
 import com.echothree.model.data.party.common.PartyConstants;
 import com.echothree.model.data.party.common.PartyTypeConstants;
 import com.echothree.model.data.party.common.PersonalTitleConstants;
@@ -8406,34 +8407,39 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("departments")
-    static Collection<DepartmentObject> departments(final DataFetchingEnvironment env,
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<DepartmentObject> departments(final DataFetchingEnvironment env,
             @GraphQLName("companyName") @GraphQLNonNull final String companyName,
             @GraphQLName("divisionName") final String divisionName) {
-        Collection<PartyDepartment> partyDepartments;
-        Collection<DepartmentObject> departmentObjects;
+        CountingPaginatedData<DepartmentObject> data;
 
         try {
             var commandForm = PartyUtil.getHome().getGetDepartmentsForm();
+            var command = CDI.current().select(GetDepartmentsCommand.class).get();
 
             commandForm.setCompanyName(companyName);
             commandForm.setDivisionName(divisionName);
 
-            partyDepartments = CDI.current().select(GetDepartmentsCommand.class).get().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, PartyDepartmentConstants.COMPONENT_VENDOR_NAME, PartyDepartmentConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var departments = entities.stream()
+                            .map(DepartmentObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, departments);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(partyDepartments == null) {
-            departmentObjects = emptyList();
-        } else {
-            departmentObjects = new ArrayList<>(partyDepartments.size());
-
-            partyDepartments.stream()
-                    .map(DepartmentObject::new)
-                    .forEachOrdered(departmentObjects::add);
-        }
-
-        return departmentObjects;
+        return data;
     }
 
     @GraphQLField
