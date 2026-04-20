@@ -20,11 +20,13 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.util.common.transfer.BaseTransfer;
 import com.echothree.util.server.persistence.BaseEntity;
 import com.echothree.util.server.persistence.Session;
+import javax.inject.Inject;
 
 public abstract class BaseContactListDescriptionTransferCache<K extends BaseEntity, V extends BaseTransfer>
         extends BaseContactListTransferCache<K, V> {
     
-    PartyControl partyControl = Session.getModelController(PartyControl.class);
+    @Inject
+    PartyControl partyControl;
     
     /** Creates a new instance of BaseContactListDescriptionTransferCache */
     protected BaseContactListDescriptionTransferCache() {
