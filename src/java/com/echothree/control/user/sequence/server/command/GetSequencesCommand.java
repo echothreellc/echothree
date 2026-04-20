@@ -26,22 +26,21 @@ import com.echothree.model.control.sequence.server.logic.SequenceTypeLogic;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.sequence.server.factory.SequenceFactory;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetSequencesCommand
-        extends BaseMultipleEntitiesCommand<Sequence, GetSequencesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<Sequence, GetSequencesForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -59,6 +58,12 @@ public class GetSequencesCommand
         );
     }
 
+    @Inject
+    SequenceControl sequenceControl;
+
+    @Inject
+    SequenceTypeLogic sequenceTypeLogic;
+
     /** Creates a new instance of GetSequencesCommand */
     public GetSequencesCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -67,19 +72,18 @@ public class GetSequencesCommand
     SequenceType sequenceType;
 
     @Override
+    protected void handleForm() {
+        sequenceType = sequenceTypeLogic.getSequenceTypeByName(this, form.getSequenceTypeName());
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return hasExecutionErrors() ? null : sequenceControl.countSequencesBySequenceType(sequenceType);
+    }
+
+    @Override
     protected Collection<Sequence> getEntities() {
-        var sequenceTypeName = form.getSequenceTypeName();
-        Collection<Sequence> sequences = null;
-
-        sequenceType = SequenceTypeLogic.getInstance().getSequenceTypeByName(this, sequenceTypeName);
-
-        if(!hasExecutionErrors()) {
-            var sequenceControl = Session.getModelController(SequenceControl.class);
-
-            sequences = sequenceControl.getSequencesBySequenceType(sequenceType);
-        }
-
-        return sequences;
+        return hasExecutionErrors() ? null : sequenceControl.getSequencesBySequenceType(sequenceType);
     }
 
     @Override
@@ -87,10 +91,8 @@ public class GetSequencesCommand
         var result = SequenceResultFactory.getGetSequencesResult();
 
         if(entities != null) {
-            var sequenceControl = Session.getModelController(SequenceControl.class);
-
             if(session.hasLimit(SequenceFactory.class)) {
-                result.setSequenceCount(sequenceControl.countSequencesBySequenceType(sequenceType));
+                result.setSequenceCount(getTotalEntities());
             }
 
             result.setSequenceType(sequenceControl.getSequenceTypeTransfer(getUserVisit(), sequenceType));

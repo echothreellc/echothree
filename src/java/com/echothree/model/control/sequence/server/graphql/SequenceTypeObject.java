@@ -17,9 +17,15 @@
 package com.echothree.model.control.sequence.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.user.server.control.UserControl;
+import com.echothree.model.data.sequence.common.SequenceConstants;
 import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.sequence.server.entity.SequenceTypeDetail;
 import com.echothree.util.server.persistence.Session;
@@ -27,7 +33,10 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 @GraphQLDescription("sequence type object")
 @GraphQLName("SequenceType")
@@ -112,4 +121,24 @@ public class SequenceTypeObject
         return sequenceControl.getBestSequenceTypeDescription(sequenceType, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
 
+    @GraphQLField
+    @GraphQLDescription("sequences")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<SequenceObject> getSequences(final DataFetchingEnvironment env) {
+        if(SequenceSecurityUtils.getHasSequencesAccess(env)) {
+            var sequenceControl = Session.getModelController(SequenceControl.class);
+            var totalCount = sequenceControl.countSequencesBySequenceType(sequenceType);
+
+            try(var objectLimiter = new ObjectLimiter(env, SequenceConstants.COMPONENT_VENDOR_NAME, SequenceConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = sequenceControl.getSequencesBySequenceType(sequenceType);
+                var sequences = entities.stream().map(SequenceObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, sequences);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
+    
 }
