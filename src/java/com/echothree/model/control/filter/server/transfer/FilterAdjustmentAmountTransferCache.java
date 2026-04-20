@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.filter.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.filter.common.FilterKinds;
 import com.echothree.model.control.filter.common.transfer.FilterAdjustmentAmountTransfer;
@@ -23,17 +24,24 @@ import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.filter.server.entity.FilterAdjustmentAmount;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.AmountUtils;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class FilterAdjustmentAmountTransferCache
         extends BaseFilterTransferCache<FilterAdjustmentAmount, FilterAdjustmentAmountTransfer> {
+    @Inject
+    AccountingControl accountingControl;
 
-    AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
-    FilterControl filterControl = Session.getModelController(FilterControl.class);
-    UomControl uomControl = Session.getModelController(UomControl.class);
+    @Inject
+    FilterControl filterControl;
+
+    @Inject
+    UomControl uomControl;
+
+
+
+
 
     /** Creates a new instance of FilterAdjustmentAmountTransferCache */
     protected FilterAdjustmentAmountTransferCache() {

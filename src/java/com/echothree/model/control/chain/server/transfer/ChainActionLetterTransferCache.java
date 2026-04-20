@@ -16,20 +16,25 @@
 
 package com.echothree.model.control.chain.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.chain.common.transfer.ChainActionLetterTransfer;
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.letter.server.control.LetterControl;
 import com.echothree.model.data.chain.server.entity.ChainActionLetter;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class ChainActionLetterTransferCache
         extends BaseChainTransferCache<ChainActionLetter, ChainActionLetterTransfer> {
+    @Inject
+    ChainControl chainControl;
 
-    ChainControl chainControl = Session.getModelController(ChainControl.class);
-    LetterControl letterControl = Session.getModelController(LetterControl.class);
+    @Inject
+    LetterControl letterControl;
+
+
+
     
     /** Creates a new instance of ChainActionLetterTransferCache */
     protected ChainActionLetterTransferCache() {

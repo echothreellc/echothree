@@ -16,19 +16,24 @@
 
 package com.echothree.model.control.filter.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.filter.common.transfer.FilterStepElementTransfer;
 import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.filter.server.entity.FilterStepElement;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class FilterStepElementTransferCache
         extends BaseFilterTransferCache<FilterStepElement, FilterStepElementTransfer> {
+    @Inject
+    FilterControl filterControl;
 
-    FilterControl filterControl = Session.getModelController(FilterControl.class);
+    @Inject
+    SelectorControl selectorControl;
+
+
 
     /** Creates a new instance of FilterStepElementTransferCache */
     protected FilterStepElementTransferCache() {
@@ -42,7 +47,7 @@ public class FilterStepElementTransferCache
         var filterStepElementTransfer = get(filterStepElement);
         
         if(filterStepElementTransfer == null) {
-            var selectorControl = Session.getModelController(SelectorControl.class);
+
             var filterStepElementDetail = filterStepElement.getLastDetail();
             var filterStepTransfer = filterControl.getFilterStepTransfer(userVisit, filterStepElementDetail.getFilterStep());
             var filterStepElementName = filterStepElementDetail.getFilterStepElementName();

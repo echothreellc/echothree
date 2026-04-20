@@ -16,18 +16,20 @@
 
 package com.echothree.model.control.communication.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.communication.common.transfer.CommunicationEventPurposeDescriptionTransfer;
 import com.echothree.model.control.communication.server.control.CommunicationControl;
 import com.echothree.model.data.communication.server.entity.CommunicationEventPurposeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class CommunicationEventPurposeDescriptionTransferCache
         extends BaseCommunicationDescriptionTransferCache<CommunicationEventPurposeDescription, CommunicationEventPurposeDescriptionTransfer> {
+    @Inject
+    CommunicationControl communicationControl;
 
-    CommunicationControl communicationControl = Session.getModelController(CommunicationControl.class);
+
 
     /** Creates a new instance of CommunicationEventPurposeDescriptionTransferCache */
     protected CommunicationEventPurposeDescriptionTransferCache() {

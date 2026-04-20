@@ -16,20 +16,25 @@
 
 package com.echothree.model.control.contactlist.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.contactlist.common.transfer.CustomerTypeContactListGroupTransfer;
 import com.echothree.model.control.contactlist.server.control.ContactListControl;
 import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.data.contactlist.server.entity.CustomerTypeContactListGroup;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class CustomerTypeContactListGroupTransferCache
         extends BaseContactListTransferCache<CustomerTypeContactListGroup, CustomerTypeContactListGroupTransfer> {
+    @Inject
+    ContactListControl contactListControl;
 
-    ContactListControl contactListControl = Session.getModelController(ContactListControl.class);
-    CustomerControl customerControl = Session.getModelController(CustomerControl.class);
+    @Inject
+    CustomerControl customerControl;
+
+
+
     
     /** Creates a new instance of CustomerTypeContactListGroupTransferCache */
     protected CustomerTypeContactListGroupTransferCache() {

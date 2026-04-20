@@ -16,18 +16,20 @@
 
 package com.echothree.model.control.queue.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.queue.common.transfer.QueueTypeDescriptionTransfer;
 import com.echothree.model.control.queue.server.control.QueueControl;
 import com.echothree.model.data.queue.server.entity.QueueTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class QueueTypeDescriptionTransferCache
         extends BaseQueueDescriptionTransferCache<QueueTypeDescription, QueueTypeDescriptionTransfer> {
+    @Inject
+    QueueControl queueControl;
 
-    QueueControl queueControl = Session.getModelController(QueueControl.class);
+
 
     /** Creates a new instance of QueueTypeDescriptionTransferCache */
     protected QueueTypeDescriptionTransferCache() {

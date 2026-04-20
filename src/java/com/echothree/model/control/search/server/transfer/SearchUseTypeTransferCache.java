@@ -16,19 +16,21 @@
 
 package com.echothree.model.control.search.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.search.common.SearchOptions;
 import com.echothree.model.control.search.common.transfer.SearchUseTypeTransfer;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.data.search.server.entity.SearchUseType;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class SearchUseTypeTransferCache
         extends BaseSearchTransferCache<SearchUseType, SearchUseTypeTransfer> {
+    @Inject
+    SearchControl searchControl;
 
-    SearchControl searchControl = Session.getModelController(SearchControl.class);
+
 
     /** Creates a new instance of SearchUseTypeTransferCache */
     protected SearchUseTypeTransferCache() {

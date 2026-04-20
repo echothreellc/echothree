@@ -16,18 +16,20 @@
 
 package com.echothree.model.control.accounting.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.accounting.common.transfer.TransactionTimeTypeDescriptionTransfer;
 import com.echothree.model.control.accounting.server.control.TransactionTimeControl;
 import com.echothree.model.data.accounting.server.entity.TransactionTimeTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class TransactionTimeTypeDescriptionTransferCache
         extends BaseAccountingDescriptionTransferCache<TransactionTimeTypeDescription, TransactionTimeTypeDescriptionTransfer> {
+    @Inject
+    TransactionTimeControl transactionTimeControl;
 
-    TransactionTimeControl transactionTimeControl = Session.getModelController(TransactionTimeControl.class);
+
 
     /** Creates a new instance of TransactionTimeTypeDescriptionTransferCache */
     protected TransactionTimeTypeDescriptionTransferCache() {

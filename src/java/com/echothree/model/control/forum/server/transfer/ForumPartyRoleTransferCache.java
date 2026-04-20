@@ -16,20 +16,25 @@
 
 package com.echothree.model.control.forum.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.forum.common.transfer.ForumPartyRoleTransfer;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.forum.server.entity.ForumPartyRole;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class ForumPartyRoleTransferCache
         extends BaseForumTransferCache<ForumPartyRole, ForumPartyRoleTransfer> {
+    @Inject
+    ForumControl forumControl;
 
-    ForumControl forumControl = Session.getModelController(ForumControl.class);
-    PartyControl partyControl = Session.getModelController(PartyControl.class);
+    @Inject
+    PartyControl partyControl;
+
+
+
     
     /** Creates a new instance of ForumPartyRoleTransferCache */
     protected ForumPartyRoleTransferCache() {

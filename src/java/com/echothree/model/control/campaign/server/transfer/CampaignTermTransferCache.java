@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.campaign.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.campaign.common.CampaignOptions;
 import com.echothree.model.control.campaign.common.transfer.CampaignTermTransfer;
 import com.echothree.model.control.campaign.common.workflow.CampaignTermStatusConstants;
@@ -23,15 +24,19 @@ import com.echothree.model.control.campaign.server.control.CampaignControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.campaign.server.entity.CampaignTerm;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class CampaignTermTransferCache
         extends BaseCampaignTransferCache<CampaignTerm, CampaignTermTransfer> {
+    @Inject
+    CampaignControl campaignControl;
 
-    CampaignControl campaignControl = Session.getModelController(CampaignControl.class);
-    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
+    @Inject
+    WorkflowControl workflowControl;
+
+
+
     
     /** Creates a new instance of CampaignTermTransferCache */
     protected CampaignTermTransferCache() {

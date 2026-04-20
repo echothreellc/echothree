@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.offer.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.offer.common.OfferOptions;
 import com.echothree.model.control.offer.common.OfferProperties;
@@ -25,17 +26,24 @@ import com.echothree.model.control.offer.server.control.OfferItemControl;
 import com.echothree.model.data.offer.server.entity.OfferItem;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.transfer.ListWrapperBuilder;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class OfferItemTransferCache
         extends BaseOfferTransferCache<OfferItem, OfferItemTransfer> {
-    
-    ItemControl itemControl = Session.getModelController(ItemControl.class);
-    OfferControl offerControl = Session.getModelController(OfferControl.class);
-    OfferItemControl offerItemControl = Session.getModelController(OfferItemControl.class);
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    OfferControl offerControl;
+
+    @Inject
+    OfferItemControl offerItemControl;
+
+
+
+
 
     boolean includeOfferItemPrices;
 

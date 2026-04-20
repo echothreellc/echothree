@@ -16,18 +16,20 @@
 
 package com.echothree.model.control.employee.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.employee.common.transfer.LeaveTypeTransfer;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.data.employee.server.entity.LeaveType;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class LeaveTypeTransferCache
         extends BaseEmployeeTransferCache<LeaveType, LeaveTypeTransfer> {
+    @Inject
+    EmployeeControl employeeControl;
 
-    EmployeeControl employeeControl = Session.getModelController(EmployeeControl.class);
+
 
     /** Creates a new instance of LeaveTypeTransferCache */
     protected LeaveTypeTransferCache() {

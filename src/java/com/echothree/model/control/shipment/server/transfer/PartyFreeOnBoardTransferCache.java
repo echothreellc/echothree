@@ -16,20 +16,25 @@
 
 package com.echothree.model.control.shipment.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.shipment.common.transfer.PartyFreeOnBoardTransfer;
 import com.echothree.model.control.shipment.server.control.FreeOnBoardControl;
 import com.echothree.model.data.shipment.server.entity.PartyFreeOnBoard;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class PartyFreeOnBoardTransferCache
         extends BaseShipmentTransferCache<PartyFreeOnBoard, PartyFreeOnBoardTransfer> {
+    @Inject
+    FreeOnBoardControl freeOnBoardControl;
 
-    FreeOnBoardControl freeOnBoardControl = Session.getModelController(FreeOnBoardControl.class);
-    PartyControl partyControl = Session.getModelController(PartyControl.class);
+    @Inject
+    PartyControl partyControl;
+
+
+
 
     /** Creates a new instance of FreeOnBoardTransferCache */
     protected PartyFreeOnBoardTransferCache() {

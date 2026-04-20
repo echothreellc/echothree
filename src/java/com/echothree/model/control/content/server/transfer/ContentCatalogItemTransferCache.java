@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.content.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.content.common.ContentOptions;
 import com.echothree.model.control.content.common.ContentProperties;
@@ -28,19 +29,32 @@ import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.content.server.entity.ContentCatalogItem;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.AmountUtils;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class ContentCatalogItemTransferCache
         extends BaseContentTransferCache<ContentCatalogItem, ContentCatalogItemTransfer> {
+    @Inject
+    AccountingControl accountingControl;
 
-    AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
-    ContentControl contentControl = Session.getModelController(ContentControl.class);
-    InventoryControl inventoryControl = Session.getModelController(InventoryControl.class);
-    ItemControl itemControl = Session.getModelController(ItemControl.class);
-    UomControl uomControl = Session.getModelController(UomControl.class);
+    @Inject
+    ContentControl contentControl;
+
+    @Inject
+    InventoryControl inventoryControl;
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    UomControl uomControl;
+
+
+
+
+
+
     AmountUtils amountUtils = AmountUtils.getInstance();
     
     TransferProperties transferProperties;

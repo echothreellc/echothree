@@ -16,18 +16,20 @@
 
 package com.echothree.model.control.warehouse.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.warehouse.common.transfer.WarehouseTypeDescriptionTransfer;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.warehouse.server.entity.WarehouseTypeDescription;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class WarehouseTypeDescriptionTransferCache
         extends BaseWarehouseDescriptionTransferCache<WarehouseTypeDescription, WarehouseTypeDescriptionTransfer> {
+    @Inject
+    WarehouseControl warehouseControl;
 
-    WarehouseControl warehouseControl = Session.getModelController(WarehouseControl.class);
+
 
     /** Creates a new instance of WarehouseTypeDescriptionTransferCache */
     protected WarehouseTypeDescriptionTransferCache() {

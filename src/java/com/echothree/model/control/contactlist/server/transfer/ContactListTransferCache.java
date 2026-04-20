@@ -16,20 +16,25 @@
 
 package com.echothree.model.control.contactlist.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.contactlist.common.transfer.ContactListTransfer;
 import com.echothree.model.control.contactlist.server.control.ContactListControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.contactlist.server.entity.ContactList;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class ContactListTransferCache
         extends BaseContactListTransferCache<ContactList, ContactListTransfer> {
+    @Inject
+    ContactListControl contactListControl;
 
-    ContactListControl contactListControl = Session.getModelController(ContactListControl.class);
-    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
+    @Inject
+    WorkflowControl workflowControl;
+
+
+
     
     /** Creates a new instance of ContactListTransferCache */
     protected ContactListTransferCache() {

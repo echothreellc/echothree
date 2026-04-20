@@ -16,18 +16,20 @@
 
 package com.echothree.model.control.wishlist.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.wishlist.common.transfer.WishlistPriorityDescriptionTransfer;
 import com.echothree.model.control.wishlist.server.control.WishlistControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.wishlist.server.entity.WishlistPriorityDescription;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class WishlistPriorityDescriptionTransferCache
         extends BaseWishlistDescriptionTransferCache<WishlistPriorityDescription, WishlistPriorityDescriptionTransfer> {
+    @Inject
+    WishlistControl wishlistControl;
 
-    WishlistControl wishlistControl = Session.getModelController(WishlistControl.class);
+
 
     /** Creates a new instance of WishlistPriorityDescriptionTransferCache */
     protected WishlistPriorityDescriptionTransferCache() {

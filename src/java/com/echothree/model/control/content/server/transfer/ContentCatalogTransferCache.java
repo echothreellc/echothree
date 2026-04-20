@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.content.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.content.common.ContentOptions;
 import com.echothree.model.control.content.common.ContentProperties;
 import com.echothree.model.control.content.common.transfer.ContentCatalogTransfer;
@@ -26,15 +27,19 @@ import com.echothree.model.data.content.server.entity.ContentCatalog;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.common.transfer.ListWrapper;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class ContentCatalogTransferCache
         extends BaseContentTransferCache<ContentCatalog, ContentCatalogTransfer> {
+    @Inject
+    ContentControl contentControl;
 
-    ContentControl contentControl = Session.getModelController(ContentControl.class);
-    OfferUseControl offerUseControl = Session.getModelController(OfferUseControl.class);
+    @Inject
+    OfferUseControl offerUseControl;
+
+
+
     
     boolean includeContentCatalogItems;
     boolean includeContentCatalogCategories;

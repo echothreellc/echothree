@@ -16,18 +16,20 @@
 
 package com.echothree.model.control.forum.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.forum.common.transfer.ForumGroupForumTransfer;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.data.forum.server.entity.ForumGroupForum;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class ForumGroupForumTransferCache
         extends BaseForumTransferCache<ForumGroupForum, ForumGroupForumTransfer> {
+    @Inject
+    ForumControl forumControl;
 
-    ForumControl forumControl = Session.getModelController(ForumControl.class);
+
 
     /** Creates a new instance of ForumGroupForumTransferCache */
     protected ForumGroupForumTransferCache() {

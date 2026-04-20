@@ -16,18 +16,20 @@
 
 package com.echothree.model.control.selector.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.selector.common.transfer.SelectorNodeDescriptionTransfer;
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.selector.server.entity.SelectorNodeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class SelectorNodeDescriptionTransferCache
         extends BaseSelectorDescriptionTransferCache<SelectorNodeDescription, SelectorNodeDescriptionTransfer> {
+    @Inject
+    SelectorControl selectorControl;
 
-    SelectorControl selectorControl = Session.getModelController(SelectorControl.class);
+
 
     /** Creates a new instance of SelectorNodeDescriptionTransferCache */
     protected SelectorNodeDescriptionTransferCache() {

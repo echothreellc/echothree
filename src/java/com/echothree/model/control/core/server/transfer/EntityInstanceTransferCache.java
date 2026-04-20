@@ -27,13 +27,15 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.server.persistence.EntityDescriptionUtils;
 import com.echothree.util.server.persistence.EntityNamesUtils;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 
 @RequestScoped
 public class EntityInstanceTransferCache
         extends BaseCoreTransferCache<EntityInstance, EntityInstanceTransfer> {
+    @Inject
+    AppearanceControl appearanceControl;
+
 
     @Inject
     EntityTypeControl entityTypeControl;
@@ -130,7 +132,7 @@ public class EntityInstanceTransferCache
             }
 
             if(includeEntityAppearance || this.includeEntityAppearance) {
-                var appearanceControl = Session.getModelController(AppearanceControl.class);
+
                 var entityAppearance = appearanceControl.getEntityAppearance(entityInstance);
 
                 entityInstanceTransfer.setEntityAppearance(entityAppearance == null ? null : appearanceControl.getEntityAppearanceTransfer(userVisit, entityAppearance));

@@ -16,18 +16,20 @@
 
 package com.echothree.model.control.filter.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.filter.common.transfer.FilterDescriptionTransfer;
 import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.data.filter.server.entity.FilterDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class FilterDescriptionTransferCache
         extends BaseFilterDescriptionTransferCache<FilterDescription, FilterDescriptionTransfer> {
+    @Inject
+    FilterControl filterControl;
 
-    FilterControl filterControl = Session.getModelController(FilterControl.class);
+
 
     /** Creates a new instance of FilterDescriptionTransferCache */
     protected FilterDescriptionTransferCache() {

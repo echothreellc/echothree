@@ -16,21 +16,26 @@
 
 package com.echothree.model.control.order.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.order.common.transfer.OrderPaymentPreferenceTransfer;
 import com.echothree.model.control.payment.server.control.PartyPaymentMethodControl;
 import com.echothree.model.control.payment.server.control.PaymentMethodControl;
 import com.echothree.model.data.order.server.entity.OrderPaymentPreference;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.AmountUtils;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class OrderPaymentPreferenceTransferCache
         extends BaseOrderTransferCache<OrderPaymentPreference, OrderPaymentPreferenceTransfer> {
+    @Inject
+    PartyPaymentMethodControl partyPaymentMethodControl;
 
-    PartyPaymentMethodControl partyPaymentMethodControl = Session.getModelController(PartyPaymentMethodControl.class);
-    PaymentMethodControl paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
+    @Inject
+    PaymentMethodControl paymentMethodControl;
+
+
+
 
     /** Creates a new instance of OrderPaymentPreferenceTransferCache */
     protected OrderPaymentPreferenceTransferCache() {

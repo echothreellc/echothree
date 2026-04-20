@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.shipping.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.comment.common.CommentConstants;
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.control.shipping.common.ShippingOptions;
@@ -23,15 +24,19 @@ import com.echothree.model.control.shipping.common.transfer.ShippingMethodTransf
 import com.echothree.model.control.shipping.server.control.ShippingControl;
 import com.echothree.model.data.shipping.server.entity.ShippingMethod;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class ShippingMethodTransferCache
         extends BaseShippingTransferCache<ShippingMethod, ShippingMethodTransfer> {
-    
-    SelectorControl selectorControl = Session.getModelController(SelectorControl.class);
-    ShippingControl shippingControl = Session.getModelController(ShippingControl.class);
+    @Inject
+    SelectorControl selectorControl;
+
+    @Inject
+    ShippingControl shippingControl;
+
+
+
 
     boolean includeComments;
     

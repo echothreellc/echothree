@@ -16,6 +16,8 @@
 
 package com.echothree.model.control.core.server.transfer;
 
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 import com.echothree.model.control.core.common.transfer.EntityGeoPointAttributeTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.uom.common.UomConstants;
@@ -25,24 +27,34 @@ import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.string.GeoPointUtils;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class EntityGeoPointAttributeTransferCache
         extends BaseCoreTransferCache<EntityGeoPointAttribute, EntityGeoPointAttributeTransfer> {
 
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
-    UomControl uomControl = Session.getModelController(UomControl.class);
-    UnitOfMeasureKind elevationUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_ELEVATION);
-    UnitOfMeasureKind altitudeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_ALTITUDE);
+    @Inject
+    CoreControl coreControl;
+
+    @Inject
+    UomControl uomControl;
+
+    UnitOfMeasureKind elevationUnitOfMeasureKind;
+    UnitOfMeasureKind altitudeUnitOfMeasureKind;
+
     GeoPointUtils geoPointUtils = GeoPointUtils.getInstance();
     
     /** Creates a new instance of EntityGeoPointAttributeTransferCache */
     protected EntityGeoPointAttributeTransferCache() {
         super();
     }
-    
+
+    @PostConstruct
+    public void setup() {
+        elevationUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_ELEVATION);
+        altitudeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_ALTITUDE);
+    }
+
     public EntityGeoPointAttributeTransfer getEntityGeoPointAttributeTransfer(final UserVisit userVisit, final EntityGeoPointAttribute entityGeoPointAttribute,
             final EntityInstance entityInstance) {
         var entityGeoPointAttributeTransfer = get(entityGeoPointAttribute);

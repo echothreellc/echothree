@@ -16,20 +16,24 @@
 
 package com.echothree.model.control.contactlist.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.contactlist.common.transfer.ContactListContactMechanismPurposeTransfer;
 import com.echothree.model.control.contactlist.server.control.ContactListControl;
 import com.echothree.model.data.contactlist.server.entity.ContactListContactMechanismPurpose;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class ContactListContactMechanismPurposeTransferCache
         extends BaseContactListTransferCache<ContactListContactMechanismPurpose, ContactListContactMechanismPurposeTransfer> {
-    
-    final ContactControl contactControl = Session.getModelController(ContactControl.class);
-    ContactListControl contactListControl = Session.getModelController(ContactListControl.class);
+    @Inject
+    ContactControl contactControl;
+
+    @Inject
+    ContactListControl contactListControl;
+
+
 
     /** Creates a new instance of ContactListContactMechanismPurposeTransferCache */
     protected ContactListContactMechanismPurposeTransferCache() {

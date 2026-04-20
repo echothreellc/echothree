@@ -16,20 +16,25 @@
 
 package com.echothree.model.control.contact.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.contact.common.transfer.PartyContactMechanismAliasTransfer;
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.contact.server.entity.PartyContactMechanismAlias;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class PartyContactMechanismAliasTransferCache
         extends BaseContactTransferCache<PartyContactMechanismAlias, PartyContactMechanismAliasTransfer> {
+    @Inject
+    ContactControl contactControl;
 
-    ContactControl contactControl = Session.getModelController(ContactControl.class);
-    PartyControl partyControl = Session.getModelController(PartyControl.class);
+    @Inject
+    PartyControl partyControl;
+
+
+
     
     /** Creates a new instance of PartyContactMechanismAliasTransferCache */
     protected PartyContactMechanismAliasTransferCache() {

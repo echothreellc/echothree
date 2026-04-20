@@ -16,18 +16,20 @@
 
 package com.echothree.model.control.payment.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.payment.common.transfer.BillingAccountRoleTypeTransfer;
 import com.echothree.model.control.payment.server.control.BillingControl;
 import com.echothree.model.data.payment.server.entity.BillingAccountRoleType;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class BillingAccountRoleTypeTransferCache
         extends BasePaymentTransferCache<BillingAccountRoleType, BillingAccountRoleTypeTransfer> {
+    @Inject
+    BillingControl billingControl;
 
-    BillingControl billingControl = Session.getModelController(BillingControl.class);
+
 
     /** Creates a new instance of BillingAccountRoleTypeTransferCache */
     protected BillingAccountRoleTypeTransferCache() {

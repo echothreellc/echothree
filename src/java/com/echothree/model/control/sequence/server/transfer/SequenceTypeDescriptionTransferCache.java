@@ -16,18 +16,20 @@
 
 package com.echothree.model.control.sequence.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.sequence.common.transfer.SequenceTypeDescriptionTransfer;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.data.sequence.server.entity.SequenceTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class SequenceTypeDescriptionTransferCache
         extends BaseSequenceDescriptionTransferCache<SequenceTypeDescription, SequenceTypeDescriptionTransfer> {
+    @Inject
+    SequenceControl sequenceControl;
 
-    SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
+
 
     /** Creates a new instance of SequenceTypeDescriptionTransferCache */
     protected SequenceTypeDescriptionTransferCache() {

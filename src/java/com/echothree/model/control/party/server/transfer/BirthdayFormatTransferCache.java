@@ -16,18 +16,20 @@
 
 package com.echothree.model.control.party.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.party.common.transfer.BirthdayFormatTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.party.server.entity.BirthdayFormat;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class BirthdayFormatTransferCache
         extends BasePartyTransferCache<BirthdayFormat, BirthdayFormatTransfer> {
+    @Inject
+    PartyControl partyControl;
 
-    PartyControl partyControl = Session.getModelController(PartyControl.class);
+
 
     /** Creates a new instance of BirthdayFormatTransferCache */
     protected BirthdayFormatTransferCache() {

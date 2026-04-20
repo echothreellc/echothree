@@ -16,23 +16,31 @@
 
 package com.echothree.model.control.party.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.icon.server.control.IconControl;
 import com.echothree.model.control.party.common.transfer.ProfileTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.party.server.entity.Profile;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.DateUtils;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class ProfileTransferCache
         extends BasePartyTransferCache<Profile, ProfileTransfer> {
+    @Inject
+    IconControl iconControl;
 
-    IconControl iconControl = Session.getModelController(IconControl.class);
-    MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
-    PartyControl partyControl = Session.getModelController(PartyControl.class);
+    @Inject
+    MimeTypeControl mimeTypeControl;
+
+    @Inject
+    PartyControl partyControl;
+
+
+
+
 
     /** Creates a new instance of ProfileTransferCache */
     protected ProfileTransferCache() {

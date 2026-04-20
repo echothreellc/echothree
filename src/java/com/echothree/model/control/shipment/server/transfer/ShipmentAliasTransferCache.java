@@ -16,18 +16,20 @@
 
 package com.echothree.model.control.shipment.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.shipment.common.transfer.ShipmentAliasTransfer;
 import com.echothree.model.control.shipment.server.control.ShipmentControl;
 import com.echothree.model.data.shipment.server.entity.ShipmentAlias;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class ShipmentAliasTransferCache
         extends BaseShipmentTransferCache<ShipmentAlias, ShipmentAliasTransfer> {
+    @Inject
+    ShipmentControl shipmentControl;
 
-    ShipmentControl shipmentControl = Session.getModelController(ShipmentControl.class);
+
 
     /** Creates a new instance of ShipmentAliasTransferCache */
     protected ShipmentAliasTransferCache() {

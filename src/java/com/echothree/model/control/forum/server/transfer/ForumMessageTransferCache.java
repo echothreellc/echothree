@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.forum.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.forum.common.ForumOptions;
 import com.echothree.model.control.forum.common.transfer.ForumMessagePartTransfer;
 import com.echothree.model.control.forum.common.transfer.ForumMessageTransfer;
@@ -25,15 +26,19 @@ import com.echothree.model.data.forum.server.entity.ForumMessage;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.common.transfer.MapWrapper;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class ForumMessageTransferCache
         extends BaseForumTransferCache<ForumMessage, ForumMessageTransfer> {
+    @Inject
+    ForumControl forumControl;
 
-    ForumControl forumControl = Session.getModelController(ForumControl.class);
-    IconControl iconControl = Session.getModelController(IconControl.class);
+    @Inject
+    IconControl iconControl;
+
+
+
 
     boolean includeForumMessageRoles;
     boolean includeForumMessageParts;

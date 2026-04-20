@@ -16,18 +16,20 @@
 
 package com.echothree.model.control.shipment.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.shipment.common.transfer.FreeOnBoardDescriptionTransfer;
 import com.echothree.model.control.shipment.server.control.FreeOnBoardControl;
 import com.echothree.model.data.shipment.server.entity.FreeOnBoardDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class FreeOnBoardDescriptionTransferCache
         extends BaseShipmentDescriptionTransferCache<FreeOnBoardDescription, FreeOnBoardDescriptionTransfer> {
+    @Inject
+    FreeOnBoardControl freeOnBoardControl;
 
-    FreeOnBoardControl freeOnBoardControl = Session.getModelController(FreeOnBoardControl.class);
+
 
     /** Creates a new instance of FreeOnBoardDescriptionTransferCache */
     protected FreeOnBoardDescriptionTransferCache() {

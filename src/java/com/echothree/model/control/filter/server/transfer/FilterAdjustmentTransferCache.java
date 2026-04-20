@@ -16,20 +16,22 @@
 
 package com.echothree.model.control.filter.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.filter.common.FilterOptions;
 import com.echothree.model.control.filter.common.transfer.FilterAdjustmentTransfer;
 import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.data.filter.server.entity.FilterAdjustment;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class FilterAdjustmentTransferCache
         extends BaseFilterTransferCache<FilterAdjustment, FilterAdjustmentTransfer> {
+    @Inject
+    FilterControl filterControl;
 
-    FilterControl filterControl = Session.getModelController(FilterControl.class);
+
 
     boolean includeFilterAdjustmentAmounts;
     boolean includeFilterAdjustmentFixedAmounts;

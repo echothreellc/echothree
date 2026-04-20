@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.training.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.training.common.TrainingOptions;
 import com.echothree.model.control.training.common.transfer.TrainingClassTransfer;
 import com.echothree.model.control.training.server.control.TrainingControl;
@@ -24,7 +25,6 @@ import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.training.server.entity.TrainingClass;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.PercentUtils;
 import com.echothree.util.server.string.UnitOfMeasureUtils;
 import javax.enterprise.context.RequestScoped;
@@ -32,9 +32,14 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class TrainingClassTransferCache
         extends BaseTrainingTransferCache<TrainingClass, TrainingClassTransfer> {
+    @Inject
+    TrainingControl trainingControl;
 
-    TrainingControl trainingControl = Session.getModelController(TrainingControl.class);
-    UomControl uomControl = Session.getModelController(UomControl.class);
+    @Inject
+    UomControl uomControl;
+
+
+
 
     boolean includeTrainingClassSections;
     boolean includePartyTrainingClasses;

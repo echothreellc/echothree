@@ -16,18 +16,20 @@
 
 package com.echothree.model.control.core.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.core.common.transfer.EntityLongDefaultTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.EntityLongDefault;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class EntityLongDefaultTransferCache
         extends BaseCoreTransferCache<EntityLongDefault, EntityLongDefaultTransfer> {
+    @Inject
+    CoreControl coreControl;
 
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
+
 
     /** Creates a new instance of EntityLongDefaultTransferCache */
     protected EntityLongDefaultTransferCache() {

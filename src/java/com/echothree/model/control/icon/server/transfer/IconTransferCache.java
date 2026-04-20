@@ -16,18 +16,20 @@
 
 package com.echothree.model.control.icon.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.control.icon.common.transfer.IconTransfer;
 import com.echothree.model.data.icon.server.entity.Icon;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class IconTransferCache
         extends BaseIconTransferCache<Icon, IconTransfer> {
-    
-    DocumentControl documentControl = Session.getModelController(DocumentControl.class);
+    @Inject
+    DocumentControl documentControl;
+
+
 
     /** Creates a new instance of IconTransferCache */
     protected IconTransferCache() {

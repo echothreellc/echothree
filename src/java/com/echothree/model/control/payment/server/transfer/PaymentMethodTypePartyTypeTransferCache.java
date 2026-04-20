@@ -16,22 +16,30 @@
 
 package com.echothree.model.control.payment.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.payment.common.transfer.PaymentMethodTypePartyTypeTransfer;
 import com.echothree.model.control.payment.server.control.PaymentMethodTypeControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.payment.server.entity.PaymentMethodTypePartyType;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class PaymentMethodTypePartyTypeTransferCache
         extends BasePaymentTransferCache<PaymentMethodTypePartyType, PaymentMethodTypePartyTypeTransfer> {
-    
-    PartyControl partyControl = Session.getModelController(PartyControl.class);
-    PaymentMethodTypeControl paymentMethodTypeControl = Session.getModelController(PaymentMethodTypeControl.class);
-    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    PaymentMethodTypeControl paymentMethodTypeControl;
+
+    @Inject
+    WorkflowControl workflowControl;
+
+
+
+
 
     /** Creates a new instance of PaymentMethodTypePartyTypeTransferCache */
     protected PaymentMethodTypePartyTypeTransferCache() {

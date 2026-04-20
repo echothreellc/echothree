@@ -16,20 +16,25 @@
 
 package com.echothree.model.control.item.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.item.common.transfer.ItemImageTypeTransfer;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.item.server.entity.ItemImageType;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class ItemImageTypeTransferCache
         extends BaseItemTransferCache<ItemImageType, ItemImageTypeTransfer> {
+    @Inject
+    ItemControl itemControl;
 
-    ItemControl itemControl = Session.getModelController(ItemControl.class);
-    MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
+    @Inject
+    MimeTypeControl mimeTypeControl;
+
+
+
     
     /** Creates a new instance of ItemImageTypeTransferCache */
     protected ItemImageTypeTransferCache() {

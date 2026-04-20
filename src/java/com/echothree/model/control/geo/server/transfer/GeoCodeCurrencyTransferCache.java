@@ -16,20 +16,25 @@
 
 package com.echothree.model.control.geo.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.geo.common.transfer.GeoCodeCurrencyTransfer;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.data.geo.server.entity.GeoCodeCurrency;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class GeoCodeCurrencyTransferCache
         extends BaseGeoTransferCache<GeoCodeCurrency, GeoCodeCurrencyTransfer> {
-    
-    AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
-    GeoControl geoControl = Session.getModelController(GeoControl.class);
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    GeoControl geoControl;
+
+
+
 
     /** Creates a new instance of GeoCodeCurrencyTransferCache */
     protected GeoCodeCurrencyTransferCache() {

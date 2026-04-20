@@ -16,18 +16,20 @@
 
 package com.echothree.model.control.scale.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.scale.common.transfer.ScaleUseTypeTransfer;
 import com.echothree.model.control.scale.server.control.ScaleControl;
 import com.echothree.model.data.scale.server.entity.ScaleUseType;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class ScaleUseTypeTransferCache
         extends BaseScaleTransferCache<ScaleUseType, ScaleUseTypeTransfer> {
+    @Inject
+    ScaleControl scaleControl;
 
-    ScaleControl scaleControl = Session.getModelController(ScaleControl.class);
+
 
     /** Creates a new instance of ScaleUseTypeTransferCache */
     protected ScaleUseTypeTransferCache() {

@@ -16,21 +16,26 @@
 
 package com.echothree.model.control.cancellationpolicy.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.cancellationpolicy.common.transfer.PartyCancellationPolicyTransfer;
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
 import com.echothree.model.control.cancellationpolicy.server.logic.PartyCancellationPolicyLogic;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.cancellationpolicy.server.entity.PartyCancellationPolicy;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class PartyCancellationPolicyTransferCache
         extends BaseCancellationPolicyTransferCache<PartyCancellationPolicy, PartyCancellationPolicyTransfer> {
+    @Inject
+    CancellationPolicyControl cancellationPolicyControl;
 
-    CancellationPolicyControl cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
-    PartyControl partyControl = Session.getModelController(PartyControl.class);
+    @Inject
+    PartyControl partyControl;
+
+
+
     
     /** Creates a new instance of PartyCancellationPolicyTransferCache */
     protected PartyCancellationPolicyTransferCache() {

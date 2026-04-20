@@ -16,20 +16,22 @@
 
 package com.echothree.model.control.core.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.core.common.CoreProperties;
 import com.echothree.model.control.core.common.transfer.MimeTypeUsageTypeTransfer;
 import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.data.core.server.entity.MimeTypeUsageType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class MimeTypeUsageTypeTransferCache
         extends BaseCoreTransferCache<MimeTypeUsageType, MimeTypeUsageTypeTransfer> {
+    @Inject
+    MimeTypeControl mimeTypeControl;
 
-    MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
+
 
     TransferProperties transferProperties;
     boolean filterMimeTypeUsageTypeName;

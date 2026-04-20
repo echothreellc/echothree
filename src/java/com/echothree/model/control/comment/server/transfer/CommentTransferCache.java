@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.comment.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.comment.common.CommentOptions;
 import com.echothree.model.control.comment.common.transfer.CommentTransfer;
 import com.echothree.model.control.core.server.control.MimeTypeControl;
@@ -24,16 +25,23 @@ import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.comment.server.entity.Comment;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class CommentTransferCache
         extends BaseCommentTransferCache<Comment, CommentTransfer> {
+    @Inject
+    MimeTypeControl mimeTypeControl;
 
-    MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
-    PartyControl partyControl = Session.getModelController(PartyControl.class);
-    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    WorkflowControl workflowControl;
+
+
+
+
     
     boolean includeBlob;
     boolean includeClob;

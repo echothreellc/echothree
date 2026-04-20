@@ -24,24 +24,36 @@ import com.echothree.model.data.core.server.entity.EntityGeoPointDefault;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.string.GeoPointUtils;
-import com.echothree.util.server.persistence.Session;
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 @RequestScoped
 public class EntityGeoPointDefaultTransferCache
         extends BaseCoreTransferCache<EntityGeoPointDefault, EntityGeoPointDefaultTransfer> {
 
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
-    UomControl uomControl = Session.getModelController(UomControl.class);
-    UnitOfMeasureKind elevationUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_ELEVATION);
-    UnitOfMeasureKind altitudeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_ALTITUDE);
+    @Inject
+    CoreControl coreControl;
+
+    @Inject
+    UomControl uomControl;
+
+    UnitOfMeasureKind elevationUnitOfMeasureKind;
+    UnitOfMeasureKind altitudeUnitOfMeasureKind;
+
     GeoPointUtils geoPointUtils = GeoPointUtils.getInstance();
     
     /** Creates a new instance of EntityGeoPointDefaultTransferCache */
     protected EntityGeoPointDefaultTransferCache() {
         super();
     }
-    
+
+    @PostConstruct
+    public void setup() {
+        elevationUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_ELEVATION);
+        altitudeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_ALTITUDE);
+    }
+
     public EntityGeoPointDefaultTransfer getEntityGeoPointDefaultTransfer(final UserVisit userVisit, final EntityGeoPointDefault entityGeoPointDefault) {
         var entityGeoPointDefaultTransfer = get(entityGeoPointDefault);
         

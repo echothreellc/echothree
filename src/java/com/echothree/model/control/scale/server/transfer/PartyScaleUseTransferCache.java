@@ -16,20 +16,25 @@
 
 package com.echothree.model.control.scale.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.scale.common.transfer.PartyScaleUseTransfer;
 import com.echothree.model.control.scale.server.control.ScaleControl;
 import com.echothree.model.data.scale.server.entity.PartyScaleUse;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class PartyScaleUseTransferCache
         extends BaseScaleTransferCache<PartyScaleUse, PartyScaleUseTransfer> {
+    @Inject
+    PartyControl partyControl;
 
-    ScaleControl scaleControl = Session.getModelController(ScaleControl.class);
-    PartyControl partyControl = Session.getModelController(PartyControl.class);
+    @Inject
+    ScaleControl scaleControl;
+
+
+
     
     /** Creates a new instance of PartyScaleUseTransferCache */
     protected PartyScaleUseTransferCache() {

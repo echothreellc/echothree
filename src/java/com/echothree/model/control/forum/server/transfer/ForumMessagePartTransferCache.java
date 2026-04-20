@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.forum.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.core.common.MimeTypes;
 import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.forum.common.ForumOptions;
@@ -26,16 +27,23 @@ import com.echothree.model.data.forum.server.entity.ForumMessagePart;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.persistence.type.ByteArray;
 import com.echothree.util.common.string.StringUtils;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class ForumMessagePartTransferCache
         extends BaseForumTransferCache<ForumMessagePart, ForumMessagePartTransfer> {
+    @Inject
+    ForumControl forumControl;
 
-    ForumControl forumControl = Session.getModelController(ForumControl.class);
-    MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
-    PartyControl partyControl = Session.getModelController(PartyControl.class);
+    @Inject
+    MimeTypeControl mimeTypeControl;
+
+    @Inject
+    PartyControl partyControl;
+
+
+
+
 
     boolean includeBlob;
     boolean includeClob;

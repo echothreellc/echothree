@@ -16,18 +16,20 @@
 
 package com.echothree.model.control.inventory.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.inventory.common.transfer.InventoryTransactionTypeDescriptionTransfer;
 import com.echothree.model.control.inventory.server.control.InventoryTransactionTypeControl;
 import com.echothree.model.data.inventory.server.entity.InventoryTransactionTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class InventoryTransactionTypeDescriptionTransferCache
         extends BaseInventoryDescriptionTransferCache<InventoryTransactionTypeDescription, InventoryTransactionTypeDescriptionTransfer> {
+    @Inject
+    InventoryTransactionTypeControl inventoryTransactionTypeControl;
 
-    InventoryTransactionTypeControl inventoryTransactionTypeControl = Session.getModelController(InventoryTransactionTypeControl.class);
+
 
     /** Creates a new instance of InventoryTransactionTypeDescriptionTransferCache */
     protected InventoryTransactionTypeDescriptionTransferCache() {

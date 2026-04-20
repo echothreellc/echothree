@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.communication.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.communication.common.CommunicationConstants;
 import com.echothree.model.control.communication.common.CommunicationOptions;
 import com.echothree.model.control.communication.common.transfer.CommunicationEmailSourceTransfer;
@@ -23,14 +24,15 @@ import com.echothree.model.control.communication.common.transfer.CommunicationSo
 import com.echothree.model.control.communication.server.control.CommunicationControl;
 import com.echothree.model.data.communication.server.entity.CommunicationSource;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class CommunicationSourceTransferCache
         extends BaseCommunicationTransferCache<CommunicationSource, CommunicationSourceTransfer> {
+    @Inject
+    CommunicationControl communicationControl;
 
-    CommunicationControl communicationControl = Session.getModelController(CommunicationControl.class);
+
 
     boolean includeRelated;
     

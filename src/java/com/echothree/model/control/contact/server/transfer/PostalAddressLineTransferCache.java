@@ -16,20 +16,22 @@
 
 package com.echothree.model.control.contact.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.contact.common.ContactOptions;
 import com.echothree.model.control.contact.common.transfer.PostalAddressLineTransfer;
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.data.contact.server.entity.PostalAddressLine;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class PostalAddressLineTransferCache
         extends BaseContactTransferCache<PostalAddressLine, PostalAddressLineTransfer> {
+    @Inject
+    ContactControl contactControl;
 
-    ContactControl contactControl = Session.getModelController(ContactControl.class);
+
 
     boolean includeElements;
     

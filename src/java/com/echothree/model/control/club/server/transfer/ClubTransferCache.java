@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.club.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.club.common.transfer.ClubTransfer;
 import com.echothree.model.control.club.server.control.ClubControl;
@@ -23,17 +24,27 @@ import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.subscription.server.control.SubscriptionControl;
 import com.echothree.model.data.club.server.entity.Club;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class ClubTransferCache
         extends BaseClubTransferCache<Club, ClubTransfer> {
-    
-    AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
-    ClubControl clubControl = Session.getModelController(ClubControl.class);
-    FilterControl filterControl = Session.getModelController(FilterControl.class);
-    SubscriptionControl subscriptionControl = Session.getModelController(SubscriptionControl.class);
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    ClubControl clubControl;
+
+    @Inject
+    FilterControl filterControl;
+
+    @Inject
+    SubscriptionControl subscriptionControl;
+
+
+
+
+
     
     /** Creates a new instance of ClubTransferCache */
     protected ClubTransferCache() {

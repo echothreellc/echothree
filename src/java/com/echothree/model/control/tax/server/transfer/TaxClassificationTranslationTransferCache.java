@@ -16,20 +16,25 @@
 
 package com.echothree.model.control.tax.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.tax.common.transfer.TaxClassificationTranslationTransfer;
 import com.echothree.model.control.tax.server.control.TaxControl;
 import com.echothree.model.data.tax.server.entity.TaxClassificationTranslation;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class TaxClassificationTranslationTransferCache
         extends BaseTaxDescriptionTransferCache<TaxClassificationTranslation, TaxClassificationTranslationTransfer> {
+    @Inject
+    MimeTypeControl mimeTypeControl;
 
-    MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
-    TaxControl taxControl = Session.getModelController(TaxControl.class);
+    @Inject
+    TaxControl taxControl;
+
+
+
 
     /** Creates a new instance of TaxClassificationTranslationTransferCache */
     protected TaxClassificationTranslationTransferCache() {

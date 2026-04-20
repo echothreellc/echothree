@@ -16,18 +16,20 @@
 
 package com.echothree.model.control.accounting.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.accounting.common.transfer.SymbolPositionDescriptionTransfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.data.accounting.server.entity.SymbolPositionDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class SymbolPositionDescriptionTransferCache
         extends BaseAccountingDescriptionTransferCache<SymbolPositionDescription, SymbolPositionDescriptionTransfer> {
+    @Inject
+    AccountingControl accountingControl;
 
-    AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
+
 
     /** Creates a new instance of SymbolPositionDescriptionTransferCache */
     protected SymbolPositionDescriptionTransferCache() {

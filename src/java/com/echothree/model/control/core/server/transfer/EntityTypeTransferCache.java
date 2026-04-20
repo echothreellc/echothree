@@ -47,10 +47,8 @@ public class EntityTypeTransferCache
     @Inject
     ComponentControl componentControl;
 
-
     @Inject
     EntityAliasControl entityAliasControl;
-
 
     @Inject
     EntityTypeControl entityTypeControl;
@@ -60,7 +58,6 @@ public class EntityTypeTransferCache
 
     @Inject
     MessageControl messageControl;
-
 
     @Inject
     UomControl uomControl;

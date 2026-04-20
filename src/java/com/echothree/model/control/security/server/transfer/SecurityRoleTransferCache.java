@@ -16,18 +16,20 @@
 
 package com.echothree.model.control.security.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.security.common.transfer.SecurityRoleTransfer;
 import com.echothree.model.control.security.server.control.SecurityControl;
 import com.echothree.model.data.security.server.entity.SecurityRole;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class SecurityRoleTransferCache
         extends BaseSecurityTransferCache<SecurityRole, SecurityRoleTransfer> {
+    @Inject
+    SecurityControl securityControl;
 
-    SecurityControl securityControl = Session.getModelController(SecurityControl.class);
+
 
     /** Creates a new instance of SecurityRoleTransferCache */
     protected SecurityRoleTransferCache() {

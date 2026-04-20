@@ -16,22 +16,30 @@
 
 package com.echothree.model.control.batch.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.batch.common.transfer.BatchTypeTransfer;
 import com.echothree.model.control.batch.server.control.BatchControl;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.batch.server.entity.BatchType;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class BatchTypeTransferCache
         extends BaseBatchTransferCache<BatchType, BatchTypeTransfer> {
+    @Inject
+    BatchControl batchControl;
 
-    BatchControl batchControl = Session.getModelController(BatchControl.class);
-    SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
-    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
+    @Inject
+    SequenceControl sequenceControl;
+
+    @Inject
+    WorkflowControl workflowControl;
+
+
+
+
     
     /** Creates a new instance of BatchTypeTransferCache */
     protected BatchTypeTransferCache() {

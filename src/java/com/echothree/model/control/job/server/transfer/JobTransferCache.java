@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.job.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.job.common.transfer.JobTransfer;
 import com.echothree.model.control.job.common.workflow.JobStatusConstants;
 import com.echothree.model.control.job.server.control.JobControl;
@@ -23,16 +24,23 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.job.server.entity.Job;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class JobTransferCache
         extends BaseJobTransferCache<Job, JobTransfer> {
-    
-    JobControl jobControl = Session.getModelController(JobControl.class);
-    PartyControl partyControl = Session.getModelController(PartyControl.class);
-    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
+    @Inject
+    JobControl jobControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    WorkflowControl workflowControl;
+
+
+
+
     
     /** Creates a new instance of JobTransferCache */
     protected JobTransferCache() {

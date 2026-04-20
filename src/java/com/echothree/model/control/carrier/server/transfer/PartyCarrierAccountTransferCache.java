@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.carrier.server.transfer;
 
+import javax.inject.Inject;
 
 
 import com.echothree.model.control.carrier.common.transfer.PartyCarrierAccountTransfer;
@@ -23,15 +24,19 @@ import com.echothree.model.control.carrier.server.control.CarrierControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.carrier.server.entity.PartyCarrierAccount;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class PartyCarrierAccountTransferCache
         extends BaseCarrierTransferCache<PartyCarrierAccount, PartyCarrierAccountTransfer> {
+    @Inject
+    CarrierControl carrierControl;
 
-    CarrierControl carrierControl = Session.getModelController(CarrierControl.class);
-    PartyControl partyControl = Session.getModelController(PartyControl.class);
+    @Inject
+    PartyControl partyControl;
+
+
+
     
     /** Creates a new instance of PartyCarrierAccountTransferCache */
     protected PartyCarrierAccountTransferCache() {

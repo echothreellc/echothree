@@ -16,20 +16,25 @@
 
 package com.echothree.model.control.inventory.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.inventory.common.transfer.InventoryLocationGroupCapacityTransfer;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.inventory.server.entity.InventoryLocationGroupCapacity;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class InventoryLocationGroupCapacityTransferCache
         extends BaseInventoryTransferCache<InventoryLocationGroupCapacity, InventoryLocationGroupCapacityTransfer> {
+    @Inject
+    InventoryControl inventoryControl;
 
-    InventoryControl inventoryControl = Session.getModelController(InventoryControl.class);
-    UomControl uomControl = Session.getModelController(UomControl.class);
+    @Inject
+    UomControl uomControl;
+
+
+
 
     /** Creates a new instance of InventoryLocationGroupCapacityTransferCache */
     protected InventoryLocationGroupCapacityTransferCache() {

@@ -16,18 +16,20 @@
 
 package com.echothree.model.control.club.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.club.common.transfer.ClubDescriptionTransfer;
 import com.echothree.model.control.club.server.control.ClubControl;
 import com.echothree.model.data.club.server.entity.ClubDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class ClubDescriptionTransferCache
         extends BaseClubDescriptionTransferCache<ClubDescription, ClubDescriptionTransfer> {
+    @Inject
+    ClubControl clubControl;
 
-    ClubControl clubControl = Session.getModelController(ClubControl.class);
+
 
     /** Creates a new instance of ClubDescriptionTransferCache */
     protected ClubDescriptionTransferCache() {

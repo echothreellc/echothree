@@ -16,22 +16,30 @@
 
 package com.echothree.model.control.shipment.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.shipment.common.transfer.ShipmentTypeTransfer;
 import com.echothree.model.control.shipment.server.control.ShipmentControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.shipment.server.entity.ShipmentType;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class ShipmentTypeTransferCache
         extends BaseShipmentTransferCache<ShipmentType, ShipmentTypeTransfer> {
+    @Inject
+    SequenceControl sequenceControl;
 
-    SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
-    ShipmentControl shipmentControl = Session.getModelController(ShipmentControl.class);
-    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
+    @Inject
+    ShipmentControl shipmentControl;
+
+    @Inject
+    WorkflowControl workflowControl;
+
+
+
+
     
     /** Creates a new instance of ShipmentTypeTransferCache */
     protected ShipmentTypeTransferCache() {

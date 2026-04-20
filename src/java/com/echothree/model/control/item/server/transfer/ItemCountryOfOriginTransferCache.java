@@ -16,21 +16,26 @@
 
 package com.echothree.model.control.item.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.item.common.transfer.ItemCountryOfOriginTransfer;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.item.server.entity.ItemCountryOfOrigin;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.PercentUtils;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class ItemCountryOfOriginTransferCache
         extends BaseItemTransferCache<ItemCountryOfOrigin, ItemCountryOfOriginTransfer> {
-    
-    GeoControl geoControl = Session.getModelController(GeoControl.class);
-    ItemControl itemControl = Session.getModelController(ItemControl.class);
+    @Inject
+    GeoControl geoControl;
+
+    @Inject
+    ItemControl itemControl;
+
+
+
 
     /** Creates a new instance of ItemCountryOfOriginTransferCache */
     protected ItemCountryOfOriginTransferCache() {

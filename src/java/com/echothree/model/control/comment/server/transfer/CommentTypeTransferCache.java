@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.comment.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.comment.common.transfer.CommentTypeTransfer;
 import com.echothree.model.control.core.server.control.EntityTypeControl;
 import com.echothree.model.control.core.server.control.MimeTypeControl;
@@ -23,17 +24,27 @@ import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.comment.server.entity.CommentType;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class CommentTypeTransferCache
         extends BaseCommentTransferCache<CommentType, CommentTypeTransfer> {
+    @Inject
+    EntityTypeControl entityTypeControl;
 
-    EntityTypeControl entityTypeControl = Session.getModelController(EntityTypeControl.class);
-    MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
-    SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
-    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
+    @Inject
+    MimeTypeControl mimeTypeControl;
+
+    @Inject
+    SequenceControl sequenceControl;
+
+    @Inject
+    WorkflowControl workflowControl;
+
+
+
+
+
     
     /** Creates a new instance of CommentTypeTransferCache */
     protected CommentTypeTransferCache() {

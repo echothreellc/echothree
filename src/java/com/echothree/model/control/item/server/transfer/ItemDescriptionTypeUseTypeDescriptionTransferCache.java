@@ -16,18 +16,20 @@
 
 package com.echothree.model.control.item.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.item.common.transfer.ItemDescriptionTypeUseTypeDescriptionTransfer;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.item.server.entity.ItemDescriptionTypeUseTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class ItemDescriptionTypeUseTypeDescriptionTransferCache
         extends BaseItemDescriptionTransferCache<ItemDescriptionTypeUseTypeDescription, ItemDescriptionTypeUseTypeDescriptionTransfer> {
+    @Inject
+    ItemControl itemControl;
 
-    ItemControl itemControl = Session.getModelController(ItemControl.class);
+
 
     /** Creates a new instance of ItemDescriptionTypeUseTypeDescriptionTransferCache */
     protected ItemDescriptionTypeUseTypeDescriptionTransferCache() {

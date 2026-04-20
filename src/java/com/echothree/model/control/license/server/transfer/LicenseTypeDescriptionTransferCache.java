@@ -16,18 +16,20 @@
 
 package com.echothree.model.control.license.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.license.common.transfer.LicenseTypeDescriptionTransfer;
 import com.echothree.model.control.license.server.control.LicenseControl;
 import com.echothree.model.data.license.server.entity.LicenseTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class LicenseTypeDescriptionTransferCache
         extends BaseLicenseDescriptionTransferCache<LicenseTypeDescription, LicenseTypeDescriptionTransfer> {
+    @Inject
+    LicenseControl licenseControl;
 
-    LicenseControl licenseControl = Session.getModelController(LicenseControl.class);
+
 
     /** Creates a new instance of LicenseTypeDescriptionTransferCache */
     protected LicenseTypeDescriptionTransferCache() {

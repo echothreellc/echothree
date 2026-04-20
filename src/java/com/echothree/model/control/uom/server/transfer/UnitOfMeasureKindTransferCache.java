@@ -16,20 +16,22 @@
 
 package com.echothree.model.control.uom.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.uom.common.UomProperties;
 import com.echothree.model.control.uom.common.transfer.UnitOfMeasureKindTransfer;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class UnitOfMeasureKindTransferCache
         extends BaseUomTransferCache<UnitOfMeasureKind, UnitOfMeasureKindTransfer> {
+    @Inject
+    UomControl uomControl;
 
-    UomControl uomControl = Session.getModelController(UomControl.class);
+
 
     TransferProperties transferProperties;
     boolean filterUnitOfMeasureKindName;

@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.vendor.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.uom.server.control.UomControl;
@@ -23,18 +24,28 @@ import com.echothree.model.control.vendor.common.transfer.VendorItemCostTransfer
 import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.vendor.server.entity.VendorItemCost;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.AmountUtils;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class VendorItemCostTransferCache
         extends BaseVendorTransferCache<VendorItemCost, VendorItemCostTransfer> {
-    
-    InventoryControl inventoryControl = Session.getModelController(InventoryControl.class);
-    PartyControl partyControl = Session.getModelController(PartyControl.class);
-    UomControl uomControl = Session.getModelController(UomControl.class);
-    VendorControl vendorControl = Session.getModelController(VendorControl.class);
+    @Inject
+    InventoryControl inventoryControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    UomControl uomControl;
+
+    @Inject
+    VendorControl vendorControl;
+
+
+
+
+
 
     /** Creates a new instance of VendorItemCostTransferCache */
     protected VendorItemCostTransferCache() {

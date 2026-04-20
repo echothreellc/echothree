@@ -16,20 +16,25 @@
 
 package com.echothree.model.control.associate.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.associate.common.transfer.AssociatePartyContactMechanismTransfer;
 import com.echothree.model.control.associate.server.control.AssociateControl;
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.data.associate.server.entity.AssociatePartyContactMechanism;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class AssociatePartyContactMechanismTransferCache
         extends BaseAssociateTransferCache<AssociatePartyContactMechanism, AssociatePartyContactMechanismTransfer> {
+    @Inject
+    AssociateControl associateControl;
 
-    AssociateControl associateControl = Session.getModelController(AssociateControl.class);
-    ContactControl contactControl = Session.getModelController(ContactControl.class);
+    @Inject
+    ContactControl contactControl;
+
+
+
     
     /** Creates a new instance of AssociatePartyContactMechanismTransferCache */
     protected AssociatePartyContactMechanismTransferCache() {

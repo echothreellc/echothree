@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.training.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.training.common.TrainingOptions;
 import com.echothree.model.control.training.common.transfer.PartyTrainingClassSessionPageTransfer;
 import com.echothree.model.control.training.common.transfer.PartyTrainingClassSessionQuestionTransfer;
@@ -31,8 +32,10 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class PartyTrainingClassSessionTransferCache
         extends BaseTrainingTransferCache<PartyTrainingClassSession, PartyTrainingClassSessionTransfer> {
+    @Inject
+    TrainingControl trainingControl;
 
-    TrainingControl trainingControl = Session.getModelController(TrainingControl.class);
+
 
     boolean includePartyTrainingClassSessionPages;
     boolean includePartyTrainingClassSessionQuestions;

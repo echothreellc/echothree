@@ -16,6 +16,8 @@
 
 package com.echothree.model.control.party.server.transfer;
 
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 import com.echothree.model.control.party.common.transfer.PartyTypeAuditPolicyTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.uom.common.UomConstants;
@@ -23,23 +25,30 @@ import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.party.server.entity.PartyTypeAuditPolicy;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class PartyTypeAuditPolicyTransferCache
         extends BasePartyTransferCache<PartyTypeAuditPolicy, PartyTypeAuditPolicyTransfer> {
 
-    PartyControl partyControl = Session.getModelController(PartyControl.class);
-    UomControl uomControl = Session.getModelController(UomControl.class);
+    @Inject
+    PartyControl partyControl;
 
-    UnitOfMeasureKind timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
+    @Inject
+    UomControl uomControl;
+
+    UnitOfMeasureKind timeUnitOfMeasureKind;
 
     /** Creates a new instance of PartyTypeAuditPolicyTransferCache */
     protected PartyTypeAuditPolicyTransferCache() {
         super();
 
         setIncludeEntityInstance(true);
+    }
+
+    @PostConstruct
+    public void setup() {
+        timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
     }
 
     @Override

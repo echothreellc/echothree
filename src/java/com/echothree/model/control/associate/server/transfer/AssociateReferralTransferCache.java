@@ -16,18 +16,20 @@
 
 package com.echothree.model.control.associate.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.associate.common.transfer.AssociateReferralTransfer;
 import com.echothree.model.control.associate.server.control.AssociateControl;
 import com.echothree.model.data.associate.server.entity.AssociateReferral;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class AssociateReferralTransferCache
         extends BaseAssociateTransferCache<AssociateReferral, AssociateReferralTransfer> {
+    @Inject
+    AssociateControl associateControl;
 
-    AssociateControl associateControl = Session.getModelController(AssociateControl.class);
+
     
     /** Creates a new instance of AssociateReferralTransferCache */
     protected AssociateReferralTransferCache() {

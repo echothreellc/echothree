@@ -16,22 +16,30 @@
 
 package com.echothree.model.control.order.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.order.common.transfer.OrderShipmentGroupTransfer;
 import com.echothree.model.control.shipping.server.control.ShippingControl;
 import com.echothree.model.data.order.server.entity.OrderShipmentGroup;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class OrderShipmentGroupTransferCache
         extends BaseOrderTransferCache<OrderShipmentGroup, OrderShipmentGroupTransfer> {
-    
-    ContactControl contactControl = Session.getModelController(ContactControl.class);;
-    ItemControl itemControl = Session.getModelController(ItemControl.class);;
-    ShippingControl shippingControl = Session.getModelController(ShippingControl.class);;
+    @Inject
+    ContactControl contactControl;
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    ShippingControl shippingControl;
+
+;
+;
+;
     
     /** Creates a new instance of OrderShipmentGroupTransferCache */
     protected OrderShipmentGroupTransferCache() {

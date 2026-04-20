@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.core.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.core.common.CoreProperties;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
@@ -29,17 +30,27 @@ import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.common.transfer.ListWrapper;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class EntityAttributeTransferCache
         extends BaseCoreTransferCache<EntityAttribute, EntityAttributeTransfer> {
+    @Inject
+    CoreControl coreControl;
 
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
-    EntityTypeControl entityTypeControl = Session.getModelController(EntityTypeControl.class);
-    SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
-    UomControl uomControl = Session.getModelController(UomControl.class);
+    @Inject
+    EntityTypeControl entityTypeControl;
+
+    @Inject
+    SequenceControl sequenceControl;
+
+    @Inject
+    UomControl uomControl;
+
+
+
+
+
 
     boolean includeDefault;
     boolean includeValue;

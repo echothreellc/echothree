@@ -16,20 +16,22 @@
 
 package com.echothree.model.control.queue.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.queue.common.QueueOptions;
 import com.echothree.model.control.queue.common.transfer.QueueTypeTransfer;
 import com.echothree.model.control.queue.server.control.QueueControl;
 import com.echothree.model.data.queue.server.entity.QueueType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class QueueTypeTransferCache
         extends BaseQueueTransferCache<QueueType, QueueTypeTransfer> {
+    @Inject
+    QueueControl queueControl;
 
-    QueueControl queueControl = Session.getModelController(QueueControl.class);
+
 
     boolean includeQueuedEntityCount;
     boolean includeOldestQueuedEntityTime;

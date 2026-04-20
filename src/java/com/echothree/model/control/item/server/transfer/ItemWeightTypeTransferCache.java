@@ -16,18 +16,20 @@
 
 package com.echothree.model.control.item.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.item.common.transfer.ItemWeightTypeTransfer;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.item.server.entity.ItemWeightType;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class ItemWeightTypeTransferCache
         extends BaseItemTransferCache<ItemWeightType, ItemWeightTypeTransfer> {
+    @Inject
+    ItemControl itemControl;
 
-    ItemControl itemControl = Session.getModelController(ItemControl.class);
+
 
     /** Creates a new instance of ItemWeightTypeTransferCache */
     protected ItemWeightTypeTransferCache() {

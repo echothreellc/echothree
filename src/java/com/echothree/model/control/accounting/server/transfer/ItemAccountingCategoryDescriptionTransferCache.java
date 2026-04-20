@@ -16,18 +16,20 @@
 
 package com.echothree.model.control.accounting.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.accounting.common.transfer.ItemAccountingCategoryDescriptionTransfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.data.accounting.server.entity.ItemAccountingCategoryDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class ItemAccountingCategoryDescriptionTransferCache
         extends BaseAccountingDescriptionTransferCache<ItemAccountingCategoryDescription, ItemAccountingCategoryDescriptionTransfer> {
+    @Inject
+    AccountingControl accountingControl;
 
-    AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
+
 
     /** Creates a new instance of ItemAccountingCategoryDescriptionTransferCache */
     protected ItemAccountingCategoryDescriptionTransferCache() {

@@ -16,21 +16,26 @@
 
 package com.echothree.model.control.index.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.index.common.IndexOptions;
 import com.echothree.model.control.index.common.transfer.IndexTransfer;
 import com.echothree.model.control.index.server.control.IndexControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.index.server.entity.Index;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class IndexTransferCache
         extends BaseIndexTransferCache<Index, IndexTransfer> {
+    @Inject
+    IndexControl indexControl;
 
-    IndexControl indexControl = Session.getModelController(IndexControl.class);
-    PartyControl partyControl = Session.getModelController(PartyControl.class);
+    @Inject
+    PartyControl partyControl;
+
+
+
     
     /** Creates a new instance of IndexTransferCache */
     protected IndexTransferCache() {

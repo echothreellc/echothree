@@ -16,20 +16,25 @@
 
 package com.echothree.model.control.cancellationpolicy.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.cancellationpolicy.common.transfer.CancellationPolicyTranslationTransfer;
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
 import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicyTranslation;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class CancellationPolicyTranslationTransferCache
         extends BaseCancellationPolicyDescriptionTransferCache<CancellationPolicyTranslation, CancellationPolicyTranslationTransfer> {
+    @Inject
+    CancellationPolicyControl cancellationPolicyControl;
 
-    CancellationPolicyControl cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
-    MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
+    @Inject
+    MimeTypeControl mimeTypeControl;
+
+
+
     
     /** Creates a new instance of CancellationPolicyTranslationTransferCache */
     protected CancellationPolicyTranslationTransferCache() {

@@ -16,18 +16,20 @@
 
 package com.echothree.model.control.core.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.core.common.transfer.ColorTransfer;
 import com.echothree.model.control.core.server.control.ColorControl;
 import com.echothree.model.data.core.server.entity.Color;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class ColorTransferCache
         extends BaseCoreTransferCache<Color, ColorTransfer> {
+    @Inject
+    ColorControl colorControl;
 
-    ColorControl colorControl = Session.getModelController(ColorControl.class);
+
 
     /** Creates a new instance of ColorTransferCache */
     protected ColorTransferCache() {

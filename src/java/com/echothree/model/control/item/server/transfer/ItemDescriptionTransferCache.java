@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.item.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.core.server.control.EventControl;
 import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.item.common.ItemOptions;
@@ -28,17 +29,27 @@ import com.echothree.model.data.item.server.entity.ItemDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.common.persistence.type.ByteArray;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class ItemDescriptionTransferCache
         extends BaseItemTransferCache<ItemDescription, ItemDescriptionTransfer> {
+    @Inject
+    EventControl eventControl;
 
-    EventControl eventControl = Session.getModelController(EventControl.class);
-    ItemControl itemControl = Session.getModelController(ItemControl.class);
-    MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
-    PartyControl partyControl = Session.getModelController(PartyControl.class);
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    MimeTypeControl mimeTypeControl;
+
+    @Inject
+    PartyControl partyControl;
+
+
+
+
+
     
     boolean includeBlob;
     boolean includeClob;

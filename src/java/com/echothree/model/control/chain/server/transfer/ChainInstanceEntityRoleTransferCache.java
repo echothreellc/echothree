@@ -16,18 +16,20 @@
 
 package com.echothree.model.control.chain.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.chain.common.transfer.ChainInstanceEntityRoleTransfer;
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.data.chain.server.entity.ChainInstanceEntityRole;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class ChainInstanceEntityRoleTransferCache
         extends BaseChainTransferCache<ChainInstanceEntityRole, ChainInstanceEntityRoleTransfer> {
+    @Inject
+    ChainControl chainControl;
 
-    ChainControl chainControl = Session.getModelController(ChainControl.class);
+
     
     /** Creates a new instance of ChainInstanceEntityRoleTransferCache */
     protected ChainInstanceEntityRoleTransferCache() {

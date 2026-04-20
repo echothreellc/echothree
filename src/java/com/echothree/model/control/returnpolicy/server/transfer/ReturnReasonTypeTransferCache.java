@@ -16,18 +16,20 @@
 
 package com.echothree.model.control.returnpolicy.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.returnpolicy.common.transfer.ReturnReasonTypeTransfer;
 import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnReasonType;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class ReturnReasonTypeTransferCache
         extends BaseReturnPolicyTransferCache<ReturnReasonType, ReturnReasonTypeTransfer> {
+    @Inject
+    ReturnPolicyControl returnPolicyControl;
 
-    ReturnPolicyControl returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
+
 
     /** Creates a new instance of ReturnReasonTypeTransferCache */
     protected ReturnReasonTypeTransferCache() {

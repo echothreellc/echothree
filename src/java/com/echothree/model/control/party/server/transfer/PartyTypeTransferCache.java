@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.party.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.party.common.PartyOptions;
 import com.echothree.model.control.party.common.transfer.PartyTypeTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
@@ -23,15 +24,19 @@ import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.data.party.server.entity.PartyType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class PartyTypeTransferCache
         extends BasePartyTransferCache<PartyType, PartyTypeTransfer> {
+    @Inject
+    PartyControl partyControl;
 
-    PartyControl partyControl = Session.getModelController(PartyControl.class);
-    SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
+    @Inject
+    SequenceControl sequenceControl;
+
+
+
 
     boolean includeAuditPolicy;
     boolean includeLockoutPolicy;

@@ -16,21 +16,26 @@
 
 package com.echothree.model.control.term.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.term.common.transfer.CustomerTypeCreditLimitTransfer;
 import com.echothree.model.data.term.server.entity.CustomerTypeCreditLimit;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.AmountUtils;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class CustomerTypeCreditLimitTransferCache
         extends BaseTermTransferCache<CustomerTypeCreditLimit, CustomerTypeCreditLimitTransfer> {
-    
-    AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
-    CustomerControl customerControl = Session.getModelController(CustomerControl.class);
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    CustomerControl customerControl;
+
+
+
 
     /** Creates a new instance of CustomerTypeCreditLimitTransferCache */
     protected CustomerTypeCreditLimitTransferCache() {

@@ -16,18 +16,20 @@
 
 package com.echothree.model.control.employee.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.employee.common.transfer.ResponsibilityTypeDescriptionTransfer;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.data.employee.server.entity.ResponsibilityTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class ResponsibilityTypeDescriptionTransferCache
         extends BaseEmployeeDescriptionTransferCache<ResponsibilityTypeDescription, ResponsibilityTypeDescriptionTransfer> {
+    @Inject
+    EmployeeControl employeeControl;
 
-    EmployeeControl employeeControl = Session.getModelController(EmployeeControl.class);
+
 
     /** Creates a new instance of ResponsibilityTypeDescriptionTransferCache */
     protected ResponsibilityTypeDescriptionTransferCache() {

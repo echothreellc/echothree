@@ -16,20 +16,25 @@
 
 package com.echothree.model.control.core.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.core.common.transfer.CommandMessageTranslationTransfer;
 import com.echothree.model.control.core.server.control.CommandControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.core.server.entity.CommandMessageTranslation;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class CommandMessageTranslationTransferCache
         extends BaseCoreTransferCache<CommandMessageTranslation, CommandMessageTranslationTransfer> {
+    @Inject
+    CommandControl commandControl;
 
-    CommandControl commandControl = Session.getModelController(CommandControl.class);
-    PartyControl partyControl = Session.getModelController(PartyControl.class);
+    @Inject
+    PartyControl partyControl;
+
+
+
     
     /** Creates a new instance of CommandMessageTranslationTransferCache */
     protected CommandMessageTranslationTransferCache() {

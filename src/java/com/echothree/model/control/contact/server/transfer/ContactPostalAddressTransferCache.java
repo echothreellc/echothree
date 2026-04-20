@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.contact.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.contact.common.transfer.ContactPostalAddressTransfer;
 import com.echothree.model.control.contact.common.workflow.PostalAddressStatusConstants;
 import com.echothree.model.control.geo.server.control.GeoControl;
@@ -23,14 +24,21 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.contact.server.entity.ContactPostalAddress;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class ContactPostalAddressTransferCache
         extends BaseContactTransferCache<ContactPostalAddress, ContactPostalAddressTransfer> {
+    @Inject
+    GeoControl geoControl;
 
-    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    WorkflowControl workflowControl;
+
+
     
     /** Creates a new instance of ContactPostalAddressTransferCache */
     protected ContactPostalAddressTransferCache() {
@@ -41,8 +49,8 @@ public class ContactPostalAddressTransferCache
         var contactPostalAddressTransfer = get(contactPostalAddress);
         
         if(contactPostalAddressTransfer == null) {
-            var geoControl = Session.getModelController(GeoControl.class);
-            var partyControl = Session.getModelController(PartyControl.class);
+
+
             var personalTitle = contactPostalAddress.getPersonalTitle();
             var personalTitleTransfer = personalTitle == null? null: partyControl.getPersonalTitleTransfer(userVisit, personalTitle);
             var firstName = contactPostalAddress.getFirstName();

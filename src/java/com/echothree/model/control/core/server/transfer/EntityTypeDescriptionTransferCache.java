@@ -16,18 +16,20 @@
 
 package com.echothree.model.control.core.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.core.common.transfer.EntityTypeDescriptionTransfer;
 import com.echothree.model.control.core.server.control.EntityTypeControl;
 import com.echothree.model.data.core.server.entity.EntityTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class EntityTypeDescriptionTransferCache
         extends BaseCoreDescriptionTransferCache<EntityTypeDescription, EntityTypeDescriptionTransfer> {
+    @Inject
+    EntityTypeControl entityTypeControl;
 
-    EntityTypeControl entityTypeControl = Session.getModelController(EntityTypeControl.class);
+
 
     /** Creates a new instance of EntityTypeDescriptionTransferCache */
     protected EntityTypeDescriptionTransferCache() {

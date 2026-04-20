@@ -16,18 +16,20 @@
 
 package com.echothree.model.control.core.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.core.common.transfer.TextDecorationTransfer;
 import com.echothree.model.control.core.server.control.TextControl;
 import com.echothree.model.data.core.server.entity.TextDecoration;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class TextDecorationTransferCache
         extends BaseCoreTransferCache<TextDecoration, TextDecorationTransfer> {
+    @Inject
+    TextControl textControl;
 
-    TextControl textControl = Session.getModelController(TextControl.class);
+
 
     /** Creates a new instance of TextDecorationTransferCache */
     protected TextDecorationTransferCache() {

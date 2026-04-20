@@ -16,6 +16,8 @@
 
 package com.echothree.model.control.workeffort.server.transfer;
 
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 import com.echothree.model.control.core.server.control.EntityTypeControl;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.uom.common.UomConstants;
@@ -27,19 +29,24 @@ import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workeffort.server.entity.WorkEffortType;
 import com.echothree.util.common.transfer.ListWrapper;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class WorkEffortTypeTransferCache
         extends BaseWorkEffortTransferCache<WorkEffortType, WorkEffortTypeTransfer> {
-    
-    EntityTypeControl entityTypeControl = Session.getModelController(EntityTypeControl.class);
-    SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
-    UomControl uomControl = Session.getModelController(UomControl.class);
-    WorkRequirementControl workRequirementControl = Session.getModelController(WorkRequirementControl.class);
+    @Inject
+    EntityTypeControl entityTypeControl;
 
-    UnitOfMeasureKind timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
+    @Inject
+    SequenceControl sequenceControl;
+
+    @Inject
+    UomControl uomControl;
+
+    @Inject
+    WorkRequirementControl workRequirementControl;
+
+    UnitOfMeasureKind timeUnitOfMeasureKind;
 
     boolean includeWorkRequirementTypes;
     boolean includeWorkEffortScopes;
@@ -56,7 +63,12 @@ public class WorkEffortTypeTransferCache
         
         setIncludeEntityInstance(true);
     }
-    
+
+    @PostConstruct
+    public void setup() {
+        timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
+    }
+
     public WorkEffortTypeTransfer getWorkEffortTypeTransfer(UserVisit userVisit, WorkEffortType workEffortType) {
         var workEffortTypeTransfer = get(workEffortType);
         

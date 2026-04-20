@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.inventory.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.inventory.common.InventoryOptions;
 import com.echothree.model.control.inventory.common.transfer.InventoryLocationGroupTransfer;
 import com.echothree.model.control.inventory.common.workflow.InventoryLocationGroupStatusConstants;
@@ -25,15 +26,22 @@ import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.inventory.server.entity.InventoryLocationGroup;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class InventoryLocationGroupTransferCache
         extends BaseInventoryTransferCache<InventoryLocationGroup, InventoryLocationGroupTransfer> {
-    
-    InventoryControl inventoryControl = Session.getModelController(InventoryControl.class);
-    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
+    @Inject
+    InventoryControl inventoryControl;
+
+    @Inject
+    WarehouseControl warehouseControl;
+
+    @Inject
+    WorkflowControl workflowControl;
+
+
+
 
     boolean includeCapacities;
     boolean includeVolume;
@@ -56,7 +64,7 @@ public class InventoryLocationGroupTransferCache
         var inventoryLocationGroupTransfer = get(inventoryLocationGroup);
         
         if(inventoryLocationGroupTransfer == null) {
-            var warehouseControl = Session.getModelController(WarehouseControl.class);
+
             var inventoryLocationGroupDetail = inventoryLocationGroup.getLastDetail();
             var warehouseParty = inventoryLocationGroupDetail.getWarehouseParty();
             var warehouse = warehouseControl.getWarehouse(warehouseParty);
