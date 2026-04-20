@@ -27,23 +27,22 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.Event;
 import com.echothree.model.data.core.server.factory.EventFactory;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetEventsCommand
-        extends BaseMultipleEntitiesCommand<Event, GetEventsForm> {
+        extends BasePaginatedMultipleEntitiesCommand<Event, GetEventsForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -53,61 +52,76 @@ public class GetEventsCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                     new SecurityRoleDefinition(SecurityRoleGroups.Event.name(), SecurityRoles.List.name())
-                    ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null),
                 new FieldDefinition("CreatedByEntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("CreatedByUuid", FieldType.UUID, false, null, null)
-                );
+        );
     }
     
+    @Inject
+    EntityInstanceControl entityInstanceControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
     /** Creates a new instance of GetEventsCommand */
     public GetEventsCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-
-    EntityInstance entityInstance;
-    EntityInstance createdBy;
-    Long eventCount;
+    
+    private EntityInstance entityInstance;
+    private EntityInstance createdBy;
 
     @Override
-    protected Collection<Event> getEntities() {
-        var eventControl = Session.getModelController(EventControl.class);
+    protected void handleForm() {
         var entityRef = form.getEntityRef();
         var uuid = form.getUuid();
         var createdByEntityRef = form.getCreatedByEntityRef();
         var createdByUuid = form.getCreatedByUuid();
         var parameterCount = (entityRef == null ? 0 : 1) + (uuid == null ? 0 : 1)
                 + (createdByEntityRef == null ? 0 : 1) + (createdByUuid == null ? 0 : 1);
-        Collection<Event> entities = null;
 
         if(parameterCount == 1) {
             if(entityRef != null || uuid != null) {
-                entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, entityRef, uuid, null);
-
-                if(!hasExecutionErrors()) {
-                    if(session.hasLimit(EventFactory.class)) {
-                        eventCount = eventControl.countEventsByEntityInstance(entityInstance);
-                    }
-
-                    entities = eventControl.getEventsByEntityInstance(entityInstance);
-                }
+                entityInstance = entityInstanceLogic.getEntityInstance(this, entityRef, uuid, null);
             } else {
-                createdBy = EntityInstanceLogic.getInstance().getEntityInstance(this, createdByEntityRef, createdByUuid, null);
-
-                if(!hasExecutionErrors()) {
-                    if(session.hasLimit(EventFactory.class)) {
-                        eventCount = eventControl.countEventsByCreatedBy(createdBy);
-                    }
-
-                    entities = eventControl.getEventsByCreatedBy(createdBy);
-                }
+                createdBy = entityInstanceLogic.getEntityInstance(this, createdByEntityRef, createdByUuid, null);
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());
+        }
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        Long total = null;
+
+        if(!hasExecutionErrors()) {
+            if(entityInstance != null) {
+                total = eventControl.countEventsByEntityInstance(entityInstance);
+            } else if(createdBy != null) {
+                total = eventControl.countEventsByCreatedBy(createdBy);
+            }
+        }
+
+        return total;
+    }
+
+    @Override
+    protected Collection<Event> getEntities() {
+        Collection<Event> entities = null;
+
+        if(!hasExecutionErrors()) {
+            if(entityInstance != null) {
+                entities = eventControl.getEventsByEntityInstance(entityInstance);
+            } else if(createdBy != null) {
+                entities = eventControl.getEventsByCreatedBy(createdBy);
+            }
         }
 
         return entities;
@@ -118,11 +132,11 @@ public class GetEventsCommand
         var result = CoreResultFactory.getGetEventsResult();
 
         if(entities != null) {
-            var eventControl = Session.getModelController(EventControl.class);
-            var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
             var userVisit = getUserVisit();
 
-            result.setEventCount(eventCount);
+            if(session.hasLimit(EventFactory.class)) {
+                result.setEventCount(getTotalEntities());
+            }
 
             if(entityInstance != null) {
                 result.setEntityInstance(entityInstanceControl.getEntityInstanceTransfer(userVisit, entityInstance, false, false, false, false));
