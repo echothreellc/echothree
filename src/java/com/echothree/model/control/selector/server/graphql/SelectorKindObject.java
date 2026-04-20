@@ -92,7 +92,7 @@ public class SelectorKindObject
 
         return selectorControl.getBestSelectorKindDescription(selectorKind, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
-s
+
     @GraphQLField
     @GraphQLDescription("selector types")
     @GraphQLNonNull
