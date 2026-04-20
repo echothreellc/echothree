@@ -18,7 +18,6 @@ package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.transfer.BaseEncryptionKeyTransfer;
 import com.echothree.model.control.core.common.workflow.BaseEncryptionKeyStatusConstants;
-import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.core.server.entity.BaseEncryptionKey;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -27,7 +26,6 @@ import com.echothree.util.server.persistence.Session;
 public class BaseEncryptionKeyTransferCache
         extends BaseCoreTransferCache<BaseEncryptionKey, BaseEncryptionKeyTransfer> {
 
-    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of BaseEncryptionKeyTransferCache */

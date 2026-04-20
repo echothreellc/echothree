@@ -23,7 +23,6 @@ import com.echothree.model.control.comment.common.CommentConstants;
 import com.echothree.model.control.communication.server.control.CommunicationControl;
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.contactlist.server.control.ContactListControl;
-import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.control.invoice.server.control.InvoiceControl;
 import com.echothree.model.control.item.server.control.ItemControl;
@@ -36,7 +35,6 @@ import com.echothree.model.control.scale.server.control.ScaleControl;
 import com.echothree.model.control.shipment.server.control.PartyFreeOnBoardControl;
 import com.echothree.model.control.subscription.server.control.SubscriptionControl;
 import com.echothree.model.control.term.server.control.TermControl;
-import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.vendor.common.VendorOptions;
 import com.echothree.model.control.vendor.common.transfer.VendorTransfer;
 import com.echothree.model.control.vendor.common.workflow.VendorStatusConstants;
@@ -65,7 +63,6 @@ public class VendorTransferCache
     ContactControl contactControl = Session.getModelController(ContactControl.class);
     ContactListControl contactListControl = Session.getModelController(ContactListControl.class);
     DocumentControl documentControl = Session.getModelController(DocumentControl.class);
-    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     ItemControl itemControl = Session.getModelController(ItemControl.class);
     InvoiceControl invoiceControl = Session.getModelController(InvoiceControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
@@ -75,7 +72,6 @@ public class VendorTransferCache
     ScaleControl scaleControl = Session.getModelController(ScaleControl.class);
     SubscriptionControl subscriptionControl = Session.getModelController(SubscriptionControl.class);
     TermControl termControl = Session.getModelController(TermControl.class);
-    UserControl userControl = Session.getModelController(UserControl.class);
     VendorControl vendorControl = Session.getModelController(VendorControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     

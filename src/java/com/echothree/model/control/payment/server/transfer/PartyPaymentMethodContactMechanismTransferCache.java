@@ -17,7 +17,6 @@
 package com.echothree.model.control.payment.server.transfer;
 
 import com.echothree.model.control.contact.server.control.ContactControl;
-import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import static com.echothree.model.control.customer.common.workflow.CustomerCreditCardContactMechanismConstants.Workflow_CUSTOMER_CREDIT_CARD_CONTACT_MECHANISM;
 import com.echothree.model.control.payment.common.PaymentMethodTypes;
 import com.echothree.model.control.payment.common.transfer.PartyPaymentMethodContactMechanismTransfer;
@@ -34,7 +33,6 @@ public class PartyPaymentMethodContactMechanismTransferCache
         extends BasePaymentTransferCache<PartyPaymentMethodContactMechanism, PartyPaymentMethodContactMechanismTransfer> {
 
     ContactControl contactControl = Session.getModelController(ContactControl.class);
-    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     PartyPaymentMethodControl partyPaymentMethodControl = Session.getModelController(PartyPaymentMethodControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     

@@ -16,7 +16,6 @@
 
 package com.echothree.model.control.printer.server.transfer;
 
-import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.printer.common.transfer.PrinterTransfer;
 import com.echothree.model.control.printer.common.workflow.PrinterStatusConstants;
 import com.echothree.model.control.printer.server.control.PrinterControl;
@@ -30,7 +29,6 @@ import javax.enterprise.context.RequestScoped;
 public class PrinterTransferCache
         extends BasePrinterTransferCache<Printer, PrinterTransfer> {
     
-    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     PrinterControl printerControl = Session.getModelController(PrinterControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     

@@ -16,7 +16,6 @@
 
 package com.echothree.model.control.warehouse.server.transfer;
 
-import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.warehouse.common.WarehouseOptions;
 import com.echothree.model.control.warehouse.common.transfer.LocationTransfer;
@@ -34,7 +33,6 @@ import javax.enterprise.context.RequestScoped;
 public class LocationTransferCache
         extends BaseWarehouseTransferCache<Location, LocationTransfer> {
     
-    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     InventoryControl inventoryControl = Session.getModelController(InventoryControl.class);
     LocationUseTypeControl locationUseTypeControl = Session.getModelController(LocationUseTypeControl.class);
     WarehouseControl warehouseControl = Session.getModelController(WarehouseControl.class);

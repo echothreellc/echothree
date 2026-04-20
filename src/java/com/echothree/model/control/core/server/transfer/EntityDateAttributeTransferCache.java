@@ -18,7 +18,6 @@ package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.transfer.EntityDateAttributeTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
-import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.data.core.server.entity.EntityDateAttribute;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -31,7 +30,6 @@ public class EntityDateAttributeTransferCache
         extends BaseCoreTransferCache<EntityDateAttribute, EntityDateAttributeTransfer> {
 
     CoreControl coreControl = Session.getModelController(CoreControl.class);
-    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
     /** Creates a new instance of EntityDateAttributeTransferCache */
     protected EntityDateAttributeTransferCache() {

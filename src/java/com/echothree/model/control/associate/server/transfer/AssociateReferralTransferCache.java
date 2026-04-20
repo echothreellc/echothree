@@ -18,7 +18,6 @@ package com.echothree.model.control.associate.server.transfer;
 
 import com.echothree.model.control.associate.common.transfer.AssociateReferralTransfer;
 import com.echothree.model.control.associate.server.control.AssociateControl;
-import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.data.associate.server.entity.AssociateReferral;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
@@ -29,7 +28,6 @@ public class AssociateReferralTransferCache
         extends BaseAssociateTransferCache<AssociateReferral, AssociateReferralTransfer> {
 
     AssociateControl associateControl = Session.getModelController(AssociateControl.class);
-    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     
     /** Creates a new instance of AssociateReferralTransferCache */
     protected AssociateReferralTransferCache() {

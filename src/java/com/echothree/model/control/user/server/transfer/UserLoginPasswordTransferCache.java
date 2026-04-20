@@ -19,7 +19,6 @@ package com.echothree.model.control.user.server.transfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.user.common.UserConstants;
 import com.echothree.model.control.user.common.transfer.UserLoginPasswordTransfer;
-import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.user.server.entity.UserLoginPassword;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
@@ -30,7 +29,6 @@ public class UserLoginPasswordTransferCache
         extends BaseUserTransferCache<UserLoginPassword, UserLoginPasswordTransfer> {
     
     PartyControl partyControl = Session.getModelController(PartyControl.class);
-    UserControl userControl = Session.getModelController(UserControl.class);
 
     /** Creates a new instance of UserLoginPasswordTransferCache */
     protected UserLoginPasswordTransferCache() {

@@ -29,7 +29,6 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.control.scale.server.control.ScaleControl;
 import com.echothree.model.control.training.server.control.TrainingControl;
-import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
@@ -53,7 +52,6 @@ public class PartyTransferCache
     PrinterControl printerControl = Session.getModelController(PrinterControl.class);
     ScaleControl scaleControl = Session.getModelController(ScaleControl.class);
     TrainingControl trainingControl = Session.getModelController(TrainingControl.class);
-    UserControl userControl = Session.getModelController(UserControl.class);
 
     boolean includeUserLogin;
     boolean includeRecoveryAnswer;

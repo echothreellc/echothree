@@ -19,7 +19,6 @@ package com.echothree.model.control.item.server.transfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
 import com.echothree.model.control.comment.common.CommentConstants;
-import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.geo.common.GeoCodeAliasTypes;
 import com.echothree.model.control.geo.common.GeoOptions;
 import com.echothree.model.control.item.common.ItemDescriptionTypes;
@@ -54,7 +53,6 @@ public class ItemTransferCache
     
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
     CancellationPolicyControl cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
-    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     ItemControl itemControl = Session.getModelController(ItemControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     ReturnPolicyControl returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);

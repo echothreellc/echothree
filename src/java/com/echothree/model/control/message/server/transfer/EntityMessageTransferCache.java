@@ -16,7 +16,6 @@
 
 package com.echothree.model.control.message.server.transfer;
 
-import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.message.common.transfer.EntityMessageTransfer;
 import com.echothree.model.control.message.server.control.MessageControl;
 import com.echothree.model.data.message.server.entity.EntityMessage;
@@ -28,7 +27,6 @@ import javax.enterprise.context.RequestScoped;
 public class EntityMessageTransferCache
         extends BaseMessageTransferCache<EntityMessage, EntityMessageTransfer> {
 
-    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     MessageControl messageControl = Session.getModelController(MessageControl.class);
 
     /** Creates a new instance of EntityMessageTransferCache */

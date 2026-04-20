@@ -16,7 +16,6 @@
 
 package com.echothree.model.control.item.server.transfer;
 
-import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.core.server.control.EventControl;
 import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.item.common.ItemOptions;
@@ -36,7 +35,6 @@ import javax.enterprise.context.RequestScoped;
 public class ItemDescriptionTransferCache
         extends BaseItemTransferCache<ItemDescription, ItemDescriptionTransfer> {
 
-    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     EventControl eventControl = Session.getModelController(EventControl.class);
     ItemControl itemControl = Session.getModelController(ItemControl.class);
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);

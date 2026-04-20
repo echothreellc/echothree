@@ -18,7 +18,6 @@ package com.echothree.model.control.rating.server.transfer;
 
 import com.echothree.model.control.core.server.control.EntityTypeControl;
 import com.echothree.model.control.rating.common.transfer.RatingTypeTransfer;
-import com.echothree.model.control.rating.server.control.RatingControl;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.data.rating.server.entity.RatingType;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -30,7 +29,6 @@ public class RatingTypeTransferCache
         extends BaseRatingTransferCache<RatingType, RatingTypeTransfer> {
     
     EntityTypeControl entityTypeControl = Session.getModelController(EntityTypeControl.class);
-    RatingControl ratingControl = Session.getModelController(RatingControl.class);
     SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
     
     /** Creates a new instance of RatingTypeTransferCache */

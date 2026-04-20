@@ -17,7 +17,6 @@
 package com.echothree.model.control.workflow.server.transfer;
 
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
-import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
 import com.echothree.model.control.workflow.common.WorkflowOptions;
 import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
@@ -30,7 +29,6 @@ import javax.enterprise.context.RequestScoped;
 public class WorkflowEntityStatusTransferCache
         extends BaseWorkflowTransferCache<WorkflowEntityStatus, WorkflowEntityStatusTransfer> {
 
-    WorkEffortControl workEffortControl = Session.getModelController(WorkEffortControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
 
     boolean includeTriggerTime;

@@ -18,7 +18,6 @@ package com.echothree.model.control.accounting.server.transfer;
 
 import com.echothree.model.control.accounting.common.transfer.TransactionEntityRoleTransfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
-import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.data.accounting.server.entity.TransactionEntityRole;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
@@ -29,7 +28,6 @@ public class TransactionEntityRoleTransferCache
         extends BaseAccountingTransferCache<TransactionEntityRole, TransactionEntityRoleTransfer> {
 
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
-    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     
     /** Creates a new instance of TransactionEntityRoleTransferCache */
     protected TransactionEntityRoleTransferCache() {

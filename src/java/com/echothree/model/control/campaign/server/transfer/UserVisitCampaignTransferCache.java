@@ -18,7 +18,6 @@ package com.echothree.model.control.campaign.server.transfer;
 
 import com.echothree.model.control.campaign.common.transfer.UserVisitCampaignTransfer;
 import com.echothree.model.control.campaign.server.control.CampaignControl;
-import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.campaign.server.entity.UserVisitCampaign;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
@@ -29,7 +28,6 @@ public class UserVisitCampaignTransferCache
         extends BaseCampaignTransferCache<UserVisitCampaign, UserVisitCampaignTransfer> {
 
     CampaignControl campaignControl = Session.getModelController(CampaignControl.class);
-    UserControl userControl = Session.getModelController(UserControl.class);
     
     /** Creates a new instance of UserVisitCampaignTransferCache */
     protected UserVisitCampaignTransferCache() {

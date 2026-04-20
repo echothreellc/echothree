@@ -19,7 +19,6 @@ package com.echothree.model.control.core.server.transfer;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.core.common.transfer.EntityClobAttributeTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
-import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.core.server.entity.EntityClobAttribute;
@@ -33,7 +32,6 @@ public class EntityClobAttributeTransferCache
         extends BaseCoreTransferCache<EntityClobAttribute, EntityClobAttributeTransfer> {
 
     CoreControl coreControl = Session.getModelController(CoreControl.class);
-    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
 

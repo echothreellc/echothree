@@ -20,7 +20,6 @@ import com.echothree.model.control.accounting.common.AccountingOptions;
 import com.echothree.model.control.accounting.common.transfer.TransactionGroupTransfer;
 import com.echothree.model.control.accounting.common.workflow.TransactionGroupStatusConstants;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
-import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.accounting.server.entity.TransactionGroup;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -33,7 +32,6 @@ public class TransactionGroupTransferCache
         extends BaseAccountingTransferCache<TransactionGroup, TransactionGroupTransfer> {
 
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
-    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     boolean includeTransactions;
     

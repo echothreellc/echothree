@@ -18,8 +18,6 @@ package com.echothree.model.control.comment.server.transfer;
 
 import com.echothree.model.control.comment.common.CommentOptions;
 import com.echothree.model.control.comment.common.transfer.CommentTransfer;
-import com.echothree.model.control.comment.server.control.CommentControl;
-import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
@@ -33,8 +31,6 @@ import javax.enterprise.context.RequestScoped;
 public class CommentTransferCache
         extends BaseCommentTransferCache<Comment, CommentTransfer> {
 
-    CommentControl commentControl = Session.getModelController(CommentControl.class);
-    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);

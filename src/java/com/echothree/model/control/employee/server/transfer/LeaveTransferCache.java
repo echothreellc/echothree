@@ -16,7 +16,6 @@
 
 package com.echothree.model.control.employee.server.transfer;
 
-import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.employee.common.transfer.LeaveTransfer;
 import com.echothree.model.control.employee.common.workflow.LeaveStatusConstants;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
@@ -36,7 +35,6 @@ public class LeaveTransferCache
         extends BaseEmployeeTransferCache<Leave, LeaveTransfer> {
 
     EmployeeControl employeeControl = Session.getModelController(EmployeeControl.class);
-    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     UomControl uomControl = Session.getModelController(UomControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
