@@ -898,6 +898,7 @@ import com.echothree.model.data.party.common.PersonalTitleConstants;
 import com.echothree.model.data.party.common.PartyAliasTypeConstants;
 import com.echothree.model.data.party.common.RoleTypeConstants;
 import com.echothree.model.data.party.common.TimeZoneConstants;
+import com.echothree.model.data.party.common.PartyDivisionConstants;
 import com.echothree.model.data.party.server.entity.DateTimeFormat;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
@@ -8355,32 +8356,37 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("divisions")
-    static Collection<DivisionObject> divisions(final DataFetchingEnvironment env,
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<DivisionObject> divisions(final DataFetchingEnvironment env,
             @GraphQLName("companyName") @GraphQLNonNull final String companyName) {
-        Collection<PartyDivision> partyDivisions;
-        Collection<DivisionObject> divisionObjects;
+        CountingPaginatedData<DivisionObject> data;
 
         try {
             var commandForm = PartyUtil.getHome().getGetDivisionsForm();
+            var command = CDI.current().select(GetDivisionsCommand.class).get();
 
             commandForm.setCompanyName(companyName);
 
-            partyDivisions = CDI.current().select(GetDivisionsCommand.class).get().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, PartyDivisionConstants.COMPONENT_VENDOR_NAME, PartyDivisionConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var divisions = entities.stream()
+                            .map(DivisionObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, divisions);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(partyDivisions == null) {
-            divisionObjects = emptyList();
-        } else {
-            divisionObjects = new ArrayList<>(partyDivisions.size());
-
-            partyDivisions.stream()
-                    .map(DivisionObject::new)
-                    .forEachOrdered(divisionObjects::add);
-        }
-
-        return divisionObjects;
+        return data;
     }
 
     @GraphQLField
