@@ -18,8 +18,14 @@ package com.echothree.model.control.filter.server.graphql;
 
 import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.user.server.control.UserControl;
+import com.echothree.model.data.filter.common.FilterConstants;
 import com.echothree.model.data.filter.server.entity.FilterType;
 import com.echothree.model.data.filter.server.entity.FilterTypeDetail;
 import com.echothree.util.server.persistence.Session;
@@ -27,9 +33,11 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 @GraphQLDescription("filter type object")
 @GraphQLName("FilterType")
@@ -93,21 +101,22 @@ public class FilterTypeObject
 
     @GraphQLField
     @GraphQLDescription("filters")
-    public Collection<FilterObject> getFilters(final DataFetchingEnvironment env) {
-        Collection<FilterObject> filterObjects = null;
-
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<FilterObject> getFilters(final DataFetchingEnvironment env) {
         if(FilterSecurityUtils.getHasFiltersAccess(env)) {
             var filterControl = Session.getModelController(FilterControl.class);
-            var filters = filterControl.getFilters(filterType);
+            var totalCount = filterControl.countFiltersByFilterType(filterType);
 
-            filterObjects = new ArrayList<>(filters.size());
+            try(var objectLimiter = new ObjectLimiter(env, FilterConstants.COMPONENT_VENDOR_NAME, FilterConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = filterControl.getFilters(filterType);
+                var filters = entities.stream().map(FilterObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
-            filters.stream()
-                    .map(FilterObject::new)
-                    .forEachOrdered(filterObjects::add);
+                return new CountedObjects<>(objectLimiter, filters);
+            }
+        } else {
+            return Connections.emptyConnection();
         }
-
-        return filterObjects;
     }
 
 }
