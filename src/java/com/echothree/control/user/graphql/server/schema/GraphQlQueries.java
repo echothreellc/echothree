@@ -895,6 +895,7 @@ import com.echothree.model.data.party.common.PartyCompanyConstants;
 import com.echothree.model.data.party.common.PartyConstants;
 import com.echothree.model.data.party.common.PartyTypeConstants;
 import com.echothree.model.data.party.common.PersonalTitleConstants;
+import com.echothree.model.data.party.common.PartyAliasTypeConstants;
 import com.echothree.model.data.party.common.RoleTypeConstants;
 import com.echothree.model.data.party.common.TimeZoneConstants;
 import com.echothree.model.data.party.server.entity.DateTimeFormat;
@@ -8121,32 +8122,37 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("partyAliasTypes")
-    static Collection<PartyAliasTypeObject> partyAliasTypes(final DataFetchingEnvironment env,
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<PartyAliasTypeObject> partyAliasTypes(final DataFetchingEnvironment env,
             @GraphQLName("partyTypeName") @GraphQLNonNull final String partyTypeName) {
-        Collection<PartyAliasType> partyAliasTypes;
-        Collection<PartyAliasTypeObject> partyAliasTypeObjects;
+        CountingPaginatedData<PartyAliasTypeObject> data;
 
         try {
             var commandForm = PartyUtil.getHome().getGetPartyAliasTypesForm();
+            var command = CDI.current().select(GetPartyAliasTypesCommand.class).get();
 
             commandForm.setPartyTypeName(partyTypeName);
 
-            partyAliasTypes = CDI.current().select(GetPartyAliasTypesCommand.class).get().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, PartyAliasTypeConstants.COMPONENT_VENDOR_NAME, PartyAliasTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var partyAliasTypes = entities.stream()
+                            .map(PartyAliasTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, partyAliasTypes);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(partyAliasTypes == null) {
-            partyAliasTypeObjects = emptyList();
-        } else {
-            partyAliasTypeObjects = new ArrayList<>(partyAliasTypes.size());
-
-            partyAliasTypes.stream()
-                    .map(PartyAliasTypeObject::new)
-                    .forEachOrdered(partyAliasTypeObjects::add);
-        }
-
-        return partyAliasTypeObjects;
+        return data;
     }
 
     @GraphQLField

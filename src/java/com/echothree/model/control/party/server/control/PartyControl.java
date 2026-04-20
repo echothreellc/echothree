@@ -2779,11 +2779,12 @@ public class PartyControl
     }
 
     public long countPartyAliasTypesByPartyType(PartyType partyType) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM partyaliastypes, partyaliastypedetails " +
-                "WHERE pat_activedetailid = patdt_partyaliastypedetailid AND patdt_ptyp_partytypeid = ?",
-                partyType);
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM partyaliastypes
+                        JOIN partyaliastypedetails ON patdt_partyaliastypedetailid = pat_activedetailid
+                        WHERE patdt_ptyp_partytypeid = ?
+                        """, partyType);
     }
 
     private static final Map<EntityPermission, String> getPartyAliasTypeByNameQueries;
