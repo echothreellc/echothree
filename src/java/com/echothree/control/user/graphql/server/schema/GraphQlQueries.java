@@ -136,10 +136,10 @@ import com.echothree.control.user.filter.server.command.GetFilterAdjustmentTypeC
 import com.echothree.control.user.filter.server.command.GetFilterAdjustmentTypesCommand;
 import com.echothree.control.user.filter.server.command.GetFilterAdjustmentsCommand;
 import com.echothree.control.user.filter.server.command.GetFilterCommand;
-import com.echothree.control.user.filter.server.command.GetFilterKindCommand;
-import com.echothree.control.user.filter.server.command.GetFilterKindsCommand;
 import com.echothree.control.user.filter.server.command.GetFilterEntranceStepCommand;
 import com.echothree.control.user.filter.server.command.GetFilterEntranceStepsCommand;
+import com.echothree.control.user.filter.server.command.GetFilterKindCommand;
+import com.echothree.control.user.filter.server.command.GetFilterKindsCommand;
 import com.echothree.control.user.filter.server.command.GetFilterStepCommand;
 import com.echothree.control.user.filter.server.command.GetFilterStepDestinationCommand;
 import com.echothree.control.user.filter.server.command.GetFilterStepDestinationsCommand;
@@ -951,6 +951,7 @@ import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.selector.server.entity.SelectorKind;
 import com.echothree.model.data.selector.server.entity.SelectorType;
 import com.echothree.model.data.sequence.common.SequenceChecksumTypeConstants;
+import com.echothree.model.data.sequence.common.SequenceConstants;
 import com.echothree.model.data.sequence.common.SequenceEncoderTypeConstants;
 import com.echothree.model.data.sequence.common.SequenceTypeConstants;
 import com.echothree.model.data.sequence.server.entity.Sequence;
@@ -2483,32 +2484,37 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("sequences")
-    static Collection<SequenceObject> sequences(final DataFetchingEnvironment env,
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<SequenceObject> sequences(final DataFetchingEnvironment env,
             @GraphQLName("sequenceTypeName") @GraphQLNonNull final String sequenceTypeName) {
-        Collection<Sequence> sequences;
-        Collection<SequenceObject> sequenceObjects;
+        CountingPaginatedData<SequenceObject> data;
 
         try {
             var commandForm = SequenceUtil.getHome().getGetSequencesForm();
+            var command = CDI.current().select(GetSequencesCommand.class).get();
 
             commandForm.setSequenceTypeName(sequenceTypeName);
 
-            sequences = CDI.current().select(GetSequencesCommand.class).get().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, SequenceConstants.COMPONENT_VENDOR_NAME, SequenceConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var sequences = entities.stream()
+                            .map(SequenceObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, sequences);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(sequences == null) {
-            sequenceObjects = emptyList();
-        } else {
-            sequenceObjects = new ArrayList<>(sequences.size());
-
-            sequences.stream()
-                    .map(SequenceObject::new)
-                    .forEachOrdered(sequenceObjects::add);
-        }
-
-        return sequenceObjects;
+        return data;
     }
 
     @GraphQLField
