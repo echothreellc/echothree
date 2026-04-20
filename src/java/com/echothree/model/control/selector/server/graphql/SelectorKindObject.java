@@ -17,9 +17,15 @@
 package com.echothree.model.control.selector.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.control.user.server.control.UserControl;
+import com.echothree.model.data.selector.common.SelectorTypeConstants;
 import com.echothree.model.data.selector.server.entity.SelectorKind;
 import com.echothree.model.data.selector.server.entity.SelectorKindDetail;
 import com.echothree.util.server.persistence.Session;
@@ -27,9 +33,11 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 @GraphQLDescription("selector kind object")
 @GraphQLName("SelectorKind")
@@ -87,21 +95,22 @@ public class SelectorKindObject
 
     @GraphQLField
     @GraphQLDescription("selector types")
-    public Collection<SelectorTypeObject> getSelectorTypes(final DataFetchingEnvironment env) {
-        Collection<SelectorTypeObject> selectorTypeObjects = null;
-
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<SelectorTypeObject> getSelectorTypes(final DataFetchingEnvironment env) {
         if(SelectorSecurityUtils.getHasSelectorTypesAccess(env)) {
             var selectorControl = Session.getModelController(SelectorControl.class);
-            var selectorTypes = selectorControl.getSelectorTypes(selectorKind);
+            var totalCount = selectorControl.countSelectorTypesBySelectorKind(selectorKind);
 
-            selectorTypeObjects = new ArrayList<>(selectorTypes.size());
+            try(var objectLimiter = new ObjectLimiter(env, SelectorTypeConstants.COMPONENT_VENDOR_NAME, SelectorTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = selectorControl.getSelectorTypes(selectorKind);
+                var selectorTypes = entities.stream().map(SelectorTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
-            selectorTypes.stream()
-                    .map(SelectorTypeObject::new)
-                    .forEachOrdered(selectorTypeObjects::add);
+                return new CountedObjects<>(objectLimiter, selectorTypes);
+            }
+        } else {
+            return Connections.emptyConnection();
         }
-
-        return selectorTypeObjects;
     }
 
 }
