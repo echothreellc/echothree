@@ -31,8 +31,6 @@ public class EntityIntegerRangeDescriptionTransferCache
     @Inject
     CoreControl coreControl;
 
-
-
     /** Creates a new instance of EntityIntegerRangeDescriptionTransferCache */
     protected EntityIntegerRangeDescriptionTransferCache() {
         super();

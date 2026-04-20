@@ -30,8 +30,6 @@ public class ItemAccountingCategoryDescriptionTransferCache
     @Inject
     AccountingControl accountingControl;
 
-
-
     /** Creates a new instance of ItemAccountingCategoryDescriptionTransferCache */
     protected ItemAccountingCategoryDescriptionTransferCache() {
         super();

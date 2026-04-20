@@ -33,9 +33,6 @@ public class AssociatePartyContactMechanismTransferCache
 
     @Inject
     ContactControl contactControl;
-
-
-
     
     /** Creates a new instance of AssociatePartyContactMechanismTransferCache */
     protected AssociatePartyContactMechanismTransferCache() {

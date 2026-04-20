@@ -37,9 +37,6 @@ public class HarmonizedTariffScheduleCodeTransferCache
     @Inject
     ItemControl itemControl;
 
-
-
-
     boolean includeHarmonizedTariffScheduleCodeUses;
     
     /** Creates a new instance of HarmonizedTariffScheduleCodeTransferCache */

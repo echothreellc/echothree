@@ -37,9 +37,6 @@ public class WorkRequirementTransferCache
     @Inject
     WorkflowControl workflowControl;
 
-
-
-
     boolean includeWorkAssignments;
     boolean includeWorkTimes;
     

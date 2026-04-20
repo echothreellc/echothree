@@ -34,9 +34,6 @@ public class MoodTransferCache
     @Inject
     PartyControl partyControl;
 
-
-
-
     /** Creates a new instance of MoodTransferCache */
     protected MoodTransferCache() {
         super();

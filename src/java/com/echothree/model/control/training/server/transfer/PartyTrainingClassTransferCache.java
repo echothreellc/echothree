@@ -42,10 +42,6 @@ public class PartyTrainingClassTransferCache
     @Inject
     WorkflowControl workflowControl;
 
-
-
-
-
     boolean includePartyTrainingClassSessions;
     
     /** Creates a new instance of PartyTrainingClassTransferCache */

@@ -30,8 +30,6 @@ public class ContactListTypeDescriptionTransferCache
     @Inject
     ContactListControl contactListControl;
 
-
-
     /** Creates a new instance of ContactListTypeDescriptionTransferCache */
     protected ContactListTypeDescriptionTransferCache() {
         super();

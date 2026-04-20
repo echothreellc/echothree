@@ -45,11 +45,6 @@ public class LocationTransferCache
     @Inject
     WorkflowControl workflowControl;
 
-
-
-
-
-
     boolean includeCapacities;
     boolean includeVolume;
     

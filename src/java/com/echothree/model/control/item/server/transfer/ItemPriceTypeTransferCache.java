@@ -32,8 +32,6 @@ public class ItemPriceTypeTransferCache
     @Inject
     ItemControl itemControl;
 
-
-
     TransferProperties transferProperties;
     boolean filterItemPriceTypeName;
     boolean filterIsDefault;

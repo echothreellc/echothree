@@ -30,8 +30,6 @@ public class QueueTypeDescriptionTransferCache
     @Inject
     QueueControl queueControl;
 
-
-
     /** Creates a new instance of QueueTypeDescriptionTransferCache */
     protected QueueTypeDescriptionTransferCache() {
         super();

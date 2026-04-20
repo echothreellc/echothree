@@ -39,10 +39,6 @@ public class PartyContactListTransferCache
 
     @Inject
     WorkflowControl workflowControl;
-
-
-
-
     
     boolean includeStatus;
     boolean includeComments;

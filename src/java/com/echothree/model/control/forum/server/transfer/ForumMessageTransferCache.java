@@ -38,9 +38,6 @@ public class ForumMessageTransferCache
     @Inject
     IconControl iconControl;
 
-
-
-
     boolean includeForumMessageRoles;
     boolean includeForumMessageParts;
     boolean includeForumMessageAttachments;

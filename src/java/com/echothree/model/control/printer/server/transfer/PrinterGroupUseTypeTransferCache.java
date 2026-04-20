@@ -30,8 +30,6 @@ public class PrinterGroupUseTypeTransferCache
     @Inject
     PrinterControl printerControl;
 
-
-
     /** Creates a new instance of PrinterGroupUseTypeTransferCache */
     protected PrinterGroupUseTypeTransferCache() {
         super();

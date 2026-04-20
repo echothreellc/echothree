@@ -41,10 +41,6 @@ public class PaymentMethodTransferCache
     @Inject
     PaymentProcessorControl paymentProcessorControl;
 
-
-
-
-
     boolean includeComments;
 
     /** Creates a new instance of PaymentMethodTransferCache */

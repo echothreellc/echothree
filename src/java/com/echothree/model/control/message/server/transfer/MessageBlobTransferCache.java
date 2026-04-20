@@ -37,10 +37,6 @@ public class MessageBlobTransferCache
 
     @Inject
     PartyControl partyControl;
-
-
-
-
     
     /** Creates a new instance of MessageBlobTransferCache */
     protected MessageBlobTransferCache() {

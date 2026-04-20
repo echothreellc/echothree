@@ -34,9 +34,6 @@ public class PartyCancellationPolicyTransferCache
 
     @Inject
     PartyControl partyControl;
-
-
-
     
     /** Creates a new instance of PartyCancellationPolicyTransferCache */
     protected PartyCancellationPolicyTransferCache() {

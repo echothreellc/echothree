@@ -41,11 +41,6 @@ public class CommentTypeTransferCache
 
     @Inject
     WorkflowControl workflowControl;
-
-
-
-
-
     
     /** Creates a new instance of CommentTypeTransferCache */
     protected CommentTypeTransferCache() {

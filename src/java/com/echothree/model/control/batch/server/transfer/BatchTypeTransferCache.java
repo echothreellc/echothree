@@ -37,10 +37,6 @@ public class BatchTypeTransferCache
 
     @Inject
     WorkflowControl workflowControl;
-
-
-
-
     
     /** Creates a new instance of BatchTypeTransferCache */
     protected BatchTypeTransferCache() {

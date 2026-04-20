@@ -30,8 +30,6 @@ public class GlResourceTypeDescriptionTransferCache
     @Inject
     AccountingControl accountingControl;
 
-
-
     /** Creates a new instance of GlResourceTypeDescriptionTransferCache */
     protected GlResourceTypeDescriptionTransferCache() {
         super();

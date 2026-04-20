@@ -30,8 +30,6 @@ public class ContentCatalogDescriptionTransferCache
     @Inject
     ContentControl contentControl;
 
-
-
     /** Creates a new instance of ContentCatalogDescriptionTransferCache */
     protected ContentCatalogDescriptionTransferCache() {
         super();

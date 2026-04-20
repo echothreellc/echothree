@@ -32,8 +32,6 @@ public class CacheEntryDependencyTransferCache
     @Inject
     CacheEntryControl cacheEntryControl;
 
-
-
     TransferProperties transferProperties;
     boolean filterCacheEntry;
     boolean filterEntityInstance;

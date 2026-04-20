@@ -30,8 +30,6 @@ public class SelectorDescriptionTransferCache
     @Inject
     SelectorControl selectorControl;
 
-
-
     /** Creates a new instance of SelectorDescriptionTransferCache */
     protected SelectorDescriptionTransferCache() {
         super();

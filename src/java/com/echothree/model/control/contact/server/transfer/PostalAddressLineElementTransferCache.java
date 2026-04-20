@@ -30,8 +30,6 @@ public class PostalAddressLineElementTransferCache
     @Inject
     ContactControl contactControl;
 
-
-
     /** Creates a new instance of PostalAddressLineElementTransferCache */
     protected PostalAddressLineElementTransferCache() {
         super();

@@ -34,9 +34,6 @@ public class ReturnPolicyTranslationTransferCache
     @Inject
     ReturnPolicyControl returnPolicyControl;
 
-
-
-
     /** Creates a new instance of ReturnPolicyTranslationTransferCache */
     protected ReturnPolicyTranslationTransferCache() {
         super();

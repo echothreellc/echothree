@@ -36,9 +36,6 @@ public class ShippingMethodTransferCache
     @Inject
     ShippingControl shippingControl;
 
-
-
-
     boolean includeComments;
     
     /** Creates a new instance of ShippingMethodTransferCache */

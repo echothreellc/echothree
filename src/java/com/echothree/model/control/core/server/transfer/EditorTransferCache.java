@@ -30,8 +30,6 @@ public class EditorTransferCache
     @Inject
     EditorControl editorControl;
 
-
-
     /** Creates a new instance of EditorTransferCache */
     protected EditorTransferCache() {
         super();

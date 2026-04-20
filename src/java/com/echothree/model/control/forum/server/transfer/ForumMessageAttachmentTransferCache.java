@@ -36,9 +36,6 @@ public class ForumMessageAttachmentTransferCache
     @Inject
     MimeTypeControl mimeTypeControl;
 
-
-
-
     boolean includeBlob;
     boolean includeClob;
     boolean includeETag;

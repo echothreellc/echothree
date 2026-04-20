@@ -30,8 +30,6 @@ public class ContentPageDescriptionTransferCache
     @Inject
     ContentControl contentControl;
 
-
-
     /** Creates a new instance of ContentPageDescriptionTransferCache */
     protected ContentPageDescriptionTransferCache() {
         super();

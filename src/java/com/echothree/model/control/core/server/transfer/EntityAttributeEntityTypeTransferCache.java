@@ -35,9 +35,6 @@ public class EntityAttributeEntityTypeTransferCache
     @Inject
     EntityTypeControl entityTypeControl;
 
-
-
-
     /** Creates a new instance of EntityAttributeEntityTypeTransferCache */
     protected EntityAttributeEntityTypeTransferCache() {
         super();

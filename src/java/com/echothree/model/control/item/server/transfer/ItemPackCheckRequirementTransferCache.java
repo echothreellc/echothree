@@ -33,9 +33,6 @@ public class ItemPackCheckRequirementTransferCache
 
     @Inject
     UomControl uomControl;
-
-
-
     
     /** Creates a new instance of ItemPackCheckRequirementTransferCache */
     protected ItemPackCheckRequirementTransferCache() {

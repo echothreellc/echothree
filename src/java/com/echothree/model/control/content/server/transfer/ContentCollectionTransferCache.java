@@ -36,9 +36,6 @@ public class ContentCollectionTransferCache
     @Inject
     OfferUseControl offerUseControl;
 
-
-
-
     boolean includeContentCatalogs;
     boolean includeContentForums;
     boolean includeContentSections;

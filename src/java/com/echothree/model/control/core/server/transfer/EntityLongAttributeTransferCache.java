@@ -31,8 +31,6 @@ public class EntityLongAttributeTransferCache
     @Inject
     CoreControl coreControl;
 
-
-
     /** Creates a new instance of EntityLongAttributeTransferCache */
     protected EntityLongAttributeTransferCache() {
         super();

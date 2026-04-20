@@ -35,9 +35,6 @@ public class OrderPaymentPreferenceTransferCache
     @Inject
     PaymentMethodControl paymentMethodControl;
 
-
-
-
     /** Creates a new instance of OrderPaymentPreferenceTransferCache */
     protected OrderPaymentPreferenceTransferCache() {
         super();

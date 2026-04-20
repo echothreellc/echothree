@@ -30,8 +30,6 @@ public class ItemPurchasingCategoryTransferCache
     @Inject
     VendorControl vendorControl;
 
-
-
     /** Creates a new instance of ItemPurchasingCategoryTransferCache */
     protected ItemPurchasingCategoryTransferCache() {
         super();

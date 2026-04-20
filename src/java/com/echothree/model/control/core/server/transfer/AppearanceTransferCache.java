@@ -40,10 +40,6 @@ public class AppearanceTransferCache
     @Inject
     FontControl fontControl;
 
-
-
-
-
     boolean includeTextDecorations;
     boolean includeTextTransformations;
     

@@ -33,9 +33,6 @@ public class PartyTypeContactListTransferCache
 
     @Inject
     PartyControl partyControl;
-
-
-
     
     /** Creates a new instance of PartyTypeContactListTransferCache */
     protected PartyTypeContactListTransferCache() {

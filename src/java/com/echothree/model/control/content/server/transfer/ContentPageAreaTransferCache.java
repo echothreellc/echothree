@@ -41,10 +41,6 @@ public class ContentPageAreaTransferCache
 
     @Inject
     PartyControl partyControl;
-
-
-
-
     
     boolean includeBlob;
     boolean includeClob;

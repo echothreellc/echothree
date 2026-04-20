@@ -33,9 +33,6 @@ public class CommunicationEventRoleTransferCache
 
     @Inject
     PartyControl partyControl;
-
-
-
     
     /** Creates a new instance of CommunicationEventRoleTransferCache */
     protected CommunicationEventRoleTransferCache() {

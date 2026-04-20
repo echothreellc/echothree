@@ -32,8 +32,6 @@ public class PostalAddressFormatTransferCache
     @Inject
     ContactControl contactControl;
 
-
-
     boolean includeLines;
     
     /** Creates a new instance of PostalAddressFormatTransferCache */

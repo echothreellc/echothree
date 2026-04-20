@@ -30,8 +30,6 @@ public class LotTimeTypeTransferCache
     @Inject
     LotTimeControl lotTimeControl;
 
-
-
     /** Creates a new instance of LotTimeTypeTransferCache */
     protected LotTimeTypeTransferCache() {
         super();

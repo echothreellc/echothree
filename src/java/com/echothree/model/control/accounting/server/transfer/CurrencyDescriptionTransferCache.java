@@ -30,8 +30,6 @@ public class CurrencyDescriptionTransferCache
     @Inject
     AccountingControl accountingControl;
 
-
-
     /** Creates a new instance of CurrencyDescriptionTransferCache */
     protected CurrencyDescriptionTransferCache() {
         super();

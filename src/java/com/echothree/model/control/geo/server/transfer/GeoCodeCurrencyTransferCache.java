@@ -34,9 +34,6 @@ public class GeoCodeCurrencyTransferCache
     @Inject
     GeoControl geoControl;
 
-
-
-
     /** Creates a new instance of GeoCodeCurrencyTransferCache */
     protected GeoCodeCurrencyTransferCache() {
         super();

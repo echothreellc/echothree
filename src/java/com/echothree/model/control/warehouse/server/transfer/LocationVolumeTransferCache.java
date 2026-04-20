@@ -35,9 +35,6 @@ public class LocationVolumeTransferCache
     @Inject
     WarehouseControl warehouseControl;
 
-
-
-
     /** Creates a new instance of LocationVolumeTransferCache */
     protected LocationVolumeTransferCache() {
         super();

@@ -35,9 +35,6 @@ public class TransactionGlEntryTransferCache
     @Inject
     PartyControl partyControl;
 
-
-
-
     /** Creates a new instance of TransactionGlEntryTransferCache */
     protected TransactionGlEntryTransferCache() {
         super();

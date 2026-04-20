@@ -33,9 +33,6 @@ public class PartyScaleUseTransferCache
 
     @Inject
     ScaleControl scaleControl;
-
-
-
     
     /** Creates a new instance of PartyScaleUseTransferCache */
     protected PartyScaleUseTransferCache() {

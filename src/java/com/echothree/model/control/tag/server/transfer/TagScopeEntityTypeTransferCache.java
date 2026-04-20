@@ -34,9 +34,6 @@ public class TagScopeEntityTypeTransferCache
     @Inject
     TagControl tagControl;
 
-
-
-
     /** Creates a new instance of TagScopeEntityTypeTransferCache */
     protected TagScopeEntityTypeTransferCache() {
         super();

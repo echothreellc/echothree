@@ -43,10 +43,6 @@ public class ForumTransferCache
     @Inject
     SequenceControl sequenceControl;
 
-
-
-
-
     boolean includeForumGroups;
     boolean includeForumThreads;
     boolean includeFutureForumThreads;

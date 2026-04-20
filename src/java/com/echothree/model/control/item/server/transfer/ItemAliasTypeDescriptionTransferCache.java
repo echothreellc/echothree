@@ -30,8 +30,6 @@ public class ItemAliasTypeDescriptionTransferCache
     @Inject
     ItemControl itemControl;
 
-
-
     /** Creates a new instance of ItemAliasTypeDescriptionTransferCache */
     protected ItemAliasTypeDescriptionTransferCache() {
         super();

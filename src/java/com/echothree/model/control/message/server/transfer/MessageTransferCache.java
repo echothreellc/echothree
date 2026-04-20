@@ -32,8 +32,6 @@ public class MessageTransferCache
     @Inject
     MessageControl messageControl;
 
-
-
     boolean includeString;
     boolean includeBlob;
     boolean includeClob;

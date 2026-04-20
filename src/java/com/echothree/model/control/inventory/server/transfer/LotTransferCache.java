@@ -42,10 +42,6 @@ public class LotTransferCache
     @Inject
     LotTimeControl lotTimeControl;
 
-
-
-
-
     boolean includeLotAliases;
     boolean includeLotTimes;
 

@@ -30,8 +30,6 @@ public class LetterSourceDescriptionTransferCache
     @Inject
     LetterControl letterControl;
 
-
-
     /** Creates a new instance of LetterSourceDescriptionTransferCache */
     protected LetterSourceDescriptionTransferCache() {
         super();

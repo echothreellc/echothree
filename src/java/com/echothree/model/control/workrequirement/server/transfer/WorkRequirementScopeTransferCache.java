@@ -45,11 +45,6 @@ public class WorkRequirementScopeTransferCache
     @Inject
     WorkRequirementControl workRequirementControl;
 
-
-
-
-
-
     boolean includeWorkRequirements;
     
     /** Creates a new instance of WorkRequirementScopeTransferCache */

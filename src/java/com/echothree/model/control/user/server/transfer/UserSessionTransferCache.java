@@ -31,8 +31,6 @@ public class UserSessionTransferCache
     @Inject
     PartyControl partyControl;
 
-
-
     /** Creates a new instance of UserSessionTransferCache */
     protected UserSessionTransferCache() {
         super();

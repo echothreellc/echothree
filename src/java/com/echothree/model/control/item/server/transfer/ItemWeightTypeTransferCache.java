@@ -30,8 +30,6 @@ public class ItemWeightTypeTransferCache
     @Inject
     ItemControl itemControl;
 
-
-
     /** Creates a new instance of ItemWeightTypeTransferCache */
     protected ItemWeightTypeTransferCache() {
         super();

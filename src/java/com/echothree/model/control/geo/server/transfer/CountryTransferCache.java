@@ -31,8 +31,6 @@ public class CountryTransferCache
     @Inject
     ContactControl contactControl;
 
-
-
     boolean includeAliases;
     
     /** Creates a new instance of CountryTransferCache */

@@ -41,10 +41,6 @@ public class ContentCategoryTransferCache
 
     @Inject
     SelectorControl selectorControl;
-
-
-
-
     
     boolean includeContentCategoryItems;
     

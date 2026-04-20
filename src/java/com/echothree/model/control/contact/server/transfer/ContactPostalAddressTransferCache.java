@@ -38,8 +38,6 @@ public class ContactPostalAddressTransferCache
 
     @Inject
     WorkflowControl workflowControl;
-
-
     
     /** Creates a new instance of ContactPostalAddressTransferCache */
     protected ContactPostalAddressTransferCache() {

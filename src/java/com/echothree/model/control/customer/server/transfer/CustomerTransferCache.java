@@ -115,27 +115,6 @@ public class CustomerTransferCache
     @Inject
     WorkflowControl workflowControl;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     boolean includeUserLogin;
     boolean includeRecoveryAnswer;
     boolean includePartyAliases;

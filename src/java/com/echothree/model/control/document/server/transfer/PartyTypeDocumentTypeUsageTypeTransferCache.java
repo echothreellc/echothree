@@ -34,9 +34,6 @@ public class PartyTypeDocumentTypeUsageTypeTransferCache
     @Inject
     PartyControl partyControl;
 
-
-
-
     /** Creates a new instance of PartyTypeDocumentTypeUsageTypeTransferCache */
     protected PartyTypeDocumentTypeUsageTypeTransferCache() {
         super();

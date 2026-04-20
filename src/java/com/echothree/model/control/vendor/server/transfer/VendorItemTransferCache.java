@@ -52,12 +52,6 @@ public class VendorItemTransferCache
     @Inject
     WorkflowControl workflowControl;
 
-
-
-
-
-
-
     ItemDescriptionLogic itemDescriptionLogic = ItemDescriptionLogic.getInstance();
 
     boolean includeVendorItemCosts;

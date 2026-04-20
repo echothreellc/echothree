@@ -37,10 +37,6 @@ public class LetterSourceTransferCache
 
     @Inject
     PartyControl partyControl;
-
-
-
-
     
     /** Creates a new instance of LetterSourceTransferCache */
     protected LetterSourceTransferCache() {

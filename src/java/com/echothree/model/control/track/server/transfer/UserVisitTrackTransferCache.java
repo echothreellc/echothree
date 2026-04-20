@@ -29,8 +29,6 @@ public class UserVisitTrackTransferCache
 
     @Inject
     TrackControl trackControl;
-
-
     
     /** Creates a new instance of UserVisitTrackTransferCache */
     protected UserVisitTrackTransferCache() {

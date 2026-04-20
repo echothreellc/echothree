@@ -33,9 +33,6 @@ public class MessageStringTransferCache
 
     @Inject
     PartyControl partyControl;
-
-
-
     
     /** Creates a new instance of MessageStringTransferCache */
     protected MessageStringTransferCache() {

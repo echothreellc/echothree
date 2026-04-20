@@ -53,11 +53,6 @@ public class OfferItemPriceTransferCache
 
     @Inject
     UomControl uomControl;
-
-
-
-
-
     
     TransferProperties transferProperties;
     boolean filterOfferItem;

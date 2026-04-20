@@ -30,8 +30,6 @@ public class LotAliasTypeTransferCache
     @Inject
     LotAliasControl lotAliasControl;
 
-
-
     /** Creates a new instance of LotAliasTypeTransferCache */
     protected LotAliasTypeTransferCache() {
         super();

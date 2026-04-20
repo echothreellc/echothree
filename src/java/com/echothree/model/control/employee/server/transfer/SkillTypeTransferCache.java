@@ -30,8 +30,6 @@ public class SkillTypeTransferCache
     @Inject
     EmployeeControl employeeControl;
 
-
-
     /** Creates a new instance of SkillTypeTransferCache */
     protected SkillTypeTransferCache() {
         super();

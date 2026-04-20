@@ -36,9 +36,6 @@ public class PartyTypeTransferCache
     @Inject
     SequenceControl sequenceControl;
 
-
-
-
     boolean includeAuditPolicy;
     boolean includeLockoutPolicy;
     boolean includePasswordStringPolicy;

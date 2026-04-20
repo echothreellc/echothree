@@ -33,9 +33,6 @@ public class CancellationKindTransferCache
 
     @Inject
     SequenceControl sequenceControl;
-
-
-
     
     /** Creates a new instance of CancellationKindTransferCache */
     protected CancellationKindTransferCache() {

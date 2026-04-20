@@ -34,9 +34,6 @@ public class OfferCustomerTypeTransferCache
     @Inject
     OfferControl offerControl;
 
-
-
-
     /** Creates a new instance of OfferCustomerTypeTransferCache */
     protected OfferCustomerTypeTransferCache() {
         super();

@@ -35,9 +35,6 @@ public class TrackTransferCache
 
     @Inject
     WorkflowControl workflowControl;
-
-
-
     
     /** Creates a new instance of TrackTransferCache */
     protected TrackTransferCache() {

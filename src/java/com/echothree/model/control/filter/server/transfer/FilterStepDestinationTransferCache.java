@@ -30,8 +30,6 @@ public class FilterStepDestinationTransferCache
     @Inject
     FilterControl filterControl;
 
-
-
     /** Creates a new instance of FilterStepDestinationTransferCache */
     protected FilterStepDestinationTransferCache() {
         super();

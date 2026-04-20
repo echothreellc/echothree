@@ -30,8 +30,6 @@ public class TrackDescriptionTransferCache
     @Inject
     TrackControl trackControl;
 
-
-
     /** Creates a new instance of TrackDescriptionTransferCache */
     protected TrackDescriptionTransferCache() {
         super();

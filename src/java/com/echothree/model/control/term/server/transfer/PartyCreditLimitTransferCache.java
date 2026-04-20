@@ -35,9 +35,6 @@ public class PartyCreditLimitTransferCache
     @Inject
     PartyControl partyControl;
 
-
-
-
     /** Creates a new instance of PartyCreditLimitTransferCache */
     protected PartyCreditLimitTransferCache() {
         super();

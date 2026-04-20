@@ -40,10 +40,6 @@ public class WorkflowTransferCache
     @Inject
     WorkflowControl workflowControl;
 
-
-
-
-
     TransferProperties transferProperties;
     boolean filterWorkflowName;
     boolean filterSelectorType;

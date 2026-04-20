@@ -30,8 +30,6 @@ public class PeriodTypeDescriptionTransferCache
     @Inject
     PeriodControl periodControl;
 
-
-
     /** Creates a new instance of PeriodTypeDescriptionTransferCache */
     protected PeriodTypeDescriptionTransferCache() {
         super();

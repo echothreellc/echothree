@@ -58,14 +58,6 @@ public class WarehouseTransferCache
     @Inject
     WarehouseControl warehouseControl;
 
-
-
-
-
-
-
-
-
     boolean includeLocationsCount;
     boolean includeLocations;
     boolean includePartyAliases;

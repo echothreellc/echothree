@@ -33,9 +33,6 @@ public class CustomerTypeContactListGroupTransferCache
 
     @Inject
     CustomerControl customerControl;
-
-
-
     
     /** Creates a new instance of CustomerTypeContactListGroupTransferCache */
     protected CustomerTypeContactListGroupTransferCache() {

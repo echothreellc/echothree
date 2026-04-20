@@ -34,9 +34,6 @@ public class PrinterTransferCache
 
     @Inject
     WorkflowControl workflowControl;
-
-
-
     
     /** Creates a new instance of PrinterTransferCache */
     protected PrinterTransferCache() {

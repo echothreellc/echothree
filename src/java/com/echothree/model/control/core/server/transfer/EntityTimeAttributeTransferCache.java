@@ -31,8 +31,6 @@ public class EntityTimeAttributeTransferCache
     @Inject
     CoreControl coreControl;
 
-
-
     /** Creates a new instance of EntityTimeAttributeTransferCache */
     protected EntityTimeAttributeTransferCache() {
         super();

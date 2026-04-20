@@ -30,8 +30,6 @@ public class OfferNameElementTransferCache
     @Inject
     OfferNameElementControl offerNameElementControl;
 
-
-
     /** Creates a new instance of OfferNameElementTransferCache */
     protected OfferNameElementTransferCache() {
         super();

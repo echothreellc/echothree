@@ -30,8 +30,6 @@ public class ContentPageLayoutAreaTransferCache
     @Inject
     ContentControl contentControl;
 
-
-
     /** Creates a new instance of ContentPageLayoutAreaTransferCache */
     protected ContentPageLayoutAreaTransferCache() {
         super();

@@ -37,10 +37,6 @@ public class PartyInventoryLevelTransferCache
 
     @Inject
     PartyControl partyControl;
-
-
-
-
     
     /** Creates a new instance of PartyInventoryLevelTransferCache */
     protected PartyInventoryLevelTransferCache() {

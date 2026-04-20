@@ -30,8 +30,6 @@ public class InvoiceRoleTypeTransferCache
     @Inject
     InvoiceControl invoiceControl;
 
-
-
     /** Creates a new instance of InvoiceRoleTypeTransferCache */
     protected InvoiceRoleTypeTransferCache() {
         super();

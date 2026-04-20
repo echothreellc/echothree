@@ -33,9 +33,6 @@ public class ForumMimeTypeTransferCache
 
     @Inject
     MimeTypeControl mimeTypeControl;
-
-
-
     
     /** Creates a new instance of ForumMimeTypeTransferCache */
     protected ForumMimeTypeTransferCache() {

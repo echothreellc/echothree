@@ -37,7 +37,6 @@ public class EntityInstanceTransferCache
     @Inject
     AppearanceControl appearanceControl;
 
-
     @Inject
     EntityTypeControl entityTypeControl;
 

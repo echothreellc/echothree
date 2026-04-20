@@ -35,9 +35,6 @@ public class DocumentTypeTransferCache
     @Inject
     MimeTypeControl mimeTypeControl;
 
-
-
-
     /** Creates a new instance of DocumentTypeTransferCache */
     protected DocumentTypeTransferCache() {
         super();

@@ -34,9 +34,6 @@ public class UseTransferCache
     @Inject
     UseTypeControl useTypeControl;
 
-
-
-
     /** Creates a new instance of UseTransferCache */
     protected UseTransferCache() {
         super();

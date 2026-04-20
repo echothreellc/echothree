@@ -40,10 +40,6 @@ public class PartyPaymentMethodContactMechanismTransferCache
 
     @Inject
     WorkflowControl workflowControl;
-
-
-
-
     
     /** Creates a new instance of PartyPaymentMethodContactMechanismTransferCache */
     protected PartyPaymentMethodContactMechanismTransferCache() {

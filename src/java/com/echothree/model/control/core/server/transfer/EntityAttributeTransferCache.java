@@ -48,11 +48,6 @@ public class EntityAttributeTransferCache
     @Inject
     UomControl uomControl;
 
-
-
-
-
-
     boolean includeDefault;
     boolean includeValue;
     boolean includeEntityListItems;

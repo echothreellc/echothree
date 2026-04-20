@@ -37,10 +37,6 @@ public class AssociateTransferCache
 
     @Inject
     PartyControl partyControl;
-
-
-
-
     
     /** Creates a new instance of AssociateTransferCache */
     protected AssociateTransferCache() {

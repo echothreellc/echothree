@@ -34,9 +34,6 @@ public class WorkflowEntityTypeTransferCache
     @Inject
     WorkflowControl workflowControl;
 
-
-
-
     /** Creates a new instance of WorkflowEntityTypeTransferCache */
     protected WorkflowEntityTypeTransferCache() {
         super();

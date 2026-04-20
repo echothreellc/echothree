@@ -30,8 +30,6 @@ public class EntityTimeDefaultTransferCache
     @Inject
     CoreControl coreControl;
 
-
-
     /** Creates a new instance of EntityTimeDefaultTransferCache */
     protected EntityTimeDefaultTransferCache() {
         super();

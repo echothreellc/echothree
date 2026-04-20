@@ -31,8 +31,6 @@ public class TagTransferCache
     @Inject
     TagControl tagControl;
 
-
-
     boolean includeUsageCount;
 
     /** Creates a new instance of TagTransferCache */

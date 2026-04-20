@@ -32,8 +32,6 @@ public class ContactEmailAddressTransferCache
     @Inject
     WorkflowControl workflowControl;
 
-
-
     /** Creates a new instance of ContactEmailAddressTransferCache */
     protected ContactEmailAddressTransferCache() {
         super();

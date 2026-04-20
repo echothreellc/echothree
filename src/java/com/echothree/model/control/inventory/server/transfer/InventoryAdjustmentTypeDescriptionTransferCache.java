@@ -30,8 +30,6 @@ public class InventoryAdjustmentTypeDescriptionTransferCache
     @Inject
     InventoryAdjustmentTypeControl inventoryAdjustmentTypeControl;
 
-
-
     /** Creates a new instance of InventoryAdjustmentTypeDescriptionTransferCache */
     protected InventoryAdjustmentTypeDescriptionTransferCache() {
         super();

@@ -39,10 +39,6 @@ public class CommentTransferCache
 
     @Inject
     WorkflowControl workflowControl;
-
-
-
-
     
     boolean includeBlob;
     boolean includeClob;

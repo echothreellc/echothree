@@ -30,8 +30,6 @@ public class BillingAccountRoleTypeTransferCache
     @Inject
     BillingControl billingControl;
 
-
-
     /** Creates a new instance of BillingAccountRoleTypeTransferCache */
     protected BillingAccountRoleTypeTransferCache() {
         super();

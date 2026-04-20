@@ -53,13 +53,6 @@ public class OfferTransferCache
 
     @Inject
     SequenceControl sequenceControl;
-
-
-
-
-
-
-
     
     boolean includeOfferCustomerTypes;
     boolean includeOfferNameElements;

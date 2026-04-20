@@ -33,9 +33,6 @@ public class ItemAliasTransferCache
 
     @Inject
     UomControl uomControl;
-
-
-
     
     /** Creates a new instance of ItemAliasTransferCache */
     protected ItemAliasTransferCache() {

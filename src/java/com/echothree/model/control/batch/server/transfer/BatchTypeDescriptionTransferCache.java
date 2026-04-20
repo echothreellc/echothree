@@ -30,8 +30,6 @@ public class BatchTypeDescriptionTransferCache
     @Inject
     BatchControl batchControl;
 
-
-
     /** Creates a new instance of BatchTypeDescriptionTransferCache */
     protected BatchTypeDescriptionTransferCache() {
         super();

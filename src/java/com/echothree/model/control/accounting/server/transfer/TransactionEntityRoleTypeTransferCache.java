@@ -33,9 +33,6 @@ public class TransactionEntityRoleTypeTransferCache
 
     @Inject
     EntityTypeControl entityTypeControl;
-
-
-
     
     /** Creates a new instance of TransactionEntityRoleTypeTransferCache */
     protected TransactionEntityRoleTypeTransferCache() {

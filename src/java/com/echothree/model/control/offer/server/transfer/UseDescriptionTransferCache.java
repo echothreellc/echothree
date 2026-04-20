@@ -30,8 +30,6 @@ public class UseDescriptionTransferCache
     @Inject
     UseControl useControl;
 
-
-
     /** Creates a new instance of UseDescriptionTransferCache */
     protected UseDescriptionTransferCache() {
         super();

@@ -37,8 +37,6 @@ public class TransactionGroupTransferCache
     @Inject
     WorkflowControl workflowControl;
 
-
-
     boolean includeTransactions;
     
     /** Creates a new instance of TransactionGroupTransferCache */

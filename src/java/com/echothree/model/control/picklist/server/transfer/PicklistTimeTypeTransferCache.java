@@ -30,8 +30,6 @@ public class PicklistTimeTypeTransferCache
     @Inject
     PicklistControl picklistControl;
 
-
-
     /** Creates a new instance of PicklistTimeTypeTransferCache */
     protected PicklistTimeTypeTransferCache() {
         super();

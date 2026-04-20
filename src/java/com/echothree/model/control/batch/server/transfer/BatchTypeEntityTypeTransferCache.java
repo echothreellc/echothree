@@ -34,9 +34,6 @@ public class BatchTypeEntityTypeTransferCache
     @Inject
     EntityTypeControl entityTypeControl;
 
-
-
-
     /** Creates a new instance of BatchTypeEntityTypeTransferCache */
     protected BatchTypeEntityTypeTransferCache() {
         super();

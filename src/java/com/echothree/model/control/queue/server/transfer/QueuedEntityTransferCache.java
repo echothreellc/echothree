@@ -30,8 +30,6 @@ public class QueuedEntityTransferCache
     @Inject
     QueueControl queueControl;
 
-
-
     /** Creates a new instance of QueuedEntityTransferCache */
     protected QueuedEntityTransferCache() {
         super();

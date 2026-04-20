@@ -35,8 +35,6 @@ public class ContactTelephoneTransferCache
     @Inject
     WorkflowControl workflowControl;
 
-
-
     /** Creates a new instance of ContactTelephoneTransferCache */
     protected ContactTelephoneTransferCache() {
         super();

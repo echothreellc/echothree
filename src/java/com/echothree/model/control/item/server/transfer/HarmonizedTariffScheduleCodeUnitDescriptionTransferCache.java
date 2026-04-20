@@ -30,8 +30,6 @@ public class HarmonizedTariffScheduleCodeUnitDescriptionTransferCache
     @Inject
     ItemControl itemControl;
 
-
-
     /** Creates a new instance of HarmonizedTariffScheduleCodeUnitDescriptionTransferCache */
     protected HarmonizedTariffScheduleCodeUnitDescriptionTransferCache() {
         super();

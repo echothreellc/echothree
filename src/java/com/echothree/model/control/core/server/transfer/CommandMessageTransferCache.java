@@ -33,8 +33,6 @@ public class CommandMessageTransferCache
     @Inject
     CommandControl commandControl;
 
-
-
     boolean includeTranslations;
     
     /** Creates a new instance of CommandMessageTransferCache */

@@ -42,10 +42,6 @@ public class ForumMessagePartTransferCache
     @Inject
     PartyControl partyControl;
 
-
-
-
-
     boolean includeBlob;
     boolean includeClob;
     boolean includeString;

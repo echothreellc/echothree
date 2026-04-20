@@ -34,9 +34,6 @@ public class ContentForumTransferCache
     @Inject
     ForumControl forumControl;
 
-
-
-
     /** Creates a new instance of ContentForumTransferCache */
     protected ContentForumTransferCache() {
         super();

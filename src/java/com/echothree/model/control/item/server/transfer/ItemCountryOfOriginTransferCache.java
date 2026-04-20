@@ -35,9 +35,6 @@ public class ItemCountryOfOriginTransferCache
     @Inject
     ItemControl itemControl;
 
-
-
-
     /** Creates a new instance of ItemCountryOfOriginTransferCache */
     protected ItemCountryOfOriginTransferCache() {
         super();

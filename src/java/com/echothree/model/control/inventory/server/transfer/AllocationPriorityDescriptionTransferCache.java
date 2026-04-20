@@ -30,8 +30,6 @@ public class AllocationPriorityDescriptionTransferCache
     @Inject
     InventoryControl inventoryControl;
 
-
-
     /** Creates a new instance of AllocationPriorityDescriptionTransferCache */
     protected AllocationPriorityDescriptionTransferCache() {
         super();

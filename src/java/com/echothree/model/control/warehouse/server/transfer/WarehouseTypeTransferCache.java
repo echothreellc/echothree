@@ -31,8 +31,6 @@ public class WarehouseTypeTransferCache
     @Inject
     WarehouseControl warehouseControl;
 
-
-
     /** Creates a new instance of WarehouseTypeTransferCache */
     protected WarehouseTypeTransferCache() {
         super();

@@ -33,9 +33,6 @@ public class ChainTransferCache
 
     @Inject
     SequenceControl sequenceControl;
-
-
-
     
     /** Creates a new instance of ChainTransferCache */
     protected ChainTransferCache() {

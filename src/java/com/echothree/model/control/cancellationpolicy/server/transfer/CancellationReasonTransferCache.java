@@ -30,8 +30,6 @@ public class CancellationReasonTransferCache
     @Inject
     CancellationPolicyControl cancellationPolicyControl;
 
-
-
     /** Creates a new instance of CancellationReasonTransferCache */
     protected CancellationReasonTransferCache() {
         super();

@@ -33,8 +33,6 @@ public class EntityIntegerRangeTransferCache
     @Inject
     CoreControl coreControl;
 
-
-
     TransferProperties transferProperties;
     boolean filterEntityAttribute;
     boolean filterEntityIntegerRangeName;

@@ -31,8 +31,6 @@ public class EntityIntegerAttributeTransferCache
     @Inject
     CoreControl coreControl;
 
-
-
     /** Creates a new instance of EntityIntegerAttributeTransferCache */
     protected EntityIntegerAttributeTransferCache() {
         super();

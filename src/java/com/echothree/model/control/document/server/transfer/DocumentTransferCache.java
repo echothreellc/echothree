@@ -36,9 +36,6 @@ public class DocumentTransferCache
     @Inject
     MimeTypeControl mimeTypeControl;
 
-
-
-
     boolean includeBlob;
     boolean includeClob;
     boolean includeETag;

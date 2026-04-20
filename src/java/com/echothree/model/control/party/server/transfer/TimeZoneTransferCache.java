@@ -32,8 +32,6 @@ public class TimeZoneTransferCache
     @Inject
     PartyControl partyControl;
 
-
-
     TransferProperties transferProperties;
     boolean filterJavaTimeZoneName;
     boolean filterUnixTimeZoneName;

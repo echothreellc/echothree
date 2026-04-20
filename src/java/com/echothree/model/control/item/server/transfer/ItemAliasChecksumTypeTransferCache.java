@@ -30,8 +30,6 @@ public class ItemAliasChecksumTypeTransferCache
     @Inject
     ItemControl itemControl;
 
-
-
     /** Creates a new instance of ItemAliasChecksumTypeTransferCache */
     protected ItemAliasChecksumTypeTransferCache() {
         super();

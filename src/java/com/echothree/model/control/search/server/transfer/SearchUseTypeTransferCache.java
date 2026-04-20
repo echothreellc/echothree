@@ -31,8 +31,6 @@ public class SearchUseTypeTransferCache
     @Inject
     SearchControl searchControl;
 
-
-
     /** Creates a new instance of SearchUseTypeTransferCache */
     protected SearchUseTypeTransferCache() {
         super();

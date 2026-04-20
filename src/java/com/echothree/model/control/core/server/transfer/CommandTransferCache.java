@@ -34,9 +34,6 @@ public class CommandTransferCache
     @Inject
     ComponentControl componentControl;
 
-
-
-
     /** Creates a new instance of CommandTransferCache */
     protected CommandTransferCache() {
         super();

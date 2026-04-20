@@ -38,9 +38,6 @@ public class MimeTypeTransferCache
     @Inject
     MimeTypeControl mimeTypeControl;
 
-
-
-
     boolean includeMimeTypeFileExtensions;
     
     TransferProperties transferProperties;

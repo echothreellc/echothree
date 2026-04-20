@@ -33,9 +33,6 @@ public class ItemUnitOfMeasureTypeTransferCache
 
     @Inject
     UomControl uomControl;
-
-
-
     
     /** Creates a new instance of ItemUnitOfMeasureTypeTransferCache */
     protected ItemUnitOfMeasureTypeTransferCache() {

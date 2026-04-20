@@ -34,9 +34,6 @@ public class IndexTransferCache
 
     @Inject
     PartyControl partyControl;
-
-
-
     
     /** Creates a new instance of IndexTransferCache */
     protected IndexTransferCache() {

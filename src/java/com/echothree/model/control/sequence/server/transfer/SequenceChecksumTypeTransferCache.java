@@ -30,8 +30,6 @@ public class SequenceChecksumTypeTransferCache
     @Inject
     SequenceControl sequenceControl;
 
-
-
     /** Creates a new instance of SequenceChecksumTypeTransferCache */
     protected SequenceChecksumTypeTransferCache() {
         super();

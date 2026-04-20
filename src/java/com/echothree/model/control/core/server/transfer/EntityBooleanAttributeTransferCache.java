@@ -31,8 +31,6 @@ public class EntityBooleanAttributeTransferCache
     @Inject
     CoreControl coreControl;
 
-
-
     /** Creates a new instance of EntityBooleanAttributeTransferCache */
     protected EntityBooleanAttributeTransferCache() {
         super();

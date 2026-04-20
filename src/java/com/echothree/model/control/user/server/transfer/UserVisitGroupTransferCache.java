@@ -31,8 +31,6 @@ public class UserVisitGroupTransferCache
     @Inject
     WorkflowControl workflowControl;
 
-
-
     /** Creates a new instance of UserVisitGroupTransferCache */
     protected UserVisitGroupTransferCache() {
         super();

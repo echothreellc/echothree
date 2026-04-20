@@ -33,8 +33,6 @@ public class WorkflowDestinationTransferCache
     @Inject
     WorkflowControl workflowControl;
 
-
-
     TransferProperties transferProperties;
     boolean filterWorkflowStep;
     boolean filterWorkflowDestinationName;

@@ -31,8 +31,6 @@ public class EntityLongRangeDescriptionTransferCache
     @Inject
     CoreControl coreControl;
 
-
-
     /** Creates a new instance of EntityLongRangeDescriptionTransferCache */
     protected EntityLongRangeDescriptionTransferCache() {
         super();

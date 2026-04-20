@@ -34,9 +34,6 @@ public class ItemWeightTransferCache
 
     @Inject
     UomControl uomControl;
-
-
-
     
     /** Creates a new instance of ItemWeightTransferCache */
     protected ItemWeightTransferCache() {

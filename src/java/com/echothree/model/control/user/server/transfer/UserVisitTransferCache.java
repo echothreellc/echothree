@@ -47,12 +47,6 @@ public class UserVisitTransferCache
     @Inject
     PartyControl partyControl;
 
-
-
-
-
-
-
     boolean includeUserVisitCampaigns;
     
     /** Creates a new instance of UserVisitTransferCache */

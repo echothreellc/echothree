@@ -37,10 +37,6 @@ public class CommunicationEmailSourceTransferCache
 
     @Inject
     ServerControl serverControl;
-
-
-
-
     
     /** Creates a new instance of CommunicationEmailSourceTransferCache */
     protected CommunicationEmailSourceTransferCache() {

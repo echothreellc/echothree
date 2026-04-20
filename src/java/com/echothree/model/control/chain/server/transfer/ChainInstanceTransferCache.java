@@ -33,8 +33,6 @@ public class ChainInstanceTransferCache
     @Inject
     ChainControl chainControl;
 
-
-
     boolean includeChainInstanceStatus;
     boolean includeChainInstanceEntityRoles;
     

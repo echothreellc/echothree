@@ -38,10 +38,6 @@ public class JobTransferCache
 
     @Inject
     WorkflowControl workflowControl;
-
-
-
-
     
     /** Creates a new instance of JobTransferCache */
     protected JobTransferCache() {

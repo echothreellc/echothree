@@ -62,14 +62,6 @@ public class CarrierTransferCache
     @Inject
     SelectorControl selectorControl;
 
-
-
-
-
-
-
-
-
     boolean includePartyContactMechanisms;
     boolean includePartyDocuments;
     boolean includePartyPrinterGroupUses;

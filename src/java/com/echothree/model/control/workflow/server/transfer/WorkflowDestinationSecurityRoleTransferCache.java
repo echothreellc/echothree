@@ -34,9 +34,6 @@ public class WorkflowDestinationSecurityRoleTransferCache
     @Inject
     WorkflowControl workflowControl;
 
-
-
-
     /** Creates a new instance of WorkflowDestinationSecurityRoleTransferCache */
     protected WorkflowDestinationSecurityRoleTransferCache() {
         super();

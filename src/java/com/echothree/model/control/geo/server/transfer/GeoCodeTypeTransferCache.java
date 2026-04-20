@@ -30,8 +30,6 @@ public class GeoCodeTypeTransferCache
     @Inject
     GeoControl geoControl;
 
-
-
     /** Creates a new instance of GeoCodeTypeTransferCache */
     protected GeoCodeTypeTransferCache() {
         super();

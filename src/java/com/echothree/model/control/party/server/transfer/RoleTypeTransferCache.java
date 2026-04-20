@@ -30,8 +30,6 @@ public class RoleTypeTransferCache
     @Inject
     PartyControl partyControl;
 
-
-
     /** Creates a new instance of RoleTypeTransferCache */
     protected RoleTypeTransferCache() {
         super();

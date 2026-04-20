@@ -37,10 +37,6 @@ public class CommunicationEventTransferCache
 
     @Inject
     DocumentControl documentControl;
-
-
-
-
     
     /** Creates a new instance of CommunicationEventTransferCache */
     protected CommunicationEventTransferCache() {

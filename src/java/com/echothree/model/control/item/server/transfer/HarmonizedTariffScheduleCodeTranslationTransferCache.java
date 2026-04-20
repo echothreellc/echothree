@@ -33,9 +33,6 @@ public class HarmonizedTariffScheduleCodeTranslationTransferCache
 
     @Inject
     MimeTypeControl mimeTypeControl;
-
-
-
     
     /** Creates a new instance of HarmonizedTariffScheduleCodeTranslationTransferCache */
     protected HarmonizedTariffScheduleCodeTranslationTransferCache() {

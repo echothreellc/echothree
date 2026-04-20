@@ -33,9 +33,6 @@ public class PartySecurityRoleTemplateTrainingClassTransferCache
 
     @Inject
     TrainingControl trainingControl;
-
-
-
     
     /** Creates a new instance of PartySecurityRoleTemplateTrainingClassTransferCache */
     protected PartySecurityRoleTemplateTrainingClassTransferCache() {

@@ -32,8 +32,6 @@ public class CurrencyTransferCache
     @Inject
     AccountingControl accountingControl;
 
-
-
     TransferProperties transferProperties;
     boolean filterCurrencyIsoName;
     boolean filterSymbol;

@@ -31,8 +31,6 @@ public class UnitOfMeasureTypeVolumeTransferCache
     @Inject
     UomControl uomControl;
 
-
-
     /** Creates a new instance of UnitOfMeasureTypeVolumeTransferCache */
     protected UnitOfMeasureTypeVolumeTransferCache() {
         super();

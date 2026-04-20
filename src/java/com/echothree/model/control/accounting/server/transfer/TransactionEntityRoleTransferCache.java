@@ -29,8 +29,6 @@ public class TransactionEntityRoleTransferCache
 
     @Inject
     AccountingControl accountingControl;
-
-
     
     /** Creates a new instance of TransactionEntityRoleTransferCache */
     protected TransactionEntityRoleTransferCache() {

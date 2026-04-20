@@ -30,8 +30,6 @@ public class CampaignMediumDescriptionTransferCache
     @Inject
     CampaignControl campaignControl;
 
-
-
     /** Creates a new instance of CampaignMediumDescriptionTransferCache */
     protected CampaignMediumDescriptionTransferCache() {
         super();

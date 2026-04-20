@@ -30,8 +30,6 @@ public class ForumRoleTypeTransferCache
     @Inject
     ForumControl forumControl;
 
-
-
     /** Creates a new instance of ForumRoleTypeTransferCache */
     protected ForumRoleTypeTransferCache() {
         super();

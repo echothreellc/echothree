@@ -30,8 +30,6 @@ public class FinancialAccountTransactionTypeDescriptionTransferCache
     @Inject
     FinancialControl financialControl;
 
-
-
     /** Creates a new instance of FinancialAccountTransactionTypeDescriptionTransferCache */
     protected FinancialAccountTransactionTypeDescriptionTransferCache() {
         super();

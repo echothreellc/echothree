@@ -30,8 +30,6 @@ public class BirthdayFormatTransferCache
     @Inject
     PartyControl partyControl;
 
-
-
     /** Creates a new instance of BirthdayFormatTransferCache */
     protected BirthdayFormatTransferCache() {
         super();

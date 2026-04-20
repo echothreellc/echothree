@@ -30,8 +30,6 @@ public class OrderTimeTransferCache
     @Inject
     OrderTimeControl orderTimeControl;
 
-
-
     /** Creates a new instance of OrderTimeTransferCache */
     protected OrderTimeTransferCache() {
         super();

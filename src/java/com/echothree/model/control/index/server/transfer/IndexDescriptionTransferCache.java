@@ -30,8 +30,6 @@ public class IndexDescriptionTransferCache
     @Inject
     IndexControl indexControl;
 
-
-
     /** Creates a new instance of IndexDescriptionTransferCache */
     protected IndexDescriptionTransferCache() {
         super();

@@ -31,8 +31,6 @@ public class UnitOfMeasureTypeWeightTransferCache
     @Inject
     UomControl uomControl;
 
-
-
     /** Creates a new instance of UnitOfMeasureTypeWeightTransferCache */
     protected UnitOfMeasureTypeWeightTransferCache() {
         super();

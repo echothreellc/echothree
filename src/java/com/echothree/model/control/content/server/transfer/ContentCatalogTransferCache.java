@@ -38,9 +38,6 @@ public class ContentCatalogTransferCache
 
     @Inject
     OfferUseControl offerUseControl;
-
-
-
     
     boolean includeContentCatalogItems;
     boolean includeContentCatalogCategories;

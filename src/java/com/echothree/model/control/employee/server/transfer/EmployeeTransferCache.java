@@ -82,19 +82,6 @@ public class EmployeeTransferCache
 
     @Inject
     WorkflowControl workflowControl;
-
-
-
-
-
-
-
-
-
-
-
-
-
     
     boolean includeUserLogin;
     boolean includeRecoveryAnswer;

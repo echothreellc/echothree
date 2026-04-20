@@ -32,8 +32,6 @@ public class TermTransferCache
     @Inject
     TermControl termControl;
 
-
-
     /** Creates a new instance of TermTransferCache */
     protected TermTransferCache() {
         super();

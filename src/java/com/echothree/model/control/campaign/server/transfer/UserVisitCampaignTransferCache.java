@@ -29,8 +29,6 @@ public class UserVisitCampaignTransferCache
 
     @Inject
     CampaignControl campaignControl;
-
-
     
     /** Creates a new instance of UserVisitCampaignTransferCache */
     protected UserVisitCampaignTransferCache() {

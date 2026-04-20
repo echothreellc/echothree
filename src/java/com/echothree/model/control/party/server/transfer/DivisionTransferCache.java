@@ -53,12 +53,6 @@ public class DivisionTransferCache
     @Inject
     ScaleControl scaleControl;
 
-
-
-
-
-
-
     boolean includePartyContactMechanisms;
     boolean includePartyDocuments;
     boolean includePartyPrinterGroupUses;

@@ -32,8 +32,6 @@ public class FilterAdjustmentTransferCache
     @Inject
     FilterControl filterControl;
 
-
-
     boolean includeFilterAdjustmentAmounts;
     boolean includeFilterAdjustmentFixedAmounts;
     boolean includeFilterAdjustmentPercents;

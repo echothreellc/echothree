@@ -30,8 +30,6 @@ public class CustomerTypeDescriptionTransferCache
     @Inject
     CustomerControl customerControl;
 
-
-
     /** Creates a new instance of CustomerTypeDescriptionTransferCache */
     protected CustomerTypeDescriptionTransferCache() {
         super();

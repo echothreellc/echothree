@@ -35,8 +35,6 @@ public class EntityStringDefaultTransferCache
     @Inject
     PartyControl partyControl;
 
-
-
     boolean includeString;
 
     /** Creates a new instance of EntityStringDefaultTransferCache */

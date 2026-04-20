@@ -30,8 +30,6 @@ public class GlAccountCategoryDescriptionTransferCache
     @Inject
     AccountingControl accountingControl;
 
-
-
     /** Creates a new instance of GlAccountCategoryDescriptionTransferCache */
     protected GlAccountCategoryDescriptionTransferCache() {
         super();

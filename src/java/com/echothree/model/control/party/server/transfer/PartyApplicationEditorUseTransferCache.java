@@ -35,9 +35,6 @@ public class PartyApplicationEditorUseTransferCache
     @Inject
     PartyControl partyControl;
 
-
-
-
     /** Creates a new instance of PartyApplicationEditorUseTransferCache */
     protected PartyApplicationEditorUseTransferCache() {
         super();

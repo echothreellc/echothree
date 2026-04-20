@@ -33,9 +33,6 @@ public class ForumPartyTypeRoleTransferCache
 
     @Inject
     PartyControl partyControl;
-
-
-
     
     /** Creates a new instance of ForumPartyTypeRoleTransferCache */
     protected ForumPartyTypeRoleTransferCache() {

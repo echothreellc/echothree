@@ -30,8 +30,6 @@ public class PostalAddressFormatDescriptionTransferCache
     @Inject
     ContactControl contactControl;
 
-
-
     /** Creates a new instance of PostalAddressFormatDescriptionTransferCache */
     protected PostalAddressFormatDescriptionTransferCache() {
         super();

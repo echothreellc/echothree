@@ -30,8 +30,6 @@ public class ServiceTransferCache
     @Inject
     ServerControl serverControl;
 
-
-
     /** Creates a new instance of ServiceTransferCache */
     protected ServiceTransferCache() {
         super();

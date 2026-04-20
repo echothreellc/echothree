@@ -30,8 +30,6 @@ public class TextDecorationTransferCache
     @Inject
     TextControl textControl;
 
-
-
     /** Creates a new instance of TextDecorationTransferCache */
     protected TextDecorationTransferCache() {
         super();

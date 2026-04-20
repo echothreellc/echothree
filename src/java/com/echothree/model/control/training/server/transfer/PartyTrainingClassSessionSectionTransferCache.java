@@ -31,8 +31,6 @@ public class PartyTrainingClassSessionSectionTransferCache
     @Inject
     TrainingControl trainingControl;
 
-
-
     /** Creates a new instance of PartyTrainingClassSessionSectionTransferCache */
     protected PartyTrainingClassSessionSectionTransferCache() {
         super();
@@ -49,7 +47,6 @@ public class PartyTrainingClassSessionSectionTransferCache
             var readingStartTime = formatTypicalDateTime(userVisit, unformattedReadingStartTime);
             var unformattedReadingEndTime = partyTrainingClassSessionSection.getReadingEndTime();
             var readingEndTime = formatTypicalDateTime(userVisit, unformattedReadingEndTime);
-
 
             partyTrainingClassSessionSectionTransfer = new PartyTrainingClassSessionSectionTransfer(partyTrainingClassSession, partyTrainingClassSessionSectionSequence,
                     trainingClassSection, unformattedReadingStartTime, readingStartTime, unformattedReadingEndTime, readingEndTime);

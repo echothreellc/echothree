@@ -34,9 +34,6 @@ public class PartyTermTransferCache
     @Inject
     TermControl termControl;
 
-
-
-
     /** Creates a new instance of PartyTermTransferCache */
     protected PartyTermTransferCache() {
         super();

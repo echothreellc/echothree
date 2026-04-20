@@ -30,8 +30,6 @@ public class FontWeightDescriptionTransferCache
     @Inject
     FontControl fontControl;
 
-
-
     /** Creates a new instance of FontWeightDescriptionTransferCache */
     protected FontWeightDescriptionTransferCache() {
         super();

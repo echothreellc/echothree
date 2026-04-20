@@ -34,9 +34,6 @@ public class ScaleTransferCache
     @Inject
     ServerControl serverControl;
 
-
-
-
     /** Creates a new instance of ScaleTransferCache */
     protected ScaleTransferCache() {
         super();

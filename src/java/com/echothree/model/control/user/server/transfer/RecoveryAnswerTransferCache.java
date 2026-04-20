@@ -29,8 +29,6 @@ public class RecoveryAnswerTransferCache
 
     @Inject
     PartyControl partyControl;
-
-
     
     /** Creates a new instance of RecoveryAnswerTransferCache */
     protected RecoveryAnswerTransferCache() {

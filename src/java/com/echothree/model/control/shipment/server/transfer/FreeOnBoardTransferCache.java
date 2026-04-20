@@ -30,8 +30,6 @@ public class FreeOnBoardTransferCache
     @Inject
     FreeOnBoardControl freeOnBoardControl;
 
-
-
     /** Creates a new instance of FreeOnBoardTransferCache */
     protected FreeOnBoardTransferCache() {
         super();

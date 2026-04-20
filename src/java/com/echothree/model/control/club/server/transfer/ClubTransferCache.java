@@ -41,11 +41,6 @@ public class ClubTransferCache
 
     @Inject
     SubscriptionControl subscriptionControl;
-
-
-
-
-
     
     /** Creates a new instance of ClubTransferCache */
     protected ClubTransferCache() {

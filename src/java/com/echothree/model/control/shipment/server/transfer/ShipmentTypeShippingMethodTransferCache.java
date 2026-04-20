@@ -34,9 +34,6 @@ public class ShipmentTypeShippingMethodTransferCache
     @Inject
     ShippingControl shippingControl;
 
-
-
-
     /** Creates a new instance of ShipmentTypeShippingMethodTransferCache */
     protected ShipmentTypeShippingMethodTransferCache() {
         super();

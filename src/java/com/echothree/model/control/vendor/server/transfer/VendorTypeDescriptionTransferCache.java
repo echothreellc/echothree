@@ -30,8 +30,6 @@ public class VendorTypeDescriptionTransferCache
     @Inject
     VendorControl vendorControl;
 
-
-
     /** Creates a new instance of VendorTypeDescriptionTransferCache */
     protected VendorTypeDescriptionTransferCache() {
         super();

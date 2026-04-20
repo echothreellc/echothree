@@ -30,8 +30,6 @@ public class SecurityRoleDescriptionTransferCache
     @Inject
     SecurityControl securityControl;
 
-
-
     /** Creates a new instance of SecurityRoleDescriptionTransferCache */
     protected SecurityRoleDescriptionTransferCache() {
         super();

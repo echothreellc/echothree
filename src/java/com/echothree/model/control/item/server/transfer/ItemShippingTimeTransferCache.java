@@ -36,9 +36,6 @@ public class ItemShippingTimeTransferCache
     @Inject
     ItemControl itemControl;
 
-
-
-
     TransferProperties transferProperties;
     boolean filterItem;
     boolean filterCustomerType;

@@ -34,8 +34,6 @@ public class EntityAttributeGroupTransferCache
     @Inject
     CoreControl coreControl;
 
-
-
     boolean includeEntityAttributes;
     
     /** Creates a new instance of EntityAttributeGroupTransferCache */

@@ -39,9 +39,6 @@ public class FinancialAccountTransferCache
     @Inject
     FinancialControl financialControl;
 
-
-
-
     boolean includeRoles;
     boolean includeTransactions;
     

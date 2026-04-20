@@ -34,9 +34,6 @@ public class OrderRoleTransferCache
     @Inject
     PartyControl partyControl;
 
-
-
-
     /** Creates a new instance of OrderRoleTransferCache */
     protected OrderRoleTransferCache() {
         super();

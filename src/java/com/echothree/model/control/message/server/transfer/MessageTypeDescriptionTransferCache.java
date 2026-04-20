@@ -30,8 +30,6 @@ public class MessageTypeDescriptionTransferCache
     @Inject
     MessageControl messageControl;
 
-
-
     /** Creates a new instance of MessageTypeDescriptionTransferCache */
     protected MessageTypeDescriptionTransferCache() {
         super();

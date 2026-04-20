@@ -34,9 +34,6 @@ public class PartyFreeOnBoardTransferCache
     @Inject
     PartyControl partyControl;
 
-
-
-
     /** Creates a new instance of FreeOnBoardTransferCache */
     protected PartyFreeOnBoardTransferCache() {
         super();

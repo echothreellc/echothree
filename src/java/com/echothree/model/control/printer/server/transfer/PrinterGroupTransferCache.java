@@ -43,10 +43,6 @@ public class PrinterGroupTransferCache
     @Inject
     WorkflowControl workflowControl;
 
-
-
-
-
     boolean includePrinters;
     
     /** Creates a new instance of PrinterGroupTransferCache */

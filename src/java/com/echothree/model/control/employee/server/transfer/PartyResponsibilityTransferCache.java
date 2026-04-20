@@ -33,9 +33,6 @@ public class PartyResponsibilityTransferCache
 
     @Inject
     PartyControl partyControl;
-
-
-
     
     /** Creates a new instance of PartyResponsibilityTransferCache */
     protected PartyResponsibilityTransferCache() {

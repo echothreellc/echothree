@@ -33,8 +33,6 @@ public class CommunicationSourceTransferCache
     @Inject
     CommunicationControl communicationControl;
 
-
-
     boolean includeRelated;
     
     /** Creates a new instance of CommunicationSourceTransferCache */

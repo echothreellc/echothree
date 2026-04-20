@@ -30,8 +30,6 @@ public class TransactionTimeTypeTransferCache
     @Inject
     TransactionTimeControl transactionTimeControl;
 
-
-
     /** Creates a new instance of TransactionTimeTypeTransferCache */
     protected TransactionTimeTypeTransferCache() {
         super();

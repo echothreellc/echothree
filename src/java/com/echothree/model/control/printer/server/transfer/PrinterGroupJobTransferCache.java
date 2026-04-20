@@ -38,10 +38,6 @@ public class PrinterGroupJobTransferCache
 
     @Inject
     WorkflowControl workflowControl;
-
-
-
-
     
     /** Creates a new instance of PrinterGroupJobTransferCache */
     protected PrinterGroupJobTransferCache() {

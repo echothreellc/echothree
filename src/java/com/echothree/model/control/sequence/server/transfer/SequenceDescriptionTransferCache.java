@@ -30,8 +30,6 @@ public class SequenceDescriptionTransferCache
     @Inject
     SequenceControl sequenceControl;
 
-
-
     /** Creates a new instance of SequenceDescriptionTransferCache */
     protected SequenceDescriptionTransferCache() {
         super();

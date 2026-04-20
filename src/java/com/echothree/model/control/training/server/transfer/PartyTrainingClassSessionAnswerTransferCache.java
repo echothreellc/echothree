@@ -31,8 +31,6 @@ public class PartyTrainingClassSessionAnswerTransferCache
     @Inject
     TrainingControl trainingControl;
 
-
-
     /** Creates a new instance of PartyTrainingClassSessionAnswerTransferCache */
     protected PartyTrainingClassSessionAnswerTransferCache() {
         super();

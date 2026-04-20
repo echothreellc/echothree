@@ -30,8 +30,6 @@ public class UnitOfMeasureKindUseTypeTransferCache
     @Inject
     UomControl uomControl;
 
-
-
     /** Creates a new instance of UnitOfMeasureKindUseTypeTransferCache */
     protected UnitOfMeasureKindUseTypeTransferCache() {
         super();

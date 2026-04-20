@@ -34,8 +34,6 @@ public class EntityListItemTransferCache
     @Inject
     CoreControl coreControl;
 
-
-
     TransferProperties transferProperties;
     boolean filterEntityAttribute;
     boolean filterEntityListItemName;

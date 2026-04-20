@@ -30,8 +30,6 @@ public class WorkRequirementTypeDescriptionTransferCache
     @Inject
     WorkRequirementControl workRequirementControl;
 
-
-
     /** Creates a new instance of WorkRequirementTypeDescriptionTransferCache */
     protected WorkRequirementTypeDescriptionTransferCache() {
         super();

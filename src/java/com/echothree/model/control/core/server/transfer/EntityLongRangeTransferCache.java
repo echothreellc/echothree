@@ -33,8 +33,6 @@ public class EntityLongRangeTransferCache
     @Inject
     CoreControl coreControl;
 
-
-
     TransferProperties transferProperties;
     boolean filterEntityAttribute;
     boolean filterEntityLongRangeName;

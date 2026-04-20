@@ -48,12 +48,6 @@ public class SalesOrderBatchTransferCache
     @Inject
     SalesOrderBatchControl salesOrderBatchControl;
 
-
-
-
-
-
-
     /** Creates a new instance of SalesOrderBatchTransferCache */
     protected SalesOrderBatchTransferCache() {
         super();

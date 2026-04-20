@@ -33,9 +33,6 @@ public class ReturnTypeTransferCache
 
     @Inject
     SequenceControl sequenceControl;
-
-
-
     
     /** Creates a new instance of ReturnTypeTransferCache */
     protected ReturnTypeTransferCache() {

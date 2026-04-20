@@ -34,9 +34,6 @@ public class PaymentProcessorTypeActionTransferCache
     @Inject
     PaymentProcessorTypeControl paymentProcessorTypeControl;
 
-
-
-
     /** Creates a new instance of PaymentProcessorTypeTransferCache */
     protected PaymentProcessorTypeActionTransferCache() {
         super();

@@ -31,8 +31,6 @@ public class ApplicationTransferCache
     @Inject
     ApplicationControl applicationControl;
 
-
-
     /** Creates a new instance of ApplicationTransferCache */
     protected ApplicationTransferCache() {
         super();

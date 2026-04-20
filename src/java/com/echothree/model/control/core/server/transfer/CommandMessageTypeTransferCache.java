@@ -30,8 +30,6 @@ public class CommandMessageTypeTransferCache
     @Inject
     CommandControl commandControl;
 
-
-
     /** Creates a new instance of CommandMessageTypeTransferCache */
     protected CommandMessageTypeTransferCache() {
         super();

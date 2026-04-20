@@ -33,9 +33,6 @@ public class LetterContactMechanismPurposeTransferCache
 
     @Inject
     LetterControl letterControl;
-
-
-
     
     /** Creates a new instance of LetterContactMechanismPurposeTransferCache */
     protected LetterContactMechanismPurposeTransferCache() {

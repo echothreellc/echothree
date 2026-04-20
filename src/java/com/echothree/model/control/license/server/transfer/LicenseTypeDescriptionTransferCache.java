@@ -30,8 +30,6 @@ public class LicenseTypeDescriptionTransferCache
     @Inject
     LicenseControl licenseControl;
 
-
-
     /** Creates a new instance of LicenseTypeDescriptionTransferCache */
     protected LicenseTypeDescriptionTransferCache() {
         super();

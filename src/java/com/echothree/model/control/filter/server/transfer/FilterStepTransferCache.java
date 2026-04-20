@@ -36,9 +36,6 @@ public class FilterStepTransferCache
     @Inject
     SelectorControl selectorControl;
 
-
-
-
     boolean includeFilterStepElements;
     boolean includeFilterStepDestinations;
     

@@ -42,11 +42,6 @@ public class ItemUnitPriceLimitTransferCache
 
     @Inject
     UomControl uomControl;
-
-
-
-
-
     
     /** Creates a new instance of ItemUnitPriceLimitTransferCache */
     protected ItemUnitPriceLimitTransferCache() {

@@ -83,17 +83,6 @@ public class ItemTransferCache
 
     @Inject
     WorkflowControl workflowControl;
-
-
-
-
-
-
-
-
-
-
-
     
     boolean includeItemShippingTimes;
     boolean includeItemAliases;

@@ -34,9 +34,6 @@ public class PartyPrinterGroupUseTransferCache
     @Inject
     PrinterControl printerControl;
 
-
-
-
     /** Creates a new instance of PartyPrinterGroupUseTransferCache */
     protected PartyPrinterGroupUseTransferCache() {
         super();

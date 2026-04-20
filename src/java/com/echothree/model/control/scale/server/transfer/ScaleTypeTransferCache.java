@@ -30,8 +30,6 @@ public class ScaleTypeTransferCache
     @Inject
     ScaleControl scaleControl;
 
-
-
     /** Creates a new instance of ScaleTypeTransferCache */
     protected ScaleTypeTransferCache() {
         super();

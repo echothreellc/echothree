@@ -33,8 +33,6 @@ public class ContactMechanismTransferCache
     @Inject
     ContactControl contactControl;
 
-
-
     boolean includeComments;
 
     /** Creates a new instance of ContactMechanismTransferCache */

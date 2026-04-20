@@ -43,11 +43,6 @@ public class VendorItemCostTransferCache
     @Inject
     VendorControl vendorControl;
 
-
-
-
-
-
     /** Creates a new instance of VendorItemCostTransferCache */
     protected VendorItemCostTransferCache() {
         super();

@@ -34,9 +34,6 @@ public class InvoiceLineGlAccountTransferCache
     @Inject
     InvoiceControl invoiceControl;
 
-
-
-
     /** Creates a new instance of InvoiceLineGlAccountTransferCache */
     protected InvoiceLineGlAccountTransferCache() {
         super();

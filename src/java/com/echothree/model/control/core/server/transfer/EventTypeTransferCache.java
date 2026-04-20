@@ -30,8 +30,6 @@ public class EventTypeTransferCache
     @Inject
     EventControl eventControl;
 
-
-
     /** Creates a new instance of EventTypeTransferCache */
     protected EventTypeTransferCache() {
         super();

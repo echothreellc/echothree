@@ -33,8 +33,6 @@ public class SecurityRoleGroupTransferCache
     @Inject
     SecurityControl securityControl;
 
-
-
     boolean includeSecurityRolesCount;
     boolean includeSecurityRoles;
 

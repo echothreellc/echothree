@@ -30,8 +30,6 @@ public class TransactionEntityRoleTypeDescriptionTransferCache
     @Inject
     AccountingControl accountingControl;
 
-
-
     /** Creates a new instance of TransactionEntityRoleTypeDescriptionTransferCache */
     protected TransactionEntityRoleTypeDescriptionTransferCache() {
         super();

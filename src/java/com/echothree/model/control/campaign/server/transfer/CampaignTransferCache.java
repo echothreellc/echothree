@@ -35,9 +35,6 @@ public class CampaignTransferCache
 
     @Inject
     WorkflowControl workflowControl;
-
-
-
     
     /** Creates a new instance of CampaignTransferCache */
     protected CampaignTransferCache() {

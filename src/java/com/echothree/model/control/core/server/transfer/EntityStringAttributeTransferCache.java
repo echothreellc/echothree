@@ -36,8 +36,6 @@ public class EntityStringAttributeTransferCache
     @Inject
     PartyControl partyControl;
 
-
-
     boolean includeString;
     
     /** Creates a new instance of EntityStringAttributeTransferCache */

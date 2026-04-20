@@ -30,8 +30,6 @@ public class CommunicationEventPurposeTransferCache
     @Inject
     CommunicationControl communicationControl;
 
-
-
     /** Creates a new instance of CommunicationEventPurposeTransferCache */
     protected CommunicationEventPurposeTransferCache() {
         super();

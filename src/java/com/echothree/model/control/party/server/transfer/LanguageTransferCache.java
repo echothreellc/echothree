@@ -32,8 +32,6 @@ public class LanguageTransferCache
     @Inject
     PartyControl partyControl;
 
-
-
     TransferProperties transferProperties;
     boolean filterLanguageIsoName;
     boolean filterisDefault;

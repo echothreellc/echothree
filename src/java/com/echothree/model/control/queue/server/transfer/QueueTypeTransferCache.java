@@ -32,8 +32,6 @@ public class QueueTypeTransferCache
     @Inject
     QueueControl queueControl;
 
-
-
     boolean includeQueuedEntityCount;
     boolean includeOldestQueuedEntityTime;
     boolean includeLatestQueuedEntityTime;

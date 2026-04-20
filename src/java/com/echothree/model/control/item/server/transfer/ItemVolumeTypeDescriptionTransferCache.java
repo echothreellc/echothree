@@ -30,8 +30,6 @@ public class ItemVolumeTypeDescriptionTransferCache
     @Inject
     ItemControl itemControl;
 
-
-
     /** Creates a new instance of ItemVolumeTypeDescriptionTransferCache */
     protected ItemVolumeTypeDescriptionTransferCache() {
         super();

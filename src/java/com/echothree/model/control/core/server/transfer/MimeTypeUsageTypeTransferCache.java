@@ -32,8 +32,6 @@ public class MimeTypeUsageTypeTransferCache
     @Inject
     MimeTypeControl mimeTypeControl;
 
-
-
     TransferProperties transferProperties;
     boolean filterMimeTypeUsageTypeName;
     boolean filterIsDefault;

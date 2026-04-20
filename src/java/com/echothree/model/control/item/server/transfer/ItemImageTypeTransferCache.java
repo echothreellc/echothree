@@ -33,9 +33,6 @@ public class ItemImageTypeTransferCache
 
     @Inject
     MimeTypeControl mimeTypeControl;
-
-
-
     
     /** Creates a new instance of ItemImageTypeTransferCache */
     protected ItemImageTypeTransferCache() {

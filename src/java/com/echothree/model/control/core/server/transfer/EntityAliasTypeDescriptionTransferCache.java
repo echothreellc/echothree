@@ -31,8 +31,6 @@ public class EntityAliasTypeDescriptionTransferCache
     @Inject
     EntityAliasControl entityAliasControl;
 
-
-
     /** Creates a new instance of EntityAliasTypeDescriptionTransferCache */
     protected EntityAliasTypeDescriptionTransferCache() {
         super();

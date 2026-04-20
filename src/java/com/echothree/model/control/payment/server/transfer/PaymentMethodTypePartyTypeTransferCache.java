@@ -38,10 +38,6 @@ public class PaymentMethodTypePartyTypeTransferCache
     @Inject
     WorkflowControl workflowControl;
 
-
-
-
-
     /** Creates a new instance of PaymentMethodTypePartyTypeTransferCache */
     protected PaymentMethodTypePartyTypeTransferCache() {
         super();

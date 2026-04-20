@@ -34,9 +34,6 @@ public class AppearanceTextDecorationTransferCache
     @Inject
     TextControl textControl;
 
-
-
-
     /** Creates a new instance of AppearanceTextDecorationTransferCache */
     protected AppearanceTextDecorationTransferCache() {
         super();

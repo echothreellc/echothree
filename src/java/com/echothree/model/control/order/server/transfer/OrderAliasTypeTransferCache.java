@@ -34,9 +34,6 @@ public class OrderAliasTypeTransferCache
     @Inject
     OrderTypeControl orderTypeControl;
 
-
-
-
     /** Creates a new instance of OrderAliasTypeTransferCache */
     protected OrderAliasTypeTransferCache() {
         super();

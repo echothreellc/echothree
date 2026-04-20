@@ -30,8 +30,6 @@ public class WishlistTypeDescriptionTransferCache
     @Inject
     WishlistControl wishlistControl;
 
-
-
     /** Creates a new instance of WishlistTypeDescriptionTransferCache */
     protected WishlistTypeDescriptionTransferCache() {
         super();

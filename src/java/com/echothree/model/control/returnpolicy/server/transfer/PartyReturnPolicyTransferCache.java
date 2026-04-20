@@ -35,9 +35,6 @@ public class PartyReturnPolicyTransferCache
     @Inject
     ReturnPolicyControl returnPolicyControl;
 
-
-
-
     /** Creates a new instance of PartyReturnPolicyTransferCache */
     protected PartyReturnPolicyTransferCache() {
         super();

@@ -30,8 +30,6 @@ public class TaxDescriptionTransferCache
     @Inject
     TaxControl taxControl;
 
-
-
     /** Creates a new instance of TaxDescriptionTransferCache */
     protected TaxDescriptionTransferCache() {
         super();

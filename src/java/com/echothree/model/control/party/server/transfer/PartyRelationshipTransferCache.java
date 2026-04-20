@@ -30,8 +30,6 @@ public class PartyRelationshipTransferCache
     @Inject
     PartyControl partyControl;
 
-
-
     /** Creates a new instance of PartyRelationshipTransferCache */
     protected PartyRelationshipTransferCache() {
         super();

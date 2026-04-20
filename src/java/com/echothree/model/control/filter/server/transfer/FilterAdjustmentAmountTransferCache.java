@@ -40,10 +40,6 @@ public class FilterAdjustmentAmountTransferCache
     @Inject
     UomControl uomControl;
 
-
-
-
-
     /** Creates a new instance of FilterAdjustmentAmountTransferCache */
     protected FilterAdjustmentAmountTransferCache() {
         super();

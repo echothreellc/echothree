@@ -40,9 +40,6 @@ public class PartyContactMechanismTransferCache
     @Inject
     PartyControl partyControl;
 
-
-
-
     boolean includePartyContactMechanismPurposes;
     boolean includePartyContactMechanismRelationships;
     boolean includePartyContactMechanismRelationshipsByFromPartyContactMechanism;

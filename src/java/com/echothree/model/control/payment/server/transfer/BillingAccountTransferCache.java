@@ -37,8 +37,6 @@ public class BillingAccountTransferCache
     @Inject
     BillingControl billingControl;
 
-
-
     boolean includeRoles;
 
     /** Creates a new instance of BillingAccountTransferCache */

@@ -30,8 +30,6 @@ public class JobDescriptionTransferCache
     @Inject
     JobControl jobControl;
 
-
-
     /** Creates a new instance of JobDescriptionTransferCache */
     protected JobDescriptionTransferCache() {
         super();

@@ -30,8 +30,6 @@ public class TrainingClassPageTransferCache
     @Inject
     TrainingControl trainingControl;
 
-
-
     /** Creates a new instance of TrainingClassPageTransferCache */
     protected TrainingClassPageTransferCache() {
         super();

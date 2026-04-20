@@ -38,10 +38,6 @@ public class ItemKitMemberTransferCache
 
     @Inject
     UomControl uomControl;
-
-
-
-
     
     /** Creates a new instance of ItemKitMemberTransferCache */
     protected ItemKitMemberTransferCache() {

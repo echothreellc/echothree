@@ -39,9 +39,6 @@ public class TrainingClassTransferCache
     @Inject
     UomControl uomControl;
 
-
-
-
     boolean includeTrainingClassSections;
     boolean includePartyTrainingClasses;
     

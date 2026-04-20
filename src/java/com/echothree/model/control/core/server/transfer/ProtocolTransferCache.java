@@ -30,8 +30,6 @@ public class ProtocolTransferCache
     @Inject
     ServerControl serverControl;
 
-
-
     /** Creates a new instance of ProtocolTransferCache */
     protected ProtocolTransferCache() {
         super();

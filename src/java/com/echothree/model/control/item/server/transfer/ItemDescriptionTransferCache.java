@@ -46,11 +46,6 @@ public class ItemDescriptionTransferCache
 
     @Inject
     PartyControl partyControl;
-
-
-
-
-
     
     boolean includeBlob;
     boolean includeClob;

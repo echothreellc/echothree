@@ -33,9 +33,6 @@ public class CommandMessageTranslationTransferCache
 
     @Inject
     PartyControl partyControl;
-
-
-
     
     /** Creates a new instance of CommandMessageTranslationTransferCache */
     protected CommandMessageTranslationTransferCache() {

@@ -33,9 +33,6 @@ public class InventoryConditionGlAccountTransferCache
 
     @Inject
     InventoryControl inventoryControl;
-
-
-
     
     /** Creates a new instance of InventoryConditionGlAccountTransferCache */
     protected InventoryConditionGlAccountTransferCache() {

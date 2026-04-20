@@ -39,10 +39,6 @@ public class FilterAdjustmentPercentTransferCache
     @Inject
     UomControl uomControl;
 
-
-
-
-
     /** Creates a new instance of FilterAdjustmentPercentTransferCache */
     protected FilterAdjustmentPercentTransferCache() {
         super();

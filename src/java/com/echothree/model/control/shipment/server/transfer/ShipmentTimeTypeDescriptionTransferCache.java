@@ -30,8 +30,6 @@ public class ShipmentTimeTypeDescriptionTransferCache
     @Inject
     ShipmentControl shipmentControl;
 
-
-
     /** Creates a new instance of ShipmentTimeTypeDescriptionTransferCache */
     protected ShipmentTimeTypeDescriptionTransferCache() {
         super();

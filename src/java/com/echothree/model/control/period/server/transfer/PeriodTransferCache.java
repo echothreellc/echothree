@@ -36,9 +36,6 @@ public class PeriodTransferCache
 
     @Inject
     WorkflowControl workflowControl;
-
-
-
     
     /** Creates a new instance of PeriodTransferCache */
     protected PeriodTransferCache() {

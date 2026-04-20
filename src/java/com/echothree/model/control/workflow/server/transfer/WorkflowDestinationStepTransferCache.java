@@ -30,8 +30,6 @@ public class WorkflowDestinationStepTransferCache
     @Inject
     WorkflowControl workflowControl;
 
-
-
     /** Creates a new instance of WorkflowDestinationStepTransferCache */
     protected WorkflowDestinationStepTransferCache() {
         super();

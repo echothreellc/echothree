@@ -30,8 +30,6 @@ public class ContentWebAddressDescriptionTransferCache
     @Inject
     ContentControl contentControl;
 
-
-
     /** Creates a new instance of ContentWebAddressDescriptionTransferCache */
     protected ContentWebAddressDescriptionTransferCache() {
         super();

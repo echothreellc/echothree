@@ -51,11 +51,6 @@ public class ContentCatalogItemTransferCache
     @Inject
     UomControl uomControl;
 
-
-
-
-
-
     AmountUtils amountUtils = AmountUtils.getInstance();
     
     TransferProperties transferProperties;

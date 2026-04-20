@@ -38,10 +38,6 @@ public class MessageTypeTransferCache
     @Inject
     MimeTypeControl mimeTypeControl;
 
-
-
-
-
     /** Creates a new instance of MessageTypeTransferCache */
     protected MessageTypeTransferCache() {
         super();

@@ -30,8 +30,6 @@ public class EntityTypeDescriptionTransferCache
     @Inject
     EntityTypeControl entityTypeControl;
 
-
-
     /** Creates a new instance of EntityTypeDescriptionTransferCache */
     protected EntityTypeDescriptionTransferCache() {
         super();

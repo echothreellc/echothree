@@ -30,8 +30,6 @@ public class ForumGroupDescriptionTransferCache
     @Inject
     ForumControl forumControl;
 
-
-
     /** Creates a new instance of ForumGroupDescriptionTransferCache */
     protected ForumGroupDescriptionTransferCache() {
         super();

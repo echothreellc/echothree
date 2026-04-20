@@ -34,9 +34,6 @@ public class TrainingClassQuestionTranslationTransferCache
     @Inject
     TrainingControl trainingControl;
 
-
-
-
     /** Creates a new instance of TrainingClassQuestionTranslationTransferCache */
     protected TrainingClassQuestionTranslationTransferCache() {
         super();

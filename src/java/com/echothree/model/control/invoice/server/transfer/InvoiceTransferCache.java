@@ -54,11 +54,6 @@ public class InvoiceTransferCache
     @Inject
     WorkflowControl workflowControl;
 
-
-
-
-
-
     boolean includeLines;
     boolean includeRoles;
 

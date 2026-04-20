@@ -30,8 +30,6 @@ public class UserKeyTransferCache
     @Inject
     PartyControl partyControl;
 
-
-
     /** Creates a new instance of UserKeyTransferCache */
     protected UserKeyTransferCache() {
         super();

@@ -34,9 +34,6 @@ public class TaxClassificationTranslationTransferCache
     @Inject
     TaxControl taxControl;
 
-
-
-
     /** Creates a new instance of TaxClassificationTranslationTransferCache */
     protected TaxClassificationTranslationTransferCache() {
         super();

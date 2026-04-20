@@ -32,8 +32,6 @@ public class ChainActionTransferCache
     @Inject
     ChainControl chainControl;
 
-
-
     boolean includeRelated;
 
     /** Creates a new instance of ChainActionTransferCache */

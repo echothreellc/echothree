@@ -42,10 +42,6 @@ public class OfferItemTransferCache
     @Inject
     OfferItemControl offerItemControl;
 
-
-
-
-
     boolean includeOfferItemPrices;
 
     TransferProperties transferProperties;

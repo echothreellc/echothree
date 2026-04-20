@@ -30,8 +30,6 @@ public class PartySecurityRoleTemplateDescriptionTransferCache
     @Inject
     SecurityControl securityControl;
 
-
-
     /** Creates a new instance of PartySecurityRoleTemplateDescriptionTransferCache */
     protected PartySecurityRoleTemplateDescriptionTransferCache() {
         super();

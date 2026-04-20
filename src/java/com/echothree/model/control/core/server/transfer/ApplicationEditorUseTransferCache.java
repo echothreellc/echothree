@@ -30,8 +30,6 @@ public class ApplicationEditorUseTransferCache
     @Inject
     ApplicationControl applicationControl;
 
-
-
     /** Creates a new instance of ApplicationEditorUseTransferCache */
     protected ApplicationEditorUseTransferCache() {
         super();

@@ -34,9 +34,6 @@ public class SubscriptionTypeTransferCache
     @Inject
     SubscriptionControl subscriptionControl;
 
-
-
-
     /** Creates a new instance of SubscriptionTypeTransferCache */
     protected SubscriptionTypeTransferCache() {
         super();

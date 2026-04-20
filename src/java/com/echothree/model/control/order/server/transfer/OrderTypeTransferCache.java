@@ -37,10 +37,6 @@ public class OrderTypeTransferCache
 
     @Inject
     WorkflowControl workflowControl;
-
-
-
-
     
     /** Creates a new instance of OrderTypeTransferCache */
     protected OrderTypeTransferCache() {

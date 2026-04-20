@@ -30,8 +30,6 @@ public class InventoryConditionUseTransferCache
     @Inject
     InventoryControl inventoryControl;
 
-
-
     /** Creates a new instance of InventoryConditionUseTransferCache */
     protected InventoryConditionUseTransferCache() {
         super();

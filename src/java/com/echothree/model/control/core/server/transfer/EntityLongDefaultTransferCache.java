@@ -30,8 +30,6 @@ public class EntityLongDefaultTransferCache
     @Inject
     CoreControl coreControl;
 
-
-
     /** Creates a new instance of EntityLongDefaultTransferCache */
     protected EntityLongDefaultTransferCache() {
         super();

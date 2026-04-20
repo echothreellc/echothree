@@ -32,8 +32,6 @@ public class ContentCategoryItemTransferCache
     @Inject
     ContentControl contentControl;
 
-
-
     TransferProperties transferProperties;
     boolean filterContentCategory;
     boolean filterContentCatalogItem;

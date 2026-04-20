@@ -32,8 +32,6 @@ public class UnitOfMeasureKindTransferCache
     @Inject
     UomControl uomControl;
 
-
-
     TransferProperties transferProperties;
     boolean filterUnitOfMeasureKindName;
     boolean filterIsDefault;

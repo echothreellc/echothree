@@ -30,8 +30,6 @@ public class InventoryLocationGroupDescriptionTransferCache
     @Inject
     InventoryControl inventoryControl;
 
-
-
     /** Creates a new instance of InventoryLocationGroupDescriptionTransferCache */
     protected InventoryLocationGroupDescriptionTransferCache() {
         super();

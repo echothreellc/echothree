@@ -34,9 +34,6 @@ public class QueuedLetterTransferCache
     @Inject
     LetterControl letterControl;
 
-
-
-
     /** Creates a new instance of QueuedLetterTransferCache */
     protected QueuedLetterTransferCache() {
         super();

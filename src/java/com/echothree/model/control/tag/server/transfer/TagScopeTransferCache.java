@@ -32,8 +32,6 @@ public class TagScopeTransferCache
     @Inject
     TagControl tagControl;
 
-
-
     boolean includeTags;
     
     /** Creates a new instance of TagScopeTransferCache */

@@ -34,9 +34,6 @@ public class EmploymentTransferCache
     @Inject
     PartyControl partyControl;
 
-
-
-
     /** Creates a new instance of EmploymentTransferCache */
     protected EmploymentTransferCache() {
         super();

@@ -64,16 +64,6 @@ public class CustomerTypeTransferCache
     @Inject
     TermControl termControl;
 
-
-
-
-
-
-
-
-
-
-
     TransferProperties transferProperties;
     boolean filterCustomerTypeName;
     boolean filterCustomerSequence;

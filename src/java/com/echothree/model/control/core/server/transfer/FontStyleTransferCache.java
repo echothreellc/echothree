@@ -30,8 +30,6 @@ public class FontStyleTransferCache
     @Inject
     FontControl fontControl;
 
-
-
     /** Creates a new instance of FontStyleTransferCache */
     protected FontStyleTransferCache() {
         super();

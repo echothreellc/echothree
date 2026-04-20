@@ -36,8 +36,6 @@ public class PartyTrainingClassSessionTransferCache
     @Inject
     TrainingControl trainingControl;
 
-
-
     boolean includePartyTrainingClassSessionPages;
     boolean includePartyTrainingClassSessionQuestions;
     

@@ -39,10 +39,6 @@ public class WorkTimeTransferCache
     @Inject
     WorkflowControl workflowControl;
 
-
-
-
-
     /** Creates a new instance of WorkTimeTransferCache */
     protected WorkTimeTransferCache() {
         super();

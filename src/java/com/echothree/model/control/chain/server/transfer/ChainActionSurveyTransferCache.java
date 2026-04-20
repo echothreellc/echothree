@@ -34,9 +34,6 @@ public class ChainActionSurveyTransferCache
 
     @Inject
     SurveyControl surveyControl;
-
-
-
     
     /** Creates a new instance of ChainActionSurveyTransferCache */
     protected ChainActionSurveyTransferCache() {

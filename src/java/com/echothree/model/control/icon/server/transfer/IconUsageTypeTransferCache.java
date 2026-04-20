@@ -30,8 +30,6 @@ public class IconUsageTypeTransferCache
     @Inject
     IconControl iconControl;
 
-
-
     /** Creates a new instance of IconUsageTypeTransferCache */
     protected IconUsageTypeTransferCache() {
         super();

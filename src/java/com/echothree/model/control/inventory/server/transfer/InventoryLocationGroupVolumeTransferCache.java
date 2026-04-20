@@ -34,9 +34,6 @@ public class InventoryLocationGroupVolumeTransferCache
 
     @Inject
     UomControl uomControl;
-
-
-
     
     /** Creates a new instance of InventoryLocationGroupVolumeTransferCache */
     protected InventoryLocationGroupVolumeTransferCache() {

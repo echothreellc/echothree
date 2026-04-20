@@ -44,11 +44,6 @@ public class PaymentProcessorTransactionTransferCache
     @Inject
     PaymentProcessorTransactionCodeControl paymentProcessorTransactionCodeControl;
 
-
-
-
-
-
     boolean includePaymentProcessorTransactionCodes;
     
     /** Creates a new instance of PaymentProcessorTransactionTransferCache */

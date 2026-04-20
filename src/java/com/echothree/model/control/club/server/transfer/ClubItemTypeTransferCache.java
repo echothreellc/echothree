@@ -30,8 +30,6 @@ public class ClubItemTypeTransferCache
     @Inject
     ClubControl clubControl;
 
-
-
     /** Creates a new instance of ClubItemTypeTransferCache */
     protected ClubItemTypeTransferCache() {
         super();

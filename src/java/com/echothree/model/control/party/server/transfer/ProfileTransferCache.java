@@ -39,10 +39,6 @@ public class ProfileTransferCache
     @Inject
     PartyControl partyControl;
 
-
-
-
-
     /** Creates a new instance of ProfileTransferCache */
     protected ProfileTransferCache() {
         super();

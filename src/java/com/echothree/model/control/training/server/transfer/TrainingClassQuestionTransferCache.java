@@ -32,8 +32,6 @@ public class TrainingClassQuestionTransferCache
     @Inject
     TrainingControl trainingControl;
 
-
-
     boolean includeTrainingClassAnswers;
     
     /** Creates a new instance of TrainingClassQuestionTransferCache */

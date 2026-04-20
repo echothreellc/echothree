@@ -31,8 +31,6 @@ public class EntityListItemDescriptionTransferCache
     @Inject
     CoreControl coreControl;
 
-
-
     /** Creates a new instance of EntityListItemDescriptionTransferCache */
     protected EntityListItemDescriptionTransferCache() {
         super();

@@ -34,9 +34,6 @@ public class ItemVolumeTransferCache
 
     @Inject
     UomControl uomControl;
-
-
-
     
     /** Creates a new instance of ItemVolumeTransferCache */
     protected ItemVolumeTransferCache() {

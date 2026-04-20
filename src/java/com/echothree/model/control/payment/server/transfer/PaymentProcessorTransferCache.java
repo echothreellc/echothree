@@ -41,10 +41,6 @@ public class PaymentProcessorTransferCache
     @Inject
     PaymentProcessorTypeControl paymentProcessorTypeControl;
 
-
-
-
-
     boolean includeComments;
     boolean includePaymentProcessorTransactions;
 

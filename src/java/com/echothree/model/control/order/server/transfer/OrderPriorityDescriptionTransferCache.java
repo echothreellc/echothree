@@ -30,8 +30,6 @@ public class OrderPriorityDescriptionTransferCache
     @Inject
     OrderPriorityControl orderPriorityControl;
 
-
-
     /** Creates a new instance of OrderPriorityDescriptionTransferCache */
     protected OrderPriorityDescriptionTransferCache() {
         super();

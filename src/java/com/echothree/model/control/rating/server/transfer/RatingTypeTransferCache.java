@@ -33,9 +33,6 @@ public class RatingTypeTransferCache
 
     @Inject
     SequenceControl sequenceControl;
-
-
-
     
     /** Creates a new instance of RatingTypeTransferCache */
     protected RatingTypeTransferCache() {

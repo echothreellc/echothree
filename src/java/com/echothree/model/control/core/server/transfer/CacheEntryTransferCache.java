@@ -40,9 +40,6 @@ public class CacheEntryTransferCache
     @Inject
     MimeTypeControl mimeTypeControl;
 
-
-
-
     boolean includeBlob;
     boolean includeClob;
     boolean includeCacheEntryDependencies;

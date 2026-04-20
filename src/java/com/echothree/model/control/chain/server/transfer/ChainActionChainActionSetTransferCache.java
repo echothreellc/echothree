@@ -34,9 +34,6 @@ public class ChainActionChainActionSetTransferCache
 
     @Inject
     UomControl uomControl;
-
-
-
     
     /** Creates a new instance of ChainActionChainActionSetTransferCache */
     protected ChainActionChainActionSetTransferCache() {

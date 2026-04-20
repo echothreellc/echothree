@@ -38,9 +38,6 @@ public class EntityAliasTypeTransferCache
     @Inject
     EntityTypeControl entityTypeControl;
 
-
-
-
     boolean includeAlias;
 
     TransferProperties transferProperties;

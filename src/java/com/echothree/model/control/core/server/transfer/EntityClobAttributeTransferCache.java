@@ -40,10 +40,6 @@ public class EntityClobAttributeTransferCache
     @Inject
     PartyControl partyControl;
 
-
-
-
-
     boolean includeClob;
     boolean includeETag;
     

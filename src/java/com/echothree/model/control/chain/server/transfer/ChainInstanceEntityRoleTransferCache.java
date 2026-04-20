@@ -29,8 +29,6 @@ public class ChainInstanceEntityRoleTransferCache
 
     @Inject
     ChainControl chainControl;
-
-
     
     /** Creates a new instance of ChainInstanceEntityRoleTransferCache */
     protected ChainInstanceEntityRoleTransferCache() {

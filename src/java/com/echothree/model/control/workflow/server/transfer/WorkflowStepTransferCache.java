@@ -32,8 +32,6 @@ public class WorkflowStepTransferCache
     @Inject
     WorkflowControl workflowControl;
 
-
-
     TransferProperties transferProperties;
     boolean filterWorkflow;
     boolean filterWorkflowStepName;

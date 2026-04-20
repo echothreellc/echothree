@@ -30,8 +30,6 @@ public class GenderTransferCache
     @Inject
     PartyControl partyControl;
 
-
-
     /** Creates a new instance of GenderTransferCache */
     protected GenderTransferCache() {
         super();

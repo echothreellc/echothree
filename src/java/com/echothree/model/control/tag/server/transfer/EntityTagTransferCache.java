@@ -30,8 +30,6 @@ public class EntityTagTransferCache
     @Inject
     TagControl tagControl;
 
-
-
     /** Creates a new instance of EntityTagTransferCache */
     protected EntityTagTransferCache() {
         super();

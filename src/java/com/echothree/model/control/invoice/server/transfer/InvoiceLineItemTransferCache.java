@@ -42,11 +42,6 @@ public class InvoiceLineItemTransferCache
     @Inject
     UomControl uomControl;
 
-
-
-
-
-
     /** Creates a new instance of InvoiceLineItemTransferCache */
     protected InvoiceLineItemTransferCache() {
         super();

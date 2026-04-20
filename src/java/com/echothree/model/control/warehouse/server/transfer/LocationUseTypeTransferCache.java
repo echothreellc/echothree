@@ -30,8 +30,6 @@ public class LocationUseTypeTransferCache
     @Inject
     LocationUseTypeControl locationUseTypeControl;
 
-
-
     /** Creates a new instance of LocationUseTypeTransferCache */
     protected LocationUseTypeTransferCache() {
         super();

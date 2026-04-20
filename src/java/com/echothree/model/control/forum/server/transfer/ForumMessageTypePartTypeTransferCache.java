@@ -30,8 +30,6 @@ public class ForumMessageTypePartTypeTransferCache
     @Inject
     ForumControl forumControl;
 
-
-
     /** Creates a new instance of ForumMessageTypePartTypeTransferCache */
     protected ForumMessageTypePartTypeTransferCache() {
         super();

@@ -34,8 +34,6 @@ public class GeoCodeTaxTransferCache
     @Inject
     TaxControl taxControl;
 
-
-
     /** Creates a new instance of GeoCodeTaxTransferCache */
     protected GeoCodeTaxTransferCache() {
         super();

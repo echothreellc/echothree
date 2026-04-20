@@ -46,11 +46,6 @@ public class TransactionTransferCache
     @Inject
     WorkflowControl workflowControl;
 
-
-
-
-
-
     boolean includeTransactionGlEntries;
     boolean includeTransactionEntityRoles;
     boolean includeTransactionTimes;

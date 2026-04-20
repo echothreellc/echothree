@@ -18,7 +18,6 @@ package com.echothree.model.control.carrier.server.transfer;
 
 import javax.inject.Inject;
 
-
 import com.echothree.model.control.carrier.common.transfer.PartyCarrierTransfer;
 import com.echothree.model.control.carrier.server.control.CarrierControl;
 import com.echothree.model.control.party.server.control.PartyControl;
@@ -35,9 +34,6 @@ public class PartyCarrierTransferCache
 
     @Inject
     PartyControl partyControl;
-
-
-
     
     /** Creates a new instance of PartyCarrierTransferCache */
     protected PartyCarrierTransferCache() {

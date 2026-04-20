@@ -30,8 +30,6 @@ public class EntityAppearanceTransferCache
     @Inject
     AppearanceControl appearanceControl;
 
-
-
     /** Creates a new instance of EntityAppearanceTransferCache */
     protected EntityAppearanceTransferCache() {
         super();

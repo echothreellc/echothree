@@ -30,8 +30,6 @@ public class SymbolPositionDescriptionTransferCache
     @Inject
     AccountingControl accountingControl;
 
-
-
     /** Creates a new instance of SymbolPositionDescriptionTransferCache */
     protected SymbolPositionDescriptionTransferCache() {
         super();

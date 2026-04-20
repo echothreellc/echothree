@@ -32,8 +32,6 @@ public class PostalAddressLineTransferCache
     @Inject
     ContactControl contactControl;
 
-
-
     boolean includeElements;
     
     /** Creates a new instance of PostalAddressLineTransferCache */

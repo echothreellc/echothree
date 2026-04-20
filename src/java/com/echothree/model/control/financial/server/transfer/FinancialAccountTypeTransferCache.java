@@ -41,11 +41,6 @@ public class FinancialAccountTypeTransferCache
 
     @Inject
     WorkflowControl workflowControl;
-
-
-
-
-
     
     /** Creates a new instance of FinancialAccountTypeTransferCache */
     protected FinancialAccountTypeTransferCache() {

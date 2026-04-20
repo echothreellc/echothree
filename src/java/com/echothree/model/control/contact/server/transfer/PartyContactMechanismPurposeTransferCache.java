@@ -30,8 +30,6 @@ public class PartyContactMechanismPurposeTransferCache
     @Inject
     ContactControl contactControl;
 
-
-
     /** Creates a new instance of PartyContactMechanismPurposeTransferCache */
     protected PartyContactMechanismPurposeTransferCache() {
         super();

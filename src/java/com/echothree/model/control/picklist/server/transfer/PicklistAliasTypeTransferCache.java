@@ -30,8 +30,6 @@ public class PicklistAliasTypeTransferCache
     @Inject
     PicklistControl picklistControl;
 
-
-
     /** Creates a new instance of PicklistAliasTypeTransferCache */
     protected PicklistAliasTypeTransferCache() {
         super();

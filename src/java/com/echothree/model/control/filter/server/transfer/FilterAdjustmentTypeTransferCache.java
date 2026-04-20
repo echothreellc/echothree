@@ -30,8 +30,6 @@ public class FilterAdjustmentTypeTransferCache
     @Inject
     FilterControl filterControl;
 
-
-
     /** Creates a new instance of FilterAdjustmentTypeTransferCache */
     protected FilterAdjustmentTypeTransferCache() {
         super();

@@ -33,9 +33,6 @@ public class GeoCodeTimeZoneTransferCache
 
     @Inject
     PartyControl partyControl;
-
-
-
     
     /** Creates a new instance of GeoCodeTimeZoneTransferCache */
     protected GeoCodeTimeZoneTransferCache() {

@@ -37,9 +37,6 @@ public class UnitOfMeasureTypeTransferCache
     @Inject
     UomControl uomControl;
 
-
-
-
     boolean includeVolume;
     boolean includeWeight;
     

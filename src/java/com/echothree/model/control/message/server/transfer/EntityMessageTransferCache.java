@@ -30,8 +30,6 @@ public class EntityMessageTransferCache
     @Inject
     MessageControl messageControl;
 
-
-
     /** Creates a new instance of EntityMessageTransferCache */
     protected EntityMessageTransferCache() {
         super();

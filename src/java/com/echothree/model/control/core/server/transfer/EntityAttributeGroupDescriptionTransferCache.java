@@ -31,8 +31,6 @@ public class EntityAttributeGroupDescriptionTransferCache
     @Inject
     CoreControl coreControl;
 
-
-
     /** Creates a new instance of EntityAttributeGroupDescriptionTransferCache */
     protected EntityAttributeGroupDescriptionTransferCache() {
         super();

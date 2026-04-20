@@ -30,8 +30,6 @@ public class ChainTypeTransferCache
     @Inject
     ChainControl chainControl;
 
-
-
     /** Creates a new instance of ChainTypeTransferCache */
     protected ChainTypeTransferCache() {
         super();

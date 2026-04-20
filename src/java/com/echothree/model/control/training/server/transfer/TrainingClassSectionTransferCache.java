@@ -33,8 +33,6 @@ public class TrainingClassSectionTransferCache
     @Inject
     TrainingControl trainingControl;
 
-
-
     boolean includeTrainingClassPages;
     boolean includeTrainingClassQuestions;
     

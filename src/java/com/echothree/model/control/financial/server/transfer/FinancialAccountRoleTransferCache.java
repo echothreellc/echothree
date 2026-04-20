@@ -34,9 +34,6 @@ public class FinancialAccountRoleTransferCache
     @Inject
     PartyControl partyControl;
 
-
-
-
     /** Creates a new instance of FinancialAccountRoleTransferCache */
     protected FinancialAccountRoleTransferCache() {
         super();

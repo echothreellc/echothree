@@ -30,8 +30,6 @@ public class MimeTypeUsageTransferCache
     @Inject
     MimeTypeControl mimeTypeControl;
 
-
-
     /** Creates a new instance of MimeTypeUsageTransferCache */
     protected MimeTypeUsageTransferCache() {
         super();

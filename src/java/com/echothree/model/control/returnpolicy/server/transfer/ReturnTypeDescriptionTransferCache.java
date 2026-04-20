@@ -30,8 +30,6 @@ public class ReturnTypeDescriptionTransferCache
     @Inject
     ReturnPolicyControl returnPolicyControl;
 
-
-
     /** Creates a new instance of ReturnTypeDescriptionTransferCache */
     protected ReturnTypeDescriptionTransferCache() {
         super();

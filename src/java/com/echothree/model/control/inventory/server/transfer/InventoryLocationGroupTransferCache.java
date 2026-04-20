@@ -41,9 +41,6 @@ public class InventoryLocationGroupTransferCache
     @Inject
     WorkflowControl workflowControl;
 
-
-
-
     boolean includeCapacities;
     boolean includeVolume;
     

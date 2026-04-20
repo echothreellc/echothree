@@ -38,10 +38,6 @@ public class BillingAccountRoleTransferCache
     @Inject
     PartyControl partyControl;
 
-
-
-
-
     /** Creates a new instance of BillingAccountRoleTransferCache */
     protected BillingAccountRoleTransferCache() {
         super();

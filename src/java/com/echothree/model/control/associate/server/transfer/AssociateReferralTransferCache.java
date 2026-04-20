@@ -29,8 +29,6 @@ public class AssociateReferralTransferCache
 
     @Inject
     AssociateControl associateControl;
-
-
     
     /** Creates a new instance of AssociateReferralTransferCache */
     protected AssociateReferralTransferCache() {

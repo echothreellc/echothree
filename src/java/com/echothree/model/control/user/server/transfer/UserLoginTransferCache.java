@@ -33,8 +33,6 @@ public class UserLoginTransferCache
     @Inject
     PartyControl partyControl;
 
-
-
     boolean includeUserLoginPasswords;
 
     /** Creates a new instance of UserLoginTransferCache */

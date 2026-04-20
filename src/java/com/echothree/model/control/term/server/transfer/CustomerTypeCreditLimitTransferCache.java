@@ -35,9 +35,6 @@ public class CustomerTypeCreditLimitTransferCache
     @Inject
     CustomerControl customerControl;
 
-
-
-
     /** Creates a new instance of CustomerTypeCreditLimitTransferCache */
     protected CustomerTypeCreditLimitTransferCache() {
         super();

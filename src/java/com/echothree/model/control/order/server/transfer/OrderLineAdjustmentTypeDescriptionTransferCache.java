@@ -30,8 +30,6 @@ public class OrderLineAdjustmentTypeDescriptionTransferCache
     @Inject
     OrderLineAdjustmentControl orderLineAdjustmentControl;
 
-
-
     /** Creates a new instance of OrderLineAdjustmentTypeDescriptionTransferCache */
     protected OrderLineAdjustmentTypeDescriptionTransferCache() {
         super();

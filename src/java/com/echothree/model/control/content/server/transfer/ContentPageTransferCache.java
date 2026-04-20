@@ -37,8 +37,6 @@ public class ContentPageTransferCache
     @Inject
     ContentControl contentControl;
 
-
-
     boolean includeContentPageAreas;
 
     TransferProperties transferProperties;

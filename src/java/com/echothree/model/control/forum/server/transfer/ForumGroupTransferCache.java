@@ -39,9 +39,6 @@ public class ForumGroupTransferCache
     @Inject
     IconControl iconControl;
 
-
-
-
     boolean includeForums;
     
     /** Creates a new instance of ForumGroupTransferCache */

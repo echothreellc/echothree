@@ -30,8 +30,6 @@ public class CarrierServiceDescriptionTransferCache
     @Inject
     CarrierControl carrierControl;
 
-
-
     /** Creates a new instance of CarrierServiceDescriptionTransferCache */
     protected CarrierServiceDescriptionTransferCache() {
         super();

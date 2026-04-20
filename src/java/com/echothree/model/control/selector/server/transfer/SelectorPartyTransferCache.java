@@ -34,9 +34,6 @@ public class SelectorPartyTransferCache
     @Inject
     SelectorControl selectorControl;
 
-
-
-
     /** Creates a new instance of SelectorPartyTransferCache */
     protected SelectorPartyTransferCache() {
         super();

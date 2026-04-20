@@ -33,9 +33,6 @@ public class GeoCodeDateTimeFormatTransferCache
 
     @Inject
     PartyControl partyControl;
-
-
-
     
     /** Creates a new instance of GeoCodeDateTimeFormatTransferCache */
     protected GeoCodeDateTimeFormatTransferCache() {

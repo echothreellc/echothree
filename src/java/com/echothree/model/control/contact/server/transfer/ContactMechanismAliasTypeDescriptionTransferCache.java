@@ -30,8 +30,6 @@ public class ContactMechanismAliasTypeDescriptionTransferCache
     @Inject
     ContactControl contactControl;
 
-
-
     /** Creates a new instance of ContactMechanismAliasTypeDescriptionTransferCache */
     protected ContactMechanismAliasTypeDescriptionTransferCache() {
         super();

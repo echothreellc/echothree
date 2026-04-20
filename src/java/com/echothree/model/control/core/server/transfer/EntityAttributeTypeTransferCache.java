@@ -32,7 +32,6 @@ public class EntityAttributeTypeTransferCache
     @Inject
     CoreControl coreControl;
 
-
     TransferProperties transferProperties;
 
     boolean filterEntityAttributeTypeName;

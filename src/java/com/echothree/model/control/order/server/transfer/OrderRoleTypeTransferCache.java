@@ -30,8 +30,6 @@ public class OrderRoleTypeTransferCache
     @Inject
     OrderRoleControl orderRoleControl;
 
-
-
     /** Creates a new instance of OrderRoleTypeTransferCache */
     protected OrderRoleTypeTransferCache() {
         super();

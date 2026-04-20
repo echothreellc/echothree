@@ -33,9 +33,6 @@ public class GeoCodeLanguageTransferCache
 
     @Inject
     PartyControl partyControl;
-
-
-
     
     /** Creates a new instance of GeoCodeLanguageTransferCache */
     protected GeoCodeLanguageTransferCache() {

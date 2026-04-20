@@ -30,8 +30,6 @@ public class EventGroupTransferCache
 
     @Inject
     WorkflowControl workflowControl;
-
-
     
     /** Creates a new instance of EventGroupTransferCache */
     protected EventGroupTransferCache() {

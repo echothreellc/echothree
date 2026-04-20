@@ -30,8 +30,6 @@ public class GlAccountTypeTransferCache
     @Inject
     AccountingControl accountingControl;
 
-
-
     /** Creates a new instance of GlAccountTypeTransferCache */
     protected GlAccountTypeTransferCache() {
         super();

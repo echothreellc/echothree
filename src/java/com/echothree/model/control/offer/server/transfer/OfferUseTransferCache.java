@@ -38,10 +38,6 @@ public class OfferUseTransferCache
     @Inject
     UseControl useControl;
 
-
-
-
-
     /** Creates a new instance of OfferUseTransferCache */
     protected OfferUseTransferCache() {
         super();

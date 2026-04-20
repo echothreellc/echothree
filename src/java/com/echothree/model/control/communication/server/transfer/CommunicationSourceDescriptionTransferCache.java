@@ -30,8 +30,6 @@ public class CommunicationSourceDescriptionTransferCache
     @Inject
     CommunicationControl communicationControl;
 
-
-
     /** Creates a new instance of CommunicationSourceDescriptionTransferCache */
     protected CommunicationSourceDescriptionTransferCache() {
         super();

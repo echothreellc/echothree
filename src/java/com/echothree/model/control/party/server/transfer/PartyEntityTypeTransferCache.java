@@ -34,9 +34,6 @@ public class PartyEntityTypeTransferCache
 
     @Inject
     PartyControl partyControl;
-
-
-
     
     /** Creates a new instance of PartyEntityTypeTransferCache */
     protected PartyEntityTypeTransferCache() {

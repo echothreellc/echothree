@@ -30,8 +30,6 @@ public class BatchAliasTypeTransferCache
     @Inject
     BatchControl batchControl;
 
-
-
     /** Creates a new instance of BatchAliasTypeTransferCache */
     protected BatchAliasTypeTransferCache() {
         super();

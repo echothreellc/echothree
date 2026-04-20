@@ -34,9 +34,6 @@ public class AppearanceDescriptionTransferCache
     @Inject
     CoreControl coreControl;
 
-
-
-
     /** Creates a new instance of AppearanceDescriptionTransferCache */
     protected AppearanceDescriptionTransferCache() {
         super();

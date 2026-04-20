@@ -31,8 +31,6 @@ public class PartyAliasTypeTransferCache
     @Inject
     PartyControl partyControl;
 
-
-
     /** Creates a new instance of PartyAliasTypeTransferCache */
     protected PartyAliasTypeTransferCache() {
         super();

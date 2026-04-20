@@ -30,8 +30,6 @@ public class TerminationTypeDescriptionTransferCache
     @Inject
     EmployeeControl employeeControl;
 
-
-
     /** Creates a new instance of TerminationTypeDescriptionTransferCache */
     protected TerminationTypeDescriptionTransferCache() {
         super();

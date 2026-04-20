@@ -30,8 +30,6 @@ public class PaymentMethodTypeTransferCache
     @Inject
     PaymentMethodTypeControl paymentMethodTypeControl;
 
-
-
     /** Creates a new instance of PaymentMethodTypeTransferCache */
     protected PaymentMethodTypeTransferCache() {
         super();

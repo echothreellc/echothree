@@ -37,10 +37,6 @@ public class InventoryTransactionTypeTransferCache
 
     @Inject
     WorkflowControl workflowControl;
-
-
-
-
     
     /** Creates a new instance of InventoryTransactionTypeTransferCache */
     protected InventoryTransactionTypeTransferCache() {

@@ -33,9 +33,6 @@ public class CarrierServiceTransferCache
 
     @Inject
     SelectorControl selectorControl;
-
-
-
     
     /** Creates a new instance of CarrierServiceTransferCache */
     protected CarrierServiceTransferCache() {

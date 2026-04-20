@@ -34,8 +34,6 @@ public class FilterStepElementTransferCache
     @Inject
     SelectorControl selectorControl;
 
-
-
     /** Creates a new instance of FilterStepElementTransferCache */
     protected FilterStepElementTransferCache() {
         super();

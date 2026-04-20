@@ -30,8 +30,6 @@ public class AssociateProgramDescriptionTransferCache
     @Inject
     AssociateControl associateControl;
 
-
-
     /** Creates a new instance of AssociateProgramDescriptionTransferCache */
     protected AssociateProgramDescriptionTransferCache() {
         super();

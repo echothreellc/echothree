@@ -30,8 +30,6 @@ public class LocationNameElementTransferCache
     @Inject
     WarehouseControl warehouseControl;
 
-
-
     /** Creates a new instance of LocationNameElementTransferCache */
     protected LocationNameElementTransferCache() {
         super();

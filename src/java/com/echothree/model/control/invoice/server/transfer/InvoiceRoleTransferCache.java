@@ -38,10 +38,6 @@ public class InvoiceRoleTransferCache
     @Inject
     PartyControl partyControl;
 
-
-
-
-
     /** Creates a new instance of InvoiceRoleTransferCache */
     protected InvoiceRoleTransferCache() {
         super();

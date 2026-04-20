@@ -31,8 +31,6 @@ public class EntityMultipleListItemAttributeTransferCache
     @Inject
     CoreControl coreControl;
 
-
-
     /** Creates a new instance of EntityMultipleListItemAttributeTransferCache */
     protected EntityMultipleListItemAttributeTransferCache() {
         super();

@@ -30,8 +30,6 @@ public class DocumentTypeUsageTypeDescriptionTransferCache
     @Inject
     DocumentControl documentControl;
 
-
-
     /** Creates a new instance of DocumentTypeUsageTypeDescriptionTransferCache */
     protected DocumentTypeUsageTypeDescriptionTransferCache() {
         super();

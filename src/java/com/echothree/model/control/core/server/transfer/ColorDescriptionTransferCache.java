@@ -30,8 +30,6 @@ public class ColorDescriptionTransferCache
     @Inject
     ColorControl colorControl;
 
-
-
     /** Creates a new instance of ColorDescriptionTransferCache */
     protected ColorDescriptionTransferCache() {
         super();

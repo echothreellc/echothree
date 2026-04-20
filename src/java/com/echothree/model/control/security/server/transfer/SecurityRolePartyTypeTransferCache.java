@@ -38,9 +38,6 @@ public class SecurityRolePartyTypeTransferCache
     @Inject
     SelectorControl selectorControl;
 
-
-
-
         
     /** Creates a new instance of SecurityRolePartyTypeTransferCache */
     protected SecurityRolePartyTypeTransferCache() {

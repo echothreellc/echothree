@@ -33,8 +33,6 @@ public class PartyTrainingClassSessionQuestionTransferCache
     @Inject
     TrainingControl trainingControl;
 
-
-
     boolean includePartyTrainingClassSessionAnswers;
     
     /** Creates a new instance of PartyTrainingClassSessionQuestionTransferCache */

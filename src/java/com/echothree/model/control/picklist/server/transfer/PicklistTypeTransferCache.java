@@ -37,10 +37,6 @@ public class PicklistTypeTransferCache
 
     @Inject
     WorkflowControl workflowControl;
-
-
-
-
     
     /** Creates a new instance of PicklistTypeTransferCache */
     protected PicklistTypeTransferCache() {

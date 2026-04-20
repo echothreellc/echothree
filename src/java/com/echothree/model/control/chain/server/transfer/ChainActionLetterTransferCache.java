@@ -33,9 +33,6 @@ public class ChainActionLetterTransferCache
 
     @Inject
     LetterControl letterControl;
-
-
-
     
     /** Creates a new instance of ChainActionLetterTransferCache */
     protected ChainActionLetterTransferCache() {

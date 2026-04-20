@@ -62,14 +62,6 @@ public class CompanyTransferCache
     @Inject
     ScaleControl scaleControl;
 
-
-
-
-
-
-
-
-
     boolean includePartyContactMechanisms;
     boolean includePartyDocuments;
     boolean includePartyPrinterGroupUses;

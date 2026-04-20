@@ -30,8 +30,6 @@ public class TagScopeDescriptionTransferCache
     @Inject
     TagControl tagControl;
 
-
-
     /** Creates a new instance of TagScopeDescriptionTransferCache */
     protected TagScopeDescriptionTransferCache() {
         super();

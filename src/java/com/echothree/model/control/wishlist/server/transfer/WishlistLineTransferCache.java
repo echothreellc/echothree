@@ -47,12 +47,6 @@ public class WishlistLineTransferCache
 
     @Inject
     WishlistControl wishlistControl;
-
-
-
-
-
-
     
     /** Creates a new instance of WishlistLineTransferCache */
     protected WishlistLineTransferCache() {

@@ -37,9 +37,6 @@ public class ForumThreadTransferCache
     @Inject
     IconControl iconControl;
 
-
-
-
     boolean includeForumMessages;
     boolean includeForumForumThreads;
     boolean hasForumMessageLimits;

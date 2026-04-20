@@ -37,10 +37,6 @@ public class ShipmentTypeTransferCache
 
     @Inject
     WorkflowControl workflowControl;
-
-
-
-
     
     /** Creates a new instance of ShipmentTypeTransferCache */
     protected ShipmentTypeTransferCache() {

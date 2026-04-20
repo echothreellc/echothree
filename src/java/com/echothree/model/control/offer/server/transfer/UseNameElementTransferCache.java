@@ -30,8 +30,6 @@ public class UseNameElementTransferCache
     @Inject
     UseNameElementControl useNameElementControl;
 
-
-
     /** Creates a new instance of UseNameElementTransferCache */
     protected UseNameElementTransferCache() {
         super();

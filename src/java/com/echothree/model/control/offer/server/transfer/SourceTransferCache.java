@@ -30,8 +30,6 @@ public class SourceTransferCache
     @Inject
     OfferUseControl offerUseControl;
 
-
-
     /** Creates a new instance of SourceTransferCache */
     protected SourceTransferCache() {
         super();

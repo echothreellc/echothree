@@ -33,9 +33,6 @@ public class CancellationPolicyTranslationTransferCache
 
     @Inject
     MimeTypeControl mimeTypeControl;
-
-
-
     
     /** Creates a new instance of CancellationPolicyTranslationTransferCache */
     protected CancellationPolicyTranslationTransferCache() {

@@ -32,8 +32,6 @@ public class DateTimeFormatTransferCache
     @Inject
     PartyControl partyControl;
 
-
-
     TransferProperties transferProperties;
     boolean filterDateTimeFormatName;
     boolean filterJavaShortDateFormat;

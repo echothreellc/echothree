@@ -37,9 +37,6 @@ public class ItemDescriptionTypeTransferCache
 
     @Inject
     MimeTypeControl mimeTypeControl;
-
-
-
     
     TransferProperties transferProperties;
     boolean filterItemDescriptionTypeName;

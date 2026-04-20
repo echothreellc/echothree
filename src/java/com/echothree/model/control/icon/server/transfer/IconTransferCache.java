@@ -30,8 +30,6 @@ public class IconTransferCache
     @Inject
     DocumentControl documentControl;
 
-
-
     /** Creates a new instance of IconTransferCache */
     protected IconTransferCache() {
         super();
