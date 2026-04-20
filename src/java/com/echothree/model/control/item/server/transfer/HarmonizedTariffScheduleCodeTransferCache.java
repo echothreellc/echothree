@@ -30,6 +30,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class HarmonizedTariffScheduleCodeTransferCache
         extends BaseItemTransferCache<HarmonizedTariffScheduleCode, HarmonizedTariffScheduleCodeTransfer> {
+
     @Inject
     GeoControl geoControl;
 

@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class VendorTypeDescriptionTransferCache
         extends BaseVendorDescriptionTransferCache<VendorTypeDescription, VendorTypeDescriptionTransfer> {
+
     @Inject
     VendorControl vendorControl;
 

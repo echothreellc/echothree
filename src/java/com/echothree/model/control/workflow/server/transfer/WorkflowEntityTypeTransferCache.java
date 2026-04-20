@@ -27,6 +27,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class WorkflowEntityTypeTransferCache
         extends BaseWorkflowTransferCache<WorkflowEntityType, WorkflowEntityTypeTransfer> {
+
     @Inject
     EntityTypeControl entityTypeControl;
 

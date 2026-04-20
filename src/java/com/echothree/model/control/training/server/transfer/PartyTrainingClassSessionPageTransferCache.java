@@ -27,6 +27,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class PartyTrainingClassSessionPageTransferCache
         extends BaseTrainingTransferCache<PartyTrainingClassSessionPage, PartyTrainingClassSessionPageTransfer> {
+
     @Inject
     TrainingControl trainingControl;
 

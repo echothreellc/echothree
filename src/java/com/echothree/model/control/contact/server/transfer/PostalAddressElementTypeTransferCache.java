@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class PostalAddressElementTypeTransferCache
         extends BaseContactTransferCache<PostalAddressElementType, PostalAddressElementTypeTransfer> {
+
     @Inject
     ContactControl contactControl;
 

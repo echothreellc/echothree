@@ -30,6 +30,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class CommentTransferCache
         extends BaseCommentTransferCache<Comment, CommentTransfer> {
+
     @Inject
     MimeTypeControl mimeTypeControl;
 

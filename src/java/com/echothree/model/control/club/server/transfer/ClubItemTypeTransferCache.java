@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class ClubItemTypeTransferCache
         extends BaseClubTransferCache<ClubItemType, ClubItemTypeTransfer> {
+
     @Inject
     ClubControl clubControl;
 

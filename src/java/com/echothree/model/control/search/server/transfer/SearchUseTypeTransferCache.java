@@ -27,6 +27,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class SearchUseTypeTransferCache
         extends BaseSearchTransferCache<SearchUseType, SearchUseTypeTransfer> {
+
     @Inject
     SearchControl searchControl;
 

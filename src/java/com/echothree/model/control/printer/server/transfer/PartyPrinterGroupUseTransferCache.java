@@ -27,6 +27,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class PartyPrinterGroupUseTransferCache
         extends BasePrinterTransferCache<PartyPrinterGroupUse, PartyPrinterGroupUseTransfer> {
+
     @Inject
     PartyControl partyControl;
 

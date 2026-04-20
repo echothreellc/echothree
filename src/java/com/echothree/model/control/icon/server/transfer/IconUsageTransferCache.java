@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class IconUsageTransferCache
         extends BaseIconTransferCache<IconUsage, IconUsageTransfer> {
+
     @Inject
     IconControl iconControl;
 

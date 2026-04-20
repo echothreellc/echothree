@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class EditorTransferCache
         extends BaseCoreTransferCache<Editor, EditorTransfer> {
+
     @Inject
     EditorControl editorControl;
 

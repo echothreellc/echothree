@@ -27,6 +27,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class ContentForumTransferCache
         extends BaseContentTransferCache<ContentForum, ContentForumTransfer> {
+
     @Inject
     ContentControl contentControl;
 

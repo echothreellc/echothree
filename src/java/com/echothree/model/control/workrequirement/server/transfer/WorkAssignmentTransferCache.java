@@ -29,6 +29,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class WorkAssignmentTransferCache
         extends BaseWorkRequirementTransferCache<WorkAssignment, WorkAssignmentTransfer> {
+
     @Inject
     PartyControl partyControl;
 

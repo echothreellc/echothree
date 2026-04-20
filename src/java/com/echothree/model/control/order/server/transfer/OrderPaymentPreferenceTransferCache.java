@@ -28,6 +28,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class OrderPaymentPreferenceTransferCache
         extends BaseOrderTransferCache<OrderPaymentPreference, OrderPaymentPreferenceTransfer> {
+
     @Inject
     PartyPaymentMethodControl partyPaymentMethodControl;
 

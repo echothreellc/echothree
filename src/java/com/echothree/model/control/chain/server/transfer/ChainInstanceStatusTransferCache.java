@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class ChainInstanceStatusTransferCache
         extends BaseChainTransferCache<ChainInstanceStatus, ChainInstanceStatusTransfer> {
+
     @Inject
     ChainControl chainControl;
 

@@ -29,6 +29,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class FilterTransferCache
         extends BaseFilterTransferCache<Filter, FilterTransfer> {
+
     @Inject
     FilterControl filterControl;
 

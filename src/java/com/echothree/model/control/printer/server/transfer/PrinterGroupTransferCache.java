@@ -33,6 +33,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class PrinterGroupTransferCache
         extends BasePrinterTransferCache<PrinterGroup, PrinterGroupTransfer> {
+
     @Inject
     PrinterControl printerControl;
 

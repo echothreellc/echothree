@@ -27,6 +27,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class ContactWebAddressTransferCache
         extends BaseContactTransferCache<ContactWebAddress, ContactWebAddressTransfer> {
+
     @Inject
     WorkflowControl workflowControl;
 

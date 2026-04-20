@@ -35,6 +35,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class ContentCatalogItemTransferCache
         extends BaseContentTransferCache<ContentCatalogItem, ContentCatalogItemTransfer> {
+
     @Inject
     AccountingControl accountingControl;
 

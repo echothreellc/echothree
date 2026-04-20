@@ -27,6 +27,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class EventGroupTransferCache
         extends BaseCoreTransferCache<EventGroup, EventGroupTransfer> {
+
     @Inject
     WorkflowControl workflowControl;
 

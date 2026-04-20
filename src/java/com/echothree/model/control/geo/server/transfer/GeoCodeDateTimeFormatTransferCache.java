@@ -27,6 +27,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class GeoCodeDateTimeFormatTransferCache
         extends BaseGeoTransferCache<GeoCodeDateTimeFormat, GeoCodeDateTimeFormatTransfer> {
+
     @Inject
     GeoControl geoControl;
 

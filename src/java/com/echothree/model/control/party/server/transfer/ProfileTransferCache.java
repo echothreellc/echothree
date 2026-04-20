@@ -29,6 +29,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class ProfileTransferCache
         extends BasePartyTransferCache<Profile, ProfileTransfer> {
+
     @Inject
     IconControl iconControl;
 

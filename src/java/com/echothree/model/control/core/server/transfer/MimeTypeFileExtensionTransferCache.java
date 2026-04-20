@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class MimeTypeFileExtensionTransferCache
         extends BaseCoreTransferCache<MimeTypeFileExtension, MimeTypeFileExtensionTransfer> {
+
     @Inject
     MimeTypeControl mimeTypeControl;
 

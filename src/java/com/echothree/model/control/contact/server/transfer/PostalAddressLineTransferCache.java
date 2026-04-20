@@ -28,6 +28,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class PostalAddressLineTransferCache
         extends BaseContactTransferCache<PostalAddressLine, PostalAddressLineTransfer> {
+
     @Inject
     ContactControl contactControl;
 

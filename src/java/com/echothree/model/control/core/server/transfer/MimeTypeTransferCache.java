@@ -31,6 +31,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class MimeTypeTransferCache
         extends BaseCoreTransferCache<MimeType, MimeTypeTransfer> {
+
     @Inject
     CoreControl coreControl;
 

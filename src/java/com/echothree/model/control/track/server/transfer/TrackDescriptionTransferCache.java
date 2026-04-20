@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class TrackDescriptionTransferCache
         extends BaseTrackDescriptionTransferCache<TrackDescription, TrackDescriptionTransfer> {
+
     @Inject
     TrackControl trackControl;
 

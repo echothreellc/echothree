@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class LicenseTypeDescriptionTransferCache
         extends BaseLicenseDescriptionTransferCache<LicenseTypeDescription, LicenseTypeDescriptionTransfer> {
+
     @Inject
     LicenseControl licenseControl;
 

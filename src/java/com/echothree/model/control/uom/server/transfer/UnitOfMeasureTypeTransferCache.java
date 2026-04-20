@@ -30,6 +30,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class UnitOfMeasureTypeTransferCache
         extends BaseUomTransferCache<UnitOfMeasureType, UnitOfMeasureTypeTransfer> {
+
     @Inject
     AccountingControl accountingControl;
 

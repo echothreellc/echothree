@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class TermTypeTransferCache
         extends BaseTermTransferCache<TermType, TermTypeTransfer> {
+
     @Inject
     TermControl termControl;
 

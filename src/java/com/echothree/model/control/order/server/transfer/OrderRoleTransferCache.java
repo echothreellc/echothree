@@ -27,6 +27,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class OrderRoleTransferCache
         extends BaseOrderTransferCache<OrderRole, OrderRoleTransfer> {
+
     @Inject
     OrderRoleControl orderRoleControl;
 

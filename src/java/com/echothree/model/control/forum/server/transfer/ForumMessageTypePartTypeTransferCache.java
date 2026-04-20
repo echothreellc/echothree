@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class ForumMessageTypePartTypeTransferCache
         extends BaseForumTransferCache<ForumMessageTypePartType, ForumMessageTypePartTypeTransfer> {
+
     @Inject
     ForumControl forumControl;
 

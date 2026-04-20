@@ -28,6 +28,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class CacheEntryDependencyTransferCache
         extends BaseCoreTransferCache<CacheEntryDependency, CacheEntryDependencyTransfer> {
+
     @Inject
     CacheEntryControl cacheEntryControl;
 

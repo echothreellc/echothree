@@ -27,6 +27,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class UserSessionTransferCache
         extends BaseUserTransferCache<UserSession, UserSessionTransfer> {
+
     @Inject
     PartyControl partyControl;
 

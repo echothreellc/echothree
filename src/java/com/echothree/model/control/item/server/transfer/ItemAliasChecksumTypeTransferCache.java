@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class ItemAliasChecksumTypeTransferCache
         extends BaseItemTransferCache<ItemAliasChecksumType, ItemAliasChecksumTypeTransfer> {
+
     @Inject
     ItemControl itemControl;
 

@@ -31,6 +31,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class EntityAliasTypeTransferCache
         extends BaseCoreTransferCache<EntityAliasType, EntityAliasTypeTransfer> {
+
     @Inject
     EntityAliasControl entityAliasControl;
 

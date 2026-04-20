@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class BatchAliasTransferCache
         extends BaseBatchTransferCache<BatchAlias, BatchAliasTransfer> {
+
     @Inject
     BatchControl batchControl;
 

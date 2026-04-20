@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class SequenceTypeDescriptionTransferCache
         extends BaseSequenceDescriptionTransferCache<SequenceTypeDescription, SequenceTypeDescriptionTransfer> {
+
     @Inject
     SequenceControl sequenceControl;
 

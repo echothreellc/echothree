@@ -27,6 +27,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class PartyFreeOnBoardTransferCache
         extends BaseShipmentTransferCache<PartyFreeOnBoard, PartyFreeOnBoardTransfer> {
+
     @Inject
     FreeOnBoardControl freeOnBoardControl;
 

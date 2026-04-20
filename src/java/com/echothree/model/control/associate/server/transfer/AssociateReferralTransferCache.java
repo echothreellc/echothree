@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class AssociateReferralTransferCache
         extends BaseAssociateTransferCache<AssociateReferral, AssociateReferralTransfer> {
+
     @Inject
     AssociateControl associateControl;
 

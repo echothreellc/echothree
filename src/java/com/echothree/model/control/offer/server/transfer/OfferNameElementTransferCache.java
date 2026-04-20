@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class OfferNameElementTransferCache
         extends BaseOfferTransferCache<OfferNameElement, OfferNameElementTransfer> {
+
     @Inject
     OfferNameElementControl offerNameElementControl;
 

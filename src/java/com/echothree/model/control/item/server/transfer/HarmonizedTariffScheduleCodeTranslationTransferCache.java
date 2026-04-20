@@ -27,6 +27,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class HarmonizedTariffScheduleCodeTranslationTransferCache
         extends BaseItemDescriptionTransferCache<HarmonizedTariffScheduleCodeTranslation, HarmonizedTariffScheduleCodeTranslationTransfer> {
+
     @Inject
     ItemControl itemControl;
 

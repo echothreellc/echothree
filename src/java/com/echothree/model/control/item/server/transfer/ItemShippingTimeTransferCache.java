@@ -29,6 +29,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class ItemShippingTimeTransferCache
         extends BaseItemTransferCache<ItemShippingTime, ItemShippingTimeTransfer> {
+
     @Inject
     CustomerControl customerControl;
 

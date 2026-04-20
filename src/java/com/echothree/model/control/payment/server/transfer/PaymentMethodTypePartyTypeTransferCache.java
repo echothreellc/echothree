@@ -28,6 +28,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class PaymentMethodTypePartyTypeTransferCache
         extends BasePaymentTransferCache<PaymentMethodTypePartyType, PaymentMethodTypePartyTypeTransfer> {
+
     @Inject
     PartyControl partyControl;
 

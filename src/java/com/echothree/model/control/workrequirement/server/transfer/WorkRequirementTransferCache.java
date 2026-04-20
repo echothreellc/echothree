@@ -30,6 +30,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class WorkRequirementTransferCache
         extends BaseWorkRequirementTransferCache<WorkRequirement, WorkRequirementTransfer> {
+
     @Inject
     WorkRequirementControl workRequirementControl;
 

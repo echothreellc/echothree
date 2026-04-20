@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class InventoryLocationGroupDescriptionTransferCache
         extends BaseInventoryDescriptionTransferCache<InventoryLocationGroupDescription, InventoryLocationGroupDescriptionTransfer> {
+
     @Inject
     InventoryControl inventoryControl;
 

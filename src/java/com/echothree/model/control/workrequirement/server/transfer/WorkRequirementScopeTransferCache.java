@@ -32,6 +32,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class WorkRequirementScopeTransferCache
         extends BaseWorkRequirementTransferCache<WorkRequirementScope, WorkRequirementScopeTransfer> {
+
     @Inject
     SelectorControl selectorControl;
 

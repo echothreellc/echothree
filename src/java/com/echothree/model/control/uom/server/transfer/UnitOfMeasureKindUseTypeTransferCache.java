@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class UnitOfMeasureKindUseTypeTransferCache
         extends BaseUomTransferCache<UnitOfMeasureKindUseType, UnitOfMeasureKindUseTypeTransfer> {
+
     @Inject
     UomControl uomControl;
 

@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class SubscriptionTypeDescriptionTransferCache
         extends BaseSubscriptionDescriptionTransferCache<SubscriptionTypeDescription, SubscriptionTypeDescriptionTransfer> {
+
     @Inject
     SubscriptionControl subscriptionControl;
 

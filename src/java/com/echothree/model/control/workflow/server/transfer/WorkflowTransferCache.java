@@ -30,6 +30,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class WorkflowTransferCache
         extends BaseWorkflowTransferCache<Workflow, WorkflowTransfer> {
+
     @Inject
     SecurityControl securityControl;
 

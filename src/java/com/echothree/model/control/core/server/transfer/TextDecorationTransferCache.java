@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class TextDecorationTransferCache
         extends BaseCoreTransferCache<TextDecoration, TextDecorationTransfer> {
+
     @Inject
     TextControl textControl;
 

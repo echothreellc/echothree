@@ -34,6 +34,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class DivisionTransferCache
         extends BasePartyTransferCache<Party, DivisionTransfer> {
+
     @Inject
     AccountingControl accountingControl;
 

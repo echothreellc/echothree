@@ -41,6 +41,7 @@ import javax.enterprise.context.RequestScoped;
 public class ItemPriceTransferCache
         extends BaseItemTransferCache<ItemPrice, ItemPriceTransfer>
         implements HistoryCache<ItemPrice, ItemPriceTransfer> {
+
     @Inject
     AccountingControl accountingControl;
 

@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class LotAliasTypeDescriptionTransferCache
         extends BaseInventoryDescriptionTransferCache<LotAliasTypeDescription, LotAliasTypeDescriptionTransfer> {
+
     @Inject
     LotAliasControl lotAliasControl;
 

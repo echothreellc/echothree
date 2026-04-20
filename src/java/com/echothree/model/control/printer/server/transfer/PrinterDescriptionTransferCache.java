@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class PrinterDescriptionTransferCache
         extends BasePrinterDescriptionTransferCache<PrinterDescription, PrinterDescriptionTransfer> {
+
     @Inject
     PrinterControl printerControl;
 

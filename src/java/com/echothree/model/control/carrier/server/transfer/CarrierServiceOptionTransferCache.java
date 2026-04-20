@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class CarrierServiceOptionTransferCache
         extends BaseCarrierTransferCache<CarrierServiceOption, CarrierServiceOptionTransfer> {
+
     @Inject
     CarrierControl carrierControl;
 

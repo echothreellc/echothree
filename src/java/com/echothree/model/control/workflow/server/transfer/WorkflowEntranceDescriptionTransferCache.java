@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class WorkflowEntranceDescriptionTransferCache
         extends BaseWorkflowDescriptionTransferCache<WorkflowEntranceDescription, WorkflowEntranceDescriptionTransfer> {
+
     @Inject
     WorkflowControl workflowControl;
 

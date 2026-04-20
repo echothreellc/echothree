@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class LeaveReasonDescriptionTransferCache
         extends BaseEmployeeDescriptionTransferCache<LeaveReasonDescription, LeaveReasonDescriptionTransfer> {
+
     @Inject
     EmployeeControl employeeControl;
 

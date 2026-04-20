@@ -28,6 +28,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class MessageTypeTransferCache
         extends BaseMessageTransferCache<MessageType, MessageTypeTransfer> {
+
     @Inject
     EntityTypeControl entityTypeControl;
 

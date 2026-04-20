@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class PartySecurityRoleTemplateTransferCache
         extends BaseSecurityTransferCache<PartySecurityRoleTemplate, PartySecurityRoleTemplateTransfer> {
+
     @Inject
     SecurityControl securityControl;
 

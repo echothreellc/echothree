@@ -28,6 +28,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class ContactTelephoneTransferCache
         extends BaseContactTransferCache<ContactTelephone, ContactTelephoneTransfer> {
+
     @Inject
     GeoControl geoControl;
 

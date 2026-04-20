@@ -28,6 +28,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class PartyApplicationEditorUseTransferCache
         extends BaseCoreTransferCache<PartyApplicationEditorUse, PartyApplicationEditorUseTransfer> {
+
     @Inject
     ApplicationControl applicationControl;
 

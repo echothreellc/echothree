@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class EntityTagTransferCache
         extends BaseTagTransferCache<EntityTag, EntityTagTransfer> {
+
     @Inject
     TagControl tagControl;
 

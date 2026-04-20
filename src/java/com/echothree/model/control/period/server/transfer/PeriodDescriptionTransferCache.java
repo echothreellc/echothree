@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class PeriodDescriptionTransferCache
         extends BasePeriodDescriptionTransferCache<PeriodDescription, PeriodDescriptionTransfer> {
+
     @Inject
     PeriodControl periodControl;
 

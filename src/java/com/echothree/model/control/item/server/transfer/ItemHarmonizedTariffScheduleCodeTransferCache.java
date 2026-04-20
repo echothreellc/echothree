@@ -28,6 +28,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class ItemHarmonizedTariffScheduleCodeTransferCache
         extends BaseItemTransferCache<ItemHarmonizedTariffScheduleCode, ItemHarmonizedTariffScheduleCodeTransfer> {
+
     @Inject
     GeoControl geoControl;
 

@@ -28,6 +28,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class PartyInventoryLevelTransferCache
         extends BaseInventoryTransferCache<PartyInventoryLevel, PartyInventoryLevelTransfer> {
+
     @Inject
     InventoryControl inventoryControl;
 

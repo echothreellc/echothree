@@ -27,6 +27,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class InventoryConditionGlAccountTransferCache
         extends BaseInventoryTransferCache<InventoryConditionGlAccount, InventoryConditionGlAccountTransfer> {
+
     @Inject
     AccountingControl accountingControl;
 

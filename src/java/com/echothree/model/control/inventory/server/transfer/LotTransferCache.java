@@ -32,6 +32,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class LotTransferCache
         extends BaseInventoryTransferCache<Lot, LotTransfer> {
+
     @Inject
     ItemControl itemControl;
 

@@ -28,6 +28,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class EntityStringDefaultTransferCache
         extends BaseCoreTransferCache<EntityStringDefault, EntityStringDefaultTransfer> {
+
     @Inject
     CoreControl coreControl;
 

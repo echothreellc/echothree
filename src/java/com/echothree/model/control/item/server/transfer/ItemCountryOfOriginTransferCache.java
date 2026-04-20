@@ -28,6 +28,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class ItemCountryOfOriginTransferCache
         extends BaseItemTransferCache<ItemCountryOfOrigin, ItemCountryOfOriginTransfer> {
+
     @Inject
     GeoControl geoControl;
 

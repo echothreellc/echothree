@@ -27,6 +27,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class ApplicationTransferCache
         extends BaseCoreTransferCache<Application, ApplicationTransfer> {
+
     @Inject
     ApplicationControl applicationControl;
 

@@ -30,6 +30,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class VendorItemCostTransferCache
         extends BaseVendorTransferCache<VendorItemCost, VendorItemCostTransfer> {
+
     @Inject
     InventoryControl inventoryControl;
 

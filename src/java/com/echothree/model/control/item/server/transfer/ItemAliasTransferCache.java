@@ -27,6 +27,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class ItemAliasTransferCache
         extends BaseItemTransferCache<ItemAlias, ItemAliasTransfer> {
+
     @Inject
     ItemControl itemControl;
 

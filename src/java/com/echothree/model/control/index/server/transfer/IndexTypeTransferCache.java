@@ -28,6 +28,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class IndexTypeTransferCache
         extends BaseIndexTransferCache<IndexType, IndexTypeTransfer> {
+
     @Inject
     EntityTypeControl entityTypeControl;
 

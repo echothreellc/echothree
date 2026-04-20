@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class LotTimeTypeDescriptionTransferCache
         extends BaseInventoryDescriptionTransferCache<LotTimeTypeDescription, LotTimeTypeDescriptionTransfer> {
+
     @Inject
     LotTimeControl lotTimeControl;
 

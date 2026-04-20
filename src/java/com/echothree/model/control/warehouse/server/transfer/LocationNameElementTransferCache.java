@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class LocationNameElementTransferCache
         extends BaseWarehouseTransferCache<LocationNameElement, LocationNameElementTransfer> {
+
     @Inject
     WarehouseControl warehouseControl;
 

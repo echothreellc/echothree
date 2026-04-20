@@ -28,6 +28,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class InvoiceRoleTransferCache
         extends BaseInvoiceTransferCache<InvoiceRole, InvoiceRoleTransfer> {
+
     @Inject
     ContactControl contactControl;
 

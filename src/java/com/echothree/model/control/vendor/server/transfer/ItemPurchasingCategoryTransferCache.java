@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class ItemPurchasingCategoryTransferCache
         extends BaseVendorTransferCache<ItemPurchasingCategory, ItemPurchasingCategoryTransfer> {
+
     @Inject
     VendorControl vendorControl;
 

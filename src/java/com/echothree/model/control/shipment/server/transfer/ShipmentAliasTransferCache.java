@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class ShipmentAliasTransferCache
         extends BaseShipmentTransferCache<ShipmentAlias, ShipmentAliasTransfer> {
+
     @Inject
     ShipmentControl shipmentControl;
 

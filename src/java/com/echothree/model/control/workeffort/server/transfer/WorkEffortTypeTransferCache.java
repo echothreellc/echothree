@@ -34,6 +34,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class WorkEffortTypeTransferCache
         extends BaseWorkEffortTransferCache<WorkEffortType, WorkEffortTypeTransfer> {
+
     @Inject
     EntityTypeControl entityTypeControl;
 

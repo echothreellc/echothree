@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class EntityAppearanceTransferCache
         extends BaseCoreTransferCache<EntityAppearance, EntityAppearanceTransfer> {
+
     @Inject
     AppearanceControl appearanceControl;
 

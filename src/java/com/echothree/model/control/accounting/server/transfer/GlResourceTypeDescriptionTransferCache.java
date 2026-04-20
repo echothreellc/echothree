@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class GlResourceTypeDescriptionTransferCache
         extends BaseAccountingDescriptionTransferCache<GlResourceTypeDescription, GlResourceTypeDescriptionTransfer> {
+
     @Inject
     AccountingControl accountingControl;
 

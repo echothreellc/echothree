@@ -32,6 +32,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class SalesOrderBatchTransferCache
         extends GenericBatchTransferCache<SalesOrderBatchTransfer> {
+
     @Inject
     AccountingControl accountingControl;
 

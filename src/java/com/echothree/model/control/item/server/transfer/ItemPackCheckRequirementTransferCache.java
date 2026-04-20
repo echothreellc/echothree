@@ -27,6 +27,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class ItemPackCheckRequirementTransferCache
         extends BaseItemTransferCache<ItemPackCheckRequirement, ItemPackCheckRequirementTransfer> {
+
     @Inject
     ItemControl itemControl;
 

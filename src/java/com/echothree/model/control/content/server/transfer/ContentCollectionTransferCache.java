@@ -29,6 +29,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class ContentCollectionTransferCache
         extends BaseContentTransferCache<ContentCollection, ContentCollectionTransfer> {
+
     @Inject
     ContentControl contentControl;
 

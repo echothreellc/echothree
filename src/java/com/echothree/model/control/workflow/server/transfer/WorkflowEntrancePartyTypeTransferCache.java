@@ -27,6 +27,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class WorkflowEntrancePartyTypeTransferCache
         extends BaseWorkflowTransferCache<WorkflowEntrancePartyType, WorkflowEntrancePartyTypeTransfer> {
+
     @Inject
     PartyControl partyControl;
 

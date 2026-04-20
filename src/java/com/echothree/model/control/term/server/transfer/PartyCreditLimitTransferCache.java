@@ -28,6 +28,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class PartyCreditLimitTransferCache
         extends BaseTermTransferCache<PartyCreditLimit, PartyCreditLimitTransfer> {
+
     @Inject
     AccountingControl accountingControl;
 

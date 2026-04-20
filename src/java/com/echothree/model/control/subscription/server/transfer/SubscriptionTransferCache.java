@@ -27,6 +27,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class SubscriptionTransferCache
         extends BaseSubscriptionTransferCache<Subscription, SubscriptionTransfer> {
+
     @Inject
     PartyControl partyControl;
 

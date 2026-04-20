@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class AllocationPriorityDescriptionTransferCache
         extends BaseInventoryDescriptionTransferCache<AllocationPriorityDescription, AllocationPriorityDescriptionTransfer> {
+
     @Inject
     InventoryControl inventoryControl;
 

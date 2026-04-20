@@ -27,6 +27,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class CommandTransferCache
         extends BaseCoreTransferCache<Command, CommandTransfer> {
+
     @Inject
     CommandControl commandControl;
 

@@ -29,6 +29,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class ContactPostalAddressTransferCache
         extends BaseContactTransferCache<ContactPostalAddress, ContactPostalAddressTransfer> {
+
     @Inject
     GeoControl geoControl;
 

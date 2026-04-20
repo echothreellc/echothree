@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class WorkRequirementTypeDescriptionTransferCache
         extends BaseWorkRequirementDescriptionTransferCache<WorkRequirementTypeDescription, WorkRequirementTypeDescriptionTransfer> {
+
     @Inject
     WorkRequirementControl workRequirementControl;
 

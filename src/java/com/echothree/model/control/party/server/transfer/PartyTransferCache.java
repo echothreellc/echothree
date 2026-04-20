@@ -41,6 +41,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class PartyTransferCache
         extends BasePartyTransferCache<Party, PartyTransfer> {
+
     @Inject
     AccountingControl accountingControl;
 
@@ -70,17 +71,6 @@ public class PartyTransferCache
 
     @Inject
     TrainingControl trainingControl;
-
-
-
-
-
-
-
-
-
-
-
 
     boolean includeUserLogin;
     boolean includeRecoveryAnswer;

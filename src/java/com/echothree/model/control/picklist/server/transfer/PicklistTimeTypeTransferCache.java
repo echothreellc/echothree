@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class PicklistTimeTypeTransferCache
         extends BasePicklistTransferCache<PicklistTimeType, PicklistTimeTypeTransfer> {
+
     @Inject
     PicklistControl picklistControl;
 

@@ -27,6 +27,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class EntityLongAttributeTransferCache
         extends BaseCoreTransferCache<EntityLongAttribute, EntityLongAttributeTransfer> {
+
     @Inject
     CoreControl coreControl;
 

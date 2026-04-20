@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class ReturnTypeDescriptionTransferCache
         extends BaseReturnPolicyDescriptionTransferCache<ReturnTypeDescription, ReturnTypeDescriptionTransfer> {
+
     @Inject
     ReturnPolicyControl returnPolicyControl;
 

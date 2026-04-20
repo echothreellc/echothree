@@ -27,6 +27,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class UserLoginPasswordTransferCache
         extends BaseUserTransferCache<UserLoginPassword, UserLoginPasswordTransfer> {
+
     @Inject
     PartyControl partyControl;
 

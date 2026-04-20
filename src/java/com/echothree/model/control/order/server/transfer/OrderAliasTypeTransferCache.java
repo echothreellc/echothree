@@ -27,6 +27,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class OrderAliasTypeTransferCache
         extends BaseOrderTransferCache<OrderAliasType, OrderAliasTypeTransfer> {
+
     @Inject
     OrderAliasControl orderAliasControl;
 

@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class RecoveryAnswerTransferCache
         extends BaseUserTransferCache<RecoveryAnswer, RecoveryAnswerTransfer> {
+
     @Inject
     PartyControl partyControl;
 

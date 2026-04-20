@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class OrderTimeTypeTransferCache
         extends BaseOrderTransferCache<OrderTimeType, OrderTimeTypeTransfer> {
+
     @Inject
     OrderTimeControl orderTimeControl;
 

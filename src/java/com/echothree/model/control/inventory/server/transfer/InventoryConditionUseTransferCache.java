@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class InventoryConditionUseTransferCache
         extends BaseInventoryTransferCache<InventoryConditionUse, InventoryConditionUseTransfer> {
+
     @Inject
     InventoryControl inventoryControl;
 

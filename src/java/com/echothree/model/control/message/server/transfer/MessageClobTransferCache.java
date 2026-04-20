@@ -28,6 +28,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class MessageClobTransferCache
         extends BaseMessageTransferCache<MessageClob, MessageClobTransfer> {
+
     @Inject
     MessageControl messageControl;
 

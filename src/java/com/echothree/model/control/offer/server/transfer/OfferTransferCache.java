@@ -35,6 +35,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class OfferTransferCache
         extends BaseOfferTransferCache<Offer, OfferTransfer> {
+
     @Inject
     FilterControl filterControl;
 

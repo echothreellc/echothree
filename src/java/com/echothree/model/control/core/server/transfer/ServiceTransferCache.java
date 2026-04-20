@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class ServiceTransferCache
         extends BaseCoreTransferCache<Service, ServiceTransfer> {
+
     @Inject
     ServerControl serverControl;
 

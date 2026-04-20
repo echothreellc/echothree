@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class PaymentMethodTypeDescriptionTransferCache
         extends BasePaymentDescriptionTransferCache<PaymentMethodTypeDescription, PaymentMethodTypeDescriptionTransfer> {
+
     @Inject
     PaymentMethodTypeControl paymentMethodTypeControl;
 

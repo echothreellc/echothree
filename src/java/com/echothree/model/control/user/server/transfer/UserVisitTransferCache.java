@@ -31,6 +31,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class UserVisitTransferCache
         extends BaseUserTransferCache<UserVisit, UserVisitTransfer> {
+
     @Inject
     AccountingControl accountingControl;
 

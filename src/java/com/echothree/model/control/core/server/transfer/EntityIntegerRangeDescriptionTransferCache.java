@@ -27,6 +27,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class EntityIntegerRangeDescriptionTransferCache
         extends BaseCoreDescriptionTransferCache<EntityIntegerRangeDescription, EntityIntegerRangeDescriptionTransfer> {
+
     @Inject
     CoreControl coreControl;
 

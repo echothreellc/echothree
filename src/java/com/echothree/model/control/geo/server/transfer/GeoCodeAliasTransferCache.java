@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class GeoCodeAliasTransferCache
         extends BaseGeoTransferCache<GeoCodeAlias, GeoCodeAliasTransfer> {
+
     @Inject
     GeoControl geoControl;
 

@@ -28,6 +28,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class OrderShipmentGroupTransferCache
         extends BaseOrderTransferCache<OrderShipmentGroup, OrderShipmentGroupTransfer> {
+
     @Inject
     ContactControl contactControl;
 

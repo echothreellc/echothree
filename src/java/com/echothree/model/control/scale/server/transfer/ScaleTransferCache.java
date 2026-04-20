@@ -27,6 +27,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class ScaleTransferCache
         extends BaseScaleTransferCache<Scale, ScaleTransfer> {
+
     @Inject
     ScaleControl scaleControl;
 

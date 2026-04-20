@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class ContentPageLayoutAreaTransferCache
         extends BaseContentTransferCache<ContentPageLayoutArea, ContentPageLayoutAreaTransfer> {
+
     @Inject
     ContentControl contentControl;
 

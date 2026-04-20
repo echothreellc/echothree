@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class TermDescriptionTransferCache
         extends BaseTermDescriptionTransferCache<TermDescription, TermDescriptionTransfer> {
+
     @Inject
     TermControl termControl;
 

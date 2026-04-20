@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class TaxDescriptionTransferCache
         extends BaseTaxDescriptionTransferCache<TaxDescription, TaxDescriptionTransfer> {
+
     @Inject
     TaxControl taxControl;
 

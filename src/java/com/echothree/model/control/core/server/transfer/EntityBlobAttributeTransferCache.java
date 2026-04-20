@@ -30,6 +30,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class EntityBlobAttributeTransferCache
         extends BaseCoreTransferCache<EntityBlobAttribute, EntityBlobAttributeTransfer> {
+
     @Inject
     CoreControl coreControl;
 

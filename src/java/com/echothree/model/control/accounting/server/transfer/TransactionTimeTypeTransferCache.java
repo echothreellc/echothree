@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class TransactionTimeTypeTransferCache
         extends BaseAccountingTransferCache<TransactionTimeType, TransactionTimeTypeTransfer> {
+
     @Inject
     TransactionTimeControl transactionTimeControl;
 

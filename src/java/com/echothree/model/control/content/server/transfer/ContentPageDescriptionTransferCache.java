@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class ContentPageDescriptionTransferCache
         extends BaseContentDescriptionTransferCache<ContentPageDescription, ContentPageDescriptionTransfer> {
+
     @Inject
     ContentControl contentControl;
 

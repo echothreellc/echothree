@@ -27,6 +27,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class MoodTransferCache
         extends BasePartyTransferCache<Mood, MoodTransfer> {
+
     @Inject
     IconControl iconControl;
 

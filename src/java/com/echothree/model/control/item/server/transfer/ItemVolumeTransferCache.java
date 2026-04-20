@@ -28,6 +28,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class ItemVolumeTransferCache
         extends BaseItemTransferCache<ItemVolume, ItemVolumeTransfer> {
+
     @Inject
     ItemControl itemControl;
 

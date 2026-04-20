@@ -30,6 +30,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class PeriodTransferCache
         extends BasePeriodTransferCache<Period, PeriodTransfer> {
+
     @Inject
     PeriodControl periodControl;
 

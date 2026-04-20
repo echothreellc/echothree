@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class IndexFieldDescriptionTransferCache
         extends BaseIndexDescriptionTransferCache<IndexFieldDescription, IndexFieldDescriptionTransfer> {
+
     @Inject
     IndexControl indexControl;
 

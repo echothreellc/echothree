@@ -27,6 +27,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class PartyTermTransferCache
         extends BaseTermTransferCache<PartyTerm, PartyTermTransfer> {
+
     @Inject
     PartyControl partyControl;
 

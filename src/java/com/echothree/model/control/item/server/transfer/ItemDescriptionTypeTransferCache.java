@@ -31,6 +31,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class ItemDescriptionTypeTransferCache
         extends BaseItemTransferCache<ItemDescriptionType, ItemDescriptionTypeTransfer> {
+
     @Inject
     ItemControl itemControl;
 

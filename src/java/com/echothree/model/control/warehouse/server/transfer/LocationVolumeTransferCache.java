@@ -28,6 +28,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class LocationVolumeTransferCache
         extends BaseWarehouseTransferCache<LocationVolume, LocationVolumeTransfer> {
+
     @Inject
     UomControl uomControl;
 

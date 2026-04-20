@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class TransactionGlAccountTransferCache
         extends BaseAccountingTransferCache<TransactionGlAccount, TransactionGlAccountTransfer> {
+
     @Inject
     AccountingControl accountingControl;
 

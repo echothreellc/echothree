@@ -27,6 +27,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class CustomerTypeShippingMethodTransferCache
         extends BaseCustomerTransferCache<CustomerTypeShippingMethod, CustomerTypeShippingMethodTransfer> {
+
     @Inject
     CustomerControl customerControl;
 

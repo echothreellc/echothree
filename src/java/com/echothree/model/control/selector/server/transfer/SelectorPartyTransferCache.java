@@ -27,6 +27,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class SelectorPartyTransferCache
         extends BaseSelectorTransferCache<SelectorParty, SelectorPartyTransfer> {
+
     @Inject
     PartyControl partyControl;
 

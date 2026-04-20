@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class UseTypeTransferCache
         extends BaseOfferTransferCache<UseType, UseTypeTransfer> {
+
     @Inject
     UseTypeControl useTypeControl;
 

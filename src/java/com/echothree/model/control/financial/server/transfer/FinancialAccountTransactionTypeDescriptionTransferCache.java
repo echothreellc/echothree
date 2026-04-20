@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class FinancialAccountTransactionTypeDescriptionTransferCache
         extends BaseFinancialDescriptionTransferCache<FinancialAccountTransactionTypeDescription, FinancialAccountTransactionTypeDescriptionTransfer> {
+
     @Inject
     FinancialControl financialControl;
 

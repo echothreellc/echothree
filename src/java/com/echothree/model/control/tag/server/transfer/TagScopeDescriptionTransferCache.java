@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class TagScopeDescriptionTransferCache
         extends BaseTagDescriptionTransferCache<TagScopeDescription, TagScopeDescriptionTransfer> {
+
     @Inject
     TagControl tagControl;
 

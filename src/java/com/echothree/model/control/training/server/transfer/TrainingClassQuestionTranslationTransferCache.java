@@ -27,6 +27,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class TrainingClassQuestionTranslationTransferCache
         extends BaseTrainingDescriptionTransferCache<TrainingClassQuestionTranslation, TrainingClassQuestionTranslationTransfer> {
+
     @Inject
     MimeTypeControl mimeTypeControl;
 

@@ -27,6 +27,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class ReturnPolicyTranslationTransferCache
         extends BaseReturnPolicyDescriptionTransferCache<ReturnPolicyTranslation, ReturnPolicyTranslationTransfer> {
+
     @Inject
     MimeTypeControl mimeTypeControl;
 

@@ -27,6 +27,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class GeoCodeCurrencyTransferCache
         extends BaseGeoTransferCache<GeoCodeCurrency, GeoCodeCurrencyTransfer> {
+
     @Inject
     AccountingControl accountingControl;
 

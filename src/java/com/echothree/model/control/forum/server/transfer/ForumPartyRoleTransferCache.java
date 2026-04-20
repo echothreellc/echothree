@@ -27,6 +27,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class ForumPartyRoleTransferCache
         extends BaseForumTransferCache<ForumPartyRole, ForumPartyRoleTransfer> {
+
     @Inject
     ForumControl forumControl;
 

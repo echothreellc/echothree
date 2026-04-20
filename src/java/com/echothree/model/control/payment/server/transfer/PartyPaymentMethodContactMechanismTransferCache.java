@@ -31,6 +31,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class PartyPaymentMethodContactMechanismTransferCache
         extends BasePaymentTransferCache<PartyPaymentMethodContactMechanism, PartyPaymentMethodContactMechanismTransfer> {
+
     @Inject
     ContactControl contactControl;
 

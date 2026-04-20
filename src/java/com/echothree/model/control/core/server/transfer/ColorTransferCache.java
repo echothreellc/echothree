@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class ColorTransferCache
         extends BaseCoreTransferCache<Color, ColorTransfer> {
+
     @Inject
     ColorControl colorControl;
 

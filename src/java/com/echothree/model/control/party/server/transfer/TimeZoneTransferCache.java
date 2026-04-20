@@ -28,6 +28,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class TimeZoneTransferCache
         extends BasePartyTransferCache<TimeZone, TimeZoneTransfer> {
+
     @Inject
     PartyControl partyControl;
 

@@ -32,6 +32,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class WishlistLineTransferCache
         extends BaseWishlistTransferCache<OrderLine, WishlistLineTransfer> {
+
     @Inject
     InventoryControl inventoryControl;
 

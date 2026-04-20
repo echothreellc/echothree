@@ -27,6 +27,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class PartyTypeDocumentTypeUsageTypeTransferCache
         extends BaseDocumentTransferCache<PartyTypeDocumentTypeUsageType, PartyTypeDocumentTypeUsageTypeTransfer> {
+
     @Inject
     DocumentControl documentControl;
 

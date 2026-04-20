@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class UserKeyTransferCache
         extends BaseUserTransferCache<UserKey, UserKeyTransfer> {
+
     @Inject
     PartyControl partyControl;
 

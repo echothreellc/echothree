@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class InventoryTransactionTypeDescriptionTransferCache
         extends BaseInventoryDescriptionTransferCache<InventoryTransactionTypeDescription, InventoryTransactionTypeDescriptionTransfer> {
+
     @Inject
     InventoryTransactionTypeControl inventoryTransactionTypeControl;
 

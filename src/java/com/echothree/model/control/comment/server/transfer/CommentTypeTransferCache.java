@@ -29,6 +29,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class CommentTypeTransferCache
         extends BaseCommentTransferCache<CommentType, CommentTypeTransfer> {
+
     @Inject
     EntityTypeControl entityTypeControl;
 

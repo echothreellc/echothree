@@ -30,6 +30,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class ItemUnitPriceLimitTransferCache
         extends BaseItemTransferCache<ItemUnitPriceLimit, ItemUnitPriceLimitTransfer> {
+
     @Inject
     AccountingControl accountingControl;
 

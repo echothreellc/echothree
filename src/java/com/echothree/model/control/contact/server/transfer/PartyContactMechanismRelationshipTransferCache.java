@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class PartyContactMechanismRelationshipTransferCache
         extends BaseContactTransferCache<PartyContactMechanismRelationship, PartyContactMechanismRelationshipTransfer> {
+
     @Inject
     ContactControl contactControl;
 

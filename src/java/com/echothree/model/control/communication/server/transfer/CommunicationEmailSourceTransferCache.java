@@ -28,6 +28,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class CommunicationEmailSourceTransferCache
         extends BaseCommunicationTransferCache<CommunicationEmailSource, CommunicationEmailSourceTransfer> {
+
     @Inject
     CommunicationControl communicationControl;
 

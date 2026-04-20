@@ -29,6 +29,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class ShippingMethodTransferCache
         extends BaseShippingTransferCache<ShippingMethod, ShippingMethodTransfer> {
+
     @Inject
     SelectorControl selectorControl;
 

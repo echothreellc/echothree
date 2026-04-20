@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class BirthdayFormatTransferCache
         extends BasePartyTransferCache<BirthdayFormat, BirthdayFormatTransfer> {
+
     @Inject
     PartyControl partyControl;
 

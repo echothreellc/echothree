@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class SequenceChecksumTypeTransferCache
         extends BaseSequenceTransferCache<SequenceChecksumType, SequenceChecksumTypeTransfer> {
+
     @Inject
     SequenceControl sequenceControl;
 

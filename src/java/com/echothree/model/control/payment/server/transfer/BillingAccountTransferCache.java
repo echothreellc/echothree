@@ -30,6 +30,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class BillingAccountTransferCache
         extends BasePaymentTransferCache<BillingAccount, BillingAccountTransfer> {
+
     @Inject
     AccountingControl accountingControl;
 

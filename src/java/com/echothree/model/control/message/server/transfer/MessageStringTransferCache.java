@@ -27,6 +27,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class MessageStringTransferCache
         extends BaseMessageTransferCache<MessageString, MessageStringTransfer> {
+
     @Inject
     MessageControl messageControl;
 

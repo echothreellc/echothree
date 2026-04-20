@@ -27,6 +27,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class EntityAliasTypeDescriptionTransferCache
         extends BaseCoreDescriptionTransferCache<EntityAliasTypeDescription, EntityAliasTypeDescriptionTransfer> {
+
     @Inject
     EntityAliasControl entityAliasControl;
 

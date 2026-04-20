@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class OrderPriorityDescriptionTransferCache
         extends BaseOrderDescriptionTransferCache<OrderPriorityDescription, OrderPriorityDescriptionTransfer> {
+
     @Inject
     OrderPriorityControl orderPriorityControl;
 

@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class TransactionTypeTransferCache
         extends BaseAccountingTransferCache<TransactionType, TransactionTypeTransfer> {
+
     @Inject
     AccountingControl accountingControl;
 

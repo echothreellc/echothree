@@ -27,6 +27,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class UnitOfMeasureTypeWeightTransferCache
         extends BaseUomTransferCache<UnitOfMeasureTypeWeight, UnitOfMeasureTypeWeightTransfer> {
+
     @Inject
     UomControl uomControl;
 

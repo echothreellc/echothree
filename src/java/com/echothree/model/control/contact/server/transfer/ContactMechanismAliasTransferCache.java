@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class ContactMechanismAliasTransferCache
         extends BaseContactTransferCache<ContactMechanismAlias, ContactMechanismAliasTransfer> {
+
     @Inject
     ContactControl contactControl;
 

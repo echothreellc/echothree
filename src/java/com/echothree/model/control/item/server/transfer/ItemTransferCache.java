@@ -50,6 +50,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class ItemTransferCache
         extends BaseItemTransferCache<Item, ItemTransfer> {
+
     @Inject
     AccountingControl accountingControl;
 

@@ -27,6 +27,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class CancellationTypeTransferCache
         extends BaseCancellationPolicyTransferCache<CancellationType, CancellationTypeTransfer> {
+
     @Inject
     CancellationPolicyControl cancellationPolicyControl;
 

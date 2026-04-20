@@ -37,6 +37,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class CarrierTransferCache
         extends BaseCarrierTransferCache<Party, CarrierTransfer> {
+
     @Inject
     AccountingControl accountingControl;
 

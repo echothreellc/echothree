@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class ItemCategoryTransferCache
         extends BaseItemTransferCache<ItemCategory, ItemCategoryTransfer> {
+
     @Inject
     ItemControl itemControl;
 

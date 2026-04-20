@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class EventTypeTransferCache
         extends BaseCoreTransferCache<EventType, EventTypeTransfer> {
+
     @Inject
     EventControl eventControl;
 

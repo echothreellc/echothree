@@ -27,6 +27,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class ContactListTransferCache
         extends BaseContactListTransferCache<ContactList, ContactListTransfer> {
+
     @Inject
     ContactListControl contactListControl;
 

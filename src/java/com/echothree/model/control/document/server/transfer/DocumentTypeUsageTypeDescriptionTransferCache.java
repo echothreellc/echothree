@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class DocumentTypeUsageTypeDescriptionTransferCache
         extends BaseDocumentDescriptionTransferCache<DocumentTypeUsageTypeDescription, DocumentTypeUsageTypeDescriptionTransfer> {
+
     @Inject
     DocumentControl documentControl;
 

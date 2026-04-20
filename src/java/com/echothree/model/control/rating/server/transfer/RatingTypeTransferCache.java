@@ -27,6 +27,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class RatingTypeTransferCache
         extends BaseRatingTransferCache<RatingType, RatingTypeTransfer> {
+
     @Inject
     EntityTypeControl entityTypeControl;
 

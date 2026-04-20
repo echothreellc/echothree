@@ -36,6 +36,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class VendorItemTransferCache
         extends BaseVendorTransferCache<VendorItem, VendorItemTransfer> {
+
     @Inject
     CancellationPolicyControl cancellationPolicyControl;
 

@@ -27,6 +27,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class WorkflowDestinationSelectorTransferCache
         extends BaseWorkflowTransferCache<WorkflowDestinationSelector, WorkflowDestinationSelectorTransfer> {
+
     @Inject
     SelectorControl selectorControl;
 

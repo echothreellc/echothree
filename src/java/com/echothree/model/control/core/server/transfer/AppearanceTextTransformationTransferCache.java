@@ -27,6 +27,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class AppearanceTextTransformationTransferCache
         extends BaseCoreTransferCache<AppearanceTextTransformation, AppearanceTextTransformationTransfer> {
+
     @Inject
     AppearanceControl appearanceControl;
 

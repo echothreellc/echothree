@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class QueuedEntityTransferCache
         extends BaseQueueTransferCache<QueuedEntity, QueuedEntityTransfer> {
+
     @Inject
     QueueControl queueControl;
 

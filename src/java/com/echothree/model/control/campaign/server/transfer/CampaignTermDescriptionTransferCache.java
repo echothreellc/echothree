@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class CampaignTermDescriptionTransferCache
         extends BaseCampaignDescriptionTransferCache<CampaignTermDescription, CampaignTermDescriptionTransfer> {
+
     @Inject
     CampaignControl campaignControl;
 

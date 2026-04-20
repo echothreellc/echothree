@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class FontWeightDescriptionTransferCache
         extends BaseCoreDescriptionTransferCache<FontWeightDescription, FontWeightDescriptionTransfer> {
+
     @Inject
     FontControl fontControl;
 

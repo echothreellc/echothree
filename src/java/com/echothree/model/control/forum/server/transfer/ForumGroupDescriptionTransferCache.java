@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class ForumGroupDescriptionTransferCache
         extends BaseForumDescriptionTransferCache<ForumGroupDescription, ForumGroupDescriptionTransfer> {
+
     @Inject
     ForumControl forumControl;
 

@@ -34,6 +34,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class ItemDescriptionTransferCache
         extends BaseItemTransferCache<ItemDescription, ItemDescriptionTransfer> {
+
     @Inject
     EventControl eventControl;
 

@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class SelectorKindDescriptionTransferCache
         extends BaseSelectorDescriptionTransferCache<SelectorKindDescription, SelectorKindDescriptionTransfer> {
+
     @Inject
     SelectorControl selectorControl;
 

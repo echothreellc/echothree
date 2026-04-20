@@ -28,6 +28,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class LanguageTransferCache
         extends BasePartyTransferCache<Language, LanguageTransfer> {
+
     @Inject
     PartyControl partyControl;
 

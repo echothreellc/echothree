@@ -29,6 +29,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class ItemTaxClassificationTransferCache
         extends BaseTaxTransferCache<ItemTaxClassification, ItemTaxClassificationTransfer> {
+
     @Inject
     GeoControl geoControl;
 

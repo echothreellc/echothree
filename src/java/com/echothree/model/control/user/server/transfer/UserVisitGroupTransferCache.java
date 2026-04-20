@@ -27,6 +27,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class UserVisitGroupTransferCache
         extends BaseUserTransferCache<UserVisitGroup, UserVisitGroupTransfer> {
+
     @Inject
     WorkflowControl workflowControl;
 

@@ -27,6 +27,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class PartyTypeContactListGroupTransferCache
         extends BaseContactListTransferCache<PartyTypeContactListGroup, PartyTypeContactListGroupTransfer> {
+
     @Inject
     ContactListControl contactListControl;
 

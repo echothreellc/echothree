@@ -27,6 +27,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class QueuedLetterTransferCache
         extends BaseLetterTransferCache<QueuedLetter, QueuedLetterTransfer> {
+
     @Inject
     ChainControl chainControl;
 

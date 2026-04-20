@@ -27,6 +27,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class LetterContactMechanismPurposeTransferCache
         extends BaseLetterTransferCache<LetterContactMechanismPurpose, LetterContactMechanismPurposeTransfer> {
+
     @Inject
     ContactControl contactControl;
 

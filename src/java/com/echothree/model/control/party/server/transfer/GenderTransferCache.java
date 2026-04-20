@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class GenderTransferCache
         extends BasePartyTransferCache<Gender, GenderTransfer> {
+
     @Inject
     PartyControl partyControl;
 

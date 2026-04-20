@@ -29,6 +29,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class PartyCarrierAccountTransferCache
         extends BaseCarrierTransferCache<PartyCarrierAccount, PartyCarrierAccountTransfer> {
+
     @Inject
     CarrierControl carrierControl;
 

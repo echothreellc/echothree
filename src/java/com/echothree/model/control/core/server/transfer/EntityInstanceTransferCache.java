@@ -33,6 +33,7 @@ import javax.inject.Inject;
 @RequestScoped
 public class EntityInstanceTransferCache
         extends BaseCoreTransferCache<EntityInstance, EntityInstanceTransfer> {
+
     @Inject
     AppearanceControl appearanceControl;
 

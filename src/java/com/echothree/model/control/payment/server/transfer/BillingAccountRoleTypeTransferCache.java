@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class BillingAccountRoleTypeTransferCache
         extends BasePaymentTransferCache<BillingAccountRoleType, BillingAccountRoleTypeTransfer> {
+
     @Inject
     BillingControl billingControl;
 

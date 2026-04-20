@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class LetterDescriptionTransferCache
         extends BaseLetterDescriptionTransferCache<LetterDescription, LetterDescriptionTransfer> {
+
     @Inject
     LetterControl letterControl;
 

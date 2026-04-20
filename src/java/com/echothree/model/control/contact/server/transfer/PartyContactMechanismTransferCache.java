@@ -33,6 +33,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class PartyContactMechanismTransferCache
         extends BaseContactTransferCache<PartyContactMechanism, PartyContactMechanismTransfer> {
+
     @Inject
     ContactControl contactControl;
 

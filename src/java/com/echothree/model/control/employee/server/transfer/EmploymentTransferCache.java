@@ -27,6 +27,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class EmploymentTransferCache
         extends BaseEmployeeTransferCache<Employment, EmploymentTransfer> {
+
     @Inject
     EmployeeControl employeeControl;
 

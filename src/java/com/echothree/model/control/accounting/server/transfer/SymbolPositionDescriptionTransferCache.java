@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class SymbolPositionDescriptionTransferCache
         extends BaseAccountingDescriptionTransferCache<SymbolPositionDescription, SymbolPositionDescriptionTransfer> {
+
     @Inject
     AccountingControl accountingControl;
 

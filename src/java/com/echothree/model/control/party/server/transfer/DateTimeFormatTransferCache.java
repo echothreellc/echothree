@@ -28,6 +28,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class DateTimeFormatTransferCache
         extends BasePartyTransferCache<DateTimeFormat, DateTimeFormatTransfer> {
+
     @Inject
     PartyControl partyControl;
 

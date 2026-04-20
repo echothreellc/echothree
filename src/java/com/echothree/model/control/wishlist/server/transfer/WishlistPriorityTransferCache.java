@@ -26,6 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class WishlistPriorityTransferCache
         extends BaseWishlistTransferCache<WishlistPriority, WishlistPriorityTransfer> {
+
     @Inject
     WishlistControl wishlistControl;
 

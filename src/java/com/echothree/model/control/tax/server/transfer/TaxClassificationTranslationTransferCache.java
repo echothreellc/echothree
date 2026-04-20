@@ -27,6 +27,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class TaxClassificationTranslationTransferCache
         extends BaseTaxDescriptionTransferCache<TaxClassificationTranslation, TaxClassificationTranslationTransfer> {
+
     @Inject
     MimeTypeControl mimeTypeControl;
 

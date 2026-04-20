@@ -30,6 +30,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class FilterAdjustmentAmountTransferCache
         extends BaseFilterTransferCache<FilterAdjustmentAmount, FilterAdjustmentAmountTransfer> {
+
     @Inject
     AccountingControl accountingControl;
 
