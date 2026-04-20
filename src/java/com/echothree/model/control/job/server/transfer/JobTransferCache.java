@@ -16,7 +16,6 @@
 
 package com.echothree.model.control.job.server.transfer;
 
-import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.job.common.transfer.JobTransfer;
 import com.echothree.model.control.job.common.workflow.JobStatusConstants;
 import com.echothree.model.control.job.server.control.JobControl;
@@ -31,7 +30,6 @@ import javax.enterprise.context.RequestScoped;
 public class JobTransferCache
         extends BaseJobTransferCache<Job, JobTransfer> {
     
-    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     JobControl jobControl = Session.getModelController(JobControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);

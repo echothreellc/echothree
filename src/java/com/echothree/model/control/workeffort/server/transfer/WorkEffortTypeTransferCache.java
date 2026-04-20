@@ -22,7 +22,6 @@ import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.workeffort.common.WorkEffortOptions;
 import com.echothree.model.control.workeffort.common.transfer.WorkEffortTypeTransfer;
-import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
 import com.echothree.model.control.workrequirement.server.control.WorkRequirementControl;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -38,7 +37,6 @@ public class WorkEffortTypeTransferCache
     EntityTypeControl entityTypeControl = Session.getModelController(EntityTypeControl.class);
     SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
     UomControl uomControl = Session.getModelController(UomControl.class);
-    WorkEffortControl workEffortControl = Session.getModelController(WorkEffortControl.class);
     WorkRequirementControl workRequirementControl = Session.getModelController(WorkRequirementControl.class);
 
     UnitOfMeasureKind timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);

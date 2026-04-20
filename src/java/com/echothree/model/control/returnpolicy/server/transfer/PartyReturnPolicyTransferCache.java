@@ -16,7 +16,6 @@
 
 package com.echothree.model.control.returnpolicy.server.transfer;
 
-import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.returnpolicy.common.transfer.PartyReturnPolicyTransfer;
 import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
@@ -30,7 +29,6 @@ import javax.enterprise.context.RequestScoped;
 public class PartyReturnPolicyTransferCache
         extends BaseReturnPolicyTransferCache<PartyReturnPolicy, PartyReturnPolicyTransfer> {
 
-    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     ReturnPolicyControl returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
 

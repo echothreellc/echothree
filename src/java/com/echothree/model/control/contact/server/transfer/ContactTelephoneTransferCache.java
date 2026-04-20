@@ -18,7 +18,6 @@ package com.echothree.model.control.contact.server.transfer;
 
 import com.echothree.model.control.contact.common.transfer.ContactTelephoneTransfer;
 import com.echothree.model.control.contact.common.workflow.TelephoneStatusConstants;
-import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.contact.server.entity.ContactTelephone;
@@ -30,7 +29,6 @@ import javax.enterprise.context.RequestScoped;
 public class ContactTelephoneTransferCache
         extends BaseContactTransferCache<ContactTelephone, ContactTelephoneTransfer> {
     
-    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
 
     /** Creates a new instance of ContactTelephoneTransferCache */

@@ -21,7 +21,6 @@ import com.echothree.model.control.accounting.common.transfer.TransactionTransfe
 import com.echothree.model.control.accounting.common.workflow.TransactionStatusConstants;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.accounting.server.control.TransactionTimeControl;
-import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.accounting.server.entity.Transaction;
@@ -36,7 +35,6 @@ public class TransactionTransferCache
         extends BaseAccountingTransferCache<Transaction, TransactionTransfer> {
 
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
-    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     TransactionTimeControl transactionTimeControl = Session.getModelController(TransactionTimeControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);

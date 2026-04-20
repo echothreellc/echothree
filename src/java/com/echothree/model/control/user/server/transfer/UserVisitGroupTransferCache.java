@@ -16,10 +16,8 @@
 
 package com.echothree.model.control.user.server.transfer;
 
-import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.user.common.transfer.UserVisitGroupTransfer;
 import com.echothree.model.control.user.common.workflow.UserVisitGroupStatusConstants;
-import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.user.server.entity.UserVisitGroup;
@@ -30,7 +28,6 @@ import javax.enterprise.context.RequestScoped;
 public class UserVisitGroupTransferCache
         extends BaseUserTransferCache<UserVisitGroup, UserVisitGroupTransfer> {
 
-    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
 
     /** Creates a new instance of UserVisitGroupTransferCache */

@@ -17,7 +17,6 @@
 package com.echothree.model.control.comment.server.transfer;
 
 import com.echothree.model.control.comment.common.transfer.CommentTypeDescriptionTransfer;
-import com.echothree.model.control.comment.server.control.CommentControl;
 import com.echothree.model.data.comment.server.entity.CommentTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
@@ -27,7 +26,6 @@ import javax.enterprise.context.RequestScoped;
 public class CommentTypeDescriptionTransferCache
         extends BaseCommentDescriptionTransferCache<CommentTypeDescription, CommentTypeDescriptionTransfer> {
 
-    CommentControl commentControl = Session.getModelController(CommentControl.class);
 
     /** Creates a new instance of CommentTypeDescriptionTransferCache */
     protected CommentTypeDescriptionTransferCache() {

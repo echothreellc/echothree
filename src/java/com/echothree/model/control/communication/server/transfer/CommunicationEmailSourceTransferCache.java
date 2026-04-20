@@ -20,7 +20,6 @@ import com.echothree.model.control.communication.common.transfer.CommunicationEm
 import com.echothree.model.control.communication.server.control.CommunicationControl;
 import com.echothree.model.control.core.server.control.ServerControl;
 import com.echothree.model.control.selector.server.control.SelectorControl;
-import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
 import com.echothree.model.data.communication.server.entity.CommunicationEmailSource;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
@@ -33,7 +32,6 @@ public class CommunicationEmailSourceTransferCache
     CommunicationControl communicationControl = Session.getModelController(CommunicationControl.class);
     ServerControl serverControl = Session.getModelController(ServerControl.class);
     SelectorControl selectorControl = Session.getModelController(SelectorControl.class);
-    WorkEffortControl workEffortControl = Session.getModelController(WorkEffortControl.class);
     
     /** Creates a new instance of CommunicationEmailSourceTransferCache */
     protected CommunicationEmailSourceTransferCache() {

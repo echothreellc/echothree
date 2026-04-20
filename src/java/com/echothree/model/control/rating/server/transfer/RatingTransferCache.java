@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.rating.server.transfer;
 
-import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.rating.common.transfer.RatingTransfer;
-import com.echothree.model.control.rating.server.control.RatingControl;
 import com.echothree.model.data.rating.server.entity.Rating;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
@@ -28,8 +26,6 @@ import javax.enterprise.context.RequestScoped;
 public class RatingTransferCache
         extends BaseRatingTransferCache<Rating, RatingTransfer> {
 
-    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-    RatingControl ratingControl = Session.getModelController(RatingControl.class);
 
     /** Creates a new instance of RatingTransferCache */
     protected RatingTransferCache() {

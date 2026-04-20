@@ -23,7 +23,6 @@ import com.echothree.model.control.offer.server.control.OfferUseControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.user.common.UserOptions;
 import com.echothree.model.control.user.common.transfer.UserVisitTransfer;
-import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
@@ -38,7 +37,6 @@ public class UserVisitTransferCache
     CampaignControl campaignControl = Session.getModelController(CampaignControl.class);
     OfferUseControl offerUseControl = Session.getModelController(OfferUseControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
-    UserControl userControl = Session.getModelController(UserControl.class);
 
     boolean includeUserVisitCampaigns;
     

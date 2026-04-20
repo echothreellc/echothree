@@ -21,7 +21,6 @@ import com.echothree.model.control.training.common.transfer.TrainingClassTransfe
 import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.control.UomControl;
-import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
 import com.echothree.model.data.training.server.entity.TrainingClass;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
@@ -36,7 +35,6 @@ public class TrainingClassTransferCache
 
     TrainingControl trainingControl = Session.getModelController(TrainingControl.class);
     UomControl uomControl = Session.getModelController(UomControl.class);
-    WorkEffortControl workEffortControl = Session.getModelController(WorkEffortControl.class);
 
     boolean includeTrainingClassSections;
     boolean includePartyTrainingClasses;

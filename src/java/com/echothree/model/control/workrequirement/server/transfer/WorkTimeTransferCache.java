@@ -16,7 +16,6 @@
 
 package com.echothree.model.control.workrequirement.server.transfer;
 
-import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.control.workrequirement.common.transfer.WorkTimeTransfer;
@@ -31,7 +30,6 @@ import javax.enterprise.context.RequestScoped;
 public class WorkTimeTransferCache
         extends BaseWorkRequirementTransferCache<WorkTime, WorkTimeTransfer> {
     
-    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     WorkRequirementControl workRequirementControl = Session.getModelController(WorkRequirementControl.class);

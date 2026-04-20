@@ -20,7 +20,6 @@ import com.echothree.model.control.campaign.common.CampaignOptions;
 import com.echothree.model.control.campaign.common.transfer.CampaignTermTransfer;
 import com.echothree.model.control.campaign.common.workflow.CampaignTermStatusConstants;
 import com.echothree.model.control.campaign.server.control.CampaignControl;
-import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.campaign.server.entity.CampaignTerm;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -32,7 +31,6 @@ public class CampaignTermTransferCache
         extends BaseCampaignTransferCache<CampaignTerm, CampaignTermTransfer> {
 
     CampaignControl campaignControl = Session.getModelController(CampaignControl.class);
-    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
     
     /** Creates a new instance of CampaignTermTransferCache */

@@ -16,7 +16,6 @@
 
 package com.echothree.model.control.tag.server.transfer;
 
-import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.tag.common.transfer.EntityTagTransfer;
 import com.echothree.model.control.tag.server.control.TagControl;
 import com.echothree.model.data.tag.server.entity.EntityTag;
@@ -28,7 +27,6 @@ import javax.enterprise.context.RequestScoped;
 public class EntityTagTransferCache
         extends BaseTagTransferCache<EntityTag, EntityTagTransfer> {
 
-    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     TagControl tagControl = Session.getModelController(TagControl.class);
 
     /** Creates a new instance of EntityTagTransferCache */

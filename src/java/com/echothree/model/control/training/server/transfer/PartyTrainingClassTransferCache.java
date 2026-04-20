@@ -16,7 +16,6 @@
 
 package com.echothree.model.control.training.server.transfer;
 
-import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.training.common.TrainingOptions;
 import com.echothree.model.control.training.common.training.PartyTrainingClassStatusConstants;
@@ -33,7 +32,6 @@ import javax.enterprise.context.RequestScoped;
 public class PartyTrainingClassTransferCache
         extends BaseTrainingTransferCache<PartyTrainingClass, PartyTrainingClassTransfer> {
     
-    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     TrainingControl trainingControl = Session.getModelController(TrainingControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);

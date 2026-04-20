@@ -16,7 +16,6 @@
 
 package com.echothree.model.control.inventory.server.transfer;
 
-import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.inventory.common.InventoryOptions;
 import com.echothree.model.control.inventory.common.transfer.InventoryLocationGroupTransfer;
 import com.echothree.model.control.inventory.common.workflow.InventoryLocationGroupStatusConstants;
@@ -33,7 +32,6 @@ import javax.enterprise.context.RequestScoped;
 public class InventoryLocationGroupTransferCache
         extends BaseInventoryTransferCache<InventoryLocationGroup, InventoryLocationGroupTransfer> {
     
-    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     InventoryControl inventoryControl = Session.getModelController(InventoryControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
 

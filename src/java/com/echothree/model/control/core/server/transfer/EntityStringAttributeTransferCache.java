@@ -19,7 +19,6 @@ package com.echothree.model.control.core.server.transfer;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.core.common.transfer.EntityStringAttributeTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
-import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityStringAttribute;
@@ -32,7 +31,6 @@ public class EntityStringAttributeTransferCache
         extends BaseCoreTransferCache<EntityStringAttribute, EntityStringAttributeTransfer> {
 
     CoreControl coreControl = Session.getModelController(CoreControl.class);
-    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     boolean includeString;
     

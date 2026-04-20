@@ -20,7 +20,6 @@ import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.control.UomControl;
-import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
 import com.echothree.model.control.workrequirement.common.WorkRequirementOptions;
 import com.echothree.model.control.workrequirement.common.transfer.WorkRequirementScopeTransfer;
 import com.echothree.model.control.workrequirement.server.control.WorkRequirementControl;
@@ -37,7 +36,6 @@ public class WorkRequirementScopeTransferCache
     SelectorControl selectorControl = Session.getModelController(SelectorControl.class);
     SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
     UomControl uomControl = Session.getModelController(UomControl.class);
-    WorkEffortControl workEffortControl = Session.getModelController(WorkEffortControl.class);
     WorkRequirementControl workRequirementControl = Session.getModelController(WorkRequirementControl.class);
 
     boolean includeWorkRequirements;

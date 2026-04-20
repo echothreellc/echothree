@@ -19,7 +19,6 @@ package com.echothree.model.control.sales.server.transfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.batch.server.control.BatchControl;
 import com.echothree.model.control.batch.server.transfer.GenericBatchTransferCache;
-import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.order.server.control.OrderBatchControl;
 import com.echothree.model.control.payment.server.control.PaymentMethodControl;
 import com.echothree.model.control.sales.common.transfer.SalesOrderBatchTransfer;
@@ -36,7 +35,6 @@ public class SalesOrderBatchTransferCache
     
     AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
     BatchControl batchControl = Session.getModelController(BatchControl.class);
-    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
     PaymentMethodControl paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
     OrderBatchControl orderBatchControl = Session.getModelController(OrderBatchControl.class);
     SalesOrderBatchControl salesOrderBatchControl = Session.getModelController(SalesOrderBatchControl.class);
