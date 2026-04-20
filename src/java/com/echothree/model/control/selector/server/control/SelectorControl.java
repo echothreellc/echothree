@@ -677,7 +677,7 @@ public class SelectorControl
 
     public long countSelectorTypesBySelectorKind(SelectorKind selectorKind) {
         return session.queryForLong(
-                "SELECT _ALL_ "
+                "SELECT COUNT(*) "
                 + "FROM selectortypes, selectortypedetails "
                 + "WHERE slt_activedetailid = sltdt_selectortypedetailid AND sltdt_slk_selectorkindid = ?",
                 selectorKind);
@@ -708,7 +708,8 @@ public class SelectorControl
                 "SELECT _ALL_ "
                 + "FROM selectortypes, selectortypedetails "
                 + "WHERE slt_activedetailid = sltdt_selectortypedetailid AND sltdt_slk_selectorkindid = ? "
-                + "ORDER BY sltdt_sortorder, sltdt_selectortypename");
+                + "ORDER BY sltdt_sortorder, sltdt_selectortypename "
+                + "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM selectortypes, selectortypedetails "
@@ -1661,7 +1662,7 @@ public class SelectorControl
 
     public long countSelectorsBySelectorType(SelectorType selectorType) {
         return session.queryForLong(
-                "SELECT _ALL_ "
+                "SELECT COUNT(*) "
                 + "FROM selectors, selectordetails "
                 + "WHERE sl_activedetailid = sldt_selectordetailid AND sldt_slt_selectortypeid = ?",
                 selectorType);
@@ -1804,7 +1805,8 @@ public class SelectorControl
                 query = "SELECT _ALL_ " +
                         "FROM selectors, selectordetails " +
                         "WHERE sl_activedetailid = sldt_selectordetailid AND sldt_slt_selectortypeid = ? " +
-                        "ORDER BY sldt_sortorder, sldt_selectorname";
+                        "ORDER BY sldt_sortorder, sldt_selectorname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM selectors, selectordetails " +
@@ -2334,7 +2336,8 @@ public class SelectorControl
                 query = "SELECT _ALL_ " +
                         "FROM selectornodes, selectornodedetails " +
                         "WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ? " +
-                        "ORDER BY slnddt_selectornodename";
+                        "ORDER BY slnddt_selectornodename " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM selectornodes, selectornodedetails " +

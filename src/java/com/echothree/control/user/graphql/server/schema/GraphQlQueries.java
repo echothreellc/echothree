@@ -946,6 +946,7 @@ import com.echothree.model.data.security.common.SecurityRoleGroupConstants;
 import com.echothree.model.data.security.server.entity.SecurityRole;
 import com.echothree.model.data.security.server.entity.SecurityRoleGroup;
 import com.echothree.model.data.selector.common.SelectorKindConstants;
+import com.echothree.model.data.selector.common.SelectorTypeConstants;
 import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.selector.server.entity.SelectorKind;
 import com.echothree.model.data.selector.server.entity.SelectorType;
@@ -2743,32 +2744,37 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("selectorTypes")
-    static Collection<SelectorTypeObject> selectorTypes(final DataFetchingEnvironment env,
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<SelectorTypeObject> selectorTypes(final DataFetchingEnvironment env,
             @GraphQLName("selectorKindName") @GraphQLNonNull final String selectorKindName) {
-        Collection<SelectorType> selectorTypes;
-        Collection<SelectorTypeObject> selectorTypeObjects;
+        CountingPaginatedData<SelectorTypeObject> data;
 
         try {
             var commandForm = SelectorUtil.getHome().getGetSelectorTypesForm();
+            var command = CDI.current().select(GetSelectorTypesCommand.class).get();
 
             commandForm.setSelectorKindName(selectorKindName);
 
-            selectorTypes = CDI.current().select(GetSelectorTypesCommand.class).get().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, SelectorTypeConstants.COMPONENT_VENDOR_NAME, SelectorTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var selectorTypes = entities.stream()
+                            .map(SelectorTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, selectorTypes);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(selectorTypes == null) {
-            selectorTypeObjects = emptyList();
-        } else {
-            selectorTypeObjects = new ArrayList<>(selectorTypes.size());
-
-            selectorTypes.stream()
-                    .map(SelectorTypeObject::new)
-                    .forEachOrdered(selectorTypeObjects::add);
-        }
-
-        return selectorTypeObjects;
+        return data;
     }
 
     @GraphQLField
