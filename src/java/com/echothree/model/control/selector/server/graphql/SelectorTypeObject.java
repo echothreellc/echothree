@@ -17,9 +17,15 @@
 package com.echothree.model.control.selector.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.control.user.server.control.UserControl;
+import com.echothree.model.data.selector.common.SelectorConstants;
 import com.echothree.model.data.selector.server.entity.SelectorType;
 import com.echothree.model.data.selector.server.entity.SelectorTypeDetail;
 import com.echothree.util.server.persistence.Session;
@@ -27,9 +33,11 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 @GraphQLDescription("selector type object")
 @GraphQLName("SelectorType")
@@ -93,21 +101,22 @@ public class SelectorTypeObject
 
     @GraphQLField
     @GraphQLDescription("selectors")
-    public Collection<SelectorObject> getSelectors(final DataFetchingEnvironment env) {
-        Collection<SelectorObject> selectorObjects = null;
-
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<SelectorObject> getSelectors(final DataFetchingEnvironment env) {
         if(SelectorSecurityUtils.getHasSelectorsAccess(env)) {
             var selectorControl = Session.getModelController(SelectorControl.class);
-            var selectors = selectorControl.getSelectorsBySelectorType(selectorType);
+            var totalCount = selectorControl.countSelectorsBySelectorType(selectorType);
 
-            selectorObjects = new ArrayList<>(selectors.size());
+            try(var objectLimiter = new ObjectLimiter(env, SelectorConstants.COMPONENT_VENDOR_NAME, SelectorConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = selectorControl.getSelectorsBySelectorType(selectorType);
+                var selectors = entities.stream().map(SelectorObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
-            selectors.stream()
-                    .map(SelectorObject::new)
-                    .forEachOrdered(selectorObjects::add);
+                return new CountedObjects<>(objectLimiter, selectors);
+            }
+        } else {
+            return Connections.emptyConnection();
         }
-
-        return selectorObjects;
     }
 
 }
