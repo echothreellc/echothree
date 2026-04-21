@@ -16,20 +16,21 @@
 
 package com.echothree.model.control.core.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.core.common.CoreProperties;
 import com.echothree.model.control.core.common.transfer.CacheEntryDependencyTransfer;
 import com.echothree.model.control.core.server.control.CacheEntryControl;
 import com.echothree.model.data.core.server.entity.CacheEntryDependency;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class CacheEntryDependencyTransferCache
         extends BaseCoreTransferCache<CacheEntryDependency, CacheEntryDependencyTransfer> {
 
-    CacheEntryControl cacheEntryControl = Session.getModelController(CacheEntryControl.class);
+    @Inject
+    CacheEntryControl cacheEntryControl;
 
     TransferProperties transferProperties;
     boolean filterCacheEntry;

@@ -20,8 +20,8 @@ import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.core.common.CoreProperties;
 import com.echothree.model.control.core.common.transfer.EntityTypeTransfer;
 import com.echothree.model.control.core.server.control.ComponentControl;
-import com.echothree.model.control.core.server.control.CoreControl;
-import com.echothree.model.control.core.server.control.EntityAliasControl;
+
+
 import com.echothree.model.control.core.server.control.EntityTypeControl;
 import com.echothree.model.control.index.server.control.IndexControl;
 import com.echothree.model.control.message.server.control.MessageControl;
@@ -40,18 +40,10 @@ import javax.inject.Inject;
 @RequestScoped
 public class EntityTypeTransferCache
         extends BaseCoreTransferCache<EntityType, EntityTypeTransfer> {
-
-    @Inject
-    CoreControl coreControl;
-
+    
     @Inject
     ComponentControl componentControl;
-
-
-    @Inject
-    EntityAliasControl entityAliasControl;
-
-
+    
     @Inject
     EntityTypeControl entityTypeControl;
 
@@ -60,7 +52,6 @@ public class EntityTypeTransferCache
 
     @Inject
     MessageControl messageControl;
-
 
     @Inject
     UomControl uomControl;

@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.tax.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.tax.common.TaxOptions;
@@ -23,16 +24,20 @@ import com.echothree.model.control.tax.common.transfer.ItemTaxClassificationTran
 import com.echothree.model.control.tax.server.control.TaxControl;
 import com.echothree.model.data.tax.server.entity.ItemTaxClassification;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class ItemTaxClassificationTransferCache
         extends BaseTaxTransferCache<ItemTaxClassification, ItemTaxClassificationTransfer> {
-    
-    GeoControl geoControl = Session.getModelController(GeoControl.class);
-    ItemControl itemControl = Session.getModelController(ItemControl.class);
-    TaxControl taxControl = Session.getModelController(TaxControl.class);
+
+    @Inject
+    GeoControl geoControl;
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    TaxControl taxControl;
 
     /** Creates a new instance of ItemTaxClassificationTransferCache */
     protected ItemTaxClassificationTransferCache() {

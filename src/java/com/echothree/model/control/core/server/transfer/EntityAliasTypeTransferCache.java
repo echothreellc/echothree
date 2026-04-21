@@ -16,24 +16,24 @@
 
 package com.echothree.model.control.core.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.core.common.CoreProperties;
 import com.echothree.model.control.core.common.transfer.EntityAliasTypeTransfer;
-import com.echothree.model.control.core.server.control.EntityAliasControl;
+
 import com.echothree.model.control.core.server.control.EntityTypeControl;
 import com.echothree.model.data.core.server.entity.EntityAliasType;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class EntityAliasTypeTransferCache
         extends BaseCoreTransferCache<EntityAliasType, EntityAliasTypeTransfer> {
-
-    EntityAliasControl entityAliasControl = Session.getModelController(EntityAliasControl.class);
-    EntityTypeControl entityTypeControl = Session.getModelController(EntityTypeControl.class);
+    
+    @Inject
+    EntityTypeControl entityTypeControl;
 
     boolean includeAlias;
 

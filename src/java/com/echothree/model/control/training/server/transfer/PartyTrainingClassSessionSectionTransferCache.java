@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.training.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.training.common.transfer.PartyTrainingClassSessionSectionTransfer;
 import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.data.training.server.entity.PartyTrainingClassSessionSection;
@@ -27,7 +28,8 @@ import javax.enterprise.context.RequestScoped;
 public class PartyTrainingClassSessionSectionTransferCache
         extends BaseTrainingTransferCache<PartyTrainingClassSessionSection, PartyTrainingClassSessionSectionTransfer> {
 
-    TrainingControl trainingControl = Session.getModelController(TrainingControl.class);
+    @Inject
+    TrainingControl trainingControl;
 
     /** Creates a new instance of PartyTrainingClassSessionSectionTransferCache */
     protected PartyTrainingClassSessionSectionTransferCache() {
@@ -45,7 +47,6 @@ public class PartyTrainingClassSessionSectionTransferCache
             var readingStartTime = formatTypicalDateTime(userVisit, unformattedReadingStartTime);
             var unformattedReadingEndTime = partyTrainingClassSessionSection.getReadingEndTime();
             var readingEndTime = formatTypicalDateTime(userVisit, unformattedReadingEndTime);
-
 
             partyTrainingClassSessionSectionTransfer = new PartyTrainingClassSessionSectionTransfer(partyTrainingClassSession, partyTrainingClassSessionSectionSequence,
                     trainingClassSection, unformattedReadingStartTime, readingStartTime, unformattedReadingEndTime, readingEndTime);

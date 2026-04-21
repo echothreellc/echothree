@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.document.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.document.common.DocumentOptions;
 import com.echothree.model.control.document.common.transfer.DocumentTransfer;
@@ -23,15 +24,17 @@ import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.data.document.server.entity.Document;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.persistence.type.ByteArray;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class DocumentTransferCache
         extends BaseDocumentTransferCache<Document, DocumentTransfer> {
 
-    DocumentControl documentControl = Session.getModelController(DocumentControl.class);
-    MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
+    @Inject
+    DocumentControl documentControl;
+
+    @Inject
+    MimeTypeControl mimeTypeControl;
 
     boolean includeBlob;
     boolean includeClob;

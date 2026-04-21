@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.customer.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
 import com.echothree.model.control.customer.common.CustomerProperties;
@@ -30,22 +31,38 @@ import com.echothree.model.control.term.server.control.TermControl;
 import com.echothree.model.data.customer.server.entity.CustomerType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class CustomerTypeTransferCache
         extends BaseCustomerTransferCache<CustomerType, CustomerTypeTransfer> {
 
-    AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
-    CancellationPolicyControl cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
-    CustomerControl customerControl = Session.getModelController(CustomerControl.class);
-    FreeOnBoardControl freeOnBoardControl = Session.getModelController(FreeOnBoardControl.class);
-    InventoryControl inventoryControl = Session.getModelController(InventoryControl.class);
-    OfferUseControl offerUseControl = Session.getModelController(OfferUseControl.class);
-    ReturnPolicyControl returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
-    SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
-    TermControl termControl = Session.getModelController(TermControl.class);
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    CancellationPolicyControl cancellationPolicyControl;
+
+    @Inject
+    CustomerControl customerControl;
+
+    @Inject
+    FreeOnBoardControl freeOnBoardControl;
+
+    @Inject
+    InventoryControl inventoryControl;
+
+    @Inject
+    OfferUseControl offerUseControl;
+
+    @Inject
+    ReturnPolicyControl returnPolicyControl;
+
+    @Inject
+    SequenceControl sequenceControl;
+
+    @Inject
+    TermControl termControl;
 
     TransferProperties transferProperties;
     boolean filterCustomerTypeName;

@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.period.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.accounting.common.workflow.FiscalPeriodStatusConstants;
 import com.echothree.model.control.period.common.PeriodConstants;
 import com.echothree.model.control.period.common.transfer.PeriodTransfer;
@@ -24,15 +25,17 @@ import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatus
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.period.server.entity.Period;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class PeriodTransferCache
         extends BasePeriodTransferCache<Period, PeriodTransfer> {
-    
-    PeriodControl periodControl = Session.getModelController(PeriodControl.class);
-    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
+
+    @Inject
+    PeriodControl periodControl;
+
+    @Inject
+    WorkflowControl workflowControl;
     
     /** Creates a new instance of PeriodTransferCache */
     protected PeriodTransferCache() {

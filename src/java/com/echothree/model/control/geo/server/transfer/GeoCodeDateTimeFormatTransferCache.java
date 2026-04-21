@@ -16,20 +16,23 @@
 
 package com.echothree.model.control.geo.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.geo.common.transfer.GeoCodeDateTimeFormatTransfer;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.geo.server.entity.GeoCodeDateTimeFormat;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class GeoCodeDateTimeFormatTransferCache
         extends BaseGeoTransferCache<GeoCodeDateTimeFormat, GeoCodeDateTimeFormatTransfer> {
 
-    GeoControl geoControl = Session.getModelController(GeoControl.class);
-    PartyControl partyControl = Session.getModelController(PartyControl.class);
+    @Inject
+    GeoControl geoControl;
+
+    @Inject
+    PartyControl partyControl;
     
     /** Creates a new instance of GeoCodeDateTimeFormatTransferCache */
     protected GeoCodeDateTimeFormatTransferCache() {

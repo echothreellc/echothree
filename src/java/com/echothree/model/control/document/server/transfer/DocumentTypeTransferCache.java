@@ -16,12 +16,12 @@
 
 package com.echothree.model.control.document.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.document.common.transfer.DocumentTypeTransfer;
 import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.data.document.server.entity.DocumentType;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.print.Doc;
 import javax.enterprise.context.RequestScoped;
 
@@ -29,8 +29,11 @@ import javax.enterprise.context.RequestScoped;
 public class DocumentTypeTransferCache
         extends BaseDocumentTransferCache<DocumentType, DocumentTypeTransfer> {
 
-    DocumentControl documentControl = Session.getModelController(DocumentControl.class);
-    MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
+    @Inject
+    DocumentControl documentControl;
+
+    @Inject
+    MimeTypeControl mimeTypeControl;
 
     /** Creates a new instance of DocumentTypeTransferCache */
     protected DocumentTypeTransferCache() {

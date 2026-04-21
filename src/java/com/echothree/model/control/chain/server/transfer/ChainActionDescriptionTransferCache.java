@@ -16,18 +16,19 @@
 
 package com.echothree.model.control.chain.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.chain.common.transfer.ChainActionDescriptionTransfer;
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.data.chain.server.entity.ChainActionDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class ChainActionDescriptionTransferCache
         extends BaseChainDescriptionTransferCache<ChainActionDescription, ChainActionDescriptionTransfer> {
 
-    ChainControl chainControl = Session.getModelController(ChainControl.class);
+    @Inject
+    ChainControl chainControl;
 
     /** Creates a new instance of ChainActionDescriptionTransferCache */
     protected ChainActionDescriptionTransferCache() {

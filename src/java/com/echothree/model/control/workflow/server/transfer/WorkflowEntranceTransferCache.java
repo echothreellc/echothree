@@ -16,20 +16,21 @@
 
 package com.echothree.model.control.workflow.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.workflow.common.WorkflowProperties;
 import com.echothree.model.control.workflow.common.transfer.WorkflowEntranceTransfer;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
 import com.echothree.util.common.form.TransferProperties;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class WorkflowEntranceTransferCache
         extends BaseWorkflowTransferCache<WorkflowEntrance, WorkflowEntranceTransfer> {
 
-    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
+    @Inject
+    WorkflowControl workflowControl;
 
     TransferProperties transferProperties;
     boolean filterWorkflow;

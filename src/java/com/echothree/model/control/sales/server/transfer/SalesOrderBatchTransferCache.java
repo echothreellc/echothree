@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.sales.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.batch.server.control.BatchControl;
 import com.echothree.model.control.batch.server.transfer.GenericBatchTransferCache;
@@ -25,19 +26,27 @@ import com.echothree.model.control.sales.common.transfer.SalesOrderBatchTransfer
 import com.echothree.model.control.sales.server.control.SalesOrderBatchControl;
 import com.echothree.model.data.batch.server.entity.Batch;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.AmountUtils;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class SalesOrderBatchTransferCache
         extends GenericBatchTransferCache<SalesOrderBatchTransfer> {
-    
-    AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
-    BatchControl batchControl = Session.getModelController(BatchControl.class);
-    PaymentMethodControl paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
-    OrderBatchControl orderBatchControl = Session.getModelController(OrderBatchControl.class);
-    SalesOrderBatchControl salesOrderBatchControl = Session.getModelController(SalesOrderBatchControl.class);
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    BatchControl batchControl;
+
+    @Inject
+    OrderBatchControl orderBatchControl;
+
+    @Inject
+    PaymentMethodControl paymentMethodControl;
+
+    @Inject
+    SalesOrderBatchControl salesOrderBatchControl;
 
     /** Creates a new instance of SalesOrderBatchTransferCache */
     protected SalesOrderBatchTransferCache() {

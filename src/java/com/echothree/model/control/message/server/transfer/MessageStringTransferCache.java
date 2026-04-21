@@ -16,20 +16,23 @@
 
 package com.echothree.model.control.message.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.message.common.transfer.MessageStringTransfer;
 import com.echothree.model.control.message.server.control.MessageControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.message.server.entity.MessageString;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class MessageStringTransferCache
         extends BaseMessageTransferCache<MessageString, MessageStringTransfer> {
 
-    MessageControl messageControl = Session.getModelController(MessageControl.class);
-    PartyControl partyControl = Session.getModelController(PartyControl.class);
+    @Inject
+    MessageControl messageControl;
+
+    @Inject
+    PartyControl partyControl;
     
     /** Creates a new instance of MessageStringTransferCache */
     protected MessageStringTransferCache() {

@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.workrequirement.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.control.UomControl;
@@ -26,17 +27,24 @@ import com.echothree.model.control.workrequirement.server.control.WorkRequiremen
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workrequirement.server.entity.WorkRequirementType;
 import com.echothree.util.common.transfer.ListWrapper;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class WorkRequirementTypeTransferCache
         extends BaseWorkRequirementTransferCache<WorkRequirementType, WorkRequirementTypeTransfer> {
-    
-    SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
-    UomControl uomControl = Session.getModelController(UomControl.class);
-    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
-    WorkRequirementControl workRequirementControl = Session.getModelController(WorkRequirementControl.class);
+
+    @Inject
+    SequenceControl sequenceControl;
+
+    @Inject
+    UomControl uomControl;
+
+    @Inject
+    WorkRequirementControl workRequirementControl;
+
+    @Inject
+    WorkflowControl workflowControl;
+
     boolean includeWorkRequirementScopes;
     
     /** Creates a new instance of WorkRequirementTypeTransferCache */

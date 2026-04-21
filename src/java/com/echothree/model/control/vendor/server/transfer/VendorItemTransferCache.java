@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.vendor.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
 import com.echothree.model.control.comment.common.CommentConstants;
 import com.echothree.model.control.item.common.ItemDescriptionTypes;
@@ -30,20 +31,29 @@ import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.vendor.server.entity.VendorItem;
 import com.echothree.util.common.transfer.ListWrapper;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class VendorItemTransferCache
         extends BaseVendorTransferCache<VendorItem, VendorItemTransfer> {
-    
-    CancellationPolicyControl cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
-    ItemControl itemControl = Session.getModelController(ItemControl.class);
-    ReturnPolicyControl returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
-    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
-    VendorControl vendorControl = Session.getModelController(VendorControl.class);
 
-    ItemDescriptionLogic itemDescriptionLogic = ItemDescriptionLogic.getInstance();
+    @Inject
+    CancellationPolicyControl cancellationPolicyControl;
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    ReturnPolicyControl returnPolicyControl;
+
+    @Inject
+    VendorControl vendorControl;
+
+    @Inject
+    WorkflowControl workflowControl;
+
+    @Inject
+    ItemDescriptionLogic itemDescriptionLogic;
 
     boolean includeVendorItemCosts;
     boolean includePurchasingComments;

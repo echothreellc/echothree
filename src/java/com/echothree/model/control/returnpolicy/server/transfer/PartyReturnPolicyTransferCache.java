@@ -16,21 +16,27 @@
 
 package com.echothree.model.control.returnpolicy.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.returnpolicy.common.transfer.PartyReturnPolicyTransfer;
 import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
 import com.echothree.model.control.returnpolicy.server.logic.PartyReturnPolicyLogic;
 import com.echothree.model.data.returnpolicy.server.entity.PartyReturnPolicy;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class PartyReturnPolicyTransferCache
         extends BaseReturnPolicyTransferCache<PartyReturnPolicy, PartyReturnPolicyTransfer> {
 
-    PartyControl partyControl = Session.getModelController(PartyControl.class);
-    ReturnPolicyControl returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    ReturnPolicyControl returnPolicyControl;
+
+    @Inject
+    PartyReturnPolicyLogic partyReturnPolicyLogic;
 
     /** Creates a new instance of PartyReturnPolicyTransferCache */
     protected PartyReturnPolicyTransferCache() {
@@ -46,7 +52,7 @@ public class PartyReturnPolicyTransferCache
 
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(partyReturnPolicy.getPrimaryKey());
             var createdBy = getPartyPK(userVisit);
-            var partyReturnPolicyStatusTransfer = PartyReturnPolicyLogic.getInstance().getPartyReturnPolicyStatusTransfer(userVisit, entityInstance, createdBy);
+            var partyReturnPolicyStatusTransfer = partyReturnPolicyLogic.getPartyReturnPolicyStatusTransfer(userVisit, entityInstance, createdBy);
 
             partyReturnPolicyTransfer = new PartyReturnPolicyTransfer(party, returnPolicy, partyReturnPolicyStatusTransfer);
             put(userVisit, partyReturnPolicy, partyReturnPolicyTransfer, entityInstance);

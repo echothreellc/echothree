@@ -16,22 +16,27 @@
 
 package com.echothree.model.control.tax.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.tax.common.transfer.TaxTransfer;
 import com.echothree.model.control.tax.server.control.TaxControl;
 import com.echothree.model.data.tax.server.entity.Tax;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class TaxTransferCache
         extends BaseTaxTransferCache<Tax, TaxTransfer> {
-    
-    AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
-    ContactControl contactControl = Session.getModelController(ContactControl.class);
-    TaxControl taxControl = Session.getModelController(TaxControl.class);
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    ContactControl contactControl;
+
+    @Inject
+    TaxControl taxControl;
 
     /** Creates a new instance of TaxTransferCache */
     protected TaxTransferCache() {

@@ -16,18 +16,19 @@
 
 package com.echothree.model.control.inventory.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.inventory.common.transfer.InventoryConditionUseTransfer;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.data.inventory.server.entity.InventoryConditionUse;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class InventoryConditionUseTransferCache
         extends BaseInventoryTransferCache<InventoryConditionUse, InventoryConditionUseTransfer> {
 
-    InventoryControl inventoryControl = Session.getModelController(InventoryControl.class);
+    @Inject
+    InventoryControl inventoryControl;
 
     /** Creates a new instance of InventoryConditionUseTransferCache */
     protected InventoryConditionUseTransferCache() {

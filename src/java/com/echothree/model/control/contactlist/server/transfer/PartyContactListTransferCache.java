@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.contactlist.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.comment.common.CommentConstants;
 import com.echothree.model.control.contactlist.common.ContactListOptions;
 import com.echothree.model.control.contactlist.common.transfer.PartyContactListTransfer;
@@ -24,16 +25,20 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.contactlist.server.entity.PartyContactList;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class PartyContactListTransferCache
         extends BaseContactListTransferCache<PartyContactList, PartyContactListTransfer> {
 
-    ContactListControl contactListControl = Session.getModelController(ContactListControl.class);
-    PartyControl partyControl = Session.getModelController(PartyControl.class);
-    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
+    @Inject
+    ContactListControl contactListControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    WorkflowControl workflowControl;
     
     boolean includeStatus;
     boolean includeComments;

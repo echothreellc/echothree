@@ -16,18 +16,19 @@
 
 package com.echothree.model.control.sequence.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.sequence.common.transfer.SequenceChecksumTypeTransfer;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.data.sequence.server.entity.SequenceChecksumType;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class SequenceChecksumTypeTransferCache
         extends BaseSequenceTransferCache<SequenceChecksumType, SequenceChecksumTypeTransfer> {
 
-    SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
+    @Inject
+    SequenceControl sequenceControl;
 
     /** Creates a new instance of SequenceChecksumTypeTransferCache */
     protected SequenceChecksumTypeTransferCache() {

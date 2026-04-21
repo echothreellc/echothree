@@ -16,18 +16,19 @@
 
 package com.echothree.model.control.content.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.content.common.transfer.ContentPageLayoutAreaTransfer;
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.data.content.server.entity.ContentPageLayoutArea;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class ContentPageLayoutAreaTransferCache
         extends BaseContentTransferCache<ContentPageLayoutArea, ContentPageLayoutAreaTransfer> {
 
-    ContentControl contentControl = Session.getModelController(ContentControl.class);
+    @Inject
+    ContentControl contentControl;
 
     /** Creates a new instance of ContentPageLayoutAreaTransferCache */
     protected ContentPageLayoutAreaTransferCache() {

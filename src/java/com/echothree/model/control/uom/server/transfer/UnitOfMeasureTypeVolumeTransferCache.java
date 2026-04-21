@@ -16,19 +16,20 @@
 
 package com.echothree.model.control.uom.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.common.transfer.UnitOfMeasureTypeVolumeTransfer;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureTypeVolume;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class UnitOfMeasureTypeVolumeTransferCache
         extends BaseUomTransferCache<UnitOfMeasureTypeVolume, UnitOfMeasureTypeVolumeTransfer> {
 
-    UomControl uomControl = Session.getModelController(UomControl.class);
+    @Inject
+    UomControl uomControl;
 
     /** Creates a new instance of UnitOfMeasureTypeVolumeTransferCache */
     protected UnitOfMeasureTypeVolumeTransferCache() {

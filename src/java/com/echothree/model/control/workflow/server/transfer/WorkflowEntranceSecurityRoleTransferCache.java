@@ -16,20 +16,23 @@
 
 package com.echothree.model.control.workflow.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.security.server.control.SecurityControl;
 import com.echothree.model.control.workflow.common.transfer.WorkflowEntranceSecurityRoleTransfer;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntranceSecurityRole;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class WorkflowEntranceSecurityRoleTransferCache
         extends BaseWorkflowTransferCache<WorkflowEntranceSecurityRole, WorkflowEntranceSecurityRoleTransfer> {
-    
-    SecurityControl securityControl = Session.getModelController(SecurityControl.class);
-    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
+
+    @Inject
+    SecurityControl securityControl;
+
+    @Inject
+    WorkflowControl workflowControl;
 
     /** Creates a new instance of WorkflowEntranceSecurityRoleTransferCache */
     protected WorkflowEntranceSecurityRoleTransferCache() {

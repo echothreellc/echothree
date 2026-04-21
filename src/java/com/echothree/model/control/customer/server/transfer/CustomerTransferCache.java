@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.customer.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
 import com.echothree.model.control.carrier.server.control.CarrierControl;
@@ -48,33 +49,71 @@ import com.echothree.model.data.invoice.server.factory.InvoiceFactory;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class CustomerTransferCache
         extends BaseCustomerTransferCache<Party, CustomerTransfer> {
 
-    AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
-    BillingControl billingControl = Session.getModelController(BillingControl.class);
-    CancellationPolicyControl cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
-    CarrierControl carrierControl = Session.getModelController(CarrierControl.class);
-    CommunicationControl communicationControl = Session.getModelController(CommunicationControl.class);
-    ContactControl contactControl = Session.getModelController(ContactControl.class);
-    ContactListControl contactListControl = Session.getModelController(ContactListControl.class);
-    CustomerControl customerControl = Session.getModelController(CustomerControl.class);
-    DocumentControl documentControl = Session.getModelController(DocumentControl.class);
-    InvoiceControl invoiceControl = Session.getModelController(InvoiceControl.class);
-    OfferUseControl offerUseControl = Session.getModelController(OfferUseControl.class);
-    PartyControl partyControl = Session.getModelController(PartyControl.class);
-    PartyPaymentMethodControl partyPaymentMethodControl = Session.getModelController(PartyPaymentMethodControl.class);
-    PartyFreeOnBoardControl partyFreeOnBoardControl = Session.getModelController(PartyFreeOnBoardControl.class);
-    PrinterControl printerControl = Session.getModelController(PrinterControl.class);
-    ReturnPolicyControl returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
-    ScaleControl scaleControl = Session.getModelController(ScaleControl.class);
-    SubscriptionControl subscriptionControl = Session.getModelController(SubscriptionControl.class);
-    TermControl termControl = Session.getModelController(TermControl.class);
-    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    BillingControl billingControl;
+
+    @Inject
+    CancellationPolicyControl cancellationPolicyControl;
+
+    @Inject
+    CarrierControl carrierControl;
+
+    @Inject
+    CommunicationControl communicationControl;
+
+    @Inject
+    ContactControl contactControl;
+
+    @Inject
+    ContactListControl contactListControl;
+
+    @Inject
+    CustomerControl customerControl;
+
+    @Inject
+    DocumentControl documentControl;
+
+    @Inject
+    InvoiceControl invoiceControl;
+
+    @Inject
+    OfferUseControl offerUseControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    PartyFreeOnBoardControl partyFreeOnBoardControl;
+
+    @Inject
+    PartyPaymentMethodControl partyPaymentMethodControl;
+
+    @Inject
+    PrinterControl printerControl;
+
+    @Inject
+    ReturnPolicyControl returnPolicyControl;
+
+    @Inject
+    ScaleControl scaleControl;
+
+    @Inject
+    SubscriptionControl subscriptionControl;
+
+    @Inject
+    TermControl termControl;
+
+    @Inject
+    WorkflowControl workflowControl;
 
     boolean includeUserLogin;
     boolean includeRecoveryAnswer;

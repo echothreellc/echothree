@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.financial.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.financial.common.FinancialOptions;
 import com.echothree.model.control.financial.common.transfer.FinancialAccountRoleTransfer;
@@ -25,16 +26,18 @@ import com.echothree.model.data.financial.server.entity.FinancialAccount;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.common.transfer.MapWrapper;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.AmountUtils;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class FinancialAccountTransferCache
         extends BaseFinancialTransferCache<FinancialAccount, FinancialAccountTransfer> {
-    
-    AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
-    FinancialControl financialControl = Session.getModelController(FinancialControl.class);
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    FinancialControl financialControl;
 
     boolean includeRoles;
     boolean includeTransactions;

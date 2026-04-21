@@ -16,18 +16,19 @@
 
 package com.echothree.model.control.carrier.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.carrier.common.transfer.CarrierServiceOptionTransfer;
 import com.echothree.model.control.carrier.server.control.CarrierControl;
 import com.echothree.model.data.carrier.server.entity.CarrierServiceOption;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class CarrierServiceOptionTransferCache
         extends BaseCarrierTransferCache<CarrierServiceOption, CarrierServiceOptionTransfer> {
 
-    CarrierControl carrierControl = Session.getModelController(CarrierControl.class);
+    @Inject
+    CarrierControl carrierControl;
 
     /** Creates a new instance of CarrierServiceOptionTransferCache */
     protected CarrierServiceOptionTransferCache() {

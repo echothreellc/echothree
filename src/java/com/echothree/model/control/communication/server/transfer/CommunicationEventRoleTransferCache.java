@@ -16,20 +16,23 @@
 
 package com.echothree.model.control.communication.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.communication.common.transfer.CommunicationEventRoleTransfer;
 import com.echothree.model.control.communication.server.control.CommunicationControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.communication.server.entity.CommunicationEventRole;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class CommunicationEventRoleTransferCache
         extends BaseCommunicationTransferCache<CommunicationEventRole, CommunicationEventRoleTransfer> {
 
-    CommunicationControl communicationControl = Session.getModelController(CommunicationControl.class);
-    PartyControl partyControl = Session.getModelController(PartyControl.class);
+    @Inject
+    CommunicationControl communicationControl;
+
+    @Inject
+    PartyControl partyControl;
     
     /** Creates a new instance of CommunicationEventRoleTransferCache */
     protected CommunicationEventRoleTransferCache() {

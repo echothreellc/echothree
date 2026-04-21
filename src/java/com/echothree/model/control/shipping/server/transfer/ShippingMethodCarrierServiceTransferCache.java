@@ -16,20 +16,23 @@
 
 package com.echothree.model.control.shipping.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.carrier.server.control.CarrierControl;
 import com.echothree.model.control.shipping.common.transfer.ShippingMethodCarrierServiceTransfer;
 import com.echothree.model.control.shipping.server.control.ShippingControl;
 import com.echothree.model.data.shipping.server.entity.ShippingMethodCarrierService;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class ShippingMethodCarrierServiceTransferCache
         extends BaseShippingTransferCache<ShippingMethodCarrierService, ShippingMethodCarrierServiceTransfer> {
-    
-    CarrierControl carrierControl = Session.getModelController(CarrierControl.class);
-    ShippingControl shippingControl = Session.getModelController(ShippingControl.class);
+
+    @Inject
+    CarrierControl carrierControl;
+
+    @Inject
+    ShippingControl shippingControl;
 
     /** Creates a new instance of ShippingMethodCarrierServiceTransferCache */
     protected ShippingMethodCarrierServiceTransferCache() {

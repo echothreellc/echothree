@@ -16,18 +16,19 @@
 
 package com.echothree.model.control.workflow.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.workflow.common.transfer.WorkflowStepDescriptionTransfer;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workflow.server.entity.WorkflowStepDescription;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class WorkflowStepDescriptionTransferCache
         extends BaseWorkflowDescriptionTransferCache<WorkflowStepDescription, WorkflowStepDescriptionTransfer> {
 
-    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
+    @Inject
+    WorkflowControl workflowControl;
 
     /** Creates a new instance of WorkflowStepDescriptionTransferCache */
     protected WorkflowStepDescriptionTransferCache() {

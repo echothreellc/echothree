@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.inventory.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.inventory.common.InventoryOptions;
 import com.echothree.model.control.inventory.common.transfer.LotAliasTransfer;
 import com.echothree.model.control.inventory.common.transfer.LotTimeTransfer;
@@ -26,16 +27,20 @@ import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.inventory.server.entity.Lot;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.MapWrapper;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class LotTransferCache
         extends BaseInventoryTransferCache<Lot, LotTransfer> {
 
-    ItemControl itemControl = Session.getModelController(ItemControl.class);
-    LotAliasControl lotAliasControl = Session.getModelController(LotAliasControl.class);
-    LotTimeControl lotTimeControl = Session.getModelController(LotTimeControl.class);
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    LotAliasControl lotAliasControl;
+
+    @Inject
+    LotTimeControl lotTimeControl;
 
     boolean includeLotAliases;
     boolean includeLotTimes;

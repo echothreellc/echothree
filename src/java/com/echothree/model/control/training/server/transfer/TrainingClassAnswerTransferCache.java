@@ -16,18 +16,19 @@
 
 package com.echothree.model.control.training.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.training.common.transfer.TrainingClassAnswerTransfer;
 import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.data.training.server.entity.TrainingClassAnswer;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class TrainingClassAnswerTransferCache
         extends BaseTrainingTransferCache<TrainingClassAnswer, TrainingClassAnswerTransfer> {
 
-    TrainingControl trainingControl = Session.getModelController(TrainingControl.class);
+    @Inject
+    TrainingControl trainingControl;
 
     /** Creates a new instance of TrainingClassAnswerTransferCache */
     protected TrainingClassAnswerTransferCache() {

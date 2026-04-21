@@ -16,20 +16,23 @@
 
 package com.echothree.model.control.batch.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.batch.common.transfer.BatchTypeEntityTypeTransfer;
 import com.echothree.model.control.batch.server.control.BatchControl;
 import com.echothree.model.control.core.server.control.EntityTypeControl;
 import com.echothree.model.data.batch.server.entity.BatchTypeEntityType;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class BatchTypeEntityTypeTransferCache
         extends BaseBatchTransferCache<BatchTypeEntityType, BatchTypeEntityTypeTransfer> {
 
-    BatchControl batchControl = Session.getModelController(BatchControl.class);
-    EntityTypeControl entityTypeControl = Session.getModelController(EntityTypeControl.class);
+    @Inject
+    BatchControl batchControl;
+
+    @Inject
+    EntityTypeControl entityTypeControl;
 
     /** Creates a new instance of BatchTypeEntityTypeTransferCache */
     protected BatchTypeEntityTypeTransferCache() {

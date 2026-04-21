@@ -16,18 +16,19 @@
 
 package com.echothree.model.control.vendor.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.vendor.common.transfer.VendorTypeDescriptionTransfer;
 import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.vendor.server.entity.VendorTypeDescription;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class VendorTypeDescriptionTransferCache
         extends BaseVendorDescriptionTransferCache<VendorTypeDescription, VendorTypeDescriptionTransfer> {
 
-    VendorControl vendorControl = Session.getModelController(VendorControl.class);
+    @Inject
+    VendorControl vendorControl;
 
     /** Creates a new instance of VendorTypeDescriptionTransferCache */
     protected VendorTypeDescriptionTransferCache() {

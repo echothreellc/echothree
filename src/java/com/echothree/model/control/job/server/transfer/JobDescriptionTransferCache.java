@@ -16,18 +16,19 @@
 
 package com.echothree.model.control.job.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.job.common.transfer.JobDescriptionTransfer;
 import com.echothree.model.control.job.server.control.JobControl;
 import com.echothree.model.data.job.server.entity.JobDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class JobDescriptionTransferCache
         extends BaseJobDescriptionTransferCache<JobDescription, JobDescriptionTransfer> {
 
-    JobControl jobControl = Session.getModelController(JobControl.class);
+    @Inject
+    JobControl jobControl;
 
     /** Creates a new instance of JobDescriptionTransferCache */
     protected JobDescriptionTransferCache() {

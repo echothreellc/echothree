@@ -16,19 +16,20 @@
 
 package com.echothree.model.control.user.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.user.common.transfer.UserVisitGroupTransfer;
 import com.echothree.model.control.user.common.workflow.UserVisitGroupStatusConstants;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.user.server.entity.UserVisitGroup;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class UserVisitGroupTransferCache
         extends BaseUserTransferCache<UserVisitGroup, UserVisitGroupTransfer> {
 
-    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
+    @Inject
+    WorkflowControl workflowControl;
 
     /** Creates a new instance of UserVisitGroupTransferCache */
     protected UserVisitGroupTransferCache() {

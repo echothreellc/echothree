@@ -16,18 +16,19 @@
 
 package com.echothree.model.control.batch.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.batch.common.transfer.BatchAliasTransfer;
 import com.echothree.model.control.batch.server.control.BatchControl;
 import com.echothree.model.data.batch.server.entity.BatchAlias;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class BatchAliasTransferCache
         extends BaseBatchTransferCache<BatchAlias, BatchAliasTransfer> {
 
-    BatchControl batchControl = Session.getModelController(BatchControl.class);
+    @Inject
+    BatchControl batchControl;
 
     /** Creates a new instance of BatchAliasTransferCache */
     protected BatchAliasTransferCache() {

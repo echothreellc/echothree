@@ -16,20 +16,23 @@
 
 package com.echothree.model.control.term.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.term.common.transfer.PartyTermTransfer;
 import com.echothree.model.control.term.server.control.TermControl;
 import com.echothree.model.data.term.server.entity.PartyTerm;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class PartyTermTransferCache
         extends BaseTermTransferCache<PartyTerm, PartyTermTransfer> {
 
-    PartyControl partyControl = Session.getModelController(PartyControl.class);
-    TermControl termControl = Session.getModelController(TermControl.class);
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    TermControl termControl;
 
     /** Creates a new instance of PartyTermTransferCache */
     protected PartyTermTransferCache() {

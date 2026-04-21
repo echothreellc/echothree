@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.invoice.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.invoice.common.InvoiceOptions;
 import com.echothree.model.control.invoice.common.InvoiceTypes;
@@ -32,18 +33,27 @@ import com.echothree.model.data.invoice.server.entity.Invoice;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.common.transfer.MapWrapper;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class InvoiceTransferCache
         extends BaseInvoiceTransferCache<Invoice, InvoiceTransfer> {
-    
-    AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
-    BillingControl billingControl = Session.getModelController(BillingControl.class);
-    InvoiceControl invoiceControl = Session.getModelController(InvoiceControl.class);
-    TermControl termControl = Session.getModelController(TermControl.class);
-    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    BillingControl billingControl;
+
+    @Inject
+    InvoiceControl invoiceControl;
+
+    @Inject
+    TermControl termControl;
+
+    @Inject
+    WorkflowControl workflowControl;
+
     boolean includeLines;
     boolean includeRoles;
 

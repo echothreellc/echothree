@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.item.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
 import com.echothree.model.control.comment.common.CommentConstants;
@@ -43,24 +44,45 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.common.transfer.MapWrapper;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.transfer.ListWrapperBuilder;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class ItemTransferCache
         extends BaseItemTransferCache<Item, ItemTransfer> {
-    
-    AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
-    CancellationPolicyControl cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
-    ItemControl itemControl = Session.getModelController(ItemControl.class);
-    PartyControl partyControl = Session.getModelController(PartyControl.class);
-    ReturnPolicyControl returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
-    SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
-    TaxControl taxControl = Session.getModelController(TaxControl.class);
-    UomControl uomControl = Session.getModelController(UomControl.class);
-    VendorControl vendorControl = Session.getModelController(VendorControl.class);
-    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    CancellationPolicyControl cancellationPolicyControl;
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    OfferItemControl offerItemControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    ReturnPolicyControl returnPolicyControl;
+
+    @Inject
+    SequenceControl sequenceControl;
+
+    @Inject
+    TaxControl taxControl;
+
+    @Inject
+    UomControl uomControl;
+
+    @Inject
+    VendorControl vendorControl;
+
+    @Inject
+    WorkflowControl workflowControl;
     
     boolean includeItemShippingTimes;
     boolean includeItemAliases;
@@ -294,7 +316,7 @@ public class ItemTransferCache
             }
 
             if(includeOfferItems) {
-                var offerItemControl = Session.getModelController(OfferItemControl.class);
+
 
                 itemTransfer.setOfferItems(ListWrapperBuilder.getInstance().filter(transferProperties, offerItemControl.getOfferItemTransfersByItem(userVisit, item)));
             }

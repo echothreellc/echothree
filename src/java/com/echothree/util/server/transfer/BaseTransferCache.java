@@ -77,6 +77,15 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
     @Inject
     protected WorkEffortControl workEffortControl;
 
+    @Inject
+    protected EntityAliasControl entityAliasControl;
+
+    @Inject
+    protected CoreControl coreControl;
+
+    @Inject
+    protected TagControl tagControl;
+
     protected Session session;
     protected Map<K, V> transferCache;
     
@@ -213,7 +222,6 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
     }
 
     protected void setupEntityAliases(final UserVisit userVisit, EntityInstance entityInstance, V transfer) {
-        var entityAliasControl = Session.getModelController(EntityAliasControl.class);
         var entityAliasTransfers = entityAliasControl.getEntityAliasTransfersByEntityInstance(userVisit, entityInstance);
         var mapWrapper = new MapWrapper<EntityAliasTransfer>(entityAliasTransfers.size());
 
@@ -241,7 +249,6 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
     }
 
     protected void setupEntityAttributeGroups(final UserVisit userVisit, EntityInstance entityInstance, V transfer) {
-        var coreControl = Session.getModelController(CoreControl.class);
         var entityAttributeGroupTransfers = coreControl.getEntityAttributeGroupTransfersByEntityType(userVisit, entityInstance.getEntityType(), entityInstance);
         var mapWrapper = new MapWrapper<EntityAttributeGroupTransfer>(entityAttributeGroupTransfers.size());
 
@@ -269,7 +276,6 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
     }
 
     protected void setupTagScopes(final UserVisit userVisit, EntityInstance entityInstance, V transfer) {
-        var tagControl = Session.getModelController(TagControl.class);
         var tagScopes = tagControl.getTagScopesByEntityType(entityInstance.getEntityType());
         var mapWrapper = new MapWrapper<TagScopeTransfer>(tagScopes.size());
 

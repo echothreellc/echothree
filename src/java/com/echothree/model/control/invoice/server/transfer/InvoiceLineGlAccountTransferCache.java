@@ -16,20 +16,23 @@
 
 package com.echothree.model.control.invoice.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.invoice.common.transfer.InvoiceLineGlAccountTransfer;
 import com.echothree.model.control.invoice.server.control.InvoiceControl;
 import com.echothree.model.data.invoice.server.entity.InvoiceLineGlAccount;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class InvoiceLineGlAccountTransferCache
         extends BaseInvoiceTransferCache<InvoiceLineGlAccount, InvoiceLineGlAccountTransfer> {
 
-    AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
-    InvoiceControl invoiceControl = Session.getModelController(InvoiceControl.class);
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    InvoiceControl invoiceControl;
 
     /** Creates a new instance of InvoiceLineGlAccountTransferCache */
     protected InvoiceLineGlAccountTransferCache() {

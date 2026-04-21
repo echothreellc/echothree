@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.user.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.user.common.transfer.UserSessionTransfer;
 import com.echothree.model.data.user.server.entity.UserSession;
@@ -26,8 +27,9 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class UserSessionTransferCache
         extends BaseUserTransferCache<UserSession, UserSessionTransfer> {
-    
-    PartyControl partyControl = Session.getModelController(PartyControl.class);
+
+    @Inject
+    PartyControl partyControl;
 
     /** Creates a new instance of UserSessionTransferCache */
     protected UserSessionTransferCache() {

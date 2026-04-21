@@ -15,6 +15,7 @@
 // --------------------------------------------------------------------------------
 package com.echothree.model.control.accounting.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.accounting.common.AccountingOptions;
 import com.echothree.model.control.accounting.common.transfer.TransactionTimeTransfer;
 import com.echothree.model.control.accounting.common.transfer.TransactionTransfer;
@@ -27,17 +28,23 @@ import com.echothree.model.data.accounting.server.entity.Transaction;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.common.transfer.MapWrapper;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class TransactionTransferCache
         extends BaseAccountingTransferCache<Transaction, TransactionTransfer> {
 
-    AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
-    PartyControl partyControl = Session.getModelController(PartyControl.class);
-    TransactionTimeControl transactionTimeControl = Session.getModelController(TransactionTimeControl.class);
-    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    TransactionTimeControl transactionTimeControl;
+
+    @Inject
+    WorkflowControl workflowControl;
 
     boolean includeTransactionGlEntries;
     boolean includeTransactionEntityRoles;

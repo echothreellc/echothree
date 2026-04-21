@@ -16,20 +16,23 @@
 
 package com.echothree.model.control.document.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.document.common.transfer.PartyTypeDocumentTypeUsageTypeTransfer;
 import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.document.server.entity.PartyTypeDocumentTypeUsageType;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class PartyTypeDocumentTypeUsageTypeTransferCache
         extends BaseDocumentTransferCache<PartyTypeDocumentTypeUsageType, PartyTypeDocumentTypeUsageTypeTransfer> {
 
-    DocumentControl documentControl = Session.getModelController(DocumentControl.class);
-    PartyControl partyControl = Session.getModelController(PartyControl.class);
+    @Inject
+    DocumentControl documentControl;
+
+    @Inject
+    PartyControl partyControl;
 
     /** Creates a new instance of PartyTypeDocumentTypeUsageTypeTransferCache */
     protected PartyTypeDocumentTypeUsageTypeTransferCache() {

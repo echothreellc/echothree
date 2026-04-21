@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.user.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.associate.server.control.AssociateControl;
 import com.echothree.model.control.campaign.server.control.CampaignControl;
@@ -25,18 +26,26 @@ import com.echothree.model.control.user.common.UserOptions;
 import com.echothree.model.control.user.common.transfer.UserVisitTransfer;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class UserVisitTransferCache
         extends BaseUserTransferCache<UserVisit, UserVisitTransfer> {
-    
-    AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
-    AssociateControl associateControl = Session.getModelController(AssociateControl.class);
-    CampaignControl campaignControl = Session.getModelController(CampaignControl.class);
-    OfferUseControl offerUseControl = Session.getModelController(OfferUseControl.class);
-    PartyControl partyControl = Session.getModelController(PartyControl.class);
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    AssociateControl associateControl;
+
+    @Inject
+    CampaignControl campaignControl;
+
+    @Inject
+    OfferUseControl offerUseControl;
+
+    @Inject
+    PartyControl partyControl;
 
     boolean includeUserVisitCampaigns;
     

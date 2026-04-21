@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.item.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.item.common.ItemPriceTypes;
@@ -30,7 +31,6 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.common.transfer.HistoryTransfer;
 import com.echothree.util.common.transfer.ListWrapper;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.AmountUtils;
 import com.echothree.util.server.transfer.HistoryCache;
 import java.util.ArrayList;
@@ -41,11 +41,18 @@ import javax.enterprise.context.RequestScoped;
 public class ItemPriceTransferCache
         extends BaseItemTransferCache<ItemPrice, ItemPriceTransfer>
         implements HistoryCache<ItemPrice, ItemPriceTransfer> {
-    
-    AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
-    InventoryControl inventoryControl = Session.getModelController(InventoryControl.class);
-    ItemControl itemControl = Session.getModelController(ItemControl.class);
-    UomControl uomControl = Session.getModelController(UomControl.class);
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    InventoryControl inventoryControl;
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    UomControl uomControl;
     
     TransferProperties transferProperties;
     boolean filterItem;

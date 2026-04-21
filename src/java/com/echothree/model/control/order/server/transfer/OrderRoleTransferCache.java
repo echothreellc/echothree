@@ -16,20 +16,23 @@
 
 package com.echothree.model.control.order.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.order.common.transfer.OrderRoleTransfer;
 import com.echothree.model.control.order.server.control.OrderRoleControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.order.server.entity.OrderRole;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class OrderRoleTransferCache
         extends BaseOrderTransferCache<OrderRole, OrderRoleTransfer> {
 
-    OrderRoleControl orderRoleControl = Session.getModelController(OrderRoleControl.class);
-    PartyControl partyControl = Session.getModelController(PartyControl.class);
+    @Inject
+    OrderRoleControl orderRoleControl;
+
+    @Inject
+    PartyControl partyControl;
 
     /** Creates a new instance of OrderRoleTransferCache */
     protected OrderRoleTransferCache() {

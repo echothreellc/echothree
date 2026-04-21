@@ -24,23 +24,35 @@ import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.club.server.entity.ClubItem;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 @RequestScoped
 public class ClubItemTransferCache
         extends BaseClubTransferCache<ClubItem, ClubItemTransfer> {
 
-    ClubControl clubControl = Session.getModelController(ClubControl.class);
-    ItemControl itemControl = Session.getModelController(ItemControl.class);
-    UomControl uomControl = Session.getModelController(UomControl.class);
-    UnitOfMeasureKind timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
+    @Inject
+    ClubControl clubControl;
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    UomControl uomControl;
+
+    UnitOfMeasureKind timeUnitOfMeasureKind;
     
     /** Creates a new instance of ClubItemTransferCache */
     protected ClubItemTransferCache() {
         super();
     }
-    
+
+    @PostConstruct
+    public void setup() {
+        timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
+    }
+
     public ClubItemTransfer getClubItemTransfer(UserVisit userVisit, ClubItem clubItem) {
         var clubItemTransfer = get(clubItem);
         

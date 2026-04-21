@@ -16,20 +16,18 @@
 
 package com.echothree.model.control.core.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.core.common.transfer.EntityIntegerRangeDescriptionTransfer;
-import com.echothree.model.control.core.server.control.CoreControl;
+
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityIntegerRangeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class EntityIntegerRangeDescriptionTransferCache
         extends BaseCoreDescriptionTransferCache<EntityIntegerRangeDescription, EntityIntegerRangeDescriptionTransfer> {
-
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
-
+    
     /** Creates a new instance of EntityIntegerRangeDescriptionTransferCache */
     protected EntityIntegerRangeDescriptionTransferCache() {
         super();

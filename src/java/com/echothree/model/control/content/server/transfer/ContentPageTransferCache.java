@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.content.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.content.common.ContentOptions;
 import com.echothree.model.control.content.common.ContentProperties;
 import com.echothree.model.control.content.common.transfer.ContentPageAreaTransfer;
@@ -24,7 +25,6 @@ import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.data.content.server.entity.ContentPage;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.transfer.MapWrapperBuilder;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -34,7 +34,8 @@ import javax.enterprise.context.RequestScoped;
 public class ContentPageTransferCache
         extends BaseContentTransferCache<ContentPage, ContentPageTransfer> {
 
-    ContentControl contentControl = Session.getModelController(ContentControl.class);
+    @Inject
+    ContentControl contentControl;
 
     boolean includeContentPageAreas;
 

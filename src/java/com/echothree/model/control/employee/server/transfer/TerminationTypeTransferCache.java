@@ -16,18 +16,19 @@
 
 package com.echothree.model.control.employee.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.employee.common.transfer.TerminationTypeTransfer;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.data.employee.server.entity.TerminationType;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class TerminationTypeTransferCache
         extends BaseEmployeeTransferCache<TerminationType, TerminationTypeTransfer> {
 
-    EmployeeControl employeeControl = Session.getModelController(EmployeeControl.class);
+    @Inject
+    EmployeeControl employeeControl;
 
     /** Creates a new instance of TerminationTypeTransferCache */
     protected TerminationTypeTransferCache() {

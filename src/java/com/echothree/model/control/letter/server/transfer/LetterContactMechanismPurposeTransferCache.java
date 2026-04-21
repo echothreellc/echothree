@@ -16,20 +16,23 @@
 
 package com.echothree.model.control.letter.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.letter.common.transfer.LetterContactMechanismPurposeTransfer;
 import com.echothree.model.control.letter.server.control.LetterControl;
 import com.echothree.model.data.letter.server.entity.LetterContactMechanismPurpose;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class LetterContactMechanismPurposeTransferCache
         extends BaseLetterTransferCache<LetterContactMechanismPurpose, LetterContactMechanismPurposeTransfer> {
-    
-    ContactControl contactControl = Session.getModelController(ContactControl.class);
-    LetterControl letterControl = Session.getModelController(LetterControl.class);
+
+    @Inject
+    ContactControl contactControl;
+
+    @Inject
+    LetterControl letterControl;
     
     /** Creates a new instance of LetterContactMechanismPurposeTransferCache */
     protected LetterContactMechanismPurposeTransferCache() {

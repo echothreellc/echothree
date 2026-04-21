@@ -16,18 +16,19 @@
 
 package com.echothree.model.control.employee.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.employee.common.transfer.SkillTypeTransfer;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.data.employee.server.entity.SkillType;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class SkillTypeTransferCache
         extends BaseEmployeeTransferCache<SkillType, SkillTypeTransfer> {
 
-    EmployeeControl employeeControl = Session.getModelController(EmployeeControl.class);
+    @Inject
+    EmployeeControl employeeControl;
 
     /** Creates a new instance of SkillTypeTransferCache */
     protected SkillTypeTransferCache() {

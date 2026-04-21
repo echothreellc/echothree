@@ -16,22 +16,27 @@
 
 package com.echothree.model.control.message.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.core.server.control.EntityTypeControl;
 import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.message.common.transfer.MessageTypeTransfer;
 import com.echothree.model.control.message.server.control.MessageControl;
 import com.echothree.model.data.message.server.entity.MessageType;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class MessageTypeTransferCache
         extends BaseMessageTransferCache<MessageType, MessageTypeTransfer> {
-    
-    EntityTypeControl entityTypeControl = Session.getModelController(EntityTypeControl.class);
-    MessageControl messageControl = Session.getModelController(MessageControl.class);
-    MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
+
+    @Inject
+    EntityTypeControl entityTypeControl;
+
+    @Inject
+    MessageControl messageControl;
+
+    @Inject
+    MimeTypeControl mimeTypeControl;
 
     /** Creates a new instance of MessageTypeTransferCache */
     protected MessageTypeTransferCache() {

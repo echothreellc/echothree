@@ -16,18 +16,19 @@
 
 package com.echothree.model.control.item.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.item.common.transfer.HarmonizedTariffScheduleCodeUseTypeDescriptionTransfer;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.item.server.entity.HarmonizedTariffScheduleCodeUseTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class HarmonizedTariffScheduleCodeUseTypeDescriptionTransferCache
         extends BaseItemDescriptionTransferCache<HarmonizedTariffScheduleCodeUseTypeDescription, HarmonizedTariffScheduleCodeUseTypeDescriptionTransfer> {
 
-    ItemControl itemControl = Session.getModelController(ItemControl.class);
+    @Inject
+    ItemControl itemControl;
 
     /** Creates a new instance of HarmonizedTariffScheduleCodeUseTypeDescriptionTransferCache */
     protected HarmonizedTariffScheduleCodeUseTypeDescriptionTransferCache() {

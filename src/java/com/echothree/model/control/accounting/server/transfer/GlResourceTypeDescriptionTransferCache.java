@@ -16,18 +16,19 @@
 
 package com.echothree.model.control.accounting.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.accounting.common.transfer.GlResourceTypeDescriptionTransfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.data.accounting.server.entity.GlResourceTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class GlResourceTypeDescriptionTransferCache
         extends BaseAccountingDescriptionTransferCache<GlResourceTypeDescription, GlResourceTypeDescriptionTransfer> {
 
-    AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
+    @Inject
+    AccountingControl accountingControl;
 
     /** Creates a new instance of GlResourceTypeDescriptionTransferCache */
     protected GlResourceTypeDescriptionTransferCache() {

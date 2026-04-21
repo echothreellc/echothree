@@ -16,20 +16,23 @@
 
 package com.echothree.model.control.party.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.icon.server.control.IconControl;
 import com.echothree.model.control.party.common.transfer.MoodTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.party.server.entity.Mood;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class MoodTransferCache
         extends BasePartyTransferCache<Mood, MoodTransfer> {
-    
-    IconControl iconControl = Session.getModelController(IconControl.class);
-    PartyControl partyControl = Session.getModelController(PartyControl.class);
+
+    @Inject
+    IconControl iconControl;
+
+    @Inject
+    PartyControl partyControl;
 
     /** Creates a new instance of MoodTransferCache */
     protected MoodTransferCache() {

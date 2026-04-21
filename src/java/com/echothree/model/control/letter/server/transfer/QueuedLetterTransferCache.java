@@ -16,20 +16,23 @@
 
 package com.echothree.model.control.letter.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.letter.common.transfer.QueuedLetterTransfer;
 import com.echothree.model.control.letter.server.control.LetterControl;
 import com.echothree.model.data.letter.server.entity.QueuedLetter;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class QueuedLetterTransferCache
         extends BaseLetterTransferCache<QueuedLetter, QueuedLetterTransfer> {
-    
-    ChainControl chainControl = Session.getModelController(ChainControl.class);
-    LetterControl letterControl = Session.getModelController(LetterControl.class);
+
+    @Inject
+    ChainControl chainControl;
+
+    @Inject
+    LetterControl letterControl;
 
     /** Creates a new instance of QueuedLetterTransferCache */
     protected QueuedLetterTransferCache() {

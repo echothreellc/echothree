@@ -16,20 +16,18 @@
 
 package com.echothree.model.control.core.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.core.common.transfer.EntityAttributeEntityAttributeGroupTransfer;
-import com.echothree.model.control.core.server.control.CoreControl;
+
 import com.echothree.model.data.core.server.entity.EntityAttributeEntityAttributeGroup;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class EntityAttributeEntityAttributeGroupTransferCache
         extends BaseCoreTransferCache<EntityAttributeEntityAttributeGroup, EntityAttributeEntityAttributeGroupTransfer> {
-
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
-
+    
     /** Creates a new instance of EntityAttributeEntityAttributeGroupTransferCache */
     protected EntityAttributeEntityAttributeGroupTransferCache() {
         super();

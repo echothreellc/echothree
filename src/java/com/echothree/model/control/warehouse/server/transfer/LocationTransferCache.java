@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.warehouse.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.warehouse.common.WarehouseOptions;
 import com.echothree.model.control.warehouse.common.transfer.LocationTransfer;
@@ -26,17 +27,23 @@ import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.warehouse.server.entity.Location;
 import com.echothree.util.common.transfer.ListWrapper;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class LocationTransferCache
         extends BaseWarehouseTransferCache<Location, LocationTransfer> {
-    
-    InventoryControl inventoryControl = Session.getModelController(InventoryControl.class);
-    LocationUseTypeControl locationUseTypeControl = Session.getModelController(LocationUseTypeControl.class);
-    WarehouseControl warehouseControl = Session.getModelController(WarehouseControl.class);
-    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
+
+    @Inject
+    InventoryControl inventoryControl;
+
+    @Inject
+    LocationUseTypeControl locationUseTypeControl;
+
+    @Inject
+    WarehouseControl warehouseControl;
+
+    @Inject
+    WorkflowControl workflowControl;
 
     boolean includeCapacities;
     boolean includeVolume;

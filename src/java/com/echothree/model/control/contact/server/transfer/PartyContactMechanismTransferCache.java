@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.contact.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.contact.common.ContactOptions;
 import com.echothree.model.control.contact.common.transfer.PartyContactMechanismRelationshipTransfer;
 import com.echothree.model.control.contact.common.transfer.PartyContactMechanismTransfer;
@@ -24,7 +25,6 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.contact.server.entity.PartyContactMechanism;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
-import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -34,8 +34,11 @@ import javax.enterprise.context.RequestScoped;
 public class PartyContactMechanismTransferCache
         extends BaseContactTransferCache<PartyContactMechanism, PartyContactMechanismTransfer> {
 
-    ContactControl contactControl = Session.getModelController(ContactControl.class);
-    PartyControl partyControl = Session.getModelController(PartyControl.class);
+    @Inject
+    ContactControl contactControl;
+
+    @Inject
+    PartyControl partyControl;
 
     boolean includePartyContactMechanismPurposes;
     boolean includePartyContactMechanismRelationships;

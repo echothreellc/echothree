@@ -16,18 +16,19 @@
 
 package com.echothree.model.control.warehouse.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.warehouse.common.transfer.LocationTypeDescriptionTransfer;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.warehouse.server.entity.LocationTypeDescription;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class LocationTypeDescriptionTransferCache
         extends BaseWarehouseDescriptionTransferCache<LocationTypeDescription, LocationTypeDescriptionTransfer> {
 
-    WarehouseControl warehouseControl = Session.getModelController(WarehouseControl.class);
+    @Inject
+    WarehouseControl warehouseControl;
 
     /** Creates a new instance of LocationTypeDescriptionTransferCache */
     protected LocationTypeDescriptionTransferCache() {
