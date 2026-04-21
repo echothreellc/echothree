@@ -19,7 +19,7 @@ package com.echothree.model.control.tag.server.transfer;
 import javax.inject.Inject;
 import com.echothree.model.control.tag.common.TagOptions;
 import com.echothree.model.control.tag.common.transfer.TagTransfer;
-import com.echothree.model.control.tag.server.control.TagControl;
+
 import com.echothree.model.data.tag.server.entity.Tag;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import javax.enterprise.context.RequestScoped;
@@ -27,10 +27,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class TagTransferCache
         extends BaseTagTransferCache<Tag, TagTransfer> {
-
-    @Inject
-    TagControl tagControl;
-
+    
     boolean includeUsageCount;
 
     /** Creates a new instance of TagTransferCache */

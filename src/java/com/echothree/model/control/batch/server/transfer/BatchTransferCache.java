@@ -26,7 +26,6 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class BatchTransferCache
         extends GenericBatchTransferCache<BatchTransfer> {
-
     
     /** Creates a new instance of BatchTransferCache */
     protected BatchTransferCache() {

@@ -19,7 +19,6 @@ package com.echothree.model.control.core.server.transfer;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import com.echothree.model.control.core.common.transfer.EntityGeoPointAttributeTransfer;
-import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.core.server.entity.EntityGeoPointAttribute;
@@ -32,9 +31,6 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class EntityGeoPointAttributeTransferCache
         extends BaseCoreTransferCache<EntityGeoPointAttribute, EntityGeoPointAttributeTransfer> {
-
-    @Inject
-    CoreControl coreControl;
 
     @Inject
     UomControl uomControl;

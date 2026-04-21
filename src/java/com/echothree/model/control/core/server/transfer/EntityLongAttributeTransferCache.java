@@ -18,7 +18,7 @@ package com.echothree.model.control.core.server.transfer;
 
 import javax.inject.Inject;
 import com.echothree.model.control.core.common.transfer.EntityLongAttributeTransfer;
-import com.echothree.model.control.core.server.control.CoreControl;
+
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityLongAttribute;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -27,10 +27,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class EntityLongAttributeTransferCache
         extends BaseCoreTransferCache<EntityLongAttribute, EntityLongAttributeTransfer> {
-
-    @Inject
-    CoreControl coreControl;
-
+    
     /** Creates a new instance of EntityLongAttributeTransferCache */
     protected EntityLongAttributeTransferCache() {
         super();

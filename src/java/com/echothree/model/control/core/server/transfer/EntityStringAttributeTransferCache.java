@@ -19,7 +19,7 @@ package com.echothree.model.control.core.server.transfer;
 import javax.inject.Inject;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.core.common.transfer.EntityStringAttributeTransfer;
-import com.echothree.model.control.core.server.control.CoreControl;
+
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityStringAttribute;
@@ -29,10 +29,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class EntityStringAttributeTransferCache
         extends BaseCoreTransferCache<EntityStringAttribute, EntityStringAttributeTransfer> {
-
-    @Inject
-    CoreControl coreControl;
-
+    
     @Inject
     PartyControl partyControl;
 

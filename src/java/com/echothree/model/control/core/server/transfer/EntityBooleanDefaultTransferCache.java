@@ -18,7 +18,7 @@ package com.echothree.model.control.core.server.transfer;
 
 import javax.inject.Inject;
 import com.echothree.model.control.core.common.transfer.EntityBooleanDefaultTransfer;
-import com.echothree.model.control.core.server.control.CoreControl;
+
 import com.echothree.model.data.core.server.entity.EntityBooleanDefault;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import javax.enterprise.context.RequestScoped;
@@ -26,10 +26,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class EntityBooleanDefaultTransferCache
         extends BaseCoreTransferCache<EntityBooleanDefault, EntityBooleanDefaultTransfer> {
-
-    @Inject
-    CoreControl coreControl;
-
+    
     /** Creates a new instance of EntityBooleanDefaultTransferCache */
     protected EntityBooleanDefaultTransferCache() {
         super();

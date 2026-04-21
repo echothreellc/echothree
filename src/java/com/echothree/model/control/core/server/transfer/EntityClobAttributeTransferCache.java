@@ -19,7 +19,7 @@ package com.echothree.model.control.core.server.transfer;
 import javax.inject.Inject;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.core.common.transfer.EntityClobAttributeTransfer;
-import com.echothree.model.control.core.server.control.CoreControl;
+
 import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.core.server.entity.EntityClobAttribute;
@@ -30,10 +30,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class EntityClobAttributeTransferCache
         extends BaseCoreTransferCache<EntityClobAttribute, EntityClobAttributeTransfer> {
-
-    @Inject
-    CoreControl coreControl;
-
+    
     @Inject
     MimeTypeControl mimeTypeControl;
 

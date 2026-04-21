@@ -20,7 +20,7 @@ import javax.inject.Inject;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.core.common.CoreProperties;
 import com.echothree.model.control.core.common.transfer.MimeTypeTransfer;
-import com.echothree.model.control.core.server.control.CoreControl;
+
 import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -31,10 +31,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class MimeTypeTransferCache
         extends BaseCoreTransferCache<MimeType, MimeTypeTransfer> {
-
-    @Inject
-    CoreControl coreControl;
-
+    
     @Inject
     MimeTypeControl mimeTypeControl;
 

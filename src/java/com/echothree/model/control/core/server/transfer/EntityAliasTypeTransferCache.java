@@ -20,7 +20,7 @@ import javax.inject.Inject;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.core.common.CoreProperties;
 import com.echothree.model.control.core.common.transfer.EntityAliasTypeTransfer;
-import com.echothree.model.control.core.server.control.EntityAliasControl;
+
 import com.echothree.model.control.core.server.control.EntityTypeControl;
 import com.echothree.model.data.core.server.entity.EntityAliasType;
 import com.echothree.model.data.core.server.entity.EntityInstance;
@@ -31,10 +31,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class EntityAliasTypeTransferCache
         extends BaseCoreTransferCache<EntityAliasType, EntityAliasTypeTransfer> {
-
-    @Inject
-    EntityAliasControl entityAliasControl;
-
+    
     @Inject
     EntityTypeControl entityTypeControl;
 

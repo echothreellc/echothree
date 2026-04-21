@@ -20,7 +20,7 @@ import javax.inject.Inject;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.core.common.CoreProperties;
 import com.echothree.model.control.core.common.transfer.EntityListItemTransfer;
-import com.echothree.model.control.core.server.control.CoreControl;
+
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityListItem;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -30,10 +30,7 @@ import javax.enterprise.context.RequestScoped;
 @RequestScoped
 public class EntityListItemTransferCache
         extends BaseCoreTransferCache<EntityListItem, EntityListItemTransfer> {
-
-    @Inject
-    CoreControl coreControl;
-
+    
     TransferProperties transferProperties;
     boolean filterEntityAttribute;
     boolean filterEntityListItemName;
