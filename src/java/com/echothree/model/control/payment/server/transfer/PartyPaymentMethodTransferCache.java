@@ -61,6 +61,9 @@ public class PartyPaymentMethodTransferCache
     @Inject
     WorkflowControl workflowControl;
 
+    @Inject
+    SecurityRoleLogic securityRoleLogic;
+
     boolean needToMaskChecked = false;
 
     boolean includeNumber;
@@ -94,7 +97,7 @@ public class PartyPaymentMethodTransferCache
             if(includeNumber || includeSecurityCode) {
 
 
-                if(!SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, userControl.getPartyFromUserVisit(userVisit),
+                if(!securityRoleLogic.hasSecurityRoleUsingNames(null, userControl.getPartyFromUserVisit(userVisit),
                         SecurityRoleGroups.PartyPaymentMethod.name(), SecurityRoles.CreditCard.name())) {
                     includeNumber = false;
                     includeSecurityCode = false;

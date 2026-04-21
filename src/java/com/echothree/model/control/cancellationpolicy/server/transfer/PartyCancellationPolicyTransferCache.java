@@ -34,6 +34,9 @@ public class PartyCancellationPolicyTransferCache
 
     @Inject
     PartyControl partyControl;
+
+    @Inject
+    PartyCancellationPolicyLogic partyCancellationPolicyLogic;
     
     /** Creates a new instance of PartyCancellationPolicyTransferCache */
     protected PartyCancellationPolicyTransferCache() {
@@ -49,7 +52,7 @@ public class PartyCancellationPolicyTransferCache
 
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(partyCancellationPolicy.getPrimaryKey());
             var createdBy = getPartyPK(userVisit);
-            var partyCancellationPolicyStatusTransfer = PartyCancellationPolicyLogic.getInstance().getPartyCancellationPolicyStatusTransfer(userVisit, entityInstance, createdBy);
+            var partyCancellationPolicyStatusTransfer = partyCancellationPolicyLogic.getPartyCancellationPolicyStatusTransfer(userVisit, entityInstance, createdBy);
 
             partyCancellationPolicyTransfer = new PartyCancellationPolicyTransfer(party, cancellationPolicy, partyCancellationPolicyStatusTransfer);
             put(userVisit, partyCancellationPolicy, partyCancellationPolicyTransfer, entityInstance);

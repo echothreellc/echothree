@@ -35,6 +35,9 @@ public class PartyReturnPolicyTransferCache
     @Inject
     ReturnPolicyControl returnPolicyControl;
 
+    @Inject
+    PartyReturnPolicyLogic partyReturnPolicyLogic;
+
     /** Creates a new instance of PartyReturnPolicyTransferCache */
     protected PartyReturnPolicyTransferCache() {
         super();
@@ -49,7 +52,7 @@ public class PartyReturnPolicyTransferCache
 
             var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(partyReturnPolicy.getPrimaryKey());
             var createdBy = getPartyPK(userVisit);
-            var partyReturnPolicyStatusTransfer = PartyReturnPolicyLogic.getInstance().getPartyReturnPolicyStatusTransfer(userVisit, entityInstance, createdBy);
+            var partyReturnPolicyStatusTransfer = partyReturnPolicyLogic.getPartyReturnPolicyStatusTransfer(userVisit, entityInstance, createdBy);
 
             partyReturnPolicyTransfer = new PartyReturnPolicyTransfer(party, returnPolicy, partyReturnPolicyStatusTransfer);
             put(userVisit, partyReturnPolicy, partyReturnPolicyTransfer, entityInstance);
