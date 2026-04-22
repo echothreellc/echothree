@@ -31,18 +31,18 @@ import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetOfferItemsCommand
-        extends BaseMultipleEntitiesCommand<OfferItem, GetOfferItemsForm> {
+        extends BasePaginatedMultipleEntitiesCommand<OfferItem, GetOfferItemsForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -65,21 +65,30 @@ public class GetOfferItemsCommand
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
+    @Inject
+    OfferControl offerControl;
+
+    @Inject
+    OfferItemControl offerItemControl;
+
+    @Inject
+    OfferLogic offerLogic;
+
     private Offer offer;
-    
+
+    @Override
+    protected void handleForm() {
+        offer = offerLogic.getOfferByName(this, form.getOfferName());
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return hasExecutionErrors() ? null : offerItemControl.countOfferItemsByOffer(offer);
+    }
+
     @Override
     protected Collection<OfferItem> getEntities() {
-        Collection<OfferItem> offerItems = null;
-
-        offer = OfferLogic.getInstance().getOfferByName(this, form.getOfferName());
-
-        if(!hasExecutionErrors()) {
-            var offerItemControl = Session.getModelController(OfferItemControl.class);
-
-            offerItems = offerItemControl.getOfferItemsByOffer(offer);
-        }
-
-        return offerItems;
+        return hasExecutionErrors() ? null : offerItemControl.getOfferItemsByOffer(offer);
     }
     
     @Override
@@ -87,15 +96,14 @@ public class GetOfferItemsCommand
         var result = OfferResultFactory.getGetOfferItemsResult();
         
         if(entities != null) {
-            var offerControl = Session.getModelController(OfferControl.class);
-            var offerItemControl = Session.getModelController(OfferItemControl.class);
             var userVisit = getUserVisit();
             
+            result.setOffer(offerControl.getOfferTransfer(userVisit, offer));
+
             if(session.hasLimit(OfferItemFactory.class)) {
-                result.setOfferItemCount(offerItemControl.countOfferItemsByOffer(offer));
+                result.setOfferItemCount(getTotalEntities());
             }
 
-            result.setOffer(offerControl.getOfferTransfer(userVisit, offer));
             result.setOfferItems(offerItemControl.getOfferItemTransfers(userVisit, entities));
         }
         

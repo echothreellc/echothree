@@ -870,6 +870,7 @@ import com.echothree.model.data.item.server.entity.ItemWeightType;
 import com.echothree.model.data.item.server.entity.RelatedItem;
 import com.echothree.model.data.item.server.entity.RelatedItemType;
 import com.echothree.model.data.offer.common.OfferConstants;
+import com.echothree.model.data.offer.common.OfferItemConstants;
 import com.echothree.model.data.offer.common.OfferNameElementConstants;
 import com.echothree.model.data.offer.common.UseConstants;
 import com.echothree.model.data.offer.common.UseNameElementConstants;
@@ -3755,32 +3756,37 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("offerItems")
-    static Collection<OfferItemObject> offerItems(final DataFetchingEnvironment env,
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<OfferItemObject> offerItems(final DataFetchingEnvironment env,
             @GraphQLName("offerName") @GraphQLNonNull final String offerName) {
-        Collection<OfferItem> offerItem;
-        Collection<OfferItemObject> offerItemObjects;
+        CountingPaginatedData<OfferItemObject> data;
 
         try {
             var commandForm = OfferUtil.getHome().getGetOfferItemsForm();
+            var command = CDI.current().select(GetOfferItemsCommand.class).get();
 
             commandForm.setOfferName(offerName);
 
-            offerItem = CDI.current().select(GetOfferItemsCommand.class).get().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, OfferItemConstants.COMPONENT_VENDOR_NAME, OfferItemConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var offerItemObjects = entities.stream()
+                            .map(OfferItemObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, offerItemObjects);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(offerItem == null) {
-            offerItemObjects = emptyList();
-        } else {
-            offerItemObjects = new ArrayList<>(offerItem.size());
-
-            offerItem.stream()
-                    .map(OfferItemObject::new)
-                    .forEachOrdered(offerItemObjects::add);
-        }
-
-        return offerItemObjects;
+        return data;
     }
 
     @GraphQLField
