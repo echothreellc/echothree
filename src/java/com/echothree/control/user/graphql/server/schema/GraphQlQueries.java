@@ -876,6 +876,7 @@ import com.echothree.model.data.offer.common.UseNameElementConstants;
 import com.echothree.model.data.offer.common.UseTypeConstants;
 import com.echothree.model.data.offer.server.entity.Offer;
 import com.echothree.model.data.offer.server.entity.OfferItem;
+import com.echothree.model.data.offer.common.OfferItemPriceConstants;
 import com.echothree.model.data.offer.server.entity.OfferItemPrice;
 import com.echothree.model.data.offer.server.entity.OfferNameElement;
 import com.echothree.model.data.offer.server.entity.OfferUse;
@@ -3812,34 +3813,39 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("offerItemPrices")
-    static Collection<OfferItemPriceObject> offerItemPrices(final DataFetchingEnvironment env,
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<OfferItemPriceObject> offerItemPrices(final DataFetchingEnvironment env,
             @GraphQLName("offerName") @GraphQLNonNull final String offerName,
             @GraphQLName("itemName") @GraphQLNonNull final String itemName) {
-        Collection<OfferItemPrice> offerItemPrice;
-        Collection<OfferItemPriceObject> offerItemPriceObjects;
+        CountingPaginatedData<OfferItemPriceObject> data;
 
         try {
             var commandForm = OfferUtil.getHome().getGetOfferItemPricesForm();
+            var command = CDI.current().select(GetOfferItemPricesCommand.class).get();
 
             commandForm.setOfferName(offerName);
             commandForm.setItemName(itemName);
 
-            offerItemPrice = CDI.current().select(GetOfferItemPricesCommand.class).get().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, OfferItemPriceConstants.COMPONENT_VENDOR_NAME, OfferItemPriceConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var offerItemPrices = entities.stream()
+                            .map(OfferItemPriceObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, offerItemPrices);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(offerItemPrice == null) {
-            offerItemPriceObjects = emptyList();
-        } else {
-            offerItemPriceObjects = new ArrayList<>(offerItemPrice.size());
-
-            offerItemPrice.stream()
-                    .map(OfferItemPriceObject::new)
-                    .forEachOrdered(offerItemPriceObjects::add);
-        }
-
-        return offerItemPriceObjects;
+        return data;
     }
 
     @GraphQLField

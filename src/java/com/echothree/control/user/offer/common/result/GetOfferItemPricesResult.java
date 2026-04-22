@@ -25,16 +25,13 @@ import java.util.List;
 
 public interface GetOfferItemPricesResult
         extends BaseResult {
-    
-    OfferTransfer getOffer();
-    void setOffer(OfferTransfer offer);
-    
-    ItemTransfer getItem();
-    void setItem(ItemTransfer item);
-    
+
     OfferItemTransfer getOfferItem();
     void setOfferItem(OfferItemTransfer offerItem);
-    
+
+    Long getOfferItemPriceCount();
+    void setOfferItemPriceCount(Long offerItemPriceCount);
+
     List<OfferItemPriceTransfer> getOfferItemPrices();
     void setOfferItemPrices(List<OfferItemPriceTransfer> offerItemPrices);
     

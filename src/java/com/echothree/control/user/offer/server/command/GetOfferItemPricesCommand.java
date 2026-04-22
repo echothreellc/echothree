@@ -24,27 +24,25 @@ import com.echothree.model.control.offer.server.control.OfferItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.item.server.entity.Item;
-import com.echothree.model.data.offer.server.entity.Offer;
 import com.echothree.model.data.offer.server.entity.OfferItem;
 import com.echothree.model.data.offer.server.entity.OfferItemPrice;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.offer.server.factory.OfferItemPriceFactory;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetOfferItemPricesCommand
-        extends BaseMultipleEntitiesCommand<OfferItemPrice, GetOfferItemPricesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<OfferItemPrice, GetOfferItemPricesForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -54,13 +52,13 @@ public class GetOfferItemPricesCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.OfferItemPrice.name(), SecurityRoles.List.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("OfferName", FieldType.ENTITY_NAME, true, null, 20L),
                 new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
     
     /** Creates a new instance of GetOfferItemPricesCommand */
@@ -68,31 +66,30 @@ public class GetOfferItemPricesCommand
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
-    private Offer offer;
-    private Item item;
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    OfferControl offerControl;
+
+    @Inject
+    OfferItemControl offerItemControl;
+
     private OfferItem offerItem;
-    
+
     @Override
-    protected Collection<OfferItemPrice> getEntities() {
-        var offerControl = Session.getModelController(OfferControl.class);
+    protected void handleForm() {
         var offerName = form.getOfferName();
-        Collection<OfferItemPrice> offerItemPrices = null;
-        
-        offer = offerControl.getOfferByName(offerName);
-        
+        var offer = offerControl.getOfferByName(offerName);
+
         if(offer != null) {
-            var itemControl = Session.getModelController(ItemControl.class);
             var itemName = form.getItemName();
-           
-            item = itemControl.getItemByName(itemName);
-            
+            var item = itemControl.getItemByName(itemName);
+
             if(item != null) {
-                var offerItemControl = Session.getModelController(OfferItemControl.class);
                 offerItem = offerItemControl.getOfferItem(offer, item);
-                
-                if(offerItem != null) {
-                    offerItemPrices = offerItemControl.getOfferItemPricesByOfferItem(offerItem);
-                } else {
+
+                if(offerItem == null) {
                     addExecutionError(ExecutionErrors.UnknownOfferItem.name(), offer.getLastDetail().getOfferName(),
                             item.getLastDetail().getItemName());
                 }
@@ -102,8 +99,16 @@ public class GetOfferItemPricesCommand
         } else {
             addExecutionError(ExecutionErrors.UnknownOfferName.name(), offerName);
         }
-        
-        return offerItemPrices;
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return offerItem != null ? offerItemControl.countOfferItemPricesByOfferItem(offerItem) : null;
+    }
+
+    @Override
+    protected Collection<OfferItemPrice> getEntities() {
+        return offerItem != null ? offerItemControl.getOfferItemPricesByOfferItem(offerItem) : null;
     }
     
     @Override
@@ -111,14 +116,14 @@ public class GetOfferItemPricesCommand
         var result = OfferResultFactory.getGetOfferItemPricesResult();
         
         if (entities != null) {
-            var offerControl = Session.getModelController(OfferControl.class);
-            var offerItemControl = Session.getModelController(OfferItemControl.class);
-            var itemControl = Session.getModelController(ItemControl.class);
             var userVisit = getUserVisit();
             
-            result.setOffer(offerControl.getOfferTransfer(userVisit, offer));
-            result.setItem(itemControl.getItemTransfer(userVisit, item));
             result.setOfferItem(offerItemControl.getOfferItemTransfer(userVisit, offerItem));
+
+            if(session.hasLimit(OfferItemPriceFactory.class)) {
+                result.setOfferItemPriceCount(getTotalEntities());
+            }
+
             result.setOfferItemPrices(offerItemControl.getOfferItemPriceTransfers(userVisit, entities));
         }
         
