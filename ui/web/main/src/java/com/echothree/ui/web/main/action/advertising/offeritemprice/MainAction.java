@@ -63,8 +63,6 @@ public class MainAction
             var executionResult = commandResult.getExecutionResult();
             var result = (GetOfferItemPricesResult)executionResult.getResult();
             
-            request.setAttribute(AttributeConstants.OFFER, result.getOffer());
-            request.setAttribute(AttributeConstants.ITEM, result.getItem());
             request.setAttribute(AttributeConstants.OFFER_ITEM, result.getOfferItem());
             request.setAttribute(AttributeConstants.OFFER_ITEM_PRICES, result.getOfferItemPrices());
             forwardKey = ForwardConstants.DISPLAY;

@@ -100,8 +100,8 @@
             <br />
             <et:hasSecurityRole securityRole="OfferItemPrice.Create">
                 <c:url var="addUrl" value="/action/Advertising/OfferItemPrice/Add">
-                    <c:param name="OfferName" value="${offer.offerName}" />
-                    <c:param name="ItemName" value="${item.itemName}" />
+                    <c:param name="OfferName" value="${offerItem.offer.offerName}" />
+                    <c:param name="ItemName" value="${offerItem.item.itemName}" />
                 </c:url>
                 <p><a href="${addUrl}">Add Offer Item Price.</a></p>
             </et:hasSecurityRole>
