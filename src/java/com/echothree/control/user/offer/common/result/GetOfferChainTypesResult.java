@@ -30,8 +30,11 @@ public interface GetOfferChainTypesResult
     
     ChainTypeTransfer getChainType();
     void setChainType(ChainTypeTransfer chainType);
-    
+
+    Long getOfferChainTypeCount();
+    void setOfferChainTypeCount(Long offerChainTypeCount);
+
     List<OfferChainTypeTransfer> getOfferChainTypes();
     void setOfferChainTypes(List<OfferChainTypeTransfer> offerChainTypes);
-    
+
 }
