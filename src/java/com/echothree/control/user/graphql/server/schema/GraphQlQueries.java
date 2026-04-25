@@ -3649,11 +3649,12 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("offerUses")
-    static Collection<OfferUseObject> offerUses(final DataFetchingEnvironment env,
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<OfferUseObject> offerUses(final DataFetchingEnvironment env,
             @GraphQLName("offerName") final String offerName,
             @GraphQLName("useName") final String useName) {
-        Collection<OfferUse> offerUses;
-        Collection<OfferUseObject> offerUseObjects;
+        CountingPaginatedData<OfferUseObject> data;
 
         try {
             var commandForm = OfferUtil.getHome().getGetOfferUsesForm();
@@ -3661,22 +3662,27 @@ public interface GraphQlQueries {
             commandForm.setOfferName(offerName);
             commandForm.setUseName(useName);
 
-            offerUses = CDI.current().select(GetOfferUsesCommand.class).get().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var command = CDI.current().select(GetOfferUsesCommand.class).get();
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, OfferConstants.COMPONENT_VENDOR_NAME, OfferConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var offerUses = entities.stream()
+                            .map(OfferUseObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, offerUses);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(offerUses == null) {
-            offerUseObjects = emptyList();
-        } else {
-            offerUseObjects = new ArrayList<>(offerUses.size());
-
-            offerUses.stream()
-                    .map(OfferUseObject::new)
-                    .forEachOrdered(offerUseObjects::add);
-        }
-
-        return offerUseObjects;
+        return data;
     }
 
     @GraphQLField
