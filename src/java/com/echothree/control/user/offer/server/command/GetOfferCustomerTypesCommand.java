@@ -19,30 +19,32 @@ package com.echothree.control.user.offer.server.command;
 import com.echothree.control.user.offer.common.form.GetOfferCustomerTypesForm;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
 import com.echothree.model.control.customer.server.control.CustomerControl;
+import com.echothree.model.control.customer.server.logic.CustomerTypeLogic;
 import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.logic.OfferLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.customer.server.entity.CustomerType;
 import com.echothree.model.data.offer.server.entity.Offer;
 import com.echothree.model.data.offer.server.entity.OfferCustomerType;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.offer.server.factory.OfferCustomerTypeFactory;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetOfferCustomerTypesCommand
-        extends BaseMultipleEntitiesCommand<OfferCustomerType, GetOfferCustomerTypesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<OfferCustomerType, GetOfferCustomerTypesForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -52,13 +54,13 @@ public class GetOfferCustomerTypesCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.OfferCustomerType.name(), SecurityRoles.List.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("OfferName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("CustomerTypeName", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
     
     /** Creates a new instance of GetOfferCustomerTypesCommand */
@@ -66,42 +68,66 @@ public class GetOfferCustomerTypesCommand
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
+    @Inject
+    CustomerControl customerControl;
+
+    @Inject
+    OfferControl offerControl;
+
+    @Inject
+    CustomerTypeLogic customerTypeLogic;
+
+    @Inject
+    OfferLogic offerLogic;
+
     private Offer offer;
     private CustomerType customerType;
-    
+
     @Override
-    protected Collection<OfferCustomerType> getEntities() {
-        var offerControl = Session.getModelController(OfferControl.class);
+    protected void handleForm() {
         var offerName = form.getOfferName();
         var customerTypeName = form.getCustomerTypeName();
         var parameterCount = (offerName != null ? 1 : 0) + (customerTypeName != null ? 1 : 0);
-        Collection<OfferCustomerType> offerCustomerTypes = null;
 
         if(parameterCount == 1) {
             if(offerName != null) {
-                offer = offerControl.getOfferByName(offerName);
-
-                if(offer != null) {
-                    offerCustomerTypes = offerControl.getOfferCustomerTypesByOffer(offer);
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownOfferName.name(), offerName);
-                }
-            } else if(customerTypeName != null) {
-                var customerControl = Session.getModelController(CustomerControl.class);
-
-                customerType = customerControl.getCustomerTypeByName(customerTypeName);
-
-                if(customerType != null) {
-                    offerCustomerTypes = offerControl.getOfferCustomerTypesByCustomerType(customerType);
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownCustomerTypeName.name(), customerTypeName);
-                }
+                offer = offerLogic.getOfferByName(this, offerName);
+            } else {
+                customerType = customerTypeLogic.getCustomerTypeByName(this, customerTypeName);
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());
         }
+    }
 
-        return offerCustomerTypes;
+    @Override
+    protected Long getTotalEntities() {
+        Long total = null;
+
+        if(!hasExecutionErrors()) {
+            if(offer != null) {
+                total = offerControl.countOfferCustomerTypesByOffer(offer);
+            } else {
+                total = offerControl.countOfferCustomerTypesByCustomerType(customerType);
+            }
+        }
+
+        return total;
+    }
+
+    @Override
+    protected Collection<OfferCustomerType> getEntities() {
+        Collection<OfferCustomerType> entities = null;
+
+        if(!hasExecutionErrors()) {
+            if(offer != null) {
+                entities = offerControl.getOfferCustomerTypesByOffer(offer);
+            } else {
+                entities = offerControl.getOfferCustomerTypesByCustomerType(customerType);
+            }
+        }
+
+        return entities;
     }
     
     @Override
@@ -109,19 +135,21 @@ public class GetOfferCustomerTypesCommand
         var result = OfferResultFactory.getGetOfferCustomerTypesResult();
         
         if(entities != null) {
-            var offerControl = Session.getModelController(OfferControl.class);
+            var userVisit = getUserVisit();
 
             if(offer != null) {
-                result.setOffer(offerControl.getOfferTransfer(getUserVisit(), offer));
+                result.setOffer(offerControl.getOfferTransfer(userVisit, offer));
             }
 
             if(customerType != null) {
-                var customerControl = Session.getModelController(CustomerControl.class);
-
-                result.setCustomerType(customerControl.getCustomerTypeTransfer(getUserVisit(), customerType));
+                result.setCustomerType(customerControl.getCustomerTypeTransfer(userVisit, customerType));
             }
-            
-            result.setOfferCustomerTypes(offerControl.getOfferCustomerTypeTransfers(getUserVisit(), entities));
+
+            if(session.hasLimit(OfferCustomerTypeFactory.class)) {
+                result.setOfferCustomerTypeCount(getTotalEntities());
+            }
+
+            result.setOfferCustomerTypes(offerControl.getOfferCustomerTypeTransfers(userVisit, entities));
         }
 
         return result;
