@@ -23,26 +23,25 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.control.vendor.server.logic.VendorLogic;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.vendor.server.entity.Vendor;
 import com.echothree.model.data.vendor.server.entity.VendorItem;
 import com.echothree.model.data.vendor.server.entity.VendorItemCost;
+import com.echothree.model.data.vendor.server.factory.VendorItemCostFactory;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetVendorItemCostsCommand
-        extends BaseMultipleEntitiesCommand<VendorItemCost, GetVendorItemCostsForm> {
+        extends BasePaginatedMultipleEntitiesCommand<VendorItemCost, GetVendorItemCostsForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -52,13 +51,13 @@ public class GetVendorItemCostsCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.VendorItemCost.name(), SecurityRoles.List.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("VendorName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("VendorItemName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
     
     /** Creates a new instance of GetVendorItemCostsCommand */
@@ -66,15 +65,17 @@ public class GetVendorItemCostsCommand
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
-    Vendor vendor;
-    VendorItem vendorItem;
+    @Inject
+    VendorControl vendorControl;
+
+    @Inject
+    VendorLogic vendorLogic;
+
+    private VendorItem vendorItem;
 
     @Override
-    protected Collection<VendorItemCost> getEntities() {
-        var vendorControl = Session.getModelController(VendorControl.class);
-        Collection<VendorItemCost> entities = null;
-
-        vendor = VendorLogic.getInstance().getVendorByName(this, form.getVendorName(), null, null);
+    protected void handleForm() {
+        var vendor = vendorLogic.getVendorByName(this, form.getVendorName(), null, null);
 
         if(!hasExecutionErrors()) {
             var vendorParty = vendor.getParty();
@@ -82,14 +83,20 @@ public class GetVendorItemCostsCommand
 
             vendorItem = vendorControl.getVendorItemByVendorPartyAndVendorItemName(vendorParty, vendorItemName);
 
-            if(vendorItem != null) {
-                entities = vendorControl.getVendorItemCostsByVendorItem(vendorItem);
-            } else {
+            if(vendorItem == null) {
                 addExecutionError(ExecutionErrors.UnknownVendorItemName.name(), vendorItemName);
             }
         }
+    }
 
-        return entities;
+    @Override
+    protected Long getTotalEntities() {
+        return hasExecutionErrors() ? null : vendorControl.countVendorItemCostsByVendorItem(vendorItem);
+    }
+
+    @Override
+    protected Collection<VendorItemCost> getEntities() {
+        return hasExecutionErrors() ? null : vendorControl.getVendorItemCostsByVendorItem(vendorItem);
     }
 
     @Override
@@ -97,11 +104,14 @@ public class GetVendorItemCostsCommand
         var result = VendorResultFactory.getGetVendorItemCostsResult();
 
         if(entities != null) {
-            var vendorControl = Session.getModelController(VendorControl.class);
             var userVisit = getUserVisit();
 
-            result.setVendor(vendorControl.getVendorTransfer(userVisit, vendor));
             result.setVendorItem(vendorControl.getVendorItemTransfer(userVisit, vendorItem));
+
+            if(session.hasLimit(VendorItemCostFactory.class)) {
+                result.setVendorItemCostCount(getTotalEntities());
+            }
+
             result.setVendorItemCosts(vendorControl.getVendorItemCostTransfers(userVisit, entities));
         }
 
