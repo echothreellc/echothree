@@ -871,13 +871,13 @@ import com.echothree.model.data.item.server.entity.RelatedItem;
 import com.echothree.model.data.item.server.entity.RelatedItemType;
 import com.echothree.model.data.offer.common.OfferConstants;
 import com.echothree.model.data.offer.common.OfferItemConstants;
+import com.echothree.model.data.offer.common.OfferItemPriceConstants;
 import com.echothree.model.data.offer.common.OfferNameElementConstants;
 import com.echothree.model.data.offer.common.UseConstants;
 import com.echothree.model.data.offer.common.UseNameElementConstants;
 import com.echothree.model.data.offer.common.UseTypeConstants;
 import com.echothree.model.data.offer.server.entity.Offer;
 import com.echothree.model.data.offer.server.entity.OfferItem;
-import com.echothree.model.data.offer.common.OfferItemPriceConstants;
 import com.echothree.model.data.offer.server.entity.OfferItemPrice;
 import com.echothree.model.data.offer.server.entity.OfferNameElement;
 import com.echothree.model.data.offer.server.entity.OfferUse;
@@ -893,15 +893,15 @@ import com.echothree.model.data.order.server.entity.OrderType;
 import com.echothree.model.data.party.common.DateTimeFormatConstants;
 import com.echothree.model.data.party.common.LanguageConstants;
 import com.echothree.model.data.party.common.NameSuffixConstants;
+import com.echothree.model.data.party.common.PartyAliasTypeConstants;
 import com.echothree.model.data.party.common.PartyCompanyConstants;
-import com.echothree.model.data.party.common.PartyDepartmentConstants;
 import com.echothree.model.data.party.common.PartyConstants;
+import com.echothree.model.data.party.common.PartyDepartmentConstants;
+import com.echothree.model.data.party.common.PartyDivisionConstants;
 import com.echothree.model.data.party.common.PartyTypeConstants;
 import com.echothree.model.data.party.common.PersonalTitleConstants;
-import com.echothree.model.data.party.common.PartyAliasTypeConstants;
 import com.echothree.model.data.party.common.RoleTypeConstants;
 import com.echothree.model.data.party.common.TimeZoneConstants;
-import com.echothree.model.data.party.common.PartyDivisionConstants;
 import com.echothree.model.data.party.server.entity.DateTimeFormat;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
@@ -991,6 +991,7 @@ import com.echothree.model.data.user.server.entity.UserLogin;
 import com.echothree.model.data.user.server.entity.UserVisitGroup;
 import com.echothree.model.data.vendor.common.ItemPurchasingCategoryConstants;
 import com.echothree.model.data.vendor.common.VendorConstants;
+import com.echothree.model.data.vendor.common.VendorItemConstants;
 import com.echothree.model.data.vendor.common.VendorTypeConstants;
 import com.echothree.model.data.vendor.server.entity.ItemPurchasingCategory;
 import com.echothree.model.data.vendor.server.entity.Vendor;
@@ -7928,34 +7929,39 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("vendorItems")
-    static Collection<VendorItemObject> vendorItems(final DataFetchingEnvironment env,
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<VendorItemObject> vendorItems(final DataFetchingEnvironment env,
             @GraphQLName("vendorName") final String vendorName,
             @GraphQLName("itemName") final String itemName) {
-        Collection<VendorItem> vendorItems;
-        Collection<VendorItemObject> vendorItemObjects;
+        CountingPaginatedData<VendorItemObject> data;
 
         try {
             var commandForm = VendorUtil.getHome().getGetVendorItemsForm();
+            var command = CDI.current().select(GetVendorItemsCommand.class).get();
 
             commandForm.setVendorName(vendorName);
             commandForm.setItemName(itemName);
 
-            vendorItems = CDI.current().select(GetVendorItemsCommand.class).get().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, VendorItemConstants.COMPONENT_VENDOR_NAME, VendorItemConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var vendorItems = entities.stream()
+                            .map(VendorItemObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, vendorItems);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(vendorItems == null) {
-            vendorItemObjects = emptyList();
-        } else {
-            vendorItemObjects = new ArrayList<>(vendorItems.size());
-
-            vendorItems.stream()
-                    .map(VendorItemObject::new)
-                    .forEachOrdered(vendorItemObjects::add);
-        }
-
-        return vendorItemObjects;
+        return data;
     }
 
     @GraphQLField
