@@ -65,11 +65,18 @@ public class OfferUseControl
         return offerUse;
     }
 
+    public long countOfferUses() {
+        return session.queryForLong(
+                "SELECT COUNT(*) "
+                        + "FROM offeruses, offerusedetails "
+                        + "WHERE ofruse_activedetailid = ofrusedt_offerusedetailid");
+    }
+
     public long countOfferUsesByOffer(Offer offer) {
         return session.queryForLong(
                 "SELECT COUNT(*) "
-                + "FROM offeruses, offerusedetails "
-                + "WHERE ofruse_activedetailid = ofrusedt_offerusedetailid AND ofrusedt_ofr_offerid = ?",
+                        + "FROM offeruses, offerusedetails "
+                        + "WHERE ofruse_activedetailid = ofrusedt_offerusedetailid AND ofrusedt_ofr_offerid = ?",
                 offer);
     }
 
@@ -90,7 +97,8 @@ public class OfferUseControl
                     "WHERE ofruse_activedetailid = ofrusedt_offerusedetailid " +
                     "AND ofrusedt_use_useid = use_useid AND use_activedetailid = usedt_usedetailid " +
                     "AND ofrusedt_ofr_offerid = ofr_offerid AND ofr_activedetailid = ofrdt_offerdetailid " +
-                    "ORDER BY ofrdt_sortorder, ofrdt_offername, usedt_sortorder, usedt_usename";
+                    "ORDER BY ofrdt_sortorder, ofrdt_offername, usedt_sortorder, usedt_usename " +
+                    "_LIMIT_";
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
             query = "SELECT _ALL_ " +
                     "FROM offeruses, offerusedetails " +
@@ -122,7 +130,8 @@ public class OfferUseControl
                         "FROM offeruses, offerusedetails, uses, usedetails " +
                         "WHERE ofruse_activedetailid = ofrusedt_offerusedetailid AND ofrusedt_ofr_offerid = ? " +
                         "AND ofrusedt_use_useid = use_useid AND use_activedetailid = usedt_usedetailid " +
-                        "ORDER BY usedt_sortorder, usedt_usename";
+                        "ORDER BY usedt_sortorder, usedt_usename " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM offeruses, offerusedetails " +
@@ -161,7 +170,8 @@ public class OfferUseControl
                         "FROM offeruses, offerusedetails, offers, offerdetails " +
                         "WHERE ofruse_activedetailid = ofrusedt_offerusedetailid AND ofrusedt_use_useid = ? " +
                         "AND ofrusedt_ofr_offerid = ofr_offerid AND ofr_activedetailid = ofrdt_offerdetailid " +
-                        "ORDER BY ofrdt_sortorder, ofrdt_offername";
+                        "ORDER BY ofrdt_sortorder, ofrdt_offername " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM offeruses, offerusedetails " +
@@ -200,7 +210,8 @@ public class OfferUseControl
                         "FROM offeruses, offerusedetails, sequences, sequencedetails " +
                         "WHERE ofruse_activedetailid = ofrusedt_offerusedetailid AND ofrusedt_salesordersequenceid = ? " +
                         "AND ofrusedt_salesordersequenceid = sq_sequenceid AND sq_activedetailid = sqdt_sequencedetailid " +
-                        "ORDER BY sqdt_sortorder, sqdt_sequencename";
+                        "ORDER BY sqdt_sortorder, sqdt_sequencename " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM offeruses, offerusedetails " +

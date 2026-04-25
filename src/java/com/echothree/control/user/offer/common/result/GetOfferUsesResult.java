@@ -31,6 +31,9 @@ public interface GetOfferUsesResult
     UseTransfer getUse();
     void setUse(UseTransfer use);
 
+    Long getOfferUseCount();
+    void setOfferUseCount(Long offerUseCount);
+
     List<OfferUseTransfer> getOfferUses();
     void setOfferUses(List<OfferUseTransfer> offerUses);
     

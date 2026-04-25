@@ -17,9 +17,16 @@
 package com.echothree.model.control.offer.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
+import com.echothree.model.control.offer.server.control.OfferUseControl;
 import com.echothree.model.control.offer.server.control.UseControl;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.user.server.control.UserControl;
+import com.echothree.model.data.offer.common.OfferUseConstants;
 import com.echothree.model.data.offer.server.entity.Use;
 import com.echothree.model.data.offer.server.entity.UseDetail;
 import com.echothree.util.server.persistence.Session;
@@ -27,7 +34,10 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 @GraphQLDescription("use object")
 @GraphQLName("Use")
@@ -88,5 +98,25 @@ public class UseObject
 
         return useControl.getBestUseDescription(use, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
-    
+
+    @GraphQLField
+    @GraphQLDescription("offer uses")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<OfferUseObject> getOfferUses(final DataFetchingEnvironment env) {
+        if(OfferSecurityUtils.getHasOfferUsesAccess(env)) {
+            var offerUseControl = Session.getModelController(OfferUseControl.class);
+            var totalCount = offerUseControl.countOfferUsesByUse(use);
+
+            try(var objectLimiter = new ObjectLimiter(env, OfferUseConstants.COMPONENT_VENDOR_NAME, OfferUseConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = offerUseControl.getOfferUsesByUse(use);
+                var offerUses = entities.stream().map(OfferUseObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, offerUses);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
+
 }

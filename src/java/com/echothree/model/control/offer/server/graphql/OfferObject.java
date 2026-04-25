@@ -27,6 +27,7 @@ import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.offer.server.control.OfferItemControl;
+import com.echothree.model.control.offer.server.control.OfferUseControl;
 import com.echothree.model.control.party.server.graphql.DepartmentObject;
 import com.echothree.model.control.party.server.graphql.PartySecurityUtils;
 import com.echothree.model.control.selector.server.graphql.SelectorObject;
@@ -35,6 +36,7 @@ import com.echothree.model.control.sequence.server.graphql.SequenceObject;
 import com.echothree.model.control.sequence.server.graphql.SequenceSecurityUtils;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.offer.common.OfferItemConstants;
+import com.echothree.model.data.offer.common.OfferUseConstants;
 import com.echothree.model.data.offer.server.entity.Offer;
 import com.echothree.model.data.offer.server.entity.OfferDetail;
 import com.echothree.util.server.persistence.Session;
@@ -143,6 +145,26 @@ public class OfferObject
         var userControl = Session.getModelController(UserControl.class);
 
         return offerControl.getBestOfferDescription(offer, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
+    }
+
+    @GraphQLField
+    @GraphQLDescription("offer uses")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<OfferUseObject> getOfferUses(final DataFetchingEnvironment env) {
+        if(OfferSecurityUtils.getHasOfferUsesAccess(env)) {
+            var offerUseControl = Session.getModelController(OfferUseControl.class);
+            var totalCount = offerUseControl.countOfferUsesByOffer(offer);
+
+            try(var objectLimiter = new ObjectLimiter(env, OfferUseConstants.COMPONENT_VENDOR_NAME, OfferUseConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = offerUseControl.getOfferUsesByOffer(offer);
+                var offerUses = entities.stream().map(OfferUseObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, offerUses);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
     }
 
     @GraphQLField
