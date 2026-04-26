@@ -978,6 +978,7 @@ import com.echothree.model.data.term.common.TermTypeConstants;
 import com.echothree.model.data.term.server.entity.Term;
 import com.echothree.model.data.term.server.entity.TermType;
 import com.echothree.model.data.uom.common.UnitOfMeasureKindConstants;
+import com.echothree.model.data.uom.common.UnitOfMeasureKindUseConstants;
 import com.echothree.model.data.uom.common.UnitOfMeasureKindUseTypeConstants;
 import com.echothree.model.data.uom.common.UnitOfMeasureTypeConstants;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
@@ -6375,34 +6376,39 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("unitOfMeasureKindUses")
-    static Collection<UnitOfMeasureKindUseObject> unitOfMeasureKindUses(final DataFetchingEnvironment env,
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<UnitOfMeasureKindUseObject> unitOfMeasureKindUses(final DataFetchingEnvironment env,
             @GraphQLName("unitOfMeasureKindUseTypeName") final String unitOfMeasureKindUseTypeName,
             @GraphQLName("unitOfMeasureKindName") final String unitOfMeasureKindName) {
-        Collection<UnitOfMeasureKindUse> unitOfMeasureKindUses;
-        Collection<UnitOfMeasureKindUseObject> unitOfMeasureKindUseObjects;
+        CountingPaginatedData<UnitOfMeasureKindUseObject> data;
 
         try {
             var commandForm = UomUtil.getHome().getGetUnitOfMeasureKindUsesForm();
+            var command = CDI.current().select(GetUnitOfMeasureKindUsesCommand.class).get();
 
             commandForm.setUnitOfMeasureKindUseTypeName(unitOfMeasureKindUseTypeName);
             commandForm.setUnitOfMeasureKindName(unitOfMeasureKindName);
 
-            unitOfMeasureKindUses = CDI.current().select(GetUnitOfMeasureKindUsesCommand.class).get().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, UnitOfMeasureKindUseConstants.COMPONENT_VENDOR_NAME, UnitOfMeasureKindUseConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var unitOfMeasureKindUses = entities.stream()
+                            .map(UnitOfMeasureKindUseObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, unitOfMeasureKindUses);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(unitOfMeasureKindUses == null) {
-            unitOfMeasureKindUseObjects = emptyList();
-        } else {
-            unitOfMeasureKindUseObjects = new ArrayList<>(unitOfMeasureKindUses.size());
-
-            unitOfMeasureKindUses.stream()
-                    .map(UnitOfMeasureKindUseObject::new)
-                    .forEachOrdered(unitOfMeasureKindUseObjects::add);
-        }
-
-        return unitOfMeasureKindUseObjects;
+        return data;
     }
 
     @GraphQLField

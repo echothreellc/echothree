@@ -24,27 +24,27 @@ import com.echothree.model.control.uom.server.logic.UnitOfMeasureKindUseLogic;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKindUse;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKindUseType;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.uom.server.factory.UnitOfMeasureKindUseFactory;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
-import com.echothree.util.server.persistence.Session;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetUnitOfMeasureKindUsesCommand
-        extends BaseMultipleEntitiesCommand<UnitOfMeasureKindUse, GetUnitOfMeasureKindUsesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<UnitOfMeasureKindUse, GetUnitOfMeasureKindUsesForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("UnitOfMeasureKindName", FieldType.ENTITY_NAME, false, null, null),
-            new FieldDefinition("UnitOfMeasureKindUseTypeName", FieldType.ENTITY_NAME, false, null, null)
+                new FieldDefinition("UnitOfMeasureKindName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("UnitOfMeasureKindUseTypeName", FieldType.ENTITY_NAME, false, null, null)
         );
     }
     
@@ -53,36 +53,60 @@ public class GetUnitOfMeasureKindUsesCommand
         super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
-    UnitOfMeasureKind unitOfMeasureKind;
-    UnitOfMeasureKindUseType unitOfMeasureKindUseType;
+    @Inject
+    UomControl uomControl;
+
+    @Inject
+    UnitOfMeasureKindLogic unitOfMeasureKindLogic;
+
+    @Inject
+    UnitOfMeasureKindUseLogic unitOfMeasureKindUseLogic;
+
+    private UnitOfMeasureKind unitOfMeasureKind;
+    private UnitOfMeasureKindUseType unitOfMeasureKindUseType;
     
     @Override
-    protected Collection<UnitOfMeasureKindUse> getEntities() {
-        Collection<UnitOfMeasureKindUse> entities = null;
+    protected void handleForm() {
         var unitOfMeasureKindName = form.getUnitOfMeasureKindName();
         var unitOfMeasureKindUseTypeName = form.getUnitOfMeasureKindUseTypeName();
         var parameterCount = (unitOfMeasureKindName == null ? 0 : 1) + (unitOfMeasureKindUseTypeName == null ? 0 : 1);
-        
+
         if(parameterCount == 1) {
             if(unitOfMeasureKindName != null) {
-                unitOfMeasureKind = UnitOfMeasureKindLogic.getInstance().getUnitOfMeasureKindByName(this, unitOfMeasureKindName);
-                
-                if(!hasExecutionErrors()) {
-                    var uomControl = Session.getModelController(UomControl.class);
-
-                    entities = uomControl.getUnitOfMeasureKindUsesByUnitOfMeasureKind(unitOfMeasureKind);
-                }
+                unitOfMeasureKind = unitOfMeasureKindLogic.getUnitOfMeasureKindByName(this, unitOfMeasureKindName);
             } else {
-                unitOfMeasureKindUseType = UnitOfMeasureKindUseLogic.getInstance().getUnitOfMeasureKindUseTypeByName(this, unitOfMeasureKindUseTypeName);
-                
-                if(!hasExecutionErrors()) {
-                    var uomControl = Session.getModelController(UomControl.class);
-
-                    entities = uomControl.getUnitOfMeasureKindUsesByUnitOfMeasureKindUseType(unitOfMeasureKindUseType);
-                }
+                unitOfMeasureKindUseType = unitOfMeasureKindUseLogic.getUnitOfMeasureKindUseTypeByName(this, unitOfMeasureKindUseTypeName);
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());
+        }
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        Long totalEntities = null;
+
+        if(!hasExecutionErrors()) {
+            if(unitOfMeasureKind != null) {
+                totalEntities = uomControl.countUnitOfMeasureKindUsesByUnitOfMeasureKind(unitOfMeasureKind);
+            } else {
+                totalEntities = uomControl.countUnitOfMeasureKindUsesByUnitOfMeasureKindUseType(unitOfMeasureKindUseType);
+            }
+        }
+
+        return totalEntities;
+    }
+
+    @Override
+    protected Collection<UnitOfMeasureKindUse> getEntities() {
+        Collection<UnitOfMeasureKindUse> entities = null;
+        
+        if(!hasExecutionErrors()) {
+            if(unitOfMeasureKind != null) {
+                entities = uomControl.getUnitOfMeasureKindUsesByUnitOfMeasureKind(unitOfMeasureKind);
+            } else {
+                entities = uomControl.getUnitOfMeasureKindUsesByUnitOfMeasureKindUseType(unitOfMeasureKindUseType);
+            }
         }
         
         return entities;
@@ -93,18 +117,22 @@ public class GetUnitOfMeasureKindUsesCommand
         var result = UomResultFactory.getGetUnitOfMeasureKindUsesResult();
         
         if(entities != null) {
-            var uomControl = Session.getModelController(UomControl.class);
+            var userVisit = getUserVisit();
 
             if(unitOfMeasureKind != null) {
-                result.setUnitOfMeasureKind(uomControl.getUnitOfMeasureKindTransfer(getUserVisit(), unitOfMeasureKind));
+                result.setUnitOfMeasureKind(uomControl.getUnitOfMeasureKindTransfer(userVisit, unitOfMeasureKind));
             } else {
-                result.setUnitOfMeasureKindUseType(uomControl.getUnitOfMeasureKindUseTypeTransfer(getUserVisit(), unitOfMeasureKindUseType));
+                result.setUnitOfMeasureKindUseType(uomControl.getUnitOfMeasureKindUseTypeTransfer(userVisit, unitOfMeasureKindUseType));
             }
 
-            result.setUnitOfMeasureKindUses(uomControl.getUnitOfMeasureKindUseTransfers(getUserVisit(), entities));
+            if(session.hasLimit(UnitOfMeasureKindUseFactory.class)) {
+                result.setUnitOfMeasureKindUseCount(getTotalEntities());
+            }
+
+            result.setUnitOfMeasureKindUses(uomControl.getUnitOfMeasureKindUseTransfers(userVisit, entities));
         }
         
         return result;
     }
-        
+    
 }
