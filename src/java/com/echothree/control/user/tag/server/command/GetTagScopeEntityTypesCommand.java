@@ -18,6 +18,7 @@ package com.echothree.control.user.tag.server.command;
 
 import com.echothree.control.user.tag.common.form.GetTagScopeEntityTypesForm;
 import com.echothree.control.user.tag.common.result.TagResultFactory;
+import com.echothree.model.control.core.server.control.EntityTypeControl;
 import com.echothree.model.control.core.server.logic.EntityTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -27,23 +28,23 @@ import com.echothree.model.control.tag.server.logic.TagScopeLogic;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.tag.server.entity.TagScope;
 import com.echothree.model.data.tag.server.entity.TagScopeEntityType;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.tag.server.factory.TagScopeEntityTypeFactory;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetTagScopeEntityTypesCommand
-        extends BaseMultipleEntitiesCommand<TagScopeEntityType, GetTagScopeEntityTypesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<TagScopeEntityType, GetTagScopeEntityTypesForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -68,35 +69,61 @@ public class GetTagScopeEntityTypesCommand
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
-    TagScope tagScope;
-    EntityType entityType;
+    @Inject
+    TagControl tagControl;
+
+    @Inject
+    EntityTypeLogic entityTypeLogic;
+
+    @Inject
+    TagScopeLogic tagScopeLogic;
+
+    private TagScope tagScope;
+    private EntityType entityType;
 
     @Override
-    protected Collection<TagScopeEntityType> getEntities() {
+    protected void handleForm() {
         var tagScopeName = form.getTagScopeName();
         var componentVendorName = form.getComponentVendorName();
         var entityTypeName = form.getEntityTypeName();
         var parameterCount = (tagScopeName == null ? 0 : 1) + (componentVendorName == null && entityTypeName == null ? 0 : 1);
-        Collection<TagScopeEntityType> entities = null;
 
         if(parameterCount == 1) {
-            var tagControl = Session.getModelController(TagControl.class);
-
             if(tagScopeName != null) {
-                tagScope = TagScopeLogic.getInstance().getTagScopeByName(this, tagScopeName);
-
-                if(!hasExecutionErrors()) {
-                    entities = tagControl.getTagScopeEntityTypesByTagScope(tagScope);
-                }
+                tagScope = tagScopeLogic.getTagScopeByName(this, tagScopeName);
             } else {
-                entityType = EntityTypeLogic.getInstance().getEntityTypeByName(this, componentVendorName, entityTypeName);
-
-                if(!hasExecutionErrors()) {
-                    entities = tagControl.getTagScopeEntityTypesByEntityType(entityType);
-                }
+                entityType = entityTypeLogic.getEntityTypeByName(this, componentVendorName, entityTypeName);
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());
+        }
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        Long totalEntities = null;
+
+        if(!hasExecutionErrors()) {
+            if(tagScope != null) {
+                totalEntities = tagControl.countTagScopeEntityTypesByTagScope(tagScope);
+            } else {
+                totalEntities = tagControl.countTagScopeEntityTypesByEntityType(entityType);
+            }
+        }
+
+        return totalEntities;
+    }
+
+    @Override
+    protected Collection<TagScopeEntityType> getEntities() {
+        Collection<TagScopeEntityType> entities = null;
+
+        if(!hasExecutionErrors()) {
+            if(tagScope != null) {
+                entities = tagControl.getTagScopeEntityTypesByTagScope(tagScope);
+            } else {
+                entities = tagControl.getTagScopeEntityTypesByEntityType(entityType);
+            }
         }
 
         return entities;
@@ -107,13 +134,16 @@ public class GetTagScopeEntityTypesCommand
         var result = TagResultFactory.getGetTagScopeEntityTypesResult();
 
         if(entities != null) {
-            var tagControl = Session.getModelController(TagControl.class);
             var userVisit = getUserVisit();
 
             if(tagScope != null) {
                 result.setTagScope(tagControl.getTagScopeTransfer(userVisit, tagScope));
             } else {
                 result.setEntityType(entityTypeControl.getEntityTypeTransfer(userVisit, entityType));
+            }
+
+            if(session.hasLimit(TagScopeEntityTypeFactory.class)) {
+                result.setTagScopeEntityTypeCount(getTotalEntities());
             }
 
             result.setTagScopeEntityTypes(tagControl.getTagScopeEntityTypeTransfers(userVisit, entities));
