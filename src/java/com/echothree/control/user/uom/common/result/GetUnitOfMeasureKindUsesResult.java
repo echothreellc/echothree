@@ -33,5 +33,8 @@ public interface GetUnitOfMeasureKindUsesResult
     
     List<UnitOfMeasureKindUseTransfer> getUnitOfMeasureKindUses();
     void setUnitOfMeasureKindUses(List<UnitOfMeasureKindUseTransfer> unitOfMeasureKindUses);
+
+    Long getUnitOfMeasureKindUseCount();
+    void setUnitOfMeasureKindUseCount(Long unitOfMeasureKindUseCount);
     
 }
