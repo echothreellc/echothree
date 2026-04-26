@@ -992,6 +992,7 @@ import com.echothree.model.data.user.server.entity.UserVisitGroup;
 import com.echothree.model.data.vendor.common.ItemPurchasingCategoryConstants;
 import com.echothree.model.data.vendor.common.VendorConstants;
 import com.echothree.model.data.vendor.common.VendorItemConstants;
+import com.echothree.model.data.vendor.common.VendorItemCostConstants;
 import com.echothree.model.data.vendor.common.VendorTypeConstants;
 import com.echothree.model.data.vendor.server.entity.ItemPurchasingCategory;
 import com.echothree.model.data.vendor.server.entity.Vendor;
@@ -7993,11 +7994,12 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("vendorItemCosts")
-    static Collection<VendorItemCostObject> vendorItemCosts(final DataFetchingEnvironment env,
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<VendorItemCostObject> vendorItemCosts(final DataFetchingEnvironment env,
             @GraphQLName("vendorName") @GraphQLNonNull final String vendorName,
             @GraphQLName("vendorItemName") @GraphQLNonNull final String vendorItemName) {
-        Collection<VendorItemCost> vendorItemCosts;
-        Collection<VendorItemCostObject> vendorItemCostObjects;
+        CountingPaginatedData<VendorItemCostObject> data;
 
         try {
             var commandForm = VendorUtil.getHome().getGetVendorItemCostsForm();
@@ -8005,22 +8007,27 @@ public interface GraphQlQueries {
             commandForm.setVendorName(vendorName);
             commandForm.setVendorItemName(vendorItemName);
 
-            vendorItemCosts = CDI.current().select(GetVendorItemCostsCommand.class).get().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var command = CDI.current().select(GetVendorItemCostsCommand.class).get();
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, VendorItemCostConstants.COMPONENT_VENDOR_NAME, VendorItemCostConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var vendorItemCosts = entities.stream()
+                            .map(VendorItemCostObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, vendorItemCosts);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(vendorItemCosts == null) {
-            vendorItemCostObjects = emptyList();
-        } else {
-            vendorItemCostObjects = new ArrayList<>(vendorItemCosts.size());
-
-            vendorItemCosts.stream()
-                    .map(VendorItemCostObject::new)
-                    .forEachOrdered(vendorItemCostObjects::add);
-        }
-
-        return vendorItemCostObjects;
+        return data;
     }
 
     @GraphQLField

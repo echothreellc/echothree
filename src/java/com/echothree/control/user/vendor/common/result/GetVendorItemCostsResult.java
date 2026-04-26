@@ -18,19 +18,18 @@ package com.echothree.control.user.vendor.common.result;
 
 import com.echothree.model.control.vendor.common.transfer.VendorItemCostTransfer;
 import com.echothree.model.control.vendor.common.transfer.VendorItemTransfer;
-import com.echothree.model.control.vendor.common.transfer.VendorTransfer;
 import com.echothree.util.common.command.BaseResult;
 import java.util.List;
 
 public interface GetVendorItemCostsResult
         extends BaseResult {
     
-    VendorTransfer getVendor();
-    void setVendor(VendorTransfer vendor);
-    
     VendorItemTransfer getVendorItem();
     void setVendorItem(VendorItemTransfer vendor);
     
+    Long getVendorItemCostCount();
+    void setVendorItemCostCount(Long vendorItemCostCount);
+
     List<VendorItemCostTransfer> getVendorItemCosts();
     void setVendorItemCosts(List<VendorItemCostTransfer> vendorItemCosts);
     
