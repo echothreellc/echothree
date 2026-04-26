@@ -969,6 +969,7 @@ import com.echothree.model.data.shipping.common.ShippingMethodConstants;
 import com.echothree.model.data.shipping.server.entity.ShippingMethod;
 import com.echothree.model.data.tag.common.TagConstants;
 import com.echothree.model.data.tag.common.TagScopeConstants;
+import com.echothree.model.data.tag.common.TagScopeEntityTypeConstants;
 import com.echothree.model.data.tag.server.entity.EntityTag;
 import com.echothree.model.data.tag.server.entity.Tag;
 import com.echothree.model.data.tag.server.entity.TagScope;
@@ -11288,34 +11289,33 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("tagScopeEntityTypes")
-    static Collection<TagScopeEntityTypeObject> tagScopeEntityTypes(final DataFetchingEnvironment env,
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<TagScopeEntityTypeObject> tagScopeEntityTypes(final DataFetchingEnvironment env,
             @GraphQLName("tagScopeName") final String tagScopeName,
             @GraphQLName("componentVendorName") final String componentVendorName,
             @GraphQLName("entityTypeName") final String entityTypeName) {
-        Collection<TagScopeEntityType> tagScopeEntityTypes;
-        Collection<TagScopeEntityTypeObject> tagScopeEntityTypeObjects;
-
         try {
             var commandForm = TagUtil.getHome().getGetTagScopeEntityTypesForm();
+            var command = CDI.current().select(GetTagScopeEntityTypesCommand.class).get();
 
             commandForm.setTagScopeName(tagScopeName);
             commandForm.setComponentVendorName(componentVendorName);
             commandForm.setEntityTypeName(entityTypeName);
 
-            tagScopeEntityTypes = CDI.current().select(GetTagScopeEntityTypesCommand.class).get().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                return Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, TagScopeEntityTypeConstants.COMPONENT_VENDOR_NAME, TagScopeEntityTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    return new CountedObjects<>(objectLimiter, entities.stream().map(TagScopeEntityTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size()))));
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
-
-        if(tagScopeEntityTypes == null) {
-            tagScopeEntityTypeObjects = emptyList();
-        } else {
-            tagScopeEntityTypeObjects = new ArrayList<>(tagScopeEntityTypes.size());
-
-            tagScopeEntityTypes.stream().map(TagScopeEntityTypeObject::new).forEachOrdered(tagScopeEntityTypeObjects::add);
-        }
-
-        return tagScopeEntityTypeObjects;
     }
 
     @GraphQLField

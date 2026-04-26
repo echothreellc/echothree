@@ -30,8 +30,11 @@ public interface GetTagScopeEntityTypesResult
     
     EntityTypeTransfer getEntityType();
     void setEntityType(EntityTypeTransfer entityType);
-    
+
+    Long getTagScopeEntityTypeCount();
+    void setTagScopeEntityTypeCount(Long tagScopeEntityTypeCount);
+
     List<TagScopeEntityTypeTransfer> getTagScopeEntityTypes();
     void setTagScopeEntityTypes(List<TagScopeEntityTypeTransfer> tagScopeEntityTypes);
-    
+
 }
