@@ -16,6 +16,8 @@
 
 package com.echothree.model.control.subscription.server.transfer;
 
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.subscription.common.transfer.SubscriptionTypeChainTransfer;
 import com.echothree.model.control.subscription.server.control.SubscriptionControl;
@@ -24,23 +26,33 @@ import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.subscription.server.entity.SubscriptionTypeChain;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class SubscriptionTypeChainTransferCache
         extends BaseSubscriptionTransferCache<SubscriptionTypeChain, SubscriptionTypeChainTransfer> {
-    
-    ChainControl chainControl = Session.getModelController(ChainControl.class);
-    SubscriptionControl subscriptionControl = Session.getModelController(SubscriptionControl.class);
-    UomControl uomControl = Session.getModelController(UomControl.class);
-    UnitOfMeasureKind timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
+
+    @Inject
+    ChainControl chainControl;
+
+    @Inject
+    SubscriptionControl subscriptionControl;
+
+    @Inject
+    UomControl uomControl;
+
+    UnitOfMeasureKind timeUnitOfMeasureKind;
     
     /** Creates a new instance of SubscriptionTypeChainTransferCache */
     protected SubscriptionTypeChainTransferCache() {
         super();
     }
-    
+
+    @PostConstruct
+    public void setup() {
+        timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
+    }
+
     public SubscriptionTypeChainTransfer getSubscriptionTypeChainTransfer(UserVisit userVisit, SubscriptionTypeChain subscriptionTypeChain) {
         var subscriptionTypeChainTransfer = get(subscriptionTypeChain);
         

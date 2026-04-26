@@ -16,22 +16,28 @@
 
 package com.echothree.model.control.security.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.transfer.SecurityRolePartyTypeTransfer;
 import com.echothree.model.control.security.server.control.SecurityControl;
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.security.server.entity.SecurityRolePartyType;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class SecurityRolePartyTypeTransferCache
         extends BaseSecurityTransferCache<SecurityRolePartyType, SecurityRolePartyTypeTransfer> {
-    
-    PartyControl partyControl = Session.getModelController(PartyControl.class);
-    SecurityControl securityControl = Session.getModelController(SecurityControl.class);
-    SelectorControl selectorControl = Session.getModelController(SelectorControl.class);
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    SecurityControl securityControl;
+
+    @Inject
+    SelectorControl selectorControl;
+
         
     /** Creates a new instance of SecurityRolePartyTypeTransferCache */
     protected SecurityRolePartyTypeTransferCache() {

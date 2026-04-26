@@ -682,6 +682,22 @@ public class OfferControl
         return offerCustomerType;
     }
 
+    public long countOfferCustomerTypesByOffer(Offer offer) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM offercustomertypes
+                        WHERE ofrcuty_ofr_offerid = ? AND ofrcuty_thrutime = ?
+                        """, offer, Session.MAX_TIME);
+    }
+
+    public long countOfferCustomerTypesByCustomerType(CustomerType customerType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM offercustomertypes
+                        WHERE ofrcuty_cuty_customertypeid = ? AND ofrcuty_thrutime = ?
+                        """, customerType, Session.MAX_TIME);
+    }
+
     private OfferCustomerType getOfferCustomerType(Offer offer, CustomerType customerType, EntityPermission entityPermission) {
         OfferCustomerType offerCustomerType;
 
@@ -782,7 +798,8 @@ public class OfferControl
                         "FROM offercustomertypes, customertypes, customertypedetails " +
                         "WHERE ofrcuty_ofr_offerid = ? AND ofrcuty_thrutime = ? " +
                         "AND ofrcuty_cuty_customertypeid = cuty_customertypeid AND cuty_lastdetailid = cutydt_customertypedetailid " +
-                        "ORDER BY cutydt_sortorder, cutydt_customertypename";
+                        "ORDER BY cutydt_sortorder, cutydt_customertypename " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM offercustomertypes " +
@@ -822,7 +839,8 @@ public class OfferControl
                         "FROM offercustomertypes, offers, offerdetails " +
                         "WHERE ofrcuty_cuty_customertypeid = ? AND ofrcuty_thrutime = ? " +
                         "AND ofrcuty_ofr_offerid = ofr_offerid AND ofr_lastdetailid = ofrdt_offerdetailid " +
-                        "ORDER BY ofrdt_sortorder, ofrdt_offername";
+                        "ORDER BY ofrdt_sortorder, ofrdt_offername " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM offercustomertypes " +
@@ -966,7 +984,23 @@ public class OfferControl
         
         return offerChainType;
     }
-    
+
+    public long countOfferChainTypesByOffer(Offer offer) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM offerchaintypes
+                        WHERE ofrchntyp_ofr_offerid = ? AND ofrchntyp_thrutime = ?
+                        """, offer, Session.MAX_TIME);
+    }
+
+    public long countOfferChainTypesByChainType(ChainType chainType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM offerchaintypes
+                        WHERE ofrchntyp_chntyp_chaintypeid = ? AND ofrchntyp_thrutime = ?
+                        """, chainType, Session.MAX_TIME);
+    }
+
     private OfferChainType getOfferChainType(Offer offer, ChainType chainType, EntityPermission entityPermission) {
         OfferChainType offerChainType;
         
@@ -1026,7 +1060,8 @@ public class OfferControl
                         + "WHERE ofrchntyp_ofr_offerid = ? AND ofrchntyp_thrutime = ? "
                         + "AND ofrchntyp_chntyp_chaintypeid = chntyp_chaintypeid AND chntyp_lastdetailid = chntypdt_chaintypedetailid "
                         + "AND chntypdt_chnk_chainkindid = chnk_chainkindid AND chnk_lastdetailid = chnkdt_chainkinddetailid "
-                        + "ORDER BY chntypdt_sortorder, chntypdt_chaintypename, chnkdt_sortorder, chnkdt_chainkindname";
+                        + "ORDER BY chntypdt_sortorder, chntypdt_chaintypename, chnkdt_sortorder, chnkdt_chainkindname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ "
                         + "FROM offerchaintypes "
@@ -1066,7 +1101,8 @@ public class OfferControl
                         "FROM offerchaintypes, offers, offerdetails " +
                         "WHERE ofrchntyp_chntyp_chaintypeid = ? AND ofrchntyp_thrutime = ? " +
                         "AND ofrchntyp_ofr_offerid = ofr_offerid AND ofr_activedetailid = ofrdt_offerdetailid " +
-                        "ORDER BY ofrdt_sortorder, ofrdt_offername";
+                        "ORDER BY ofrdt_sortorder, ofrdt_offername " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM offerchaintypes " +
@@ -1106,7 +1142,8 @@ public class OfferControl
                         "FROM offerchaintypes, offers, offerdetails " +
                         "WHERE ofrchntyp_chn_chainid = ? AND ofrchntyp_thrutime = ? " +
                         "AND ofrchntyp_ofr_offerid = ofr_offerid AND ofr_activedetailid = ofrdt_offerdetailid " +
-                        "ORDER BY ofrdt_sortorder, ofrdt_offername";
+                        "ORDER BY ofrdt_sortorder, ofrdt_offername " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM offerchaintypes " +

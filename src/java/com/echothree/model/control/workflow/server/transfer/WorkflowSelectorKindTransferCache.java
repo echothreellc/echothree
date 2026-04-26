@@ -16,20 +16,23 @@
 
 package com.echothree.model.control.workflow.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.control.workflow.common.transfer.WorkflowSelectorKindTransfer;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workflow.server.entity.WorkflowSelectorKind;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class WorkflowSelectorKindTransferCache
         extends BaseWorkflowTransferCache<WorkflowSelectorKind, WorkflowSelectorKindTransfer> {
-    
-    SelectorControl selectorControl = Session.getModelController(SelectorControl.class);
-    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
+
+    @Inject
+    SelectorControl selectorControl;
+
+    @Inject
+    WorkflowControl workflowControl;
 
     /** Creates a new instance of WorkflowSelectorKindTransferCache */
     protected WorkflowSelectorKindTransferCache() {

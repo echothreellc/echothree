@@ -30,8 +30,11 @@ public interface GetEntityTagsResult
     
     TagTransfer getTag();
     void setTag(TagTransfer tag);
-    
+
+    Long getEntityTagCount();
+    void setEntityTagCount(Long entityTagCount);
+
     List<EntityTagTransfer> getEntityTags();
     void setEntityTags(List<EntityTagTransfer> entityTags);
-    
+
 }

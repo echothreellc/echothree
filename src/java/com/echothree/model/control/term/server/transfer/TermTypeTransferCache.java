@@ -16,18 +16,19 @@
 
 package com.echothree.model.control.term.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.term.common.transfer.TermTypeTransfer;
 import com.echothree.model.control.term.server.control.TermControl;
 import com.echothree.model.data.term.server.entity.TermType;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class TermTypeTransferCache
         extends BaseTermTransferCache<TermType, TermTypeTransfer> {
 
-    TermControl termControl = Session.getModelController(TermControl.class);
+    @Inject
+    TermControl termControl;
 
     /** Creates a new instance of TermTypeTransferCache */
     protected TermTypeTransferCache() {

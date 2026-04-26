@@ -16,20 +16,23 @@
 
 package com.echothree.model.control.forum.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.forum.common.transfer.ForumMessageRoleTransfer;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.forum.server.entity.ForumMessageRole;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class ForumMessageRoleTransferCache
         extends BaseForumTransferCache<ForumMessageRole, ForumMessageRoleTransfer> {
 
-    ForumControl forumControl = Session.getModelController(ForumControl.class);
-    PartyControl partyControl = Session.getModelController(PartyControl.class);
+    @Inject
+    ForumControl forumControl;
+
+    @Inject
+    PartyControl partyControl;
     
     /** Creates a new instance of ForumMessageRoleTransferCache */
     protected ForumMessageRoleTransferCache() {

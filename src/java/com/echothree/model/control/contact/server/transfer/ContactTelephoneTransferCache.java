@@ -16,22 +16,24 @@
 
 package com.echothree.model.control.contact.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.contact.common.transfer.ContactTelephoneTransfer;
 import com.echothree.model.control.contact.common.workflow.TelephoneStatusConstants;
-import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.contact.server.entity.ContactTelephone;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class ContactTelephoneTransferCache
         extends BaseContactTransferCache<ContactTelephone, ContactTelephoneTransfer> {
-    
-    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
+
+    @Inject
+    GeoControl geoControl;
+
+    @Inject
+    WorkflowControl workflowControl;
 
     /** Creates a new instance of ContactTelephoneTransferCache */
     protected ContactTelephoneTransferCache() {
@@ -42,7 +44,7 @@ public class ContactTelephoneTransferCache
         var contactTelephoneTransfer = get(contactTelephone);
         
         if(contactTelephoneTransfer == null) {
-            var geoControl = Session.getModelController(GeoControl.class);
+
             var countryGeoCode = geoControl.getCountryTransfer(userVisit, contactTelephone.getCountryGeoCode());
             var areaCode = contactTelephone.getAreaCode();
             var telephoneNumber = contactTelephone.getTelephoneNumber();

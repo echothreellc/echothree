@@ -16,18 +16,19 @@
 
 package com.echothree.model.control.offer.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.offer.common.transfer.UseNameElementDescriptionTransfer;
 import com.echothree.model.control.offer.server.control.UseNameElementControl;
 import com.echothree.model.data.offer.server.entity.UseNameElementDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class UseNameElementDescriptionTransferCache
         extends BaseOfferDescriptionTransferCache<UseNameElementDescription, UseNameElementDescriptionTransfer> {
 
-    UseNameElementControl useNameElementControl = Session.getModelController(UseNameElementControl.class);
+    @Inject
+    UseNameElementControl useNameElementControl;
 
     /** Creates a new instance of UseNameElementDescriptionTransferCache */
     protected UseNameElementDescriptionTransferCache() {

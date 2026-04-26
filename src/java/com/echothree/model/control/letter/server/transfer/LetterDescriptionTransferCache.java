@@ -16,18 +16,19 @@
 
 package com.echothree.model.control.letter.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.letter.common.transfer.LetterDescriptionTransfer;
 import com.echothree.model.control.letter.server.control.LetterControl;
 import com.echothree.model.data.letter.server.entity.LetterDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class LetterDescriptionTransferCache
         extends BaseLetterDescriptionTransferCache<LetterDescription, LetterDescriptionTransfer> {
 
-    LetterControl letterControl = Session.getModelController(LetterControl.class);
+    @Inject
+    LetterControl letterControl;
 
     /** Creates a new instance of LetterDescriptionTransferCache */
     protected LetterDescriptionTransferCache() {

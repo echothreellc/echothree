@@ -16,20 +16,21 @@
 
 package com.echothree.model.control.message.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.message.common.MessageOptions;
 import com.echothree.model.control.message.common.transfer.MessageTransfer;
 import com.echothree.model.control.message.server.control.MessageControl;
 import com.echothree.model.data.message.server.entity.Message;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class MessageTransferCache
         extends BaseMessageTransferCache<Message, MessageTransfer> {
 
-    MessageControl messageControl = Session.getModelController(MessageControl.class);
+    @Inject
+    MessageControl messageControl;
 
     boolean includeString;
     boolean includeBlob;

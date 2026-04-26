@@ -16,20 +16,19 @@
 
 package com.echothree.model.control.track.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.track.common.transfer.UserVisitTrackTransfer;
 import com.echothree.model.control.track.server.control.TrackControl;
-import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.track.server.entity.UserVisitTrack;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class UserVisitTrackTransferCache
         extends BaseTrackTransferCache<UserVisitTrack, UserVisitTrackTransfer> {
 
-    TrackControl trackControl = Session.getModelController(TrackControl.class);
-    UserControl userControl = Session.getModelController(UserControl.class);
+    @Inject
+    TrackControl trackControl;
     
     /** Creates a new instance of UserVisitTrackTransferCache */
     protected UserVisitTrackTransferCache() {

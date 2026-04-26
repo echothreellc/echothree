@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.filter.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.filter.common.FilterOptions;
 import com.echothree.model.control.filter.common.transfer.FilterTransfer;
 import com.echothree.model.control.filter.server.control.FilterControl;
@@ -23,15 +24,17 @@ import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.filter.server.entity.Filter;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class FilterTransferCache
         extends BaseFilterTransferCache<Filter, FilterTransfer> {
 
-    FilterControl filterControl = Session.getModelController(FilterControl.class);
-    SelectorControl selectorControl = Session.getModelController(SelectorControl.class);
+    @Inject
+    FilterControl filterControl;
+
+    @Inject
+    SelectorControl selectorControl;
 
     boolean includeFilterEntranceSteps;
     boolean includeFilterSteps;

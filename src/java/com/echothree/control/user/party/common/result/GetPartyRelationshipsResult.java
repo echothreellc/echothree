@@ -29,6 +29,9 @@ public interface GetPartyRelationshipsResult
     
     PartyTransfer getToParty();
     void setToParty(PartyTransfer toParty);
+
+    Long getPartyRelationshipCount();
+    void setPartyRelationshipCount(Long partyRelationshipCount);
     
     List<PartyRelationshipTransfer> getPartyRelationships();
     void setPartyRelationships(List<PartyRelationshipTransfer> rartyRelationships);

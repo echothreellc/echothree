@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.warehouse.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.document.server.control.DocumentControl;
@@ -30,20 +31,32 @@ import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.warehouse.server.entity.Warehouse;
 import com.echothree.util.common.transfer.ListWrapper;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class WarehouseTransferCache
         extends BaseWarehouseTransferCache<Party, WarehouseTransfer> {
-    
-    AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
-    ContactControl contactControl = Session.getModelController(ContactControl.class);
-    DocumentControl documentControl = Session.getModelController(DocumentControl.class);
-    PartyControl partyControl = Session.getModelController(PartyControl.class);
-    PrinterControl printerControl = Session.getModelController(PrinterControl.class);
-    ScaleControl scaleControl = Session.getModelController(ScaleControl.class);
-    WarehouseControl warehouseControl = Session.getModelController(WarehouseControl.class);
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    ContactControl contactControl;
+
+    @Inject
+    DocumentControl documentControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    PrinterControl printerControl;
+
+    @Inject
+    ScaleControl scaleControl;
+
+    @Inject
+    WarehouseControl warehouseControl;
 
     boolean includeLocationsCount;
     boolean includeLocations;

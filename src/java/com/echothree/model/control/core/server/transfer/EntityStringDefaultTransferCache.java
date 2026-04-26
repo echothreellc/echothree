@@ -16,21 +16,22 @@
 
 package com.echothree.model.control.core.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.core.common.transfer.EntityStringDefaultTransfer;
-import com.echothree.model.control.core.server.control.CoreControl;
+
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.core.server.entity.EntityStringDefault;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class EntityStringDefaultTransferCache
         extends BaseCoreTransferCache<EntityStringDefault, EntityStringDefaultTransfer> {
+    
+    @Inject
+    PartyControl partyControl;
 
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
-    PartyControl partyControl = Session.getModelController(PartyControl.class);
     boolean includeString;
 
     /** Creates a new instance of EntityStringDefaultTransferCache */

@@ -16,18 +16,19 @@
 
 package com.echothree.model.control.uom.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.uom.common.transfer.UnitOfMeasureEquivalentTransfer;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureEquivalent;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class UnitOfMeasureEquivalentTransferCache
         extends BaseUomTransferCache<UnitOfMeasureEquivalent, UnitOfMeasureEquivalentTransfer> {
 
-    UomControl uomControl = Session.getModelController(UomControl.class);
+    @Inject
+    UomControl uomControl;
 
     /** Creates a new instance of UnitOfMeasureEquivalentTransferCache */
     protected UnitOfMeasureEquivalentTransferCache() {

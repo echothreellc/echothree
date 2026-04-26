@@ -16,20 +16,18 @@
 
 package com.echothree.model.control.tag.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.tag.common.TagOptions;
 import com.echothree.model.control.tag.common.transfer.TagTransfer;
-import com.echothree.model.control.tag.server.control.TagControl;
+
 import com.echothree.model.data.tag.server.entity.Tag;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class TagTransferCache
         extends BaseTagTransferCache<Tag, TagTransfer> {
-
-    TagControl tagControl = Session.getModelController(TagControl.class);
-
+    
     boolean includeUsageCount;
 
     /** Creates a new instance of TagTransferCache */

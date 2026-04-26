@@ -63,7 +63,6 @@ public class MainAction
             var executionResult = commandResult.getExecutionResult();
             var result = (GetVendorItemCostsResult)executionResult.getResult();
             
-            request.setAttribute(AttributeConstants.VENDOR, result.getVendor());
             request.setAttribute(AttributeConstants.VENDOR_ITEM, result.getVendorItem());
             request.setAttribute(AttributeConstants.VENDOR_ITEM_COSTS, result.getVendorItemCosts());
             

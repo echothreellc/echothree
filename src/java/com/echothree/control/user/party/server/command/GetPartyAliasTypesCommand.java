@@ -26,22 +26,21 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.party.server.entity.PartyAliasType;
 import com.echothree.model.data.party.server.entity.PartyType;
 import com.echothree.model.data.party.server.factory.PartyAliasTypeFactory;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetPartyAliasTypesCommand
-        extends BaseMultipleEntitiesCommand<PartyAliasType, GetPartyAliasTypesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<PartyAliasType, GetPartyAliasTypesForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -51,27 +50,39 @@ public class GetPartyAliasTypesCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.PartyAliasType.name(), SecurityRoles.List.name())
-                        ))
-                ));
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    PartyTypeLogic partyTypeLogic;
     
     /** Creates a new instance of GetPartyAliasTypesCommand */
     public GetPartyAliasTypesCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
-    PartyType partyType;
+    private PartyType partyType;
+
+    @Override
+    protected void handleForm() {
+        partyType = partyTypeLogic.getPartyTypeByName(this, form.getPartyTypeName());
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return hasExecutionErrors() ? null : partyControl.countPartyAliasTypesByPartyType(partyType);
+    }
 
     @Override
     protected Collection<PartyAliasType> getEntities() {
-        var partyControl = Session.getModelController(PartyControl.class);
-
-        partyType = PartyTypeLogic.getInstance().getPartyTypeByName(this, form.getPartyTypeName());
-
         return hasExecutionErrors() ? null : partyControl.getPartyAliasTypes(partyType);
     }
 
@@ -80,10 +91,8 @@ public class GetPartyAliasTypesCommand
         var result = PartyResultFactory.getGetPartyAliasTypesResult();
 
         if(entities != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
-
             if(session.hasLimit(PartyAliasTypeFactory.class)) {
-                result.setPartyAliasTypeCount(partyControl.countPartyAliasTypesByPartyType(partyType));
+                result.setPartyAliasTypeCount(getTotalEntities());
             }
 
             result.setPartyType(partyControl.getPartyTypeTransfer(getUserVisit(), partyType));

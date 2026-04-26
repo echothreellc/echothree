@@ -30,18 +30,18 @@ import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetDepartmentsCommand
-        extends BaseMultipleEntitiesCommand<PartyDepartment, GetDepartmentsForm> {
+        extends BasePaginatedMultipleEntitiesCommand<PartyDepartment, GetDepartmentsForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -59,6 +59,12 @@ public class GetDepartmentsCommand
                 new FieldDefinition("DivisionName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    DivisionLogic divisionLogic;
     
     /** Creates a new instance of GetDepartmentsCommand */
     public GetDepartmentsCommand() {
@@ -68,20 +74,21 @@ public class GetDepartmentsCommand
     PartyDivision partyDivision;
 
     @Override
-    protected Collection<PartyDepartment> getEntities() {
+    protected void handleForm() {
         var companyName = form.getCompanyName();
         var divisionName = form.getDivisionName();
-        Collection<PartyDepartment> partyDepartments = null;
 
-        partyDivision = DivisionLogic.getInstance().getPartyDivisionByName(this, companyName, divisionName, null, null, true);
+        partyDivision = divisionLogic.getPartyDivisionByName(this, companyName, divisionName, null, null, true);
+    }
 
-        if(!hasExecutionErrors()) {
-            var partyControl = Session.getModelController(PartyControl.class);
+    @Override
+    protected Long getTotalEntities() {
+        return hasExecutionErrors() ? null : partyControl.countPartyDepartments(partyDivision.getParty());
+    }
 
-            partyDepartments = partyControl.getDepartmentsByDivision(partyDivision.getParty());
-        }
-
-        return partyDepartments;
+    @Override
+    protected Collection<PartyDepartment> getEntities() {
+        return hasExecutionErrors() ? null : partyControl.getDepartmentsByDivision(partyDivision.getParty());
     }
 
     @Override
@@ -89,11 +96,10 @@ public class GetDepartmentsCommand
         var result = PartyResultFactory.getGetDepartmentsResult();
 
         if(entities != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var userVisit = getUserVisit();
 
             if(session.hasLimit(PartyDepartmentFactory.class)) {
-                result.setDepartmentCount(partyControl.countPartyDepartments(partyDivision.getParty()));
+                result.setDepartmentCount(getTotalEntities());
             }
 
             result.setDivision(partyControl.getDivisionTransfer(userVisit, partyDivision));

@@ -16,18 +16,19 @@
 
 package com.echothree.model.control.geo.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.geo.common.transfer.GeoCodeRelationshipTransfer;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.data.geo.server.entity.GeoCodeRelationship;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class GeoCodeRelationshipTransferCache
         extends BaseGeoTransferCache<GeoCodeRelationship, GeoCodeRelationshipTransfer> {
 
-    GeoControl geoControl = Session.getModelController(GeoControl.class);
+    @Inject
+    GeoControl geoControl;
 
     /** Creates a new instance of GeoCodeRelationshipTransferCache */
     protected GeoCodeRelationshipTransferCache() {

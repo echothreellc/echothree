@@ -16,20 +16,23 @@
 
 package com.echothree.model.control.offer.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.offer.common.transfer.OfferCustomerTypeTransfer;
 import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.data.offer.server.entity.OfferCustomerType;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class OfferCustomerTypeTransferCache
         extends BaseOfferTransferCache<OfferCustomerType, OfferCustomerTypeTransfer> {
-    
-    CustomerControl customerControl = Session.getModelController(CustomerControl.class);
-    OfferControl offerControl = Session.getModelController(OfferControl.class);
+
+    @Inject
+    CustomerControl customerControl;
+
+    @Inject
+    OfferControl offerControl;
 
     /** Creates a new instance of OfferCustomerTypeTransferCache */
     protected OfferCustomerTypeTransferCache() {

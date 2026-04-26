@@ -16,20 +16,23 @@
 
 package com.echothree.model.control.employee.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.employee.common.transfer.PartyResponsibilityTransfer;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.employee.server.entity.PartyResponsibility;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class PartyResponsibilityTransferCache
         extends BaseEmployeeTransferCache<PartyResponsibility, PartyResponsibilityTransfer> {
 
-    EmployeeControl employeeControl = Session.getModelController(EmployeeControl.class);
-    PartyControl partyControl = Session.getModelController(PartyControl.class);
+    @Inject
+    EmployeeControl employeeControl;
+
+    @Inject
+    PartyControl partyControl;
     
     /** Creates a new instance of PartyResponsibilityTransferCache */
     protected PartyResponsibilityTransferCache() {

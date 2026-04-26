@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.core.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.core.common.transfer.CommandMessageTransfer;
 import com.echothree.model.control.core.common.transfer.CommandMessageTranslationTransfer;
@@ -23,14 +24,14 @@ import com.echothree.model.control.core.server.control.CommandControl;
 import com.echothree.model.data.core.server.entity.CommandMessage;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.MapWrapper;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class CommandMessageTransferCache
         extends BaseCoreTransferCache<CommandMessage, CommandMessageTransfer> {
 
-    CommandControl commandControl = Session.getModelController(CommandControl.class);
+    @Inject
+    CommandControl commandControl;
 
     boolean includeTranslations;
     

@@ -16,18 +16,19 @@
 
 package com.echothree.model.control.workrequirement.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.workrequirement.common.transfer.WorkRequirementTypeDescriptionTransfer;
 import com.echothree.model.control.workrequirement.server.control.WorkRequirementControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workrequirement.server.entity.WorkRequirementTypeDescription;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class WorkRequirementTypeDescriptionTransferCache
         extends BaseWorkRequirementDescriptionTransferCache<WorkRequirementTypeDescription, WorkRequirementTypeDescriptionTransfer> {
 
-    WorkRequirementControl workRequirementControl = Session.getModelController(WorkRequirementControl.class);
+    @Inject
+    WorkRequirementControl workRequirementControl;
 
     /** Creates a new instance of WorkRequirementTypeDescriptionTransferCache */
     protected WorkRequirementTypeDescriptionTransferCache() {

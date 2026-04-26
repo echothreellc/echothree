@@ -16,18 +16,19 @@
 
 package com.echothree.model.control.order.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.order.common.transfer.OrderTypeDescriptionTransfer;
 import com.echothree.model.control.order.server.control.OrderTypeControl;
 import com.echothree.model.data.order.server.entity.OrderTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class OrderTypeDescriptionTransferCache
         extends BaseOrderDescriptionTransferCache<OrderTypeDescription, OrderTypeDescriptionTransfer> {
 
-    OrderTypeControl orderTypeControl = Session.getModelController(OrderTypeControl.class);
+    @Inject
+    OrderTypeControl orderTypeControl;
 
     /** Creates a new instance of OrderTypeDescriptionTransferCache */
     protected OrderTypeDescriptionTransferCache() {

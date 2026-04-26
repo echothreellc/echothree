@@ -16,20 +16,23 @@
 
 package com.echothree.model.control.subscription.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.subscription.common.transfer.SubscriptionTransfer;
 import com.echothree.model.control.subscription.server.control.SubscriptionControl;
 import com.echothree.model.data.subscription.server.entity.Subscription;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class SubscriptionTransferCache
         extends BaseSubscriptionTransferCache<Subscription, SubscriptionTransfer> {
-    
-    PartyControl partyControl = Session.getModelController(PartyControl.class);
-    SubscriptionControl subscriptionControl = Session.getModelController(SubscriptionControl.class);
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    SubscriptionControl subscriptionControl;
 
     /** Creates a new instance of SubscriptionTransferCache */
     protected SubscriptionTransferCache() {

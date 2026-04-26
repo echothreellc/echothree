@@ -16,22 +16,18 @@
 
 package com.echothree.model.control.core.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.core.common.transfer.EntityListItemAttributeTransfer;
-import com.echothree.model.control.core.server.control.CoreControl;
-import com.echothree.model.control.core.server.control.EntityInstanceControl;
+
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityListItemAttribute;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class EntityListItemAttributeTransferCache
         extends BaseCoreTransferCache<EntityListItemAttribute, EntityListItemAttributeTransfer> {
-
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
-    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-
+    
     /** Creates a new instance of EntityListItemAttributeTransferCache */
     protected EntityListItemAttributeTransferCache() {
         super();

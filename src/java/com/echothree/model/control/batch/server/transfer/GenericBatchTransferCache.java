@@ -25,13 +25,17 @@ import com.echothree.model.data.batch.server.entity.Batch;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
-import com.echothree.util.server.persistence.Session;
+import javax.inject.Inject;
 
 public abstract class GenericBatchTransferCache<V extends GenericBatchTransfer>
         extends BaseBatchTransferCache<Batch, V> {
 
-    BatchControl batchControl = Session.getModelController(BatchControl.class);
-    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
+    @Inject
+    BatchControl batchControl;
+
+    @Inject
+    WorkflowControl workflowControl;
+
     boolean includeAliases;
     boolean includeEntities;
     

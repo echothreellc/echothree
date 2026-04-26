@@ -1,5 +1,34 @@
 # Changelog
 
+## 2026-04-26-01
+
+* Convert GetOfferUses UC to Use BasePaginatedMultipleEntitiesCommand [1126](https://gitlab.echothree.com/echothree/echothree/-/work_items/1126)
+* Convert GetOfferItemPrices UC to Use BasePaginatedMultipleEntitiesCommand [1128](https://gitlab.echothree.com/echothree/echothree/-/work_items/1128)
+* Convert GetOfferCustomerTypes UC to Use BasePaginatedMultipleEntitiesCommand [1130](https://gitlab.echothree.com/echothree/echothree/-/work_items/1130)
+* Convert GetOfferChainTypes UC to Use BasePaginatedMultipleEntitiesCommand [1131](https://gitlab.echothree.com/echothree/echothree/-/work_items/1131)
+* Convert GetSources UC to Use BasePaginatedMultipleEntitiesCommand [1132](https://gitlab.echothree.com/echothree/echothree/-/work_items/1132)
+* Convert GetOfferItems UC to Use BasePaginatedMultipleEntitiesCommand [1135](https://gitlab.echothree.com/echothree/echothree/-/work_items/1135)
+* Convert GetSelectors UC to Use BasePaginatedMultipleEntitiesCommand [1139](https://gitlab.echothree.com/echothree/echothree/-/work_items/1139)
+* Convert GetEvents UC to Use BasePaginatedMultipleEntitiesCommand [1153](https://gitlab.echothree.com/echothree/echothree/-/work_items/1153)
+* Convert GetDivisions UC to Use BasePaginatedMultipleEntitiesCommand [1157](https://gitlab.echothree.com/echothree/echothree/-/work_items/1157)
+* Convert GetDepartments UC to Use BasePaginatedMultipleEntitiesCommand [1158](https://gitlab.echothree.com/echothree/echothree/-/work_items/1158)
+* Convert GetPartyAliases UC to Use BasePaginatedMultipleEntitiesCommand [1159](https://gitlab.echothree.com/echothree/echothree/-/work_items/1159)
+* Convert GetPartyAliasTypes UC to Use BasePaginatedMultipleEntitiesCommand [1163](https://gitlab.echothree.com/echothree/echothree/-/work_items/1163)
+* Convert GetPartyRelationships UC to Use BasePaginatedMultipleEntitiesCommand [1165](https://gitlab.echothree.com/echothree/echothree/-/work_items/1165)
+* Convert GetSequences UC to Use BasePaginatedMultipleEntitiesCommand [1254](https://gitlab.echothree.com/echothree/echothree/-/work_items/1254)
+* Convert GetUnitOfMeasureKindUses UC to Use BasePaginatedMultipleEntitiesCommand [1261](https://gitlab.echothree.com/echothree/echothree/-/work_items/1261)
+* Convert GetEntityTags UC to Use BasePaginatedMultipleEntitiesCommand [1267](https://gitlab.echothree.com/echothree/echothree/-/work_items/1267)
+* Convert GetTagScopeEntityTypes UC to Use BasePaginatedMultipleEntitiesCommand [1269](https://gitlab.echothree.com/echothree/echothree/-/work_items/1269)
+* Convert GetVendorItemCosts UC to Use BasePaginatedMultipleEntitiesCommand [1274](https://gitlab.echothree.com/echothree/echothree/-/work_items/1274)
+* Convert GetVendorItems UC to Use BasePaginatedMultipleEntitiesCommand [1276](https://gitlab.echothree.com/echothree/echothree/-/work_items/1276)
+* Add Security to Index Type and Index UCs [1756](https://gitlab.echothree.com/echothree/echothree/-/work_items/1756)
+* Review Event Hierarchy for Filters and Filter Adjustments [1757](https://gitlab.echothree.com/echothree/echothree/-/work_items/1757)
+* jOOQ 3.21.2 Upgrade [1758](https://gitlab.echothree.com/echothree/echothree/-/work_items/1758)
+* Add Order Content Catalog Entity [1759](https://gitlab.echothree.com/echothree/echothree/-/work_items/1759)
+* Add Inventory Party Status Entity [1760](https://gitlab.echothree.com/echothree/echothree/-/work_items/1760)
+* Correct Hiding Field Warnings From Error Prone [1761](https://gitlab.echothree.com/echothree/echothree/-/work_items/1761)
+* Inject Control and Logic Classes in Transfer Caches [1762](https://gitlab.echothree.com/echothree/echothree/-/work_items/1762)
+
 ## 2026-04-12-01
 
 * Convert EditSelectorDescription UC to Use BaseAbstractEditCommand [900](https://gitlab.echothree.com/echothree/echothree/-/work_items/900)

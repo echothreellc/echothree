@@ -16,18 +16,19 @@
 
 package com.echothree.model.control.message.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.message.common.transfer.MessageTypeDescriptionTransfer;
 import com.echothree.model.control.message.server.control.MessageControl;
 import com.echothree.model.data.message.server.entity.MessageTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class MessageTypeDescriptionTransferCache
         extends BaseMessageDescriptionTransferCache<MessageTypeDescription, MessageTypeDescriptionTransfer> {
 
-    MessageControl messageControl = Session.getModelController(MessageControl.class);
+    @Inject
+    MessageControl messageControl;
 
     /** Creates a new instance of MessageTypeDescriptionTransferCache */
     protected MessageTypeDescriptionTransferCache() {

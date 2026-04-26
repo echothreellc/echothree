@@ -16,18 +16,19 @@
 
 package com.echothree.model.control.forum.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.forum.common.transfer.ForumRoleTypeTransfer;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.data.forum.server.entity.ForumRoleType;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class ForumRoleTypeTransferCache
         extends BaseForumTransferCache<ForumRoleType, ForumRoleTypeTransfer> {
 
-    ForumControl forumControl = Session.getModelController(ForumControl.class);
+    @Inject
+    ForumControl forumControl;
 
     /** Creates a new instance of ForumRoleTypeTransferCache */
     protected ForumRoleTypeTransferCache() {

@@ -16,18 +16,19 @@
 
 package com.echothree.model.control.core.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.core.common.transfer.EditorDescriptionTransfer;
 import com.echothree.model.control.core.server.control.EditorControl;
 import com.echothree.model.data.core.server.entity.EditorDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class EditorDescriptionTransferCache
         extends BaseCoreDescriptionTransferCache<EditorDescription, EditorDescriptionTransfer> {
 
-    EditorControl editorControl = Session.getModelController(EditorControl.class);
+    @Inject
+    EditorControl editorControl;
 
     /** Creates a new instance of EditorDescriptionTransferCache */
     protected EditorDescriptionTransferCache() {

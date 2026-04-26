@@ -20,7 +20,7 @@
 
 <html:html xhtml="true">
     <head>
-        <title>Items (<c:out value="${vendor.vendorName}" />)</title>
+        <title>Items (<c:out value="${vendorItem.vendor.vendorName}" />)</title>
         <html:base/>
         <%@ include file="../../include/environment.jsp" %>
     </head>
@@ -52,7 +52,7 @@
         </div>
         <div id="Content">
             <c:url var="addUrl" value="/action/Purchasing/VendorItemCost/Add">
-                <c:param name="VendorName" value="${vendor.vendorName}" />
+                <c:param name="VendorName" value="${vendorItem.vendor.vendorName}" />
                 <c:param name="VendorItemName" value="${vendorItem.vendorItemName}" />
             </c:url>
             <p><a href="${addUrl}">Add Cost.</a></p>
@@ -68,15 +68,15 @@
                 </display:column>
                 <display:column>
                     <c:url var="editUrl" value="/action/Purchasing/VendorItemCost/Edit">
-                        <c:param name="VendorName" value="${vendor.vendorName}" />
-                        <c:param name="VendorItemName" value="${vendorItem.vendorItemName}" />
+                        <c:param name="VendorName" value="${vendorItemCost.vendorItem.vendor.vendorName}" />
+                        <c:param name="VendorItemName" value="${vendorItemCost.vendorItem.vendorItemName}" />
                         <c:param name="InventoryConditionName" value="${vendorItemCost.inventoryCondition.inventoryConditionName}" />
                         <c:param name="UnitOfMeasureTypeName" value="${vendorItemCost.unitOfMeasureType.unitOfMeasureTypeName}" />
                     </c:url>
                     <a href="${editUrl}">Edit</a>
                     <c:url var="deleteUrl" value="/action/Purchasing/VendorItemCost/Delete">
-                        <c:param name="VendorName" value="${vendor.vendorName}" />
-                        <c:param name="VendorItemName" value="${vendorItem.vendorItemName}" />
+                        <c:param name="VendorName" value="${vendorItemCost.vendorItem.vendor.vendorName}" />
+                        <c:param name="VendorItemName" value="${vendorItemCost.vendorItem.vendorItemName}" />
                         <c:param name="InventoryConditionName" value="${vendorItemCost.inventoryCondition.inventoryConditionName}" />
                         <c:param name="UnitOfMeasureTypeName" value="${vendorItemCost.unitOfMeasureType.unitOfMeasureTypeName}" />
                     </c:url>

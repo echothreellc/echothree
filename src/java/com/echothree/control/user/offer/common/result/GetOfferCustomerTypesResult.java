@@ -33,5 +33,8 @@ public interface GetOfferCustomerTypesResult
     
     List<OfferCustomerTypeTransfer> getOfferCustomerTypes();
     void setOfferCustomerTypes(List<OfferCustomerTypeTransfer> offerCustomerTypes);
+
+    Long getOfferCustomerTypeCount();
+    void setOfferCustomerTypeCount(Long offerCustomerTypeCount);
     
 }

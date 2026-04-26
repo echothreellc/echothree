@@ -16,18 +16,19 @@
 
 package com.echothree.model.control.accounting.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.accounting.common.transfer.GlAccountTypeTransfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.data.accounting.server.entity.GlAccountType;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class GlAccountTypeTransferCache
         extends BaseAccountingTransferCache<GlAccountType, GlAccountTypeTransfer> {
 
-    AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
+    @Inject
+    AccountingControl accountingControl;
 
     /** Creates a new instance of GlAccountTypeTransferCache */
     protected GlAccountTypeTransferCache() {

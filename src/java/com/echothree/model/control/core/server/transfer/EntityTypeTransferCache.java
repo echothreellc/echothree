@@ -16,18 +16,15 @@
 
 package com.echothree.model.control.core.server.transfer;
 
-import com.echothree.model.control.comment.server.control.CommentControl;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.core.common.CoreProperties;
 import com.echothree.model.control.core.common.transfer.EntityTypeTransfer;
 import com.echothree.model.control.core.server.control.ComponentControl;
-import com.echothree.model.control.core.server.control.CoreControl;
-import com.echothree.model.control.core.server.control.EntityAliasControl;
-import com.echothree.model.control.core.server.control.EntityInstanceControl;
+
+
 import com.echothree.model.control.core.server.control.EntityTypeControl;
 import com.echothree.model.control.index.server.control.IndexControl;
 import com.echothree.model.control.message.server.control.MessageControl;
-import com.echothree.model.control.rating.server.control.RatingControl;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.core.server.entity.EntityType;
@@ -43,22 +40,10 @@ import javax.inject.Inject;
 @RequestScoped
 public class EntityTypeTransferCache
         extends BaseCoreTransferCache<EntityType, EntityTypeTransfer> {
-
-    @Inject
-    CoreControl coreControl;
-
+    
     @Inject
     ComponentControl componentControl;
-
-    @Inject
-    CommentControl commentControl;
-
-    @Inject
-    EntityAliasControl entityAliasControl;
-
-    @Inject
-    EntityInstanceControl entityInstanceControl;
-
+    
     @Inject
     EntityTypeControl entityTypeControl;
 
@@ -67,9 +52,6 @@ public class EntityTypeTransferCache
 
     @Inject
     MessageControl messageControl;
-
-    @Inject
-    RatingControl ratingControl;
 
     @Inject
     UomControl uomControl;

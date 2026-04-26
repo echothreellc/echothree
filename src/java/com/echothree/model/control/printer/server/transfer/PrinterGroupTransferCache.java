@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.printer.server.transfer;
 
-import com.echothree.model.control.core.server.control.EntityInstanceControl;
+import javax.inject.Inject;
 import com.echothree.model.control.printer.common.PrinterOptions;
 import com.echothree.model.control.printer.common.transfer.PrinterGroupTransfer;
 import com.echothree.model.control.printer.common.workflow.PrinterGroupStatusConstants;
@@ -27,18 +27,21 @@ import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.printer.server.entity.PrinterGroup;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.UnitOfMeasureUtils;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class PrinterGroupTransferCache
         extends BasePrinterTransferCache<PrinterGroup, PrinterGroupTransfer> {
-    
-    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-    PrinterControl printerControl = Session.getModelController(PrinterControl.class);
-    UomControl uomControl = Session.getModelController(UomControl.class);
-    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
+
+    @Inject
+    PrinterControl printerControl;
+
+    @Inject
+    UomControl uomControl;
+
+    @Inject
+    WorkflowControl workflowControl;
 
     boolean includePrinters;
     

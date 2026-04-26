@@ -648,6 +648,37 @@
                         </index>
                     </indexes>
                 </table>
+                <table namePlural="InventoryPartyStatuses" nameSingular="InventoryPartyStatus" columnPrefix="invparst">
+                    <columns>
+                        <column name="InventoryPartyStatusId" type="EID" nullAllowed="false" />
+                        <column name="PartyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId" />
+                        <column name="ItemId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Items" destinationColumn="ItemId" />
+                        <column name="UnitOfMeasureTypeId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="UnitOfMeasureTypes" destinationColumn="UnitOfMeasureTypeId" />
+                        <column name="InventoryConditionId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="InventoryConditions" destinationColumn="InventoryConditionId" />
+                        <column name="QuantityOnHand" type="Measurement" nullAllowed="false" />
+                        <column name="AvailableToPromise" type="Measurement" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="InventoryPartyStatusId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="PartyId" />
+                            <indexColumn name="ItemId" />
+                            <indexColumn name="UnitOfMeasureTypeId" />
+                            <indexColumn name="InventoryConditionId" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="ItemId" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="UnitOfMeasureTypeId" />
+                        </index>
+                        <index type="Multiple">
+                            <indexColumn name="InventoryConditionId" />
+                        </index>
+                    </indexes>
+                </table>
                 <table namePlural="PartyInventoryLevels" nameSingular="PartyInventoryLevel" columnPrefix="parinvlvl">
                     <columns>
                         <column name="PartyInventoryLevelId" type="EID" nullAllowed="false" />

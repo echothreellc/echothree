@@ -16,20 +16,23 @@
 
 package com.echothree.model.control.content.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.content.common.transfer.ContentForumTransfer;
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.data.content.server.entity.ContentForum;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class ContentForumTransferCache
         extends BaseContentTransferCache<ContentForum, ContentForumTransfer> {
 
-    ContentControl contentControl = Session.getModelController(ContentControl.class);
-    ForumControl forumControl = Session.getModelController(ForumControl.class);
+    @Inject
+    ContentControl contentControl;
+
+    @Inject
+    ForumControl forumControl;
 
     /** Creates a new instance of ContentForumTransferCache */
     protected ContentForumTransferCache() {

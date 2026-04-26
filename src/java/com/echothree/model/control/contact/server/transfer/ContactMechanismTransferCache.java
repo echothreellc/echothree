@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.contact.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.comment.common.CommentConstants;
 import com.echothree.model.control.contact.common.ContactMechanismTypes;
 import com.echothree.model.control.contact.common.ContactOptions;
@@ -23,14 +24,14 @@ import com.echothree.model.control.contact.common.transfer.ContactMechanismTrans
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.data.contact.server.entity.ContactMechanism;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class ContactMechanismTransferCache
         extends BaseContactTransferCache<ContactMechanism, ContactMechanismTransfer> {
 
-    ContactControl contactControl = Session.getModelController(ContactControl.class);
+    @Inject
+    ContactControl contactControl;
 
     boolean includeComments;
 

@@ -18,7 +18,6 @@ package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.core.common.transfer.EntityVisitTransfer;
-import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.data.core.server.entity.EntityVisit;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
@@ -28,7 +27,6 @@ import javax.enterprise.context.RequestScoped;
 public class EntityVisitTransferCache
         extends BaseCoreTransferCache<EntityVisit, EntityVisitTransfer> {
 
-    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
 
     boolean includeEntityInstance;
     boolean includeVisitedEntityInstance;

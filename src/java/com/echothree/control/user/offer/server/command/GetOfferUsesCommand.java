@@ -29,23 +29,23 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.offer.server.entity.Offer;
 import com.echothree.model.data.offer.server.entity.OfferUse;
 import com.echothree.model.data.offer.server.entity.Use;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.offer.server.factory.OfferUseFactory;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.ParameterUtils;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetOfferUsesCommand
-        extends BaseMultipleEntitiesCommand<OfferUse, GetOfferUsesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<OfferUse, GetOfferUsesForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -69,31 +69,65 @@ public class GetOfferUsesCommand
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
+    @Inject
+    OfferControl offerControl;
+
+    @Inject
+    OfferUseControl offerUseControl;
+
+    @Inject
+    UseControl useControl;
+
+    @Inject
+    OfferLogic offerLogic;
+
+    @Inject
+    UseLogic useLogic;
+
     private Offer offer;
     private Use use;
 
     @Override
-    protected Collection<OfferUse> getEntities() {
-        Collection<OfferUse> offerUses = null;
+    protected void handleForm() {
         var offerName = form.getOfferName();
         var useName = form.getUseName();
 
         if(ParameterUtils.getInstance().isExactlyOneBooleanTrue(this, offerName != null && useName == null,
                 offerName == null && useName != null, offerName == null && useName == null)) {
-            var offerUseControl = Session.getModelController(OfferUseControl.class);
-
             if(offerName != null) {
-                offer = OfferLogic.getInstance().getOfferByName(this, offerName);
+                offer = offerLogic.getOfferByName(this, offerName);
+            } else if(useName != null) {
+                use = useLogic.getUseByName(this, useName);
+            }
+        }
+    }
 
-                if(!hasExecutionErrors()) {
-                    offerUses = offerUseControl.getOfferUsesByOffer(offer);
-                }
-            } if(useName != null) {
-                use = UseLogic.getInstance().getUseByName(this, useName);
+    @Override
+    protected Long getTotalEntities() {
+        Long total = null;
 
-                if(!hasExecutionErrors()) {
-                    offerUses = offerUseControl.getOfferUsesByUse(use);
-                }
+        if(!hasExecutionErrors()) {
+            if(offer != null) {
+                total = offerUseControl.countOfferUsesByOffer(offer);
+            } else if(use != null) {
+                total = offerUseControl.countOfferUsesByUse(use);
+            } else {
+                total = offerUseControl.countOfferUses();
+            }
+        }
+
+        return total;
+    }
+
+    @Override
+    protected Collection<OfferUse> getEntities() {
+        Collection<OfferUse> offerUses = null;
+
+        if(!hasExecutionErrors()) {
+            if(offer != null) {
+                offerUses = offerUseControl.getOfferUsesByOffer(offer);
+            } else if(use != null) {
+                offerUses = offerUseControl.getOfferUsesByUse(use);
             } else {
                 offerUses = offerUseControl.getOfferUses();
             }
@@ -107,19 +141,18 @@ public class GetOfferUsesCommand
         var result = OfferResultFactory.getGetOfferUsesResult();
         
         if(entities != null) {
-            var offerUseControl = Session.getModelController(OfferUseControl.class);
             var userVisit = getUserVisit();
 
             if(offer != null) {
-                var offerControl = Session.getModelController(OfferControl.class);
-
                 result.setOffer(offerControl.getOfferTransfer(userVisit, offer));
             }
 
             if(use != null) {
-                var useControl = Session.getModelController(UseControl.class);
-
                 result.setUse(useControl.getUseTransfer(userVisit, use));
+            }
+
+            if(session.hasLimit(OfferUseFactory.class)) {
+                result.setOfferUseCount(getTotalEntities());
             }
 
             result.setOfferUses(offerUseControl.getOfferUseTransfers(userVisit, entities));

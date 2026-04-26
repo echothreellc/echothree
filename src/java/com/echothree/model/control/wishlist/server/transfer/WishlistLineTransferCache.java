@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.wishlist.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.associate.common.transfer.AssociateReferralTransfer;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.item.server.control.ItemControl;
@@ -25,19 +26,27 @@ import com.echothree.model.control.wishlist.common.transfer.WishlistLineTransfer
 import com.echothree.model.control.wishlist.server.control.WishlistControl;
 import com.echothree.model.data.order.server.entity.OrderLine;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.AmountUtils;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class WishlistLineTransferCache
         extends BaseWishlistTransferCache<OrderLine, WishlistLineTransfer> {
-    
-    InventoryControl inventoryControl = Session.getModelController(InventoryControl.class);
-    ItemControl itemControl = Session.getModelController(ItemControl.class);
-    OfferUseControl offerUseControl = Session.getModelController(OfferUseControl.class);
-    UomControl uomControl = Session.getModelController(UomControl.class);
-    WishlistControl wishlistControl = Session.getModelController(WishlistControl.class);
+
+    @Inject
+    InventoryControl inventoryControl;
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    OfferUseControl offerUseControl;
+
+    @Inject
+    UomControl uomControl;
+
+    @Inject
+    WishlistControl wishlistControl;
     
     /** Creates a new instance of WishlistLineTransferCache */
     protected WishlistLineTransferCache() {

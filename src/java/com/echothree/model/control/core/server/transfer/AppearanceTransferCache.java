@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.core.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.core.common.transfer.AppearanceTransfer;
 import com.echothree.model.control.core.server.control.AppearanceControl;
@@ -24,16 +25,20 @@ import com.echothree.model.control.core.server.control.FontControl;
 import com.echothree.model.data.core.server.entity.Appearance;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class AppearanceTransferCache
         extends BaseCoreTransferCache<Appearance, AppearanceTransfer> {
 
-    AppearanceControl appearanceControl = Session.getModelController(AppearanceControl.class);
-    ColorControl colorControl = Session.getModelController(ColorControl.class);
-    FontControl fontControl = Session.getModelController(FontControl.class);
+    @Inject
+    AppearanceControl appearanceControl;
+
+    @Inject
+    ColorControl colorControl;
+
+    @Inject
+    FontControl fontControl;
 
     boolean includeTextDecorations;
     boolean includeTextTransformations;

@@ -16,21 +16,24 @@
 
 package com.echothree.model.control.chain.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.chain.common.transfer.ChainActionSurveyTransfer;
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.survey.common.transfer.SurveyTransfer;
 import com.echothree.model.control.survey.server.control.SurveyControl;
 import com.echothree.model.data.chain.server.entity.ChainActionSurvey;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class ChainActionSurveyTransferCache
         extends BaseChainTransferCache<ChainActionSurvey, ChainActionSurveyTransfer> {
 
-    ChainControl chainControl = Session.getModelController(ChainControl.class);
-    SurveyControl surveyControl = Session.getModelController(SurveyControl.class);
+    @Inject
+    ChainControl chainControl;
+
+    @Inject
+    SurveyControl surveyControl;
     
     /** Creates a new instance of ChainActionSurveyTransferCache */
     protected ChainActionSurveyTransferCache() {

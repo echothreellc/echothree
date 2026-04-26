@@ -16,20 +16,21 @@
 
 package com.echothree.model.control.item.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.item.common.ItemProperties;
 import com.echothree.model.control.item.common.transfer.ItemPriceTypeTransfer;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.item.server.entity.ItemPriceType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class ItemPriceTypeTransferCache
         extends BaseItemTransferCache<ItemPriceType, ItemPriceTypeTransfer> {
 
-    ItemControl itemControl = Session.getModelController(ItemControl.class);
+    @Inject
+    ItemControl itemControl;
 
     TransferProperties transferProperties;
     boolean filterItemPriceTypeName;

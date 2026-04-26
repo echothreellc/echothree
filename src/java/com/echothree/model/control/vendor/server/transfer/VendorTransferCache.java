@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.vendor.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
 import com.echothree.model.control.carrier.server.control.CarrierControl;
@@ -23,7 +24,6 @@ import com.echothree.model.control.comment.common.CommentConstants;
 import com.echothree.model.control.communication.server.control.CommunicationControl;
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.contactlist.server.control.ContactListControl;
-import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.control.invoice.server.control.InvoiceControl;
 import com.echothree.model.control.item.server.control.ItemControl;
@@ -36,7 +36,6 @@ import com.echothree.model.control.scale.server.control.ScaleControl;
 import com.echothree.model.control.shipment.server.control.PartyFreeOnBoardControl;
 import com.echothree.model.control.subscription.server.control.SubscriptionControl;
 import com.echothree.model.control.term.server.control.TermControl;
-import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.vendor.common.VendorOptions;
 import com.echothree.model.control.vendor.common.transfer.VendorTransfer;
 import com.echothree.model.control.vendor.common.workflow.VendorStatusConstants;
@@ -49,7 +48,6 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.vendor.server.entity.Vendor;
 import com.echothree.model.data.vendor.server.factory.VendorItemFactory;
 import com.echothree.util.common.transfer.ListWrapper;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.AmountUtils;
 import javax.enterprise.context.RequestScoped;
 
@@ -57,27 +55,62 @@ import javax.enterprise.context.RequestScoped;
 public class VendorTransferCache
         extends BaseVendorTransferCache<Party, VendorTransfer> {
 
-    AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
-    BillingControl billingControl = Session.getModelController(BillingControl.class);
-    CancellationPolicyControl cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
-    CarrierControl carrierControl = Session.getModelController(CarrierControl.class);
-    CommunicationControl communicationControl = Session.getModelController(CommunicationControl.class);
-    ContactControl contactControl = Session.getModelController(ContactControl.class);
-    ContactListControl contactListControl = Session.getModelController(ContactListControl.class);
-    DocumentControl documentControl = Session.getModelController(DocumentControl.class);
-    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-    ItemControl itemControl = Session.getModelController(ItemControl.class);
-    InvoiceControl invoiceControl = Session.getModelController(InvoiceControl.class);
-    PartyControl partyControl = Session.getModelController(PartyControl.class);
-    PartyFreeOnBoardControl partyFreeOnBoardControl = Session.getModelController(PartyFreeOnBoardControl.class);
-    PrinterControl printerControl = Session.getModelController(PrinterControl.class);
-    ReturnPolicyControl returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
-    ScaleControl scaleControl = Session.getModelController(ScaleControl.class);
-    SubscriptionControl subscriptionControl = Session.getModelController(SubscriptionControl.class);
-    TermControl termControl = Session.getModelController(TermControl.class);
-    UserControl userControl = Session.getModelController(UserControl.class);
-    VendorControl vendorControl = Session.getModelController(VendorControl.class);
-    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    BillingControl billingControl;
+
+    @Inject
+    CancellationPolicyControl cancellationPolicyControl;
+
+    @Inject
+    CarrierControl carrierControl;
+
+    @Inject
+    CommunicationControl communicationControl;
+
+    @Inject
+    ContactControl contactControl;
+
+    @Inject
+    ContactListControl contactListControl;
+
+    @Inject
+    DocumentControl documentControl;
+
+    @Inject
+    InvoiceControl invoiceControl;
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    PartyFreeOnBoardControl partyFreeOnBoardControl;
+
+    @Inject
+    PrinterControl printerControl;
+
+    @Inject
+    ReturnPolicyControl returnPolicyControl;
+
+    @Inject
+    ScaleControl scaleControl;
+
+    @Inject
+    SubscriptionControl subscriptionControl;
+
+    @Inject
+    TermControl termControl;
+
+    @Inject
+    VendorControl vendorControl;
+
+    @Inject
+    WorkflowControl workflowControl;
     
     boolean includeUserLogin;
     boolean includeRecoveryAnswer;

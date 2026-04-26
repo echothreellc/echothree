@@ -16,10 +16,10 @@
 
 package com.echothree.model.control.payment.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.comment.common.CommentConstants;
 import com.echothree.model.control.contact.common.transfer.PartyContactMechanismTransfer;
 import com.echothree.model.control.contact.server.control.ContactControl;
-import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import static com.echothree.model.control.customer.common.workflow.CustomerCreditCardPaymentMethodConstants.Workflow_CUSTOMER_CREDIT_CARD_PAYMENT_METHOD;
 import com.echothree.model.control.party.common.transfer.NameSuffixTransfer;
 import com.echothree.model.control.party.common.transfer.PersonalTitleTransfer;
@@ -40,19 +40,29 @@ import com.echothree.model.data.payment.server.entity.PartyPaymentMethod;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.string.StringUtils;
 import com.echothree.util.common.transfer.ListWrapper;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class PartyPaymentMethodTransferCache
         extends BasePaymentTransferCache<PartyPaymentMethod, PartyPaymentMethodTransfer> {
-    
-    ContactControl contactControl = Session.getModelController(ContactControl.class);
-    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-    PartyControl partyControl = Session.getModelController(PartyControl.class);
-    PartyPaymentMethodControl partyPaymentMethodControl = Session.getModelController(PartyPaymentMethodControl.class);
-    PaymentMethodControl paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
-    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
+
+    @Inject
+    ContactControl contactControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    PartyPaymentMethodControl partyPaymentMethodControl;
+
+    @Inject
+    PaymentMethodControl paymentMethodControl;
+
+    @Inject
+    WorkflowControl workflowControl;
+
+    @Inject
+    SecurityRoleLogic securityRoleLogic;
 
     boolean needToMaskChecked = false;
 
@@ -85,9 +95,9 @@ public class PartyPaymentMethodTransferCache
         // Additional security check to determine if the PAN or security code should be masked.
         if(!needToMaskChecked) {
             if(includeNumber || includeSecurityCode) {
-                var userControl = Session.getModelController(UserControl.class);
 
-                if(!SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, userControl.getPartyFromUserVisit(userVisit),
+
+                if(!securityRoleLogic.hasSecurityRoleUsingNames(null, userControl.getPartyFromUserVisit(userVisit),
                         SecurityRoleGroups.PartyPaymentMethod.name(), SecurityRoles.CreditCard.name())) {
                     includeNumber = false;
                     includeSecurityCode = false;

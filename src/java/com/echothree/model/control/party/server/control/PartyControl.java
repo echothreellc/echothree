@@ -213,6 +213,7 @@ import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.sql.SQLException;
@@ -223,7 +224,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import com.echothree.util.server.cdi.CommandScope;
 
 @CommandScope
 public class PartyControl
@@ -2779,11 +2779,12 @@ public class PartyControl
     }
 
     public long countPartyAliasTypesByPartyType(PartyType partyType) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM partyaliastypes, partyaliastypedetails " +
-                "WHERE pat_activedetailid = patdt_partyaliastypedetailid AND patdt_ptyp_partytypeid = ?",
-                partyType);
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM partyaliastypes
+                        JOIN partyaliastypedetails ON patdt_partyaliastypedetailid = pat_activedetailid
+                        WHERE patdt_ptyp_partytypeid = ?
+                        """, partyType);
     }
 
     private static final Map<EntityPermission, String> getPartyAliasTypeByNameQueries;
@@ -4578,15 +4579,33 @@ public class PartyControl
         
         return partyRelationship;
     }
-    
+
     public long countPartyRelationships(final PartyRelationshipType partyRelationshipType, final Party fromParty, final RoleType fromRoleType,
             final Party toParty, final RoleType toRoleType) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM partyrelationships " +
-                "WHERE prel_prt_partyrelationshiptypeid = ? AND prel_frompartyid = ? AND prel_fromroletypeid = ? " +
-                "AND prel_topartyid = ? AND prel_toroletypeid = ? AND prel_thrutime = ?",
-                partyRelationshipType, fromParty, fromRoleType, toParty, toRoleType, Session.MAX_TIME);
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM partyrelationships
+                        WHERE prel_prt_partyrelationshiptypeid = ? AND prel_frompartyid = ? AND prel_fromroletypeid = ?
+                        AND prel_topartyid = ? AND prel_toroletypeid = ? AND prel_thrutime = ?
+                        """, partyRelationshipType, fromParty, fromRoleType, toParty, toRoleType, Session.MAX_TIME);
+    }
+
+    public long countPartyRelationshipsByFromRelationship(PartyRelationshipType partyRelationshipType,
+            Party fromParty, RoleType fromRoleType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM partyrelationships
+                        WHERE prel_prt_partyrelationshiptypeid = ? AND prel_frompartyid = ? AND prel_fromroletypeid = ? AND prel_thrutime = ?
+                        """, partyRelationshipType, fromParty, fromRoleType, Session.MAX_TIME);
+    }
+
+    public long countPartyRelationshipsByToRelationship(PartyRelationshipType partyRelationshipType,
+            Party toParty, final RoleType toRoleType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM partyrelationships
+                        WHERE prel_prt_partyrelationshiptypeid = ? AND prel_topartyid = ? AND prel_toroletypeid = ? AND prel_thrutime = ?
+                        """, partyRelationshipType, toParty, toRoleType, Session.MAX_TIME);
     }
 
     private static final Map<EntityPermission, String> getPartyRelationshipQueries;

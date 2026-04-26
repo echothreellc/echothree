@@ -16,22 +16,27 @@
 
 package com.echothree.model.control.invoice.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.invoice.common.transfer.InvoiceRoleTransfer;
 import com.echothree.model.control.invoice.server.control.InvoiceControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.invoice.server.entity.InvoiceRole;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class InvoiceRoleTransferCache
         extends BaseInvoiceTransferCache<InvoiceRole, InvoiceRoleTransfer> {
 
-    ContactControl contactControl = Session.getModelController(ContactControl.class);
-    InvoiceControl invoiceControl = Session.getModelController(InvoiceControl.class);
-    PartyControl partyControl = Session.getModelController(PartyControl.class);
+    @Inject
+    ContactControl contactControl;
+
+    @Inject
+    InvoiceControl invoiceControl;
+
+    @Inject
+    PartyControl partyControl;
 
     /** Creates a new instance of InvoiceRoleTransferCache */
     protected InvoiceRoleTransferCache() {

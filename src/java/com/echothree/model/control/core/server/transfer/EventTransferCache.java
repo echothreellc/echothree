@@ -16,21 +16,19 @@
 
 package com.echothree.model.control.core.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.core.common.transfer.EventTransfer;
-import com.echothree.model.control.core.server.control.CoreControl;
-import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.core.server.control.EventControl;
 import com.echothree.model.data.core.server.entity.Event;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class EventTransferCache
         extends BaseCoreTransferCache<Event, EventTransfer> {
 
-    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-    EventControl eventControl = Session.getModelController(EventControl.class);
+    @Inject
+    EventControl eventControl;
 
     /** Creates a new instance of EventTransferCache */
     protected EventTransferCache() {

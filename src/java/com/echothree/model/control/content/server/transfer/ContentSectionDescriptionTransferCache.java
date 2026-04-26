@@ -16,18 +16,19 @@
 
 package com.echothree.model.control.content.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.content.common.transfer.ContentSectionDescriptionTransfer;
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.data.content.server.entity.ContentSectionDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class ContentSectionDescriptionTransferCache
         extends BaseContentDescriptionTransferCache<ContentSectionDescription, ContentSectionDescriptionTransfer> {
 
-    ContentControl contentControl = Session.getModelController(ContentControl.class);
+    @Inject
+    ContentControl contentControl;
 
     /** Creates a new instance of ContentSectionDescriptionTransferCache */
     protected ContentSectionDescriptionTransferCache() {

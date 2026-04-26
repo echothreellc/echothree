@@ -2550,7 +2550,47 @@ public class FilterControl
     public List<Filter> getFiltersForUpdate(FilterType filterType) {
         return getFilters(filterType, EntityPermission.READ_WRITE);
     }
-    
+
+    private static final Map<EntityPermission, String> getFiltersByInitialFilterAdjustmentQueries;
+
+    static {
+        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM filters
+                JOIN filterdetails ON fltdt_filterdetailid = flt_activedetailid
+                JOIN filtertypes ON flttyp_filtertypeid = fltdt_flttyp_filtertypeid
+                JOIN filtertypedetails ON flttypdt_filtertypedetailid = flttyp_lastdetailid
+                JOIN filterkinds ON fltk_filterkindid = flttypdt_fltk_filterkindid
+                JOIN filterkinddetails ON fltkdt_filterkinddetailid = fltk_lastdetailid
+                WHERE fltdt_initialfilteradjustmentid = ?
+                ORDER BY fltkdt_sortorder, fltkdt_filterkindname, flttypdt_sortorder, flttypdt_filtertypename, fltdt_sortorder, fltdt_filtername
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM filters
+                JOIN filterdetails ON fltdt_filterdetailid = flt_activedetailid
+                WHERE fltdt_initialfilteradjustmentid = ?
+                FOR UPDATE
+                """);
+        getFiltersByInitialFilterAdjustmentQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    private List<Filter> getFiltersByInitialFilterAdjustment(FilterAdjustment initialFilterAdjustment, EntityPermission entityPermission) {
+        return FilterFactory.getInstance().getEntitiesFromQuery(entityPermission, getFiltersByInitialFilterAdjustmentQueries,
+                initialFilterAdjustment);
+    }
+
+    public List<Filter> getFiltersByInitialFilterAdjustment(FilterAdjustment initialFilterAdjustment) {
+        return getFiltersByInitialFilterAdjustment(initialFilterAdjustment, EntityPermission.READ_ONLY);
+    }
+
+    public List<Filter> getFiltersByInitialFilterAdjustmentForUpdate(FilterAdjustment initialFilterAdjustment) {
+        return getFiltersByInitialFilterAdjustment(initialFilterAdjustment, EntityPermission.READ_WRITE);
+    }
+
     public Filter getDefaultFilter(FilterType filterType, EntityPermission entityPermission) {
         Filter filter;
         
@@ -3547,7 +3587,7 @@ public class FilterControl
         var filterStepDestination = FilterStepDestinationFactory.getInstance().create(fromFilterStep,
                 toFilterStep, session.getStartTime(), Session.MAX_TIME);
         
-        sendEvent(fromFilterStep.getLastDetail().getFilter().getPrimaryKey(), EventTypes.MODIFY,
+        sendEvent(fromFilterStep.getPrimaryKey(), EventTypes.MODIFY,
                 filterStepDestination.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return filterStepDestination;
@@ -3725,7 +3765,7 @@ public class FilterControl
         filterStepDestination.setThruTime(session.getStartTime());
         filterStepDestination.store();
         
-        sendEvent(filterStepDestination.getFromFilterStep().getLastDetail().getFilter().getPrimaryKey(),
+        sendEvent(filterStepDestination.getFromFilterStep().getPrimaryKey(),
                 EventTypes.MODIFY, filterStepDestination.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
@@ -3766,8 +3806,7 @@ public class FilterControl
         filterStepElement.setLastDetail(filterStepElementDetail);
         filterStepElement.store();
         
-        sendEvent(filterStep.getLastDetail().getFilter().getPrimaryKey(), EventTypes.MODIFY,
-                filterStepElement.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(filterStepElement.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return filterStepElement;
     }
@@ -3897,7 +3936,51 @@ public class FilterControl
     public List<FilterStepElement> getFilterStepElementsByFilterStepForUpdate(FilterStep filterStep) {
         return getFilterStepElementsByFilterStep(filterStep, EntityPermission.READ_WRITE);
     }
-    
+
+    private static final Map<EntityPermission, String> getFilterStepElementsByFilterAdjustmentQueries;
+
+    static {
+        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM filterstepelements
+                JOIN filterstepelementdetails ON fltstpedt_filterstepelementdetailid = fltstpe_activedetailid
+                JOIN filtersteps ON fltstp_filterstepid = fltstpedt_fltstp_filterstepid
+                JOIN filterstepdetails ON fltstpdt_filterstepdetailid = fltstp_lastdetailid
+                JOIN filters ON flt_filterid = fltstpdt_flt_filterid
+                JOIN filterdetails ON fltdt_filterdetailid = flt_lastdetailid
+                JOIN filtertypes on flttyp_filtertypeid = fltdt_flttyp_filtertypeid
+                JOIN filtertypedetails on flttypdt_filtertypedetailid = flttyp_lastdetailid
+                JOIN filterkinds ON fltk_filterkindid = flttypdt_fltk_filterkindid
+                JOIN filterkinddetails ON fltkdt_filterkinddetailid = fltk_lastdetailid
+                WHERE fltstpedt_flta_filteradjustmentid = ?
+                ORDER BY fltkdt_sortorder, fltkdt_filterkindname, flttypdt_sortorder, flttypdt_filtertypename, fltdt_sortorder, fltdt_filtername, fltstpdt_filterstepname, fltstpedt_filterstepelementname
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM filterstepelements
+                JOIN filterstepelementdetails ON fltstpedt_filterstepelementdetailid = fltstpe_lastdetailid
+                WHERE fltstpedt_flta_filteradjustmentid = ?
+                FOR UPDATE
+                """);
+        getFilterStepElementsByFilterAdjustmentQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    private List<Filter> getFilterStepElementsByFilterAdjustment(FilterAdjustment filterAdjustment, EntityPermission entityPermission) {
+        return FilterFactory.getInstance().getEntitiesFromQuery(entityPermission, getFilterStepElementsByFilterAdjustmentQueries,
+                filterAdjustment);
+    }
+
+    public List<Filter> getFilterStepElementsByFilterAdjustment(FilterAdjustment filterAdjustment) {
+        return getFilterStepElementsByFilterAdjustment(filterAdjustment, EntityPermission.READ_ONLY);
+    }
+
+    public List<Filter> getFilterStepElementsByFilterAdjustmentForUpdate(FilterAdjustment filterAdjustment) {
+        return getFilterStepElementsByFilterAdjustment(filterAdjustment, EntityPermission.READ_WRITE);
+    }
+
     public List<FilterStepElementTransfer> getFilterStepElementTransfers(UserVisit userVisit, Collection<FilterStepElement> filterStepElements) {
         List<FilterStepElementTransfer> filterStepElementTransfers = new ArrayList<>(filterStepElements.size());
         
@@ -3939,8 +4022,7 @@ public class FilterControl
             filterStepElement.setActiveDetail(filterStepElementDetail);
             filterStepElement.setLastDetail(filterStepElementDetail);
             
-            sendEvent(filterStep.getLastDetail().getFilter().getPrimaryKey(), EventTypes.MODIFY,
-                    filterStepElementPK, EventTypes.DELETE, updatedBy);
+            sendEvent(filterStepElementPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -3952,8 +4034,7 @@ public class FilterControl
         filterStepElement.setActiveDetail(null);
         filterStepElement.store();
         
-        sendEvent(filterStepElementDetail.getFilterStep().getLastDetail().getFilter().getPrimaryKey(),
-                EventTypes.MODIFY, filterStepElement.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(filterStepElement.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteFilterStepElementsByFilterStep(FilterStep filterStep, BasePK deletedBy) {
@@ -3973,9 +4054,7 @@ public class FilterControl
         var filterStepElementDescription = FilterStepElementDescriptionFactory.getInstance().create(
                 filterStepElement, language, description, session.getStartTime(), Session.MAX_TIME);
         
-        sendEvent(filterStepElement.getLastDetail().getFilterStep().getLastDetail().getFilterPK(),
-                EventTypes.MODIFY, filterStepElementDescription.getPrimaryKey(), EventTypes.CREATE,
-                createdBy);
+        sendEvent(filterStepElement.getPrimaryKey(), EventTypes.MODIFY, filterStepElementDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return filterStepElementDescription;
     }
@@ -4115,14 +4194,14 @@ public class FilterControl
             filterStepElementDescription = FilterStepElementDescriptionFactory.getInstance().create(filterStepElement,
                     language, description, session.getStartTime(), Session.MAX_TIME);
             
-            sendEvent(filterStepElement.getLastDetail().getFilterStep().getLastDetail().getFilterPK(), EventTypes.MODIFY, filterStepElementDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(filterStepElement.getPrimaryKey(), EventTypes.MODIFY, filterStepElementDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteFilterStepElementDescription(FilterStepElementDescription filterStepElementDescription, BasePK deletedBy) {
         filterStepElementDescription.setThruTime(session.getStartTime());
         
-        sendEvent(filterStepElementDescription.getFilterStepElement().getLastDetail().getFilterStep().getLastDetail().getFilterPK(), EventTypes.MODIFY, filterStepElementDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(filterStepElementDescription.getFilterStepElement().getPrimaryKey(), EventTypes.MODIFY, filterStepElementDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     

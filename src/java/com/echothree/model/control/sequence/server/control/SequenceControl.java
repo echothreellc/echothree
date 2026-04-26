@@ -174,7 +174,8 @@ public class SequenceControl
             query = "SELECT _ALL_ " +
                     "FROM sequencetypes, sequencetypedetails " +
                     "WHERE sqtyp_activedetailid = sqtypdt_sequencetypedetailid " +
-                    "ORDER BY sqtypdt_sortorder, sqtypdt_sequencetypename";
+                    "ORDER BY sqtypdt_sortorder, sqtypdt_sequencetypename " +
+                    "_LIMIT_";
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
             query = "SELECT _ALL_ " +
                     "FROM sequencetypes, sequencetypedetails " +
@@ -667,7 +668,8 @@ public class SequenceControl
             var ps = SequenceChecksumTypeFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM sequencechecksumtypes " +
-                    "WHERE sqct_sequencechecksumtypename = ?");
+                    "WHERE sqct_sequencechecksumtypename = ? " +
+                    "_LIMIT_");
             
             ps.setString(1, sequenceChecksumTypeName);
             
@@ -792,7 +794,8 @@ public class SequenceControl
         var ps = SequenceEncoderTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM sequenceencodertypes " +
-                "ORDER BY sqet_sortorder, sqet_sequenceencodertypename");
+                "ORDER BY sqet_sortorder, sqet_sequenceencodertypename " +
+                "_LIMIT_");
         
         return SequenceEncoderTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
@@ -985,7 +988,8 @@ public class SequenceControl
                 query = "SELECT _ALL_ " +
                         "FROM sequences, sequencedetails " +
                         "WHERE sq_activedetailid = sqdt_sequencedetailid AND sqdt_sqtyp_sequencetypeid = ? " +
-                        "ORDER BY sqdt_sortorder, sqdt_sequencename";
+                        "ORDER BY sqdt_sortorder, sqdt_sequencename " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM sequences, sequencedetails " +

@@ -15,10 +15,10 @@
 // --------------------------------------------------------------------------------
 package com.echothree.model.control.employee.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.contactlist.server.control.ContactListControl;
-import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.party.server.control.PartyApplicationEditorUseControl;
 import com.echothree.model.control.party.server.control.PartyEntityTypeControl;
 import com.echothree.model.control.document.server.control.DocumentControl;
@@ -33,13 +33,11 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.control.scale.server.control.ScaleControl;
 import com.echothree.model.control.training.server.control.TrainingControl;
-import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.employee.server.entity.PartyEmployee;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
-import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -49,20 +47,41 @@ import javax.enterprise.context.RequestScoped;
 public class EmployeeTransferCache
         extends BaseEmployeeTransferCache<Party, EmployeeTransfer> {
 
-    AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
-    ContactControl contactControl = Session.getModelController(ContactControl.class);
-    ContactListControl contactListControl = Session.getModelController(ContactListControl.class);
-    DocumentControl documentControl = Session.getModelController(DocumentControl.class);
-    EmployeeControl employeeControl = Session.getModelController(EmployeeControl.class);
-    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-    PartyApplicationEditorUseControl partyApplicationEditorUseControl = Session.getModelController(PartyApplicationEditorUseControl.class);
-    PartyControl partyControl = Session.getModelController(PartyControl.class);
-    PartyEntityTypeControl partyEntityTypeControl = Session.getModelController(PartyEntityTypeControl.class);
-    PrinterControl printerControl = Session.getModelController(PrinterControl.class);
-    ScaleControl scaleControl = Session.getModelController(ScaleControl.class);
-    TrainingControl trainingControl = Session.getModelController(TrainingControl.class);
-    UserControl userControl = Session.getModelController(UserControl.class);
-    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    ContactControl contactControl;
+
+    @Inject
+    ContactListControl contactListControl;
+
+    @Inject
+    DocumentControl documentControl;
+
+    @Inject
+    EmployeeControl employeeControl;
+
+    @Inject
+    PartyApplicationEditorUseControl partyApplicationEditorUseControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    PartyEntityTypeControl partyEntityTypeControl;
+
+    @Inject
+    PrinterControl printerControl;
+
+    @Inject
+    ScaleControl scaleControl;
+
+    @Inject
+    TrainingControl trainingControl;
+
+    @Inject
+    WorkflowControl workflowControl;
     
     boolean includeUserLogin;
     boolean includeRecoveryAnswer;

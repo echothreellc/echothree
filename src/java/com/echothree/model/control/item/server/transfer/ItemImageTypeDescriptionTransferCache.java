@@ -16,18 +16,19 @@
 
 package com.echothree.model.control.item.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.item.common.transfer.ItemImageTypeDescriptionTransfer;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.item.server.entity.ItemImageTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class ItemImageTypeDescriptionTransferCache
         extends BaseItemDescriptionTransferCache<ItemImageTypeDescription, ItemImageTypeDescriptionTransfer> {
 
-    ItemControl itemControl = Session.getModelController(ItemControl.class);
+    @Inject
+    ItemControl itemControl;
 
     /** Creates a new instance of ItemImageTypeDescriptionTransferCache */
     protected ItemImageTypeDescriptionTransferCache() {

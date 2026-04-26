@@ -16,18 +16,19 @@
 
 package com.echothree.model.control.contact.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.contact.common.transfer.ContactMechanismAliasTransfer;
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.data.contact.server.entity.ContactMechanismAlias;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class ContactMechanismAliasTransferCache
         extends BaseContactTransferCache<ContactMechanismAlias, ContactMechanismAliasTransfer> {
 
-    ContactControl contactControl = Session.getModelController(ContactControl.class);
+    @Inject
+    ContactControl contactControl;
 
     /** Creates a new instance of ContactMechanismAliasTransferCache */
     protected ContactMechanismAliasTransferCache() {

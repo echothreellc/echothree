@@ -16,20 +16,23 @@
 
 package com.echothree.model.control.workflow.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.core.server.control.EntityTypeControl;
 import com.echothree.model.control.workflow.common.transfer.WorkflowEntityTypeTransfer;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntityType;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class WorkflowEntityTypeTransferCache
         extends BaseWorkflowTransferCache<WorkflowEntityType, WorkflowEntityTypeTransfer> {
 
-    EntityTypeControl entityTypeControl = Session.getModelController(EntityTypeControl.class);
-    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
+    @Inject
+    EntityTypeControl entityTypeControl;
+
+    @Inject
+    WorkflowControl workflowControl;
 
     /** Creates a new instance of WorkflowEntityTypeTransferCache */
     protected WorkflowEntityTypeTransferCache() {

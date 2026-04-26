@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.vendor.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
 import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
@@ -25,19 +26,29 @@ import com.echothree.model.control.vendor.common.transfer.VendorTypeTransfer;
 import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.vendor.server.entity.VendorType;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class VendorTypeTransferCache
         extends BaseVendorTransferCache<VendorType, VendorTypeTransfer> {
-    
-    AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
-    CancellationPolicyControl cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
-    FreeOnBoardControl freeOnBoardControl = Session.getModelController(FreeOnBoardControl.class);
-    ReturnPolicyControl returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
-    TermControl termControl = Session.getModelController(TermControl.class);
-    VendorControl vendorControl = Session.getModelController(VendorControl.class);
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    CancellationPolicyControl cancellationPolicyControl;
+
+    @Inject
+    FreeOnBoardControl freeOnBoardControl;
+
+    @Inject
+    ReturnPolicyControl returnPolicyControl;
+
+    @Inject
+    TermControl termControl;
+
+    @Inject
+    VendorControl vendorControl;
 
     /** Creates a new instance of VendorTypeTransferCache */
     protected VendorTypeTransferCache() {

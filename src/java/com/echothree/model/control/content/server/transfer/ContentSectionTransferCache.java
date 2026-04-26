@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.content.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.content.common.ContentOptions;
 import com.echothree.model.control.content.common.ContentProperties;
 import com.echothree.model.control.content.common.transfer.ContentSectionTransfer;
@@ -23,7 +24,6 @@ import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.data.content.server.entity.ContentSection;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.transfer.ListWrapperBuilder;
 import javax.enterprise.context.RequestScoped;
 
@@ -31,7 +31,8 @@ import javax.enterprise.context.RequestScoped;
 public class ContentSectionTransferCache
         extends BaseContentTransferCache<ContentSection, ContentSectionTransfer> {
 
-    ContentControl contentControl = Session.getModelController(ContentControl.class);
+    @Inject
+    ContentControl contentControl;
 
     boolean includeContentPages;
     

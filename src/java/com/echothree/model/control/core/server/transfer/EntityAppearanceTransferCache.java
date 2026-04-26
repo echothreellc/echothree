@@ -16,20 +16,19 @@
 
 package com.echothree.model.control.core.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.core.common.transfer.EntityAppearanceTransfer;
 import com.echothree.model.control.core.server.control.AppearanceControl;
-import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.data.core.server.entity.EntityAppearance;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class EntityAppearanceTransferCache
         extends BaseCoreTransferCache<EntityAppearance, EntityAppearanceTransfer> {
 
-    AppearanceControl appearanceControl = Session.getModelController(AppearanceControl.class);
-    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
+    @Inject
+    AppearanceControl appearanceControl;
 
     /** Creates a new instance of EntityAppearanceTransferCache */
     protected EntityAppearanceTransferCache() {

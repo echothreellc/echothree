@@ -16,20 +16,19 @@
 
 package com.echothree.model.control.queue.server.transfer;
 
-import com.echothree.model.control.core.server.control.EntityInstanceControl;
+import javax.inject.Inject;
 import com.echothree.model.control.queue.common.transfer.QueuedEntityTransfer;
 import com.echothree.model.control.queue.server.control.QueueControl;
 import com.echothree.model.data.queue.server.entity.QueuedEntity;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class QueuedEntityTransferCache
         extends BaseQueueTransferCache<QueuedEntity, QueuedEntityTransfer> {
 
-    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-    QueueControl queueControl = Session.getModelController(QueueControl.class);
+    @Inject
+    QueueControl queueControl;
 
     /** Creates a new instance of QueuedEntityTransferCache */
     protected QueuedEntityTransferCache() {

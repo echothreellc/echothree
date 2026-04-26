@@ -26,22 +26,21 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.party.server.entity.PartyCompany;
 import com.echothree.model.data.party.server.entity.PartyDivision;
 import com.echothree.model.data.party.server.factory.PartyDivisionFactory;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetDivisionsCommand
-        extends BaseMultipleEntitiesCommand<PartyDivision, GetDivisionsForm> {
+        extends BasePaginatedMultipleEntitiesCommand<PartyDivision, GetDivisionsForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -56,31 +55,35 @@ public class GetDivisionsCommand
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CompanyName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
-    
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    CompanyLogic companyLogic;
+
     /** Creates a new instance of GetDivisionsCommand */
     public GetDivisionsCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
-
     PartyCompany partyCompany;
 
     @Override
+    protected void handleForm() {
+        partyCompany = companyLogic.getPartyCompanyByName(this, form.getCompanyName(), null, null, true);
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return hasExecutionErrors() ? null : partyControl.countPartyDivisions(partyCompany.getParty());
+    }
+
+    @Override
     protected Collection<PartyDivision> getEntities() {
-        var companyName = form.getCompanyName();
-        Collection<PartyDivision> partyDivisions = null;
-
-        partyCompany = CompanyLogic.getInstance().getPartyCompanyByName(this, companyName, null, null, true);
-
-        if(!hasExecutionErrors()) {
-            var partyControl = Session.getModelController(PartyControl.class);
-
-            partyDivisions = partyControl.getDivisionsByCompany(partyCompany.getParty());
-        }
-
-        return partyDivisions;
+        return hasExecutionErrors() ? null : partyControl.getDivisionsByCompany(partyCompany.getParty());
     }
 
     @Override
@@ -88,11 +91,10 @@ public class GetDivisionsCommand
         var result = PartyResultFactory.getGetDivisionsResult();
 
         if(entities != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
             var userVisit = getUserVisit();
 
             if(session.hasLimit(PartyDivisionFactory.class)) {
-                result.setDivisionCount(partyControl.countPartyDivisions(partyCompany.getParty()));
+                result.setDivisionCount(getTotalEntities());
             }
 
             result.setCompany(partyControl.getCompanyTransfer(userVisit, partyCompany));

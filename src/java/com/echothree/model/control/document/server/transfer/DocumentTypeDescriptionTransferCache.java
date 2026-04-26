@@ -16,18 +16,19 @@
 
 package com.echothree.model.control.document.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.document.common.transfer.DocumentTypeDescriptionTransfer;
 import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.data.document.server.entity.DocumentTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class DocumentTypeDescriptionTransferCache
         extends BaseDocumentDescriptionTransferCache<DocumentTypeDescription, DocumentTypeDescriptionTransfer> {
 
-    DocumentControl documentControl = Session.getModelController(DocumentControl.class);
+    @Inject
+    DocumentControl documentControl;
 
     /** Creates a new instance of DocumentTypeDescriptionTransferCache */
     protected DocumentTypeDescriptionTransferCache() {

@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.invoice.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.invoice.common.transfer.InvoiceLineItemTransfer;
 import com.echothree.model.control.invoice.server.control.InvoiceControl;
@@ -23,17 +24,23 @@ import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.invoice.server.entity.InvoiceLineItem;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class InvoiceLineItemTransferCache
         extends BaseInvoiceTransferCache<InvoiceLineItem, InvoiceLineItemTransfer> {
 
-    InventoryControl inventoryControl = Session.getModelController(InventoryControl.class);
-    InvoiceControl invoiceControl = Session.getModelController(InvoiceControl.class);
-    ItemControl itemControl = Session.getModelController(ItemControl.class);
-    UomControl uomControl = Session.getModelController(UomControl.class);
+    @Inject
+    InventoryControl inventoryControl;
+
+    @Inject
+    InvoiceControl invoiceControl;
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    UomControl uomControl;
 
     /** Creates a new instance of InvoiceLineItemTransferCache */
     protected InvoiceLineItemTransferCache() {

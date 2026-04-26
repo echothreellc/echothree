@@ -25,6 +25,7 @@ import com.echothree.control.user.offer.server.command.GetOfferItemPricesCommand
 import com.echothree.control.user.offer.server.command.GetOfferItemsCommand;
 import com.echothree.control.user.offer.server.command.GetOfferNameElementCommand;
 import com.echothree.control.user.offer.server.command.GetOfferUseCommand;
+import com.echothree.control.user.offer.server.command.GetOfferUsesCommand;
 import com.echothree.control.user.offer.server.command.GetOffersCommand;
 import com.echothree.control.user.offer.server.command.GetSourceCommand;
 import com.echothree.control.user.offer.server.command.GetUseCommand;
@@ -65,6 +66,10 @@ public interface OfferSecurityUtils {
 
     static boolean getHasOfferUseAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetOfferUseCommand.class);
+    }
+
+    static boolean getHasOfferUsesAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetOfferUsesCommand.class);
     }
 
     static boolean getHasSourceAccess(final DataFetchingEnvironment env) {

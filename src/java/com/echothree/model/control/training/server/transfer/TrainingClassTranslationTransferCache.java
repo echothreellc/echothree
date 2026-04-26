@@ -16,20 +16,23 @@
 
 package com.echothree.model.control.training.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.control.training.common.transfer.TrainingClassTranslationTransfer;
 import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.data.training.server.entity.TrainingClassTranslation;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class TrainingClassTranslationTransferCache
         extends BaseTrainingDescriptionTransferCache<TrainingClassTranslation, TrainingClassTranslationTransfer> {
 
-    TrainingControl trainingControl = Session.getModelController(TrainingControl.class);
-    MimeTypeControl mimeTypeControl = Session.getModelController(MimeTypeControl.class);
+    @Inject
+    MimeTypeControl mimeTypeControl;
+
+    @Inject
+    TrainingControl trainingControl;
     
     /** Creates a new instance of TrainingClassTranslationTransferCache */
     protected TrainingClassTranslationTransferCache() {

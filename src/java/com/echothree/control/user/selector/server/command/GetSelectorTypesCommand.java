@@ -26,22 +26,21 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.selector.server.entity.SelectorKind;
 import com.echothree.model.data.selector.server.entity.SelectorType;
 import com.echothree.model.data.selector.server.factory.SelectorTypeFactory;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetSelectorTypesCommand
-        extends BaseMultipleEntitiesCommand<SelectorType, GetSelectorTypesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<SelectorType, GetSelectorTypesForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -59,6 +58,12 @@ public class GetSelectorTypesCommand
         );
     }
 
+    @Inject
+    SelectorControl selectorControl;
+    
+    @Inject
+    SelectorKindLogic selectorKindLogic;
+
     /** Creates a new instance of GetSelectorTypesCommand */
     public GetSelectorTypesCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -67,11 +72,17 @@ public class GetSelectorTypesCommand
     SelectorKind selectorKind;
 
     @Override
+    protected void handleForm() {
+        selectorKind = selectorKindLogic.getSelectorKindByName(this, form.getSelectorKindName());
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return hasExecutionErrors() ? null : selectorControl.countSelectorTypesBySelectorKind(selectorKind);
+    }
+
+    @Override
     protected Collection<SelectorType> getEntities() {
-        var selectorControl = Session.getModelController(SelectorControl.class);
-
-        selectorKind = SelectorKindLogic.getInstance().getSelectorKindByName(this, form.getSelectorKindName());
-
         return hasExecutionErrors() ? null : selectorControl.getSelectorTypes(selectorKind);
     }
 
@@ -80,10 +91,8 @@ public class GetSelectorTypesCommand
         var result = SelectorResultFactory.getGetSelectorTypesResult();
 
         if(entities != null) {
-            var selectorControl = Session.getModelController(SelectorControl.class);
-
             if(session.hasLimit(SelectorTypeFactory.class)) {
-                result.setSelectorTypeCount(selectorControl.countSelectorTypesBySelectorKind(selectorKind));
+                result.setSelectorTypeCount(getTotalEntities());
             }
 
             result.setSelectorKind(selectorControl.getSelectorKindTransfer(getUserVisit(), selectorKind));

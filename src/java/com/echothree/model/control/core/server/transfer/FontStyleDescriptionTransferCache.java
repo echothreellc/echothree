@@ -16,18 +16,19 @@
 
 package com.echothree.model.control.core.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.core.common.transfer.FontStyleDescriptionTransfer;
 import com.echothree.model.control.core.server.control.FontControl;
 import com.echothree.model.data.core.server.entity.FontStyleDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class FontStyleDescriptionTransferCache
         extends BaseCoreDescriptionTransferCache<FontStyleDescription, FontStyleDescriptionTransfer> {
 
-    FontControl fontControl = Session.getModelController(FontControl.class);
+    @Inject
+    FontControl fontControl;
 
     /** Creates a new instance of FontStyleDescriptionTransferCache */
     protected FontStyleDescriptionTransferCache() {

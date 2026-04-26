@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.track.server.transfer;
 
-import com.echothree.model.control.core.server.control.EntityInstanceControl;
+import javax.inject.Inject;
 import com.echothree.model.control.track.common.TrackOptions;
 import com.echothree.model.control.track.common.transfer.TrackTransfer;
 import com.echothree.model.control.track.common.workflow.TrackStatusConstants;
@@ -24,16 +24,17 @@ import com.echothree.model.control.track.server.control.TrackControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.track.server.entity.Track;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class TrackTransferCache
         extends BaseTrackTransferCache<Track, TrackTransfer> {
 
-    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-    TrackControl trackControl = Session.getModelController(TrackControl.class);
-    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
+    @Inject
+    TrackControl trackControl;
+
+    @Inject
+    WorkflowControl workflowControl;
     
     /** Creates a new instance of TrackTransferCache */
     protected TrackTransferCache() {

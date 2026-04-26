@@ -16,30 +16,34 @@
 
 package com.echothree.model.control.workeffort.server.transfer;
 
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.workeffort.common.WorkEffortOptions;
 import com.echothree.model.control.workeffort.common.transfer.WorkEffortScopeTransfer;
-import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
 import com.echothree.model.control.workrequirement.server.control.WorkRequirementControl;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workeffort.server.entity.WorkEffortScope;
 import com.echothree.util.common.transfer.ListWrapper;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class WorkEffortScopeTransferCache
         extends BaseWorkEffortTransferCache<WorkEffortScope, WorkEffortScopeTransfer> {
-    
-    SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
-    UomControl uomControl = Session.getModelController(UomControl.class);
-    WorkEffortControl workEffortControl = Session.getModelController(WorkEffortControl.class);
-    WorkRequirementControl workRequirementControl = Session.getModelController(WorkRequirementControl.class);
 
-    UnitOfMeasureKind timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
+    @Inject
+    SequenceControl sequenceControl;
+
+    @Inject
+    UomControl uomControl;
+
+    @Inject
+    WorkRequirementControl workRequirementControl;
+
+    UnitOfMeasureKind timeUnitOfMeasureKind;
 
     boolean includeWorkRequirementScopes;
     boolean includeWorkEfforts;
@@ -56,7 +60,12 @@ public class WorkEffortScopeTransferCache
         
         setIncludeEntityInstance(true);
     }
-    
+
+    @PostConstruct
+    public void setup() {
+        timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
+    }
+
     public WorkEffortScopeTransfer getWorkEffortScopeTransfer(UserVisit userVisit, WorkEffortScope workEffortScope) {
         var workEffortScopeTransfer = get(workEffortScope);
         

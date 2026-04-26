@@ -16,7 +16,6 @@
 
 package com.echothree.model.control.employee.server.transfer;
 
-import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.employee.common.transfer.LeaveTransfer;
 import com.echothree.model.control.employee.common.workflow.LeaveStatusConstants;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
@@ -27,19 +26,26 @@ import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.employee.server.entity.Leave;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.UnitOfMeasureUtils;
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 @RequestScoped
 public class LeaveTransferCache
         extends BaseEmployeeTransferCache<Leave, LeaveTransfer> {
 
-    EmployeeControl employeeControl = Session.getModelController(EmployeeControl.class);
-    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-    PartyControl partyControl = Session.getModelController(PartyControl.class);
-    UomControl uomControl = Session.getModelController(UomControl.class);
-    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
+    @Inject
+    EmployeeControl employeeControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    UomControl uomControl;
+
+    @Inject
+    WorkflowControl workflowControl;
 
     UnitOfMeasureKind timeUnitOfMeasureKind;
     UnitOfMeasureUtils unitOfMeasureUtils;
@@ -50,10 +56,14 @@ public class LeaveTransferCache
         
         setIncludeEntityInstance(true);
         
-        timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
         unitOfMeasureUtils = UnitOfMeasureUtils.getInstance();
     }
-    
+
+    @PostConstruct
+    public void setup() {
+        timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
+    }
+
     public LeaveTransfer getLeaveTransfer(UserVisit userVisit, Leave leave) {
         var leaveTransfer = get(leave);
         

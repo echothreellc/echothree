@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.party.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.carrier.server.control.CarrierControl;
 import com.echothree.model.control.contact.server.control.ContactControl;
@@ -31,21 +32,36 @@ import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PartyCompany;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class CompanyTransferCache
         extends BasePartyTransferCache<Party, CompanyTransfer> {
-    
-    AccountingControl accountingControl = Session.getModelController(AccountingControl.class);
-    CarrierControl carrierControl = Session.getModelController(CarrierControl.class);
-    ContactControl contactControl = Session.getModelController(ContactControl.class);
-    DocumentControl documentControl = Session.getModelController(DocumentControl.class);
-    InvoiceControl invoiceControl = Session.getModelController(InvoiceControl.class);
-    PartyControl partyControl = Session.getModelController(PartyControl.class);
-    PrinterControl printerControl = Session.getModelController(PrinterControl.class);
-    ScaleControl scaleControl = Session.getModelController(ScaleControl.class);
+
+    @Inject
+    AccountingControl accountingControl;
+
+    @Inject
+    CarrierControl carrierControl;
+
+    @Inject
+    ContactControl contactControl;
+
+    @Inject
+    DocumentControl documentControl;
+
+    @Inject
+    InvoiceControl invoiceControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    PrinterControl printerControl;
+
+    @Inject
+    ScaleControl scaleControl;
+
     boolean includePartyContactMechanisms;
     boolean includePartyDocuments;
     boolean includePartyPrinterGroupUses;

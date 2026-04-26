@@ -16,18 +16,19 @@
 
 package com.echothree.model.control.security.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.security.common.transfer.PartySecurityRoleTemplateDescriptionTransfer;
 import com.echothree.model.control.security.server.control.SecurityControl;
 import com.echothree.model.data.security.server.entity.PartySecurityRoleTemplateDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class PartySecurityRoleTemplateDescriptionTransferCache
         extends BaseSecurityDescriptionTransferCache<PartySecurityRoleTemplateDescription, PartySecurityRoleTemplateDescriptionTransfer> {
 
-    SecurityControl securityControl = Session.getModelController(SecurityControl.class);
+    @Inject
+    SecurityControl securityControl;
 
     /** Creates a new instance of PartySecurityRoleTemplateDescriptionTransferCache */
     protected PartySecurityRoleTemplateDescriptionTransferCache() {

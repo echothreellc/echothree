@@ -16,8 +16,7 @@
 
 package com.echothree.model.control.workrequirement.server.transfer;
 
-import com.echothree.model.control.core.server.control.EntityInstanceControl;
-import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
+import javax.inject.Inject;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.control.workrequirement.common.WorkRequirementOptions;
 import com.echothree.model.control.workrequirement.common.transfer.WorkRequirementTransfer;
@@ -26,17 +25,17 @@ import com.echothree.model.control.workrequirement.server.control.WorkRequiremen
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workrequirement.server.entity.WorkRequirement;
 import com.echothree.util.common.transfer.ListWrapper;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class WorkRequirementTransferCache
         extends BaseWorkRequirementTransferCache<WorkRequirement, WorkRequirementTransfer> {
-    
-    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-    WorkEffortControl workEffortControl = Session.getModelController(WorkEffortControl.class);
-    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
-    WorkRequirementControl workRequirementControl = Session.getModelController(WorkRequirementControl.class);
+
+    @Inject
+    WorkRequirementControl workRequirementControl;
+
+    @Inject
+    WorkflowControl workflowControl;
 
     boolean includeWorkAssignments;
     boolean includeWorkTimes;

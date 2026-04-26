@@ -16,21 +16,21 @@
 
 package com.echothree.model.control.core.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.core.common.transfer.AppearanceDescriptionTransfer;
 import com.echothree.model.control.core.server.control.AppearanceControl;
-import com.echothree.model.control.core.server.control.CoreControl;
+
 import com.echothree.model.data.core.server.entity.AppearanceDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class AppearanceDescriptionTransferCache
         extends BaseCoreDescriptionTransferCache<AppearanceDescription, AppearanceDescriptionTransfer> {
 
-    AppearanceControl appearanceControl = Session.getModelController(AppearanceControl.class);
-    CoreControl coreControl = Session.getModelController(CoreControl.class);
-
+    @Inject
+    AppearanceControl appearanceControl;
+    
     /** Creates a new instance of AppearanceDescriptionTransferCache */
     protected AppearanceDescriptionTransferCache() {
         super();

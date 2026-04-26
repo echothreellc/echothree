@@ -49,6 +49,7 @@ import com.echothree.model.data.tag.server.value.TagScopeDetailValue;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.sql.SQLException;
@@ -56,7 +57,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import com.echothree.util.server.cdi.CommandScope;
 
 @CommandScope
 public class TagControl
@@ -1085,13 +1085,12 @@ public class TagControl
                 tag, Session.MAX_TIME);
     }
 
-    public long countEntityTagsByTagScopeAndEntityInstance(final TagScope tagScope, final EntityInstance taggedEntityInstance) {
+    public long countEntityTagsByTaggedEntityInstance(final EntityInstance taggedEntityInstance) {
         return session.queryForLong(
                 "SELECT COUNT(*) " +
-                "FROM tags, tagdetails, entitytags " +
-                "WHERE t_activedetailid = tdt_tagdetailid AND tdt_ts_tagscopeid = ? " +
-                "AND t_tagid = et_t_tagid AND et_taggedentityinstanceid = ? AND et_thrutime = ?",
-                tagScope, taggedEntityInstance, Session.MAX_TIME);
+                        "FROM entitytags " +
+                        "WHERE et_taggedentityinstanceid = ? AND et_thrutime = ?",
+                taggedEntityInstance, Session.MAX_TIME);
     }
 
     private EntityTag getEntityTag(EntityInstance taggedEntityInstance, Tag tag, EntityPermission entityPermission) {

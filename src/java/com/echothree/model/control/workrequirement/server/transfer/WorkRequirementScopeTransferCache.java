@@ -16,29 +16,34 @@
 
 package com.echothree.model.control.workrequirement.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.control.UomControl;
-import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
 import com.echothree.model.control.workrequirement.common.WorkRequirementOptions;
 import com.echothree.model.control.workrequirement.common.transfer.WorkRequirementScopeTransfer;
 import com.echothree.model.control.workrequirement.server.control.WorkRequirementControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workrequirement.server.entity.WorkRequirementScope;
 import com.echothree.util.common.transfer.ListWrapper;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class WorkRequirementScopeTransferCache
         extends BaseWorkRequirementTransferCache<WorkRequirementScope, WorkRequirementScopeTransfer> {
-    
-    SelectorControl selectorControl = Session.getModelController(SelectorControl.class);
-    SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
-    UomControl uomControl = Session.getModelController(UomControl.class);
-    WorkEffortControl workEffortControl = Session.getModelController(WorkEffortControl.class);
-    WorkRequirementControl workRequirementControl = Session.getModelController(WorkRequirementControl.class);
+
+    @Inject
+    SelectorControl selectorControl;
+
+    @Inject
+    SequenceControl sequenceControl;
+
+    @Inject
+    UomControl uomControl;
+
+    @Inject
+    WorkRequirementControl workRequirementControl;
 
     boolean includeWorkRequirements;
     

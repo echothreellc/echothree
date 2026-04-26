@@ -20,14 +20,15 @@ import com.echothree.model.control.payment.common.transfer.PaymentProcessorDescr
 import com.echothree.model.control.payment.server.control.PaymentProcessorControl;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 @RequestScoped
 public class PaymentProcessorDescriptionTransferCache
         extends BasePaymentDescriptionTransferCache<PaymentProcessorDescription, PaymentProcessorDescriptionTransfer> {
 
-    PaymentProcessorControl paymentProcessorControl = Session.getModelController(com.echothree.model.control.payment.server.control.PaymentProcessorControl.class);
+    @Inject
+    PaymentProcessorControl paymentProcessorControl;
 
     /** Creates a new instance of PaymentProcessorDescriptionTransferCache */
     protected PaymentProcessorDescriptionTransferCache() {

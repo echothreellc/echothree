@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.printer.server.transfer;
 
-import com.echothree.model.control.core.server.control.EntityInstanceControl;
+import javax.inject.Inject;
 import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.control.printer.common.transfer.PrinterGroupJobTransfer;
 import com.echothree.model.control.printer.common.workflow.PrinterGroupJobStatusConstants;
@@ -24,17 +24,20 @@ import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.printer.server.entity.PrinterGroupJob;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class PrinterGroupJobTransferCache
         extends BasePrinterTransferCache<PrinterGroupJob, PrinterGroupJobTransfer> {
-    
-    DocumentControl documentControl = Session.getModelController(DocumentControl.class);
-    EntityInstanceControl entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-    PrinterControl printerControl = Session.getModelController(PrinterControl.class);
-    WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
+
+    @Inject
+    DocumentControl documentControl;
+
+    @Inject
+    PrinterControl printerControl;
+
+    @Inject
+    WorkflowControl workflowControl;
     
     /** Creates a new instance of PrinterGroupJobTransferCache */
     protected PrinterGroupJobTransferCache() {

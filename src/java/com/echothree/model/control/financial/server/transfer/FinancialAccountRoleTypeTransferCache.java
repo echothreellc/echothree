@@ -16,18 +16,19 @@
 
 package com.echothree.model.control.financial.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.financial.common.transfer.FinancialAccountRoleTypeTransfer;
 import com.echothree.model.control.financial.server.control.FinancialControl;
 import com.echothree.model.data.financial.server.entity.FinancialAccountRoleType;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class FinancialAccountRoleTypeTransferCache
         extends BaseFinancialTransferCache<FinancialAccountRoleType, FinancialAccountRoleTypeTransfer> {
 
-    FinancialControl financialControl = Session.getModelController(FinancialControl.class);
+    @Inject
+    FinancialControl financialControl;
 
     /** Creates a new instance of FinancialAccountRoleTypeTransferCache */
     protected FinancialAccountRoleTypeTransferCache() {

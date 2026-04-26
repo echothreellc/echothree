@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.payment.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.payment.common.PaymentOptions;
 import com.echothree.model.control.payment.common.transfer.PaymentProcessorTransactionTransfer;
 import com.echothree.model.control.payment.server.control.PaymentProcessorActionTypeControl;
@@ -25,17 +26,23 @@ import com.echothree.model.control.payment.server.control.PaymentProcessorTransa
 import com.echothree.model.data.payment.server.entity.PaymentProcessorTransaction;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class PaymentProcessorTransactionTransferCache
         extends BasePaymentTransferCache<PaymentProcessorTransaction, PaymentProcessorTransactionTransfer> {
 
-    PaymentProcessorControl paymentProcessorControl = Session.getModelController(PaymentProcessorControl.class);
-    PaymentProcessorActionTypeControl paymentProcessorActionTypeControl = Session.getModelController(PaymentProcessorActionTypeControl.class);
-    PaymentProcessorResultCodeControl paymentProcessorResultCodeControl = Session.getModelController(PaymentProcessorResultCodeControl.class);
-    PaymentProcessorTransactionCodeControl paymentProcessorTransactionCodeControl = Session.getModelController(PaymentProcessorTransactionCodeControl.class);
+    @Inject
+    PaymentProcessorActionTypeControl paymentProcessorActionTypeControl;
+
+    @Inject
+    PaymentProcessorControl paymentProcessorControl;
+
+    @Inject
+    PaymentProcessorResultCodeControl paymentProcessorResultCodeControl;
+
+    @Inject
+    PaymentProcessorTransactionCodeControl paymentProcessorTransactionCodeControl;
 
     boolean includePaymentProcessorTransactionCodes;
     

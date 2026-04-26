@@ -22,21 +22,27 @@ import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.order.common.OrderRoleTypes;
 import com.echothree.model.control.order.common.OrderTypes;
+import com.echothree.model.control.order.common.transfer.OrderContentCatalogTransfer;
 import com.echothree.model.control.order.common.transfer.OrderTransfer;
+import com.echothree.model.control.order.server.transfer.OrderContentCatalogTransferCache;
 import com.echothree.model.control.wishlist.server.control.WishlistControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
+import com.echothree.model.data.content.server.entity.ContentCatalog;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.order.common.pk.OrderPK;
 import com.echothree.model.data.order.server.entity.Order;
+import com.echothree.model.data.order.server.entity.OrderContentCatalog;
 import com.echothree.model.data.order.server.entity.OrderPriority;
 import com.echothree.model.data.order.server.entity.OrderStatus;
 import com.echothree.model.data.order.server.entity.OrderType;
 import com.echothree.model.data.order.server.entity.OrderUserVisit;
+import com.echothree.model.data.order.server.factory.OrderContentCatalogFactory;
 import com.echothree.model.data.order.server.factory.OrderDetailFactory;
 import com.echothree.model.data.order.server.factory.OrderFactory;
 import com.echothree.model.data.order.server.factory.OrderStatusFactory;
 import com.echothree.model.data.order.server.factory.OrderUserVisitFactory;
+import com.echothree.model.data.order.server.value.OrderContentCatalogValue;
 import com.echothree.model.data.order.server.value.OrderDetailValue;
 import com.echothree.model.data.order.server.value.OrderUserVisitValue;
 import com.echothree.model.data.party.server.entity.Party;
@@ -47,14 +53,17 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.wishlist.server.entity.WishlistType;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import com.echothree.util.server.cdi.CommandScope;
+import javax.inject.Inject;
 
 @CommandScope
 public class OrderControl
@@ -267,6 +276,7 @@ public class OrderControl
         var orderLineControl = Session.getModelController(OrderLineControl.class);
 
         removeOrderStatusByOrder(order);
+        deleteOrderContentCatalogsByOrder(order, deletedBy);
         orderTimeControl.deleteOrderTimesByOrder(order, deletedBy);
         orderRoleControl.deleteOrderRolesByOrder(order, deletedBy);
         orderAdjustmentControl.deleteOrderAdjustmentsByOrder(order, deletedBy);
@@ -501,6 +511,200 @@ public class OrderControl
     
     public void removeOrderUserVisitsByUserVisit(UserVisit userVisit) {
         removeOrderUserVisits(getOrderUserVisitsByUserVisitForUpdate(userVisit));
+    }
+
+    // --------------------------------------------------------------------------------
+    //   Order Content Catalog
+    // --------------------------------------------------------------------------------
+    
+    @Inject
+    OrderContentCatalogFactory orderContentCatalogFactory;
+
+    @Inject
+    OrderContentCatalogTransferCache orderContentCatalogTransferCache;
+
+    public OrderContentCatalog createOrderContentCatalog(Order order, ContentCatalog contentCatalog, BasePK createdBy) {
+        var orderContentCatalog = orderContentCatalogFactory.create(order, contentCatalog, session.getStartTime(), Session.MAX_TIME);
+
+        sendEvent(order.getPrimaryKey(), EventTypes.MODIFY, orderContentCatalog.getPrimaryKey(), EventTypes.CREATE, createdBy);
+
+        return orderContentCatalog;
+    }
+
+    public long countOrderContentCatalogsByOrder(Order order) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM ordercontentcatalogs
+                        WHERE ordcntct_ord_orderid = ? AND ordcntct_thrutime = ?
+                        """, order, Session.MAX_TIME);
+    }
+
+    public long countOrderContentCatalogsByContentCatalog(ContentCatalog contentCatalog) {
+        return session.queryForLong("""
+                        SELECT COUNT(*) " +
+                        "FROM ordercontentcatalogs " +
+                        "WHERE ordcntct_cntct_contentcatalogid = ? AND ordcntct_thrutime = ?
+                        """, contentCatalog, Session.MAX_TIME);
+    }
+
+    public boolean orderContentCatalogExists(Order order, ContentCatalog contentCatalog) {
+        return session.queryForLong("""
+                        SELECT COUNT(*) " +
+                        "FROM ordercontentcatalogs " +
+                        "WHERE ordcntct_ord_orderid = ? AND ordcntct_cntct_contentcatalogid = ? AND ordcntct_thrutime = ?
+                        """, order, contentCatalog, Session.MAX_TIME) == 1;
+    }
+
+    private static final Map<EntityPermission, String> getOrderContentCatalogQueries;
+
+    static {
+        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+
+        queryMap.put(EntityPermission.READ_ONLY, """
+                        SELECT _ALL_
+                        FROM ordercontentcatalogs
+                        WHERE ordcntct_ord_orderid = ? AND ordcntct_cntct_contentcatalogid = ? AND ordcntct_thrutime = ?
+                        """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                        SELECT _ALL_
+                        FROM ordercontentcatalogs
+                        WHERE ordcntct_ord_orderid = ? AND ordcntct_cntct_contentcatalogid = ? AND ordcntct_thrutime = ?
+                        FOR UPDATE
+                        """);
+        getOrderContentCatalogQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    private OrderContentCatalog getOrderContentCatalog(Order order, ContentCatalog contentCatalog, EntityPermission entityPermission) {
+        return orderContentCatalogFactory.getEntityFromQuery(entityPermission, getOrderContentCatalogQueries, order, contentCatalog, Session.MAX_TIME);
+    }
+
+    public OrderContentCatalog getOrderContentCatalog(Order order, ContentCatalog contentCatalog) {
+        return getOrderContentCatalog(order, contentCatalog, EntityPermission.READ_ONLY);
+    }
+
+    public OrderContentCatalog getOrderContentCatalogForUpdate(Order order, ContentCatalog contentCatalog) {
+        return getOrderContentCatalog(order, contentCatalog, EntityPermission.READ_WRITE);
+    }
+
+    public OrderContentCatalogValue getOrderContentCatalogValue(OrderContentCatalog orderContentCatalog) {
+        return orderContentCatalog == null? null: orderContentCatalog.getOrderContentCatalogValue().clone();
+    }
+
+    public OrderContentCatalogValue getOrderContentCatalogValueForUpdate(Order order, ContentCatalog contentCatalog) {
+        return getOrderContentCatalogValue(getOrderContentCatalogForUpdate(order, contentCatalog));
+    }
+
+    private static final Map<EntityPermission, String> getOrderContentCatalogsByOrderQueries;
+
+    static {
+        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+
+        queryMap.put(EntityPermission.READ_ONLY, """
+                        SELECT _ALL_
+                        FROM ordercontentcatalogs
+                        JOIN contentcatalogs ON cntct_contentcatalogid = ordcntct_cntct_contentcatalogid
+                        JOIN contentcatalogdetails ON cntctdt_contentcatalogdetailid = cntct_lastdetailid
+                        JOIN contentcollections ON cntc_contentcollectionid = cntctdt_cntc_contentcollectionid
+                        JOIN contentcollectiondetails ON cntcdt_contentcollectiondetailid = cntc_lastdetailid
+                        WHERE ordcntct_cntct_contentcatalogid = ? AND ordcntct_thrutime = ?
+                        ORDER BY cntcdt_contentcollectionname, cntctdt_sortorder, cntctdt_contentcatalogname
+                        """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                        SELECT _ALL_
+                        FROM ordercontentcatalogs
+                        WHERE ordcntct_cntct_contentcatalogid = ? AND ordcntct_thrutime = ?
+                        FOR UPDATE
+                        """);
+        getOrderContentCatalogsByOrderQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    private List<OrderContentCatalog> getOrderContentCatalogsByOrder(Order order, EntityPermission entityPermission) {
+        return orderContentCatalogFactory.getEntitiesFromQuery(entityPermission, getOrderContentCatalogsByOrderQueries, order, Session.MAX_TIME);
+    }
+
+    public List<OrderContentCatalog> getOrderContentCatalogsByOrder(Order order) {
+        return getOrderContentCatalogsByOrder(order, EntityPermission.READ_ONLY);
+    }
+
+    public List<OrderContentCatalog> getOrderContentCatalogsByOrderForUpdate(Order order) {
+        return getOrderContentCatalogsByOrder(order, EntityPermission.READ_WRITE);
+    }
+
+    private static final Map<EntityPermission, String> getOrderContentCatalogsByContentCatalogQueries;
+
+    static {
+        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+
+        queryMap.put(EntityPermission.READ_ONLY, """
+                        SELECT _ALL_
+                        FROM ordercontentcatalogs
+                        JOIN orders ON ord_orderid = ordcntct_ord_orderid
+                        JOIN orderdetails ON ord_lastdetailid = orddt_orderdetailid
+                        WHERE ordcntct_cntct_contentcatalogid = ? AND ordcntct_thrutime = ?
+                        ORDER BY orddt_ordername
+                        """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                        SELECT _ALL_
+                        FROM ordercontentcatalogs
+                        WHERE ordcntct_cntct_contentcatalogid = ? AND ordcntct_thrutime = ?
+                        FOR UPDATE
+                        """);
+        getOrderContentCatalogsByContentCatalogQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    private List<OrderContentCatalog> getOrderContentCatalogsByContentCatalog(ContentCatalog contentCatalog, EntityPermission entityPermission) {
+        return orderContentCatalogFactory.getEntitiesFromQuery(entityPermission, getOrderContentCatalogsByContentCatalogQueries, contentCatalog, Session.MAX_TIME);
+    }
+
+    public List<OrderContentCatalog> getOrderContentCatalogsByContentCatalog(ContentCatalog contentCatalog) {
+        return getOrderContentCatalogsByContentCatalog(contentCatalog, EntityPermission.READ_ONLY);
+    }
+
+    public List<OrderContentCatalog> getOrderContentCatalogsByContentCatalogForUpdate(ContentCatalog contentCatalog) {
+        return getOrderContentCatalogsByContentCatalog(contentCatalog, EntityPermission.READ_WRITE);
+    }
+
+    public OrderContentCatalogTransfer getOrderContentCatalogTransfer(UserVisit userVisit, OrderContentCatalog orderContentCatalog) {
+        return orderContentCatalogTransferCache.getOrderContentCatalogTransfer(userVisit, orderContentCatalog);
+    }
+
+    public List<OrderContentCatalogTransfer> getOrderContentCatalogTransfers(UserVisit userVisit, Collection<OrderContentCatalog> orderContentCatalogs) {
+        List<OrderContentCatalogTransfer> orderContentCatalogTransfers = new ArrayList<>(orderContentCatalogs.size());
+
+        orderContentCatalogs.forEach((orderContentCatalog) ->
+                orderContentCatalogTransfers.add(orderContentCatalogTransferCache.getOrderContentCatalogTransfer(userVisit, orderContentCatalog))
+        );
+
+        return orderContentCatalogTransfers;
+    }
+
+    public List<OrderContentCatalogTransfer> getOrderContentCatalogTransfersByOrder(UserVisit userVisit, Order order) {
+        return getOrderContentCatalogTransfers(userVisit, getOrderContentCatalogsByOrder(order));
+    }
+
+    public List<OrderContentCatalogTransfer> getOrderContentCatalogTransfersByContentCatalog(UserVisit userVisit, ContentCatalog contentCatalog) {
+        return getOrderContentCatalogTransfers(userVisit, getOrderContentCatalogsByContentCatalog(contentCatalog));
+    }
+
+    public void deleteOrderContentCatalog(OrderContentCatalog orderContentCatalog, BasePK deletedBy) {
+        orderContentCatalog.setThruTime(session.getStartTime());
+
+        sendEvent(orderContentCatalog.getContentCatalogPK(), EventTypes.MODIFY, orderContentCatalog.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+
+    }
+
+    public void deleteOrderContentCatalogs(List<OrderContentCatalog> orderContentCatalogs, BasePK deletedBy) {
+        orderContentCatalogs.forEach((orderContentCatalog) ->
+                deleteOrderContentCatalog(orderContentCatalog, deletedBy)
+        );
+    }
+
+    public void deleteOrderContentCatalogsByOrder(Order order, BasePK deletedBy) {
+        deleteOrderContentCatalogs(getOrderContentCatalogsByOrderForUpdate(order), deletedBy);
+    }
+
+    public void deleteOrderContentCatalogsByContentCatalog(ContentCatalog contentCatalog, BasePK deletedBy) {
+        deleteOrderContentCatalogs(getOrderContentCatalogsByContentCatalogForUpdate(contentCatalog), deletedBy);
     }
 
 }

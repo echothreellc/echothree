@@ -16,18 +16,19 @@
 
 package com.echothree.model.control.inventory.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.inventory.common.transfer.LotTimeTransfer;
 import com.echothree.model.control.inventory.server.control.LotTimeControl;
 import com.echothree.model.data.inventory.server.entity.LotTime;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class LotTimeTransferCache
         extends BaseInventoryTransferCache<LotTime, LotTimeTransfer> {
 
-    LotTimeControl lotTimeControl = Session.getModelController(LotTimeControl.class);
+    @Inject
+    LotTimeControl lotTimeControl;
 
     /** Creates a new instance of LotTimeTransferCache */
     protected LotTimeTransferCache() {

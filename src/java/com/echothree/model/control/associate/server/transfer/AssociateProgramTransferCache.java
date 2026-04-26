@@ -16,12 +16,12 @@
 
 package com.echothree.model.control.associate.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.associate.common.transfer.AssociateProgramTransfer;
 import com.echothree.model.control.associate.server.control.AssociateControl;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.data.associate.server.entity.AssociateProgram;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.PercentUtils;
 import javax.enterprise.context.RequestScoped;
 
@@ -29,9 +29,12 @@ import javax.enterprise.context.RequestScoped;
 public class AssociateProgramTransferCache
         extends BaseAssociateTransferCache<AssociateProgram, AssociateProgramTransfer> {
 
-    AssociateControl associateControl = Session.getModelController(AssociateControl.class);
-    SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
-    
+    @Inject
+    AssociateControl associateControl;
+
+    @Inject
+    SequenceControl sequenceControl;
+
     /** Creates a new instance of AssociateProgramTransferCache */
     protected AssociateProgramTransferCache() {
         super();

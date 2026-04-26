@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.offer.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.offer.common.OfferOptions;
 import com.echothree.model.control.offer.common.OfferProperties;
@@ -28,20 +29,30 @@ import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.data.offer.server.entity.Offer;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.transfer.ListWrapperBuilder;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class OfferTransferCache
         extends BaseOfferTransferCache<Offer, OfferTransfer> {
-    
-    OfferControl offerControl = Session.getModelController(OfferControl.class);
-    FilterControl filterControl = Session.getModelController(FilterControl.class);
-    OfferNameElementControl offerNameElementControl = Session.getModelController(OfferNameElementControl.class);
-    PartyControl partyControl = Session.getModelController(PartyControl.class);
-    SelectorControl selectorControl = Session.getModelController(SelectorControl.class);
-    SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
+
+    @Inject
+    FilterControl filterControl;
+
+    @Inject
+    OfferControl offerControl;
+
+    @Inject
+    OfferNameElementControl offerNameElementControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    SelectorControl selectorControl;
+
+    @Inject
+    SequenceControl sequenceControl;
     
     boolean includeOfferCustomerTypes;
     boolean includeOfferNameElements;

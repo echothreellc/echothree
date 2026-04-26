@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.security.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.security.common.SecurityOptions;
 import com.echothree.model.control.security.common.transfer.SecurityRoleGroupTransfer;
 import com.echothree.model.control.security.common.transfer.SecurityRoleTransfer;
@@ -23,14 +24,14 @@ import com.echothree.model.control.security.server.control.SecurityControl;
 import com.echothree.model.data.security.server.entity.SecurityRoleGroup;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.MapWrapper;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class SecurityRoleGroupTransferCache
         extends BaseSecurityTransferCache<SecurityRoleGroup, SecurityRoleGroupTransfer> {
 
-    SecurityControl securityControl = Session.getModelController(SecurityControl.class);
+    @Inject
+    SecurityControl securityControl;
 
     boolean includeSecurityRolesCount;
     boolean includeSecurityRoles;

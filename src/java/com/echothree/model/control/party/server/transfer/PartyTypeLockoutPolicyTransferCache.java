@@ -23,17 +23,21 @@ import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.party.server.entity.PartyTypeLockoutPolicy;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 @RequestScoped
 public class PartyTypeLockoutPolicyTransferCache
         extends BasePartyTransferCache<PartyTypeLockoutPolicy, PartyTypeLockoutPolicyTransfer> {
 
-    PartyControl partyControl = Session.getModelController(PartyControl.class);
-    UomControl uomControl = Session.getModelController(UomControl.class);
+    @Inject
+    PartyControl partyControl;
 
-    UnitOfMeasureKind timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
+    @Inject
+    UomControl uomControl;
+
+    UnitOfMeasureKind timeUnitOfMeasureKind;
 
     /** Creates a new instance of PartyTypeLockoutPolicyTransferCache */
     protected PartyTypeLockoutPolicyTransferCache() {
@@ -42,6 +46,11 @@ public class PartyTypeLockoutPolicyTransferCache
         setIncludeEntityInstance(true);
     }
 
+    @PostConstruct
+    public void setup() {
+        timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
+    }
+    
     @Override
     public PartyTypeLockoutPolicyTransfer getTransfer(UserVisit userVisit, PartyTypeLockoutPolicy partyTypeLockoutPolicy) {
         var partyTypeLockoutPolicyTransfer = get(partyTypeLockoutPolicy);

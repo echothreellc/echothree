@@ -23,6 +23,9 @@ import java.util.List;
 public interface GetSourcesResult
         extends BaseResult {
     
+    Long getSourceCount();
+    void setSourceCount(Long sourceCount);
+
     List<SourceTransfer> getSources();
     void setSources(List<SourceTransfer> sources);
     

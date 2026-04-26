@@ -894,6 +894,33 @@
                         </index>
                     </indexes>
                 </table>
+                <table namePlural="OrderContentCatalogs" nameSingular="OrderContentCatalog" columnPrefix="ordcntct">
+                    <columns>
+                        <column name="OrderContentCatalogId" type="EID" nullAllowed="false" />
+                        <column name="OrderId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Orders" destinationColumn="OrderId" />
+                        <column name="ContentCatalogId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="ContentCatalogs" destinationColumn="ContentCatalogId" />
+                        <column name="FromTime" type="Time" nullAllowed="false" />
+                        <column name="ThruTime" type="Time" nullAllowed="false" />
+                    </columns>
+                    <indexes>
+                        <index type="PrimaryKey">
+                            <indexColumn name="OrderContentCatalogId" />
+                        </index>
+                        <index type="Unique" name="Index1">
+                            <indexColumn name="OrderId" />
+                            <indexColumn name="ContentCatalogId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index2">
+                            <indexColumn name="OrderId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index3">
+                            <indexColumn name="ContentCatalogId" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                    </indexes>
+                </table>
                 <table namePlural="OrderShipmentGroups" nameSingular="OrderShipmentGroup" columnPrefix="ordshpgrp">
                     <columns>
                         <column name="OrderShipmentGroupId" type="EID" nullAllowed="false" />

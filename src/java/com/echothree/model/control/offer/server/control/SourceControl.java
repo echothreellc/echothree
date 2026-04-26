@@ -81,6 +81,14 @@ public class SourceControl
         return source;
     }
 
+    public long countSources() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM sources
+                        JOIN sourcedetails ON srcdt_sourcedetailid = src_activedetailid
+                        """);
+    }
+
     public long countSourcesByOfferUse(OfferUse offerUse) {
         return session.queryForLong(
                 "SELECT COUNT(*) " +
@@ -135,7 +143,8 @@ public class SourceControl
             query = "SELECT _ALL_ " +
                     "FROM sources, sourcedetails " +
                     "WHERE src_activedetailid = srcdt_sourcedetailid " +
-                    "ORDER BY srcdt_sortorder, srcdt_sourcename";
+                    "ORDER BY srcdt_sortorder, srcdt_sourcename " +
+                    "_LIMIT_";
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
             query = "SELECT _ALL_ " +
                     "FROM sources, sourcedetails " +

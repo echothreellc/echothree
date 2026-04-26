@@ -16,20 +16,23 @@
 
 package com.echothree.model.control.customer.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.customer.common.transfer.CustomerTypePaymentMethodTransfer;
 import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.payment.server.control.PaymentMethodControl;
 import com.echothree.model.data.customer.server.entity.CustomerTypePaymentMethod;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class CustomerTypePaymentMethodTransferCache
         extends BaseCustomerTransferCache<CustomerTypePaymentMethod, CustomerTypePaymentMethodTransfer> {
 
-    CustomerControl customerControl = Session.getModelController(CustomerControl.class);
-    PaymentMethodControl paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
+    @Inject
+    CustomerControl customerControl;
+
+    @Inject
+    PaymentMethodControl paymentMethodControl;
 
     /** Creates a new instance of CustomerTypePaymentMethodTransferCache */
     protected CustomerTypePaymentMethodTransferCache() {

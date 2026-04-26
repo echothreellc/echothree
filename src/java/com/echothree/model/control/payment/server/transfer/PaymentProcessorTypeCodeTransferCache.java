@@ -16,20 +16,23 @@
 
 package com.echothree.model.control.payment.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.payment.common.transfer.PaymentProcessorTypeCodeTransfer;
 import com.echothree.model.control.payment.server.control.PaymentProcessorTypeCodeControl;
 import com.echothree.model.control.payment.server.control.PaymentProcessorTypeCodeTypeControl;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorTypeCode;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class PaymentProcessorTypeCodeTransferCache
         extends BasePaymentTransferCache<PaymentProcessorTypeCode, PaymentProcessorTypeCodeTransfer> {
 
-    PaymentProcessorTypeCodeTypeControl paymentProcessorTypeCodeTypeControl = Session.getModelController(PaymentProcessorTypeCodeTypeControl.class);
-    PaymentProcessorTypeCodeControl paymentProcessorTypeCodeControl = Session.getModelController(PaymentProcessorTypeCodeControl.class);
+    @Inject
+    PaymentProcessorTypeCodeControl paymentProcessorTypeCodeControl;
+
+    @Inject
+    PaymentProcessorTypeCodeTypeControl paymentProcessorTypeCodeTypeControl;
 
     /** Creates a new instance of PaymentProcessorTypeTransferCache */
     protected PaymentProcessorTypeCodeTransferCache() {

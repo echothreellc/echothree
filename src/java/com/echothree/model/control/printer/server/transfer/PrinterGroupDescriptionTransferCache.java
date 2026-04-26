@@ -16,18 +16,19 @@
 
 package com.echothree.model.control.printer.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.printer.common.transfer.PrinterGroupDescriptionTransfer;
 import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.data.printer.server.entity.PrinterGroupDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class PrinterGroupDescriptionTransferCache
         extends BasePrinterDescriptionTransferCache<PrinterGroupDescription, PrinterGroupDescriptionTransfer> {
 
-    PrinterControl printerControl = Session.getModelController(PrinterControl.class);
+    @Inject
+    PrinterControl printerControl;
 
     /** Creates a new instance of PrinterGroupDescriptionTransferCache */
     protected PrinterGroupDescriptionTransferCache() {

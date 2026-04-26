@@ -16,20 +16,23 @@
 
 package com.echothree.model.control.core.server.transfer;
 
+import javax.inject.Inject;
 import com.echothree.model.control.core.common.transfer.CommandTransfer;
 import com.echothree.model.control.core.server.control.CommandControl;
 import com.echothree.model.control.core.server.control.ComponentControl;
 import com.echothree.model.data.core.server.entity.Command;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.RequestScoped;
 
 @RequestScoped
 public class CommandTransferCache
         extends BaseCoreTransferCache<Command, CommandTransfer> {
 
-    CommandControl commandControl = Session.getModelController(CommandControl.class);
-    ComponentControl componentControl = Session.getModelController(ComponentControl.class);
+    @Inject
+    CommandControl commandControl;
+
+    @Inject
+    ComponentControl componentControl;
 
     /** Creates a new instance of CommandTransferCache */
     protected CommandTransferCache() {
