@@ -28,24 +28,24 @@ import com.echothree.model.control.tag.server.logic.TagLogic;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.tag.server.entity.EntityTag;
 import com.echothree.model.data.tag.server.entity.Tag;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.tag.server.factory.EntityTagFactory;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.ParameterUtils;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetEntityTagsCommand
-        extends BaseMultipleEntitiesCommand<EntityTag, GetEntityTagsForm> {
+        extends BasePaginatedMultipleEntitiesCommand<EntityTag, GetEntityTagsForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -55,15 +55,15 @@ public class GetEntityTagsCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.EntityTag.name(), SecurityRoles.List.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null),
                 new FieldDefinition("TagScopeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("TagName", FieldType.TAG, false, null, null)
-                );
+        );
     }
     
     /** Creates a new instance of GetEntityTagsCommand */
@@ -71,32 +71,62 @@ public class GetEntityTagsCommand
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
-    EntityInstance taggedEntityInstance;
-    Tag tag;
+    @Inject
+    EntityInstanceControl entityInstanceControl;
+
+    @Inject
+    TagControl tagControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    TagLogic tagLogic;
+
+    private EntityInstance taggedEntityInstance;
+    private Tag tag;
+
+    @Override
+    protected void handleForm() {
+        var tagScopeName = form.getTagScopeName();
+        var tagName = form.getTagName();
+        var possibleEntitySpecs = entityInstanceLogic.countPossibleEntitySpecs(form);
+        var traditionalParameterCount = ParameterUtils.getInstance().countNonNullParameters(tagScopeName, tagName);
+
+        if(possibleEntitySpecs == 1 && traditionalParameterCount == 0) {
+            taggedEntityInstance = entityInstanceLogic.getEntityInstance(this, form);
+        } else if(possibleEntitySpecs == 0 && traditionalParameterCount == 2) {
+            tag = tagLogic.getTagByName(this, tagScopeName, tagName);
+        } else {
+            addExecutionError(ExecutionErrors.InvalidParameterCount.name());
+        }
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        Long total = null;
+
+        if(!hasExecutionErrors()) {
+            if(taggedEntityInstance != null) {
+                total = tagControl.countEntityTagsByTaggedEntityInstance(taggedEntityInstance);
+            } else if(tag != null) {
+                total = tagControl.countEntityTagsByTag(tag);
+            }
+        }
+
+        return total;
+    }
 
     @Override
     protected Collection<EntityTag> getEntities() {
-        var tagControl = Session.getModelController(TagControl.class);
-        var tagScopeName = form.getTagScopeName();
-        var tagName = form.getTagName();
-        var possibleEntitySpecs = EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
-        var traditionalParameterCount = ParameterUtils.getInstance().countNonNullParameters(tagScopeName, tagName);
         Collection<EntityTag> entityTags = null;
 
-        if(possibleEntitySpecs == 1 && traditionalParameterCount == 0) {
-            taggedEntityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form);
-
-            if(!hasExecutionErrors()) {
+        if(!hasExecutionErrors()) {
+            if(taggedEntityInstance != null) {
                 entityTags = tagControl.getEntityTagsByTaggedEntityInstance(taggedEntityInstance);
-            }
-        } else if (possibleEntitySpecs == 0 && traditionalParameterCount == 2) {
-            tag = TagLogic.getInstance().getTagByName(this, tagScopeName, tagName);
-
-            if(!hasExecutionErrors()) {
+            } else if(tag != null) {
                 entityTags = tagControl.getEntityTagsByTag(tag);
             }
-        } else {
-            addExecutionError(ExecutionErrors.InvalidParameterCount.name());
         }
 
         return entityTags;
@@ -107,15 +137,16 @@ public class GetEntityTagsCommand
         var result = TagResultFactory.getGetEntityTagsResult();
 
         if(entities != null) {
-            var tagControl = Session.getModelController(TagControl.class);
             var userVisit = getUserVisit();
 
             if(taggedEntityInstance != null) {
-                var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-
                 result.setTaggedEntityInstance(entityInstanceControl.getEntityInstanceTransfer(userVisit, taggedEntityInstance, false, false, false, false));
-            } else {
+            } else if(tag != null) {
                 result.setTag(tagControl.getTagTransfer(userVisit, tag));
+            }
+
+            if(session.hasLimit(EntityTagFactory.class)) {
+                result.setEntityTagCount(getTotalEntities());
             }
 
             result.setEntityTags(tagControl.getEntityTagTransfers(userVisit, entities));
