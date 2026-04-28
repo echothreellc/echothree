@@ -18,6 +18,7 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetEntityAttributeEntityAttributeGroupsForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -25,7 +26,6 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityAttributeEntityAttributeGroup;
 import com.echothree.model.data.core.server.entity.EntityAttributeGroup;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -37,6 +37,7 @@ import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetEntityAttributeEntityAttributeGroupsCommand
@@ -65,9 +66,12 @@ public class GetEntityAttributeEntityAttributeGroupsCommand
     public GetEntityAttributeEntityAttributeGroupsCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
+    
+    @Inject
+    EntityAttributeLogic entityAttributeLogic;
 
-    EntityAttribute entityAttribute;
-    EntityAttributeGroup entityAttributeGroup;
+    private EntityAttribute entityAttribute;
+    private EntityAttributeGroup entityAttributeGroup;
 
     @Override
     protected void handleForm() {
@@ -80,9 +84,9 @@ public class GetEntityAttributeEntityAttributeGroupsCommand
 
         if(parameterCount == 1) {
             if(entityAttributeGroupName == null) {
-                entityAttribute = EntityAttributeLogic.getInstance().getEntityAttributeByName(this, componentVendorName, entityTypeName, entityAttributeName);
+                entityAttribute = entityAttributeLogic.getEntityAttributeByName(this, componentVendorName, entityTypeName, entityAttributeName);
             } else { // entityAttributeGroup
-                entityAttributeGroup = EntityAttributeLogic.getInstance().getEntityAttributeGroupByName(this, entityAttributeGroupName);
+                entityAttributeGroup = entityAttributeLogic.getEntityAttributeGroupByName(this, entityAttributeGroupName);
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());

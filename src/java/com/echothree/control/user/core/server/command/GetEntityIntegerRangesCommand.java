@@ -19,28 +19,29 @@ package com.echothree.control.user.core.server.command;
 import com.echothree.control.user.core.common.form.GetEntityIntegerRangesForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
+import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityIntegerRange;
 import com.echothree.model.data.core.server.factory.EntityIntegerRangeFactory;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetEntityIntegerRangesCommand
-        extends BaseMultipleEntitiesCommand<EntityIntegerRange, GetEntityIntegerRangesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<EntityIntegerRange, GetEntityIntegerRangesForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -64,45 +65,39 @@ public class GetEntityIntegerRangesCommand
     public GetEntityIntegerRangesCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
+    
+    @Inject
+    EntityAttributeLogic entityAttributeLogic;
 
-    EntityAttribute entityAttribute;
+    private EntityAttribute entityAttribute;
+
+    @Override
+    protected void handleForm() {
+        var componentVendorName = form.getComponentVendorName();
+        var entityTypeName = form.getEntityTypeName();
+        var entityAttributeName = form.getEntityAttributeName();
+
+        entityAttribute = entityAttributeLogic.getEntityAttributeByName(this, componentVendorName, entityTypeName, entityAttributeName);
+
+        if(!hasExecutionErrors()) {
+            var entityAttributeType = entityAttribute.getLastDetail().getEntityAttributeType();
+            var entityAttributeTypeName = entityAttributeType.getEntityAttributeTypeName();
+
+            if(!entityAttributeTypeName.equals(EntityAttributeTypes.INTEGER.name())) {
+                addExecutionError(ExecutionErrors.InvalidEntityAttributeType.name(), componentVendorName, entityTypeName, entityAttributeName,
+                        entityAttributeTypeName);
+            }
+        }
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return hasExecutionErrors() ? null : coreControl.countEntityIntegerRanges(entityAttribute);
+    }
 
     @Override
     protected Collection<EntityIntegerRange> getEntities() {
-        var componentVendorName = form.getComponentVendorName();
-        var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
-        Collection<EntityIntegerRange> entityIntegerRanges = null;
-
-        if(componentVendor != null) {
-            var entityTypeName = form.getEntityTypeName();
-            var entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
-
-            if(entityType != null) {
-                var entityAttributeName = form.getEntityAttributeName();
-
-                entityAttribute = coreControl.getEntityAttributeByName(entityType, entityAttributeName);
-
-                if(entityAttribute != null) {
-                    var entityAttributeType = entityAttribute.getLastDetail().getEntityAttributeType();
-                    var entityAttributeTypeName = entityAttributeType.getEntityAttributeTypeName();
-
-                    if(entityAttributeTypeName.equals(EntityAttributeTypes.INTEGER.name())) {
-                        entityIntegerRanges = coreControl.getEntityIntegerRanges(entityAttribute);
-                    } else {
-                        addExecutionError(ExecutionErrors.InvalidEntityAttributeType.name(), componentVendorName, entityTypeName, entityAttributeName,
-                                entityAttributeTypeName);
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownEntityAttributeName.name(), componentVendorName, entityTypeName, entityAttributeName);
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownEntityTypeName.name(), componentVendorName, entityTypeName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownComponentVendorName.name(), componentVendorName);
-        }
-
-        return entityIntegerRanges;
+        return hasExecutionErrors() ? null : coreControl.getEntityIntegerRanges(entityAttribute);
     }
 
     @Override
@@ -112,11 +107,12 @@ public class GetEntityIntegerRangesCommand
         if(entities != null) {
             var userVisit = getUserVisit();
 
+            result.setEntityAttribute(coreControl.getEntityAttributeTransfer(userVisit, entityAttribute, null));
+
             if(session.hasLimit(EntityIntegerRangeFactory.class)) {
-                result.setEntityIntegerRangeCount(coreControl.countEntityIntegerRanges(entityAttribute));
+                result.setEntityIntegerRangeCount(getTotalEntities());
             }
 
-            result.setEntityAttribute(coreControl.getEntityAttributeTransfer(userVisit, entityAttribute, null));
             result.setEntityIntegerRanges(coreControl.getEntityIntegerRangeTransfers(userVisit, entities, null));
         }
 
