@@ -33,6 +33,7 @@ import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.workflow.server.graphql.WorkflowObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowSecurityUtils;
 import com.echothree.model.data.core.common.EntityListItemConstants;
+import com.echothree.model.data.core.common.EntityLongRangeConstants;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityAttributeBlob;
 import com.echothree.model.data.core.server.entity.EntityAttributeDetail;
@@ -538,7 +539,6 @@ public class EntityAttributeObject
 
     @GraphQLField
     @GraphQLDescription("entity list items")
-    @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<EntityListItemObject> getEntityListItems(final DataFetchingEnvironment env) {
         var entityAttributeType = getEntityAttributeTypeEnum();
@@ -556,8 +556,6 @@ public class EntityAttributeObject
 
                 entityListItemObjects = new CountedObjects<>(objectLimiter, entityListItems);
             }
-        } else {
-            entityListItemObjects = Connections.emptyConnection();
         }
 
         return entityListItemObjects;
@@ -565,18 +563,20 @@ public class EntityAttributeObject
 
     @GraphQLField
     @GraphQLDescription("entity long ranges")
-    public Collection<EntityLongRangeObject> getEntityLongRanges(final DataFetchingEnvironment env) {
-        Collection<EntityLongRangeObject> entityLongRangeObjects = null;
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<EntityLongRangeObject> getEntityLongRanges(final DataFetchingEnvironment env) {
+        CountingPaginatedData<EntityLongRangeObject> entityLongRangeObjects = null;
 
         if(getEntityAttributeTypeEnum() == EntityAttributeTypes.LONG
                 && CoreSecurityUtils.getHasEntityLongRangesAccess(env)) {
             var coreControl = Session.getModelController(CoreControl.class);
-            var entityLongRanges = coreControl.getEntityLongRanges(entityAttribute);
+            var totalCount = coreControl.countEntityLongRanges(entityAttribute);
 
-            entityLongRangeObjects = new ArrayList<>(entityLongRanges.size());
+            try(var objectLimiter = new ObjectLimiter(env, EntityLongRangeConstants.COMPONENT_VENDOR_NAME, EntityLongRangeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = coreControl.getEntityLongRanges(entityAttribute);
+                var entityLongRanges = entities.stream().map(EntityLongRangeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
-            for(var entityLongRange : entityLongRanges) {
-                entityLongRangeObjects.add(new EntityLongRangeObject(entityLongRange));
+                entityLongRangeObjects = new CountedObjects<>(objectLimiter, entityLongRanges);
             }
         }
 
