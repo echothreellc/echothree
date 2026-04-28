@@ -19,7 +19,6 @@ package com.echothree.model.control.core.server.graphql;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
-import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
 import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
 import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
@@ -32,6 +31,7 @@ import com.echothree.model.control.uom.server.graphql.UomSecurityUtils;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.workflow.server.graphql.WorkflowObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowSecurityUtils;
+import com.echothree.model.data.core.common.EntityIntegerRangeConstants;
 import com.echothree.model.data.core.common.EntityListItemConstants;
 import com.echothree.model.data.core.common.EntityLongRangeConstants;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
@@ -585,18 +585,20 @@ public class EntityAttributeObject
 
     @GraphQLField
     @GraphQLDescription("entity integer ranges")
-    public Collection<EntityIntegerRangeObject> getEntityIntegerRanges(final DataFetchingEnvironment env) {
-        Collection<EntityIntegerRangeObject> entityIntegerRangeObjects = null;
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<EntityIntegerRangeObject> getEntityIntegerRanges(final DataFetchingEnvironment env) {
+        CountingPaginatedData<EntityIntegerRangeObject> entityIntegerRangeObjects = null;
 
         if(getEntityAttributeTypeEnum() == EntityAttributeTypes.INTEGER
                 && CoreSecurityUtils.getHasEntityIntegerRangesAccess(env)) {
             var coreControl = Session.getModelController(CoreControl.class);
-            var entityIntegerRanges = coreControl.getEntityIntegerRanges(entityAttribute);
+            var totalCount = coreControl.countEntityIntegerRanges(entityAttribute);
 
-            entityIntegerRangeObjects = new ArrayList<>(entityIntegerRanges.size());
+            try(var objectLimiter = new ObjectLimiter(env, EntityIntegerRangeConstants.COMPONENT_VENDOR_NAME, EntityIntegerRangeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = coreControl.getEntityIntegerRanges(entityAttribute);
+                var entityIntegerRanges = entities.stream().map(EntityIntegerRangeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
-            for(var entityIntegerRange : entityIntegerRanges) {
-                entityIntegerRangeObjects.add(new EntityIntegerRangeObject(entityIntegerRange));
+                entityIntegerRangeObjects = new CountedObjects<>(objectLimiter, entityIntegerRanges);
             }
         }
 
