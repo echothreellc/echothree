@@ -19,6 +19,7 @@ package com.echothree.model.control.core.server.graphql;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
 import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
 import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
@@ -31,6 +32,7 @@ import com.echothree.model.control.uom.server.graphql.UomSecurityUtils;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.workflow.server.graphql.WorkflowObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowSecurityUtils;
+import com.echothree.model.data.core.common.EntityAttributeEntityAttributeGroupConstants;
 import com.echothree.model.data.core.common.EntityIntegerRangeConstants;
 import com.echothree.model.data.core.common.EntityListItemConstants;
 import com.echothree.model.data.core.common.EntityLongRangeConstants;
@@ -52,7 +54,6 @@ import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.stream.Collectors;
 
 @GraphQLDescription("entity attribute object")
@@ -607,21 +608,22 @@ public class EntityAttributeObject
 
     @GraphQLField
     @GraphQLDescription("entity attribute entity attribute groups")
-    public Collection<EntityAttributeEntityAttributeGroupObject> getEntityAttributeEntityAttributeGroups(final DataFetchingEnvironment env) {
-        Collection<EntityAttributeEntityAttributeGroupObject> entityAttributeEntityAttributeGroupObjects = null;
-
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<EntityAttributeEntityAttributeGroupObject> getEntityAttributeEntityAttributeGroups(final DataFetchingEnvironment env) {
         if(CoreSecurityUtils.getHasEntityAttributeEntityAttributeGroupsAccess(env)) {
             var coreControl = Session.getModelController(CoreControl.class);
-            var entityAttributeEntityAttributeGroups = coreControl.getEntityAttributeEntityAttributeGroupsByEntityAttribute(entityAttribute);
+            var totalCount = coreControl.countEntityAttributeEntityAttributeGroupsByEntityAttribute(entityAttribute);
 
-            entityAttributeEntityAttributeGroupObjects = new ArrayList<>(entityAttributeEntityAttributeGroups.size());
+            try(var objectLimiter = new ObjectLimiter(env, EntityAttributeEntityAttributeGroupConstants.COMPONENT_VENDOR_NAME, EntityAttributeEntityAttributeGroupConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = coreControl.getEntityAttributeEntityAttributeGroupsByEntityAttribute(entityAttribute);
+                var entityAttributeEntityAttributeGroups = entities.stream().map(EntityAttributeEntityAttributeGroupObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
-            for(var entityAttributeEntityAttributeGroup : entityAttributeEntityAttributeGroups) {
-                entityAttributeEntityAttributeGroupObjects.add(new EntityAttributeEntityAttributeGroupObject(entityAttributeEntityAttributeGroup));
+                return new CountedObjects<>(objectLimiter, entityAttributeEntityAttributeGroups);
             }
+        } else {
+            return Connections.emptyConnection();
         }
-
-        return entityAttributeEntityAttributeGroupObjects;
     }
 
 }
