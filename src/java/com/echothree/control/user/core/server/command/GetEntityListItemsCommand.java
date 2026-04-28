@@ -23,19 +23,19 @@ import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityListItem;
 import com.echothree.model.data.core.server.factory.EntityListItemFactory;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetEntityListItemsCommand
-        extends BaseMultipleEntitiesCommand<EntityListItem, GetEntityListItemsForm> {
+        extends BasePaginatedMultipleEntitiesCommand<EntityListItem, GetEntityListItemsForm> {
 
     // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -53,15 +53,26 @@ public class GetEntityListItemsCommand
         super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
-    EntityAttribute entityAttribute;
-    
+    @Inject
+    EntityAttributeLogic entityAttributeLogic;
+
+    private EntityAttribute entityAttribute;
+
+    @Override
+    protected void handleForm() {
+        entityAttribute = entityAttributeLogic.getEntityAttributeByName(this,
+                form.getComponentVendorName(), form.getEntityTypeName(), form.getEntityAttributeName());
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return hasExecutionErrors() ? null : coreControl.countEntityListItems(entityAttribute);
+    }
+
     @Override
     protected Collection<EntityListItem> getEntities() {
         Collection<EntityListItem> entities = null;
-        
-        entityAttribute = EntityAttributeLogic.getInstance().getEntityAttributeByName(this,
-                form.getComponentVendorName(), form.getEntityTypeName(), form.getEntityAttributeName());
-                
+
         if(!hasExecutionErrors()) {
             var entityAttributeType = entityAttribute.getLastDetail().getEntityAttributeType();
             var entityAttributeTypeName = entityAttributeType.getEntityAttributeTypeName();
@@ -72,28 +83,31 @@ public class GetEntityListItemsCommand
             } else {
                 var entityAttributeDetail = entityAttribute.getLastDetail();
                 var entityTypeDetail = entityAttributeDetail.getEntityType().getLastDetail();
-                
+
                 addExecutionError(ExecutionErrors.InvalidEntityAttributeType.name(),
                         entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
                         entityTypeDetail.getEntityTypeName(), entityAttributeDetail.getEntityAttributeName(),
                         entityAttributeTypeName);
             }
         }
-        
+
         return entities;
     }
-    
+
     @Override
     protected BaseResult getResult(Collection<EntityListItem> entities) {
         var result = CoreResultFactory.getGetEntityListItemsResult();
-        
+
         if(entities != null) {
+            var userVisit = getUserVisit();
+
+            result.setEntityAttribute(coreControl.getEntityAttributeTransfer(userVisit, entityAttribute, null));
+
             if(session.hasLimit(EntityListItemFactory.class)) {
-                result.setEntityListItemCount(coreControl.countEntityListItems(entityAttribute));
+                result.setEntityListItemCount(getTotalEntities());
             }
 
-            result.setEntityAttribute(coreControl.getEntityAttributeTransfer(getUserVisit(), entityAttribute, null));
-            result.setEntityListItems(coreControl.getEntityListItemTransfers(getUserVisit(), entities, null));
+            result.setEntityListItems(coreControl.getEntityListItemTransfers(userVisit, entities, null));
         }
 
         return result;

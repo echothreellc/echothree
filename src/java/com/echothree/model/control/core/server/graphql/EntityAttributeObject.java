@@ -19,7 +19,12 @@ package com.echothree.model.control.core.server.graphql;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.sequence.server.graphql.SequenceObject;
 import com.echothree.model.control.sequence.server.graphql.SequenceSecurityUtils;
 import com.echothree.model.control.uom.server.graphql.UnitOfMeasureTypeObject;
@@ -27,6 +32,7 @@ import com.echothree.model.control.uom.server.graphql.UomSecurityUtils;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.workflow.server.graphql.WorkflowObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowSecurityUtils;
+import com.echothree.model.data.core.common.EntityListItemConstants;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityAttributeBlob;
 import com.echothree.model.data.core.server.entity.EntityAttributeDetail;
@@ -42,9 +48,11 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 @GraphQLDescription("entity attribute object")
 @GraphQLName("EntityAttribute")
@@ -530,21 +538,26 @@ public class EntityAttributeObject
 
     @GraphQLField
     @GraphQLDescription("entity list items")
-    public Collection<EntityListItemObject> getEntityListItems(final DataFetchingEnvironment env) {
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<EntityListItemObject> getEntityListItems(final DataFetchingEnvironment env) {
         var entityAttributeType = getEntityAttributeTypeEnum();
-        Collection<EntityListItemObject> entityListItemObjects = null;
+        CountingPaginatedData<EntityListItemObject> entityListItemObjects = null;
 
         if((entityAttributeType == EntityAttributeTypes.LISTITEM
                 || entityAttributeType == EntityAttributeTypes.MULTIPLELISTITEM)
                 && CoreSecurityUtils.getHasEntityListItemsAccess(env)) {
             var coreControl = Session.getModelController(CoreControl.class);
-            var entityListItems = coreControl.getEntityListItems(entityAttribute);
+            var totalCount = coreControl.countEntityListItems(entityAttribute);
 
-            entityListItemObjects = new ArrayList<>(entityListItems.size());
+            try(var objectLimiter = new ObjectLimiter(env, EntityListItemConstants.COMPONENT_VENDOR_NAME, EntityListItemConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = coreControl.getEntityListItems(entityAttribute);
+                var entityListItems = entities.stream().map(EntityListItemObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
-            for(var entityListItem : entityListItems) {
-                entityListItemObjects.add(new EntityListItemObject(entityListItem));
+                entityListItemObjects = new CountedObjects<>(objectLimiter, entityListItems);
             }
+        } else {
+            entityListItemObjects = Connections.emptyConnection();
         }
 
         return entityListItemObjects;
