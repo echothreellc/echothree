@@ -38,6 +38,7 @@ public class GetContentForumsCommand
 
     @Inject
     ContentControl contentControl;
+    
     @Inject
     ContentLogic contentLogic;
 
