@@ -22,6 +22,7 @@ import com.echothree.control.user.payment.server.command.GetPaymentProcessorResu
 import com.echothree.control.user.payment.server.command.GetPaymentProcessorTransactionCodesCommand;
 import com.echothree.control.user.payment.server.command.GetPaymentProcessorTransactionCommand;
 import com.echothree.control.user.payment.server.command.GetPaymentProcessorTransactionsCommand;
+import com.echothree.control.user.payment.server.command.GetPaymentProcessorTypeCodeCommand;
 import com.echothree.control.user.payment.server.command.GetPaymentProcessorTypeCodeTypeCommand;
 import com.echothree.control.user.payment.server.command.GetPaymentProcessorTypeCommand;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
@@ -39,6 +40,10 @@ public interface PaymentSecurityUtils {
 
     static boolean getHasPaymentProcessorTransactionAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetPaymentProcessorTransactionCommand.class);
+    }
+
+    static boolean getHasPaymentProcessorTypeCodeAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetPaymentProcessorTypeCodeCommand.class);
     }
 
     static boolean getHasPaymentProcessorTransactionCodesAccess(final DataFetchingEnvironment env) {
