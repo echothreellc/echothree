@@ -792,6 +792,14 @@ public class MimeTypeControl
         return MimeTypeUsageFactory.getInstance().create(mimeType, mimeTypeUsageType);
     }
 
+    public long countMimeTypeUsagesByMimeType(MimeType mimeType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM mimetypeusages
+                        WHERE mtypu_mtyp_mimetypeid = ?
+                        """, mimeType);
+    }
+
     public MimeTypeUsage getMimeTypeUsage(MimeType mimeType, MimeTypeUsageType mimeTypeUsageType) {
         MimeTypeUsage mimeTypeUsage;
 
@@ -821,7 +829,8 @@ public class MimeTypeControl
                             + "FROM mimetypeusages, mimetypes, mimetypedetails "
                             + "WHERE mtypu_mtyp_mimetypeid = ? "
                             + "AND mtypu_mtyp_mimetypeid = mtyp_mimetypeid AND mtyp_lastdetailid = mtypdt_mimetypedetailid "
-                            + "ORDER BY mtypdt_sortorder, mtypdt_mimetypename");
+                            + "ORDER BY mtypdt_sortorder, mtypdt_mimetypename "
+                            + "_LIMIT_");
 
             ps.setLong(1, mimeType.getPrimaryKey().getEntityId());
 
@@ -916,7 +925,8 @@ public class MimeTypeControl
         var ps = MimeTypeFileExtensionFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                         "FROM mimetypefileextensions " +
-                        "ORDER BY mtypfe_fileextension");
+                        "ORDER BY mtypfe_fileextension " +
+                        "_LIMIT_");
 
         return MimeTypeFileExtensionFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
@@ -926,7 +936,8 @@ public class MimeTypeControl
                 "SELECT _ALL_ "
                         + "FROM mimetypefileextensions "
                         + "WHERE mtypfe_mtyp_mimetypeid = ? "
-                        + "ORDER BY mtypfe_fileextension");
+                        + "ORDER BY mtypfe_fileextension "
+                        + "_LIMIT_");
 
         return MimeTypeFileExtensionFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps,
                 mimeType);
