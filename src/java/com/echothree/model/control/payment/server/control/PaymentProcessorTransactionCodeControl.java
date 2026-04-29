@@ -56,6 +56,14 @@ public class PaymentProcessorTransactionCodeControl
         return paymentProcessorTransactionCode;
     }
 
+    public long countPaymentProcessorTransactionCodesByPaymentProcessorTransaction(final PaymentProcessorTransaction paymentProcessorTransaction) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM paymentprocessortransactions
+                        WHERE pprctrxc_pprctrx_paymentprocessortransactionid = ? AND pprctrxc_thrutime = ?
+                        """, paymentProcessorTransaction, Session.MAX_TIME);
+    }
+
     private static final Map<EntityPermission, String> getPaymentProcessorTransactionCodeQueries = Map.of(
             EntityPermission.READ_ONLY,
             "SELECT _ALL_ " +
@@ -99,7 +107,8 @@ public class PaymentProcessorTransactionCodeControl
                     "WHERE pprctrxc_pprctrx_paymentprocessortransactionid = ? AND pprctrxc_thrutime = ? " +
                     "AND pprctrxc_pproctypc_paymentprocessortypecodeid = pproctypc_paymentprocessortypecodeid AND pproctypc_lastdetailid = pproctypcdt_paymentprocessortypecodedetailid " +
                     "AND pproctypcdt_pproctypctyp_paymentprocessortypecodetypeid = pproctypctyp_paymentprocessortypecodetypeid AND pproctypctyp_lastdetailid = pproctypctypdt_paymentprocessortypecodetypedetailid " +
-                    "ORDER BY pproctypcdt_sortorder, pproctypcdt_paymentprocessortypecodename, pproctypctypdt_sortorder, pproctypctypdt_paymentprocessortypecodetypename",
+                    "ORDER BY pproctypcdt_sortorder, pproctypcdt_paymentprocessortypecodename, pproctypctypdt_sortorder, pproctypctypdt_paymentprocessortypecodetypename " +
+                    "_LIMIT_",
             EntityPermission.READ_WRITE,
             "SELECT _ALL_ " +
                     "FROM paymentprocessortransactioncodes " +
