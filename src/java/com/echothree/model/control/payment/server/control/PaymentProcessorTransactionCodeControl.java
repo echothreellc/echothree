@@ -64,6 +64,14 @@ public class PaymentProcessorTransactionCodeControl
                         """, paymentProcessorTransaction, Session.MAX_TIME);
     }
 
+    public long countPaymentProcessorTransactionCodesByPaymentProcessorTypeCode(final PaymentProcessorTypeCode paymentProcessorTypeCode) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM paymentprocessortransactions
+                        WHERE pprctrxc_pproctypc_paymentprocessortypecodeid = ? AND pprctrxc_thrutime = ?
+                        """, paymentProcessorTypeCode, Session.MAX_TIME);
+    }
+
     private static final Map<EntityPermission, String> getPaymentProcessorTransactionCodeQueries = Map.of(
             EntityPermission.READ_ONLY,
             "SELECT _ALL_ " +
