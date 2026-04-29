@@ -750,6 +750,7 @@ import com.echothree.model.data.core.common.EventTypeConstants;
 import com.echothree.model.data.core.common.FontStyleConstants;
 import com.echothree.model.data.core.common.FontWeightConstants;
 import com.echothree.model.data.core.common.MimeTypeConstants;
+import com.echothree.model.data.core.common.MimeTypeFileExtensionConstants;
 import com.echothree.model.data.core.common.TextDecorationConstants;
 import com.echothree.model.data.core.common.TextTransformationConstants;
 import com.echothree.model.data.core.server.entity.Appearance;
@@ -6174,29 +6175,31 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("mimeTypeFileExtensions")
-    static Collection<MimeTypeFileExtensionObject> mimeTypeFileExtensions(final DataFetchingEnvironment env) {
-        Collection<MimeTypeFileExtension> mimeTypeFileExtensions;
-        Collection<MimeTypeFileExtensionObject> mimeTypeFileExtensionObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<MimeTypeFileExtensionObject> mimeTypeFileExtensions(final DataFetchingEnvironment env) {
+        CountingPaginatedData<MimeTypeFileExtensionObject> data;
 
         try {
             var commandForm = CoreUtil.getHome().getGetMimeTypeFileExtensionsForm();
+            var command = CDI.current().select(GetMimeTypeFileExtensionsCommand.class).get();
 
-            mimeTypeFileExtensions = CDI.current().select(GetMimeTypeFileExtensionsCommand.class).get().getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, MimeTypeFileExtensionConstants.COMPONENT_VENDOR_NAME, MimeTypeFileExtensionConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+                    var mimeTypeFileExtensionObjects = entities.stream().map(MimeTypeFileExtensionObject::new).collect(Collectors.toList());
+
+                    data = new CountedObjects<>(objectLimiter, mimeTypeFileExtensionObjects);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(mimeTypeFileExtensions == null) {
-            mimeTypeFileExtensionObjects = emptyList();
-        } else {
-            mimeTypeFileExtensionObjects = new ArrayList<>(mimeTypeFileExtensions.size());
-
-            mimeTypeFileExtensions.stream()
-                    .map(MimeTypeFileExtensionObject::new)
-                    .forEachOrdered(mimeTypeFileExtensionObjects::add);
-        }
-
-        return mimeTypeFileExtensionObjects;
+        return data;
     }
 
     @GraphQLField

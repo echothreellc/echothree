@@ -859,6 +859,21 @@ public class MimeTypeControl
         return MimeTypeFileExtensionFactory.getInstance().create(mimeType, fileExtension, isDefault);
     }
 
+    public long countMimeTypeFileExtensions() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM mimetypefileextensions
+                        """);
+    }
+
+    public long countMimeTypeFileExtensionsByMimeType(MimeType mimeType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM mimetypefileextensions
+                        WHERE mtypfe_mtyp_mimetypeid = ?
+                        """, mimeType);
+    }
+
     public MimeTypeFileExtension getDefaultMimeTypeFileExtension(MimeType mimeType) {
         MimeTypeFileExtension mimeTypeFileExtension;
 

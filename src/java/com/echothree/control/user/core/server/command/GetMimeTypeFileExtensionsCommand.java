@@ -20,18 +20,18 @@ import com.echothree.control.user.core.common.form.GetMimeTypeFileExtensionsForm
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.data.core.server.entity.MimeTypeFileExtension;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.core.server.factory.MimeTypeFileExtensionFactory;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
-import com.echothree.util.server.persistence.Session;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetMimeTypeFileExtensionsCommand
-        extends BaseMultipleEntitiesCommand<MimeTypeFileExtension, GetMimeTypeFileExtensionsForm> {
+        extends BasePaginatedMultipleEntitiesCommand<MimeTypeFileExtension, GetMimeTypeFileExtensionsForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
@@ -44,19 +44,35 @@ public class GetMimeTypeFileExtensionsCommand
         super(null, FORM_FIELD_DEFINITIONS, true);
     }
 
+    @Inject
+    MimeTypeControl mimeTypeControl;
+
+    @Override
+    protected void handleForm() {
+        // No form fields to handle.
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return mimeTypeControl.countMimeTypeFileExtensions();
+    }
+
     @Override
     protected Collection<MimeTypeFileExtension> getEntities() {
-        var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
-
         return mimeTypeControl.getMimeTypeFileExtensions();
     }
 
     @Override
     protected BaseResult getResult(Collection<MimeTypeFileExtension> entities) {
-        var mimeTypeControl = Session.getModelController(MimeTypeControl.class);
         var result = CoreResultFactory.getGetMimeTypeFileExtensionsResult();
 
-        result.setMimeTypeFileExtensions(mimeTypeControl.getMimeTypeFileExtensionTransfers(getUserVisit(), entities));
+        if(entities != null) {
+            if(session.hasLimit(MimeTypeFileExtensionFactory.class)) {
+                result.setMimeTypeFileExtensionCount(getTotalEntities());
+            }
+
+            result.setMimeTypeFileExtensions(mimeTypeControl.getMimeTypeFileExtensionTransfers(getUserVisit(), entities));
+        }
 
         return result;
     }
