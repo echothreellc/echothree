@@ -76,6 +76,7 @@ import com.echothree.model.data.content.common.pk.ContentCatalogItemVariablePric
 import com.echothree.model.data.content.common.pk.ContentCatalogPK;
 import com.echothree.model.data.content.common.pk.ContentCategoryPK;
 import com.echothree.model.data.content.common.pk.ContentCollectionPK;
+import com.echothree.model.data.content.common.pk.ContentForumPK;
 import com.echothree.model.data.content.common.pk.ContentPageAreaPK;
 import com.echothree.model.data.content.common.pk.ContentPageAreaTypePK;
 import com.echothree.model.data.content.common.pk.ContentPageLayoutPK;
@@ -1114,7 +1115,7 @@ public class ContentControl
         return contentCollections;
     }
     
-    private ContentCollection getContentCollectionByName(String contentCollectionName, EntityPermission entityPermission) {
+    public ContentCollection getContentCollectionByName(String contentCollectionName, EntityPermission entityPermission) {
         ContentCollection contentCollection;
         
         try {
@@ -4902,6 +4903,30 @@ public class ContentControl
         sendEvent(contentForum.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return contentForum;
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ContentForum */
+    public ContentForum getContentForumByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ContentForumPK(entityInstance.getEntityUniqueId());
+
+        return ContentForumFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public ContentForum getContentForumByEntityInstance(EntityInstance entityInstance) {
+        return getContentForumByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ContentForum getContentForumByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getContentForumByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countContentForumsByContentCollection(ContentCollection contentCollection) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM contentforums
+                        JOIN contentforumdetails ON cntfrmdt_contentforumdetailid = cntfrm_activedetailid
+                        WHERE cntfrmdt_cntc_contentcollectionid = ?
+                        """, contentCollection);
     }
     
     private List<ContentForum> getContentForums(ContentCollection contentCollection, EntityPermission entityPermission) {

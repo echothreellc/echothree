@@ -26,8 +26,11 @@ public interface GetContentForumsResult
     
     ContentCollectionTransfer getContentCollection();
     void setContentCollection(ContentCollectionTransfer contentCollection);
-    
+
+    Long getContentForumCount();
+    void setContentForumCount(Long contentForumCount);
+
     List<ContentForumTransfer> getContentForums();
     void setContentForums(List<ContentForumTransfer> contentForums);
-    
+
 }

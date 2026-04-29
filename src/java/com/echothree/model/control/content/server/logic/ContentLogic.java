@@ -18,6 +18,7 @@ package com.echothree.model.control.content.server.logic;
 
 import com.echothree.model.control.content.common.exception.DuplicateContentCategoryItemException;
 import com.echothree.model.control.content.common.exception.MalformedUrlException;
+import com.echothree.model.control.content.common.exception.UnknownContentCollectionNameException;
 import com.echothree.model.control.content.common.exception.UnknownContentWebAddressNameException;
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.item.common.ItemPriceTypes;
@@ -29,6 +30,7 @@ import com.echothree.model.data.content.server.entity.ContentCatalog;
 import com.echothree.model.data.content.server.entity.ContentCatalogItem;
 import com.echothree.model.data.content.server.entity.ContentCategory;
 import com.echothree.model.data.content.server.entity.ContentCategoryItem;
+import com.echothree.model.data.content.server.entity.ContentCollection;
 import com.echothree.model.data.content.server.value.ContentCategoryItemValue;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;
 import com.echothree.model.data.item.server.entity.Item;
@@ -41,7 +43,7 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
+import com.echothree.util.server.persistence.EntityPermission;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -51,10 +53,20 @@ import java.util.List;
 import java.util.Set;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class ContentLogic
         extends BaseLogic {
+
+    @Inject
+    protected ContentControl contentControl;
+
+    @Inject
+    protected OfferUseControl offerUseControl;
+
+    @Inject
+    protected OfferItemControl offerItemControl;
 
     protected ContentLogic() {
         super();
@@ -64,11 +76,30 @@ public class ContentLogic
         return CDI.current().select(ContentLogic.class).get();
     }
 
+    public ContentCollection getContentCollectionByName(final ExecutionErrorAccumulator eea, final String contentCollectionName,
+            final EntityPermission entityPermission) {
+        var contentCollection = contentControl.getContentCollectionByName(contentCollectionName, entityPermission);
+
+        if(contentCollection == null) {
+            handleExecutionError(UnknownContentCollectionNameException.class, eea, ExecutionErrors.UnknownContentCollectionName.name(),
+                    contentCollectionName);
+        }
+
+        return contentCollection;
+    }
+
+    public ContentCollection getContentCollectionByName(final ExecutionErrorAccumulator eea, final String contentCollectionName) {
+        return getContentCollectionByName(eea, contentCollectionName, EntityPermission.READ_ONLY);
+    }
+
+    public ContentCollection getContentCollectionByNameForUpdate(final ExecutionErrorAccumulator eea, final String contentCollectionName) {
+        return getContentCollectionByName(eea, contentCollectionName, EntityPermission.READ_WRITE);
+    }
+
     public void checkReferrer(final ExecutionErrorAccumulator eea, final String referrer) {
         // A null referrer is considered valid.
         if(referrer != null) {
             try {
-                var contentControl = Session.getModelController(ContentControl.class);
                 var uri = new URI(referrer);
                 var url = uri.toURL();
                 var contentWebAddressName = url.getHost();
@@ -102,7 +133,6 @@ public class ContentLogic
 
     /** Get a Set of all OfferUses in a ContentCatalog for a given ContentCatalogItem. */
     private Set<OfferUse> getOfferUsesByContentCatalogItem(final ContentCatalogItem contentCatalogItem) {
-        var contentControl = Session.getModelController(ContentControl.class);
         Set<OfferUse> offerUses = new HashSet<>();
         var contentCategoryItems = contentControl.getContentCategoryItemsByContentCatalogItem(contentCatalogItem);
 
@@ -115,7 +145,6 @@ public class ContentLogic
 
     /** Checks across all Offers utilized in a ContentCatalog, and finds the lowest price that the ContentCatalogItem is offered for. */
     private Long getLowestUnitPrice(final ContentCatalogItem contentCatalogItem) {
-        var offerItemControl = Session.getModelController(OfferItemControl.class);
         var offerUses = getOfferUsesByContentCatalogItem(contentCatalogItem);
         long unitPrice = Integer.MAX_VALUE;
 
@@ -134,7 +163,6 @@ public class ContentLogic
     /** Checks across all Offers utilized in a ContentCatalog, and finds an OfferItemVariablePrice for this ContentCatalogItem. All
      OfferItemVariablePrices should be the same, so we'll just use the first one that's found. */
     private OfferItemVariablePrice getOfferItemVariablePrice(final ContentCatalogItem contentCatalogItem) {
-        var offerItemControl = Session.getModelController(OfferItemControl.class);
         var offerUses = getOfferUsesByContentCatalogItem(contentCatalogItem);
         var offerUsesIterator = offerUses.iterator();
         var offerUse = offerUsesIterator.hasNext() ? offerUsesIterator.next() : null;
@@ -148,8 +176,6 @@ public class ContentLogic
 
     /** Check to make sure the ContentCatalogItem has the lower price possible in the ContentCatalog, or if it is no longer used, delete it. */
     public void updateContentCatalogItemPriceByContentCatalogItem(final ContentCatalogItem contentCatalogItem, final BasePK updatedBy) {
-        var contentControl = Session.getModelController(ContentControl.class);
-
         // Check to see if it still exists in any other categories, and delete ContentCatalogItem if it doesn't.
         if(contentControl.countContentCategoryItemsByContentCatalogItem(contentCatalogItem) == 0) {
             contentControl.deleteContentCatalogItem(contentCatalogItem, updatedBy);
@@ -202,7 +228,6 @@ public class ContentLogic
     }
 
     private Set<ContentCatalog> getContentCatalogsByOfferUses(final Iterable<OfferUse> offerUses) {
-        var contentControl = Session.getModelController(ContentControl.class);
         Set<ContentCatalog> contentCatalogs = new HashSet<>();
 
         for(var offerUse : offerUses) {
@@ -217,7 +242,6 @@ public class ContentLogic
     }
 
     private Set<ContentCatalogItem> getContentCatalogItemsByContentCatalogs(final Iterable<ContentCatalog> contentCatalogs, final OfferItemPrice offerItemPrice) {
-        var contentControl = Session.getModelController(ContentControl.class);
         Set<ContentCatalogItem> contentCatalogItems = new HashSet<>();
 
         for(var contentCatalog : contentCatalogs) {
@@ -233,7 +257,6 @@ public class ContentLogic
     }
 
     public void updateContentCatalogItemPricesByOfferItemPrice(final OfferItemPrice offerItemPrice, final BasePK updatedBy) {
-        var offerUseControl = Session.getModelController(OfferUseControl.class);
         Iterable<OfferUse> offerUses = offerUseControl.getOfferUsesByOffer(offerItemPrice.getOfferItem().getOffer());
         Iterable<ContentCatalog> contentCatalogs = getContentCatalogsByOfferUses(offerUses);
         Iterable<ContentCatalogItem> contentCatalogItems = getContentCatalogItemsByContentCatalogs(contentCatalogs, offerItemPrice);
@@ -242,7 +265,6 @@ public class ContentLogic
     }
 
     private void addContentCatalogItems(final Set<ContentCatalogItem> contentCatalogItems, final ContentCategory parentContentCategory) {
-        var contentControl = Session.getModelController(ContentControl.class);
         Iterable<ContentCategoryItem> contentCategoryItems = contentControl.getContentCategoryItemsByContentCategory(parentContentCategory);
         Iterable<ContentCategory> childContentCategories = contentControl.getContentCategoriesByParentContentCategory(parentContentCategory);
 
@@ -276,7 +298,6 @@ public class ContentLogic
         var offer = offerUse.getLastDetail().getOffer();
 
         if(OfferItemLogic.getInstance().getOfferItemPrice(eea, offer, item, inventoryCondition, unitOfMeasureType, currency) != null) {
-            var contentControl = Session.getModelController(ContentControl.class);
             var contentCategoryDetail = contentCategory.getLastDetail();
             var contentCatalog = contentCategoryDetail.getContentCatalog();
             var contentCatalogItem = contentControl.getContentCatalogItem(contentCatalog, item, inventoryCondition, unitOfMeasureType, currency);
@@ -308,13 +329,10 @@ public class ContentLogic
     }
 
     public void updateContentCategoryItemFromValue(final ContentCategoryItemValue contentCategoryItemValue, final BasePK updatedBy) {
-        var contentControl = Session.getModelController(ContentControl.class);
-
         contentControl.updateContentCategoryItemFromValue(contentCategoryItemValue, updatedBy);
     }
 
     public void deleteContentCategoryItem(final ContentCategoryItem contentCategoryItem, final BasePK deletedBy) {
-        var contentControl = Session.getModelController(ContentControl.class);
         var contentCatalogItem = contentCategoryItem.getContentCatalogItemForUpdate();
 
         contentControl.deleteContentCategoryItem(contentCategoryItem, deletedBy);
@@ -333,7 +351,6 @@ public class ContentLogic
 
     /** Return a List of all ContentCategories, including the one passed to it, that inherit the DefaultOfferUse from it. */
     private List<ContentCategory> getChildContentCategoriesByContentCategory(final ContentCategory contentCategory) {
-        var contentControl = Session.getModelController(ContentControl.class);
         List<ContentCategory> contentCategories = new ArrayList<>();
 
         getChildContentCategoriesByContentCategory(contentControl, contentCategories, contentCategory);
@@ -342,8 +359,6 @@ public class ContentLogic
     }
 
     private Set<ContentCategory> getContentCategoriesByOffer(Offer offer) {
-        var contentControl = Session.getModelController(ContentControl.class);
-        var offerUseControl = Session.getModelController(OfferUseControl.class);
         Set<ContentCategory> contentCategories = new HashSet<>();
 
         offerUseControl.getOfferUsesByOffer(offer).forEach((offerUse) -> {
@@ -364,7 +379,6 @@ public class ContentLogic
     }
 
     private Set<ContentCatalogItem> getPossibleContentCatalogItemsByOfferItemPrice(Iterable<ContentCatalog> contentCatalogs, OfferItemPrice offerItemPrice) {
-        var contentControl = Session.getModelController(ContentControl.class);
         Set<ContentCatalogItem> contentCatalogItems = new HashSet<>();
 
         for(var contentCatalog : contentCatalogs) {
@@ -380,7 +394,6 @@ public class ContentLogic
     }
 
     public void deleteContentCategoryItemByOfferItemPrice(final OfferItemPrice offerItemPrice, final BasePK deletedBy) {
-        var contentControl = Session.getModelController(ContentControl.class);
         var offerItem = offerItemPrice.getOfferItem();
 
         // Create a list of all ContentCategories whose DefaultOfferUse is one that could be form this OfferItemPrice.
