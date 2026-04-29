@@ -925,7 +925,8 @@ public class MimeTypeControl
         var ps = MimeTypeFileExtensionFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                         "FROM mimetypefileextensions " +
-                        "ORDER BY mtypfe_fileextension");
+                        "ORDER BY mtypfe_fileextension " +
+                        "_LIMIT_");
 
         return MimeTypeFileExtensionFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
@@ -935,7 +936,8 @@ public class MimeTypeControl
                 "SELECT _ALL_ "
                         + "FROM mimetypefileextensions "
                         + "WHERE mtypfe_mtyp_mimetypeid = ? "
-                        + "ORDER BY mtypfe_fileextension");
+                        + "ORDER BY mtypfe_fileextension "
+                        + "_LIMIT_");
 
         return MimeTypeFileExtensionFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps,
                 mimeType);
