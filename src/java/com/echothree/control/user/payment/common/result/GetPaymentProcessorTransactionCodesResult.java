@@ -17,13 +17,20 @@
 package com.echothree.control.user.payment.common.result;
 
 import com.echothree.model.control.payment.common.transfer.PaymentProcessorTransactionCodeTransfer;
+import com.echothree.model.control.payment.common.transfer.PaymentProcessorTransactionTransfer;
 import com.echothree.util.common.command.BaseResult;
 import java.util.List;
 
 public interface GetPaymentProcessorTransactionCodesResult
         extends BaseResult {
-    
+
+    PaymentProcessorTransactionTransfer getPaymentProcessorTransaction();
+    void setPaymentProcessorTransaction(PaymentProcessorTransactionTransfer paymentProcessorTransaction);
+
+    Long getPaymentProcessorTransactionCodeCount();
+    void setPaymentProcessorTransactionCodeCount(Long paymentProcessorTransactionCodeCount);
+
     List<PaymentProcessorTransactionCodeTransfer> getPaymentProcessorTransactionCodes();
-    void setPaymentProcessorTransactionCodes(List<PaymentProcessorTransactionCodeTransfer> paymentProcessorTransactions);
-    
+    void setPaymentProcessorTransactionCodes(List<PaymentProcessorTransactionCodeTransfer> paymentProcessorTransactionCodes);
+
 }
