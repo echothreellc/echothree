@@ -22,20 +22,22 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.picklist.server.control.PicklistControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.model.data.picklist.server.entity.PicklistType;
+import com.echothree.model.data.picklist.server.factory.PicklistTypeFactory;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetPicklistTypesCommand
-        extends BaseSimpleCommand<GetPicklistTypesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<PicklistType, GetPicklistTypesForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -56,14 +58,37 @@ public class GetPicklistTypesCommand
     public GetPicklistTypesCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    @Inject
+    PicklistControl picklistControl;
+
     @Override
-    protected BaseResult execute() {
-        var picklistControl = Session.getModelController(PicklistControl.class);
+    protected void handleForm() {
+        // No form fields to handle
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return picklistControl.countPicklistTypes();
+    }
+
+    @Override
+    protected Collection<PicklistType> getEntities() {
+        return picklistControl.getPicklistTypes();
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<PicklistType> entities) {
         var result = PicklistResultFactory.getGetPicklistTypesResult();
-        
-        result.setPicklistTypes(picklistControl.getPicklistTypeTransfers(getUserVisit()));
-        
+
+        if(entities != null) {
+            if(session.hasLimit(PicklistTypeFactory.class)) {
+                result.setPicklistTypeCount(getTotalEntities());
+            }
+
+            result.setPicklistTypes(picklistControl.getPicklistTypeTransfers(getUserVisit(), entities));
+        }
+
         return result;
     }
     
