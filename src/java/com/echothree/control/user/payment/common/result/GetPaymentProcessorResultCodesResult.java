@@ -23,6 +23,9 @@ import java.util.List;
 public interface GetPaymentProcessorResultCodesResult
         extends BaseResult {
     
+    Long getPaymentProcessorResultCodeCount();
+    void setPaymentProcessorResultCodeCount(Long paymentProcessorResultCodeCount);
+
     List<PaymentProcessorResultCodeTransfer> getPaymentProcessorResultCodes();
     void setPaymentProcessorResultCodes(List<PaymentProcessorResultCodeTransfer> paymentProcessorResultCodes);
     

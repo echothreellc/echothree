@@ -99,6 +99,14 @@ public class PaymentProcessorResultCodeControl
         return getPaymentProcessorResultCodeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
 
+    public long countPaymentProcessorResultCodes() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM paymentprocessorresultcodes
+                        JOIN paymentprocessorresultcodedetails ON pprcrcdt_paymentprocessorresultcodedetailid = pprcrc_activedetailid
+                        """);
+    }
+
     private static final Map<EntityPermission, String> getPaymentProcessorResultCodeByNameQueries = Map.of(
             EntityPermission.READ_ONLY,
             "SELECT _ALL_ " +

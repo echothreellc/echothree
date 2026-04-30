@@ -20,25 +20,24 @@ import com.echothree.control.user.payment.common.form.GetPaymentProcessorResultC
 import com.echothree.control.user.payment.common.result.PaymentResultFactory;
 import com.echothree.model.control.payment.server.control.PaymentProcessorResultCodeControl;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorResultCode;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.model.data.payment.server.factory.PaymentProcessorResultCodeFactory;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
-import com.echothree.util.server.persistence.Session;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetPaymentProcessorResultCodesCommand
-        extends BaseMultipleEntitiesCommand<PaymentProcessorResultCode, GetPaymentProcessorResultCodesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<PaymentProcessorResultCode, GetPaymentProcessorResultCodesForm> {
     
     // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {
-        FORM_FIELD_DEFINITIONS = List.of(
-                );
+        FORM_FIELD_DEFINITIONS = List.of();
     }
     
     /** Creates a new instance of GetPaymentProcessorResultCodesCommand */
@@ -46,19 +45,35 @@ public class GetPaymentProcessorResultCodesCommand
         super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
+    @Inject
+    PaymentProcessorResultCodeControl paymentProcessorResultCodeControl;
+
+    @Override
+    protected void handleForm() {
+        // No form fields to handle.
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return paymentProcessorResultCodeControl.countPaymentProcessorResultCodes();
+    }
+
     @Override
     protected Collection<PaymentProcessorResultCode> getEntities() {
-        var paymentProcessorResultCodeControl = Session.getModelController(PaymentProcessorResultCodeControl.class);
-        
         return paymentProcessorResultCodeControl.getPaymentProcessorResultCodes();
     }
     
     @Override
     protected BaseResult getResult(Collection<PaymentProcessorResultCode> entities) {
         var result = PaymentResultFactory.getGetPaymentProcessorResultCodesResult();
-        var paymentProcessorResultCodeControl = Session.getModelController(PaymentProcessorResultCodeControl.class);
         
-        result.setPaymentProcessorResultCodes(paymentProcessorResultCodeControl.getPaymentProcessorResultCodeTransfers(getUserVisit(), entities));
+        if(entities != null) {
+            if(session.hasLimit(PaymentProcessorResultCodeFactory.class)) {
+                result.setPaymentProcessorResultCodeCount(getTotalEntities());
+            }
+
+            result.setPaymentProcessorResultCodes(paymentProcessorResultCodeControl.getPaymentProcessorResultCodeTransfers(getUserVisit(), entities));
+        }
         
         return result;
     }
