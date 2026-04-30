@@ -22,8 +22,11 @@ import java.util.List;
 
 public interface GetPeriodKindsResult
         extends BaseResult {
+
+    Long getPeriodKindCount();
+    void setPeriodKindCount(Long periodKindCount);
     
     List<PeriodKindTransfer> getPeriodKinds();
     void setPeriodKinds(List<PeriodKindTransfer> periodKinds);
-    
+
 }
