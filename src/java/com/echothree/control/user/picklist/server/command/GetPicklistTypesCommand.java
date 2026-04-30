@@ -47,20 +47,19 @@ public class GetPicklistTypesCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.PicklistType.name(), SecurityRoles.List.name())
-                        ))
-                ));
+                ))
+        ));
         
-        FORM_FIELD_DEFINITIONS = List.of(
-                );
-    }
-    
-    /** Creates a new instance of GetPicklistTypesCommand */
-    public GetPicklistTypesCommand() {
-        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+        FORM_FIELD_DEFINITIONS = List.of();
     }
 
     @Inject
     PicklistControl picklistControl;
+
+    /** Creates a new instance of GetPicklistTypesCommand */
+    public GetPicklistTypesCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    }
 
     @Override
     protected void handleForm() {
