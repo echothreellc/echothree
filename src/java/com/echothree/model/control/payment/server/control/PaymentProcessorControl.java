@@ -162,7 +162,8 @@ public class PaymentProcessorControl
             query = "SELECT _ALL_ " +
                     "FROM paymentprocessors, paymentprocessordetails " +
                     "WHERE pprc_activedetailid = pprcdt_paymentprocessordetailid " +
-                    "ORDER BY pprcdt_sortorder, pprcdt_paymentprocessorname";
+                    "ORDER BY pprcdt_sortorder, pprcdt_paymentprocessorname " +
+                    "_LIMIT_";
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
             query = "SELECT _ALL_ " +
                     "FROM paymentprocessors, paymentprocessordetails " +
@@ -416,7 +417,8 @@ public class PaymentProcessorControl
                 query = "SELECT _ALL_ " +
                         "FROM paymentprocessordescriptions, languages " +
                         "WHERE pprcd_pprc_paymentprocessorid = ? AND pprcd_thrutime = ? AND pprcd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                        "ORDER BY lang_sortorder, lang_languageisoname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM paymentprocessordescriptions " +

@@ -176,7 +176,8 @@ public class PaymentMethodTypePartyTypeControl
                     "WHERE pmtypptyp_activedetailid = pmtypptypdt_paymentmethodtypepartytypedetailid " +
                     "AND pmtypptypdt_ptyp_partytypeid = ptyp_partytypeid " +
                     "AND pmtypptypdt_pmtyp_paymentmethodtypeid = ? " +
-                    "ORDER BY ptyp_sortorder, ptyp_partytypename",
+                    "ORDER BY ptyp_sortorder, ptyp_partytypename " +
+                    "_LIMIT_",
             EntityPermission.READ_WRITE,
             "SELECT _ALL_ " +
                     "FROM paymentmethodtypepartytypes, paymentmethodtypepartytypedetails " +
@@ -204,7 +205,8 @@ public class PaymentMethodTypePartyTypeControl
                     "WHERE pmtypptyp_activedetailid = pmtypptypdt_paymentmethodtypepartytypedetailid " +
                     "AND pmtypptypdt_pmtyp_paymentmethodtypeid = pmtyp_paymentmethodtypeid AND pmtyp_activedetailid = pmtypdt_paymentmethodtypedetailid " +
                     "AND pmtypptypdt_ptyp_partytypeid = ? " +
-                    "ORDER BY pmtypdt_sortorder, pmtypdt_paymentmethodtypename",
+                    "ORDER BY pmtypdt_sortorder, pmtypdt_paymentmethodtypename " +
+                    "_LIMIT_",
             EntityPermission.READ_WRITE,
             "SELECT _ALL_ " +
                     "FROM paymentmethodtypepartytypes, paymentmethodtypepartytypedetails " +

@@ -145,7 +145,8 @@ public class PaymentMethodControl
             query = "SELECT _ALL_ " +
                     "FROM paymentmethods, paymentmethoddetails " +
                     "WHERE pm_activedetailid = pmdt_paymentmethoddetailid " +
-                    "ORDER BY pmdt_sortorder, pmdt_paymentmethodname";
+                    "ORDER BY pmdt_sortorder, pmdt_paymentmethodname " +
+                    "_LIMIT_";
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
             query = "SELECT _ALL_ " +
                     "FROM paymentmethods, paymentmethoddetails " +
@@ -176,7 +177,8 @@ public class PaymentMethodControl
                 query = "SELECT _ALL_ " +
                         "FROM paymentmethods, paymentmethoddetails " +
                         "WHERE pm_activedetailid = pmdt_paymentmethoddetailid AND pmdt_pmtyp_paymentmethodtypeid = ? " +
-                        "ORDER BY pmdt_sortorder, pmdt_paymentmethodname";
+                        "ORDER BY pmdt_sortorder, pmdt_paymentmethodname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM paymentmethods, paymentmethoddetails " +
@@ -214,7 +216,8 @@ public class PaymentMethodControl
                 query = "SELECT _ALL_ " +
                         "FROM paymentmethods, paymentmethoddetails " +
                         "WHERE pm_activedetailid = pmdt_paymentmethoddetailid AND pmdt_pprc_paymentprocessorid = ? " +
-                        "ORDER BY pmdt_sortorder, pmdt_paymentmethodname";
+                        "ORDER BY pmdt_sortorder, pmdt_paymentmethodname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM paymentmethods, paymentmethoddetails " +
@@ -497,7 +500,8 @@ public class PaymentMethodControl
                 query = "SELECT _ALL_ " +
                         "FROM paymentmethoddescriptions, languages " +
                         "WHERE pmd_pm_paymentmethodid = ? AND pmd_thrutime = ? AND pmd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                        "ORDER BY lang_sortorder, lang_languageisoname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM paymentmethoddescriptions " +

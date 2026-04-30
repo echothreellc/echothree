@@ -377,7 +377,8 @@ public class PaymentProcessorActionTypeControl
             "SELECT _ALL_ " +
                     "FROM paymentprocessoractiontypedescriptions, languages " +
                     "WHERE pprcacttypd_pprcacttyp_paymentprocessoractiontypeid = ? AND pprcacttypd_thrutime = ? AND pprcacttypd_lang_languageid = lang_languageid " +
-                    "ORDER BY lang_sortorder, lang_languageisoname",
+                    "ORDER BY lang_sortorder, lang_languageisoname " +
+                    "_LIMIT_",
             EntityPermission.READ_WRITE,
             "SELECT _ALL_ " +
                     "FROM paymentprocessoractiontypedescriptions " +

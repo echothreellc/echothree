@@ -196,7 +196,8 @@ public class PartyPaymentMethodControl
                 "SELECT _ALL_ " +
                 "FROM partypaymentmethods, partypaymentmethoddetails " +
                 "WHERE parpm_activedetailid = parpmdt_partypaymentmethoddetailid AND parpmdt_par_partyid = ? " +
-                "ORDER BY parpmdt_sortorder, parpmdt_partypaymentmethodname");
+                "ORDER BY parpmdt_sortorder, parpmdt_partypaymentmethodname " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
                 "FROM partypaymentmethods, partypaymentmethoddetails " +
@@ -227,7 +228,8 @@ public class PartyPaymentMethodControl
                 "SELECT _ALL_ " +
                 "FROM partypaymentmethods, partypaymentmethoddetails " +
                 "WHERE parpm_activedetailid = parpmdt_partypaymentmethoddetailid AND parpmdt_pm_paymentmethodid = ? " +
-                "ORDER BY parpmdt_sortorder, parpmdt_partypaymentmethodname");
+                "ORDER BY parpmdt_sortorder, parpmdt_partypaymentmethodname " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
                 "FROM partypaymentmethods, partypaymentmethoddetails " +
@@ -513,7 +515,8 @@ public class PartyPaymentMethodControl
                         "AND parpmcc_parpm_partypaymentmethodid = parpm_partypaymentmethodid AND parpm_lastdetailid = parpmdt_partypaymentmethoddetailid " +
                         "AND parpmdt_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid " +
                         "AND pardt_ptyp_partytypeid = ptyp_partytypeid " +
-                        "ORDER BY parpmdt_partypaymentmethodname, pardt_partyname, ptyp_sortorder, ptyp_partytypename";
+                        "ORDER BY parpmdt_partypaymentmethodname, pardt_partyname, ptyp_sortorder, ptyp_partytypename " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM partypaymentmethodcreditcards " +
@@ -557,7 +560,8 @@ public class PartyPaymentMethodControl
                         "AND parpmcc_parpm_partypaymentmethodid = parpm_partypaymentmethodid AND parpm_lastdetailid = parpmdt_partypaymentmethoddetailid " +
                         "AND parpmdt_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid " +
                         "AND pardt_ptyp_partytypeid = ptyp_partytypeid " +
-                        "ORDER BY parpmdt_partypaymentmethodname, pardt_partyname, ptyp_sortorder, ptyp_partytypename";
+                        "ORDER BY parpmdt_partypaymentmethodname, pardt_partyname, ptyp_sortorder, ptyp_partytypename " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM partypaymentmethodcreditcards " +
