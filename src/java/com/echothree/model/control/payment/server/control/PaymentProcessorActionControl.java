@@ -98,7 +98,8 @@ public class PaymentProcessorActionControl
                     "WHERE pprcact_pprc_paymentprocessorid = ? AND pprcact_thrutime = ? " +
                     "AND pprcact_pprctypact_paymentprocessortypeactionid = pprctypact_paymentprocessortypeactionid AND pprctypact_lastdetailid = pprctypactdt_paymentprocessortypeactiondetailid " +
                     "AND pprctypactdt_pprcacttyp_paymentprocessoractiontypeid = pprcacttyp_paymentprocessoractiontypeid AND pprcacttyp_lastdetailid = pprcacttypdt_paymentprocessoractiontypedetailid " +
-                    "ORDER BY pprctypactdt_sortorder, pprcacttypdt_sortorder, pprcacttypdt_paymentprocessoractiontypename",
+                    "ORDER BY pprctypactdt_sortorder, pprcacttypdt_sortorder, pprcacttypdt_paymentprocessoractiontypename " +
+                    "_LIMIT_",
             EntityPermission.READ_WRITE,
             "SELECT _ALL_ " +
                     "FROM paymentprocessoractions " +
@@ -126,7 +127,8 @@ public class PaymentProcessorActionControl
                     "FROM paymentprocessoractions, paymentprocessors, paymentprocessordetails " +
                     "WHERE pprcact_pprctypact_paymentprocessortypeactionid = ? AND pprcact_thrutime = ? " +
                     "AND pprcact_pprc_paymentprocessorid = pprc_paymentprocessorid AND pprc_lastdetailid = pprcdt_paymentprocessordetailid " +
-                    "ORDER BY pprcdt_sortorder, pprcdt_paymentprocessorname",
+                    "ORDER BY pprcdt_sortorder, pprcdt_paymentprocessorname " +
+                    "_LIMIT_",
             EntityPermission.READ_WRITE,
             "SELECT _ALL_ " +
                     "FROM paymentprocessoractions " +

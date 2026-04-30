@@ -173,7 +173,8 @@ public class PaymentProcessorTypeCodeTypeControl
             "SELECT _ALL_ " +
                     "FROM paymentprocessortypecodetypes, paymentprocessortypecodetypedetails " +
                     "WHERE pproctypctyp_activedetailid = pproctypctypdt_paymentprocessortypecodetypedetailid AND pproctypctypdt_pprctyp_paymentprocessortypeid = ? " +
-                    "ORDER BY pproctypctypdt_sortorder, pproctypctypdt_paymentprocessortypecodetypename",
+                    "ORDER BY pproctypctypdt_sortorder, pproctypctypdt_paymentprocessortypecodetypename " +
+                    "_LIMIT_",
             EntityPermission.READ_WRITE,
             "SELECT _ALL_ " +
                     "FROM paymentprocessortypecodetypes, paymentprocessortypecodetypedetails " +
@@ -391,7 +392,8 @@ public class PaymentProcessorTypeCodeTypeControl
             "SELECT _ALL_ " +
                     "FROM paymentprocessortypecodetypedescriptions, languages " +
                     "WHERE pproctypctypd_pproctypctyp_paymentprocessortypecodetypeid = ? AND pproctypctypd_thrutime = ? AND pproctypctypd_lang_languageid = lang_languageid " +
-                    "ORDER BY lang_sortorder, lang_languageisoname",
+                    "ORDER BY lang_sortorder, lang_languageisoname " +
+                    "_LIMIT_",
             EntityPermission.READ_WRITE,
             "SELECT _ALL_ " +
                     "FROM paymentprocessortypecodetypedescriptions " +

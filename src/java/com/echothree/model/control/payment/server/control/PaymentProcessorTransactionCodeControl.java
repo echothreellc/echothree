@@ -144,7 +144,8 @@ public class PaymentProcessorTransactionCodeControl
                     "FROM paymentprocessortransactioncodes, paymentprocessortransactions, paymentprocessortransactiondetails " +
                     "WHERE pprctrxc_pproctypc_paymentprocessortypecodeid = ? AND pprctrxc_thrutime = ? " +
                     "AND pprctrxc_pprctrx_paymentprocessortransactionid = pprctrx_paymentprocessortransactionid AND pprctrx_lastdetailid = pprctrxdt_paymentprocessortransactiondetailid " +
-                    "ORDER BY pprctrxdt_paymentprocessortransactionname",
+                    "ORDER BY pprctrxdt_paymentprocessortransactionname " +
+                    "_LIMIT_",
             EntityPermission.READ_WRITE,
             "SELECT _ALL_ " +
                     "FROM paymentprocessortransactioncodes " +
