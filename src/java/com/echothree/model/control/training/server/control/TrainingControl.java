@@ -134,6 +134,7 @@ import com.echothree.model.data.workeffort.server.entity.WorkEffortScope;
 import com.echothree.model.data.workflow.server.entity.WorkflowStep;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
@@ -148,7 +149,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
@@ -248,13 +248,28 @@ public class TrainingControl
         
         return trainingClass;
     }
-    
-    /** Assume that the entityInstance passed to this function is a ECHO_THREE.TrainingClass */
-    public TrainingClass getTrainingClassByEntityInstance(EntityInstance entityInstance) {
-        var pk = new TrainingClassPK(entityInstance.getEntityUniqueId());
-        var trainingClass = TrainingClassFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
-        return trainingClass;
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.TrainingClass */
+    public TrainingClass getTrainingClassByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new TrainingClassPK(entityInstance.getEntityUniqueId());
+
+        return TrainingClassFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public TrainingClass getTrainingClassByEntityInstance(EntityInstance entityInstance) {
+        return getTrainingClassByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public TrainingClass getTrainingClassByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getTrainingClassByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countTrainingClasses() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM trainingclasses
+                        JOIN trainingclassdetails ON trnclsdt_trainingclassdetailid = trncls_activedetailid
+                        """);
     }
 
     private static final Map<EntityPermission, String> getTrainingClassByNameQueries;
@@ -362,15 +377,18 @@ public class TrainingControl
         return trainingClassTransferCache.getTrainingClassTransfer(userVisit, trainingClass);
     }
     
-    public List<TrainingClassTransfer> getTrainingClassTransfers(UserVisit userVisit) {
-        var trainingClasses = getTrainingClasses();
+    public List<TrainingClassTransfer> getTrainingClassTransfers(UserVisit userVisit, Collection<TrainingClass> trainingClasses) {
         List<TrainingClassTransfer> trainingClassTransfers = new ArrayList<>(trainingClasses.size());
-        
+
         trainingClasses.forEach((trainingClass) ->
                 trainingClassTransfers.add(trainingClassTransferCache.getTrainingClassTransfer(userVisit, trainingClass))
         );
-        
+
         return trainingClassTransfers;
+    }
+
+    public List<TrainingClassTransfer> getTrainingClassTransfers(UserVisit userVisit) {
+        return getTrainingClassTransfers(userVisit, getTrainingClasses());
     }
     
     public TrainingClassChoicesBean getTrainingClassChoices(String defaultTrainingClassChoice, Language language, boolean allowNullChoice) {
