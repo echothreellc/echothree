@@ -48,6 +48,7 @@ import com.echothree.model.data.track.server.value.TrackDetailValue;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
@@ -61,7 +62,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
@@ -134,11 +134,26 @@ public class TrackControl
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.Track */
-    public Track getTrackByEntityInstance(EntityInstance entityInstance) {
+    public Track getTrackByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new TrackPK(entityInstance.getEntityUniqueId());
-        var track = TrackFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
-        return track;
+        return TrackFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public Track getTrackByEntityInstance(EntityInstance entityInstance) {
+        return getTrackByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public Track getTrackByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getTrackByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countTracks() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM tracks
+                        JOIN trackdetails ON trkdt_trackdetailid = trk_activedetailid
+                        """);
     }
 
     private static final Map<EntityPermission, String> getTrackByNameQueries;
@@ -314,6 +329,16 @@ public class TrackControl
     
    public TrackTransfer getTrackTransfer(UserVisit userVisit, Track track) {
         return trackTransferCache.getTrackTransfer(userVisit, track);
+    }
+
+    public List<TrackTransfer> getTrackTransfers(UserVisit userVisit, Collection<Track> tracks) {
+        List<TrackTransfer> trackTransfers = new ArrayList<>(tracks.size());
+
+        tracks.forEach((track) ->
+                trackTransfers.add(trackTransferCache.getTrackTransfer(userVisit, track))
+        );
+
+        return trackTransfers;
     }
 
     public List<TrackTransfer> getTrackTransfers(UserVisit userVisit) {
