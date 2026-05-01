@@ -23,6 +23,9 @@ import java.util.List;
 public interface GetTrainingClassesResult
         extends BaseResult {
     
+    Long getTrainingClassCount();
+    void setTrainingClassCount(Long trainingClassCount);
+
     List<TrainingClassTransfer> getTrainingClasses();
     void setTrainingClasses(List<TrainingClassTransfer> trainingClasses);
     
