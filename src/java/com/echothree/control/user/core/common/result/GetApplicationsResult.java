@@ -23,6 +23,9 @@ import java.util.List;
 public interface GetApplicationsResult
         extends BaseResult {
     
+    Long getApplicationCount();
+    void setApplicationCount(Long applicationCount);
+
     List<ApplicationTransfer> getApplications();
     void setApplications(List<ApplicationTransfer> applications);
     
