@@ -37,7 +37,9 @@ import com.echothree.model.control.picklist.server.transfer.PicklistTimeTypeDesc
 import com.echothree.model.control.picklist.server.transfer.PicklistTimeTypeTransferCache;
 import com.echothree.model.control.picklist.server.transfer.PicklistTypeDescriptionTransferCache;
 import com.echothree.model.control.picklist.server.transfer.PicklistTypeTransferCache;
+import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.server.entity.Language;
+import com.echothree.model.data.picklist.common.pk.PicklistTypePK;
 import com.echothree.model.data.picklist.server.entity.Picklist;
 import com.echothree.model.data.picklist.server.entity.PicklistAlias;
 import com.echothree.model.data.picklist.server.entity.PicklistAliasType;
@@ -71,6 +73,7 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
@@ -83,7 +86,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
@@ -156,6 +158,29 @@ public class PicklistControl
         sendEvent(picklistType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return picklistType;
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.PicklistType */
+    public PicklistType getPicklistTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new PicklistTypePK(entityInstance.getEntityUniqueId());
+
+        return PicklistTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public PicklistType getPicklistTypeByEntityInstance(EntityInstance entityInstance) {
+        return getPicklistTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public PicklistType getPicklistTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getPicklistTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countPicklistTypes() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM picklisttypes
+                        JOIN picklisttypedetails ON pcklsttypdt_picklisttypedetailid = pcklsttyp_activedetailid
+                        """);
     }
 
     private static final Map<EntityPermission, String> getPicklistTypeByNameQueries;
@@ -296,12 +321,11 @@ public class PicklistControl
         return getPicklistTypesByParentPicklistType(parentPicklistType, EntityPermission.READ_WRITE);
     }
 
-   public PicklistTypeTransfer getPicklistTypeTransfer(UserVisit userVisit, PicklistType picklistType) {
+    public PicklistTypeTransfer getPicklistTypeTransfer(UserVisit userVisit, PicklistType picklistType) {
         return picklistTypeTransferCache.getPicklistTypeTransfer(userVisit, picklistType);
     }
 
-    public List<PicklistTypeTransfer> getPicklistTypeTransfers(UserVisit userVisit) {
-        var picklistTypes = getPicklistTypes();
+    public List<PicklistTypeTransfer> getPicklistTypeTransfers(UserVisit userVisit, Collection<PicklistType> picklistTypes) {
         List<PicklistTypeTransfer> picklistTypeTransfers = new ArrayList<>(picklistTypes.size());
 
         picklistTypes.forEach((picklistType) ->
@@ -309,6 +333,10 @@ public class PicklistControl
         );
 
         return picklistTypeTransfers;
+    }
+
+    public List<PicklistTypeTransfer> getPicklistTypeTransfers(UserVisit userVisit) {
+        return getPicklistTypeTransfers(userVisit, getPicklistTypes());
     }
 
     public PicklistTypeChoicesBean getPicklistTypeChoices(String defaultPicklistTypeChoice,

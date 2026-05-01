@@ -23,6 +23,9 @@ import java.util.List;
 public interface GetPicklistTypesResult
         extends BaseResult {
     
+    Long getPicklistTypeCount();
+    void setPicklistTypeCount(Long picklistTypeCount);
+
     List<PicklistTypeTransfer> getPicklistTypes();
     void setPicklistTypes(List<PicklistTypeTransfer> picklistTypes);
     
