@@ -63,6 +63,7 @@ import com.echothree.model.data.index.server.value.IndexTypeDetailValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
@@ -73,7 +74,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
@@ -1054,11 +1054,18 @@ public class IndexControl
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.Index */
-    public Index getIndexByEntityInstance(EntityInstance entityInstance) {
+    public Index getIndexByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new IndexPK(entityInstance.getEntityUniqueId());
-        var index = IndexFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
-        return index;
+        return IndexFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public Index getIndexByEntityInstance(EntityInstance entityInstance) {
+        return getIndexByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public Index getIndexByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getIndexByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
 
     public long countIndexes() {
@@ -1290,8 +1297,7 @@ public class IndexControl
         return indexTransferCache.getIndexTransfer(userVisit, index);
     }
 
-    public List<IndexTransfer> getIndexTransfers(UserVisit userVisit) {
-        var indexes = getIndexes();
+    public List<IndexTransfer> getIndexTransfers(UserVisit userVisit, Collection<Index> indexes) {
         List<IndexTransfer> indexTransfers = new ArrayList<>(indexes.size());
 
         indexes.forEach((index) ->
@@ -1299,6 +1305,10 @@ public class IndexControl
         );
 
         return indexTransfers;
+    }
+
+    public List<IndexTransfer> getIndexTransfers(UserVisit userVisit) {
+        return getIndexTransfers(userVisit, getIndexes());
     }
 
     public IndexChoicesBean getIndexChoices(String defaultIndexChoice, Language language, boolean allowNullChoice) {

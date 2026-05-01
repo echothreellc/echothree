@@ -23,6 +23,9 @@ import java.util.List;
 public interface GetIndexesResult
         extends BaseResult {
     
+    Long getIndexCount();
+    void setIndexCount(Long indexCount);
+
     List<IndexTransfer> getIndexes();
     void setIndexes(List<IndexTransfer> indexes);
     
