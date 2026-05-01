@@ -58,7 +58,9 @@ import com.echothree.model.control.invoice.server.transfer.InvoiceTypeDescriptio
 import com.echothree.model.control.invoice.server.transfer.InvoiceTypeTransferCache;
 import com.echothree.model.data.accounting.server.entity.GlAccount;
 import com.echothree.model.data.contact.server.entity.PartyContactMechanism;
+import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;
+import com.echothree.model.data.invoice.common.pk.InvoiceTypePK;
 import com.echothree.model.data.invoice.server.entity.Invoice;
 import com.echothree.model.data.invoice.server.entity.InvoiceAlias;
 import com.echothree.model.data.invoice.server.entity.InvoiceAliasType;
@@ -129,6 +131,7 @@ import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
@@ -142,7 +145,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
@@ -444,7 +446,30 @@ public class InvoiceControl
         
         return invoiceType;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.InvoiceType */
+    public InvoiceType getInvoiceTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new InvoiceTypePK(entityInstance.getEntityUniqueId());
+
+        return InvoiceTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public InvoiceType getInvoiceTypeByEntityInstance(EntityInstance entityInstance) {
+        return getInvoiceTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public InvoiceType getInvoiceTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getInvoiceTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countInvoiceTypes() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM invoicetypes
+                        JOIN invoicetypedetails ON invctypdt_invoicetypedetailid = invctyp_activedetailid
+                        """);
+    }
+
     private static final Map<EntityPermission, String> getInvoiceTypeByNameQueries;
 
     static {
@@ -587,15 +612,18 @@ public class InvoiceControl
         return invoiceTypeTransferCache.getInvoiceTypeTransfer(userVisit, invoiceType);
     }
     
-    public List<InvoiceTypeTransfer> getInvoiceTypeTransfers(UserVisit userVisit) {
-        var invoiceTypes = getInvoiceTypes();
+    public List<InvoiceTypeTransfer> getInvoiceTypeTransfers(UserVisit userVisit, Collection<InvoiceType> invoiceTypes) {
         List<InvoiceTypeTransfer> invoiceTypeTransfers = new ArrayList<>(invoiceTypes.size());
-        
+
         invoiceTypes.forEach((invoiceType) ->
                 invoiceTypeTransfers.add(invoiceTypeTransferCache.getInvoiceTypeTransfer(userVisit, invoiceType))
         );
-        
+
         return invoiceTypeTransfers;
+    }
+
+    public List<InvoiceTypeTransfer> getInvoiceTypeTransfers(UserVisit userVisit) {
+        return getInvoiceTypeTransfers(userVisit, getInvoiceTypes());
     }
     
     public InvoiceTypeChoicesBean getInvoiceTypeChoices(String defaultInvoiceTypeChoice, Language language,
