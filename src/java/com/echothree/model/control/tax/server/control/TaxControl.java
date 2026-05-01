@@ -38,6 +38,7 @@ import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.tax.common.pk.TaxClassificationPK;
+import com.echothree.model.data.tax.common.pk.TaxPK;
 import com.echothree.model.data.tax.server.entity.GeoCodeTax;
 import com.echothree.model.data.tax.server.entity.ItemTaxClassification;
 import com.echothree.model.data.tax.server.entity.Tax;
@@ -61,6 +62,7 @@ import com.echothree.model.data.tax.server.value.TaxDetailValue;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
@@ -72,7 +74,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
@@ -827,7 +828,30 @@ public class TaxControl
         
         return tax;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Tax */
+    public Tax getTaxByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new TaxPK(entityInstance.getEntityUniqueId());
+
+        return TaxFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public Tax getTaxByEntityInstance(EntityInstance entityInstance) {
+        return getTaxByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public Tax getTaxByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getTaxByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countTaxes() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM taxes
+                        JOIN taxdetails ON txdt_taxdetailid = tx_activedetailid
+                        """);
+    }
+
     private List<Tax> getTaxes(EntityPermission entityPermission) {
         String query = null;
         
@@ -835,7 +859,8 @@ public class TaxControl
             query = "SELECT _ALL_ " +
                     "FROM taxes, taxdetails " +
                     "WHERE tx_activedetailid = txdt_taxdetailid " +
-                    "ORDER BY txdt_sortorder, txdt_taxname";
+                    "ORDER BY txdt_sortorder, txdt_taxname " +
+                    "_LIMIT_";
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
             query = "SELECT _ALL_ " +
                     "FROM taxes, taxdetails " +
@@ -936,8 +961,7 @@ public class TaxControl
         return taxTransferCache.getTransfer(userVisit, tax);
     }
     
-    public List<TaxTransfer> getTaxTransfers(UserVisit userVisit) {
-        var taxes = getTaxes();
+    public List<TaxTransfer> getTaxTransfers(UserVisit userVisit, Collection<Tax> taxes) {
         List<TaxTransfer> taxTransfers = new ArrayList<>(taxes.size());
         
         taxes.forEach((tax) ->
@@ -945,6 +969,10 @@ public class TaxControl
         );
         
         return taxTransfers;
+    }
+    
+    public List<TaxTransfer> getTaxTransfers(UserVisit userVisit) {
+        return getTaxTransfers(userVisit, getTaxes());
     }
     
     private void updateTaxFromValue(TaxDetailValue taxDetailValue, boolean checkDefault,
