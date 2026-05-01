@@ -29,7 +29,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class WorkflowEntranceSteps implements En {
 
     public WorkflowEntranceSteps() {
-        When("^the user begins entering a new workflow entrance",
+        When("^the user begins entering a new workflow entrance$",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -40,7 +40,7 @@ public class WorkflowEntranceSteps implements En {
                     persona.createWorkflowEntranceForm = WorkflowUtil.getHome().getCreateWorkflowEntranceForm();
                 });
 
-        When("^the user adds the new workflow entrance",
+        When("^the user adds the new workflow entrance$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createWorkflowEntranceForm = persona.createWorkflowEntranceForm;
@@ -61,7 +61,7 @@ public class WorkflowEntranceSteps implements En {
                     persona.createWorkflowEntranceForm = null;
                 });
 
-        When("^the user begins deleting a workflow entrance",
+        When("^the user begins deleting a workflow entrance$",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -72,7 +72,7 @@ public class WorkflowEntranceSteps implements En {
                     persona.deleteWorkflowEntranceForm = WorkflowUtil.getHome().getDeleteWorkflowEntranceForm();
                 });
 
-        When("^the user deletes the workflow entrance",
+        When("^the user deletes the workflow entrance$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteWorkflowEntranceForm = persona.deleteWorkflowEntranceForm;
@@ -95,7 +95,7 @@ public class WorkflowEntranceSteps implements En {
                     persona.workflowEntranceUniversalSpec = WorkflowUtil.getHome().getWorkflowEntranceUniversalSpec();
                 });
 
-        When("^the user begins editing the workflow entrance",
+        When("^the user begins editing the workflow entrance$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.workflowEntranceUniversalSpec;
@@ -118,7 +118,7 @@ public class WorkflowEntranceSteps implements En {
                     }
                 });
 
-        When("^the user finishes editing the workflow entrance",
+        When("^the user finishes editing the workflow entrance$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.workflowEntranceUniversalSpec;

@@ -28,7 +28,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class InventoryConditionSteps implements En {
 
     public InventoryConditionSteps() {
-        When("^the user begins entering a new inventory condition",
+        When("^the user begins entering a new inventory condition$",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -59,7 +59,7 @@ public class InventoryConditionSteps implements En {
                     persona.createInventoryConditionForm = null;
                 });
 
-        When("^the user begins deleting an inventory condition",
+        When("^the user begins deleting an inventory condition$",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -93,7 +93,7 @@ public class InventoryConditionSteps implements En {
                     persona.inventoryConditionSpec = InventoryUtil.getHome().getInventoryConditionUniversalSpec();
                 });
 
-        When("^the user begins editing the inventory condition",
+        When("^the user begins editing the inventory condition$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.inventoryConditionSpec;
