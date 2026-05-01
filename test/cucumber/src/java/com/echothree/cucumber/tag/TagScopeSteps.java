@@ -97,7 +97,7 @@ public class TagScopeSteps implements En {
                     persona.tagScopeSpec = TagUtil.getHome().getTagScopeSpec();
                 });
 
-        When("^the user begins editing the tag scope",
+        When("^the user begins editing the tag scope$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.tagScopeSpec;
@@ -120,7 +120,7 @@ public class TagScopeSteps implements En {
                     }
                 });
 
-        When("^the user finishes editing the tag scope",
+        When("^the user finishes editing the tag scope$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.tagScopeSpec;

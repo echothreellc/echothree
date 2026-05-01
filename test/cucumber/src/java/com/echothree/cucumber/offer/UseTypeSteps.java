@@ -28,7 +28,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class UseTypeSteps implements En {
 
     public UseTypeSteps() {
-        When("^the user begins entering a new use type",
+        When("^the user begins entering a new use type$",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -39,7 +39,7 @@ public class UseTypeSteps implements En {
                     persona.createUseTypeForm = OfferUtil.getHome().getCreateUseTypeForm();
                 });
 
-        When("^the user adds the new use type",
+        When("^the user adds the new use type$",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -63,7 +63,7 @@ public class UseTypeSteps implements En {
                     persona.createUseTypeForm = null;
                 });
 
-        When("^the user begins deleting an use type",
+        When("^the user begins deleting an use type$",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -74,7 +74,7 @@ public class UseTypeSteps implements En {
                     persona.deleteUseTypeForm = OfferUtil.getHome().getDeleteUseTypeForm();
                 });
 
-        When("^the user deletes the use type",
+        When("^the user deletes the use type$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteUseTypeForm = persona.deleteUseTypeForm;
@@ -120,7 +120,7 @@ public class UseTypeSteps implements En {
                     }
                 });
 
-        When("^the user finishes editing the use type",
+        When("^the user finishes editing the use type$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.useTypeSpec;

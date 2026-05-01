@@ -97,7 +97,7 @@ public class TagSteps implements En {
                     persona.tagSpec = TagUtil.getHome().getTagSpec();
                 });
 
-        When("^the user begins editing the tag",
+        When("^the user begins editing the tag$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.tagSpec;
@@ -120,7 +120,7 @@ public class TagSteps implements En {
                     }
                 });
 
-        When("^the user finishes editing the tag",
+        When("^the user finishes editing the tag$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.tagSpec;

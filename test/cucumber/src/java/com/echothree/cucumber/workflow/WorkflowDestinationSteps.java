@@ -29,7 +29,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class WorkflowDestinationSteps implements En {
 
     public WorkflowDestinationSteps() {
-        When("^the user begins entering a new workflow destination",
+        When("^the user begins entering a new workflow destination$",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -40,7 +40,7 @@ public class WorkflowDestinationSteps implements En {
                     persona.createWorkflowDestinationForm = WorkflowUtil.getHome().getCreateWorkflowDestinationForm();
                 });
 
-        When("^the user adds the new workflow destination",
+        When("^the user adds the new workflow destination$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createWorkflowDestinationForm = persona.createWorkflowDestinationForm;
@@ -61,7 +61,7 @@ public class WorkflowDestinationSteps implements En {
                     persona.createWorkflowDestinationForm = null;
                 });
 
-        When("^the user begins deleting a workflow destination",
+        When("^the user begins deleting a workflow destination$",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -72,7 +72,7 @@ public class WorkflowDestinationSteps implements En {
                     persona.deleteWorkflowDestinationForm = WorkflowUtil.getHome().getDeleteWorkflowDestinationForm();
                 });
 
-        When("^the user deletes the workflow destination",
+        When("^the user deletes the workflow destination$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteWorkflowDestinationForm = persona.deleteWorkflowDestinationForm;
@@ -95,7 +95,7 @@ public class WorkflowDestinationSteps implements En {
                     persona.workflowDestinationUniversalSpec = WorkflowUtil.getHome().getWorkflowDestinationUniversalSpec();
                 });
 
-        When("^the user begins editing the workflow destination",
+        When("^the user begins editing the workflow destination$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.workflowDestinationUniversalSpec;
@@ -118,7 +118,7 @@ public class WorkflowDestinationSteps implements En {
                     }
                 });
 
-        When("^the user finishes editing the workflow destination",
+        When("^the user finishes editing the workflow destination$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.workflowDestinationUniversalSpec;

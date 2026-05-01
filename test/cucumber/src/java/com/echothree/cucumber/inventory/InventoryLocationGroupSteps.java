@@ -28,7 +28,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class InventoryLocationGroupSteps implements En {
 
     public InventoryLocationGroupSteps() {
-        When("^the user begins entering a new inventory location group",
+        When("^the user begins entering a new inventory location group$",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -60,7 +60,7 @@ public class InventoryLocationGroupSteps implements En {
                     persona.createInventoryLocationGroupForm = null;
                 });
 
-        When("^the user begins setting the status of an inventory location group",
+        When("^the user begins setting the status of an inventory location group$",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -84,7 +84,7 @@ public class InventoryLocationGroupSteps implements En {
                     persona.setInventoryLocationGroupStatusForm = null;
                 });
 
-        When("^the user begins deleting an inventory location group",
+        When("^the user begins deleting an inventory location group$",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -120,7 +120,7 @@ public class InventoryLocationGroupSteps implements En {
                     persona.inventoryLocationGroupSpec = InventoryUtil.getHome().getInventoryLocationGroupSpec();
                 });
 
-        When("^the user begins editing the inventory location group",
+        When("^the user begins editing the inventory location group$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.inventoryLocationGroupSpec;

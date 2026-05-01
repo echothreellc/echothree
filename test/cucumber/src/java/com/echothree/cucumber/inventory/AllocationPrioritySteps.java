@@ -28,7 +28,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class AllocationPrioritySteps implements En {
 
     public AllocationPrioritySteps() {
-        When("^the user begins entering a new allocation priority",
+        When("^the user begins entering a new allocation priority$",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -59,7 +59,7 @@ public class AllocationPrioritySteps implements En {
                     persona.createAllocationPriorityForm = null;
                 });
 
-        When("^the user begins deleting an allocation priority",
+        When("^the user begins deleting an allocation priority$",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -93,7 +93,7 @@ public class AllocationPrioritySteps implements En {
                     persona.allocationPrioritySpec = InventoryUtil.getHome().getAllocationPriorityUniversalSpec();
                 });
 
-        When("^the user begins editing the allocation priority",
+        When("^the user begins editing the allocation priority$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.allocationPrioritySpec;
