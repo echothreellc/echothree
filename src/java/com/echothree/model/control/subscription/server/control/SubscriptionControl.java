@@ -38,9 +38,11 @@ import com.echothree.model.control.subscription.server.transfer.SubscriptionType
 import com.echothree.model.control.subscription.server.transfer.SubscriptionTypeTransferCache;
 import com.echothree.model.data.chain.server.entity.Chain;
 import com.echothree.model.data.chain.server.entity.ChainType;
+import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.sequence.server.entity.Sequence;
+import com.echothree.model.data.subscription.common.pk.SubscriptionKindPK;
 import com.echothree.model.data.subscription.server.entity.Subscription;
 import com.echothree.model.data.subscription.server.entity.SubscriptionKind;
 import com.echothree.model.data.subscription.server.entity.SubscriptionKindDescription;
@@ -65,6 +67,7 @@ import com.echothree.model.data.subscription.server.value.SubscriptionTypeDetail
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
@@ -76,7 +79,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
@@ -141,6 +143,29 @@ public class SubscriptionControl
         sendEvent(subscriptionKind.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return subscriptionKind;
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.SubscriptionKind */
+    public SubscriptionKind getSubscriptionKindByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new SubscriptionKindPK(entityInstance.getEntityUniqueId());
+
+        return SubscriptionKindFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public SubscriptionKind getSubscriptionKindByEntityInstance(EntityInstance entityInstance) {
+        return getSubscriptionKindByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public SubscriptionKind getSubscriptionKindByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getSubscriptionKindByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countSubscriptionKinds() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM subscriptionkinds
+                        JOIN subscriptionkinddetails ON subscrkdt_subscriptionkinddetailid = subscrk_activedetailid
+                        """);
     }
 
     private static final Map<EntityPermission, String> getSubscriptionKindByNameQueries;
@@ -223,7 +248,8 @@ public class SubscriptionControl
                 "SELECT _ALL_ "
                 + "FROM subscriptionkinds, subscriptionkinddetails "
                 + "WHERE subscrk_activedetailid = subscrkdt_subscriptionkinddetailid "
-                + "ORDER BY subscrkdt_sortorder, subscrkdt_subscriptionkindname");
+                + "ORDER BY subscrkdt_sortorder, subscrkdt_subscriptionkindname "
+                + "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM subscriptionkinds, subscriptionkinddetails "
@@ -282,15 +308,18 @@ public class SubscriptionControl
         return subscriptionKindTransferCache.getSubscriptionKindTransfer(userVisit, subscriptionKind);
     }
 
-    public List<SubscriptionKindTransfer> getSubscriptionKindTransfers(UserVisit userVisit) {
-        var subscriptionKinds = getSubscriptionKinds();
-        List<SubscriptionKindTransfer> subscriptionKindTransfers = new ArrayList<>(subscriptionKinds.size());
+    public List<SubscriptionKindTransfer> getSubscriptionKindTransfers(UserVisit userVisit, Collection<SubscriptionKind> subscriptionKinds) {
+        var subscriptionKindTransfers = new ArrayList<SubscriptionKindTransfer>(subscriptionKinds.size());
 
         subscriptionKinds.forEach((subscriptionKind) ->
                 subscriptionKindTransfers.add(subscriptionKindTransferCache.getSubscriptionKindTransfer(userVisit, subscriptionKind))
         );
 
         return subscriptionKindTransfers;
+    }
+
+    public List<SubscriptionKindTransfer> getSubscriptionKindTransfers(UserVisit userVisit) {
+        return getSubscriptionKindTransfers(userVisit, getSubscriptionKinds());
     }
 
     private void updateSubscriptionKindFromValue(SubscriptionKindDetailValue subscriptionKindDetailValue, boolean checkDefault, BasePK updatedBy) {
