@@ -23,6 +23,9 @@ import java.util.List;
 public interface GetJobsResult
         extends BaseResult {
     
+    Long getJobCount();
+    void setJobCount(Long jobCount);
+
     List<JobTransfer> getJobs();
     void setJobs(List<JobTransfer> jobs);
     

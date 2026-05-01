@@ -24,6 +24,8 @@ import com.echothree.model.control.job.common.transfer.JobTransfer;
 import com.echothree.model.control.job.common.workflow.JobStatusConstants;
 import com.echothree.model.control.job.server.transfer.JobDescriptionTransferCache;
 import com.echothree.model.control.job.server.transfer.JobTransferCache;
+import com.echothree.model.data.core.server.entity.EntityInstance;
+import com.echothree.model.data.job.common.pk.JobPK;
 import com.echothree.model.data.job.server.entity.Job;
 import com.echothree.model.data.job.server.entity.JobDescription;
 import com.echothree.model.data.job.server.entity.JobStatus;
@@ -40,14 +42,15 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
@@ -90,7 +93,30 @@ public class JobControl
         
         return job;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Job */
+    public Job getJobByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new JobPK(entityInstance.getEntityUniqueId());
+
+        return JobFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public Job getJobByEntityInstance(EntityInstance entityInstance) {
+        return getJobByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public Job getJobByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getJobByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countJobs() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM jobs
+                        JOIN jobdetails ON jbdt_jobdetailid = jb_activedetailid
+                        """);
+    }
+
     private Job getJobByName(String jobName, EntityPermission entityPermission) {
         Job job;
         
@@ -143,7 +169,8 @@ public class JobControl
             query = "SELECT _ALL_ " +
                     "FROM jobs, jobdetails " +
                     "WHERE jb_activedetailid = jbdt_jobdetailid " +
-                    "ORDER BY jbdt_sortorder, jbdt_jobname";
+                    "ORDER BY jbdt_sortorder, jbdt_jobname " +
+                    "_LIMIT_";
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
             query = "SELECT _ALL_ " +
                     "FROM jobs, jobdetails " +
@@ -168,15 +195,18 @@ public class JobControl
         return jobTransferCache.getJobTransfer(userVisit, job);
     }
     
-    public List<JobTransfer> getJobTransfers(UserVisit userVisit) {
-        var jobs = getJobs();
+    public List<JobTransfer> getJobTransfers(UserVisit userVisit, Collection<Job> jobs) {
         List<JobTransfer> jobTransfers = new ArrayList<>(jobs.size());
-        
+
         jobs.forEach((job) ->
                 jobTransfers.add(jobTransferCache.getJobTransfer(userVisit, job))
         );
-        
+
         return jobTransfers;
+    }
+
+    public List<JobTransfer> getJobTransfers(UserVisit userVisit) {
+        return getJobTransfers(userVisit, getJobs());
     }
     
     public JobStatusChoicesBean getJobStatusChoices(String defaultJobStatusChoice, Language language, boolean allowNullChoice,
