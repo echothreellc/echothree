@@ -50,15 +50,16 @@ import com.echothree.model.data.core.server.value.ApplicationEditorUseDetailValu
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import com.echothree.util.server.cdi.CommandScope;
 
 @CommandScope
 public class ApplicationControl
@@ -102,10 +103,26 @@ public class ApplicationControl
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.Application */
-    public Application getApplicationByEntityInstance(EntityInstance entityInstance) {
+    public Application getApplicationByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ApplicationPK(entityInstance.getEntityUniqueId());
 
-        return ApplicationFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+        return ApplicationFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public Application getApplicationByEntityInstance(EntityInstance entityInstance) {
+        return getApplicationByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public Application getApplicationByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getApplicationByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countApplications() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM applications
+                        JOIN applicationdetails ON appldt_applicationdetailid = appl_activedetailid
+                        """);
     }
 
     private static final Map<EntityPermission, String> getApplicationByNameQueries;
@@ -217,8 +234,7 @@ public class ApplicationControl
         return applicationTransferCache.getApplicationTransfer(userVisit, application);
     }
 
-    public List<ApplicationTransfer> getApplicationTransfers(UserVisit userVisit) {
-        var applications = getApplications();
+    public List<ApplicationTransfer> getApplicationTransfers(UserVisit userVisit, Collection<Application> applications) {
         List<ApplicationTransfer> applicationTransfers = new ArrayList<>(applications.size());
 
         applications.forEach((application) ->
@@ -226,6 +242,10 @@ public class ApplicationControl
         );
 
         return applicationTransfers;
+    }
+
+    public List<ApplicationTransfer> getApplicationTransfers(UserVisit userVisit) {
+        return getApplicationTransfers(userVisit, getApplications());
     }
 
     public ApplicationChoicesBean getApplicationChoices(String defaultApplicationChoice, Language language, boolean allowNullChoice) {
