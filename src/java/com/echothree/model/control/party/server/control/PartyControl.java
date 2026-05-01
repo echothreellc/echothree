@@ -86,6 +86,7 @@ import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.icon.server.entity.Icon;
 import com.echothree.model.data.party.common.pk.DateTimeFormatDetailPK;
 import com.echothree.model.data.party.common.pk.DateTimeFormatPK;
+import com.echothree.model.data.party.common.pk.GenderPK;
 import com.echothree.model.data.party.common.pk.LanguagePK;
 import com.echothree.model.data.party.common.pk.NameSuffixPK;
 import com.echothree.model.data.party.common.pk.PartyAliasTypePK;
@@ -5209,7 +5210,30 @@ public class PartyControl
         
         return gender;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Gender */
+    public Gender getGenderByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new GenderPK(entityInstance.getEntityUniqueId());
+
+        return GenderFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public Gender getGenderByEntityInstance(EntityInstance entityInstance) {
+        return getGenderByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public Gender getGenderByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getGenderByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countGenders() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM genders
+                        JOIN genderdetails ON gndrdt_genderdetailid = gndr_activedetailid
+                        """);
+    }
+
     private Gender getGenderByName(String genderName, EntityPermission entityPermission) {
         Gender gender;
         
@@ -5353,15 +5377,18 @@ public class PartyControl
         return genderTransferCache.getTransfer(userVisit, gender);
     }
     
-    public List<GenderTransfer> getGenderTransfers(UserVisit userVisit) {
-        var genders = getGenders();
+    public List<GenderTransfer> getGenderTransfers(UserVisit userVisit, Collection<Gender> genders) {
         List<GenderTransfer> genderTransfers = new ArrayList<>(genders.size());
-        
-        genders.forEach((gender) ->
-                genderTransfers.add(genderTransferCache.getTransfer(userVisit, gender))
+
+        genders.forEach(gender ->
+                genderTransfers.add(getGenderTransfer(userVisit, gender))
         );
-        
+
         return genderTransfers;
+    }
+
+    public List<GenderTransfer> getGenderTransfers(UserVisit userVisit) {
+        return getGenderTransfers(userVisit, getGenders());
     }
     
     private void updateGenderFromValue(GenderDetailValue genderDetailValue, boolean checkDefault, BasePK updatedBy) {
