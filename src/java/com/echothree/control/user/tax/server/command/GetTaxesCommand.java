@@ -19,37 +19,61 @@ package com.echothree.control.user.tax.server.command;
 import com.echothree.control.user.tax.common.form.GetTaxesForm;
 import com.echothree.control.user.tax.common.result.TaxResultFactory;
 import com.echothree.model.control.tax.server.control.TaxControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.model.data.tax.server.entity.Tax;
+import com.echothree.model.data.tax.server.factory.TaxFactory;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetTaxesCommand
-        extends BaseSimpleCommand<GetTaxesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<Tax, GetTaxesForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {
-        FORM_FIELD_DEFINITIONS = List.of(
-                );
+        FORM_FIELD_DEFINITIONS = List.of();
     }
-    
+
+    @Inject
+    TaxControl taxControl;
+
     /** Creates a new instance of GetTaxesCommand */
     public GetTaxesCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var taxControl = Session.getModelController(TaxControl.class);
+    protected void handleForm() {
+        // No form fields to handle
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return taxControl.countTaxes();
+    }
+
+    @Override
+    protected Collection<Tax> getEntities() {
+        return taxControl.getTaxes();
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<Tax> entities) {
         var result = TaxResultFactory.getGetTaxesResult();
-        
-        result.setTaxes(taxControl.getTaxTransfers(getUserVisit()));
-        
+
+        if(entities != null) {
+            if(session.hasLimit(TaxFactory.class)) {
+                result.setTaxCount(getTotalEntities());
+            }
+
+            result.setTaxes(taxControl.getTaxTransfers(getUserVisit(), entities));
+        }
+
         return result;
     }
     
