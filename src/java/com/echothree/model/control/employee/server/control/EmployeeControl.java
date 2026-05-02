@@ -411,15 +411,18 @@ public class EmployeeControl
         return responsibilityTypeTransferCache.getResponsibilityTypeTransfer(userVisit, responsibilityType);
     }
     
-    public List<ResponsibilityTypeTransfer> getResponsibilityTypeTransfers(UserVisit userVisit) {
-        var responsibilityTypes = getResponsibilityTypes();
+    public List<ResponsibilityTypeTransfer> getResponsibilityTypeTransfers(UserVisit userVisit, Collection<ResponsibilityType> responsibilityTypes) {
         List<ResponsibilityTypeTransfer> responsibilityTypeTransfers = new ArrayList<>(responsibilityTypes.size());
-        
+
         responsibilityTypes.forEach((responsibilityType) ->
                 responsibilityTypeTransfers.add(responsibilityTypeTransferCache.getResponsibilityTypeTransfer(userVisit, responsibilityType))
         );
-        
+
         return responsibilityTypeTransfers;
+    }
+
+    public List<ResponsibilityTypeTransfer> getResponsibilityTypeTransfers(UserVisit userVisit) {
+        return getResponsibilityTypeTransfers(userVisit, getResponsibilityTypes());
     }
     
     public ResponsibilityTypeChoicesBean getResponsibilityTypeChoices(String defaultResponsibilityTypeChoice, Language language,
