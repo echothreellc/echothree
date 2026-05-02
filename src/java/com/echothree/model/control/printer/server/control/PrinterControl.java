@@ -54,6 +54,7 @@ import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.printer.common.pk.PrinterGroupJobPK;
+import com.echothree.model.data.printer.common.pk.PrinterGroupPK;
 import com.echothree.model.data.printer.server.entity.PartyPrinterGroupUse;
 import com.echothree.model.data.printer.server.entity.Printer;
 import com.echothree.model.data.printer.server.entity.PrinterDescription;
@@ -86,6 +87,7 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workflow.server.entity.WorkflowStep;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
@@ -97,7 +99,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
@@ -168,6 +169,29 @@ public class PrinterControl
         sendEvent(printerGroup.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return printerGroup;
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.PrinterGroup */
+    public PrinterGroup getPrinterGroupByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new PrinterGroupPK(entityInstance.getEntityUniqueId());
+
+        return PrinterGroupFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public PrinterGroup getPrinterGroupByEntityInstance(EntityInstance entityInstance) {
+        return getPrinterGroupByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public PrinterGroup getPrinterGroupByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getPrinterGroupByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countPrinterGroups() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM printergroups
+                        JOIN printergroupdetails ON prngrpdt_printergroupdetailid = prngrp_activedetailid
+                        """);
     }
 
     private static final Map<EntityPermission, String> getPrinterGroupByNameQueries;
