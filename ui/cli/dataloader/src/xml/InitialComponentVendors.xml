@@ -988,6 +988,9 @@
             <entityType entityTypeName="InventoryConditionDescription" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Inventory Condition Description" />
             </entityType>
+            <entityType entityTypeName="InventoryConditionUseType" keepAllHistory="false" isExtensible="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Inventory Condition Use Type" />
+            </entityType>
             <entityType entityTypeName="InventoryConditionUse" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Inventory Condition Use" />
             </entityType>
