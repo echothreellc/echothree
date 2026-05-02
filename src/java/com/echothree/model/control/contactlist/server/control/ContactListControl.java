@@ -1911,8 +1911,7 @@ public class ContactListControl
         return contactListTransferCache.getContactListTransfer(userVisit, contactList);
     }
 
-    public List<ContactListTransfer> getContactListTransfers(UserVisit userVisit) {
-        var contactLists = getContactLists();
+    public List<ContactListTransfer> getContactListTransfers(UserVisit userVisit, Collection<ContactList> contactLists) {
         List<ContactListTransfer> contactListTransfers = new ArrayList<>(contactLists.size());
 
         contactLists.forEach((contactList) ->
@@ -1920,6 +1919,10 @@ public class ContactListControl
         );
 
         return contactListTransfers;
+    }
+
+    public List<ContactListTransfer> getContactListTransfers(UserVisit userVisit) {
+        return getContactListTransfers(userVisit, getContactLists());
     }
 
     private void updateContactListFromValue(ContactListDetailValue contactListDetailValue, boolean checkDefault, BasePK updatedBy) {

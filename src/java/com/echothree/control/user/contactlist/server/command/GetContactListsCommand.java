@@ -22,20 +22,22 @@ import com.echothree.model.control.contactlist.server.control.ContactListControl
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.model.data.contactlist.server.entity.ContactList;
+import com.echothree.model.data.contactlist.server.factory.ContactListFactory;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetContactListsCommand
-        extends BaseSimpleCommand<GetContactListsForm> {
+        extends BasePaginatedMultipleEntitiesCommand<ContactList, GetContactListsForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -44,27 +46,49 @@ public class GetContactListsCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.ContactList.name(), SecurityRoles.List.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.ContactList.name(), SecurityRoles.List.name())
+                ))
+        ));
 
-        FORM_FIELD_DEFINITIONS = List.of(
-                );
+        FORM_FIELD_DEFINITIONS = List.of();
     }
+
+    @Inject
+    ContactListControl contactListControl;
 
     /** Creates a new instance of GetContactListsCommand */
     public GetContactListsCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var contactListControl = Session.getModelController(ContactListControl.class);
+    protected void handleForm() {
+        // No form fields.
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return contactListControl.countContactLists();
+    }
+
+    @Override
+    protected Collection<ContactList> getEntities() {
+        return contactListControl.getContactLists();
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<ContactList> entities) {
         var result = ContactListResultFactory.getGetContactListsResult();
-        
-        result.setContactLists(contactListControl.getContactListTransfers(getUserVisit()));
-        
+
+        if(entities != null) {
+            if(session.hasLimit(ContactListFactory.class)) {
+                result.setContactListCount(contactListControl.countContactLists());
+            }
+
+            result.setContactLists(contactListControl.getContactListTransfers(getUserVisit(), entities));
+        }
+
         return result;
     }
-    
+
 }
