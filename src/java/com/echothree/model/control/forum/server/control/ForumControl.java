@@ -1131,7 +1131,8 @@ public class ForumControl
                         "FROM forumgroupforums, forums, forumdetails " +
                         "WHERE frmgrpfrm_frmgrp_forumgroupid = ? AND frmgrpfrm_thrutime = ? " +
                         "AND frmgrpfrm_frm_forumid = frm_forumid AND frm_lastdetailid = frmdt_forumdetailid " +
-                        "ORDER BY frmdt_sortorder, frmdt_forumname";
+                        "ORDER BY frmdt_sortorder, frmdt_forumname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM forumgroupforums " +

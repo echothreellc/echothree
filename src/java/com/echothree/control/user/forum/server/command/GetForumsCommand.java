@@ -20,71 +20,104 @@ import com.echothree.control.user.forum.common.form.GetForumsForm;
 import com.echothree.control.user.forum.common.result.ForumResultFactory;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.data.forum.server.entity.Forum;
+import com.echothree.model.data.forum.server.entity.ForumGroup;
 import com.echothree.model.data.forum.server.factory.ForumFactory;
 import com.echothree.model.data.forum.server.factory.ForumGroupForumFactory;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetForumsCommand
-        extends BaseSimpleCommand<GetForumsForm> {
+        extends BasePaginatedMultipleEntitiesCommand<Forum, GetForumsForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("ForumGroupName", FieldType.ENTITY_NAME, false, null, null)
+                new FieldDefinition("ForumGroupName", FieldType.ENTITY_NAME, false, null, null)
         );
     }
-    
+
+    @Inject
+    ForumControl forumControl;
+
     /** Creates a new instance of GetForumsCommand */
     public GetForumsCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
-    @Override
-    protected BaseResult execute() {
-        var forumControl = Session.getModelController(ForumControl.class);
-        var result = ForumResultFactory.getGetForumsResult();
-        var forumGroupName = form.getForumGroupName();
-        var forumGroup = forumControl.getForumGroupByName(forumGroupName);
-        
-        if(forumGroupName == null || forumGroup != null) {
-            var userVisit = getUserVisit();
-            
-            if(forumGroup == null) {
-                if(session.hasLimit(ForumFactory.class)) {
-                    result.setForumCount(forumControl.countForums());
-                }
+    private ForumGroup forumGroup;
 
-                result.setForums(forumControl.getForumTransfers(userVisit));
+    @Override
+    protected void handleForm() {
+        var forumGroupName = form.getForumGroupName();
+
+        if(forumGroupName != null) {
+            forumGroup = forumControl.getForumGroupByName(forumGroupName);
+
+            if(forumGroup == null) {
+                addExecutionError(ExecutionErrors.UnknownForumGroupName.name(), forumGroupName);
+            }
+        }
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return forumGroup == null ?
+                forumControl.countForums() :
+                forumControl.countForumGroupForumsByForumGroup(forumGroup);
+    }
+
+    @Override
+    protected Collection<Forum> getEntities() {
+        Collection<Forum> forums = null;
+
+        if(!hasExecutionErrors()) {
+            if(forumGroup == null) {
+                forums = forumControl.getForums();
             } else {
                 var forumGroupForums = forumControl.getForumGroupForumsByForumGroup(forumGroup);
-                List<Forum> forums = new ArrayList<>(forumGroupForums.size());
-                
-                forumGroupForums.forEach((forumGroupForum) -> {
+
+                forums = new ArrayList<>(forumGroupForums.size());
+                for(var forumGroupForum : forumGroupForums) {
                     forums.add(forumGroupForum.getForum());
-                });
-                
+                }
+            }
+        }
+
+        return forums;
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<Forum> entities) {
+        var result = ForumResultFactory.getGetForumsResult();
+
+        if(entities != null) {
+            var userVisit = getUserVisit();
+
+            if(forumGroup == null) {
+                if(session.hasLimit(ForumFactory.class)) {
+                    result.setForumCount(getTotalEntities());
+                }
+            } else {
                 if(session.hasLimit(ForumGroupForumFactory.class)) {
-                    result.setForumCount(forumControl.countForumGroupForumsByForumGroup(forumGroup));
+                    result.setForumCount(getTotalEntities());
                 }
 
                 result.setForumGroup(forumControl.getForumGroupTransfer(userVisit, forumGroup));
-                result.setForums(forumControl.getForumTransfers(userVisit, forums));
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownForumGroupName.name(), forumGroupName);
+
+            result.setForums(forumControl.getForumTransfers(userVisit, new ArrayList<>(entities)));
         }
-        
+
         return result;
     }
     
