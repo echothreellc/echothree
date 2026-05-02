@@ -53,7 +53,7 @@ public class GetUnitOfMeasureKindUseTypesCommand
 
     @Override
     protected void handleForm() {
-        // No additional form fields to handle.
+        // No form fields.
     }
 
     @Override
