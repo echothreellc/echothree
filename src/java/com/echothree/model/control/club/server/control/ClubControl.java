@@ -48,6 +48,7 @@ import com.echothree.model.data.subscription.server.entity.SubscriptionType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
@@ -56,7 +57,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
@@ -148,7 +148,8 @@ public class ClubControl
             query = "SELECT _ALL_ " +
                     "FROM clubs, clubdetails " +
                     "WHERE clb_activedetailid = clbdt_clubdetailid " +
-                    "ORDER BY clbdt_sortorder, clbdt_clubname";
+                    "ORDER BY clbdt_sortorder, clbdt_clubname " +
+                    "_LIMIT_";
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
             query = "SELECT _ALL_ " +
                     "FROM clubs, clubdetails " +
@@ -286,15 +287,18 @@ public class ClubControl
         return clubTransferCache.getClubTransfer(userVisit, club);
     }
     
-    public List<ClubTransfer> getClubTransfers(UserVisit userVisit) {
-        var clubs = getClubs();
+    public List<ClubTransfer> getClubTransfers(UserVisit userVisit, Collection<Club> clubs) {
         List<ClubTransfer> clubTransfers = new ArrayList<>(clubs.size());
-        
+
         clubs.forEach((club) ->
                 clubTransfers.add(clubTransferCache.getClubTransfer(userVisit, club))
         );
-        
+
         return clubTransfers;
+    }
+
+    public List<ClubTransfer> getClubTransfers(UserVisit userVisit) {
+        return getClubTransfers(userVisit, getClubs());
     }
     
     private void updateClubFromValue(ClubDetailValue clubDetailValue, boolean checkDefault, BasePK updatedBy) {
