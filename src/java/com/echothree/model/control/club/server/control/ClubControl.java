@@ -27,6 +27,7 @@ import com.echothree.model.control.club.server.transfer.ClubItemTypeTransferCach
 import com.echothree.model.control.club.server.transfer.ClubTransferCache;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.data.accounting.server.entity.Currency;
+import com.echothree.model.data.club.common.pk.ClubPK;
 import com.echothree.model.data.club.server.entity.Club;
 import com.echothree.model.data.club.server.entity.ClubDescription;
 import com.echothree.model.data.club.server.entity.ClubItem;
@@ -41,6 +42,7 @@ import com.echothree.model.data.club.server.factory.ClubItemTypeFactory;
 import com.echothree.model.data.club.server.value.ClubDescriptionValue;
 import com.echothree.model.data.club.server.value.ClubDetailValue;
 import com.echothree.model.data.club.server.value.ClubItemValue;
+import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.filter.server.entity.Filter;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.party.server.entity.Language;
@@ -116,6 +118,21 @@ public class ClubControl
         sendEvent(club.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return club;
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Club */
+    public Club getClubByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ClubPK(entityInstance.getEntityUniqueId());
+
+        return ClubFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public Club getClubByEntityInstance(EntityInstance entityInstance) {
+        return getClubByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public Club getClubByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getClubByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
 
     public long countClubs() {
