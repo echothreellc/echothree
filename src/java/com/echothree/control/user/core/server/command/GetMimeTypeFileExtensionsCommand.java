@@ -18,7 +18,6 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetMimeTypeFileExtensionsForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.model.control.core.server.control.MimeTypeControl;
 import com.echothree.model.data.core.server.entity.MimeTypeFileExtension;
 import com.echothree.model.data.core.server.factory.MimeTypeFileExtensionFactory;
 import com.echothree.util.common.command.BaseResult;
@@ -27,7 +26,6 @@ import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
 
 @Dependent
 public class GetMimeTypeFileExtensionsCommand
@@ -43,9 +41,6 @@ public class GetMimeTypeFileExtensionsCommand
     public GetMimeTypeFileExtensionsCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
     }
-
-    @Inject
-    MimeTypeControl mimeTypeControl;
 
     @Override
     protected void handleForm() {

@@ -55,14 +55,12 @@ import com.echothree.model.control.contactlist.server.transfer.PartyTypeContactL
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.letter.server.control.LetterControl;
-import com.echothree.model.data.campaign.common.pk.CampaignPK;
-import com.echothree.model.data.campaign.server.entity.Campaign;
-import com.echothree.model.data.campaign.server.factory.CampaignFactory;
 import com.echothree.model.data.chain.server.entity.Chain;
 import com.echothree.model.data.contact.server.entity.ContactMechanismPurpose;
 import com.echothree.model.data.contactlist.common.pk.ContactListFrequencyPK;
 import com.echothree.model.data.contactlist.common.pk.ContactListGroupPK;
 import com.echothree.model.data.contactlist.common.pk.ContactListPK;
+import com.echothree.model.data.contactlist.common.pk.ContactListTypePK;
 import com.echothree.model.data.contactlist.server.entity.ContactList;
 import com.echothree.model.data.contactlist.server.entity.ContactListContactMechanismPurpose;
 import com.echothree.model.data.contactlist.server.entity.ContactListDescription;
@@ -225,6 +223,29 @@ public class ContactListControl
         return contactListType;
     }
 
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ContactListType */
+    public ContactListType getContactListTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ContactListTypePK(entityInstance.getEntityUniqueId());
+
+        return ContactListTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public ContactListType getContactListTypeByEntityInstance(EntityInstance entityInstance) {
+        return getContactListTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ContactListType getContactListTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getContactListTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countContactListTypes() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM contactlisttypes
+                        JOIN contactlisttypedetails ON clsttypdt_contactlisttypedetailid = clsttyp_activedetailid
+                        """);
+    }
+
     private static final Map<EntityPermission, String> getContactListTypeByNameQueries;
 
     static {
@@ -305,7 +326,8 @@ public class ContactListControl
                 "SELECT _ALL_ "
                 + "FROM contactlisttypes, contactlisttypedetails "
                 + "WHERE clsttyp_activedetailid = clsttypdt_contactlisttypedetailid "
-                + "ORDER BY clsttypdt_sortorder, clsttypdt_contactlisttypename");
+                + "ORDER BY clsttypdt_sortorder, clsttypdt_contactlisttypename " +
+                "_LIMIT");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM contactlisttypes, contactlisttypedetails "
@@ -335,7 +357,8 @@ public class ContactListControl
                 "SELECT _ALL_ "
                 + "FROM contactlisttypes, contactlisttypedetails "
                 + "WHERE clsttyp_activedetailid = clsttypdt_contactlisttypedetailid AND clsttypdt_confirmationrequestchainid = ? "
-                + "ORDER BY clsttypdt_sortorder, clsttypdt_contactlisttypename");
+                + "ORDER BY clsttypdt_sortorder, clsttypdt_contactlisttypename " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM contactlisttypes, contactlisttypedetails "
@@ -366,7 +389,8 @@ public class ContactListControl
                 "SELECT _ALL_ "
                 + "FROM contactlisttypes, contactlisttypedetails "
                 + "WHERE clsttyp_activedetailid = clsttypdt_contactlisttypedetailid AND clsttypdt_subscribechainid = ? "
-                + "ORDER BY clsttypdt_sortorder, clsttypdt_contactlisttypename");
+                + "ORDER BY clsttypdt_sortorder, clsttypdt_contactlisttypename " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM contactlisttypes, contactlisttypedetails "
@@ -397,7 +421,8 @@ public class ContactListControl
                 "SELECT _ALL_ "
                 + "FROM contactlisttypes, contactlisttypedetails "
                 + "WHERE clsttyp_activedetailid = clsttypdt_contactlisttypedetailid AND clsttypdt_unsubscribechainid = ? "
-                + "ORDER BY clsttypdt_sortorder, clsttypdt_contactlisttypename");
+                + "ORDER BY clsttypdt_sortorder, clsttypdt_contactlisttypename " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM contactlisttypes, contactlisttypedetails "
@@ -457,8 +482,7 @@ public class ContactListControl
         return contactListTypeTransferCache.getContactListTypeTransfer(userVisit, contactListType);
     }
 
-    public List<ContactListTypeTransfer> getContactListTypeTransfers(UserVisit userVisit) {
-        var contactListTypes = getContactListTypes();
+    public List<ContactListTypeTransfer> getContactListTypeTransfers(UserVisit userVisit, Collection<ContactListType> contactListTypes) {
         List<ContactListTypeTransfer> contactListTypeTransfers = new ArrayList<>(contactListTypes.size());
 
         contactListTypes.forEach((contactListType) ->
@@ -466,6 +490,10 @@ public class ContactListControl
         );
 
         return contactListTypeTransfers;
+    }
+
+    public List<ContactListTypeTransfer> getContactListTypeTransfers(UserVisit userVisit) {
+        return getContactListTypeTransfers(userVisit, getContactListTypes());
     }
 
     private void updateContactListTypeFromValue(ContactListTypeDetailValue contactListTypeDetailValue, boolean checkDefault, BasePK updatedBy) {
