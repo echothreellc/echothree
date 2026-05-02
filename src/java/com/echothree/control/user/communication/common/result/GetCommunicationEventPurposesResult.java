@@ -22,8 +22,11 @@ import java.util.List;
 
 public interface GetCommunicationEventPurposesResult
         extends BaseResult {
-    
+
+    Long getCommunicationEventPurposeCount();
+    void setCommunicationEventPurposeCount(Long communicationEventPurposeCount);
+
     List<CommunicationEventPurposeTransfer> getCommunicationEventPurposes();
     void setCommunicationEventPurposes(List<CommunicationEventPurposeTransfer> communicationEventPurposes);
-    
+
 }
