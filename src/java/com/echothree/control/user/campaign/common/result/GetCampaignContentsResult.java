@@ -23,6 +23,9 @@ import java.util.List;
 public interface GetCampaignContentsResult
         extends BaseResult {
     
+    Long getCampaignContentCount();
+    void setCampaignContentCount(Long campaignContentCount);
+
     List<CampaignContentTransfer> getCampaignContents();
     void setCampaignContents(List<CampaignContentTransfer> campaignContents);
     
