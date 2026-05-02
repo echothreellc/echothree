@@ -27,8 +27,10 @@ import static com.echothree.model.control.core.common.workflow.BaseEncryptionKey
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
+import com.echothree.model.data.core.common.pk.BaseEncryptionKeyPK;
 import com.echothree.model.data.core.server.entity.BaseEncryptionKey;
 import com.echothree.model.data.core.server.entity.EntityEncryptionKey;
+import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.factory.BaseEncryptionKeyFactory;
 import com.echothree.model.data.core.server.factory.EntityEncryptionKeyFactory;
 import com.echothree.model.data.party.common.pk.PartyPK;
@@ -38,14 +40,15 @@ import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BaseKey;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.persistence.Sha1Utils;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import com.echothree.util.server.cdi.CommandScope;
 
 @CommandScope
 public class EncryptionKeyControl
@@ -91,13 +94,36 @@ public class EncryptionKeyControl
         return baseEncryptionKey;
     }
 
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.BaseEncryptionKey */
+    public BaseEncryptionKey getBaseEncryptionKeyByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new BaseEncryptionKeyPK(entityInstance.getEntityUniqueId());
+
+        return BaseEncryptionKeyFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public BaseEncryptionKey getBaseEncryptionKeyByEntityInstance(EntityInstance entityInstance) {
+        return getBaseEncryptionKeyByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public BaseEncryptionKey getBaseEncryptionKeyByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getBaseEncryptionKeyByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countBaseEncryptionKeys() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM baseencryptionkeys
+                        """);
+    }
+
     private List<BaseEncryptionKey> getBaseEncryptionKeys(EntityPermission entityPermission) {
         String query = null;
 
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
             query = "SELECT _ALL_ " +
                     "FROM baseencryptionkeys " +
-                    "ORDER BY bek_baseencryptionkeyname";
+                    "ORDER BY bek_baseencryptionkeyname " +
+                    "_LIMIT_";
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
             query = "SELECT _ALL_ " +
                     "FROM baseencryptionkeys " +
@@ -253,8 +279,7 @@ public class EncryptionKeyControl
         return baseEncryptionKeyTransferCache.getBaseEncryptionKeyTransfer(userVisit, getActiveBaseEncryptionKey());
     }
 
-    public List<BaseEncryptionKeyTransfer> getBaseEncryptionKeyTransfers(UserVisit userVisit) {
-        var baseEncryptionKeys = getBaseEncryptionKeys();
+    public List<BaseEncryptionKeyTransfer> getBaseEncryptionKeyTransfers(UserVisit userVisit, Collection<BaseEncryptionKey> baseEncryptionKeys) {
         List<BaseEncryptionKeyTransfer> baseEncryptionKeyTransfers = new ArrayList<>(baseEncryptionKeys.size());
 
         baseEncryptionKeys.forEach((baseEncryptionKey) ->
@@ -262,6 +287,10 @@ public class EncryptionKeyControl
         );
 
         return baseEncryptionKeyTransfers;
+    }
+
+    public List<BaseEncryptionKeyTransfer> getBaseEncryptionKeyTransfers(UserVisit userVisit) {
+        return getBaseEncryptionKeyTransfers(userVisit, getBaseEncryptionKeys());
     }
 
     public BaseEncryptionKeyStatusChoicesBean getBaseEncryptionKeyStatusChoices(String defaultBaseEncryptionKeyStatusChoice,

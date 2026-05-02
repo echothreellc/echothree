@@ -22,7 +22,6 @@ import com.echothree.model.control.core.server.control.EncryptionKeyControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -31,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetBaseEncryptionKeyCommand
@@ -47,13 +46,16 @@ public class GetBaseEncryptionKeyCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.BaseEncryptionKey.name(), SecurityRoles.Review.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("BaseEncryptionKeyName", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    EncryptionKeyControl encryptionKeyControl;
     
     /** Creates a new instance of GetBaseEncryptionKeyCommand */
     public GetBaseEncryptionKeyCommand() {
@@ -62,7 +64,6 @@ public class GetBaseEncryptionKeyCommand
     
     @Override
     protected BaseResult execute() {
-        var encryptionKeyControl = Session.getModelController(EncryptionKeyControl.class);
         var result = CoreResultFactory.getGetBaseEncryptionKeyResult();
         var baseEncryptionKeyName = form.getBaseEncryptionKeyName();
         var baseEncryptionKey = baseEncryptionKeyName == null? null: encryptionKeyControl.getBaseEncryptionKeyByName(baseEncryptionKeyName);

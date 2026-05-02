@@ -23,6 +23,9 @@ import java.util.List;
 public interface GetBaseEncryptionKeysResult
         extends BaseResult {
     
+    Long getBaseEncryptionKeyCount();
+    void setBaseEncryptionKeyCount(Long baseEncryptionKeyCount);
+
     List<BaseEncryptionKeyTransfer> getBaseEncryptionKeys();
     void setBaseEncryptionKeys(List<BaseEncryptionKeyTransfer> baseEncryptionKeys);
     
