@@ -2005,8 +2005,7 @@ public class CampaignControl
         return campaignTermTransferCache.getCampaignTermTransfer(userVisit, campaignTerm);
     }
 
-    public List<CampaignTermTransfer> getCampaignTermTransfers(UserVisit userVisit) {
-        var campaignTerms = getCampaignTerms();
+    public List<CampaignTermTransfer> getCampaignTermTransfers(UserVisit userVisit, Collection<CampaignTerm> campaignTerms) {
         List<CampaignTermTransfer> campaignTermTransfers = new ArrayList<>(campaignTerms.size());
 
         campaignTerms.forEach((campaignTerm) ->
@@ -2014,6 +2013,10 @@ public class CampaignControl
         );
 
         return campaignTermTransfers;
+    }
+
+    public List<CampaignTermTransfer> getCampaignTermTransfers(UserVisit userVisit) {
+        return getCampaignTermTransfers(userVisit, getCampaignTerms());
     }
 
     public CampaignTermChoicesBean getCampaignTermChoices(String defaultCampaignTermChoice, Language language, boolean allowNullChoice) {

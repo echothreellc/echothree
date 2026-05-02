@@ -23,6 +23,9 @@ import java.util.List;
 public interface GetCampaignTermsResult
         extends BaseResult {
     
+    Long getCampaignTermCount();
+    void setCampaignTermCount(Long campaignTermCount);
+
     List<CampaignTermTransfer> getCampaignTerms();
     void setCampaignTerms(List<CampaignTermTransfer> campaignTerms);
     
