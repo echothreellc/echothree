@@ -22,8 +22,11 @@ import java.util.List;
 
 public interface GetLeaveReasonsResult
         extends BaseResult {
-    
+
+    Long getLeaveReasonCount();
+    void setLeaveReasonCount(Long leaveReasonCount);
+
     List<LeaveReasonTransfer> getLeaveReasons();
     void setLeaveReasons(List<LeaveReasonTransfer> leaveReasons);
-    
+
 }
