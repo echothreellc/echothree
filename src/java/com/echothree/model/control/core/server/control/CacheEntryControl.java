@@ -33,6 +33,7 @@ import com.echothree.model.data.core.server.factory.CacheEntryFactory;
 import com.echothree.model.data.core.server.value.CacheEntryDependencyValue;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.persistence.type.ByteArray;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
@@ -42,7 +43,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import com.echothree.util.server.cdi.CommandScope;
 
 @CommandScope
 public class CacheEntryControl
