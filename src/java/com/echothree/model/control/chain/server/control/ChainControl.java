@@ -67,10 +67,8 @@ import com.echothree.model.control.contactlist.server.control.ContactListControl
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.letter.server.control.LetterControl;
 import com.echothree.model.control.offer.server.control.OfferControl;
-import com.echothree.model.data.campaign.common.pk.CampaignPK;
-import com.echothree.model.data.campaign.server.entity.Campaign;
-import com.echothree.model.data.campaign.server.factory.CampaignFactory;
 import com.echothree.model.data.chain.common.pk.ChainActionTypePK;
+import com.echothree.model.data.chain.common.pk.ChainKindPK;
 import com.echothree.model.data.chain.server.entity.Chain;
 import com.echothree.model.data.chain.server.entity.ChainAction;
 import com.echothree.model.data.chain.server.entity.ChainActionChainActionSet;
@@ -148,6 +146,7 @@ import com.echothree.model.data.survey.server.entity.Survey;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
@@ -159,7 +158,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
@@ -271,6 +269,29 @@ public class ChainControl
         return chainKind;
     }
 
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ChainKind */
+    public ChainKind getChainKindByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ChainKindPK(entityInstance.getEntityUniqueId());
+
+        return ChainKindFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public ChainKind getChainKindByEntityInstance(EntityInstance entityInstance) {
+        return getChainKindByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ChainKind getChainKindByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getChainKindByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countChainKinds() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM chainkinds
+                        JOIN chainkinddetails ON chnkdt_chainkinddetailid = chnk_activedetailid
+                        """);
+    }
+
     private static final Map<EntityPermission, String> getChainKindByNameQueries;
 
     static {
@@ -351,7 +372,8 @@ public class ChainControl
                 "SELECT _ALL_ "
                 + "FROM chainkinds, chainkinddetails "
                 + "WHERE chnk_activedetailid = chnkdt_chainkinddetailid "
-                + "ORDER BY chnkdt_sortorder, chnkdt_chainkindname");
+                + "ORDER BY chnkdt_sortorder, chnkdt_chainkindname " +
+                "_ORDER_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM chainkinds, chainkinddetails "
@@ -410,8 +432,7 @@ public class ChainControl
         return chainKindTransferCache.getChainKindTransfer(userVisit, chainKind);
     }
 
-    public List<ChainKindTransfer> getChainKindTransfers(UserVisit userVisit) {
-        var chainKinds = getChainKinds();
+    public List<ChainKindTransfer> getChainKindTransfers(UserVisit userVisit, Collection<ChainKind> chainKinds) {
         List<ChainKindTransfer> chainKindTransfers = new ArrayList<>(chainKinds.size());
 
         chainKinds.forEach((chainKind) ->
@@ -419,6 +440,10 @@ public class ChainControl
         );
 
         return chainKindTransfers;
+    }
+
+    public List<ChainKindTransfer> getChainKindTransfers(UserVisit userVisit) {
+        return getChainKindTransfers(userVisit, getChainKinds());
     }
 
     private void updateChainKindFromValue(ChainKindDetailValue chainKindDetailValue, boolean checkDefault, BasePK updatedBy) {
