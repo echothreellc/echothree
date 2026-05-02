@@ -23,6 +23,9 @@ import java.util.List;
 public interface GetInventoryConditionUseTypesResult
         extends BaseResult {
     
+    Long getInventoryConditionUseTypeCount();
+    void setInventoryConditionUseTypeCount(Long inventoryConditionUseTypeCount);
+
     List<InventoryConditionUseTypeTransfer> getInventoryConditionUseTypes();
     void setInventoryConditionUseTypes(List<InventoryConditionUseTypeTransfer> inventoryConditionUseTypes);
     

@@ -43,6 +43,7 @@ import com.echothree.model.data.accounting.server.entity.ItemAccountingCategory;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.inventory.common.pk.AllocationPriorityPK;
 import com.echothree.model.data.inventory.common.pk.InventoryConditionPK;
+import com.echothree.model.data.inventory.common.pk.InventoryConditionUseTypePK;
 import com.echothree.model.data.inventory.server.entity.AllocationPriority;
 import com.echothree.model.data.inventory.server.entity.AllocationPriorityDescription;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;
@@ -1360,7 +1361,29 @@ public class InventoryControl
             Integer sortOrder) {
         return InventoryConditionUseTypeFactory.getInstance().create(inventoryConditionUseTypeName, isDefault, sortOrder);
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.InventoryConditionUseType */
+    public InventoryConditionUseType getInventoryConditionUseTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new InventoryConditionUseTypePK(entityInstance.getEntityUniqueId());
+
+        return InventoryConditionUseTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public InventoryConditionUseType getInventoryConditionUseTypeByEntityInstance(EntityInstance entityInstance) {
+        return getInventoryConditionUseTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public InventoryConditionUseType getInventoryConditionUseTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getInventoryConditionUseTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countInventoryConditionUseTypes() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM inventoryconditionusetypes
+                        """);
+    }
+
     public List<InventoryConditionUseType> getInventoryConditionUseTypes() {
         var ps = InventoryConditionUseTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
@@ -1421,18 +1444,18 @@ public class InventoryControl
         return inventoryConditionUseTypeTransferCache.getTransfer(userVisit, inventoryConditionUseType);
     }
     
-    private List<InventoryConditionUseTypeTransfer> getInventoryConditionUseTypeTransfers(final UserVisit userVisit,
-            final List<InventoryConditionUseType> inventoryConditionUseTypes) {
+    public List<InventoryConditionUseTypeTransfer> getInventoryConditionUseTypeTransfers(final UserVisit userVisit,
+            final Collection<InventoryConditionUseType> inventoryConditionUseTypes) {
         List<InventoryConditionUseTypeTransfer> inventoryConditionUseTypeTransfers = null;
-        
+
         if(inventoryConditionUseTypes != null) {
-            
             inventoryConditionUseTypeTransfers = new ArrayList<>(inventoryConditionUseTypes.size());
-            
+
             for(var inventoryConditionUseType : inventoryConditionUseTypes) {
                 inventoryConditionUseTypeTransfers.add(inventoryConditionUseTypeTransferCache.getTransfer(userVisit, inventoryConditionUseType));
             }
         }
+
         return inventoryConditionUseTypeTransfers;
     }
     
