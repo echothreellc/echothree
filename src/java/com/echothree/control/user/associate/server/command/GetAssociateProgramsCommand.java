@@ -19,36 +19,60 @@ package com.echothree.control.user.associate.server.command;
 import com.echothree.control.user.associate.common.form.GetAssociateProgramsForm;
 import com.echothree.control.user.associate.common.result.AssociateResultFactory;
 import com.echothree.model.control.associate.server.control.AssociateControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.model.data.associate.server.entity.AssociateProgram;
+import com.echothree.model.data.associate.server.factory.AssociateProgramFactory;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetAssociateProgramsCommand
-        extends BaseSimpleCommand<GetAssociateProgramsForm> {
+        extends BasePaginatedMultipleEntitiesCommand<AssociateProgram, GetAssociateProgramsForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {
-        FORM_FIELD_DEFINITIONS = List.of(
-                );
+        FORM_FIELD_DEFINITIONS = List.of();
     }
     
+    @Inject
+    AssociateControl associateControl;
+
     /** Creates a new instance of GetAssociateProgramsCommand */
     public GetAssociateProgramsCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override
-    protected BaseResult execute() {
-        var associateControl = Session.getModelController(AssociateControl.class);
+    protected void handleForm() {
+        // No form fields to handle
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return associateControl.countAssociatePrograms();
+    }
+
+    @Override
+    protected Collection<AssociateProgram> getEntities() {
+        return associateControl.getAssociatePrograms();
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<AssociateProgram> entities) {
         var result = AssociateResultFactory.getGetAssociateProgramsResult();
         
-        result.setAssociatePrograms(associateControl.getAssociateProgramTransfers(getUserVisit()));
+        if(entities != null) {
+            if(session.hasLimit(AssociateProgramFactory.class)) {
+                result.setAssociateProgramCount(getTotalEntities());
+            }
+
+            result.setAssociatePrograms(associateControl.getAssociateProgramTransfers(getUserVisit(), entities));
+        }
         
         return result;
     }
