@@ -67,6 +67,10 @@ import com.echothree.model.control.contactlist.server.control.ContactListControl
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.letter.server.control.LetterControl;
 import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.data.campaign.common.pk.CampaignPK;
+import com.echothree.model.data.campaign.server.entity.Campaign;
+import com.echothree.model.data.campaign.server.factory.CampaignFactory;
+import com.echothree.model.data.chain.common.pk.ChainActionTypePK;
 import com.echothree.model.data.chain.server.entity.Chain;
 import com.echothree.model.data.chain.server.entity.ChainAction;
 import com.echothree.model.data.chain.server.entity.ChainActionChainActionSet;
@@ -2327,6 +2331,29 @@ public class ChainControl
         return chainActionType;
     }
 
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ChainActionType */
+    public ChainActionType getChainActionTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ChainActionTypePK(entityInstance.getEntityUniqueId());
+
+        return ChainActionTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public ChainActionType getChainActionTypeByEntityInstance(EntityInstance entityInstance) {
+        return getChainActionTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ChainActionType getChainActionTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getChainActionTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countChainActionTypes() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM chainactiontypes
+                        JOIN chainactiontypedetails ON chnacttypdt_chainactiontypedetailid = chnacttyp_activedetailid
+                        """);
+    }
+
     private static final Map<EntityPermission, String> getChainActionTypeByNameQueries;
 
     static {
@@ -2407,7 +2434,8 @@ public class ChainControl
                 "SELECT _ALL_ "
                 + "FROM chainactiontypes, chainactiontypedetails "
                 + "WHERE chnacttyp_activedetailid = chnacttypdt_chainactiontypedetailid "
-                + "ORDER BY chnacttypdt_sortorder, chnacttypdt_chainactiontypename");
+                + "ORDER BY chnacttypdt_sortorder, chnacttypdt_chainactiontypename " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM chainactiontypes, chainactiontypedetails "
@@ -2466,8 +2494,7 @@ public class ChainControl
         return chainActionTypeTransferCache.getChainActionTypeTransfer(userVisit, chainActionType);
     }
 
-    public List<ChainActionTypeTransfer> getChainActionTypeTransfers(UserVisit userVisit) {
-        var chainActionTypes = getChainActionTypes();
+    public List<ChainActionTypeTransfer> getChainActionTypeTransfers(UserVisit userVisit, Collection<ChainActionType> chainActionTypes) {
         List<ChainActionTypeTransfer> chainActionTypeTransfers = new ArrayList<>(chainActionTypes.size());
 
         chainActionTypes.forEach((chainActionType) ->
@@ -2475,6 +2502,10 @@ public class ChainControl
         );
 
         return chainActionTypeTransfers;
+    }
+
+    public List<ChainActionTypeTransfer> getChainActionTypeTransfers(UserVisit userVisit) {
+        return getChainActionTypeTransfers(userVisit, getChainActionTypes());
     }
 
     private void updateChainActionTypeFromValue(ChainActionTypeDetailValue chainActionTypeDetailValue, boolean checkDefault, BasePK updatedBy) {

@@ -22,8 +22,11 @@ import java.util.List;
 
 public interface GetChainActionTypesResult
         extends BaseResult {
-    
+
+    Long getChainActionTypeCount();
+    void setChainActionTypeCount(Long chainActionTypeCount);
+
     List<ChainActionTypeTransfer> getChainActionTypes();
     void setChainActionTypes(List<ChainActionTypeTransfer> chainActionTypes);
-    
+
 }
