@@ -22,8 +22,11 @@ import java.util.List;
 
 public interface GetCampaignMediumsResult
         extends BaseResult {
-    
+
+    Long getCampaignMediumCount();
+    void setCampaignMediumCount(Long campaignMediumCount);
+
     List<CampaignMediumTransfer> getCampaignMediums();
     void setCampaignMediums(List<CampaignMediumTransfer> campaignMediums);
-    
+
 }

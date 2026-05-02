@@ -1473,8 +1473,7 @@ public class CampaignControl
         return campaignMediumTransferCache.getCampaignMediumTransfer(userVisit, campaignMedium);
     }
 
-    public List<CampaignMediumTransfer> getCampaignMediumTransfers(UserVisit userVisit) {
-        var campaignMediums = getCampaignMediums();
+    public List<CampaignMediumTransfer> getCampaignMediumTransfers(UserVisit userVisit, Collection<CampaignMedium> campaignMediums) {
         List<CampaignMediumTransfer> campaignMediumTransfers = new ArrayList<>(campaignMediums.size());
 
         campaignMediums.forEach((campaignMedium) ->
@@ -1482,6 +1481,10 @@ public class CampaignControl
         );
 
         return campaignMediumTransfers;
+    }
+
+    public List<CampaignMediumTransfer> getCampaignMediumTransfers(UserVisit userVisit) {
+        return getCampaignMediumTransfers(userVisit, getCampaignMediums());
     }
 
     public CampaignMediumChoicesBean getCampaignMediumChoices(String defaultCampaignMediumChoice, Language language, boolean allowNullChoice) {
