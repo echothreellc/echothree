@@ -415,8 +415,7 @@ public class CampaignControl
         return campaignTransferCache.getCampaignTransfer(userVisit, campaign);
     }
 
-    public List<CampaignTransfer> getCampaignTransfers(UserVisit userVisit) {
-        var campaigns = getCampaigns();
+    public List<CampaignTransfer> getCampaignTransfers(UserVisit userVisit, Collection<Campaign> campaigns) {
         List<CampaignTransfer> campaignTransfers = new ArrayList<>(campaigns.size());
 
         campaigns.forEach((campaign) ->
@@ -424,6 +423,10 @@ public class CampaignControl
         );
 
         return campaignTransfers;
+    }
+
+    public List<CampaignTransfer> getCampaignTransfers(UserVisit userVisit) {
+        return getCampaignTransfers(userVisit, getCampaigns());
     }
 
     public CampaignChoicesBean getCampaignChoices(String defaultCampaignChoice, Language language, boolean allowNullChoice) {
