@@ -22,8 +22,11 @@ import java.util.List;
 
 public interface GetDocumentTypesResult
         extends BaseResult {
-    
+
+    Long getDocumentTypeCount();
+    void setDocumentTypeCount(Long documentTypeCount);
+
     List<DocumentTypeTransfer> getDocumentTypes();
     void setDocumentTypes(List<DocumentTypeTransfer> documentTypes);
-    
+
 }
