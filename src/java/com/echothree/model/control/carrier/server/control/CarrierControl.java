@@ -42,6 +42,7 @@ import com.echothree.model.control.carrier.server.transfer.PartyCarrierAccountTr
 import com.echothree.model.control.carrier.server.transfer.PartyCarrierTransferCache;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.shipping.server.control.ShippingControl;
+import com.echothree.model.data.carrier.common.pk.CarrierTypePK;
 import com.echothree.model.data.carrier.server.entity.Carrier;
 import com.echothree.model.data.carrier.server.entity.CarrierOption;
 import com.echothree.model.data.carrier.server.entity.CarrierOptionDescription;
@@ -75,12 +76,14 @@ import com.echothree.model.data.carrier.server.value.CarrierTypeDescriptionValue
 import com.echothree.model.data.carrier.server.value.CarrierTypeDetailValue;
 import com.echothree.model.data.carrier.server.value.CarrierValue;
 import com.echothree.model.data.carrier.server.value.PartyCarrierAccountDetailValue;
+import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
@@ -92,7 +95,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
@@ -169,6 +171,29 @@ public class CarrierControl
         sendEvent(carrierType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return carrierType;
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.CarrierType */
+    public CarrierType getCarrierTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new CarrierTypePK(entityInstance.getEntityUniqueId());
+
+        return CarrierTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public CarrierType getCarrierTypeByEntityInstance(EntityInstance entityInstance) {
+        return getCarrierTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public CarrierType getCarrierTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getCarrierTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countCarrierTypes() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM carriertypes
+                        JOIN carriertypedetails ON crrtypdt_carriertypedetailid = crrtyp_activedetailid
+                        """);
     }
 
     private static final Map<EntityPermission, String> getCarrierTypeByNameQueries;
