@@ -22,6 +22,9 @@ import java.util.List;
 
 public interface GetLeaveTypesResult
         extends BaseResult {
+
+    Long getLeaveTypeCount();
+    void setLeaveTypeCount(Long leaveTypeCount);
     
     List<LeaveTypeTransfer> getLeaveTypes();
     void setLeaveTypes(List<LeaveTypeTransfer> leaveTypes);

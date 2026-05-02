@@ -22,20 +22,22 @@ import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.model.data.employee.server.entity.LeaveType;
+import com.echothree.model.data.employee.server.factory.LeaveTypeFactory;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetLeaveTypesCommand
-        extends BaseSimpleCommand<GetLeaveTypesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<LeaveType, GetLeaveTypesForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -52,19 +54,42 @@ public class GetLeaveTypesCommand
                 );
     }
 
+    @Inject
+    EmployeeControl employeeControl;
+
     /** Creates a new instance of GetLeaveTypesCommand */
     public GetLeaveTypesCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var employeeControl = Session.getModelController(EmployeeControl.class);
+    protected void handleForm() {
+        // No form fields.
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return employeeControl.countLeaveTypes();
+    }
+
+    @Override
+    protected Collection<LeaveType> getEntities() {
+        return employeeControl.getLeaveTypes();
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<LeaveType> entities) {
         var result = EmployeeResultFactory.getGetLeaveTypesResult();
 
-        result.setLeaveTypes(employeeControl.getLeaveTypeTransfers(getUserVisit()));
-        
+        if(entities != null) {
+            if(session.hasLimit(LeaveTypeFactory.class)) {
+                result.setLeaveTypeCount(getTotalEntities());
+            }
+
+            result.setLeaveTypes(employeeControl.getLeaveTypeTransfers(getUserVisit(), entities));
+        }
+
         return result;
     }
-    
+
 }
