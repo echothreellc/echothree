@@ -61,7 +61,7 @@ public class GetItemPriceTypesCommand
 
     @Override
     protected void handleForm() {
-        // No form fields to validate or process.
+        // No form fields.
     }
 
     @Override

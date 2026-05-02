@@ -63,7 +63,7 @@ public class GetShippingMethodsCommand
 
     @Override
     protected void handleForm() {
-        // No form fields to handle
+        // No form fields.
     }
 
     @Override

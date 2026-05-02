@@ -60,7 +60,7 @@ public class GetSearchResultActionTypesCommand
 
     @Override
     protected void handleForm() {
-        // no form fields
+        // No form fields.
     }
 
     @Override
