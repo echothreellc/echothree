@@ -19,37 +19,61 @@ package com.echothree.control.user.contact.server.command;
 import com.echothree.control.user.contact.common.form.GetContactMechanismTypesForm;
 import com.echothree.control.user.contact.common.result.ContactResultFactory;
 import com.echothree.model.control.contact.server.control.ContactControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.model.data.contact.server.entity.ContactMechanismType;
+import com.echothree.model.data.contact.server.factory.ContactMechanismTypeFactory;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetContactMechanismTypesCommand
-        extends BaseSimpleCommand<GetContactMechanismTypesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<ContactMechanismType, GetContactMechanismTypesForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {
-        FORM_FIELD_DEFINITIONS = List.of(
-                );
+        FORM_FIELD_DEFINITIONS = List.of();
     }
     
+    @Inject
+    ContactControl contactControl;
+
     /** Creates a new instance of GetContactMechanismTypesCommand */
     public GetContactMechanismTypesCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var contactControl = Session.getModelController(ContactControl.class);
+    protected void handleForm() {
+        // No form fields.
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return contactControl.countContactMechanismTypes();
+    }
+
+    @Override
+    protected Collection<ContactMechanismType> getEntities() {
+        return contactControl.getContactMechanismTypes();
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<ContactMechanismType> entities) {
         var result = ContactResultFactory.getGetContactMechanismTypesResult();
-        
-        result.setContactMechanismTypes(contactControl.getContactMechanismTypeTransfers(getUserVisit()));
-        
+
+        if(entities != null) {
+            if(session.hasLimit(ContactMechanismTypeFactory.class)) {
+                result.setContactMechanismTypeCount(getTotalEntities());
+            }
+
+            result.setContactMechanismTypes(contactControl.getContactMechanismTypeTransfers(getUserVisit(), entities));
+        }
+
         return result;
     }
     

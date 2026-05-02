@@ -83,12 +83,10 @@ import com.echothree.model.control.order.server.control.OrderShipmentGroupContro
 import com.echothree.model.control.payment.server.control.BillingControl;
 import com.echothree.model.control.payment.server.control.PartyPaymentMethodControl;
 import com.echothree.model.control.shipment.server.control.ShipmentControl;
-import com.echothree.model.data.campaign.common.pk.CampaignPK;
-import com.echothree.model.data.campaign.server.entity.Campaign;
-import com.echothree.model.data.campaign.server.factory.CampaignFactory;
 import com.echothree.model.data.contact.common.pk.ContactMechanismAliasTypePK;
 import com.echothree.model.data.contact.common.pk.ContactMechanismPK;
 import com.echothree.model.data.contact.common.pk.ContactMechanismPurposePK;
+import com.echothree.model.data.contact.common.pk.ContactMechanismTypePK;
 import com.echothree.model.data.contact.server.entity.ContactEmailAddress;
 import com.echothree.model.data.contact.server.entity.ContactInet4Address;
 import com.echothree.model.data.contact.server.entity.ContactInet6Address;
@@ -174,6 +172,7 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
@@ -186,7 +185,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
@@ -271,7 +269,29 @@ public class ContactControl
         return ContactMechanismTypeFactory.getInstance().create(contactMechanismTypeName, parentContactMechanismType,
                 isDefault, sortOrder);
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ContactMechanismType */
+    public ContactMechanismType getContactMechanismTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ContactMechanismTypePK(entityInstance.getEntityUniqueId());
+
+        return ContactMechanismTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public ContactMechanismType getContactMechanismTypeByEntityInstance(EntityInstance entityInstance) {
+        return getContactMechanismTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ContactMechanismType getContactMechanismTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getContactMechanismTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countContactMechanismTypes() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM contactmechanismtypes
+                        """);
+    }
+
     public ContactMechanismType getContactMechanismTypeByName(String contactMechanismTypeName) {
         ContactMechanismType contactMechanismType;
         
@@ -295,7 +315,8 @@ public class ContactControl
         var ps = ContactMechanismTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM contactmechanismtypes " +
-                "ORDER BY cmt_sortorder, cmt_contactmechanismtypename");
+                "ORDER BY cmt_sortorder, cmt_contactmechanismtypename " +
+                "_LIMIT_");
         
         return ContactMechanismTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
@@ -332,15 +353,18 @@ public class ContactControl
         return contactMechanismTypeTransferCache.getContactMechanismTypeTransfer(userVisit, contactMechanismType);
     }
     
-    public List<ContactMechanismTypeTransfer> getContactMechanismTypeTransfers(UserVisit userVisit) {
-        var entities = getContactMechanismTypes();
-        List<ContactMechanismTypeTransfer> transfers = new ArrayList<>(entities.size());
+    public List<ContactMechanismTypeTransfer> getContactMechanismTypeTransfers(UserVisit userVisit, Collection<ContactMechanismType> contactMechanismTypes) {
+        List<ContactMechanismTypeTransfer> transfers = new ArrayList<>(contactMechanismTypes.size());
 
-        entities.forEach((entity) ->
-                transfers.add(contactMechanismTypeTransferCache.getContactMechanismTypeTransfer(userVisit, entity))
-        );
-        
+        contactMechanismTypes.forEach((contactMechanismType) -> {
+            transfers.add(contactMechanismTypeTransferCache.getContactMechanismTypeTransfer(userVisit, contactMechanismType));
+        });
+
         return transfers;
+    }
+
+    public List<ContactMechanismTypeTransfer> getContactMechanismTypeTransfers(UserVisit userVisit) {
+        return getContactMechanismTypeTransfers(userVisit, getContactMechanismTypes());
     }
     
     // --------------------------------------------------------------------------------
