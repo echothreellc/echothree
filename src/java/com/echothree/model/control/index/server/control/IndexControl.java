@@ -139,6 +139,29 @@ public class IndexControl
         return indexType;
     }
 
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.IndexType */
+    public IndexType getIndexTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new IndexTypePK(entityInstance.getEntityUniqueId());
+
+        return IndexTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public IndexType getIndexTypeByEntityInstance(EntityInstance entityInstance) {
+        return getIndexTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public IndexType getIndexTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getIndexTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countIndexTypes() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM indextypes
+                        JOIN indextypedetails ON idxtdt_indextypedetailid = idxt_activedetailid
+                        """);
+    }
+
     public long countIndexTypesByEntityType(EntityType entityType) {
         return session.queryForLong(
                 "SELECT COUNT(*) " +
@@ -149,14 +172,6 @@ public class IndexControl
 
     public boolean isEntityTypeUsedByIndexTypes(EntityType entityType) {
         return countIndexTypesByEntityType(entityType) != 0;
-    }
-
-    /** Assume that the entityInstance passed to this function is a ECHO_THREE.IndexType */
-    public IndexType getIndexTypeByEntityInstance(EntityInstance entityInstance) {
-        var pk = new IndexTypePK(entityInstance.getEntityUniqueId());
-        var indexType = IndexTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
-
-        return indexType;
     }
 
     private static final Map<EntityPermission, String> getIndexTypeByNameQueries;
@@ -596,7 +611,7 @@ public class IndexControl
     }
 
     // --------------------------------------------------------------------------------
-    //   Search Types
+    //   Index Fields
     // --------------------------------------------------------------------------------
 
     public IndexField createIndexField(IndexType indexType, String indexFieldName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
@@ -871,7 +886,7 @@ public class IndexControl
     }
 
     // --------------------------------------------------------------------------------
-    //   Search Type Descriptions
+    //   Index Field Descriptions
     // --------------------------------------------------------------------------------
 
     public IndexFieldDescription createIndexFieldDescription(IndexField indexField, Language language, String description,
