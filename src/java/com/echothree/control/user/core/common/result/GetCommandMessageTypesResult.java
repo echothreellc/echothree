@@ -26,4 +26,7 @@ public interface GetCommandMessageTypesResult
     List<CommandMessageTypeTransfer> getCommandMessageTypes();
     void setCommandMessageTypes(List<CommandMessageTypeTransfer> commandMessageTypes);
     
+    Long getCommandMessageTypeCount();
+    void setCommandMessageTypeCount(Long commandMessageTypeCount);
+    
 }

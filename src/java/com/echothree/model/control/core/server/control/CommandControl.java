@@ -24,6 +24,7 @@ import com.echothree.model.control.core.common.transfer.CommandMessageTranslatio
 import com.echothree.model.control.core.common.transfer.CommandMessageTypeDescriptionTransfer;
 import com.echothree.model.control.core.common.transfer.CommandMessageTypeTransfer;
 import com.echothree.model.control.core.common.transfer.CommandTransfer;
+import com.echothree.model.data.core.common.pk.CommandMessageTypePK;
 import com.echothree.model.data.core.server.entity.Command;
 import com.echothree.model.data.core.server.entity.CommandDescription;
 import com.echothree.model.data.core.server.entity.CommandMessage;
@@ -31,6 +32,7 @@ import com.echothree.model.data.core.server.entity.CommandMessageTranslation;
 import com.echothree.model.data.core.server.entity.CommandMessageType;
 import com.echothree.model.data.core.server.entity.CommandMessageTypeDescription;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
+import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.factory.CommandDescriptionFactory;
 import com.echothree.model.data.core.server.factory.CommandDetailFactory;
 import com.echothree.model.data.core.server.factory.CommandFactory;
@@ -50,6 +52,7 @@ import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.sql.SQLException;
@@ -57,7 +60,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
@@ -468,6 +470,29 @@ public class CommandControl
         return commandMessageType;
     }
 
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.CommandMessageType */
+    public CommandMessageType getCommandMessageTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new CommandMessageTypePK(entityInstance.getEntityUniqueId());
+
+        return CommandMessageTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public CommandMessageType getCommandMessageTypeByEntityInstance(EntityInstance entityInstance) {
+        return getCommandMessageTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public CommandMessageType getCommandMessageTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getCommandMessageTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countCommandMessageTypes() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM commandmessagetypes
+                        JOIN commandmessagetypedetails ON cmdmssgtydt_commandmessagetypedetailid = cmdmssgty_activedetailid
+                        """);
+    }
+
     private List<CommandMessageType> getCommandMessageTypes(EntityPermission entityPermission) {
         String query = null;
 
@@ -475,7 +500,8 @@ public class CommandControl
             query = "SELECT _ALL_ " +
                     "FROM commandmessagetypes, commandmessagetypedetails " +
                     "WHERE cmdmssgty_activedetailid = cmdmssgtydt_commandmessagetypedetailid " +
-                    "ORDER BY cmdmssgtydt_sortorder, cmdmssgtydt_commandmessagetypename";
+                    "ORDER BY cmdmssgtydt_sortorder, cmdmssgtydt_commandmessagetypename " +
+                    "_LIMIT_";
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
             query = "SELECT _ALL_ " +
                     "FROM commandmessagetypes, commandmessagetypedetails " +
@@ -610,8 +636,7 @@ public class CommandControl
         return commandMessageTypeTransferCache.getCommandMessageTypeTransfer(userVisit, commandMessageType);
     }
 
-    public List<CommandMessageTypeTransfer> getCommandMessageTypeTransfers(UserVisit userVisit) {
-        var commandMessageTypes = getCommandMessageTypes();
+    public List<CommandMessageTypeTransfer> getCommandMessageTypeTransfers(UserVisit userVisit, Collection<CommandMessageType> commandMessageTypes) {
         List<CommandMessageTypeTransfer> commandMessageTypeTransfers = new ArrayList<>(commandMessageTypes.size());
 
         commandMessageTypes.forEach((commandMessageType) ->
@@ -619,6 +644,10 @@ public class CommandControl
         );
 
         return commandMessageTypeTransfers;
+    }
+
+    public List<CommandMessageTypeTransfer> getCommandMessageTypeTransfers(UserVisit userVisit) {
+        return getCommandMessageTypeTransfers(userVisit, getCommandMessageTypes());
     }
 
     private void updateCommandMessageTypeFromValue(CommandMessageTypeDetailValue commandMessageTypeDetailValue, boolean checkDefault,
