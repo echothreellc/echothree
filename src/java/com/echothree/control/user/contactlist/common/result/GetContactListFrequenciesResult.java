@@ -22,6 +22,9 @@ import java.util.List;
 
 public interface GetContactListFrequenciesResult
         extends BaseResult {
+
+    Long getContactListFrequencyCount();
+    void setContactListFrequencyCount(Long contactListFrequencyCount);
     
     List<ContactListFrequencyTransfer> getContactListFrequencies();
     void setContactListFrequencies(List<ContactListFrequencyTransfer> contactListFrequencies);

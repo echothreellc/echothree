@@ -57,6 +57,8 @@ import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.letter.server.control.LetterControl;
 import com.echothree.model.data.chain.server.entity.Chain;
 import com.echothree.model.data.contact.server.entity.ContactMechanismPurpose;
+import com.echothree.model.data.contactlist.common.pk.ContactListFrequencyPK;
+import com.echothree.model.data.contactlist.common.pk.ContactListPK;
 import com.echothree.model.data.contactlist.server.entity.ContactList;
 import com.echothree.model.data.contactlist.server.entity.ContactListContactMechanismPurpose;
 import com.echothree.model.data.contactlist.server.entity.ContactListDescription;
@@ -105,6 +107,7 @@ import com.echothree.model.data.contactlist.server.value.CustomerTypeContactList
 import com.echothree.model.data.contactlist.server.value.PartyContactListDetailValue;
 import com.echothree.model.data.contactlist.server.value.PartyTypeContactListGroupValue;
 import com.echothree.model.data.contactlist.server.value.PartyTypeContactListValue;
+import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.customer.server.entity.CustomerType;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
@@ -114,6 +117,7 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
@@ -125,7 +129,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
@@ -1150,6 +1153,29 @@ public class ContactListControl
         return contactListFrequency;
     }
 
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ContactListFrequency */
+    public ContactListFrequency getContactListFrequencyByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ContactListFrequencyPK(entityInstance.getEntityUniqueId());
+
+        return ContactListFrequencyFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public ContactListFrequency getContactListFrequencyByEntityInstance(EntityInstance entityInstance) {
+        return getContactListFrequencyByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ContactListFrequency getContactListFrequencyByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getContactListFrequencyByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countContactListFrequencys() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM contactlistfrequencies
+                        JOIN contactlistfrequencydetails ON clstfrqdt_contactlistfrequencydetailid = clstfrq_activedetailid
+                        """);
+    }
+
     private static final Map<EntityPermission, String> getContactListFrequencyByNameQueries;
 
     static {
@@ -1230,7 +1256,8 @@ public class ContactListControl
                 "SELECT _ALL_ "
                 + "FROM contactlistfrequencies, contactlistfrequencydetails "
                 + "WHERE clstfrq_activedetailid = clstfrqdt_contactlistfrequencydetailid "
-                + "ORDER BY clstfrqdt_sortorder, clstfrqdt_contactlistfrequencyname");
+                + "ORDER BY clstfrqdt_sortorder, clstfrqdt_contactlistfrequencyname " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM contactlistfrequencies, contactlistfrequencydetails "
@@ -1289,8 +1316,7 @@ public class ContactListControl
         return contactListFrequencyTransferCache.getContactListFrequencyTransfer(userVisit, contactListFrequency);
     }
 
-    public List<ContactListFrequencyTransfer> getContactListFrequencyTransfers(UserVisit userVisit) {
-        var contactListFrequencies = getContactListFrequencies();
+    public List<ContactListFrequencyTransfer> getContactListFrequencyTransfers(UserVisit userVisit, Collection<ContactListFrequency> contactListFrequencies) {
         List<ContactListFrequencyTransfer> contactListFrequencyTransfers = new ArrayList<>(contactListFrequencies.size());
 
         contactListFrequencies.forEach((contactListFrequency) ->
@@ -1298,6 +1324,10 @@ public class ContactListControl
         );
 
         return contactListFrequencyTransfers;
+    }
+
+    public List<ContactListFrequencyTransfer> getContactListFrequencyTransfers(UserVisit userVisit) {
+        return getContactListFrequencyTransfers(userVisit, getContactListFrequencies());
     }
 
     private void updateContactListFrequencyFromValue(ContactListFrequencyDetailValue contactListFrequencyDetailValue, boolean checkDefault, BasePK updatedBy) {
@@ -1553,6 +1583,29 @@ public class ContactListControl
         sendEvent(contactList.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return contactList;
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ContactList */
+    public ContactList getContactListByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ContactListPK(entityInstance.getEntityUniqueId());
+
+        return ContactListFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public ContactList getContactListByEntityInstance(EntityInstance entityInstance) {
+        return getContactListByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ContactList getContactListByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getContactListByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countContactLists() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM contactlists
+                        JOIN contactlistdetails ON clstdt_contactlistdetailid = clst_activedetailid
+                        """);
     }
 
     private static final Map<EntityPermission, String> getContactListByNameQueries;
