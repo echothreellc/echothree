@@ -23,6 +23,9 @@ import java.util.List;
 public interface GetContactMechanismAliasTypesResult
         extends BaseResult {
     
+    Long getContactMechanismAliasTypeCount();
+    void setContactMechanismAliasTypeCount(Long contactMechanismAliasTypeCount);
+
     List<ContactMechanismAliasTypeTransfer> getContactMechanismAliasTypes();
     void setContactMechanismAliasTypes(List<ContactMechanismAliasTypeTransfer> contactMechanismAliasTypes);
     

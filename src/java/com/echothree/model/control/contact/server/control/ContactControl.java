@@ -83,6 +83,10 @@ import com.echothree.model.control.order.server.control.OrderShipmentGroupContro
 import com.echothree.model.control.payment.server.control.BillingControl;
 import com.echothree.model.control.payment.server.control.PartyPaymentMethodControl;
 import com.echothree.model.control.shipment.server.control.ShipmentControl;
+import com.echothree.model.data.campaign.common.pk.CampaignPK;
+import com.echothree.model.data.campaign.server.entity.Campaign;
+import com.echothree.model.data.campaign.server.factory.CampaignFactory;
+import com.echothree.model.data.contact.common.pk.ContactMechanismAliasTypePK;
 import com.echothree.model.data.contact.common.pk.ContactMechanismPK;
 import com.echothree.model.data.contact.common.pk.ContactMechanismPurposePK;
 import com.echothree.model.data.contact.server.entity.ContactEmailAddress;
@@ -418,6 +422,29 @@ public class ContactControl
         sendEvent(contactMechanismAliasType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return contactMechanismAliasType;
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ContactMechanismAliasType */
+    public ContactMechanismAliasType getContactMechanismAliasTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ContactMechanismAliasTypePK(entityInstance.getEntityUniqueId());
+
+        return ContactMechanismAliasTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public ContactMechanismAliasType getContactMechanismAliasTypeByEntityInstance(EntityInstance entityInstance) {
+        return getContactMechanismAliasTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ContactMechanismAliasType getContactMechanismAliasTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getContactMechanismAliasTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countContactMechanismAliasTypes() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM contactmechanismaliastypes
+                        JOIN contactmechanismaliastypedetails ON cmchaltypdt_contactmechanismaliastypedetailid = cmchaltyp_activedetailid
+                        """);
     }
 
     private static final Map<EntityPermission, String> getContactMechanismAliasTypeByNameQueries;
