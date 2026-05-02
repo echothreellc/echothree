@@ -947,6 +947,16 @@ public class CampaignControl
         return campaignSourceTransferCache.getCampaignSourceTransfer(userVisit, campaignSource);
     }
 
+    public List<CampaignSourceTransfer> getCampaignSourceTransfers(UserVisit userVisit, Collection<CampaignSource> campaignSources) {
+        var campaignSourceTransfers = new ArrayList<CampaignSourceTransfer>(campaignSources.size());
+
+        campaignSources.forEach((campaignSource) -> {
+            campaignSourceTransfers.add(campaignSourceTransferCache.getCampaignSourceTransfer(userVisit, campaignSource));
+        });
+
+        return campaignSourceTransfers;
+    }
+
     public List<CampaignSourceTransfer> getCampaignSourceTransfers(UserVisit userVisit) {
         var campaignSources = getCampaignSources();
         List<CampaignSourceTransfer> campaignSourceTransfers = new ArrayList<>(campaignSources.size());
