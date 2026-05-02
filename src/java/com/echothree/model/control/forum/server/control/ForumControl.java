@@ -77,6 +77,7 @@ import com.echothree.model.data.forum.common.pk.ForumGroupPK;
 import com.echothree.model.data.forum.common.pk.ForumMessagePK;
 import com.echothree.model.data.forum.common.pk.ForumPK;
 import com.echothree.model.data.forum.common.pk.ForumThreadPK;
+import com.echothree.model.data.forum.common.pk.ForumTypePK;
 import com.echothree.model.data.forum.server.entity.Forum;
 import com.echothree.model.data.forum.server.entity.ForumBlobMessagePart;
 import com.echothree.model.data.forum.server.entity.ForumClobMessagePart;
@@ -171,6 +172,7 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.common.persistence.type.ByteArray;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
@@ -181,7 +183,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
@@ -277,20 +278,28 @@ public class ForumControl
         
         return forumGroup;
     }
-    
-    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ForumGroup */
-    public ForumGroup getForumGroupByEntityInstance(EntityInstance entityInstance) {
-        var pk = new ForumGroupPK(entityInstance.getEntityUniqueId());
-        var forumGroup = ForumGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
-        return forumGroup;
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ForumGroup */
+    public ForumGroup getForumGroupByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ForumGroupPK(entityInstance.getEntityUniqueId());
+
+        return ForumGroupFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public ForumGroup getForumGroupByEntityInstance(EntityInstance entityInstance) {
+        return getForumGroupByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ForumGroup getForumGroupByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getForumGroupByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
 
     public long countForumGroups() {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM forumgroups, forumgroupdetails " +
-                "WHERE frmgrp_activedetailid = frmgrpdt_forumgroupdetailid");
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM forumgroups
+                        JOIN forumgroupdetails ON frmgrpdt_forumgroupdetailid = frmgrp_activedetailid
+                        """);
     }
 
     public List<ForumGroup> getForumGroups() {
@@ -298,7 +307,8 @@ public class ForumControl
                 "SELECT _ALL_ " +
                 "FROM forumgroups, forumgroupdetails " +
                 "WHERE frmgrp_activedetailid = frmgrpdt_forumgroupdetailid " +
-                "ORDER BY frmgrpdt_sortorder, frmgrpdt_forumgroupname");
+                "ORDER BY frmgrpdt_sortorder, frmgrpdt_forumgroupname " +
+                "_LIMIT_");
         
         return ForumGroupFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
@@ -630,20 +640,28 @@ public class ForumControl
         
         return forum;
     }
-    
-    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Forum */
-    public Forum getForumByEntityInstance(EntityInstance entityInstance) {
-        var pk = new ForumPK(entityInstance.getEntityUniqueId());
-        var forum = ForumFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
-        return forum;
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Forum */
+    public Forum getForumByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ForumPK(entityInstance.getEntityUniqueId());
+
+        return ForumFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public Forum getForumByEntityInstance(EntityInstance entityInstance) {
+        return getForumByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public Forum getForumByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getForumByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
 
     public long countForums() {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM forums, forumdetails " +
-                "WHERE frm_activedetailid = frmdt_forumdetailid");
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM forums
+                        JOIN forumdetails ON frmdt_forumdetailid = frm_activedetailid
+                        """);
     }
 
     public List<Forum> getForums() {
@@ -651,7 +669,8 @@ public class ForumControl
                 "SELECT _ALL_ " +
                 "FROM forums, forumdetails " +
                 "WHERE frm_activedetailid = frmdt_forumdetailid " +
-                "ORDER BY frmdt_sortorder, frmdt_forumname");
+                "ORDER BY frmdt_sortorder, frmdt_forumname " +
+                "_LIMIT_");
         
         return ForumFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
@@ -1408,7 +1427,29 @@ public class ForumControl
     public ForumType createForumType(String forumTypeName, Boolean isDefault, Integer sortOrder) {
         return ForumTypeFactory.getInstance().create(forumTypeName, isDefault, sortOrder);
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ForumType */
+    public ForumType getForumTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ForumTypePK(entityInstance.getEntityUniqueId());
+
+        return ForumTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public ForumType getForumTypeByEntityInstance(EntityInstance entityInstance) {
+        return getForumTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ForumType getForumTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getForumTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countForumTypes() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM forumtypes
+                        """);
+    }
+
     public ForumType getForumTypeByName(String forumTypeName) {
         ForumType forumType;
         
@@ -1432,7 +1473,8 @@ public class ForumControl
         var ps = ForumTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM forumtypes " +
-                "ORDER BY frmtyp_sortorder, frmtyp_forumtypename");
+                "ORDER BY frmtyp_sortorder, frmtyp_forumtypename " +
+                "_LIMIT_");
         
         return ForumTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
