@@ -22,20 +22,22 @@ import com.echothree.model.control.batch.server.control.BatchControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.model.data.batch.server.entity.BatchType;
+import com.echothree.model.data.batch.server.factory.BatchTypeFactory;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetBatchTypesCommand
-        extends BaseSimpleCommand<GetBatchTypesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<BatchType, GetBatchTypesForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -45,25 +47,47 @@ public class GetBatchTypesCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.BatchType.name(), SecurityRoles.List.name())
-                        ))
-                ));
+                ))
+        ));
         
-        FORM_FIELD_DEFINITIONS = List.of(
-                );
+        FORM_FIELD_DEFINITIONS = List.of();
     }
     
+    @Inject
+    BatchControl batchControl;
+
     /** Creates a new instance of GetBatchTypesCommand */
     public GetBatchTypesCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override
-    protected BaseResult execute() {
-        var batchControl = Session.getModelController(BatchControl.class);
+    protected void handleForm() {
+        // No form fields to handle
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return batchControl.countBatchTypes();
+    }
+
+    @Override
+    protected Collection<BatchType> getEntities() {
+        return batchControl.getBatchTypes();
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<BatchType> entities) {
         var result = BatchResultFactory.getGetBatchTypesResult();
-        
-        result.setBatchTypes(batchControl.getBatchTypeTransfers(getUserVisit()));
-        
+
+        if(entities != null) {
+            if(session.hasLimit(BatchTypeFactory.class)) {
+                result.setBatchTypeCount(getTotalEntities());
+            }
+
+            result.setBatchTypes(batchControl.getBatchTypeTransfers(getUserVisit(), entities));
+        }
+
         return result;
     }
     

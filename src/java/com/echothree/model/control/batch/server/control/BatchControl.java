@@ -36,6 +36,7 @@ import com.echothree.model.control.batch.server.transfer.BatchTypeEntityTypeTran
 import com.echothree.model.control.batch.server.transfer.BatchTypeTransferCache;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.data.batch.common.pk.BatchPK;
+import com.echothree.model.data.batch.common.pk.BatchTypePK;
 import com.echothree.model.data.batch.server.entity.Batch;
 import com.echothree.model.data.batch.server.entity.BatchAlias;
 import com.echothree.model.data.batch.server.entity.BatchAliasType;
@@ -69,6 +70,7 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
@@ -81,7 +83,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
@@ -155,7 +156,30 @@ public class BatchControl
         
         return batchType;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.BatchType */
+    public BatchType getBatchTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new BatchTypePK(entityInstance.getEntityUniqueId());
+
+        return BatchTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public BatchType getBatchTypeByEntityInstance(EntityInstance entityInstance) {
+        return getBatchTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public BatchType getBatchTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getBatchTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countBatchTypes() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM batchtypes
+                        JOIN batchtypedetails ON btchtypdt_batchtypedetailid = btchtyp_activedetailid
+                        """);
+    }
+
     private static final Map<EntityPermission, String> getBatchTypeByNameQueries;
 
     static {
@@ -298,15 +322,18 @@ public class BatchControl
         return batchTypeTransferCache.getTransfer(userVisit, batchType);
     }
     
-    public List<BatchTypeTransfer> getBatchTypeTransfers(UserVisit userVisit) {
-        var batchTypes = getBatchTypes();
+    public List<BatchTypeTransfer> getBatchTypeTransfers(UserVisit userVisit, Collection<BatchType> batchTypes) {
         List<BatchTypeTransfer> batchTypeTransfers = new ArrayList<>(batchTypes.size());
-        
+
         batchTypes.forEach((batchType) ->
                 batchTypeTransfers.add(batchTypeTransferCache.getTransfer(userVisit, batchType))
         );
-        
+
         return batchTypeTransfers;
+    }
+
+    public List<BatchTypeTransfer> getBatchTypeTransfers(UserVisit userVisit) {
+        return getBatchTypeTransfers(userVisit, getBatchTypes());
     }
     
     public BatchTypeChoicesBean getBatchTypeChoices(String defaultBatchTypeChoice,
