@@ -23,6 +23,9 @@ import java.util.List;
 public interface GetContactListGroupsResult
         extends BaseResult {
     
+    Long getContactListGroupCount();
+    void setContactListGroupCount(Long contactListGroupCount);
+
     List<ContactListGroupTransfer> getContactListGroups();
     void setContactListGroups(List<ContactListGroupTransfer> contactListGroups);
     

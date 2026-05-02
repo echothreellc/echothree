@@ -68,7 +68,7 @@ public class GetContactListFrequenciesCommand
 
     @Override
     protected Long getTotalEntities() {
-        return contactListControl.countContactListFrequencys();
+        return contactListControl.countContactListFrequencies();
     }
 
     @Override

@@ -55,9 +55,13 @@ import com.echothree.model.control.contactlist.server.transfer.PartyTypeContactL
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.letter.server.control.LetterControl;
+import com.echothree.model.data.campaign.common.pk.CampaignPK;
+import com.echothree.model.data.campaign.server.entity.Campaign;
+import com.echothree.model.data.campaign.server.factory.CampaignFactory;
 import com.echothree.model.data.chain.server.entity.Chain;
 import com.echothree.model.data.contact.server.entity.ContactMechanismPurpose;
 import com.echothree.model.data.contactlist.common.pk.ContactListFrequencyPK;
+import com.echothree.model.data.contactlist.common.pk.ContactListGroupPK;
 import com.echothree.model.data.contactlist.common.pk.ContactListPK;
 import com.echothree.model.data.contactlist.server.entity.ContactList;
 import com.echothree.model.data.contactlist.server.entity.ContactListContactMechanismPurpose;
@@ -746,6 +750,29 @@ public class ContactListControl
         return contactListGroup;
     }
 
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ContactListGroup */
+    public ContactListGroup getContactListGroupByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ContactListGroupPK(entityInstance.getEntityUniqueId());
+
+        return ContactListGroupFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public ContactListGroup getContactListGroupByEntityInstance(EntityInstance entityInstance) {
+        return getContactListGroupByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ContactListGroup getContactListGroupByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getContactListGroupByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countContactListGroups() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM contactlistgroups
+                        JOIN contactlistgroupdetails ON clstgrpdt_contactlistgroupdetailid = clstgrp_activedetailid
+                        """);
+    }
+
     private static final Map<EntityPermission, String> getContactListGroupByNameQueries;
 
     static {
@@ -826,7 +853,8 @@ public class ContactListControl
                 "SELECT _ALL_ "
                 + "FROM contactlistgroups, contactlistgroupdetails "
                 + "WHERE clstgrp_activedetailid = clstgrpdt_contactlistgroupdetailid "
-                + "ORDER BY clstgrpdt_sortorder, clstgrpdt_contactlistgroupname");
+                + "ORDER BY clstgrpdt_sortorder, clstgrpdt_contactlistgroupname " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM contactlistgroups, contactlistgroupdetails "
@@ -885,8 +913,7 @@ public class ContactListControl
         return contactListGroupTransferCache.getContactListGroupTransfer(userVisit, contactListGroup);
     }
 
-    public List<ContactListGroupTransfer> getContactListGroupTransfers(UserVisit userVisit) {
-        var contactListGroups = getContactListGroups();
+    public List<ContactListGroupTransfer> getContactListGroupTransfers(UserVisit userVisit, Collection<ContactListGroup> contactListGroups) {
         List<ContactListGroupTransfer> contactListGroupTransfers = new ArrayList<>(contactListGroups.size());
 
         contactListGroups.forEach((contactListGroup) ->
@@ -894,6 +921,10 @@ public class ContactListControl
         );
 
         return contactListGroupTransfers;
+    }
+
+    public List<ContactListGroupTransfer> getContactListGroupTransfers(UserVisit userVisit) {
+        return getContactListGroupTransfers(userVisit, getContactListGroups());
     }
 
     private void updateContactListGroupFromValue(ContactListGroupDetailValue contactListGroupDetailValue, boolean checkDefault, BasePK updatedBy) {
@@ -1168,7 +1199,7 @@ public class ContactListControl
         return getContactListFrequencyByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
 
-    public long countContactListFrequencys() {
+    public long countContactListFrequencies() {
         return session.queryForLong("""
                         SELECT COUNT(*)
                         FROM contactlistfrequencies
@@ -1688,7 +1719,8 @@ public class ContactListControl
                 "SELECT _ALL_ "
                 + "FROM contactlists, contactlistdetails "
                 + "WHERE clst_activedetailid = clstdt_contactlistdetailid "
-                + "ORDER BY clstdt_sortorder, clstdt_contactlistname");
+                + "ORDER BY clstdt_sortorder, clstdt_contactlistname " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM contactlists, contactlistdetails "

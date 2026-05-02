@@ -25,6 +25,7 @@ import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class ContactListGroupLogic
@@ -38,8 +39,10 @@ public class ContactListGroupLogic
         return CDI.current().select(ContactListGroupLogic.class).get();
     }
     
+    @Inject
+    ContactListControl contactListControl;
+
     public ContactListGroup getContactListGroupByName(final ExecutionErrorAccumulator eea, final String contactListGroupName) {
-        var contactListControl = Session.getModelController(ContactListControl.class);
         var contactListGroup = contactListControl.getContactListGroupByName(contactListGroupName);
 
         if(contactListGroup == null) {
