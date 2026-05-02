@@ -31,8 +31,10 @@ import com.echothree.model.control.shipment.common.transfer.ShipmentTypeDescript
 import com.echothree.model.control.shipment.common.transfer.ShipmentTypeShippingMethodTransfer;
 import com.echothree.model.control.shipment.common.transfer.ShipmentTypeTransfer;
 import com.echothree.model.data.contact.server.entity.PartyContactMechanism;
+import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.sequence.server.entity.SequenceType;
+import com.echothree.model.data.shipment.common.pk.ShipmentTypePK;
 import com.echothree.model.data.shipment.server.entity.Shipment;
 import com.echothree.model.data.shipment.server.entity.ShipmentAlias;
 import com.echothree.model.data.shipment.server.entity.ShipmentAliasType;
@@ -70,6 +72,7 @@ import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.sql.SQLException;
@@ -82,7 +85,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import com.echothree.util.server.cdi.CommandScope;
 
 @CommandScope
 public class ShipmentControl
@@ -127,6 +129,29 @@ public class ShipmentControl
         sendEvent(shipmentType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return shipmentType;
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ShipmentType */
+    public ShipmentType getShipmentTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ShipmentTypePK(entityInstance.getEntityUniqueId());
+
+        return ShipmentTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public ShipmentType getShipmentTypeByEntityInstance(EntityInstance entityInstance) {
+        return getShipmentTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ShipmentType getShipmentTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getShipmentTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countShipmentTypes() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM shipmenttypes
+                        JOIN shipmenttypedetails ON shptypdt_shipmenttypedetailid = shptyp_activedetailid
+                        """);
     }
 
     private static final Map<EntityPermission, String> getShipmentTypeByNameQueries;
@@ -271,8 +296,7 @@ public class ShipmentControl
         return shipmentTypeTransferCache.getTransfer(userVisit, shipmentType);
     }
 
-    public List<ShipmentTypeTransfer> getShipmentTypeTransfers(UserVisit userVisit) {
-        var shipmentTypes = getShipmentTypes();
+    public List<ShipmentTypeTransfer> getShipmentTypeTransfers(UserVisit userVisit, Collection<ShipmentType> shipmentTypes) {
         List<ShipmentTypeTransfer> shipmentTypeTransfers = new ArrayList<>(shipmentTypes.size());
 
         shipmentTypes.forEach((shipmentType) ->
@@ -280,6 +304,10 @@ public class ShipmentControl
         );
 
         return shipmentTypeTransfers;
+    }
+
+    public List<ShipmentTypeTransfer> getShipmentTypeTransfers(UserVisit userVisit) {
+        return getShipmentTypeTransfers(userVisit, getShipmentTypes());
     }
 
     public ShipmentTypeChoicesBean getShipmentTypeChoices(String defaultShipmentTypeChoice,
