@@ -23,6 +23,9 @@ import java.util.List;
 public interface GetCampaignSourcesResult
         extends BaseResult {
     
+    Long getCampaignSourceCount();
+    void setCampaignSourceCount(Long campaignSourceCount);
+
     List<CampaignSourceTransfer> getCampaignSources();
     void setCampaignSources(List<CampaignSourceTransfer> campaignSources);
     
