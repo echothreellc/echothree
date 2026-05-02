@@ -23,6 +23,9 @@ import java.util.List;
 public interface GetContactMechanismTypesResult
         extends BaseResult {
     
+    Long getContactMechanismTypeCount();
+    void setContactMechanismTypeCount(Long contactMechanismTypeCount);
+
     List<ContactMechanismTypeTransfer> getContactMechanismTypes();
     void setContactMechanismTypes(List<ContactMechanismTypeTransfer> contactMechanismTypes);
     
