@@ -43,8 +43,10 @@ import com.echothree.model.control.document.server.transfer.PartyTypeDocumentTyp
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
+import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.core.server.entity.MimeTypeUsageType;
+import com.echothree.model.data.document.common.pk.DocumentTypePK;
 import com.echothree.model.data.document.server.entity.Document;
 import com.echothree.model.data.document.server.entity.DocumentBlob;
 import com.echothree.model.data.document.server.entity.DocumentClob;
@@ -88,6 +90,7 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.common.persistence.type.ByteArray;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
@@ -101,7 +104,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
@@ -177,7 +179,30 @@ public class DocumentControl
         
         return documentType;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.DocumentType */
+    public DocumentType getDocumentTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new DocumentTypePK(entityInstance.getEntityUniqueId());
+
+        return DocumentTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public DocumentType getDocumentTypeByEntityInstance(EntityInstance entityInstance) {
+        return getDocumentTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public DocumentType getDocumentTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getDocumentTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countDocumentTypes() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM documenttypes
+                        JOIN documenttypedetails ON dcmnttypdt_documenttypedetailid = dcmnttyp_activedetailid
+                        """);
+    }
+
     private static final Map<EntityPermission, String> getDocumentTypeByNameQueries;
 
     static {
@@ -320,8 +345,7 @@ public class DocumentControl
         return documentTypeTransferCache.getDocumentTypeTransfer(userVisit, documentType);
     }
     
-    public List<DocumentTypeTransfer> getDocumentTypeTransfers(UserVisit userVisit) {
-        var documentTypes = getDocumentTypes();
+    public List<DocumentTypeTransfer> getDocumentTypeTransfers(UserVisit userVisit, Collection<DocumentType> documentTypes) {
         List<DocumentTypeTransfer> documentTypeTransfers = new ArrayList<>(documentTypes.size());
         
         documentTypes.forEach((documentType) ->
@@ -329,6 +353,10 @@ public class DocumentControl
         );
         
         return documentTypeTransfers;
+    }
+    
+    public List<DocumentTypeTransfer> getDocumentTypeTransfers(UserVisit userVisit) {
+        return getDocumentTypeTransfers(userVisit, getDocumentTypes());
     }
     
     public DocumentTypeChoicesBean getDocumentTypeChoices(String defaultDocumentTypeChoice, Language language, boolean allowNullChoice) {
