@@ -23,6 +23,9 @@ import java.util.List;
 public interface GetContactListsResult
         extends BaseResult {
     
+    Long getContactListCount();
+    void setContactListCount(Long contactListCount);
+
     List<ContactListTransfer> getContactLists();
     void setContactLists(List<ContactListTransfer> contactLists);
     
