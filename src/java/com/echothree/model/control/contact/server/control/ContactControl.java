@@ -87,6 +87,7 @@ import com.echothree.model.data.contact.common.pk.ContactMechanismAliasTypePK;
 import com.echothree.model.data.contact.common.pk.ContactMechanismPK;
 import com.echothree.model.data.contact.common.pk.ContactMechanismPurposePK;
 import com.echothree.model.data.contact.common.pk.ContactMechanismTypePK;
+import com.echothree.model.data.contact.common.pk.PostalAddressFormatPK;
 import com.echothree.model.data.contact.server.entity.ContactEmailAddress;
 import com.echothree.model.data.contact.server.entity.ContactInet4Address;
 import com.echothree.model.data.contact.server.entity.ContactInet6Address;
@@ -3731,7 +3732,30 @@ public class ContactControl
         
         return postalAddressFormat;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.PostalAddressFormat */
+    public PostalAddressFormat getPostalAddressFormatByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new PostalAddressFormatPK(entityInstance.getEntityUniqueId());
+
+        return PostalAddressFormatFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public PostalAddressFormat getPostalAddressFormatByEntityInstance(EntityInstance entityInstance) {
+        return getPostalAddressFormatByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public PostalAddressFormat getPostalAddressFormatByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getPostalAddressFormatByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countPostalAddressFormats() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM postaladdressformats
+                        JOIN postaladdressformatdetails ON pstafmtdt_postaladdressformatdetailid = pstafmt_activedetailid
+                        """);
+    }
+
     private List<PostalAddressFormat> getPostalAddressFormats(EntityPermission entityPermission) {
         String query = null;
         
@@ -3739,7 +3763,8 @@ public class ContactControl
             query = "SELECT _ALL_ " +
                     "FROM postaladdressformats, postaladdressformatdetails " +
                     "WHERE pstafmt_activedetailid = pstafmtdt_postaladdressformatdetailid " +
-                    "ORDER BY pstafmtdt_sortorder, pstafmtdt_postaladdressformatname";
+                    "ORDER BY pstafmtdt_sortorder, pstafmtdt_postaladdressformatname " +
+                    "_LIMIT_";
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
             query = "SELECT _ALL_ " +
                     "FROM postaladdressformats, postaladdressformatdetails " +
@@ -3874,15 +3899,18 @@ public class ContactControl
         return postalAddressFormatTransferCache.getPostalAddressFormatTransfer(userVisit, postalAddressFormat);
     }
     
-    public List<PostalAddressFormatTransfer> getPostalAddressFormatTransfers(UserVisit userVisit) {
-        var postalAddressFormats = getPostalAddressFormats();
+    public List<PostalAddressFormatTransfer> getPostalAddressFormatTransfers(UserVisit userVisit, Collection<PostalAddressFormat> postalAddressFormats) {
         List<PostalAddressFormatTransfer> postalAddressFormatTransfers = new ArrayList<>(postalAddressFormats.size());
-        
+
         postalAddressFormats.forEach((postalAddressFormat) ->
                 postalAddressFormatTransfers.add(postalAddressFormatTransferCache.getPostalAddressFormatTransfer(userVisit, postalAddressFormat))
         );
-        
+
         return postalAddressFormatTransfers;
+    }
+
+    public List<PostalAddressFormatTransfer> getPostalAddressFormatTransfers(UserVisit userVisit) {
+        return getPostalAddressFormatTransfers(userVisit, getPostalAddressFormats());
     }
     
     private void updatePostalAddressFormatFromValue(PostalAddressFormatDetailValue postalAddressFormatDetailValue, boolean checkDefault,
