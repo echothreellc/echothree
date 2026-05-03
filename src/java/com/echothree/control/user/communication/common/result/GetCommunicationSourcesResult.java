@@ -17,12 +17,19 @@
 package com.echothree.control.user.communication.common.result;
 
 import com.echothree.model.control.communication.common.transfer.CommunicationSourceTransfer;
+import com.echothree.model.control.communication.common.transfer.CommunicationSourceTypeTransfer;
 import com.echothree.util.common.command.BaseResult;
 import java.util.List;
 
 public interface GetCommunicationSourcesResult
         extends BaseResult {
-    
+
+    CommunicationSourceTypeTransfer getCommunicationSourceType();
+    void setCommunicationSourceType(CommunicationSourceTypeTransfer communicationSourceType);
+
+    Long getCommunicationSourceCount();
+    void setCommunicationSourceCount(Long communicationSourceCount);
+
     List<CommunicationSourceTransfer> getCommunicationSources();
     void setCommunicationSources(List<CommunicationSourceTransfer> communicationSources);
     

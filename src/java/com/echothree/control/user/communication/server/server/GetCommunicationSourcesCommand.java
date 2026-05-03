@@ -19,58 +19,86 @@ package com.echothree.control.user.communication.server.server;
 import com.echothree.control.user.communication.common.form.GetCommunicationSourcesForm;
 import com.echothree.control.user.communication.common.result.CommunicationResultFactory;
 import com.echothree.model.control.communication.server.control.CommunicationControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.communication.server.entity.CommunicationSource;
+import com.echothree.model.data.communication.server.entity.CommunicationSourceType;
+import com.echothree.model.data.communication.server.factory.CommunicationSourceFactory;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetCommunicationSourcesCommand
-        extends BaseSimpleCommand<GetCommunicationSourcesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<CommunicationSource, GetCommunicationSourcesForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("CommunicationSourceTypeName", FieldType.ENTITY_NAME, false, null, null)
+                new FieldDefinition("CommunicationSourceTypeName", FieldType.ENTITY_NAME, false, null, null)
         );
     }
     
+    @Inject
+    CommunicationControl communicationControl;
+
     /** Creates a new instance of GetCommunicationSourcesCommand */
     public GetCommunicationSourcesCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
+    CommunicationSourceType communicationSourceType;
+
     @Override
-    protected BaseResult execute() {
-        var result = CommunicationResultFactory.getGetCommunicationSourcesResult();
+    protected void handleForm() {
         var communicationSourceTypeName = form.getCommunicationSourceTypeName();
-        var parameterCount = (communicationSourceTypeName == null ? 0 : 1);
-        
-        if(parameterCount < 2) {
-            var communicationControl = Session.getModelController(CommunicationControl.class);
-            
-            if(communicationSourceTypeName != null) {
-                var communicationSourceType = communicationControl.getCommunicationSourceTypeByName(communicationSourceTypeName);
-                
-                if(communicationSourceType != null) {
-                    result.setCommunicationSources(communicationControl.getCommunicationSourceTransfersByCommunicationSourceType(getUserVisit(),
-                            communicationSourceType));
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownCommunicationSourceTypeName.name(), communicationSourceTypeName);
-                }
-            } else {
-                result.setCommunicationSources(communicationControl.getCommunicationSourceTransfers(getUserVisit()));
+
+        if(communicationSourceTypeName != null) {
+            communicationSourceType = communicationControl.getCommunicationSourceTypeByName(communicationSourceTypeName);
+
+            if(communicationSourceType == null) {
+                addExecutionError(ExecutionErrors.UnknownCommunicationSourceTypeName.name(), communicationSourceTypeName);
             }
-        } else {
-            addExecutionError(ExecutionErrors.InvalidParameterCount.name());
         }
-        
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return hasExecutionErrors() ? null :
+                communicationSourceType == null ? communicationControl.countCommunicationSources() :
+                communicationControl.countCommunicationSourcesByCommunicationSourceType(communicationSourceType);
+    }
+
+    @Override
+    protected Collection<CommunicationSource> getEntities() {
+        return hasExecutionErrors() ? null :
+                communicationSourceType == null ? communicationControl.getCommunicationSources() :
+                communicationControl.getCommunicationSourcesByCommunicationSourceType(communicationSourceType);
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<CommunicationSource> entities) {
+        var result = CommunicationResultFactory.getGetCommunicationSourcesResult();
+
+        if(entities != null) {
+            var userVisit = getUserVisit();
+
+            if(communicationSourceType != null) {
+                result.setCommunicationSourceType(communicationControl.getCommunicationSourceTypeTransfer(userVisit, communicationSourceType));
+            }
+
+            if(session.hasLimit(CommunicationSourceFactory.class)) {
+                result.setCommunicationSourceCount(getTotalEntities());
+            }
+
+            result.setCommunicationSources(communicationControl.getCommunicationSourceTransfers(userVisit, entities));
+        }
+
         return result;
     }
     
