@@ -19,38 +19,62 @@ package com.echothree.control.user.workeffort.server.command;
 import com.echothree.control.user.workeffort.common.form.GetWorkEffortTypesForm;
 import com.echothree.control.user.workeffort.common.result.WorkEffortResultFactory;
 import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.model.data.workeffort.server.entity.WorkEffortType;
+import com.echothree.model.data.workeffort.server.factory.WorkEffortTypeFactory;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetWorkEffortTypesCommand
-        extends BaseSimpleCommand<GetWorkEffortTypesForm> {
-    
+        extends BasePaginatedMultipleEntitiesCommand<WorkEffortType, GetWorkEffortTypesForm> {
+
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {
-        FORM_FIELD_DEFINITIONS = List.of(
-                );
+        FORM_FIELD_DEFINITIONS = List.of();
     }
-    
+
+    @Inject
+    WorkEffortControl workEffortControl;
+
     /** Creates a new instance of GetWorkEffortTypesCommand */
     public GetWorkEffortTypesCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
+    protected void handleForm() {
+        // No form fields.
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return workEffortControl.countWorkEffortTypes();
+    }
+
+    @Override
+    protected Collection<WorkEffortType> getEntities() {
+        return workEffortControl.getWorkEffortTypes();
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<WorkEffortType> entities) {
         var result = WorkEffortResultFactory.getGetWorkEffortTypesResult();
-        var workEffortControl = Session.getModelController(WorkEffortControl.class);
-        
-        result.setWorkEffortTypes(workEffortControl.getWorkEffortTypeTransfers(getUserVisit()));
-        
+
+        if(entities != null) {
+            if(session.hasLimit(WorkEffortTypeFactory.class)) {
+                result.setWorkEffortTypeCount(getTotalEntities());
+            }
+
+            result.setWorkEffortTypes(workEffortControl.getWorkEffortTypeTransfers(getUserVisit(), entities));
+        }
+
         return result;
     }
-    
+
 }

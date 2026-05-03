@@ -22,8 +22,11 @@ import java.util.List;
 
 public interface GetWorkEffortTypesResult
         extends BaseResult {
-    
+
+    Long getWorkEffortTypeCount();
+    void setWorkEffortTypeCount(Long workEffortTypeCount);
+
     List<WorkEffortTypeTransfer> getWorkEffortTypes();
     void setWorkEffortTypes(List<WorkEffortTypeTransfer> workEffortTypes);
-    
+
 }

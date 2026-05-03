@@ -34,6 +34,7 @@ import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.model.data.workeffort.common.pk.WorkEffortTypePK;
 import com.echothree.model.data.workeffort.server.entity.WorkEffort;
 import com.echothree.model.data.workeffort.server.entity.WorkEffortScope;
 import com.echothree.model.data.workeffort.server.entity.WorkEffortScopeDescription;
@@ -54,6 +55,7 @@ import com.echothree.model.data.workeffort.server.value.WorkEffortTypeDescriptio
 import com.echothree.model.data.workeffort.server.value.WorkEffortTypeDetailValue;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
@@ -62,7 +64,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
@@ -113,7 +114,30 @@ public class WorkEffortControl
         
         return workEffortType;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.WorkEffortType */
+    public WorkEffortType getWorkEffortTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new WorkEffortTypePK(entityInstance.getEntityUniqueId());
+
+        return WorkEffortTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public WorkEffortType getWorkEffortTypeByEntityInstance(EntityInstance entityInstance) {
+        return getWorkEffortTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public WorkEffortType getWorkEffortTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getWorkEffortTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countWorkEffortTypes() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM workefforttypes
+                        JOIN workefforttypedetails ON wetdt_workefforttypedetailid = wet_activedetailid
+                        """);
+    }
+
     private List<WorkEffortType> getWorkEffortTypes(EntityPermission entityPermission) {
         String query = null;
         
@@ -121,7 +145,8 @@ public class WorkEffortControl
             query = "SELECT _ALL_ " +
                     "FROM workefforttypes, workefforttypedetails " +
                     "WHERE wet_activedetailid = wetdt_workefforttypedetailid " +
-                    "ORDER BY wetdt_sortorder, wetdt_workefforttypename";
+                    "ORDER BY wetdt_sortorder, wetdt_workefforttypename " +
+                    "_LIMIT_";
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
             query = "SELECT _ALL_ " +
                     "FROM workefforttypes, workeffortscopedetails " +
@@ -193,15 +218,18 @@ public class WorkEffortControl
         return workEffortTypeTransferCache.getWorkEffortTypeTransfer(userVisit, workEffortType);
     }
     
-    public List<WorkEffortTypeTransfer> getWorkEffortTypeTransfers(UserVisit userVisit) {
-        var workEffortTypes = getWorkEffortTypes();
+    public List<WorkEffortTypeTransfer> getWorkEffortTypeTransfers(UserVisit userVisit, Collection<WorkEffortType> workEffortTypes) {
         List<WorkEffortTypeTransfer> workEffortTypeTransfers = new ArrayList<>(workEffortTypes.size());
-        
+
         workEffortTypes.forEach((workEffortType) ->
                 workEffortTypeTransfers.add(workEffortTypeTransferCache.getWorkEffortTypeTransfer(userVisit, workEffortType))
         );
-        
+
         return workEffortTypeTransfers;
+    }
+
+    public List<WorkEffortTypeTransfer> getWorkEffortTypeTransfers(UserVisit userVisit) {
+        return getWorkEffortTypeTransfers(userVisit, getWorkEffortTypes());
     }
     
     public void updateWorkEffortTypeFromValue(WorkEffortTypeDetailValue workEffortTypeDetailValue, BasePK updatedBy) {
