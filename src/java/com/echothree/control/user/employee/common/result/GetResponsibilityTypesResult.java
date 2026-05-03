@@ -22,8 +22,11 @@ import java.util.List;
 
 public interface GetResponsibilityTypesResult
         extends BaseResult {
-    
+
+    Long getResponsibilityTypeCount();
+    void setResponsibilityTypeCount(Long responsibilityTypeCount);
+
     List<ResponsibilityTypeTransfer> getResponsibilityTypes();
     void setResponsibilityTypes(List<ResponsibilityTypeTransfer> responsibilityTypes);
-    
+
 }
