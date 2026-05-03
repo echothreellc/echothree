@@ -84,6 +84,7 @@ import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.icon.server.entity.Icon;
+import com.echothree.model.data.party.common.pk.BirthdayFormatPK;
 import com.echothree.model.data.party.common.pk.DateTimeFormatDetailPK;
 import com.echothree.model.data.party.common.pk.DateTimeFormatPK;
 import com.echothree.model.data.party.common.pk.GenderPK;
@@ -6082,6 +6083,29 @@ public class PartyControl
         sendEvent(birthdayFormat.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return birthdayFormat;
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.BirthdayFormat */
+    public BirthdayFormat getBirthdayFormatByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new BirthdayFormatPK(entityInstance.getEntityUniqueId());
+
+        return BirthdayFormatFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public BirthdayFormat getBirthdayFormatByEntityInstance(EntityInstance entityInstance) {
+        return getBirthdayFormatByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public BirthdayFormat getBirthdayFormatByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getBirthdayFormatByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countBirthdayFormats() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM birthdayformats
+                        JOIN birthdayformatdetails ON bdyfdt_birthdayformatdetailid = bdyf_activedetailid
+                        """);
     }
 
     private List<BirthdayFormat> getBirthdayFormats(EntityPermission entityPermission) {
