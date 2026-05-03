@@ -28,6 +28,10 @@ import com.echothree.model.control.core.common.transfer.ServerTransfer;
 import com.echothree.model.control.core.common.transfer.ServiceDescriptionTransfer;
 import com.echothree.model.control.core.common.transfer.ServiceTransfer;
 import com.echothree.model.control.scale.server.control.ScaleControl;
+import com.echothree.model.data.core.common.pk.ProtocolPK;
+import com.echothree.model.data.core.common.pk.ServerPK;
+import com.echothree.model.data.core.common.pk.ServicePK;
+import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.Protocol;
 import com.echothree.model.data.core.server.entity.ProtocolDescription;
 import com.echothree.model.data.core.server.entity.Server;
@@ -55,15 +59,16 @@ import com.echothree.model.data.core.server.value.ServiceDetailValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import com.echothree.util.server.cdi.CommandScope;
 
 @CommandScope
 public class ServerControl
@@ -105,6 +110,29 @@ public class ServerControl
         sendEvent(protocol.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return protocol;
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Protocol */
+    public Protocol getProtocolByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ProtocolPK(entityInstance.getEntityUniqueId());
+
+        return ProtocolFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public Protocol getProtocolByEntityInstance(EntityInstance entityInstance) {
+        return getProtocolByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public Protocol getProtocolByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getProtocolByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countProtocols() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM protocols
+                        JOIN protocoldetails ON protdt_protocoldetailid = prot_activedetailid
+                        """);
     }
 
     private static final Map<EntityPermission, String> getProtocolByNameQueries;
@@ -216,8 +244,7 @@ public class ServerControl
         return protocolTransferCache.getProtocolTransfer(userVisit, protocol);
     }
 
-    public List<ProtocolTransfer> getProtocolTransfers(UserVisit userVisit) {
-        var protocols = getProtocols();
+    public List<ProtocolTransfer> getProtocolTransfers(UserVisit userVisit, Collection<Protocol> protocols) {
         List<ProtocolTransfer> protocolTransfers = new ArrayList<>(protocols.size());
 
         protocols.forEach((protocol) ->
@@ -225,6 +252,10 @@ public class ServerControl
         );
 
         return protocolTransfers;
+    }
+
+    public List<ProtocolTransfer> getProtocolTransfers(UserVisit userVisit) {
+        return getProtocolTransfers(userVisit, getProtocols());
     }
 
     public ProtocolChoicesBean getProtocolChoices(String defaultProtocolChoice, Language language, boolean allowNullChoice) {
@@ -410,7 +441,8 @@ public class ServerControl
                 "SELECT _ALL_ " +
                         "FROM protocoldescriptions, languages " +
                         "WHERE protd_prot_protocolid = ? AND protd_thrutime = ? AND protd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname");
+                        "ORDER BY lang_sortorder, lang_languageisoname " +
+                        "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
                         "FROM protocoldescriptions " +
@@ -531,6 +563,29 @@ public class ServerControl
         return service;
     }
 
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Service */
+    public Service getServiceByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ServicePK(entityInstance.getEntityUniqueId());
+
+        return ServiceFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public Service getServiceByEntityInstance(EntityInstance entityInstance) {
+        return getServiceByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public Service getServiceByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getServiceByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countServices() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM services
+                        JOIN servicedetails ON srvdt_servicedetailid = srv_activedetailid
+                        """);
+    }
+
     private static final Map<EntityPermission, String> getServiceByNameQueries;
 
     static {
@@ -646,7 +701,8 @@ public class ServerControl
                         "FROM services, servicedetails " +
                         "WHERE srv_activedetailid = srvdt_servicedetailid " +
                         "AND srvdt_prot_protocolid = ? " +
-                        "ORDER BY srvdt_sortorder, srvdt_servicename");
+                        "ORDER BY srvdt_sortorder, srvdt_servicename " +
+                        "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
                         "FROM services, servicedetails " +
@@ -873,7 +929,8 @@ public class ServerControl
                 "SELECT _ALL_ " +
                         "FROM servicedescriptions, languages " +
                         "WHERE srvd_srv_serviceid = ? AND srvd_thrutime = ? AND srvd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname");
+                        "ORDER BY lang_sortorder, lang_languageisoname " +
+                        "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
                         "FROM servicedescriptions " +
@@ -991,6 +1048,29 @@ public class ServerControl
         sendEvent(server.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return server;
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Server */
+    public Server getServerByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ServerPK(entityInstance.getEntityUniqueId());
+
+        return ServerFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public Server getServerByEntityInstance(EntityInstance entityInstance) {
+        return getServerByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public Server getServerByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getServerByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countServers() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM servers
+                        JOIN serverdetails ON servdt_serverdetailid = serv_activedetailid
+                        """);
     }
 
     private static final Map<EntityPermission, String> getServerByNameQueries;
@@ -1296,7 +1376,8 @@ public class ServerControl
                 "SELECT _ALL_ " +
                         "FROM serverdescriptions, languages " +
                         "WHERE servd_serv_serverid = ? AND servd_thrutime = ? AND servd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname");
+                        "ORDER BY lang_sortorder, lang_languageisoname " +
+                        "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
                         "FROM serverdescriptions " +
@@ -1444,7 +1525,8 @@ public class ServerControl
                         "FROM serverservices, services, servicedetails " +
                         "WHERE servsrv_serv_serverid = ? AND servsrv_thrutime = ? " +
                         "AND servsrv_srv_serviceid = srv_serviceid AND srv_lastdetailid = srvdt_servicedetailid " +
-                        "ORDER BY srvdt_sortorder, srvdt_servicename");
+                        "ORDER BY srvdt_sortorder, srvdt_servicename " +
+                        "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
                         "FROM serverservices " +
@@ -1476,7 +1558,8 @@ public class ServerControl
                         "FROM serverservices, services, servicedetails " +
                         "WHERE servsrv_srv_serviceid = ? AND servsrv_thrutime = ? " +
                         "AND servsrv_serv_serverid = serv_serverid AND serv_lastdetailid = servdt_serverdetailid " +
-                        "ORDER BY servdt_sortorder, servdt_servername");
+                        "ORDER BY servdt_sortorder, servdt_servername " +
+                        "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
                         "FROM serverservices " +

@@ -23,6 +23,9 @@ import java.util.List;
 public interface GetProtocolsResult
         extends BaseResult {
     
+    Long getProtocolCount();
+    void setProtocolCount(Long protocolCount);
+
     List<ProtocolTransfer> getProtocols();
     void setProtocols(List<ProtocolTransfer> protocols);
     
