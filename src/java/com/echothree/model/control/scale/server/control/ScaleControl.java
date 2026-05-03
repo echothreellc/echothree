@@ -34,9 +34,13 @@ import com.echothree.model.control.scale.server.transfer.ScaleTypeDescriptionTra
 import com.echothree.model.control.scale.server.transfer.ScaleTypeTransferCache;
 import com.echothree.model.control.scale.server.transfer.ScaleUseTypeDescriptionTransferCache;
 import com.echothree.model.control.scale.server.transfer.ScaleUseTypeTransferCache;
+import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.ServerService;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
+import com.echothree.model.data.scale.common.pk.ScalePK;
+import com.echothree.model.data.scale.common.pk.ScaleTypePK;
+import com.echothree.model.data.scale.common.pk.ScaleUseTypePK;
 import com.echothree.model.data.scale.server.entity.PartyScaleUse;
 import com.echothree.model.data.scale.server.entity.Scale;
 import com.echothree.model.data.scale.server.entity.ScaleDescription;
@@ -63,6 +67,7 @@ import com.echothree.model.data.scale.server.value.ScaleUseTypeDescriptionValue;
 import com.echothree.model.data.scale.server.value.ScaleUseTypeDetailValue;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
@@ -73,7 +78,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
@@ -141,6 +145,29 @@ public class ScaleControl
         sendEvent(scaleType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return scaleType;
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ScaleType */
+    public ScaleType getScaleTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ScaleTypePK(entityInstance.getEntityUniqueId());
+
+        return ScaleTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public ScaleType getScaleTypeByEntityInstance(EntityInstance entityInstance) {
+        return getScaleTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ScaleType getScaleTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getScaleTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countScaleTypes() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM scaletypes
+                        JOIN scaletypedetails ON scltypdt_scaletypedetailid = scltyp_activedetailid
+                        """);
     }
 
     private static final Map<EntityPermission, String> getScaleTypeByNameQueries;
@@ -527,7 +554,7 @@ public class ScaleControl
     }
 
     // --------------------------------------------------------------------------------
-    //   Scale Groups
+    //   Scales
     // --------------------------------------------------------------------------------
 
     public Scale createScale(String scaleName, ScaleType scaleType, ServerService serverService, Boolean isDefault, Integer sortOrder,
@@ -557,6 +584,29 @@ public class ScaleControl
         sendEvent(scale.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return scale;
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Scale */
+    public Scale getScaleByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ScalePK(entityInstance.getEntityUniqueId());
+
+        return ScaleFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public Scale getScaleByEntityInstance(EntityInstance entityInstance) {
+        return getScaleByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public Scale getScaleByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getScaleByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countScales() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM scales
+                        JOIN scaledetails ON scldt_scaledetailid = scl_activedetailid
+                        """);
     }
 
     private static final Map<EntityPermission, String> getScaleByNameQueries;
@@ -885,7 +935,7 @@ public class ScaleControl
     }
 
     // --------------------------------------------------------------------------------
-    //   Scale Group Descriptions
+    //   Scale Descriptions
     // --------------------------------------------------------------------------------
 
     public ScaleDescription createScaleDescription(Scale scale,
@@ -1037,7 +1087,7 @@ public class ScaleControl
     }
 
     // --------------------------------------------------------------------------------
-    //   Scale Group Use Types
+    //   Scale Use Types
     // --------------------------------------------------------------------------------
 
     public ScaleUseType createScaleUseType(String scaleUseTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
@@ -1067,6 +1117,29 @@ public class ScaleControl
         sendEvent(scaleUseType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return scaleUseType;
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ScaleUseType */
+    public ScaleUseType getScaleUseTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ScaleUseTypePK(entityInstance.getEntityUniqueId());
+
+        return ScaleUseTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public ScaleUseType getScaleUseTypeByEntityInstance(EntityInstance entityInstance) {
+        return getScaleUseTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ScaleUseType getScaleUseTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getScaleUseTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countScaleUseTypes() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM scaleusetypes
+                        JOIN scaleusetypedetails ON sclusetypdt_scaleusetypedetailid = sclusetyp_activedetailid
+                        """);
     }
 
     private static final Map<EntityPermission, String> getScaleUseTypeByNameQueries;
@@ -1301,7 +1374,7 @@ public class ScaleControl
     }
 
     // --------------------------------------------------------------------------------
-    //   Scale Group Use Type Descriptions
+    //   Scale Use Type Descriptions
     // --------------------------------------------------------------------------------
 
     public ScaleUseTypeDescription createScaleUseTypeDescription(ScaleUseType scaleUseType,
@@ -1453,7 +1526,7 @@ public class ScaleControl
     }
 
     // --------------------------------------------------------------------------------
-    //   Party Scale Group Uses
+    //   Party Scale Uses
     // --------------------------------------------------------------------------------
     
     public PartyScaleUse createPartyScaleUse(Party party, ScaleUseType scaleUseType, Scale scale, BasePK createdBy) {

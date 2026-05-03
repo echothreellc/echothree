@@ -19,37 +19,61 @@ package com.echothree.control.user.scale.server.command;
 import com.echothree.control.user.scale.common.form.GetScaleTypesForm;
 import com.echothree.control.user.scale.common.result.ScaleResultFactory;
 import com.echothree.model.control.scale.server.control.ScaleControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.model.data.scale.server.entity.ScaleType;
+import com.echothree.model.data.scale.server.factory.ScaleTypeFactory;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetScaleTypesCommand
-        extends BaseSimpleCommand<GetScaleTypesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<ScaleType, GetScaleTypesForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {
-        FORM_FIELD_DEFINITIONS = List.of(
-                );
+        FORM_FIELD_DEFINITIONS = List.of();
     }
+
+    @Inject
+    ScaleControl scaleControl;
 
     /** Creates a new instance of GetScaleTypesCommand */
     public GetScaleTypesCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var scaleControl = Session.getModelController(ScaleControl.class);
+    protected void handleForm() {
+        // No form fields.
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return scaleControl.countScaleTypes();
+    }
+
+    @Override
+    protected Collection<ScaleType> getEntities() {
+        return scaleControl.getScaleTypes();
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<ScaleType> entities) {
         var result = ScaleResultFactory.getGetScaleTypesResult();
 
-        result.setScaleTypes(scaleControl.getScaleTypeTransfers(getUserVisit()));
-        
+        if(entities != null) {
+            if(session.hasLimit(ScaleTypeFactory.class)) {
+                result.setScaleTypeCount(getTotalEntities());
+            }
+
+            result.setScaleTypes(scaleControl.getScaleTypeTransfers(getUserVisit(), entities));
+        }
+
         return result;
     }
     
