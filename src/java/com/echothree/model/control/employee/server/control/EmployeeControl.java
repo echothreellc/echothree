@@ -834,7 +834,7 @@ public class EmployeeControl
     
     private List<SkillType> getSkillTypes(EntityPermission entityPermission) {
         String query = null;
-        
+
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
             query = "SELECT _ALL_ " +
                     "FROM skilltypes, skilltypedetails " +
@@ -849,7 +849,7 @@ public class EmployeeControl
         }
 
         var ps = SkillTypeFactory.getInstance().prepareStatement(query);
-        
+
         return SkillTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
     }
     
@@ -865,15 +865,18 @@ public class EmployeeControl
         return skillTypeTransferCache.getSkillTypeTransfer(userVisit, skillType);
     }
     
-    public List<SkillTypeTransfer> getSkillTypeTransfers(UserVisit userVisit) {
-        var skillTypes = getSkillTypes();
+    public List<SkillTypeTransfer> getSkillTypeTransfers(UserVisit userVisit, Collection<SkillType> skillTypes) {
         List<SkillTypeTransfer> skillTypeTransfers = new ArrayList<>(skillTypes.size());
-        
+
         skillTypes.forEach((skillType) ->
                 skillTypeTransfers.add(skillTypeTransferCache.getSkillTypeTransfer(userVisit, skillType))
         );
-        
+
         return skillTypeTransfers;
+    }
+
+    public List<SkillTypeTransfer> getSkillTypeTransfers(UserVisit userVisit) {
+        return getSkillTypeTransfers(userVisit, getSkillTypes());
     }
     
     public SkillTypeChoicesBean getSkillTypeChoices(String defaultSkillTypeChoice, Language language, boolean allowNullChoice) {

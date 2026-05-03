@@ -23,6 +23,9 @@ import java.util.List;
 public interface GetSkillTypesResult
         extends BaseResult {
     
+    Long getSkillTypeCount();
+    void setSkillTypeCount(Long skillTypeCount);
+
     List<SkillTypeTransfer> getSkillTypes();
     void setSkillTypes(List<SkillTypeTransfer> skillTypes);
     
