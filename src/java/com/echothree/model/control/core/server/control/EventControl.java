@@ -38,6 +38,7 @@ import com.echothree.model.control.queue.server.logic.QueuedEntityLogic;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
+import com.echothree.model.data.core.common.pk.EventGroupPK;
 import com.echothree.model.data.core.common.pk.EventTypePK;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityTime;
@@ -418,6 +419,29 @@ public class EventControl
         return eventGroup;
     }
 
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.EventGroup */
+    public EventGroup getEventGroupByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new EventGroupPK(entityInstance.getEntityUniqueId());
+
+        return EventGroupFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public EventGroup getEventGroupByEntityInstance(EntityInstance entityInstance) {
+        return getEventGroupByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public EventGroup getEventGroupByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getEventGroupByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countEventGroups() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM eventgroups
+                        JOIN eventgroupdetails ON evgrpdt_eventgroupdetailid = evgrp_activedetailid
+                        """);
+    }
+
     public EventGroupDetailValue getEventGroupDetailValueForUpdate(EventGroup eventGroup) {
         return eventGroup.getLastDetailForUpdate().getEventGroupDetailValue().clone();
     }
@@ -470,7 +494,8 @@ public class EventControl
             query = "SELECT _ALL_ " +
                     "FROM eventgroups, eventgroupdetails " +
                     "WHERE evgrp_activedetailid = evgrpdt_eventgroupdetailid " +
-                    "ORDER BY evgrpdt_eventgroupname";
+                    "ORDER BY evgrpdt_eventgroupname " +
+                    "_LIMIT_";
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
             query = "SELECT _ALL_ " +
                     "FROM eventgroups, eventgroupdetails " +

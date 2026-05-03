@@ -20,15 +20,14 @@ import com.echothree.control.user.core.common.form.GetEventGroupForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.server.control.EventControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetEventGroupCommand
@@ -38,9 +37,12 @@ public class GetEventGroupCommand
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("EventGroupName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("EventGroupName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
+
+    @Inject
+    EventControl eventControl;
     
     /** Creates a new instance of GetEventGroupCommand */
     public GetEventGroupCommand() {
@@ -49,7 +51,6 @@ public class GetEventGroupCommand
     
     @Override
     protected BaseResult execute() {
-        var eventControl = Session.getModelController(EventControl.class);
         var result = CoreResultFactory.getGetEventGroupResult();
         var eventGroupName = form.getEventGroupName();
         var eventGroup = eventControl.getEventGroupByName(eventGroupName);
