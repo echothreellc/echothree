@@ -22,6 +22,9 @@ import java.util.List;
 
 public interface GetEditorsResult
         extends BaseResult {
+
+    Long getEditorCount();
+    void setEditorCount(Long editorCount);
     
     List<EditorTransfer> getEditors();
     void setEditors(List<EditorTransfer> editors);
