@@ -23,6 +23,9 @@ import java.util.List;
 public interface GetServersResult
         extends BaseResult {
     
+    Long getServerCount();
+    void setServerCount(Long serverCount);
+
     List<ServerTransfer> getServers();
     void setServers(List<ServerTransfer> servers);
     
