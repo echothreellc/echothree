@@ -20,8 +20,10 @@ import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.common.choice.EditorChoicesBean;
 import com.echothree.model.control.core.common.transfer.EditorDescriptionTransfer;
 import com.echothree.model.control.core.common.transfer.EditorTransfer;
+import com.echothree.model.data.core.common.pk.EditorPK;
 import com.echothree.model.data.core.server.entity.Editor;
 import com.echothree.model.data.core.server.entity.EditorDescription;
+import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.factory.EditorDescriptionFactory;
 import com.echothree.model.data.core.server.factory.EditorDetailFactory;
 import com.echothree.model.data.core.server.factory.EditorFactory;
@@ -30,15 +32,16 @@ import com.echothree.model.data.core.server.value.EditorDetailValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
@@ -90,6 +93,29 @@ public class EditorControl
         sendEvent(editor.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return editor;
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Editor */
+    public Editor getEditorByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new EditorPK(entityInstance.getEntityUniqueId());
+
+        return EditorFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public Editor getEditorByEntityInstance(EntityInstance entityInstance) {
+        return getEditorByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public Editor getEditorByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getEditorByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countEditors() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM editors
+                        JOIN editordetails ON edtrdt_editordetailid = edtr_activedetailid
+                        """);
     }
 
     private static final Map<EntityPermission, String> getEditorByNameQueries;
@@ -201,8 +227,7 @@ public class EditorControl
         return editorTransferCache.getEditorTransfer(userVisit, editor);
     }
 
-    public List<EditorTransfer> getEditorTransfers(UserVisit userVisit) {
-        var editors = getEditors();
+    public List<EditorTransfer> getEditorTransfers(UserVisit userVisit, Collection<Editor> editors) {
         List<EditorTransfer> editorTransfers = new ArrayList<>(editors.size());
 
         editors.forEach((editor) ->
@@ -210,6 +235,10 @@ public class EditorControl
         );
 
         return editorTransfers;
+    }
+
+    public List<EditorTransfer> getEditorTransfers(UserVisit userVisit) {
+        return getEditorTransfers(userVisit, getEditors());
     }
 
     public EditorChoicesBean getEditorChoices(String defaultEditorChoice, Language language, boolean allowNullChoice) {
