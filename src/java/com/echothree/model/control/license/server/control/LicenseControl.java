@@ -34,16 +34,17 @@ import com.echothree.model.data.license.server.value.LicenseTypeDetailValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
@@ -98,11 +99,26 @@ public class LicenseControl
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.LicenseType */
-    public LicenseType getLicenseTypeByEntityInstance(EntityInstance entityInstance) {
+    public LicenseType getLicenseTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new LicenseTypePK(entityInstance.getEntityUniqueId());
-        var licenseType = LicenseTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
-        return licenseType;
+        return LicenseTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public LicenseType getLicenseTypeByEntityInstance(EntityInstance entityInstance) {
+        return getLicenseTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public LicenseType getLicenseTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getLicenseTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countLicenseTypes() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM licensetypes
+                        JOIN licensetypedetails ON lcnstypdt_licensetypedetailid = lcnstyp_activedetailid
+                        """);
     }
 
     private static final Map<EntityPermission, String> getLicenseTypeByNameQueries;
@@ -210,19 +226,22 @@ public class LicenseControl
         return getLicenseTypes(EntityPermission.READ_WRITE);
     }
 
-   public LicenseTypeTransfer getLicenseTypeTransfer(UserVisit userVisit, LicenseType licenseType) {
+    public LicenseTypeTransfer getLicenseTypeTransfer(UserVisit userVisit, LicenseType licenseType) {
         return licenseTypeTransferCache.getLicenseTypeTransfer(userVisit, licenseType);
     }
 
-    public List<LicenseTypeTransfer> getLicenseTypeTransfers(UserVisit userVisit) {
-        var licenseTypes = getLicenseTypes();
-        List<LicenseTypeTransfer> licenseTypeTransfers = new ArrayList<>(licenseTypes.size());
+    public List<LicenseTypeTransfer> getLicenseTypeTransfers(UserVisit userVisit, Collection<LicenseType> licenseTypes) {
+        var licenseTypeTransfers = new ArrayList<LicenseTypeTransfer>(licenseTypes.size());
 
         licenseTypes.forEach((licenseType) ->
                 licenseTypeTransfers.add(licenseTypeTransferCache.getLicenseTypeTransfer(userVisit, licenseType))
         );
 
         return licenseTypeTransfers;
+    }
+
+    public List<LicenseTypeTransfer> getLicenseTypeTransfers(UserVisit userVisit) {
+        return getLicenseTypeTransfers(userVisit, getLicenseTypes());
     }
 
     public LicenseTypeChoicesBean getLicenseTypeChoices(String defaultLicenseTypeChoice, Language language, boolean allowNullChoice) {
