@@ -729,8 +729,7 @@ public class ServerControl
         return serviceTransferCache.getServiceTransfer(userVisit, service);
     }
 
-    public List<ServiceTransfer> getServiceTransfers(UserVisit userVisit) {
-        var services = getServices();
+    public List<ServiceTransfer> getServiceTransfers(UserVisit userVisit, Collection<Service> services) {
         List<ServiceTransfer> serviceTransfers = new ArrayList<>(services.size());
 
         services.forEach((service) ->
@@ -738,6 +737,10 @@ public class ServerControl
         );
 
         return serviceTransfers;
+    }
+
+    public List<ServiceTransfer> getServiceTransfers(UserVisit userVisit) {
+        return getServiceTransfers(userVisit, getServices());
     }
 
     public ServiceChoicesBean getServiceChoices(String defaultServiceChoice, Language language, boolean allowNullChoice) {
