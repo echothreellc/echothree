@@ -23,6 +23,9 @@ import java.util.List;
 public interface GetEventGroupsResult
         extends BaseResult {
     
+    Long getEventGroupCount();
+    void setEventGroupCount(Long eventGroupCount);
+
     List<EventGroupTransfer> getEventGroups();
     void setEventGroups(List<EventGroupTransfer> eventGroups);
     
