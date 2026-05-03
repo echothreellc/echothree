@@ -22,8 +22,11 @@ import java.util.List;
 
 public interface GetLicenseTypesResult
         extends BaseResult {
-    
+
+    Long getLicenseTypeCount();
+    void setLicenseTypeCount(Long licenseTypeCount);
+
     List<LicenseTypeTransfer> getLicenseTypes();
     void setLicenseTypes(List<LicenseTypeTransfer> licenseTypes);
-    
+
 }

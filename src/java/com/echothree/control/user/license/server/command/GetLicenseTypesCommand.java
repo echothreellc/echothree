@@ -22,20 +22,22 @@ import com.echothree.model.control.license.server.control.LicenseControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.model.data.license.server.entity.LicenseType;
+import com.echothree.model.data.license.server.factory.LicenseTypeFactory;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetLicenseTypesCommand
-        extends BaseSimpleCommand<GetLicenseTypesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<LicenseType, GetLicenseTypesForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -45,12 +47,14 @@ public class GetLicenseTypesCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.LicenseType.name(), SecurityRoles.List.name())
-                        ))
-                ));
+                ))
+        ));
         
-        FORM_FIELD_DEFINITIONS = List.of(
-                );
+        FORM_FIELD_DEFINITIONS = List.of();
     }
+    
+    @Inject
+    LicenseControl licenseControl;
     
     /** Creates a new instance of GetLicenseTypesCommand */
     public GetLicenseTypesCommand() {
@@ -58,12 +62,32 @@ public class GetLicenseTypesCommand
     }
     
     @Override
-    protected BaseResult execute() {
-        var licenseControl = Session.getModelController(LicenseControl.class);
+    protected void handleForm() {
+        // No form fields.
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return licenseControl.countLicenseTypes();
+    }
+
+    @Override
+    protected Collection<LicenseType> getEntities() {
+        return licenseControl.getLicenseTypes();
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<LicenseType> entities) {
         var result = LicenseResultFactory.getGetLicenseTypesResult();
-        
-        result.setLicenseTypes(licenseControl.getLicenseTypeTransfers(getUserVisit()));
-        
+
+        if(entities != null) {
+            if(session.hasLimit(LicenseTypeFactory.class)) {
+                result.setLicenseTypeCount(getTotalEntities());
+            }
+
+            result.setLicenseTypes(licenseControl.getLicenseTypeTransfers(getUserVisit(), entities));
+        }
+
         return result;
     }
     
