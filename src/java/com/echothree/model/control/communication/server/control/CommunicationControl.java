@@ -1318,6 +1318,15 @@ public class CommunicationControl
                         """);
     }
 
+    public long countCommunicationSourcesByCommunicationSourceType(CommunicationSourceType communicationSourceType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM communicationsources
+                        JOIN communicationsourcedetails ON cmmnsrcdt_communicationsourcedetailid = cmmnsrc_activedetailid
+                        WHERE cmmnsrcdt_cmmnsrctyp_communicationsourcetypeid = ?
+                        """, communicationSourceType);
+    }
+
     private CommunicationSource getCommunicationSourceByName(String communicationSourceName, EntityPermission entityPermission) {
         CommunicationSource communicationSource;
         
