@@ -218,15 +218,18 @@ public class WorkEffortControl
         return workEffortTypeTransferCache.getWorkEffortTypeTransfer(userVisit, workEffortType);
     }
     
-    public List<WorkEffortTypeTransfer> getWorkEffortTypeTransfers(UserVisit userVisit) {
-        var workEffortTypes = getWorkEffortTypes();
+    public List<WorkEffortTypeTransfer> getWorkEffortTypeTransfers(UserVisit userVisit, Collection<WorkEffortType> workEffortTypes) {
         List<WorkEffortTypeTransfer> workEffortTypeTransfers = new ArrayList<>(workEffortTypes.size());
-        
+
         workEffortTypes.forEach((workEffortType) ->
                 workEffortTypeTransfers.add(workEffortTypeTransferCache.getWorkEffortTypeTransfer(userVisit, workEffortType))
         );
-        
+
         return workEffortTypeTransfers;
+    }
+
+    public List<WorkEffortTypeTransfer> getWorkEffortTypeTransfers(UserVisit userVisit) {
+        return getWorkEffortTypeTransfers(userVisit, getWorkEffortTypes());
     }
     
     public void updateWorkEffortTypeFromValue(WorkEffortTypeDetailValue workEffortTypeDetailValue, BasePK updatedBy) {
