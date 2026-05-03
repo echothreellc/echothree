@@ -19,37 +19,61 @@ package com.echothree.control.user.scale.server.command;
 import com.echothree.control.user.scale.common.form.GetScaleUseTypesForm;
 import com.echothree.control.user.scale.common.result.ScaleResultFactory;
 import com.echothree.model.control.scale.server.control.ScaleControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.model.data.scale.server.entity.ScaleUseType;
+import com.echothree.model.data.scale.server.factory.ScaleUseTypeFactory;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetScaleUseTypesCommand
-        extends BaseSimpleCommand<GetScaleUseTypesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<ScaleUseType, GetScaleUseTypesForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {
-        FORM_FIELD_DEFINITIONS = List.of(
-                );
+        FORM_FIELD_DEFINITIONS = List.of();
     }
+
+    @Inject
+    ScaleControl scaleControl;
 
     /** Creates a new instance of GetScaleUseTypesCommand */
     public GetScaleUseTypesCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var scaleControl = Session.getModelController(ScaleControl.class);
+    protected void handleForm() {
+        // No form fields.
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return scaleControl.countScaleUseTypes();
+    }
+
+    @Override
+    protected Collection<ScaleUseType> getEntities() {
+        return scaleControl.getScaleUseTypes();
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<ScaleUseType> entities) {
         var result = ScaleResultFactory.getGetScaleUseTypesResult();
 
-        result.setScaleUseTypes(scaleControl.getScaleUseTypeTransfers(getUserVisit()));
-        
+        if(entities != null) {
+            if(session.hasLimit(ScaleUseTypeFactory.class)) {
+                result.setScaleUseTypeCount(getTotalEntities());
+            }
+
+            result.setScaleUseTypes(scaleControl.getScaleUseTypeTransfers(getUserVisit(), entities));
+        }
+
         return result;
     }
     

@@ -23,6 +23,9 @@ import java.util.List;
 public interface GetScaleUseTypesResult
         extends BaseResult {
     
+    Long getScaleUseTypeCount();
+    void setScaleUseTypeCount(Long scaleUseTypeCount);
+
     List<ScaleUseTypeTransfer> getScaleUseTypes();
     void setScaleUseTypes(List<ScaleUseTypeTransfer> scaleUseTypes);
     
