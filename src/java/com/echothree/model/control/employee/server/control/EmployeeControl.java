@@ -2557,8 +2557,7 @@ public class EmployeeControl
         return terminationReasonTransferCache.getTerminationReasonTransfer(userVisit, terminationReason);
     }
     
-    public List<TerminationReasonTransfer> getTerminationReasonTransfers(UserVisit userVisit) {
-        var terminationReasons = getTerminationReasons();
+    public List<TerminationReasonTransfer> getTerminationReasonTransfers(UserVisit userVisit, Collection<TerminationReason> terminationReasons) {
         List<TerminationReasonTransfer> terminationReasonTransfers = new ArrayList<>(terminationReasons.size());
         
         terminationReasons.forEach((terminationReason) ->
@@ -2566,6 +2565,10 @@ public class EmployeeControl
         );
         
         return terminationReasonTransfers;
+    }
+    
+    public List<TerminationReasonTransfer> getTerminationReasonTransfers(UserVisit userVisit) {
+        return getTerminationReasonTransfers(userVisit, getTerminationReasons());
     }
     
     public TerminationReasonChoicesBean getTerminationReasonChoices(String defaultTerminationReasonChoice, Language language,

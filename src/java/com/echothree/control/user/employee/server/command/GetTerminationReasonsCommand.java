@@ -22,20 +22,22 @@ import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.model.data.employee.server.entity.TerminationReason;
+import com.echothree.model.data.employee.server.factory.TerminationReasonFactory;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetTerminationReasonsCommand
-        extends BaseSimpleCommand<GetTerminationReasonsForm> {
+        extends BasePaginatedMultipleEntitiesCommand<TerminationReason, GetTerminationReasonsForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -48,23 +50,45 @@ public class GetTerminationReasonsCommand
                 ))
         ));
 
-        FORM_FIELD_DEFINITIONS = List.of(
-                );
+        FORM_FIELD_DEFINITIONS = List.of();
     }
-    
+
+    @Inject
+    EmployeeControl employeeControl;
+
     /** Creates a new instance of GetTerminationReasonsCommand */
     public GetTerminationReasonsCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
+    protected void handleForm() {
+        // No form fields.
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return employeeControl.countTerminationReasons();
+    }
+
+    @Override
+    protected Collection<TerminationReason> getEntities() {
+        return employeeControl.getTerminationReasons();
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<TerminationReason> entities) {
         var result = EmployeeResultFactory.getGetTerminationReasonsResult();
-        var employeeControl = Session.getModelController(EmployeeControl.class);
-        
-        result.setTerminationReasons(employeeControl.getTerminationReasonTransfers(getUserVisit()));
-        
+
+        if(entities != null) {
+            if(session.hasLimit(TerminationReasonFactory.class)) {
+                result.setTerminationReasonCount(getTotalEntities());
+            }
+
+            result.setTerminationReasons(employeeControl.getTerminationReasonTransfers(getUserVisit(), entities));
+        }
+
         return result;
     }
-    
+
 }
