@@ -1185,8 +1185,7 @@ public class ServerControl
         return serverTransferCache.getServerTransfer(userVisit, server);
     }
 
-    public List<ServerTransfer> getServerTransfers(UserVisit userVisit) {
-        var servers = getServers();
+    public List<ServerTransfer> getServerTransfers(UserVisit userVisit, Collection<Server> servers) {
         List<ServerTransfer> serverTransfers = new ArrayList<>(servers.size());
 
         servers.forEach((server) ->
@@ -1194,6 +1193,10 @@ public class ServerControl
         );
 
         return serverTransfers;
+    }
+
+    public List<ServerTransfer> getServerTransfers(UserVisit userVisit) {
+        return getServerTransfers(userVisit, getServers());
     }
 
     public ServerChoicesBean getServerChoices(String defaultServerChoice, Language language, boolean allowNullChoice) {
