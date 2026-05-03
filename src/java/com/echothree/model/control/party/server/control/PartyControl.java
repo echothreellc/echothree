@@ -89,6 +89,7 @@ import com.echothree.model.data.party.common.pk.DateTimeFormatDetailPK;
 import com.echothree.model.data.party.common.pk.DateTimeFormatPK;
 import com.echothree.model.data.party.common.pk.GenderPK;
 import com.echothree.model.data.party.common.pk.LanguagePK;
+import com.echothree.model.data.party.common.pk.MoodPK;
 import com.echothree.model.data.party.common.pk.NameSuffixPK;
 import com.echothree.model.data.party.common.pk.PartyAliasTypePK;
 import com.echothree.model.data.party.common.pk.PartyPK;
@@ -5659,7 +5660,30 @@ public class PartyControl
         
         return mood;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Mood */
+    public Mood getMoodByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new MoodPK(entityInstance.getEntityUniqueId());
+
+        return MoodFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public Mood getMoodByEntityInstance(EntityInstance entityInstance) {
+        return getMoodByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public Mood getMoodByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getMoodByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countMoods() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM moods
+                        JOIN mooddetails ON md_activedetailid = mddt_mooddetailid
+                        """);
+    }
+
     private Mood getMoodByName(String moodName, EntityPermission entityPermission) {
         Mood mood;
         
@@ -5803,15 +5827,18 @@ public class PartyControl
         return moodTransferCache.getTransfer(userVisit, mood);
     }
     
-    public List<MoodTransfer> getMoodTransfers(UserVisit userVisit) {
-        var moods = getMoods();
+    public List<MoodTransfer> getMoodTransfers(UserVisit userVisit, Collection<Mood> moods) {
         List<MoodTransfer> moodTransfers = new ArrayList<>(moods.size());
-        
+
         moods.forEach((mood) ->
                 moodTransfers.add(moodTransferCache.getTransfer(userVisit, mood))
         );
-        
+
         return moodTransfers;
+    }
+
+    public List<MoodTransfer> getMoodTransfers(UserVisit userVisit) {
+        return getMoodTransfers(userVisit, getMoods());
     }
     
     private void updateMoodFromValue(MoodDetailValue moodDetailValue, boolean checkDefault, BasePK updatedBy) {

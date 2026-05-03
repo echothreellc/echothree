@@ -20,11 +20,10 @@ import com.echothree.control.user.party.common.form.GetMoodForm;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.List;
@@ -38,7 +37,7 @@ public class GetMoodCommand
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("MoodName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("MoodName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
     

@@ -22,8 +22,11 @@ import java.util.List;
 
 public interface GetMoodsResult
         extends BaseResult {
-    
+
+    Long getMoodCount();
+    void setMoodCount(Long moodCount);
+
     List<MoodTransfer> getMoods();
     void setMoods(List<MoodTransfer> moods);
-    
+
 }

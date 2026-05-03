@@ -19,38 +19,62 @@ package com.echothree.control.user.party.server.command;
 import com.echothree.control.user.party.common.form.GetMoodsForm;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.model.data.party.server.entity.Mood;
+import com.echothree.model.data.party.server.factory.MoodFactory;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetMoodsCommand
-        extends BaseSimpleCommand<GetMoodsForm> {
-    
+        extends BasePaginatedMultipleEntitiesCommand<Mood, GetMoodsForm> {
+
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {
-        FORM_FIELD_DEFINITIONS = List.of(
-                );
+        FORM_FIELD_DEFINITIONS = List.of();
     }
-    
+
+    @Inject
+    PartyControl partyControl;
+
     /** Creates a new instance of GetMoodsCommand */
     public GetMoodsCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var partyControl = Session.getModelController(PartyControl.class);
+    protected void handleForm() {
+        // No form fields.
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return partyControl.countMoods();
+    }
+
+    @Override
+    protected Collection<Mood> getEntities() {
+        return partyControl.getMoods();
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<Mood> entities) {
         var result = PartyResultFactory.getGetMoodsResult();
-        
-        result.setMoods(partyControl.getMoodTransfers(getUserVisit()));
-        
+
+        if(entities != null) {
+            if(session.hasLimit(MoodFactory.class)) {
+                result.setMoodCount(getTotalEntities());
+            }
+
+            result.setMoods(partyControl.getMoodTransfers(getUserVisit(), entities));
+        }
+
         return result;
     }
-    
+
 }
