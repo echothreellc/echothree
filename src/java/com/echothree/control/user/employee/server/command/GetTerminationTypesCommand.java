@@ -22,20 +22,22 @@ import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.model.data.employee.server.entity.TerminationType;
+import com.echothree.model.data.employee.server.factory.TerminationTypeFactory;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetTerminationTypesCommand
-        extends BaseSimpleCommand<GetTerminationTypesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<TerminationType, GetTerminationTypesForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -48,23 +50,45 @@ public class GetTerminationTypesCommand
                 ))
         ));
 
-        FORM_FIELD_DEFINITIONS = List.of(
-                );
+        FORM_FIELD_DEFINITIONS = List.of();
     }
-    
+
+    @Inject
+    EmployeeControl employeeControl;
+
     /** Creates a new instance of GetTerminationTypesCommand */
     public GetTerminationTypesCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
+    protected void handleForm() {
+        // No form fields.
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return employeeControl.countTerminationTypes();
+    }
+
+    @Override
+    protected Collection<TerminationType> getEntities() {
+        return employeeControl.getTerminationTypes();
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<TerminationType> entities) {
         var result = EmployeeResultFactory.getGetTerminationTypesResult();
-        var employeeControl = Session.getModelController(EmployeeControl.class);
-        
-        result.setTerminationTypes(employeeControl.getTerminationTypeTransfers(getUserVisit()));
-        
+
+        if(entities != null) {
+            if(session.hasLimit(TerminationTypeFactory.class)) {
+                result.setTerminationTypeCount(getTotalEntities());
+            }
+
+            result.setTerminationTypes(employeeControl.getTerminationTypeTransfers(getUserVisit(), entities));
+        }
+
         return result;
     }
-    
+
 }

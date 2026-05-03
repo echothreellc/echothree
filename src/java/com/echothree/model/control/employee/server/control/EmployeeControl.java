@@ -3011,15 +3011,18 @@ public class EmployeeControl
         return terminationTypeTransferCache.getTerminationTypeTransfer(userVisit, terminationType);
     }
     
-    public List<TerminationTypeTransfer> getTerminationTypeTransfers(UserVisit userVisit) {
-        var terminationTypes = getTerminationTypes();
+    public List<TerminationTypeTransfer> getTerminationTypeTransfers(UserVisit userVisit, Collection<TerminationType> terminationTypes) {
         List<TerminationTypeTransfer> terminationTypeTransfers = new ArrayList<>(terminationTypes.size());
-        
+
         terminationTypes.forEach((terminationType) ->
                 terminationTypeTransfers.add(terminationTypeTransferCache.getTerminationTypeTransfer(userVisit, terminationType))
         );
-        
+
         return terminationTypeTransfers;
+    }
+
+    public List<TerminationTypeTransfer> getTerminationTypeTransfers(UserVisit userVisit) {
+        return getTerminationTypeTransfers(userVisit, getTerminationTypes());
     }
     
     public TerminationTypeChoicesBean getTerminationTypeChoices(String defaultTerminationTypeChoice, Language language,

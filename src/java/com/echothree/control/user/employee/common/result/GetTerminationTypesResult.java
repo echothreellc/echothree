@@ -23,6 +23,9 @@ import java.util.List;
 public interface GetTerminationTypesResult
         extends BaseResult {
     
+    Long getTerminationTypeCount();
+    void setTerminationTypeCount(Long terminationTypeCount);
+
     List<TerminationTypeTransfer> getTerminationTypes();
     void setTerminationTypes(List<TerminationTypeTransfer> terminationTypes);
     
