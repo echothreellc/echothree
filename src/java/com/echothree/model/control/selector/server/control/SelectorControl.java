@@ -1374,6 +1374,15 @@ public class SelectorControl
                         """);
     }
 
+    public long countSelectorNodeTypesBySelectorKind(final SelectorKind selectorKind) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM selectornodetypes
+                        JOIN selectornodetypeuses ON slntu_slnt_selectornodetypeid = slnt_selectornodetypeid
+                        WHERE slntu_slk_selectorkindid = ?
+                        """, selectorKind);
+    }
+
     public SelectorNodeType getSelectorNodeTypeByName(String selectorNodeTypeName) {
         SelectorNodeType selectorNodeType;
         
@@ -2268,12 +2277,13 @@ public class SelectorControl
         return getSelectorNodeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
 
-    public long countSelectorNodes() {
+    public long countSelectorNodesBySelector(final Selector selector) {
         return session.queryForLong("""
                         SELECT COUNT(*)
                         FROM selectornodes
                         JOIN selectornodedetails ON slnddt_selectornodedetailid = slnd_activedetailid
-                        """);
+                        WHERE slnddt_sl_selectorid = ?
+                        """, selector);
     }
 
     private SelectorNode getRootSelectorNode(Selector selector, EntityPermission entityPermission) {
