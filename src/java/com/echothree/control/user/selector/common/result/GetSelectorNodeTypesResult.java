@@ -16,6 +16,7 @@
 
 package com.echothree.control.user.selector.common.result;
 
+import com.echothree.model.control.selector.common.transfer.SelectorKindTransfer;
 import com.echothree.model.control.selector.common.transfer.SelectorNodeTypeTransfer;
 import com.echothree.util.common.command.BaseResult;
 import java.util.List;
@@ -23,6 +24,12 @@ import java.util.List;
 public interface GetSelectorNodeTypesResult
         extends BaseResult {
     
+    SelectorKindTransfer getSelectorKind();
+    void setSelectorKind(SelectorKindTransfer selectorKind);
+
+    Long getSelectorNodeTypeCount();
+    void setSelectorNodeTypeCount(Long selectorNodeTypeCount);
+
     List<SelectorNodeTypeTransfer> getSelectorNodeTypes();
     void setSelectorNodeTypes(List<SelectorNodeTypeTransfer> selectorNodeTypes);
     
