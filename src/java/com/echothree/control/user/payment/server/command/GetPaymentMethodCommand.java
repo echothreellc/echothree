@@ -23,7 +23,6 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.payment.server.control.PaymentMethodControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -48,12 +47,12 @@ public class GetPaymentMethodCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.PaymentMethod.name(), SecurityRoles.Review.name())
-                        ))
-                ));
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PaymentMethodName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
     
     /** Creates a new instance of GetPaymentMethodCommand */
