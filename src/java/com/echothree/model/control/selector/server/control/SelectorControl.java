@@ -58,6 +58,7 @@ import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.payment.server.entity.PaymentMethod;
 import com.echothree.model.data.payment.server.entity.PaymentProcessor;
 import com.echothree.model.data.selector.common.pk.SelectorKindPK;
+import com.echothree.model.data.selector.common.pk.SelectorNodePK;
 import com.echothree.model.data.selector.common.pk.SelectorNodeTypePK;
 import com.echothree.model.data.selector.common.pk.SelectorPK;
 import com.echothree.model.data.selector.common.pk.SelectorTypePK;
@@ -155,6 +156,7 @@ import com.echothree.model.data.workflow.server.entity.WorkflowStep;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
@@ -167,7 +169,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
@@ -349,7 +350,8 @@ public class SelectorControl
                 "SELECT _ALL_ "
                 + "FROM selectorkinds, selectorkinddetails "
                 + "WHERE slk_activedetailid = slkdt_selectorkinddetailid "
-                + "ORDER BY slkdt_sortorder, slkdt_selectorkindname");
+                + "ORDER BY slkdt_sortorder, slkdt_selectorkindname " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM selectorkinds, selectorkinddetails "
@@ -554,7 +556,8 @@ public class SelectorControl
                 "SELECT _ALL_ "
                 + "FROM selectorkinddescriptions, languages "
                 + "WHERE slkd_slk_selectorkindid = ? AND slkd_thrutime = ? AND slkd_lang_languageid = lang_languageid "
-                + "ORDER BY lang_sortorder, lang_languageisoname");
+                + "ORDER BY lang_sortorder, lang_languageisoname " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM selectorkinddescriptions "
@@ -1005,7 +1008,8 @@ public class SelectorControl
                 "SELECT _ALL_ "
                 + "FROM selectortypedescriptions, languages "
                 + "WHERE sltd_slt_selectortypeid = ? AND sltd_thrutime = ? AND sltd_lang_languageid = lang_languageid "
-                + "ORDER BY lang_sortorder, lang_languageisoname");
+                + "ORDER BY lang_sortorder, lang_languageisoname " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM selectortypedescriptions "
@@ -1109,7 +1113,8 @@ public class SelectorControl
         var ps = SelectorBooleanTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM selectorbooleantypes " +
-                "ORDER BY slbt_sortorder, slbt_selectorbooleantypename");
+                "ORDER BY slbt_sortorder, slbt_selectorbooleantypename " +
+                "_LIMIT_");
         
         selectorBooleanTypes = SelectorBooleanTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
         
@@ -1233,7 +1238,8 @@ public class SelectorControl
         var ps = SelectorComparisonTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM selectorcomparisontypes " +
-                "ORDER BY slct_sortorder, slct_selectorcomparisontypename");
+                "ORDER BY slct_sortorder, slct_selectorcomparisontypename " +
+                "_LIMIT_");
         
         return SelectorComparisonTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
@@ -1360,7 +1366,14 @@ public class SelectorControl
     public SelectorNodeType getSelectorNodeTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
         return getSelectorNodeTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
-    
+
+    public long countSelectorNodeTypes() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM selectornodetypes
+                        """);
+    }
+
     public SelectorNodeType getSelectorNodeTypeByName(String selectorNodeTypeName) {
         SelectorNodeType selectorNodeType;
         
@@ -1384,7 +1397,8 @@ public class SelectorControl
         var ps = SelectorNodeTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM selectornodetypes " +
-                "ORDER BY slnt_sortorder, slnt_selectornodetypename");
+                "ORDER BY slnt_sortorder, slnt_selectornodetypename " +
+                "_LIMIT_");
         
         return SelectorNodeTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
@@ -1397,7 +1411,8 @@ public class SelectorControl
                     "SELECT _ALL_ " +
                     "FROM selectornodetypes, selectornodetypeuses " +
                     "WHERE slnt_selectornodetypeid = slntu_slnt_selectornodetypeid AND slntu_slk_selectorkindid = ? " +
-                    "ORDER BY slnt_sortorder, slnt_selectornodetypename");
+                    "ORDER BY slnt_sortorder, slnt_selectornodetypename " +
+                    "_LIMIT_");
             
             ps.setLong(1, selectorKind.getPrimaryKey().getEntityId());
             
@@ -1523,7 +1538,8 @@ public class SelectorControl
         var ps = SelectorTextSearchTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM selectortextsearchtypes " +
-                "ORDER BY sltst_sortorder, sltst_selectortextsearchtypename");
+                "ORDER BY sltst_sortorder, sltst_selectortextsearchtypename " +
+                "_LIMIT_");
         
         return SelectorTextSearchTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
@@ -1844,7 +1860,8 @@ public class SelectorControl
                     + "WHERE sl_activedetailid = sldt_selectordetailid AND sldt_slt_selectortypeid = slt_selectortypeid "
                     + "AND slt_activedetailid = sltdt_selectortypedetailid "
                     + "AND sltdt_slk_selectorkindid = ? "
-                    + "ORDER BY sltdt_sortorder, sltdt_selectortypename, sldt_sortorder, sldt_selectorname");
+                    + "ORDER BY sltdt_sortorder, sltdt_selectortypename, sldt_sortorder, sldt_selectorname " +
+                    "_LIMIT_");
             
             ps.setLong(1, selectorKind.getPrimaryKey().getEntityId());
             
@@ -2069,7 +2086,8 @@ public class SelectorControl
                 query = "SELECT _ALL_ " +
                         "FROM selectordescriptions, languages " +
                         "WHERE sld_sl_selectorid = ? AND sld_thrutime = ? AND sld_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                        "ORDER BY lang_sortorder, lang_languageisoname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM selectordescriptions " +
@@ -2234,7 +2252,30 @@ public class SelectorControl
         
         return selectorNode;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.SelectorNode */
+    public SelectorNode getSelectorNodeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new SelectorNodePK(entityInstance.getEntityUniqueId());
+
+        return SelectorNodeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public SelectorNode getSelectorNodeByEntityInstance(EntityInstance entityInstance) {
+        return getSelectorNodeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public SelectorNode getSelectorNodeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getSelectorNodeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countSelectorNodes() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM selectornodes
+                        JOIN selectornodedetails ON slnddt_selectornodedetailid = slnd_activedetailid
+                        """);
+    }
+
     private SelectorNode getRootSelectorNode(Selector selector, EntityPermission entityPermission) {
         SelectorNode selectorNode;
         
@@ -2603,7 +2644,8 @@ public class SelectorControl
                 query = "SELECT _ALL_ " +
                         "FROM selectornodedescriptions, languages " +
                         "WHERE slndd_slnd_selectornodeid = ? AND slndd_thrutime = ? AND slndd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                        "ORDER BY lang_sortorder, lang_languageisoname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM selectornodedescriptions " +
@@ -4331,7 +4373,8 @@ public class SelectorControl
                         "FROM selectorparties, parties, partydetails " +
                         "WHERE slpar_sl_selectorid = ? AND slpar_thrutime = ? " +
                         "AND slpar_par_partyid = par_partyid AND par_activedetailid = pardt_partydetailid " +
-                        "ORDER BY pardt_partyname";
+                        "ORDER BY pardt_partyname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM selectorparties " +
