@@ -17,12 +17,19 @@
 package com.echothree.control.user.payment.common.result;
 
 import com.echothree.model.control.payment.common.transfer.PaymentMethodTransfer;
+import com.echothree.model.control.payment.common.transfer.PaymentMethodTypeTransfer;
 import com.echothree.util.common.command.BaseResult;
 import java.util.List;
 
 public interface GetPaymentMethodsResult
         extends BaseResult {
     
+    PaymentMethodTypeTransfer getPaymentMethodType();
+    void setPaymentMethodType(PaymentMethodTypeTransfer paymentMethodType);
+
+    Long getPaymentMethodCount();
+    void setPaymentMethodCount(Long paymentMethodCount);
+
     List<PaymentMethodTransfer> getPaymentMethods();
     void setPaymentMethods(List<PaymentMethodTransfer> paymentMethods);
     

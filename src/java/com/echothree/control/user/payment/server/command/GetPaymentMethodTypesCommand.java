@@ -19,8 +19,8 @@ package com.echothree.control.user.payment.server.command;
 import com.echothree.control.user.payment.common.form.GetPaymentMethodTypesForm;
 import com.echothree.control.user.payment.common.result.PaymentResultFactory;
 import com.echothree.model.control.payment.server.control.PaymentMethodTypeControl;
-import com.echothree.model.data.party.server.factory.LanguageFactory;
 import com.echothree.model.data.payment.server.entity.PaymentMethodType;
+import com.echothree.model.data.payment.server.factory.PaymentMethodTypeFactory;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
@@ -33,16 +33,16 @@ import javax.inject.Inject;
 public class GetPaymentMethodTypesCommand
         extends BasePaginatedMultipleEntitiesCommand<PaymentMethodType, GetPaymentMethodTypesForm> {
 
-    @Inject
-    PaymentMethodTypeControl paymentMethodTypeControl;
-    
     // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {
         FORM_FIELD_DEFINITIONS = List.of();
     }
-    
+
+    @Inject
+    PaymentMethodTypeControl paymentMethodTypeControl;
+
     /** Creates a new instance of GetPaymentMethodTypesCommand */
     public GetPaymentMethodTypesCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
@@ -68,7 +68,7 @@ public class GetPaymentMethodTypesCommand
         var result = PaymentResultFactory.getGetPaymentMethodTypesResult();
 
         if(entities != null) {
-            if(session.hasLimit(LanguageFactory.class)) {
+            if(session.hasLimit(PaymentMethodTypeFactory.class)) {
                 result.setPaymentMethodTypeCount(getTotalEntities());
             }
 

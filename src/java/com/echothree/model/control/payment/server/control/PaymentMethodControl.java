@@ -22,7 +22,9 @@ import com.echothree.model.control.order.server.control.OrderPaymentPreferenceCo
 import com.echothree.model.control.payment.common.choice.PaymentMethodChoicesBean;
 import com.echothree.model.control.payment.common.transfer.PaymentMethodDescriptionTransfer;
 import com.echothree.model.control.payment.common.transfer.PaymentMethodTransfer;
+import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.server.entity.Language;
+import com.echothree.model.data.payment.common.pk.PaymentMethodPK;
 import com.echothree.model.data.payment.server.entity.PaymentMethod;
 import com.echothree.model.data.payment.server.entity.PaymentMethodCheck;
 import com.echothree.model.data.payment.server.entity.PaymentMethodCreditCard;
@@ -42,6 +44,7 @@ import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.sql.SQLException;
@@ -49,7 +52,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import com.echothree.util.server.cdi.CommandScope;
 
 @CommandScope
 public class PaymentMethodControl
@@ -92,7 +94,66 @@ public class PaymentMethodControl
         
         return paymentMethod;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.PaymentMethod */
+    public PaymentMethod getPaymentMethodByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new PaymentMethodPK(entityInstance.getEntityUniqueId());
+
+        return PaymentMethodFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public PaymentMethod getPaymentMethodByEntityInstance(EntityInstance entityInstance) {
+        return getPaymentMethodByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public PaymentMethod getPaymentMethodByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getPaymentMethodByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countPaymentMethods() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM paymentmethods
+                        JOIN paymentmethoddetails ON pmdt_paymentmethoddetailid = pm_activedetailid
+                        """);
+    }
+
+    public long countPaymentMethodsByPaymentMethodType(final PaymentMethodType paymentMethodType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM paymentmethods
+                        JOIN paymentmethoddetails ON pmdt_paymentmethoddetailid = pm_activedetailid
+                        WHERE pmdt_pmtyp_paymentmethodtypeid = ?
+                        """, paymentMethodType);
+    }
+
+    public long countPaymentMethodsByPaymentProcessor(final PaymentProcessor paymentProcessor) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM paymentmethods
+                        JOIN paymentmethoddetails ON pmdt_paymentmethoddetailid = pm_activedetailid
+                        WHERE pmdt_pprc_paymentprocessorid = ?
+                        """, paymentProcessor);
+    }
+
+    public long countPaymentMethodsByItemSelector(final Selector itemSelector) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM paymentmethods
+                        JOIN paymentmethoddetails ON pmdt_paymentmethoddetailid = pm_activedetailid
+                        WHERE pmdt_itemselectorid = ?
+                        """, itemSelector);
+    }
+
+    public long countPaymentMethodsBySalesOrderItemSelector(final Selector salesOrderItemSelector) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM paymentmethods
+                        JOIN paymentmethoddetails ON pmdt_paymentmethoddetailid = pm_activedetailid
+                        WHERE pmdt_salesorderitemselectorid = ?
+                        """, salesOrderItemSelector);
+    }
+
     public PaymentMethodDetailValue getPaymentMethodDetailValueForUpdate(PaymentMethod paymentMethod) {
         return paymentMethod.getLastDetailForUpdate().getPaymentMethodDetailValue().clone();
     }
