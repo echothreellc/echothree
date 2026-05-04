@@ -64,8 +64,6 @@ public class MainAction
             var executionResult = commandResult.getExecutionResult();
             var result = (GetSelectorNodesResult)executionResult.getResult();
             
-            request.setAttribute("selectorKind", result.getSelectorKind());
-            request.setAttribute("selectorType", result.getSelectorType());
             request.setAttribute("selector", result.getSelector());
             request.setAttribute("selectorNodes", result.getSelectorNodes());
             forwardKey = ForwardConstants.DISPLAY;

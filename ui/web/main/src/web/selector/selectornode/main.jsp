@@ -31,12 +31,12 @@
                 <a href="<c:url value="/action/Selector/Main" />">Selectors</a> &gt;&gt;
                 <a href="<c:url value="/action/Selector/SelectorKind/Main" />">Kinds</a> &gt;&gt;
                 <c:url var="selectorTypesUrl" value="/action/Selector/SelectorKind/Main">
-                    <c:param name="SelectorKindName" value="${selectorKind.selectorKindName}" />
+                    <c:param name="SelectorKindName" value="${selector.selectorType.selectorKind.selectorKindName}" />
                 </c:url>
                 <a href="${selectorTypesUrl}">Types</a> &gt;&gt;
                 <c:url var="selectorsUrl" value="/action/Selector/Selector/Main">
-                    <c:param name="SelectorKindName" value="${selectorKind.selectorKindName}" />
-                    <c:param name="SelectorTypeName" value="${selectorType.selectorTypeName}" />
+                    <c:param name="SelectorKindName" value="${selector.selectorType.selectorKind.selectorKindName}" />
+                    <c:param name="SelectorTypeName" value="${selector.selectorType.selectorTypeName}" />
                 </c:url>
                 <a href="${selectorsUrl}">Selectors</a> &gt;&gt;
                 Nodes
@@ -44,8 +44,8 @@
         </div>
         <div id="Content">
             <c:url var="addUrl" value="/action/Selector/SelectorNode/Add/Step1">
-                <c:param name="SelectorKindName" value="${selectorKind.selectorKindName}" />
-                <c:param name="SelectorTypeName" value="${selectorType.selectorTypeName}" />
+                <c:param name="SelectorKindName" value="${selector.selectorType.selectorKind.selectorKindName}" />
+                <c:param name="SelectorTypeName" value="${selector.selectorType.selectorTypeName}" />
                 <c:param name="SelectorName" value="${selector.selectorName}" />
             </c:url>
             <p><a href="${addUrl}">Add Selector Node.</a></p>

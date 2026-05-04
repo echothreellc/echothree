@@ -16,25 +16,20 @@
 
 package com.echothree.control.user.selector.common.result;
 
-import com.echothree.model.control.selector.common.transfer.SelectorKindTransfer;
 import com.echothree.model.control.selector.common.transfer.SelectorNodeTransfer;
 import com.echothree.model.control.selector.common.transfer.SelectorTransfer;
-import com.echothree.model.control.selector.common.transfer.SelectorTypeTransfer;
 import com.echothree.util.common.command.BaseResult;
 import java.util.List;
 
 public interface GetSelectorNodesResult
         extends BaseResult {
     
-    SelectorKindTransfer getSelectorKind();
-    void setSelectorKind(SelectorKindTransfer selectorKind);
-    
-    SelectorTypeTransfer getSelectorType();
-    void setSelectorType(SelectorTypeTransfer selectorType);
-    
     SelectorTransfer getSelector();
     void setSelector(SelectorTransfer selector);
-    
+
+    Long getSelectorNodeCount();
+    void setSelectorNodeCount(Long selectorNodeCount);
+
     List<SelectorNodeTransfer> getSelectorNodes();
     void setSelectorNodes(List<SelectorNodeTransfer> selectorNode);
     
