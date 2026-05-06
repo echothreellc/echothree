@@ -26,8 +26,6 @@ import com.echothree.model.control.party.server.transfer.DivisionTransferCache;
 import com.echothree.model.control.party.server.transfer.GenderDescriptionTransferCache;
 import com.echothree.model.control.party.server.transfer.GenderTransferCache;
 import com.echothree.model.control.party.server.transfer.LanguageTransferCache;
-import com.echothree.model.control.party.server.transfer.MoodDescriptionTransferCache;
-import com.echothree.model.control.party.server.transfer.MoodTransferCache;
 import com.echothree.model.control.party.server.transfer.NameSuffixTransferCache;
 import com.echothree.model.control.party.server.transfer.PartyAliasTransferCache;
 import com.echothree.model.control.party.server.transfer.PartyAliasTypeDescriptionTransferCache;
@@ -128,11 +126,6 @@ public class BasePartyControl
     @Inject
     GenderDescriptionTransferCache genderDescriptionTransferCache;
 
-    @Inject
-    MoodTransferCache moodTransferCache;
-
-    @Inject
-    MoodDescriptionTransferCache moodDescriptionTransferCache;
 
     @Inject
     BirthdayFormatTransferCache birthdayFormatTransferCache;

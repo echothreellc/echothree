@@ -970,12 +970,6 @@
             <entityType entityTypeName="GenderDescription" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Gender Description" />
             </entityType>
-            <entityType entityTypeName="Mood" keepAllHistory="false" isExtensible="true" sortOrder="1">
-                <entityTypeDescription languageIsoName="en" description="Mood" />
-            </entityType>
-            <entityType entityTypeName="MoodDescription" keepAllHistory="false" isExtensible="false" sortOrder="1">
-                <entityTypeDescription languageIsoName="en" description="Mood Description" />
-            </entityType>
             <entityType entityTypeName="BirthdayFormat" keepAllHistory="false" isExtensible="true" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Birthday Format" />
             </entityType>

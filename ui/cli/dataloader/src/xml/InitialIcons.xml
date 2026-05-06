@@ -28,9 +28,6 @@
         <iconUsageType iconUsageTypeName="FORUM" isDefault="false" sortOrder="1">
             <iconUsageTypeDescription languageIsoName="en" description="Forum" />
         </iconUsageType>
-        <iconUsageType iconUsageTypeName="MOOD" isDefault="false" sortOrder="1">
-            <iconUsageTypeDescription languageIsoName="en" description="Mood" />
-        </iconUsageType>
         <iconUsageType iconUsageTypeName="PROFILE" isDefault="false" sortOrder="1">
             <iconUsageTypeDescription languageIsoName="en" description="Profile" />
         </iconUsageType>
