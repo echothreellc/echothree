@@ -34,7 +34,6 @@
         <file name="/InitialNameSuffixes.xml" />
         <file name="/InitialGenders.xml" />
         <file name="/InitialBirthdayFormats.xml" />
-        <file name="/InitialMoods.xml" />
         <file name="/InitialUserLogins.xml" />
         <file name="/InitialRecoveryQuestions.xml" />
         <file name="/InitialTimeZones.xml" />

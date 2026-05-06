@@ -366,36 +366,6 @@ public interface PartyService
     CommandResult deleteGenderDescription(UserVisitPK userVisitPK, DeleteGenderDescriptionForm form);
     
     // --------------------------------------------------------------------------------
-    //   Moods
-    // --------------------------------------------------------------------------------
-    
-    CommandResult createMood(UserVisitPK userVisitPK, CreateMoodForm form);
-    
-    CommandResult getMoodChoices(UserVisitPK userVisitPK, GetMoodChoicesForm form);
-    
-    CommandResult getMood(UserVisitPK userVisitPK, GetMoodForm form);
-    
-    CommandResult getMoods(UserVisitPK userVisitPK, GetMoodsForm form);
-    
-    CommandResult setDefaultMood(UserVisitPK userVisitPK, SetDefaultMoodForm form);
-    
-    CommandResult editMood(UserVisitPK userVisitPK, EditMoodForm form);
-    
-    CommandResult deleteMood(UserVisitPK userVisitPK, DeleteMoodForm form);
-    
-    // --------------------------------------------------------------------------------
-    //   Mood Descriptions
-    // --------------------------------------------------------------------------------
-    
-    CommandResult createMoodDescription(UserVisitPK userVisitPK, CreateMoodDescriptionForm form);
-    
-    CommandResult getMoodDescriptions(UserVisitPK userVisitPK, GetMoodDescriptionsForm form);
-    
-    CommandResult editMoodDescription(UserVisitPK userVisitPK, EditMoodDescriptionForm form);
-    
-    CommandResult deleteMoodDescription(UserVisitPK userVisitPK, DeleteMoodDescriptionForm form);
-    
-    // --------------------------------------------------------------------------------
     //   Birthday Formats
     // --------------------------------------------------------------------------------
 

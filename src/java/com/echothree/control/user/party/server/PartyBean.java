@@ -705,69 +705,6 @@ public class PartyBean
     }
     
     // --------------------------------------------------------------------------------
-    //   Moods
-    // --------------------------------------------------------------------------------
-
-    @Override
-    public CommandResult createMood(UserVisitPK userVisitPK, CreateMoodForm form) {
-        return CDI.current().select(CreateMoodCommand.class).get().run(userVisitPK, form);
-    }
-
-    @Override
-    public CommandResult getMoodChoices(UserVisitPK userVisitPK, GetMoodChoicesForm form) {
-        return CDI.current().select(GetMoodChoicesCommand.class).get().run(userVisitPK, form);
-    }
-
-    @Override
-    public CommandResult getMood(UserVisitPK userVisitPK, GetMoodForm form) {
-        return CDI.current().select(GetMoodCommand.class).get().run(userVisitPK, form);
-    }
-
-    @Override
-    public CommandResult getMoods(UserVisitPK userVisitPK, GetMoodsForm form) {
-        return CDI.current().select(GetMoodsCommand.class).get().run(userVisitPK, form);
-    }
-
-    @Override
-    public CommandResult setDefaultMood(UserVisitPK userVisitPK, SetDefaultMoodForm form) {
-        return CDI.current().select(SetDefaultMoodCommand.class).get().run(userVisitPK, form);
-    }
-
-    @Override
-    public CommandResult editMood(UserVisitPK userVisitPK, EditMoodForm form) {
-        return CDI.current().select(EditMoodCommand.class).get().run(userVisitPK, form);
-    }
-
-    @Override
-    public CommandResult deleteMood(UserVisitPK userVisitPK, DeleteMoodForm form) {
-        return CDI.current().select(DeleteMoodCommand.class).get().run(userVisitPK, form);
-    }
-
-    // --------------------------------------------------------------------------------
-    //   Mood Descriptions
-    // --------------------------------------------------------------------------------
-
-    @Override
-    public CommandResult createMoodDescription(UserVisitPK userVisitPK, CreateMoodDescriptionForm form) {
-        return CDI.current().select(CreateMoodDescriptionCommand.class).get().run(userVisitPK, form);
-    }
-
-    @Override
-    public CommandResult getMoodDescriptions(UserVisitPK userVisitPK, GetMoodDescriptionsForm form) {
-        return CDI.current().select(GetMoodDescriptionsCommand.class).get().run(userVisitPK, form);
-    }
-
-    @Override
-    public CommandResult editMoodDescription(UserVisitPK userVisitPK, EditMoodDescriptionForm form) {
-        return CDI.current().select(EditMoodDescriptionCommand.class).get().run(userVisitPK, form);
-    }
-
-    @Override
-    public CommandResult deleteMoodDescription(UserVisitPK userVisitPK, DeleteMoodDescriptionForm form) {
-        return CDI.current().select(DeleteMoodDescriptionCommand.class).get().run(userVisitPK, form);
-    }
-
-    // --------------------------------------------------------------------------------
     //   Birthday Formats
     // --------------------------------------------------------------------------------
 
