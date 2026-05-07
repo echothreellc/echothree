@@ -14,23 +14,13 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.period.common.result;
+package com.echothree.control.user.period.common.spec;
 
-import com.echothree.model.control.period.common.transfer.PeriodKindTransfer;
-import com.echothree.model.control.period.common.transfer.PeriodTypeTransfer;
-import com.echothree.util.common.command.BaseResult;
-import java.util.List;
+import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
 
-public interface GetPeriodTypesResult
-        extends BaseResult {
+public interface PeriodKindUniversalSpec
+        extends PeriodKindSpec, UniversalEntitySpec {
     
-    PeriodKindTransfer getPeriodKind();
-    void setPeriodKind(PeriodKindTransfer periodKind);
-
-    Long getPeriodTypeCount();
-    void setPeriodTypeCount(Long periodTypeCount);
-    
-    List<PeriodTypeTransfer> getPeriodTypes();
-    void setPeriodTypes(List<PeriodTypeTransfer> periodTypes);
+    // Nothing additional beyond PeriodKindSpec, UniversalEntitySpec
     
 }
