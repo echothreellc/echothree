@@ -31,6 +31,7 @@ import com.echothree.model.control.rating.server.transfer.RatingTypeTransferCach
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.party.server.entity.Language;
+import com.echothree.model.data.rating.common.pk.RatingTypeListItemPK;
 import com.echothree.model.data.rating.common.pk.RatingTypePK;
 import com.echothree.model.data.rating.server.entity.Rating;
 import com.echothree.model.data.rating.server.entity.RatingDetail;
@@ -489,7 +490,31 @@ public class RatingControl
         
         return ratingTypeListItem;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.RatingTypeListItem */
+    public RatingTypeListItem getRatingTypeListItemByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new RatingTypeListItemPK(entityInstance.getEntityUniqueId());
+
+        return RatingTypeListItemFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public RatingTypeListItem getRatingTypeListItemByEntityInstance(EntityInstance entityInstance) {
+        return getRatingTypeListItemByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public RatingTypeListItem getRatingTypeListItemByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getRatingTypeListItemByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countRatingTypeListItemsByRatingType(final RatingType ratingType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM ratingtypelistitems
+                        JOIN ratingtypelistitemdetails ON rtgtyplidt_ratingtypelistitemdetailid = rtgtypli_activedetailid
+                        WHERE rtgtyplidt_rtgtyp_ratingtypeid = ?
+                        """, ratingType);
+    }
+
     private RatingTypeListItem getRatingTypeListItemByName(RatingType ratingType, String ratingTypeListItemName,
             EntityPermission entityPermission) {
         RatingTypeListItem ratingTypeListItem;
@@ -626,8 +651,7 @@ public class RatingControl
         return ratingTypeListItemTransferCache.getRatingTypeListItemTransfer(userVisit, ratingTypeListItem);
     }
     
-    public List<RatingTypeListItemTransfer> getRatingTypeListItemTransfers(UserVisit userVisit, RatingType ratingType) {
-        var ratingTypeListItems = getRatingTypeListItems(ratingType);
+    public List<RatingTypeListItemTransfer> getRatingTypeListItemTransfers(UserVisit userVisit, Collection<RatingTypeListItem> ratingTypeListItems) {
         List<RatingTypeListItemTransfer> ratingTypeListItemTransfers = new ArrayList<>(ratingTypeListItems.size());
         
         ratingTypeListItems.forEach((ratingTypeListItem) ->
@@ -635,6 +659,10 @@ public class RatingControl
         );
         
         return ratingTypeListItemTransfers;
+    }
+    
+    public List<RatingTypeListItemTransfer> getRatingTypeListItemTransfers(UserVisit userVisit, RatingType ratingType) {
+        return getRatingTypeListItemTransfers(userVisit, getRatingTypeListItems(ratingType));
     }
     
     private void updateRatingTypeListItemFromValue(RatingTypeListItemDetailValue ratingTypeListItemDetailValue, boolean checkDefault,
