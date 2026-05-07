@@ -16,7 +16,6 @@
 
 package com.echothree.control.user.rating.common.result;
 
-import com.echothree.model.control.core.common.transfer.ComponentVendorTransfer;
 import com.echothree.model.control.core.common.transfer.EntityTypeTransfer;
 import com.echothree.model.control.rating.common.transfer.RatingTypeTransfer;
 import com.echothree.util.common.command.BaseResult;
@@ -24,14 +23,14 @@ import java.util.List;
 
 public interface GetRatingTypesResult
         extends BaseResult {
-    
-    ComponentVendorTransfer getComponentVendor();
-    void setComponentVendor(ComponentVendorTransfer componentVendor);
-    
+
     EntityTypeTransfer getEntityType();
     void setEntityType(EntityTypeTransfer entityType);
-    
+
+    Long getRatingTypeCount();
+    void setRatingTypeCount(Long ratingTypeCount);
+
     List<RatingTypeTransfer> getRatingTypes();
     void setRatingTypes(List<RatingTypeTransfer> ratingTypes);
-    
+
 }

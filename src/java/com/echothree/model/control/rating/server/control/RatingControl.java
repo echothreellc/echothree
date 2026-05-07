@@ -31,6 +31,7 @@ import com.echothree.model.control.rating.server.transfer.RatingTypeTransferCach
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.party.server.entity.Language;
+import com.echothree.model.data.rating.common.pk.RatingTypePK;
 import com.echothree.model.data.rating.server.entity.Rating;
 import com.echothree.model.data.rating.server.entity.RatingDetail;
 import com.echothree.model.data.rating.server.entity.RatingType;
@@ -54,6 +55,7 @@ import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
@@ -62,7 +64,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
@@ -114,7 +115,31 @@ public class RatingControl
         
         return ratingType;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.RatingType */
+    public RatingType getRatingTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new RatingTypePK(entityInstance.getEntityUniqueId());
+
+        return RatingTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public RatingType getRatingTypeByEntityInstance(EntityInstance entityInstance) {
+        return getRatingTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public RatingType getRatingTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getRatingTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countRatingTypesByEntityType(final EntityType entityType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM ratingtypes
+                        JOIN ratingtypedetails ON rtgtypdt_ratingtypename = rtgtyp_activedetailid
+                        WHERE rtgtypdt_ent_entitytypeid = ?
+                        """, entityType);
+    }
+
     private List<RatingType> getRatingTypes(EntityType entityType, EntityPermission entityPermission) {
         List<RatingType> ratingTypes;
         
@@ -206,13 +231,16 @@ public class RatingControl
     }
     
     public List<RatingTypeTransfer> getRatingTypeTransfers(UserVisit userVisit, EntityType entityType) {
-        var ratingTypes = getRatingTypes(entityType);
+        return getRatingTypeTransfers(userVisit, getRatingTypes(entityType));
+    }
+
+    public List<RatingTypeTransfer> getRatingTypeTransfers(UserVisit userVisit, Collection<RatingType> ratingTypes) {
         List<RatingTypeTransfer> ratingTypeTransfers = new ArrayList<>(ratingTypes.size());
-        
+
         ratingTypes.forEach((ratingType) ->
                 ratingTypeTransfers.add(ratingTypeTransferCache.getRatingTypeTransfer(userVisit, ratingType))
         );
-        
+
         return ratingTypeTransfers;
     }
     
