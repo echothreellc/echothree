@@ -19,19 +19,22 @@ package com.echothree.control.user.rating.server.command;
 import com.echothree.control.user.rating.common.form.GetRatingTypeListItemsForm;
 import com.echothree.control.user.rating.common.result.RatingResultFactory;
 import com.echothree.model.control.rating.server.control.RatingControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.control.rating.server.logic.RatingTypeLogic;
+import com.echothree.model.data.rating.server.entity.RatingType;
+import com.echothree.model.data.rating.server.entity.RatingTypeListItem;
+import com.echothree.model.data.rating.server.factory.RatingTypeListItemFactory;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetRatingTypeListItemsCommand
-        extends BaseSimpleCommand<GetRatingTypeListItemsForm> {
+        extends BasePaginatedMultipleEntitiesCommand<RatingTypeListItem, GetRatingTypeListItemsForm> {
 
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
@@ -40,48 +43,58 @@ public class GetRatingTypeListItemsCommand
                 new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null),
                 new FieldDefinition("RatingTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
     
+    @Inject
+    RatingControl ratingControl;
+
+    @Inject
+    RatingTypeLogic ratingTypeLogic;
+
     /** Creates a new instance of GetRatingTypeListItemsCommand */
     public GetRatingTypeListItemsCommand() {
-        super(null, FORM_FIELD_DEFINITIONS, false);
+        super(null, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    RatingType ratingType;
+
     @Override
-    protected BaseResult execute() {
-        var result = RatingResultFactory.getGetRatingTypeListItemsResult();
+    protected void handleForm() {
         var componentVendorName = form.getComponentVendorName();
-        var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
-        
-        if(componentVendor != null) {
+        var entityTypeName = form.getEntityTypeName();
+        var ratingTypeName = form.getRatingTypeName();
+
+        ratingType = ratingTypeLogic.getRatingTypeByName(this, componentVendorName, entityTypeName, ratingTypeName);
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return hasExecutionErrors() ? null : ratingControl.countRatingTypeListItemsByRatingType(ratingType);
+    }
+
+    @Override
+    protected Collection<RatingTypeListItem> getEntities() {
+        return hasExecutionErrors() ? null : ratingControl.getRatingTypeListItems(ratingType);
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<RatingTypeListItem> entities) {
+        var result = RatingResultFactory.getGetRatingTypeListItemsResult();
+
+        if(entities != null) {
             var userVisit = getUserVisit();
-            var entityTypeName = form.getEntityTypeName();
-            var entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
-            
-            result.setComponentVendor(componentControl.getComponentVendorTransfer(userVisit, componentVendor));
-            
-            if(entityType != null) {
-                var ratingControl = Session.getModelController(RatingControl.class);
-                var ratingTypeName = form.getRatingTypeName();
-                var ratingType = ratingControl.getRatingTypeByName(entityType, ratingTypeName);
-                
-                result.setEntityType(entityTypeControl.getEntityTypeTransfer(userVisit, entityType));
-                
-                if(ratingType != null) {
-                    result.setRatingType(ratingControl.getRatingTypeTransfer(userVisit, ratingType));
-                    result.setRatingTypeListItems(ratingControl.getRatingTypeListItemTransfers(userVisit, ratingType));
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownRatingTypeName.name(), ratingTypeName);
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownEntityTypeName.name(), entityTypeName);
+
+            result.setRatingType(ratingControl.getRatingTypeTransfer(userVisit, ratingType));
+
+            if(session.hasLimit(RatingTypeListItemFactory.class)) {
+                result.setRatingTypeListItemCount(getTotalEntities());
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownComponentVendorName.name(), componentVendorName);
+
+            result.setRatingTypeListItems(ratingControl.getRatingTypeListItemTransfers(userVisit, entities));
         }
-        
+
         return result;
     }
-    
+
 }
