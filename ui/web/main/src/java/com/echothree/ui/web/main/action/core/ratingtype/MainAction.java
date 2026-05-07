@@ -62,13 +62,8 @@ public class MainAction
             var commandResult = RatingUtil.getHome().getRatingTypes(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
             var result = (GetRatingTypesResult)executionResult.getResult();
-            var componentVendorTransfer = result.getComponentVendor();
-            var entityTypeTransfer = result.getEntityType();
-            
-            request.setAttribute(AttributeConstants.COMPONENT_VENDOR, componentVendorTransfer);
-            request.setAttribute(AttributeConstants.COMPONENT_VENDOR_NAME, componentVendorTransfer.getComponentVendorName());
-            request.setAttribute(AttributeConstants.ENTITY_TYPE, entityTypeTransfer);
-            request.setAttribute(AttributeConstants.ENTITY_TYPE_NAME, entityTypeTransfer.getEntityTypeName());
+
+            request.setAttribute(AttributeConstants.ENTITY_TYPE, result.getEntityType());
             request.setAttribute(AttributeConstants.RATING_TYPES, result.getRatingTypes());
             forwardKey = ForwardConstants.DISPLAY;
         } catch (NamingException ne) {
