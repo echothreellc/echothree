@@ -38,6 +38,7 @@ import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.period.common.pk.PeriodKindPK;
+import com.echothree.model.data.period.common.pk.PeriodTypePK;
 import com.echothree.model.data.period.server.entity.Period;
 import com.echothree.model.data.period.server.entity.PeriodDescription;
 import com.echothree.model.data.period.server.entity.PeriodKind;
@@ -165,7 +166,7 @@ public class PeriodControl
                         """);
     }
 
-    private PeriodKind getPeriodKindByName(String periodKindName, EntityPermission entityPermission) {
+    public PeriodKind getPeriodKindByName(String periodKindName, EntityPermission entityPermission) {
         PeriodKind periodKind;
         
         try {
@@ -210,7 +211,7 @@ public class PeriodControl
         return getPeriodKindDetailValueForUpdate(getPeriodKindByNameForUpdate(periodKindName));
     }
     
-    private PeriodKind getDefaultPeriodKind(EntityPermission entityPermission) {
+    public PeriodKind getDefaultPeriodKind(EntityPermission entityPermission) {
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
@@ -593,7 +594,31 @@ public class PeriodControl
         
         return periodType;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.PeriodType */
+    public PeriodType getPeriodTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new PeriodTypePK(entityInstance.getEntityUniqueId());
+
+        return PeriodTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public PeriodType getPeriodTypeByEntityInstance(EntityInstance entityInstance) {
+        return getPeriodTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public PeriodType getPeriodTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getPeriodTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countPeriodTypes(final PeriodKind periodKind) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM periodtypes
+                        JOIN periodtypedetails ON prdtdt_periodtypedetailid = prdt_activedetailid
+                        WHERE prdtdt_prdk_periodkindid = ?
+                        """, periodKind);
+    }
+
     private List<PeriodType> getPeriodTypes(PeriodKind periodKind, EntityPermission entityPermission) {
         List<PeriodType> periodTypes;
         
