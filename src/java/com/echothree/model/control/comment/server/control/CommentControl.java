@@ -31,6 +31,7 @@ import com.echothree.model.control.comment.server.transfer.CommentUsageTypeDescr
 import com.echothree.model.control.comment.server.transfer.CommentUsageTypeTransferCache;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
+import com.echothree.model.data.comment.common.pk.CommentTypePK;
 import com.echothree.model.data.comment.server.entity.Comment;
 import com.echothree.model.data.comment.server.entity.CommentBlob;
 import com.echothree.model.data.comment.server.entity.CommentClob;
@@ -74,6 +75,7 @@ import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.common.persistence.type.ByteArray;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
@@ -82,7 +84,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
@@ -138,7 +139,31 @@ public class CommentControl
         
         return commentType;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.CommentType */
+    public CommentType getCommentTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new CommentTypePK(entityInstance.getEntityUniqueId());
+
+        return CommentTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public CommentType getCommentTypeByEntityInstance(EntityInstance entityInstance) {
+        return getCommentTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public CommentType getCommentTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getCommentTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countCommentTypes(final EntityType entityType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM commenttypes
+                        JOIN commenttypedetails ON cmnttypdt_commenttypedetailid = cmnttyp_activedetailid
+                        WHERE cmnttypdt_ent_entitytypeid = ?
+                        """, entityType);
+    }
+
     private List<CommentType> getCommentTypes(EntityType entityType, EntityPermission entityPermission) {
         List<CommentType> commentTypes;
         
@@ -229,15 +254,18 @@ public class CommentControl
         return commentTypeTransferCache.getCommentTypeTransfer(userVisit, commentType);
     }
     
-    public List<CommentTypeTransfer> getCommentTypeTransfers(UserVisit userVisit, EntityType entityType) {
-        var commentTypes = getCommentTypes(entityType);
+    public List<CommentTypeTransfer> getCommentTypeTransfers(UserVisit userVisit, Collection<CommentType> commentTypes) {
         List<CommentTypeTransfer> commentTypeTransfers = new ArrayList<>(commentTypes.size());
-        
+
         commentTypes.forEach((commentType) ->
                 commentTypeTransfers.add(commentTypeTransferCache.getCommentTypeTransfer(userVisit, commentType))
         );
-        
+
         return commentTypeTransfers;
+    }
+
+    public List<CommentTypeTransfer> getCommentTypeTransfers(UserVisit userVisit, EntityType entityType) {
+        return getCommentTypeTransfers(userVisit, getCommentTypes(entityType));
     }
     
     public void updateCommentTypeFromValue(CommentTypeDetailValue commentTypeDetailValue, BasePK updatedBy) {
