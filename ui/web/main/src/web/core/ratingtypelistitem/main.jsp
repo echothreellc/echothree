@@ -31,12 +31,12 @@
                 <a href="<c:url value="/action/Core/Main" />">Core</a> &gt;&gt;
                 <a href="<c:url value="/action/Core/ComponentVendor/Main" />">Component Vendors</a> &gt;&gt;
                 <c:url var="entityTypesUrl" value="/action/Core/EntityType/Main">
-                    <c:param name="ComponentVendorName" value="${componentVendorName}" />
+                    <c:param name="ComponentVendorName" value="${ratingType.entityType.componentVendor.componentVendorName}" />
                 </c:url>
                 <a href="${entityTypesUrl}">Entity Types</a> &gt;&gt;
                 <c:url var="ratingTypesUrl" value="/action/Core/RatingType/Main">
-                    <c:param name="ComponentVendorName" value="${componentVendorName}" />
-                    <c:param name="EntityTypeName" value="${entityTypeName}" />
+                    <c:param name="ComponentVendorName" value="${ratingType.entityType.componentVendor.componentVendorName}" />
+                    <c:param name="EntityTypeName" value="${ratingType.entityType.entityTypeName}" />
                 </c:url>
                 <a href="${ratingTypesUrl}">Rating Types</a> &gt;&gt;
                 List Items
@@ -44,9 +44,9 @@
         </div>
         <div id="Content">
             <c:url var="addUrl" value="/action/Core/RatingTypeListItem/Add">
-                <c:param name="ComponentVendorName" value="${componentVendorName}" />
-                <c:param name="EntityTypeName" value="${entityTypeName}" />
-                <c:param name="RatingTypeName" value="${ratingTypeName}" />
+                <c:param name="ComponentVendorName" value="${ratingType.entityType.componentVendor.componentVendorName}" />
+                <c:param name="EntityTypeName" value="${ratingType.entityType.entityTypeName}" />
+                <c:param name="RatingTypeName" value="${ratingType.ratingTypeName}" />
             </c:url>
             <p><a href="${addUrl}">Add List Item.</a></p>
             <et:checkSecurityRoles securityRoles="Event.List" />
