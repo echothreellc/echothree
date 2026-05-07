@@ -31,7 +31,7 @@
                 <a href="<c:url value="/action/Core/Main" />">Core</a> &gt;&gt;
                 <a href="<c:url value="/action/Core/ComponentVendor/Main" />">Component Vendors</a> &gt;&gt;
                 <c:url var="entityTypesUrl" value="/action/Core/EntityType/Main">
-                    <c:param name="ComponentVendorName" value="${componentVendorName}" />
+                    <c:param name="ComponentVendorName" value="${entityType.componentVendor.componentVendorName}" />
                 </c:url>
                 <a href="${entityTypesUrl}">Entity Types</a> &gt;&gt;
                 Comment Types
@@ -39,8 +39,8 @@
         </div>
         <div id="Content">
             <c:url var="addUrl" value="/action/Core/CommentType/Add">
-                <c:param name="ComponentVendorName" value="${componentVendorName}" />
-                <c:param name="EntityTypeName" value="${entityTypeName}" />
+                <c:param name="ComponentVendorName" value="${entityType.componentVendor.componentVendorName}" />
+                <c:param name="EntityTypeName" value="${entityType.entityTypeName}" />
             </c:url>
             <p><a href="${addUrl}">Add Comment Type.</a></p>
             <et:checkSecurityRoles securityRoles="Event.List" />
