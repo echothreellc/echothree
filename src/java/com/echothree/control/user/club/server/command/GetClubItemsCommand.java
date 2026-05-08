@@ -43,17 +43,17 @@ public class GetClubItemsCommand
                 new FieldDefinition("ClubName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
-    /** Creates a new instance of GetClubItemsCommand */
-    public GetClubItemsCommand() {
-        super(null, FORM_FIELD_DEFINITIONS, true);
-    }
 
     @Inject
     ClubControl clubControl;
 
     @Inject
     ClubLogic clubLogic;
+
+    /** Creates a new instance of GetClubItemsCommand */
+    public GetClubItemsCommand() {
+        super(null, FORM_FIELD_DEFINITIONS, true);
+    }
 
     Club club;
 
