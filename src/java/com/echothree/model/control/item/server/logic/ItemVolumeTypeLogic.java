@@ -36,10 +36,17 @@ import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class ItemVolumeTypeLogic
     extends BaseLogic {
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    ItemControl itemControl;
 
     protected ItemVolumeTypeLogic() {
         super();
@@ -52,7 +59,6 @@ public class ItemVolumeTypeLogic
     public ItemVolumeType createItemVolumeType(final ExecutionErrorAccumulator eea, final String itemVolumeTypeName,
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description,
             final BasePK createdBy) {
-        var itemControl = Session.getModelController(ItemControl.class);
         var itemVolumeType = itemControl.getItemVolumeTypeByName(itemVolumeTypeName);
 
         if(itemVolumeType == null) {
@@ -70,7 +76,6 @@ public class ItemVolumeTypeLogic
 
     public ItemVolumeType getItemVolumeTypeByName(final ExecutionErrorAccumulator eea, final String itemVolumeTypeName,
             final EntityPermission entityPermission) {
-        var itemControl = Session.getModelController(ItemControl.class);
         var itemVolumeType = itemControl.getItemVolumeTypeByName(itemVolumeTypeName, entityPermission);
 
         if(itemVolumeType == null) {
@@ -91,9 +96,8 @@ public class ItemVolumeTypeLogic
     public ItemVolumeType getItemVolumeTypeByUniversalSpec(final ExecutionErrorAccumulator eea,
             final ItemVolumeTypeUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
         ItemVolumeType itemVolumeType = null;
-        var itemControl = Session.getModelController(ItemControl.class);
         var itemVolumeTypeName = universalSpec.getItemVolumeTypeName();
-        var parameterCount = (itemVolumeTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (itemVolumeTypeName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 0 -> {
@@ -109,7 +113,7 @@ public class ItemVolumeTypeLogic
             }
             case 1 -> {
                 if(itemVolumeTypeName == null) {
-                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = entityInstanceLogic.getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHO_THREE.name(), EntityTypes.ItemVolumeType.name());
 
                     if(!eea.hasExecutionErrors()) {
@@ -138,15 +142,11 @@ public class ItemVolumeTypeLogic
 
     public void updateItemVolumeTypeFromValue(final Session session, final ItemVolumeTypeDetailValue itemVolumeTypeDetailValue,
             final BasePK updatedBy) {
-        final var itemControl = Session.getModelController(ItemControl.class);
-
         itemControl.updateItemVolumeTypeFromValue(itemVolumeTypeDetailValue, updatedBy);
     }
     
     public void deleteItemVolumeType(final ExecutionErrorAccumulator eea, final ItemVolumeType itemVolumeType,
             final BasePK deletedBy) {
-        var itemControl = Session.getModelController(ItemControl.class);
-
         itemControl.deleteItemVolumeType(itemVolumeType, deletedBy);
     }
 

@@ -373,6 +373,7 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.common.persistence.type.ByteArray;
 import com.echothree.util.common.transfer.HistoryTransfer;
 import com.echothree.util.common.transfer.ListWrapper;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
@@ -388,7 +389,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
@@ -9878,6 +9878,30 @@ public class ItemControl
         return itemVolume;
     }
 
+    public long countItemVolumesByItem(final Item item) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM itemvolumes
+                        WHERE ivol_itm_itemid = ? AND ivol_thrutime = ?
+                        """, item, Session.MAX_TIME);
+    }
+
+    public long countItemVolumesByUnitOfMeasureType(final UnitOfMeasureType unitOfMeasureType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM itemvolumes
+                        WHERE ivol_uomt_unitofmeasuretypeid = ? AND ivol_thrutime = ?
+                        """, unitOfMeasureType, Session.MAX_TIME);
+    }
+
+    public long countItemVolumesByItemVolumeType(final ItemVolumeType itemVolumeType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM itemvolumes
+                        WHERE ivol_ivolt_itemvolumetypeid = ? AND ivol_thrutime = ?
+                        """, itemVolumeType, Session.MAX_TIME);
+    }
+
     private ItemVolume getItemVolume(Item item, UnitOfMeasureType unitOfMeasureType, ItemVolumeType itemVolumeType,
             EntityPermission entityPermission) {
         ItemVolume itemVolume;
@@ -10086,8 +10110,7 @@ public class ItemControl
         return getItemVolumeTransfer(userVisit, getItemVolume(item, unitOfMeasureType, itemVolumeType));
     }
 
-    public List<ItemVolumeTransfer> getItemVolumeTransfersByItem(UserVisit userVisit, Item item) {
-        var itemVolumes = getItemVolumesByItem(item);
+    public List<ItemVolumeTransfer> getItemVolumeTransfers(UserVisit userVisit, Collection<ItemVolume> itemVolumes) {
         List<ItemVolumeTransfer> itemVolumeTransfers = new ArrayList<>(itemVolumes.size());
 
         itemVolumes.forEach((itemVolume) ->
@@ -10095,6 +10118,10 @@ public class ItemControl
         );
 
         return itemVolumeTransfers;
+    }
+
+    public List<ItemVolumeTransfer> getItemVolumeTransfersByItem(UserVisit userVisit, Item item) {
+        return getItemVolumeTransfers(userVisit, getItemVolumesByItem(item));
     }
 
     public void deleteItemVolume(ItemVolume itemVolume, BasePK deletedBy) {

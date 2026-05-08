@@ -19,18 +19,22 @@ package com.echothree.control.user.item.server.command;
 import com.echothree.control.user.item.common.form.GetItemVolumesForm;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.item.server.control.ItemControl;
+import com.echothree.model.control.item.server.logic.ItemLogic;
+import com.echothree.model.data.item.server.entity.Item;
+import com.echothree.model.data.item.server.entity.ItemVolume;
+import com.echothree.model.data.item.server.factory.ItemVolumeFactory;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetItemVolumesCommand
-        extends BaseSimpleCommand<GetItemVolumesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<ItemVolume, GetItemVolumesForm> {
 
     // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -41,27 +45,50 @@ public class GetItemVolumesCommand
         );
     }
     
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    ItemLogic itemLogic;
+
     /** Creates a new instance of GetItemVolumesCommand */
     public GetItemVolumesCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    Item item;
+
     @Override
-    protected BaseResult execute() {
-        var itemControl = Session.getModelController(ItemControl.class);
+    protected void handleForm() {
+        item = itemLogic.getItemByName(this, form.getItemName());
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return hasExecutionErrors() ? null : itemControl.countItemVolumesByItem(item);
+    }
+
+    @Override
+    protected Collection<ItemVolume> getEntities() {
+        return hasExecutionErrors() ? null : itemControl.getItemVolumesByItem(item);
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<ItemVolume> entities) {
         var result = ItemResultFactory.getGetItemVolumesResult();
-        var itemName = form.getItemName();
-        var item = itemControl.getItemByName(itemName);
-        
-        if(item != null) {
+
+        if(entities != null) {
             var userVisit = getUserVisit();
-            
+
             result.setItem(itemControl.getItemTransfer(userVisit, item));
-            result.setItemVolumes(itemControl.getItemVolumeTransfersByItem(userVisit, item));
-        } else {
-            addExecutionError(ExecutionErrors.UnknownItemName.name(), itemName);
+
+            if(session.hasLimit(ItemVolumeFactory.class)) {
+                result.setItemVolumeCount(getTotalEntities());
+            }
+
+            result.setItemVolumes(itemControl.getItemVolumeTransfers(userVisit, entities));
         }
-        
+
         return result;
     }
     
