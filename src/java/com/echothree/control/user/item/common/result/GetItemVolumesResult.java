@@ -26,6 +26,9 @@ public interface GetItemVolumesResult
     
     ItemTransfer getItem();
     void setItem(ItemTransfer item);
+
+    Long getItemVolumeCount();
+    void setItemVolumeCount(Long itemVolumeCount);
     
     List<ItemVolumeTransfer> getItemVolumes();
     void setItemVolumes(List<ItemVolumeTransfer> itemVolumes);
