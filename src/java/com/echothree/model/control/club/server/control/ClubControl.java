@@ -218,7 +218,7 @@ public class ClubControl
         return getDefaultClubForUpdate().getLastDetailForUpdate().getClubDetailValue().clone();
     }
     
-    private Club getClubByName(String clubName, EntityPermission entityPermission) {
+    public Club getClubByName(String clubName, EntityPermission entityPermission) {
         Club club;
         
         try {
@@ -708,7 +708,31 @@ public class ClubControl
         
         return clubItem;
     }
-    
+
+    public long countClubItemsByClub(final Club club) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM clubitems
+                        WHERE clbitm_clb_clubid = ? AND clbitm_thrutime = ?
+                        """, club, Session.MAX_TIME);
+    }
+
+    public long countClubItemsByClubItemType(final ClubItemType clubItemType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM clubitems
+                        WHERE clbitm_clbitmtyp_clubitemtypeid = ? AND clbitm_thrutime = ?
+                        """, clubItemType, Session.MAX_TIME);
+    }
+
+    public long countClubItemsByItem(final Item item) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM clubitems
+                        WHERE clbitm_itm_itemid = ? AND clbitm_thrutime = ?
+                        """, item, Session.MAX_TIME);
+    }
+
     private ClubItem getClubItem(Club club, ClubItemType clubItemType, Item item, EntityPermission entityPermission) {
         ClubItem clubItem;
         
@@ -837,7 +861,7 @@ public class ClubControl
         return clubItemTransferCache.getClubItemTransfer(userVisit, clubItem);
     }
     
-    private List<ClubItemTransfer> getClubItemTransfers(UserVisit userVisit, Collection<ClubItem> clubItems) {
+    public List<ClubItemTransfer> getClubItemTransfers(UserVisit userVisit, Collection<ClubItem> clubItems) {
         List<ClubItemTransfer> clubItemTransfers = new ArrayList<>(clubItems.size());
         
         clubItems.forEach((clubItem) ->

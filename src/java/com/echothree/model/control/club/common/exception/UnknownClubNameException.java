@@ -14,23 +14,31 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.club.common.result;
+package com.echothree.model.control.club.common.exception;
 
-import com.echothree.model.control.club.common.transfer.ClubItemTransfer;
-import com.echothree.model.control.club.common.transfer.ClubTransfer;
-import com.echothree.util.common.command.BaseResult;
-import java.util.List;
+import com.echothree.util.common.message.Message;
 
-public interface GetClubItemsResult
-        extends BaseResult {
-    
-    ClubTransfer getClub();
-    void setClub(ClubTransfer club);
+public class UnknownClubNameException
+        extends BaseClubException {
 
-    Long getClubItemCount();
-    void setClubItemCount(Long clubItemCount);
-    
-    List<ClubItemTransfer> getClubItems();
-    void setClubItems(List<ClubItemTransfer> clubItems);
-    
+    /** Creates a new instance of UnknownClubNameException */
+    public UnknownClubNameException() {
+        super();
+    }
+
+    /** Creates a new instance of UnknownClubNameException */
+    public UnknownClubNameException(String message) {
+        super(message);
+    }
+
+    /** Creates a new instance of UnknownClubNameException */
+    public UnknownClubNameException(Throwable cause) {
+        super(cause);
+    }
+
+    /** Creates a new instance of UnknownClubNameException */
+    public UnknownClubNameException(Message message) {
+        super(message);
+    }
+
 }
