@@ -55,6 +55,7 @@ import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.printer.common.pk.PrinterGroupJobPK;
 import com.echothree.model.data.printer.common.pk.PrinterGroupPK;
+import com.echothree.model.data.printer.common.pk.PrinterPK;
 import com.echothree.model.data.printer.server.entity.PartyPrinterGroupUse;
 import com.echothree.model.data.printer.server.entity.Printer;
 import com.echothree.model.data.printer.server.entity.PrinterDescription;
@@ -628,13 +629,36 @@ public class PrinterControl
         return printer;
     }
 
-    public long countPrintersByPrinterGroup(PrinterGroup printerGroup) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM printergroups, printergroupdetails " +
-                "WHERE prngrp_activedetailid = prngrpdt_printergroupdetailid " +
-                "AND prngrpdt_prngrp_printergroupid = ?",
-                printerGroup);
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Printer */
+    public Printer getPrinterByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new PrinterPK(entityInstance.getEntityUniqueId());
+
+        return PrinterFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public Printer getPrinterByEntityInstance(EntityInstance entityInstance) {
+        return getPrinterByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public Printer getPrinterByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getPrinterByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countPrinters() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM printers
+                        JOIN printerdetails ON prndt_printerdetailid = prn_activedetailid
+                        """);
+    }
+
+    public long countPrintersByPrinterGroup(final PrinterGroup printerGroup) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM printers
+                        JOIN printerdetails ON prndt_printerdetailid = prn_activedetailid
+                        AND prndt_prngrp_printergroupid = ?
+                        """, printerGroup);
     }
 
     private static final Map<EntityPermission, String> getPrinterByNameQueries;

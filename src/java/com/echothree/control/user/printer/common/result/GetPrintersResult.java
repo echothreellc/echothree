@@ -27,6 +27,9 @@ public interface GetPrintersResult
     PrinterGroupTransfer getPrinterGroup();
     void setPrinterGroup(PrinterGroupTransfer printerGroup);
     
+    Long getPrinterCount();
+    void setPrinterCount(Long printerCount);
+
     List<PrinterTransfer> getPrinters();
     void setPrinters(List<PrinterTransfer> printers);
     
