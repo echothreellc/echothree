@@ -26,6 +26,9 @@ public interface GetLeavesResult
     
     PartyTransfer getParty();
     void setParty(PartyTransfer party);
+
+    Long getLeaveCount();
+    void setLeaveCount(Long leaveCount);
     
     List<LeaveTransfer> getLeaves();
     void setLeaves(List<LeaveTransfer> leaves);
