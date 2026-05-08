@@ -20,15 +20,15 @@ import com.echothree.control.user.comment.common.form.GetCommentUsageTypeForm;
 import com.echothree.control.user.comment.common.result.CommentResultFactory;
 import com.echothree.model.control.comment.server.control.CommentControl;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.control.core.server.logic.EntityTypeLogic;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetCommentUsageTypeCommand
@@ -42,8 +42,14 @@ public class GetCommentUsageTypeCommand
                 new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null),
                 new FieldDefinition("CommentTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("CommentUsageTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    CommentControl commentControl;
+
+    @Inject
+    EntityTypeLogic entityTypeLogic;
 
     /** Creates a new instance of GetCommentUsageTypeCommand */
     public GetCommentUsageTypeCommand() {
@@ -52,39 +58,27 @@ public class GetCommentUsageTypeCommand
 
     @Override
     protected BaseResult execute() {
+        var entityType = entityTypeLogic.getEntityTypeByName(this, form.getComponentVendorName(), form.getEntityTypeName());
         var result = CommentResultFactory.getGetCommentUsageTypeResult();
-        var componentVendorName = form.getComponentVendorName();
-        var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
 
-        if(componentVendor != null) {
-            var userVisit = getUserVisit();
-            var entityTypeName = form.getEntityTypeName();
-            var entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
+        if(!hasExecutionErrors()) {
+            var commentTypeName = form.getCommentTypeName();
+            var commentType = commentControl.getCommentTypeByName(entityType, commentTypeName);
 
-            if(entityType != null) {
-                var commentControl = Session.getModelController(CommentControl.class);
-                var commentTypeName = form.getCommentTypeName();
-                var commentType = commentControl.getCommentTypeByName(entityType, commentTypeName);
+            if(commentType != null) {
+                var commentUsageTypeName = form.getCommentUsageTypeName();
+                var commentUsageType = commentControl.getCommentUsageTypeByName(commentType, commentUsageTypeName);
 
-                if(commentType != null) {
-                    var commentUsageTypeName = form.getCommentUsageTypeName();
-                    var commentUsageType = commentControl.getCommentUsageTypeByName(commentType, commentUsageTypeName);
+                if(commentUsageType != null) {
+                    result.setCommentUsageType(commentControl.getCommentUsageTypeTransfer(getUserVisit(), commentUsageType));
 
-                    if(commentUsageType != null) {
-                        result.setCommentUsageType(commentControl.getCommentUsageTypeTransfer(userVisit, commentUsageType));
-
-                        sendEvent(commentUsageType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownCommentUsageTypeName.name(), commentUsageTypeName);
-                    }
+                    sendEvent(commentUsageType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
                 } else {
-                    addExecutionError(ExecutionErrors.UnknownCommentTypeName.name(), commentTypeName);
+                    addExecutionError(ExecutionErrors.UnknownCommentUsageTypeName.name(), commentUsageTypeName);
                 }
             } else {
-                addExecutionError(ExecutionErrors.UnknownEntityTypeName.name(), entityTypeName);
+                addExecutionError(ExecutionErrors.UnknownCommentTypeName.name(), commentTypeName);
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownComponentVendorName.name(), componentVendorName);
         }
 
         return result;

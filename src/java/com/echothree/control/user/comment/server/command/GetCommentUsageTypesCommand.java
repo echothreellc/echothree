@@ -19,19 +19,23 @@ package com.echothree.control.user.comment.server.command;
 import com.echothree.control.user.comment.common.form.GetCommentUsageTypesForm;
 import com.echothree.control.user.comment.common.result.CommentResultFactory;
 import com.echothree.model.control.comment.server.control.CommentControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.control.core.server.logic.EntityTypeLogic;
+import com.echothree.model.data.comment.server.entity.CommentType;
+import com.echothree.model.data.comment.server.entity.CommentUsageType;
+import com.echothree.model.data.comment.server.factory.CommentUsageTypeFactory;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetCommentUsageTypesCommand
-        extends BaseSimpleCommand<GetCommentUsageTypesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<CommentUsageType, GetCommentUsageTypesForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
@@ -40,48 +44,64 @@ public class GetCommentUsageTypesCommand
                 new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null),
                 new FieldDefinition("CommentTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
-    
+
+    @Inject
+    CommentControl commentControl;
+
+    @Inject
+    EntityTypeLogic entityTypeLogic;
+
     /** Creates a new instance of GetCommentUsageTypesCommand */
     public GetCommentUsageTypesCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    CommentType commentType;
+
     @Override
-    protected BaseResult execute() {
-        var result = CommentResultFactory.getGetCommentUsageTypesResult();
-        var componentVendorName = form.getComponentVendorName();
-        var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
-        
-        if(componentVendor != null) {
-            var userVisit = getUserVisit();
-            var entityTypeName = form.getEntityTypeName();
-            var entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
-            
-            result.setComponentVendor(componentControl.getComponentVendorTransfer(userVisit, componentVendor));
-            
-            if(entityType != null) {
-                var commentControl = Session.getModelController(CommentControl.class);
-                var commentTypeName = form.getCommentTypeName();
-                var commentType = commentControl.getCommentTypeByName(entityType, commentTypeName);
-                
-                result.setEntityType(entityTypeControl.getEntityTypeTransfer(userVisit, entityType));
-                
-                if(commentType != null) {
-                    result.setCommentType(commentControl.getCommentTypeTransfer(userVisit, commentType));
-                    result.setCommentUsageTypes(commentControl.getCommentUsageTypeTransfers(userVisit, commentType));
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownCommentTypeName.name(), commentTypeName);
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownEntityTypeName.name(), entityTypeName);
+    protected void handleForm() {
+        var entityType = entityTypeLogic.getEntityTypeByName(this, form.getComponentVendorName(), form.getEntityTypeName());
+
+        if(!hasExecutionErrors()) {
+            var commentTypeName = form.getCommentTypeName();
+
+            commentType = commentControl.getCommentTypeByName(entityType, commentTypeName);
+
+            if(commentType == null) {
+                addExecutionError(ExecutionErrors.UnknownCommentTypeName.name(), commentTypeName);
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownComponentVendorName.name(), componentVendorName);
         }
-        
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return hasExecutionErrors() ? null : commentControl.countCommentUsageTypesByCommentType(commentType);
+    }
+
+    @Override
+    protected Collection<CommentUsageType> getEntities() {
+        return hasExecutionErrors() ? null : commentControl.getCommentUsageTypes(commentType);
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<CommentUsageType> entities) {
+        var result = CommentResultFactory.getGetCommentUsageTypesResult();
+
+        if(entities != null) {
+            var userVisit = getUserVisit();
+
+            result.setCommentType(commentControl.getCommentTypeTransfer(userVisit, commentType));
+
+            if(session.hasLimit(CommentUsageTypeFactory.class)) {
+                result.setCommentUsageTypeCount(getTotalEntities());
+            }
+
+            result.setCommentUsageTypes(commentControl.getCommentUsageTypeTransfers(userVisit, entities));
+        }
+
         return result;
     }
-    
+
 }
