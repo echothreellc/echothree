@@ -23,6 +23,9 @@ import java.util.List;
 public interface GetPrinterGroupUseTypesResult
         extends BaseResult {
     
+    Long getPrinterGroupUseTypeCount();
+    void setPrinterGroupUseTypeCount(Long printerGroupUseTypeCount);
+
     List<PrinterGroupUseTypeTransfer> getPrinterGroupUseTypes();
     void setPrinterGroupUseTypes(List<PrinterGroupUseTypeTransfer> printerGroupUseTypes);
     
