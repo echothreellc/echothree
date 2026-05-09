@@ -21,9 +21,9 @@ import com.echothree.control.user.payment.common.result.PaymentResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.payment.server.control.PartyPaymentMethodControl;
+import com.echothree.model.control.payment.server.logic.PartyPaymentMethodLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -32,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetPartyPaymentMethodCommand
@@ -49,12 +49,12 @@ public class GetPartyPaymentMethodCommand
                 new PartyTypeDefinition(PartyTypes.CUSTOMER.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.PartyPaymentMethod.name(), SecurityRoles.Review.name())
-                        ))
-                ));
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyPaymentMethodName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
     
     /** Creates a new instance of GetPartyPaymentMethodCommand */
@@ -62,14 +62,19 @@ public class GetPartyPaymentMethodCommand
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
+    @Inject
+    PartyPaymentMethodControl partyPaymentMethodControl;
+
+    @Inject
+    PartyPaymentMethodLogic partyPaymentMethodLogic;
+    
     @Override
     protected BaseResult execute() {
-        var partyPaymentMethodControl = Session.getModelController(PartyPaymentMethodControl.class);
         var result = PaymentResultFactory.getGetPartyPaymentMethodResult();
         var partyPaymentMethodName = form.getPartyPaymentMethodName();
-        var partyPaymentMethod = partyPaymentMethodControl.getPartyPaymentMethodByName(partyPaymentMethodName);
+        var partyPaymentMethod = partyPaymentMethodLogic.getPartyPaymentMethodByName(this, partyPaymentMethodName);
         
-        if(partyPaymentMethod != null) {
+        if(!hasExecutionErrors()) {
             var party = getParty();
             var partyTypeName = party.getLastDetail().getPartyType().getPartyTypeName();
 
@@ -77,14 +82,13 @@ public class GetPartyPaymentMethodCommand
             // return a UnknownPartyPaymentMethodName error.
             if(partyTypeName.equals(PartyTypes.CUSTOMER.name())) {
                 if(!partyPaymentMethod.getLastDetail().getParty().equals(party)) {
+                    addExecutionError(ExecutionErrors.UnknownPartyPaymentMethodName.name(), partyPaymentMethodName);
                     partyPaymentMethod = null;
                 }
             }
         }
 
-        if(partyPaymentMethod == null) {
-            addExecutionError(ExecutionErrors.UnknownPartyPaymentMethodName.name(), partyPaymentMethodName);
-        } else {
+        if(!hasExecutionErrors()) {
             result.setPartyPaymentMethod(partyPaymentMethodControl.getPartyPaymentMethodTransfer(getUserVisit(), partyPaymentMethod));
 
             sendEvent(partyPaymentMethod.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
