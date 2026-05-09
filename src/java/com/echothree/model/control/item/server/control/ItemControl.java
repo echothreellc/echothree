@@ -5705,7 +5705,39 @@ public class ItemControl
         
         return itemUnitPriceLimit;
     }
-    
+
+    public long countItemUnitPriceLimitsByItem(final Item item) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM itemunitpricelimits
+                        WHERE iupl_itm_itemid = ? AND iupl_thrutime = ?
+                        """, item, Session.MAX_TIME);
+    }
+
+    public long countItemUnitPriceLimitsByInventoryCondition(final InventoryCondition inventoryCondition) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM itemunitpricelimits
+                        WHERE iupl_itm_itemid = ? AND iupl_thrutime = ?
+                        """, inventoryCondition, Session.MAX_TIME);
+    }
+
+    public long countItemUnitPriceLimitsByUnitOfMeasureType(final UnitOfMeasureType unitOfMeasureType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM itemunitpricelimits
+                        WHERE iupl_itm_itemid = ? AND iupl_thrutime = ?
+                        """, unitOfMeasureType, Session.MAX_TIME);
+    }
+
+    public long countItemUnitPriceLimitsByCurrency(final Currency currency) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM itemunitpricelimits
+                        WHERE iupl_itm_itemid = ? AND iupl_thrutime = ?
+                        """, currency, Session.MAX_TIME);
+    }
+
     private ItemUnitPriceLimit getItemUnitPriceLimit(Item item, InventoryCondition inventoryCondition,
             UnitOfMeasureType unitOfMeasureType, Currency currency, EntityPermission entityPermission) {
         ItemUnitPriceLimit itemUnitPriceLimit;
@@ -5941,15 +5973,18 @@ public class ItemControl
         return getItemUnitPriceLimitTransfer(userVisit, getItemUnitPriceLimit(item, inventoryCondition, unitOfMeasureType, currency));
     }
 
-    public List<ItemUnitPriceLimitTransfer> getItemUnitPriceLimitTransfersByItem(UserVisit userVisit, Item item) {
-        var itemUnitPriceLimits = getItemUnitPriceLimitsByItem(item);
+    public List<ItemUnitPriceLimitTransfer> getItemUnitPriceLimitTransfers(UserVisit userVisit, Collection<ItemUnitPriceLimit> itemUnitPriceLimits) {
         List<ItemUnitPriceLimitTransfer> itemUnitPriceLimitTransfers = new ArrayList<>(itemUnitPriceLimits.size());
-        
+
         itemUnitPriceLimits.forEach((itemUnitPriceLimit) ->
                 itemUnitPriceLimitTransfers.add(itemUnitPriceLimitTransferCache.getTransfer(userVisit, itemUnitPriceLimit))
         );
-        
+
         return itemUnitPriceLimitTransfers;
+    }
+
+    public List<ItemUnitPriceLimitTransfer> getItemUnitPriceLimitTransfersByItem(UserVisit userVisit, Item item) {
+        return getItemUnitPriceLimitTransfers(userVisit, getItemUnitPriceLimitsByItem(item));
     }
     
     public void deleteItemUnitPriceLimit(ItemUnitPriceLimit itemUnitPriceLimit, BasePK deletedBy) {
