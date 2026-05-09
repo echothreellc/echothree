@@ -10620,7 +10620,31 @@ public class ItemControl
         
         return itemWeight;
     }
-    
+
+    public long countItemWeightsByItem(final Item item) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM itemweights
+                        WHERE iwght_itm_itemid = ? AND iwght_thrutime = ?
+                        """, item, Session.MAX_TIME);
+    }
+
+    public long countItemWeightsByUnitOfMeasureType(final UnitOfMeasureType unitOfMeasureType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM itemweights
+                        WHERE iwght_uomt_unitofmeasuretypeid = ? AND iwght_thrutime = ?
+                        """, unitOfMeasureType, Session.MAX_TIME);
+    }
+
+    public long countItemWeightsByItemWeightType(final ItemWeightType itemWeightType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM itemweights
+                        WHERE iwght_iwghtt_itemweighttypeid = ? AND iwght_thrutime = ?
+                        """, itemWeightType, Session.MAX_TIME);
+    }
+
     private ItemWeight getItemWeight(Item item, UnitOfMeasureType unitOfMeasureType, ItemWeightType itemWeightType,
             EntityPermission entityPermission) {
         ItemWeight itemWeight;
