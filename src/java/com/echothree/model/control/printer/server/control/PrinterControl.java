@@ -1073,39 +1073,35 @@ public class PrinterControl
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.PrinterGroupJob */
-    public PrinterGroupJob getPrinterGroupJobByEntityInstance(EntityInstance entityInstance) {
+    public PrinterGroupJob getPrinterGroupJobByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new PrinterGroupJobPK(entityInstance.getEntityUniqueId());
-        var printerGroupJob = PrinterGroupJobFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
-        return printerGroupJob;
+        return PrinterGroupJobFactory.getInstance().getEntityFromPK(entityPermission, pk);
     }
 
-    private PrinterGroupJob convertEntityInstanceToPrinterGroupJob(final EntityInstance entityInstance, final EntityPermission entityPermission) {
-        var entityInstanceControl = Session.getModelController(EntityInstanceControl.class);
-        PrinterGroupJob printerGroupJob = null;
-
-        if(entityInstanceControl.verifyEntityInstance(entityInstance, ComponentVendors.ECHO_THREE.name(), EntityTypes.PrinterGroupJob.name())) {
-            printerGroupJob = PrinterGroupJobFactory.getInstance().getEntityFromPK(entityPermission, new PrinterGroupJobPK(entityInstance.getEntityUniqueId()));
-        }
-
-        return printerGroupJob;
+    public PrinterGroupJob getPrinterGroupJobByEntityInstance(EntityInstance entityInstance) {
+        return getPrinterGroupJobByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
     }
 
-    public PrinterGroupJob convertEntityInstanceToPrinterGroupJob(final EntityInstance entityInstance) {
-        return convertEntityInstanceToPrinterGroupJob(entityInstance, EntityPermission.READ_ONLY);
+    public PrinterGroupJob getPrinterGroupJobByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getPrinterGroupJobByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
 
-    public PrinterGroupJob convertEntityInstanceToPrinterGroupJobForUpdate(final EntityInstance entityInstance) {
-        return convertEntityInstanceToPrinterGroupJob(entityInstance, EntityPermission.READ_WRITE);
+    public long countPrinterGroupJobsByPrinterGroup(final PrinterGroup printerGroup) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM printergroupjobs
+                        JOIN printergroupjobdetails ON prngrpjdt_printergroupjobdetailid = prngrpj_activedetailid
+                        WHERE prngrpjdt_prngrp_printergroupid = ?
+                        """);
     }
 
-    public long countPrinterGroupJobsByPrinterGroup(PrinterGroup printerGroup) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM printergroupjobs, printergroupjobdetails " +
-                "WHERE prngrpj_activedetailid = prngrpjdt_printergroupjobdetailid " +
-                "AND prngrpjdt_prngrp_printergroupid = ?",
-                printerGroup);
+    public long countPrinterGroupJobsByPrinterGroupJobStatus(final WorkflowStep workflowStep) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM workflowentitystatuses
+                        WHERE wkfles_wkfls_workflowstepid = ? AND wkfles_thrutime = ?
+                        """, workflowStep, Session.MAX_TIME);
     }
 
     private static final Map<EntityPermission, String> getPrinterGroupJobByNameQueries;
