@@ -26,7 +26,10 @@ public interface GetPrinterGroupJobsResult
     
     PrinterGroupTransfer getPrinterGroup();
     void setPrinterGroup(PrinterGroupTransfer printerGroup);
-    
+
+    Long getPrinterGroupJobCount();
+    void setPrinterGroupJobCount(Long printerGroupJobCount);
+
     List<PrinterGroupJobTransfer> getPrinterGroupJobs();
     void setPrinterGroupJobs(List<PrinterGroupJobTransfer> printerGroupJobs);
     

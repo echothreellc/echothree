@@ -16,8 +16,8 @@
 
 package com.echothree.model.control.printer.server.trigger;
 
-import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.control.printer.common.workflow.PrinterGroupJobStatusConstants;
+import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.control.workflow.server.trigger.BaseTrigger;
 import com.echothree.model.control.workflow.server.trigger.EntityTypeTrigger;
 import com.echothree.model.data.party.common.pk.PartyPK;
@@ -32,7 +32,7 @@ public class PrinterGroupJobTrigger
     @Override
     public void handleTrigger(final Session session, final ExecutionErrorAccumulator eea, final WorkflowEntityStatus workflowEntityStatus, final PartyPK triggeredBy) {
         var printerControl = Session.getModelController(PrinterControl.class);
-        var printerGroupJob = printerControl.convertEntityInstanceToPrinterGroupJobForUpdate(getEntityInstance(workflowEntityStatus));
+        var printerGroupJob = printerControl.getPrinterGroupJobByEntityInstanceForUpdate(getEntityInstance(workflowEntityStatus));
         var workflowStepName = getWorkflowStepName(workflowEntityStatus);
         
         if(workflowStepName.equals(PrinterGroupJobStatusConstants.WorkflowStep_PRINTED)
