@@ -20,21 +20,21 @@ import com.echothree.control.user.index.common.form.GetIndexFieldForm;
 import com.echothree.control.user.index.common.result.IndexResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.index.server.control.IndexControl;
+import com.echothree.model.control.index.server.logic.IndexFieldLogic;
+import com.echothree.model.control.index.server.logic.IndexTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetIndexFieldCommand
@@ -47,14 +47,14 @@ public class GetIndexFieldCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.IndexField.name(), SecurityRoles.Review.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.IndexField.name(), SecurityRoles.Review.name())
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("IndexTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("IndexFieldName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
     
     /** Creates a new instance of GetIndexFieldCommand */
@@ -62,26 +62,30 @@ public class GetIndexFieldCommand
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
+    @Inject
+    IndexControl indexControl;
+
+    @Inject
+    IndexFieldLogic indexFieldLogic;
+
+    @Inject
+    IndexTypeLogic indexTypeLogic;
+
     @Override
     protected BaseResult execute() {
-        var indexControl = Session.getModelController(IndexControl.class);
         var result = IndexResultFactory.getGetIndexFieldResult();
         var indexTypeName = form.getIndexTypeName();
-        var indexType = indexControl.getIndexTypeByName(indexTypeName);
+        var indexType = indexTypeLogic.getIndexTypeByName(this, indexTypeName);
         
-        if(indexType != null) {
+        if(!hasExecutionErrors()) {
             var indexFieldName = form.getIndexFieldName();
-            var indexField = indexControl.getIndexFieldByName(indexType, indexFieldName);
+            var indexField = indexFieldLogic.getIndexFieldByName(this, indexType, indexFieldName);
             
-            if(indexField != null) {
+            if(!hasExecutionErrors()) {
                 result.setIndexField(indexControl.getIndexFieldTransfer(getUserVisit(), indexField));
                 
                 sendEvent(indexField.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
-            } else {
-                addExecutionError(ExecutionErrors.UnknownIndexFieldName.name(), indexTypeName, indexFieldName);
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownIndexTypeName.name(), indexTypeName);
         }
         
         return result;

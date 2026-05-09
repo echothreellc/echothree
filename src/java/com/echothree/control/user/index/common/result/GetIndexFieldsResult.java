@@ -26,6 +26,9 @@ public interface GetIndexFieldsResult
     
     IndexTypeTransfer getIndexType();
     void setIndexType(IndexTypeTransfer indexType);
+
+    Long getIndexFieldCount();
+    void setIndexFieldCount(Long indexFieldCount);
     
     List<IndexFieldTransfer> getIndexFields();
     void setIndexFields(List<IndexFieldTransfer> indexFields);
