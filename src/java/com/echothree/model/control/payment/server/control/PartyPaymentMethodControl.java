@@ -27,10 +27,12 @@ import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.data.contact.server.entity.PartyContactMechanism;
 import com.echothree.model.data.contact.server.entity.PartyContactMechanismPurpose;
+import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.NameSuffix;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PersonalTitle;
+import com.echothree.model.data.payment.common.pk.PartyPaymentMethodPK;
 import com.echothree.model.data.payment.server.entity.PartyPaymentMethod;
 import com.echothree.model.data.payment.server.entity.PartyPaymentMethodContactMechanism;
 import com.echothree.model.data.payment.server.entity.PartyPaymentMethodCreditCard;
@@ -47,6 +49,7 @@ import com.echothree.model.data.payment.server.value.PartyPaymentMethodDetailVal
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.persistence.EncryptionUtils;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
@@ -58,7 +61,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import com.echothree.util.server.cdi.CommandScope;
 
 @CommandScope
 public class PartyPaymentMethodControl
@@ -111,6 +113,39 @@ public class PartyPaymentMethodControl
         sendEvent(partyPaymentMethod.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return partyPaymentMethod;
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.PartyPaymentMethod */
+    public PartyPaymentMethod getPartyPaymentMethodByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new PartyPaymentMethodPK(entityInstance.getEntityUniqueId());
+
+        return PartyPaymentMethodFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public PartyPaymentMethod getPartyPaymentMethodByEntityInstance(EntityInstance entityInstance) {
+        return getPartyPaymentMethodByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public PartyPaymentMethod getPartyPaymentMethodByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getPartyPaymentMethodByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countPartyPaymentMethodsByParty(final Party party) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM partypaymentmethods
+                        JOIN partypaymentmethoddetails ON parpmdt_partypaymentmethoddetailid = parpm_activedetailid
+                        AND parpmdt_par_partyid = ?
+                        """, party);
+    }
+
+    public long countPartyPaymentMethodsByPaymentMethod(final PaymentMethod paymentMethod) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM partypaymentmethods
+                        JOIN partypaymentmethoddetails ON parpmdt_partypaymentmethoddetailid = parpm_activedetailid
+                        AND parpmdt_pm_paymentmethodid = ?
+                        """, paymentMethod);
     }
 
     private static final Map<EntityPermission, String> getPartyPaymentMethodByNameQueries;
