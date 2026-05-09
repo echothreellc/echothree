@@ -29,13 +29,16 @@ import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class ForumLogic
         extends BaseLogic {
+
+    @Inject
+    ForumControl forumControl;
 
     protected ForumLogic() {
         super();
@@ -46,7 +49,6 @@ public class ForumLogic
     }
     
     public ForumRoleType getForumRoleTypeByName(final ExecutionErrorAccumulator eea, final String forumRoleTypeName) {
-        var forumControl = Session.getModelController(ForumControl.class);
         var forumRoleType = forumControl.getForumRoleTypeByName(forumRoleTypeName);
 
         if(forumRoleType == null) {
@@ -63,7 +65,6 @@ public class ForumLogic
     }
 
     public boolean isForumRoleTypePermitted(final ExecutionErrorAccumulator eea, final Forum forum, final Party party, final ForumRoleType forumRoleType) {
-        var forumControl = Session.getModelController(ForumControl.class);
         var hasForumPartyTypeRoles = forumControl.hasForumPartyTypeRoles(forum, forumRoleType);
         var hasForumPartyRoles = forumControl.hasForumPartyRoles(forum, forumRoleType);
         var permitted = !(hasForumPartyTypeRoles || hasForumPartyRoles);
@@ -121,7 +122,6 @@ public class ForumLogic
     }
 
     public boolean isForumRoleTypePermitted(final ExecutionErrorAccumulator eea, final ForumThread forumThread, final Party party, final ForumRoleType forumRoleType) {
-        var forumControl = Session.getModelController(ForumControl.class);
         var forumForumThreads = forumControl.getForumForumThreadsByForumThread(forumThread);
         var permitted = false;
 

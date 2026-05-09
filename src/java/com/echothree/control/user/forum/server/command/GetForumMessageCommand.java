@@ -27,20 +27,19 @@ import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.control.forum.server.logic.ForumLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.forum.server.entity.ForumMessage;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetForumMessageCommand
         extends BaseSimpleCommand<GetForumMessageForm> {
-    
+
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
@@ -48,9 +47,15 @@ public class GetForumMessageCommand
                 new FieldDefinition("ForumMessageName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
-                );
+        );
     }
-    
+
+    @Inject
+    ForumControl forumControl;
+
+    @Inject
+    ForumLogic forumLogic;
+
     /** Creates a new instance of GetForumMessageCommand */
     public GetForumMessageCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
@@ -63,7 +68,6 @@ public class GetForumMessageCommand
         var parameterCount = (forumMessageName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
-            var forumControl = Session.getModelController(ForumControl.class);
             ForumMessage forumMessage = null;
 
             if(forumMessageName == null) {
@@ -84,7 +88,7 @@ public class GetForumMessageCommand
             if(!hasExecutionErrors()) {
                 if(forumMessage.getLastDetail().getPostedTime() <= session.getStartTime()
                         || (getParty() == null ? false : getPartyTypeName().equals(PartyTypes.EMPLOYEE.name()))) {
-                    if(form.getUuid() != null || ForumLogic.getInstance().isForumRoleTypePermitted(this, forumMessage, getParty(), ForumConstants.ForumRoleType_READER)) {
+                    if(form.getUuid() != null || forumLogic.isForumRoleTypePermitted(this, forumMessage, getParty(), ForumConstants.ForumRoleType_READER)) {
                         result.setForumMessage(forumControl.getForumMessageTransfer(getUserVisit(), forumMessage));
                         sendEvent(forumMessage.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
                     } else {
