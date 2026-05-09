@@ -20,6 +20,8 @@ import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.common.transfer.PartyApplicationEditorUseTransfer;
 import com.echothree.model.data.core.server.entity.ApplicationEditor;
 import com.echothree.model.data.core.server.entity.ApplicationEditorUse;
+import com.echothree.model.data.core.server.entity.EntityInstance;
+import com.echothree.model.data.party.common.pk.PartyApplicationEditorUsePK;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PartyApplicationEditorUse;
 import com.echothree.model.data.party.server.factory.PartyApplicationEditorUseDetailFactory;
@@ -27,6 +29,7 @@ import com.echothree.model.data.party.server.factory.PartyApplicationEditorUseFa
 import com.echothree.model.data.party.server.value.PartyApplicationEditorUseDetailValue;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
@@ -34,7 +37,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import com.echothree.util.server.cdi.CommandScope;
 
 @CommandScope
 public class PartyApplicationEditorUseControl
@@ -64,6 +66,48 @@ public class PartyApplicationEditorUseControl
         sendEvent(partyApplicationEditorUse.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return partyApplicationEditorUse;
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.PartyApplicationEditorUse */
+    public PartyApplicationEditorUse getPartyApplicationEditorUseByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new PartyApplicationEditorUsePK(entityInstance.getEntityUniqueId());
+
+        return PartyApplicationEditorUseFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public PartyApplicationEditorUse getPartyApplicationEditorUseByEntityInstance(EntityInstance entityInstance) {
+        return getPartyApplicationEditorUseByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public PartyApplicationEditorUse getPartyApplicationEditorUseByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getPartyApplicationEditorUseByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countPartyApplicationEditorUsesByParty(final Party party) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM partyapplicationeditoruses
+                        JOIN partyapplicationeditorusedetails ON parappledtrusedt_partyapplicationeditorusedetailid = parappledtruse_activedetailid
+                        WHERE parappledtrusedt_par_partyid = ?
+                        """, party);
+    }
+
+    public long countPartyApplicationEditorUsesByApplicationEditorUse(final ApplicationEditorUse applicationEditorUse) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM partyapplicationeditoruses
+                        JOIN partyapplicationeditorusedetails ON parappledtrusedt_partyapplicationeditorusedetailid = parappledtruse_activedetailid
+                        WHERE parappledtrusedt_appledtruse_applicationeditoruseid = ?
+                        """, applicationEditorUse);
+    }
+
+    public long countPartyApplicationEditorUsesByApplicationEditor(final ApplicationEditor applicationEditor) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM partyapplicationeditoruses
+                        JOIN partyapplicationeditorusedetails ON parappledtrusedt_partyapplicationeditorusedetailid = parappledtruse_activedetailid
+                        WHERE parappledtrusedt_appledtr_applicationeditorid = ?
+                        """, applicationEditor);
     }
 
     private static final Map<EntityPermission, String> getPartyApplicationEditorUseQueries;

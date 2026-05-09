@@ -26,7 +26,6 @@ import com.echothree.model.control.party.server.control.PartyApplicationEditorUs
 import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -35,9 +34,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetPartyApplicationEditorUseCommand
@@ -51,16 +50,28 @@ public class GetPartyApplicationEditorUseCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.PartyApplicationEditorUse.name(), SecurityRoles.Review.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("ApplicationName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ApplicationEditorUseName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
     
+    @Inject
+    ApplicationControl applicationControl;
+
+    @Inject
+    PartyApplicationEditorUseControl partyApplicationEditorUseControl;
+
+    @Inject
+    ApplicationLogic applicationLogic;
+
+    @Inject
+    PartyLogic partyLogic;
+
     /** Creates a new instance of GetPartyApplicationEditorUseCommand */
     public GetPartyApplicationEditorUseCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -70,18 +81,17 @@ public class GetPartyApplicationEditorUseCommand
     protected BaseResult execute() {
         var result = PartyResultFactory.getGetPartyApplicationEditorUseResult();
         var partyName = form.getPartyName();
-        var party = partyName == null ? getParty() : PartyLogic.getInstance().getPartyByName(this, partyName);
+        var party = partyName == null ? getParty() : partyLogic.getPartyByName(this, partyName);
         
         if(!hasExecutionErrors()) {
             var applicationName = form.getApplicationName();
-            var application = ApplicationLogic.getInstance().getApplicationByName(this, applicationName);
+            var application = applicationLogic.getApplicationByName(this, applicationName);
             
             if(!hasExecutionErrors()) {
                 var applicationEditorUseName = form.getApplicationEditorUseName();
-                var applicationEditorUse = ApplicationLogic.getInstance().getApplicationEditorUseByName(this, application, applicationEditorUseName);
+                var applicationEditorUse = applicationLogic.getApplicationEditorUseByName(this, application, applicationEditorUseName);
                 
                 if(!hasExecutionErrors()) {
-                    var partyApplicationEditorUseControl = Session.getModelController(PartyApplicationEditorUseControl.class);
                     var partyApplicationEditorUse = partyApplicationEditorUseControl.getPartyApplicationEditorUse(party, applicationEditorUse);
                     var partyPK = getPartyPK();
                     
@@ -93,14 +103,13 @@ public class GetPartyApplicationEditorUseCommand
                         var userVisit = getUserVisit();
                         var partyApplicationEditorUseTransfer = partyApplicationEditorUseControl.getPartyApplicationEditorUseTransfer(userVisit, partyApplicationEditorUse);
                         
-                        // Fill in a few defaults in the TO of the Party is requesting this for themselves.
+                        // Fill in a few defaults in the TO if the Party is requesting this for themselves.
                         if(partyName == null) {
                             var applicationEditorUseDetail = applicationEditorUse.getLastDetail();
                             var preferredHeight = partyApplicationEditorUseTransfer.getPreferredHeight();
                             var preferredWidth = partyApplicationEditorUseTransfer.getPreferredWidth();
                             
                             if(partyApplicationEditorUseTransfer.getApplicationEditor() == null) {
-                                var applicationControl = Session.getModelController(ApplicationControl.class);
                                 var applicationEditor = applicationEditorUseDetail.getDefaultApplicationEditor();
                                         
                                 if(applicationEditor == null) {
