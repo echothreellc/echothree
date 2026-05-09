@@ -27,6 +27,9 @@ public interface GetItemUnitPriceLimitsResult
     ItemTransfer getItem();
     void setItem(ItemTransfer item);
     
+    Long getItemUnitPriceLimitCount();
+    void setItemUnitPriceLimitCount(Long itemUnitPriceLimitCount);
+
     List<ItemUnitPriceLimitTransfer> getItemUnitPriceLimits();
     void setItemUnitPriceLimits(List<ItemUnitPriceLimitTransfer> itemUnitPriceLimits);
     
