@@ -55,6 +55,7 @@ import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.printer.common.pk.PrinterGroupJobPK;
 import com.echothree.model.data.printer.common.pk.PrinterGroupPK;
+import com.echothree.model.data.printer.common.pk.PrinterGroupUseTypePK;
 import com.echothree.model.data.printer.common.pk.PrinterPK;
 import com.echothree.model.data.printer.server.entity.PartyPrinterGroupUse;
 import com.echothree.model.data.printer.server.entity.Printer;
@@ -1457,6 +1458,29 @@ public class PrinterControl
         sendEvent(printerGroupUseType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return printerGroupUseType;
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.PrinterGroupUseType */
+    public PrinterGroupUseType getPrinterGroupUseTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new PrinterGroupUseTypePK(entityInstance.getEntityUniqueId());
+
+        return PrinterGroupUseTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public PrinterGroupUseType getPrinterGroupUseTypeByEntityInstance(EntityInstance entityInstance) {
+        return getPrinterGroupUseTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public PrinterGroupUseType getPrinterGroupUseTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getPrinterGroupUseTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countPrinterGroupUseTypes() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM printergroupusetypes
+                        JOIN printergroupusetypedetails ON prngrpusetypdt_printergroupusetypedetailid = prngrpusetyp_activedetailid
+                        """);
     }
 
     private static final Map<EntityPermission, String> getPrinterGroupUseTypeByNameQueries;
