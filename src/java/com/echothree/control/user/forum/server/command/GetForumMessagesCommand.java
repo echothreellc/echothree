@@ -25,50 +25,56 @@ import com.echothree.model.control.forum.common.ForumConstants;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.control.forum.server.logic.ForumLogic;
 import com.echothree.model.control.party.common.PartyTypes;
+import com.echothree.model.data.forum.server.entity.ForumMessage;
 import com.echothree.model.data.forum.server.entity.ForumThread;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.forum.server.factory.ForumMessageFactory;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetForumMessagesCommand
-        extends BaseSimpleCommand<GetForumMessagesForm> {
-    
+        extends BasePaginatedMultipleEntitiesCommand<ForumMessage, GetForumMessagesForm> {
+
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ForumThreadName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
-                );
+        );
     }
-    
+
+    @Inject
+    ForumControl forumControl;
+
+    @Inject
+    ForumLogic forumLogic;
+
     /** Creates a new instance of GetForumMessagesCommand */
     public GetForumMessagesCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    ForumThread forumThread;
+
     @Override
-    protected BaseResult execute() {
-        var result = ForumResultFactory.getGetForumMessagesResult();
+    protected void handleForm() {
         var forumThreadName = form.getForumThreadName();
         var parameterCount = (forumThreadName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
-            var forumControl = Session.getModelController(ForumControl.class);
-            ForumThread forumThread = null;
-
             if(forumThreadName == null) {
                 var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHO_THREE.name(),
                         EntityTypes.ForumThread.name());
-                
+
                 if(!hasExecutionErrors()) {
                     forumThread = forumControl.getForumThreadByEntityInstance(entityInstance);
                 }
@@ -81,20 +87,43 @@ public class GetForumMessagesCommand
             }
 
             if(!hasExecutionErrors()) {
-                if(forumThread.getLastDetail().getPostedTime() <= session.getStartTime()
-                        || (getParty() == null ? false : getPartyTypeName().equals(PartyTypes.EMPLOYEE.name()))) {
-                    if(form.getUuid() != null || ForumLogic.getInstance().isForumRoleTypePermitted(this, forumThread, getParty(), ForumConstants.ForumRoleType_READER)) {
-                        result.setForumMessages(forumControl.getForumMessageTransfersByForumThread(getUserVisit(), forumThread));
-                    }
-                } else {
+                if(forumThread.getLastDetail().getPostedTime() > session.getStartTime()
+                        && (getParty() == null || !getPartyTypeName().equals(PartyTypes.EMPLOYEE.name()))) {
                     addExecutionError(ExecutionErrors.UnpublishedForumThread.name(), forumThread.getLastDetail().getForumThreadName());
+                } else if(form.getUuid() == null && !forumLogic.isForumRoleTypePermitted(this, forumThread, getParty(), ForumConstants.ForumRoleType_READER)) {
+                    forumThread = null; // TODO: This should be an ExecutionError also.
                 }
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());
         }
-        
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return forumThread == null ? null : forumControl.countForumMessagesByForumThread(forumThread);
+    }
+
+    @Override
+    protected Collection<ForumMessage> getEntities() {
+        return forumThread == null ? null : forumControl.getForumMessagesByForumThread(forumThread);
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<ForumMessage> entities) {
+        var result = ForumResultFactory.getGetForumMessagesResult();
+
+        if(entities != null) {
+            result.setForumThread(forumControl.getForumThreadTransfer(getUserVisit(), forumThread));
+
+            if(session.hasLimit(ForumMessageFactory.class)) {
+                result.setForumMessageCount(getTotalEntities());
+            }
+
+            result.setForumMessages(forumControl.getForumMessageTransfers(getUserVisit(), entities));
+        }
+
         return result;
     }
-    
+
 }
