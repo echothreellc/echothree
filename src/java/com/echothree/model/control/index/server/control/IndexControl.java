@@ -35,6 +35,7 @@ import com.echothree.model.control.index.server.transfer.IndexTypeTransferCache;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityType;
+import com.echothree.model.data.index.common.pk.IndexFieldPK;
 import com.echothree.model.data.index.common.pk.IndexPK;
 import com.echothree.model.data.index.common.pk.IndexTypePK;
 import com.echothree.model.data.index.server.entity.Index;
@@ -641,6 +642,30 @@ public class IndexControl
         sendEvent(indexField.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return indexField;
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.IndexField */
+    public IndexField getIndexFieldByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new IndexFieldPK(entityInstance.getEntityUniqueId());
+
+        return IndexFieldFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public IndexField getIndexFieldByEntityInstance(EntityInstance entityInstance) {
+        return getIndexFieldByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public IndexField getIndexFieldByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getIndexFieldByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countIndexFieldsByIndexType(final IndexType indexType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM indexfields
+                        JOIN indexfielddetails ON idxflddt_indexfielddetailid = idxfld_activedetailid
+                        WHERE idxflddt_idxt_indextypeid = ?
+                        """, indexType);
     }
 
     private static final Map<EntityPermission, String> getIndexFieldsQueries;
