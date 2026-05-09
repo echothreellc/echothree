@@ -19,16 +19,17 @@ package com.echothree.control.user.item.server.command;
 import com.echothree.control.user.item.common.form.GetItemWeightForm;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.item.server.control.ItemControl;
+import com.echothree.model.control.item.server.logic.ItemLogic;
 import com.echothree.model.control.item.server.logic.ItemWeightTypeLogic;
-import com.echothree.model.control.uom.server.control.UomControl;
+import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetItemWeightCommand
@@ -49,22 +50,32 @@ public class GetItemWeightCommand
     public GetItemWeightCommand() {
         super(null, FORM_FIELD_DEFINITIONS, false);
     }
-    
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    ItemLogic itemLogic;
+
+    @Inject
+    ItemWeightTypeLogic itemWeightTypeLogic;
+
+    @Inject
+    UnitOfMeasureTypeLogic unitOfMeasureTypeLogic;
+
     @Override
     protected BaseResult execute() {
-        var itemControl = Session.getModelController(ItemControl.class);
         var result = ItemResultFactory.getGetItemWeightResult();
         var itemName = form.getItemName();
-        var item = itemControl.getItemByName(itemName);
-        
-        if(item != null) {
-        var uomControl = Session.getModelController(UomControl.class);
+        var item = itemLogic.getItemByName(this, itemName);
+
+        if(!hasExecutionErrors()) {
             var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
             var unitOfMeasureKind = item.getLastDetail().getUnitOfMeasureKind();
-            var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
-            
-            if(unitOfMeasureType != null) {
-                var itemWeightType = ItemWeightTypeLogic.getInstance().getItemWeightTypeByName(this, form.getItemWeightTypeName());
+            var unitOfMeasureType = unitOfMeasureTypeLogic.getUnitOfMeasureTypeByName(this, unitOfMeasureKind, unitOfMeasureTypeName);
+
+            if(!hasExecutionErrors()) {
+                var itemWeightType = itemWeightTypeLogic.getItemWeightTypeByName(this, form.getItemWeightTypeName());
 
                 if(!hasExecutionErrors()) {
                     var itemWeight = itemControl.getItemWeight(item, unitOfMeasureType, itemWeightType);
@@ -77,13 +88,9 @@ public class GetItemWeightCommand
                                 itemWeightType.getLastDetail().getItemWeightTypeName());
                     }
                 }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownUnitOfMeasureTypeName.name(), unitOfMeasureKind.getLastDetail().getUnitOfMeasureKindName(), unitOfMeasureTypeName);
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownItemName.name(), itemName);
         }
-        
+
         return result;
     }
     
