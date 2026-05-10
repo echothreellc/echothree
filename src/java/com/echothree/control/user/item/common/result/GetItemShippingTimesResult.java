@@ -26,6 +26,9 @@ public interface GetItemShippingTimesResult
     
     ItemTransfer getItem();
     void setItem(ItemTransfer item);
+
+    Long getItemShippingTimeCount();
+    void setItemShippingTimeCount(Long itemShippingTimeCount);
     
     List<ItemShippingTimeTransfer> getItemShippingTimes();
     void setItemShippingTimes(List<ItemShippingTimeTransfer> itemShippingTimes);
