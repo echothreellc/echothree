@@ -26,8 +26,11 @@ public interface GetItemUnitLimitsResult
     
     ItemTransfer getItem();
     void setItem(ItemTransfer item);
-    
+
+    Long getItemUnitLimitCount();
+    void setItemUnitLimitCount(Long itemUnitLimitCount);
+
     List<ItemUnitLimitTransfer> getItemUnitLimits();
     void setItemUnitLimits(List<ItemUnitLimitTransfer> itemUnitLimits);
-    
+
 }

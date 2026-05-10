@@ -5423,7 +5423,31 @@ public class ItemControl
         
         return itemUnitLimit;
     }
-    
+
+    public long countItemUnitLimitsByItem(final Item item) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM itemunitlimits
+                        WHERE iul_itm_itemid = ? AND iul_thrutime = ?
+                        """, item, Session.MAX_TIME);
+    }
+
+    public long countItemUnitLimitsByInventoryCondition(final InventoryCondition inventoryCondition) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM itemunitlimits
+                        WHERE iul_itm_itemid = ? AND iul_thrutime = ?
+                        """, inventoryCondition, Session.MAX_TIME);
+    }
+
+    public long countItemUnitLimitsByUnitOfMeasureType(final UnitOfMeasureType unitOfMeasureType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM itemunitlimits
+                        WHERE iul_itm_itemid = ? AND iul_thrutime = ?
+                        """, unitOfMeasureType, Session.MAX_TIME);
+    }
+
     private ItemUnitLimit getItemUnitLimit(Item item, InventoryCondition inventoryCondition,
             UnitOfMeasureType unitOfMeasureType, EntityPermission entityPermission) {
         ItemUnitLimit itemUnitLimit;
@@ -5653,13 +5677,16 @@ public class ItemControl
     }
 
     public List<ItemUnitLimitTransfer> getItemUnitLimitTransfersByItem(UserVisit userVisit, Item item) {
-        var itemUnitLimits = getItemUnitLimitsByItem(item);
+        return getItemUnitLimitTransfers(userVisit, getItemUnitLimitsByItem(item));
+    }
+
+    public List<ItemUnitLimitTransfer> getItemUnitLimitTransfers(UserVisit userVisit, Collection<ItemUnitLimit> itemUnitLimits) {
         List<ItemUnitLimitTransfer> itemUnitLimitTransfers = new ArrayList<>(itemUnitLimits.size());
-        
+
         itemUnitLimits.forEach((itemUnitLimit) ->
                 itemUnitLimitTransfers.add(itemUnitLimitTransferCache.getTransfer(userVisit, itemUnitLimit))
         );
-        
+
         return itemUnitLimitTransfers;
     }
     
