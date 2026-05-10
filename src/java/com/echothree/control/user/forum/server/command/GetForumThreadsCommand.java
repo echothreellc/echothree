@@ -25,51 +25,60 @@ import com.echothree.model.control.forum.common.ForumConstants;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.control.forum.server.logic.ForumLogic;
 import com.echothree.model.data.forum.server.entity.Forum;
+import com.echothree.model.data.forum.server.entity.ForumThread;
 import com.echothree.model.data.forum.server.factory.ForumThreadFactory;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetForumThreadsCommand
-        extends BaseSimpleCommand<GetForumThreadsForm> {
-    
+        extends BasePaginatedMultipleEntitiesCommand<ForumThread, GetForumThreadsForm> {
+
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ForumName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null),
                 new FieldDefinition("IncludeFutureForumThreads", FieldType.BOOLEAN, true, null, null)
-                );
+        );
     }
-    
+
+    @Inject
+    ForumControl forumControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    ForumLogic forumLogic;
+
     /** Creates a new instance of GetForumThreadsCommand */
     public GetForumThreadsCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    Forum forum;
+    boolean includeFutureForumThreads;
+
     @Override
-    protected BaseResult execute() {
-        var result = ForumResultFactory.getGetForumThreadsResult();
+    protected void handleForm() {
         var forumName = form.getForumName();
-        var parameterCount = (forumName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+        var parameterCount = (forumName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
-            var forumControl = Session.getModelController(ForumControl.class);
-            Forum forum = null;
-
             if(forumName == null) {
-                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHO_THREE.name(),
+                var entityInstance = entityInstanceLogic.getEntityInstance(this, form, ComponentVendors.ECHO_THREE.name(),
                         EntityTypes.Forum.name());
-                
+
                 if(!hasExecutionErrors()) {
                     forum = forumControl.getForumByEntityInstance(entityInstance);
                 }
@@ -81,19 +90,8 @@ public class GetForumThreadsCommand
                 }
             }
 
-            // If the UUID for the Forum is specified, then bypass the ForumRoleType check.
             if(!hasExecutionErrors()) {
-                if(form.getUuid() != null || ForumLogic.getInstance().isForumRoleTypePermitted(this, forum, getParty(), ForumConstants.ForumRoleType_READER)) {
-                    var includeFutureForumThreads = Boolean.parseBoolean(form.getIncludeFutureForumThreads());
-                    var userVisit = getUserVisit();
-
-                    if(session.hasLimit(ForumThreadFactory.class)) {
-                        result.setForumThreadCount(forumControl.countForumThreadsByForum(forum, includeFutureForumThreads));
-                    }
-
-                    result.setForum(forumControl.getForumTransfer(userVisit, forum));
-                    result.setForumThreads(forumControl.getForumThreadTransfersByForum(userVisit, forum, includeFutureForumThreads));
-                } else {
+                if(form.getUuid() == null && !forumLogic.isForumRoleTypePermitted(this, forum, getParty(), ForumConstants.ForumRoleType_READER)) {
                     addExecutionError(ExecutionErrors.MissingRequiredForumRoleType.name(), ForumConstants.ForumRoleType_READER);
                 }
             }
@@ -101,7 +99,36 @@ public class GetForumThreadsCommand
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());
         }
 
+        includeFutureForumThreads = Boolean.parseBoolean(form.getIncludeFutureForumThreads());
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return hasExecutionErrors() ? null : forumControl.countForumThreadsByForum(forum, includeFutureForumThreads);
+    }
+
+    @Override
+    protected Collection<ForumThread> getEntities() {
+        return hasExecutionErrors() ? null : forumControl.getForumThreadsByForum(forum, includeFutureForumThreads);
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<ForumThread> entities) {
+        var result = ForumResultFactory.getGetForumThreadsResult();
+
+        if(entities != null) {
+            var userVisit = getUserVisit();
+
+            result.setForum(forumControl.getForumTransfer(userVisit, forum));
+
+            if(session.hasLimit(ForumThreadFactory.class)) {
+                result.setForumThreadCount(getTotalEntities());
+            }
+
+            result.setForumThreads(forumControl.getForumThreadTransfers(userVisit, entities));
+        }
+
         return result;
     }
-    
+
 }

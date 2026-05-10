@@ -27,20 +27,19 @@ import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.control.forum.server.logic.ForumLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.forum.server.entity.ForumThread;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetForumThreadCommand
         extends BaseSimpleCommand<GetForumThreadForm> {
-    
+
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
@@ -48,9 +47,18 @@ public class GetForumThreadCommand
                 new FieldDefinition("ForumThreadName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
-                );
+        );
     }
-    
+
+    @Inject
+    ForumControl forumControl;
+
+    @Inject
+    EntityInstanceLogic entityInstanceLogic;
+
+    @Inject
+    ForumLogic forumLogic;
+
     /** Creates a new instance of GetForumThreadCommand */
     public GetForumThreadCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
@@ -60,14 +68,13 @@ public class GetForumThreadCommand
     protected BaseResult execute() {
         var result = ForumResultFactory.getGetForumThreadResult();
         var forumThreadName = form.getForumThreadName();
-        var parameterCount = (forumThreadName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+        var parameterCount = (forumThreadName == null ? 0 : 1) + entityInstanceLogic.countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
-            var forumControl = Session.getModelController(ForumControl.class);
             ForumThread forumThread = null;
 
             if(forumThreadName == null) {
-                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHO_THREE.name(),
+                var entityInstance = entityInstanceLogic.getEntityInstance(this, form, ComponentVendors.ECHO_THREE.name(),
                         EntityTypes.ForumThread.name());
                 
                 if(!hasExecutionErrors()) {
@@ -84,7 +91,7 @@ public class GetForumThreadCommand
             if(!hasExecutionErrors()) {
                 if(forumThread.getLastDetail().getPostedTime() <= session.getStartTime()
                         || (getParty() == null ? false : getPartyTypeName().equals(PartyTypes.EMPLOYEE.name()))) {
-                    if(form.getUuid() != null || ForumLogic.getInstance().isForumRoleTypePermitted(this, forumThread, getParty(), ForumConstants.ForumRoleType_READER)) {
+                    if(form.getUuid() != null || forumLogic.isForumRoleTypePermitted(this, forumThread, getParty(), ForumConstants.ForumRoleType_READER)) {
                         result.setForumThread(forumControl.getForumThreadTransfer(getUserVisit(), forumThread));
                         sendEvent(forumThread.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
                     } else {
