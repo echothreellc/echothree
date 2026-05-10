@@ -5087,7 +5087,39 @@ public class ItemControl
         
         return itemUnitCustomerTypeLimit;
     }
-    
+
+    public long countItemUnitCustomerTypeLimitsByItem(final Item item) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM itemunitcustomertypelimits
+                        WHERE iuctl_itm_itemid = ? AND iuctl_thrutime = ?
+                        """, item, Session.MAX_TIME);
+    }
+
+    public long countItemUnitCustomerTypeLimitsByInventoryCondition(final InventoryCondition inventoryCondition) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM itemunitcustomertypelimits
+                        WHERE iuctl_invcon_inventoryconditionid = ? AND iuctl_thrutime = ?
+                        """, inventoryCondition, Session.MAX_TIME);
+    }
+
+    public long countItemUnitCustomerTypeLimitsByUnitOfMeasureType(final UnitOfMeasureType unitOfMeasureType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM itemunitcustomertypelimits
+                        WHERE iuctl_uomt_unitofmeasuretypeid = ? AND iuctl_thrutime = ?
+                        """, unitOfMeasureType, Session.MAX_TIME);
+    }
+
+    public long countItemUnitCustomerTypeLimitsByCustomerType(final CustomerType customerType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM itemunitcustomertypelimits
+                        WHERE iuctl_cuty_customertypeid = ? AND iuctl_thrutime = ?
+                        """, customerType, Session.MAX_TIME);
+    }
+
     private ItemUnitCustomerTypeLimit getItemUnitCustomerTypeLimit(Item item, InventoryCondition inventoryCondition,
             UnitOfMeasureType unitOfMeasureType, CustomerType customerType, EntityPermission entityPermission) {
         ItemUnitCustomerTypeLimit itemUnitCustomerTypeLimit;
@@ -5367,8 +5399,7 @@ public class ItemControl
         return getItemUnitCustomerTypeLimitTransfer(userVisit, getItemUnitCustomerTypeLimit(item, inventoryCondition, unitOfMeasureType, customerType));
     }
 
-    public List<ItemUnitCustomerTypeLimitTransfer> getItemUnitCustomerTypeLimitTransfersByItem(UserVisit userVisit, Item item) {
-        var itemUnitCustomerTypeLimits = getItemUnitCustomerTypeLimitsByItem(item);
+    public List<ItemUnitCustomerTypeLimitTransfer> getItemUnitCustomerTypeLimitTransfers(UserVisit userVisit, Collection<ItemUnitCustomerTypeLimit> itemUnitCustomerTypeLimits) {
         List<ItemUnitCustomerTypeLimitTransfer> itemUnitCustomerTypeLimitTransfers = new ArrayList<>(itemUnitCustomerTypeLimits.size());
         
         itemUnitCustomerTypeLimits.forEach((itemUnitCustomerTypeLimit) ->
@@ -5376,6 +5407,10 @@ public class ItemControl
         );
         
         return itemUnitCustomerTypeLimitTransfers;
+    }
+    
+    public List<ItemUnitCustomerTypeLimitTransfer> getItemUnitCustomerTypeLimitTransfersByItem(UserVisit userVisit, Item item) {
+        return getItemUnitCustomerTypeLimitTransfers(userVisit, getItemUnitCustomerTypeLimitsByItem(item));
     }
     
     public void deleteItemUnitCustomerTypeLimit(ItemUnitCustomerTypeLimit itemUnitCustomerTypeLimit, BasePK deletedBy) {
