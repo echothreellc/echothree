@@ -2810,7 +2810,23 @@ public class ItemControl
         
         return itemShippingTime;
     }
-    
+
+    public long countItemShippingTimesByItem(final Item item) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM itemshippingtimes
+                        WHERE istim_itm_itemid = ? AND istim_thrutime = ?
+                        """, item, Session.MAX_TIME);
+    }
+
+    public long countItemShippingTimesByCustomerType(final CustomerType customerType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM itemshippingtimes
+                        WHERE istim_cuty_customertypeid = ? AND istim_thrutime = ?
+                        """, customerType, Session.MAX_TIME);
+    }
+
     private ItemShippingTime getItemShippingTime(Item item, CustomerType customerType, EntityPermission entityPermission) {
         ItemShippingTime itemShippingTime;
         
@@ -2968,15 +2984,18 @@ public class ItemControl
         return getItemShippingTimeTransfer(userVisit, getItemShippingTime(item, customerType));
     }
     
+    public List<ItemShippingTimeTransfer> getItemShippingTimeTransfers(UserVisit userVisit, Collection<ItemShippingTime> entities) {
+        List<ItemShippingTimeTransfer> transfers = new ArrayList<>(entities.size());
+
+        entities.forEach((entity) ->
+                transfers.add(itemShippingTimeTransferCache.getTransfer(userVisit, entity))
+        );
+
+        return transfers;
+    }
+
     public List<ItemShippingTimeTransfer> getItemShippingTimeTransfersByItem(UserVisit userVisit, Item item) {
-        var itemShippingTimes = getItemShippingTimesByItem(item);
-        List<ItemShippingTimeTransfer> itemShippingTimeTransfers = new ArrayList<>(itemShippingTimes.size());
-        
-        itemShippingTimes.forEach((itemShippingTime) -> {
-            itemShippingTimeTransfers.add(itemShippingTimeTransferCache.getTransfer(userVisit, itemShippingTime));
-        });
-        
-        return itemShippingTimeTransfers;
+        return getItemShippingTimeTransfers(userVisit, getItemShippingTimesByItem(item));
     }
     
     public void deleteItemShippingTime(ItemShippingTime itemShippingTime, BasePK deletedBy) {

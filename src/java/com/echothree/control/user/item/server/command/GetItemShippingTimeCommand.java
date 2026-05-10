@@ -18,17 +18,17 @@ package com.echothree.control.user.item.server.command;
 
 import com.echothree.control.user.item.common.form.GetItemShippingTimeForm;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
-import com.echothree.model.control.customer.server.control.CustomerControl;
+import com.echothree.model.control.customer.server.logic.CustomerTypeLogic;
 import com.echothree.model.control.item.server.control.ItemControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.control.item.server.logic.ItemLogic;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetItemShippingTimeCommand
@@ -38,11 +38,20 @@ public class GetItemShippingTimeCommand
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("CustomerTypeName", FieldType.PERCENT, true, null, null)
+                new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("CustomerTypeName", FieldType.PERCENT, true, null, null)
         );
     }
-    
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    CustomerTypeLogic customerTypeLogic;
+
+    @Inject
+    ItemLogic itemLogic;
+
     /** Creates a new instance of GetItemShippingTimeCommand */
     public GetItemShippingTimeCommand() {
         super(null, FORM_FIELD_DEFINITIONS, false);
@@ -50,17 +59,15 @@ public class GetItemShippingTimeCommand
     
     @Override
     protected BaseResult execute() {
-        var itemControl = Session.getModelController(ItemControl.class);
         var result = ItemResultFactory.getGetItemShippingTimeResult();
         var itemName = form.getItemName();
-        var item = itemControl.getItemByName(itemName);
+        var item = itemLogic.getItemByName(this, itemName);
         
-        if(item != null) {
-            var customerControl = Session.getModelController(CustomerControl.class);
+        if(!hasExecutionErrors()) {
             var customerTypeName = form.getCustomerTypeName();
-            var customerType = customerControl.getCustomerTypeByName(customerTypeName);
+            var customerType = customerTypeLogic.getCustomerTypeByName(this, customerTypeName);
 
-            if(customerType != null) {
+            if(!hasExecutionErrors()) {
                 var itemShippingTime = itemControl.getItemShippingTime(item, customerType);
 
                 if(itemShippingTime != null) {
@@ -68,11 +75,7 @@ public class GetItemShippingTimeCommand
                 } else {
                     addExecutionError(ExecutionErrors.UnknownItemShippingTime.name(), itemName, customerTypeName);
                 }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownCustomerTypeName.name(), customerTypeName);
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownItemName.name(), itemName);
         }
         
         return result;
