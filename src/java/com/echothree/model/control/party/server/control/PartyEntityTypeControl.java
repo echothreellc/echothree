@@ -26,12 +26,12 @@ import com.echothree.model.data.party.server.value.PartyEntityTypeValue;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import com.echothree.util.server.cdi.CommandScope;
 
 @CommandScope
 public class PartyEntityTypeControl
@@ -52,6 +52,22 @@ public class PartyEntityTypeControl
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyEntityType.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return partyEntityType;
+    }
+
+    public long countPartyEntityTypesByParty(final Party party) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM partyentitytypes
+                        WHERE pent_par_partyid = ? AND pent_thrutime = ?
+                        """, party, Session.MAX_TIME);
+    }
+
+    public long countPartyEntityTypesByEntityType(final EntityType entityType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM partyentitytypes
+                        WHERE pent_ent_entitytypeid = ? AND pent_thrutime = ?
+                        """, entityType, Session.MAX_TIME);
     }
 
     private PartyEntityType getPartyEntityType(Party party, EntityType entityType, EntityPermission entityPermission) {
