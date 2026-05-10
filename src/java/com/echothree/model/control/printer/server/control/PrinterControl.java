@@ -1874,7 +1874,31 @@ public class PrinterControl
         
         return partyPrinterGroupUse;
     }
-    
+
+    public long countPartyPrinterGroupUsesByParty(final Party party) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM partyprintergroupuses
+                        WHERE parprngrpuse_par_partyid = ? AND parprngrpuse_thrutime = ?
+                        """, party, Session.MAX_TIME);
+    }
+
+    public long countPartyPrinterGroupUsesByPrinterGroupUseType(final PrinterGroupUseType printerGroupUseType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM partyprintergroupuses
+                        WHERE parprngrpuse_prngrpusetyp_printergroupusetypeid = ? AND parprngrpuse_thrutime = ?
+                        """, printerGroupUseType, Session.MAX_TIME);
+    }
+
+    public long countPartyPrinterGroupUsesByPrinterGroup(final PrinterGroup printerGroup) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM partyprintergroupuses
+                        WHERE parprngrpuse_prngrp_printergroupid = ? AND parprngrpuse_thrutime = ?
+                        """, printerGroup, Session.MAX_TIME);
+    }
+
     private static final Map<EntityPermission, String> getPartyPrinterGroupUseQueries;
 
     static {

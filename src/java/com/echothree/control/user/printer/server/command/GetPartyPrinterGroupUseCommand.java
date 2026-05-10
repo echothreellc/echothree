@@ -19,23 +19,22 @@ package com.echothree.control.user.printer.server.command;
 import com.echothree.control.user.printer.common.form.GetPartyPrinterGroupUseForm;
 import com.echothree.control.user.printer.common.result.PrinterResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetPartyPrinterGroupUseCommand
@@ -49,19 +48,24 @@ public class GetPartyPrinterGroupUseCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.PartyPrinterGroupUse.name(), SecurityRoles.Review.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("PrinterGroupUseTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
     
-    /** Creates a new instance of GetPartyPrinterGroupUseCommand */
     public GetPartyPrinterGroupUseCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
+
+    @Inject
+    PrinterControl printerControl;
+
+    @Inject
+    PartyLogic partyLogic;
     
     @Override
     protected BaseResult execute() {
@@ -70,19 +74,12 @@ public class GetPartyPrinterGroupUseCommand
         Party party;
 
         if(partyName != null) {
-            var partyControl = Session.getModelController(PartyControl.class);
-
-            party = partyControl.getPartyByName(partyName);
-            
-            if(party == null) {
-                addExecutionError(ExecutionErrors.UnknownPartyName.name(), partyName);
-            }
+            party = partyLogic.getPartyByName(this, partyName);
         } else {
             party = getParty();
         }
 
         if(!hasExecutionErrors()) {
-            var printerControl = Session.getModelController(PrinterControl.class);
             var printerGroupUseTypeName = form.getPrinterGroupUseTypeName();
             var printerGroupUseType = printerControl.getPrinterGroupUseTypeByName(printerGroupUseTypeName);
 
