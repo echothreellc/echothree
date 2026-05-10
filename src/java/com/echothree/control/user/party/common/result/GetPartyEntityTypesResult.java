@@ -26,8 +26,11 @@ public interface GetPartyEntityTypesResult
     
     PartyTransfer getParty();
     void setParty(PartyTransfer party);
-    
+
+    Long getPartyEntityTypeCount();
+    void setPartyEntityTypeCount(Long partyEntityTypeCount);
+
     List<PartyEntityTypeTransfer> getPartyEntityTypes();
     void setPartyEntityTypes(List<PartyEntityTypeTransfer> partyEntityTypes);
-    
+
 }
