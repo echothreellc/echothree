@@ -14,23 +14,31 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.item.common.result;
+package com.echothree.model.control.item.common.exception;
 
-import com.echothree.model.control.item.common.transfer.ItemKitMemberTransfer;
-import com.echothree.model.control.item.common.transfer.ItemTransfer;
-import com.echothree.util.common.command.BaseResult;
-import java.util.List;
+import com.echothree.util.common.message.Message;
 
-public interface GetItemKitMembersResult
-        extends BaseResult {
-    
-    ItemTransfer getItem();
-    void setItem(ItemTransfer item);
+public class InvalidItemTypeException
+        extends BaseItemException {
 
-    Long getItemKitMemberCount();
-    void setItemKitMemberCount(Long itemKitMemberCount);
+    /** Creates a new instance of InvalidItemTypeException */
+    public InvalidItemTypeException() {
+        super();
+    }
 
-    List<ItemKitMemberTransfer> getItemKitMembers();
-    void setItemKitMembers(List<ItemKitMemberTransfer> itemItemKitMembers);
+    /** Creates a new instance of InvalidItemTypeException */
+    public InvalidItemTypeException(String message) {
+        super(message);
+    }
+
+    /** Creates a new instance of InvalidItemTypeException */
+    public InvalidItemTypeException(Throwable cause) {
+        super(cause);
+    }
+
+    /** Creates a new instance of InvalidItemTypeException */
+    public InvalidItemTypeException(Message message) {
+        super(message);
+    }
 
 }

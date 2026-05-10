@@ -19,49 +19,75 @@ package com.echothree.control.user.item.server.command;
 import com.echothree.control.user.item.common.form.GetItemKitMembersForm;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.item.server.control.ItemControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.control.item.server.logic.ItemLogic;
+import com.echothree.model.data.item.server.entity.Item;
+import com.echothree.model.data.item.server.entity.ItemKitMember;
+import com.echothree.model.data.item.server.factory.ItemKitMemberFactory;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetItemKitMembersCommand
-        extends BaseSimpleCommand<GetItemKitMembersForm> {
+        extends BasePaginatedMultipleEntitiesCommand<ItemKitMember, GetItemKitMembersForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    ItemLogic itemLogic;
+
     /** Creates a new instance of GetItemKitMembersCommand */
     public GetItemKitMembersCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    Item item;
+
     @Override
-    protected BaseResult execute() {
-        var itemControl = Session.getModelController(ItemControl.class);
+    protected void handleForm() {
+        item = itemLogic.getItemByName(this, form.getItemName());
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return hasExecutionErrors() ? null : itemControl.countItemKitMembersByItem(item);
+    }
+
+    @Override
+    protected Collection<ItemKitMember> getEntities() {
+        return hasExecutionErrors() ? null : itemControl.getItemKitMembersByItem(item);
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<ItemKitMember> entities) {
         var result = ItemResultFactory.getGetItemKitMembersResult();
-        var itemName = form.getItemName();
-        var item = itemControl.getItemByName(itemName);
-        
-        if(item != null) {
+
+        if(entities != null) {
             var userVisit = getUserVisit();
-            
+
             result.setItem(itemControl.getItemTransfer(userVisit, item));
-            result.setItemKitMembers(itemControl.getItemKitMemberTransfersByItem(userVisit, item));
-        } else {
-            addExecutionError(ExecutionErrors.UnknownItemName.name(), itemName);
+
+            if(session.hasLimit(ItemKitMemberFactory.class)) {
+                result.setItemKitMemberCount(getTotalEntities());
+            }
+
+            result.setItemKitMembers(itemControl.getItemKitMemberTransfers(userVisit, entities));
         }
-        
+
         return result;
     }
     
