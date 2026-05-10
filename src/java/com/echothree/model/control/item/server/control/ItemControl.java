@@ -4351,7 +4351,55 @@ public class ItemControl
         
         return itemKitMember;
     }
-    
+
+    public long countItemKitMembersByItem(Item item) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM itemkitmembers
+                        WHERE ikm_itm_itemid = ? AND ikm_thrutime = ?
+                        """, item, Session.MAX_TIME);
+    }
+
+    public long countItemKitMembersByInventoryCondition(InventoryCondition inventoryCondition) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM itemkitmembers
+                        WHERE ikm_invcon_inventoryconditionid = ? AND ikm_thrutime = ?
+                        """, inventoryCondition, Session.MAX_TIME);
+    }
+
+    public long countItemKitMembersByUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM itemkitmembers
+                        WHERE ikm_uomt_unitofmeasuretypeid = ? AND ikm_thrutime = ?
+                        """, unitOfMeasureType, Session.MAX_TIME);
+    }
+
+    public long countItemKitMembersByMemberItem(Item memberItem) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM itemkitmembers
+                        WHERE ikm_memberitemid = ? AND ikm_thrutime = ?
+                        """, memberItem, Session.MAX_TIME);
+    }
+
+    public long countItemKitMembersByMemberInventoryCondition(InventoryCondition memberInventoryCondition) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM itemkitmembers
+                        WHERE ikm_memberinventoryconditionid = ? AND ikm_thrutime = ?
+                        """, memberInventoryCondition, Session.MAX_TIME);
+    }
+
+    public long countItemKitMembersByMemberUnitOfMeasureType(UnitOfMeasureType memberUnitOfMeasureType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM itemkitmembers
+                        WHERE ikm_memberunitofmeasuretypeid = ? AND ikm_thrutime = ?
+                        """, memberUnitOfMeasureType, Session.MAX_TIME);
+    }
+
     private ItemKitMember getItemKitMember(Item item, InventoryCondition inventoryCondition, UnitOfMeasureType unitOfMeasureType,
             Item memberItem, InventoryCondition memberInventoryCondition, UnitOfMeasureType memberUnitOfMeasureType,
             EntityPermission entityPermission) {
@@ -4816,15 +4864,18 @@ public class ItemControl
                 memberUnitOfMeasureType));
     }
 
-    public List<ItemKitMemberTransfer> getItemKitMemberTransfersByItem(UserVisit userVisit, Item item) {
-        var itemKitMembers = getItemKitMembersByItem(item);
+    public List<ItemKitMemberTransfer> getItemKitMemberTransfers(UserVisit userVisit, Collection<ItemKitMember> itemKitMembers) {
         List<ItemKitMemberTransfer> itemKitMemberTransfers = new ArrayList<>(itemKitMembers.size());
-        
+
         itemKitMembers.forEach((itemKitMember) ->
                 itemKitMemberTransfers.add(itemKitMemberTransferCache.getTransfer(userVisit, itemKitMember))
         );
-        
+
         return itemKitMemberTransfers;
+    }
+
+    public List<ItemKitMemberTransfer> getItemKitMemberTransfersByItem(UserVisit userVisit, Item item) {
+        return getItemKitMemberTransfers(userVisit, getItemKitMembersByItem(item));
     }
     
     public void deleteItemKitMember(ItemKitMember itemKitMember, BasePK deletedBy) {
