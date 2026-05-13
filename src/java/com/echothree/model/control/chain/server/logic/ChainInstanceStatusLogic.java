@@ -29,12 +29,14 @@ import com.echothree.model.data.chain.server.entity.ChainAction;
 import com.echothree.model.data.chain.server.entity.ChainInstance;
 import com.echothree.model.data.chain.server.entity.ChainInstanceStatus;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
 
 @ApplicationScoped
-public class ChainInstanceStatusLogic {
+public class ChainInstanceStatusLogic
+        extends BaseLogic {
 
     protected ChainInstanceStatusLogic() {
         super();
