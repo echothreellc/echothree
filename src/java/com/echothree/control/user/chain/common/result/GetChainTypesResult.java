@@ -26,11 +26,11 @@ public interface GetChainTypesResult
     
     ChainKindTransfer getChainKind();
     void setChainKind(ChainKindTransfer chainKind);
-    
-    List<ChainTypeTransfer> getChainTypes();
-    void setChainTypes(List<ChainTypeTransfer> chainTypes);
 
     Long getChainTypeCount();
     void setChainTypeCount(Long chainTypeCount);
-    
+
+    List<ChainTypeTransfer> getChainTypes();
+    void setChainTypes(List<ChainTypeTransfer> chainTypes);
+
 }
