@@ -18,13 +18,14 @@ package com.echothree.model.control.party.server.logic;
 
 import com.echothree.model.control.chain.common.ChainConstants;
 import com.echothree.model.control.chain.server.control.ChainControl;
-import com.echothree.model.control.chain.server.logic.BaseChainLogic;
 import com.echothree.model.control.chain.server.logic.ChainEntityRoleTypeLogic;
+import com.echothree.model.control.chain.server.logic.ChainInstanceLogic;
 import com.echothree.model.control.chain.server.logic.ChainTypeLogic;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.data.chain.server.entity.ChainInstance;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
@@ -33,10 +34,13 @@ import javax.inject.Inject;
 
 @ApplicationScoped
 public class PartyChainLogic
-        extends BaseChainLogic {
+        extends BaseLogic {
 
     @Inject
-    ChainTypeLogic chainTypeLogic;
+    protected ChainTypeLogic chainTypeLogic;
+
+    @Inject
+    protected ChainInstanceLogic chainInstanceLogic;
 
     @Inject
     ChainEntityRoleTypeLogic chainEntityRoleTypeLogic;
@@ -63,10 +67,10 @@ public class PartyChainLogic
                 var entityInstance = entityInstanceControl.getEntityInstanceByBasePK(party.getPrimaryKey());
                 
                 if(resetChainIfRunning) {
-                    deleteChainInstanceByChainEntityRoleTypeAndEntityInstance(chainEntityRoleType, entityInstance, createdBy);
+                    chainInstanceLogic.deleteChainInstanceByChainEntityRoleTypeAndEntityInstance(chainEntityRoleType, entityInstance, createdBy);
                 }
                 
-                chainInstance = createChainInstance(eea, chainType, party, createdBy);
+                chainInstance = chainInstanceLogic.createChainInstance(eea, chainType, party, createdBy);
 
                 if(!hasExecutionErrors(eea) && chainInstance != null) {
                     var chainControl = Session.getModelController(ChainControl.class);

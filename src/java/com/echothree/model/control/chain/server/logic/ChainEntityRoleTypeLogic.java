@@ -34,14 +34,6 @@ public class ChainEntityRoleTypeLogic
         super();
     }
 
-    private static class ChainEntityRoleTypeLogicHolder {
-        static ChainEntityRoleTypeLogic instance = new ChainEntityRoleTypeLogic();
-    }
-
-    public static ChainEntityRoleTypeLogic getInstance() {
-        return ChainEntityRoleTypeLogicHolder.instance;
-    }
-
     public ChainEntityRoleType getChainEntityRoleTypeByName(final ExecutionErrorAccumulator eea, final ChainType chainType, final String chainEntityRoleTypeName) {
         var chainControl = Session.getModelController(ChainControl.class);
         var chainEntityRoleType = chainControl.getChainEntityRoleTypeByName(chainType, chainEntityRoleTypeName);

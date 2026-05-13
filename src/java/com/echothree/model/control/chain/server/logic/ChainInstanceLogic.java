@@ -17,8 +17,6 @@
 package com.echothree.model.control.chain.server.logic;
 
 import com.echothree.model.control.chain.server.control.ChainControl;
-import com.echothree.model.control.customer.server.control.CustomerControl;
-import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.data.chain.server.entity.Chain;
@@ -30,39 +28,32 @@ import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
-import com.echothree.util.server.persistence.Session;
 import java.util.HashSet;
 import java.util.Set;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
 @ApplicationScoped
-public class BaseChainLogic
+public class ChainInstanceLogic
         extends BaseLogic {
 
     @Inject
-    ChainTypeLogic chainTypeLogic;
+    protected ChainControl chainControl;
 
-    protected BaseChainLogic() {
+    @Inject
+    protected ChainLogic chainLogic;
+
+    @Inject
+    protected ChainTypeLogic chainTypeLogic;
+
+    protected ChainInstanceLogic() {
         super();
     }
 
-    protected Chain getChain(final ExecutionErrorAccumulator eea, final ChainType chainType, final Party party) {
-        var chainControl = Session.getModelController(ChainControl.class);
-        var offerControl = Session.getModelController(OfferControl.class);
-        var customerControl = Session.getModelController(CustomerControl.class);
-        var customer = customerControl.getCustomer(party);
-        var initialOfferUse = customer == null ? null : customer.getInitialOfferUse();
-        var offerChainType = initialOfferUse == null ? null : offerControl.getOfferChainType(initialOfferUse.getLastDetail().getOffer(), chainType);
-
-        return offerChainType == null ? chainControl.getDefaultChain(chainType) : offerChainType.getChain();
-    }
-
-    protected ChainInstance createChainInstance(final ExecutionErrorAccumulator eea, final Chain chain, final BasePK createdBy) {
-        var chainControl = Session.getModelController(ChainControl.class);
+    public ChainInstance createChainInstance(final ExecutionErrorAccumulator eea, final Chain chain, final BasePK createdBy) {
         var defaultChainActionSet = chainControl.getDefaultChainActionSet(chain);
         ChainInstance chainInstance = null;
-        
+
         // The lack of a defaultChainActionSet is not a reportable error - it just silently avoids creating a Chain Instance.
         if(defaultChainActionSet != null) {
             var sequence = chain.getLastDetail().getChainInstanceSequence();
@@ -75,12 +66,12 @@ public class BaseChainLogic
                 chainInstance = chainControl.createChainInstance(SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence), defaultChainActionSet, createdBy);
             }
         }
-        
+
         return chainInstance;
     }
-    
-    protected ChainInstance createChainInstance(final ExecutionErrorAccumulator eea, final ChainType chainType, final Party party, final BasePK createdBy) {
-        var chain = getChain(eea, chainType, party);
+
+    public ChainInstance createChainInstance(final ExecutionErrorAccumulator eea, final ChainType chainType, final Party party, final BasePK createdBy) {
+        var chain = chainLogic.getChain(eea, chainType, party);
         ChainInstance chainInstance = null;
 
         if(chain != null) {
@@ -89,8 +80,8 @@ public class BaseChainLogic
 
         return chainInstance;
     }
-    
-    protected ChainInstance createChainInstance(final ExecutionErrorAccumulator eea, final String chainKindName, final String chainTypeName, final Party party,
+
+    public ChainInstance createChainInstance(final ExecutionErrorAccumulator eea, final String chainKindName, final String chainTypeName, final Party party,
             final BasePK createdBy) {
         var chainType = chainTypeLogic.getChainTypeByName(eea, chainKindName, chainTypeName);
         ChainInstance chainInstance = null;
@@ -101,18 +92,17 @@ public class BaseChainLogic
 
         return chainInstance;
     }
-    
-    protected void deleteChainInstanceByChainEntityRoleTypeAndEntityInstance(final ChainEntityRoleType chainEntityRoleType, final EntityInstance entityInstance,
+
+    public void deleteChainInstanceByChainEntityRoleTypeAndEntityInstance(final ChainEntityRoleType chainEntityRoleType, final EntityInstance entityInstance,
             final BasePK deletedBy) {
-        var chainControl = Session.getModelController(ChainControl.class);
         var chainInstanceEntityRoles = chainControl.getChainInstanceEntityRoles(chainEntityRoleType, entityInstance);
         Set<ChainInstance> chainInstances = new HashSet<>();
-        
+
         chainInstanceEntityRoles.forEach((chainInstanceEntityRole) -> {
             chainInstances.add(chainInstanceEntityRole.getChainInstanceForUpdate());
         });
-        
+
         chainControl.deleteChainInstances(chainInstances, deletedBy);
     }
-    
+
 }

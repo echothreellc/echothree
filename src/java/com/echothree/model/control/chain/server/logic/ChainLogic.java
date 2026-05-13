@@ -16,34 +16,40 @@
 
 package com.echothree.model.control.chain.server.logic;
 
-import com.echothree.model.control.chain.common.exception.UnknownChainKindNameException;
 import com.echothree.model.control.chain.server.control.ChainControl;
-import com.echothree.model.data.chain.server.entity.ChainKind;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.model.control.customer.server.control.CustomerControl;
+import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.data.chain.server.entity.Chain;
+import com.echothree.model.data.chain.server.entity.ChainType;
+import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
 @ApplicationScoped
-public class ChainKindLogic
+public class ChainLogic
         extends BaseLogic {
 
     @Inject
     ChainControl chainControl;
 
-    protected ChainKindLogic() {
+    @Inject
+    OfferControl offerControl;
+
+    @Inject
+    CustomerControl customerControl;
+
+    protected ChainLogic() {
         super();
     }
 
-    public ChainKind getChainKindByName(final ExecutionErrorAccumulator eea, final String chainKindName) {
-        var chainKind = chainControl.getChainKindByName(chainKindName);
+    public Chain getChain(final ExecutionErrorAccumulator eea, final ChainType chainType, final Party party) {
+        var customer = customerControl.getCustomer(party);
+        var initialOfferUse = customer == null ? null : customer.getInitialOfferUse();
+        var offerChainType = initialOfferUse == null ? null : offerControl.getOfferChainType(initialOfferUse.getLastDetail().getOffer(), chainType);
 
-        if(chainKind == null) {
-            handleExecutionError(UnknownChainKindNameException.class, eea, ExecutionErrors.UnknownChainKindName.name(), chainKindName);
-        }
-
-        return chainKind;
+        return offerChainType == null ? chainControl.getDefaultChain(chainType) : offerChainType.getChain();
     }
 
 }

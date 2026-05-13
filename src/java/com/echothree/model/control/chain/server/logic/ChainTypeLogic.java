@@ -40,14 +40,6 @@ public class ChainTypeLogic
         super();
     }
 
-    private static class ChainTypeLogicHolder {
-        static ChainTypeLogic instance = new ChainTypeLogic();
-    }
-
-    public static ChainTypeLogic getInstance() {
-        return ChainTypeLogicHolder.instance;
-    }
-
     public ChainType getChainTypeByName(final ExecutionErrorAccumulator eea, final ChainKind chainKind, final String chainTypeName) {
         var chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
 
