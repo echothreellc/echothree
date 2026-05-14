@@ -18,8 +18,6 @@ package com.echothree.model.control.chain.server.logic;
 
 import com.echothree.model.control.chain.common.exception.UnknownChainActionSetNameException;
 import com.echothree.model.control.chain.server.control.ChainControl;
-import com.echothree.model.control.customer.server.control.CustomerControl;
-import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.data.chain.server.entity.Chain;
 import com.echothree.model.data.chain.server.entity.ChainActionSet;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -34,12 +32,6 @@ public class ChainActionSetLogic
 
     @Inject
     ChainControl chainControl;
-
-    @Inject
-    OfferControl offerControl;
-
-    @Inject
-    CustomerControl customerControl;
 
     @Inject
     ChainLogic chainLogic;

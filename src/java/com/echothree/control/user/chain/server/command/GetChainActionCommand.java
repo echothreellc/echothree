@@ -19,6 +19,7 @@ package com.echothree.control.user.chain.server.command;
 import com.echothree.control.user.chain.common.form.GetChainActionForm;
 import com.echothree.control.user.chain.common.result.ChainResultFactory;
 import com.echothree.model.control.chain.server.control.ChainControl;
+import com.echothree.model.control.chain.server.logic.ChainActionLogic;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -32,9 +33,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetChainActionCommand
@@ -47,9 +48,9 @@ public class GetChainActionCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.ChainAction.name(), SecurityRoles.Review.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.ChainAction.name(), SecurityRoles.Review.name())
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ChainKindName", FieldType.ENTITY_NAME, true, null, null),
@@ -57,8 +58,14 @@ public class GetChainActionCommand
                 new FieldDefinition("ChainName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ChainActionSetName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ChainActionName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    ChainControl chainControl;
+
+    @Inject
+    ChainActionLogic chainActionLogic;
     
     /** Creates a new instance of GetChainActionCommand */
     public GetChainActionCommand() {
@@ -67,48 +74,21 @@ public class GetChainActionCommand
     
     @Override
     protected BaseResult execute() {
-        var chainControl = Session.getModelController(ChainControl.class);
         var result = ChainResultFactory.getGetChainActionResult();
         var chainKindName = form.getChainKindName();
-        var chainKind = chainControl.getChainKindByName(chainKindName);
-        
-        if(chainKind != null) {
-            var chainTypeName = form.getChainTypeName();
-            var chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
+        var chainTypeName = form.getChainTypeName();
+        var chainName = form.getChainName();
+        var chainActionSetName = form.getChainActionSetName();
+        var chainActionName = form.getChainActionName();
+        var chainAction = chainActionLogic.getChainActionByName(this, chainKindName, chainTypeName, chainName,
+                chainActionSetName, chainActionName);
 
-            if(chainType != null) {
-                var chainName = form.getChainName();
-                var chain = chainControl.getChainByName(chainType, chainName);
+        if(!hasExecutionErrors()) {
+            result.setChainAction(chainControl.getChainActionTransfer(getUserVisit(), chainAction));
 
-                if(chain != null) {
-                    var chainActionSetName = form.getChainActionSetName();
-                    var chainActionSet = chainControl.getChainActionSetByName(chain, chainActionSetName);
-
-                    if(chainActionSet != null) {
-                        var chainActionName = form.getChainActionName();
-                        var chainAction = chainControl.getChainActionByName(chainActionSet, chainActionName);
-
-                        if(chainAction != null) {
-                            result.setChainAction(chainControl.getChainActionTransfer(getUserVisit(), chainAction));
-
-                            sendEvent(chainAction.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
-                        } else {
-                            addExecutionError(ExecutionErrors.UnknownChainActionName.name(), chainKindName, chainTypeName, chainName, chainActionSetName,
-                                    chainActionName);
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownChainActionSetName.name(), chainKindName, chainTypeName, chainName, chainActionSetName);
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownChainName.name(), chainKindName, chainTypeName, chainName);
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownChainTypeName.name(), chainKindName, chainTypeName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownChainKindName.name(), chainKindName);
+            sendEvent(chainAction.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
-        
+
         return result;
     }
     
