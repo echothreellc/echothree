@@ -26,11 +26,11 @@ public interface GetChainActionSetsResult
     
     ChainTransfer getChain();
     void setChain(ChainTransfer chain);
-    
-    List<ChainActionSetTransfer> getChainActionSets();
-    void setChainActionSets(List<ChainActionSetTransfer> chainActionSets);
 
     Long getChainActionSetCount();
     void setChainActionSetCount(Long chainActionSetCount);
-    
+
+    List<ChainActionSetTransfer> getChainActionSets();
+    void setChainActionSets(List<ChainActionSetTransfer> chainActionSets);
+
 }
