@@ -29,5 +29,8 @@ public interface GetChainActionSetsResult
     
     List<ChainActionSetTransfer> getChainActionSets();
     void setChainActionSets(List<ChainActionSetTransfer> chainActionSets);
+
+    Long getChainActionSetCount();
+    void setChainActionSetCount(Long chainActionSetCount);
     
 }

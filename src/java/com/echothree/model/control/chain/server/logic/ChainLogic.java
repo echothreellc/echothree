@@ -17,12 +17,10 @@
 package com.echothree.model.control.chain.server.logic;
 
 import com.echothree.model.control.chain.common.exception.UnknownChainNameException;
-import com.echothree.model.control.chain.common.exception.UnknownChainTypeNameException;
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.data.chain.server.entity.Chain;
-import com.echothree.model.data.chain.server.entity.ChainKind;
 import com.echothree.model.data.chain.server.entity.ChainType;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -55,18 +53,21 @@ public class ChainLogic
         var chain = chainControl.getChainByName(chainType, chainName);
 
         if(chain == null) {
-            handleExecutionError(UnknownChainNameException.class, eea, ExecutionErrors.UnknownChainName.name(), chainType.getLastDetail().getChainTypeName(),
+            handleExecutionError(UnknownChainNameException.class, eea, ExecutionErrors.UnknownChainName.name(),
+                    chainType.getLastDetail().getChainKind().getLastDetail().getChainKindName(),
+                    chainType.getLastDetail().getChainTypeName(),
                     chainName);
         }
 
         return chain;
     }
 
-    public Chain getChainByName(final ExecutionErrorAccumulator eea, final String chainKindName, final String chainTypeName, final String chainName) {
+    public Chain getChainByName(final ExecutionErrorAccumulator eea, final String chainKindName, final String chainTypeName,
+            final String chainName) {
         var chainType = chainTypeLogic.getChainTypeByName(eea, chainKindName, chainTypeName);
         Chain chain = null;
 
-        if(chainType != null) {
+        if(!hasExecutionErrors(eea)) {
             chain = getChainByName(eea, chainType, chainName);
         }
 
