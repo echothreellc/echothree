@@ -40,7 +40,9 @@ public class ChainEntityRoleTypeLogic
 
         if(chainEntityRoleType == null) {
             handleExecutionError(UnknownChainEntityRoleTypeNameException.class, eea, ExecutionErrors.UnknownChainEntityRoleTypeName.name(),
-                    chainType.getLastDetail().getChainTypeName(), chainEntityRoleTypeName);
+                    chainType.getLastDetail().getChainKind().getLastDetail().getChainKindName(),
+                    chainType.getLastDetail().getChainTypeName(),
+                    chainEntityRoleTypeName);
         }
 
         return chainEntityRoleType;
