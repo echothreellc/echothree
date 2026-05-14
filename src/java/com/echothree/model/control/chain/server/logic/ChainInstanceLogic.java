@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.chain.server.logic;
 
+import com.echothree.model.control.chain.common.exception.UnknownChainInstanceNameException;
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
@@ -25,6 +26,7 @@ import com.echothree.model.data.chain.server.entity.ChainInstance;
 import com.echothree.model.data.chain.server.entity.ChainType;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.server.entity.Party;
+import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
@@ -88,6 +90,16 @@ public class ChainInstanceLogic
 
         if(!hasExecutionErrors(eea)) {
             chainInstance = createChainInstance(eea, chainType, party, createdBy);
+        }
+
+        return chainInstance;
+    }
+
+    public ChainInstance getChainInstanceByName(final ExecutionErrorAccumulator eea, final String chainInstanceName) {
+        var chainInstance = chainControl.getChainInstanceByName(chainInstanceName);
+
+        if(chainInstance == null) {
+            handleExecutionError(UnknownChainInstanceNameException.class, eea, ExecutionErrors.UnknownChainInstanceName.name(), chainInstanceName);
         }
 
         return chainInstance;

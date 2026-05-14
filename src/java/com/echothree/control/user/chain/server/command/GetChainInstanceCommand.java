@@ -19,15 +19,14 @@ package com.echothree.control.user.chain.server.command;
 import com.echothree.control.user.chain.common.form.GetChainInstanceForm;
 import com.echothree.control.user.chain.common.result.ChainResultFactory;
 import com.echothree.model.control.chain.server.control.ChainControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.model.control.chain.server.logic.ChainInstanceLogic;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetChainInstanceCommand
@@ -38,9 +37,15 @@ public class GetChainInstanceCommand
     static {
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ChainInstanceName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
-    
+
+    @Inject
+    ChainControl chainControl;
+
+    @Inject
+    ChainInstanceLogic chainInstanceLogic;
+
     /** Creates a new instance of GetChainInstanceCommand */
     public GetChainInstanceCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
@@ -48,15 +53,12 @@ public class GetChainInstanceCommand
     
     @Override
     protected BaseResult execute() {
-        var chainControl = Session.getModelController(ChainControl.class);
         var result = ChainResultFactory.getGetChainInstanceResult();
         var chainInstanceName = form.getChainInstanceName();
-        var chainInstance = chainControl.getChainInstanceByName(chainInstanceName);
+        var chainInstance = chainInstanceLogic.getChainInstanceByName(this, chainInstanceName);
         
-        if(chainInstance != null) {
+        if(!hasExecutionErrors()) {
             result.setChainInstance(chainControl.getChainInstanceTransfer(getUserVisit(), chainInstance));
-        } else {
-            addExecutionError(ExecutionErrors.UnknownChainInstanceName.name(), chainInstanceName);
         }
         
         return result;

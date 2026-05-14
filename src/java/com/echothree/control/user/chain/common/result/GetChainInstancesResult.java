@@ -26,6 +26,9 @@ public interface GetChainInstancesResult
     
     ChainTransfer getChain();
     void setChain(ChainTransfer chain);
+
+    Long getChainInstanceCount();
+    void setChainInstanceCount(Long chainInstanceCount);
     
     List<ChainInstanceTransfer> getChainInstances();
     void setChainInstances(List<ChainInstanceTransfer> chainInstances);
