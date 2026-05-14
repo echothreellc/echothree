@@ -19,6 +19,7 @@ package com.echothree.control.user.chain.server.command;
 import com.echothree.control.user.chain.common.form.GetChainKindForm;
 import com.echothree.control.user.chain.common.result.ChainResultFactory;
 import com.echothree.model.control.chain.server.control.ChainControl;
+import com.echothree.model.control.chain.server.logic.ChainKindLogic;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -34,10 +35,17 @@ import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetChainKindCommand
         extends BaseSimpleCommand<GetChainKindForm> {
+
+    @Inject
+    ChainControl chainControl;
+
+    @Inject
+    ChainKindLogic chainKindLogic;
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -62,17 +70,14 @@ public class GetChainKindCommand
     
     @Override
     protected BaseResult execute() {
-        var chainControl = Session.getModelController(ChainControl.class);
         var result = ChainResultFactory.getGetChainKindResult();
         var chainKindName = form.getChainKindName();
-        var chainKind = chainControl.getChainKindByName(chainKindName);
+        var chainKind = chainKindLogic.getChainKindByName(this, chainKindName);
         
-        if(chainKind != null) {
+        if(!hasExecutionErrors()) {
             result.setChainKind(chainControl.getChainKindTransfer(getUserVisit(), chainKind));
             
             sendEvent(chainKind.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
-        } else {
-            addExecutionError(ExecutionErrors.UnknownChainKindName.name(), chainKindName);
         }
         
         return result;

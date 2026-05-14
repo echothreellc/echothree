@@ -18,20 +18,33 @@ package com.echothree.model.control.contactlist.server.logic;
 
 import com.echothree.model.control.chain.common.ChainConstants;
 import com.echothree.model.control.chain.server.control.ChainControl;
-import com.echothree.model.control.chain.server.logic.BaseChainLogic;
+import com.echothree.model.control.chain.server.logic.ChainInstanceLogic;
+import com.echothree.model.control.chain.server.logic.ChainLogic;
+import com.echothree.model.control.chain.server.logic.ChainTypeLogic;
 import com.echothree.model.data.chain.server.entity.Chain;
 import com.echothree.model.data.chain.server.entity.ChainInstance;
 import com.echothree.model.data.contactlist.server.entity.PartyContactList;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class ContactListChainLogic
-        extends BaseChainLogic {
+        extends BaseLogic {
+
+    @Inject
+    protected ChainLogic chainLogic;
+
+    @Inject
+    protected ChainTypeLogic chainTypeLogic;
+
+    @Inject
+    protected ChainInstanceLogic chainInstanceLogic;
 
     protected ContactListChainLogic() {
         super();
@@ -63,15 +76,15 @@ public class ContactListChainLogic
         }
         
         if(chain == null) {
-            var chainType = getChainTypeByName(eea, chainKindName, chainTypeName);
-            
-            if(chain != null) {
-                chain = getChain(eea, chainType, party);
+            var chainType = chainTypeLogic.getChainTypeByName(eea, chainKindName, chainTypeName);
+
+            if(chainType != null) {
+                chain = chainLogic.getChain(eea, chainType, party);
             }
         }
         
         if(chain != null) {
-            chainInstance = createChainInstance(eea, chain, createdBy);
+            chainInstance = chainInstanceLogic.createChainInstance(eea, chain, createdBy);
         }
         
         return chainInstance;
