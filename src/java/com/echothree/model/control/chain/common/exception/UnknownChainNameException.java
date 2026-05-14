@@ -14,23 +14,31 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.chain.common.result;
+package com.echothree.model.control.chain.common.exception;
 
-import com.echothree.model.control.chain.common.transfer.ChainTransfer;
-import com.echothree.model.control.chain.common.transfer.ChainTypeTransfer;
-import com.echothree.util.common.command.BaseResult;
-import java.util.List;
+import com.echothree.util.common.message.Message;
 
-public interface GetChainsResult
-        extends BaseResult {
+public class UnknownChainNameException
+        extends BaseChainException {
     
-    ChainTypeTransfer getChainType();
-    void setChainType(ChainTypeTransfer chainType);
+    /** Creates a new instance of UnknownChainNameException */
+    public UnknownChainNameException() {
+        super();
+    }
+    
+    /** Creates a new instance of UnknownChainNameException */
+    public UnknownChainNameException(String message) {
+        super(message);
+    }
+    
+    /** Creates a new instance of UnknownChainNameException */
+    public UnknownChainNameException(Throwable cause) {
+        super(cause);
+    }
+    
+    /** Creates a new instance of UnknownChainNameException */
+    public UnknownChainNameException(Message message) {
+        super(message);
+    }
 
-    Long getChainCount();
-    void setChainCount(Long chainCount);
-    
-    List<ChainTransfer> getChains();
-    void setChains(List<ChainTransfer> chains);
-    
 }

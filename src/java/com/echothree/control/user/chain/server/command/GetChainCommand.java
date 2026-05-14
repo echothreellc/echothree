@@ -19,22 +19,21 @@ package com.echothree.control.user.chain.server.command;
 import com.echothree.control.user.chain.common.form.GetChainForm;
 import com.echothree.control.user.chain.common.result.ChainResultFactory;
 import com.echothree.model.control.chain.server.control.ChainControl;
+import com.echothree.model.control.chain.server.logic.ChainLogic;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetChainCommand
@@ -47,16 +46,22 @@ public class GetChainCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.Chain.name(), SecurityRoles.Review.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.Chain.name(), SecurityRoles.Review.name())
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ChainKindName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ChainTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ChainName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    ChainControl chainControl;
+
+    @Inject
+    ChainLogic chainLogic;
     
     /** Creates a new instance of GetChainCommand */
     public GetChainCommand() {
@@ -65,33 +70,18 @@ public class GetChainCommand
     
     @Override
     protected BaseResult execute() {
-        var chainControl = Session.getModelController(ChainControl.class);
         var result = ChainResultFactory.getGetChainResult();
         var chainKindName = form.getChainKindName();
-        var chainKind = chainControl.getChainKindByName(chainKindName);
-        
-        if(chainKind != null) {
-            var chainTypeName = form.getChainTypeName();
-            var chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
+        var chainTypeName = form.getChainTypeName();
+        var chainName = form.getChainName();
+        var chain = chainLogic.getChainByName(this, chainKindName, chainTypeName, chainName);
 
-            if(chainType != null) {
-                var chainName = form.getChainName();
-                var chain = chainControl.getChainByName(chainType, chainName);
+        if(!hasExecutionErrors()) {
+            result.setChain(chainControl.getChainTransfer(getUserVisit(), chain));
 
-                if(chain != null) {
-                    result.setChain(chainControl.getChainTransfer(getUserVisit(), chain));
-
-                    sendEvent(chain.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownChainName.name(), chainKindName, chainTypeName, chainName);
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownChainTypeName.name(), chainKindName, chainTypeName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownChainKindName.name(), chainKindName);
+            sendEvent(chain.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
-        
+
         return result;
     }
     

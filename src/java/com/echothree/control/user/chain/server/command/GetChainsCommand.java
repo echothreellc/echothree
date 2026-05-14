@@ -19,25 +19,30 @@ package com.echothree.control.user.chain.server.command;
 import com.echothree.control.user.chain.common.form.GetChainsForm;
 import com.echothree.control.user.chain.common.result.ChainResultFactory;
 import com.echothree.model.control.chain.server.control.ChainControl;
+import com.echothree.model.control.chain.server.logic.ChainKindLogic;
+import com.echothree.model.control.chain.server.logic.ChainTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.model.data.chain.server.entity.Chain;
+import com.echothree.model.data.chain.server.entity.ChainKind;
+import com.echothree.model.data.chain.server.entity.ChainType;
+import com.echothree.model.data.chain.server.factory.ChainFactory;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetChainsCommand
-        extends BaseSimpleCommand<GetChainsForm> {
+        extends BasePaginatedMultipleEntitiesCommand<Chain, GetChainsForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -46,42 +51,68 @@ public class GetChainsCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.Chain.name(), SecurityRoles.List.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.Chain.name(), SecurityRoles.List.name())
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("ChainKindName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("ChainTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+                new FieldDefinition("ChainKindName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("ChainTypeName", FieldType.ENTITY_NAME, true, null, null)
+        );
     }
-    
+
+    @Inject
+    ChainControl chainControl;
+
+    @Inject
+    ChainKindLogic chainKindLogic;
+
+    @Inject
+    ChainTypeLogic chainTypeLogic;
+
     /** Creates a new instance of GetChainsCommand */
     public GetChainsCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
-    @Override
-    protected BaseResult execute() {
-        var chainControl = Session.getModelController(ChainControl.class);
-        var result = ChainResultFactory.getGetChainsResult();
-        var chainKindName = form.getChainKindName();
-        var chainKind = chainControl.getChainKindByName(chainKindName);
-        
-        if(chainKind != null) {
-            var chainTypeName = form.getChainTypeName();
-            var chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
 
-            if(chainType != null) {
-                result.setChainType(chainControl.getChainTypeTransfer(getUserVisit(), chainType));
-                result.setChains(chainControl.getChainTransfersByChainType(getUserVisit(), chainType));
-            } else {
-                addExecutionError(ExecutionErrors.UnknownChainTypeName.name(), chainKindName, chainTypeName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownChainKindName.name(), chainKindName);
+    protected ChainKind chainKind;
+    protected ChainType chainType;
+
+    @Override
+    protected void handleForm() {
+        chainKind = chainKindLogic.getChainKindByName(this, form.getChainKindName());
+
+        if(!hasExecutionErrors()) {
+            chainType = chainTypeLogic.getChainTypeByName(this, chainKind, form.getChainTypeName());
         }
-        
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return hasExecutionErrors() ? null : chainControl.countChainsByChainType(chainType);
+    }
+
+    @Override
+    protected Collection<Chain> getEntities() {
+        return hasExecutionErrors() ? null : chainControl.getChainsByChainType(chainType);
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<Chain> entities) {
+        var result = ChainResultFactory.getGetChainsResult();
+
+        if(entities != null) {
+            var userVisit = getUserVisit();
+
+            result.setChainType(chainControl.getChainTypeTransfer(userVisit, chainType));
+
+            if(session.hasLimit(ChainFactory.class)) {
+                result.setChainCount(getTotalEntities());
+            }
+
+            result.setChains(chainControl.getChainTransfersByChainType(userVisit, chainType));
+        }
+
         return result;
     }
     

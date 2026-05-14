@@ -16,12 +16,16 @@
 
 package com.echothree.model.control.chain.server.logic;
 
+import com.echothree.model.control.chain.common.exception.UnknownChainNameException;
+import com.echothree.model.control.chain.common.exception.UnknownChainTypeNameException;
 import com.echothree.model.control.chain.server.control.ChainControl;
 import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.data.chain.server.entity.Chain;
+import com.echothree.model.data.chain.server.entity.ChainKind;
 import com.echothree.model.data.chain.server.entity.ChainType;
 import com.echothree.model.data.party.server.entity.Party;
+import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import javax.enterprise.context.ApplicationScoped;
@@ -40,10 +44,35 @@ public class ChainLogic
     @Inject
     CustomerControl customerControl;
 
+    @Inject
+    ChainTypeLogic chainTypeLogic;
+
     protected ChainLogic() {
         super();
     }
 
+    public Chain getChainByName(final ExecutionErrorAccumulator eea, final ChainType chainType, final String chainName) {
+        var chain = chainControl.getChainByName(chainType, chainName);
+
+        if(chain == null) {
+            handleExecutionError(UnknownChainNameException.class, eea, ExecutionErrors.UnknownChainName.name(), chainType.getLastDetail().getChainTypeName(),
+                    chainName);
+        }
+
+        return chain;
+    }
+
+    public Chain getChainByName(final ExecutionErrorAccumulator eea, final String chainKindName, final String chainTypeName, final String chainName) {
+        var chainType = chainTypeLogic.getChainTypeByName(eea, chainKindName, chainTypeName);
+        Chain chain = null;
+
+        if(chainType != null) {
+            chain = getChainByName(eea, chainType, chainName);
+        }
+
+        return chain;
+    }
+    
     public Chain getChain(final ExecutionErrorAccumulator eea, final ChainType chainType, final Party party) {
         var customer = customerControl.getCustomer(party);
         var initialOfferUse = customer == null ? null : customer.getInitialOfferUse();
