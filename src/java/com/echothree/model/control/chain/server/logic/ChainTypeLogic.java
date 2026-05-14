@@ -44,7 +44,8 @@ public class ChainTypeLogic
         var chainType = chainControl.getChainTypeByName(chainKind, chainTypeName);
 
         if(chainType == null) {
-            handleExecutionError(UnknownChainTypeNameException.class, eea, ExecutionErrors.UnknownChainTypeName.name(), chainKind.getLastDetail().getChainKindName(),
+            handleExecutionError(UnknownChainTypeNameException.class, eea, ExecutionErrors.UnknownChainTypeName.name(),
+                    chainKind.getLastDetail().getChainKindName(),
                     chainTypeName);
         }
 
@@ -55,7 +56,7 @@ public class ChainTypeLogic
         var chainKind = chainKindLogic.getChainKindByName(eea, chainKindName);
         ChainType chainType = null;
 
-        if(chainKind != null) {
+        if(!hasExecutionErrors(eea)) {
             chainType = getChainTypeByName(eea, chainKind, chainTypeName);
         }
 
