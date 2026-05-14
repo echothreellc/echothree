@@ -26,6 +26,9 @@ public interface GetChainEntityRoleTypesResult
     
     ChainTypeTransfer getChainType();
     void setChainType(ChainTypeTransfer chainType);
+
+    Long getChainEntityRoleTypeCount();
+    void setChainEntityRoleTypeCount(Long chainEntityRoleTypeCount);
     
     List<ChainEntityRoleTypeTransfer> getChainEntityRoleTypes();
     void setChainEntityRoleTypes(List<ChainEntityRoleTypeTransfer> chainEntityRoleTypes);
