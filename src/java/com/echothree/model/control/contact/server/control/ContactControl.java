@@ -4373,7 +4373,23 @@ public class ContactControl
         
         return postalAddressLineElement;
     }
-    
+
+    public long countPostalAddressLineElementsByPostalAddressLine(final PostalAddressLine postalAddressLine) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM postaladdresslineelements
+                        WHERE pstale_pstal_postaladdresslineid = ? AND pstale_thrutime = ?
+                        """, postalAddressLine, Session.MAX_TIME);
+    }
+
+    public long countPostalAddressLineElementsByPostalAddressElementType(final PostalAddressElementType postalAddressElementType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM postaladdresslineelements
+                        WHERE pstale_pstaetyp_postaladdresselementtypeid = ? AND pstale_thrutime = ?
+                        """, postalAddressElementType, Session.MAX_TIME);
+    }
+
     private PostalAddressLineElement getPostalAddressLineElement(PostalAddressLine postalAddressLine,
             Integer postalAddressLineElementSortOrder, EntityPermission entityPermission) {
         PostalAddressLineElement postalAddressLineElement;

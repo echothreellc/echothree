@@ -62,11 +62,8 @@ public class MainAction
             var commandResult = ContactUtil.getHome().getPostalAddressLineElements(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
             var result = (GetPostalAddressLineElementsResult)executionResult.getResult();
-            var postalAddressFormatTransfer = result.getPostalAddressFormat();
-            var postalAddressLineTransfer = result.getPostalAddressLine();
-            
-            request.setAttribute(AttributeConstants.POSTAL_ADDRESS_FORMAT, postalAddressFormatTransfer);
-            request.setAttribute(AttributeConstants.POSTAL_ADDRESS_LINE, postalAddressLineTransfer);
+
+            request.setAttribute(AttributeConstants.POSTAL_ADDRESS_LINE, result.getPostalAddressLine());
             request.setAttribute(AttributeConstants.POSTAL_ADDRESS_LINE_ELEMENTS, result.getPostalAddressLineElements());
             forwardKey = ForwardConstants.DISPLAY;
         } catch (NamingException ne) {
