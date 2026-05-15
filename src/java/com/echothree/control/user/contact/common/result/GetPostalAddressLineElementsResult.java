@@ -16,7 +16,6 @@
 
 package com.echothree.control.user.contact.common.result;
 
-import com.echothree.model.control.contact.common.transfer.PostalAddressFormatTransfer;
 import com.echothree.model.control.contact.common.transfer.PostalAddressLineElementTransfer;
 import com.echothree.model.control.contact.common.transfer.PostalAddressLineTransfer;
 import com.echothree.util.common.command.BaseResult;
@@ -25,13 +24,13 @@ import java.util.List;
 public interface GetPostalAddressLineElementsResult
         extends BaseResult {
     
-    PostalAddressFormatTransfer getPostalAddressFormat();
-    void setPostalAddressFormat(PostalAddressFormatTransfer postalAddressFormat);
-    
     PostalAddressLineTransfer getPostalAddressLine();
     void setPostalAddressLine(PostalAddressLineTransfer postalAddressLine);
-    
+
+    Long getPostalAddressLineElementCount();
+    void setPostalAddressLineElementCount(Long postalAddressLineElementCount);
+
     List<PostalAddressLineElementTransfer> getPostalAddressLineElements();
     void setPostalAddressLineElements(List<PostalAddressLineElementTransfer> postalAddressLineElements);
-    
+
 }
