@@ -26,6 +26,9 @@ public interface GetPostalAddressLinesResult
     
     PostalAddressFormatTransfer getPostalAddressFormat();
     void setPostalAddressFormat(PostalAddressFormatTransfer postalAddressFormat);
+
+    Long getPostalAddressLineCount();
+    void setPostalAddressLineCount(Long postalAddressLineCount);
     
     List<PostalAddressLineTransfer> getPostalAddressLines();
     void setPostalAddressLines(List<PostalAddressLineTransfer> postalAddressLines);
