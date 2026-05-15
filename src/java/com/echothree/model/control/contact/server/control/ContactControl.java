@@ -88,6 +88,7 @@ import com.echothree.model.data.contact.common.pk.ContactMechanismPK;
 import com.echothree.model.data.contact.common.pk.ContactMechanismPurposePK;
 import com.echothree.model.data.contact.common.pk.ContactMechanismTypePK;
 import com.echothree.model.data.contact.common.pk.PostalAddressFormatPK;
+import com.echothree.model.data.contact.common.pk.PostalAddressLinePK;
 import com.echothree.model.data.contact.server.entity.ContactEmailAddress;
 import com.echothree.model.data.contact.server.entity.ContactInet4Address;
 import com.echothree.model.data.contact.server.entity.ContactInet6Address;
@@ -4175,7 +4176,31 @@ public class ContactControl
         
         return postalAddressLine;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.PostalAddressLine */
+    public PostalAddressLine getPostalAddressLineByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new PostalAddressLinePK(entityInstance.getEntityUniqueId());
+
+        return PostalAddressLineFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public PostalAddressLine getPostalAddressLineByEntityInstance(EntityInstance entityInstance) {
+        return getPostalAddressLineByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public PostalAddressLine getPostalAddressLineByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getPostalAddressLineByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countPostalAddressLinesByPostalAddressFormat(final PostalAddressFormat postalAddressFormat) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM postaladdresslines
+                        JOIN postaladdresslinedetails ON pstaldt_postaladdresslinedetailid = pstal_activedetailid
+                        WHERE pstaldt_pstafmt_postaladdressformatid = ?
+                        """, postalAddressFormat);
+    }
+
     private PostalAddressLine getPostalAddressLine(PostalAddressFormat postalAddressFormat, Integer postalAddressLineSortOrder,
             EntityPermission entityPermission) {
         PostalAddressLine postalAddressLine;
@@ -4269,16 +4294,19 @@ public class ContactControl
     public PostalAddressLineTransfer getPostalAddressLineTransfer(UserVisit userVisit, PostalAddressLine postalAddressLine) {
         return postalAddressLineTransferCache.getPostalAddressLineTransfer(userVisit, postalAddressLine);
     }
-    
-    public List<PostalAddressLineTransfer> getPostalAddressLineTransfersByPostalAddressFormat(UserVisit userVisit, PostalAddressFormat postalAddressFormat) {
-        var postalAddressLines = getPostalAddressLinesByPostalAddressFormat(postalAddressFormat);
+
+    public List<PostalAddressLineTransfer> getPostalAddressLineTransfers(UserVisit userVisit, Collection<PostalAddressLine> postalAddressLines) {
         List<PostalAddressLineTransfer> postalAddressLineTransfers = new ArrayList<>(postalAddressLines.size());
-        
-        postalAddressLines.forEach((postalAddressLine) ->
-                postalAddressLineTransfers.add(postalAddressLineTransferCache.getPostalAddressLineTransfer(userVisit, postalAddressLine))
-        );
-        
+
+        postalAddressLines.forEach((postalAddressLine) -> {
+            postalAddressLineTransfers.add(postalAddressLineTransferCache.getPostalAddressLineTransfer(userVisit, postalAddressLine));
+        });
+
         return postalAddressLineTransfers;
+    }
+
+    public List<PostalAddressLineTransfer> getPostalAddressLineTransfersByPostalAddressFormat(UserVisit userVisit, PostalAddressFormat postalAddressFormat) {
+        return getPostalAddressLineTransfers(userVisit, getPostalAddressLinesByPostalAddressFormat(postalAddressFormat));
     }
     
     public void updatePostalAddressLineFromValue(PostalAddressLineDetailValue postalAddressLineDetailValue, BasePK updatedBy) {
