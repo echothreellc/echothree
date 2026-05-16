@@ -56,11 +56,6 @@ public class GetCustomerTypeContactListCommand
                 new FieldDefinition("ContactListName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-    
-    /** Creates a new instance of GetCustomerTypeContactListCommand */
-    public GetCustomerTypeContactListCommand() {
-        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
-    }
 
     @Inject
     ContactListControl contactListControl;
@@ -70,7 +65,12 @@ public class GetCustomerTypeContactListCommand
 
     @Inject
     CustomerTypeLogic customerTypeLogic;
-    
+
+    /** Creates a new instance of GetCustomerTypeContactListCommand */
+    public GetCustomerTypeContactListCommand() {
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+    }
+
     @Override
     protected BaseResult execute() {
         var result = ContactListResultFactory.getGetCustomerTypeContactListResult();
