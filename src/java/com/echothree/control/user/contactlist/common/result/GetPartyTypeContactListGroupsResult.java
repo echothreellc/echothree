@@ -31,6 +31,9 @@ public interface GetPartyTypeContactListGroupsResult
     ContactListGroupTransfer getContactListGroup();
     void setContactListGroup(ContactListGroupTransfer contactListGroup);
     
+    Long getPartyTypeContactListGroupCount();
+    void setPartyTypeContactListGroupCount(Long partyTypeContactListGroupCount);
+
     List<PartyTypeContactListGroupTransfer> getPartyTypeContactListGroups();
     void setPartyTypeContactListGroups(List<PartyTypeContactListGroupTransfer> partyTypeContactListGroups);
     
