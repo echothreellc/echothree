@@ -30,8 +30,11 @@ public interface GetPartyTypeContactListsResult
     
     ContactListTransfer getContactList();
     void setContactList(ContactListTransfer contactList);
-    
+
+    Long getPartyTypeContactListCount();
+    void setPartyTypeContactListCount(Long partyTypeContactListCount);
+
     List<PartyTypeContactListTransfer> getPartyTypeContactLists();
     void setPartyTypeContactLists(List<PartyTypeContactListTransfer> partyTypeContactLists);
-    
+
 }
