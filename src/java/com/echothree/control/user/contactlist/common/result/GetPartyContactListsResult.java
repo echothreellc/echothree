@@ -31,7 +31,10 @@ public interface GetPartyContactListsResult
     ContactListTransfer getContactList();
     void setContactList(ContactListTransfer contactList);
 
+    Long getPartyContactListCount();
+    void setPartyContactListCount(Long partyContactListCount);
+
     List<PartyContactListTransfer> getPartyContactLists();
     void setPartyContactLists(List<PartyContactListTransfer> partyContactLists);
-    
+
 }
