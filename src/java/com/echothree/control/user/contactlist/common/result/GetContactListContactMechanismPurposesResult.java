@@ -27,6 +27,9 @@ public interface GetContactListContactMechanismPurposesResult
     ContactListTransfer getContactList();
     void setContactList(ContactListTransfer contactList);
     
+    Long getContactListContactMechanismPurposeCount();
+    void setContactListContactMechanismPurposeCount(Long contactListContactMechanismPurposeCount);
+
     List<ContactListContactMechanismPurposeTransfer> getContactListContactMechanismPurposes();
     void setContactListContactMechanismPurposes(List<ContactListContactMechanismPurposeTransfer> contactListContactMechanismPurposes);
     
