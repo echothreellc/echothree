@@ -30,8 +30,11 @@ public interface GetCustomerTypeContactListsResult
     
     ContactListTransfer getContactList();
     void setContactList(ContactListTransfer contactList);
-    
+
+    Long getCustomerTypeContactListCount();
+    void setCustomerTypeContactListCount(Long customerTypeContactListCount);
+
     List<CustomerTypeContactListTransfer> getCustomerTypeContactLists();
     void setCustomerTypeContactLists(List<CustomerTypeContactListTransfer> customerTypeContactLists);
-    
+
 }

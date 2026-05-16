@@ -19,22 +19,22 @@ package com.echothree.control.user.contactlist.server.command;
 import com.echothree.control.user.contactlist.common.form.GetCustomerTypeContactListForm;
 import com.echothree.control.user.contactlist.common.result.ContactListResultFactory;
 import com.echothree.model.control.contactlist.server.control.ContactListControl;
-import com.echothree.model.control.customer.server.control.CustomerControl;
+import com.echothree.model.control.contactlist.server.logic.ContactListLogic;
+import com.echothree.model.control.customer.server.logic.CustomerTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetCustomerTypeContactListCommand
@@ -47,34 +47,41 @@ public class GetCustomerTypeContactListCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.ContactList.name(), SecurityRoles.CustomerTypeContactList.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.ContactList.name(), SecurityRoles.CustomerTypeContactList.name())
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CustomerTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ContactListName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
     
     /** Creates a new instance of GetCustomerTypeContactListCommand */
     public GetCustomerTypeContactListCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
+
+    @Inject
+    ContactListControl contactListControl;
+
+    @Inject
+    ContactListLogic contactListLogic;
+
+    @Inject
+    CustomerTypeLogic customerTypeLogic;
     
     @Override
     protected BaseResult execute() {
-        var customerControl = Session.getModelController(CustomerControl.class);
         var result = ContactListResultFactory.getGetCustomerTypeContactListResult();
         var customerTypeName = form.getCustomerTypeName();
-        var customerType = customerControl.getCustomerTypeByName(customerTypeName);
+        var customerType = customerTypeLogic.getCustomerTypeByName(this, customerTypeName);
         
-        if(customerType != null) {
-            var contactListControl = Session.getModelController(ContactListControl.class);
+        if(!hasExecutionErrors()) {
             var contactListName = form.getContactListName();
-            var contactList = contactListControl.getContactListByName(contactListName);
+            var contactList = contactListLogic.getContactListByName(this, contactListName);
             
-            if(contactList != null) {
+            if(!hasExecutionErrors()) {
                 var customerTypeContactList = contactListControl.getCustomerTypeContactList(customerType, contactList);
                 
                 if(customerTypeContactList != null) {
@@ -82,11 +89,7 @@ public class GetCustomerTypeContactListCommand
                 } else {
                     addExecutionError(ExecutionErrors.UnknownCustomerTypeContactList.name(), customerTypeName, contactListName);
                 }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownContactListName.name(), contactListName);
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownCustomerTypeName.name(), customerTypeName);
         }
         
         return result;
