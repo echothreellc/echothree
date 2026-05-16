@@ -57,10 +57,12 @@ import com.echothree.model.control.core.server.control.EntityInstanceControl;
 import com.echothree.model.control.letter.server.control.LetterControl;
 import com.echothree.model.data.chain.server.entity.Chain;
 import com.echothree.model.data.contact.server.entity.ContactMechanismPurpose;
+import com.echothree.model.data.contactlist.common.pk.ContactListContactMechanismPurposePK;
 import com.echothree.model.data.contactlist.common.pk.ContactListFrequencyPK;
 import com.echothree.model.data.contactlist.common.pk.ContactListGroupPK;
 import com.echothree.model.data.contactlist.common.pk.ContactListPK;
 import com.echothree.model.data.contactlist.common.pk.ContactListTypePK;
+import com.echothree.model.data.contactlist.common.pk.PartyContactListPK;
 import com.echothree.model.data.contactlist.server.entity.ContactList;
 import com.echothree.model.data.contactlist.server.entity.ContactListContactMechanismPurpose;
 import com.echothree.model.data.contactlist.server.entity.ContactListDescription;
@@ -327,7 +329,7 @@ public class ContactListControl
                 + "FROM contactlisttypes, contactlisttypedetails "
                 + "WHERE clsttyp_activedetailid = clsttypdt_contactlisttypedetailid "
                 + "ORDER BY clsttypdt_sortorder, clsttypdt_contactlisttypename " +
-                "_LIMIT");
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM contactlisttypes, contactlisttypedetails "
@@ -657,7 +659,8 @@ public class ContactListControl
                 "SELECT _ALL_ "
                 + "FROM contactlisttypedescriptions, languages "
                 + "WHERE clsttypd_clsttyp_contactlisttypeid = ? AND clsttypd_thrutime = ? AND clsttypd_lang_languageid = lang_languageid "
-                + "ORDER BY lang_sortorder, lang_languageisoname");
+                + "ORDER BY lang_sortorder, lang_languageisoname " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM contactlisttypedescriptions "
@@ -1091,7 +1094,8 @@ public class ContactListControl
                 "SELECT _ALL_ "
                 + "FROM contactlistgroupdescriptions, languages "
                 + "WHERE clstgrpd_clstgrp_contactlistgroupid = ? AND clstgrpd_thrutime = ? AND clstgrpd_lang_languageid = lang_languageid "
-                + "ORDER BY lang_sortorder, lang_languageisoname");
+                + "ORDER BY lang_sortorder, lang_languageisoname " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM contactlistgroupdescriptions "
@@ -1522,7 +1526,8 @@ public class ContactListControl
                 "SELECT _ALL_ "
                 + "FROM contactlistfrequencydescriptions, languages "
                 + "WHERE clstfrqd_clstfrq_contactlistfrequencyid = ? AND clstfrqd_thrutime = ? AND clstfrqd_lang_languageid = lang_languageid "
-                + "ORDER BY lang_sortorder, lang_languageisoname");
+                + "ORDER BY lang_sortorder, lang_languageisoname " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM contactlistfrequencydescriptions "
@@ -1667,6 +1672,42 @@ public class ContactListControl
                         """);
     }
 
+    public long countContactListsByContactListGroup(final ContactListGroup contactListGroup) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM contactlists
+                        JOIN contactlistdetails ON clstdt_contactlistdetailid = clst_activedetailid
+                        WHERE clstdt_clstgrp_contactlistgroupid = ?
+                        """, contactListGroup);
+    }
+
+    public long countContactListsByContactListType(final ContactListType contactListType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM contactlists
+                        JOIN contactlistdetails ON clstdt_contactlistdetailid = clst_activedetailid
+                        WHERE clstdt_clsttyp_contactlisttypeid = ?
+                        """, contactListType);
+    }
+
+    public long countContactListsByContactListFrequency(final ContactListFrequency contactListFrequency) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM contactlists
+                        JOIN contactlistdetails ON clstdt_contactlistdetailid = clst_activedetailid
+                        WHERE clstdt_clstfrq_contactlistfrequencyid = ?
+                        """, contactListFrequency);
+    }
+
+    public long countContactListsByDefaultPartyContactListStatus(final WorkflowEntrance defaultPartyContactListStatus) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM contactlists
+                        JOIN contactlistdetails ON clstdt_contactlistdetailid = clst_activedetailid
+                        WHERE clstdt_defaultpartycontactliststatusid
+                        """, defaultPartyContactListStatus);
+    }
+
     private static final Map<EntityPermission, String> getContactListByNameQueries;
 
     static {
@@ -1779,7 +1820,8 @@ public class ContactListControl
                 + "FROM contactlists, contactlistdetails "
                 + "WHERE clst_activedetailid = clstdt_contactlistdetailid "
                 + "AND clstdt_clstgrp_contactlistgroupid = ? "
-                + "ORDER BY clstdt_sortorder, clstdt_contactlistname");
+                + "ORDER BY clstdt_sortorder, clstdt_contactlistname " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM contactlists, contactlistdetails "
@@ -1812,7 +1854,8 @@ public class ContactListControl
                 + "FROM contactlists, contactlistdetails "
                 + "WHERE clst_activedetailid = clstdt_contactlistdetailid "
                 + "AND clstdt_clsttyp_contactlisttypeid = ? "
-                + "ORDER BY clstdt_sortorder, clstdt_contactlistname");
+                + "ORDER BY clstdt_sortorder, clstdt_contactlistname " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM contactlists, contactlistdetails "
@@ -1845,7 +1888,8 @@ public class ContactListControl
                 + "FROM contactlists, contactlistdetails "
                 + "WHERE clst_activedetailid = clstdt_contactlistdetailid "
                 + "AND clstdt_clstfrq_contactlistfrequencyid = ? "
-                + "ORDER BY clstdt_sortorder, clstdt_contactlistname");
+                + "ORDER BY clstdt_sortorder, clstdt_contactlistname " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM contactlists, contactlistdetails "
@@ -1878,7 +1922,8 @@ public class ContactListControl
                 + "FROM contactlists, contactlistdetails "
                 + "WHERE clst_activedetailid = clstdt_contactlistdetailid "
                 + "AND clstdt_wkflen_workflowentranceid = ? "
-                + "ORDER BY clstdt_sortorder, clstdt_contactlistname");
+                + "ORDER BY clstdt_sortorder, clstdt_contactlistname " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM contactlists, contactlistdetails "
@@ -2118,7 +2163,8 @@ public class ContactListControl
                 "SELECT _ALL_ "
                 + "FROM contactlistdescriptions, languages "
                 + "WHERE clstd_clst_contactlistid = ? AND clstd_thrutime = ? AND clstd_lang_languageid = lang_languageid "
-                + "ORDER BY lang_sortorder, lang_languageisoname");
+                + "ORDER BY lang_sortorder, lang_languageisoname " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM contactlistdescriptions "
@@ -2226,7 +2272,49 @@ public class ContactListControl
         
         return partyContactList;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.PartyContactList */
+    public PartyContactList getPartyContactListByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new PartyContactListPK(entityInstance.getEntityUniqueId());
+
+        return PartyContactListFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public PartyContactList getPartyContactListByEntityInstance(EntityInstance entityInstance) {
+        return getPartyContactListByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public PartyContactList getPartyContactListByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getPartyContactListByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countPartyContactListsByParty(final Party party) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM partycontactlists
+                        JOIN partycontactlistdetails ON parclstdt_partycontactlistdetailid = parclst_activedetailid
+                        WHERE parclstdt_par_partyid = ?
+                        """, party);
+    }
+
+    public long countPartyContactListsByContactList(final ContactList contactList) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM partycontactlists
+                        JOIN partycontactlistdetails ON parclstdt_partycontactlistdetailid = parclst_activedetailid
+                        WHERE parclstdt_clst_contactlistid = ?
+                        """, contactList);
+    }
+
+    public long countPartyContactListsByPreferredContactListContactMechanismPurpose(final ContactListContactMechanismPurpose preferredContactListContactMechanismPurpose) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM partycontactlists
+                        JOIN partycontactlistdetails ON parclstdt_partycontactlistdetailid = parclst_activedetailid
+                        WHERE parclstdt_preferredcontactlistcontactmechanismpurposeid = ?
+                        """, preferredContactListContactMechanismPurpose);
+    }
+
     private static final Map<EntityPermission, String> getPartyContactListQueries;
 
     static {
@@ -2276,7 +2364,8 @@ public class ContactListControl
                 + "WHERE parclst_activedetailid = parclstdt_partycontactlistdetailid AND parclstdt_par_partyid = ? "
                 + "AND parclstdt_clst_contactlistid = clst_contactlistid "
                 + "AND clst_activedetailid = clstdt_contactlistdetailid "
-                + "ORDER BY clstdt_sortorder, clstdt_contactlistname");
+                + "ORDER BY clstdt_sortorder, clstdt_contactlistname " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM partycontactlists, partycontactlistdetails "
@@ -2309,7 +2398,8 @@ public class ContactListControl
                 + "WHERE parclst_activedetailid = parclstdt_partycontactlistdetailid AND parclstdt_clst_contactlistid = ? "
                 + "AND parclstdt_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid "
                 + "AND pardt_ptyp_partytypeid = ptyp_partytypeid "
-                + "ORDER BY parclstdt_sortorder, pardt_partyname, ptyp_sortorder, ptyp_partytypename");
+                + "ORDER BY parclstdt_sortorder, pardt_partyname, ptyp_sortorder, ptyp_partytypename " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM partycontactlists, partycontactlistdetails "
@@ -2490,7 +2580,23 @@ public class ContactListControl
         
         return partyTypeContactListGroup;
     }
-    
+
+    public long countPartyTypeContactListGroupsByPartyType(final PartyType partyType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM partytypecontactlistgroups
+                        WHERE ptypclstgrp_ptyp_partytypeid = ? AND ptypclstgrp_thrutime = ?
+                        """, partyType, Session.MAX_TIME);
+    }
+
+    public long countPartyTypeContactListGroupsByContactListGroup(final ContactListGroup contactListGroup) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM partytypecontactlistgroups
+                        WHERE ptypclstgrp_clstgrp_contactlistgroupid = ? AND ptypclstgrp_thrutime = ?
+                        """, contactListGroup, Session.MAX_TIME);
+    }
+
     private static final Map<EntityPermission, String> getPartyTypeContactListGroupQueries;
 
     static {
@@ -2539,7 +2645,8 @@ public class ContactListControl
                 + "FROM partytypecontactlistgroups, contactlistgroups, contactlistgroupdetails "
                 + "WHERE ptypclstgrp_ptyp_partytypeid = ? AND ptypclstgrp_thrutime = ? "
                 + "AND ptypclstgrp_clstgrp_contactlistgroupid = clstgrp_contactlistgroupid AND clstgrp_lastdetailid = clstgrpdt_contactlistgroupdetailid "
-                + "ORDER BY clstgrpdt_sortorder, clstgrpdt_contactlistgroupname");
+                + "ORDER BY clstgrpdt_sortorder, clstgrpdt_contactlistgroupname " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM partytypecontactlistgroups "
@@ -2571,7 +2678,8 @@ public class ContactListControl
                 + "FROM partytypecontactlistgroups, partytypes "
                 + "WHERE ptypclstgrp_clstgrp_contactlistgroupid = ? AND ptypclstgrp_thrutime = ? "
                 + "AND ptypclstgrp_ptyp_partytypeid = ptyp_partytypeid "
-                + "ORDER BY ptyp_sortorder, ptyp_partytypename");
+                + "ORDER BY ptyp_sortorder, ptyp_partytypename " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM partytypecontactlistgroups "
@@ -2667,7 +2775,23 @@ public class ContactListControl
         
         return partyTypeContactList;
     }
-    
+
+    public long countPartyTypeContactListsByPartyType(final PartyType partyType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM partytypecontactlists
+                        WHERE ptypclst_ptyp_partytypeid = ? AND ptypclst_thrutime = ?
+                        """, partyType, Session.MAX_TIME);
+    }
+
+    public long countPartyTypeContactListsByContactList(final ContactList contactList) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM partytypecontactlists
+                        WHERE ptypclst_clst_contactlistid = ? AND ptypclst_thrutime = ?
+                        """, contactList, Session.MAX_TIME);
+    }
+
     private static final Map<EntityPermission, String> getPartyTypeContactListQueries;
 
     static {
@@ -2716,7 +2840,8 @@ public class ContactListControl
                 + "FROM partytypecontactlists, contactlists, contactlistdetails "
                 + "WHERE ptypclst_ptyp_partytypeid = ? AND ptypclst_thrutime = ? "
                 + "AND ptypclst_clst_contactlistid = clst_contactlistid AND clst_lastdetailid = clstdt_contactlistdetailid "
-                + "ORDER BY clstdt_sortorder, clstdt_contactlistname");
+                + "ORDER BY clstdt_sortorder, clstdt_contactlistname " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM partytypecontactlists "
@@ -2748,7 +2873,8 @@ public class ContactListControl
                 + "FROM partytypecontactlists, partytypes "
                 + "WHERE ptypclst_clst_contactlistid = ? AND ptypclst_thrutime = ? "
                 + "AND ptypclst_ptyp_partytypeid = ptyp_partytypeid "
-                + "ORDER BY ptyp_sortorder, ptyp_partytypename");
+                + "ORDER BY ptyp_sortorder, ptyp_partytypename " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM partytypecontactlists "
@@ -2846,6 +2972,22 @@ public class ContactListControl
         return customerTypeContactListGroup;
     }
 
+    public long countCustomerTypeContactListGroupsByCustomerType(final CustomerType customerType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM customertypecontactlistgroups
+                        WHERE cutyclstgrp_cuty_customertypeid = ? AND cutyclstgrp_thrutime = ?
+                        """, customerType, Session.MAX_TIME);
+    }
+
+    public long countCustomerTypeContactListGroupsByContactListGroup(final ContactListGroup contactListGroup) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM customertypecontactlistgroups
+                        WHERE cutyclstgrp_clstgrp_contactlistgroupid = ? AND cutyclstgrp_thrutime = ?
+                        """, contactListGroup, Session.MAX_TIME);
+    }
+
     private static final Map<EntityPermission, String> getCustomerTypeContactListGroupQueries;
 
     static {
@@ -2894,7 +3036,8 @@ public class ContactListControl
                 + "FROM customertypecontactlistgroups, contactlistgroups, contactlistgroupdetails "
                 + "WHERE cutyclstgrp_cuty_customertypeid = ? AND cutyclstgrp_thrutime = ? "
                 + "AND cutyclstgrp_clstgrp_contactlistgroupid = clstgrp_contactlistgroupid AND clstgrp_lastdetailid = clstgrpdt_contactlistgroupdetailid "
-                + "ORDER BY clstgrpdt_sortorder, clstgrpdt_contactlistgroupname");
+                + "ORDER BY clstgrpdt_sortorder, clstgrpdt_contactlistgroupname " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM customertypecontactlistgroups "
@@ -2926,7 +3069,8 @@ public class ContactListControl
                 + "FROM customertypecontactlistgroups, customertypes, customertypedetails "
                 + "WHERE cutyclstgrp_clstgrp_contactlistgroupid = ? AND cutyclstgrp_thrutime = ? "
                 + "AND cutyclstgrp_cuty_customertypeid = cuty_customertypeid AND cuty_lastdetailid = cutydt_customertypedetailid "
-                + "ORDER BY cutydt_sortorder, cutydt_customertypename");
+                + "ORDER BY cutydt_sortorder, cutydt_customertypename " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM customertypecontactlistgroups "
@@ -3023,6 +3167,22 @@ public class ContactListControl
         return customerTypeContactList;
     }
 
+    public long countCustomerTypeContactListsByCustomerType(final CustomerType customerType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM customertypecontactlists
+                        WHERE cutyclst_cuty_customertypeid = ? AND cutyclst_thrutime = ?
+                        """, customerType, Session.MAX_TIME);
+    }
+
+    public long countCustomerTypeContactListsByContactList(final ContactList contactList) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM customertypecontactlistgroups
+                        WHERE cutyclst_clst_contactlistid = ? AND cutyclst_thrutime = ?
+                        """, contactList, Session.MAX_TIME);
+    }
+
     private static final Map<EntityPermission, String> getCustomerTypeContactListQueries;
 
     static {
@@ -3071,7 +3231,8 @@ public class ContactListControl
                 + "FROM customertypecontactlists, contactlists, contactlistdetails "
                 + "WHERE cutyclst_cuty_customertypeid = ? AND cutyclst_thrutime = ? "
                 + "AND cutyclst_clst_contactlistid = clst_contactlistid AND clst_lastdetailid = clstdt_contactlistdetailid "
-                + "ORDER BY clstdt_sortorder, clstdt_contactlistname");
+                + "ORDER BY clstdt_sortorder, clstdt_contactlistname " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM customertypecontactlists "
@@ -3103,7 +3264,8 @@ public class ContactListControl
                 + "FROM customertypecontactlists, customertypes, customertypedetails "
                 + "WHERE cutyclst_clst_contactlistid = ? AND cutyclst_thrutime = ? "
                 + "AND cutyclst_cuty_customertypeid = cuty_customertypeid AND cuty_lastdetailid = cutydt_customertypedetailid "
-                + "ORDER BY cutydt_sortorder, cutydt_customertypename");
+                + "ORDER BY cutydt_sortorder, cutydt_customertypename " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM customertypecontactlists "
@@ -3217,6 +3379,39 @@ public class ContactListControl
         sendEvent(contactListContactMechanismPurpose.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return contactListContactMechanismPurpose;
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ContactListContactMechanismPurpose */
+    public ContactListContactMechanismPurpose getContactListContactMechanismPurposeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ContactListContactMechanismPurposePK(entityInstance.getEntityUniqueId());
+
+        return ContactListContactMechanismPurposeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public ContactListContactMechanismPurpose getContactListContactMechanismPurposeByEntityInstance(EntityInstance entityInstance) {
+        return getContactListContactMechanismPurposeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ContactListContactMechanismPurpose getContactListContactMechanismPurposeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getContactListContactMechanismPurposeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countContactListContactMechanismPurposesByContactList(final ContactList contactList) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM contactlistcontactmechanismpurposes
+                        JOIN contactlistcontactmechanismpurposedetails ON clstcmprdt_contactlistcontactmechanismpurposedetailid = clstcmpr_activedetailid
+                        WHERE clstcmprdt_clst_contactlistid = ?
+                        """, contactList);
+    }
+
+    public long countContactListContactMechanismPurposesByContactMechanismPurpose(final ContactMechanismPurpose contactMechanismPurpose) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM contactlistcontactmechanismpurposes
+                        JOIN contactlistcontactmechanismpurposedetails ON clstcmprdt_contactlistcontactmechanismpurposedetailid = clstcmpr_activedetailid
+                        WHERE clstcmprdt_cmpr_contactmechanismpurposeid = ?
+                        """, contactMechanismPurpose);
     }
 
     private static final Map<EntityPermission, String> getContactListContactMechanismPurposeQueries;
