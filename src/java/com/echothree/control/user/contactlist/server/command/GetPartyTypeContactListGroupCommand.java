@@ -19,22 +19,23 @@ package com.echothree.control.user.contactlist.server.command;
 import com.echothree.control.user.contactlist.common.form.GetPartyTypeContactListGroupForm;
 import com.echothree.control.user.contactlist.common.result.ContactListResultFactory;
 import com.echothree.model.control.contactlist.server.control.ContactListControl;
+import com.echothree.model.control.contactlist.server.logic.ContactListGroupLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.control.party.server.logic.PartyTypeLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetPartyTypeContactListGroupCommand
@@ -47,16 +48,28 @@ public class GetPartyTypeContactListGroupCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.ContactListGroup.name(), SecurityRoles.PartyTypeContactListGroup.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.ContactListGroup.name(), SecurityRoles.PartyTypeContactListGroup.name())
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ContactListGroupName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
     
+    @Inject
+    ContactListControl contactListControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    ContactListGroupLogic contactListGroupLogic;
+
+    @Inject
+    PartyTypeLogic partyTypeLogic;
+
     /** Creates a new instance of GetPartyTypeContactListGroupCommand */
     public GetPartyTypeContactListGroupCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
@@ -64,17 +77,15 @@ public class GetPartyTypeContactListGroupCommand
     
     @Override
     protected BaseResult execute() {
-        var partyControl = Session.getModelController(PartyControl.class);
         var result = ContactListResultFactory.getGetPartyTypeContactListGroupResult();
         var partyTypeName = form.getPartyTypeName();
-        var partyType = partyControl.getPartyTypeByName(partyTypeName);
+        var partyType = partyTypeLogic.getPartyTypeByName(this, partyTypeName);
         
-        if(partyType != null) {
-            var contactListControl = Session.getModelController(ContactListControl.class);
+        if(!hasExecutionErrors()) {
             var contactListGroupName = form.getContactListGroupName();
-            var contactListGroup = contactListControl.getContactListGroupByName(contactListGroupName);
+            var contactListGroup = contactListGroupLogic.getContactListGroupByName(this, contactListGroupName);
             
-            if(contactListGroup != null) {
+            if(!hasExecutionErrors()) {
                 var partyTypeContactListGroup = contactListControl.getPartyTypeContactListGroup(partyType, contactListGroup);
                 
                 if(partyTypeContactListGroup != null) {
@@ -82,11 +93,7 @@ public class GetPartyTypeContactListGroupCommand
                 } else {
                     addExecutionError(ExecutionErrors.UnknownPartyTypeContactListGroup.name(), partyTypeName, contactListGroupName);
                 }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownContactListGroupName.name(), contactListGroupName);
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownPartyTypeName.name(), partyTypeName);
         }
         
         return result;
