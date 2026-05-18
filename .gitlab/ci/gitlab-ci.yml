@@ -29,6 +29,12 @@ build:
       - build/ui/cli/database/jar/database.jar
       - build/ui/cli/dataloader/jar/dataloader.jar
       - build/ui/cli/mailtransfer/jar/mailtransfer.jar
+      - build/lib/jooq.jar
+      - build/lib/jooq-codegen.jar
+      - build/lib/jooq-meta.jar
+      - build/lib/jaxb-api.jar
+      - build/lib/r2dbc-spi.jar
+      - build/lib/reactive-streams.jar
       - build/lib/mysql-connector-java.jar
       - build/lib/nekohtml.jar
       - build/lib/javax.mail.jar
