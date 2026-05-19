@@ -128,8 +128,8 @@ public class FilterTypeLogic
             final boolean allowDefault, final EntityPermission entityPermission) {
         var filterKindName = universalSpec.getFilterKindName();
         var filterTypeName = universalSpec.getFilterTypeName();
-        var nameParameterCount= ParameterUtils.getInstance().countNonNullParameters(filterKindName, filterTypeName);
-        var possibleEntitySpecs= EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var nameParameterCount = ParameterUtils.getInstance().countNonNullParameters(filterKindName, filterTypeName);
+        var possibleEntitySpecs = EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
         FilterType filterType = null;
 
         if(nameParameterCount < 3 && possibleEntitySpecs == 0) {
