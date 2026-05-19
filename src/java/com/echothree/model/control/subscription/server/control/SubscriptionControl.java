@@ -43,6 +43,8 @@ import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.subscription.common.pk.SubscriptionKindPK;
+import com.echothree.model.data.subscription.common.pk.SubscriptionPK;
+import com.echothree.model.data.subscription.common.pk.SubscriptionTypePK;
 import com.echothree.model.data.subscription.server.entity.Subscription;
 import com.echothree.model.data.subscription.server.entity.SubscriptionKind;
 import com.echothree.model.data.subscription.server.entity.SubscriptionKindDescription;
@@ -185,7 +187,7 @@ public class SubscriptionControl
         getSubscriptionKindByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private SubscriptionKind getSubscriptionKindByName(String subscriptionKindName, EntityPermission entityPermission) {
+    public SubscriptionKind getSubscriptionKindByName(String subscriptionKindName, EntityPermission entityPermission) {
         return SubscriptionKindFactory.getInstance().getEntityFromQuery(entityPermission, getSubscriptionKindByNameQueries,
                 subscriptionKindName);
     }
@@ -223,7 +225,7 @@ public class SubscriptionControl
         getDefaultSubscriptionKindQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private SubscriptionKind getDefaultSubscriptionKind(EntityPermission entityPermission) {
+    public SubscriptionKind getDefaultSubscriptionKind(EntityPermission entityPermission) {
         return SubscriptionKindFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultSubscriptionKindQueries);
     }
 
@@ -258,7 +260,7 @@ public class SubscriptionControl
         getSubscriptionKindsQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private List<SubscriptionKind> getSubscriptionKinds(EntityPermission entityPermission) {
+    public List<SubscriptionKind> getSubscriptionKinds(EntityPermission entityPermission) {
         return SubscriptionKindFactory.getInstance().getEntitiesFromQuery(entityPermission, getSubscriptionKindsQueries);
     }
 
@@ -576,7 +578,40 @@ public class SubscriptionControl
         
         return subscriptionType;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.SubscriptionType */
+    public SubscriptionType getSubscriptionTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new SubscriptionTypePK(entityInstance.getEntityUniqueId());
+
+        return SubscriptionTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public SubscriptionType getSubscriptionTypeByEntityInstance(EntityInstance entityInstance) {
+        return getSubscriptionTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public SubscriptionType getSubscriptionTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getSubscriptionTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countSubscriptionTypesBySubscriptionKind(final SubscriptionKind subscriptionKind) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM subscriptiontypes
+                        JOIN subscriptiontypedetails ON subscrtypdt_subscriptiontypedetailid = subscrtyp_activedetailid
+                        WHERE subscrtypdt_subscrk_subscriptionkindid = ?
+                        """, subscriptionKind);
+    }
+
+    public long countSubscriptionTypesBySubscriptionSequence(final Sequence subscriptionSequence) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM subscriptiontypes
+                        JOIN subscriptiontypedetails ON subscrtypdt_subscriptiontypedetailid = subscrtyp_activedetailid
+                        WHERE subscrtypdt_subscriptionsequenceid = ?
+                        """, subscriptionSequence);
+    }
+
     private List<SubscriptionType> getSubscriptionTypesBySubscriptionKind(SubscriptionKind subscriptionKind,
             EntityPermission entityPermission) {
         List<SubscriptionType> subscriptionTypes;
@@ -618,7 +653,7 @@ public class SubscriptionControl
         return getSubscriptionTypesBySubscriptionKind(subscriptionKind, EntityPermission.READ_WRITE);
     }
     
-    private SubscriptionType getDefaultSubscriptionType(SubscriptionKind subscriptionKind, EntityPermission entityPermission) {
+    public SubscriptionType getDefaultSubscriptionType(SubscriptionKind subscriptionKind, EntityPermission entityPermission) {
         SubscriptionType subscriptionType;
         
         try {
@@ -661,7 +696,7 @@ public class SubscriptionControl
         return getDefaultSubscriptionTypeForUpdate(subscriptionKind).getLastDetailForUpdate().getSubscriptionTypeDetailValue().clone();
     }
     
-    private SubscriptionType getSubscriptionTypeByName(SubscriptionKind subscriptionKind, String subscriptionTypeName,
+    public SubscriptionType getSubscriptionTypeByName(SubscriptionKind subscriptionKind, String subscriptionTypeName,
             EntityPermission entityPermission) {
         SubscriptionType subscriptionType;
         
@@ -1040,7 +1075,23 @@ public class SubscriptionControl
         
         return subscriptionTypeChain;
     }
-    
+
+    public long countSubscriptionTypeChainsBySubscriptionType(final SubscriptionType subscriptionType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM subscriptiontypechains
+                        WHERE subscrtypchn_subscrtyp_subscriptiontypeid = ? AND subscrtypchn_thrutime = ?
+                        """, subscriptionType, Session.MAX_TIME);
+    }
+
+    public long countSubscriptionTypeChainsByChain(final Chain chain) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM subscriptiontypechains
+                        WHERE subscrtypchn_chn_chainid = ? AND subscrtypchn_thrutime = ?
+                        """, chain, Session.MAX_TIME);
+    }
+
     private SubscriptionTypeChain getSubscriptionTypeChain(SubscriptionType subscriptionType, Chain chain,
             EntityPermission entityPermission) {
         SubscriptionTypeChain subscriptionTypeChain;
@@ -1256,7 +1307,30 @@ public class SubscriptionControl
         
         return subscription;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Subscription */
+    public Subscription getSubscriptionByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new SubscriptionPK(entityInstance.getEntityUniqueId());
+
+        return SubscriptionFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public Subscription getSubscriptionByEntityInstance(EntityInstance entityInstance) {
+        return getSubscriptionByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public Subscription getSubscriptionByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getSubscriptionByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countSubscriptions() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM subscriptions
+                        JOIN subscriptiondetails ON subscrdt_subscriptiondetailid = subscr_activedetailid
+                        """);
+    }
+
     private Subscription getSubscription(SubscriptionType subscriptionType, Party party, EntityPermission entityPermission) {
         Subscription subscription;
         
@@ -1297,7 +1371,7 @@ public class SubscriptionControl
         return getSubscription(subscriptionType, party, EntityPermission.READ_WRITE);
     }
     
-    private Subscription getSubscriptionByName(String subscriptionName, EntityPermission entityPermission) {
+    public Subscription getSubscriptionByName(String subscriptionName, EntityPermission entityPermission) {
         Subscription subscription;
         
         try {
