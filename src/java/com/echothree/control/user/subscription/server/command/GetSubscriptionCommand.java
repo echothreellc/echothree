@@ -20,49 +20,61 @@ import com.echothree.control.user.subscription.common.form.GetSubscriptionForm;
 import com.echothree.control.user.subscription.common.result.SubscriptionResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.subscription.server.control.SubscriptionControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.model.control.subscription.server.logic.SubscriptionLogic;
+import com.echothree.model.data.subscription.server.entity.Subscription;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetSubscriptionCommand
-        extends BaseSimpleCommand<GetSubscriptionForm> {
-    
+        extends BaseSingleEntityCommand<Subscription, GetSubscriptionForm> {
+
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("SubscriptionName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("SubscriptionName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
-    
+
+    @Inject
+    SubscriptionControl subscriptionControl;
+
+    @Inject
+    SubscriptionLogic subscriptionLogic;
+
     /** Creates a new instance of GetSubscriptionCommand */
     public GetSubscriptionCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var subscriptionControl = Session.getModelController(SubscriptionControl.class);
+    protected Subscription getEntity() {
+        var subscription = subscriptionLogic.getSubscriptionByUniversalSpec(this, form);
+
+        if(subscription != null) {
+            sendEvent(subscription.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+        }
+
+        return subscription;
+    }
+
+    @Override
+    protected BaseResult getResult(Subscription subscription) {
         var result = SubscriptionResultFactory.getGetSubscriptionResult();
-        var subscriptionName = form.getSubscriptionName();
-        var subscription = subscriptionControl.getSubscriptionByName(subscriptionName);
-        
+
         if(subscription != null) {
             result.setSubscription(subscriptionControl.getSubscriptionTransfer(getUserVisit(), subscription));
-            
-            sendEvent(subscription.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
-        } else {
-            addExecutionError(ExecutionErrors.UnknownSubscriptionName.name(), subscriptionName);
         }
-        
+
         return result;
     }
-    
+
 }
