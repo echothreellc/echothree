@@ -14,13 +14,13 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.subscription.common.form;
+package com.echothree.control.user.subscription.common.spec;
 
-import com.echothree.control.user.subscription.common.spec.SubscriptionUniversalSpec;
+import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
 
-public interface GetSubscriptionForm
-        extends SubscriptionUniversalSpec {
-    
-    // Nothing additional beyond SubscriptionSpec
-    
+public interface SubscriptionUniversalSpec
+        extends SubscriptionSpec, UniversalEntitySpec {
+
+    // Nothing additional beyond SubscriptionSpec, UniversalEntitySpec
+
 }
