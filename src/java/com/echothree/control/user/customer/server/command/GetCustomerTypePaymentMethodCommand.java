@@ -19,16 +19,16 @@ package com.echothree.control.user.customer.server.command;
 import com.echothree.control.user.customer.common.form.GetCustomerTypePaymentMethodForm;
 import com.echothree.control.user.customer.common.result.CustomerResultFactory;
 import com.echothree.model.control.customer.server.control.CustomerControl;
-import com.echothree.model.control.payment.server.control.PaymentMethodControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.control.customer.server.logic.CustomerTypeLogic;
+import com.echothree.model.control.payment.server.logic.PaymentMethodLogic;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetCustomerTypePaymentMethodCommand
@@ -40,9 +40,18 @@ public class GetCustomerTypePaymentMethodCommand
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CustomerTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("PaymentMethodName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
     
+    @Inject
+    CustomerControl customerControl;
+
+    @Inject
+    CustomerTypeLogic customerTypeLogic;
+
+    @Inject
+    PaymentMethodLogic paymentMethodLogic;
+
     /** Creates a new instance of GetCustomerTypePaymentMethodCommand */
     public GetCustomerTypePaymentMethodCommand() {
         super(null, FORM_FIELD_DEFINITIONS, false);
@@ -50,17 +59,15 @@ public class GetCustomerTypePaymentMethodCommand
     
     @Override
     protected BaseResult execute() {
-        var customerControl = Session.getModelController(CustomerControl.class);
         var result = CustomerResultFactory.getGetCustomerTypePaymentMethodResult();
         var customerTypeName = form.getCustomerTypeName();
-        var customerType = customerControl.getCustomerTypeByName(customerTypeName);
+        var customerType = customerTypeLogic.getCustomerTypeByName(this, customerTypeName);
         
-        if(customerType != null) {
-            var paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
+        if(!hasExecutionErrors()) {
             var paymentMethodName = form.getPaymentMethodName();
-            var paymentMethod = paymentMethodControl.getPaymentMethodByName(paymentMethodName);
+            var paymentMethod = paymentMethodLogic.getPaymentMethodByName(this, paymentMethodName);
             
-            if(paymentMethod != null) {
+            if(!hasExecutionErrors()) {
                 var customerTypePaymentMethod = customerControl.getCustomerTypePaymentMethod(customerType, paymentMethod);
                 
                 if(customerTypePaymentMethod != null) {
@@ -68,11 +75,7 @@ public class GetCustomerTypePaymentMethodCommand
                 } else {
                     addExecutionError(ExecutionErrors.UnknownCustomerTypePaymentMethod.name(), customerTypeName, paymentMethodName);
                 }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownPaymentMethodName.name(), paymentMethodName);
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownCustomerTypeName.name(), customerTypeName);
         }
         
         return result;

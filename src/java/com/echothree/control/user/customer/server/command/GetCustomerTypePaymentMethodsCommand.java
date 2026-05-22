@@ -19,48 +19,73 @@ package com.echothree.control.user.customer.server.command;
 import com.echothree.control.user.customer.common.form.GetCustomerTypePaymentMethodsForm;
 import com.echothree.control.user.customer.common.result.CustomerResultFactory;
 import com.echothree.model.control.customer.server.control.CustomerControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.model.control.customer.server.logic.CustomerTypeLogic;
+import com.echothree.model.data.customer.server.entity.CustomerType;
+import com.echothree.model.data.customer.server.entity.CustomerTypePaymentMethod;
+import com.echothree.model.data.customer.server.factory.CustomerTypePaymentMethodFactory;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetCustomerTypePaymentMethodsCommand
-        extends BaseSimpleCommand<GetCustomerTypePaymentMethodsForm> {
+        extends BasePaginatedMultipleEntitiesCommand<CustomerTypePaymentMethod, GetCustomerTypePaymentMethodsForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CustomerTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
     
+    @Inject
+    CustomerControl customerControl;
+
+    @Inject
+    CustomerTypeLogic customerTypeLogic;
+
     /** Creates a new instance of GetCustomerTypePaymentMethodsCommand */
     public GetCustomerTypePaymentMethodsCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
+    CustomerType customerType;
+
     @Override
-    protected BaseResult execute() {
+    protected void handleForm() {
+        customerType = customerTypeLogic.getCustomerTypeByName(this, form.getCustomerTypeName());
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return hasExecutionErrors() ? null : customerControl.countCustomerTypePaymentMethodsByCustomerType(customerType);
+    }
+
+    @Override
+    protected Collection<CustomerTypePaymentMethod> getEntities() {
+        return hasExecutionErrors() ? null : customerControl.getCustomerTypePaymentMethodsByCustomerType(customerType);
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<CustomerTypePaymentMethod> entities) {
         var result = CustomerResultFactory.getGetCustomerTypePaymentMethodsResult();
-        var customerControl = Session.getModelController(CustomerControl.class);
-        var customerTypeName = form.getCustomerTypeName();
-        var customerType = customerControl.getCustomerTypeByName(customerTypeName);
         
-        if(customerType != null) {
+        if(entities != null) {
             var userVisit = getUserVisit();
-            
+
             result.setCustomerType(customerControl.getCustomerTypeTransfer(userVisit, customerType));
-            result.setCustomerTypePaymentMethods(customerControl.getCustomerTypePaymentMethodTransfersByCustomerType(userVisit,
-                    customerType));
-        } else {
-            addExecutionError(ExecutionErrors.UnknownCustomerTypeName.name(), customerTypeName);
+
+            if(session.hasLimit(CustomerTypePaymentMethodFactory.class)) {
+                result.setCustomerTypePaymentMethodCount(getTotalEntities());
+            }
+
+            result.setCustomerTypePaymentMethods(customerControl.getCustomerTypePaymentMethodTransfers(userVisit, entities));
         }
         
         return result;
