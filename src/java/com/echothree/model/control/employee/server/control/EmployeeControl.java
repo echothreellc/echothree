@@ -4547,7 +4547,23 @@ public class EmployeeControl
         
         return partySkill;
     }
-    
+
+    public long countPartySkillsByParty(final Party party) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM partyskills
+                        WHERE parskl_par_partyid = ? AND parskl_thrutime = ?
+                        """, party, Session.MAX_TIME);
+    }
+
+    public long countPartySkillsBySkillType(final SkillType skillType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM partyskills
+                        WHERE parskl_skltyp_skilltypeid = ? AND parskl_thrutime = ?
+                        """, skillType, Session.MAX_TIME);
+    }
+
     private PartySkill getPartySkill(Party party, SkillType skillType, EntityPermission entityPermission) {
         PartySkill partySkill;
         
