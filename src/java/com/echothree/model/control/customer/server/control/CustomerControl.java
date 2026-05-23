@@ -80,6 +80,7 @@ import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
@@ -92,7 +93,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import com.echothree.util.server.cdi.CommandScope;
 import javax.inject.Inject;
 
 @CommandScope
@@ -1101,8 +1101,8 @@ public class CustomerControl
         return customerTypePaymentMethodTransferCache.getCustomerTypePaymentMethodTransfer(userVisit, customerTypePaymentMethod);
     }
     
-    private List<CustomerTypePaymentMethodTransfer> getCustomerTypePaymentMethodTransfersByPaymentMethod(UserVisit userVisit,
-            List<CustomerTypePaymentMethod> customerTypePaymentMethods) {
+    public List<CustomerTypePaymentMethodTransfer> getCustomerTypePaymentMethodTransfers(UserVisit userVisit,
+            Collection<CustomerTypePaymentMethod> customerTypePaymentMethods) {
         List<CustomerTypePaymentMethodTransfer> customerTypePaymentMethodTransfers = new ArrayList<>(customerTypePaymentMethods.size());
 
         for(var customerTypePaymentMethod : customerTypePaymentMethods) {
@@ -1113,11 +1113,11 @@ public class CustomerControl
     }
     
     public List<CustomerTypePaymentMethodTransfer> getCustomerTypePaymentMethodTransfersByPaymentMethod(UserVisit userVisit, PaymentMethod paymentMethod) {
-        return getCustomerTypePaymentMethodTransfersByPaymentMethod(userVisit, getCustomerTypePaymentMethodsByPaymentMethod(paymentMethod));
+        return getCustomerTypePaymentMethodTransfers(userVisit, getCustomerTypePaymentMethodsByPaymentMethod(paymentMethod));
     }
     
     public List<CustomerTypePaymentMethodTransfer> getCustomerTypePaymentMethodTransfersByCustomerType(UserVisit userVisit, CustomerType customerType) {
-        return getCustomerTypePaymentMethodTransfersByPaymentMethod(userVisit, getCustomerTypePaymentMethodsByCustomerType(customerType));
+        return getCustomerTypePaymentMethodTransfers(userVisit, getCustomerTypePaymentMethodsByCustomerType(customerType));
     }
     
     private void updateCustomerTypePaymentMethodFromValue(CustomerTypePaymentMethodValue customerTypePaymentMethodValue,
