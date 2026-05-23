@@ -30,8 +30,11 @@ public interface GetPartyResponsibilitiesResult
     
     ResponsibilityTypeTransfer getResponsibilityType();
     void setResponsibilityType(ResponsibilityTypeTransfer skillType);
-    
+
+    Long getPartyResponsibilityCount();
+    void setPartyResponsibilityCount(Long partyResponsibilityCount);
+
     List<PartyResponsibilityTransfer> getPartyResponsibilities();
     void setPartyResponsibilities(List<PartyResponsibilityTransfer> partyResponsibilities);
-    
+
 }

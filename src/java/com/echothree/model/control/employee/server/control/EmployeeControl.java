@@ -4339,7 +4339,23 @@ public class EmployeeControl
         
         return partyResponsibility;
     }
-    
+
+    public long countPartyResponsibilitiesByParty(final Party party) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM partyresponsibilities
+                        WHERE parrsp_par_partyid = ? AND parrsp_thrutime = ?
+                        """, party, Session.MAX_TIME);
+    }
+
+    public long countPartyResponsibilitiesByResponsibilityType(final ResponsibilityType responsibilityType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM partyresponsibilities
+                        WHERE parrsp_rsptyp_responsibilitytypeid = ? AND parrsp_thrutime = ?
+                        """, responsibilityType, Session.MAX_TIME);
+    }
+
     private PartyResponsibility getPartyResponsibility(Party party, ResponsibilityType responsibilityType, EntityPermission entityPermission) {
         PartyResponsibility partyResponsibility;
         
