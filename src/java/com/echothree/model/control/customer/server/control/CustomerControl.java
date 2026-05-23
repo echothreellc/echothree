@@ -1396,8 +1396,8 @@ public class CustomerControl
         return customerTypeShippingMethodTransferCache.getCustomerTypeShippingMethodTransfer(userVisit, customerTypeShippingMethod);
     }
     
-    private List<CustomerTypeShippingMethodTransfer> getCustomerTypeShippingMethodTransfersByShippingMethod(UserVisit userVisit,
-            List<CustomerTypeShippingMethod> customerTypeShippingMethods) {
+    public List<CustomerTypeShippingMethodTransfer> getCustomerTypeShippingMethodTransfers(UserVisit userVisit,
+            Collection<CustomerTypeShippingMethod> customerTypeShippingMethods) {
         List<CustomerTypeShippingMethodTransfer> customerTypeShippingMethodTransfers = new ArrayList<>(customerTypeShippingMethods.size());
 
         for(var customerTypeShippingMethod : customerTypeShippingMethods) {
@@ -1408,11 +1408,11 @@ public class CustomerControl
     }
     
     public List<CustomerTypeShippingMethodTransfer> getCustomerTypeShippingMethodTransfersByShippingMethod(UserVisit userVisit, ShippingMethod shippingMethod) {
-        return getCustomerTypeShippingMethodTransfersByShippingMethod(userVisit, getCustomerTypeShippingMethodsByShippingMethod(shippingMethod));
+        return getCustomerTypeShippingMethodTransfers(userVisit, getCustomerTypeShippingMethodsByShippingMethod(shippingMethod));
     }
     
     public List<CustomerTypeShippingMethodTransfer> getCustomerTypeShippingMethodTransfersByCustomerType(UserVisit userVisit, CustomerType customerType) {
-        return getCustomerTypeShippingMethodTransfersByShippingMethod(userVisit, getCustomerTypeShippingMethodsByCustomerType(customerType));
+        return getCustomerTypeShippingMethodTransfers(userVisit, getCustomerTypeShippingMethodsByCustomerType(customerType));
     }
     
     private void updateCustomerTypeShippingMethodFromValue(CustomerTypeShippingMethodValue customerTypeShippingMethodValue,
