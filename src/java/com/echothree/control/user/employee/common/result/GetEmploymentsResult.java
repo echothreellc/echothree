@@ -27,6 +27,9 @@ public interface GetEmploymentsResult
     PartyTransfer getParty();
     void setParty(PartyTransfer party);
     
+    Long getEmploymentCount();
+    void setEmploymentCount(Long employmentCount);
+
     List<EmploymentTransfer> getEmployments();
     void setEmployments(List<EmploymentTransfer> employments);
     

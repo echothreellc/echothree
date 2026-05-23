@@ -20,50 +20,76 @@ import com.echothree.control.user.employee.common.form.GetEmploymentsForm;
 import com.echothree.control.user.employee.common.result.EmployeeResultFactory;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.model.control.party.server.logic.PartyLogic;
+import com.echothree.model.data.employee.server.entity.Employment;
+import com.echothree.model.data.employee.server.factory.EmploymentFactory;
+import com.echothree.model.data.party.server.entity.Party;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetEmploymentsCommand
-        extends BaseSimpleCommand<GetEmploymentsForm> {
+        extends BasePaginatedMultipleEntitiesCommand<Employment, GetEmploymentsForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    EmployeeControl employeeControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    PartyLogic partyLogic;
 
     /** Creates a new instance of GetEmploymentsCommand */
     public GetEmploymentsCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    Party party;
+
     @Override
-    protected BaseResult execute() {
-        var partyControl = Session.getModelController(PartyControl.class);
+    protected void handleForm() {
+        party = partyLogic.getPartyByName(this, form.getPartyName());
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return hasExecutionErrors() ? null : employeeControl.countEmploymentsByParty(party);
+    }
+
+    @Override
+    protected Collection<Employment> getEntities() {
+        return hasExecutionErrors() ? null : employeeControl.getEmploymentsByParty(party);
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<Employment> entities) {
         var result = EmployeeResultFactory.getGetEmploymentsResult();
-        var partyName = form.getPartyName();
-        var party = partyControl.getPartyByName(partyName);
 
-        if(party != null) {
-            var employeeControl = Session.getModelController(EmployeeControl.class);
-            var userVisit = getUserVisit();
+        if(entities != null) {
+            result.setParty(partyControl.getPartyTransfer(getUserVisit(), party));
 
-            result.setParty(partyControl.getPartyTransfer(userVisit, party));
-            result.setEmployments(employeeControl.getEmploymentTransfersByParty(userVisit, party));
-        } else {
-            addExecutionError(ExecutionErrors.UnknownPartyName.name(), partyName);
+            if(session.hasLimit(EmploymentFactory.class)) {
+                result.setEmploymentCount(getTotalEntities());
+            }
+
+            result.setEmployments(employeeControl.getEmploymentTransfers(getUserVisit(), entities));
         }
-        
+
         return result;
     }
     

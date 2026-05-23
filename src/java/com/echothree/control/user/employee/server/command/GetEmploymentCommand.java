@@ -19,15 +19,14 @@ package com.echothree.control.user.employee.server.command;
 import com.echothree.control.user.employee.common.form.GetEmploymentForm;
 import com.echothree.control.user.employee.common.result.EmployeeResultFactory;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetEmploymentCommand
@@ -38,9 +37,12 @@ public class GetEmploymentCommand
     static {
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("EmploymentName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
     
+    @Inject
+    EmployeeControl employeeControl;
+
     /** Creates a new instance of GetEmploymentCommand */
     public GetEmploymentCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
@@ -48,7 +50,6 @@ public class GetEmploymentCommand
     
     @Override
     protected BaseResult execute() {
-        var employeeControl = Session.getModelController(EmployeeControl.class);
         var result = EmployeeResultFactory.getGetEmploymentResult();
         var employmentName = form.getEmploymentName();
         var employment = employeeControl.getEmploymentByName(employmentName);
