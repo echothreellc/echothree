@@ -791,7 +791,7 @@ public class CampaignControl
         getCampaignSourceByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private CampaignSource getCampaignSourceByName(String campaignSourceName, EntityPermission entityPermission) {
+    public CampaignSource getCampaignSourceByName(String campaignSourceName, EntityPermission entityPermission) {
         return CampaignSourceFactory.getInstance().getEntityFromQuery(entityPermission, getCampaignSourceByNameQueries, campaignSourceName);
     }
 
@@ -822,7 +822,7 @@ public class CampaignControl
         getCampaignSourceByValueQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private CampaignSource getCampaignSourceByValue(String value, EntityPermission entityPermission) {
+    public CampaignSource getCampaignSourceByValue(String value, EntityPermission entityPermission) {
         return CampaignSourceFactory.getInstance().getEntityFromQuery(entityPermission, getCampaignSourceByValueQueries, 
                 Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault())));
     }
@@ -862,7 +862,7 @@ public class CampaignControl
         getDefaultCampaignSourceQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private CampaignSource getDefaultCampaignSource(EntityPermission entityPermission) {
+    public CampaignSource getDefaultCampaignSource(EntityPermission entityPermission) {
         return CampaignSourceFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultCampaignSourceQueries);
     }
 
@@ -897,7 +897,7 @@ public class CampaignControl
         getCampaignSourcesQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private List<CampaignSource> getCampaignSources(EntityPermission entityPermission) {
+    public List<CampaignSource> getCampaignSources(EntityPermission entityPermission) {
         return CampaignSourceFactory.getInstance().getEntitiesFromQuery(entityPermission, getCampaignSourcesQueries);
     }
 

@@ -19,29 +19,26 @@ package com.echothree.control.user.campaign.server.command;
 import com.echothree.control.user.campaign.common.form.GetCampaignSourceForm;
 import com.echothree.control.user.campaign.common.result.CampaignResultFactory;
 import com.echothree.model.control.campaign.server.control.CampaignControl;
-import com.echothree.model.control.core.common.ComponentVendors;
-import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.campaign.server.logic.CampaignSourceLogic;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.campaign.server.entity.CampaignSource;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetCampaignSourceCommand
-        extends BaseSimpleCommand<GetCampaignSourceForm> {
+        extends BaseSingleEntityCommand<CampaignSource, GetCampaignSourceForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -61,44 +58,36 @@ public class GetCampaignSourceCommand
         );
     }
     
+    @Inject
+    CampaignControl campaignControl;
+
+    @Inject
+    CampaignSourceLogic campaignSourceLogic;
+
     /** Creates a new instance of GetCampaignSourceCommand */
     public GetCampaignSourceCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = CampaignResultFactory.getGetCampaignSourceResult();
-        var campaignSourceName = form.getCampaignSourceName();
-        var parameterCount = (campaignSourceName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+    protected CampaignSource getEntity() {
+        var campaignSource = campaignSourceLogic.getCampaignSourceByUniversalSpec(this, form);
 
-        if(parameterCount == 1) {
-            var campaignControl = Session.getModelController(CampaignControl.class);
-            CampaignSource campaignSource = null;
-
-            if(campaignSourceName == null) {
-                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHO_THREE.name(),
-                        EntityTypes.CampaignSource.name());
-                
-                if(!hasExecutionErrors()) {
-                    campaignSource = campaignControl.getCampaignSourceByEntityInstance(entityInstance);
-                }
-            } else {
-                campaignSource = campaignControl.getCampaignSourceByName(campaignSourceName);
-
-                if(campaignSource == null) {
-                    addExecutionError(ExecutionErrors.UnknownCampaignSourceName.name(), campaignSourceName);
-                }
-            }
-
-            if(!hasExecutionErrors()) {
-                result.setCampaignSource(campaignControl.getCampaignSourceTransfer(getUserVisit(), campaignSource));
-                sendEvent(campaignSource.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
-            }
-        } else {
-            addExecutionError(ExecutionErrors.InvalidParameterCount.name());
+        if(!hasExecutionErrors()) {
+            sendEvent(campaignSource.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
-        
+
+        return campaignSource;
+    }
+
+    @Override
+    protected BaseResult getResult(CampaignSource campaignSource) {
+        var result = CampaignResultFactory.getGetCampaignSourceResult();
+
+        if(campaignSource != null) {
+            result.setCampaignSource(campaignControl.getCampaignSourceTransfer(getUserVisit(), campaignSource));
+        }
+
         return result;
     }
     
