@@ -27,7 +27,10 @@ public interface GetCacheEntryDependenciesResult
     CacheEntryTransfer getCacheEntry();
     void setCacheEntry(CacheEntryTransfer cacheEntry);
 
+    Long getCacheEntryDependencyCount();
+    void setCacheEntryDependencyCount(Long cacheEntryDependencyCount);
+
     List<CacheEntryDependencyTransfer> getCacheEntryDependencies();
     void setCacheEntryDependencies(List<CacheEntryDependencyTransfer> cacheEntryDependencies);
-    
+
 }

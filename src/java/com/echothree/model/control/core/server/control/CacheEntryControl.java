@@ -80,9 +80,10 @@ public class CacheEntryControl
     }
 
     public long countCacheEntries() {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM cacheentries");
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM cacheentries
+                        """);
     }
 
     private static final Map<EntityPermission, String> getCacheEntryByCacheEntryKeyQueries;
@@ -300,6 +301,22 @@ public class CacheEntryControl
         }
 
         CacheEntryDependencyFactory.getInstance().create(cacheEntryDependencyValues);
+    }
+
+    public long countCacheEntryDependenciesByCacheEntry(final CacheEntry cacheEntry) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM cacheentrydependencies
+                        WHERE centd_cent_cacheentryid = ?
+                        """, cacheEntry);
+    }
+
+    public long countCacheEntryDependenciesByEntityInstance(final EntityInstance entityInstance) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM cacheentrydependencies
+                        WHERE centd_eni_entityinstanceid = ?
+                        """, entityInstance);
     }
 
     public CacheEntryDependency createCacheEntryDependency(CacheEntry cacheEntry, EntityInstance entityInstance) {
