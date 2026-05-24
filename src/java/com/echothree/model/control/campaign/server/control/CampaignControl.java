@@ -2394,7 +2394,7 @@ public class CampaignControl
         getCampaignContentByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private CampaignContent getCampaignContentByName(String campaignContentName, EntityPermission entityPermission) {
+    public CampaignContent getCampaignContentByName(String campaignContentName, EntityPermission entityPermission) {
         return CampaignContentFactory.getInstance().getEntityFromQuery(entityPermission, getCampaignContentByNameQueries, campaignContentName);
     }
 
@@ -2425,7 +2425,7 @@ public class CampaignControl
         getCampaignContentByValueQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private CampaignContent getCampaignContentByValue(String value, EntityPermission entityPermission) {
+    public CampaignContent getCampaignContentByValue(String value, EntityPermission entityPermission) {
         return CampaignContentFactory.getInstance().getEntityFromQuery(entityPermission, getCampaignContentByValueQueries, 
                 Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault())));
     }
