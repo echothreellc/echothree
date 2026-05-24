@@ -49,6 +49,8 @@ import com.echothree.control.user.campaign.common.CampaignUtil;
 import com.echothree.control.user.campaign.server.command.GetCampaignCommand;
 import com.echothree.control.user.campaign.server.command.GetCampaignContentCommand;
 import com.echothree.control.user.campaign.server.command.GetCampaignContentsCommand;
+import com.echothree.control.user.campaign.server.command.GetCampaignMediumCommand;
+import com.echothree.control.user.campaign.server.command.GetCampaignMediumsCommand;
 import com.echothree.control.user.campaign.server.command.GetCampaignsCommand;
 import com.echothree.control.user.cancellationpolicy.common.CancellationPolicyUtil;
 import com.echothree.control.user.cancellationpolicy.server.command.GetCancellationKindCommand;
@@ -476,6 +478,7 @@ import com.echothree.model.control.accounting.server.graphql.TransactionObject;
 import com.echothree.model.control.accounting.server.graphql.TransactionTimeTypeObject;
 import com.echothree.model.control.accounting.server.graphql.TransactionTypeObject;
 import com.echothree.model.control.campaign.server.graphql.CampaignContentObject;
+import com.echothree.model.control.campaign.server.graphql.CampaignMediumObject;
 import com.echothree.model.control.campaign.server.graphql.CampaignObject;
 import com.echothree.model.control.cancellationpolicy.server.graphql.CancellationKindObject;
 import com.echothree.model.control.cancellationpolicy.server.graphql.CancellationPolicyObject;
@@ -716,8 +719,10 @@ import com.echothree.model.data.accounting.server.entity.TransactionTimeType;
 import com.echothree.model.data.accounting.server.entity.TransactionType;
 import com.echothree.model.data.campaign.common.CampaignConstants;
 import com.echothree.model.data.campaign.common.CampaignContentConstants;
+import com.echothree.model.data.campaign.common.CampaignMediumConstants;
 import com.echothree.model.data.campaign.server.entity.Campaign;
 import com.echothree.model.data.campaign.server.entity.CampaignContent;
+import com.echothree.model.data.campaign.server.entity.CampaignMedium;
 import com.echothree.model.data.cancellationpolicy.common.CancellationKindConstants;
 import com.echothree.model.data.cancellationpolicy.common.CancellationPolicyConstants;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationKind;
@@ -12718,6 +12723,59 @@ public interface GraphQlQueries {
                             .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, campaignContents);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("campaignMedium")
+    static CampaignMediumObject campaignMedium(final DataFetchingEnvironment env,
+            @GraphQLName("campaignMediumName") final String campaignMediumName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        CampaignMedium campaignMedium;
+
+        try {
+            var commandForm = CampaignUtil.getHome().getGetCampaignMediumForm();
+
+            commandForm.setCampaignMediumName(campaignMediumName);
+            commandForm.setUuid(id);
+
+            campaignMedium = CDI.current().select(GetCampaignMediumCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return campaignMedium == null ? null : new CampaignMediumObject(campaignMedium);
+    }
+
+    @GraphQLField
+    @GraphQLName("campaignMediums")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<CampaignMediumObject> campaignMediums(final DataFetchingEnvironment env) {
+        CountingPaginatedData<CampaignMediumObject> data;
+
+        try {
+            var commandForm = CampaignUtil.getHome().getGetCampaignMediumsForm();
+            var command = CDI.current().select(GetCampaignMediumsCommand.class).get();
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, CampaignMediumConstants.COMPONENT_VENDOR_NAME, CampaignMediumConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var campaignMediums = entities.stream()
+                            .map(CampaignMediumObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, campaignMediums);
                 }
             }
         } catch (NamingException ex) {
