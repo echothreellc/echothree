@@ -24,7 +24,12 @@ import com.echothree.model.control.core.common.transfer.CommandMessageTranslatio
 import com.echothree.model.control.core.common.transfer.CommandMessageTypeDescriptionTransfer;
 import com.echothree.model.control.core.common.transfer.CommandMessageTypeTransfer;
 import com.echothree.model.control.core.common.transfer.CommandTransfer;
+import com.echothree.model.data.campaign.common.pk.CampaignPK;
+import com.echothree.model.data.campaign.server.entity.Campaign;
+import com.echothree.model.data.campaign.server.factory.CampaignFactory;
+import com.echothree.model.data.core.common.pk.CommandMessagePK;
 import com.echothree.model.data.core.common.pk.CommandMessageTypePK;
+import com.echothree.model.data.core.common.pk.CommandPK;
 import com.echothree.model.data.core.server.entity.Command;
 import com.echothree.model.data.core.server.entity.CommandDescription;
 import com.echothree.model.data.core.server.entity.CommandMessage;
@@ -97,6 +102,38 @@ public class CommandControl
         return command;
     }
 
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Command */
+    public Command getCommandByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new CommandPK(entityInstance.getEntityUniqueId());
+
+        return CommandFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public Command getCommandByEntityInstance(EntityInstance entityInstance) {
+        return getCommandByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public Command getCommandByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getCommandByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countCommands() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM commands
+                        JOIN commanddetails ON cmddt_commanddetailid = cmd_activedetailid
+                        """);
+    }
+
+    public long countCommandsByComponentVendor(final ComponentVendor componentVendor) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM commands
+                        JOIN commanddetails ON cmddt_commanddetailid = cmd_activedetailid
+                        WHERE cmddt_cvnd_componentvendorid = ?
+                        """, componentVendor);
+    }
+
     private Command getCommandByName(ComponentVendor componentVendor, String commandName, EntityPermission entityPermission) {
         Command command;
 
@@ -156,7 +193,8 @@ public class CommandControl
                         "FROM commands, commanddetails " +
                         "WHERE cmd_activedetailid = cmddt_commanddetailid " +
                         "AND cmddt_cvnd_componentvendorid = ? " +
-                        "ORDER BY cmddt_sortorder, cmddt_commandname";
+                        "ORDER BY cmddt_sortorder, cmddt_commandname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM commands, commanddetails " +
@@ -190,7 +228,8 @@ public class CommandControl
                 "SELECT _ALL_ " +
                         "FROM commands, commanddetails " +
                         "WHERE cmd_activedetailid = cmddt_commanddetailid " +
-                        "ORDER BY cmddt_sortorder, cmddt_commandname");
+                        "ORDER BY cmddt_sortorder, cmddt_commandname " +
+                        "_LIMIT_");
 
         return commandFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
@@ -199,7 +238,7 @@ public class CommandControl
         return commandTransferCache.getCommandTransfer(userVisit, command);
     }
 
-    private List<CommandTransfer> getCommandTransfers(UserVisit userVisit, Collection<Command> commands) {
+    public List<CommandTransfer> getCommandTransfers(UserVisit userVisit, Collection<Command> commands) {
         List<CommandTransfer> commandTransfers = new ArrayList<>(commands.size());
 
         commands.forEach((command) ->
@@ -336,7 +375,8 @@ public class CommandControl
                 query = "SELECT _ALL_ " +
                         "FROM commanddescriptions, languages " +
                         "WHERE cmdd_cmd_commandid = ? AND cmdd_thrutime = ? AND cmdd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                        "ORDER BY lang_sortorder, lang_languageisoname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM commanddescriptions " +
@@ -802,7 +842,8 @@ public class CommandControl
                 query = "SELECT _ALL_ " +
                         "FROM commandmessagetypedescriptions, languages " +
                         "WHERE cmdmssgtyd_cmdmssgty_commandmessagetypeid = ? AND cmdmssgtyd_thrutime = ? AND cmdmssgtyd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                        "ORDER BY lang_sortorder, lang_languageisoname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM commandmessagetypedescriptions " +
@@ -925,6 +966,30 @@ public class CommandControl
         return commandMessage;
     }
 
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.CommandMessage */
+    public CommandMessage getCommandMessageByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new CommandMessagePK(entityInstance.getEntityUniqueId());
+
+        return CommandMessageFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public CommandMessage getCommandMessageByEntityInstance(EntityInstance entityInstance) {
+        return getCommandMessageByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public CommandMessage getCommandMessageByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getCommandMessageByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countCommandMessagesByCommandMessageType(final CommandMessageType commandMessageType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM commandmessages
+                        JOIN commandmessagedetails ON cmdmssgdt_commandmessagedetailid = cmdmssg_activedetailid
+                        WHERE cmdmssgdt_cmdmssgty_commandmessagetypeid = ?
+                        """, commandMessageType);
+    }
+
     private CommandMessage getCommandMessageByKey(CommandMessageType commandMessageType, String commandMessageKey, EntityPermission entityPermission) {
         CommandMessage commandMessage;
 
@@ -984,7 +1049,8 @@ public class CommandControl
                         "FROM commandmessages, commandmessagedetails " +
                         "WHERE cmdmssg_activedetailid = cmdmssgdt_commandmessagedetailid " +
                         "AND cmdmssgdt_cmdmssgty_commandmessagetypeid = ? " +
-                        "ORDER BY cmdmssgdt_commandmessagekey";
+                        "ORDER BY cmdmssgdt_commandmessagekey " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM commandmessages, commandmessagedetails " +
@@ -1102,7 +1168,8 @@ public class CommandControl
                         "FROM commandmessagetranslations, languages " +
                         "WHERE cmdmssgtr_cmdmssg_commandMessageid = ? AND cmdmssgtr_thrutime = ? " +
                         "AND cmdmssgtr_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                        "ORDER BY lang_sortorder, lang_languageisoname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM commandmessagetranslations " +
