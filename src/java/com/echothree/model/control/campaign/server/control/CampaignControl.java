@@ -259,7 +259,7 @@ public class CampaignControl
         getCampaignByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private Campaign getCampaignByName(String campaignName, EntityPermission entityPermission) {
+    public Campaign getCampaignByName(String campaignName, EntityPermission entityPermission) {
         return CampaignFactory.getInstance().getEntityFromQuery(entityPermission, getCampaignByNameQueries, campaignName);
     }
 
@@ -290,7 +290,7 @@ public class CampaignControl
         getCampaignByValueQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private Campaign getCampaignByValue(String value, EntityPermission entityPermission) {
+    public Campaign getCampaignByValue(String value, EntityPermission entityPermission) {
         return CampaignFactory.getInstance().getEntityFromQuery(entityPermission, getCampaignByValueQueries, 
                 Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault())));
     }

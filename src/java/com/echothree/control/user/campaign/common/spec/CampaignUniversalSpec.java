@@ -14,13 +14,13 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.campaign.common.form;
+package com.echothree.control.user.campaign.common.spec;
 
-import com.echothree.control.user.campaign.common.spec.CampaignUniversalSpec;
+import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
 
-public interface GetCampaignForm
-        extends CampaignUniversalSpec {
-    
-    // Nothing additional beyond CampaignUniversalSpec
-    
+public interface CampaignUniversalSpec
+        extends CampaignSpec, UniversalEntitySpec {
+
+    // Nothing additional beyond CampaignSpec, UniversalEntitySpec
+
 }
