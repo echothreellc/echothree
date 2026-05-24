@@ -19,19 +19,15 @@ package com.echothree.control.user.campaign.server.command;
 import com.echothree.control.user.campaign.common.form.GetCampaignMediumForm;
 import com.echothree.control.user.campaign.common.result.CampaignResultFactory;
 import com.echothree.model.control.campaign.server.control.CampaignControl;
-import com.echothree.model.control.core.common.ComponentVendors;
-import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.campaign.server.logic.CampaignMediumLogic;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.campaign.server.entity.CampaignMedium;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -65,6 +61,9 @@ public class GetCampaignMediumCommand
     @Inject
     CampaignControl campaignControl;
 
+    @Inject
+    CampaignMediumLogic campaignMediumLogic;
+
     /** Creates a new instance of GetCampaignMediumCommand */
     public GetCampaignMediumCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -72,27 +71,10 @@ public class GetCampaignMediumCommand
 
     @Override
     protected CampaignMedium getEntity() {
-        var campaignMediumName = form.getCampaignMediumName();
-        var parameterCount = (campaignMediumName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
-        CampaignMedium campaignMedium = null;
+        var campaignMedium = campaignMediumLogic.getCampaignMediumByUniversalSpec(this, form);
 
-        if(parameterCount == 1) {
-            if(campaignMediumName == null) {
-                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHO_THREE.name(),
-                        EntityTypes.CampaignMedium.name());
-
-                if(!hasExecutionErrors()) {
-                    campaignMedium = campaignControl.getCampaignMediumByEntityInstance(entityInstance);
-                }
-            } else {
-                campaignMedium = campaignControl.getCampaignMediumByName(campaignMediumName);
-
-                if(campaignMedium == null) {
-                    addExecutionError(ExecutionErrors.UnknownCampaignMediumName.name(), campaignMediumName);
-                }
-            }
-        } else {
-            addExecutionError(ExecutionErrors.InvalidParameterCount.name());
+        if(!hasExecutionErrors()) {
+            sendEvent(campaignMedium.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return campaignMedium;
@@ -104,7 +86,6 @@ public class GetCampaignMediumCommand
 
         if(campaignMedium != null) {
             result.setCampaignMedium(campaignControl.getCampaignMediumTransfer(getUserVisit(), campaignMedium));
-            sendEvent(campaignMedium.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return result;

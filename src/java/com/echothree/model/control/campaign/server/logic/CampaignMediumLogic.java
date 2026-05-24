@@ -16,12 +16,17 @@
 
 package com.echothree.model.control.campaign.server.logic;
 
+import com.echothree.control.user.campaign.common.spec.CampaignMediumUniversalSpec;
 import com.echothree.model.control.campaign.common.exception.UnknownCampaignMediumNameException;
 import com.echothree.model.control.campaign.common.exception.UnknownCampaignMediumStatusChoiceException;
 import com.echothree.model.control.campaign.common.exception.UnknownCampaignMediumValueException;
 import com.echothree.model.control.campaign.common.workflow.CampaignMediumStatusConstants;
 import com.echothree.model.control.campaign.server.control.CampaignControl;
+import com.echothree.model.control.core.common.ComponentVendors;
+import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.server.control.EntityInstanceControl;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.control.workflow.server.logic.WorkflowDestinationLogic;
 import com.echothree.model.control.workflow.server.logic.WorkflowLogic;
@@ -30,9 +35,11 @@ import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
+import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.spi.CDI;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class CampaignMediumLogic
@@ -45,10 +52,13 @@ public class CampaignMediumLogic
     public static CampaignMediumLogic getInstance() {
         return CDI.current().select(CampaignMediumLogic.class).get();
     }
-    
-    public CampaignMedium getCampaignMediumByName(final ExecutionErrorAccumulator eea, final String campaignMediumName) {
-        var campaignControl = Session.getModelController(CampaignControl.class);
-        var campaignMedium = campaignControl.getCampaignMediumByName(campaignMediumName);
+
+    @Inject
+    CampaignControl campaignControl;
+
+    public CampaignMedium getCampaignMediumByName(final ExecutionErrorAccumulator eea, final String campaignMediumName,
+            final EntityPermission entityPermission) {
+        var campaignMedium = campaignControl.getCampaignMediumByName(campaignMediumName, entityPermission);
 
         if(campaignMedium == null) {
             handleExecutionError(UnknownCampaignMediumNameException.class, eea, ExecutionErrors.UnknownCampaignMediumName.name(), campaignMediumName);
@@ -56,16 +66,68 @@ public class CampaignMediumLogic
 
         return campaignMedium;
     }
-    
-    public CampaignMedium getCampaignMediumByValue(final ExecutionErrorAccumulator eea, final String campaignMediumValue) {
-        var campaignControl = Session.getModelController(CampaignControl.class);
-        var campaignMedium = campaignControl.getCampaignMediumByValue(campaignMediumValue);
+
+    public CampaignMedium getCampaignMediumByName(final ExecutionErrorAccumulator eea, final String campaignMediumName) {
+        return getCampaignMediumByName(eea, campaignMediumName, EntityPermission.READ_ONLY);
+    }
+
+    public CampaignMedium getCampaignMediumByNameForUpdate(final ExecutionErrorAccumulator eea, final String campaignMediumName) {
+        return getCampaignMediumByName(eea, campaignMediumName, EntityPermission.READ_WRITE);
+    }
+
+    public CampaignMedium getCampaignMediumByValue(final ExecutionErrorAccumulator eea, final String campaignMediumValue,
+            final EntityPermission entityPermission) {
+        var campaignMedium = campaignControl.getCampaignMediumByValue(campaignMediumValue, entityPermission);
 
         if(campaignMedium == null) {
             handleExecutionError(UnknownCampaignMediumValueException.class, eea, ExecutionErrors.UnknownCampaignMediumValue.name(), campaignMediumValue);
         }
 
         return campaignMedium;
+    }
+
+    public CampaignMedium getCampaignMediumByValue(final ExecutionErrorAccumulator eea, final String campaignMediumValue) {
+        return getCampaignMediumByValue(eea, campaignMediumValue, EntityPermission.READ_ONLY);
+    }
+
+    public CampaignMedium getCampaignMediumByValueForUpdate(final ExecutionErrorAccumulator eea, final String campaignMediumValue) {
+        return getCampaignMediumByValue(eea, campaignMediumValue, EntityPermission.READ_WRITE);
+    }
+
+    public CampaignMedium getCampaignMediumByUniversalSpec(final ExecutionErrorAccumulator eea,
+            final CampaignMediumUniversalSpec universalSpec, final EntityPermission entityPermission) {
+        CampaignMedium campaignMedium = null;
+        var campaignMediumName = universalSpec.getCampaignMediumName();
+        var parameterCount = (campaignMediumName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+
+        switch(parameterCount) {
+            case 1 -> {
+                if(campaignMediumName == null) {
+                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.CampaignMedium.name());
+
+                    if(!eea.hasExecutionErrors()) {
+                        campaignMedium = campaignControl.getCampaignMediumByEntityInstance(entityInstance, entityPermission);
+                    }
+                } else {
+                    campaignMedium = getCampaignMediumByName(eea, campaignMediumName, entityPermission);
+                }
+            }
+            default ->
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+        }
+
+        return campaignMedium;
+    }
+
+    public CampaignMedium getCampaignMediumByUniversalSpec(final ExecutionErrorAccumulator eea,
+            final CampaignMediumUniversalSpec universalSpec) {
+        return getCampaignMediumByUniversalSpec(eea, universalSpec, EntityPermission.READ_ONLY);
+    }
+
+    public CampaignMedium getCampaignMediumByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea,
+            final CampaignMediumUniversalSpec universalSpec) {
+        return getCampaignMediumByUniversalSpec(eea, universalSpec, EntityPermission.READ_WRITE);
     }
     
     public void setCampaignMediumStatus(final Session session, ExecutionErrorAccumulator eea, CampaignMedium campaignMedium, String campaignMediumStatusChoice, PartyPK modifiedBy) {
