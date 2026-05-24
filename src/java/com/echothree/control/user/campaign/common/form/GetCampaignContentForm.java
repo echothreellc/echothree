@@ -21,6 +21,6 @@ import com.echothree.control.user.campaign.common.spec.CampaignContentUniversalS
 public interface GetCampaignContentForm
         extends CampaignContentUniversalSpec {
     
-    // Nothing additional beyond CampaignContentSpec, UniversalEntitySpec
+    // Nothing additional beyond CampaignContentUniversalSpec
     
 }
