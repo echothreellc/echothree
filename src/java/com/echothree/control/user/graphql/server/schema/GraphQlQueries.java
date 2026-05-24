@@ -51,6 +51,8 @@ import com.echothree.control.user.campaign.server.command.GetCampaignContentComm
 import com.echothree.control.user.campaign.server.command.GetCampaignContentsCommand;
 import com.echothree.control.user.campaign.server.command.GetCampaignMediumCommand;
 import com.echothree.control.user.campaign.server.command.GetCampaignMediumsCommand;
+import com.echothree.control.user.campaign.server.command.GetCampaignSourceCommand;
+import com.echothree.control.user.campaign.server.command.GetCampaignSourcesCommand;
 import com.echothree.control.user.campaign.server.command.GetCampaignTermCommand;
 import com.echothree.control.user.campaign.server.command.GetCampaignTermsCommand;
 import com.echothree.control.user.campaign.server.command.GetCampaignsCommand;
@@ -482,6 +484,7 @@ import com.echothree.model.control.accounting.server.graphql.TransactionTypeObje
 import com.echothree.model.control.campaign.server.graphql.CampaignContentObject;
 import com.echothree.model.control.campaign.server.graphql.CampaignMediumObject;
 import com.echothree.model.control.campaign.server.graphql.CampaignObject;
+import com.echothree.model.control.campaign.server.graphql.CampaignSourceObject;
 import com.echothree.model.control.campaign.server.graphql.CampaignTermObject;
 import com.echothree.model.control.cancellationpolicy.server.graphql.CancellationKindObject;
 import com.echothree.model.control.cancellationpolicy.server.graphql.CancellationPolicyObject;
@@ -723,10 +726,12 @@ import com.echothree.model.data.accounting.server.entity.TransactionType;
 import com.echothree.model.data.campaign.common.CampaignConstants;
 import com.echothree.model.data.campaign.common.CampaignContentConstants;
 import com.echothree.model.data.campaign.common.CampaignMediumConstants;
+import com.echothree.model.data.campaign.common.CampaignSourceConstants;
 import com.echothree.model.data.campaign.common.CampaignTermConstants;
 import com.echothree.model.data.campaign.server.entity.Campaign;
 import com.echothree.model.data.campaign.server.entity.CampaignContent;
 import com.echothree.model.data.campaign.server.entity.CampaignMedium;
+import com.echothree.model.data.campaign.server.entity.CampaignSource;
 import com.echothree.model.data.campaign.server.entity.CampaignTerm;
 import com.echothree.model.data.cancellationpolicy.common.CancellationKindConstants;
 import com.echothree.model.data.cancellationpolicy.common.CancellationPolicyConstants;
@@ -12834,6 +12839,59 @@ public interface GraphQlQueries {
                             .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, campaignTerms);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("campaignSource")
+    static CampaignSourceObject campaignSource(final DataFetchingEnvironment env,
+            @GraphQLName("campaignSourceName") final String campaignSourceName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        CampaignSource campaignSource;
+
+        try {
+            var commandForm = CampaignUtil.getHome().getGetCampaignSourceForm();
+
+            commandForm.setCampaignSourceName(campaignSourceName);
+            commandForm.setUuid(id);
+
+            campaignSource = CDI.current().select(GetCampaignSourceCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return campaignSource == null ? null : new CampaignSourceObject(campaignSource);
+    }
+
+    @GraphQLField
+    @GraphQLName("campaignSources")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<CampaignSourceObject> campaignSources(final DataFetchingEnvironment env) {
+        CountingPaginatedData<CampaignSourceObject> data;
+
+        try {
+            var commandForm = CampaignUtil.getHome().getGetCampaignSourcesForm();
+            var command = CDI.current().select(GetCampaignSourcesCommand.class).get();
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, CampaignSourceConstants.COMPONENT_VENDOR_NAME, CampaignSourceConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var campaignSources = entities.stream()
+                            .map(CampaignSourceObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, campaignSources);
                 }
             }
         } catch (NamingException ex) {
