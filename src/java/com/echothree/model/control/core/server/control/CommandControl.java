@@ -1083,7 +1083,7 @@ public class CommandControl
         return commandMessageTransferCache.getCommandMessageTransfer(userVisit, commandMessage);
     }
 
-    private List<CommandMessageTransfer> getCommandMessageTransfers(UserVisit userVisit, Collection<CommandMessage> commandMessages) {
+    public List<CommandMessageTransfer> getCommandMessageTransfers(UserVisit userVisit, Collection<CommandMessage> commandMessages) {
         List<CommandMessageTransfer> commandMessageTransfers = new ArrayList<>(commandMessages.size());
 
         commandMessages.forEach((commandMessage) ->

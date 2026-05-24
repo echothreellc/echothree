@@ -22,22 +22,25 @@ import com.echothree.model.control.core.server.control.CommandControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.core.server.entity.CommandMessage;
+import com.echothree.model.data.core.server.entity.CommandMessageType;
+import com.echothree.model.data.core.server.factory.CommandMessageFactory;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetCommandMessagesCommand
-        extends BaseSimpleCommand<GetCommandMessagesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<CommandMessage, GetCommandMessagesForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -47,33 +50,56 @@ public class GetCommandMessagesCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.CommandMessage.name(), SecurityRoles.List.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CommandMessageTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
-    
+
     /** Creates a new instance of GetCommandMessagesCommand */
     public GetCommandMessagesCommand() {
-        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    CommandMessageType commandMessageType;
+
     @Override
-    protected BaseResult execute() {
-        var commandControl = Session.getModelController(CommandControl.class);
-        var result = CoreResultFactory.getGetCommandMessagesResult();
+    protected void handleForm() {
         var commandMessageTypeName = form.getCommandMessageTypeName();
-        var commandMessageType = commandControl.getCommandMessageTypeByName(commandMessageTypeName);
-        
-        if(commandMessageType != null) {
-            result.setCommandMessageType(commandControl.getCommandMessageTypeTransfer(getUserVisit(), commandMessageType));
-            result.setCommandMessages(commandControl.getCommandMessageTransfers(getUserVisit(), commandMessageType));
-        } else {
+
+        commandMessageType = commandControl.getCommandMessageTypeByName(commandMessageTypeName);
+
+        if(commandMessageType == null) {
             addExecutionError(ExecutionErrors.UnknownCommandMessageTypeName.name(), commandMessageTypeName);
         }
-        
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return hasExecutionErrors() ? null : commandControl.countCommandMessagesByCommandMessageType(commandMessageType);
+    }
+
+    @Override
+    protected Collection<CommandMessage> getEntities() {
+        return hasExecutionErrors() ? null : commandControl.getCommandMessagesByCommandMessageType(commandMessageType);
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<CommandMessage> entities) {
+        var result = CoreResultFactory.getGetCommandMessagesResult();
+
+        if(entities != null) {
+            result.setCommandMessageType(commandControl.getCommandMessageTypeTransfer(getUserVisit(), commandMessageType));
+
+            if(session.hasLimit(CommandMessageFactory.class)) {
+                result.setCommandMessageCount(getTotalEntities());
+            }
+
+            result.setCommandMessages(commandControl.getCommandMessageTransfers(getUserVisit(), entities));
+        }
+
         return result;
     }
     
