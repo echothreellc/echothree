@@ -2859,7 +2859,55 @@ public class CampaignControl
 
         return userVisitCampaign;
     }
-    
+
+    public long countUserVisitCampaignsByUserVisit(final UserVisit userVisit) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM uservisitcampaigns
+                        WHERE uviscmpgn_uvis_uservisitid = ? AND uviscmpgn_thrutime = ?
+                        """, userVisit, Session.MAX_TIME);
+    }
+
+    public long countUserVisitCampaignsByCampaign(final Campaign campaign) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM uservisitcampaigns
+                        WHERE uviscmpgn_cmpgn_campaignid = ? AND uviscmpgn_thrutime = ?
+                        """, campaign, Session.MAX_TIME);
+    }
+
+    public long countUserVisitCampaignsByCampaignSource(final CampaignSource campaignSource) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM uservisitcampaigns
+                        WHERE uviscmpgn_cmpgnsrc_campaignsourceid = ? AND uviscmpgn_thrutime = ?
+                        """, campaignSource, Session.MAX_TIME);
+    }
+
+    public long countUserVisitCampaignsByCampaignMedium(final CampaignMedium campaignMedium) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM uservisitcampaigns
+                        WHERE uviscmpgn_cmpgnmdm_campaignmediumid = ? AND uviscmpgn_thrutime = ?
+                        """, campaignMedium, Session.MAX_TIME);
+    }
+
+    public long countUserVisitCampaignsByCampaignTerm(final CampaignTerm campaignTerm) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM uservisitcampaigns
+                        WHERE uviscmpgn_cmpgntrm_campaigntermid = ? AND uviscmpgn_thrutime = ?
+                        """, campaignTerm, Session.MAX_TIME);
+    }
+
+    public long countUserVisitCampaignsByCampaignContent(final CampaignContent campaignContent) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM uservisitcampaigns
+                        WHERE uviscmpgn_cmpgncnt_campaigncontentid = ? AND uviscmpgn_thrutime = ?
+                        """, campaignContent, Session.MAX_TIME);
+    }
+
     public Integer getMinimumUserVisitCampaignSequence(UserVisit userVisit) {
         return session.queryForInteger(
                 "SELECT MIN(uviscmpgn_uservisitcampaignsequence) " +

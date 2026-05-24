@@ -18,20 +18,31 @@ package com.echothree.model.control.user.server.graphql;
 
 import com.echothree.model.control.accounting.server.graphql.AccountingSecurityUtils;
 import com.echothree.model.control.accounting.server.graphql.CurrencyObject;
+import com.echothree.model.control.campaign.server.control.CampaignControl;
+import com.echothree.model.control.campaign.server.graphql.UserVisitCampaignObject;
 import com.echothree.model.control.graphql.server.graphql.TimeObject;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.offer.server.graphql.OfferSecurityUtils;
 import com.echothree.model.control.offer.server.graphql.OfferUseObject;
 import com.echothree.model.control.party.server.graphql.DateTimeFormatObject;
 import com.echothree.model.control.party.server.graphql.LanguageObject;
 import com.echothree.model.control.party.server.graphql.PartySecurityUtils;
 import com.echothree.model.control.party.server.graphql.TimeZoneObject;
+import com.echothree.model.data.campaign.common.UserVisitCampaignConstants;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 @GraphQLDescription("user visit object")
 @GraphQLName("UserVisit")
@@ -123,4 +134,25 @@ public class UserVisitObject
 
         return retainUntilTime == null ? null : new TimeObject(retainUntilTime);
     }
+
+    @GraphQLField
+    @GraphQLDescription("user visit campaigns")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<UserVisitCampaignObject> getUserVisitCampaigns(final DataFetchingEnvironment env) {
+//        if(CampaignSecurityUtils.getHasUserVisitCampaignsAccess(env)) {
+            var campaignControl = Session.getModelController(CampaignControl.class);
+            var totalCount = campaignControl.countUserVisitCampaignsByUserVisit(userVisit);
+
+            try(var objectLimiter = new ObjectLimiter(env, UserVisitCampaignConstants.COMPONENT_VENDOR_NAME, UserVisitCampaignConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = campaignControl.getUserVisitCampaignsByUserVisit(userVisit);
+                var items = entities.stream().map(UserVisitCampaignObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, items);
+            }
+//        } else {
+//            return Connections.emptyConnection();
+//        }
+    }
+
 }
