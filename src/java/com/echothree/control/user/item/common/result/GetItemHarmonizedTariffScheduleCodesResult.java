@@ -34,6 +34,9 @@ public interface GetItemHarmonizedTariffScheduleCodesResult
     
     HarmonizedTariffScheduleCodeUseTypeTransfer getHarmonizedTariffScheduleCodeUseType();
     void setHarmonizedTariffScheduleCodeUseType(HarmonizedTariffScheduleCodeUseTypeTransfer harmonizedTariffScheduleCodeUseType);
+
+    Long getItemHarmonizedTariffScheduleCodeCount();
+    void setItemHarmonizedTariffScheduleCodeCount(Long itemHarmonizedTariffScheduleCodeCount);
     
     List<ItemHarmonizedTariffScheduleCodeTransfer> getItemHarmonizedTariffScheduleCodes();
     void setItemHarmonizedTariffScheduleCodes(List<ItemHarmonizedTariffScheduleCodeTransfer> itemHarmonizedTariffScheduleCodes);
