@@ -157,6 +157,7 @@ import com.echothree.model.data.item.common.pk.ItemDeliveryTypePK;
 import com.echothree.model.data.item.common.pk.ItemDescriptionPK;
 import com.echothree.model.data.item.common.pk.ItemDescriptionTypePK;
 import com.echothree.model.data.item.common.pk.ItemDescriptionTypeUseTypePK;
+import com.echothree.model.data.item.common.pk.ItemHarmonizedTariffScheduleCodePK;
 import com.echothree.model.data.item.common.pk.ItemImageTypePK;
 import com.echothree.model.data.item.common.pk.ItemInventoryTypePK;
 import com.echothree.model.data.item.common.pk.ItemPK;
@@ -14050,6 +14051,57 @@ public class ItemControl
         sendEvent(item.getPrimaryKey(), EventTypes.MODIFY, itemHarmonizedTariffScheduleCode.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return itemHarmonizedTariffScheduleCode;
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ItemHarmonizedTariffScheduleCode */
+    public ItemHarmonizedTariffScheduleCode getItemHarmonizedTariffScheduleCodeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ItemHarmonizedTariffScheduleCodePK(entityInstance.getEntityUniqueId());
+
+        return ItemHarmonizedTariffScheduleCodeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public ItemHarmonizedTariffScheduleCode getItemHarmonizedTariffScheduleCodeByEntityInstance(EntityInstance entityInstance) {
+        return getItemHarmonizedTariffScheduleCodeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ItemHarmonizedTariffScheduleCode getItemHarmonizedTariffScheduleCodeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getItemHarmonizedTariffScheduleCodeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countItemHarmonizedTariffScheduleCodesByItem(final Item item) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM itemharmonizedtariffschedulecodes
+                        JOIN itemharmonizedtariffschedulecodedetails ON itmhztscdt_itemharmonizedtariffschedulecodedetailid = itmhztsc_activedetailid
+                        WHERE itmhztscdt_itm_itemid = ?
+                        """, item);
+    }
+
+    public long countItemHarmonizedTariffScheduleCodesByCountryGeoCode(final GeoCode countryGeoCode) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM itemharmonizedtariffschedulecodes
+                        JOIN itemharmonizedtariffschedulecodedetails ON itmhztscdt_itemharmonizedtariffschedulecodedetailid = itmhztsc_activedetailid
+                        WHERE itmhztscdt_countrygeocodeid = ?
+                        """, countryGeoCode);
+    }
+
+    public long countItemHarmonizedTariffScheduleCodesByHarmonizedTariffScheduleCodeUseType(final HarmonizedTariffScheduleCodeUseType harmonizedTariffScheduleCodeUseType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM itemharmonizedtariffschedulecodes
+                        JOIN itemharmonizedtariffschedulecodedetails ON itmhztscdt_itemharmonizedtariffschedulecodedetailid = itmhztsc_activedetailid
+                        WHERE itmhztscdt_hztscutyp_harmonizedtariffschedulecodeusetypeid = ?
+                        """, harmonizedTariffScheduleCodeUseType);
+    }
+
+    public long countItemHarmonizedTariffScheduleCodesByHarmonizedTariffScheduleCode(final HarmonizedTariffScheduleCode harmonizedTariffScheduleCode) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM itemharmonizedtariffschedulecodes
+                        JOIN itemharmonizedtariffschedulecodedetails ON itmhztscdt_itemharmonizedtariffschedulecodedetailid = itmhztsc_activedetailid
+                        WHERE itmhztscdt_hztsc_harmonizedtariffschedulecodeid = ?
+                        """, harmonizedTariffScheduleCode);
     }
 
     private static final Map<EntityPermission, String> getItemHarmonizedTariffScheduleCodesByItemQueries;

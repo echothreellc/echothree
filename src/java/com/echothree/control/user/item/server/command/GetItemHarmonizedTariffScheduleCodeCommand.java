@@ -19,45 +19,62 @@ package com.echothree.control.user.item.server.command;
 import com.echothree.control.user.item.common.form.GetItemHarmonizedTariffScheduleCodeForm;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.geo.server.control.GeoControl;
+import com.echothree.model.control.geo.server.logic.GeoCodeLogic;
 import com.echothree.model.control.item.server.control.ItemControl;
+import com.echothree.model.control.item.server.logic.HarmonizedTariffScheduleCodeLogic;
+import com.echothree.model.control.item.server.logic.ItemLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetItemHarmonizedTariffScheduleCodeCommand
         extends BaseSimpleCommand<GetItemHarmonizedTariffScheduleCodeForm> {
-    
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.ItemHarmonizedTariffScheduleCode.name(), SecurityRoles.Review.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.ItemHarmonizedTariffScheduleCode.name(), SecurityRoles.Review.name())
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("CountryName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("HarmonizedTariffScheduleCodeUseTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
-    
+
+    @Inject
+    GeoControl geoControl;
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    GeoCodeLogic geoCodeLogic;
+
+    @Inject
+    HarmonizedTariffScheduleCodeLogic harmonizedTariffScheduleCodeLogic;
+
+    @Inject
+    ItemLogic itemLogic;
+
     /** Creates a new instance of GetItemHarmonizedTariffScheduleCodeCommand */
     public GetItemHarmonizedTariffScheduleCodeCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -65,19 +82,17 @@ public class GetItemHarmonizedTariffScheduleCodeCommand
     
     @Override
     protected BaseResult execute() {
-        var itemControl = Session.getModelController(ItemControl.class);
         var result = ItemResultFactory.getGetItemHarmonizedTariffScheduleCodeResult();
         var itemName = form.getItemName();
-        var item = itemControl.getItemByName(itemName);
-        
+        var item = itemLogic.getItemByName(this, itemName);
+
         if(item != null) {
-            var geoControl = Session.getModelController(GeoControl.class);
             var countryName = form.getCountryName();
-            var countryGeoCode = geoControl.getCountryByAlias(countryName);
-            
+            var countryGeoCode = geoCodeLogic.getGeoCodeByAlias(this, geoControl.getGeoCodeTypeByName("COUNTRY"), geoControl.getGeoCodeScopeByName("UTILITY"), "ISO_2_LETTER", countryName);
+
             if(countryGeoCode != null) {
                 var harmonizedTariffScheduleCodeUseTypeName = form.getHarmonizedTariffScheduleCodeUseTypeName();
-                var harmonizedTariffScheduleCodeUseType = itemControl.getHarmonizedTariffScheduleCodeUseTypeByName(harmonizedTariffScheduleCodeUseTypeName);
+                var harmonizedTariffScheduleCodeUseType = harmonizedTariffScheduleCodeLogic.getHarmonizedTariffScheduleCodeUseTypeByName(this, harmonizedTariffScheduleCodeUseTypeName);
 
                 if(harmonizedTariffScheduleCodeUseType != null) {
                     var itemHarmonizedTariffScheduleCode = itemControl.getItemHarmonizedTariffScheduleCode(item, countryGeoCode,
@@ -88,16 +103,10 @@ public class GetItemHarmonizedTariffScheduleCodeCommand
                     } else {
                         addExecutionError(ExecutionErrors.UnknownItemHarmonizedTariffScheduleCode.name(), itemName, countryName, harmonizedTariffScheduleCodeUseTypeName);
                     }
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownHarmonizedTariffScheduleCodeUseTypeName.name(), harmonizedTariffScheduleCodeUseTypeName);
                 }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownCountryName.name(), countryName);
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownItemName.name(), itemName);
         }
-        
+
         return result;
     }
     
