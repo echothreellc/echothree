@@ -7206,11 +7206,12 @@ public class ItemControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(1);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM itemfixedprices "
-                + "WHERE itmfp_itmp_itempriceid = ? "
-                + "ORDER BY itmfp_thrutime");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM itemfixedprices
+                WHERE itmfp_itmp_itempriceid = ?
+                ORDER BY itmfp_thrutime
+                """);
         getItemFixedPriceHistoryQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -7315,11 +7316,12 @@ public class ItemControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(1);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM itemvariableprices "
-                + "WHERE itmvp_itmp_itempriceid = ? "
-                + "ORDER BY itmvp_thrutime");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM itemvariableprices
+                WHERE itmvp_itmp_itempriceid = ?
+                ORDER BY itmvp_thrutime
+                """);
         getItemVariablePriceHistoryQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -7412,8 +7414,7 @@ public class ItemControl
     }
 
     public long countItemDescriptionTypes() {
-        return session.queryForLong(
-                """
+        return session.queryForLong("""
                 SELECT COUNT(*)
                 FROM itemdescriptiontypes, itemdescriptiontypedetails
                 WHERE idt_activedetailid = idtdt_itemdescriptiontypedetailid
@@ -7421,8 +7422,7 @@ public class ItemControl
     }
 
     public long countItemDescriptionTypesByParentItemDescriptionType(ItemDescriptionType parentItemDescriptionType) {
-        return session.queryForLong(
-                """
+        return session.queryForLong("""
                 SELECT COUNT(*)
                 FROM itemdescriptiontypes, itemdescriptiontypedetails
                 WHERE idt_activedetailid = idtdt_itemdescriptiontypedetailid
@@ -7436,17 +7436,19 @@ public class ItemControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM itemdescriptiontypes, itemdescriptiontypedetails " +
-                "WHERE idt_activedetailid = idtdt_itemdescriptiontypedetailid " +
-                "AND idtdt_itemdescriptiontypename = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM itemdescriptiontypes, itemdescriptiontypedetails " +
-                "WHERE idt_activedetailid = idtdt_itemdescriptiontypedetailid " +
-                "AND idtdt_itemdescriptiontypename = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM itemdescriptiontypes, itemdescriptiontypedetails
+                WHERE idt_activedetailid = idtdt_itemdescriptiontypedetailid
+                AND idtdt_itemdescriptiontypename = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM itemdescriptiontypes, itemdescriptiontypedetails
+                WHERE idt_activedetailid = idtdt_itemdescriptiontypedetailid
+                AND idtdt_itemdescriptiontypename = ?
+                FOR UPDATE
+                """);
         getItemDescriptionTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -7471,19 +7473,21 @@ public class ItemControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM itemdescriptiontypes, itemdescriptiontypedetails " +
-                "WHERE idt_activedetailid = idtdt_itemdescriptiontypedetailid " +
-                "AND idtdt_includeinindex = 1 " +
-                "ORDER BY idtdt_sortorder, idtdt_itemdescriptiontypename " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM itemdescriptiontypes, itemdescriptiontypedetails " +
-                "WHERE idt_activedetailid = idtdt_itemdescriptiontypedetailid " +
-                "AND idtdt_includeinindex = 1 " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM itemdescriptiontypes, itemdescriptiontypedetails
+                WHERE idt_activedetailid = idtdt_itemdescriptiontypedetailid
+                AND idtdt_includeinindex = 1
+                ORDER BY idtdt_sortorder, idtdt_itemdescriptiontypename
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM itemdescriptiontypes, itemdescriptiontypedetails
+                WHERE idt_activedetailid = idtdt_itemdescriptiontypedetailid
+                AND idtdt_includeinindex = 1
+                FOR UPDATE
+                """);
         getItemDescriptionTypesByIncludeInIndexQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -7504,17 +7508,19 @@ public class ItemControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM itemdescriptiontypes, itemdescriptiontypedetails " +
-                "WHERE idt_activedetailid = idtdt_itemdescriptiontypedetailid " +
-                "AND idtdt_indexdefault = 1");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM itemdescriptiontypes, itemdescriptiontypedetails " +
-                "WHERE idt_activedetailid = idtdt_itemdescriptiontypedetailid " +
-                "AND idtdt_indexdefault = 1 " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM itemdescriptiontypes, itemdescriptiontypedetails
+                WHERE idt_activedetailid = idtdt_itemdescriptiontypedetailid
+                AND idtdt_indexdefault = 1
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM itemdescriptiontypes, itemdescriptiontypedetails
+                WHERE idt_activedetailid = idtdt_itemdescriptiontypedetailid
+                AND idtdt_indexdefault = 1
+                FOR UPDATE
+                """);
         getIndexDefaultItemDescriptionTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -7539,17 +7545,19 @@ public class ItemControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM itemdescriptiontypes, itemdescriptiontypedetails " +
-                "WHERE idt_activedetailid = idtdt_itemdescriptiontypedetailid " +
-                "AND idtdt_isdefault = 1");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM itemdescriptiontypes, itemdescriptiontypedetails " +
-                "WHERE idt_activedetailid = idtdt_itemdescriptiontypedetailid " +
-                "AND idtdt_isdefault = 1 " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM itemdescriptiontypes, itemdescriptiontypedetails
+                WHERE idt_activedetailid = idtdt_itemdescriptiontypedetailid
+                AND idtdt_isdefault = 1
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM itemdescriptiontypes, itemdescriptiontypedetails
+                WHERE idt_activedetailid = idtdt_itemdescriptiontypedetailid
+                AND idtdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultItemDescriptionTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -7574,17 +7582,19 @@ public class ItemControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM itemdescriptiontypes, itemdescriptiontypedetails " +
-                "WHERE idt_activedetailid = idtdt_itemdescriptiontypedetailid " +
-                "ORDER BY idtdt_sortorder, idtdt_itemdescriptiontypename " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM itemdescriptiontypes, itemdescriptiontypedetails " +
-                "WHERE idt_activedetailid = idtdt_itemdescriptiontypedetailid " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM itemdescriptiontypes, itemdescriptiontypedetails
+                WHERE idt_activedetailid = idtdt_itemdescriptiontypedetailid
+                ORDER BY idtdt_sortorder, idtdt_itemdescriptiontypename
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM itemdescriptiontypes, itemdescriptiontypedetails
+                WHERE idt_activedetailid = idtdt_itemdescriptiontypedetailid
+                FOR UPDATE
+                """);
         getItemDescriptionTypesQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -7605,17 +7615,19 @@ public class ItemControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM itemdescriptiontypes, itemdescriptiontypedetails " +
-                "WHERE idt_activedetailid = idtdt_itemdescriptiontypedetailid AND idtdt_parentitemdescriptiontypeid = ? " +
-                "ORDER BY idtdt_sortorder, idtdt_itemdescriptiontypename " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM itemdescriptiontypes, itemdescriptiontypedetails " +
-                "WHERE idt_activedetailid = idtdt_itemdescriptiontypedetailid AND idtdt_parentitemdescriptiontypeid = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM itemdescriptiontypes, itemdescriptiontypedetails
+                WHERE idt_activedetailid = idtdt_itemdescriptiontypedetailid AND idtdt_parentitemdescriptiontypeid = ?
+                ORDER BY idtdt_sortorder, idtdt_itemdescriptiontypename
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM itemdescriptiontypes, itemdescriptiontypedetails
+                WHERE idt_activedetailid = idtdt_itemdescriptiontypedetailid AND idtdt_parentitemdescriptiontypeid = ?
+                FOR UPDATE
+                """);
         getItemDescriptionTypesByParentItemDescriptionTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -7842,15 +7854,17 @@ public class ItemControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM itemdescriptiontypedescriptions " +
-                "WHERE idtd_idt_itemdescriptiontypeid = ? AND idtd_lang_languageid = ? AND idtd_thrutime = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM itemdescriptiontypedescriptions " +
-                "WHERE idtd_idt_itemdescriptiontypeid = ? AND idtd_lang_languageid = ? AND idtd_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM itemdescriptiontypedescriptions
+                WHERE idtd_idt_itemdescriptiontypeid = ? AND idtd_lang_languageid = ? AND idtd_thrutime = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM itemdescriptiontypedescriptions
+                WHERE idtd_idt_itemdescriptiontypeid = ? AND idtd_lang_languageid = ? AND idtd_thrutime = ?
+                FOR UPDATE
+                """);
         getItemDescriptionTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -7880,17 +7894,19 @@ public class ItemControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM itemdescriptiontypedescriptions, languages " +
-                "WHERE idtd_idt_itemdescriptiontypeid = ? AND idtd_thrutime = ? AND idtd_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortorder, lang_languageisoname " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM itemdescriptiontypedescriptions " +
-                "WHERE idtd_idt_itemdescriptiontypeid = ? AND idtd_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM itemdescriptiontypedescriptions, languages
+                WHERE idtd_idt_itemdescriptiontypeid = ? AND idtd_thrutime = ? AND idtd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM itemdescriptiontypedescriptions
+                WHERE idtd_idt_itemdescriptiontypeid = ? AND idtd_thrutime = ?
+                FOR UPDATE
+                """);
         getItemDescriptionTypeDescriptionsByItemDescriptionTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -7994,15 +8010,17 @@ public class ItemControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM itemimagedescriptiontypes " +
-                "WHERE iimgdt_idt_itemdescriptiontypeid = ? AND iimgdt_thrutime = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM itemimagedescriptiontypes " +
-                "WHERE iimgdt_idt_itemdescriptiontypeid = ? AND iimgdt_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM itemimagedescriptiontypes
+                WHERE iimgdt_idt_itemdescriptiontypeid = ? AND iimgdt_thrutime = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM itemimagedescriptiontypes
+                WHERE iimgdt_idt_itemdescriptiontypeid = ? AND iimgdt_thrutime = ?
+                FOR UPDATE
+                """);
         getItemImageDescriptionTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -8120,8 +8138,7 @@ public class ItemControl
     }
 
     public long countItemDescriptionTypeUseTypes() {
-        return session.queryForLong(
-                """
+        return session.queryForLong("""
                 SELECT COUNT(*)
                 FROM itemdescriptiontypeusetypes, itemdescriptiontypeusetypedetails
                 WHERE idtutyp_activedetailid = idtutypdt_itemdescriptiontypeusetypedetailid
@@ -8133,17 +8150,19 @@ public class ItemControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM itemdescriptiontypeusetypes, itemdescriptiontypeusetypedetails " +
-                "WHERE idtutyp_activedetailid = idtutypdt_itemdescriptiontypeusetypedetailid " +
-                "AND idtutypdt_itemdescriptiontypeusetypename = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM itemdescriptiontypeusetypes, itemdescriptiontypeusetypedetails " +
-                "WHERE idtutyp_activedetailid = idtutypdt_itemdescriptiontypeusetypedetailid " +
-                "AND idtutypdt_itemdescriptiontypeusetypename = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM itemdescriptiontypeusetypes, itemdescriptiontypeusetypedetails
+                WHERE idtutyp_activedetailid = idtutypdt_itemdescriptiontypeusetypedetailid
+                AND idtutypdt_itemdescriptiontypeusetypename = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM itemdescriptiontypeusetypes, itemdescriptiontypeusetypedetails
+                WHERE idtutyp_activedetailid = idtutypdt_itemdescriptiontypeusetypedetailid
+                AND idtutypdt_itemdescriptiontypeusetypename = ?
+                FOR UPDATE
+                """);
         getItemDescriptionTypeUseTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -8172,17 +8191,19 @@ public class ItemControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM itemdescriptiontypeusetypes, itemdescriptiontypeusetypedetails " +
-                "WHERE idtutyp_activedetailid = idtutypdt_itemdescriptiontypeusetypedetailid " +
-                "AND idtutypdt_isdefault = 1");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM itemdescriptiontypeusetypes, itemdescriptiontypeusetypedetails " +
-                "WHERE idtutyp_activedetailid = idtutypdt_itemdescriptiontypeusetypedetailid " +
-                "AND idtutypdt_isdefault = 1 " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM itemdescriptiontypeusetypes, itemdescriptiontypeusetypedetails
+                WHERE idtutyp_activedetailid = idtutypdt_itemdescriptiontypeusetypedetailid
+                AND idtutypdt_isdefault = 1
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM itemdescriptiontypeusetypes, itemdescriptiontypeusetypedetails
+                WHERE idtutyp_activedetailid = idtutypdt_itemdescriptiontypeusetypedetailid
+                AND idtutypdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultItemDescriptionTypeUseTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -8207,17 +8228,19 @@ public class ItemControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM itemdescriptiontypeusetypes, itemdescriptiontypeusetypedetails " +
-                "WHERE idtutyp_activedetailid = idtutypdt_itemdescriptiontypeusetypedetailid " +
-                "ORDER BY idtutypdt_sortorder, idtutypdt_itemdescriptiontypeusetypename " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM itemdescriptiontypeusetypes, itemdescriptiontypeusetypedetails " +
-                "WHERE idtutyp_activedetailid = idtutypdt_itemdescriptiontypeusetypedetailid " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM itemdescriptiontypeusetypes, itemdescriptiontypeusetypedetails
+                WHERE idtutyp_activedetailid = idtutypdt_itemdescriptiontypeusetypedetailid
+                ORDER BY idtutypdt_sortorder, idtutypdt_itemdescriptiontypeusetypename
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM itemdescriptiontypeusetypes, itemdescriptiontypeusetypedetails
+                WHERE idtutyp_activedetailid = idtutypdt_itemdescriptiontypeusetypedetailid
+                FOR UPDATE
+                """);
         getItemDescriptionTypeUseTypesQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -8426,15 +8449,17 @@ public class ItemControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM itemdescriptiontypeusetypedescriptions " +
-                "WHERE idtutypd_idtutyp_itemdescriptiontypeusetypeid = ? AND idtutypd_lang_languageid = ? AND idtutypd_thrutime = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM itemdescriptiontypeusetypedescriptions " +
-                "WHERE idtutypd_idtutyp_itemdescriptiontypeusetypeid = ? AND idtutypd_lang_languageid = ? AND idtutypd_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM itemdescriptiontypeusetypedescriptions
+                WHERE idtutypd_idtutyp_itemdescriptiontypeusetypeid = ? AND idtutypd_lang_languageid = ? AND idtutypd_thrutime = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM itemdescriptiontypeusetypedescriptions
+                WHERE idtutypd_idtutyp_itemdescriptiontypeusetypeid = ? AND idtutypd_lang_languageid = ? AND idtutypd_thrutime = ?
+                FOR UPDATE
+                """);
         getItemDescriptionTypeUseTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -8465,17 +8490,19 @@ public class ItemControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM itemdescriptiontypeusetypedescriptions, languages " +
-                "WHERE idtutypd_idtutyp_itemdescriptiontypeusetypeid = ? AND idtutypd_thrutime = ? AND idtutypd_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortorder, lang_languageisoname " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM itemdescriptiontypeusetypedescriptions " +
-                "WHERE idtutypd_idtutyp_itemdescriptiontypeusetypeid = ? AND idtutypd_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM itemdescriptiontypeusetypedescriptions, languages
+                WHERE idtutypd_idtutyp_itemdescriptiontypeusetypeid = ? AND idtutypd_thrutime = ? AND idtutypd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM itemdescriptiontypeusetypedescriptions
+                WHERE idtutypd_idtutyp_itemdescriptiontypeusetypeid = ? AND idtutypd_thrutime = ?
+                FOR UPDATE
+                """);
         getItemDescriptionTypeUseTypeDescriptionsByItemDescriptionTypeUseTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -8594,16 +8621,18 @@ public class ItemControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM itemdescriptiontypeuses " +
-                "WHERE idtu_idt_itemdescriptiontypeid = ? AND idtu_idtutyp_itemdescriptiontypeusetypeid = ? AND idtu_thrutime = ? " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM itemdescriptiontypeuses " +
-                "WHERE idtu_idt_itemdescriptiontypeid = ? AND idtu_idtutyp_itemdescriptiontypeusetypeid = ? AND idtu_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM itemdescriptiontypeuses
+                WHERE idtu_idt_itemdescriptiontypeid = ? AND idtu_idtutyp_itemdescriptiontypeusetypeid = ? AND idtu_thrutime = ?
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM itemdescriptiontypeuses
+                WHERE idtu_idt_itemdescriptiontypeid = ? AND idtu_idtutyp_itemdescriptiontypeusetypeid = ? AND idtu_thrutime = ?
+                FOR UPDATE
+                """);
         getItemDescriptionTypeUseQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -8630,18 +8659,20 @@ public class ItemControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM itemdescriptiontypeuses, itemdescriptiontypes, itemdescriptiontypedetails " +
-                "WHERE idtu_idt_itemdescriptiontypeid = ? AND idtu_thrutime = ? " +
-                "AND idtu_idt_itemdescriptiontypeid = idt_itemdescriptiontypeid AND idt_lastdetailid = idtdt_itemdescriptiontypedetailid " +
-                "ORDER BY idtdt_sortorder, idtdt_itemdescriptiontypename " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM itemdescriptiontypeuses " +
-                "WHERE idtu_idt_itemdescriptiontypeid = ? AND idtu_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM itemdescriptiontypeuses, itemdescriptiontypes, itemdescriptiontypedetails
+                WHERE idtu_idt_itemdescriptiontypeid = ? AND idtu_thrutime = ?
+                AND idtu_idt_itemdescriptiontypeid = idt_itemdescriptiontypeid AND idt_lastdetailid = idtdt_itemdescriptiontypedetailid
+                ORDER BY idtdt_sortorder, idtdt_itemdescriptiontypename
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM itemdescriptiontypeuses
+                WHERE idtu_idt_itemdescriptiontypeid = ? AND idtu_thrutime = ?
+                FOR UPDATE
+                """);
         getItemDescriptionTypeUsesByItemDescriptionTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -8663,18 +8694,20 @@ public class ItemControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM itemdescriptiontypeuses, itemdescriptiontypeusetypes, itemdescriptiontypeusetypedetails " +
-                "WHERE idtu_idtutyp_itemdescriptiontypeusetypeid = ? AND idtu_thrutime = ? " +
-                "AND idtu_idtutyp_itemdescriptiontypeusetypeid = idtutyp_itemdescriptiontypeusetypeid AND idtutyp_lastdetailid = idtutypdt_itemdescriptiontypeusetypedetailid " +
-                "ORDER BY idtutypdt_sortorder, idtutypdt_itemdescriptiontypeusetypename " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM itemdescriptiontypeuses " +
-                "WHERE idtu_idtutyp_itemdescriptiontypeusetypeid = ? AND idtu_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM itemdescriptiontypeuses, itemdescriptiontypeusetypes, itemdescriptiontypeusetypedetails
+                WHERE idtu_idtutyp_itemdescriptiontypeusetypeid = ? AND idtu_thrutime = ?
+                AND idtu_idtutyp_itemdescriptiontypeusetypeid = idtutyp_itemdescriptiontypeusetypeid AND idtutyp_lastdetailid = idtutypdt_itemdescriptiontypeusetypedetailid
+                ORDER BY idtutypdt_sortorder, idtutypdt_itemdescriptiontypeusetypename
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM itemdescriptiontypeuses
+                WHERE idtu_idtutyp_itemdescriptiontypeusetypeid = ? AND idtu_thrutime = ?
+                FOR UPDATE
+                """);
         getItemDescriptionTypeUsesByItemDescriptionTypeUseTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -8790,8 +8823,7 @@ public class ItemControl
     }
 
     public long countItemImageTypes() {
-        return session.queryForLong(
-                """
+        return session.queryForLong("""
                 SELECT COUNT(*)
                 FROM itemimagetypes, itemimagetypedetails
                 WHERE iimgt_activedetailid = iimgtdt_itemimagetypedetailid
@@ -8803,17 +8835,19 @@ public class ItemControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM itemimagetypes, itemimagetypedetails " +
-                "WHERE iimgt_activedetailid = iimgtdt_itemimagetypedetailid " +
-                "AND iimgtdt_itemimagetypename = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM itemimagetypes, itemimagetypedetails " +
-                "WHERE iimgt_activedetailid = iimgtdt_itemimagetypedetailid " +
-                "AND iimgtdt_itemimagetypename = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM itemimagetypes, itemimagetypedetails
+                WHERE iimgt_activedetailid = iimgtdt_itemimagetypedetailid
+                AND iimgtdt_itemimagetypename = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM itemimagetypes, itemimagetypedetails
+                WHERE iimgt_activedetailid = iimgtdt_itemimagetypedetailid
+                AND iimgtdt_itemimagetypename = ?
+                FOR UPDATE
+                """);
         getItemImageTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -8838,17 +8872,19 @@ public class ItemControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM itemimagetypes, itemimagetypedetails " +
-                "WHERE iimgt_activedetailid = iimgtdt_itemimagetypedetailid " +
-                "AND iimgtdt_isdefault = 1");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM itemimagetypes, itemimagetypedetails " +
-                "WHERE iimgt_activedetailid = iimgtdt_itemimagetypedetailid " +
-                "AND iimgtdt_isdefault = 1 " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM itemimagetypes, itemimagetypedetails
+                WHERE iimgt_activedetailid = iimgtdt_itemimagetypedetailid
+                AND iimgtdt_isdefault = 1
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM itemimagetypes, itemimagetypedetails
+                WHERE iimgt_activedetailid = iimgtdt_itemimagetypedetailid
+                AND iimgtdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultItemImageTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -8873,17 +8909,19 @@ public class ItemControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM itemimagetypes, itemimagetypedetails " +
-                "WHERE iimgt_activedetailid = iimgtdt_itemimagetypedetailid " +
-                "ORDER BY iimgtdt_sortorder, iimgtdt_itemimagetypename " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM itemimagetypes, itemimagetypedetails " +
-                "WHERE iimgt_activedetailid = iimgtdt_itemimagetypedetailid " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM itemimagetypes, itemimagetypedetails
+                WHERE iimgt_activedetailid = iimgtdt_itemimagetypedetailid
+                ORDER BY iimgtdt_sortorder, iimgtdt_itemimagetypename
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM itemimagetypes, itemimagetypedetails
+                WHERE iimgt_activedetailid = iimgtdt_itemimagetypedetailid
+                FOR UPDATE
+                """);
         getItemImageTypesQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -9047,15 +9085,17 @@ public class ItemControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM itemimagetypedescriptions " +
-                "WHERE iimgtd_iimgt_itemimagetypeid = ? AND iimgtd_lang_languageid = ? AND iimgtd_thrutime = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM itemimagetypedescriptions " +
-                "WHERE iimgtd_iimgt_itemimagetypeid = ? AND iimgtd_lang_languageid = ? AND iimgtd_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM itemimagetypedescriptions
+                WHERE iimgtd_iimgt_itemimagetypeid = ? AND iimgtd_lang_languageid = ? AND iimgtd_thrutime = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM itemimagetypedescriptions
+                WHERE iimgtd_iimgt_itemimagetypeid = ? AND iimgtd_lang_languageid = ? AND iimgtd_thrutime = ?
+                FOR UPDATE
+                """);
         getItemImageTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -9086,17 +9126,19 @@ public class ItemControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM itemimagetypedescriptions, languages " +
-                "WHERE iimgtd_iimgt_itemimagetypeid = ? AND iimgtd_thrutime = ? AND iimgtd_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortorder, lang_languageisoname " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM itemimagetypedescriptions " +
-                "WHERE iimgtd_iimgt_itemimagetypeid = ? AND iimgtd_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM itemimagetypedescriptions, languages
+                WHERE iimgtd_iimgt_itemimagetypeid = ? AND iimgtd_thrutime = ? AND iimgtd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM itemimagetypedescriptions
+                WHERE iimgtd_iimgt_itemimagetypeid = ? AND iimgtd_thrutime = ?
+                FOR UPDATE
+                """);
         getItemImageTypeDescriptionsByItemImageTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -9229,13 +9271,14 @@ public class ItemControl
                 "WHERE idesc_activedetailid = idescdt_itemdescriptiondetailid " +
                 "AND idesc_itemdescriptionid = iimgdesc_idesc_itemdescriptionid AND iimgdesc_thrutime = ? " +
                 "AND idescdt_idt_itemdescriptiontypeid = ? AND iimgdesc_scaledfromparent = 1");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM itemdescriptions, itemdescriptiondetails, itemimagedescriptions " +
-                "WHERE idesc_activedetailid = idescdt_itemdescriptiondetailid " +
-                "AND idesc_itemdescriptionid = iimgdesc_idesc_itemdescriptionid AND iimgdesc_thrutime = ? " +
-                "AND idescdt_idt_itemdescriptiontypeid = ? AND iimgdesc_scaledfromparent = 1 " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM itemdescriptions, itemdescriptiondetails, itemimagedescriptions
+                WHERE idesc_activedetailid = idescdt_itemdescriptiondetailid
+                AND idesc_itemdescriptionid = iimgdesc_idesc_itemdescriptionid AND iimgdesc_thrutime = ?
+                AND idescdt_idt_itemdescriptiontypeid = ? AND iimgdesc_scaledfromparent = 1
+                FOR UPDATE
+                """);
         getScaledItemDescriptionsByItemDescriptionTypePKQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -9257,20 +9300,22 @@ public class ItemControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                // TODO: ORDER BY
-                "SELECT _ALL_ " +
-                "FROM itemdescriptions, itemdescriptiondetails, itemimagedescriptions " +
-                "WHERE idesc_activedetailid = idescdt_itemdescriptiondetailid " +
-                "AND idesc_itemdescriptionid = iimgdesc_idesc_itemdescriptionid AND iimgdesc_thrutime = ? " +
-                "AND iimgdesc_iimgt_itemimagetypeid = ? AND iimgdesc_scaledfromparent = 1");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM itemdescriptions, itemdescriptiondetails, itemimagedescriptions " +
-                "WHERE idesc_activedetailid = idescdt_itemdescriptiondetailid " +
-                "AND idesc_itemdescriptionid = iimgdesc_idesc_itemdescriptionid AND iimgdesc_thrutime = ? " +
-                "AND iimgdesc_iimgt_itemimagetypeid = ? AND iimgdesc_scaledfromparent = 1 " +
-                "FOR UPDATE");
+        // TODO: ORDER BY
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM itemdescriptions, itemdescriptiondetails, itemimagedescriptions
+                WHERE idesc_activedetailid = idescdt_itemdescriptiondetailid
+                AND idesc_itemdescriptionid = iimgdesc_idesc_itemdescriptionid AND iimgdesc_thrutime = ?
+                AND iimgdesc_iimgt_itemimagetypeid = ? AND iimgdesc_scaledfromparent = 1
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM itemdescriptions, itemdescriptiondetails, itemimagedescriptions
+                WHERE idesc_activedetailid = idescdt_itemdescriptiondetailid
+                AND idesc_itemdescriptionid = iimgdesc_idesc_itemdescriptionid AND iimgdesc_thrutime = ?
+                AND iimgdesc_iimgt_itemimagetypeid = ? AND iimgdesc_scaledfromparent = 1
+                FOR UPDATE
+                """);
         getScaledItemDescriptionsByItemImageTypePKQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -9702,14 +9747,18 @@ public class ItemControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM itemimagedescriptions " +
-                "WHERE iimgdesc_idesc_itemdescriptionid = ? AND iimgdesc_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM itemimagedescriptions
+                WHERE iimgdesc_idesc_itemdescriptionid = ? AND iimgdesc_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM itemimagedescriptions " +
-                "WHERE iimgdesc_idesc_itemdescriptionid = ? AND iimgdesc_thrutime = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM itemimagedescriptions
+                WHERE iimgdesc_idesc_itemdescriptionid = ? AND iimgdesc_thrutime = ?
+                FOR UPDATE
+                """);
         getItemImageDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -9744,11 +9793,12 @@ public class ItemControl
                 "SELECT _ALL_ " +
                 "FROM itemimagedescriptions " +
                 "WHERE iimgdesc_iimgt_itemimagetypeid = ? AND iimgdesc_thrutime = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM itemimagedescriptions " +
-                "WHERE iimgdesc_iimgt_itemimagetypeid = ? AND iimgdesc_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM itemimagedescriptions
+                WHERE iimgdesc_iimgt_itemimagetypeid = ? AND iimgdesc_thrutime = ?
+                FOR UPDATE
+                """);
         getItemImageDescriptionByItemImageTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -11614,17 +11664,19 @@ public class ItemControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM relateditemtypes, relateditemtypedetails " +
-                "WHERE rltityp_activedetailid = rltitypdt_relateditemtypedetailid " +
-                "AND rltitypdt_relateditemtypename = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM relateditemtypes, relateditemtypedetails " +
-                "WHERE rltityp_activedetailid = rltitypdt_relateditemtypedetailid " +
-                "AND rltitypdt_relateditemtypename = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM relateditemtypes, relateditemtypedetails
+                WHERE rltityp_activedetailid = rltitypdt_relateditemtypedetailid
+                AND rltitypdt_relateditemtypename = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM relateditemtypes, relateditemtypedetails
+                WHERE rltityp_activedetailid = rltitypdt_relateditemtypedetailid
+                AND rltitypdt_relateditemtypename = ?
+                FOR UPDATE
+                """);
         getRelatedItemTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -11653,17 +11705,19 @@ public class ItemControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM relateditemtypes, relateditemtypedetails " +
-                "WHERE rltityp_activedetailid = rltitypdt_relateditemtypedetailid " +
-                "AND rltitypdt_isdefault = 1");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM relateditemtypes, relateditemtypedetails " +
-                "WHERE rltityp_activedetailid = rltitypdt_relateditemtypedetailid " +
-                "AND rltitypdt_isdefault = 1 " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM relateditemtypes, relateditemtypedetails
+                WHERE rltityp_activedetailid = rltitypdt_relateditemtypedetailid
+                AND rltitypdt_isdefault = 1
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM relateditemtypes, relateditemtypedetails
+                WHERE rltityp_activedetailid = rltitypdt_relateditemtypedetailid
+                AND rltitypdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultRelatedItemTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -11688,17 +11742,19 @@ public class ItemControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM relateditemtypes, relateditemtypedetails " +
-                "WHERE rltityp_activedetailid = rltitypdt_relateditemtypedetailid " +
-                "ORDER BY rltitypdt_sortorder, rltitypdt_relateditemtypename " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM relateditemtypes, relateditemtypedetails " +
-                "WHERE rltityp_activedetailid = rltitypdt_relateditemtypedetailid " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM relateditemtypes, relateditemtypedetails
+                WHERE rltityp_activedetailid = rltitypdt_relateditemtypedetailid
+                ORDER BY rltitypdt_sortorder, rltitypdt_relateditemtypename
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM relateditemtypes, relateditemtypedetails
+                WHERE rltityp_activedetailid = rltitypdt_relateditemtypedetailid
+                FOR UPDATE
+                """);
         getRelatedItemTypesQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -11720,15 +11776,19 @@ public class ItemControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM relateditemtypes, relateditemtypedetails " +
-                "WHERE rltityp_activedetailid = rltitypdt_relateditemtypedetailid AND rltitypdt_parentrelateditemtypeid = ? " +
-                "ORDER BY rltitypdt_sortorder, rltitypdt_relateditemtypename");
+                """
+                SELECT _ALL_
+                FROM relateditemtypes, relateditemtypedetails
+                WHERE rltityp_activedetailid = rltitypdt_relateditemtypedetailid AND rltitypdt_parentrelateditemtypeid = ?
+                ORDER BY rltitypdt_sortorder, rltitypdt_relateditemtypename
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM relateditemtypes, relateditemtypedetails " +
-                "WHERE rltityp_activedetailid = rltitypdt_relateditemtypedetailid AND rltitypdt_parentrelateditemtypeid = ? " +
-                "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM relateditemtypes, relateditemtypedetails
+                WHERE rltityp_activedetailid = rltitypdt_relateditemtypedetailid AND rltitypdt_parentrelateditemtypeid = ?
+                FOR UPDATE
+                """);
         getRelatedItemTypesByParentRelatedItemTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -11895,15 +11955,17 @@ public class ItemControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM relateditemtypedescriptions " +
-                "WHERE rltitypd_rltityp_relateditemtypeid = ? AND rltitypd_lang_languageid = ? AND rltitypd_thrutime = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM relateditemtypedescriptions " +
-                "WHERE rltitypd_rltityp_relateditemtypeid = ? AND rltitypd_lang_languageid = ? AND rltitypd_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM relateditemtypedescriptions
+                WHERE rltitypd_rltityp_relateditemtypeid = ? AND rltitypd_lang_languageid = ? AND rltitypd_thrutime = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM relateditemtypedescriptions
+                WHERE rltitypd_rltityp_relateditemtypeid = ? AND rltitypd_lang_languageid = ? AND rltitypd_thrutime = ?
+                FOR UPDATE
+                """);
         getRelatedItemTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -11934,17 +11996,19 @@ public class ItemControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM relateditemtypedescriptions, languages " +
-                "WHERE rltitypd_rltityp_relateditemtypeid = ? AND rltitypd_thrutime = ? AND rltitypd_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortorder, lang_languageisoname " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM relateditemtypedescriptions " +
-                "WHERE rltitypd_rltityp_relateditemtypeid = ? AND rltitypd_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM relateditemtypedescriptions, languages
+                WHERE rltitypd_rltityp_relateditemtypeid = ? AND rltitypd_thrutime = ? AND rltitypd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM relateditemtypedescriptions
+                WHERE rltitypd_rltityp_relateditemtypeid = ? AND rltitypd_thrutime = ?
+                FOR UPDATE
+                """);
         getRelatedItemTypeDescriptionsByRelatedItemTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -12054,17 +12118,19 @@ public class ItemControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM relateditems, relateditemdetails " +
-                "WHERE rlti_activedetailid = rltidt_relateditemdetailid " +
-                "AND rltidt_rltityp_relateditemtypeid = ? AND rltidt_fromitemid = ? AND rltidt_toitemid = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM relateditems, relateditemdetails " +
-                "WHERE rlti_activedetailid = rltidt_relateditemdetailid " +
-                "AND rltidt_rltityp_relateditemtypeid = ? AND rltidt_fromitemid = ? AND rltidt_toitemid = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM relateditems, relateditemdetails
+                WHERE rlti_activedetailid = rltidt_relateditemdetailid
+                AND rltidt_rltityp_relateditemtypeid = ? AND rltidt_fromitemid = ? AND rltidt_toitemid = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM relateditems, relateditemdetails
+                WHERE rlti_activedetailid = rltidt_relateditemdetailid
+                AND rltidt_rltityp_relateditemtypeid = ? AND rltidt_fromitemid = ? AND rltidt_toitemid = ?
+                FOR UPDATE
+                """);
         getRelatedItemQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -12093,20 +12159,22 @@ public class ItemControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM relateditems, relateditemdetails, items, itemdetails " +
-                "WHERE rlti_activedetailid = rltidt_relateditemdetailid " +
-                "AND rltidt_rltityp_relateditemtypeid = ? " +
-                "AND rltidt_fromitemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid " +
-                "ORDER BY rltidt_sortorder, itmdt_itemname " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM relateditems, relateditemdetails " +
-                "WHERE rlti_activedetailid = rltidt_relateditemdetailid " +
-                "AND rltidt_rltityp_relateditemtypeid = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM relateditems, relateditemdetails, items, itemdetails
+                WHERE rlti_activedetailid = rltidt_relateditemdetailid
+                AND rltidt_rltityp_relateditemtypeid = ?
+                AND rltidt_fromitemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid
+                ORDER BY rltidt_sortorder, itmdt_itemname
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM relateditems, relateditemdetails
+                WHERE rlti_activedetailid = rltidt_relateditemdetailid
+                AND rltidt_rltityp_relateditemtypeid = ?
+                FOR UPDATE
+                """);
         getRelatedItemsByRelatedItemTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -12137,20 +12205,22 @@ public class ItemControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM relateditems, relateditemdetails, items, itemdetails " +
-                "WHERE rlti_activedetailid = rltidt_relateditemdetailid " +
-                "AND rltidt_rltityp_relateditemtypeid = ? AND rltidt_fromitemid = ? " +
-                "AND rltidt_fromitemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid " +
-                "ORDER BY rltidt_sortorder, itmdt_itemname " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM relateditems, relateditemdetails " +
-                "WHERE rlti_activedetailid = rltidt_relateditemdetailid " +
-                "AND rltidt_rltityp_relateditemtypeid = ? AND rltidt_fromitemid = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM relateditems, relateditemdetails, items, itemdetails
+                WHERE rlti_activedetailid = rltidt_relateditemdetailid
+                AND rltidt_rltityp_relateditemtypeid = ? AND rltidt_fromitemid = ?
+                AND rltidt_fromitemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid
+                ORDER BY rltidt_sortorder, itmdt_itemname
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM relateditems, relateditemdetails
+                WHERE rlti_activedetailid = rltidt_relateditemdetailid
+                AND rltidt_rltityp_relateditemtypeid = ? AND rltidt_fromitemid = ?
+                FOR UPDATE
+                """);
         getRelatedItemsByRelatedItemTypeAndFromItemQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -12181,20 +12251,22 @@ public class ItemControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM relateditems, relateditemdetails, items, itemdetails " +
-                "WHERE rlti_activedetailid = rltidt_relateditemdetailid " +
-                "AND rltidt_rltityp_relateditemtypeid = ? AND rltidt_toitemid = ? " +
-                "AND rltidt_toitemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid " +
-                "ORDER BY rltidt_sortorder, itmdt_itemname " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM relateditems, relateditemdetails " +
-                "WHERE rlti_activedetailid = rltidt_relateditemdetailid " +
-                "AND rltidt_rltityp_relateditemtypeid = ? AND rltidt_toitemid = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM relateditems, relateditemdetails, items, itemdetails
+                WHERE rlti_activedetailid = rltidt_relateditemdetailid
+                AND rltidt_rltityp_relateditemtypeid = ? AND rltidt_toitemid = ?
+                AND rltidt_toitemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid
+                ORDER BY rltidt_sortorder, itmdt_itemname
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM relateditems, relateditemdetails
+                WHERE rlti_activedetailid = rltidt_relateditemdetailid
+                AND rltidt_rltityp_relateditemtypeid = ? AND rltidt_toitemid = ?
+                FOR UPDATE
+                """);
         getRelatedItemsByRelatedItemTypeAndToItemQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -12225,21 +12297,23 @@ public class ItemControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM relateditems, relateditemdetails, relateditemtypes, relateditemtypedetails, items, itemdetails " +
-                "WHERE rlti_activedetailid = rltidt_relateditemdetailid " +
-                "AND rltidt_fromitemid = ? " +
-                "AND rltidt_rltityp_relateditemtypeid = rltityp_relateditemtypeid AND rltityp_lastdetailid = rltitypdt_relateditemtypedetailid " +
-                "AND rltidt_fromitemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid " +
-                "ORDER BY rltitypdt_sortorder, rltitypdt_relateditemtypename, rltidt_sortorder, itmdt_itemname " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM relateditems, relateditemdetails " +
-                "WHERE rlti_activedetailid = rltidt_relateditemdetailid " +
-                "AND rltidt_fromitemid = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM relateditems, relateditemdetails, relateditemtypes, relateditemtypedetails, items, itemdetails
+                WHERE rlti_activedetailid = rltidt_relateditemdetailid
+                AND rltidt_fromitemid = ?
+                AND rltidt_rltityp_relateditemtypeid = rltityp_relateditemtypeid AND rltityp_lastdetailid = rltitypdt_relateditemtypedetailid
+                AND rltidt_fromitemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid
+                ORDER BY rltitypdt_sortorder, rltitypdt_relateditemtypename, rltidt_sortorder, itmdt_itemname
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM relateditems, relateditemdetails
+                WHERE rlti_activedetailid = rltidt_relateditemdetailid
+                AND rltidt_fromitemid = ?
+                FOR UPDATE
+                """);
         getRelatedItemsByFromItemQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -12270,21 +12344,23 @@ public class ItemControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM relateditems, relateditemdetails, relateditemtypes, relateditemtypedetails, items, itemdetails " +
-                "WHERE rlti_activedetailid = rltidt_relateditemdetailid " +
-                "AND rltidt_toitemid = ? " +
-                "AND rltidt_rltityp_relateditemtypeid = rltityp_relateditemtypeid AND rltityp_lastdetailid = rltitypdt_relateditemtypedetailid " +
-                "AND rltidt_toitemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid " +
-                "ORDER BY rltitypdt_sortorder, rltitypdt_relateditemtypename, rltidt_sortorder, itmdt_itemname " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM relateditems, relateditemdetails " +
-                "WHERE rlti_activedetailid = rltidt_relateditemdetailid " +
-                "AND rltidt_toitemid = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM relateditems, relateditemdetails, relateditemtypes, relateditemtypedetails, items, itemdetails
+                WHERE rlti_activedetailid = rltidt_relateditemdetailid
+                AND rltidt_toitemid = ?
+                AND rltidt_rltityp_relateditemtypeid = rltityp_relateditemtypeid AND rltityp_lastdetailid = rltitypdt_relateditemtypedetailid
+                AND rltidt_toitemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid
+                ORDER BY rltitypdt_sortorder, rltitypdt_relateditemtypename, rltidt_sortorder, itmdt_itemname
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM relateditems, relateditemdetails
+                WHERE rlti_activedetailid = rltidt_relateditemdetailid
+                AND rltidt_toitemid = ?
+                FOR UPDATE
+                """);
         getRelatedItemsByToItemQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -12469,17 +12545,19 @@ public class ItemControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM harmonizedtariffschedulecodes, harmonizedtariffschedulecodedetails "
-                + "WHERE hztsc_activedetailid = hztscdt_harmonizedtariffschedulecodedetailid AND hztscdt_countrygeocodeid = ? "
-                + "ORDER BY hztscdt_sortorder, hztscdt_harmonizedtariffschedulecodename "
-                + "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM harmonizedtariffschedulecodes, harmonizedtariffschedulecodedetails "
-                + "WHERE hztsc_activedetailid = hztscdt_harmonizedtariffschedulecodedetailid AND hztscdt_countrygeocodeid = ? "
-                + "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM harmonizedtariffschedulecodes, harmonizedtariffschedulecodedetails
+                WHERE hztsc_activedetailid = hztscdt_harmonizedtariffschedulecodedetailid AND hztscdt_countrygeocodeid = ?
+                ORDER BY hztscdt_sortorder, hztscdt_harmonizedtariffschedulecodename
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM harmonizedtariffschedulecodes, harmonizedtariffschedulecodedetails
+                WHERE hztsc_activedetailid = hztscdt_harmonizedtariffschedulecodedetailid AND hztscdt_countrygeocodeid = ?
+                FOR UPDATE
+                """);
         getHarmonizedTariffScheduleCodesByCountryGeoCodeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -12501,17 +12579,19 @@ public class ItemControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM harmonizedtariffschedulecodes, harmonizedtariffschedulecodedetails "
-                + "WHERE hztsc_activedetailid = hztscdt_harmonizedtariffschedulecodedetailid AND hztscdt_firstharmonizedtariffschedulecodeunitid = ? "
-                + "ORDER BY hztscdt_sortorder, hztscdt_harmonizedtariffschedulecodename "
-                + "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM harmonizedtariffschedulecodes, harmonizedtariffschedulecodedetails "
-                + "WHERE hztsc_activedetailid = hztscdt_harmonizedtariffschedulecodedetailid AND hztscdt_firstharmonizedtariffschedulecodeunitid = ? "
-                + "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM harmonizedtariffschedulecodes, harmonizedtariffschedulecodedetails
+                WHERE hztsc_activedetailid = hztscdt_harmonizedtariffschedulecodedetailid AND hztscdt_firstharmonizedtariffschedulecodeunitid = ?
+                ORDER BY hztscdt_sortorder, hztscdt_harmonizedtariffschedulecodename
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM harmonizedtariffschedulecodes, harmonizedtariffschedulecodedetails
+                WHERE hztsc_activedetailid = hztscdt_harmonizedtariffschedulecodedetailid AND hztscdt_firstharmonizedtariffschedulecodeunitid = ?
+                FOR UPDATE
+                """);
         getHarmonizedTariffScheduleCodesByFirstHarmonizedTariffScheduleCodeUnitQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -12533,17 +12613,19 @@ public class ItemControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM harmonizedtariffschedulecodes, harmonizedtariffschedulecodedetails "
-                + "WHERE hztsc_activedetailid = hztscdt_harmonizedtariffschedulecodedetailid AND hztscdt_secondharmonizedtariffschedulecodeunitid = ? "
-                + "ORDER BY hztscdt_sortorder, hztscdt_harmonizedtariffschedulecodename "
-                + "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM harmonizedtariffschedulecodes, harmonizedtariffschedulecodedetails "
-                + "WHERE hztsc_activedetailid = hztscdt_harmonizedtariffschedulecodedetailid AND hztscdt_secondharmonizedtariffschedulecodeunitid = ? "
-                + "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM harmonizedtariffschedulecodes, harmonizedtariffschedulecodedetails
+                WHERE hztsc_activedetailid = hztscdt_harmonizedtariffschedulecodedetailid AND hztscdt_secondharmonizedtariffschedulecodeunitid = ?
+                ORDER BY hztscdt_sortorder, hztscdt_harmonizedtariffschedulecodename
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM harmonizedtariffschedulecodes, harmonizedtariffschedulecodedetails
+                WHERE hztsc_activedetailid = hztscdt_harmonizedtariffschedulecodedetailid AND hztscdt_secondharmonizedtariffschedulecodeunitid = ?
+                FOR UPDATE
+                """);
         getHarmonizedTariffScheduleCodesBySecondHarmonizedTariffScheduleCodeUnitQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -12565,17 +12647,19 @@ public class ItemControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM harmonizedtariffschedulecodes, harmonizedtariffschedulecodedetails "
-                + "WHERE hztsc_activedetailid = hztscdt_harmonizedtariffschedulecodedetailid "
-                + "AND hztscdt_countrygeocodeid = ? AND hztscdt_isdefault = 1");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM harmonizedtariffschedulecodes, harmonizedtariffschedulecodedetails "
-                + "WHERE hztsc_activedetailid = hztscdt_harmonizedtariffschedulecodedetailid "
-                + "AND hztscdt_countrygeocodeid = ? AND hztscdt_isdefault = 1 "
-                + "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM harmonizedtariffschedulecodes, harmonizedtariffschedulecodedetails
+                WHERE hztsc_activedetailid = hztscdt_harmonizedtariffschedulecodedetailid
+                AND hztscdt_countrygeocodeid = ? AND hztscdt_isdefault = 1
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM harmonizedtariffschedulecodes, harmonizedtariffschedulecodedetails
+                WHERE hztsc_activedetailid = hztscdt_harmonizedtariffschedulecodedetailid
+                AND hztscdt_countrygeocodeid = ? AND hztscdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultHarmonizedTariffScheduleCodeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -12601,17 +12685,19 @@ public class ItemControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM harmonizedtariffschedulecodes, harmonizedtariffschedulecodedetails "
-                + "WHERE hztsc_activedetailid = hztscdt_harmonizedtariffschedulecodedetailid "
-                + "AND hztscdt_countrygeocodeid = ? AND hztscdt_harmonizedtariffschedulecodename = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM harmonizedtariffschedulecodes, harmonizedtariffschedulecodedetails "
-                + "WHERE hztsc_activedetailid = hztscdt_harmonizedtariffschedulecodedetailid "
-                + "AND hztscdt_countrygeocodeid = ? AND hztscdt_harmonizedtariffschedulecodename = ? "
-                + "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM harmonizedtariffschedulecodes, harmonizedtariffschedulecodedetails
+                WHERE hztsc_activedetailid = hztscdt_harmonizedtariffschedulecodedetailid
+                AND hztscdt_countrygeocodeid = ? AND hztscdt_harmonizedtariffschedulecodename = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM harmonizedtariffschedulecodes, harmonizedtariffschedulecodedetails
+                WHERE hztsc_activedetailid = hztscdt_harmonizedtariffschedulecodedetailid
+                AND hztscdt_countrygeocodeid = ? AND hztscdt_harmonizedtariffschedulecodename = ?
+                FOR UPDATE
+                """);
         getHarmonizedTariffScheduleCodeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -12813,15 +12899,17 @@ public class ItemControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM harmonizedtariffschedulecodetranslations "
-                + "WHERE hztsctr_hztsc_harmonizedtariffschedulecodeid = ? AND hztsctr_lang_languageid = ? AND hztsctr_thrutime = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM harmonizedtariffschedulecodetranslations "
-                + "WHERE hztsctr_hztsc_harmonizedtariffschedulecodeid = ? AND hztsctr_lang_languageid = ? AND hztsctr_thrutime = ? "
-                + "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM harmonizedtariffschedulecodetranslations
+                WHERE hztsctr_hztsc_harmonizedtariffschedulecodeid = ? AND hztsctr_lang_languageid = ? AND hztsctr_thrutime = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM harmonizedtariffschedulecodetranslations
+                WHERE hztsctr_hztsc_harmonizedtariffschedulecodeid = ? AND hztsctr_lang_languageid = ? AND hztsctr_thrutime = ?
+                FOR UPDATE
+                """);
         getHarmonizedTariffScheduleCodeTranslationQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -12851,16 +12939,18 @@ public class ItemControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM harmonizedtariffschedulecodetranslations, languages "
-                + "WHERE hztsctr_hztsc_harmonizedtariffschedulecodeid = ? AND hztsctr_thrutime = ? AND hztsctr_lang_languageid = lang_languageid "
-                + "ORDER BY lang_sortorder, lang_languageisoname");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM harmonizedtariffschedulecodetranslations "
-                + "WHERE hztsctr_hztsc_harmonizedtariffschedulecodeid = ? AND hztsctr_thrutime = ? "
-                + "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM harmonizedtariffschedulecodetranslations, languages
+                WHERE hztsctr_hztsc_harmonizedtariffschedulecodeid = ? AND hztsctr_thrutime = ? AND hztsctr_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM harmonizedtariffschedulecodetranslations
+                WHERE hztsctr_hztsc_harmonizedtariffschedulecodeid = ? AND hztsctr_thrutime = ?
+                FOR UPDATE
+                """);
         getHarmonizedTariffScheduleCodeTranslationsByHarmonizedTariffScheduleCodeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -12977,15 +13067,17 @@ public class ItemControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM harmonizedtariffschedulecodeusetypes, harmonizedtariffschedulecodeusetypedetails "
-                + "WHERE hztscutyp_activedetailid = hztscutypdt_harmonizedtariffschedulecodeusetypedetailid AND hztscutypdt_harmonizedtariffschedulecodeusetypename = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM harmonizedtariffschedulecodeusetypes, harmonizedtariffschedulecodeusetypedetails "
-                + "WHERE hztscutyp_activedetailid = hztscutypdt_harmonizedtariffschedulecodeusetypedetailid AND hztscutypdt_harmonizedtariffschedulecodeusetypename = ? "
-                + "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM harmonizedtariffschedulecodeusetypes, harmonizedtariffschedulecodeusetypedetails
+                WHERE hztscutyp_activedetailid = hztscutypdt_harmonizedtariffschedulecodeusetypedetailid AND hztscutypdt_harmonizedtariffschedulecodeusetypename = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM harmonizedtariffschedulecodeusetypes, harmonizedtariffschedulecodeusetypedetails
+                WHERE hztscutyp_activedetailid = hztscutypdt_harmonizedtariffschedulecodeusetypedetailid AND hztscutypdt_harmonizedtariffschedulecodeusetypename = ?
+                FOR UPDATE
+                """);
         getHarmonizedTariffScheduleCodeUseTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -13015,15 +13107,17 @@ public class ItemControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM harmonizedtariffschedulecodeusetypes, harmonizedtariffschedulecodeusetypedetails "
-                + "WHERE hztscutyp_activedetailid = hztscutypdt_harmonizedtariffschedulecodeusetypedetailid AND hztscutypdt_isdefault = 1");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM harmonizedtariffschedulecodeusetypes, harmonizedtariffschedulecodeusetypedetails "
-                + "WHERE hztscutyp_activedetailid = hztscutypdt_harmonizedtariffschedulecodeusetypedetailid AND hztscutypdt_isdefault = 1 "
-                + "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM harmonizedtariffschedulecodeusetypes, harmonizedtariffschedulecodeusetypedetails
+                WHERE hztscutyp_activedetailid = hztscutypdt_harmonizedtariffschedulecodeusetypedetailid AND hztscutypdt_isdefault = 1
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM harmonizedtariffschedulecodeusetypes, harmonizedtariffschedulecodeusetypedetails
+                WHERE hztscutyp_activedetailid = hztscutypdt_harmonizedtariffschedulecodeusetypedetailid AND hztscutypdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultHarmonizedTariffScheduleCodeUseTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -13048,16 +13142,18 @@ public class ItemControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM harmonizedtariffschedulecodeusetypes, harmonizedtariffschedulecodeusetypedetails "
-                + "WHERE hztscutyp_activedetailid = hztscutypdt_harmonizedtariffschedulecodeusetypedetailid "
-                + "ORDER BY hztscutypdt_sortorder, hztscutypdt_harmonizedtariffschedulecodeusetypename");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM harmonizedtariffschedulecodeusetypes, harmonizedtariffschedulecodeusetypedetails "
-                + "WHERE hztscutyp_activedetailid = hztscutypdt_harmonizedtariffschedulecodeusetypedetailid "
-                + "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM harmonizedtariffschedulecodeusetypes, harmonizedtariffschedulecodeusetypedetails
+                WHERE hztscutyp_activedetailid = hztscutypdt_harmonizedtariffschedulecodeusetypedetailid
+                ORDER BY hztscutypdt_sortorder, hztscutypdt_harmonizedtariffschedulecodeusetypename
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM harmonizedtariffschedulecodeusetypes, harmonizedtariffschedulecodeusetypedetails
+                WHERE hztscutyp_activedetailid = hztscutypdt_harmonizedtariffschedulecodeusetypedetailid
+                FOR UPDATE
+                """);
         getHarmonizedTariffScheduleCodeUseTypesQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -13213,15 +13309,17 @@ public class ItemControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM harmonizedtariffschedulecodeusetypedescriptions "
-                + "WHERE hztscutypd_hztscutyp_harmonizedtariffschedulecodeusetypeid = ? AND hztscutypd_lang_languageid = ? AND hztscutypd_thrutime = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM harmonizedtariffschedulecodeusetypedescriptions "
-                + "WHERE hztscutypd_hztscutyp_harmonizedtariffschedulecodeusetypeid = ? AND hztscutypd_lang_languageid = ? AND hztscutypd_thrutime = ? "
-                + "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM harmonizedtariffschedulecodeusetypedescriptions
+                WHERE hztscutypd_hztscutyp_harmonizedtariffschedulecodeusetypeid = ? AND hztscutypd_lang_languageid = ? AND hztscutypd_thrutime = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM harmonizedtariffschedulecodeusetypedescriptions
+                WHERE hztscutypd_hztscutyp_harmonizedtariffschedulecodeusetypeid = ? AND hztscutypd_lang_languageid = ? AND hztscutypd_thrutime = ?
+                FOR UPDATE
+                """);
         getHarmonizedTariffScheduleCodeUseTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -13251,16 +13349,18 @@ public class ItemControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM harmonizedtariffschedulecodeusetypedescriptions, languages "
-                + "WHERE hztscutypd_hztscutyp_harmonizedtariffschedulecodeusetypeid = ? AND hztscutypd_thrutime = ? AND hztscutypd_lang_languageid = lang_languageid "
-                + "ORDER BY lang_sortorder, lang_languageisoname");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM harmonizedtariffschedulecodeusetypedescriptions "
-                + "WHERE hztscutypd_hztscutyp_harmonizedtariffschedulecodeusetypeid = ? AND hztscutypd_thrutime = ? "
-                + "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM harmonizedtariffschedulecodeusetypedescriptions, languages
+                WHERE hztscutypd_hztscutyp_harmonizedtariffschedulecodeusetypeid = ? AND hztscutypd_thrutime = ? AND hztscutypd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM harmonizedtariffschedulecodeusetypedescriptions
+                WHERE hztscutypd_hztscutyp_harmonizedtariffschedulecodeusetypeid = ? AND hztscutypd_thrutime = ?
+                FOR UPDATE
+                """);
         getHarmonizedTariffScheduleCodeUseTypeDescriptionsByHarmonizedTariffScheduleCodeUseTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -13382,15 +13482,17 @@ public class ItemControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM harmonizedtariffschedulecodeunits, harmonizedtariffschedulecodeunitdetails "
-                + "WHERE hztscunt_activedetailid = hztscuntdt_harmonizedtariffschedulecodeunitdetailid AND hztscuntdt_harmonizedtariffschedulecodeunitname = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM harmonizedtariffschedulecodeunits, harmonizedtariffschedulecodeunitdetails "
-                + "WHERE hztscunt_activedetailid = hztscuntdt_harmonizedtariffschedulecodeunitdetailid AND hztscuntdt_harmonizedtariffschedulecodeunitname = ? "
-                + "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM harmonizedtariffschedulecodeunits, harmonizedtariffschedulecodeunitdetails
+                WHERE hztscunt_activedetailid = hztscuntdt_harmonizedtariffschedulecodeunitdetailid AND hztscuntdt_harmonizedtariffschedulecodeunitname = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM harmonizedtariffschedulecodeunits, harmonizedtariffschedulecodeunitdetails
+                WHERE hztscunt_activedetailid = hztscuntdt_harmonizedtariffschedulecodeunitdetailid AND hztscuntdt_harmonizedtariffschedulecodeunitname = ?
+                FOR UPDATE
+                """);
         getHarmonizedTariffScheduleCodeUnitByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -13420,15 +13522,17 @@ public class ItemControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM harmonizedtariffschedulecodeunits, harmonizedtariffschedulecodeunitdetails "
-                + "WHERE hztscunt_activedetailid = hztscuntdt_harmonizedtariffschedulecodeunitdetailid AND hztscuntdt_isdefault = 1");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM harmonizedtariffschedulecodeunits, harmonizedtariffschedulecodeunitdetails "
-                + "WHERE hztscunt_activedetailid = hztscuntdt_harmonizedtariffschedulecodeunitdetailid AND hztscuntdt_isdefault = 1 "
-                + "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM harmonizedtariffschedulecodeunits, harmonizedtariffschedulecodeunitdetails
+                WHERE hztscunt_activedetailid = hztscuntdt_harmonizedtariffschedulecodeunitdetailid AND hztscuntdt_isdefault = 1
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM harmonizedtariffschedulecodeunits, harmonizedtariffschedulecodeunitdetails
+                WHERE hztscunt_activedetailid = hztscuntdt_harmonizedtariffschedulecodeunitdetailid AND hztscuntdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultHarmonizedTariffScheduleCodeUnitQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -13453,16 +13557,18 @@ public class ItemControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM harmonizedtariffschedulecodeunits, harmonizedtariffschedulecodeunitdetails "
-                + "WHERE hztscunt_activedetailid = hztscuntdt_harmonizedtariffschedulecodeunitdetailid "
-                + "ORDER BY hztscuntdt_sortorder, hztscuntdt_harmonizedtariffschedulecodeunitname");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM harmonizedtariffschedulecodeunits, harmonizedtariffschedulecodeunitdetails "
-                + "WHERE hztscunt_activedetailid = hztscuntdt_harmonizedtariffschedulecodeunitdetailid "
-                + "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM harmonizedtariffschedulecodeunits, harmonizedtariffschedulecodeunitdetails
+                WHERE hztscunt_activedetailid = hztscuntdt_harmonizedtariffschedulecodeunitdetailid
+                ORDER BY hztscuntdt_sortorder, hztscuntdt_harmonizedtariffschedulecodeunitname
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM harmonizedtariffschedulecodeunits, harmonizedtariffschedulecodeunitdetails
+                WHERE hztscunt_activedetailid = hztscuntdt_harmonizedtariffschedulecodeunitdetailid
+                FOR UPDATE
+                """);
         getHarmonizedTariffScheduleCodeUnitsQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -13618,15 +13724,17 @@ public class ItemControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM harmonizedtariffschedulecodeunitdescriptions "
-                + "WHERE hztscuntd_hztscunt_harmonizedtariffschedulecodeunitid = ? AND hztscuntd_lang_languageid = ? AND hztscuntd_thrutime = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM harmonizedtariffschedulecodeunitdescriptions "
-                + "WHERE hztscuntd_hztscunt_harmonizedtariffschedulecodeunitid = ? AND hztscuntd_lang_languageid = ? AND hztscuntd_thrutime = ? "
-                + "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM harmonizedtariffschedulecodeunitdescriptions
+                WHERE hztscuntd_hztscunt_harmonizedtariffschedulecodeunitid = ? AND hztscuntd_lang_languageid = ? AND hztscuntd_thrutime = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM harmonizedtariffschedulecodeunitdescriptions
+                WHERE hztscuntd_hztscunt_harmonizedtariffschedulecodeunitid = ? AND hztscuntd_lang_languageid = ? AND hztscuntd_thrutime = ?
+                FOR UPDATE
+                """);
         getHarmonizedTariffScheduleCodeUnitDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -13656,16 +13764,18 @@ public class ItemControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM harmonizedtariffschedulecodeunitdescriptions, languages "
-                + "WHERE hztscuntd_hztscunt_harmonizedtariffschedulecodeunitid = ? AND hztscuntd_thrutime = ? AND hztscuntd_lang_languageid = lang_languageid "
-                + "ORDER BY lang_sortorder, lang_languageisoname");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM harmonizedtariffschedulecodeunitdescriptions "
-                + "WHERE hztscuntd_hztscunt_harmonizedtariffschedulecodeunitid = ? AND hztscuntd_thrutime = ? "
-                + "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM harmonizedtariffschedulecodeunitdescriptions, languages
+                WHERE hztscuntd_hztscunt_harmonizedtariffschedulecodeunitid = ? AND hztscuntd_thrutime = ? AND hztscuntd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM harmonizedtariffschedulecodeunitdescriptions
+                WHERE hztscuntd_hztscunt_harmonizedtariffschedulecodeunitid = ? AND hztscuntd_thrutime = ?
+                FOR UPDATE
+                """);
         getHarmonizedTariffScheduleCodeUnitDescriptionsByHarmonizedTariffScheduleCodeUnitQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -13767,15 +13877,17 @@ public class ItemControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM harmonizedtariffschedulecodeuses "
-                + "WHERE hztscu_hztsc_harmonizedtariffschedulecodeid = ? AND hztscu_hztscutyp_harmonizedtariffschedulecodeusetypeid = ? AND hztscu_thrutime = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM harmonizedtariffschedulecodeuses "
-                + "WHERE hztscu_hztsc_harmonizedtariffschedulecodeid = ? AND hztscu_hztscutyp_harmonizedtariffschedulecodeusetypeid = ? AND hztscu_thrutime = ? "
-                + "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM harmonizedtariffschedulecodeuses
+                WHERE hztscu_hztsc_harmonizedtariffschedulecodeid = ? AND hztscu_hztscutyp_harmonizedtariffschedulecodeusetypeid = ? AND hztscu_thrutime = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM harmonizedtariffschedulecodeuses
+                WHERE hztscu_hztsc_harmonizedtariffschedulecodeid = ? AND hztscu_hztscutyp_harmonizedtariffschedulecodeusetypeid = ? AND hztscu_thrutime = ?
+                FOR UPDATE
+                """);
         getHarmonizedTariffScheduleCodeUseQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -13809,17 +13921,19 @@ public class ItemControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM harmonizedtariffschedulecodeuses, harmonizedtariffschedulecodeusetypes, harmonizedtariffschedulecodeusetypedetails "
-                + "WHERE hztscu_hztsc_harmonizedtariffschedulecodeid = ? AND hztscu_thrutime = ? "
-                + "AND hztscu_hztscutyp_harmonizedtariffschedulecodeusetypeid = hztscutyp_harmonizedtariffschedulecodeusetypeid AND hztscutyp_lastdetailid = hztscutypdt_harmonizedtariffschedulecodeusetypedetailid "
-                + "ORDER BY hztscutypdt_sortorder, hztscutypdt_harmonizedtariffschedulecodeusetypename");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM harmonizedtariffschedulecodeuses "
-                + "WHERE hztscu_hztsc_harmonizedtariffschedulecodeid = ? AND hztscu_thrutime = ? "
-                + "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM harmonizedtariffschedulecodeuses, harmonizedtariffschedulecodeusetypes, harmonizedtariffschedulecodeusetypedetails
+                WHERE hztscu_hztsc_harmonizedtariffschedulecodeid = ? AND hztscu_thrutime = ?
+                AND hztscu_hztscutyp_harmonizedtariffschedulecodeusetypeid = hztscutyp_harmonizedtariffschedulecodeusetypeid AND hztscutyp_lastdetailid = hztscutypdt_harmonizedtariffschedulecodeusetypedetailid
+                ORDER BY hztscutypdt_sortorder, hztscutypdt_harmonizedtariffschedulecodeusetypename
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM harmonizedtariffschedulecodeuses
+                WHERE hztscu_hztsc_harmonizedtariffschedulecodeid = ? AND hztscu_thrutime = ?
+                FOR UPDATE
+                """);
         getHarmonizedTariffScheduleCodeUsesByHarmonizedTariffScheduleCodeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -13841,17 +13955,19 @@ public class ItemControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM harmonizedtariffschedulecodeuses, harmonizedtariffschedulecodes, harmonizedtariffschedulecodedetails "
-                + "WHERE hztscu_hztscutyp_harmonizedtariffschedulecodeusetypeid = ? AND hztscu_thrutime = ? "
-                + "AND hztscu_hztsc_harmonizedtariffschedulecodeid = hztsc_harmonizedtariffschedulecodeid AND hztsc_lastdetailid = hztscdt_harmonizedtariffschedulecodedetailid "
-                + "ORDER BY hztscdt_sortorder, hztscdt_harmonizedtariffschedulecodename");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM harmonizedtariffschedulecodeuses "
-                + "WHERE hztscu_hztscutyp_harmonizedtariffschedulecodeusetypeid = ? AND hztscu_thrutime = ? "
-                + "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM harmonizedtariffschedulecodeuses, harmonizedtariffschedulecodes, harmonizedtariffschedulecodedetails
+                WHERE hztscu_hztscutyp_harmonizedtariffschedulecodeusetypeid = ? AND hztscu_thrutime = ?
+                AND hztscu_hztsc_harmonizedtariffschedulecodeid = hztsc_harmonizedtariffschedulecodeid AND hztsc_lastdetailid = hztscdt_harmonizedtariffschedulecodedetailid
+                ORDER BY hztscdt_sortorder, hztscdt_harmonizedtariffschedulecodename
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM harmonizedtariffschedulecodeuses
+                WHERE hztscu_hztscutyp_harmonizedtariffschedulecodeusetypeid = ? AND hztscu_thrutime = ?
+                FOR UPDATE
+                """);
         getHarmonizedTariffScheduleCodeUsesByHarmonizedTariffScheduleCodeUseTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -13941,18 +14057,20 @@ public class ItemControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM itemharmonizedtariffschedulecodes, itemharmonizedtariffschedulecodedetails, geocodes, geocodedetails, harmonizedtariffschedulecodeusetypes, harmonizedtariffschedulecodeusetypedetails "
-                + "WHERE itmhztsc_activedetailid = itmhztscdt_itemharmonizedtariffschedulecodedetailid AND itmhztscdt_itm_itemid = ? "
-                + "AND itmhztscdt_countrygeocodeid = geo_geocodeid AND geo_lastdetailid = geodt_geocodedetailid "
-                + "AND itmhztscdt_hztscutyp_harmonizedtariffschedulecodeusetypeid = hztscutyp_harmonizedtariffschedulecodeusetypeid AND hztscutyp_lastdetailid = hztscutypdt_harmonizedtariffschedulecodeusetypedetailid "
-                + "ORDER BY geodt_sortorder, geodt_geocodename, hztscutypdt_sortorder, hztscutypdt_harmonizedtariffschedulecodeusetypename");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM itemharmonizedtariffschedulecodes, itemharmonizedtariffschedulecodedetails "
-                + "WHERE itmhztsc_activedetailid = itmhztscdt_itemharmonizedtariffschedulecodedetailid AND itmhztscdt_itm_itemid = ? "
-                + "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM itemharmonizedtariffschedulecodes, itemharmonizedtariffschedulecodedetails, geocodes, geocodedetails, harmonizedtariffschedulecodeusetypes, harmonizedtariffschedulecodeusetypedetails
+                WHERE itmhztsc_activedetailid = itmhztscdt_itemharmonizedtariffschedulecodedetailid AND itmhztscdt_itm_itemid = ?
+                AND itmhztscdt_countrygeocodeid = geo_geocodeid AND geo_lastdetailid = geodt_geocodedetailid
+                AND itmhztscdt_hztscutyp_harmonizedtariffschedulecodeusetypeid = hztscutyp_harmonizedtariffschedulecodeusetypeid AND hztscutyp_lastdetailid = hztscutypdt_harmonizedtariffschedulecodeusetypedetailid
+                ORDER BY geodt_sortorder, geodt_geocodename, hztscutypdt_sortorder, hztscutypdt_harmonizedtariffschedulecodeusetypename
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM itemharmonizedtariffschedulecodes, itemharmonizedtariffschedulecodedetails
+                WHERE itmhztsc_activedetailid = itmhztscdt_itemharmonizedtariffschedulecodedetailid AND itmhztscdt_itm_itemid = ?
+                FOR UPDATE
+                """);
         getItemHarmonizedTariffScheduleCodesByItemQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -13974,18 +14092,20 @@ public class ItemControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM itemharmonizedtariffschedulecodes, itemharmonizedtariffschedulecodedetails, items, itemdetails, harmonizedtariffschedulecodeusetypes, harmonizedtariffschedulecodeusetypedetails "
-                + "WHERE itmhztsc_activedetailid = itmhztscdt_itemharmonizedtariffschedulecodedetailid AND itmhztscdt_countrygeocodeid = ? "
-                + "AND itmhztscdt_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid "
-                + "AND itmhztscdt_hztscutyp_harmonizedtariffschedulecodeusetypeid = hztscutyp_harmonizedtariffschedulecodeusetypeid AND hztscutyp_lastdetailid = hztscutypdt_harmonizedtariffschedulecodeusetypedetailid "
-                + "ORDER BY itmdt_itemname, hztscutypdt_sortorder, hztscutypdt_harmonizedtariffschedulecodeusetypename");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM itemharmonizedtariffschedulecodes, itemharmonizedtariffschedulecodedetails "
-                + "WHERE itmhztsc_activedetailid = itmhztscdt_itemharmonizedtariffschedulecodedetailid AND itmhztscdt_countrygeocodeid = ? "
-                + "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM itemharmonizedtariffschedulecodes, itemharmonizedtariffschedulecodedetails, items, itemdetails, harmonizedtariffschedulecodeusetypes, harmonizedtariffschedulecodeusetypedetails
+                WHERE itmhztsc_activedetailid = itmhztscdt_itemharmonizedtariffschedulecodedetailid AND itmhztscdt_countrygeocodeid = ?
+                AND itmhztscdt_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid
+                AND itmhztscdt_hztscutyp_harmonizedtariffschedulecodeusetypeid = hztscutyp_harmonizedtariffschedulecodeusetypeid AND hztscutyp_lastdetailid = hztscutypdt_harmonizedtariffschedulecodeusetypedetailid
+                ORDER BY itmdt_itemname, hztscutypdt_sortorder, hztscutypdt_harmonizedtariffschedulecodeusetypename
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM itemharmonizedtariffschedulecodes, itemharmonizedtariffschedulecodedetails
+                WHERE itmhztsc_activedetailid = itmhztscdt_itemharmonizedtariffschedulecodedetailid AND itmhztscdt_countrygeocodeid = ?
+                FOR UPDATE
+                """);
         getItemHarmonizedTariffScheduleCodesByCountryGeoCodeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -14007,18 +14127,20 @@ public class ItemControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM itemharmonizedtariffschedulecodes, itemharmonizedtariffschedulecodedetails, items, itemdetails, geocodes, geocodedetails "
-                + "AND itmhztscdt_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid "
-                + "AND itmhztscdt_countrygeocodeid = geo_geocodeid AND geo_lastdetailid = geodt_geocodedetailid "
-                + "WHERE itmhztsc_activedetailid = itmhztscdt_itemharmonizedtariffschedulecodedetailid AND itmhztscdt_hztscutyp_harmonizedtariffschedulecodeusetypeid = ? "
-                + "ORDER BY itmdt_itemname, geodt_sortorder, geodt_geocodename");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM itemharmonizedtariffschedulecodes, itemharmonizedtariffschedulecodedetails "
-                + "WHERE itmhztsc_activedetailid = itmhztscdt_itemharmonizedtariffschedulecodedetailid AND itmhztscdt_hztscutyp_harmonizedtariffschedulecodeusetypeid = ? "
-                + "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM itemharmonizedtariffschedulecodes, itemharmonizedtariffschedulecodedetails, items, itemdetails, geocodes, geocodedetails
+                AND itmhztscdt_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid
+                AND itmhztscdt_countrygeocodeid = geo_geocodeid AND geo_lastdetailid = geodt_geocodedetailid
+                WHERE itmhztsc_activedetailid = itmhztscdt_itemharmonizedtariffschedulecodedetailid AND itmhztscdt_hztscutyp_harmonizedtariffschedulecodeusetypeid = ?
+                ORDER BY itmdt_itemname, geodt_sortorder, geodt_geocodename
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM itemharmonizedtariffschedulecodes, itemharmonizedtariffschedulecodedetails
+                WHERE itmhztsc_activedetailid = itmhztscdt_itemharmonizedtariffschedulecodedetailid AND itmhztscdt_hztscutyp_harmonizedtariffschedulecodeusetypeid = ?
+                FOR UPDATE
+                """);
         getItemHarmonizedTariffScheduleCodesByHarmonizedTariffScheduleCodeUseQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -14040,19 +14162,21 @@ public class ItemControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM itemharmonizedtariffschedulecodes, itemharmonizedtariffschedulecodedetails, items, itemdetails, geocodes, geocodedetails, harmonizedtariffschedulecodeusetypes, harmonizedtariffschedulecodeusetypedetails "
-                + "WHERE itmhztsc_activedetailid = itmhztscdt_itemharmonizedtariffschedulecodedetailid AND itmhztscdt_hztsc_harmonizedtariffschedulecodeid = ? "
-                + "AND itmhztscdt_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid "
-                + "AND itmhztscdt_countrygeocodeid = geo_geocodeid AND geo_lastdetailid = geodt_geocodedetailid "
-                + "AND itmhztscdt_hztscutyp_harmonizedtariffschedulecodeusetypeid = hztscutyp_harmonizedtariffschedulecodeusetypeid AND hztscutyp_lastdetailid = hztscutypdt_harmonizedtariffschedulecodeusetypedetailid "
-                + "ORDER BY itmdt_itemname, geodt_sortorder, geodt_geocodename, hztscutypdt_sortorder, hztscutypdt_harmonizedtariffschedulecodeusetypename ");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM itemharmonizedtariffschedulecodes, itemharmonizedtariffschedulecodedetails "
-                + "WHERE itmhztsc_activedetailid = itmhztscdt_itemharmonizedtariffschedulecodedetailid AND itmhztscdt_hztsc_harmonizedtariffschedulecodeid = ? "
-                + "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM itemharmonizedtariffschedulecodes, itemharmonizedtariffschedulecodedetails, items, itemdetails, geocodes, geocodedetails, harmonizedtariffschedulecodeusetypes, harmonizedtariffschedulecodeusetypedetails
+                WHERE itmhztsc_activedetailid = itmhztscdt_itemharmonizedtariffschedulecodedetailid AND itmhztscdt_hztsc_harmonizedtariffschedulecodeid = ?
+                AND itmhztscdt_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid
+                AND itmhztscdt_countrygeocodeid = geo_geocodeid AND geo_lastdetailid = geodt_geocodedetailid
+                AND itmhztscdt_hztscutyp_harmonizedtariffschedulecodeusetypeid = hztscutyp_harmonizedtariffschedulecodeusetypeid AND hztscutyp_lastdetailid = hztscutypdt_harmonizedtariffschedulecodeusetypedetailid
+                ORDER BY itmdt_itemname, geodt_sortorder, geodt_geocodename, hztscutypdt_sortorder, hztscutypdt_harmonizedtariffschedulecodeusetypename
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM itemharmonizedtariffschedulecodes, itemharmonizedtariffschedulecodedetails
+                WHERE itmhztsc_activedetailid = itmhztscdt_itemharmonizedtariffschedulecodedetailid AND itmhztscdt_hztsc_harmonizedtariffschedulecodeid = ?
+                FOR UPDATE
+                """);
         getItemHarmonizedTariffScheduleCodesByHarmonizedTariffScheduleCodeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -14074,17 +14198,19 @@ public class ItemControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM itemharmonizedtariffschedulecodes, itemharmonizedtariffschedulecodedetails "
-                + "WHERE itmhztsc_activedetailid = itmhztscdt_itemharmonizedtariffschedulecodedetailid "
-                + "AND itmhztscdt_itm_itemid = ? AND itmhztscdt_countrygeocodeid = ? AND itmhztscdt_hztscutyp_harmonizedtariffschedulecodeusetypeid = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM itemharmonizedtariffschedulecodes, itemharmonizedtariffschedulecodedetails "
-                + "WHERE itmhztsc_activedetailid = itmhztscdt_itemharmonizedtariffschedulecodedetailid "
-                + "AND itmhztscdt_itm_itemid = ? AND itmhztscdt_countrygeocodeid = ? AND itmhztscdt_hztscutyp_harmonizedtariffschedulecodeusetypeid = ? "
-                + "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM itemharmonizedtariffschedulecodes, itemharmonizedtariffschedulecodedetails
+                WHERE itmhztsc_activedetailid = itmhztscdt_itemharmonizedtariffschedulecodedetailid
+                AND itmhztscdt_itm_itemid = ? AND itmhztscdt_countrygeocodeid = ? AND itmhztscdt_hztscutyp_harmonizedtariffschedulecodeusetypeid = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM itemharmonizedtariffschedulecodes, itemharmonizedtariffschedulecodedetails
+                WHERE itmhztsc_activedetailid = itmhztscdt_itemharmonizedtariffschedulecodedetailid
+                AND itmhztscdt_itm_itemid = ? AND itmhztscdt_countrygeocodeid = ? AND itmhztscdt_hztscutyp_harmonizedtariffschedulecodeusetypeid = ?
+                FOR UPDATE
+                """);
         getItemHarmonizedTariffScheduleCodeQueries = Collections.unmodifiableMap(queryMap);
     }
 
