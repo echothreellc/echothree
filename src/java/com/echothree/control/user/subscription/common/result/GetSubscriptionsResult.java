@@ -26,14 +26,14 @@ import java.util.List;
 public interface GetSubscriptionsResult
         extends BaseResult {
     
-    SubscriptionKindTransfer getSubscriptionKind();
-    void setSubscriptionKind(SubscriptionKindTransfer subscriptionKind);
-    
     SubscriptionTypeTransfer getSubscriptionType();
     void setSubscriptionType(SubscriptionTypeTransfer subscriptionType);
     
     PartyTransfer getParty();
     void setParty(PartyTransfer party);
+
+    Long getSubscriptionCount();
+    void setSubscriptionCount(Long subscriptionCount);
     
     List<SubscriptionTransfer> getSubscriptions();
     void setSubscriptions(List<SubscriptionTransfer> subscriptions);

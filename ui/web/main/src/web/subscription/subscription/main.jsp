@@ -31,7 +31,7 @@
                 <a href="<c:url value="/action/Subscription/Main" />">Subscriptions</a> &gt;&gt;
                 <a href="<c:url value="/action/Subscription/SubscriptionKind/Main" />">Kinds</a> &gt;&gt;
                 <c:url var="subscriptionTypesUrl" value="/action/Subscription/SubscriptionType/Main">
-                    <c:param name="SubscriptionKindName" value="${subscriptionKind.subscriptionKindName}" />
+                    <c:param name="SubscriptionKindName" value="${subscriptionType.subscriptionKind.subscriptionKindName}" />
                 </c:url>
                 <a href="${subscriptionTypesUrl}">Types</a> &gt;&gt;
                 Subscriptions
