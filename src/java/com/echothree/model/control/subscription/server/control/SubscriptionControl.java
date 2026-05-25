@@ -175,15 +175,17 @@ public class SubscriptionControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM subscriptionkinds, subscriptionkinddetails "
-                + "WHERE subscrk_activedetailid = subscrkdt_subscriptionkinddetailid AND subscrkdt_subscriptionkindname = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM subscriptionkinds, subscriptionkinddetails "
-                + "WHERE subscrk_activedetailid = subscrkdt_subscriptionkinddetailid AND subscrkdt_subscriptionkindname = ? "
-                + "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM subscriptionkinds, subscriptionkinddetails
+                WHERE subscrk_activedetailid = subscrkdt_subscriptionkinddetailid AND subscrkdt_subscriptionkindname = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM subscriptionkinds, subscriptionkinddetails
+                WHERE subscrk_activedetailid = subscrkdt_subscriptionkinddetailid AND subscrkdt_subscriptionkindname = ?
+                FOR UPDATE
+                """);
         getSubscriptionKindByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -213,15 +215,17 @@ public class SubscriptionControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM subscriptionkinds, subscriptionkinddetails "
-                + "WHERE subscrk_activedetailid = subscrkdt_subscriptionkinddetailid AND subscrkdt_isdefault = 1");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM subscriptionkinds, subscriptionkinddetails "
-                + "WHERE subscrk_activedetailid = subscrkdt_subscriptionkinddetailid AND subscrkdt_isdefault = 1 "
-                + "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM subscriptionkinds, subscriptionkinddetails
+                WHERE subscrk_activedetailid = subscrkdt_subscriptionkinddetailid AND subscrkdt_isdefault = 1
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM subscriptionkinds, subscriptionkinddetails
+                WHERE subscrk_activedetailid = subscrkdt_subscriptionkinddetailid AND subscrkdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultSubscriptionKindQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -246,17 +250,19 @@ public class SubscriptionControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM subscriptionkinds, subscriptionkinddetails "
-                + "WHERE subscrk_activedetailid = subscrkdt_subscriptionkinddetailid "
-                + "ORDER BY subscrkdt_sortorder, subscrkdt_subscriptionkindname "
-                + "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM subscriptionkinds, subscriptionkinddetails "
-                + "WHERE subscrk_activedetailid = subscrkdt_subscriptionkinddetailid "
-                + "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM subscriptionkinds, subscriptionkinddetails
+                WHERE subscrk_activedetailid = subscrkdt_subscriptionkinddetailid
+                ORDER BY subscrkdt_sortorder, subscrkdt_subscriptionkindname
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM subscriptionkinds, subscriptionkinddetails
+                WHERE subscrk_activedetailid = subscrkdt_subscriptionkinddetailid
+                FOR UPDATE
+                """);
         getSubscriptionKindsQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -414,15 +420,17 @@ public class SubscriptionControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM subscriptionkinddescriptions "
-                + "WHERE subscrkd_subscrk_subscriptionkindid = ? AND subscrkd_lang_languageid = ? AND subscrkd_thrutime = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM subscriptionkinddescriptions "
-                + "WHERE subscrkd_subscrk_subscriptionkindid = ? AND subscrkd_lang_languageid = ? AND subscrkd_thrutime = ? "
-                + "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM subscriptionkinddescriptions
+                WHERE subscrkd_subscrk_subscriptionkindid = ? AND subscrkd_lang_languageid = ? AND subscrkd_thrutime = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM subscriptionkinddescriptions
+                WHERE subscrkd_subscrk_subscriptionkindid = ? AND subscrkd_lang_languageid = ? AND subscrkd_thrutime = ?
+                FOR UPDATE
+                """);
         getSubscriptionKindDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -452,16 +460,18 @@ public class SubscriptionControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM subscriptionkinddescriptions, languages "
-                + "WHERE subscrkd_subscrk_subscriptionkindid = ? AND subscrkd_thrutime = ? AND subscrkd_lang_languageid = lang_languageid "
-                + "ORDER BY lang_sortorder, lang_languageisoname");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM subscriptionkinddescriptions "
-                + "WHERE subscrkd_subscrk_subscriptionkindid = ? AND subscrkd_thrutime = ? "
-                + "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM subscriptionkinddescriptions, languages
+                WHERE subscrkd_subscrk_subscriptionkindid = ? AND subscrkd_thrutime = ? AND subscrkd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM subscriptionkinddescriptions
+                WHERE subscrkd_subscrk_subscriptionkindid = ? AND subscrkd_thrutime = ?
+                FOR UPDATE
+                """);
         getSubscriptionKindDescriptionsBySubscriptionKindQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -620,17 +630,21 @@ public class SubscriptionControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM subscriptiontypes, subscriptiontypedetails " +
-                        "WHERE subscrtyp_activedetailid = subscrtypdt_subscriptiontypedetailid " +
-                        "AND subscrtypdt_subscrk_subscriptionkindid = ? " +
-                        "ORDER BY subscrtypdt_sortorder, subscrtypdt_subscriptiontypename";
+                query = """
+                        SELECT _ALL_
+                        FROM subscriptiontypes, subscriptiontypedetails
+                        WHERE subscrtyp_activedetailid = subscrtypdt_subscriptiontypedetailid
+                        AND subscrtypdt_subscrk_subscriptionkindid = ?
+                        ORDER BY subscrtypdt_sortorder, subscrtypdt_subscriptiontypename
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM subscriptiontypes, subscriptiontypedetails " +
-                        "WHERE subscrtyp_activedetailid = subscrtypdt_subscriptiontypedetailid " +
-                        "AND subscrtypdt_subscrk_subscriptionkindid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM subscriptiontypes, subscriptiontypedetails
+                        WHERE subscrtyp_activedetailid = subscrtypdt_subscriptiontypedetailid
+                        AND subscrtypdt_subscrk_subscriptionkindid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SubscriptionTypeFactory.getInstance().prepareStatement(query);
@@ -660,16 +674,20 @@ public class SubscriptionControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM subscriptiontypes, subscriptiontypedetails " +
-                        "WHERE subscrtyp_activedetailid = subscrtypdt_subscriptiontypedetailid " +
-                        "AND subscrtypdt_subscrk_subscriptionkindid = ? AND subscrtypdt_isdefault = 1";
+                query = """
+                        SELECT _ALL_
+                        FROM subscriptiontypes, subscriptiontypedetails
+                        WHERE subscrtyp_activedetailid = subscrtypdt_subscriptiontypedetailid
+                        AND subscrtypdt_subscrk_subscriptionkindid = ? AND subscrtypdt_isdefault = 1
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM subscriptiontypes, subscriptiontypedetails " +
-                        "WHERE subscrtyp_activedetailid = subscrtypdt_subscriptiontypedetailid " +
-                        "AND subscrtypdt_subscrk_subscriptionkindid = ? AND subscrtypdt_isdefault = 1 " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM subscriptiontypes, subscriptiontypedetails
+                        WHERE subscrtyp_activedetailid = subscrtypdt_subscriptiontypedetailid
+                        AND subscrtypdt_subscrk_subscriptionkindid = ? AND subscrtypdt_isdefault = 1
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SubscriptionTypeFactory.getInstance().prepareStatement(query);
@@ -704,16 +722,20 @@ public class SubscriptionControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM subscriptiontypes, subscriptiontypedetails " +
-                        "WHERE subscrtyp_activedetailid = subscrtypdt_subscriptiontypedetailid " +
-                        "AND subscrtypdt_subscrk_subscriptionkindid = ? AND subscrtypdt_subscriptiontypename = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM subscriptiontypes, subscriptiontypedetails
+                        WHERE subscrtyp_activedetailid = subscrtypdt_subscriptiontypedetailid
+                        AND subscrtypdt_subscrk_subscriptionkindid = ? AND subscrtypdt_subscriptiontypename = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM subscriptiontypes, subscriptiontypedetails " +
-                        "WHERE subscrtyp_activedetailid = subscrtypdt_subscriptiontypedetailid " +
-                        "AND subscrtypdt_subscrk_subscriptionkindid = ? AND subscrtypdt_subscriptiontypename = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM subscriptiontypes, subscriptiontypedetails
+                        WHERE subscrtyp_activedetailid = subscrtypdt_subscriptiontypedetailid
+                        AND subscrtypdt_subscrk_subscriptionkindid = ? AND subscrtypdt_subscriptiontypename = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SubscriptionTypeFactory.getInstance().prepareStatement(query);
@@ -900,16 +922,20 @@ public class SubscriptionControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM subscriptiontypedescriptions " +
-                        "WHERE subscrtypd_subscrtyp_subscriptiontypeid = ? AND subscrtypd_lang_languageid = ? " +
-                        "AND subscrtypd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM subscriptiontypedescriptions
+                        WHERE subscrtypd_subscrtyp_subscriptiontypeid = ? AND subscrtypd_lang_languageid = ?
+                        AND subscrtypd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM subscriptiontypedescriptions " +
-                        "WHERE subscrtypd_subscrtyp_subscriptiontypeid = ? AND subscrtypd_lang_languageid = ? " +
-                        "AND subscrtypd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM subscriptiontypedescriptions
+                        WHERE subscrtypd_subscrtyp_subscriptiontypeid = ? AND subscrtypd_lang_languageid = ?
+                        AND subscrtypd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SubscriptionTypeDescriptionFactory.getInstance().prepareStatement(query);
@@ -953,16 +979,20 @@ public class SubscriptionControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM subscriptiontypedescriptions, languages " +
-                        "WHERE subscrtypd_subscrtyp_subscriptiontypeid = ? AND subscrtypd_thrutime = ? " +
-                        "AND subscrtypd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM subscriptiontypedescriptions, languages
+                        WHERE subscrtypd_subscrtyp_subscriptiontypeid = ? AND subscrtypd_thrutime = ?
+                        AND subscrtypd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM subscriptiontypedescriptions " +
-                        "WHERE subscrtypd_subscrtyp_subscriptiontypeid = ? AND subscrtypd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM subscriptiontypedescriptions
+                        WHERE subscrtypd_subscrtyp_subscriptiontypeid = ? AND subscrtypd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SubscriptionTypeDescriptionFactory.getInstance().prepareStatement(query);
@@ -1100,16 +1130,20 @@ public class SubscriptionControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM subscriptiontypechains " +
-                        "WHERE subscrtypchn_subscrtyp_subscriptiontypeid = ? AND subscrtypchn_chn_chainid = ? " +
-                        "AND subscrtypchn_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM subscriptiontypechains
+                        WHERE subscrtypchn_subscrtyp_subscriptiontypeid = ? AND subscrtypchn_chn_chainid = ?
+                        AND subscrtypchn_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM subscriptiontypechains " +
-                        "WHERE subscrtypchn_subscrtyp_subscriptiontypeid = ? AND subscrtypchn_chn_chainid = ? " +
-                        "AND subscrtypchn_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM subscriptiontypechains
+                        WHERE subscrtypchn_subscrtyp_subscriptiontypeid = ? AND subscrtypchn_chn_chainid = ?
+                        AND subscrtypchn_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SubscriptionTypeChainFactory.getInstance().prepareStatement(query);
@@ -1150,16 +1184,20 @@ public class SubscriptionControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM subscriptiontypechains, chains, chaindetails " +
-                        "WHERE subscrtypchn_subscrtyp_subscriptiontypeid = ? AND subscrtypchn_thrutime = ? " +
-                        "AND subscrtypchn_chn_chainid = chn_chainid AND chn_lastdetailid = chndt_chaindetailid " +
-                        "ORDER BY chndt_sortorder, chndt_chainname";
+                query = """
+                        SELECT _ALL_
+                        FROM subscriptiontypechains, chains, chaindetails
+                        WHERE subscrtypchn_subscrtyp_subscriptiontypeid = ? AND subscrtypchn_thrutime = ?
+                        AND subscrtypchn_chn_chainid = chn_chainid AND chn_lastdetailid = chndt_chaindetailid
+                        ORDER BY chndt_sortorder, chndt_chainname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM subscriptiontypechains " +
-                        "WHERE subscrtypchn_subscrtyp_subscriptiontypeid = ? AND subscrtypchn_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM subscriptiontypechains
+                        WHERE subscrtypchn_subscrtyp_subscriptiontypeid = ? AND subscrtypchn_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SubscriptionTypeChainFactory.getInstance().prepareStatement(query);
@@ -1191,16 +1229,20 @@ public class SubscriptionControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM subscriptiontypechains, chains, chaindetails " +
-                        "WHERE subscrtypchn_subscrtyp_subscriptiontypeid = ? AND subscrtypchn_thrutime = ? " +
-                        "AND subscrtypchn_chn_chainid = chn_chainid AND chn_lastdetailid = chndt_chaindetailid AND chndt_chntyp_chaintypeid = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM subscriptiontypechains, chains, chaindetails
+                        WHERE subscrtypchn_subscrtyp_subscriptiontypeid = ? AND subscrtypchn_thrutime = ?
+                        AND subscrtypchn_chn_chainid = chn_chainid AND chn_lastdetailid = chndt_chaindetailid AND chndt_chntyp_chaintypeid = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM subscriptiontypechains " +
-                        "WHERE subscrtypchn_subscrtyp_subscriptiontypeid = ? AND subscrtypchn_thrutime = ? " +
-                        "AND subscrtypchn_chn_chainid = chn_chainid AND chn_lastdetailid = chndt_chaindetailid AND chndt_chntyp_chaintypeid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM subscriptiontypechains
+                        WHERE subscrtypchn_subscrtyp_subscriptiontypeid = ? AND subscrtypchn_thrutime = ?
+                        AND subscrtypchn_chn_chainid = chn_chainid AND chn_lastdetailid = chndt_chaindetailid AND chndt_chntyp_chaintypeid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SubscriptionTypeChainFactory.getInstance().prepareStatement(query);
@@ -1338,16 +1380,20 @@ public class SubscriptionControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM subscriptions, subscriptiondetails " +
-                        "WHERE subscr_activedetailid = subscrdt_subscriptiondetailid AND subscrdt_subscrtyp_subscriptiontypeid = ? " +
-                        "AND subscrdt_par_partyid = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM subscriptions, subscriptiondetails
+                        WHERE subscr_activedetailid = subscrdt_subscriptiondetailid AND subscrdt_subscrtyp_subscriptiontypeid = ?
+                        AND subscrdt_par_partyid = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM subscriptions, subscriptiondetails " +
-                        "WHERE subscr_activedetailid = subscrdt_subscriptiondetailid AND subscrdt_subscrtyp_subscriptiontypeid = ? " +
-                        "AND subscrdt_par_partyid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM subscriptions, subscriptiondetails
+                        WHERE subscr_activedetailid = subscrdt_subscriptiondetailid AND subscrdt_subscrtyp_subscriptiontypeid = ?
+                        AND subscrdt_par_partyid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SubscriptionFactory.getInstance().prepareStatement(query);
@@ -1378,14 +1424,18 @@ public class SubscriptionControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM subscriptions, subscriptiondetails " +
-                        "WHERE subscr_activedetailid = subscrdt_subscriptiondetailid AND subscrdt_subscriptionname = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM subscriptions, subscriptiondetails
+                        WHERE subscr_activedetailid = subscrdt_subscriptiondetailid AND subscrdt_subscriptionname = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM subscriptions, subscriptiondetails " +
-                        "WHERE subscr_activedetailid = subscrdt_subscriptiondetailid AND subscrdt_subscriptionname = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM subscriptions, subscriptiondetails
+                        WHERE subscr_activedetailid = subscrdt_subscriptiondetailid AND subscrdt_subscriptionname = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SubscriptionFactory.getInstance().prepareStatement(query);
@@ -1420,15 +1470,19 @@ public class SubscriptionControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM subscriptions, subscriptiondetails " +
-                        "WHERE subscr_activedetailid = subscrdt_subscriptiondetailid AND subscrdt_subscrtyp_subscriptiontypeid = ? " +
-                        "ORDER BY subscrdt_subscriptionname";
+                query = """
+                        SELECT _ALL_
+                        FROM subscriptions, subscriptiondetails
+                        WHERE subscr_activedetailid = subscrdt_subscriptiondetailid AND subscrdt_subscrtyp_subscriptiontypeid = ?
+                        ORDER BY subscrdt_subscriptionname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM subscriptions, subscriptiondetails " +
-                        "WHERE subscr_activedetailid = subscrdt_subscriptiondetailid AND subscrdt_subscrtyp_subscriptiontypeid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM subscriptions, subscriptiondetails
+                        WHERE subscr_activedetailid = subscrdt_subscriptiondetailid AND subscrdt_subscrtyp_subscriptiontypeid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SubscriptionFactory.getInstance().prepareStatement(query);
@@ -1458,17 +1512,21 @@ public class SubscriptionControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM subscriptions, subscriptiondetails, subscriptiontypes, subscriptiontypedetails " +
-                        "WHERE subscr_activedetailid = subscrdt_subscriptiondetailid AND subscrdt_par_partyid = ? " +
-                        "AND subscrdt_subscrtyp_subscriptiontypeid = subscrtyp_subscriptiontypeid " +
-                        "AND subscrtyp_lastdetailid = subscrtypdt_subscriptiontypedetailid " +
-                        "ORDER BY subscrtypdt_sortorder, subscrtypdt_subscriptiontypename";
+                query = """
+                        SELECT _ALL_
+                        FROM subscriptions, subscriptiondetails, subscriptiontypes, subscriptiontypedetails
+                        WHERE subscr_activedetailid = subscrdt_subscriptiondetailid AND subscrdt_par_partyid = ?
+                        AND subscrdt_subscrtyp_subscriptiontypeid = subscrtyp_subscriptiontypeid
+                        AND subscrtyp_lastdetailid = subscrtypdt_subscriptiontypedetailid
+                        ORDER BY subscrtypdt_sortorder, subscrtypdt_subscriptiontypename
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM subscriptions, subscriptiondetails " +
-                        "WHERE subscr_activedetailid = subscrdt_subscriptiondetailid AND subscrdt_par_partyid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM subscriptions, subscriptiondetails
+                        WHERE subscr_activedetailid = subscrdt_subscriptiondetailid AND subscrdt_par_partyid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SubscriptionFactory.getInstance().prepareStatement(query);
