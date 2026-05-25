@@ -465,6 +465,7 @@ public class SubscriptionControl
                 FROM subscriptionkinddescriptions, languages
                 WHERE subscrkd_subscrk_subscriptionkindid = ? AND subscrkd_thrutime = ? AND subscrkd_lang_languageid = lang_languageid
                 ORDER BY lang_sortorder, lang_languageisoname
+                _LIMIT_
                 """);
         queryMap.put(EntityPermission.READ_WRITE, """
                 SELECT _ALL_
@@ -636,6 +637,7 @@ public class SubscriptionControl
                         WHERE subscrtyp_activedetailid = subscrtypdt_subscriptiontypedetailid
                         AND subscrtypdt_subscrk_subscriptionkindid = ?
                         ORDER BY subscrtypdt_sortorder, subscrtypdt_subscriptiontypename
+                        _LIMIT_
                         """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = """
@@ -985,6 +987,7 @@ public class SubscriptionControl
                         WHERE subscrtypd_subscrtyp_subscriptiontypeid = ? AND subscrtypd_thrutime = ?
                         AND subscrtypd_lang_languageid = lang_languageid
                         ORDER BY lang_sortorder, lang_languageisoname
+                        _LIMIT_
                         """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = """
@@ -1190,6 +1193,7 @@ public class SubscriptionControl
                         WHERE subscrtypchn_subscrtyp_subscriptiontypeid = ? AND subscrtypchn_thrutime = ?
                         AND subscrtypchn_chn_chainid = chn_chainid AND chn_lastdetailid = chndt_chaindetailid
                         ORDER BY chndt_sortorder, chndt_chainname
+                        _LIMIT_
                         """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = """
@@ -1373,6 +1377,24 @@ public class SubscriptionControl
                         """);
     }
 
+    public long countSubscriptionsBySubscriptionType(final SubscriptionType subscriptionType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM subscriptions
+                        JOIN subscriptiondetails ON subscrdt_subscriptiondetailid = subscr_activedetailid
+                        WHERE subscrdt_subscrtyp_subscriptiontypeid = ?
+                        """, subscriptionType);
+    }
+
+    public long countSubscriptionsByParty(final Party party) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM subscriptions
+                        JOIN subscriptiondetails ON subscrdt_subscriptiondetailid = subscr_activedetailid
+                        WHERE subscrdt_par_partyid = ?
+                        """, party);
+    }
+
     private Subscription getSubscription(SubscriptionType subscriptionType, Party party, EntityPermission entityPermission) {
         Subscription subscription;
         
@@ -1475,6 +1497,7 @@ public class SubscriptionControl
                         FROM subscriptions, subscriptiondetails
                         WHERE subscr_activedetailid = subscrdt_subscriptiondetailid AND subscrdt_subscrtyp_subscriptiontypeid = ?
                         ORDER BY subscrdt_subscriptionname
+                        _LIMIT_
                         """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = """
@@ -1519,6 +1542,7 @@ public class SubscriptionControl
                         AND subscrdt_subscrtyp_subscriptiontypeid = subscrtyp_subscriptiontypeid
                         AND subscrtyp_lastdetailid = subscrtypdt_subscriptiontypedetailid
                         ORDER BY subscrtypdt_sortorder, subscrtypdt_subscriptiontypename
+                        _LIMIT_
                         """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = """
@@ -1553,7 +1577,7 @@ public class SubscriptionControl
         return subscriptionTransferCache.getSubscriptionTransfer(userVisit, subscription);
     }
     
-    private List<SubscriptionTransfer> getSubscriptionTransfers(UserVisit userVisit, Collection<Subscription> subscriptions) {
+    public List<SubscriptionTransfer> getSubscriptionTransfers(UserVisit userVisit, Collection<Subscription> subscriptions) {
         List<SubscriptionTransfer> subscriptionTransfers = new ArrayList<>(subscriptions.size());
         
         subscriptions.forEach((subscription) ->

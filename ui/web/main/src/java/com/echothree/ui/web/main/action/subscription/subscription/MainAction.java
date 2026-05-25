@@ -70,7 +70,6 @@ public class MainAction
             var executionResult = commandResult.getExecutionResult();
             var result = (GetSubscriptionsResult)executionResult.getResult();
             
-            request.setAttribute(AttributeConstants.SUBSCRIPTION_KIND, result.getSubscriptionKind());
             request.setAttribute(AttributeConstants.SUBSCRIPTION_TYPE, result.getSubscriptionType());
             request.setAttribute(AttributeConstants.SUBSCRIPTIONS, result.getSubscriptions());
             forwardKey = ForwardConstants.DISPLAY;
