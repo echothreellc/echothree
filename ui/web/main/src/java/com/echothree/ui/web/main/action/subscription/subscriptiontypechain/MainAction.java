@@ -63,7 +63,6 @@ public class MainAction
             var executionResult = commandResult.getExecutionResult();
             var result = (GetSubscriptionTypeChainsResult)executionResult.getResult();
             
-            request.setAttribute(AttributeConstants.SUBSCRIPTION_KIND, result.getSubscriptionKind());
             request.setAttribute(AttributeConstants.SUBSCRIPTION_TYPE, result.getSubscriptionType());
             request.setAttribute(AttributeConstants.SUBSCRIPTION_TYPE_CHAINS, result.getSubscriptionTypeChains());
             forwardKey = ForwardConstants.DISPLAY;
