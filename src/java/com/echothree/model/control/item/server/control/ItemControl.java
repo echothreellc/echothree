@@ -4338,10 +4338,11 @@ public class ItemControl
     }
     
     public long countItemCountryOfOriginsByCountryGeoCode(GeoCode countryGeoCode) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM itemcountryoforigins " +
-                "WHERE icoorgn_countrygeocodeid = ? AND icoorgn_thrutime = ?",
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM itemcountryoforigins
+                WHERE icoorgn_countrygeocodeid = ? AND icoorgn_thrutime = ?
+                """,
                 countryGeoCode, Session.MAX_TIME);
     }
 
@@ -4352,14 +4353,18 @@ public class ItemControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemcountryoforigins " +
-                        "WHERE icoorgn_itm_itemid = ? AND icoorgn_countrygeocodeid = ? AND icoorgn_thrutime = ?";
+                query = """
+                SELECT _ALL_
+                FROM itemcountryoforigins
+                WHERE icoorgn_itm_itemid = ? AND icoorgn_countrygeocodeid = ? AND icoorgn_thrutime = ?
+                """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemcountryoforigins " +
-                        "WHERE icoorgn_itm_itemid = ? AND icoorgn_countrygeocodeid = ? AND icoorgn_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                SELECT _ALL_
+                FROM itemcountryoforigins
+                WHERE icoorgn_itm_itemid = ? AND icoorgn_countrygeocodeid = ? AND icoorgn_thrutime = ?
+                FOR UPDATE
+                """;
             }
 
             var ps = ItemCountryOfOriginFactory.getInstance().prepareStatement(query);
@@ -4399,16 +4404,20 @@ public class ItemControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemcountryoforigins, geocodes, geocodedetails " +
-                        "WHERE icoorgn_itm_itemid = ? AND icoorgn_thrutime = ? " +
-                        "AND icoorgn_countrygeocodeid = geo_geocodeid AND geo_lastdetailid = geodt_geocodedetailid " +
-                        "ORDER BY geodt_sortorder, geodt_geocodename";
+                query = """
+                SELECT _ALL_
+                FROM itemcountryoforigins, geocodes, geocodedetails
+                WHERE icoorgn_itm_itemid = ? AND icoorgn_thrutime = ?
+                AND icoorgn_countrygeocodeid = geo_geocodeid AND geo_lastdetailid = geodt_geocodedetailid
+                ORDER BY geodt_sortorder, geodt_geocodename
+                """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemcountryoforigins " +
-                        "WHERE icoorgn_itm_itemid = ? AND icoorgn_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                SELECT _ALL_
+                FROM itemcountryoforigins
+                WHERE icoorgn_itm_itemid = ? AND icoorgn_thrutime = ?
+                FOR UPDATE
+                """;
             }
 
             var ps = ItemCountryOfOriginFactory.getInstance().prepareStatement(query);
@@ -4439,16 +4448,20 @@ public class ItemControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemcountryoforigins, items, itemdetails " +
-                        "WHERE icoorgn_countrygeocodeid = ? AND icoorgn_thrutime = ? " +
-                        "AND icoorgn_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid " +
-                        "ORDER BY itmdt_itemname";
+                query = """
+                SELECT _ALL_
+                FROM itemcountryoforigins, items, itemdetails
+                WHERE icoorgn_countrygeocodeid = ? AND icoorgn_thrutime = ?
+                AND icoorgn_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid
+                ORDER BY itmdt_itemname
+                """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemcountryoforigins " +
-                        "WHERE icoorgn_countrygeocodeid = ? AND icoorgn_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                SELECT _ALL_
+                FROM itemcountryoforigins
+                WHERE icoorgn_countrygeocodeid = ? AND icoorgn_thrutime = ?
+                FOR UPDATE
+                """;
             }
 
             var ps = ItemCountryOfOriginFactory.getInstance().prepareStatement(query);
@@ -4603,17 +4616,21 @@ public class ItemControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemkitmembers " +
-                        "WHERE ikm_itm_itemid = ? AND ikm_invcon_inventoryconditionid = ?  AND ikm_uomt_unitofmeasuretypeid = ? " +
-                        "AND ikm_memberitemid = ? AND ikm_memberinventoryconditionid = ?  AND ikm_memberunitofmeasuretypeid = ? " +
-                        "AND ikm_thrutime = ?";
+                query = """
+                SELECT _ALL_
+                FROM itemkitmembers
+                WHERE ikm_itm_itemid = ? AND ikm_invcon_inventoryconditionid = ?  AND ikm_uomt_unitofmeasuretypeid = ?
+                AND ikm_memberitemid = ? AND ikm_memberinventoryconditionid = ?  AND ikm_memberunitofmeasuretypeid = ?
+                AND ikm_thrutime = ?
+                """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemkitmembers " +
-                        "WHERE ikm_itm_itemid = ? AND ikm_invcon_inventoryconditionid = ?  AND ikm_uomt_unitofmeasuretypeid = ? " +
-                        "AND ikm_memberitemid = ? AND ikm_memberinventoryconditionid = ?  AND ikm_memberunitofmeasuretypeid = ? " +
-                        "FOR UPDATE";
+                query = """
+                SELECT _ALL_
+                FROM itemkitmembers
+                WHERE ikm_itm_itemid = ? AND ikm_invcon_inventoryconditionid = ?  AND ikm_uomt_unitofmeasuretypeid = ?
+                AND ikm_memberitemid = ? AND ikm_memberinventoryconditionid = ?  AND ikm_memberunitofmeasuretypeid = ?
+                FOR UPDATE
+                """;
             }
 
             var ps = ItemKitMemberFactory.getInstance().prepareStatement(query);
@@ -4663,16 +4680,20 @@ public class ItemControl
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
                 // TODO: 'ORDER BY'
-                query = "SELECT _ALL_ " +
-                        "FROM itemkitmembers " +
-                        "WHERE ikm_itm_itemid = ? AND ikm_invcon_inventoryconditionid = ? AND ikm_uomt_unitofmeasuretypeid = ? " +
-                        "AND ikm_thrutime = ?";
+                query = """
+                SELECT _ALL_
+                FROM itemkitmembers
+                WHERE ikm_itm_itemid = ? AND ikm_invcon_inventoryconditionid = ? AND ikm_uomt_unitofmeasuretypeid = ?
+                AND ikm_thrutime = ?
+                """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemkitmembers " +
-                        "WHERE ikm_itm_itemid = ? AND ikm_invcon_inventoryconditionid = ? AND ikm_uomt_unitofmeasuretypeid = ? " +
-                        "AND ikm_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                SELECT _ALL_
+                FROM itemkitmembers
+                WHERE ikm_itm_itemid = ? AND ikm_invcon_inventoryconditionid = ? AND ikm_uomt_unitofmeasuretypeid = ?
+                AND ikm_thrutime = ?
+                FOR UPDATE
+                """;
             }
 
             var ps = ItemKitMemberFactory.getInstance().prepareStatement(query);
@@ -4709,16 +4730,20 @@ public class ItemControl
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
                 // TODO: 'ORDER BY'
-                query = "SELECT _ALL_ " +
-                        "FROM itemkitmembers " +
-                        "WHERE ikm_memberitemid = ? AND ikm_memberinventoryconditionid = ? AND ikm_memberunitofmeasuretypeid = ? " +
-                        "AND ikm_thrutime = ?";
+                query = """
+                SELECT _ALL_
+                FROM itemkitmembers
+                WHERE ikm_memberitemid = ? AND ikm_memberinventoryconditionid = ? AND ikm_memberunitofmeasuretypeid = ?
+                AND ikm_thrutime = ?
+                """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemkitmembers " +
-                        "WHERE ikm_memberitemid = ? AND ikm_memberinventoryconditionid = ? AND ikm_memberunitofmeasuretypeid = ? " +
-                        "AND ikm_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                SELECT _ALL_
+                FROM itemkitmembers
+                WHERE ikm_memberitemid = ? AND ikm_memberinventoryconditionid = ? AND ikm_memberunitofmeasuretypeid = ?
+                AND ikm_thrutime = ?
+                FOR UPDATE
+                """;
             }
 
             var ps = ItemKitMemberFactory.getInstance().prepareStatement(query);
@@ -4754,14 +4779,18 @@ public class ItemControl
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
                 // TODO: 'ORDER BY'
-                query = "SELECT _ALL_ " +
-                        "FROM itemkitmembers " +
-                        "WHERE ikm_itm_itemid = ? AND ikm_thrutime = ?";
+                query = """
+                SELECT _ALL_
+                FROM itemkitmembers
+                WHERE ikm_itm_itemid = ? AND ikm_thrutime = ?
+                """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemkitmembers " +
-                        "WHERE ikm_itm_itemid = ? AND ikm_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                SELECT _ALL_
+                FROM itemkitmembers
+                WHERE ikm_itm_itemid = ? AND ikm_thrutime = ?
+                FOR UPDATE
+                """;
             }
 
             var ps = ItemKitMemberFactory.getInstance().prepareStatement(query);
@@ -4793,14 +4822,18 @@ public class ItemControl
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
                 // TODO: 'ORDER BY'
-                query = "SELECT _ALL_ " +
-                        "FROM itemkitmembers " +
-                        "WHERE ikm_memberitemid = ? AND ikm_thrutime = ?";
+                query = """
+                SELECT _ALL_
+                FROM itemkitmembers
+                WHERE ikm_memberitemid = ? AND ikm_thrutime = ?
+                """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemkitmembers " +
-                        "WHERE ikm_itm_itemid = ? AND ikm_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                SELECT _ALL_
+                FROM itemkitmembers
+                WHERE ikm_itm_itemid = ? AND ikm_thrutime = ?
+                FOR UPDATE
+                """;
             }
 
             var ps = ItemKitMemberFactory.getInstance().prepareStatement(query);
@@ -4832,14 +4865,18 @@ public class ItemControl
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
                 // TODO: 'ORDER BY'
-                query = "SELECT _ALL_ " +
-                        "FROM itemkitmembers " +
-                        "WHERE ikm_invcon_inventoryconditionid = ? AND ikm_thrutime = ?";
+                query = """
+                SELECT _ALL_
+                FROM itemkitmembers
+                WHERE ikm_invcon_inventoryconditionid = ? AND ikm_thrutime = ?
+                """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemkitmembers " +
-                        "WHERE ikm_invcon_inventoryconditionid = ? AND ikm_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                SELECT _ALL_
+                FROM itemkitmembers
+                WHERE ikm_invcon_inventoryconditionid = ? AND ikm_thrutime = ?
+                FOR UPDATE
+                """;
             }
 
             var ps = ItemKitMemberFactory.getInstance().prepareStatement(query);
@@ -4871,14 +4908,18 @@ public class ItemControl
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
                 // TODO: 'ORDER BY'
-                query = "SELECT _ALL_ " +
-                        "FROM itemkitmembers " +
-                        "WHERE ikm_memberinventoryconditionid = ? AND ikm_thrutime = ?";
+                query = """
+                SELECT _ALL_
+                FROM itemkitmembers
+                WHERE ikm_memberinventoryconditionid = ? AND ikm_thrutime = ?
+                """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemkitmembers " +
-                        "WHERE ikm_memberinventoryconditionid = ? AND ikm_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                SELECT _ALL_
+                FROM itemkitmembers
+                WHERE ikm_memberinventoryconditionid = ? AND ikm_thrutime = ?
+                FOR UPDATE
+                """;
             }
 
             var ps = ItemKitMemberFactory.getInstance().prepareStatement(query);
@@ -4910,14 +4951,18 @@ public class ItemControl
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
                 // TODO: 'ORDER BY'
-                query = "SELECT _ALL_ " +
-                        "FROM itemkitmembers " +
-                        "WHERE ikm_uomt_unitofmeasuretypeid = ? AND ikm_thrutime = ?";
+                query = """
+                SELECT _ALL_
+                FROM itemkitmembers
+                WHERE ikm_uomt_unitofmeasuretypeid = ? AND ikm_thrutime = ?
+                """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemkitmembers " +
-                        "WHERE ikm_uomt_unitofmeasuretypeid = ? AND ikm_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                SELECT _ALL_
+                FROM itemkitmembers
+                WHERE ikm_uomt_unitofmeasuretypeid = ? AND ikm_thrutime = ?
+                FOR UPDATE
+                """;
             }
 
             var ps = ItemKitMemberFactory.getInstance().prepareStatement(query);
@@ -4945,11 +4990,12 @@ public class ItemControl
         List<ItemKitMember> itemKitMembers;
         
         try {
-            var ps = ItemKitMemberFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM itemkitmembers " +
-                    "WHERE ikm_itm_itemid = ? AND ikm_uomt_unitofmeasuretypeid = ? AND ikm_thrutime = ? " +
-                    "FOR UPDATE");
+            var ps = ItemKitMemberFactory.getInstance().prepareStatement("""
+                SELECT _ALL_
+                FROM itemkitmembers
+                WHERE ikm_itm_itemid = ? AND ikm_uomt_unitofmeasuretypeid = ? AND ikm_thrutime = ?
+                FOR UPDATE
+                """);
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, unitOfMeasureType.getPrimaryKey().getEntityId());
@@ -4971,14 +5017,18 @@ public class ItemControl
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
                 // TODO: 'ORDER BY'
-                query = "SELECT _ALL_ " +
-                        "FROM itemkitmembers " +
-                        "WHERE ikm_memberunitofmeasuretypeid = ? AND ikm_thrutime = ?";
+                query = """
+                SELECT _ALL_
+                FROM itemkitmembers
+                WHERE ikm_memberunitofmeasuretypeid = ? AND ikm_thrutime = ?
+                """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemkitmembers " +
-                        "WHERE ikm_memberunitofmeasuretypeid = ? AND ikm_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                SELECT _ALL_
+                FROM itemkitmembers
+                WHERE ikm_memberunitofmeasuretypeid = ? AND ikm_thrutime = ?
+                FOR UPDATE
+                """;
             }
 
             var ps = ItemKitMemberFactory.getInstance().prepareStatement(query);
@@ -5007,10 +5057,12 @@ public class ItemControl
         
         try {
             var ps = ItemKitMemberFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM itemkitmembers " +
-                    "WHERE ikm_memberitemid = ? AND ikm_memberunitofmeasuretypeid = ? AND ikm_thrutime = ? " +
-                    "FOR UPDATE");
+                    """
+                SELECT _ALL_
+                FROM itemkitmembers
+                WHERE ikm_memberitemid = ? AND ikm_memberunitofmeasuretypeid = ? AND ikm_thrutime = ?
+                FOR UPDATE
+                """);
             
             ps.setLong(1, memberItem.getPrimaryKey().getEntityId());
             ps.setLong(2, memberUnitOfMeasureType.getPrimaryKey().getEntityId());
@@ -5142,14 +5194,18 @@ public class ItemControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itempackcheckrequirements " +
-                        "WHERE ipcr_itm_itemid = ? AND ipcr_uomt_unitofmeasuretypeid = ? AND ipcr_thrutime = ?";
+                query = """
+                SELECT _ALL_
+                FROM itempackcheckrequirements
+                WHERE ipcr_itm_itemid = ? AND ipcr_uomt_unitofmeasuretypeid = ? AND ipcr_thrutime = ?
+                """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itempackcheckrequirements " +
-                        "WHERE ipcr_itm_itemid = ? AND ipcr_uomt_unitofmeasuretypeid = ? AND ipcr_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                SELECT _ALL_
+                FROM itempackcheckrequirements
+                WHERE ipcr_itm_itemid = ? AND ipcr_uomt_unitofmeasuretypeid = ? AND ipcr_thrutime = ?
+                FOR UPDATE
+                """;
             }
 
             var ps = ItemPackCheckRequirementFactory.getInstance().prepareStatement(query);
@@ -5189,17 +5245,21 @@ public class ItemControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itempackcheckrequirements, unitofmeasuretypes, unitofmeasuretypedetails " +
-                        "WHERE ipcr_itm_itemid = ? AND ipcr_thrutime = ? " +
-                        "AND ipcr_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid " +
-                        "AND uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid " +
-                        "ORDER BY uomtdt_sortorder, uomtdt_unitofmeasuretypename";
+                query = """
+                SELECT _ALL_
+                FROM itempackcheckrequirements, unitofmeasuretypes, unitofmeasuretypedetails
+                WHERE ipcr_itm_itemid = ? AND ipcr_thrutime = ?
+                AND ipcr_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid
+                AND uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid
+                ORDER BY uomtdt_sortorder, uomtdt_unitofmeasuretypename
+                """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itempackcheckrequirements " +
-                        "WHERE ipcr_itm_itemid = ? AND ipcr_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                SELECT _ALL_
+                FROM itempackcheckrequirements
+                WHERE ipcr_itm_itemid = ? AND ipcr_thrutime = ?
+                FOR UPDATE
+                """;
             }
 
             var ps = ItemPackCheckRequirementFactory.getInstance().prepareStatement(query);
@@ -5230,16 +5290,20 @@ public class ItemControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itempackcheckrequirements, items, itemdetails " +
-                        "WHERE ipcr_itm_itemid = ? AND ipcr_thrutime = ? " +
-                        "AND ipcr_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid " +
-                        "ORDER BY uomtdt_sortorder, uomtdt_unitofmeasuretypename";
+                query = """
+                SELECT _ALL_
+                FROM itempackcheckrequirements, items, itemdetails
+                WHERE ipcr_itm_itemid = ? AND ipcr_thrutime = ?
+                AND ipcr_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid
+                ORDER BY uomtdt_sortorder, uomtdt_unitofmeasuretypename
+                """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itempackcheckrequirements " +
-                        "WHERE ipcr_uomt_unitofmeasuretypeid = ? AND ipcr_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                SELECT _ALL_
+                FROM itempackcheckrequirements
+                WHERE ipcr_uomt_unitofmeasuretypeid = ? AND ipcr_thrutime = ?
+                FOR UPDATE
+                """;
             }
 
             var ps = ItemPackCheckRequirementFactory.getInstance().prepareStatement(query);
@@ -5269,10 +5333,12 @@ public class ItemControl
         
         try {
             var ps = ItemPackCheckRequirementFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM itempackcheckrequirements " +
-                    "WHERE ipcr_itm_itemid = ? AND ipcr_uomt_unitofmeasuretypeid = ? AND ipcr_thrutime = ? " +
-                    "FOR UPDATE");
+                    """
+                SELECT _ALL_
+                FROM itempackcheckrequirements
+                WHERE ipcr_itm_itemid = ? AND ipcr_uomt_unitofmeasuretypeid = ? AND ipcr_thrutime = ?
+                FOR UPDATE
+                """);
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, unitOfMeasureType.getPrimaryKey().getEntityId());
@@ -5408,16 +5474,20 @@ public class ItemControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemunitcustomertypelimits " +
-                        "WHERE iuctl_itm_itemid = ? AND iuctl_invcon_inventoryconditionid = ? AND iuctl_uomt_unitofmeasuretypeid = ? " +
-                        "AND iuctl_cuty_customertypeid = ? AND iuctl_thrutime = ?";
+                query = """
+                SELECT _ALL_
+                FROM itemunitcustomertypelimits
+                WHERE iuctl_itm_itemid = ? AND iuctl_invcon_inventoryconditionid = ? AND iuctl_uomt_unitofmeasuretypeid = ?
+                AND iuctl_cuty_customertypeid = ? AND iuctl_thrutime = ?
+                """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemunitcustomertypelimits " +
-                        "WHERE iuctl_itm_itemid = ? AND iuctl_invcon_inventoryconditionid = ? AND iuctl_uomt_unitofmeasuretypeid = ? " +
-                        "AND iuctl_cuty_customertypeid = ? AND iuctl_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                SELECT _ALL_
+                FROM itemunitcustomertypelimits
+                WHERE iuctl_itm_itemid = ? AND iuctl_invcon_inventoryconditionid = ? AND iuctl_uomt_unitofmeasuretypeid = ?
+                AND iuctl_cuty_customertypeid = ? AND iuctl_thrutime = ?
+                FOR UPDATE
+                """;
             }
 
             var ps = ItemUnitCustomerTypeLimitFactory.getInstance().prepareStatement(query);
@@ -5462,18 +5532,22 @@ public class ItemControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemunitcustomertypelimits, inventoryconditions, inventoryconditiondetails, unitofmeasuretypes, unitofmeasuretypedetails, customertypes, customertypedetails " +
-                        "WHERE iuctl_itm_itemid = ? AND iuctl_thrutime = ? " +
-                        "AND iuctl_invcon_inventoryconditionid = invcon_inventoryconditionid AND invcon_lastdetailid = invcondt_inventoryconditiondetailid " +
-                        "AND iuctl_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid AND uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid " +
-                        "AND iuctl_cuty_customertypeid = cuty_customertypeid AND cuty_lastdetailid = cutydt_customertypedetailid " +
-                        "ORDER BY invcondt_sortorder, invcondt_inventoryconditionname, uomtdt_sortorder, uomtdt_unitofmeasuretypename, cutydt_sortorder, cutydt_customertypename";
+                query = """
+                SELECT _ALL_
+                FROM itemunitcustomertypelimits, inventoryconditions, inventoryconditiondetails, unitofmeasuretypes, unitofmeasuretypedetails, customertypes, customertypedetails
+                WHERE iuctl_itm_itemid = ? AND iuctl_thrutime = ?
+                AND iuctl_invcon_inventoryconditionid = invcon_inventoryconditionid AND invcon_lastdetailid = invcondt_inventoryconditiondetailid
+                AND iuctl_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid AND uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid
+                AND iuctl_cuty_customertypeid = cuty_customertypeid AND cuty_lastdetailid = cutydt_customertypedetailid
+                ORDER BY invcondt_sortorder, invcondt_inventoryconditionname, uomtdt_sortorder, uomtdt_unitofmeasuretypename, cutydt_sortorder, cutydt_customertypename
+                """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemunitcustomertypelimits " +
-                        "WHERE iuctl_itm_itemid = ? AND iuctl_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                SELECT _ALL_
+                FROM itemunitcustomertypelimits
+                WHERE iuctl_itm_itemid = ? AND iuctl_thrutime = ?
+                FOR UPDATE
+                """;
             }
 
             var ps = ItemUnitCustomerTypeLimitFactory.getInstance().prepareStatement(query);
@@ -5504,18 +5578,22 @@ public class ItemControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemunitcustomertypelimits, items, itemdetails, unitofmeasuretypes, unitofmeasuretypedetails, customertypes, customertypedetails " +
-                        "WHERE iuctl_invcon_inventoryconditionid = ? AND iuctl_thrutime = ? " +
-                        "AND iuctl_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid " +
-                        "AND iuctl_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid AND uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid " +
-                        "AND iuctl_cuty_customertypeid = cuty_customertypeid AND cuty_lastdetailid = cutydt_customertypedetailid " +
-                        "ORDER BY itmdt_itemname, uomtdt_sortorder, uomtdt_unitofmeasuretypename, cutydt_sortorder, cutydt_customertypename";
+                query = """
+                SELECT _ALL_
+                FROM itemunitcustomertypelimits, items, itemdetails, unitofmeasuretypes, unitofmeasuretypedetails, customertypes, customertypedetails
+                WHERE iuctl_invcon_inventoryconditionid = ? AND iuctl_thrutime = ?
+                AND iuctl_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid
+                AND iuctl_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid AND uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid
+                AND iuctl_cuty_customertypeid = cuty_customertypeid AND cuty_lastdetailid = cutydt_customertypedetailid
+                ORDER BY itmdt_itemname, uomtdt_sortorder, uomtdt_unitofmeasuretypename, cutydt_sortorder, cutydt_customertypename
+                """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemunitcustomertypelimits " +
-                        "WHERE iuctl_invcon_inventoryconditionid = ? AND iuctl_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                SELECT _ALL_
+                FROM itemunitcustomertypelimits
+                WHERE iuctl_invcon_inventoryconditionid = ? AND iuctl_thrutime = ?
+                FOR UPDATE
+                """;
             }
 
             var ps = ItemUnitCustomerTypeLimitFactory.getInstance().prepareStatement(query);
@@ -5546,18 +5624,22 @@ public class ItemControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemunitcustomertypelimits, items, itemdetails, inventoryconditions, inventoryconditiondetails, customertypes, customertypedetails " +
-                        "WHERE iuctl_uomt_unitofmeasuretypeid = ? AND iuctl_thrutime = ? " +
-                        "AND iuctl_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid " +
-                        "AND iuctl_invcon_inventoryconditionid = invcon_inventoryconditionid AND invcon_lastdetailid = invcondt_inventoryconditiondetailid " +
-                        "AND iuctl_cuty_customertypeid = cuty_customertypeid AND cuty_lastdetailid = cutydt_customertypedetailid " +
-                        "ORDER BY itmdt_itemname, invcondt_sortorder, invcondt_inventoryconditionname, cutydt_sortorder, cutydt_customertypename";
+                query = """
+                SELECT _ALL_
+                FROM itemunitcustomertypelimits, items, itemdetails, inventoryconditions, inventoryconditiondetails, customertypes, customertypedetails
+                WHERE iuctl_uomt_unitofmeasuretypeid = ? AND iuctl_thrutime = ?
+                AND iuctl_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid
+                AND iuctl_invcon_inventoryconditionid = invcon_inventoryconditionid AND invcon_lastdetailid = invcondt_inventoryconditiondetailid
+                AND iuctl_cuty_customertypeid = cuty_customertypeid AND cuty_lastdetailid = cutydt_customertypedetailid
+                ORDER BY itmdt_itemname, invcondt_sortorder, invcondt_inventoryconditionname, cutydt_sortorder, cutydt_customertypename
+                """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemunitcustomertypelimits " +
-                        "WHERE iuctl_invcon_inventoryconditionid = ? AND iuctl_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                SELECT _ALL_
+                FROM itemunitcustomertypelimits
+                WHERE iuctl_invcon_inventoryconditionid = ? AND iuctl_thrutime = ?
+                FOR UPDATE
+                """;
             }
 
             var ps = ItemUnitCustomerTypeLimitFactory.getInstance().prepareStatement(query);
@@ -5587,10 +5669,12 @@ public class ItemControl
         
         try {
             var ps = ItemUnitCustomerTypeLimitFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM itemunitcustomertypelimits " +
-                    "WHERE iuctl_itm_itemid = ? AND iuctl_invcon_inventoryconditionid = ? AND iuctl_thrutime = ? " +
-                    "FOR UPDATE");
+                    """
+                SELECT _ALL_
+                FROM itemunitcustomertypelimits
+                WHERE iuctl_itm_itemid = ? AND iuctl_invcon_inventoryconditionid = ? AND iuctl_thrutime = ?
+                FOR UPDATE
+                """);
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, unitOfMeasureType.getPrimaryKey().getEntityId());
@@ -5612,18 +5696,22 @@ public class ItemControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemunitcustomertypelimits, items, itemdetails, inventoryconditions, inventoryconditiondetails, unitofmeasuretypes, unitofmeasuretypedetails " +
-                        "WHERE iuctl_cuty_customertypeid = ? AND iuctl_thrutime = ? " +
-                        "AND iuctl_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid " +
-                        "AND iuctl_invcon_inventoryconditionid = invcon_inventoryconditionid AND invcon_lastdetailid = invcondt_inventoryconditiondetailid " +
-                        "AND iuctl_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid AND uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid " +
-                        "ORDER BY itmdt_itemname, invcondt_sortorder, invcondt_inventoryconditionname, uomtdt_sortorder, uomtdt_unitofmeasuretypename";
+                query = """
+                SELECT _ALL_
+                FROM itemunitcustomertypelimits, items, itemdetails, inventoryconditions, inventoryconditiondetails, unitofmeasuretypes, unitofmeasuretypedetails
+                WHERE iuctl_cuty_customertypeid = ? AND iuctl_thrutime = ?
+                AND iuctl_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid
+                AND iuctl_invcon_inventoryconditionid = invcon_inventoryconditionid AND invcon_lastdetailid = invcondt_inventoryconditiondetailid
+                AND iuctl_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid AND uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid
+                ORDER BY itmdt_itemname, invcondt_sortorder, invcondt_inventoryconditionname, uomtdt_sortorder, uomtdt_unitofmeasuretypename
+                """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemunitcustomertypelimits " +
-                        "WHERE iuctl_invcon_inventoryconditionid = ? AND iuctl_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                SELECT _ALL_
+                FROM itemunitcustomertypelimits
+                WHERE iuctl_invcon_inventoryconditionid = ? AND iuctl_thrutime = ?
+                FOR UPDATE
+                """;
             }
 
             var ps = ItemUnitCustomerTypeLimitFactory.getInstance().prepareStatement(query);
@@ -5771,16 +5859,20 @@ public class ItemControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemunitlimits " +
-                        "WHERE iul_itm_itemid = ? AND iul_invcon_inventoryconditionid = ? AND iul_uomt_unitofmeasuretypeid = ? " +
-                        "AND iul_thrutime = ?";
+                query = """
+                SELECT _ALL_
+                FROM itemunitlimits
+                WHERE iul_itm_itemid = ? AND iul_invcon_inventoryconditionid = ? AND iul_uomt_unitofmeasuretypeid = ?
+                AND iul_thrutime = ?
+                """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemunitlimits " +
-                        "WHERE iul_itm_itemid = ? AND iul_invcon_inventoryconditionid = ? AND iul_uomt_unitofmeasuretypeid = ? " +
-                        "AND iul_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                SELECT _ALL_
+                FROM itemunitlimits
+                WHERE iul_itm_itemid = ? AND iul_invcon_inventoryconditionid = ? AND iul_uomt_unitofmeasuretypeid = ?
+                AND iul_thrutime = ?
+                FOR UPDATE
+                """;
             }
 
             var ps = ItemUnitLimitFactory.getInstance().prepareStatement(query);
@@ -5823,17 +5915,21 @@ public class ItemControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemunitlimits, inventoryconditions, inventoryconditiondetails, unitofmeasuretypes, unitofmeasuretypedetails " +
-                        "WHERE iul_itm_itemid = ? AND iul_thrutime = ? " +
-                        "AND iul_invcon_inventoryconditionid = invcon_inventoryconditionid AND invcon_lastdetailid = invcondt_inventoryconditiondetailid " +
-                        "AND iul_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid AND uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid " +
-                        "ORDER BY invcondt_sortorder, invcondt_inventoryconditionname, uomtdt_sortorder, uomtdt_unitofmeasuretypename";
+                query = """
+                SELECT _ALL_
+                FROM itemunitlimits, inventoryconditions, inventoryconditiondetails, unitofmeasuretypes, unitofmeasuretypedetails
+                WHERE iul_itm_itemid = ? AND iul_thrutime = ?
+                AND iul_invcon_inventoryconditionid = invcon_inventoryconditionid AND invcon_lastdetailid = invcondt_inventoryconditiondetailid
+                AND iul_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid AND uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid
+                ORDER BY invcondt_sortorder, invcondt_inventoryconditionname, uomtdt_sortorder, uomtdt_unitofmeasuretypename
+                """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemunitlimits " +
-                        "WHERE iul_itm_itemid = ? AND iul_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                SELECT _ALL_
+                FROM itemunitlimits
+                WHERE iul_itm_itemid = ? AND iul_thrutime = ?
+                FOR UPDATE
+                """;
             }
 
             var ps = ItemUnitLimitFactory.getInstance().prepareStatement(query);
@@ -5864,17 +5960,21 @@ public class ItemControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemunitlimits, items, itemdetails, unitofmeasuretypes, unitofmeasuretypedetails " +
-                        "WHERE iul_invcon_inventoryconditionid = ? AND iul_thrutime = ? " +
-                        "AND iul_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid " +
-                        "AND iul_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid AND uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid " +
-                        "ORDER BY itmdt_itemname, uomtdt_sortorder, uomtdt_unitofmeasuretypename";
+                query = """
+                SELECT _ALL_
+                FROM itemunitlimits, items, itemdetails, unitofmeasuretypes, unitofmeasuretypedetails
+                WHERE iul_invcon_inventoryconditionid = ? AND iul_thrutime = ?
+                AND iul_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid
+                AND iul_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid AND uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid
+                ORDER BY itmdt_itemname, uomtdt_sortorder, uomtdt_unitofmeasuretypename
+                """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemunitlimits " +
-                        "WHERE iul_invcon_inventoryconditionid = ? AND iul_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                SELECT _ALL_
+                FROM itemunitlimits
+                WHERE iul_invcon_inventoryconditionid = ? AND iul_thrutime = ?
+                FOR UPDATE
+                """;
             }
 
             var ps = ItemUnitLimitFactory.getInstance().prepareStatement(query);
@@ -5905,17 +6005,21 @@ public class ItemControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemunitlimits, items, itemdetails, inventoryconditions, inventoryconditiondetails " +
-                        "WHERE iul_uomt_unitofmeasuretypeid = ? AND iul_thrutime = ? " +
-                        "AND iul_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid " +
-                        "AND iul_invcon_inventoryconditionid = invcon_inventoryconditionid AND invcon_lastdetailid = invcondt_inventoryconditiondetailid " +
-                        "ORDER BY itmdt_itemname, invcondt_sortorder, invcondt_inventoryconditionname";
+                query = """
+                SELECT _ALL_
+                FROM itemunitlimits, items, itemdetails, inventoryconditions, inventoryconditiondetails
+                WHERE iul_uomt_unitofmeasuretypeid = ? AND iul_thrutime = ?
+                AND iul_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid
+                AND iul_invcon_inventoryconditionid = invcon_inventoryconditionid AND invcon_lastdetailid = invcondt_inventoryconditiondetailid
+                ORDER BY itmdt_itemname, invcondt_sortorder, invcondt_inventoryconditionname
+                """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemunitlimits " +
-                        "WHERE iul_uomt_unitofmeasuretypeid = ? AND iul_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                SELECT _ALL_
+                FROM itemunitlimits
+                WHERE iul_uomt_unitofmeasuretypeid = ? AND iul_thrutime = ?
+                FOR UPDATE
+                """;
             }
 
             var ps = ItemUnitLimitFactory.getInstance().prepareStatement(query);
@@ -5944,10 +6048,12 @@ public class ItemControl
         
         try {
             var ps = ItemUnitLimitFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM itemunitlimits " +
-                    "WHERE iul_itm_itemid = ? AND iul_uomt_unitofmeasuretypeid = ? AND iul_thrutime = ? " +
-                    "FOR UPDATE");
+                    """
+                SELECT _ALL_
+                FROM itemunitlimits
+                WHERE iul_itm_itemid = ? AND iul_uomt_unitofmeasuretypeid = ? AND iul_thrutime = ?
+                FOR UPDATE
+                """);
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, unitOfMeasureType.getPrimaryKey().getEntityId());
@@ -6088,16 +6194,20 @@ public class ItemControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemunitpricelimits " +
-                        "WHERE iupl_itm_itemid = ? AND iupl_invcon_inventoryconditionid = ? AND iupl_uomt_unitofmeasuretypeid = ? " +
-                        "AND iupl_cur_currencyid = ? AND iupl_thrutime = ?";
+                query = """
+                SELECT _ALL_
+                FROM itemunitpricelimits
+                WHERE iupl_itm_itemid = ? AND iupl_invcon_inventoryconditionid = ? AND iupl_uomt_unitofmeasuretypeid = ?
+                AND iupl_cur_currencyid = ? AND iupl_thrutime = ?
+                """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemunitpricelimits " +
-                        "WHERE iupl_itm_itemid = ? AND iupl_invcon_inventoryconditionid = ? AND iupl_uomt_unitofmeasuretypeid = ? " +
-                        "AND iupl_cur_currencyid = ? AND iupl_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                SELECT _ALL_
+                FROM itemunitpricelimits
+                WHERE iupl_itm_itemid = ? AND iupl_invcon_inventoryconditionid = ? AND iupl_uomt_unitofmeasuretypeid = ?
+                AND iupl_cur_currencyid = ? AND iupl_thrutime = ?
+                FOR UPDATE
+                """;
             }
 
             var ps = ItemUnitPriceLimitFactory.getInstance().prepareStatement(query);
@@ -6142,18 +6252,22 @@ public class ItemControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemunitpricelimits, inventoryconditions, inventoryconditiondetails, unitofmeasuretypes, unitofmeasuretypedetails, currencies " +
-                        "WHERE iupl_itm_itemid = ? AND iupl_thrutime = ? " +
-                        "AND iupl_invcon_inventoryconditionid = invcon_inventoryconditionid AND invcon_lastdetailid = invcondt_inventoryconditiondetailid " +
-                        "AND iupl_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid AND uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid " +
-                        "AND iupl_cur_currencyid = cur_currencyid " +
-                        "ORDER BY invcondt_sortorder, invcondt_inventoryconditionname, uomtdt_sortorder, uomtdt_unitofmeasuretypename, cur_sortorder, cur_currencyisoname";
+                query = """
+                SELECT _ALL_
+                FROM itemunitpricelimits, inventoryconditions, inventoryconditiondetails, unitofmeasuretypes, unitofmeasuretypedetails, currencies
+                WHERE iupl_itm_itemid = ? AND iupl_thrutime = ?
+                AND iupl_invcon_inventoryconditionid = invcon_inventoryconditionid AND invcon_lastdetailid = invcondt_inventoryconditiondetailid
+                AND iupl_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid AND uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid
+                AND iupl_cur_currencyid = cur_currencyid
+                ORDER BY invcondt_sortorder, invcondt_inventoryconditionname, uomtdt_sortorder, uomtdt_unitofmeasuretypename, cur_sortorder, cur_currencyisoname
+                """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemunitpricelimits " +
-                        "WHERE iupl_itm_itemid = ? AND iupl_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                SELECT _ALL_
+                FROM itemunitpricelimits
+                WHERE iupl_itm_itemid = ? AND iupl_thrutime = ?
+                FOR UPDATE
+                """;
             }
 
             var ps = ItemUnitPriceLimitFactory.getInstance().prepareStatement(query);
@@ -6184,18 +6298,22 @@ public class ItemControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemunitpricelimits, items, itemdetails, unitofmeasuretypes, unitofmeasuretypedetails, currencies " +
-                        "WHERE iupl_invcon_inventoryconditionid = ? AND iupl_thrutime = ? " +
-                        "AND iupl_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid " +
-                        "AND iupl_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid AND uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid " +
-                        "AND iupl_cur_currencyid = cur_currencyid " +
-                        "ORDER BY itmdt_itemname, uomtdt_sortorder, uomtdt_unitofmeasuretypename, cur_sortorder, cur_currencyisoname";
+                query = """
+                SELECT _ALL_
+                FROM itemunitpricelimits, items, itemdetails, unitofmeasuretypes, unitofmeasuretypedetails, currencies
+                WHERE iupl_invcon_inventoryconditionid = ? AND iupl_thrutime = ?
+                AND iupl_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid
+                AND iupl_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid AND uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid
+                AND iupl_cur_currencyid = cur_currencyid
+                ORDER BY itmdt_itemname, uomtdt_sortorder, uomtdt_unitofmeasuretypename, cur_sortorder, cur_currencyisoname
+                """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemunitpricelimits " +
-                        "WHERE iupl_itm_itemid = ? AND iupl_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                SELECT _ALL_
+                FROM itemunitpricelimits
+                WHERE iupl_itm_itemid = ? AND iupl_thrutime = ?
+                FOR UPDATE
+                """;
             }
 
             var ps = ItemUnitPriceLimitFactory.getInstance().prepareStatement(query);
@@ -6226,18 +6344,22 @@ public class ItemControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemunitpricelimits, items, itemdetails, inventoryconditions, inventoryconditiondetails, currencies " +
-                        "WHERE iupl_uomt_unitofmeasuretypeid = ? AND iupl_thrutime = ? " +
-                        "AND iupl_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid " +
-                        "AND iupl_invcon_inventoryconditionid = invcon_inventoryconditionid AND invcon_lastdetailid = invcondt_inventoryconditiondetailid " +
-                        "AND iupl_cur_currencyid = cur_currencyid " +
-                        "ORDER BY itmdt_itemname, uomtdt_sortorder, invcondt_sortorder, invcondt_inventoryconditionname, cur_sortorder, cur_currencyisoname";
+                query = """
+                SELECT _ALL_
+                FROM itemunitpricelimits, items, itemdetails, inventoryconditions, inventoryconditiondetails, currencies
+                WHERE iupl_uomt_unitofmeasuretypeid = ? AND iupl_thrutime = ?
+                AND iupl_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid
+                AND iupl_invcon_inventoryconditionid = invcon_inventoryconditionid AND invcon_lastdetailid = invcondt_inventoryconditiondetailid
+                AND iupl_cur_currencyid = cur_currencyid
+                ORDER BY itmdt_itemname, uomtdt_sortorder, invcondt_sortorder, invcondt_inventoryconditionname, cur_sortorder, cur_currencyisoname
+                """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemunitpricelimits " +
-                        "WHERE iupl_uomt_unitofmeasuretypeid = ? AND iupl_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                SELECT _ALL_
+                FROM itemunitpricelimits
+                WHERE iupl_uomt_unitofmeasuretypeid = ? AND iupl_thrutime = ?
+                FOR UPDATE
+                """;
             }
 
             var ps = ItemUnitPriceLimitFactory.getInstance().prepareStatement(query);
@@ -6267,10 +6389,12 @@ public class ItemControl
         
         try {
             var ps = ItemUnitPriceLimitFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM itemunitpricelimits " +
-                    "WHERE iupl_itm_itemid = ? AND iupl_uomt_unitofmeasuretypeid = ? AND iupl_thrutime = ? " +
-                    "FOR UPDATE");
+                    """
+                SELECT _ALL_
+                FROM itemunitpricelimits
+                WHERE iupl_itm_itemid = ? AND iupl_uomt_unitofmeasuretypeid = ? AND iupl_thrutime = ?
+                FOR UPDATE
+                """);
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, unitOfMeasureType.getPrimaryKey().getEntityId());
@@ -6372,8 +6496,10 @@ public class ItemControl
 
     public long countItemPriceTypes() {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM itempricetypes");
+                """
+                SELECT COUNT(*)
+                FROM itempricetypes
+                """);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.ItemPriceType */
@@ -6398,14 +6524,18 @@ public class ItemControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itempricetypes " +
-                        "WHERE ipt_itempricetypename = ?";
+                query = """
+                SELECT _ALL_
+                FROM itempricetypes
+                WHERE ipt_itempricetypename = ?
+                """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itempricetypes " +
-                        "WHERE ipt_itempricetypename = ? " +
-                        "FOR UPDATE";
+                query = """
+                SELECT _ALL_
+                FROM itempricetypes
+                WHERE ipt_itempricetypename = ?
+                FOR UPDATE
+                """;
             }
 
             var ps = ItemPriceTypeFactory.getInstance().prepareStatement(query);
@@ -6432,14 +6562,18 @@ public class ItemControl
         String query = null;
 
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM itempricetypes " +
-                    "WHERE ipt_isdefault = 1";
+            query = """
+                SELECT _ALL_
+                FROM itempricetypes
+                WHERE ipt_isdefault = 1
+                """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM itempricetypes " +
-                    "WHERE ipt_isdefault = 1 " +
-                    "FOR UPDATE";
+            query = """
+                SELECT _ALL_
+                FROM itempricetypes
+                WHERE ipt_isdefault = 1
+                FOR UPDATE
+                """;
         }
 
         var ps = ItemPriceTypeFactory.getInstance().prepareStatement(query);
@@ -6461,10 +6595,12 @@ public class ItemControl
 
     public List<ItemPriceType> getItemPriceTypes() {
         var ps = ItemPriceTypeFactory.getInstance().prepareStatement(
-                "SELECT _ALL_ " +
-                "FROM itempricetypes " +
-                "ORDER BY ipt_sortorder, ipt_itempricetypename " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM itempricetypes
+                ORDER BY ipt_sortorder, ipt_itempricetypename
+                _LIMIT_
+                """);
         
         return ItemPriceTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
@@ -6538,9 +6674,11 @@ public class ItemControl
         
         try {
             var ps = ItemPriceTypeDescriptionFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM itempricetypedescriptions " +
-                    "WHERE iptd_ipt_itempricetypeid = ? AND iptd_lang_languageid = ?");
+                    """
+                SELECT _ALL_
+                FROM itempricetypedescriptions
+                WHERE iptd_ipt_itempricetypeid = ? AND iptd_lang_languageid = ?
+                """);
             
             ps.setLong(1, itemPriceType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -6623,19 +6761,23 @@ public class ItemControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemprices, inventoryconditions, inventoryconditiondetails, unitofmeasuretypes, unitofmeasuretypedetails, currencies " +
-                        "WHERE itmp_itm_itemid = ? AND itmp_thrutime = ? " +
-                        "AND itmp_invcon_inventoryconditionid = invcon_inventoryconditionid AND invcon_lastdetailid = invcondt_inventoryconditiondetailid " +
-                        "AND itmp_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid AND uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid " +
-                        "AND itmp_cur_currencyid = cur_currencyid " +
-                        "ORDER BY invcondt_sortorder, invcondt_inventoryconditionname, uomtdt_sortorder, uomtdt_unitofmeasuretypename, cur_sortorder, cur_currencyisoname " +
-                        "_LIMIT_";
+                query = """
+                SELECT _ALL_
+                FROM itemprices, inventoryconditions, inventoryconditiondetails, unitofmeasuretypes, unitofmeasuretypedetails, currencies
+                WHERE itmp_itm_itemid = ? AND itmp_thrutime = ?
+                AND itmp_invcon_inventoryconditionid = invcon_inventoryconditionid AND invcon_lastdetailid = invcondt_inventoryconditiondetailid
+                AND itmp_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid AND uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid
+                AND itmp_cur_currencyid = cur_currencyid
+                ORDER BY invcondt_sortorder, invcondt_inventoryconditionname, uomtdt_sortorder, uomtdt_unitofmeasuretypename, cur_sortorder, cur_currencyisoname
+                _LIMIT_
+                """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemprices " +
-                        "WHERE itmp_itm_itemid = ? AND itmp_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                SELECT _ALL_
+                FROM itemprices
+                WHERE itmp_itm_itemid = ? AND itmp_thrutime = ?
+                FOR UPDATE
+                """;
             }
 
             var ps = ItemPriceFactory.getInstance().prepareStatement(query);
@@ -6666,19 +6808,23 @@ public class ItemControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemprices, items, itemdetails, unitofmeasuretypes, unitofmeasuretypedetails, currencies " +
-                        "WHERE itmp_invcon_inventoryconditionid = ? AND itmp_thrutime = ? " +
-                        "AND itmp_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid " +
-                        "AND itmp_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid AND uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid " +
-                        "AND itmp_cur_currencyid = cur_currencyid " +
-                        "ORDER BY itmdt_itemname, uomtdt_sortorder, uomtdt_unitofmeasuretypename, cur_sortorder, cur_currencyisoname " +
-                        "_LIMIT_";
+                query = """
+                SELECT _ALL_
+                FROM itemprices, items, itemdetails, unitofmeasuretypes, unitofmeasuretypedetails, currencies
+                WHERE itmp_invcon_inventoryconditionid = ? AND itmp_thrutime = ?
+                AND itmp_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid
+                AND itmp_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid AND uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid
+                AND itmp_cur_currencyid = cur_currencyid
+                ORDER BY itmdt_itemname, uomtdt_sortorder, uomtdt_unitofmeasuretypename, cur_sortorder, cur_currencyisoname
+                _LIMIT_
+                """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemprices " +
-                        "WHERE itmp_invcon_inventoryconditionid = ? AND itmp_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                SELECT _ALL_
+                FROM itemprices
+                WHERE itmp_invcon_inventoryconditionid = ? AND itmp_thrutime = ?
+                FOR UPDATE
+                """;
             }
 
             var ps = ItemPriceFactory.getInstance().prepareStatement(query);
@@ -6709,19 +6855,23 @@ public class ItemControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemprices, items, itemdetails, inventoryconditions, inventoryconditiondetails, currencies " +
-                        "WHERE itmp_uomt_unitofmeasuretypeid = ? AND itmp_thrutime = ? " +
-                        "AND itmp_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid " +
-                        "AND itmp_invcon_inventoryconditionid = invcon_inventoryconditionid AND invcon_lastdetailid = invcondt_inventoryconditiondetailid " +
-                        "AND itmp_cur_currencyid = cur_currencyid " +
-                        "ORDER BY itmdt_itemname, invcondt_sortorder, invcondt_inventoryconditionname, cur_sortorder, cur_currencyisoname " +
-                        "_LIMIT_";
+                query = """
+                SELECT _ALL_
+                FROM itemprices, items, itemdetails, inventoryconditions, inventoryconditiondetails, currencies
+                WHERE itmp_uomt_unitofmeasuretypeid = ? AND itmp_thrutime = ?
+                AND itmp_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid
+                AND itmp_invcon_inventoryconditionid = invcon_inventoryconditionid AND invcon_lastdetailid = invcondt_inventoryconditiondetailid
+                AND itmp_cur_currencyid = cur_currencyid
+                ORDER BY itmdt_itemname, invcondt_sortorder, invcondt_inventoryconditionname, cur_sortorder, cur_currencyisoname
+                _LIMIT_
+                """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemprices " +
-                        "WHERE itmp_uomt_unitofmeasuretypeid = ? AND itmp_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                SELECT _ALL_
+                FROM itemprices
+                WHERE itmp_uomt_unitofmeasuretypeid = ? AND itmp_thrutime = ?
+                FOR UPDATE
+                """;
             }
 
             var ps = ItemPriceFactory.getInstance().prepareStatement(query);
@@ -6752,19 +6902,23 @@ public class ItemControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemprices, items, itemdetails, inventoryconditions, inventoryconditiondetails, unitofmeasuretypes, unitofmeasuretypedetails " +
-                        "WHERE itmp_cur_currencyid = ? AND itmp_thrutime = ? " +
-                        "AND itmp_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid " +
-                        "AND itmp_invcon_inventoryconditionid = invcon_inventoryconditionid AND invcon_lastdetailid = invcondt_inventoryconditiondetailid " +
-                        "AND itmp_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid AND uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid " +
-                        "ORDER BY itmdt_itemname, invcondt_sortorder, invcondt_inventoryconditionname, uomtdt_sortorder, uomtdt_unitofmeasuretypename " +
-                        "_LIMIT_";
+                query = """
+                SELECT _ALL_
+                FROM itemprices, items, itemdetails, inventoryconditions, inventoryconditiondetails, unitofmeasuretypes, unitofmeasuretypedetails
+                WHERE itmp_cur_currencyid = ? AND itmp_thrutime = ?
+                AND itmp_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid
+                AND itmp_invcon_inventoryconditionid = invcon_inventoryconditionid AND invcon_lastdetailid = invcondt_inventoryconditiondetailid
+                AND itmp_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid AND uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid
+                ORDER BY itmdt_itemname, invcondt_sortorder, invcondt_inventoryconditionname, uomtdt_sortorder, uomtdt_unitofmeasuretypename
+                _LIMIT_
+                """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemprices " +
-                        "WHERE itmp_cur_currencyid = ? AND itmp_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                SELECT _ALL_
+                FROM itemprices
+                WHERE itmp_cur_currencyid = ? AND itmp_thrutime = ?
+                FOR UPDATE
+                """;
             }
 
             var ps = ItemPriceFactory.getInstance().prepareStatement(query);
@@ -6792,11 +6946,12 @@ public class ItemControl
         List<ItemPrice> itemPrices;
         
         try {
-            var ps = ItemPriceFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM itemprices " +
-                    "WHERE itmp_itm_itemid = ? AND itmp_uomt_unitofmeasuretypeid = ? AND itmp_thrutime = ? " +
-                    "FOR UPDATE");
+            var ps = ItemPriceFactory.getInstance().prepareStatement("""
+                SELECT _ALL_
+                FROM itemprices
+                WHERE itmp_itm_itemid = ? AND itmp_uomt_unitofmeasuretypeid = ? AND itmp_thrutime = ?
+                FOR UPDATE
+                """);
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, unitOfMeasureType.getPrimaryKey().getEntityId());
@@ -6818,18 +6973,22 @@ public class ItemControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemprices, currencies " +
-                        "WHERE itmp_itm_itemid = ? AND itmp_invcon_inventoryconditionid = ? AND itmp_uomt_unitofmeasuretypeid = ? " +
-                        "AND itmp_thrutime = ? AND itmp_cur_currencyid = cur_currencyid " +
-                        "ORDER BY cur_sortorder, cur_currencyisoname " +
-                        "_LIMIT_";
+                query = """
+                SELECT _ALL_
+                FROM itemprices, currencies
+                WHERE itmp_itm_itemid = ? AND itmp_invcon_inventoryconditionid = ? AND itmp_uomt_unitofmeasuretypeid = ?
+                AND itmp_thrutime = ? AND itmp_cur_currencyid = cur_currencyid
+                ORDER BY cur_sortorder, cur_currencyisoname
+                _LIMIT_
+                """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemprices " +
-                        "WHERE itmp_itm_itemid = ? AND itmp_invcon_inventoryconditionid = ? AND itmp_uomt_unitofmeasuretypeid = ? " +
-                        "AND itmp_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                SELECT _ALL_
+                FROM itemprices
+                WHERE itmp_itm_itemid = ? AND itmp_invcon_inventoryconditionid = ? AND itmp_uomt_unitofmeasuretypeid = ?
+                AND itmp_thrutime = ?
+                FOR UPDATE
+                """;
             }
 
             var ps = ItemPriceFactory.getInstance().prepareStatement(query);
@@ -6863,16 +7022,20 @@ public class ItemControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemprices " +
-                        "WHERE itmp_itm_itemid = ? AND itmp_invcon_inventoryconditionid = ? AND itmp_uomt_unitofmeasuretypeid = ? AND itmp_cur_currencyid = ? " +
-                        "AND itmp_thrutime = ?";
+                query = """
+                SELECT _ALL_
+                FROM itemprices
+                WHERE itmp_itm_itemid = ? AND itmp_invcon_inventoryconditionid = ? AND itmp_uomt_unitofmeasuretypeid = ? AND itmp_cur_currencyid = ?
+                AND itmp_thrutime = ?
+                """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemprices " +
-                        "WHERE itmp_itm_itemid = ? AND itmp_invcon_inventoryconditionid = ? AND itmp_uomt_unitofmeasuretypeid = ? AND itmp_cur_currencyid = ? " +
-                        "AND itmp_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                SELECT _ALL_
+                FROM itemprices
+                WHERE itmp_itm_itemid = ? AND itmp_invcon_inventoryconditionid = ? AND itmp_uomt_unitofmeasuretypeid = ? AND itmp_cur_currencyid = ?
+                AND itmp_thrutime = ?
+                FOR UPDATE
+                """;
             }
 
             var ps = ItemPriceFactory.getInstance().prepareStatement(query);
@@ -6993,14 +7156,18 @@ public class ItemControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemfixedprices " +
-                        "WHERE itmfp_itmp_itempriceid = ? AND itmfp_thrutime = ?";
+                query = """
+                SELECT _ALL_
+                FROM itemfixedprices
+                WHERE itmfp_itmp_itempriceid = ? AND itmfp_thrutime = ?
+                """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemfixedprices " +
-                        "WHERE itmfp_itmp_itempriceid = ? AND itmfp_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                SELECT _ALL_
+                FROM itemfixedprices
+                WHERE itmfp_itmp_itempriceid = ? AND itmfp_thrutime = ?
+                FOR UPDATE
+                """;
             }
 
             var ps = ItemFixedPriceFactory.getInstance().prepareStatement(query);
@@ -7098,14 +7265,18 @@ public class ItemControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemvariableprices " +
-                        "WHERE itmvp_itmp_itempriceid = ? AND itmvp_thrutime = ?";
+                query = """
+                SELECT _ALL_
+                FROM itemvariableprices
+                WHERE itmvp_itmp_itempriceid = ? AND itmvp_thrutime = ?
+                """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemvariableprices " +
-                        "WHERE itmvp_itmp_itempriceid = ? AND itmvp_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                SELECT _ALL_
+                FROM itemvariableprices
+                WHERE itmvp_itmp_itempriceid = ? AND itmvp_thrutime = ?
+                FOR UPDATE
+                """;
             }
 
             var ps = ItemVariablePriceFactory.getInstance().prepareStatement(query);
@@ -7242,17 +7413,21 @@ public class ItemControl
 
     public long countItemDescriptionTypes() {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                    "FROM itemdescriptiontypes, itemdescriptiontypedetails " +
-                    "WHERE idt_activedetailid = idtdt_itemdescriptiontypedetailid");
+                """
+                SELECT COUNT(*)
+                FROM itemdescriptiontypes, itemdescriptiontypedetails
+                WHERE idt_activedetailid = idtdt_itemdescriptiontypedetailid
+                """);
     }
 
     public long countItemDescriptionTypesByParentItemDescriptionType(ItemDescriptionType parentItemDescriptionType) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM itemdescriptiontypes, itemdescriptiontypedetails " +
-                        "WHERE idt_activedetailid = idtdt_itemdescriptiontypedetailid " +
-                        "AND idtdt_parentitemdescriptiontypeid = ?",
+                """
+                SELECT COUNT(*)
+                FROM itemdescriptiontypes, itemdescriptiontypedetails
+                WHERE idt_activedetailid = idtdt_itemdescriptiontypedetailid
+                AND idtdt_parentitemdescriptiontypeid = ?
+                """,
                 parentItemDescriptionType);
     }
 
@@ -7946,9 +8121,11 @@ public class ItemControl
 
     public long countItemDescriptionTypeUseTypes() {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM itemdescriptiontypeusetypes, itemdescriptiontypeusetypedetails " +
-                "WHERE idtutyp_activedetailid = idtutypdt_itemdescriptiontypeusetypedetailid");
+                """
+                SELECT COUNT(*)
+                FROM itemdescriptiontypeusetypes, itemdescriptiontypeusetypedetails
+                WHERE idtutyp_activedetailid = idtutypdt_itemdescriptiontypeusetypedetailid
+                """);
     }
 
     private static final Map<EntityPermission, String> getItemDescriptionTypeUseTypeByNameQueries;
@@ -8064,15 +8241,19 @@ public class ItemControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemdescriptiontypeusetypes, itemdescriptiontypeusetypedetails " +
-                        "WHERE idtutyp_activedetailid = idtutypdt_itemdescriptiontypeusetypedetailid AND idtutypdt_parentitemdescriptiontypeusetypeid = ? " +
-                        "ORDER BY idtutypdt_sortorder, idtutypdt_itemdescriptiontypeusetypename";
+                query = """
+                SELECT _ALL_
+                FROM itemdescriptiontypeusetypes, itemdescriptiontypeusetypedetails
+                WHERE idtutyp_activedetailid = idtutypdt_itemdescriptiontypeusetypedetailid AND idtutypdt_parentitemdescriptiontypeusetypeid = ?
+                ORDER BY idtutypdt_sortorder, idtutypdt_itemdescriptiontypeusetypename
+                """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemdescriptiontypeusetypes, itemdescriptiontypeusetypedetails " +
-                        "WHERE idtutyp_activedetailid = idtutypdt_itemdescriptiontypeusetypedetailid AND idtutypdt_parentitemdescriptiontypeusetypeid = ? " +
-                        "FOR UPDATE";
+                query = """
+                SELECT _ALL_
+                FROM itemdescriptiontypeusetypes, itemdescriptiontypeusetypedetails
+                WHERE idtutyp_activedetailid = idtutypdt_itemdescriptiontypeusetypedetailid AND idtutypdt_parentitemdescriptiontypeusetypeid = ?
+                FOR UPDATE
+                """;
             }
 
             var ps = ItemDescriptionTypeUseTypeFactory.getInstance().prepareStatement(query);
@@ -8610,9 +8791,11 @@ public class ItemControl
 
     public long countItemImageTypes() {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM itemimagetypes, itemimagetypedetails " +
-                "WHERE iimgt_activedetailid = iimgtdt_itemimagetypedetailid");
+                """
+                SELECT COUNT(*)
+                FROM itemimagetypes, itemimagetypedetails
+                WHERE iimgt_activedetailid = iimgtdt_itemimagetypedetailid
+                """);
     }
 
     private static final Map<EntityPermission, String> getItemImageTypeByNameQueries;
@@ -9111,18 +9294,22 @@ public class ItemControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemdescriptions, itemdescriptiondetails, itemdescriptiontypes, itemdescriptiontypedetails, languages " +
-                        "WHERE idesc_activedetailid = idescdt_itemdescriptiondetailid AND idescdt_itm_itemid = ? " +
-                        "AND idescdt_idt_itemdescriptiontypeid = idt_itemdescriptiontypeid AND idt_lastdetailid = idtdt_itemdescriptiontypedetailid " +
-                        "AND idescdt_lang_languageid = lang_languageid " +
-                        "ORDER BY idtdt_sortorder, idtdt_itemdescriptiontypename, lang_sortorder, lang_languageisoname " +
-                        "_LIMIT_";
+                query = """
+                SELECT _ALL_
+                FROM itemdescriptions, itemdescriptiondetails, itemdescriptiontypes, itemdescriptiontypedetails, languages
+                WHERE idesc_activedetailid = idescdt_itemdescriptiondetailid AND idescdt_itm_itemid = ?
+                AND idescdt_idt_itemdescriptiontypeid = idt_itemdescriptiontypeid AND idt_lastdetailid = idtdt_itemdescriptiontypedetailid
+                AND idescdt_lang_languageid = lang_languageid
+                ORDER BY idtdt_sortorder, idtdt_itemdescriptiontypename, lang_sortorder, lang_languageisoname
+                _LIMIT_
+                """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemdescriptions, itemdescriptiondetails " +
-                        "WHERE idesc_activedetailid = idescdt_itemdescriptiondetailid AND idescdt_itm_itemid = ? " +
-                        "FOR UPDATE";
+                query = """
+                SELECT _ALL_
+                FROM itemdescriptions, itemdescriptiondetails
+                WHERE idesc_activedetailid = idescdt_itemdescriptiondetailid AND idescdt_itm_itemid = ?
+                FOR UPDATE
+                """;
             }
 
             var ps = ItemDescriptionFactory.getInstance().prepareStatement(query);
@@ -9152,18 +9339,22 @@ public class ItemControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemdescriptions, itemdescriptiondetails, items, itemdetails, languages " +
-                        "WHERE idesc_activedetailid = idescdt_itemdescriptiondetailid AND idescdt_idt_itemdescriptiontypeid = ? " +
-                        "AND idescdt_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid " +
-                        "AND idescdt_lang_languageid = lang_languageid " +
-                        "ORDER BY itmdt_itemname, lang_sortorder, lang_languageisoname " +
-                        "_LIMIT_";
+                query = """
+                SELECT _ALL_
+                FROM itemdescriptions, itemdescriptiondetails, items, itemdetails, languages
+                WHERE idesc_activedetailid = idescdt_itemdescriptiondetailid AND idescdt_idt_itemdescriptiontypeid = ?
+                AND idescdt_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid
+                AND idescdt_lang_languageid = lang_languageid
+                ORDER BY itmdt_itemname, lang_sortorder, lang_languageisoname
+                _LIMIT_
+                """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemdescriptions, itemdescriptiondetails " +
-                        "WHERE idesc_activedetailid = idescdt_itemdescriptiondetailid AND idescdt_idt_itemdescriptiontypeid = ? " +
-                        "FOR UPDATE";
+                query = """
+                SELECT _ALL_
+                FROM itemdescriptions, itemdescriptiondetails
+                WHERE idesc_activedetailid = idescdt_itemdescriptiondetailid AND idescdt_idt_itemdescriptiontypeid = ?
+                FOR UPDATE
+                """;
             }
 
             var ps = ItemDescriptionFactory.getInstance().prepareStatement(query);
@@ -9188,9 +9379,11 @@ public class ItemControl
 
     public long countItemDescriptionsByItem(Item item) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM itemdescriptions, itemdescriptiondetails " +
-                "WHERE idesc_activedetailid = idescdt_itemdescriptiondetailid AND idescdt_itm_itemid = ?",
+                """
+                SELECT COUNT(*)
+                FROM itemdescriptions, itemdescriptiondetails
+                WHERE idesc_activedetailid = idescdt_itemdescriptiondetailid AND idescdt_itm_itemid = ?
+                """,
                 item);
     }
 
@@ -9202,16 +9395,20 @@ public class ItemControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemdescriptions, itemdescriptiondetails " +
-                        "WHERE idesc_activedetailid = idescdt_itemdescriptiondetailid AND idescdt_idt_itemdescriptiontypeid = ? " +
-                        "AND idescdt_itm_itemid = ? AND idescdt_lang_languageid = ?";
+                query = """
+                SELECT _ALL_
+                FROM itemdescriptions, itemdescriptiondetails
+                WHERE idesc_activedetailid = idescdt_itemdescriptiondetailid AND idescdt_idt_itemdescriptiontypeid = ?
+                AND idescdt_itm_itemid = ? AND idescdt_lang_languageid = ?
+                """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemdescriptions, itemdescriptiondetails " +
-                        "WHERE idesc_activedetailid = idescdt_itemdescriptiondetailid AND idescdt_idt_itemdescriptiontypeid = ? " +
-                        "AND idescdt_itm_itemid = ? AND idescdt_lang_languageid = ? " +
-                        "FOR UPDATE";
+                query = """
+                SELECT _ALL_
+                FROM itemdescriptions, itemdescriptiondetails
+                WHERE idesc_activedetailid = idescdt_itemdescriptiondetailid AND idescdt_idt_itemdescriptiontypeid = ?
+                AND idescdt_itm_itemid = ? AND idescdt_lang_languageid = ?
+                FOR UPDATE
+                """;
             }
 
             var ps = ItemDescriptionFactory.getInstance().prepareStatement(query);
@@ -9408,14 +9605,18 @@ public class ItemControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemblobdescriptions " +
-                        "WHERE ibdesc_idesc_itemdescriptionid = ? AND ibdesc_thrutime = ?";
+                query = """
+                SELECT _ALL_
+                FROM itemblobdescriptions
+                WHERE ibdesc_idesc_itemdescriptionid = ? AND ibdesc_thrutime = ?
+                """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemblobdescriptions " +
-                        "WHERE ibdesc_idesc_itemdescriptionid = ? AND ibdesc_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                SELECT _ALL_
+                FROM itemblobdescriptions
+                WHERE ibdesc_idesc_itemdescriptionid = ? AND ibdesc_thrutime = ?
+                FOR UPDATE
+                """;
             }
 
             var ps = ItemBlobDescriptionFactory.getInstance().prepareStatement(query);
@@ -9620,14 +9821,18 @@ public class ItemControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemclobdescriptions " +
-                        "WHERE icdesc_idesc_itemdescriptionid = ? AND icdesc_thrutime = ?";
+                query = """
+                SELECT _ALL_
+                FROM itemclobdescriptions
+                WHERE icdesc_idesc_itemdescriptionid = ? AND icdesc_thrutime = ?
+                """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemclobdescriptions " +
-                        "WHERE icdesc_idesc_itemdescriptionid = ? AND icdesc_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                SELECT _ALL_
+                FROM itemclobdescriptions
+                WHERE icdesc_idesc_itemdescriptionid = ? AND icdesc_thrutime = ?
+                FOR UPDATE
+                """;
             }
 
             var ps = ItemClobDescriptionFactory.getInstance().prepareStatement(query);
@@ -9712,14 +9917,18 @@ public class ItemControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemstringdescriptions " +
-                        "WHERE isdesc_idesc_itemdescriptionid = ? AND isdesc_thrutime = ?";
+                query = """
+                SELECT _ALL_
+                FROM itemstringdescriptions
+                WHERE isdesc_idesc_itemdescriptionid = ? AND isdesc_thrutime = ?
+                """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemstringdescriptions " +
-                        "WHERE isdesc_idesc_itemdescriptionid = ? AND isdesc_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                SELECT _ALL_
+                FROM itemstringdescriptions
+                WHERE isdesc_idesc_itemdescriptionid = ? AND isdesc_thrutime = ?
+                FOR UPDATE
+                """;
             }
 
             var ps = ItemStringDescriptionFactory.getInstance().prepareStatement(query);
@@ -9838,9 +10047,11 @@ public class ItemControl
 
     public long countItemVolumeTypes() {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM itemvolumetypes, itemvolumetypedetails " +
-                        "WHERE ivolt_activedetailid = ivoltdt_itemvolumetypedetailid");
+                """
+                SELECT COUNT(*)
+                FROM itemvolumetypes, itemvolumetypedetails
+                WHERE ivolt_activedetailid = ivoltdt_itemvolumetypedetailid
+                """);
     }
 
     public ItemVolumeType getItemVolumeTypeByName(String itemVolumeTypeName, EntityPermission entityPermission) {
@@ -9850,14 +10061,18 @@ public class ItemControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemvolumetypes, itemvolumetypedetails " +
-                        "WHERE ivolt_activedetailid = ivoltdt_itemvolumetypedetailid AND ivoltdt_itemvolumetypename = ?";
+                query = """
+                SELECT _ALL_
+                FROM itemvolumetypes, itemvolumetypedetails
+                WHERE ivolt_activedetailid = ivoltdt_itemvolumetypedetailid AND ivoltdt_itemvolumetypename = ?
+                """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemvolumetypes, itemvolumetypedetails " +
-                        "WHERE ivolt_activedetailid = ivoltdt_itemvolumetypedetailid AND ivoltdt_itemvolumetypename = ? " +
-                        "FOR UPDATE";
+                query = """
+                SELECT _ALL_
+                FROM itemvolumetypes, itemvolumetypedetails
+                WHERE ivolt_activedetailid = ivoltdt_itemvolumetypedetailid AND ivoltdt_itemvolumetypename = ?
+                FOR UPDATE
+                """;
             }
 
             var ps = ItemVolumeTypeFactory.getInstance().prepareStatement(query);
@@ -9892,14 +10107,18 @@ public class ItemControl
         String query = null;
 
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM itemvolumetypes, itemvolumetypedetails " +
-                    "WHERE ivolt_activedetailid = ivoltdt_itemvolumetypedetailid AND ivoltdt_isdefault = 1";
+            query = """
+                SELECT _ALL_
+                FROM itemvolumetypes, itemvolumetypedetails
+                WHERE ivolt_activedetailid = ivoltdt_itemvolumetypedetailid AND ivoltdt_isdefault = 1
+                """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM itemvolumetypes, itemvolumetypedetails " +
-                    "WHERE ivolt_activedetailid = ivoltdt_itemvolumetypedetailid AND ivoltdt_isdefault = 1 " +
-                    "FOR UPDATE";
+            query = """
+                SELECT _ALL_
+                FROM itemvolumetypes, itemvolumetypedetails
+                WHERE ivolt_activedetailid = ivoltdt_itemvolumetypedetailid AND ivoltdt_isdefault = 1
+                FOR UPDATE
+                """;
         }
 
         var ps = ItemVolumeTypeFactory.getInstance().prepareStatement(query);
@@ -9923,16 +10142,20 @@ public class ItemControl
         String query = null;
 
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM itemvolumetypes, itemvolumetypedetails " +
-                    "WHERE ivolt_activedetailid = ivoltdt_itemvolumetypedetailid " +
-                    "ORDER BY ivoltdt_sortorder, ivoltdt_itemvolumetypename " +
-                    "_LIMIT_";
+            query = """
+                SELECT _ALL_
+                FROM itemvolumetypes, itemvolumetypedetails
+                WHERE ivolt_activedetailid = ivoltdt_itemvolumetypedetailid
+                ORDER BY ivoltdt_sortorder, ivoltdt_itemvolumetypename
+                _LIMIT_
+                """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM itemvolumetypes, itemvolumetypedetails " +
-                    "WHERE ivolt_activedetailid = ivoltdt_itemvolumetypedetailid " +
-                    "FOR UPDATE";
+            query = """
+                SELECT _ALL_
+                FROM itemvolumetypes, itemvolumetypedetails
+                WHERE ivolt_activedetailid = ivoltdt_itemvolumetypedetailid
+                FOR UPDATE
+                """;
         }
 
         var ps = ItemVolumeTypeFactory.getInstance().prepareStatement(query);
@@ -10095,14 +10318,18 @@ public class ItemControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemvolumetypedescriptions " +
-                        "WHERE ivoltd_ivolt_itemvolumetypeid = ? AND ivoltd_lang_languageid = ? AND ivoltd_thrutime = ?";
+                query = """
+                SELECT _ALL_
+                FROM itemvolumetypedescriptions
+                WHERE ivoltd_ivolt_itemvolumetypeid = ? AND ivoltd_lang_languageid = ? AND ivoltd_thrutime = ?
+                """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemvolumetypedescriptions " +
-                        "WHERE ivoltd_ivolt_itemvolumetypeid = ? AND ivoltd_lang_languageid = ? AND ivoltd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                SELECT _ALL_
+                FROM itemvolumetypedescriptions
+                WHERE ivoltd_ivolt_itemvolumetypeid = ? AND ivoltd_lang_languageid = ? AND ivoltd_thrutime = ?
+                FOR UPDATE
+                """;
             }
 
             var ps = ItemVolumeTypeDescriptionFactory.getInstance().prepareStatement(query);
@@ -10143,15 +10370,19 @@ public class ItemControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemvolumetypedescriptions, languages " +
-                        "WHERE ivoltd_ivolt_itemvolumetypeid = ? AND ivoltd_thrutime = ? AND ivoltd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                SELECT _ALL_
+                FROM itemvolumetypedescriptions, languages
+                WHERE ivoltd_ivolt_itemvolumetypeid = ? AND ivoltd_thrutime = ? AND ivoltd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemvolumetypedescriptions " +
-                        "WHERE ivoltd_ivolt_itemvolumetypeid = ? AND ivoltd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                SELECT _ALL_
+                FROM itemvolumetypedescriptions
+                WHERE ivoltd_ivolt_itemvolumetypeid = ? AND ivoltd_thrutime = ?
+                FOR UPDATE
+                """;
             }
 
             var ps = ItemVolumeTypeDescriptionFactory.getInstance().prepareStatement(query);
@@ -10287,14 +10518,18 @@ public class ItemControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemvolumes " +
-                        "WHERE ivol_itm_itemid = ? AND ivol_uomt_unitofmeasuretypeid = ? AND ivol_ivolt_itemvolumetypeid = ? AND ivol_thrutime = ?";
+                query = """
+                SELECT _ALL_
+                FROM itemvolumes
+                WHERE ivol_itm_itemid = ? AND ivol_uomt_unitofmeasuretypeid = ? AND ivol_ivolt_itemvolumetypeid = ? AND ivol_thrutime = ?
+                """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemvolumes " +
-                        "WHERE ivol_itm_itemid = ? AND ivol_uomt_unitofmeasuretypeid = ? AND ivol_ivolt_itemvolumetypeid = ? AND ivol_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                SELECT _ALL_
+                FROM itemvolumes
+                WHERE ivol_itm_itemid = ? AND ivol_uomt_unitofmeasuretypeid = ? AND ivol_ivolt_itemvolumetypeid = ? AND ivol_thrutime = ?
+                FOR UPDATE
+                """;
             }
 
             var ps = ItemVolumeFactory.getInstance().prepareStatement(query);
@@ -10335,17 +10570,21 @@ public class ItemControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemvolumes " +
-                        "JOIN itemvolumetypes ON ivol_ivolt_itemvolumetypeid = ivolt_itemvolumetypeid " +
-                        "JOIN itemvolumetypedetails ON ivolt_lastdetailid = ivoltdt_itemvolumetypedetailid " +
-                        "WHERE ivol_itm_itemid = ? AND ivol_uomt_unitofmeasuretypeid = ? AND ivol_thrutime = ? " +
-                        "ORDER BY ivoltdt_sortorder, ivoltdt_itemvolumetypename";
+                query = """
+                SELECT _ALL_
+                FROM itemvolumes
+                JOIN itemvolumetypes ON ivol_ivolt_itemvolumetypeid = ivolt_itemvolumetypeid
+                JOIN itemvolumetypedetails ON ivolt_lastdetailid = ivoltdt_itemvolumetypedetailid
+                WHERE ivol_itm_itemid = ? AND ivol_uomt_unitofmeasuretypeid = ? AND ivol_thrutime = ?
+                ORDER BY ivoltdt_sortorder, ivoltdt_itemvolumetypename
+                """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemvolumes " +
-                        "WHERE ivol_itm_itemid = ? AND ivol_uomt_unitofmeasuretypeid = ? AND ivol_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                SELECT _ALL_
+                FROM itemvolumes
+                WHERE ivol_itm_itemid = ? AND ivol_uomt_unitofmeasuretypeid = ? AND ivol_thrutime = ?
+                FOR UPDATE
+                """;
             }
 
             var ps = ItemVolumeFactory.getInstance().prepareStatement(query);
@@ -10377,19 +10616,23 @@ public class ItemControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemvolumes " +
-                        "JOIN unitofmeasuretypes ON ivol_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid " +
-                        "JOIN unitofmeasuretypedetails ON uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid " +
-                        "JOIN itemvolumetypes ON ivol_ivolt_itemvolumetypeid = ivolt_itemvolumetypeid " +
-                        "JOIN itemvolumetypedetails ON ivolt_lastdetailid = ivoltdt_itemvolumetypedetailid " +
-                        "WHERE ivol_itm_itemid = ? AND ivol_thrutime = ? " +
-                        "ORDER BY uomtdt_sortorder, uomtdt_unitofmeasuretypename, ivoltdt_sortorder, ivoltdt_itemvolumetypename";
+                query = """
+                SELECT _ALL_
+                FROM itemvolumes
+                JOIN unitofmeasuretypes ON ivol_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid
+                JOIN unitofmeasuretypedetails ON uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid
+                JOIN itemvolumetypes ON ivol_ivolt_itemvolumetypeid = ivolt_itemvolumetypeid
+                JOIN itemvolumetypedetails ON ivolt_lastdetailid = ivoltdt_itemvolumetypedetailid
+                WHERE ivol_itm_itemid = ? AND ivol_thrutime = ?
+                ORDER BY uomtdt_sortorder, uomtdt_unitofmeasuretypename, ivoltdt_sortorder, ivoltdt_itemvolumetypename
+                """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemvolumes " +
-                        "WHERE ivol_itm_itemid = ? AND ivol_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                SELECT _ALL_
+                FROM itemvolumes
+                WHERE ivol_itm_itemid = ? AND ivol_thrutime = ?
+                FOR UPDATE
+                """;
             }
 
             var ps = ItemVolumeFactory.getInstance().prepareStatement(query);
@@ -10420,19 +10663,23 @@ public class ItemControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemvolumes " +
-                        "JOIN items ON ivol_itm_itemid = itm_itemid " +
-                        "JOIN itemdetails ON itm_lastdetailid = itmdt_itemdetailid " +
-                        "JOIN unitofmeasuretypes ON ivol_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid " +
-                        "JOIN unitofmeasuretypedetails ON uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid " +
-                        "WHERE ivol_uomt_unitofmeasuretypeid = ? AND ivol_thrutime = ? " +
-                        "ORDER BY itmdt_itemname, uomtdt_sortorder, uomtdt_unitofmeasuretypename";
+                query = """
+                SELECT _ALL_
+                FROM itemvolumes
+                JOIN items ON ivol_itm_itemid = itm_itemid
+                JOIN itemdetails ON itm_lastdetailid = itmdt_itemdetailid
+                JOIN unitofmeasuretypes ON ivol_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid
+                JOIN unitofmeasuretypedetails ON uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid
+                WHERE ivol_uomt_unitofmeasuretypeid = ? AND ivol_thrutime = ?
+                ORDER BY itmdt_itemname, uomtdt_sortorder, uomtdt_unitofmeasuretypename
+                """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemvolumes " +
-                        "WHERE ivol_itm_itemid = ? AND ivol_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                SELECT _ALL_
+                FROM itemvolumes
+                WHERE ivol_itm_itemid = ? AND ivol_thrutime = ?
+                FOR UPDATE
+                """;
             }
 
             var ps = ItemVolumeFactory.getInstance().prepareStatement(query);
@@ -10579,10 +10826,11 @@ public class ItemControl
     }
 
     public long countItemWeightTypes() {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM itemweighttypes, itemweighttypedetails " +
-                        "WHERE iwghtt_activedetailid = iwghttdt_itemweighttypedetailid");
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM itemweighttypes, itemweighttypedetails
+                WHERE iwghtt_activedetailid = iwghttdt_itemweighttypedetailid
+                """);
     }
 
     public ItemWeightType getItemWeightTypeByName(String itemWeightTypeName, EntityPermission entityPermission) {
@@ -10592,14 +10840,18 @@ public class ItemControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemweighttypes, itemweighttypedetails " +
-                        "WHERE iwghtt_activedetailid = iwghttdt_itemweighttypedetailid AND iwghttdt_itemweighttypename = ?";
+                query = """
+                SELECT _ALL_
+                FROM itemweighttypes, itemweighttypedetails
+                WHERE iwghtt_activedetailid = iwghttdt_itemweighttypedetailid AND iwghttdt_itemweighttypename = ?
+                """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemweighttypes, itemweighttypedetails " +
-                        "WHERE iwghtt_activedetailid = iwghttdt_itemweighttypedetailid AND iwghttdt_itemweighttypename = ? " +
-                        "FOR UPDATE";
+                query = """
+                SELECT _ALL_
+                FROM itemweighttypes, itemweighttypedetails
+                WHERE iwghtt_activedetailid = iwghttdt_itemweighttypedetailid AND iwghttdt_itemweighttypename = ?
+                FOR UPDATE
+                """;
             }
 
             var ps = ItemWeightTypeFactory.getInstance().prepareStatement(query);
@@ -10634,14 +10886,18 @@ public class ItemControl
         String query = null;
 
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM itemweighttypes, itemweighttypedetails " +
-                    "WHERE iwghtt_activedetailid = iwghttdt_itemweighttypedetailid AND iwghttdt_isdefault = 1";
+            query = """
+                SELECT _ALL_
+                FROM itemweighttypes, itemweighttypedetails
+                WHERE iwghtt_activedetailid = iwghttdt_itemweighttypedetailid AND iwghttdt_isdefault = 1
+                """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM itemweighttypes, itemweighttypedetails " +
-                    "WHERE iwghtt_activedetailid = iwghttdt_itemweighttypedetailid AND iwghttdt_isdefault = 1 " +
-                    "FOR UPDATE";
+            query = """
+                SELECT _ALL_
+                FROM itemweighttypes, itemweighttypedetails
+                WHERE iwghtt_activedetailid = iwghttdt_itemweighttypedetailid AND iwghttdt_isdefault = 1
+                FOR UPDATE
+                """;
         }
 
         var ps = ItemWeightTypeFactory.getInstance().prepareStatement(query);
@@ -10665,16 +10921,20 @@ public class ItemControl
         String query = null;
 
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM itemweighttypes, itemweighttypedetails " +
-                    "WHERE iwghtt_activedetailid = iwghttdt_itemweighttypedetailid " +
-                    "ORDER BY iwghttdt_sortorder, iwghttdt_itemweighttypename " +
-                    "_LIMIT_";
+            query = """
+                SELECT _ALL_
+                FROM itemweighttypes, itemweighttypedetails
+                WHERE iwghtt_activedetailid = iwghttdt_itemweighttypedetailid
+                ORDER BY iwghttdt_sortorder, iwghttdt_itemweighttypename
+                _LIMIT_
+                """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM itemweighttypes, itemweighttypedetails " +
-                    "WHERE iwghtt_activedetailid = iwghttdt_itemweighttypedetailid " +
-                    "FOR UPDATE";
+            query = """
+                SELECT _ALL_
+                FROM itemweighttypes, itemweighttypedetails
+                WHERE iwghtt_activedetailid = iwghttdt_itemweighttypedetailid
+                FOR UPDATE
+                """;
         }
 
         var ps = ItemWeightTypeFactory.getInstance().prepareStatement(query);
@@ -10838,14 +11098,18 @@ public class ItemControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemweighttypedescriptions " +
-                        "WHERE iwghttd_iwghtt_itemweighttypeid = ? AND iwghttd_lang_languageid = ? AND iwghttd_thrutime = ?";
+                query = """
+                SELECT _ALL_
+                FROM itemweighttypedescriptions
+                WHERE iwghttd_iwghtt_itemweighttypeid = ? AND iwghttd_lang_languageid = ? AND iwghttd_thrutime = ?
+                """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemweighttypedescriptions " +
-                        "WHERE iwghttd_iwghtt_itemweighttypeid = ? AND iwghttd_lang_languageid = ? AND iwghttd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                SELECT _ALL_
+                FROM itemweighttypedescriptions
+                WHERE iwghttd_iwghtt_itemweighttypeid = ? AND iwghttd_lang_languageid = ? AND iwghttd_thrutime = ?
+                FOR UPDATE
+                """;
             }
 
             var ps = ItemWeightTypeDescriptionFactory.getInstance().prepareStatement(query);
@@ -10886,15 +11150,19 @@ public class ItemControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemweighttypedescriptions, languages " +
-                        "WHERE iwghttd_iwghtt_itemweighttypeid = ? AND iwghttd_thrutime = ? AND iwghttd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                SELECT _ALL_
+                FROM itemweighttypedescriptions, languages
+                WHERE iwghttd_iwghtt_itemweighttypeid = ? AND iwghttd_thrutime = ? AND iwghttd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemweighttypedescriptions " +
-                        "WHERE iwghttd_iwghtt_itemweighttypeid = ? AND iwghttd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                SELECT _ALL_
+                FROM itemweighttypedescriptions
+                WHERE iwghttd_iwghtt_itemweighttypeid = ? AND iwghttd_thrutime = ?
+                FOR UPDATE
+                """;
             }
 
             var ps = ItemWeightTypeDescriptionFactory.getInstance().prepareStatement(query);
@@ -11030,14 +11298,18 @@ public class ItemControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemweights " +
-                        "WHERE iwght_itm_itemid = ? AND iwght_uomt_unitofmeasuretypeid = ? AND iwght_iwghtt_itemweighttypeid = ? AND iwght_thrutime = ?";
+                query = """
+                SELECT _ALL_
+                FROM itemweights
+                WHERE iwght_itm_itemid = ? AND iwght_uomt_unitofmeasuretypeid = ? AND iwght_iwghtt_itemweighttypeid = ? AND iwght_thrutime = ?
+                """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemweights " +
-                        "WHERE iwght_itm_itemid = ? AND iwght_uomt_unitofmeasuretypeid = ? AND iwght_iwghtt_itemweighttypeid = ? AND iwght_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                SELECT _ALL_
+                FROM itemweights
+                WHERE iwght_itm_itemid = ? AND iwght_uomt_unitofmeasuretypeid = ? AND iwght_iwghtt_itemweighttypeid = ? AND iwght_thrutime = ?
+                FOR UPDATE
+                """;
             }
 
             var ps = ItemWeightFactory.getInstance().prepareStatement(query);
@@ -11078,17 +11350,21 @@ public class ItemControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemweights " +
-                        "JOIN itemweighttypes ON iwght_iwghtt_itemweighttypeid = iwghtt_itemweighttypeid " +
-                        "JOIN itemweighttypedetails ON iwghtt_lastdetailid = iwghttdt_itemweighttypedetailid " +
-                        "WHERE iwght_itm_itemid = ? AND iwght_uomt_unitofmeasuretypeid = ? AND iwght_thrutime = ? " +
-                        "ORDER BY iwghttdt_sortorder, iwghttdt_itemweighttypename";
+                query = """
+                SELECT _ALL_
+                FROM itemweights
+                JOIN itemweighttypes ON iwght_iwghtt_itemweighttypeid = iwghtt_itemweighttypeid
+                JOIN itemweighttypedetails ON iwghtt_lastdetailid = iwghttdt_itemweighttypedetailid
+                WHERE iwght_itm_itemid = ? AND iwght_uomt_unitofmeasuretypeid = ? AND iwght_thrutime = ?
+                ORDER BY iwghttdt_sortorder, iwghttdt_itemweighttypename
+                """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemweights " +
-                        "WHERE iwght_itm_itemid = ? AND iwght_uomt_unitofmeasuretypeid = ? AND iwght_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                SELECT _ALL_
+                FROM itemweights
+                WHERE iwght_itm_itemid = ? AND iwght_uomt_unitofmeasuretypeid = ? AND iwght_thrutime = ?
+                FOR UPDATE
+                """;
             }
 
             var ps = ItemWeightFactory.getInstance().prepareStatement(query);
@@ -11120,19 +11396,23 @@ public class ItemControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemweights " +
-                        "JOIN unitofmeasuretypes ON iwght_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid " +
-                        "JOIN unitofmeasuretypedetails ON uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid " +
-                        "JOIN itemweighttypes ON iwght_iwghtt_itemweighttypeid = iwghtt_itemweighttypeid " +
-                        "JOIN itemweighttypedetails ON iwghtt_lastdetailid = iwghttdt_itemweighttypedetailid " +
-                        "WHERE iwght_itm_itemid = ? AND iwght_thrutime = ? " +
-                        "ORDER BY uomtdt_sortorder, uomtdt_unitofmeasuretypename, iwghttdt_sortorder, iwghttdt_itemweighttypename";
+                query = """
+                SELECT _ALL_
+                FROM itemweights
+                JOIN unitofmeasuretypes ON iwght_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid
+                JOIN unitofmeasuretypedetails ON uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid
+                JOIN itemweighttypes ON iwght_iwghtt_itemweighttypeid = iwghtt_itemweighttypeid
+                JOIN itemweighttypedetails ON iwghtt_lastdetailid = iwghttdt_itemweighttypedetailid
+                WHERE iwght_itm_itemid = ? AND iwght_thrutime = ?
+                ORDER BY uomtdt_sortorder, uomtdt_unitofmeasuretypename, iwghttdt_sortorder, iwghttdt_itemweighttypename
+                """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemweights " +
-                        "WHERE iwght_itm_itemid = ? AND iwght_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                SELECT _ALL_
+                FROM itemweights
+                WHERE iwght_itm_itemid = ? AND iwght_thrutime = ?
+                FOR UPDATE
+                """;
             }
 
             var ps = ItemWeightFactory.getInstance().prepareStatement(query);
@@ -11163,19 +11443,23 @@ public class ItemControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemweights " +
-                        "JOIN items ON iwght_itm_itemid = itm_itemid " +
-                        "JOIN itemdetails ON itm_lastdetailid = itmdt_itemdetailid " +
-                        "JOIN unitofmeasuretypes ON iwght_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid " +
-                        "JOIN unitofmeasuretypedetails ON uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid " +
-                        "WHERE iwght_uomt_unitofmeasuretypeid = ? AND iwght_thrutime = ? " +
-                        "ORDER BY itmdt_itemname, uomtdt_sortorder, uomtdt_unitofmeasuretypename";
+                query = """
+                SELECT _ALL_
+                FROM itemweights
+                JOIN items ON iwght_itm_itemid = itm_itemid
+                JOIN itemdetails ON itm_lastdetailid = itmdt_itemdetailid
+                JOIN unitofmeasuretypes ON iwght_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid
+                JOIN unitofmeasuretypedetails ON uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid
+                WHERE iwght_uomt_unitofmeasuretypeid = ? AND iwght_thrutime = ?
+                ORDER BY itmdt_itemname, uomtdt_sortorder, uomtdt_unitofmeasuretypename
+                """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemweights " +
-                        "WHERE iwght_itm_itemid = ? AND iwght_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                SELECT _ALL_
+                FROM itemweights
+                WHERE iwght_itm_itemid = ? AND iwght_thrutime = ?
+                FOR UPDATE
+                """;
             }
 
             var ps = ItemWeightFactory.getInstance().prepareStatement(query);
@@ -11318,10 +11602,11 @@ public class ItemControl
     }
 
     public long countRelatedItemTypes() {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM relateditemtypes, relateditemtypedetails " +
-                "WHERE rltityp_activedetailid = rltitypdt_relateditemtypedetailid");
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM relateditemtypes, relateditemtypedetails
+                WHERE rltityp_activedetailid = rltitypdt_relateditemtypedetailid
+                """);
     }
 
     private static final Map<EntityPermission, String> getRelatedItemTypeByNameQueries;
@@ -11838,11 +12123,12 @@ public class ItemControl
     }
 
     public long countRelatedItemsByRelatedItemType(RelatedItemType relatedItemType) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM relateditems, relateditemdetails " +
-                "WHERE rlti_activedetailid = rltidt_relateditemdetailid " +
-                "AND rltidt_rltityp_relateditemtypeid = ?",
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM relateditems, relateditemdetails
+                WHERE rlti_activedetailid = rltidt_relateditemdetailid
+                AND rltidt_rltityp_relateditemtypeid = ?
+                """,
                 relatedItemType);
     }
 
@@ -11881,11 +12167,12 @@ public class ItemControl
     }
 
     public long countRelatedItemsByRelatedItemTypeAndFromItem(RelatedItemType relatedItemType, Item fromItem) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM relateditems, relateditemdetails " +
-                "WHERE rlti_activedetailid = rltidt_relateditemdetailid " +
-                "AND rltidt_rltityp_relateditemtypeid = ? AND rltidt_fromitemid = ?",
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM relateditems, relateditemdetails
+                WHERE rlti_activedetailid = rltidt_relateditemdetailid
+                AND rltidt_rltityp_relateditemtypeid = ? AND rltidt_fromitemid = ?
+                """,
                 relatedItemType, fromItem);
     }
 
@@ -11924,11 +12211,12 @@ public class ItemControl
     }
 
     public long countRelatedItemsByRelatedItemTypeAndToItem(RelatedItemType relatedItemType, Item toItem) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM relateditems, relateditemdetails " +
-                "WHERE rlti_activedetailid = rltidt_relateditemdetailid " +
-                "AND rltidt_rltityp_relateditemtypeid = ? AND rltidt_toitemid = ?",
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM relateditems, relateditemdetails
+                WHERE rlti_activedetailid = rltidt_relateditemdetailid
+                AND rltidt_rltityp_relateditemtypeid = ? AND rltidt_toitemid = ?
+                """,
                 relatedItemType, toItem);
     }
 
@@ -11968,11 +12256,12 @@ public class ItemControl
     }
 
     public long countRelatedItemsByFromItem(Item fromItem) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM relateditems, relateditemdetails " +
-                "WHERE rlti_activedetailid = rltidt_relateditemdetailid " +
-                "AND rltidt_fromitemid = ?",
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM relateditems, relateditemdetails
+                WHERE rlti_activedetailid = rltidt_relateditemdetailid
+                AND rltidt_fromitemid = ?
+                """,
                 fromItem);
     }
 
@@ -12012,11 +12301,12 @@ public class ItemControl
     }
 
     public long countRelatedItemsByToItem(Item toItem) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM relateditems, relateditemdetails " +
-                "WHERE rlti_activedetailid = rltidt_relateditemdetailid " +
-                "AND rltidt_toitemid = ?",
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM relateditems, relateditemdetails
+                WHERE rlti_activedetailid = rltidt_relateditemdetailid
+                AND rltidt_toitemid = ?
+                """,
                 toItem);
     }
 
@@ -12159,18 +12449,19 @@ public class ItemControl
     }
     
     public long countHarmonizedTariffScheduleCodes() {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM harmonizedtariffschedulecodes, harmonizedtariffschedulecodedetails " +
-                "WHERE hztsc_activedetailid = hztscdt_harmonizedtariffschedulecodedetailid");
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM harmonizedtariffschedulecodes, harmonizedtariffschedulecodedetails
+                WHERE hztsc_activedetailid = hztscdt_harmonizedtariffschedulecodedetailid
+                """);
     }
 
     public long countHarmonizedTariffScheduleCodesByCountryGeoCode(GeoCode countryGeoCode) {
-        return session.queryForLong(
-                "SELECT COUNT(*) "
-                        + "FROM harmonizedtariffschedulecodes, harmonizedtariffschedulecodedetails "
-                        + "WHERE hztsc_activedetailid = hztscdt_harmonizedtariffschedulecodedetailid AND hztscdt_countrygeocodeid = ?",
-                countryGeoCode);
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM harmonizedtariffschedulecodes, harmonizedtariffschedulecodedetails
+                WHERE hztsc_activedetailid = hztscdt_harmonizedtariffschedulecodedetailid AND hztscdt_countrygeocodeid = ?
+                """, countryGeoCode);
     }
 
     private static final Map<EntityPermission, String> getHarmonizedTariffScheduleCodesByCountryGeoCodeQueries;
