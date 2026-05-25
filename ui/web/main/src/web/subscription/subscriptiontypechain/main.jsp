@@ -31,7 +31,7 @@
                 <a href="<c:url value="/action/Subscription/Main" />">Subscriptions</a> &gt;&gt;
                 <a href="<c:url value="/action/Subscription/SubscriptionKind/Main" />">Kinds</a> &gt;&gt;
                 <c:url var="subscriptionTypesUrl" value="/action/Subscription/SubscriptionType/Main">
-                    <c:param name="SubscriptionKindName" value="${subscriptionKind.subscriptionKindName}" />
+                    <c:param name="SubscriptionKindName" value="${subscriptionType.subscriptionKind.subscriptionKindName}" />
                 </c:url>
                 <a href="${subscriptionTypesUrl}">Types</a> &gt;&gt;
                 Chains
@@ -39,7 +39,7 @@
         </div>
         <div id="Content">
             <c:url var="addUrl" value="/action/Subscription/SubscriptionTypeChain/Add/Step1">
-                <c:param name="SubscriptionKindName" value="${subscriptionKind.subscriptionKindName}" />
+                <c:param name="SubscriptionKindName" value="${subscriptionType.subscriptionKind.subscriptionKindName}" />
                 <c:param name="SubscriptionTypeName" value="${subscriptionType.subscriptionTypeName}" />
             </c:url>
             <p><a href="${addUrl}">Add Chain.</a></p>
