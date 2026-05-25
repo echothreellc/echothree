@@ -5118,7 +5118,23 @@ public class ItemControl
         
         return itemPackCheckRequirement;
     }
-    
+
+    public long countItemPackCheckRequirementByItem(final Item item) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM itempackcheckrequirements
+                        WHERE ipcr_itm_itemid = ? AND ipcr_thrutime = ?
+                        """, item, Session.MAX_TIME);
+    }
+
+    public long countItemPackCheckRequirementByUnitOfMeasureType(final UnitOfMeasureType unitOfMeasureType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM itempackcheckrequirements
+                        WHERE ipcr_uomt_unitofmeasuretypeid = ? AND ipcr_thrutime = ?
+                        """, unitOfMeasureType, Session.MAX_TIME);
+    }
+
     private ItemPackCheckRequirement getItemPackCheckRequirement(Item item, UnitOfMeasureType unitOfMeasureType, EntityPermission entityPermission) {
         ItemPackCheckRequirement itemPackCheckRequirement;
         
@@ -12127,20 +12143,19 @@ public class ItemControl
         return harmonizedTariffScheduleCode;
     }
 
-    public long countHarmonizedTariffScheduleCodesByCountryGeoCode(GeoCode countryGeoCode) {
-        return session.queryForLong(
-                "SELECT COUNT(*) "
-                + "FROM harmonizedtariffschedulecodes, harmonizedtariffschedulecodedetails "
-                + "WHERE hztsc_activedetailid = hztscdt_harmonizedtariffschedulecodedetailid AND hztscdt_countrygeocodeid = ?",
-                countryGeoCode);
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.HarmonizedTariffScheduleCode */
+    public HarmonizedTariffScheduleCode getHarmonizedTariffScheduleCodeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new HarmonizedTariffScheduleCodePK(entityInstance.getEntityUniqueId());
+
+        return HarmonizedTariffScheduleCodeFactory.getInstance().getEntityFromPK(entityPermission, pk);
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHO_THREE.HarmonizedTariffScheduleCode */
     public HarmonizedTariffScheduleCode getHarmonizedTariffScheduleCodeByEntityInstance(EntityInstance entityInstance) {
-        var pk = new HarmonizedTariffScheduleCodePK(entityInstance.getEntityUniqueId());
-        var harmonizedTariffScheduleCode = HarmonizedTariffScheduleCodeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
-        
-        return harmonizedTariffScheduleCode;
+        return getHarmonizedTariffScheduleCodeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public HarmonizedTariffScheduleCode getHarmonizedTariffScheduleCodeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getHarmonizedTariffScheduleCodeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
     
     public long countHarmonizedTariffScheduleCodes() {
@@ -12148,6 +12163,14 @@ public class ItemControl
                 "SELECT COUNT(*) " +
                 "FROM harmonizedtariffschedulecodes, harmonizedtariffschedulecodedetails " +
                 "WHERE hztsc_activedetailid = hztscdt_harmonizedtariffschedulecodedetailid");
+    }
+
+    public long countHarmonizedTariffScheduleCodesByCountryGeoCode(GeoCode countryGeoCode) {
+        return session.queryForLong(
+                "SELECT COUNT(*) "
+                        + "FROM harmonizedtariffschedulecodes, harmonizedtariffschedulecodedetails "
+                        + "WHERE hztsc_activedetailid = hztscdt_harmonizedtariffschedulecodedetailid AND hztscdt_countrygeocodeid = ?",
+                countryGeoCode);
     }
 
     private static final Map<EntityPermission, String> getHarmonizedTariffScheduleCodesByCountryGeoCodeQueries;

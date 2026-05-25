@@ -26,6 +26,9 @@ public interface GetItemPackCheckRequirementsResult
     
     ItemTransfer getItem();
     void setItem(ItemTransfer item);
+
+    Long getItemPackCheckRequirementCount();
+    void setItemPackCheckRequirementCount(Long itemPackCheckRequirementCount);
     
     List<ItemPackCheckRequirementTransfer> getItemPackCheckRequirements();
     void setItemPackCheckRequirements(List<ItemPackCheckRequirementTransfer> itemPackCheckRequirements);
