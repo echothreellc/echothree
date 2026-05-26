@@ -4337,14 +4337,21 @@ public class ItemControl
         
         return itemCountryOfOrigin;
     }
-    
-    public long countItemCountryOfOriginsByCountryGeoCode(GeoCode countryGeoCode) {
+
+    public long countItemCountryOfOriginsByItem(final Item item) {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM itemcountryoforigins
+                WHERE icoorgn_itm_itemid = ? AND icoorgn_thrutime = ?
+                """, item, Session.MAX_TIME);
+    }
+
+    public long countItemCountryOfOriginsByCountryGeoCode(final GeoCode countryGeoCode) {
         return session.queryForLong("""
                 SELECT COUNT(*)
                 FROM itemcountryoforigins
                 WHERE icoorgn_countrygeocodeid = ? AND icoorgn_thrutime = ?
-                """,
-                countryGeoCode, Session.MAX_TIME);
+                """, countryGeoCode, Session.MAX_TIME);
     }
 
     private ItemCountryOfOrigin getItemCountryOfOrigin(Item item, GeoCode countryGeoCode, EntityPermission entityPermission) {
