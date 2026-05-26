@@ -20,15 +20,15 @@ import com.echothree.control.user.item.common.form.GetItemCountryOfOriginForm;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.item.server.control.ItemControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.control.item.server.logic.ItemLogic;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetItemCountryOfOriginCommand
@@ -38,8 +38,8 @@ public class GetItemCountryOfOriginCommand
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("CountryName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("CountryName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
     
@@ -48,15 +48,22 @@ public class GetItemCountryOfOriginCommand
         super(null, FORM_FIELD_DEFINITIONS, false);
     }
     
+    @Inject
+    GeoControl geoControl;
+
+    @Inject
+    ItemControl itemControl;
+
+    @Inject
+    ItemLogic itemLogic;
+
     @Override
     protected BaseResult execute() {
-        var itemControl = Session.getModelController(ItemControl.class);
         var result = ItemResultFactory.getGetItemCountryOfOriginResult();
         var itemName = form.getItemName();
-        var item = itemControl.getItemByName(itemName);
+        var item = itemLogic.getItemByName(this, itemName);
         
-        if(item != null) {
-            var geoControl = Session.getModelController(GeoControl.class);
+        if(!hasExecutionErrors()) {
             var countryName = form.getCountryName();
             var countryGeoCode = geoControl.getCountryByAlias(countryName);
             
@@ -71,8 +78,6 @@ public class GetItemCountryOfOriginCommand
             } else {
                 addExecutionError(ExecutionErrors.UnknownCountryName.name(), countryName);
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownItemName.name(), itemName);
         }
         
         return result;
