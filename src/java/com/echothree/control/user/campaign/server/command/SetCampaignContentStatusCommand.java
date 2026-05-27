@@ -17,13 +17,11 @@
 package com.echothree.control.user.campaign.server.command;
 
 import com.echothree.control.user.campaign.common.form.SetCampaignContentStatusForm;
-import com.echothree.model.control.campaign.server.control.CampaignControl;
 import com.echothree.model.control.campaign.server.logic.CampaignContentLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
@@ -50,13 +48,12 @@ public class SetCampaignContentStatusCommand
         ));
         
         FORM_FIELD_DEFINITIONS = List.of(
-                new FieldDefinition("CampaignContentName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("CampaignContentName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Uuid", FieldType.UUID, false, null, null),
                 new FieldDefinition("CampaignContentStatusChoice", FieldType.ENTITY_NAME, true, null, null)
         );
     }
-
-    @Inject
-    CampaignControl campaignControl;
 
     @Inject
     CampaignContentLogic campaignContentLogic;
@@ -68,15 +65,12 @@ public class SetCampaignContentStatusCommand
     
     @Override
     protected BaseResult execute() {
-        var campaignContentName = form.getCampaignContentName();
-        var campaignContent = campaignControl.getCampaignContentByName(campaignContentName);
+        var campaignContent = campaignContentLogic.getCampaignContentByUniversalSpecForUpdate(this, form);
         
-        if(campaignContent != null) {
+        if(!hasExecutionErrors()) {
             var campaignContentStatusChoice = form.getCampaignContentStatusChoice();
             
             campaignContentLogic.setCampaignContentStatus(session, this, campaignContent, campaignContentStatusChoice, getPartyPK());
-        } else {
-            addExecutionError(ExecutionErrors.UnknownCampaignContentName.name(), campaignContentName);
         }
         
         return null;

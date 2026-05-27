@@ -15982,13 +15982,15 @@ public interface GraphQlMutations {
     @GraphQLField
     @GraphQLRelayMutation
     static MutationResultObject deleteCampaignContent(final DataFetchingEnvironment env,
-            @GraphQLName("campaignContentName") @GraphQLNonNull final String campaignContentName) {
+            @GraphQLName("campaignContentName") final String campaignContentName,
+            @GraphQLName("id") @GraphQLID final String id) {
         var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = CampaignUtil.getHome().getDeleteCampaignContentForm();
 
             commandForm.setCampaignContentName(campaignContentName);
+            commandForm.setUuid(id);
 
             var commandResult = CampaignUtil.getHome().deleteCampaignContent(BaseGraphQl.getUserVisitPK(env), commandForm);
             mutationResultObject.setCommandResult(commandResult);
@@ -16002,7 +16004,8 @@ public interface GraphQlMutations {
     @GraphQLField
     @GraphQLRelayMutation
     static MutationResultWithIdObject editCampaignContent(final DataFetchingEnvironment env,
-            @GraphQLName("campaignContentName") @GraphQLNonNull final String campaignContentName,
+            @GraphQLName("campaignContentName") final String campaignContentName,
+            @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("value") final String value,
             @GraphQLName("isDefault") final String isDefault,
             @GraphQLName("sortOrder") final String sortOrder,
@@ -16010,9 +16013,10 @@ public interface GraphQlMutations {
         var mutationResultObject = new MutationResultWithIdObject();
 
         try {
-            var spec = CampaignUtil.getHome().getCampaignContentSpec();
+            var spec = CampaignUtil.getHome().getCampaignContentUniversalSpec();
 
             spec.setCampaignContentName(campaignContentName);
+            spec.setUuid(id);
 
             var commandForm = CampaignUtil.getHome().getEditCampaignContentForm();
 
@@ -16056,7 +16060,8 @@ public interface GraphQlMutations {
     @GraphQLRelayMutation
     @GraphQLName("setCampaignContentStatus")
     static MutationResultObject setCampaignContentStatus(final DataFetchingEnvironment env,
-            @GraphQLName("campaignContentName") @GraphQLNonNull final String campaignContentName,
+            @GraphQLName("campaignContentName") final String campaignContentName,
+            @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("campaignContentStatusChoice") @GraphQLNonNull final String campaignContentStatusChoice) {
         var mutationResultObject = new MutationResultObject();
 
@@ -16064,6 +16069,7 @@ public interface GraphQlMutations {
             var commandForm = CampaignUtil.getHome().getSetCampaignContentStatusForm();
 
             commandForm.setCampaignContentName(campaignContentName);
+            commandForm.setUuid(id);
             commandForm.setCampaignContentStatusChoice(campaignContentStatusChoice);
 
             mutationResultObject.setCommandResult(CampaignUtil.getHome().setCampaignContentStatus(BaseGraphQl.getUserVisitPK(env), commandForm));
