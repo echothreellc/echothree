@@ -22,18 +22,17 @@ import com.echothree.model.control.campaign.server.logic.CampaignContentLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class SetCampaignContentStatusCommand
@@ -46,16 +45,22 @@ public class SetCampaignContentStatusCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.CampaignContentStatus.name(), SecurityRoles.Choices.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.CampaignContentStatus.name(), SecurityRoles.Choices.name())
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CampaignContentName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("CampaignContentStatusChoice", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
-    
+
+    @Inject
+    CampaignControl campaignControl;
+
+    @Inject
+    CampaignContentLogic campaignContentLogic;
+
     /** Creates a new instance of SetCampaignContentStatusCommand */
     public SetCampaignContentStatusCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
@@ -63,14 +68,13 @@ public class SetCampaignContentStatusCommand
     
     @Override
     protected BaseResult execute() {
-        var campaignControl = Session.getModelController(CampaignControl.class);
         var campaignContentName = form.getCampaignContentName();
         var campaignContent = campaignControl.getCampaignContentByName(campaignContentName);
         
         if(campaignContent != null) {
             var campaignContentStatusChoice = form.getCampaignContentStatusChoice();
             
-            CampaignContentLogic.getInstance().setCampaignContentStatus(session, this, campaignContent, campaignContentStatusChoice, getPartyPK());
+            campaignContentLogic.setCampaignContentStatus(session, this, campaignContent, campaignContentStatusChoice, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownCampaignContentName.name(), campaignContentName);
         }
