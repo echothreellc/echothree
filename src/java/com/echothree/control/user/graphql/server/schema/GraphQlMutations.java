@@ -25,6 +25,8 @@ import com.echothree.control.user.accounting.common.result.EditItemAccountingCat
 import com.echothree.control.user.accounting.common.result.EditTransactionTimeTypeResult;
 import com.echothree.control.user.authentication.common.AuthenticationUtil;
 import com.echothree.control.user.campaign.common.CampaignUtil;
+import com.echothree.control.user.campaign.common.result.CreateCampaignContentResult;
+import com.echothree.control.user.campaign.common.result.EditCampaignContentResult;
 import com.echothree.control.user.content.common.ContentUtil;
 import com.echothree.control.user.content.common.result.CreateContentCatalogResult;
 import com.echothree.control.user.content.common.result.CreateContentCategoryResult;
@@ -255,6 +257,7 @@ import com.echothree.control.user.workflow.common.result.EditWorkflowDestination
 import com.echothree.control.user.workflow.common.result.EditWorkflowEntranceResult;
 import com.echothree.control.user.workflow.common.result.EditWorkflowResult;
 import com.echothree.control.user.workflow.common.result.EditWorkflowStepResult;
+import com.echothree.model.control.campaign.server.graphql.CreateCampaignContentResultObject;
 import com.echothree.model.control.graphql.server.graphql.MutationResultObject;
 import com.echothree.model.control.graphql.server.graphql.MutationResultWithIdObject;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
@@ -15939,6 +15942,131 @@ public interface GraphQlMutations {
             commandForm.setGeoCodeAliasTypeName(geoCodeAliasTypeName);
 
             mutationResultObject.setCommandResult(GeoUtil.getHome().deleteGeoCodeAlias(BaseGraphQl.getUserVisitPK(env), commandForm));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static CreateCampaignContentResultObject createCampaignContent(final DataFetchingEnvironment env,
+            @GraphQLName("value") @GraphQLNonNull final String value,
+            @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
+            @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new CreateCampaignContentResultObject();
+
+        try {
+            var commandForm = CampaignUtil.getHome().getCreateCampaignContentForm();
+
+            commandForm.setValue(value);
+            commandForm.setIsDefault(isDefault);
+            commandForm.setSortOrder(sortOrder);
+            commandForm.setDescription(description);
+
+            var commandResult = CampaignUtil.getHome().createCampaignContent(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                mutationResultObject.setCreateCampaignContentResult((CreateCampaignContentResult)commandResult.getExecutionResult().getResult());
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject deleteCampaignContent(final DataFetchingEnvironment env,
+            @GraphQLName("campaignContentName") @GraphQLNonNull final String campaignContentName) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = CampaignUtil.getHome().getDeleteCampaignContentForm();
+
+            commandForm.setCampaignContentName(campaignContentName);
+
+            var commandResult = CampaignUtil.getHome().deleteCampaignContent(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultWithIdObject editCampaignContent(final DataFetchingEnvironment env,
+            @GraphQLName("campaignContentName") @GraphQLNonNull final String campaignContentName,
+            @GraphQLName("value") final String value,
+            @GraphQLName("isDefault") final String isDefault,
+            @GraphQLName("sortOrder") final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var spec = CampaignUtil.getHome().getCampaignContentSpec();
+
+            spec.setCampaignContentName(campaignContentName);
+
+            var commandForm = CampaignUtil.getHome().getEditCampaignContentForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = CampaignUtil.getHome().editCampaignContent(BaseGraphQl.getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditCampaignContentResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                mutationResultObject.setEntityInstance(result.getCampaignContent().getEntityInstance());
+
+                if(arguments.containsKey("value"))
+                    edit.setValue(value);
+                if(arguments.containsKey("isDefault"))
+                    edit.setIsDefault(isDefault);
+                if(arguments.containsKey("sortOrder"))
+                    edit.setSortOrder(sortOrder);
+                if(arguments.containsKey("description"))
+                    edit.setDescription(description);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = CampaignUtil.getHome().editCampaignContent(BaseGraphQl.getUserVisitPK(env), commandForm);
+            }
+
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    @GraphQLName("setCampaignContentStatus")
+    static MutationResultObject setCampaignContentStatus(final DataFetchingEnvironment env,
+            @GraphQLName("campaignContentName") @GraphQLNonNull final String campaignContentName,
+            @GraphQLName("campaignContentStatusChoice") @GraphQLNonNull final String campaignContentStatusChoice) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = CampaignUtil.getHome().getSetCampaignContentStatusForm();
+
+            commandForm.setCampaignContentName(campaignContentName);
+            commandForm.setCampaignContentStatusChoice(campaignContentStatusChoice);
+
+            mutationResultObject.setCommandResult(CampaignUtil.getHome().setCampaignContentStatus(BaseGraphQl.getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }

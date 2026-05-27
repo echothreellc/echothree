@@ -22,18 +22,17 @@ import com.echothree.model.control.campaign.server.control.CampaignControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateCampaignContentCommand
@@ -47,17 +46,20 @@ public class CreateCampaignContentCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.CampaignContent.name(), SecurityRoles.Create.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Value", FieldType.STRING, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
-    
+
+    @Inject
+    CampaignControl campaignControl;
+
     /** Creates a new instance of CreateCampaignContentCommand */
     public CreateCampaignContentCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
@@ -66,7 +68,6 @@ public class CreateCampaignContentCommand
     @Override
     protected BaseResult execute() {
         var result = CampaignResultFactory.getCreateCampaignContentResult();
-        var campaignControl = Session.getModelController(CampaignControl.class);
         var value = form.getValue();
         var campaignContent = campaignControl.getCampaignContentByValue(value);
         
@@ -84,9 +85,12 @@ public class CreateCampaignContentCommand
         } else {
             addExecutionError(ExecutionErrors.DuplicateCampaignContentValue.name(), value);
         }
-        
-        result.setCampaignContentName(campaignContent.getLastDetail().getCampaignContentName());
-        
+
+        if(campaignContent != null) {
+            result.setCampaignContentName(campaignContent.getLastDetail().getCampaignContentName());
+            result.setEntityRef(campaignContent.getPrimaryKey().getEntityRef());
+        }
+
         return result;
     }
     
