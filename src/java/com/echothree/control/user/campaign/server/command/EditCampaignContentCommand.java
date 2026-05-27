@@ -20,13 +20,13 @@ import com.echothree.control.user.campaign.common.edit.CampaignContentEdit;
 import com.echothree.control.user.campaign.common.edit.CampaignEditFactory;
 import com.echothree.control.user.campaign.common.result.CampaignResultFactory;
 import com.echothree.control.user.campaign.common.result.EditCampaignContentResult;
-import com.echothree.control.user.campaign.common.spec.CampaignContentSpec;
+import com.echothree.control.user.campaign.common.spec.CampaignContentUniversalSpec;
 import com.echothree.model.control.campaign.server.control.CampaignControl;
+import com.echothree.model.control.campaign.server.logic.CampaignContentLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.campaign.server.entity.CampaignContent;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -40,7 +40,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class EditCampaignContentCommand
-        extends BaseAbstractEditCommand<CampaignContentSpec, CampaignContentEdit, EditCampaignContentResult, CampaignContent, CampaignContent> {
+        extends BaseAbstractEditCommand<CampaignContentUniversalSpec, CampaignContentEdit, EditCampaignContentResult, CampaignContent, CampaignContent> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
@@ -55,9 +55,11 @@ public class EditCampaignContentCommand
         ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
-                new FieldDefinition("CampaignContentName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("CampaignContentName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
-        
+
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Value", FieldType.STRING, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
@@ -65,9 +67,11 @@ public class EditCampaignContentCommand
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         );
     }
-
     @Inject
     CampaignControl campaignControl;
+
+    @Inject
+    CampaignContentLogic campaignContentLogic;
 
     /** Creates a new instance of EditCampaignContentCommand */
     public EditCampaignContentCommand() {
@@ -86,20 +90,7 @@ public class EditCampaignContentCommand
 
     @Override
     public CampaignContent getEntity(EditCampaignContentResult result) {
-        CampaignContent campaignContent;
-        var campaignContentName = spec.getCampaignContentName();
-
-        if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-            campaignContent = campaignControl.getCampaignContentByName(campaignContentName);
-        } else { // EditMode.UPDATE
-            campaignContent = campaignControl.getCampaignContentByNameForUpdate(campaignContentName);
-        }
-
-        if(campaignContent == null) {
-            addExecutionError(ExecutionErrors.UnknownCampaignContentName.name(), campaignContentName);
-        }
-
-        return campaignContent;
+        return campaignContentLogic.getCampaignContentByUniversalSpec(this, spec, editModeToEntityPermission(editMode));
     }
 
     @Override

@@ -17,11 +17,11 @@
 package com.echothree.control.user.campaign.common.form;
 
 import com.echothree.control.user.campaign.common.edit.CampaignContentEdit;
-import com.echothree.control.user.campaign.common.spec.CampaignContentSpec;
+import com.echothree.control.user.campaign.common.spec.CampaignContentUniversalSpec;
 import com.echothree.util.common.form.BaseEditForm;
 
 public interface EditCampaignContentForm
-        extends BaseEditForm<CampaignContentSpec, CampaignContentEdit> {
+        extends BaseEditForm<CampaignContentUniversalSpec, CampaignContentEdit> {
     
     // Nothing additional beyond BaseEditForm
     
