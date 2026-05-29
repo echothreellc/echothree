@@ -26,8 +26,10 @@ import com.echothree.control.user.accounting.common.result.EditTransactionTimeTy
 import com.echothree.control.user.authentication.common.AuthenticationUtil;
 import com.echothree.control.user.campaign.common.CampaignUtil;
 import com.echothree.control.user.campaign.common.result.CreateCampaignContentResult;
+import com.echothree.control.user.campaign.common.result.CreateCampaignMediumResult;
 import com.echothree.control.user.campaign.common.result.CreateCampaignTermResult;
 import com.echothree.control.user.campaign.common.result.EditCampaignContentResult;
+import com.echothree.control.user.campaign.common.result.EditCampaignMediumResult;
 import com.echothree.control.user.campaign.common.result.EditCampaignTermResult;
 import com.echothree.control.user.content.common.ContentUtil;
 import com.echothree.control.user.content.common.result.CreateContentCatalogResult;
@@ -260,6 +262,7 @@ import com.echothree.control.user.workflow.common.result.EditWorkflowEntranceRes
 import com.echothree.control.user.workflow.common.result.EditWorkflowResult;
 import com.echothree.control.user.workflow.common.result.EditWorkflowStepResult;
 import com.echothree.model.control.campaign.server.graphql.CreateCampaignContentResultObject;
+import com.echothree.model.control.campaign.server.graphql.CreateCampaignMediumResultObject;
 import com.echothree.model.control.campaign.server.graphql.CreateCampaignTermResultObject;
 import com.echothree.model.control.graphql.server.graphql.MutationResultObject;
 import com.echothree.model.control.graphql.server.graphql.MutationResultWithIdObject;
@@ -16076,6 +16079,137 @@ public interface GraphQlMutations {
             commandForm.setCampaignTermStatusChoice(campaignTermStatusChoice);
 
             mutationResultObject.setCommandResult(CampaignUtil.getHome().setCampaignTermStatus(BaseGraphQl.getUserVisitPK(env), commandForm));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static CreateCampaignMediumResultObject createCampaignMedium(final DataFetchingEnvironment env,
+            @GraphQLName("value") @GraphQLNonNull final String value,
+            @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
+            @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new CreateCampaignMediumResultObject();
+
+        try {
+            var commandForm = CampaignUtil.getHome().getCreateCampaignMediumForm();
+
+            commandForm.setValue(value);
+            commandForm.setIsDefault(isDefault);
+            commandForm.setSortOrder(sortOrder);
+            commandForm.setDescription(description);
+
+            var commandResult = CampaignUtil.getHome().createCampaignMedium(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                mutationResultObject.setCreateCampaignMediumResult((CreateCampaignMediumResult)commandResult.getExecutionResult().getResult());
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject deleteCampaignMedium(final DataFetchingEnvironment env,
+            @GraphQLName("campaignMediumName") final String campaignMediumName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = CampaignUtil.getHome().getDeleteCampaignMediumForm();
+
+            commandForm.setCampaignMediumName(campaignMediumName);
+            commandForm.setUuid(id);
+
+            var commandResult = CampaignUtil.getHome().deleteCampaignMedium(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultWithIdObject editCampaignMedium(final DataFetchingEnvironment env,
+            @GraphQLName("campaignMediumName") final String campaignMediumName,
+            @GraphQLName("id") @GraphQLID final String id,
+            @GraphQLName("value") final String value,
+            @GraphQLName("isDefault") final String isDefault,
+            @GraphQLName("sortOrder") final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var spec = CampaignUtil.getHome().getCampaignMediumUniversalSpec();
+
+            spec.setCampaignMediumName(campaignMediumName);
+            spec.setUuid(id);
+
+            var commandForm = CampaignUtil.getHome().getEditCampaignMediumForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = CampaignUtil.getHome().editCampaignMedium(BaseGraphQl.getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditCampaignMediumResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                mutationResultObject.setEntityInstance(result.getCampaignMedium().getEntityInstance());
+
+                if(arguments.containsKey("value"))
+                    edit.setValue(value);
+                if(arguments.containsKey("isDefault"))
+                    edit.setIsDefault(isDefault);
+                if(arguments.containsKey("sortOrder"))
+                    edit.setSortOrder(sortOrder);
+                if(arguments.containsKey("description"))
+                    edit.setDescription(description);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = CampaignUtil.getHome().editCampaignMedium(BaseGraphQl.getUserVisitPK(env), commandForm);
+            }
+
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    @GraphQLName("setCampaignMediumStatus")
+    static MutationResultObject setCampaignMediumStatus(final DataFetchingEnvironment env,
+            @GraphQLName("campaignMediumName") final String campaignMediumName,
+            @GraphQLName("id") @GraphQLID final String id,
+            @GraphQLName("campaignMediumStatusChoice") @GraphQLNonNull final String campaignMediumStatusChoice) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = CampaignUtil.getHome().getSetCampaignMediumStatusForm();
+
+            commandForm.setCampaignMediumName(campaignMediumName);
+            commandForm.setUuid(id);
+            commandForm.setCampaignMediumStatusChoice(campaignMediumStatusChoice);
+
+            mutationResultObject.setCommandResult(CampaignUtil.getHome().setCampaignMediumStatus(BaseGraphQl.getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }

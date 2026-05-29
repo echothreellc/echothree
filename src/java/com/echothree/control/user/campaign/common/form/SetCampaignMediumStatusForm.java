@@ -16,10 +16,10 @@
 
 package com.echothree.control.user.campaign.common.form;
 
-import com.echothree.control.user.campaign.common.spec.CampaignMediumSpec;
+import com.echothree.control.user.campaign.common.spec.CampaignMediumUniversalSpec;
 
 public interface SetCampaignMediumStatusForm
-        extends CampaignMediumSpec {
+        extends CampaignMediumUniversalSpec {
     
     String getCampaignMediumStatusChoice();
     void setCampaignMediumStatusChoice(String campaignMediumStatusChoice);
