@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.campaign.common.form;
 
-import com.echothree.control.user.campaign.common.spec.CampaignTermSpec;
+import com.echothree.control.user.campaign.common.spec.CampaignTermUniversalSpec;
 
 public interface DeleteCampaignTermForm
-        extends CampaignTermSpec {
+        extends CampaignTermUniversalSpec {
     
-    // Nothing additional beyond CampaignTermSpec
+    // Nothing additional beyond CampaignTermUniversalSpec
     
 }
