@@ -36,7 +36,7 @@ public class CreateCampaignMediumResultObject
     }
 
     @GraphQLField
-    @GraphQLDescription("campaign content name")
+    @GraphQLDescription("campaign medium name")
     public String getCampaignMediumName() {
         return campaignMediumName;
     }
