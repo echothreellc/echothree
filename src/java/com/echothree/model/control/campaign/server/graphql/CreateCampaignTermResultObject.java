@@ -22,7 +22,7 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 
-@GraphQLDescription("create campaign content result object")
+@GraphQLDescription("create campaign term result object")
 @GraphQLName("CreateCampaignTermResult")
 public class CreateCampaignTermResultObject
         extends MutationResultWithIdObject {
