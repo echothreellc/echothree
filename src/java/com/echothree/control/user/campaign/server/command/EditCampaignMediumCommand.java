@@ -16,63 +16,68 @@
 
 package com.echothree.control.user.campaign.server.command;
 
-import com.echothree.control.user.campaign.common.edit.CampaignEditFactory;
 import com.echothree.control.user.campaign.common.edit.CampaignMediumEdit;
-import com.echothree.control.user.campaign.common.form.EditCampaignMediumForm;
+import com.echothree.control.user.campaign.common.edit.CampaignEditFactory;
 import com.echothree.control.user.campaign.common.result.CampaignResultFactory;
 import com.echothree.control.user.campaign.common.result.EditCampaignMediumResult;
-import com.echothree.control.user.campaign.common.spec.CampaignMediumSpec;
+import com.echothree.control.user.campaign.common.spec.CampaignMediumUniversalSpec;
 import com.echothree.model.control.campaign.server.control.CampaignControl;
+import com.echothree.model.control.campaign.server.logic.CampaignMediumLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.campaign.server.entity.CampaignMedium;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditCampaignMediumCommand
-        extends BaseAbstractEditCommand<CampaignMediumSpec, CampaignMediumEdit, EditCampaignMediumResult, CampaignMedium, CampaignMedium> {
-    
+        extends BaseAbstractEditCommand<CampaignMediumUniversalSpec, CampaignMediumEdit, EditCampaignMediumResult, CampaignMedium, CampaignMedium> {
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.CampaignMedium.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
-        
+                ))
+        ));
+
         SPEC_FIELD_DEFINITIONS = List.of(
-                new FieldDefinition("CampaignMediumName", FieldType.ENTITY_NAME, true, null, null)
-                );
-        
+                new FieldDefinition("CampaignMediumName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
+        );
+
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Value", FieldType.STRING, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
-    
+    @Inject
+    CampaignControl campaignControl;
+
+    @Inject
+    CampaignMediumLogic campaignMediumLogic;
+
     /** Creates a new instance of EditCampaignMediumCommand */
     public EditCampaignMediumCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
     @Override
     public EditCampaignMediumResult getResult() {
         return CampaignResultFactory.getEditCampaignMediumResult();
@@ -85,21 +90,7 @@ public class EditCampaignMediumCommand
 
     @Override
     public CampaignMedium getEntity(EditCampaignMediumResult result) {
-        var campaignControl = Session.getModelController(CampaignControl.class);
-        CampaignMedium campaignMedium;
-        var campaignMediumName = spec.getCampaignMediumName();
-
-        if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-            campaignMedium = campaignControl.getCampaignMediumByName(campaignMediumName);
-        } else { // EditMode.UPDATE
-            campaignMedium = campaignControl.getCampaignMediumByNameForUpdate(campaignMediumName);
-        }
-
-        if(campaignMedium == null) {
-            addExecutionError(ExecutionErrors.UnknownCampaignMediumName.name(), campaignMediumName);
-        }
-
-        return campaignMedium;
+        return campaignMediumLogic.getCampaignMediumByUniversalSpec(this, spec, editModeToEntityPermission(editMode));
     }
 
     @Override
@@ -109,14 +100,11 @@ public class EditCampaignMediumCommand
 
     @Override
     public void fillInResult(EditCampaignMediumResult result, CampaignMedium campaignMedium) {
-        var campaignControl = Session.getModelController(CampaignControl.class);
-
         result.setCampaignMedium(campaignControl.getCampaignMediumTransfer(getUserVisit(), campaignMedium));
     }
 
     @Override
     public void doLock(CampaignMediumEdit edit, CampaignMedium campaignMedium) {
-        var campaignControl = Session.getModelController(CampaignControl.class);
         var campaignMediumDescription = campaignControl.getCampaignMediumDescription(campaignMedium, getPreferredLanguage());
         var campaignMediumDetail = campaignMedium.getLastDetail();
 
@@ -131,7 +119,6 @@ public class EditCampaignMediumCommand
 
     @Override
     public void canUpdate(CampaignMedium campaignMedium) {
-        var campaignControl = Session.getModelController(CampaignControl.class);
         var value = edit.getValue();
         var duplicateCampaignMedium = campaignControl.getCampaignMediumByValue(value);
 
@@ -142,7 +129,6 @@ public class EditCampaignMediumCommand
 
     @Override
     public void doUpdate(CampaignMedium campaignMedium) {
-        var campaignControl = Session.getModelController(CampaignControl.class);
         var partyPK = getPartyPK();
         var campaignMediumDetailValue = campaignControl.getCampaignMediumDetailValueForUpdate(campaignMedium);
         var campaignMediumDescription = campaignControl.getCampaignMediumDescriptionForUpdate(campaignMedium, getPreferredLanguage());
@@ -169,5 +155,5 @@ public class EditCampaignMediumCommand
             }
         }
     }
-    
+
 }
