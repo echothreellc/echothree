@@ -36,7 +36,7 @@ public class CreateCampaignSourceResultObject
     }
 
     @GraphQLField
-    @GraphQLDescription("campaign content name")
+    @GraphQLDescription("campaign source name")
     public String getCampaignSourceName() {
         return campaignSourceName;
     }
