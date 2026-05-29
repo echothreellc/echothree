@@ -16,63 +16,68 @@
 
 package com.echothree.control.user.campaign.server.command;
 
-import com.echothree.control.user.campaign.common.edit.CampaignEditFactory;
 import com.echothree.control.user.campaign.common.edit.CampaignTermEdit;
-import com.echothree.control.user.campaign.common.form.EditCampaignTermForm;
+import com.echothree.control.user.campaign.common.edit.CampaignEditFactory;
 import com.echothree.control.user.campaign.common.result.CampaignResultFactory;
 import com.echothree.control.user.campaign.common.result.EditCampaignTermResult;
-import com.echothree.control.user.campaign.common.spec.CampaignTermSpec;
+import com.echothree.control.user.campaign.common.spec.CampaignTermUniversalSpec;
 import com.echothree.model.control.campaign.server.control.CampaignControl;
+import com.echothree.model.control.campaign.server.logic.CampaignTermLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.campaign.server.entity.CampaignTerm;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class EditCampaignTermCommand
-        extends BaseAbstractEditCommand<CampaignTermSpec, CampaignTermEdit, EditCampaignTermResult, CampaignTerm, CampaignTerm> {
-    
+        extends BaseAbstractEditCommand<CampaignTermUniversalSpec, CampaignTermEdit, EditCampaignTermResult, CampaignTerm, CampaignTerm> {
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.CampaignTerm.name(), SecurityRoles.Edit.name())
-                        ))
-                ));
-        
+                ))
+        ));
+
         SPEC_FIELD_DEFINITIONS = List.of(
-                new FieldDefinition("CampaignTermName", FieldType.ENTITY_NAME, true, null, null)
-                );
-        
+                new FieldDefinition("CampaignTermName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
+        );
+
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("Value", FieldType.STRING, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                );
+        );
     }
-    
+    @Inject
+    CampaignControl campaignControl;
+
+    @Inject
+    CampaignTermLogic campaignTermLogic;
+
     /** Creates a new instance of EditCampaignTermCommand */
     public EditCampaignTermCommand() {
         super(COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
-    
+
     @Override
     public EditCampaignTermResult getResult() {
         return CampaignResultFactory.getEditCampaignTermResult();
@@ -85,21 +90,7 @@ public class EditCampaignTermCommand
 
     @Override
     public CampaignTerm getEntity(EditCampaignTermResult result) {
-        var campaignControl = Session.getModelController(CampaignControl.class);
-        CampaignTerm campaignTerm;
-        var campaignTermName = spec.getCampaignTermName();
-
-        if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-            campaignTerm = campaignControl.getCampaignTermByName(campaignTermName);
-        } else { // EditMode.UPDATE
-            campaignTerm = campaignControl.getCampaignTermByNameForUpdate(campaignTermName);
-        }
-
-        if(campaignTerm == null) {
-            addExecutionError(ExecutionErrors.UnknownCampaignTermName.name(), campaignTermName);
-        }
-
-        return campaignTerm;
+        return campaignTermLogic.getCampaignTermByUniversalSpec(this, spec, editModeToEntityPermission(editMode));
     }
 
     @Override
@@ -109,14 +100,11 @@ public class EditCampaignTermCommand
 
     @Override
     public void fillInResult(EditCampaignTermResult result, CampaignTerm campaignTerm) {
-        var campaignControl = Session.getModelController(CampaignControl.class);
-
         result.setCampaignTerm(campaignControl.getCampaignTermTransfer(getUserVisit(), campaignTerm));
     }
 
     @Override
     public void doLock(CampaignTermEdit edit, CampaignTerm campaignTerm) {
-        var campaignControl = Session.getModelController(CampaignControl.class);
         var campaignTermDescription = campaignControl.getCampaignTermDescription(campaignTerm, getPreferredLanguage());
         var campaignTermDetail = campaignTerm.getLastDetail();
 
@@ -131,7 +119,6 @@ public class EditCampaignTermCommand
 
     @Override
     public void canUpdate(CampaignTerm campaignTerm) {
-        var campaignControl = Session.getModelController(CampaignControl.class);
         var value = edit.getValue();
         var duplicateCampaignTerm = campaignControl.getCampaignTermByValue(value);
 
@@ -142,7 +129,6 @@ public class EditCampaignTermCommand
 
     @Override
     public void doUpdate(CampaignTerm campaignTerm) {
-        var campaignControl = Session.getModelController(CampaignControl.class);
         var partyPK = getPartyPK();
         var campaignTermDetailValue = campaignControl.getCampaignTermDetailValueForUpdate(campaignTerm);
         var campaignTermDescription = campaignControl.getCampaignTermDescriptionForUpdate(campaignTerm, getPreferredLanguage());
@@ -169,5 +155,5 @@ public class EditCampaignTermCommand
             }
         }
     }
-    
+
 }
