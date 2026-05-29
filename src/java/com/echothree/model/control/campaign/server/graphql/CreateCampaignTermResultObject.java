@@ -36,7 +36,7 @@ public class CreateCampaignTermResultObject
     }
 
     @GraphQLField
-    @GraphQLDescription("campaign content name")
+    @GraphQLDescription("campaign term name")
     public String getCampaignTermName() {
         return campaignTermName;
     }
