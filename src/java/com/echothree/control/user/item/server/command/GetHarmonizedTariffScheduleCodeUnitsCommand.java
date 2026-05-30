@@ -22,20 +22,22 @@ import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.model.data.item.server.entity.HarmonizedTariffScheduleCodeUnit;
+import com.echothree.model.data.item.server.factory.HarmonizedTariffScheduleCodeUnitFactory;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetHarmonizedTariffScheduleCodeUnitsCommand
-        extends BaseSimpleCommand<GetHarmonizedTariffScheduleCodeUnitsForm> {
+        extends BasePaginatedMultipleEntitiesCommand<HarmonizedTariffScheduleCodeUnit, GetHarmonizedTariffScheduleCodeUnitsForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -44,26 +46,48 @@ public class GetHarmonizedTariffScheduleCodeUnitsCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.HarmonizedTariffScheduleCodeUnit.name(), SecurityRoles.List.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.HarmonizedTariffScheduleCodeUnit.name(), SecurityRoles.List.name())
+                ))
+        ));
 
-        FORM_FIELD_DEFINITIONS = List.of(
-                );
+        FORM_FIELD_DEFINITIONS = List.of();
     }
 
+    @Inject
+    ItemControl itemControl;
+    
     /** Creates a new instance of GetHarmonizedTariffScheduleCodeUnitsCommand */
     public GetHarmonizedTariffScheduleCodeUnitsCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var itemControl = Session.getModelController(ItemControl.class);
+    protected void handleForm() {
+        // No form fields.
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return itemControl.countHarmonizedTariffScheduleCodeUnits();
+    }
+
+    @Override
+    protected Collection<HarmonizedTariffScheduleCodeUnit> getEntities() {
+        return itemControl.getHarmonizedTariffScheduleCodeUnits();
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<HarmonizedTariffScheduleCodeUnit> entities) {
         var result = ItemResultFactory.getGetHarmonizedTariffScheduleCodeUnitsResult();
-        
-        result.setHarmonizedTariffScheduleCodeUnits(itemControl.getHarmonizedTariffScheduleCodeUnitTransfers(getUserVisit()));
-        
+
+        if(entities != null) {
+            if(session.hasLimit(HarmonizedTariffScheduleCodeUnitFactory.class)) {
+                result.setHarmonizedTariffScheduleCodeUnitCount(getTotalEntities());
+            }
+
+            result.setHarmonizedTariffScheduleCodeUnits(itemControl.getHarmonizedTariffScheduleCodeUnitTransfers(getUserVisit(), entities));
+        }
+
         return result;
     }
     
