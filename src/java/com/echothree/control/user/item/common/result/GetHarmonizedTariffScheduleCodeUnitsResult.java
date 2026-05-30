@@ -23,6 +23,9 @@ import java.util.List;
 public interface GetHarmonizedTariffScheduleCodeUnitsResult
         extends BaseResult {
     
+    Long getHarmonizedTariffScheduleCodeUnitCount();
+    void setHarmonizedTariffScheduleCodeUnitCount(Long harmonizedTariffScheduleCodeUnitCount);
+
     List<HarmonizedTariffScheduleCodeUnitTransfer> getHarmonizedTariffScheduleCodeUnits();
     void setHarmonizedTariffScheduleCodeUnits(List<HarmonizedTariffScheduleCodeUnitTransfer> harmonizedTariffScheduleCodeUnits);
     

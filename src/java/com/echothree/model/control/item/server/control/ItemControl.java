@@ -150,6 +150,7 @@ import com.echothree.model.data.customer.server.entity.CustomerType;
 import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;
 import com.echothree.model.data.item.common.pk.HarmonizedTariffScheduleCodePK;
+import com.echothree.model.data.item.common.pk.HarmonizedTariffScheduleCodeUnitPK;
 import com.echothree.model.data.item.common.pk.ItemAliasChecksumTypePK;
 import com.echothree.model.data.item.common.pk.ItemAliasTypePK;
 import com.echothree.model.data.item.common.pk.ItemCategoryPK;
@@ -13485,6 +13486,29 @@ public class ItemControl
         return harmonizedTariffScheduleCodeUnit;
     }
 
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.HarmonizedTariffScheduleCodeUnit */
+    public HarmonizedTariffScheduleCodeUnit getHarmonizedTariffScheduleCodeUnitByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new HarmonizedTariffScheduleCodeUnitPK(entityInstance.getEntityUniqueId());
+
+        return HarmonizedTariffScheduleCodeUnitFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public HarmonizedTariffScheduleCodeUnit getHarmonizedTariffScheduleCodeUnitByEntityInstance(EntityInstance entityInstance) {
+        return getHarmonizedTariffScheduleCodeUnitByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public HarmonizedTariffScheduleCodeUnit getHarmonizedTariffScheduleCodeUnitByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getHarmonizedTariffScheduleCodeUnitByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countHarmonizedTariffScheduleCodeUnits() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM harmonizedtariffschedulecodeunits
+                        JOIN harmonizedtariffschedulecodeunitdetails ON hztscuntdt_harmonizedtariffschedulecodeunitdetailid = hztscunt_activedetailid
+                        """);
+    }
+
     private static final Map<EntityPermission, String> getHarmonizedTariffScheduleCodeUnitByNameQueries;
 
     static {
@@ -13630,15 +13654,18 @@ public class ItemControl
         return harmonizedTariffScheduleCodeUnitTransferCache.getTransfer(userVisit, harmonizedTariffScheduleCodeUnit);
     }
 
-    public List<HarmonizedTariffScheduleCodeUnitTransfer> getHarmonizedTariffScheduleCodeUnitTransfers(UserVisit userVisit) {
-        var harmonizedTariffScheduleCodeUnits = getHarmonizedTariffScheduleCodeUnits();
-        List<HarmonizedTariffScheduleCodeUnitTransfer> harmonizedTariffScheduleCodeUnitTransfers = new ArrayList<>(harmonizedTariffScheduleCodeUnits.size());
+    public List<HarmonizedTariffScheduleCodeUnitTransfer> getHarmonizedTariffScheduleCodeUnitTransfers(UserVisit userVisit, Collection<HarmonizedTariffScheduleCodeUnit> entities) {
+        List<HarmonizedTariffScheduleCodeUnitTransfer> harmonizedTariffScheduleCodeUnitTransfers = new ArrayList<>(entities.size());
 
-        harmonizedTariffScheduleCodeUnits.forEach((harmonizedTariffScheduleCodeUnit) ->
+        entities.forEach((harmonizedTariffScheduleCodeUnit) ->
                 harmonizedTariffScheduleCodeUnitTransfers.add(harmonizedTariffScheduleCodeUnitTransferCache.getTransfer(userVisit, harmonizedTariffScheduleCodeUnit))
         );
 
         return harmonizedTariffScheduleCodeUnitTransfers;
+    }
+
+    public List<HarmonizedTariffScheduleCodeUnitTransfer> getHarmonizedTariffScheduleCodeUnitTransfers(UserVisit userVisit) {
+        return getHarmonizedTariffScheduleCodeUnitTransfers(userVisit, getHarmonizedTariffScheduleCodeUnits());
     }
 
     private void updateHarmonizedTariffScheduleCodeUnitFromValue(HarmonizedTariffScheduleCodeUnitDetailValue harmonizedTariffScheduleCodeUnitDetailValue, boolean checkDefault, BasePK updatedBy) {
