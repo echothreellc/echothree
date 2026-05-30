@@ -23,23 +23,25 @@ import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.geo.server.entity.GeoCode;
+import com.echothree.model.data.item.server.entity.HarmonizedTariffScheduleCode;
 import com.echothree.model.data.item.server.factory.HarmonizedTariffScheduleCodeFactory;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetHarmonizedTariffScheduleCodesCommand
-        extends BaseSimpleCommand<GetHarmonizedTariffScheduleCodesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<HarmonizedTariffScheduleCode, GetHarmonizedTariffScheduleCodesForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -48,40 +50,63 @@ public class GetHarmonizedTariffScheduleCodesCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.HarmonizedTariffScheduleCode.name(), SecurityRoles.List.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.HarmonizedTariffScheduleCode.name(), SecurityRoles.List.name())
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CountryName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
-    
+
+    @Inject
+    GeoControl geoControl;
+
+    @Inject
+    ItemControl itemControl;
+
+    private GeoCode countryGeoCode;
+
     /** Creates a new instance of GetHarmonizedTariffScheduleCodesCommand */
     public GetHarmonizedTariffScheduleCodesCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var geoControl = Session.getModelController(GeoControl.class);
-        var result = ItemResultFactory.getGetHarmonizedTariffScheduleCodesResult();
+    protected void handleForm() {
         var countryName = form.getCountryName();
-        var geoCode = geoControl.getCountryByAlias(countryName);
-        
-        if(geoCode != null) {
-            var itemControl = Session.getModelController(ItemControl.class);
-            
-            if(session.hasLimit(HarmonizedTariffScheduleCodeFactory.class)) {
-                result.setHarmonizedTariffScheduleCodeCount(itemControl.countHarmonizedTariffScheduleCodesByCountryGeoCode(geoCode));
-            }
-            
-            result.setCountry(geoControl.getCountryTransfer(getUserVisit(), geoCode));
-            result.setHarmonizedTariffScheduleCodes(itemControl.getHarmonizedTariffScheduleCodeTransfersByCountryGeoCode(getUserVisit(), geoCode));
-        } else {
+
+        countryGeoCode = geoControl.getCountryByAlias(countryName);
+
+        if(countryGeoCode == null) {
             addExecutionError(ExecutionErrors.UnknownCountryName.name(), countryName);
         }
-        
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return countryGeoCode == null ? null : itemControl.countHarmonizedTariffScheduleCodesByCountryGeoCode(countryGeoCode);
+    }
+
+    @Override
+    protected Collection<HarmonizedTariffScheduleCode> getEntities() {
+        return countryGeoCode == null ? null : itemControl.getHarmonizedTariffScheduleCodesByCountryGeoCode(countryGeoCode);
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<HarmonizedTariffScheduleCode> entities) {
+        var result = ItemResultFactory.getGetHarmonizedTariffScheduleCodesResult();
+
+        if(entities != null) {
+            result.setCountry(geoControl.getCountryTransfer(getUserVisit(), countryGeoCode));
+
+            if(session.hasLimit(HarmonizedTariffScheduleCodeFactory.class)) {
+                result.setHarmonizedTariffScheduleCodeCount(getTotalEntities());
+            }
+
+            result.setHarmonizedTariffScheduleCodes(itemControl.getHarmonizedTariffScheduleCodeTransfers(getUserVisit(), entities));
+        }
+
         return result;
     }
     
