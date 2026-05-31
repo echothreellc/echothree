@@ -13936,6 +13936,22 @@ public class ItemControl
         return harmonizedTariffScheduleCodeUse;
     }
 
+    public long countHarmonizedTariffScheduleCodeUsesByHarmonizedTariffScheduleCode(HarmonizedTariffScheduleCode harmonizedTariffScheduleCode) {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM harmonizedtariffschedulecodeuses
+                WHERE hztscu_hztsc_harmonizedtariffschedulecodeid = ? AND hztscu_thrutime = ?
+                """, harmonizedTariffScheduleCode, Session.MAX_TIME);
+    }
+
+    public long countHarmonizedTariffScheduleCodeUsesByHarmonizedTariffScheduleCodeUseType(HarmonizedTariffScheduleCodeUseType harmonizedTariffScheduleCodeUseType) {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM harmonizedtariffschedulecodeuses
+                WHERE hztscu_hztscutyp_harmonizedtariffschedulecodeusetypeid = ? AND hztscu_thrutime = ?
+                """, harmonizedTariffScheduleCodeUseType, Session.MAX_TIME);
+    }
+
     private static final Map<EntityPermission, String> getHarmonizedTariffScheduleCodeUseQueries;
 
     static {
@@ -14053,7 +14069,7 @@ public class ItemControl
         return harmonizedTariffScheduleCodeUseTransferCache.getTransfer(userVisit, harmonizedTariffScheduleCodeUse);
     }
 
-    public List<HarmonizedTariffScheduleCodeUseTransfer> getHarmonizedTariffScheduleCodeUseTransfersByHarmonizedTariffScheduleCode(UserVisit userVisit, List<HarmonizedTariffScheduleCodeUse> harmonizedTariffScheduleCodeUses) {
+    public List<HarmonizedTariffScheduleCodeUseTransfer> getHarmonizedTariffScheduleCodeUseTransfers(UserVisit userVisit, Collection<HarmonizedTariffScheduleCodeUse> harmonizedTariffScheduleCodeUses) {
         List<HarmonizedTariffScheduleCodeUseTransfer> harmonizedTariffScheduleCodeUseTransfers = new ArrayList<>(harmonizedTariffScheduleCodeUses.size());
 
         harmonizedTariffScheduleCodeUses.forEach((harmonizedTariffScheduleCodeUse) -> {
@@ -14061,6 +14077,10 @@ public class ItemControl
         });
 
         return harmonizedTariffScheduleCodeUseTransfers;
+    }
+
+    public List<HarmonizedTariffScheduleCodeUseTransfer> getHarmonizedTariffScheduleCodeUseTransfersByHarmonizedTariffScheduleCode(UserVisit userVisit, List<HarmonizedTariffScheduleCodeUse> harmonizedTariffScheduleCodeUses) {
+        return getHarmonizedTariffScheduleCodeUseTransfers(userVisit, harmonizedTariffScheduleCodeUses);
     }
 
     public List<HarmonizedTariffScheduleCodeUseTransfer> getHarmonizedTariffScheduleCodeUseTransfersByHarmonizedTariffScheduleCode(UserVisit userVisit, HarmonizedTariffScheduleCode harmonizedTariffScheduleCode) {
