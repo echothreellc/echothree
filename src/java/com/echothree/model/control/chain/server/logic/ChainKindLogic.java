@@ -17,6 +17,7 @@
 package com.echothree.model.control.chain.server.logic;
 
 import com.echothree.control.user.chain.common.spec.ChainKindUniversalSpec;
+import com.echothree.model.control.chain.common.exception.CannotDeleteChainKindInUseException;
 import com.echothree.model.control.chain.common.exception.DuplicateChainKindNameException;
 import com.echothree.model.control.chain.common.exception.UnknownChainKindNameException;
 import com.echothree.model.control.chain.common.exception.UnknownDefaultChainKindException;
@@ -33,18 +34,23 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
 public class ChainKindLogic
         extends BaseLogic {
 
-    @Inject
-    ChainControl chainControl;
-
     protected ChainKindLogic() {
         super();
     }
+
+    public static ChainKindLogic getInstance() {
+        return CDI.current().select(ChainKindLogic.class).get();
+    }
+
+    @Inject
+    ChainControl chainControl;
 
     public ChainKind createChainKind(final ExecutionErrorAccumulator eea, final String chainKindName,
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description,
@@ -132,7 +138,14 @@ public class ChainKindLogic
 
     public void deleteChainKind(final ExecutionErrorAccumulator eea, final ChainKind chainKind,
             final BasePK deletedBy) {
-        chainControl.deleteChainKind(chainKind, deletedBy);
+        var chainTypeCount = chainControl.countChainTypesByChainKind(chainKind);
+
+        if(chainTypeCount == 0) {
+            chainControl.deleteChainKind(chainKind, deletedBy);
+        } else {
+            handleExecutionError(CannotDeleteChainKindInUseException.class, eea, ExecutionErrors.CannotDeleteChainKindInUse.name(),
+                    chainKind.getLastDetail().getChainKindName());
+        }
     }
 
 }
