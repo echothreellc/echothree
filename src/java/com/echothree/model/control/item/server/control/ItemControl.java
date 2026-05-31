@@ -13180,6 +13180,7 @@ public class ItemControl
                 FROM harmonizedtariffschedulecodeusetypes, harmonizedtariffschedulecodeusetypedetails
                 WHERE hztscutyp_activedetailid = hztscutypdt_harmonizedtariffschedulecodeusetypedetailid
                 ORDER BY hztscutypdt_sortorder, hztscutypdt_harmonizedtariffschedulecodeusetypename
+                _LIMIT_
                 """);
         queryMap.put(EntityPermission.READ_WRITE, """
                 SELECT _ALL_
@@ -13621,6 +13622,7 @@ public class ItemControl
                 FROM harmonizedtariffschedulecodeunits, harmonizedtariffschedulecodeunitdetails
                 WHERE hztscunt_activedetailid = hztscuntdt_harmonizedtariffschedulecodeunitdetailid
                 ORDER BY hztscuntdt_sortorder, hztscuntdt_harmonizedtariffschedulecodeunitname
+                _LIMIT_
                 """);
         queryMap.put(EntityPermission.READ_WRITE, """
                 SELECT _ALL_
