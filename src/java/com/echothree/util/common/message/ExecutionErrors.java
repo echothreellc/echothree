@@ -2379,5 +2379,7 @@ public enum ExecutionErrors {
     CannotDeleteFilterKindInUse,
     CannotDeleteChainActionTypeInUse,
     UnknownDefaultChainActionType,
+    UnknownDefaultChain,
+    CannotDeleteChainInUse,
 
 }
