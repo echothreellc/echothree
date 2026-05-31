@@ -151,6 +151,7 @@ import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;
 import com.echothree.model.data.item.common.pk.HarmonizedTariffScheduleCodePK;
 import com.echothree.model.data.item.common.pk.HarmonizedTariffScheduleCodeUnitPK;
+import com.echothree.model.data.item.common.pk.HarmonizedTariffScheduleCodeUseTypePK;
 import com.echothree.model.data.item.common.pk.ItemAliasChecksumTypePK;
 import com.echothree.model.data.item.common.pk.ItemAliasTypePK;
 import com.echothree.model.data.item.common.pk.ItemCategoryPK;
@@ -13071,6 +13072,29 @@ public class ItemControl
         return harmonizedTariffScheduleCodeUseType;
     }
 
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.HarmonizedTariffScheduleCodeUseType */
+    public HarmonizedTariffScheduleCodeUseType getHarmonizedTariffScheduleCodeUseTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new HarmonizedTariffScheduleCodeUseTypePK(entityInstance.getEntityUniqueId());
+
+        return HarmonizedTariffScheduleCodeUseTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public HarmonizedTariffScheduleCodeUseType getHarmonizedTariffScheduleCodeUseTypeByEntityInstance(EntityInstance entityInstance) {
+        return getHarmonizedTariffScheduleCodeUseTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public HarmonizedTariffScheduleCodeUseType getHarmonizedTariffScheduleCodeUseTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getHarmonizedTariffScheduleCodeUseTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countHarmonizedTariffScheduleCodeUseTypes() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM harmonizedtariffschedulecodeusetypes
+                        JOIN harmonizedtariffschedulecodeusetypedetails ON hztscutypdt_harmonizedtariffschedulecodeusetypedetailid = hztscutyp_activedetailid
+                        """);
+    }
+
     private static final Map<EntityPermission, String> getHarmonizedTariffScheduleCodeUseTypeByNameQueries;
 
     static {
@@ -13216,15 +13240,18 @@ public class ItemControl
         return harmonizedTariffScheduleCodeUseTypeTransferCache.getTransfer(userVisit, harmonizedTariffScheduleCodeUseType);
     }
 
-    public List<HarmonizedTariffScheduleCodeUseTypeTransfer> getHarmonizedTariffScheduleCodeUseTypeTransfers(UserVisit userVisit) {
-        var harmonizedTariffScheduleCodeUseTypes = getHarmonizedTariffScheduleCodeUseTypes();
-        List<HarmonizedTariffScheduleCodeUseTypeTransfer> harmonizedTariffScheduleCodeUseTypeTransfers = new ArrayList<>(harmonizedTariffScheduleCodeUseTypes.size());
+    public List<HarmonizedTariffScheduleCodeUseTypeTransfer> getHarmonizedTariffScheduleCodeUseTypeTransfers(UserVisit userVisit, Collection<HarmonizedTariffScheduleCodeUseType> entities) {
+        List<HarmonizedTariffScheduleCodeUseTypeTransfer> harmonizedTariffScheduleCodeUseTypeTransfers = new ArrayList<>(entities.size());
 
-        harmonizedTariffScheduleCodeUseTypes.forEach((harmonizedTariffScheduleCodeUseType) ->
+        entities.forEach((harmonizedTariffScheduleCodeUseType) ->
                 harmonizedTariffScheduleCodeUseTypeTransfers.add(harmonizedTariffScheduleCodeUseTypeTransferCache.getTransfer(userVisit, harmonizedTariffScheduleCodeUseType))
         );
 
         return harmonizedTariffScheduleCodeUseTypeTransfers;
+    }
+
+    public List<HarmonizedTariffScheduleCodeUseTypeTransfer> getHarmonizedTariffScheduleCodeUseTypeTransfers(UserVisit userVisit) {
+        return getHarmonizedTariffScheduleCodeUseTypeTransfers(userVisit, getHarmonizedTariffScheduleCodeUseTypes());
     }
 
     private void updateHarmonizedTariffScheduleCodeUseTypeFromValue(HarmonizedTariffScheduleCodeUseTypeDetailValue harmonizedTariffScheduleCodeUseTypeDetailValue, boolean checkDefault, BasePK updatedBy) {

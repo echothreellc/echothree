@@ -22,7 +22,10 @@ import java.util.List;
 
 public interface GetHarmonizedTariffScheduleCodeUseTypesResult
         extends BaseResult {
-    
+
+    Long getHarmonizedTariffScheduleCodeUseTypeCount();
+    void setHarmonizedTariffScheduleCodeUseTypeCount(Long harmonizedTariffScheduleCodeUseTypeCount);
+
     List<HarmonizedTariffScheduleCodeUseTypeTransfer> getHarmonizedTariffScheduleCodeUseTypes();
     void setHarmonizedTariffScheduleCodeUseTypes(List<HarmonizedTariffScheduleCodeUseTypeTransfer> harmonizedTariffScheduleCodeUseTypes);
     
