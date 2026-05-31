@@ -315,7 +315,7 @@ public class ChainControl
         getChainKindByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private ChainKind getChainKindByName(String chainKindName, EntityPermission entityPermission) {
+    public ChainKind getChainKindByName(String chainKindName, EntityPermission entityPermission) {
         return ChainKindFactory.getInstance().getEntityFromQuery(entityPermission, getChainKindByNameQueries,
                 chainKindName);
     }
@@ -353,7 +353,7 @@ public class ChainControl
         getDefaultChainKindQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private ChainKind getDefaultChainKind(EntityPermission entityPermission) {
+    public ChainKind getDefaultChainKind(EntityPermission entityPermission) {
         return ChainKindFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultChainKindQueries);
     }
 

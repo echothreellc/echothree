@@ -24,29 +24,22 @@ import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.chain.server.entity.ChainKind;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class GetChainKindCommand
-        extends BaseSimpleCommand<GetChainKindForm> {
+        extends BaseSingleEntityCommand<ChainKind, GetChainKindForm> {
 
-    @Inject
-    ChainControl chainControl;
-
-    @Inject
-    ChainKindLogic chainKindLogic;
-    
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
@@ -59,27 +52,42 @@ public class GetChainKindCommand
         ));
 
         FORM_FIELD_DEFINITIONS = List.of(
-                new FieldDefinition("ChainKindName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("ChainKindName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Uuid", FieldType.UUID, false, null, null)
         );
     }
-    
+
+    @Inject
+    ChainControl chainControl;
+
+    @Inject
+    ChainKindLogic chainKindLogic;
+
     /** Creates a new instance of GetChainKindCommand */
     public GetChainKindCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var result = ChainResultFactory.getGetChainKindResult();
-        var chainKindName = form.getChainKindName();
-        var chainKind = chainKindLogic.getChainKindByName(this, chainKindName);
-        
-        if(!hasExecutionErrors()) {
-            result.setChainKind(chainControl.getChainKindTransfer(getUserVisit(), chainKind));
-            
+    protected ChainKind getEntity() {
+        var chainKind = chainKindLogic.getChainKindByUniversalSpec(this, form, true);
+
+        if(chainKind != null) {
             sendEvent(chainKind.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
-        
+
+        return chainKind;
+    }
+
+    @Override
+    protected BaseResult getResult(ChainKind chainKind) {
+        var result = ChainResultFactory.getGetChainKindResult();
+
+        if(chainKind != null) {
+            result.setChainKind(chainControl.getChainKindTransfer(getUserVisit(), chainKind));
+        }
+
         return result;
     }
     

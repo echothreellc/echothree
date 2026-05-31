@@ -650,6 +650,7 @@ public enum ExecutionErrors {
     DuplicatePartyTypeUse,
     DuplicateChainKindName,
     DuplicateChainKindDescription,
+    UnknownDefaultChainKind,
     UnknownChainKindName,
     DuplicateChainTypeName,
     DuplicateChainTypeDescription,
