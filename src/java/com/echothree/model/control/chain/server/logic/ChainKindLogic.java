@@ -33,7 +33,6 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
@@ -45,10 +44,6 @@ public class ChainKindLogic
 
     protected ChainKindLogic() {
         super();
-    }
-
-    public static ChainKindLogic getInstance() {
-        return CDI.current().select(ChainKindLogic.class).get();
     }
 
     public ChainKind createChainKind(final ExecutionErrorAccumulator eea, final String chainKindName,
