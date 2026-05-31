@@ -30,8 +30,11 @@ public interface GetHarmonizedTariffScheduleCodeUsesResult
     
     HarmonizedTariffScheduleCodeUseTypeTransfer getHarmonizedTariffScheduleCodeUseType();
     void setHarmonizedTariffScheduleCodeUseType(HarmonizedTariffScheduleCodeUseTypeTransfer harmonizedTariffScheduleCodeUseType);
-    
+
+    Long getHarmonizedTariffScheduleCodeUseCount();
+    void setHarmonizedTariffScheduleCodeUseCount(Long harmonizedTariffScheduleCodeUseCount);
+
     List<HarmonizedTariffScheduleCodeUseTransfer> getHarmonizedTariffScheduleCodeUses();
     void setHarmonizedTariffScheduleCodeUses(List<HarmonizedTariffScheduleCodeUseTransfer> harmonizedTariffScheduleCodeUses);
-    
+
 }
