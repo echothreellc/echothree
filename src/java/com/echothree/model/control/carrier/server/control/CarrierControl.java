@@ -201,17 +201,19 @@ public class CarrierControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM carriertypes, carriertypedetails " +
-                "WHERE crrtyp_activedetailid = crrtypdt_carriertypedetailid " +
-                "AND crrtypdt_carriertypename = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM carriertypes, carriertypedetails " +
-                "WHERE crrtyp_activedetailid = crrtypdt_carriertypedetailid " +
-                "AND crrtypdt_carriertypename = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM carriertypes, carriertypedetails
+                WHERE crrtyp_activedetailid = crrtypdt_carriertypedetailid
+                AND crrtypdt_carriertypename = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM carriertypes, carriertypedetails
+                WHERE crrtyp_activedetailid = crrtypdt_carriertypedetailid
+                AND crrtypdt_carriertypename = ?
+                FOR UPDATE
+                """);
         getCarrierTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -240,17 +242,19 @@ public class CarrierControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM carriertypes, carriertypedetails " +
-                "WHERE crrtyp_activedetailid = crrtypdt_carriertypedetailid " +
-                "AND crrtypdt_isdefault = 1");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM carriertypes, carriertypedetails " +
-                "WHERE crrtyp_activedetailid = crrtypdt_carriertypedetailid " +
-                "AND crrtypdt_isdefault = 1 " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM carriertypes, carriertypedetails
+                WHERE crrtyp_activedetailid = crrtypdt_carriertypedetailid
+                AND crrtypdt_isdefault = 1
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM carriertypes, carriertypedetails
+                WHERE crrtyp_activedetailid = crrtypdt_carriertypedetailid
+                AND crrtypdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultCarrierTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -275,17 +279,19 @@ public class CarrierControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM carriertypes, carriertypedetails " +
-                "WHERE crrtyp_activedetailid = crrtypdt_carriertypedetailid " +
-                "ORDER BY crrtypdt_sortorder, crrtypdt_carriertypename " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM carriertypes, carriertypedetails " +
-                "WHERE crrtyp_activedetailid = crrtypdt_carriertypedetailid " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM carriertypes, carriertypedetails
+                WHERE crrtyp_activedetailid = crrtypdt_carriertypedetailid
+                ORDER BY crrtypdt_sortorder, crrtypdt_carriertypename
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM carriertypes, carriertypedetails
+                WHERE crrtyp_activedetailid = crrtypdt_carriertypedetailid
+                FOR UPDATE
+                """);
         getCarrierTypesQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -306,16 +312,18 @@ public class CarrierControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM carriertypes, carriertypedetails " +
-                "WHERE crrtyp_activedetailid = crrtypdt_carriertypedetailid AND crrtypdt_parentcarriertypeid = ? " +
-                "ORDER BY crrtypdt_sortorder, crrtypdt_carriertypename");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM carriertypes, carriertypedetails " +
-                "WHERE crrtyp_activedetailid = crrtypdt_carriertypedetailid AND crrtypdt_parentcarriertypeid = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM carriertypes, carriertypedetails
+                WHERE crrtyp_activedetailid = crrtypdt_carriertypedetailid AND crrtypdt_parentcarriertypeid = ?
+                ORDER BY crrtypdt_sortorder, crrtypdt_carriertypename
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM carriertypes, carriertypedetails
+                WHERE crrtyp_activedetailid = crrtypdt_carriertypedetailid AND crrtypdt_parentcarriertypeid = ?
+                FOR UPDATE
+                """);
         getCarrierTypesByParentCarrierTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -482,15 +490,17 @@ public class CarrierControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM carriertypedescriptions " +
-                "WHERE crrtypd_crrtyp_carriertypeid = ? AND crrtypd_lang_languageid = ? AND crrtypd_thrutime = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM carriertypedescriptions " +
-                "WHERE crrtypd_crrtyp_carriertypeid = ? AND crrtypd_lang_languageid = ? AND crrtypd_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM carriertypedescriptions
+                WHERE crrtypd_crrtyp_carriertypeid = ? AND crrtypd_lang_languageid = ? AND crrtypd_thrutime = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM carriertypedescriptions
+                WHERE crrtypd_crrtyp_carriertypeid = ? AND crrtypd_lang_languageid = ? AND crrtypd_thrutime = ?
+                FOR UPDATE
+                """);
         getCarrierTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -521,17 +531,19 @@ public class CarrierControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM carriertypedescriptions, languages " +
-                "WHERE crrtypd_crrtyp_carriertypeid = ? AND crrtypd_thrutime = ? AND crrtypd_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortorder, lang_languageisoname " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM carriertypedescriptions " +
-                "WHERE crrtypd_crrtyp_carriertypeid = ? AND crrtypd_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM carriertypedescriptions, languages
+                WHERE crrtypd_crrtyp_carriertypeid = ? AND crrtypd_thrutime = ? AND crrtypd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM carriertypedescriptions
+                WHERE crrtypd_crrtyp_carriertypeid = ? AND crrtypd_thrutime = ?
+                FOR UPDATE
+                """);
         getCarrierTypeDescriptionsByCarrierTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -648,14 +660,18 @@ public class CarrierControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM carriers " +
-                        "WHERE crr_par_partyid = ? AND crr_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM carriers
+                        WHERE crr_par_partyid = ? AND crr_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM carriers " +
-                        "WHERE crr_par_partyid = ? AND crr_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM carriers
+                        WHERE crr_par_partyid = ? AND crr_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = CarrierFactory.getInstance().prepareStatement(query);
@@ -690,14 +706,18 @@ public class CarrierControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM carriers " +
-                        "WHERE crr_carriername = ? AND crr_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM carriers
+                        WHERE crr_carriername = ? AND crr_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM carriers " +
-                        "WHERE crr_carriername = ? AND crr_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM carriers
+                        WHERE crr_carriername = ? AND crr_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = CarrierFactory.getInstance().prepareStatement(query);
@@ -732,14 +752,18 @@ public class CarrierControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM carriers " +
-                        "WHERE crr_isdefault = 1 AND crr_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM carriers
+                        WHERE crr_isdefault = 1 AND crr_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM carriers " +
-                        "WHERE crr_isdefault = 1 AND crr_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM carriers
+                        WHERE crr_isdefault = 1 AND crr_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = CarrierFactory.getInstance().prepareStatement(query);
@@ -773,15 +797,19 @@ public class CarrierControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM carriers " +
-                        "WHERE crr_thrutime = ? " +
-                        "ORDER BY crr_sortorder, crr_carriername";
+                query = """
+                        SELECT _ALL_
+                        FROM carriers
+                        WHERE crr_thrutime = ?
+                        ORDER BY crr_sortorder, crr_carriername
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM carriers " +
-                        "WHERE crr_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM carriers
+                        WHERE crr_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = CarrierFactory.getInstance().prepareStatement(query);
@@ -977,15 +1005,19 @@ public class CarrierControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM carrierservices, carrierservicedetails " +
-                        "WHERE crrsrv_activedetailid = crrsrvdt_carrierservicedetailid AND crrsrvdt_carrierpartyid = ? " +
-                        "ORDER BY crrsrvdt_sortorder, crrsrvdt_carrierservicename";
+                query = """
+                        SELECT _ALL_
+                        FROM carrierservices, carrierservicedetails
+                        WHERE crrsrv_activedetailid = crrsrvdt_carrierservicedetailid AND crrsrvdt_carrierpartyid = ?
+                        ORDER BY crrsrvdt_sortorder, crrsrvdt_carrierservicename
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM carrierservices, carrierservicedetails " +
-                        "WHERE crrsrv_activedetailid = crrsrvdt_carrierservicedetailid AND crrsrvdt_carrierpartyid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM carrierservices, carrierservicedetails
+                        WHERE crrsrv_activedetailid = crrsrvdt_carrierservicedetailid AND crrsrvdt_carrierpartyid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = CarrierServiceFactory.getInstance().prepareStatement(query);
@@ -1015,16 +1047,20 @@ public class CarrierControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM carrierservices, carrierservicedetails " +
-                        "WHERE crrsrv_activedetailid = crrsrvdt_carrierservicedetailid " +
-                        "AND crrsrvdt_carrierpartyid = ? AND crrsrvdt_isdefault = 1";
+                query = """
+                        SELECT _ALL_
+                        FROM carrierservices, carrierservicedetails
+                        WHERE crrsrv_activedetailid = crrsrvdt_carrierservicedetailid
+                        AND crrsrvdt_carrierpartyid = ? AND crrsrvdt_isdefault = 1
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM carrierservices, carrierservicedetails " +
-                        "WHERE crrsrv_activedetailid = crrsrvdt_carrierservicedetailid " +
-                        "AND crrsrvdt_carrierpartyid = ? AND crrsrvdt_isdefault = 1 " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM carrierservices, carrierservicedetails
+                        WHERE crrsrv_activedetailid = crrsrvdt_carrierservicedetailid
+                        AND crrsrvdt_carrierpartyid = ? AND crrsrvdt_isdefault = 1
+                        FOR UPDATE
+                        """;
             }
 
             var ps = CarrierServiceFactory.getInstance().prepareStatement(query);
@@ -1058,16 +1094,20 @@ public class CarrierControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM carrierservices, carrierservicedetails " +
-                        "WHERE crrsrv_activedetailid = crrsrvdt_carrierservicedetailid " +
-                        "AND crrsrvdt_carrierpartyid = ? AND crrsrvdt_carrierservicename = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM carrierservices, carrierservicedetails
+                        WHERE crrsrv_activedetailid = crrsrvdt_carrierservicedetailid
+                        AND crrsrvdt_carrierpartyid = ? AND crrsrvdt_carrierservicename = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM carrierservices, carrierservicedetails " +
-                        "WHERE crrsrv_activedetailid = crrsrvdt_carrierservicedetailid " +
-                        "AND crrsrvdt_carrierpartyid = ? AND crrsrvdt_carrierservicename = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM carrierservices, carrierservicedetails
+                        WHERE crrsrv_activedetailid = crrsrvdt_carrierservicedetailid
+                        AND crrsrvdt_carrierpartyid = ? AND crrsrvdt_carrierservicename = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = CarrierServiceFactory.getInstance().prepareStatement(query);
@@ -1269,14 +1309,18 @@ public class CarrierControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM carrierservicedescriptions " +
-                        "WHERE crrsrvd_crrsrv_carrierserviceid = ? AND crrsrvd_lang_languageid = ? AND crrsrvd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM carrierservicedescriptions
+                        WHERE crrsrvd_crrsrv_carrierserviceid = ? AND crrsrvd_lang_languageid = ? AND crrsrvd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM carrierservicedescriptions " +
-                        "WHERE crrsrvd_crrsrv_carrierserviceid = ? AND crrsrvd_lang_languageid = ? AND crrsrvd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM carrierservicedescriptions
+                        WHERE crrsrvd_crrsrv_carrierserviceid = ? AND crrsrvd_lang_languageid = ? AND crrsrvd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = CarrierServiceDescriptionFactory.getInstance().prepareStatement(query);
@@ -1316,15 +1360,19 @@ public class CarrierControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM carrierservicedescriptions, languages " +
-                        "WHERE crrsrvd_crrsrv_carrierserviceid = ? AND crrsrvd_thrutime = ? AND crrsrvd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM carrierservicedescriptions, languages
+                        WHERE crrsrvd_crrsrv_carrierserviceid = ? AND crrsrvd_thrutime = ? AND crrsrvd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM carrierservicedescriptions " +
-                        "WHERE crrsrvd_crrsrv_carrierserviceid = ? AND crrsrvd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM carrierservicedescriptions
+                        WHERE crrsrvd_crrsrv_carrierserviceid = ? AND crrsrvd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = CarrierServiceDescriptionFactory.getInstance().prepareStatement(query);
@@ -1459,15 +1507,19 @@ public class CarrierControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM carrieroptions, carrieroptiondetails " +
-                        "WHERE crropt_activedetailid = crroptdt_carrieroptiondetailid AND crroptdt_carrierpartyid = ? " +
-                        "ORDER BY crroptdt_sortorder, crroptdt_carrieroptionname";
+                query = """
+                        SELECT _ALL_
+                        FROM carrieroptions, carrieroptiondetails
+                        WHERE crropt_activedetailid = crroptdt_carrieroptiondetailid AND crroptdt_carrierpartyid = ?
+                        ORDER BY crroptdt_sortorder, crroptdt_carrieroptionname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM carrieroptions, carrieroptiondetails " +
-                        "WHERE crropt_activedetailid = crroptdt_carrieroptiondetailid AND crroptdt_carrierpartyid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM carrieroptions, carrieroptiondetails
+                        WHERE crropt_activedetailid = crroptdt_carrieroptiondetailid AND crroptdt_carrierpartyid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = CarrierOptionFactory.getInstance().prepareStatement(query);
@@ -1497,16 +1549,20 @@ public class CarrierControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM carrieroptions, carrieroptiondetails " +
-                        "WHERE crropt_activedetailid = crroptdt_carrieroptiondetailid " +
-                        "AND crroptdt_carrierpartyid = ? AND crroptdt_isdefault = 1";
+                query = """
+                        SELECT _ALL_
+                        FROM carrieroptions, carrieroptiondetails
+                        WHERE crropt_activedetailid = crroptdt_carrieroptiondetailid
+                        AND crroptdt_carrierpartyid = ? AND crroptdt_isdefault = 1
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM carrieroptions, carrieroptiondetails " +
-                        "WHERE crropt_activedetailid = crroptdt_carrieroptiondetailid " +
-                        "AND crroptdt_carrierpartyid = ? AND crroptdt_isdefault = 1 " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM carrieroptions, carrieroptiondetails
+                        WHERE crropt_activedetailid = crroptdt_carrieroptiondetailid
+                        AND crroptdt_carrierpartyid = ? AND crroptdt_isdefault = 1
+                        FOR UPDATE
+                        """;
             }
 
             var ps = CarrierOptionFactory.getInstance().prepareStatement(query);
@@ -1540,16 +1596,20 @@ public class CarrierControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM carrieroptions, carrieroptiondetails " +
-                        "WHERE crropt_activedetailid = crroptdt_carrieroptiondetailid " +
-                        "AND crroptdt_carrierpartyid = ? AND crroptdt_carrieroptionname = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM carrieroptions, carrieroptiondetails
+                        WHERE crropt_activedetailid = crroptdt_carrieroptiondetailid
+                        AND crroptdt_carrierpartyid = ? AND crroptdt_carrieroptionname = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM carrieroptions, carrieroptiondetails " +
-                        "WHERE crropt_activedetailid = crroptdt_carrieroptiondetailid " +
-                        "AND crroptdt_carrierpartyid = ? AND crroptdt_carrieroptionname = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM carrieroptions, carrieroptiondetails
+                        WHERE crropt_activedetailid = crroptdt_carrieroptiondetailid
+                        AND crroptdt_carrierpartyid = ? AND crroptdt_carrieroptionname = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = CarrierOptionFactory.getInstance().prepareStatement(query);
@@ -1758,14 +1818,18 @@ public class CarrierControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM carrieroptiondescriptions " +
-                        "WHERE crroptd_crropt_carrieroptionid = ? AND crroptd_lang_languageid = ? AND crroptd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM carrieroptiondescriptions
+                        WHERE crroptd_crropt_carrieroptionid = ? AND crroptd_lang_languageid = ? AND crroptd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM carrieroptiondescriptions " +
-                        "WHERE crroptd_crropt_carrieroptionid = ? AND crroptd_lang_languageid = ? AND crroptd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM carrieroptiondescriptions
+                        WHERE crroptd_crropt_carrieroptionid = ? AND crroptd_lang_languageid = ? AND crroptd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = CarrierOptionDescriptionFactory.getInstance().prepareStatement(query);
@@ -1805,15 +1869,19 @@ public class CarrierControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM carrieroptiondescriptions, languages " +
-                        "WHERE crroptd_crropt_carrieroptionid = ? AND crroptd_thrutime = ? AND crroptd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM carrieroptiondescriptions, languages
+                        WHERE crroptd_crropt_carrieroptionid = ? AND crroptd_thrutime = ? AND crroptd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM carrieroptiondescriptions " +
-                        "WHERE crroptd_crropt_carrieroptionid = ? AND crroptd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM carrieroptiondescriptions
+                        WHERE crroptd_crropt_carrieroptionid = ? AND crroptd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = CarrierOptionDescriptionFactory.getInstance().prepareStatement(query);
@@ -1931,14 +1999,18 @@ public class CarrierControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM carrierserviceoptions " +
-                        "WHERE crrsrvopt_crrsrv_carrierserviceid = ? AND crrsrvopt_crropt_carrieroptionid = ? AND crrsrvopt_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM carrierserviceoptions
+                        WHERE crrsrvopt_crrsrv_carrierserviceid = ? AND crrsrvopt_crropt_carrieroptionid = ? AND crrsrvopt_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM carrierserviceoptions " +
-                        "WHERE crrsrvopt_crrsrv_carrierserviceid = ? AND crrsrvopt_crropt_carrieroptionid = ? AND crrsrvopt_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM carrierserviceoptions
+                        WHERE crrsrvopt_crrsrv_carrierserviceid = ? AND crrsrvopt_crropt_carrieroptionid = ? AND crrsrvopt_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = CarrierServiceOptionFactory.getInstance().prepareStatement(query);
@@ -1978,16 +2050,20 @@ public class CarrierControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM carrierserviceoptions, carrieroptions, carrieroptiondetails " +
-                        "WHERE crrsrvopt_crrsrv_carrierserviceid = ? AND crrsrvopt_thrutime = ? " +
-                        "AND crrsrvopt_crropt_carrieroptionid = crropt_carrieroptionid AND crropt_activedetailid = crroptdt_carrieroptiondetailid " +
-                        "ORDER BY crroptdt_sortorder, crroptdt_carrieroptionname";
+                query = """
+                        SELECT _ALL_
+                        FROM carrierserviceoptions, carrieroptions, carrieroptiondetails
+                        WHERE crrsrvopt_crrsrv_carrierserviceid = ? AND crrsrvopt_thrutime = ?
+                        AND crrsrvopt_crropt_carrieroptionid = crropt_carrieroptionid AND crropt_activedetailid = crroptdt_carrieroptiondetailid
+                        ORDER BY crroptdt_sortorder, crroptdt_carrieroptionname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM carrierserviceoptions " +
-                        "WHERE crrsrvopt_crrsrv_carrierserviceid = ? AND crrsrvopt_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM carrierserviceoptions
+                        WHERE crrsrvopt_crrsrv_carrierserviceid = ? AND crrsrvopt_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = CarrierServiceOptionFactory.getInstance().prepareStatement(query);
@@ -2018,16 +2094,20 @@ public class CarrierControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM carrierserviceoptions, carrierservices, carrierservicedetails " +
-                        "WHERE crrsrvopt_crropt_carrieroptionid = ? AND crrsrvopt_thrutime = ? " +
-                        "AND crrsrvopt_crrsrv_carrierserviceid = crrsrv_carrierserviceid AND crrsrv_activedetailid = crrsrvdt_carrierservicedetailid " +
-                        "ORDER BY crrsrvdt_sortorder, crrsrvdt_carrierservicename";
+                query = """
+                        SELECT _ALL_
+                        FROM carrierserviceoptions, carrierservices, carrierservicedetails
+                        WHERE crrsrvopt_crropt_carrieroptionid = ? AND crrsrvopt_thrutime = ?
+                        AND crrsrvopt_crrsrv_carrierserviceid = crrsrv_carrierserviceid AND crrsrv_activedetailid = crrsrvdt_carrierservicedetailid
+                        ORDER BY crrsrvdt_sortorder, crrsrvdt_carrierservicename
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM carrierserviceoptions " +
-                        "WHERE crrsrvopt_crropt_carrieroptionid = ? AND crrsrvopt_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM carrierserviceoptions
+                        WHERE crrsrvopt_crropt_carrieroptionid = ? AND crrsrvopt_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = CarrierServiceOptionFactory.getInstance().prepareStatement(query);
@@ -2138,11 +2218,11 @@ public class CarrierControl
     }
     
     public long countPartyCarriersByParty(Party party) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM partycarriers " +
-                "WHERE pcrr_par_partyid = ? AND pcrr_thrutime = ?",
-                party, Session.MAX_TIME);
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM partycarriers
+                        WHERE pcrr_par_partyid = ? AND pcrr_thrutime = ?
+                        """, party, Session.MAX_TIME);
     }
 
     private PartyCarrier getPartyCarrier(Party party, Party carrierParty, EntityPermission entityPermission) {
@@ -2152,14 +2232,18 @@ public class CarrierControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partycarriers " +
-                        "WHERE pcrr_par_partyid = ? AND pcrr_carrierpartyid = ? AND pcrr_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM partycarriers
+                        WHERE pcrr_par_partyid = ? AND pcrr_carrierpartyid = ? AND pcrr_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partycarriers " +
-                        "WHERE pcrr_par_partyid = ? AND pcrr_carrierpartyid = ? AND pcrr_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM partycarriers
+                        WHERE pcrr_par_partyid = ? AND pcrr_carrierpartyid = ? AND pcrr_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = PartyCarrierFactory.getInstance().prepareStatement(query);
@@ -2191,16 +2275,20 @@ public class CarrierControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partycarriers, parties, partydetails " +
-                        "WHERE pcrr_par_partyid = ? AND pcrr_thrutime = ? AND pcrr_par_partyid = par_partyid " +
-                        "AND par_activedetailid = pardt_partydetailid " +
-                        "ORDER BY pardt_partyname";
+                query = """
+                        SELECT _ALL_
+                        FROM partycarriers, parties, partydetails
+                        WHERE pcrr_par_partyid = ? AND pcrr_thrutime = ? AND pcrr_par_partyid = par_partyid
+                        AND par_activedetailid = pardt_partydetailid
+                        ORDER BY pardt_partyname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partycarriers " +
-                        "WHERE pcrr_par_partyid = ? AND pcrr_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM partycarriers
+                        WHERE pcrr_par_partyid = ? AND pcrr_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = PartyCarrierFactory.getInstance().prepareStatement(query);
@@ -2231,16 +2319,20 @@ public class CarrierControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partycarriers, carriers " +
-                        "WHERE pcrr_carrierpartyid = ? AND pcrr_thrutime = ? AND pcrr_carrierpartyid = crr_par_partyid " +
-                        "AND crr_thrutime = ? " +
-                        "ORDER BY pardt_partyname";
+                query = """
+                        SELECT _ALL_
+                        FROM partycarriers, carriers
+                        WHERE pcrr_carrierpartyid = ? AND pcrr_thrutime = ? AND pcrr_carrierpartyid = crr_par_partyid
+                        AND crr_thrutime = ?
+                        ORDER BY pardt_partyname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM partycarriers " +
-                        "WHERE pcrr_par_partyid = ? AND pcrr_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM partycarriers
+                        WHERE pcrr_par_partyid = ? AND pcrr_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = PartyCarrierFactory.getInstance().prepareStatement(query);
@@ -2334,18 +2426,20 @@ public class CarrierControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM partycarrieraccounts, partycarrieraccountdetails " +
-                "WHERE pcrract_activedetailid = pcrractdt_partycarrieraccountdetailid " +
-                "AND pcrractdt_par_partyid = ? AND pcrractdt_carrierpartyid = ? " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partycarrieraccounts, partycarrieraccountdetails " +
-                "WHERE pcrract_activedetailid = pcrractdt_partycarrieraccountdetailid " +
-                "AND pcrractdt_par_partyid = ? AND pcrractdt_carrierpartyid = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM partycarrieraccounts, partycarrieraccountdetails
+                WHERE pcrract_activedetailid = pcrractdt_partycarrieraccountdetailid
+                AND pcrractdt_par_partyid = ? AND pcrractdt_carrierpartyid = ?
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM partycarrieraccounts, partycarrieraccountdetails
+                WHERE pcrract_activedetailid = pcrractdt_partycarrieraccountdetailid
+                AND pcrractdt_par_partyid = ? AND pcrractdt_carrierpartyid = ?
+                FOR UPDATE
+                """);
         getPartyCarrierAccountQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -2375,20 +2469,22 @@ public class CarrierControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM partycarrieraccounts, partycarrieraccountdetails, parties, partydetails " +
-                "WHERE pcrract_activedetailid = pcrractdt_partycarrieraccountdetailid " +
-                "AND pcrractdt_par_partyid = ? " +
-                "AND pcrractdt_carrierpartyid = par_partyid AND par_lastdetailid = pardt_partydetailid " +
-                "ORDER BY pardt_partyname " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partycarrieraccounts, partycarrieraccountdetails " +
-                "WHERE pcrract_activedetailid = pcrractdt_partycarrieraccountdetailid " +
-                "AND pcrractdt_par_partyid = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM partycarrieraccounts, partycarrieraccountdetails, parties, partydetails
+                WHERE pcrract_activedetailid = pcrractdt_partycarrieraccountdetailid
+                AND pcrractdt_par_partyid = ?
+                AND pcrractdt_carrierpartyid = par_partyid AND par_lastdetailid = pardt_partydetailid
+                ORDER BY pardt_partyname
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM partycarrieraccounts, partycarrieraccountdetails
+                WHERE pcrract_activedetailid = pcrractdt_partycarrieraccountdetailid
+                AND pcrractdt_par_partyid = ?
+                FOR UPDATE
+                """);
         getPartyCarrierAccountsByPartyQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -2410,20 +2506,22 @@ public class CarrierControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM partycarrieraccounts, partycarrieraccountdetails, parties, partydetails " +
-                "WHERE pcrract_activedetailid = pcrractdt_partycarrieraccountdetailid " +
-                "AND pcrractdt_carrierpartyid = ? " +
-                "AND pcrractdt_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid " +
-                "ORDER BY pardt_partyname " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM partycarrieraccounts, partycarrieraccountdetails " +
-                "WHERE pcrract_activedetailid = pcrractdt_partycarrieraccountdetailid " +
-                "AND pcrractdt_carrierpartyid = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM partycarrieraccounts, partycarrieraccountdetails, parties, partydetails
+                WHERE pcrract_activedetailid = pcrractdt_partycarrieraccountdetailid
+                AND pcrractdt_carrierpartyid = ?
+                AND pcrractdt_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid
+                ORDER BY pardt_partyname
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM partycarrieraccounts, partycarrieraccountdetails
+                WHERE pcrract_activedetailid = pcrractdt_partycarrieraccountdetailid
+                AND pcrractdt_carrierpartyid = ?
+                FOR UPDATE
+                """);
         getPartyCarrierAccountsByCarrierPartyQueries = Collections.unmodifiableMap(queryMap);
     }
 
