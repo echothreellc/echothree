@@ -320,6 +320,7 @@ public class CarrierControl
                 FROM carriertypes, carriertypedetails
                 WHERE crrtyp_activedetailid = crrtypdt_carriertypedetailid AND crrtypdt_parentcarriertypeid = ?
                 ORDER BY crrtypdt_sortorder, crrtypdt_carriertypename
+                _LIMIT_
                 """);
         queryMap.put(EntityPermission.READ_WRITE, """
                 SELECT _ALL_
@@ -837,6 +838,7 @@ public class CarrierControl
                         FROM carriers
                         WHERE crr_thrutime = ?
                         ORDER BY crr_sortorder, crr_carriername
+                        _LIMIT_
                         """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = """
@@ -1095,6 +1097,7 @@ public class CarrierControl
                         FROM carrierservices, carrierservicedetails
                         WHERE crrsrv_activedetailid = crrsrvdt_carrierservicedetailid AND crrsrvdt_carrierpartyid = ?
                         ORDER BY crrsrvdt_sortorder, crrsrvdt_carrierservicename
+                        _LIMIT_
                         """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = """
@@ -1450,6 +1453,7 @@ public class CarrierControl
                         FROM carrierservicedescriptions, languages
                         WHERE crrsrvd_crrsrv_carrierserviceid = ? AND crrsrvd_thrutime = ? AND crrsrvd_lang_languageid = lang_languageid
                         ORDER BY lang_sortorder, lang_languageisoname
+                        _LIMIT_
                         """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = """
@@ -1693,6 +1697,7 @@ public class CarrierControl
                         FROM carrieroptions, carrieroptiondetails
                         WHERE crropt_activedetailid = crroptdt_carrieroptiondetailid AND crroptdt_carrierpartyid = ?
                         ORDER BY crroptdt_sortorder, crroptdt_carrieroptionname
+                        _LIMIT_
                         """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = """
@@ -2055,6 +2060,7 @@ public class CarrierControl
                         FROM carrieroptiondescriptions, languages
                         WHERE crroptd_crropt_carrieroptionid = ? AND crroptd_thrutime = ? AND crroptd_lang_languageid = lang_languageid
                         ORDER BY lang_sortorder, lang_languageisoname
+                        _LIMIT_
                         """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = """
@@ -2317,6 +2323,7 @@ public class CarrierControl
                         WHERE crrsrvopt_crrsrv_carrierserviceid = ? AND crrsrvopt_thrutime = ?
                         AND crrsrvopt_crropt_carrieroptionid = crropt_carrieroptionid AND crropt_activedetailid = crroptdt_carrieroptiondetailid
                         ORDER BY crroptdt_sortorder, crroptdt_carrieroptionname
+                        _LIMIT_
                         """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = """
@@ -2361,6 +2368,7 @@ public class CarrierControl
                         WHERE crrsrvopt_crropt_carrieroptionid = ? AND crrsrvopt_thrutime = ?
                         AND crrsrvopt_crrsrv_carrierserviceid = crrsrv_carrierserviceid AND crrsrv_activedetailid = crrsrvdt_carrierservicedetailid
                         ORDER BY crrsrvdt_sortorder, crrsrvdt_carrierservicename
+                        _LIMIT_
                         """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = """
@@ -2550,6 +2558,7 @@ public class CarrierControl
                         WHERE pcrr_par_partyid = ? AND pcrr_thrutime = ? AND pcrr_par_partyid = par_partyid
                         AND par_activedetailid = pardt_partydetailid
                         ORDER BY pardt_partyname
+                        _LIMIT_
                         """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = """
@@ -2594,6 +2603,7 @@ public class CarrierControl
                         WHERE pcrr_carrierpartyid = ? AND pcrr_thrutime = ? AND pcrr_carrierpartyid = crr_par_partyid
                         AND crr_thrutime = ?
                         ORDER BY pardt_partyname
+                        _LIMIT_
                         """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = """
