@@ -21,24 +21,27 @@ import com.echothree.control.user.carrier.common.result.CarrierResultFactory;
 import com.echothree.model.control.carrier.server.control.CarrierControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.model.data.carrier.server.entity.PartyCarrierAccount;
+import com.echothree.model.data.carrier.server.factory.PartyCarrierAccountFactory;
+import com.echothree.model.data.party.server.entity.Party;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetPartyCarrierAccountsCommand
-        extends BaseSimpleCommand<GetPartyCarrierAccountsForm> {
+        extends BasePaginatedMultipleEntitiesCommand<PartyCarrierAccount, GetPartyCarrierAccountsForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -48,34 +51,59 @@ public class GetPartyCarrierAccountsCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.PartyCarrierAccount.name(), SecurityRoles.List.name())
-                        ))
-                ));
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
     
+    @Inject
+    CarrierControl carrierControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    PartyLogic partyLogic;
+
     /** Creates a new instance of GetPartyCarrierAccountsCommand */
     public GetPartyCarrierAccountsCommand() {
-        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    Party party;
+
     @Override
-    protected BaseResult execute() {
-        var partyControl = Session.getModelController(PartyControl.class);
+    protected void handleForm() {
+        party = partyLogic.getPartyByName(this, form.getPartyName());
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return party == null ? null : carrierControl.countPartyCarrierAccountsByParty(party);
+    }
+
+    @Override
+    protected Collection<PartyCarrierAccount> getEntities() {
+        return party == null ? null : carrierControl.getPartyCarrierAccountsByParty(party);
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<PartyCarrierAccount> entities) {
         var result = CarrierResultFactory.getGetPartyCarrierAccountsResult();
-        var partyName = form.getPartyName();
-        var party = partyControl.getPartyByName(partyName);
 
         if(party != null) {
-            var carrierControl = Session.getModelController(CarrierControl.class);
             var userVisit = getUserVisit();
 
             result.setParty(partyControl.getPartyTransfer(userVisit, party));
-            result.setPartyCarrierAccounts(carrierControl.getPartyCarrierAccountTransfersByParty(userVisit, party));
-        } else {
-            addExecutionError(ExecutionErrors.UnknownPartyName.name(), partyName);
+
+            if(session.hasLimit(PartyCarrierAccountFactory.class)) {
+                result.setPartyCarrierAccountCount(getTotalEntities());
+            }
+
+            result.setPartyCarrierAccounts(carrierControl.getPartyCarrierAccountTransfers(userVisit, entities));
         }
 
         return result;

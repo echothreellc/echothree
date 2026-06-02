@@ -45,6 +45,7 @@ import com.echothree.model.control.shipping.server.control.ShippingControl;
 import com.echothree.model.data.carrier.common.pk.CarrierOptionPK;
 import com.echothree.model.data.carrier.common.pk.CarrierServicePK;
 import com.echothree.model.data.carrier.common.pk.CarrierTypePK;
+import com.echothree.model.data.carrier.common.pk.PartyCarrierAccountPK;
 import com.echothree.model.data.carrier.server.entity.Carrier;
 import com.echothree.model.data.carrier.server.entity.CarrierOption;
 import com.echothree.model.data.carrier.server.entity.CarrierOptionDescription;
@@ -2631,7 +2632,7 @@ public class CarrierControl
         return partyCarrierTransferCache.getPartyCarrierTransfer(userVisit, partyCarrier);
     }
     
-    public List<PartyCarrierTransfer> getPartyCarrierTransfersByParty(UserVisit userVisit, List<PartyCarrier> partyCarriers) {
+    public List<PartyCarrierTransfer> getPartyCarrierTransfersByParty(UserVisit userVisit, Collection<PartyCarrier> partyCarriers) {
         List<PartyCarrierTransfer> partyCarrierTransfers = new ArrayList<>(partyCarriers.size());
 
         partyCarriers.forEach((partyCarrier) ->
@@ -2639,6 +2640,10 @@ public class CarrierControl
         );
 
         return partyCarrierTransfers;
+    }
+
+    public List<PartyCarrierTransfer> getPartyCarrierTransfersByParty(UserVisit userVisit, List<PartyCarrier> partyCarriers) {
+        return getPartyCarrierTransfersByParty(userVisit, (Collection<PartyCarrier>)partyCarriers);
     }
 
     public List<PartyCarrierTransfer> getPartyCarrierTransfersByParty(UserVisit userVisit, Party party) {
@@ -2687,6 +2692,39 @@ public class CarrierControl
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyCarrierAccount.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return partyCarrierAccount;
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.PartyCarrierAccount */
+    public PartyCarrierAccount getPartyCarrierAccountByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new PartyCarrierAccountPK(entityInstance.getEntityUniqueId());
+
+        return PartyCarrierAccountFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public PartyCarrierAccount getPartyCarrierAccountByEntityInstance(EntityInstance entityInstance) {
+        return getPartyCarrierAccountByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public PartyCarrierAccount getPartyCarrierAccountByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getPartyCarrierAccountByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countPartyCarrierAccountsByParty(final Party party) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM partycarrieraccounts
+                        JOIN partycarrieraccountdetails ON pcrractdt_partycarrieraccountdetailid = pcrract_activedetailid
+                        WHERE pcrractdt_par_partyid = ?
+                        """, party);
+    }
+
+    public long countPartyCarrierAccountsByCarrierParty(final Party carrierParty) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM partycarrieraccounts
+                        JOIN partycarrieraccountdetails ON pcrractdt_partycarrieraccountdetailid = pcrract_activedetailid
+                        WHERE pcrractdt_carrierpartyid = ?
+                        """, carrierParty);
     }
 
     private static final Map<EntityPermission, String> getPartyCarrierAccountQueries;
