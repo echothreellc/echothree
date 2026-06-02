@@ -874,6 +874,14 @@ public class CarrierControl
         return getCarrierTransfer(userVisit, getCarrier(party));
     }
     
+    public List<CarrierTransfer> getCarrierTransfers(UserVisit userVisit, Collection<Carrier> carriers) {
+        var carrierTransfers = new ArrayList<CarrierTransfer>(carriers.size());
+
+        carriers.forEach((carrier) -> carrierTransfers.add(carrierTransferCache.getCarrierTransfer(userVisit, carrier)));
+
+        return carrierTransfers;
+    }
+
     public List<CarrierTransfer> getCarrierTransfers(UserVisit userVisit) {
         var carriers = getCarriers();
         List<CarrierTransfer> carrierTransfers = new ArrayList<>(carriers.size());
