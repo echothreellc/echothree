@@ -1600,7 +1600,7 @@ public class CarrierControl
         return getCarrierOptionByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
 
-    public long countCampaignsByCarrierParty(final Party carrierParty) {
+    public long countCarrierOptionsByCarrierParty(final Party carrierParty) {
         return session.queryForLong("""
                         SELECT COUNT(*)
                         FROM carrieroptions
@@ -1609,7 +1609,7 @@ public class CarrierControl
                         """, carrierParty);
     }
 
-    public long countCampaignsByRecommendedGeoCodeSelector(final Selector recommendedGeoCodeSelector) {
+    public long countCarrierOptionsByRecommendedGeoCodeSelector(final Selector recommendedGeoCodeSelector) {
         return session.queryForLong("""
                         SELECT COUNT(*)
                         FROM carrieroptions
@@ -1618,7 +1618,7 @@ public class CarrierControl
                         """, recommendedGeoCodeSelector);
     }
 
-    public long countCampaignsByRequiredGeoCodeSelector(final Selector requiredGeoCodeSelector) {
+    public long countCarrierOptionsByRequiredGeoCodeSelector(final Selector requiredGeoCodeSelector) {
         return session.queryForLong("""
                         SELECT COUNT(*)
                         FROM carrieroptions
@@ -1627,7 +1627,7 @@ public class CarrierControl
                         """, requiredGeoCodeSelector);
     }
 
-    public long countCampaignsByRecommendedItemSelector(final Selector recommendedItemSelector) {
+    public long countCarrierOptionsByRecommendedItemSelector(final Selector recommendedItemSelector) {
         return session.queryForLong("""
                         SELECT COUNT(*)
                         FROM carrieroptions
@@ -1636,7 +1636,7 @@ public class CarrierControl
                         """, recommendedItemSelector);
     }
 
-    public long countCampaignsByRequiredItemSelector(final Selector requiredItemSelector) {
+    public long countCarrierOptionsByRequiredItemSelector(final Selector requiredItemSelector) {
         return session.queryForLong("""
                         SELECT COUNT(*)
                         FROM carrieroptions
@@ -1645,7 +1645,7 @@ public class CarrierControl
                         """, requiredItemSelector);
     }
 
-    public long countCampaignsByRecommendedOrderSelector(final Selector recommendedOrderSelector) {
+    public long countCarrierOptionsByRecommendedOrderSelector(final Selector recommendedOrderSelector) {
         return session.queryForLong("""
                         SELECT COUNT(*)
                         FROM carrieroptions
@@ -1654,7 +1654,7 @@ public class CarrierControl
                         """, recommendedOrderSelector);
     }
 
-    public long countCampaignsByRequiredOrderSelector(final Selector requiredOrderSelector) {
+    public long countCarrierOptionsByRequiredOrderSelector(final Selector requiredOrderSelector) {
         return session.queryForLong("""
                         SELECT COUNT(*)
                         FROM carrieroptions
@@ -1663,7 +1663,7 @@ public class CarrierControl
                         """, requiredOrderSelector);
     }
 
-    public long countCampaignsByRecommendedShipmentSelector(final Selector recommendedShipmentSelector) {
+    public long countCarrierOptionsByRecommendedShipmentSelector(final Selector recommendedShipmentSelector) {
         return session.queryForLong("""
                         SELECT COUNT(*)
                         FROM carrieroptions
@@ -1672,7 +1672,7 @@ public class CarrierControl
                         """, recommendedShipmentSelector);
     }
 
-    public long countCampaignsByRequiredShipmentSelector(final Selector requiredShipmentSelector) {
+    public long countCarrierOptionsByRequiredShipmentSelector(final Selector requiredShipmentSelector) {
         return session.queryForLong("""
                         SELECT COUNT(*)
                         FROM carrieroptions
@@ -1860,15 +1860,18 @@ public class CarrierControl
         return carrierOptionTransferCache.getCarrierOptionTransfer(userVisit, carrierOption);
     }
     
-    public List<CarrierOptionTransfer> getCarrierOptionTransfers(UserVisit userVisit, Party carrierParty) {
-        var carrierPartyPriorities = getCarrierOptions(carrierParty);
-        List<CarrierOptionTransfer> carrierOptionTransfers = new ArrayList<>(carrierPartyPriorities.size());
+    public List<CarrierOptionTransfer> getCarrierOptionTransfers(UserVisit userVisit, Collection<CarrierOption> carrierOptions) {
+        List<CarrierOptionTransfer> carrierOptionTransfers = new ArrayList<>(carrierOptions.size());
         
-        carrierPartyPriorities.forEach((carrierOption) ->
+        carrierOptions.forEach((carrierOption) ->
                 carrierOptionTransfers.add(carrierOptionTransferCache.getCarrierOptionTransfer(userVisit, carrierOption))
         );
         
         return carrierOptionTransfers;
+    }
+    
+    public List<CarrierOptionTransfer> getCarrierOptionTransfers(UserVisit userVisit, Party carrierParty) {
+        return getCarrierOptionTransfers(userVisit, getCarrierOptions(carrierParty));
     }
     
     private void updateCarrierOptionFromValue(CarrierOptionDetailValue carrierOptionDetailValue, boolean checkDefault,
