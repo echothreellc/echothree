@@ -42,6 +42,8 @@ import com.echothree.model.control.carrier.server.transfer.PartyCarrierAccountTr
 import com.echothree.model.control.carrier.server.transfer.PartyCarrierTransferCache;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.shipping.server.control.ShippingControl;
+import com.echothree.model.data.carrier.common.pk.CarrierOptionPK;
+import com.echothree.model.data.carrier.common.pk.CarrierServicePK;
 import com.echothree.model.data.carrier.common.pk.CarrierTypePK;
 import com.echothree.model.data.carrier.server.entity.Carrier;
 import com.echothree.model.data.carrier.server.entity.CarrierOption;
@@ -652,7 +654,39 @@ public class CarrierControl
         
         return carrier;
     }
-    
+
+    public long countCarriers() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM carriers
+                        WHERE crr_thrutime = ?
+                        """, Session.MAX_TIME);
+    }
+
+    public long countCarriersByCarrierType(final CarrierType carrierType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM campaigns
+                        WHERE crr_crrtyp_carriertypeid = ? AND crr_thrutime = ?
+                        """, carrierType, Session.MAX_TIME);
+    }
+
+    public long countCarriersByGeoCodeSelector(final Selector geoCodeSelector) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM campaigns
+                        WHERE crr_geocodeselectorid = ? AND crr_thrutime = ?
+                        """, geoCodeSelector, Session.MAX_TIME);
+    }
+
+    public long countCarriersByItemSelector(final Selector itemSelector) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM campaigns
+                        WHERE crr_itemselectorid = ? AND crr_thrutime = ?
+                        """, itemSelector, Session.MAX_TIME);
+    }
+
     private Carrier getCarrier(Party party, EntityPermission entityPermission) {
         Carrier carrier;
         
@@ -997,7 +1031,49 @@ public class CarrierControl
         
         return carrierService;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.CarrierService */
+    public CarrierService getCarrierServiceByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new CarrierServicePK(entityInstance.getEntityUniqueId());
+
+        return CarrierServiceFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public CarrierService getCarrierServiceByEntityInstance(EntityInstance entityInstance) {
+        return getCarrierServiceByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public CarrierService getCarrierServiceByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getCarrierServiceByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countCarrierServicesByCarrierParty(final Party carrierParty) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM carrierservices
+                        JOIN carrierservicedetails ON crrsrvdt_carrierservicedetailid = crrsrv_activedetailid
+                        WHERE crrsrvdt_carrierpartyid = ?
+                        """, carrierParty);
+    }
+
+    public long countCarrierServicesByGeoCodeSelector(final Selector geoCodeSelector) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM carrierservices
+                        JOIN carrierservicedetails ON crrsrvdt_carrierservicedetailid = crrsrv_activedetailid
+                        WHERE crrsrvdt_geocodeselectorid = ?
+                        """, geoCodeSelector);
+    }
+
+    public long countCarrierServicesByItemSelector(final Selector itemSelector) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM carrierservices
+                        JOIN carrierservicedetails ON crrsrvdt_carrierservicedetailid = crrsrv_activedetailid
+                        WHERE crrsrvdt_itemselectorid = ?
+                        """, itemSelector);
+    }
+
     private List<CarrierService> getCarrierServices(Party carrierParty, EntityPermission entityPermission) {
         List<CarrierService> carrierPartyPriorities;
         
@@ -1499,7 +1575,103 @@ public class CarrierControl
         
         return carrierOption;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.CarrierOption */
+    public CarrierOption getCarrierOptionByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new CarrierOptionPK(entityInstance.getEntityUniqueId());
+
+        return CarrierOptionFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public CarrierOption getCarrierOptionByEntityInstance(EntityInstance entityInstance) {
+        return getCarrierOptionByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public CarrierOption getCarrierOptionByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getCarrierOptionByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countCampaignsByCarrierParty(final Party carrierParty) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM carrieroptions
+                        JOIN carrieroptiondetails ON crroptdt_carrieroptiondetailid = crropt_activedetailid
+                        WHERE crroptdt_carrierpartyid = ?
+                        """, carrierParty);
+    }
+
+    public long countCampaignsByRecommendedGeoCodeSelector(final Selector recommendedGeoCodeSelector) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM carrieroptions
+                        JOIN carrieroptiondetails ON crroptdt_carrieroptiondetailid = crropt_activedetailid
+                        WHERE crroptdt_recommendedgeocodeselectorid = ?
+                        """, recommendedGeoCodeSelector);
+    }
+
+    public long countCampaignsByRequiredGeoCodeSelector(final Selector requiredGeoCodeSelector) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM carrieroptions
+                        JOIN carrieroptiondetails ON crroptdt_carrieroptiondetailid = crropt_activedetailid
+                        WHERE crroptdt_requiredgeocodeselectorid = ?
+                        """, requiredGeoCodeSelector);
+    }
+
+    public long countCampaignsByRecommendedItemSelector(final Selector recommendedItemSelector) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM carrieroptions
+                        JOIN carrieroptiondetails ON crroptdt_carrieroptiondetailid = crropt_activedetailid
+                        WHERE crroptdt_recommendeditemselectorid = ?
+                        """, recommendedItemSelector);
+    }
+
+    public long countCampaignsByRequiredItemSelector(final Selector requiredItemSelector) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM carrieroptions
+                        JOIN carrieroptiondetails ON crroptdt_carrieroptiondetailid = crropt_activedetailid
+                        WHERE crroptdt_requireditemselectorid = ?
+                        """, requiredItemSelector);
+    }
+
+    public long countCampaignsByRecommendedOrderSelector(final Selector recommendedOrderSelector) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM carrieroptions
+                        JOIN carrieroptiondetails ON crroptdt_carrieroptiondetailid = crropt_activedetailid
+                        WHERE crroptdt_recommendedorderselectorid = ?
+                        """, recommendedOrderSelector);
+    }
+
+    public long countCampaignsByRequiredOrderSelector(final Selector requiredOrderSelector) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM carrieroptions
+                        JOIN carrieroptiondetails ON crroptdt_carrieroptiondetailid = crropt_activedetailid
+                        WHERE crroptdt_requiredorderselectorid = ?
+                        """, requiredOrderSelector);
+    }
+
+    public long countCampaignsByRecommendedShipmentSelector(final Selector recommendedShipmentSelector) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM carrieroptions
+                        JOIN carrieroptiondetails ON crroptdt_carrieroptiondetailid = crropt_activedetailid
+                        WHERE crroptdt_recommendedshipmentselectorid = ?
+                        """, recommendedShipmentSelector);
+    }
+
+    public long countCampaignsByRequiredShipmentSelector(final Selector requiredShipmentSelector) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM carrieroptions
+                        JOIN carrieroptiondetails ON crroptdt_carrieroptiondetailid = crropt_activedetailid
+                        WHERE crroptdt_requiredshipmentselectorid = ?
+                        """, requiredShipmentSelector);
+    }
+
     private List<CarrierOption> getCarrierOptions(Party carrierParty, EntityPermission entityPermission) {
         List<CarrierOption> carrierPartyPriorities;
         
@@ -1990,7 +2162,87 @@ public class CarrierControl
         
         return carrierServiceOption;
     }
-    
+
+    public long countCarrierServiceOptionsByCarrierService(final CarrierService carrierService) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM carrierserviceoptions
+                        WHERE crrsrvopt_crrsrv_carrierserviceid = ? AND crrsrvopt_thrutime = ?
+                        """, carrierService, Session.MAX_TIME);
+    }
+
+    public long countCarrierServiceOptionsByCarrierOption(final CarrierOption carrierOption) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM carrierserviceoptions
+                        WHERE crrsrvopt_crropt_carrieroptionid = ? AND crrsrvopt_thrutime = ?
+                        """, carrierOption, Session.MAX_TIME);
+    }
+
+    public long countCarrierServiceOptionsByRecommendedGeoCodeSelector(final Selector recommendedGeoCodeSelector) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM carrierserviceoptions
+                        WHERE crrsrvopt_recommendedgeocodeselectorid = ? AND crrsrvopt_thrutime = ?
+                        """, recommendedGeoCodeSelector, Session.MAX_TIME);
+    }
+
+    public long countCarrierServiceOptionsByRequiredGeoCodeSelector(final Selector requiredGeoCodeSelector) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM carrierserviceoptions
+                        WHERE crrsrvopt_requiredgeocodeselectorid = ? AND crrsrvopt_thrutime = ?
+                        """, requiredGeoCodeSelector, Session.MAX_TIME);
+    }
+
+    public long countCarrierServiceOptionsByRecommendedItemSelector(final Selector recommendedItemSelector) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM carrierserviceoptions
+                        WHERE crrsrvopt_recommendeditemselectorid = ? AND crrsrvopt_thrutime = ?
+                        """, recommendedItemSelector, Session.MAX_TIME);
+    }
+
+    public long countCarrierServiceOptionsByRequiredItemSelector(final Selector requiredItemSelector) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM carrierserviceoptions
+                        WHERE crrsrvopt_requireditemselectorid = ? AND crrsrvopt_thrutime = ?
+                        """, requiredItemSelector, Session.MAX_TIME);
+    }
+
+    public long countCarrierServiceOptionsByRecommendedOrderSelector(final Selector recommendedOrderSelector) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM carrierserviceoptions
+                        WHERE crrsrvopt_recommendedorderselectorid = ? AND crrsrvopt_thrutime = ?
+                        """, recommendedOrderSelector, Session.MAX_TIME);
+    }
+
+    public long countCarrierServiceOptionsByRequiredOrderSelector(final Selector requiredOrderSelector) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM carrierserviceoptions
+                        WHERE crrsrvopt_requiredorderselectorid = ? AND crrsrvopt_thrutime = ?
+                        """, requiredOrderSelector, Session.MAX_TIME);
+    }
+
+    public long countCarrierServiceOptionsByRecommendedShipmentSelector(final Selector recommendedShipmentSelector) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM carrierserviceoptions
+                        WHERE crrsrvopt_recommendedshipmentselectorid = ? AND crrsrvopt_thrutime = ?
+                        """, recommendedShipmentSelector, Session.MAX_TIME);
+    }
+
+    public long countCarrierServiceOptionsByRequiredShipmentSelector(final Selector requiredShipmentSelector) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM carrierserviceoptions
+                        WHERE crrsrvopt_requiredshipmentselectorid = ? AND crrsrvopt_thrutime = ?
+                        """, requiredShipmentSelector, Session.MAX_TIME);
+    }
+
     private CarrierServiceOption getCarrierServiceOption(CarrierService carrierService, CarrierOption carrierOption,
             EntityPermission entityPermission) {
         CarrierServiceOption carrierServiceOption;
@@ -2216,13 +2468,21 @@ public class CarrierControl
         
         return partyCarrier;
     }
-    
-    public long countPartyCarriersByParty(Party party) {
+
+    public long countPartyCarriersByParty(final Party party) {
         return session.queryForLong("""
                         SELECT COUNT(*)
                         FROM partycarriers
                         WHERE pcrr_par_partyid = ? AND pcrr_thrutime = ?
                         """, party, Session.MAX_TIME);
+    }
+
+    public long countPartyCarriersByCarrierParty(final Party carrierParty) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM partycarriers
+                        WHERE pcrr_carrierpartyid = ? AND pcrr_thrutime = ?
+                        """, carrierParty, Session.MAX_TIME);
     }
 
     private PartyCarrier getPartyCarrier(Party party, Party carrierParty, EntityPermission entityPermission) {
