@@ -1264,16 +1264,19 @@ public class CarrierControl
     public CarrierServiceTransfer getCarrierServiceTransfer(UserVisit userVisit, CarrierService carrierService) {
         return carrierServiceTransferCache.getCarrierServiceTransfer(userVisit, carrierService);
     }
-    
-    public List<CarrierServiceTransfer> getCarrierServiceTransfers(UserVisit userVisit, Party carrierParty) {
-        var carrierPartyPriorities = getCarrierServices(carrierParty);
-        List<CarrierServiceTransfer> carrierServiceTransfers = new ArrayList<>(carrierPartyPriorities.size());
-        
-        carrierPartyPriorities.forEach((carrierService) ->
+
+    public List<CarrierServiceTransfer> getCarrierServiceTransfers(UserVisit userVisit, Collection<CarrierService> carrierServices) {
+        List<CarrierServiceTransfer> carrierServiceTransfers = new ArrayList<>(carrierServices.size());
+
+        carrierServices.forEach((carrierService) ->
                 carrierServiceTransfers.add(carrierServiceTransferCache.getCarrierServiceTransfer(userVisit, carrierService))
         );
-        
+
         return carrierServiceTransfers;
+    }
+
+    public List<CarrierServiceTransfer> getCarrierServiceTransfers(UserVisit userVisit, Party carrierParty) {
+        return getCarrierServiceTransfers(userVisit, getCarrierServices(carrierParty));
     }
     
     private void updateCarrierServiceFromValue(CarrierServiceDetailValue carrierServiceDetailValue, boolean checkDefault,
