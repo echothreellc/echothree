@@ -57,7 +57,7 @@ public class GetCarrierServiceCommand
     
     @Inject
     CarrierControl carrierControl;
-
+    
     /** Creates a new instance of GetCarrierServiceCommand */
     public GetCarrierServiceCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
