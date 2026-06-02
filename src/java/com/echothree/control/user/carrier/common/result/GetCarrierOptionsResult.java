@@ -26,6 +26,9 @@ public interface GetCarrierOptionsResult
     
     CarrierTransfer getCarrier();
     void setCarrier(CarrierTransfer carrier);
+
+    Long getCarrierOptionCount();
+    void setCarrierOptionCount(Long carrierOptionCount);
     
     List<CarrierOptionTransfer> getCarrierOptions();
     void setCarrierOptions(List<CarrierOptionTransfer> carrierOptions);
