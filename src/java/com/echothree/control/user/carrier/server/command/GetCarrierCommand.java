@@ -25,18 +25,17 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.carrier.server.entity.Carrier;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetCarrierCommand
@@ -50,15 +49,21 @@ public class GetCarrierCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.Carrier.name(), SecurityRoles.Review.name())
-                        ))
-                ));
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CarrierName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
     
+    @Inject
+    CarrierControl carrierControl;
+
+    @Inject
+    PartyControl partyControl;
+
     /** Creates a new instance of GetCarrierCommand */
     public GetCarrierCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -72,7 +77,6 @@ public class GetCarrierCommand
         var parameterCount = (carrierName == null ? 0 : 1) + (partyName == null ? 0 : 1);
         
         if(parameterCount == 1) {
-            var carrierControl = Session.getModelController(CarrierControl.class);
             Carrier carrier = null;
             
             if(carrierName != null) {
@@ -82,7 +86,6 @@ public class GetCarrierCommand
                     addExecutionError(ExecutionErrors.UnknownCarrierName.name(), carrierName);
                 }
             } else {
-                var partyControl = Session.getModelController(PartyControl.class);
                 var party = partyControl.getPartyByName(partyName);
                 
                 if(party != null) {
