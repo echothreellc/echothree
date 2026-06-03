@@ -19,15 +19,17 @@ package com.echothree.control.user.carrier.server.command;
 import com.echothree.control.user.carrier.common.form.GetPartyCarrierForm;
 import com.echothree.control.user.carrier.common.result.CarrierResultFactory;
 import com.echothree.model.control.carrier.server.control.CarrierControl;
+import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.carrier.server.entity.PartyCarrier;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -37,7 +39,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetPartyCarrierCommand
-        extends BaseSimpleCommand<GetPartyCarrierForm> {
+        extends BaseSingleEntityCommand<PartyCarrier, GetPartyCarrierForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -68,8 +70,8 @@ public class GetPartyCarrierCommand
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = CarrierResultFactory.getGetPartyCarrierResult();
+    protected PartyCarrier getEntity() {
+        PartyCarrier partyCarrier = null;
         var partyName = form.getPartyName();
         var party = partyLogic.getPartyByName(this, partyName);
 
@@ -78,16 +80,25 @@ public class GetPartyCarrierCommand
             var carrier = carrierControl.getCarrierByName(carrierName);
 
             if(carrier != null) {
-                var partyCarrier = carrierControl.getPartyCarrier(party, carrier.getParty());
+                partyCarrier = carrierControl.getPartyCarrier(party, carrier.getParty());
 
-                if(partyCarrier != null) {
-                    result.setPartyCarrier(carrierControl.getPartyCarrierTransfer(getUserVisit(), partyCarrier));
-                } else {
+                if(partyCarrier == null) {
                     addExecutionError(ExecutionErrors.UnknownPartyCarrier.name(), partyName, carrierName);
                 }
             } else {
                 addExecutionError(ExecutionErrors.UnknownCarrierName.name(), carrierName);
             }
+        }
+
+        return partyCarrier;
+    }
+
+    @Override
+    protected BaseResult getResult(PartyCarrier partyCarrier) {
+        var result = CarrierResultFactory.getGetPartyCarrierResult();
+
+        if(partyCarrier != null) {
+            result.setPartyCarrier(carrierControl.getPartyCarrierTransfer(getUserVisit(), partyCarrier));
         }
 
         return result;
