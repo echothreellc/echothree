@@ -23,11 +23,12 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.carrier.server.entity.PartyCarrierAccount;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -37,7 +38,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetPartyCarrierAccountCommand
-        extends BaseSimpleCommand<GetPartyCarrierAccountForm> {
+        extends BaseSingleEntityCommand<PartyCarrierAccount, GetPartyCarrierAccountForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -68,8 +69,8 @@ public class GetPartyCarrierAccountCommand
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = CarrierResultFactory.getGetPartyCarrierAccountResult();
+    protected PartyCarrierAccount getEntity() {
+        PartyCarrierAccount partyCarrierAccount = null;
         var partyName = form.getPartyName();
         var party = partyLogic.getPartyByName(this, partyName);
 
@@ -78,16 +79,25 @@ public class GetPartyCarrierAccountCommand
             var carrier = carrierControl.getCarrierByName(carrierName);
 
             if(carrier != null) {
-                var partyCarrierAccount = carrierControl.getPartyCarrierAccount(party, carrier.getParty());
+                partyCarrierAccount = carrierControl.getPartyCarrierAccount(party, carrier.getParty());
 
-                if(partyCarrierAccount != null) {
-                    result.setPartyCarrierAccount(carrierControl.getPartyCarrierAccountTransfer(getUserVisit(), partyCarrierAccount));
-                } else {
+                if(partyCarrierAccount == null) {
                     addExecutionError(ExecutionErrors.UnknownPartyCarrierAccount.name(), partyName, carrierName);
                 }
             } else {
                 addExecutionError(ExecutionErrors.UnknownCarrierName.name(), carrierName);
             }
+        }
+
+        return partyCarrierAccount;
+    }
+
+    @Override
+    protected BaseResult getResult(PartyCarrierAccount partyCarrierAccount) {
+        var result = CarrierResultFactory.getGetPartyCarrierAccountResult();
+
+        if(partyCarrierAccount != null) {
+            result.setPartyCarrierAccount(carrierControl.getPartyCarrierAccountTransfer(getUserVisit(), partyCarrierAccount));
         }
 
         return result;
