@@ -21,7 +21,7 @@ import com.echothree.control.user.carrier.common.result.CarrierResultFactory;
 import com.echothree.model.control.carrier.server.control.CarrierControl;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.carrier.server.entity.Carrier;
@@ -29,7 +29,7 @@ import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -39,7 +39,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetCarrierCommand
-        extends BaseSimpleCommand<GetCarrierForm> {
+        extends BaseSingleEntityCommand<Carrier, GetCarrierForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -62,7 +62,7 @@ public class GetCarrierCommand
     CarrierControl carrierControl;
 
     @Inject
-    PartyControl partyControl;
+    PartyLogic partyLogic;
 
     /** Creates a new instance of GetCarrierCommand */
     public GetCarrierCommand() {
@@ -70,46 +70,49 @@ public class GetCarrierCommand
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = CarrierResultFactory.getGetCarrierResult();
+    protected Carrier getEntity() {
+        Carrier carrier = null;
         var carrierName = form.getCarrierName();
         var partyName = form.getPartyName();
         var parameterCount = (carrierName == null ? 0 : 1) + (partyName == null ? 0 : 1);
-        
+
         if(parameterCount == 1) {
-            Carrier carrier = null;
-            
             if(carrierName != null) {
                 carrier = carrierControl.getCarrierByName(carrierName);
-                
+
                 if(carrier == null) {
                     addExecutionError(ExecutionErrors.UnknownCarrierName.name(), carrierName);
                 }
             } else {
-                var party = partyControl.getPartyByName(partyName);
-                
-                if(party != null) {
-                    var partyType = partyControl.getPartyTypeByName(PartyTypes.CARRIER.name());
-                    
-                    if(party.getLastDetail().getPartyType().equals(partyType)) {
+                var party = partyLogic.getPartyByName(this, partyName);
+
+                if(!hasExecutionErrors()) {
+                    partyLogic.checkPartyType(this, party, PartyTypes.CARRIER.name());
+
+                    if(!hasExecutionErrors()) {
                         carrier = carrierControl.getCarrier(party);
-                    } else {
-                        addExecutionError(ExecutionErrors.InvalidPartyType.name());
                     }
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownPartyName.name(), partyName);
                 }
             }
-            
+
             if(!hasExecutionErrors()) {
-                result.setCarrier(carrierControl.getCarrierTransfer(getUserVisit(), carrier));
-                
                 sendEvent(carrier.getPartyPK(), EventTypes.READ, null, null, getPartyPK());
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());
         }
-        
+
+        return carrier;
+    }
+
+    @Override
+    protected BaseResult getResult(Carrier carrier) {
+        var result = CarrierResultFactory.getGetCarrierResult();
+
+        if(carrier != null) {
+            result.setCarrier(carrierControl.getCarrierTransfer(getUserVisit(), carrier));
+        }
+
         return result;
     }
     
