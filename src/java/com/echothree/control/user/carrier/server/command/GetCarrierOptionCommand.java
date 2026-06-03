@@ -19,14 +19,16 @@ package com.echothree.control.user.carrier.server.command;
 import com.echothree.control.user.carrier.common.form.GetCarrierOptionForm;
 import com.echothree.control.user.carrier.common.result.CarrierResultFactory;
 import com.echothree.model.control.carrier.server.control.CarrierControl;
+import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.carrier.server.entity.CarrierOption;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -36,7 +38,7 @@ import javax.inject.Inject;
 
 @Dependent
 public class GetCarrierOptionCommand
-        extends BaseSimpleCommand<GetCarrierOptionForm> {
+        extends BaseSingleEntityCommand<CarrierOption, GetCarrierOptionForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -64,26 +66,38 @@ public class GetCarrierOptionCommand
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = CarrierResultFactory.getGetCarrierOptionResult();
+    protected CarrierOption getEntity() {
+        CarrierOption carrierOption = null;
         var carrierName = form.getCarrierName();
         var carrier = carrierControl.getCarrierByName(carrierName);
-        
+
         if(carrier != null) {
             var carrierParty = carrier.getParty();
             var carrierOptionName = form.getCarrierOptionName();
-            var carrierOption = carrierControl.getCarrierOptionByName(carrierParty, carrierOptionName);
-            
+
+            carrierOption = carrierControl.getCarrierOptionByName(carrierParty, carrierOptionName);
+
             if(carrierOption != null) {
-                result.setCarrierOption(carrierControl.getCarrierOptionTransfer(getUserVisit(), carrierOption));
+                sendEvent(carrierOption.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownCarrierOptionName.name(), carrierName, carrierOptionName);
             }
         } else {
             addExecutionError(ExecutionErrors.UnknownCarrierName.name(), carrierName);
         }
-        
+
+        return carrierOption;
+    }
+
+    @Override
+    protected BaseResult getResult(CarrierOption carrierOption) {
+        var result = CarrierResultFactory.getGetCarrierOptionResult();
+
+        if(carrierOption != null) {
+            result.setCarrierOption(carrierControl.getCarrierOptionTransfer(getUserVisit(), carrierOption));
+        }
+
         return result;
     }
-    
+
 }
