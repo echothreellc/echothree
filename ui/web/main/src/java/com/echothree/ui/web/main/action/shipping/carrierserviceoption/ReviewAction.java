@@ -67,9 +67,6 @@ public class ReviewAction
             var carrierServiceOption = result.getCarrierServiceOption();
             
             if(carrierServiceOption != null) {
-                request.setAttribute(AttributeConstants.CARRIER, result.getCarrier());
-                request.setAttribute(AttributeConstants.CARRIER_SERVICE, result.getCarrierService());
-                request.setAttribute(AttributeConstants.CARRIER_OPTION, result.getCarrierOption());
                 request.setAttribute(AttributeConstants.CARRIER_SERVICE_OPTION, carrierServiceOption);
                 forwardKey = ForwardConstants.DISPLAY;
             } else {

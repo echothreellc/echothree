@@ -16,23 +16,11 @@
 
 package com.echothree.control.user.carrier.common.result;
 
-import com.echothree.model.control.carrier.common.transfer.CarrierOptionTransfer;
 import com.echothree.model.control.carrier.common.transfer.CarrierServiceOptionTransfer;
-import com.echothree.model.control.carrier.common.transfer.CarrierServiceTransfer;
-import com.echothree.model.control.carrier.common.transfer.CarrierTransfer;
 import com.echothree.util.common.command.BaseResult;
 
 public interface GetCarrierServiceOptionResult
         extends BaseResult {
-    
-    CarrierTransfer getCarrier();
-    void setCarrier(CarrierTransfer carrier);
-    
-    CarrierServiceTransfer getCarrierService();
-    void setCarrierService(CarrierServiceTransfer carrierService);
-    
-    CarrierOptionTransfer getCarrierOption();
-    void setCarrierOption(CarrierOptionTransfer carrierOption);
     
     CarrierServiceOptionTransfer getCarrierServiceOption();
     void setCarrierServiceOption(CarrierServiceOptionTransfer carrierServiceOption);
