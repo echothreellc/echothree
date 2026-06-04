@@ -93,17 +93,19 @@ public class LotTimeControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM lottimetypes, lottimetypedetails " +
-                "WHERE lttimtyp_activedetailid = lttimtypdt_lottimetypedetailid " +
-                "AND lttimtypdt_lottimetypename = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM lottimetypes, lottimetypedetails " +
-                "WHERE lttimtyp_activedetailid = lttimtypdt_lottimetypedetailid " +
-                "AND lttimtypdt_lottimetypename = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM lottimetypes, lottimetypedetails
+                WHERE lttimtyp_activedetailid = lttimtypdt_lottimetypedetailid
+                AND lttimtypdt_lottimetypename = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM lottimetypes, lottimetypedetails
+                WHERE lttimtyp_activedetailid = lttimtypdt_lottimetypedetailid
+                AND lttimtypdt_lottimetypename = ?
+                FOR UPDATE
+                """);
         getLotTimeTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -133,17 +135,19 @@ public class LotTimeControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM lottimetypes, lottimetypedetails " +
-                "WHERE lttimtyp_activedetailid = lttimtypdt_lottimetypedetailid " +
-                "AND lttimtypdt_isdefault = 1");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM lottimetypes, lottimetypedetails " +
-                "WHERE lttimtyp_activedetailid = lttimtypdt_lottimetypedetailid " +
-                "AND lttimtypdt_isdefault = 1 " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM lottimetypes, lottimetypedetails
+                WHERE lttimtyp_activedetailid = lttimtypdt_lottimetypedetailid
+                AND lttimtypdt_isdefault = 1
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM lottimetypes, lottimetypedetails
+                WHERE lttimtyp_activedetailid = lttimtypdt_lottimetypedetailid
+                AND lttimtypdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultLotTimeTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -168,16 +172,18 @@ public class LotTimeControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM lottimetypes, lottimetypedetails " +
-                "WHERE lttimtyp_activedetailid = lttimtypdt_lottimetypedetailid " +
-                "ORDER BY lttimtypdt_sortorder, lttimtypdt_lottimetypename");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM lottimetypes, lottimetypedetails " +
-                "WHERE lttimtyp_activedetailid = lttimtypdt_lottimetypedetailid " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM lottimetypes, lottimetypedetails
+                WHERE lttimtyp_activedetailid = lttimtypdt_lottimetypedetailid
+                ORDER BY lttimtypdt_sortorder, lttimtypdt_lottimetypename
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM lottimetypes, lottimetypedetails
+                WHERE lttimtyp_activedetailid = lttimtypdt_lottimetypedetailid
+                FOR UPDATE
+                """);
         getLotTimeTypesQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -334,15 +340,17 @@ public class LotTimeControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM lottimetypedescriptions " +
-                "WHERE lttimtypd_lttimtyp_lottimetypeid = ? AND lttimtypd_lang_languageid = ? AND lttimtypd_thrutime = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM lottimetypedescriptions " +
-                "WHERE lttimtypd_lttimtyp_lottimetypeid = ? AND lttimtypd_lang_languageid = ? AND lttimtypd_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM lottimetypedescriptions
+                WHERE lttimtypd_lttimtyp_lottimetypeid = ? AND lttimtypd_lang_languageid = ? AND lttimtypd_thrutime = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM lottimetypedescriptions
+                WHERE lttimtypd_lttimtyp_lottimetypeid = ? AND lttimtypd_lang_languageid = ? AND lttimtypd_thrutime = ?
+                FOR UPDATE
+                """);
         getLotTimeTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -372,16 +380,18 @@ public class LotTimeControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM lottimetypedescriptions, languages " +
-                "WHERE lttimtypd_lttimtyp_lottimetypeid = ? AND lttimtypd_thrutime = ? AND lttimtypd_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortorder, lang_languageisoname");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM lottimetypedescriptions " +
-                "WHERE lttimtypd_lttimtyp_lottimetypeid = ? AND lttimtypd_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM lottimetypedescriptions, languages
+                WHERE lttimtypd_lttimtyp_lottimetypeid = ? AND lttimtypd_thrutime = ? AND lttimtypd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM lottimetypedescriptions
+                WHERE lttimtypd_lttimtyp_lottimetypeid = ? AND lttimtypd_thrutime = ?
+                FOR UPDATE
+                """);
         getLotTimeTypeDescriptionsByLotTimeTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -477,19 +487,19 @@ public class LotTimeControl
     }
 
     public long countLotTimesByLot(Lot lot) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM lottimes " +
-                "WHERE lttim_lt_lotid = ? AND lttim_thrutime = ?",
-                lot, Session.MAX_TIME);
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM lottimes
+                WHERE lttim_lt_lotid = ? AND lttim_thrutime = ?
+                """, lot, Session.MAX_TIME);
     }
 
     public long countLotTimesByLotTimeType(LotTimeType lotTimeType) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM lottimes " +
-                "WHERE lttim_lttimtyp_lottimetypeid = ? AND lttim_thrutime = ?",
-                lotTimeType, Session.MAX_TIME);
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM lottimes
+                WHERE lttim_lttimtyp_lottimetypeid = ? AND lttim_thrutime = ?
+                """, lotTimeType, Session.MAX_TIME);
     }
 
     private static final Map<EntityPermission, String> getLotTimeQueries;
@@ -497,15 +507,17 @@ public class LotTimeControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM lottimes " +
-                "WHERE lttim_lt_lotid = ? AND lttim_lttimtyp_lottimetypeid = ? AND lttim_thrutime = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM lottimes " +
-                "WHERE lttim_lt_lotid = ? AND lttim_lttimtyp_lottimetypeid = ? AND lttim_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM lottimes
+                WHERE lttim_lt_lotid = ? AND lttim_lttimtyp_lottimetypeid = ? AND lttim_thrutime = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM lottimes
+                WHERE lttim_lt_lotid = ? AND lttim_lttimtyp_lottimetypeid = ? AND lttim_thrutime = ?
+                FOR UPDATE
+                """);
         getLotTimeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -534,17 +546,19 @@ public class LotTimeControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM lottimes, lottimetypes, lottimetypedetails " +
-                "WHERE lttim_lt_lotid = ? AND lttim_thrutime = ? " +
-                "AND lttim_lttimtyp_lottimetypeid = lttimtyp_lottimetypeid AND lttimtyp_activedetailid = lttimtypdt_lottimetypedetailid " +
-                "ORDER BY lttimtypdt_sortorder, lttimtypdt_lottimetypename");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM lottimes " +
-                "WHERE lttim_lt_lotid = ? AND lttim_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM lottimes, lottimetypes, lottimetypedetails
+                WHERE lttim_lt_lotid = ? AND lttim_thrutime = ?
+                AND lttim_lttimtyp_lottimetypeid = lttimtyp_lottimetypeid AND lttimtyp_activedetailid = lttimtypdt_lottimetypedetailid
+                ORDER BY lttimtypdt_sortorder, lttimtypdt_lottimetypename
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM lottimes
+                WHERE lttim_lt_lotid = ? AND lttim_thrutime = ?
+                FOR UPDATE
+                """);
         getLotTimesByLotQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -565,17 +579,19 @@ public class LotTimeControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM lottimes, lots, lotdetails " +
-                "WHERE lttim_lttimtyp_lottimetypeid = ? AND lttim_thrutime = ? " +
-                "AND lttim_lt_lotid = lttim_lt_lotid AND lt_activedetailid = ltdt_lotdetailid " +
-                "ORDER BY ltdt_lotname");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM lottimes " +
-                "WHERE lttim_lttimtyp_lottimetypeid = ? AND lttim_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM lottimes, lots, lotdetails
+                WHERE lttim_lttimtyp_lottimetypeid = ? AND lttim_thrutime = ?
+                AND lttim_lt_lotid = lttim_lt_lotid AND lt_activedetailid = ltdt_lotdetailid
+                ORDER BY ltdt_lotname
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM lottimes
+                WHERE lttim_lttimtyp_lottimetypeid = ? AND lttim_thrutime = ?
+                FOR UPDATE
+                """);
         getLotTimesByLotTimeTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 

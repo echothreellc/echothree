@@ -92,17 +92,19 @@ public class LotAliasControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM lotaliastypes, lotaliastypedetails " +
-                "WHERE ltaltyp_activedetailid = ltaltypdt_lotaliastypedetailid " +
-                "AND ltaltypdt_lotaliastypename = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM lotaliastypes, lotaliastypedetails " +
-                "WHERE ltaltyp_activedetailid = ltaltypdt_lotaliastypedetailid " +
-                "AND ltaltypdt_lotaliastypename = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM lotaliastypes, lotaliastypedetails
+                WHERE ltaltyp_activedetailid = ltaltypdt_lotaliastypedetailid
+                AND ltaltypdt_lotaliastypename = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM lotaliastypes, lotaliastypedetails
+                WHERE ltaltyp_activedetailid = ltaltypdt_lotaliastypedetailid
+                AND ltaltypdt_lotaliastypename = ?
+                FOR UPDATE
+                """);
         getLotAliasTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -132,17 +134,19 @@ public class LotAliasControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM lotaliastypes, lotaliastypedetails " +
-                "WHERE ltaltyp_activedetailid = ltaltypdt_lotaliastypedetailid " +
-                "AND ltaltypdt_isdefault = 1");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM lotaliastypes, lotaliastypedetails " +
-                "WHERE ltaltyp_activedetailid = ltaltypdt_lotaliastypedetailid " +
-                "AND ltaltypdt_isdefault = 1 " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM lotaliastypes, lotaliastypedetails
+                WHERE ltaltyp_activedetailid = ltaltypdt_lotaliastypedetailid
+                AND ltaltypdt_isdefault = 1
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM lotaliastypes, lotaliastypedetails
+                WHERE ltaltyp_activedetailid = ltaltypdt_lotaliastypedetailid
+                AND ltaltypdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultLotAliasTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -167,16 +171,18 @@ public class LotAliasControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM lotaliastypes, lotaliastypedetails " +
-                "WHERE ltaltyp_activedetailid = ltaltypdt_lotaliastypedetailid " +
-                "ORDER BY ltaltypdt_sortorder, ltaltypdt_lotaliastypename");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM lotaliastypes, lotaliastypedetails " +
-                "WHERE ltaltyp_activedetailid = ltaltypdt_lotaliastypedetailid " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM lotaliastypes, lotaliastypedetails
+                WHERE ltaltyp_activedetailid = ltaltypdt_lotaliastypedetailid
+                ORDER BY ltaltypdt_sortorder, ltaltypdt_lotaliastypename
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM lotaliastypes, lotaliastypedetails
+                WHERE ltaltyp_activedetailid = ltaltypdt_lotaliastypedetailid
+                FOR UPDATE
+                """);
         getLotAliasTypesQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -341,15 +347,17 @@ public class LotAliasControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM lotaliastypedescriptions " +
-                "WHERE ltaltypd_ltaltyp_lotaliastypeid = ? AND ltaltypd_lang_languageid = ? AND ltaltypd_thrutime = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM lotaliastypedescriptions " +
-                "WHERE ltaltypd_ltaltyp_lotaliastypeid = ? AND ltaltypd_lang_languageid = ? AND ltaltypd_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM lotaliastypedescriptions
+                WHERE ltaltypd_ltaltyp_lotaliastypeid = ? AND ltaltypd_lang_languageid = ? AND ltaltypd_thrutime = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM lotaliastypedescriptions
+                WHERE ltaltypd_ltaltyp_lotaliastypeid = ? AND ltaltypd_lang_languageid = ? AND ltaltypd_thrutime = ?
+                FOR UPDATE
+                """);
         getLotAliasTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -379,16 +387,18 @@ public class LotAliasControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM lotaliastypedescriptions, languages " +
-                "WHERE ltaltypd_ltaltyp_lotaliastypeid = ? AND ltaltypd_thrutime = ? AND ltaltypd_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortorder, lang_languageisoname");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM lotaliastypedescriptions " +
-                "WHERE ltaltypd_ltaltyp_lotaliastypeid = ? AND ltaltypd_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM lotaliastypedescriptions, languages
+                WHERE ltaltypd_ltaltyp_lotaliastypeid = ? AND ltaltypd_thrutime = ? AND ltaltypd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM lotaliastypedescriptions
+                WHERE ltaltypd_ltaltyp_lotaliastypeid = ? AND ltaltypd_thrutime = ?
+                FOR UPDATE
+                """);
         getLotAliasTypeDescriptionsByLotAliasTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -488,15 +498,17 @@ public class LotAliasControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM lotaliases " +
-                "WHERE ltal_lt_lotid = ? AND ltal_ltaltyp_lotaliastypeid = ? AND ltal_thrutime = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM lotaliases " +
-                "WHERE ltal_lt_lotid = ? AND ltal_ltaltyp_lotaliastypeid = ? AND ltal_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM lotaliases
+                WHERE ltal_lt_lotid = ? AND ltal_ltaltyp_lotaliastypeid = ? AND ltal_thrutime = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM lotaliases
+                WHERE ltal_lt_lotid = ? AND ltal_ltaltyp_lotaliastypeid = ? AND ltal_thrutime = ?
+                FOR UPDATE
+                """);
         getLotAliasQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -526,15 +538,17 @@ public class LotAliasControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM lotaliases " +
-                "WHERE ltal_ltaltyp_lotaliastypeid = ? AND ltal_alias = ? AND ltal_thrutime = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM lotaliases " +
-                "WHERE ltal_ltaltyp_lotaliastypeid = ? AND ltal_alias = ? AND ltal_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM lotaliases
+                WHERE ltal_ltaltyp_lotaliastypeid = ? AND ltal_alias = ? AND ltal_thrutime = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM lotaliases
+                WHERE ltal_ltaltyp_lotaliastypeid = ? AND ltal_alias = ? AND ltal_thrutime = ?
+                FOR UPDATE
+                """);
         getLotAliasByAliasQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -555,17 +569,19 @@ public class LotAliasControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM lotaliases, lotaliastypes, lotaliastypedetails " +
-                "WHERE ltal_lt_lotid = ? AND ltal_thrutime = ? " +
-                "AND ltal_ltaltyp_lotaliastypeid = ltaltyp_lotaliastypeid AND ltaltyp_lastdetailid = ltaltypdt_lotaliastypedetailid" +
-                "ORDER BY ltaltypdt_sortorder, ltaltypdt_lotaliastypename");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM lotaliases " +
-                "WHERE ltal_lt_lotid = ? AND ltal_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM lotaliases, lotaliastypes, lotaliastypedetails
+                WHERE ltal_lt_lotid = ? AND ltal_thrutime = ?
+                AND ltal_ltaltyp_lotaliastypeid = ltaltyp_lotaliastypeid AND ltaltyp_lastdetailid = ltaltypdt_lotaliastypedetailid
+                ORDER BY ltaltypdt_sortorder, ltaltypdt_lotaliastypename
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM lotaliases
+                WHERE ltal_lt_lotid = ? AND ltal_thrutime = ?
+                FOR UPDATE
+                """);
         getLotAliasesByLotQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -587,17 +603,19 @@ public class LotAliasControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM lotaliases, lotes, lotdetails " +
-                "WHERE ltal_ltaltyp_lotaliastypeid = ? AND ltal_thrutime = ? " +
-                "AND ltal_lt_lotid = lt_lotid AND lt_lastdetailid = ltdt_lotdetailid " +
-                "ORDER BY lang_sortorder, lang_languageisoname");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM lotaliases " +
-                "WHERE ltal_ltaltyp_lotaliastypeid = ? AND ltal_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM lotaliases, lots, lotdetails
+                WHERE ltal_ltaltyp_lotaliastypeid = ? AND ltal_thrutime = ?
+                AND ltal_lt_lotid = lt_lotid AND lt_lastdetailid = ltdt_lotdetailid
+                ORDER BY ltdt_lotname
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM lotaliases
+                WHERE ltal_ltaltyp_lotaliastypeid = ? AND ltal_thrutime = ?
+                FOR UPDATE
+                """);
         getLotAliasesByLotAliasTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
