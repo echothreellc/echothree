@@ -430,6 +430,7 @@ public class InventoryAdjustmentTypeControl
                 FROM inventoryadjustmenttypedescriptions, languages
                 WHERE invadjtypd_invadjtyp_inventoryadjustmenttypeid = ? AND invadjtypd_thrutime = ? AND invadjtypd_lang_languageid = lang_languageid
                 ORDER BY lang_sortorder, lang_languageisoname
+                _LIMIT_
                 """);
         queryMap.put(EntityPermission.READ_WRITE, """
                 SELECT _ALL_

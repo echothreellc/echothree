@@ -176,6 +176,7 @@ public class LotAliasControl
                 FROM lotaliastypes, lotaliastypedetails
                 WHERE ltaltyp_activedetailid = ltaltypdt_lotaliastypedetailid
                 ORDER BY ltaltypdt_sortorder, ltaltypdt_lotaliastypename
+                _LIMIT_
                 """);
         queryMap.put(EntityPermission.READ_WRITE, """
                 SELECT _ALL_
@@ -392,6 +393,7 @@ public class LotAliasControl
                 FROM lotaliastypedescriptions, languages
                 WHERE ltaltypd_ltaltyp_lotaliastypeid = ? AND ltaltypd_thrutime = ? AND ltaltypd_lang_languageid = lang_languageid
                 ORDER BY lang_sortorder, lang_languageisoname
+                _LIMIT_
                 """);
         queryMap.put(EntityPermission.READ_WRITE, """
                 SELECT _ALL_
@@ -575,6 +577,7 @@ public class LotAliasControl
                 WHERE ltal_lt_lotid = ? AND ltal_thrutime = ?
                 AND ltal_ltaltyp_lotaliastypeid = ltaltyp_lotaliastypeid AND ltaltyp_lastdetailid = ltaltypdt_lotaliastypedetailid
                 ORDER BY ltaltypdt_sortorder, ltaltypdt_lotaliastypename
+                _LIMIT_
                 """);
         queryMap.put(EntityPermission.READ_WRITE, """
                 SELECT _ALL_
@@ -609,6 +612,7 @@ public class LotAliasControl
                 WHERE ltal_ltaltyp_lotaliastypeid = ? AND ltal_thrutime = ?
                 AND ltal_lt_lotid = lt_lotid AND lt_lastdetailid = ltdt_lotdetailid
                 ORDER BY ltdt_lotname
+                _LIMIT_
                 """);
         queryMap.put(EntityPermission.READ_WRITE, """
                 SELECT _ALL_

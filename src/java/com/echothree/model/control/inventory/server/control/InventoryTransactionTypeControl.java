@@ -437,6 +437,7 @@ public class InventoryTransactionTypeControl
                 FROM inventorytransactiontypedescriptions, languages
                 WHERE invtnxtypd_invtnxtyp_inventorytransactiontypeid = ? AND invtnxtypd_thrutime = ? AND invtnxtypd_lang_languageid = lang_languageid
                 ORDER BY lang_sortorder, lang_languageisoname
+                _LIMIT_
                 """);
         queryMap.put(EntityPermission.READ_WRITE, """
                 SELECT _ALL_

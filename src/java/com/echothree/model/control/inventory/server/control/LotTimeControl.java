@@ -177,6 +177,7 @@ public class LotTimeControl
                 FROM lottimetypes, lottimetypedetails
                 WHERE lttimtyp_activedetailid = lttimtypdt_lottimetypedetailid
                 ORDER BY lttimtypdt_sortorder, lttimtypdt_lottimetypename
+                _LIMIT_
                 """);
         queryMap.put(EntityPermission.READ_WRITE, """
                 SELECT _ALL_
@@ -385,6 +386,7 @@ public class LotTimeControl
                 FROM lottimetypedescriptions, languages
                 WHERE lttimtypd_lttimtyp_lottimetypeid = ? AND lttimtypd_thrutime = ? AND lttimtypd_lang_languageid = lang_languageid
                 ORDER BY lang_sortorder, lang_languageisoname
+                _LIMIT_
                 """);
         queryMap.put(EntityPermission.READ_WRITE, """
                 SELECT _ALL_
@@ -552,6 +554,7 @@ public class LotTimeControl
                 WHERE lttim_lt_lotid = ? AND lttim_thrutime = ?
                 AND lttim_lttimtyp_lottimetypeid = lttimtyp_lottimetypeid AND lttimtyp_activedetailid = lttimtypdt_lottimetypedetailid
                 ORDER BY lttimtypdt_sortorder, lttimtypdt_lottimetypename
+                _LIMIT_
                 """);
         queryMap.put(EntityPermission.READ_WRITE, """
                 SELECT _ALL_
@@ -585,6 +588,7 @@ public class LotTimeControl
                 WHERE lttim_lttimtyp_lottimetypeid = ? AND lttim_thrutime = ?
                 AND lttim_lt_lotid = lttim_lt_lotid AND lt_activedetailid = ltdt_lotdetailid
                 ORDER BY ltdt_lotname
+                _LIMIT_
                 """);
         queryMap.put(EntityPermission.READ_WRITE, """
                 SELECT _ALL_
