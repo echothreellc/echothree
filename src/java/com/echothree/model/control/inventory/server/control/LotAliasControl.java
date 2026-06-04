@@ -21,6 +21,8 @@ import com.echothree.model.control.inventory.common.choice.LotAliasTypeChoicesBe
 import com.echothree.model.control.inventory.common.transfer.LotAliasTransfer;
 import com.echothree.model.control.inventory.common.transfer.LotAliasTypeDescriptionTransfer;
 import com.echothree.model.control.inventory.common.transfer.LotAliasTypeTransfer;
+import com.echothree.model.data.core.server.entity.EntityInstance;
+import com.echothree.model.data.inventory.common.pk.LotAliasTypePK;
 import com.echothree.model.data.inventory.server.entity.Lot;
 import com.echothree.model.data.inventory.server.entity.LotAlias;
 import com.echothree.model.data.inventory.server.entity.LotAliasType;
@@ -35,6 +37,7 @@ import com.echothree.model.data.inventory.server.value.LotAliasValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
@@ -43,7 +46,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import com.echothree.util.server.cdi.CommandScope;
 
 @CommandScope
 public class LotAliasControl
@@ -85,6 +87,29 @@ public class LotAliasControl
         sendEvent(lotAliasType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return lotAliasType;
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.LotAliasType */
+    public LotAliasType getLotAliasTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new LotAliasTypePK(entityInstance.getEntityUniqueId());
+
+        return LotAliasTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public LotAliasType getLotAliasTypeByEntityInstance(EntityInstance entityInstance) {
+        return getLotAliasTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public LotAliasType getLotAliasTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getLotAliasTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countLotAliasTypes() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM lotaliastypes
+                        JOIN lotaliastypedetails ON ltaltypdt_lotaliastypedetailid = ltaltyp_activedetailid
+                        """);
     }
 
     private static final Map<EntityPermission, String> getLotAliasTypeByNameQueries;
@@ -493,6 +518,22 @@ public class LotAliasControl
         sendEvent(lot.getPrimaryKey(), EventTypes.MODIFY, lotAlias.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return lotAlias;
+    }
+
+    public long countLotAliasesByLot(final Lot lot) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM lotaliases
+                        WHERE ltal_lt_lotid = ? AND ltal_thrutime = ?
+                        """, lot, Session.MAX_TIME);
+    }
+
+    public long countLotAliasesByLotAliasType(final LotAliasType lotAliasType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM lotaliases
+                        WHERE ltal_ltaltyp_lotaliastypeid = ? AND ltal_thrutime = ?
+                        """, lotAliasType, Session.MAX_TIME);
     }
 
     private static final Map<EntityPermission, String> getLotAliasQueries;

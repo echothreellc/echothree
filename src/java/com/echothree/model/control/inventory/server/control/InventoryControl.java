@@ -44,6 +44,7 @@ import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.inventory.common.pk.AllocationPriorityPK;
 import com.echothree.model.data.inventory.common.pk.InventoryConditionPK;
 import com.echothree.model.data.inventory.common.pk.InventoryConditionUseTypePK;
+import com.echothree.model.data.inventory.common.pk.InventoryLocationGroupPK;
 import com.echothree.model.data.inventory.server.entity.AllocationPriority;
 import com.echothree.model.data.inventory.server.entity.AllocationPriorityDescription;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;
@@ -149,6 +150,21 @@ public class InventoryControl
         sendEvent(inventoryLocationGroup.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return inventoryLocationGroup;
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.InventoryLocationGroup */
+    public InventoryLocationGroup getInventoryLocationGroupByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new InventoryLocationGroupPK(entityInstance.getEntityUniqueId());
+
+        return InventoryLocationGroupFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public InventoryLocationGroup getInventoryLocationGroupByEntityInstance(EntityInstance entityInstance) {
+        return getInventoryLocationGroupByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public InventoryLocationGroup getInventoryLocationGroupByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getInventoryLocationGroupByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
 
     public long countInventoryLocationGroupsByWarehouseParty(Party warehouseParty) {
@@ -669,7 +685,15 @@ public class InventoryControl
         
         return inventoryLocationGroupVolume;
     }
-    
+
+    public long countInventoryLocationGroupVolumesByInventoryLocationGroup(final InventoryLocationGroup inventoryLocationGroup) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM inventorylocationgroupvolumes
+                        WHERE invlocgrpvol_invlocgrp_inventorylocationgroupid = ? AND invlocgrpvol_thrutime = ?
+                        """, inventoryLocationGroup, Session.MAX_TIME);
+    }
+
     private InventoryLocationGroupVolume getInventoryLocationGroupVolume(InventoryLocationGroup inventoryLocationGroup, EntityPermission entityPermission) {
         InventoryLocationGroupVolume inventoryLocationGroupVolume;
         
@@ -763,16 +787,24 @@ public class InventoryControl
     //   Inventory Location Group Capacities
     // --------------------------------------------------------------------------------
     
-    public InventoryLocationGroupCapacity createInventoryLocationGroupCapacity(InventoryLocationGroup inventoryInventoryLocationGroupGroup,
+    public InventoryLocationGroupCapacity createInventoryLocationGroupCapacity(InventoryLocationGroup inventoryLocationGroupGroup,
             UnitOfMeasureType unitOfMeasureType, Long capacity, BasePK createdBy) {
-        var inventoryInventoryLocationGroupGroupCapacity = InventoryLocationGroupCapacityFactory.getInstance().create(inventoryInventoryLocationGroupGroup,
+        var inventoryLocationGroupGroupCapacity = InventoryLocationGroupCapacityFactory.getInstance().create(inventoryLocationGroupGroup,
                 unitOfMeasureType, capacity, session.getStartTime(), Session.MAX_TIME);
         
-        sendEvent(inventoryInventoryLocationGroupGroup.getPrimaryKey(), EventTypes.MODIFY, inventoryInventoryLocationGroupGroupCapacity.getPrimaryKey(), null, createdBy);
+        sendEvent(inventoryLocationGroupGroup.getPrimaryKey(), EventTypes.MODIFY, inventoryLocationGroupGroupCapacity.getPrimaryKey(), null, createdBy);
         
-        return inventoryInventoryLocationGroupGroupCapacity;
+        return inventoryLocationGroupGroupCapacity;
     }
-    
+
+    public long countInventoryLocationGroupCapacitiesByInventoryLocationGroup(final InventoryLocationGroup inventoryLocationGroup) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM inventorylocationgroupcapacities
+                        WHERE invlocgrpcap_invlocgrp_inventorylocationgroupid = ? AND invlocgrpcap_thrutime = ?
+                        """, inventoryLocationGroup, Session.MAX_TIME);
+    }
+
     private List<InventoryLocationGroupCapacity> getInventoryLocationGroupCapacitiesByInventoryLocationGroup(InventoryLocationGroup inventoryInventoryLocationGroupGroup, EntityPermission entityPermission) {
         List<InventoryLocationGroupCapacity> inventoryInventoryLocationGroupGroupCapacities;
         
@@ -1581,7 +1613,23 @@ public class InventoryControl
         
         return inventoryConditionUse;
     }
-    
+
+    public long countInventoryConditionUsesByInventoryConditionUseType(final InventoryConditionUseType inventoryConditionUseType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM inventoryconditionuses
+                        WHERE invconu_invconut_inventoryconditionusetypeid = ? AND invconu_thrutime = ?
+                        """, inventoryConditionUseType, Session.MAX_TIME);
+    }
+
+    public long countInventoryConditionUsesByInventoryCondition(final InventoryCondition inventoryCondition) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM inventoryconditionuses
+                        WHERE invconu_invcon_inventoryconditionid = ? AND invconu_thrutime = ?
+                        """, inventoryCondition, Session.MAX_TIME);
+    }
+
     private InventoryConditionUse getInventoryConditionUse(InventoryConditionUseType inventoryConditionUseType,
             InventoryCondition inventoryCondition, EntityPermission entityPermission) {
         InventoryConditionUse inventoryConditionUse;
@@ -1799,23 +1847,7 @@ public class InventoryControl
             InventoryConditionUseType inventoryConditionUseType) {
         return getInventoryConditionUseTransfers(userVisit, getInventoryConditionUsesByInventoryConditionUseType(inventoryConditionUseType));
     }
-    
-    public long countInventoryConditionUsesByInventoryConditionUseType(InventoryConditionUseType inventoryConditionUseType) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM inventoryconditionuses
-                WHERE invconu_invconut_inventoryconditionusetypeid = ? AND invconu_thrutime = ?
-                """, inventoryConditionUseType, Session.MAX_TIME);
-    }
-    
-    public long countInventoryConditionUsesByInventoryCondition(InventoryCondition inventoryCondition) {
-        return session.queryForLong("""
-                SELECT COUNT(*)
-                FROM inventoryconditionuses
-                WHERE invconu_invcon_inventoryconditionid = ? AND invconu_thrutime = ?
-                """, inventoryCondition, Session.MAX_TIME);
-    }
-    
+
     private void updateInventoryConditionUseFromValue(InventoryConditionUseValue inventoryConditionUseValue, boolean checkDefault,
             BasePK updatedBy) {
         var inventoryConditionUse = InventoryConditionUseFactory.getInstance().getEntityFromPK(
@@ -1906,7 +1938,63 @@ public class InventoryControl
         
         return inventoryConditionGlAccount;
     }
-    
+
+    public long countInventoryConditionGlAccountByInventoryCondition(final InventoryCondition inventoryCondition) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM inventoryconditionglaccounts
+                        WHERE invcongla_invcon_inventoryconditionid = ? AND invcongla_thrutime = ?
+                        """, inventoryCondition, Session.MAX_TIME);
+    }
+
+    public long countInventoryConditionGlAccountByItemAccountingCategory(final ItemAccountingCategory itemAccountingCategory) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM inventoryconditionglaccounts
+                        WHERE invcongla_iactgc_itemaccountingcategoryid = ? AND invcongla_thrutime = ?
+                        """, itemAccountingCategory, Session.MAX_TIME);
+    }
+
+    public long countInventoryConditionGlAccountByInventoryGlAccount(final GlAccount inventoryGlAccount) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM inventoryconditionglaccounts
+                        WHERE invcongla_inventoryglaccountid = ? AND invcongla_thrutime = ?
+                        """, inventoryGlAccount, Session.MAX_TIME);
+    }
+
+    public long countInventoryConditionGlAccountBySalesGlAccount(final GlAccount salesGlAccount) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM inventoryconditionglaccounts
+                        WHERE invcongla_salesglaccountid = ? AND invcongla_thrutime = ?
+                        """, salesGlAccount, Session.MAX_TIME);
+    }
+
+    public long countInventoryConditionGlAccountByReturnsGlAccount(final GlAccount returnsGlAccount) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM inventoryconditionglaccounts
+                        WHERE invcongla_returnsglaccountid = ? AND invcongla_thrutime = ?
+                        """, returnsGlAccount, Session.MAX_TIME);
+    }
+
+    public long countInventoryConditionGlAccountByCogsGlAccount(final GlAccount cogsGlAccount) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM inventoryconditionglaccounts
+                        WHERE invcongla_cogsglaccountid = ? AND invcongla_thrutime = ?
+                        """, cogsGlAccount, Session.MAX_TIME);
+    }
+
+    public long countInventoryConditionGlAccountByReturnsCogsGlAccount(final GlAccount returnsCogsGlAccount) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM inventoryconditionglaccounts
+                        WHERE invcongla_returnscogsglaccountid = ? AND invcongla_thrutime = ?
+                        """, returnsCogsGlAccount, Session.MAX_TIME);
+    }
+
     private InventoryConditionGlAccount getInventoryConditionGlAccount(InventoryCondition inventoryCondition,
             ItemAccountingCategory itemAccountingCategory, EntityPermission entityPermission) {
         InventoryConditionGlAccount inventoryConditionGlAccount;

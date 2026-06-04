@@ -21,6 +21,8 @@ import com.echothree.model.control.inventory.common.choice.LotTimeTypeChoicesBea
 import com.echothree.model.control.inventory.common.transfer.LotTimeTransfer;
 import com.echothree.model.control.inventory.common.transfer.LotTimeTypeDescriptionTransfer;
 import com.echothree.model.control.inventory.common.transfer.LotTimeTypeTransfer;
+import com.echothree.model.data.core.server.entity.EntityInstance;
+import com.echothree.model.data.inventory.common.pk.LotTimeTypePK;
 import com.echothree.model.data.inventory.server.entity.Lot;
 import com.echothree.model.data.inventory.server.entity.LotTime;
 import com.echothree.model.data.inventory.server.entity.LotTimeType;
@@ -35,6 +37,7 @@ import com.echothree.model.data.inventory.server.value.LotTimeValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
@@ -44,7 +47,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import com.echothree.util.server.cdi.CommandScope;
 
 @CommandScope
 public class LotTimeControl
@@ -86,6 +88,29 @@ public class LotTimeControl
         sendEvent(lotTimeType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return lotTimeType;
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.LotTimeType */
+    public LotTimeType getLotTimeTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new LotTimeTypePK(entityInstance.getEntityUniqueId());
+
+        return LotTimeTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public LotTimeType getLotTimeTypeByEntityInstance(EntityInstance entityInstance) {
+        return getLotTimeTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public LotTimeType getLotTimeTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getLotTimeTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countLotTimeTypes() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM lottimetypes
+                        JOIN lottimetypedetails ON lttimtypdt_lottimetypedetailid = lttimtyp_activedetailid
+                        """);
     }
 
     private static final Map<EntityPermission, String> getLotTimeTypeByNameQueries;
