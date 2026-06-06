@@ -229,8 +229,7 @@ public class LotTimeControl
         return lotTimeTypeTransferCache.getTransfer(userVisit, lotTimeType);
     }
 
-    public List<LotTimeTypeTransfer> getLotTimeTypeTransfers(UserVisit userVisit) {
-        var lotTimeTypes = getLotTimeTypes();
+    public List<LotTimeTypeTransfer> getLotTimeTypeTransfers(UserVisit userVisit, Collection<LotTimeType> lotTimeTypes) {
         List<LotTimeTypeTransfer> lotTimeTypeTransfers = new ArrayList<>(lotTimeTypes.size());
 
         lotTimeTypes.forEach((lotTimeType) ->
@@ -238,6 +237,10 @@ public class LotTimeControl
         );
 
         return lotTimeTypeTransfers;
+    }
+
+    public List<LotTimeTypeTransfer> getLotTimeTypeTransfers(UserVisit userVisit) {
+        return getLotTimeTypeTransfers(userVisit, getLotTimeTypes());
     }
 
     public LotTimeTypeChoicesBean getLotTimeTypeChoices(String defaultLotTimeTypeChoice, Language language, boolean allowNullChoice) {
