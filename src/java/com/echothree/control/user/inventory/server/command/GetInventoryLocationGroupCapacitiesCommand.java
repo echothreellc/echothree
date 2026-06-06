@@ -16,24 +16,26 @@
 
 package com.echothree.control.user.inventory.server.command;
 
-
 import com.echothree.control.user.inventory.common.form.GetInventoryLocationGroupCapacitiesForm;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
-import com.echothree.model.control.warehouse.server.control.WarehouseControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.control.warehouse.server.logic.WarehouseLogic;
+import com.echothree.model.data.inventory.server.entity.InventoryLocationGroup;
+import com.echothree.model.data.inventory.server.entity.InventoryLocationGroupCapacity;
+import com.echothree.model.data.inventory.server.factory.InventoryLocationGroupCapacityFactory;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetInventoryLocationGroupCapacitiesCommand
-        extends BaseSimpleCommand<GetInventoryLocationGroupCapacitiesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<InventoryLocationGroupCapacity, GetInventoryLocationGroupCapacitiesForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
@@ -41,38 +43,63 @@ public class GetInventoryLocationGroupCapacitiesCommand
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("WarehouseName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("InventoryLocationGroupName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
     
     /** Creates a new instance of GetInventoryLocationGroupCapacitiesCommand */
     public GetInventoryLocationGroupCapacitiesCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    @Inject
+    InventoryControl inventoryControl;
+
+    @Inject
+    WarehouseLogic warehouseLogic;
+
+    private InventoryLocationGroup inventoryLocationGroup;
+
     @Override
-    protected BaseResult execute() {
-        var warehouseControl = Session.getModelController(WarehouseControl.class);
-        var result = InventoryResultFactory.getGetInventoryLocationGroupCapacitiesResult();
-        var warehouseName = form.getWarehouseName();
-        var warehouse = warehouseControl.getWarehouseByName(warehouseName);
-        
-        if(warehouse != null) {
-            var inventoryControl = Session.getModelController(InventoryControl.class);
+    protected void handleForm() {
+        var warehouse = warehouseLogic.getWarehouseByName(this, form.getWarehouseName(), null, null, false);
+
+        if(!hasExecutionErrors()) {
             var inventoryLocationGroupName = form.getInventoryLocationGroupName();
-            var inventoryLocationGroup = inventoryControl.getInventoryLocationGroupByName(warehouse.getParty(), inventoryLocationGroupName);
-            
-            if(inventoryLocationGroup != null) {
-                var userVisit = getUserVisit();
-                
-                result.setInventoryLocationGroup(inventoryControl.getInventoryLocationGroupTransfer(userVisit, inventoryLocationGroup));
-                result.setInventoryLocationGroupCapacities(inventoryControl.getInventoryLocationGroupCapacityTransfersByInventoryLocationGroup(userVisit, inventoryLocationGroup));
-            } else {
-                addExecutionError(ExecutionErrors.UnknownInventoryLocationGroupName.name(), inventoryLocationGroupName);
+
+            inventoryLocationGroup = inventoryControl.getInventoryLocationGroupByName(warehouse.getParty(), inventoryLocationGroupName);
+
+            if(inventoryLocationGroup == null) {
+                addExecutionError(ExecutionErrors.UnknownInventoryLocationGroupName.name(), warehouse.getWarehouseName(), inventoryLocationGroupName);
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownWarehouseName.name(), warehouseName);
         }
-        
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return hasExecutionErrors() ? null : inventoryControl.countInventoryLocationGroupCapacitiesByInventoryLocationGroup(inventoryLocationGroup);
+    }
+
+    @Override
+    protected Collection<InventoryLocationGroupCapacity> getEntities() {
+        return hasExecutionErrors() ? null : inventoryControl.getInventoryLocationGroupCapacitiesByInventoryLocationGroup(inventoryLocationGroup);
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<InventoryLocationGroupCapacity> entities) {
+        var result = InventoryResultFactory.getGetInventoryLocationGroupCapacitiesResult();
+
+        if(entities != null) {
+            var userVisit = getUserVisit();
+
+            result.setInventoryLocationGroup(inventoryControl.getInventoryLocationGroupTransfer(userVisit, inventoryLocationGroup));
+
+            if(session.hasLimit(InventoryLocationGroupCapacityFactory.class)) {
+                result.setInventoryLocationGroupCapacityCount(getTotalEntities());
+            }
+
+            result.setInventoryLocationGroupCapacities(inventoryControl.getInventoryLocationGroupCapacityTransfersByInventoryLocationGroup(userVisit, inventoryLocationGroup));
+        }
+
         return result;
     }
     
