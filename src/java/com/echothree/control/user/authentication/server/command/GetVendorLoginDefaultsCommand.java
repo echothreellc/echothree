@@ -20,15 +20,19 @@ import com.echothree.control.user.authentication.common.form.AuthenticationFormF
 import com.echothree.control.user.authentication.common.form.GetVendorLoginDefaultsForm;
 import com.echothree.control.user.authentication.common.result.AuthenticationResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
+import com.echothree.model.control.user.server.control.UserControl;
+import com.echothree.model.control.user.server.logic.UserLoginLogic;
+import com.echothree.model.data.user.server.entity.UserLogin;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetVendorLoginDefaultsCommand
-        extends BaseSimpleCommand<GetVendorLoginDefaultsForm> {
+        extends BaseSingleEntityCommand<UserLogin, GetVendorLoginDefaultsForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
@@ -36,34 +40,44 @@ public class GetVendorLoginDefaultsCommand
         FORM_FIELD_DEFINITIONS = List.of();
     }
     
+    @Inject
+    UserControl userControl;
+
+    @Inject
+    UserLoginLogic userLoginLogic;
+
     /** Creates a new instance of GetVendorLoginDefaultsCommand */
     public GetVendorLoginDefaultsCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = AuthenticationResultFactory.getGetVendorLoginDefaultsResult();
-        var userControl = getUserControl();
+    protected UserLogin getEntity() {
+        UserLogin userLogin = null;
         var userSession = userControl.getUserSessionByUserVisit(getUserVisit());
-        String username = null;
-        
+
         if(userSession != null) {
             var party = userSession.getParty();
-            
+
             if(party != null) {
                 if(party.getLastDetail().getPartyType().getPartyTypeName().equals(PartyTypes.VENDOR.name())) {
-                    var userLogin = userControl.getUserLogin(party);
-                    
-                    username = userLogin.getUsername();
+                    userLogin = userControl.getUserLogin(party);
                 }
             }
         }
 
+        return userLogin;
+    }
+
+    @Override
+    protected BaseResult getResult(UserLogin userLogin) {
+        var result = AuthenticationResultFactory.getGetVendorLoginDefaultsResult();
+        var username = userLogin == null ? null : userLogin.getUsername();
         var vendorLoginForm = AuthenticationFormFactory.getVendorLoginForm();
+
         vendorLoginForm.setUsername(username);
         result.setVendorLoginForm(vendorLoginForm);
-        
+
         return result;
     }
     
