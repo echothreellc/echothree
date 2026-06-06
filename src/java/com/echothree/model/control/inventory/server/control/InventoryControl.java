@@ -1823,8 +1823,8 @@ public class InventoryControl
         return getInventoryConditionUsesByInventoryConditionUseType(inventoryConditionUseType, EntityPermission.READ_WRITE);
     }
     
-    private List<InventoryConditionUseTransfer> getInventoryConditionUseTransfers(final UserVisit userVisit,
-            final List<InventoryConditionUse> inventoryConditionUses) {
+    public List<InventoryConditionUseTransfer> getInventoryConditionUseTransfers(final UserVisit userVisit,
+            final Collection<InventoryConditionUse> inventoryConditionUses) {
         List<InventoryConditionUseTransfer> inventoryConditionUseTransfers = null;
         
         if(inventoryConditionUses != null) {
