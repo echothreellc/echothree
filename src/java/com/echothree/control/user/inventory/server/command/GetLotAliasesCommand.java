@@ -25,20 +25,25 @@ import com.echothree.model.control.item.server.logic.ItemLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.inventory.server.entity.Lot;
+import com.echothree.model.data.inventory.server.entity.LotAlias;
+import com.echothree.model.data.inventory.server.factory.LotAliasFactory;
+import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetLotAliasesCommand
-        extends BaseSimpleCommand<GetLotAliasesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<LotAlias, GetLotAliasesForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -54,34 +59,66 @@ public class GetLotAliasesCommand
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LotIdentifier", FieldType.STRING, true, 1L, 40L)
-                );
+        );
     }
     
+    @Inject
+    LotAliasControl lotAliasControl;
+
+    @Inject
+    LotControl lotControl;
+
+    @Inject
+    ItemLogic itemLogic;
+
+    @Inject
+    LotLogic lotLogic;
+
     /** Creates a new instance of GetLotAliasesCommand */
     public GetLotAliasesCommand() {
-        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    private Lot lot;
+
     @Override
-    protected BaseResult execute() {
-        var result = InventoryResultFactory.getGetLotAliasesResult();
-        var item = ItemLogic.getInstance().getItemByName(this, form.getItemName());
+    protected void handleForm() {
+        Item item = itemLogic.getItemByName(this, form.getItemName());
 
         if(!hasExecutionErrors()) {
             var lotIdentifier = form.getLotIdentifier();
-            var lot = LotLogic.getInstance().getLotByIdentifier(this, item, lotIdentifier);
 
-            if(!hasExecutionErrors()) {
-                var lotControl = Session.getModelController(LotControl.class);
-                var lotAliasControl = Session.getModelController(LotAliasControl.class);
-                var userVisit = getUserVisit();
+            lot = lotLogic.getLotByIdentifier(this, item, lotIdentifier);
+        }
+    }
 
-                result.setLot(lotControl.getLotTransfer(userVisit, lot));
-                result.setLotAliases(lotAliasControl.getLotAliasTransfersByLot(userVisit, lot));
+    @Override
+    protected Long getTotalEntities() {
+        return lot == null ? null : lotAliasControl.countLotAliasesByLot(lot);
+    }
+
+    @Override
+    protected Collection<LotAlias> getEntities() {
+        return lot == null ? null : lotAliasControl.getLotAliasesByLot(lot);
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<LotAlias> entities) {
+        var result = InventoryResultFactory.getGetLotAliasesResult();
+
+        if(entities != null) {
+            var userVisit = getUserVisit();
+
+            result.setLot(lotControl.getLotTransfer(userVisit, lot));
+
+            if(session.hasLimit(LotAliasFactory.class)) {
+                result.setLotAliasCount(getTotalEntities());
             }
+
+            result.setLotAliases(lotAliasControl.getLotAliasTransfers(userVisit, entities));
         }
 
         return result;
     }
-    
+
 }

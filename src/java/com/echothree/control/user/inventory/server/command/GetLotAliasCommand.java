@@ -19,13 +19,11 @@ package com.echothree.control.user.inventory.server.command;
 import com.echothree.control.user.inventory.common.form.GetLotAliasForm;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
 import com.echothree.model.control.inventory.server.control.LotAliasControl;
-import com.echothree.model.control.inventory.server.control.LotControl;
 import com.echothree.model.control.inventory.server.logic.LotLogic;
 import com.echothree.model.control.item.server.logic.ItemLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -34,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetLotAliasCommand
@@ -57,9 +55,18 @@ public class GetLotAliasCommand
                 new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LotIdentifier", FieldType.STRING, true, 1L, 40L),
                 new FieldDefinition("LotAliasTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
     
+    @Inject
+    LotAliasControl lotAliasControl;
+
+    @Inject
+    ItemLogic itemLogic;
+
+    @Inject
+    LotLogic lotLogic;
+
     /** Creates a new instance of GetLotAliasCommand */
     public GetLotAliasCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
@@ -68,14 +75,13 @@ public class GetLotAliasCommand
     @Override
     protected BaseResult execute() {
         var result = InventoryResultFactory.getGetLotAliasResult();
-        var item = ItemLogic.getInstance().getItemByName(this, form.getItemName());
+        var item = itemLogic.getItemByName(this, form.getItemName());
 
         if(!hasExecutionErrors()) {
             var lotIdentifier = form.getLotIdentifier();
-            var lot = LotLogic.getInstance().getLotByIdentifier(this, item, lotIdentifier);
+            var lot = lotLogic.getLotByIdentifier(this, item, lotIdentifier);
 
             if(!hasExecutionErrors()) {
-                var lotAliasControl = Session.getModelController(LotAliasControl.class);
                 var lotAliasTypeName = form.getLotAliasTypeName();
                 var lotAliasType = lotAliasControl.getLotAliasTypeByName(lotAliasTypeName);
 
