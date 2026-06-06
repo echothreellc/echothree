@@ -41,6 +41,7 @@ import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -228,8 +229,7 @@ public class LotAliasControl
         return lotAliasTypeTransferCache.getTransfer(userVisit, lotAliasType);
     }
 
-    public List<LotAliasTypeTransfer> getLotAliasTypeTransfers(UserVisit userVisit) {
-        var lotAliasTypes = getLotAliasTypes();
+    public List<LotAliasTypeTransfer> getLotAliasTypeTransfers(UserVisit userVisit, Collection<LotAliasType> lotAliasTypes) {
         List<LotAliasTypeTransfer> lotAliasTypeTransfers = new ArrayList<>(lotAliasTypes.size());
 
         lotAliasTypes.forEach((lotAliasType) ->
@@ -237,6 +237,10 @@ public class LotAliasControl
         );
 
         return lotAliasTypeTransfers;
+    }
+
+    public List<LotAliasTypeTransfer> getLotAliasTypeTransfers(UserVisit userVisit) {
+        return getLotAliasTypeTransfers(userVisit, getLotAliasTypes());
     }
 
     public LotAliasTypeChoicesBean getLotAliasTypeChoices(String defaultLotAliasTypeChoice, Language language,
@@ -681,15 +685,18 @@ public class LotAliasControl
         return lotAliasTransferCache.getTransfer(userVisit, lotAlias);
     }
 
-    public List<LotAliasTransfer> getLotAliasTransfersByLot(UserVisit userVisit, Lot lot) {
-        var lotaliases = getLotAliasesByLot(lot);
-        List<LotAliasTransfer> lotAliasTransfers = new ArrayList<>(lotaliases.size());
+    public List<LotAliasTransfer> getLotAliasTransfers(UserVisit userVisit, Collection<LotAlias> lotAliases) {
+        List<LotAliasTransfer> lotAliasTransfers = new ArrayList<>(lotAliases.size());
 
-        lotaliases.forEach((lotAlias) ->
+        lotAliases.forEach((lotAlias) ->
                 lotAliasTransfers.add(lotAliasTransferCache.getTransfer(userVisit, lotAlias))
         );
 
         return lotAliasTransfers;
+    }
+
+    public List<LotAliasTransfer> getLotAliasTransfersByLot(UserVisit userVisit, Lot lot) {
+        return getLotAliasTransfers(userVisit, getLotAliasesByLot(lot));
     }
 
     public void updateLotAliasFromValue(LotAliasValue lotAliasValue, BasePK updatedBy) {
