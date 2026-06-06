@@ -23,7 +23,6 @@ import com.echothree.model.control.inventory.server.control.LotTimeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -32,14 +31,14 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetLotTimeTypeCommand
         extends BaseSimpleCommand<GetLotTimeTypeForm> {
-    
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
@@ -48,14 +47,17 @@ public class GetLotTimeTypeCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.LotTimeType.name(), SecurityRoles.Review.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("LotTimeTypeName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
-    
+
+    @Inject
+    LotTimeControl lotTimeControl;
+
     /** Creates a new instance of GetLotTimeTypeCommand */
     public GetLotTimeTypeCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -63,7 +65,6 @@ public class GetLotTimeTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var lotTimeControl = Session.getModelController(LotTimeControl.class);
         var result = InventoryResultFactory.getGetLotTimeTypeResult();
         var lotTimeTypeName = form.getLotTimeTypeName();
         var lotTimeType = lotTimeControl.getLotTimeTypeByName(lotTimeTypeName);

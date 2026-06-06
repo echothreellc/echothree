@@ -111,10 +111,11 @@ public class InventoryTransactionTypeControl
     }
 
     public long countInventoryTransactionTypes() {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM inventorytransactiontypes, inventorytransactiontypedetails " +
-                "WHERE invtnxtyp_activedetailid = invtnxtypdt_inventorytransactiontypedetailid");
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM inventorytransactiontypes, inventorytransactiontypedetails
+                WHERE invtnxtyp_activedetailid = invtnxtypdt_inventorytransactiontypedetailid
+                """);
     }
 
     private static final Map<EntityPermission, String> getInventoryTransactionTypeByNameQueries;
@@ -122,17 +123,19 @@ public class InventoryTransactionTypeControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM inventorytransactiontypes, inventorytransactiontypedetails " +
-                "WHERE invtnxtyp_activedetailid = invtnxtypdt_inventorytransactiontypedetailid " +
-                "AND invtnxtypdt_inventorytransactiontypename = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM inventorytransactiontypes, inventorytransactiontypedetails " +
-                "WHERE invtnxtyp_activedetailid = invtnxtypdt_inventorytransactiontypedetailid " +
-                "AND invtnxtypdt_inventorytransactiontypename = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM inventorytransactiontypes, inventorytransactiontypedetails
+                WHERE invtnxtyp_activedetailid = invtnxtypdt_inventorytransactiontypedetailid
+                AND invtnxtypdt_inventorytransactiontypename = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM inventorytransactiontypes, inventorytransactiontypedetails
+                WHERE invtnxtyp_activedetailid = invtnxtypdt_inventorytransactiontypedetailid
+                AND invtnxtypdt_inventorytransactiontypename = ?
+                FOR UPDATE
+                """);
         getInventoryTransactionTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -161,17 +164,19 @@ public class InventoryTransactionTypeControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM inventorytransactiontypes, inventorytransactiontypedetails " +
-                "WHERE invtnxtyp_activedetailid = invtnxtypdt_inventorytransactiontypedetailid " +
-                "AND invtnxtypdt_isdefault = 1");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM inventorytransactiontypes, inventorytransactiontypedetails " +
-                "WHERE invtnxtyp_activedetailid = invtnxtypdt_inventorytransactiontypedetailid " +
-                "AND invtnxtypdt_isdefault = 1 " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM inventorytransactiontypes, inventorytransactiontypedetails
+                WHERE invtnxtyp_activedetailid = invtnxtypdt_inventorytransactiontypedetailid
+                AND invtnxtypdt_isdefault = 1
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM inventorytransactiontypes, inventorytransactiontypedetails
+                WHERE invtnxtyp_activedetailid = invtnxtypdt_inventorytransactiontypedetailid
+                AND invtnxtypdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultInventoryTransactionTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -196,17 +201,19 @@ public class InventoryTransactionTypeControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM inventorytransactiontypes, inventorytransactiontypedetails " +
-                "WHERE invtnxtyp_activedetailid = invtnxtypdt_inventorytransactiontypedetailid " +
-                "ORDER BY invtnxtypdt_sortorder, invtnxtypdt_inventorytransactiontypename " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM inventorytransactiontypes, inventorytransactiontypedetails " +
-                "WHERE invtnxtyp_activedetailid = invtnxtypdt_inventorytransactiontypedetailid " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM inventorytransactiontypes, inventorytransactiontypedetails
+                WHERE invtnxtyp_activedetailid = invtnxtypdt_inventorytransactiontypedetailid
+                ORDER BY invtnxtypdt_sortorder, invtnxtypdt_inventorytransactiontypename
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM inventorytransactiontypes, inventorytransactiontypedetails
+                WHERE invtnxtyp_activedetailid = invtnxtypdt_inventorytransactiontypedetailid
+                FOR UPDATE
+                """);
         getInventoryTransactionTypesQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -385,15 +392,17 @@ public class InventoryTransactionTypeControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM inventorytransactiontypedescriptions " +
-                "WHERE invtnxtypd_invtnxtyp_inventorytransactiontypeid = ? AND invtnxtypd_lang_languageid = ? AND invtnxtypd_thrutime = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM inventorytransactiontypedescriptions " +
-                "WHERE invtnxtypd_invtnxtyp_inventorytransactiontypeid = ? AND invtnxtypd_lang_languageid = ? AND invtnxtypd_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM inventorytransactiontypedescriptions
+                WHERE invtnxtypd_invtnxtyp_inventorytransactiontypeid = ? AND invtnxtypd_lang_languageid = ? AND invtnxtypd_thrutime = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM inventorytransactiontypedescriptions
+                WHERE invtnxtypd_invtnxtyp_inventorytransactiontypeid = ? AND invtnxtypd_lang_languageid = ? AND invtnxtypd_thrutime = ?
+                FOR UPDATE
+                """);
         getInventoryTransactionTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -423,16 +432,19 @@ public class InventoryTransactionTypeControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM inventorytransactiontypedescriptions, languages " +
-                "WHERE invtnxtypd_invtnxtyp_inventorytransactiontypeid = ? AND invtnxtypd_thrutime = ? AND invtnxtypd_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortorder, lang_languageisoname");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM inventorytransactiontypedescriptions " +
-                "WHERE invtnxtypd_invtnxtyp_inventorytransactiontypeid = ? AND invtnxtypd_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM inventorytransactiontypedescriptions, languages
+                WHERE invtnxtypd_invtnxtyp_inventorytransactiontypeid = ? AND invtnxtypd_thrutime = ? AND invtnxtypd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM inventorytransactiontypedescriptions
+                WHERE invtnxtypd_invtnxtyp_inventorytransactiontypeid = ? AND invtnxtypd_thrutime = ?
+                FOR UPDATE
+                """);
         getInventoryTransactionTypeDescriptionsByInventoryTransactionTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
