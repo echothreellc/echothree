@@ -21,7 +21,6 @@ import com.echothree.control.user.authentication.common.form.GetEmployeeLoginDef
 import com.echothree.control.user.authentication.common.result.AuthenticationResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.user.server.entity.UserLogin;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -42,9 +41,6 @@ public class GetEmployeeLoginDefaultsCommand
     
     @Inject
     PartyControl partyControl;
-
-    @Inject
-    UserControl userControl;
 
     /** Creates a new instance of GetEmployeeLoginDefaultsCommand */
     public GetEmployeeLoginDefaultsCommand() {
