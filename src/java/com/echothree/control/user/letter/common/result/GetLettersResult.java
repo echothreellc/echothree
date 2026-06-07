@@ -26,8 +26,11 @@ public interface GetLettersResult
     
     ChainTypeTransfer getChainType();
     void setChainType(ChainTypeTransfer chainType);
-    
+
+    Long getLetterCount();
+    void setLetterCount(Long letterCount);
+
     List<LetterTransfer> getLetters();
     void setLetters(List<LetterTransfer> letters);
-    
+
 }
