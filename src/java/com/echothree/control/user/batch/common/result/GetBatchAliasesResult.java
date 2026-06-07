@@ -27,7 +27,10 @@ public interface GetBatchAliasesResult
     BatchTransfer getBatch();
     void setBatch(BatchTransfer batch);
 
+    Long getBatchAliasCount();
+    void setBatchAliasCount(Long batchAliasCount);
+
     List<BatchAliasTransfer> getBatchAliases();
     void setBatchAliases(List<BatchAliasTransfer> batchAliases);
-    
+
 }
