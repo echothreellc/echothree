@@ -150,14 +150,18 @@ public class LetterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM lettersources, lettersourcedetails " +
-                        "WHERE lttrsrc_activedetailid = lttrsrcdt_lettersourcedetailid AND lttrsrcdt_lettersourcename = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM lettersources, lettersourcedetails
+                        WHERE lttrsrc_activedetailid = lttrsrcdt_lettersourcedetailid AND lttrsrcdt_lettersourcename = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM lettersources, lettersourcedetails " +
-                        "WHERE lttrsrc_activedetailid = lttrsrcdt_lettersourcedetailid AND lttrsrcdt_lettersourcename = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM lettersources, lettersourcedetails
+                        WHERE lttrsrc_activedetailid = lttrsrcdt_lettersourcedetailid AND lttrsrcdt_lettersourcename = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = LetterSourceFactory.getInstance().prepareStatement(query);
@@ -192,14 +196,18 @@ public class LetterControl
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM lettersources, lettersourcedetails " +
-                    "WHERE lttrsrc_activedetailid = lttrsrcdt_lettersourcedetailid AND lttrsrcdt_isdefault = 1";
+            query = """
+                    SELECT _ALL_
+                    FROM lettersources, lettersourcedetails
+                    WHERE lttrsrc_activedetailid = lttrsrcdt_lettersourcedetailid AND lttrsrcdt_isdefault = 1
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM lettersources, lettersourcedetails " +
-                    "WHERE lttrsrc_activedetailid = lttrsrcdt_lettersourcedetailid AND lttrsrcdt_isdefault = 1 " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM lettersources, lettersourcedetails
+                    WHERE lttrsrc_activedetailid = lttrsrcdt_lettersourcedetailid AND lttrsrcdt_isdefault = 1
+                    FOR UPDATE
+                    """;
         }
 
         var ps = LetterSourceFactory.getInstance().prepareStatement(query);
@@ -223,15 +231,19 @@ public class LetterControl
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM lettersources, lettersourcedetails " +
-                    "WHERE lttrsrc_activedetailid = lttrsrcdt_letterSourcedetailid " +
-                    "ORDER BY lttrsrcdt_sortorder, lttrsrcdt_letterSourcename";
+            query = """
+                    SELECT _ALL_
+                    FROM lettersources, lettersourcedetails
+                    WHERE lttrsrc_activedetailid = lttrsrcdt_letterSourcedetailid
+                    ORDER BY lttrsrcdt_sortorder, lttrsrcdt_letterSourcename
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM lettersources, lettersourcedetails " +
-                    "WHERE lttrsrc_activedetailid = lttrsrcdt_letterSourcedetailid " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM lettersources, lettersourcedetails
+                    WHERE lttrsrc_activedetailid = lttrsrcdt_letterSourcedetailid
+                    FOR UPDATE
+                    """;
         }
 
         var ps = LetterSourceFactory.getInstance().prepareStatement(query);
@@ -255,15 +267,19 @@ public class LetterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM lettersources, lettersourcedetails " +
-                        "WHERE lttrsrc_activedetailid = lttrsrcdt_lettersourcedetailid AND lttrsrcdt_emailaddresspartycontactmechanismid = ? " +
-                        "ORDER BY lttrsrcdt_sortorder, lttrsrcdt_lettersourcename";
+                query = """
+                        SELECT _ALL_
+                        FROM lettersources, lettersourcedetails
+                        WHERE lttrsrc_activedetailid = lttrsrcdt_lettersourcedetailid AND lttrsrcdt_emailaddresspartycontactmechanismid = ?
+                        ORDER BY lttrsrcdt_sortorder, lttrsrcdt_lettersourcename
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM lettersources, lettersourcedetails " +
-                        "WHERE lttrsrc_activedetailid = lttrsrcdt_lettersourcedetailid AND lttrsrcdt_emailaddresspartycontactmechanismid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM lettersources, lettersourcedetails
+                        WHERE lttrsrc_activedetailid = lttrsrcdt_lettersourcedetailid AND lttrsrcdt_emailaddresspartycontactmechanismid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = LetterSourceFactory.getInstance().prepareStatement(query);
@@ -294,15 +310,19 @@ public class LetterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM lettersources, lettersourcedetails " +
-                        "WHERE lttrsrc_activedetailid = lttrsrcdt_lettersourcedetailid AND lttrsrcdt_postaladdresspartycontactmechanismid = ? " +
-                        "ORDER BY lttrsrcdt_sortorder, lttrsrcdt_lettersourcename";
+                query = """
+                        SELECT _ALL_
+                        FROM lettersources, lettersourcedetails
+                        WHERE lttrsrc_activedetailid = lttrsrcdt_lettersourcedetailid AND lttrsrcdt_postaladdresspartycontactmechanismid = ?
+                        ORDER BY lttrsrcdt_sortorder, lttrsrcdt_lettersourcename
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM lettersources, lettersourcedetails " +
-                        "WHERE lttrsrc_activedetailid = lttrsrcdt_lettersourcedetailid AND lttrsrcdt_postaladdresspartycontactmechanismid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM lettersources, lettersourcedetails
+                        WHERE lttrsrc_activedetailid = lttrsrcdt_lettersourcedetailid AND lttrsrcdt_postaladdresspartycontactmechanismid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = LetterSourceFactory.getInstance().prepareStatement(query);
@@ -333,15 +353,19 @@ public class LetterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM lettersources, lettersourcedetails " +
-                        "WHERE lttrsrc_activedetailid = lttrsrcdt_lettersourcedetailid AND lttrsrcdt_lettersourcepartycontactmechanismid = ? " +
-                        "ORDER BY lttrsrcdt_sortorder, lttrsrcdt_lettersourcename";
+                query = """
+                        SELECT _ALL_
+                        FROM lettersources, lettersourcedetails
+                        WHERE lttrsrc_activedetailid = lttrsrcdt_lettersourcedetailid AND lttrsrcdt_lettersourcepartycontactmechanismid = ?
+                        ORDER BY lttrsrcdt_sortorder, lttrsrcdt_lettersourcename
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM lettersources, lettersourcedetails " +
-                        "WHERE lttrsrc_activedetailid = lttrsrcdt_lettersourcedetailid AND lttrsrcdt_lettersourcepartycontactmechanismid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM lettersources, lettersourcedetails
+                        WHERE lttrsrc_activedetailid = lttrsrcdt_lettersourcedetailid AND lttrsrcdt_lettersourcepartycontactmechanismid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = LetterSourceFactory.getInstance().prepareStatement(query);
@@ -534,14 +558,18 @@ public class LetterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM lettersourcedescriptions " +
-                        "WHERE lttrsrcd_lttrsrc_letterSourceid = ? AND lttrsrcd_lang_languageid = ? AND lttrsrcd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM lettersourcedescriptions
+                        WHERE lttrsrcd_lttrsrc_letterSourceid = ? AND lttrsrcd_lang_languageid = ? AND lttrsrcd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM lettersourcedescriptions " +
-                        "WHERE lttrsrcd_lttrsrc_letterSourceid = ? AND lttrsrcd_lang_languageid = ? AND lttrsrcd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM lettersourcedescriptions
+                        WHERE lttrsrcd_lttrsrc_letterSourceid = ? AND lttrsrcd_lang_languageid = ? AND lttrsrcd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = LetterSourceDescriptionFactory.getInstance().prepareStatement(query);
@@ -583,15 +611,19 @@ public class LetterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM lettersourcedescriptions, languages " +
-                        "WHERE lttrsrcd_lttrsrc_letterSourceid = ? AND lttrsrcd_thrutime = ? AND lttrsrcd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM lettersourcedescriptions, languages
+                        WHERE lttrsrcd_lttrsrc_letterSourceid = ? AND lttrsrcd_thrutime = ? AND lttrsrcd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM lettersourcedescriptions " +
-                        "WHERE lttrsrcd_lttrsrc_letterSourceid = ? AND lttrsrcd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM lettersourcedescriptions
+                        WHERE lttrsrcd_lttrsrc_letterSourceid = ? AND lttrsrcd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = LetterSourceDescriptionFactory.getInstance().prepareStatement(query);
@@ -725,14 +757,18 @@ public class LetterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM letters, letterdetails " +
-                        "WHERE lttr_activedetailid = lttrdt_letterdetailid AND lttrdt_chntyp_chaintypeid = ? AND lttrdt_lettername = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM letters, letterdetails
+                        WHERE lttr_activedetailid = lttrdt_letterdetailid AND lttrdt_chntyp_chaintypeid = ? AND lttrdt_lettername = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM letters, letterdetails " +
-                        "WHERE lttr_activedetailid = lttrdt_letterdetailid AND lttrdt_chntyp_chaintypeid = ? AND lttrdt_lettername = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM letters, letterdetails
+                        WHERE lttr_activedetailid = lttrdt_letterdetailid AND lttrdt_chntyp_chaintypeid = ? AND lttrdt_lettername = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = LetterFactory.getInstance().prepareStatement(query);
@@ -771,14 +807,18 @@ public class LetterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM letters, letterdetails " +
-                        "WHERE lttr_activedetailid = lttrdt_letterdetailid AND lttrdt_chntyp_chaintypeid = ? AND lttrdt_isdefault = 1";
+                query = """
+                        SELECT _ALL_
+                        FROM letters, letterdetails
+                        WHERE lttr_activedetailid = lttrdt_letterdetailid AND lttrdt_chntyp_chaintypeid = ? AND lttrdt_isdefault = 1
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM letters, letterdetails " +
-                        "WHERE lttr_activedetailid = lttrdt_letterdetailid AND lttrdt_chntyp_chaintypeid = ? AND lttrdt_isdefault = 1 " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM letters, letterdetails
+                        WHERE lttr_activedetailid = lttrdt_letterdetailid AND lttrdt_chntyp_chaintypeid = ? AND lttrdt_isdefault = 1
+                        FOR UPDATE
+                        """;
             }
 
             var ps = LetterFactory.getInstance().prepareStatement(query);
@@ -812,15 +852,19 @@ public class LetterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM letters, letterdetails " +
-                        "WHERE lttr_activedetailid = lttrdt_letterdetailid AND lttrdt_chntyp_chaintypeid = ? " +
-                        "ORDER BY lttrdt_sortorder, lttrdt_lettername";
+                query = """
+                        SELECT _ALL_
+                        FROM letters, letterdetails
+                        WHERE lttr_activedetailid = lttrdt_letterdetailid AND lttrdt_chntyp_chaintypeid = ?
+                        ORDER BY lttrdt_sortorder, lttrdt_lettername
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM letters, letterdetails " +
-                        "WHERE lttr_activedetailid = lttrdt_letterdetailid AND lttrdt_chntyp_chaintypeid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM letters, letterdetails
+                        WHERE lttr_activedetailid = lttrdt_letterdetailid AND lttrdt_chntyp_chaintypeid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = LetterFactory.getInstance().prepareStatement(query);
@@ -850,15 +894,19 @@ public class LetterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM letters, letterdetails " +
-                        "WHERE lttr_activedetailid = lttrdt_letterdetailid AND lttrdt_lttrsrc_lettersourceid = ? " +
-                        "ORDER BY lttrdt_sortorder, lttrdt_lettername";
+                query = """
+                        SELECT _ALL_
+                        FROM letters, letterdetails
+                        WHERE lttr_activedetailid = lttrdt_letterdetailid AND lttrdt_lttrsrc_lettersourceid = ?
+                        ORDER BY lttrdt_sortorder, lttrdt_lettername
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM letters, letterdetails " +
-                        "WHERE lttr_activedetailid = lttrdt_letterdetailid AND lttrdt_lttrsrc_lettersourceid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM letters, letterdetails
+                        WHERE lttr_activedetailid = lttrdt_letterdetailid AND lttrdt_lttrsrc_lettersourceid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = LetterFactory.getInstance().prepareStatement(query);
@@ -888,15 +936,19 @@ public class LetterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM letters, letterdetails " +
-                        "WHERE lttr_activedetailid = lttrdt_letterdetailid AND lttrdt_clst_contactlistid = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM letters, letterdetails
+                        WHERE lttr_activedetailid = lttrdt_letterdetailid AND lttrdt_clst_contactlistid = ?
+                        """;
                 // TODO: ORDER BY
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM letters, letterdetails " +
-                        "WHERE lttr_activedetailid = lttrdt_letterdetailid AND lttrdt_clst_contactlistid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM letters, letterdetails
+                        WHERE lttr_activedetailid = lttrdt_letterdetailid AND lttrdt_clst_contactlistid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = LetterFactory.getInstance().prepareStatement(query);
@@ -1086,14 +1138,18 @@ public class LetterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM letterdescriptions " +
-                        "WHERE lttrd_lttr_letterid = ? AND lttrd_lang_languageid = ? AND lttrd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM letterdescriptions
+                        WHERE lttrd_lttr_letterid = ? AND lttrd_lang_languageid = ? AND lttrd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM letterdescriptions " +
-                        "WHERE lttrd_lttr_letterid = ? AND lttrd_lang_languageid = ? AND lttrd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM letterdescriptions
+                        WHERE lttrd_lttr_letterid = ? AND lttrd_lang_languageid = ? AND lttrd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = LetterDescriptionFactory.getInstance().prepareStatement(query);
@@ -1135,15 +1191,19 @@ public class LetterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM letterdescriptions, languages " +
-                        "WHERE lttrd_lttr_letterid = ? AND lttrd_thrutime = ? AND lttrd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM letterdescriptions, languages
+                        WHERE lttrd_lttr_letterid = ? AND lttrd_thrutime = ? AND lttrd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM letterdescriptions " +
-                        "WHERE lttrd_lttr_letterid = ? AND lttrd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM letterdescriptions
+                        WHERE lttrd_lttr_letterid = ? AND lttrd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = LetterDescriptionFactory.getInstance().prepareStatement(query);
@@ -1268,16 +1328,20 @@ public class LetterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM lettercontactmechanismpurposes, lettercontactmechanismpurposedetails " +
-                        "WHERE lttrcmpr_activedetailid = lttrcmprdt_lettercontactmechanismpurposedetailid " +
-                        "AND lttrcmprdt_lttr_letterid = ? AND lttrcmprdt_priority = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM lettercontactmechanismpurposes, lettercontactmechanismpurposedetails
+                        WHERE lttrcmpr_activedetailid = lttrcmprdt_lettercontactmechanismpurposedetailid
+                        AND lttrcmprdt_lttr_letterid = ? AND lttrcmprdt_priority = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM lettercontactmechanismpurposes, lettercontactmechanismpurposedetails " +
-                        "WHERE lttrcmpr_activedetailid = lttrcmprdt_lettercontactmechanismpurposedetailid " +
-                        "AND lttrcmprdt_lttr_letterid = ? AND lttrcmprdt_priority = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM lettercontactmechanismpurposes, lettercontactmechanismpurposedetails
+                        WHERE lttrcmpr_activedetailid = lttrcmprdt_lettercontactmechanismpurposedetailid
+                        AND lttrcmprdt_lttr_letterid = ? AND lttrcmprdt_priority = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = LetterContactMechanismPurposeFactory.getInstance().prepareStatement(query);
@@ -1317,17 +1381,21 @@ public class LetterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM lettercontactmechanismpurposes, lettercontactmechanismpurposedetails " +
-                        "WHERE lttrcmpr_activedetailid = lttrcmprdt_lettercontactmechanismpurposedetailid " +
-                        "AND lttrcmprdt_lttr_letterid = ? " +
-                        "ORDER BY lttrcmprdt_priority";
+                query = """
+                        SELECT _ALL_
+                        FROM lettercontactmechanismpurposes, lettercontactmechanismpurposedetails
+                        WHERE lttrcmpr_activedetailid = lttrcmprdt_lettercontactmechanismpurposedetailid
+                        AND lttrcmprdt_lttr_letterid = ?
+                        ORDER BY lttrcmprdt_priority
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM lettercontactmechanismpurposes, lettercontactmechanismpurposedetails " +
-                        "WHERE lttrcmpr_activedetailid = lttrcmprdt_lettercontactmechanismpurposedetailid " +
-                        "AND lttrcmprdt_lttr_letterid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM lettercontactmechanismpurposes, lettercontactmechanismpurposedetails
+                        WHERE lttrcmpr_activedetailid = lttrcmprdt_lettercontactmechanismpurposedetailid
+                        AND lttrcmprdt_lttr_letterid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = LetterContactMechanismPurposeFactory.getInstance().prepareStatement(query);
@@ -1426,19 +1494,19 @@ public class LetterControl
     }
 
     public boolean isChainInstanceUsedByQueuedLetters(ChainInstance chainInstance) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM queuedletters " +
-                "WHERE qlttr_chni_chaininstanceid = ?",
-                chainInstance) != 1;
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM queuedletters
+                WHERE qlttr_chni_chaininstanceid = ?
+                """, chainInstance) != 1;
     }
 
     public boolean isChainInstanceUsedByQueuedLetters(Letter letter) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM queuedletters " +
-                "WHERE qlttr_lttr_letterid = ?",
-                letter) != 1;
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM queuedletters
+                WHERE qlttr_lttr_letterid = ?
+                """, letter) != 1;
     }
 
     private static final Map<EntityPermission, String> getQueuedLetterQueries;
@@ -1446,15 +1514,17 @@ public class LetterControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM queuedletters "
-                + "WHERE qlttr_chni_chaininstanceid = ? AND qlttr_queuedlettersequence = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM queuedletters "
-                + "WHERE qlttr_chni_chaininstanceid = ? AND qlttr_queuedlettersequence = ? "
-                + "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM queuedletters
+                WHERE qlttr_chni_chaininstanceid = ? AND qlttr_queuedlettersequence = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM queuedletters
+                WHERE qlttr_chni_chaininstanceid = ? AND qlttr_queuedlettersequence = ?
+                FOR UPDATE
+                """);
         getQueuedLetterQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1475,12 +1545,16 @@ public class LetterControl
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM queuedletters";
+            query = """
+                    SELECT _ALL_
+                    FROM queuedletters
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM queuedletters " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM queuedletters
+                    FOR UPDATE
+                    """;
         }
 
         var ps = QueuedLetterFactory.getInstance().prepareStatement(query);
@@ -1503,15 +1577,19 @@ public class LetterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM queuedletters " +
-                        "WHERE qlttr_chni_chaininstanceid = ? " +
-                        "ORDER BY qlttr_queuedletterid";
+                query = """
+                        SELECT _ALL_
+                        FROM queuedletters
+                        WHERE qlttr_chni_chaininstanceid = ?
+                        ORDER BY qlttr_queuedletterid
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM queuedletters " +
-                        "WHERE qlttr_chni_chaininstanceid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM queuedletters
+                        WHERE qlttr_chni_chaininstanceid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = QueuedLetterFactory.getInstance().prepareStatement(query);
@@ -1541,15 +1619,19 @@ public class LetterControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM queuedletters " +
-                        "WHERE qlttr_lttr_letterid = ? " +
-                        "ORDER BY qlttr_queuedletterid";
+                query = """
+                        SELECT _ALL_
+                        FROM queuedletters
+                        WHERE qlttr_lttr_letterid = ?
+                        ORDER BY qlttr_queuedletterid
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM queuedletters " +
-                        "WHERE qlttr_lttr_letterid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM queuedletters
+                        WHERE qlttr_lttr_letterid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = QueuedLetterFactory.getInstance().prepareStatement(query);
