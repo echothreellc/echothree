@@ -20,14 +20,12 @@ import com.echothree.control.user.authentication.common.form.AuthenticationFormF
 import com.echothree.control.user.authentication.common.form.GetCustomerLoginDefaultsForm;
 import com.echothree.control.user.authentication.common.result.AuthenticationResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.user.server.entity.UserLogin;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
 
 @Dependent
 public class GetCustomerLoginDefaultsCommand
@@ -39,9 +37,6 @@ public class GetCustomerLoginDefaultsCommand
         FORM_FIELD_DEFINITIONS = List.of();
     }
     
-    @Inject
-    UserControl userControl;
-
     /** Creates a new instance of GetCustomerLoginDefaultsCommand */
     public GetCustomerLoginDefaultsCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
