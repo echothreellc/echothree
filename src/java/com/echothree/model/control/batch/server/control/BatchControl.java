@@ -679,6 +679,15 @@ public class BatchControl
                 batchType, Session.MAX_TIME);
     }
 
+    public long countBatchTypeEntityTypesByEntityType(EntityType entityType) {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM batchtypeentitytypes
+                WHERE btchtypent_ent_entitytypeid = ? AND btchtypent_thrutime = ?
+                """,
+                entityType, Session.MAX_TIME);
+    }
+
     public boolean getBatchTypeEntityTypeExists(BatchType batchType, EntityType entityType) {
         return 1 == session.queryForLong("""
                 SELECT COUNT(*)

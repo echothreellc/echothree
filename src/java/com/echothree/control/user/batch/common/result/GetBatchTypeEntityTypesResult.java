@@ -31,7 +31,10 @@ public interface GetBatchTypeEntityTypesResult
     EntityTypeTransfer getEntityType();
     void setEntityType(EntityTypeTransfer entityType);
 
+    Long getBatchTypeEntityTypeCount();
+    void setBatchTypeEntityTypeCount(Long batchTypeEntityTypeCount);
+
     List<BatchTypeEntityTypeTransfer> getBatchTypeEntityTypes();
     void setBatchTypeEntityTypes(List<BatchTypeEntityTypeTransfer> batchTypeEntityTypes);
-    
+
 }
