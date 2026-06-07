@@ -84,6 +84,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 import javax.inject.Inject;
 
 @CommandScope
@@ -1005,15 +1006,14 @@ public class BatchControl
         return batchAliasTypeTransferCache.getTransfer(userVisit, batchAliasType);
     }
     
+    public List<BatchAliasTypeTransfer> getBatchAliasTypeTransfers(UserVisit userVisit, Collection<BatchAliasType> batchAliasTypes) {
+        return batchAliasTypes.stream()
+                .map((batchAliasType) -> getBatchAliasTypeTransfer(userVisit, batchAliasType))
+                .collect(Collectors.toList());
+    }
+
     public List<BatchAliasTypeTransfer> getBatchAliasTypeTransfers(UserVisit userVisit, BatchType batchType) {
-        var batchAliasTypes = getBatchAliasTypes(batchType);
-        List<BatchAliasTypeTransfer> batchAliasTypeTransfers = new ArrayList<>(batchAliasTypes.size());
-        
-        batchAliasTypes.forEach((batchAliasType) ->
-                batchAliasTypeTransfers.add(batchAliasTypeTransferCache.getTransfer(userVisit, batchAliasType))
-        );
-        
-        return batchAliasTypeTransfers;
+        return getBatchAliasTypeTransfers(userVisit, getBatchAliasTypes(batchType));
     }
     
     public BatchAliasTypeChoicesBean getBatchAliasTypeChoices(String defaultBatchAliasTypeChoice, Language language,
