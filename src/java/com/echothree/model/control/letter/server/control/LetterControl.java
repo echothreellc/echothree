@@ -1570,15 +1570,18 @@ public class LetterControl
         return letterContactMechanismPurposeTransferCache.getLetterContactMechanismPurposeTransfer(userVisit, letterContactMechanismPurpose);
     }
     
-    public List<LetterContactMechanismPurposeTransfer> getLetterContactMechanismPurposeTransfersByLetter(UserVisit userVisit, Letter letter) {
-        var letterContactMechanismPurposes = getLetterContactMechanismPurposesByLetter(letter);
+    public List<LetterContactMechanismPurposeTransfer> getLetterContactMechanismPurposeTransfers(UserVisit userVisit, Collection<LetterContactMechanismPurpose> letterContactMechanismPurposes) {
         List<LetterContactMechanismPurposeTransfer> letterContactMechanismPurposeTransfers = new ArrayList<>(letterContactMechanismPurposes.size());
-        
+
         letterContactMechanismPurposes.forEach((letterContactMechanismPurpose) ->
                 letterContactMechanismPurposeTransfers.add(letterContactMechanismPurposeTransferCache.getLetterContactMechanismPurposeTransfer(userVisit, letterContactMechanismPurpose))
         );
-        
+
         return letterContactMechanismPurposeTransfers;
+    }
+
+    public List<LetterContactMechanismPurposeTransfer> getLetterContactMechanismPurposeTransfersByLetter(UserVisit userVisit, Letter letter) {
+        return getLetterContactMechanismPurposeTransfers(userVisit, getLetterContactMechanismPurposesByLetter(letter));
     }
     
     public void updateLetterContactMechanismPurposeFromValue(LetterContactMechanismPurposeDetailValue letterContactMechanismPurposeDetailValue, BasePK updatedBy) {
