@@ -459,15 +459,18 @@ public class LetterControl
         return letterSourceTransferCache.getLetterSourceTransfer(userVisit, letterSource);
     }
     
-    public List<LetterSourceTransfer> getLetterSourceTransfers(UserVisit userVisit) {
-        var letterSources = getLetterSources();
+    public List<LetterSourceTransfer> getLetterSourceTransfers(UserVisit userVisit, Collection<LetterSource> letterSources) {
         List<LetterSourceTransfer> letterSourceTransfers = new ArrayList<>(letterSources.size());
-        
+
         letterSources.forEach((letterSource) ->
                 letterSourceTransfers.add(letterSourceTransferCache.getLetterSourceTransfer(userVisit, letterSource))
         );
-        
+
         return letterSourceTransfers;
+    }
+
+    public List<LetterSourceTransfer> getLetterSourceTransfers(UserVisit userVisit) {
+        return getLetterSourceTransfers(userVisit, getLetterSources());
     }
     
     public LetterSourceChoicesBean getLetterSourceChoices(String defaultLetterSourceChoice, Language language, boolean allowNullChoice) {
