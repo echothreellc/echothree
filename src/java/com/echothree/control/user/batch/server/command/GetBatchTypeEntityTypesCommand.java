@@ -19,19 +19,25 @@ package com.echothree.control.user.batch.server.command;
 import com.echothree.control.user.batch.common.form.GetBatchTypeEntityTypesForm;
 import com.echothree.control.user.batch.common.result.BatchResultFactory;
 import com.echothree.model.control.batch.server.control.BatchControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.control.batch.server.logic.BatchLogic;
+import com.echothree.model.control.core.server.logic.EntityTypeLogic;
+import com.echothree.model.data.batch.server.entity.BatchType;
+import com.echothree.model.data.batch.server.entity.BatchTypeEntityType;
+import com.echothree.model.data.batch.server.factory.BatchTypeEntityTypeFactory;
+import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetBatchTypeEntityTypesCommand
-        extends BaseSimpleCommand<GetBatchTypeEntityTypesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<BatchTypeEntityType, GetBatchTypeEntityTypesForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
@@ -40,54 +46,80 @@ public class GetBatchTypeEntityTypesCommand
                 new FieldDefinition("BatchTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, false, null, null)
-                );
+        );
     }
-    
+
+    @Inject
+    BatchControl batchControl;
+
+    @Inject
+    BatchLogic batchLogic;
+
+    @Inject
+    EntityTypeLogic entityTypeLogic;
+
     /** Creates a new instance of GetBatchTypeEntityTypesCommand */
     public GetBatchTypeEntityTypesCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    BatchType batchType;
+    EntityType entityType;
+
     @Override
-    protected BaseResult execute() {
-        var result = BatchResultFactory.getGetBatchTypeEntityTypesResult();
+    protected void handleForm() {
         var batchTypeName = form.getBatchTypeName();
         var componentVendorName = form.getComponentVendorName();
         var entityTypeName = form.getEntityTypeName();
         var parameterCount = (batchTypeName == null ? 0 : 1) + (componentVendorName == null && entityTypeName == null ? 0 : 1);
 
         if(parameterCount == 1) {
-            var batchControl = Session.getModelController(BatchControl.class);
-
             if(batchTypeName != null) {
-                var batchType = batchControl.getBatchTypeByName(batchTypeName);
-
-                if(batchType != null) {
-                    result.setBatchType(batchControl.getBatchTypeTransfer(getUserVisit(), batchType));
-                    result.setBatchTypeEntityTypes(batchControl.getBatchTypeEntityTypeTransfersByBatchType(getUserVisit(), batchType));
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownBatchTypeName.name(), batchTypeName);
-                }
+                batchType = batchLogic.getBatchTypeByName(this, batchTypeName);
             } else {
-                var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
-
-                if(componentVendor != null) {
-                    var entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
-
-                    if(entityType != null) {
-                        result.setEntityType(entityTypeControl.getEntityTypeTransfer(getUserVisit(), entityType));
-                        result.setBatchTypeEntityTypes(batchControl.getBatchTypeEntityTypeTransfersByEntityType(getUserVisit(), entityType));
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownEntityTypeName.name(), componentVendorName, entityTypeName);
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownComponentVendorName.name(), componentVendorName);
-                }
+                entityType = entityTypeLogic.getEntityTypeByName(this, componentVendorName, entityTypeName);
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());
         }
-        
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return hasExecutionErrors() ? null :
+                batchType != null ? batchControl.countBatchTypeEntityTypesByBatchType(batchType) :
+                batchControl.countBatchTypeEntityTypesByEntityType(entityType);
+    }
+
+    @Override
+    protected Collection<BatchTypeEntityType> getEntities() {
+        return hasExecutionErrors() ? null :
+                batchType != null ? batchControl.getBatchTypeEntityTypesByBatchType(batchType) :
+                batchControl.getBatchTypeEntityTypesByEntityType(entityType);
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<BatchTypeEntityType> entities) {
+        var result = BatchResultFactory.getGetBatchTypeEntityTypesResult();
+
+        if(entities != null) {
+            var userVisit = getUserVisit();
+
+            if(batchType != null) {
+                result.setBatchType(batchControl.getBatchTypeTransfer(userVisit, batchType));
+            }
+
+            if(entityType != null) {
+                result.setEntityType(entityTypeControl.getEntityTypeTransfer(userVisit, entityType));
+            }
+
+            if(session.hasLimit(BatchTypeEntityTypeFactory.class)) {
+                result.setBatchTypeEntityTypeCount(getTotalEntities());
+            }
+
+            result.setBatchTypeEntityTypes(batchControl.getBatchTypeEntityTypeTransfers(userVisit, entities));
+        }
+
         return result;
     }
     
