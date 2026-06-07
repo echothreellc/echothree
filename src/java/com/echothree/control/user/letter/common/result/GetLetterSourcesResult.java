@@ -22,8 +22,11 @@ import java.util.List;
 
 public interface GetLetterSourcesResult
         extends BaseResult {
-    
+
+    Long getLetterSourceCount();
+    void setLetterSourceCount(Long letterSourceCount);
+
     List<LetterSourceTransfer> getLetterSources();
     void setLetterSources(List<LetterSourceTransfer> letterSources);
-    
+
 }
