@@ -31,6 +31,9 @@ public interface GetPartyCancellationPoliciesResult
     CancellationPolicyTransfer getCancellationPolicy();
     void setCancellationPolicy(CancellationPolicyTransfer cancellationPolicy);
 
+    Long getPartyCancellationPolicyCount();
+    void setPartyCancellationPolicyCount(Long partyCancellationPolicyCount);
+
     List<PartyCancellationPolicyTransfer> getPartyCancellationPolicies();
     void setPartyCancellationPolicies(List<PartyCancellationPolicyTransfer> partyCancellationPolicies);
     

@@ -19,26 +19,33 @@ package com.echothree.control.user.cancellationpolicy.server.command;
 import com.echothree.control.user.cancellationpolicy.common.form.GetPartyCancellationPoliciesForm;
 import com.echothree.control.user.cancellationpolicy.common.result.CancellationPolicyResultFactory;
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
+import com.echothree.model.control.cancellationpolicy.server.logic.CancellationKindLogic;
+import com.echothree.model.control.cancellationpolicy.server.logic.CancellationPolicyLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
+import com.echothree.model.data.cancellationpolicy.server.entity.PartyCancellationPolicy;
+import com.echothree.model.data.cancellationpolicy.server.factory.PartyCancellationPolicyFactory;
+import com.echothree.model.data.party.server.entity.Party;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetPartyCancellationPoliciesCommand
-        extends BaseSimpleCommand<GetPartyCancellationPoliciesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<PartyCancellationPolicy, GetPartyCancellationPoliciesForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -48,25 +55,41 @@ public class GetPartyCancellationPoliciesCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.PartyCancellationPolicy.name(), SecurityRoles.List.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("CancellationKindName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("CancellationPolicyName", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    CancellationPolicyControl cancellationPolicyControl;
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    CancellationKindLogic cancellationKindLogic;
+
+    @Inject
+    CancellationPolicyLogic cancellationPolicyLogic;
+
+    @Inject
+    PartyLogic partyLogic;
 
     /** Creates a new instance of GetPartyCancellationPoliciesCommand */
     public GetPartyCancellationPoliciesCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
+    private Party party;
+    private CancellationPolicy cancellationPolicy;
+
     @Override
-    protected BaseResult execute() {
-        var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
-        var result = CancellationPolicyResultFactory.getGetPartyCancellationPoliciesResult();
+    protected void handleForm() {
         var partyName = form.getPartyName();
         var cancellationKindName = form.getCancellationKindName();
         var cancellationPolicyName = form.getCancellationPolicyName();
@@ -74,31 +97,67 @@ public class GetPartyCancellationPoliciesCommand
 
         if(parameterCount == 1) {
             if(partyName != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
-                var party = partyControl.getPartyByName(partyName);
-
-                if(party != null) {
-                    result.setPartyCancellationPolicies(cancellationPolicyControl.getPartyCancellationPolicyTransfersByParty(getUserVisit(), party));
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownPartyName.name(), partyName);
-                }
+                party = partyLogic.getPartyByName(this, partyName);
             } else {
-                var cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
+                var cancellationKind = cancellationKindLogic.getCancellationKindByName(this, cancellationKindName);
 
-                if(cancellationKind != null) {
-                    var cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(cancellationKind, cancellationPolicyName);
-
-                    if(cancellationPolicy != null) {
-                        result.setPartyCancellationPolicies(cancellationPolicyControl.getPartyCancellationPolicyTransfersByCancellationPolicy(getUserVisit(), cancellationPolicy));
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownCancellationPolicyName.name(), cancellationKindName, cancellationPolicyName);
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownCancellationKindName.name(), cancellationKindName);
+                if(!hasExecutionErrors()) {
+                    cancellationPolicy = cancellationPolicyLogic.getCancellationPolicyByName(this, cancellationKind, cancellationPolicyName);
                 }
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());
+        }
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        Long total = null;
+
+        if(!hasExecutionErrors()) {
+            if(party != null) {
+                total = cancellationPolicyControl.countPartyCancellationPoliciesByParty(party);
+            } else {
+                total = cancellationPolicyControl.countPartyCancellationPoliciesByCancellationPolicy(cancellationPolicy);
+            }
+        }
+
+        return total;
+    }
+
+    @Override
+    protected Collection<PartyCancellationPolicy> getEntities() {
+        Collection<PartyCancellationPolicy> entities = null;
+
+        if(!hasExecutionErrors()) {
+            if(party != null) {
+                entities = cancellationPolicyControl.getPartyCancellationPoliciesByParty(party);
+            } else {
+                entities = cancellationPolicyControl.getPartyCancellationPoliciesByCancellationPolicy(cancellationPolicy);
+            }
+        }
+
+        return entities;
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<PartyCancellationPolicy> entities) {
+        var result = CancellationPolicyResultFactory.getGetPartyCancellationPoliciesResult();
+
+        if(entities != null) {
+            if(party != null) {
+                result.setParty(partyControl.getPartyTransfer(getUserVisit(), party));
+            }
+
+            if(cancellationPolicy != null) {
+                result.setCancellationPolicy(cancellationPolicyControl.getCancellationPolicyTransfer(getUserVisit(), cancellationPolicy));
+            }
+
+            if(session.hasLimit(PartyCancellationPolicyFactory.class)) {
+                result.setPartyCancellationPolicyCount(getTotalEntities());
+            }
+
+            result.setPartyCancellationPolicies(cancellationPolicyControl.getPartyCancellationPolicyTransfers(getUserVisit(), entities));
         }
 
         return result;
