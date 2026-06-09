@@ -145,19 +145,21 @@ public class GetPartyCancellationPoliciesCommand
         var result = CancellationPolicyResultFactory.getGetPartyCancellationPoliciesResult();
 
         if(entities != null) {
+            var userVisit = getUserVisit();
+
             if(party != null) {
-                result.setParty(partyControl.getPartyTransfer(getUserVisit(), party));
+                result.setParty(partyControl.getPartyTransfer(userVisit, party));
             }
 
             if(cancellationPolicy != null) {
-                result.setCancellationPolicy(cancellationPolicyControl.getCancellationPolicyTransfer(getUserVisit(), cancellationPolicy));
+                result.setCancellationPolicy(cancellationPolicyControl.getCancellationPolicyTransfer(userVisit, cancellationPolicy));
             }
 
             if(session.hasLimit(PartyCancellationPolicyFactory.class)) {
                 result.setPartyCancellationPolicyCount(getTotalEntities());
             }
 
-            result.setPartyCancellationPolicies(cancellationPolicyControl.getPartyCancellationPolicyTransfers(getUserVisit(), entities));
+            result.setPartyCancellationPolicies(cancellationPolicyControl.getPartyCancellationPolicyTransfers(userVisit, entities));
         }
 
         return result;
