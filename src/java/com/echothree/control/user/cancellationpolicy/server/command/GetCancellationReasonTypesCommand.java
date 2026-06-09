@@ -19,25 +19,31 @@ package com.echothree.control.user.cancellationpolicy.server.command;
 import com.echothree.control.user.cancellationpolicy.common.form.GetCancellationReasonTypesForm;
 import com.echothree.control.user.cancellationpolicy.common.result.CancellationPolicyResultFactory;
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
+import com.echothree.model.control.cancellationpolicy.server.logic.CancellationKindLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.cancellationpolicy.server.entity.CancellationKind;
+import com.echothree.model.data.cancellationpolicy.server.entity.CancellationReason;
+import com.echothree.model.data.cancellationpolicy.server.entity.CancellationReasonType;
+import com.echothree.model.data.cancellationpolicy.server.entity.CancellationType;
+import com.echothree.model.data.cancellationpolicy.server.factory.CancellationReasonTypeFactory;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetCancellationReasonTypesCommand
-        extends BaseSimpleCommand<GetCancellationReasonTypesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<CancellationReasonType, GetCancellationReasonTypesForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -56,51 +62,102 @@ public class GetCancellationReasonTypesCommand
                 new FieldDefinition("CancellationTypeName", FieldType.ENTITY_NAME, false, null, null)
                 );
     }
+
+    @Inject
+    CancellationPolicyControl cancellationPolicyControl;
+
+    @Inject
+    CancellationKindLogic cancellationKindLogic;
     
     /** Creates a new instance of GetCancellationReasonTypesCommand */
     public GetCancellationReasonTypesCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    CancellationKind cancellationKind;
+    CancellationReason cancellationReason;
+    CancellationType cancellationType;
+
     @Override
-    protected BaseResult execute() {
-        var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
-        var result = CancellationPolicyResultFactory.getGetCancellationReasonTypesResult();
+    protected void handleForm() {
+        var cancellationKindName = form.getCancellationKindName();
         var cancellationReasonName = form.getCancellationReasonName();
         var cancellationTypeName = form.getCancellationTypeName();
-        var parameterCount = (cancellationReasonName != null? 1: 0) + (cancellationTypeName != null? 1: 0);
-        
+        var parameterCount = (cancellationReasonName != null ? 1 : 0) + (cancellationTypeName != null ? 1 : 0);
+
         if(parameterCount == 1) {
-            var cancellationKindName = form.getCancellationKindName();
-            var cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
-            
-            if(cancellationKind != null) {
+            cancellationKind = cancellationKindLogic.getCancellationKindByName(this, cancellationKindName);
+
+            if(!hasExecutionErrors()) {
                 if(cancellationReasonName != null) {
-                    var cancellationReason = cancellationPolicyControl.getCancellationReasonByName(cancellationKind, cancellationReasonName);
-                    
-                    if(cancellationReason != null) {
-                        result.setCancellationReason(cancellationPolicyControl.getCancellationReasonTransfer(getUserVisit(), cancellationReason));
-                        result.setCancellationReasonTypes(cancellationPolicyControl.getCancellationReasonTypeTransfersByCancellationReason(getUserVisit(), cancellationReason));
-                    } else {
+                    cancellationReason = cancellationPolicyControl.getCancellationReasonByName(cancellationKind, cancellationReasonName);
+
+                    if(cancellationReason == null) {
                         addExecutionError(ExecutionErrors.UnknownCancellationReasonName.name(), cancellationReasonName);
                     }
-                } else if(cancellationTypeName != null) {
-                    var cancellationType = cancellationPolicyControl.getCancellationTypeByName(cancellationKind, cancellationTypeName);
-                    
-                    if(cancellationType != null) {
-                        result.setCancellationType(cancellationPolicyControl.getCancellationTypeTransfer(getUserVisit(), cancellationType));
-                        result.setCancellationReasonTypes(cancellationPolicyControl.getCancellationReasonTypeTransfersByCancellationType(getUserVisit(), cancellationType));
-                    } else {
+                } else {
+                    cancellationType = cancellationPolicyControl.getCancellationTypeByName(cancellationKind, cancellationTypeName);
+
+                    if(cancellationType == null) {
                         addExecutionError(ExecutionErrors.UnknownCancellationTypeName.name(), cancellationTypeName);
                     }
                 }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownCancellationKindName.name(), cancellationKindName);
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());
         }
-        
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        Long total = null;
+
+        if(!hasExecutionErrors()) {
+            if(cancellationReason != null) {
+                total = cancellationPolicyControl.countCancellationReasonTypesByCancellationReason(cancellationReason);
+            } else {
+                total = cancellationPolicyControl.countCancellationReasonTypesByCancellationType(cancellationType);
+            }
+        }
+
+        return total;
+    }
+
+    @Override
+    protected Collection<CancellationReasonType> getEntities() {
+        Collection<CancellationReasonType> entities = null;
+
+        if(!hasExecutionErrors()) {
+            if(cancellationReason != null) {
+                entities = cancellationPolicyControl.getCancellationReasonTypesByCancellationReason(cancellationReason);
+            } else {
+                entities = cancellationPolicyControl.getCancellationReasonTypesByCancellationType(cancellationType);
+            }
+        }
+
+        return entities;
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<CancellationReasonType> entities) {
+        var result = CancellationPolicyResultFactory.getGetCancellationReasonTypesResult();
+
+        if(entities != null) {
+            var userVisit = getUserVisit();
+
+            if(cancellationReason != null) {
+                result.setCancellationReason(cancellationPolicyControl.getCancellationReasonTransfer(userVisit, cancellationReason));
+            } else {
+                result.setCancellationType(cancellationPolicyControl.getCancellationTypeTransfer(userVisit, cancellationType));
+            }
+
+            if(session.hasLimit(CancellationReasonTypeFactory.class)) {
+                result.setCancellationReasonTypeCount(getTotalEntities());
+            }
+
+            result.setCancellationReasonTypes(cancellationPolicyControl.getCancellationReasonTypeTransfers(userVisit, entities));
+        }
+
         return result;
     }
     
