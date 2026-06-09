@@ -31,6 +31,9 @@ public interface GetPartyReturnPoliciesResult
     ReturnPolicyTransfer getReturnPolicy();
     void setReturnPolicy(ReturnPolicyTransfer returnPolicy);
 
+    Long getPartyReturnPolicyCount();
+    void setPartyReturnPolicyCount(Long partyReturnPolicyCount);
+
     List<PartyReturnPolicyTransfer> getPartyReturnPolicies();
     void setPartyReturnPolicies(List<PartyReturnPolicyTransfer> partyReturnPolicies);
     

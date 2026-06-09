@@ -20,25 +20,32 @@ import com.echothree.control.user.returnpolicy.common.form.GetPartyReturnPolicie
 import com.echothree.control.user.returnpolicy.common.result.ReturnPolicyResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
+import com.echothree.model.control.returnpolicy.server.logic.ReturnKindLogic;
+import com.echothree.model.control.returnpolicy.server.logic.ReturnPolicyLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.party.server.entity.Party;
+import com.echothree.model.data.returnpolicy.server.entity.PartyReturnPolicy;
+import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
+import com.echothree.model.data.returnpolicy.server.factory.PartyReturnPolicyFactory;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetPartyReturnPoliciesCommand
-        extends BaseSimpleCommand<GetPartyReturnPoliciesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<PartyReturnPolicy, GetPartyReturnPoliciesForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -47,26 +54,42 @@ public class GetPartyReturnPoliciesCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.PartyReturnPolicy.name(), SecurityRoles.List.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.PartyReturnPolicy.name(), SecurityRoles.List.name())
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("ReturnKindName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("ReturnPolicyName", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
+
+    @Inject
+    PartyControl partyControl;
+
+    @Inject
+    ReturnPolicyControl returnPolicyControl;
+
+    @Inject
+    PartyLogic partyLogic;
+
+    @Inject
+    ReturnKindLogic returnKindLogic;
+
+    @Inject
+    ReturnPolicyLogic returnPolicyLogic;
 
     /** Creates a new instance of GetPartyReturnPoliciesCommand */
     public GetPartyReturnPoliciesCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
+    private Party party;
+    private ReturnPolicy returnPolicy;
+
     @Override
-    protected BaseResult execute() {
-        var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
-        var result = ReturnPolicyResultFactory.getGetPartyReturnPoliciesResult();
+    protected void handleForm() {
         var partyName = form.getPartyName();
         var returnKindName = form.getReturnKindName();
         var returnPolicyName = form.getReturnPolicyName();
@@ -74,31 +97,67 @@ public class GetPartyReturnPoliciesCommand
 
         if(parameterCount == 1) {
             if(partyName != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
-                var party = partyControl.getPartyByName(partyName);
-
-                if(party != null) {
-                    result.setPartyReturnPolicies(returnPolicyControl.getPartyReturnPolicyTransfersByParty(getUserVisit(), party));
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownPartyName.name(), partyName);
-                }
+                party = partyLogic.getPartyByName(this, partyName);
             } else {
-                var returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
+                var returnKind = returnKindLogic.getReturnKindByName(this, returnKindName);
 
-                if(returnKind != null) {
-                    var returnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName);
-
-                    if(returnPolicy != null) {
-                        result.setPartyReturnPolicies(returnPolicyControl.getPartyReturnPolicyTransfersByReturnPolicy(getUserVisit(), returnPolicy));
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownReturnPolicyName.name(), returnKindName, returnPolicyName);
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownReturnKindName.name(), returnKindName);
+                if(!hasExecutionErrors()) {
+                    returnPolicy = returnPolicyLogic.getReturnPolicyByName(this, returnKind, returnPolicyName);
                 }
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());
+        }
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        Long total = null;
+
+        if(!hasExecutionErrors()) {
+            if(party != null) {
+                total = returnPolicyControl.countPartyReturnPoliciesByParty(party);
+            } else {
+                total = returnPolicyControl.countPartyReturnPoliciesByReturnPolicy(returnPolicy);
+            }
+        }
+
+        return total;
+    }
+
+    @Override
+    protected Collection<PartyReturnPolicy> getEntities() {
+        Collection<PartyReturnPolicy> entities = null;
+
+        if(!hasExecutionErrors()) {
+            if(party != null) {
+                entities = returnPolicyControl.getPartyReturnPoliciesByParty(party);
+            } else {
+                entities = returnPolicyControl.getPartyReturnPoliciesByReturnPolicy(returnPolicy);
+            }
+        }
+
+        return entities;
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<PartyReturnPolicy> entities) {
+        var result = ReturnPolicyResultFactory.getGetPartyReturnPoliciesResult();
+
+        if(entities != null) {
+            var userVisit = getUserVisit();
+
+            if(party != null) {
+                result.setParty(partyControl.getPartyTransfer(userVisit, party));
+            } else {
+                result.setReturnPolicy(returnPolicyControl.getReturnPolicyTransfer(userVisit, returnPolicy));
+            }
+
+            if(session.hasLimit(PartyReturnPolicyFactory.class)) {
+                result.setPartyReturnPolicyCount(getTotalEntities());
+            }
+
+            result.setPartyReturnPolicies(returnPolicyControl.getPartyReturnPolicyTransfers(userVisit, entities));
         }
 
         return result;
