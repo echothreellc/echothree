@@ -30,8 +30,11 @@ public interface GetCancellationReasonTypesResult
     
     CancellationTypeTransfer getCancellationType();
     void setCancellationType(CancellationTypeTransfer cancellationType);
-    
+
+    Long getCancellationReasonTypeCount();
+    void setCancellationReasonTypeCount(Long cancellationReasonTypeCount);
+
     List<CancellationReasonTypeTransfer> getCancellationReasonTypes();
     void setCancellationReasonTypes(List<CancellationReasonTypeTransfer> cancellationReasonTypes);
-    
+
 }
