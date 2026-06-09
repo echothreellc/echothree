@@ -19,25 +19,28 @@ package com.echothree.control.user.cancellationpolicy.server.command;
 import com.echothree.control.user.cancellationpolicy.common.form.GetCancellationReasonsForm;
 import com.echothree.control.user.cancellationpolicy.common.result.CancellationPolicyResultFactory;
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
+import com.echothree.model.control.cancellationpolicy.server.logic.CancellationKindLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.model.data.cancellationpolicy.server.entity.CancellationKind;
+import com.echothree.model.data.cancellationpolicy.server.entity.CancellationReason;
+import com.echothree.model.data.cancellationpolicy.server.factory.CancellationReasonFactory;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetCancellationReasonsCommand
-        extends BaseSimpleCommand<GetCancellationReasonsForm> {
+        extends BasePaginatedMultipleEntitiesCommand<CancellationReason, GetCancellationReasonsForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -47,31 +50,56 @@ public class GetCancellationReasonsCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.CancellationReason.name(), SecurityRoles.List.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CancellationKindName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
     
+    @Inject
+    CancellationPolicyControl cancellationPolicyControl;
+
+    @Inject
+    CancellationKindLogic cancellationKindLogic;
+
     /** Creates a new instance of GetCancellationReasonsCommand */
     public GetCancellationReasonsCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
+    private CancellationKind cancellationKind;
+
     @Override
-    protected BaseResult execute() {
-        var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
+    protected void handleForm() {
+        cancellationKind = cancellationKindLogic.getCancellationKindByName(this, form.getCancellationKindName());
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return hasExecutionErrors() ? null : cancellationPolicyControl.countCancellationReasonsByCancellationKind(cancellationKind);
+    }
+
+    @Override
+    protected Collection<CancellationReason> getEntities() {
+        return hasExecutionErrors() ? null : cancellationPolicyControl.getCancellationReasons(cancellationKind);
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<CancellationReason> entities) {
         var result = CancellationPolicyResultFactory.getGetCancellationReasonsResult();
-        var cancellationKindName = form.getCancellationKindName();
-        var cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
         
-        if(cancellationKind != null) {
-            result.setCancellationKind(cancellationPolicyControl.getCancellationKindTransfer(getUserVisit(), cancellationKind));
-            result.setCancellationReasons(cancellationPolicyControl.getCancellationReasonTransfersByCancellationKind(getUserVisit(), cancellationKind));
-        } else {
-            addExecutionError(ExecutionErrors.UnknownCancellationKindName.name(), cancellationKindName);
+        if(entities != null) {
+            var userVisit = getUserVisit();
+
+            result.setCancellationKind(cancellationPolicyControl.getCancellationKindTransfer(userVisit, cancellationKind));
+
+            if(session.hasLimit(CancellationReasonFactory.class)) {
+                result.setCancellationReasonCount(getTotalEntities());
+            }
+
+            result.setCancellationReasons(cancellationPolicyControl.getCancellationReasonTransfers(userVisit, entities));
         }
         
         return result;

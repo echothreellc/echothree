@@ -1877,8 +1877,7 @@ public class CancellationPolicyControl
         return cancellationReasonTransferCache.getCancellationReasonTransfer(userVisit, cancellationReason);
     }
     
-    public List<CancellationReasonTransfer> getCancellationReasonTransfersByCancellationKind(UserVisit userVisit, CancellationKind cancellationKind) {
-        var cancellationReasons = getCancellationReasons(cancellationKind);
+    public List<CancellationReasonTransfer> getCancellationReasonTransfers(UserVisit userVisit, Collection<CancellationReason> cancellationReasons) {
         List<CancellationReasonTransfer> cancellationReasonTransfers = new ArrayList<>(cancellationReasons.size());
         
         cancellationReasons.forEach((cancellationReason) ->
@@ -1886,6 +1885,10 @@ public class CancellationPolicyControl
         );
         
         return cancellationReasonTransfers;
+    }
+    
+    public List<CancellationReasonTransfer> getCancellationReasonTransfersByCancellationKind(UserVisit userVisit, CancellationKind cancellationKind) {
+        return getCancellationReasonTransfers(userVisit, getCancellationReasons(cancellationKind));
     }
     
     private void updateCancellationReasonFromValue(CancellationReasonDetailValue cancellationReasonDetailValue, boolean checkDefault,
