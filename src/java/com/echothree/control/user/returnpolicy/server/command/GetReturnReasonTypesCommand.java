@@ -20,24 +20,30 @@ import com.echothree.control.user.returnpolicy.common.form.GetReturnReasonTypesF
 import com.echothree.control.user.returnpolicy.common.result.ReturnPolicyResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
+import com.echothree.model.control.returnpolicy.server.logic.ReturnKindLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.returnpolicy.server.entity.ReturnKind;
+import com.echothree.model.data.returnpolicy.server.entity.ReturnReason;
+import com.echothree.model.data.returnpolicy.server.entity.ReturnReasonType;
+import com.echothree.model.data.returnpolicy.server.entity.ReturnType;
+import com.echothree.model.data.returnpolicy.server.factory.ReturnReasonTypeFactory;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetReturnReasonTypesCommand
-        extends BaseSimpleCommand<GetReturnReasonTypesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<ReturnReasonType, GetReturnReasonTypesForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -46,62 +52,114 @@ public class GetReturnReasonTypesCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.ReturnReasonType.name(), SecurityRoles.List.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.ReturnReasonType.name(), SecurityRoles.List.name())
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ReturnKindName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ReturnReasonName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("ReturnTypeName", FieldType.ENTITY_NAME, false, null, null)
-                );
+        );
     }
-    
+
+    @Inject
+    ReturnPolicyControl returnPolicyControl;
+
+    @Inject
+    ReturnKindLogic returnKindLogic;
+
     /** Creates a new instance of GetReturnReasonTypesCommand */
     public GetReturnReasonTypesCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    ReturnKind returnKind;
+    ReturnReason returnReason;
+    ReturnType returnType;
+
     @Override
-    protected BaseResult execute() {
-        var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
-        var result = ReturnPolicyResultFactory.getGetReturnReasonTypesResult();
-        var returnReasonName = form.getReturnReasonName();
-        var returnTypeName = form.getReturnTypeName();
-        var parameterCount = (returnReasonName != null? 1: 0) + (returnTypeName != null? 1: 0);
-        
-        if(parameterCount == 1) {
-            var returnKindName = form.getReturnKindName();
-            var returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
-            
-            if(returnKind != null) {
+    protected void handleForm() {
+        var returnKindName = form.getReturnKindName();
+
+        returnKind = returnKindLogic.getReturnKindByName(this, returnKindName);
+
+        if(!hasExecutionErrors()) {
+            var returnReasonName = form.getReturnReasonName();
+            var returnTypeName = form.getReturnTypeName();
+            var parameterCount = (returnReasonName != null ? 1 : 0) + (returnTypeName != null ? 1 : 0);
+
+            if(parameterCount == 1) {
                 if(returnReasonName != null) {
-                    var returnReason = returnPolicyControl.getReturnReasonByName(returnKind, returnReasonName);
-                    
-                    if(returnReason != null) {
-                        result.setReturnReason(returnPolicyControl.getReturnReasonTransfer(getUserVisit(), returnReason));
-                        result.setReturnReasonTypes(returnPolicyControl.getReturnReasonTypeTransfersByReturnReason(getUserVisit(), returnReason));
-                    } else {
+                    returnReason = returnPolicyControl.getReturnReasonByName(returnKind, returnReasonName);
+
+                    if(returnReason == null) {
                         addExecutionError(ExecutionErrors.UnknownReturnReasonName.name(), returnReasonName);
                     }
-                } else if(returnTypeName != null) {
-                    var returnType = returnPolicyControl.getReturnTypeByName(returnKind, returnTypeName);
-                    
-                    if(returnType != null) {
-                        result.setReturnType(returnPolicyControl.getReturnTypeTransfer(getUserVisit(), returnType));
-                        result.setReturnReasonTypes(returnPolicyControl.getReturnReasonTypeTransfersByReturnType(getUserVisit(), returnType));
-                    } else {
+                } else {
+                    returnType = returnPolicyControl.getReturnTypeByName(returnKind, returnTypeName);
+
+                    if(returnType == null) {
                         addExecutionError(ExecutionErrors.UnknownReturnTypeName.name(), returnTypeName);
                     }
                 }
             } else {
-                addExecutionError(ExecutionErrors.UnknownReturnKindName.name(), returnKindName);
+                addExecutionError(ExecutionErrors.InvalidParameterCount.name());
             }
-        } else {
-            addExecutionError(ExecutionErrors.InvalidParameterCount.name());
         }
-        
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        Long total = null;
+
+        if(!hasExecutionErrors()) {
+            if(returnReason != null) {
+                total = returnPolicyControl.countReturnReasonTypesByReturnReason(returnReason);
+            } else {
+                total = returnPolicyControl.countReturnReasonTypesByReturnType(returnType);
+            }
+        }
+
+        return total;
+    }
+
+    @Override
+    protected Collection<ReturnReasonType> getEntities() {
+        Collection<ReturnReasonType> entities = null;
+
+        if(!hasExecutionErrors()) {
+            if(returnReason != null) {
+                entities = returnPolicyControl.getReturnReasonTypesByReturnReason(returnReason);
+            } else {
+                entities = returnPolicyControl.getReturnReasonTypesByReturnType(returnType);
+            }
+        }
+
+        return entities;
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<ReturnReasonType> entities) {
+        var result = ReturnPolicyResultFactory.getGetReturnReasonTypesResult();
+
+        if(entities != null) {
+            var userVisit = getUserVisit();
+
+            if(returnReason != null) {
+                result.setReturnReason(returnPolicyControl.getReturnReasonTransfer(userVisit, returnReason));
+            } else {
+                result.setReturnType(returnPolicyControl.getReturnTypeTransfer(userVisit, returnType));
+            }
+
+            if(session.hasLimit(ReturnReasonTypeFactory.class)) {
+                result.setReturnReasonTypeCount(getTotalEntities());
+            }
+
+            result.setReturnReasonTypes(returnPolicyControl.getReturnReasonTypeTransfers(userVisit, entities));
+        }
+
         return result;
     }
-    
+
 }

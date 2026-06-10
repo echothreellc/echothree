@@ -30,6 +30,9 @@ public interface GetReturnReasonTypesResult
     
     ReturnTypeTransfer getReturnType();
     void setReturnType(ReturnTypeTransfer returnType);
+
+    Long getReturnReasonTypeCount();
+    void setReturnReasonTypeCount(Long returnReasonTypeCount);
     
     List<ReturnReasonTypeTransfer> getReturnReasonTypes();
     void setReturnReasonTypes(List<ReturnReasonTypeTransfer> returnReasonTypes);
