@@ -30,8 +30,11 @@ public interface GetReturnPolicyReasonsResult
     
     ReturnReasonTransfer getReturnReason();
     void setReturnReason(ReturnReasonTransfer returnReason);
-    
+
+    Long getReturnPolicyReasonCount();
+    void setReturnPolicyReasonCount(Long returnPolicyReasonCount);
+
     List<ReturnPolicyReasonTransfer> getReturnPolicyReasons();
     void setReturnPolicyReasons(List<ReturnPolicyReasonTransfer> returnPolicyReasons);
-    
+
 }
