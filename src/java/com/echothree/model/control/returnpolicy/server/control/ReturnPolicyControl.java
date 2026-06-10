@@ -1854,16 +1854,19 @@ public class ReturnPolicyControl
     public ReturnReasonTransfer getReturnReasonTransfer(UserVisit userVisit, ReturnReason returnReason) {
         return returnReasonTransferCache.getReturnReasonTransfer(userVisit, returnReason);
     }
-    
-    public List<ReturnReasonTransfer> getReturnReasonTransfersByReturnKind(UserVisit userVisit, ReturnKind returnKind) {
-        var returnReasons = getReturnReasons(returnKind);
+
+    public List<ReturnReasonTransfer> getReturnReasonTransfers(UserVisit userVisit, Collection<ReturnReason> returnReasons) {
         List<ReturnReasonTransfer> returnReasonTransfers = new ArrayList<>(returnReasons.size());
-        
+
         returnReasons.forEach((returnReason) ->
                 returnReasonTransfers.add(returnReasonTransferCache.getReturnReasonTransfer(userVisit, returnReason))
         );
-        
+
         return returnReasonTransfers;
+    }
+
+    public List<ReturnReasonTransfer> getReturnReasonTransfersByReturnKind(UserVisit userVisit, ReturnKind returnKind) {
+        return getReturnReasonTransfers(userVisit, getReturnReasons(returnKind));
     }
     
     private void updateReturnReasonFromValue(ReturnReasonDetailValue returnReasonDetailValue, boolean checkDefault,

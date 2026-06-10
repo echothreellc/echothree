@@ -21,20 +21,20 @@ import com.echothree.control.user.returnpolicy.common.result.ReturnPolicyResultF
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
+import com.echothree.model.control.returnpolicy.server.logic.ReturnKindLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetReturnReasonCommand
@@ -47,15 +47,21 @@ public class GetReturnReasonCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.ReturnReason.name(), SecurityRoles.Review.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.ReturnReason.name(), SecurityRoles.Review.name())
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ReturnKindName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ReturnReasonName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+
+    @Inject
+    ReturnPolicyControl returnPolicyControl;
+
+    @Inject
+    ReturnKindLogic returnKindLogic;
     
     /** Creates a new instance of GetReturnReasonCommand */
     public GetReturnReasonCommand() {
@@ -64,12 +70,11 @@ public class GetReturnReasonCommand
     
     @Override
     protected BaseResult execute() {
-        var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
         var result = ReturnPolicyResultFactory.getGetReturnReasonResult();
         var returnKindName = form.getReturnKindName();
-        var returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
+        var returnKind = returnKindLogic.getReturnKindByName(this, returnKindName);
         
-        if(returnKind != null) {
+        if(!hasExecutionErrors()) {
             var returnReasonName = form.getReturnReasonName();
             var returnReason = returnPolicyControl.getReturnReasonByName(returnKind, returnReasonName);
             
@@ -80,8 +85,6 @@ public class GetReturnReasonCommand
             } else {
                 addExecutionError(ExecutionErrors.UnknownReturnReasonName.name(), returnReasonName);
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownReturnKindName.name(), returnKindName);
         }
         
         return result;

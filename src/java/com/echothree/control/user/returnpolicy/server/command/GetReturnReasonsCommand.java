@@ -20,24 +20,27 @@ import com.echothree.control.user.returnpolicy.common.form.GetReturnReasonsForm;
 import com.echothree.control.user.returnpolicy.common.result.ReturnPolicyResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
+import com.echothree.model.control.returnpolicy.server.logic.ReturnKindLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.model.data.returnpolicy.server.entity.ReturnKind;
+import com.echothree.model.data.returnpolicy.server.entity.ReturnReason;
+import com.echothree.model.data.returnpolicy.server.factory.ReturnReasonFactory;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetReturnReasonsCommand
-        extends BaseSimpleCommand<GetReturnReasonsForm> {
+        extends BasePaginatedMultipleEntitiesCommand<ReturnReason, GetReturnReasonsForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -46,34 +49,59 @@ public class GetReturnReasonsCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                    new SecurityRoleDefinition(SecurityRoleGroups.ReturnReason.name(), SecurityRoles.List.name())
-                    ))
-                ));
+                        new SecurityRoleDefinition(SecurityRoleGroups.ReturnReason.name(), SecurityRoles.List.name())
+                ))
+        ));
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ReturnKindName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
-    
+
+    @Inject
+    ReturnPolicyControl returnPolicyControl;
+
+    @Inject
+    ReturnKindLogic returnKindLogic;
+
     /** Creates a new instance of GetReturnReasonsCommand */
     public GetReturnReasonsCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    ReturnKind returnKind;
+
     @Override
-    protected BaseResult execute() {
-        var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
+    protected void handleForm() {
+        returnKind = returnKindLogic.getReturnKindByName(this, form.getReturnKindName());
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return hasExecutionErrors() ? null : returnPolicyControl.countReturnReasonsByReturnKind(returnKind);
+    }
+
+    @Override
+    protected Collection<ReturnReason> getEntities() {
+        return hasExecutionErrors() ? null : returnPolicyControl.getReturnReasons(returnKind);
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<ReturnReason> entities) {
         var result = ReturnPolicyResultFactory.getGetReturnReasonsResult();
-        var returnKindName = form.getReturnKindName();
-        var returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
-        
-        if(returnKind != null) {
-            result.setReturnKind(returnPolicyControl.getReturnKindTransfer(getUserVisit(), returnKind));
-            result.setReturnReasons(returnPolicyControl.getReturnReasonTransfersByReturnKind(getUserVisit(), returnKind));
-        } else {
-            addExecutionError(ExecutionErrors.UnknownReturnKindName.name(), returnKindName);
+
+        if(entities != null) {
+            var userVisit = getUserVisit();
+
+            result.setReturnKind(returnPolicyControl.getReturnKindTransfer(userVisit, returnKind));
+
+            if(session.hasLimit(ReturnReasonFactory.class)) {
+                result.setReturnReasonCount(getTotalEntities());
+            }
+
+            result.setReturnReasons(returnPolicyControl.getReturnReasonTransfers(userVisit, entities));
         }
-        
+
         return result;
     }
     
