@@ -26,6 +26,8 @@ import com.echothree.model.control.core.common.transfer.ApplicationEditorUseDesc
 import com.echothree.model.control.core.common.transfer.ApplicationEditorUseTransfer;
 import com.echothree.model.control.core.common.transfer.ApplicationTransfer;
 import com.echothree.model.control.party.server.control.PartyApplicationEditorUseControl;
+import com.echothree.model.data.core.common.pk.ApplicationEditorPK;
+import com.echothree.model.data.core.common.pk.ApplicationEditorUsePK;
 import com.echothree.model.data.core.common.pk.ApplicationPK;
 import com.echothree.model.data.core.server.entity.Application;
 import com.echothree.model.data.core.server.entity.ApplicationDescription;
@@ -130,17 +132,19 @@ public class ApplicationControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM applications, applicationdetails " +
-                        "WHERE appl_activedetailid = appldt_applicationdetailid " +
-                        "AND appldt_applicationname = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM applications, applicationdetails " +
-                        "WHERE appl_activedetailid = appldt_applicationdetailid " +
-                        "AND appldt_applicationname = ? " +
-                        "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM applications, applicationdetails
+                WHERE appl_activedetailid = appldt_applicationdetailid
+                AND appldt_applicationname = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM applications, applicationdetails
+                WHERE appl_activedetailid = appldt_applicationdetailid
+                AND appldt_applicationname = ?
+                FOR UPDATE
+                """);
         getApplicationByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -169,17 +173,19 @@ public class ApplicationControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM applications, applicationdetails " +
-                        "WHERE appl_activedetailid = appldt_applicationdetailid " +
-                        "AND appldt_isdefault = 1");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM applications, applicationdetails " +
-                        "WHERE appl_activedetailid = appldt_applicationdetailid " +
-                        "AND appldt_isdefault = 1 " +
-                        "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM applications, applicationdetails
+                WHERE appl_activedetailid = appldt_applicationdetailid
+                AND appldt_isdefault = 1
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM applications, applicationdetails
+                WHERE appl_activedetailid = appldt_applicationdetailid
+                AND appldt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultApplicationQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -204,17 +210,19 @@ public class ApplicationControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM applications, applicationdetails " +
-                        "WHERE appl_activedetailid = appldt_applicationdetailid " +
-                        "ORDER BY appldt_sortorder, appldt_applicationname " +
-                        "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM applications, applicationdetails " +
-                        "WHERE appl_activedetailid = appldt_applicationdetailid " +
-                        "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM applications, applicationdetails
+                WHERE appl_activedetailid = appldt_applicationdetailid
+                ORDER BY appldt_sortorder, appldt_applicationname
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM applications, applicationdetails
+                WHERE appl_activedetailid = appldt_applicationdetailid
+                FOR UPDATE
+                """);
         getApplicationsQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -390,15 +398,17 @@ public class ApplicationControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM applicationdescriptions " +
-                        "WHERE appld_appl_applicationid = ? AND appld_lang_languageid = ? AND appld_thrutime = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM applicationdescriptions " +
-                        "WHERE appld_appl_applicationid = ? AND appld_lang_languageid = ? AND appld_thrutime = ? " +
-                        "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM applicationdescriptions
+                WHERE appld_appl_applicationid = ? AND appld_lang_languageid = ? AND appld_thrutime = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM applicationdescriptions
+                WHERE appld_appl_applicationid = ? AND appld_lang_languageid = ? AND appld_thrutime = ?
+                FOR UPDATE
+                """);
         getApplicationDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -428,16 +438,19 @@ public class ApplicationControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM applicationdescriptions, languages " +
-                        "WHERE appld_appl_applicationid = ? AND appld_thrutime = ? AND appld_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM applicationdescriptions " +
-                        "WHERE appld_appl_applicationid = ? AND appld_thrutime = ? " +
-                        "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM applicationdescriptions, languages
+                WHERE appld_appl_applicationid = ? AND appld_thrutime = ? AND appld_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM applicationdescriptions
+                WHERE appld_appl_applicationid = ? AND appld_thrutime = ?
+                FOR UPDATE
+                """);
         getApplicationDescriptionsByApplicationQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -552,22 +565,57 @@ public class ApplicationControl
         return applicationEditor;
     }
 
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ApplicationEditor */
+    public ApplicationEditor getApplicationEditorByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ApplicationEditorPK(entityInstance.getEntityUniqueId());
+
+        return ApplicationEditorFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public ApplicationEditor getApplicationEditorByEntityInstance(EntityInstance entityInstance) {
+        return getApplicationEditorByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ApplicationEditor getApplicationEditorByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getApplicationEditorByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countApplicationEditorsByApplication(final Application application) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM applicationeditors
+                        JOIN applicationeditordetails ON appledtrdt_applicationeditordetailid = appledtr_activedetailid
+                        WHERE appledtrdt_appl_applicationid = ? AND appledtrdt_edtr_editorid = ?
+                        """, application);
+    }
+
+    public long countApplicationEditorsByEditor(final Editor editor) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM applicationeditors
+                        JOIN applicationeditordetails ON appledtrdt_applicationeditordetailid = appledtr_activedetailid
+                        WHERE appledtrdt_appl_applicationid = ? AND appledtrdt_edtr_editorid = ?
+                        """, editor);
+    }
+
     private static final Map<EntityPermission, String> getApplicationEditorQueries;
 
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                        + "FROM applicationeditors, applicationeditordetails "
-                        + "WHERE appledtr_activedetailid = appledtrdt_applicationeditordetailid "
-                        + "AND appledtrdt_appl_applicationid = ? AND appledtrdt_edtr_editorid = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                        + "FROM applicationeditors, applicationeditordetails "
-                        + "WHERE appledtr_activedetailid = appledtrdt_applicationeditordetailid "
-                        + "AND appledtrdt_appl_applicationid = ? AND appledtrdt_edtr_editorid = ? "
-                        + "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM applicationeditors, applicationeditordetails
+                WHERE appledtr_activedetailid = appledtrdt_applicationeditordetailid
+                AND appledtrdt_appl_applicationid = ? AND appledtrdt_edtr_editorid = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM applicationeditors, applicationeditordetails
+                WHERE appledtr_activedetailid = appledtrdt_applicationeditordetailid
+                AND appledtrdt_appl_applicationid = ? AND appledtrdt_edtr_editorid = ?
+                FOR UPDATE
+                """);
         getApplicationEditorQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -597,17 +645,19 @@ public class ApplicationControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                        + "FROM applicationeditors, applicationeditordetails "
-                        + "WHERE appledtr_activedetailid = appledtrdt_applicationeditordetailid "
-                        + "AND appledtrdt_appl_applicationid = ? AND appledtrdt_isdefault = 1");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                        + "FROM applicationeditors, applicationeditordetails "
-                        + "WHERE appledtr_activedetailid = appledtrdt_applicationeditordetailid "
-                        + "AND appledtrdt_appl_applicationid = ? AND appledtrdt_isdefault = 1 "
-                        + "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM applicationeditors, applicationeditordetails
+                WHERE appledtr_activedetailid = appledtrdt_applicationeditordetailid
+                AND appledtrdt_appl_applicationid = ? AND appledtrdt_isdefault = 1
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM applicationeditors, applicationeditordetails
+                WHERE appledtr_activedetailid = appledtrdt_applicationeditordetailid
+                AND appledtrdt_appl_applicationid = ? AND appledtrdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultApplicationEditorQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -633,18 +683,20 @@ public class ApplicationControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                        + "FROM applicationeditors, applicationeditordetails, editors, editordetails "
-                        + "WHERE appledtr_activedetailid = appledtrdt_applicationeditordetailid AND appledtrdt_appl_applicationid = ? "
-                        + "AND appledtrdt_edtr_editorid = edtr_editorid AND edtr_lastdetailid = edtrdt_editordetailid "
-                        + "ORDER BY edtrdt_sortorder, edtrdt_editorname "
-                        + "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                        + "FROM applicationeditors, applicationeditordetails "
-                        + "WHERE appledtr_activedetailid = appledtrdt_applicationeditordetailid AND appledtrdt_appl_applicationid = ? "
-                        + "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM applicationeditors, applicationeditordetails, editors, editordetails
+                WHERE appledtr_activedetailid = appledtrdt_applicationeditordetailid AND appledtrdt_appl_applicationid = ?
+                AND appledtrdt_edtr_editorid = edtr_editorid AND edtr_lastdetailid = edtrdt_editordetailid
+                ORDER BY edtrdt_sortorder, edtrdt_editorname
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM applicationeditors, applicationeditordetails
+                WHERE appledtr_activedetailid = appledtrdt_applicationeditordetailid AND appledtrdt_appl_applicationid = ?
+                FOR UPDATE
+                """);
         getApplicationEditorsByApplicationQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -666,18 +718,20 @@ public class ApplicationControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                        + "FROM applicationeditors, applicationeditordetails, applications, applicationdetails "
-                        + "WHERE appledtr_activedetailid = appledtrdt_applicationeditordetailid AND appledtrdt_edtr_editorid = ? "
-                        + "AND appledtrdt_appl_applicationid = appl_applicationid AND appl_lastdetailid = appldt_applicationdetailid "
-                        + "ORDER BY appldt_sortorder, appldt_applicationname "
-                        + "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                        + "FROM applicationeditors, applicationeditordetails "
-                        + "WHERE appledtr_activedetailid = appledtrdt_applicationeditordetailid AND appledtrdt_edtr_editorid = ? "
-                        + "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM applicationeditors, applicationeditordetails, applications, applicationdetails
+                WHERE appledtr_activedetailid = appledtrdt_applicationeditordetailid AND appledtrdt_edtr_editorid = ?
+                AND appledtrdt_appl_applicationid = appl_applicationid AND appl_lastdetailid = appldt_applicationdetailid
+                ORDER BY appldt_sortorder, appldt_applicationname
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM applicationeditors, applicationeditordetails
+                WHERE appledtr_activedetailid = appledtrdt_applicationeditordetailid AND appledtrdt_edtr_editorid = ?
+                FOR UPDATE
+                """);
         getApplicationEditorsByEditorQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -698,7 +752,7 @@ public class ApplicationControl
         return applicationEditorTransferCache.getApplicationEditorTransfer(userVisit, applicationEditor);
     }
 
-    public List<ApplicationEditorTransfer> getApplicationEditorTransfers(List<ApplicationEditor> applicationEditors, UserVisit userVisit) {
+    public List<ApplicationEditorTransfer> getApplicationEditorTransfers(UserVisit userVisit, Collection<ApplicationEditor> applicationEditors) {
         List<ApplicationEditorTransfer> applicationEditorTransfers = new ArrayList<>(applicationEditors.size());
 
         applicationEditors.forEach((applicationEditor) ->
@@ -709,11 +763,11 @@ public class ApplicationControl
     }
 
     public List<ApplicationEditorTransfer> getApplicationEditorTransfersByApplication(UserVisit userVisit, Application application) {
-        return getApplicationEditorTransfers(getApplicationEditorsByApplication(application), userVisit);
+        return getApplicationEditorTransfers(userVisit, getApplicationEditorsByApplication(application));
     }
 
     public List<ApplicationEditorTransfer> getApplicationEditorTransfersByEditor(UserVisit userVisit, Editor editor) {
-        return getApplicationEditorTransfers(getApplicationEditorsByEditor(editor), userVisit);
+        return getApplicationEditorTransfers(userVisit, getApplicationEditorsByEditor(editor));
     }
 
     public ApplicationEditorChoicesBean getApplicationEditorChoices(String defaultApplicationEditorChoice, Language language, boolean allowNullChoice,
@@ -888,22 +942,57 @@ public class ApplicationControl
         return applicationEditorUse;
     }
 
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ApplicationEditorUse */
+    public ApplicationEditorUse getApplicationEditorUseByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ApplicationEditorUsePK(entityInstance.getEntityUniqueId());
+
+        return ApplicationEditorUseFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public ApplicationEditorUse getApplicationEditorUseByEntityInstance(EntityInstance entityInstance) {
+        return getApplicationEditorUseByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ApplicationEditorUse getApplicationEditorUseByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getApplicationEditorUseByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countApplicationEditorUsesByApplication(final Application application) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM applicationeditoruses
+                        JOIN applicationeditorusedetails ON appledtrusedt_applicationeditorusedetailid = appledtruse_activedetailid
+                        WHERE appledtrusedt_appl_applicationid = ?
+                        """, application);
+    }
+
+    public long countApplicationEditorUsesByDefaultApplicationEditor(final ApplicationEditor defaultApplicationEditor) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM applicationeditoruses
+                        JOIN applicationeditorusedetails ON appledtrusedt_applicationeditorusedetailid = appledtruse_activedetailid
+                        WHERE appledtrusedt_defaultapplicationeditorid = ?
+                        """, defaultApplicationEditor);
+    }
+
     private static final Map<EntityPermission, String> getApplicationEditorUseByNameQueries;
 
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                        + "FROM applicationeditoruses, applicationeditorusedetails "
-                        + "WHERE appledtruse_activedetailid = appledtrusedt_applicationeditorusedetailid "
-                        + "AND appledtrusedt_appl_applicationid = ? AND appledtrusedt_applicationeditorusename = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                        + "FROM applicationeditoruses, applicationeditorusedetails "
-                        + "WHERE appledtruse_activedetailid = appledtrusedt_applicationeditorusedetailid "
-                        + "AND appledtrusedt_appl_applicationid = ? AND appledtrusedt_applicationeditorusename = ? "
-                        + "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM applicationeditoruses, applicationeditorusedetails
+                WHERE appledtruse_activedetailid = appledtrusedt_applicationeditorusedetailid
+                AND appledtrusedt_appl_applicationid = ? AND appledtrusedt_applicationeditorusename = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM applicationeditoruses, applicationeditorusedetails
+                WHERE appledtruse_activedetailid = appledtrusedt_applicationeditorusedetailid
+                AND appledtrusedt_appl_applicationid = ? AND appledtrusedt_applicationeditorusename = ?
+                FOR UPDATE
+                """);
         getApplicationEditorUseByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -933,17 +1022,19 @@ public class ApplicationControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                        + "FROM applicationeditoruses, applicationeditorusedetails "
-                        + "WHERE appledtruse_activedetailid = appledtrusedt_applicationeditorusedetailid "
-                        + "AND appledtrusedt_appl_applicationid = ? AND appledtrusedt_isdefault = 1");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                        + "FROM applicationeditoruses, applicationeditorusedetails "
-                        + "WHERE appledtruse_activedetailid = appledtrusedt_applicationeditorusedetailid "
-                        + "AND appledtrusedt_appl_applicationid = ? AND appledtrusedt_isdefault = 1 "
-                        + "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM applicationeditoruses, applicationeditorusedetails
+                WHERE appledtruse_activedetailid = appledtrusedt_applicationeditorusedetailid
+                AND appledtrusedt_appl_applicationid = ? AND appledtrusedt_isdefault = 1
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM applicationeditoruses, applicationeditorusedetails
+                WHERE appledtruse_activedetailid = appledtrusedt_applicationeditorusedetailid
+                AND appledtrusedt_appl_applicationid = ? AND appledtrusedt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultApplicationEditorUseQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -969,17 +1060,19 @@ public class ApplicationControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                        + "FROM applicationeditoruses, applicationeditorusedetails "
-                        + "WHERE appledtruse_activedetailid = appledtrusedt_applicationeditorusedetailid AND appledtrusedt_appl_applicationid = ? "
-                        + "ORDER BY appledtrusedt_sortorder, appledtrusedt_applicationeditorusename "
-                        + "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                        + "FROM applicationeditoruses, applicationeditorusedetails "
-                        + "WHERE appledtruse_activedetailid = appledtrusedt_applicationeditorusedetailid AND appledtrusedt_appl_applicationid = ? "
-                        + "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM applicationeditoruses, applicationeditorusedetails
+                WHERE appledtruse_activedetailid = appledtrusedt_applicationeditorusedetailid AND appledtrusedt_appl_applicationid = ?
+                ORDER BY appledtrusedt_sortorder, appledtrusedt_applicationeditorusename
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM applicationeditoruses, applicationeditorusedetails
+                WHERE appledtruse_activedetailid = appledtrusedt_applicationeditorusedetailid AND appledtrusedt_appl_applicationid = ?
+                FOR UPDATE
+                """);
         getApplicationEditorUsesByApplicationQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1001,18 +1094,20 @@ public class ApplicationControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                        + "FROM applicationeditoruses, applicationeditorusedetails, applications, applicationdetails "
-                        + "WHERE appledtruse_activedetailid = appledtrusedt_applicationeditorusedetailid AND appledtrusedt_defaultapplicationeditorid = ? "
-                        + "AND appledtrusedt_appl_applicationid = appl_applicationid AND appl_lastdetailid = appldt_applicationdetailid "
-                        + "ORDER BY appledtrusedt_sortorder, appledtrusedt_applicationeditorusename, appldt_sortorder, appldt_applicationname "
-                        + "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                        + "FROM applicationeditoruses, applicationeditorusedetails "
-                        + "WHERE appledtruse_activedetailid = appledtrusedt_applicationeditorusedetailid AND appledtrusedt_defaultapplicationeditorid = ? "
-                        + "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM applicationeditoruses, applicationeditorusedetails, applications, applicationdetails
+                WHERE appledtruse_activedetailid = appledtrusedt_applicationeditorusedetailid AND appledtrusedt_defaultapplicationeditorid = ?
+                AND appledtrusedt_appl_applicationid = appl_applicationid AND appl_lastdetailid = appldt_applicationdetailid
+                ORDER BY appledtrusedt_sortorder, appledtrusedt_applicationeditorusename, appldt_sortorder, appldt_applicationname
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM applicationeditoruses, applicationeditorusedetails
+                WHERE appledtruse_activedetailid = appledtrusedt_applicationeditorusedetailid AND appledtrusedt_defaultapplicationeditorid = ?
+                FOR UPDATE
+                """);
         getApplicationEditorUsesByDefaultApplicationEditorQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1210,15 +1305,17 @@ public class ApplicationControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM applicationeditorusedescriptions " +
-                        "WHERE appledtrused_appledtruse_applicationeditoruseid = ? AND appledtrused_lang_languageid = ? AND appledtrused_thrutime = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM applicationeditorusedescriptions " +
-                        "WHERE appledtrused_appledtruse_applicationeditoruseid = ? AND appledtrused_lang_languageid = ? AND appledtrused_thrutime = ? " +
-                        "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM applicationeditorusedescriptions
+                WHERE appledtrused_appledtruse_applicationeditoruseid = ? AND appledtrused_lang_languageid = ? AND appledtrused_thrutime = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM applicationeditorusedescriptions
+                WHERE appledtrused_appledtruse_applicationeditoruseid = ? AND appledtrused_lang_languageid = ? AND appledtrused_thrutime = ?
+                FOR UPDATE
+                """);
         getApplicationEditorUseDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1248,16 +1345,19 @@ public class ApplicationControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM applicationeditorusedescriptions, languages " +
-                        "WHERE appledtrused_appledtruse_applicationeditoruseid = ? AND appledtrused_thrutime = ? AND appledtrused_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM applicationeditorusedescriptions " +
-                        "WHERE appledtrused_appledtruse_applicationeditoruseid = ? AND appledtrused_thrutime = ? " +
-                        "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM applicationeditorusedescriptions, languages
+                WHERE appledtrused_appledtruse_applicationeditoruseid = ? AND appledtrused_thrutime = ? AND appledtrused_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM applicationeditorusedescriptions
+                WHERE appledtrused_appledtruse_applicationeditoruseid = ? AND appledtrused_thrutime = ?
+                FOR UPDATE
+                """);
         getApplicationEditorUseDescriptionsByApplicationEditorUseQueries = Collections.unmodifiableMap(queryMap);
     }
 
