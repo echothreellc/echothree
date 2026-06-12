@@ -22,7 +22,6 @@ import com.echothree.model.control.core.server.control.ServerControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -31,9 +30,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetServerServiceCommand
@@ -47,13 +46,17 @@ public class GetServerServiceCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ServerService.name(), SecurityRoles.Review.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
-                new FieldDefinition("ServerName", FieldType.HOST_NAME, true, null, null)
-                );
+                new FieldDefinition("ServerName", FieldType.HOST_NAME, true, null, null),
+                new FieldDefinition("ServiceName", FieldType.HOST_NAME, true, null, null)
+        );
     }
+    
+    @Inject
+    ServerControl serverControl;
     
     /** Creates a new instance of GetServerServiceCommand */
     public GetServerServiceCommand() {
@@ -62,7 +65,6 @@ public class GetServerServiceCommand
     
     @Override
     protected BaseResult execute() {
-        var serverControl = Session.getModelController(ServerControl.class);
         var result = CoreResultFactory.getGetServerServiceResult();
         var serverName = form.getServerName();
         var server = serverControl.getServerByName(serverName);

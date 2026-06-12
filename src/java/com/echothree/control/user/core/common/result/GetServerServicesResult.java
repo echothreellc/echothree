@@ -26,6 +26,9 @@ public interface GetServerServicesResult
     
     ServerTransfer getServer();
     void setServer(ServerTransfer server);
+
+    Long getServerServicesCount();
+    void setServerServicesCount(Long serverServicesCount);
     
     List<ServerServiceTransfer> getServerServices();
     void setServerServices(List<ServerServiceTransfer> serverServices);
