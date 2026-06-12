@@ -40,6 +40,7 @@ import graphql.introspection.IntrospectionQuery;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ExecutionException;
+import java.util.regex.Pattern;
 import javax.naming.NamingException;
 import javax.servlet.AsyncContext;
 import javax.servlet.ServletConfig;
@@ -67,6 +68,8 @@ public class GraphQlServlet
     protected static final String SCHEME_HTTPS = "https";
 
     protected static final GraphQlRequest INTROSPECTION_REQUEST = new GraphQlRequest(IntrospectionQuery.INTROSPECTION_QUERY, null, null);
+
+    private static final Pattern HEADER_SANITIZATION_PATTERN = Pattern.compile("[\\r\\n]");
 
     protected GraphQlConfiguration configuration;
     protected HttpRequestHandler getHandler;
@@ -170,10 +173,14 @@ public class GraphQlServlet
         doRequestAsync(request, response, postHandler);
     }
 
+    private String sanitizeHeaderValue(String headerValue) {
+        return headerValue == null ? null : HEADER_SANITIZATION_PATTERN.matcher(headerValue).replaceAll("");
+    }
+
     @Override
     protected void doOptions(HttpServletRequest request, HttpServletResponse response) {
-        var origin = request.getHeader(ORIGIN);
-        var accessControlRequestHeaders = request.getHeader(ACCESS_CONTROL_REQUEST_HEADERS);
+        var origin = sanitizeHeaderValue(request.getHeader(ORIGIN));
+        var accessControlRequestHeaders = sanitizeHeaderValue(request.getHeader(ACCESS_CONTROL_REQUEST_HEADERS));
 
         response.addHeader(ACCESS_CONTROL_ALLOW_ORIGIN, origin == null ? "*" : origin);
         response.addHeader(ACCESS_CONTROL_ALLOW_CREDENTIALS, String.valueOf(true));
@@ -192,7 +199,7 @@ public class GraphQlServlet
     private void query(GraphQlQueryInvoker queryInvoker, GraphQlInvocationInput invocationInput,
             HttpServletRequest request, HttpServletResponse response)
             throws IOException, NamingException, ExecutionException, InterruptedException {
-        var origin = request.getHeader(ORIGIN);
+        var origin = sanitizeHeaderValue(request.getHeader(ORIGIN));
         var remoteAddr = request.getRemoteAddr();
         var result = queryInvoker.query(getUserVisitPK(request), invocationInput, remoteAddr);
 
