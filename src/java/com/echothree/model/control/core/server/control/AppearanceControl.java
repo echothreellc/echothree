@@ -50,6 +50,7 @@ import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.sql.SQLException;
@@ -60,7 +61,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import com.echothree.util.server.cdi.CommandScope;
 
 @CommandScope
 public class AppearanceControl
@@ -134,16 +134,20 @@ public class AppearanceControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM appearances, appearancedetails " +
-                        "WHERE apprnc_activedetailid = apprncdt_appearancedetailid " +
-                        "AND apprncdt_appearancename = ?");
+                """
+                SELECT _ALL_
+                FROM appearances, appearancedetails
+                WHERE apprnc_activedetailid = apprncdt_appearancedetailid
+                AND apprncdt_appearancename = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM appearances, appearancedetails " +
-                        "WHERE apprnc_activedetailid = apprncdt_appearancedetailid " +
-                        "AND apprncdt_appearancename = ? " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM appearances, appearancedetails
+                WHERE apprnc_activedetailid = apprncdt_appearancedetailid
+                AND apprncdt_appearancename = ?
+                FOR UPDATE
+                """);
         getAppearanceByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -173,16 +177,20 @@ public class AppearanceControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM appearances, appearancedetails " +
-                        "WHERE apprnc_activedetailid = apprncdt_appearancedetailid " +
-                        "AND apprncdt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM appearances, appearancedetails
+                WHERE apprnc_activedetailid = apprncdt_appearancedetailid
+                AND apprncdt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM appearances, appearancedetails " +
-                        "WHERE apprnc_activedetailid = apprncdt_appearancedetailid " +
-                        "AND apprncdt_isdefault = 1 " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM appearances, appearancedetails
+                WHERE apprnc_activedetailid = apprncdt_appearancedetailid
+                AND apprncdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultAppearanceQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -208,16 +216,20 @@ public class AppearanceControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM appearances, appearancedetails " +
-                        "WHERE apprnc_activedetailid = apprncdt_appearancedetailid " +
-                        "ORDER BY apprncdt_sortorder, apprncdt_appearancename " +
-                        "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM appearances, appearancedetails
+                WHERE apprnc_activedetailid = apprncdt_appearancedetailid
+                ORDER BY apprncdt_sortorder, apprncdt_appearancename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM appearances, appearancedetails " +
-                        "WHERE apprnc_activedetailid = apprncdt_appearancedetailid " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM appearances, appearancedetails
+                WHERE apprnc_activedetailid = apprncdt_appearancedetailid
+                FOR UPDATE
+                """);
         getAppearancesQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -239,16 +251,20 @@ public class AppearanceControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM appearances, appearancedetails " +
-                        "WHERE apprnc_activedetailid = apprncdt_appearancedetailid AND apprncdt_textcolorid = ? " +
-                        "ORDER BY apprncdt_sortorder, apprncdt_appearancename " +
-                        "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM appearances, appearancedetails
+                WHERE apprnc_activedetailid = apprncdt_appearancedetailid AND apprncdt_textcolorid = ?
+                ORDER BY apprncdt_sortorder, apprncdt_appearancename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM appearances, appearancedetails " +
-                        "WHERE apprnc_activedetailid = apprncdt_appearancedetailid AND apprncdt_textcolorid = ? " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM appearances, appearancedetails
+                WHERE apprnc_activedetailid = apprncdt_appearancedetailid AND apprncdt_textcolorid = ?
+                FOR UPDATE
+                """);
         getAppearancesByTextColorQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -271,16 +287,20 @@ public class AppearanceControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM appearances, appearancedetails " +
-                        "WHERE apprnc_activedetailid = apprncdt_appearancedetailid AND apprncdt_backgroundcolorid = ? " +
-                        "ORDER BY apprncdt_sortorder, apprncdt_appearancename " +
-                        "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM appearances, appearancedetails
+                WHERE apprnc_activedetailid = apprncdt_appearancedetailid AND apprncdt_backgroundcolorid = ?
+                ORDER BY apprncdt_sortorder, apprncdt_appearancename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM appearances, appearancedetails " +
-                        "WHERE apprnc_activedetailid = apprncdt_appearancedetailid AND apprncdt_backgroundcolorid = ? " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM appearances, appearancedetails
+                WHERE apprnc_activedetailid = apprncdt_appearancedetailid AND apprncdt_backgroundcolorid = ?
+                FOR UPDATE
+                """);
         getAppearancesByBackgroundColorQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -303,16 +323,20 @@ public class AppearanceControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM appearances, appearancedetails " +
-                        "WHERE apprnc_activedetailid = apprncdt_appearancedetailid AND apprncdt_fntstyl_fontstyleid = ? " +
-                        "ORDER BY apprncdt_sortorder, apprncdt_appearancename " +
-                        "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM appearances, appearancedetails
+                WHERE apprnc_activedetailid = apprncdt_appearancedetailid AND apprncdt_fntstyl_fontstyleid = ?
+                ORDER BY apprncdt_sortorder, apprncdt_appearancename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM appearances, appearancedetails " +
-                        "WHERE apprnc_activedetailid = apprncdt_appearancedetailid AND apprncdt_fntstyl_fontstyleid = ? " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM appearances, appearancedetails
+                WHERE apprnc_activedetailid = apprncdt_appearancedetailid AND apprncdt_fntstyl_fontstyleid = ?
+                FOR UPDATE
+                """);
         getAppearancesByFontStyleQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -335,16 +359,20 @@ public class AppearanceControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM appearances, appearancedetails " +
-                        "WHERE apprnc_activedetailid = apprncdt_appearancedetailid AND apprncdt_fntwght_fontweightid = ? " +
-                        "ORDER BY apprncdt_sortorder, apprncdt_appearancename " +
-                        "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM appearances, appearancedetails
+                WHERE apprnc_activedetailid = apprncdt_appearancedetailid AND apprncdt_fntwght_fontweightid = ?
+                ORDER BY apprncdt_sortorder, apprncdt_appearancename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM appearances, appearancedetails " +
-                        "WHERE apprnc_activedetailid = apprncdt_appearancedetailid AND apprncdt_fntwght_fontweightid = ? " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM appearances, appearancedetails
+                WHERE apprnc_activedetailid = apprncdt_appearancedetailid AND apprncdt_fntwght_fontweightid = ?
+                FOR UPDATE
+                """);
         getAppearancesByFontWeightQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -548,14 +576,18 @@ public class AppearanceControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM appearancedescriptions " +
-                        "WHERE apprncd_apprnc_appearanceid = ? AND apprncd_lang_languageid = ? AND apprncd_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM appearancedescriptions
+                WHERE apprncd_apprnc_appearanceid = ? AND apprncd_lang_languageid = ? AND apprncd_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM appearancedescriptions " +
-                        "WHERE apprncd_apprnc_appearanceid = ? AND apprncd_lang_languageid = ? AND apprncd_thrutime = ? " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM appearancedescriptions
+                WHERE apprncd_apprnc_appearanceid = ? AND apprncd_lang_languageid = ? AND apprncd_thrutime = ?
+                FOR UPDATE
+                """);
         getAppearanceDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -586,15 +618,20 @@ public class AppearanceControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM appearancedescriptions, languages " +
-                        "WHERE apprncd_apprnc_appearanceid = ? AND apprncd_thrutime = ? AND apprncd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname");
+                """
+                SELECT _ALL_
+                FROM appearancedescriptions, languages
+                WHERE apprncd_apprnc_appearanceid = ? AND apprncd_thrutime = ? AND apprncd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM appearancedescriptions " +
-                        "WHERE apprncd_apprnc_appearanceid = ? AND apprncd_thrutime = ? " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM appearancedescriptions
+                WHERE apprncd_apprnc_appearanceid = ? AND apprncd_thrutime = ?
+                FOR UPDATE
+                """);
         getAppearanceDescriptionsByAppearanceQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -690,20 +727,40 @@ public class AppearanceControl
         return appearanceTextDecoration;
     }
 
+    public long countAppearanceTextDecorationsByAppearance(final Appearance appearance) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM appearancetextdecorations
+                        WHERE apprntxtdcrtn_apprnc_appearanceid = ? AND apprntxtdcrtn_thrutime = ?
+                        """, appearance, Session.MAX_TIME);
+    }
+
+    public long countAppearanceTextDecorationsByTextDecoration(final TextDecoration textDecoration) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM appearancetextdecorations
+                        WHERE apprntxtdcrtn_txtdcrtn_textdecorationid = ? AND apprntxtdcrtn_thrutime = ?
+                        """, textDecoration, Session.MAX_TIME);
+    }
+
     private static final Map<EntityPermission, String> getAppearanceTextDecorationQueries;
 
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                        + "FROM appearancetextdecorations "
-                        + "WHERE apprntxtdcrtn_apprnc_appearanceid = ? AND apprntxtdcrtn_txtdcrtn_textdecorationid = ? AND apprntxtdcrtn_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM appearancetextdecorations
+                WHERE apprntxtdcrtn_apprnc_appearanceid = ? AND apprntxtdcrtn_txtdcrtn_textdecorationid = ? AND apprntxtdcrtn_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                        + "FROM appearancetextdecorations "
-                        + "WHERE apprntxtdcrtn_apprnc_appearanceid = ? AND apprntxtdcrtn_txtdcrtn_textdecorationid = ? AND apprntxtdcrtn_thrutime = ? "
-                        + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM appearancetextdecorations
+                WHERE apprntxtdcrtn_apprnc_appearanceid = ? AND apprntxtdcrtn_txtdcrtn_textdecorationid = ? AND apprntxtdcrtn_thrutime = ?
+                FOR UPDATE
+                """);
         getAppearanceTextDecorationQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -734,16 +791,21 @@ public class AppearanceControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                        + "FROM appearancetextdecorations, textdecorations, textdecorationdetails "
-                        + "WHERE apprntxtdcrtn_apprnc_appearanceid = ? AND apprntxtdcrtn_thrutime = ? "
-                        + "AND apprntxtdcrtn_txtdcrtn_textdecorationid = txtdcrtn_textdecorationid AND txtdcrtn_lastdetailid = txtdcrtndt_textdecorationdetailid "
-                        + "ORDER BY txtdcrtndt_sortorder, txtdcrtndt_textdecorationname");
+                """
+                SELECT _ALL_
+                FROM appearancetextdecorations, textdecorations, textdecorationdetails
+                WHERE apprntxtdcrtn_apprnc_appearanceid = ? AND apprntxtdcrtn_thrutime = ?
+                AND apprntxtdcrtn_txtdcrtn_textdecorationid = txtdcrtn_textdecorationid AND txtdcrtn_lastdetailid = txtdcrtndt_textdecorationdetailid
+                ORDER BY txtdcrtndt_sortorder, txtdcrtndt_textdecorationname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                        + "FROM appearancetextdecorations "
-                        + "WHERE apprntxtdcrtn_apprnc_appearanceid = ? AND apprntxtdcrtn_thrutime = ? "
-                        + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM appearancetextdecorations
+                WHERE apprntxtdcrtn_apprnc_appearanceid = ? AND apprntxtdcrtn_thrutime = ?
+                FOR UPDATE
+                """);
         getAppearanceTextDecorationsByAppearanceQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -766,16 +828,21 @@ public class AppearanceControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                        + "FROM appearancetextdecorations, appearances, appearancedetails "
-                        + "WHERE apprntxtdcrtn_txtdcrtn_textdecorationid = ? AND apprntxtdcrtn_thrutime = ? "
-                        + "AND apprntxttrns_apprnc_appearanceid = apprnc_appearanceid AND apprnc_lastdetailid = apprncdt_appearancedetailid "
-                        + "ORDER BY apprncdt_sortorder, apprncdt_appearancename");
+                """
+                SELECT _ALL_
+                FROM appearancetextdecorations, appearances, appearancedetails
+                WHERE apprntxtdcrtn_txtdcrtn_textdecorationid = ? AND apprntxtdcrtn_thrutime = ?
+                AND apprntxttrns_apprnc_appearanceid = apprnc_appearanceid AND apprnc_lastdetailid = apprncdt_appearancedetailid
+                ORDER BY apprncdt_sortorder, apprncdt_appearancename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                        + "FROM appearancetextdecorations "
-                        + "WHERE apprncd_apprnc_appearanceid = ? AND apprntxtdcrtn_thrutime = ? "
-                        + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM appearancetextdecorations
+                WHERE apprncd_apprnc_appearanceid = ? AND apprntxtdcrtn_thrutime = ?
+                FOR UPDATE
+                """);
         getAppearanceTextDecorationsByTextDecorationQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -847,20 +914,40 @@ public class AppearanceControl
         return appearanceTextTransformation;
     }
 
+    public long countAppearanceTextTransformationsByAppearance(final Appearance appearance) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM appearancetexttransformations
+                        WHERE apprntxttrns_apprnc_appearanceid = ? AND apprntxttrns_thrutime = ?
+                        """, appearance, Session.MAX_TIME);
+    }
+
+    public long countAppearanceTextTransformationsByTextTransformation(final TextTransformation textTransformation) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM appearancetexttransformations
+                        WHERE apprntxttrns_txttrns_texttransformationid = ? AND apprntxttrns_thrutime = ?
+                        """, textTransformation, Session.MAX_TIME);
+    }
+
     private static final Map<EntityPermission, String> getAppearanceTextTransformationQueries;
 
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                        + "FROM appearancetexttransformations "
-                        + "WHERE apprntxttrns_apprnc_appearanceid = ? AND apprntxttrns_txttrns_texttransformationid = ? AND apprntxttrns_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM appearancetexttransformations
+                WHERE apprntxttrns_apprnc_appearanceid = ? AND apprntxttrns_txttrns_texttransformationid = ? AND apprntxttrns_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                        + "FROM appearancetexttransformations "
-                        + "WHERE apprntxttrns_apprnc_appearanceid = ? AND apprntxttrns_txttrns_texttransformationid = ? AND apprntxttrns_thrutime = ? "
-                        + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM appearancetexttransformations
+                WHERE apprntxttrns_apprnc_appearanceid = ? AND apprntxttrns_txttrns_texttransformationid = ? AND apprntxttrns_thrutime = ?
+                FOR UPDATE
+                """);
         getAppearanceTextTransformationQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -891,16 +978,21 @@ public class AppearanceControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                        + "FROM appearancetexttransformations, texttransformations, texttransformationdetails "
-                        + "WHERE apprntxttrns_apprnc_appearanceid = ? AND apprntxttrns_thrutime = ? "
-                        + "AND apprntxttrns_txttrns_texttransformationid = txttrns_texttransformationid AND txttrns_lastdetailid = txttrnsdt_texttransformationdetailid "
-                        + "ORDER BY txttrnsdt_sortorder, txttrnsdt_texttransformationname");
+                """
+                SELECT _ALL_
+                FROM appearancetexttransformations, texttransformations, texttransformationdetails
+                WHERE apprntxttrns_apprnc_appearanceid = ? AND apprntxttrns_thrutime = ?
+                AND apprntxttrns_txttrns_texttransformationid = txttrns_texttransformationid AND txttrns_lastdetailid = txttrnsdt_texttransformationdetailid
+                ORDER BY txttrnsdt_sortorder, txttrnsdt_texttransformationname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                        + "FROM appearancetexttransformations "
-                        + "WHERE apprntxttrns_apprnc_appearanceid = ? AND apprntxttrns_thrutime = ? "
-                        + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM appearancetexttransformations
+                WHERE apprntxttrns_apprnc_appearanceid = ? AND apprntxttrns_thrutime = ?
+                FOR UPDATE
+                """);
         getAppearanceTextTransformationsByAppearanceQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -923,16 +1015,21 @@ public class AppearanceControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                        + "FROM appearancetexttransformations, appearances, appearancedetails "
-                        + "WHERE apprntxttrns_txttrns_texttransformationid = ? AND apprntxttrns_thrutime = ? "
-                        + "AND apprntxttrns_apprnc_appearanceid = apprnc_appearanceid AND apprnc_lastdetailid = apprncdt_appearancedetailid "
-                        + "ORDER BY apprncdt_sortorder, apprncdt_appearancename");
+                """
+                SELECT _ALL_
+                FROM appearancetexttransformations, appearances, appearancedetails
+                WHERE apprntxttrns_txttrns_texttransformationid = ? AND apprntxttrns_thrutime = ?
+                AND apprntxttrns_apprnc_appearanceid = apprnc_appearanceid AND apprnc_lastdetailid = apprncdt_appearancedetailid
+                ORDER BY apprncdt_sortorder, apprncdt_appearancename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                        + "FROM apprntxttrns_txttrns_texttransformationid "
-                        + "WHERE apprncd_apprnc_appearanceid = ? AND apprntxttrns_thrutime = ? "
-                        + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM appearancetexttransformations
+                WHERE apprncd_apprnc_appearanceid = ? AND apprntxttrns_thrutime = ?
+                FOR UPDATE
+                """);
         getAppearanceTextTransformationsByTextTransformationQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1004,20 +1101,40 @@ public class AppearanceControl
         return entityAppearance;
     }
 
+    public long countEntityAppearancesByEntityInstance(final EntityInstance entityInstance) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM entityappearances
+                        WHERE eniapprnc_eni_entityinstanceid = ? AND eniapprnc_thrutime = ?
+                        """, entityInstance, Session.MAX_TIME);
+    }
+
+    public long countEntityAppearancesByAppearance(final Appearance appearance) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM entityappearances
+                        WHERE eniapprnc_apprnc_appearanceid = ? AND eniapprnc_thrutime = ?
+                        """, appearance, Session.MAX_TIME);
+    }
+
     private static final Map<EntityPermission, String> getEntityAppearanceQueries;
 
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM entityappearances " +
-                        "WHERE eniapprnc_eni_entityinstanceid = ? AND eniapprnc_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM entityappearances
+                WHERE eniapprnc_eni_entityinstanceid = ? AND eniapprnc_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM entityappearances " +
-                        "WHERE eniapprnc_eni_entityinstanceid = ? AND eniapprnc_thrutime = ? " +
-                        "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM entityappearances
+                WHERE eniapprnc_eni_entityinstanceid = ? AND eniapprnc_thrutime = ?
+                FOR UPDATE
+                """);
         getEntityAppearanceQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1049,10 +1166,12 @@ public class AppearanceControl
 
         try {
             var ps = EntityAppearanceFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                            "FROM entityappearances " +
-                            "WHERE eniapprnc_eni_entityinstanceid = ? AND eniapprnc_thrutime = ? " +
-                            "FOR UPDATE");
+                    """
+                    SELECT _ALL_
+                    FROM entityappearances
+                    WHERE eniapprnc_eni_entityinstanceid = ? AND eniapprnc_thrutime = ?
+                    FOR UPDATE
+                    """);
 
             ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -1069,18 +1188,23 @@ public class AppearanceControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                        + "FROM entityappearances, entityinstances, entitytypes, entitytypedetails, componentvendors, componentvendordetails "
-                        + "WHERE eniapprnc_apprnc_appearanceid = ? AND eniapprnc_thrutime = ? "
-                        + "AND eniapprnc_eni_entityinstanceid = eni_entityinstanceid "
-                        + "AND eni_ent_entitytypeid = ent_entitytypeid AND ent_lastdetailid = entdt_entitytypedetailid "
-                        + "AND entdt_cvnd_componentvendorid = cvnd_componentvendorid AND cvnd_lastdetailid = cvndd_componentvendordetailid "
-                        + "ORDER BY cvndd_componentvendorname, entdt_sortorder, entdt_entitytypename, eni_entityuniqueid");
+                """
+                SELECT _ALL_
+                FROM entityappearances, entityinstances, entitytypes, entitytypedetails, componentvendors, componentvendordetails
+                WHERE eniapprnc_apprnc_appearanceid = ? AND eniapprnc_thrutime = ?
+                AND eniapprnc_eni_entityinstanceid = eni_entityinstanceid
+                AND eni_ent_entitytypeid = ent_entitytypeid AND ent_lastdetailid = entdt_entitytypedetailid
+                AND entdt_cvnd_componentvendorid = cvnd_componentvendorid AND cvnd_lastdetailid = cvndd_componentvendordetailid
+                ORDER BY cvndd_componentvendorname, entdt_sortorder, entdt_entitytypename, eni_entityuniqueid
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                        + "FROM entityappearances "
-                        + "WHERE eniapprnc_apprnc_appearanceid = ? AND eniapprnc_thrutime = ? "
-                        + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM entityappearances
+                WHERE eniapprnc_apprnc_appearanceid = ? AND eniapprnc_thrutime = ?
+                FOR UPDATE
+                """);
         getEntityAppearancesByAppearanceQueries = Collections.unmodifiableMap(queryMap);
     }
 
