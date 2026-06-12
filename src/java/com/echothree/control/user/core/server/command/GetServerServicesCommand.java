@@ -22,22 +22,25 @@ import com.echothree.model.control.core.server.control.ServerControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.core.server.entity.Server;
+import com.echothree.model.data.core.server.entity.ServerService;
+import com.echothree.model.data.core.server.factory.ServerServiceFactory;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetServerServicesCommand
-        extends BaseSimpleCommand<GetServerServicesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<ServerService, GetServerServicesForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -47,31 +50,59 @@ public class GetServerServicesCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ServerService.name(), SecurityRoles.List.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ServerName", FieldType.HOST_NAME, true, null, null)
-                );
+        );
     }
     
+    @Inject
+    ServerControl serverControl;
+
     /** Creates a new instance of GetServerServicesCommand */
     public GetServerServicesCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
+    Server server;
+
     @Override
-    protected BaseResult execute() {
-        var serverControl = Session.getModelController(ServerControl.class);
-        var result = CoreResultFactory.getGetServerServicesResult();
+    protected void handleForm() {
         var serverName = form.getServerName();
-        var server = serverControl.getServerByName(serverName);
+
+        server = serverControl.getServerByName(serverName);
+
+        if(server == null) {
+            addExecutionError(ExecutionErrors.UnknownServerName.name(), serverName);
+        }
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return server == null ? null : serverControl.countServerServicesByServer(server);
+    }
+
+    @Override
+    protected Collection<ServerService> getEntities() {
+        return server == null ? null : serverControl.getServerServicesByServer(server);
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<ServerService> entities) {
+        var result = CoreResultFactory.getGetServerServicesResult();
         
         if(server != null) {
-            result.setServer(serverControl.getServerTransfer(getUserVisit(), server));
-            result.setServerServices(serverControl.getServerServiceTransfersByServer(getUserVisit(), server));
-        } else {
-            addExecutionError(ExecutionErrors.UnknownServerName.name(), serverName);
+            var userVisit = getUserVisit();
+
+            result.setServer(serverControl.getServerTransfer(userVisit, server));
+
+            if(session.hasLimit(ServerServiceFactory.class)) {
+                result.setServerServicesCount(getTotalEntities());
+            }
+
+            result.setServerServices(serverControl.getServerServiceTransfersByServer(userVisit, server));
         }
         
         return result;
