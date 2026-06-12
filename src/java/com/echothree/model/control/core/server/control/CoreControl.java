@@ -259,8 +259,10 @@ public class CoreControl
 
     public long countEntityAttributeTypes() {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM entityattributetypes ");
+                """
+                SELECT COUNT(*)
+                FROM entityattributetypes
+                """);
     }
 
     public EntityAttributeType getEntityAttributeTypeByName(String entityAttributeTypeName) {
@@ -268,9 +270,11 @@ public class CoreControl
         
         try {
             var ps = entityAttributeTypeFactory.prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM entityattributetypes " +
-                    "WHERE enat_entityattributetypename = ?");
+                    """
+                    SELECT _ALL_
+                    FROM entityattributetypes
+                    WHERE enat_entityattributetypename = ?
+                    """);
             
             ps.setString(1, entityAttributeTypeName);
             
@@ -284,10 +288,12 @@ public class CoreControl
     
     public List<EntityAttributeType> getEntityAttributeTypes() {
         var ps = entityAttributeTypeFactory.prepareStatement(
-                "SELECT _ALL_ " +
-                "FROM entityattributetypes " +
-                "ORDER BY enat_entityattributetypename " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM entityattributetypes
+                ORDER BY enat_entityattributetypename
+                _LIMIT_
+                """);
         
         return entityAttributeTypeFactory.getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
@@ -355,9 +361,11 @@ public class CoreControl
         
         try {
             var ps = entityAttributeTypeDescriptionFactory.prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM entityattributetypedescriptions " +
-                    "WHERE enatd_enat_entityattributetypeid = ? AND enatd_lang_languageid = ?");
+                    """
+                    SELECT _ALL_
+                    FROM entityattributetypedescriptions
+                    WHERE enatd_enat_entityattributetypeid = ? AND enatd_lang_languageid = ?
+                    """);
             
             ps.setLong(1, entityAttributeType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -443,9 +451,11 @@ public class CoreControl
 
     public long countEntityAttributeGroups() {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM entityattributegroups, entityattributegroupdetails " +
-                "WHERE enagp_activedetailid = enagpdt_entityattributegroupdetailid");
+                """
+                SELECT COUNT(*)
+                FROM entityattributegroups, entityattributegroupdetails
+                WHERE enagp_activedetailid = enagpdt_entityattributegroupdetailid
+                """);
     }
 
     public long countEntityAttributeGroupsByEntityType(EntityType entityType) {
@@ -470,16 +480,20 @@ public class CoreControl
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM entityattributegroups, entityattributegroupdetails " +
-                    "WHERE enagp_activedetailid = enagpdt_entityattributegroupdetailid " +
-                    "ORDER BY enagpdt_sortorder, enagpdt_entityattributegroupname " +
-                    "_LIMIT_";
+            query = """
+                    SELECT _ALL_
+                    FROM entityattributegroups, entityattributegroupdetails
+                    WHERE enagp_activedetailid = enagpdt_entityattributegroupdetailid
+                    ORDER BY enagpdt_sortorder, enagpdt_entityattributegroupname
+                    _LIMIT_
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM entityattributegroups, entityattributegroupdetails " +
-                    "WHERE enagp_activedetailid = enagpdt_entityattributegroupdetailid " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM entityattributegroups, entityattributegroupdetails
+                    WHERE enagp_activedetailid = enagpdt_entityattributegroupdetailid
+                    FOR UPDATE
+                    """;
         }
 
         var ps = entityAttributeGroupFactory.prepareStatement(query);
@@ -502,22 +516,26 @@ public class CoreControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ "
-                        + "FROM entityattributegroups, entityattributegroupdetails, entityattributeentityattributegroups, entityattributes, entityattributedetails "
-                        + "WHERE enagp_lastdetailid = enagpdt_entityattributegroupdetailid "
-                        + "AND enagp_entityattributegroupid = enaenagp_enagp_entityattributegroupid AND enaenagp_ena_entityattributeid = ena_entityattributeid AND enaenagp_thrutime = ? "
-                        + "AND ena_lastdetailid = enadt_entityattributedetailid AND enadt_ent_entitytypeid = ? "
-                        + "GROUP BY enagp_entityattributegroupid "
-                        + "ORDER BY enagpdt_sortorder, enagpdt_entityattributegroupname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM entityattributegroups, entityattributegroupdetails, entityattributeentityattributegroups, entityattributes, entityattributedetails
+                        WHERE enagp_lastdetailid = enagpdt_entityattributegroupdetailid
+                        AND enagp_entityattributegroupid = enaenagp_enagp_entityattributegroupid AND enaenagp_ena_entityattributeid = ena_entityattributeid AND enaenagp_thrutime = ?
+                        AND ena_lastdetailid = enadt_entityattributedetailid AND enadt_ent_entitytypeid = ?
+                        GROUP BY enagp_entityattributegroupid
+                        ORDER BY enagpdt_sortorder, enagpdt_entityattributegroupname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ "
-                        + "FROM entityattributegroups, entityattributegroupdetails, entityattributeentityattributegroups, entityattributes, entityattributedetails "
-                        + "WHERE enagp_lastdetailid = enagpdt_entityattributegroupdetailid "
-                        + "AND enagp_entityattributegroupid = enaenagp_enagp_entityattributegroupid AND enaenagp_ena_entityattributeid = ena_entityattributeid AND enaenagp_thrutime = ? "
-                        + "AND ena_lastdetailid = enadt_entityattributedetailid AND enadt_ent_entitytypeid = ? "
-                        + "GROUP BY enagp_entityattributegroupid "
-                        + "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entityattributegroups, entityattributegroupdetails, entityattributeentityattributegroups, entityattributes, entityattributedetails
+                        WHERE enagp_lastdetailid = enagpdt_entityattributegroupdetailid
+                        AND enagp_entityattributegroupid = enaenagp_enagp_entityattributegroupid AND enaenagp_ena_entityattributeid = ena_entityattributeid AND enaenagp_thrutime = ?
+                        AND ena_lastdetailid = enadt_entityattributedetailid AND enadt_ent_entitytypeid = ?
+                        GROUP BY enagp_entityattributegroupid
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityAttributeGroupFactory.prepareStatement(query);
@@ -545,14 +563,18 @@ public class CoreControl
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM entityattributegroups, entityattributegroupdetails " +
-                    "WHERE enagp_activedetailid = enagpdt_entityattributegroupdetailid AND enagpdt_isdefault = 1";
+            query = """
+                    SELECT _ALL_
+                    FROM entityattributegroups, entityattributegroupdetails
+                    WHERE enagp_activedetailid = enagpdt_entityattributegroupdetailid AND enagpdt_isdefault = 1
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM entityattributegroups, entityattributegroupdetails " +
-                    "WHERE enagp_activedetailid = enagpdt_entityattributegroupdetailid AND enagpdt_isdefault = 1 " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM entityattributegroups, entityattributegroupdetails
+                    WHERE enagp_activedetailid = enagpdt_entityattributegroupdetailid AND enagpdt_isdefault = 1
+                    FOR UPDATE
+                    """;
         }
 
         var ps = entityAttributeGroupFactory.prepareStatement(query);
@@ -579,14 +601,18 @@ public class CoreControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityattributegroups, entityattributegroupdetails " +
-                        "WHERE enagp_activedetailid = enagpdt_entityattributegroupdetailid AND enagpdt_entityattributegroupname = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM entityattributegroups, entityattributegroupdetails
+                        WHERE enagp_activedetailid = enagpdt_entityattributegroupdetailid AND enagpdt_entityattributegroupname = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityattributegroups, entityattributegroupdetails " +
-                        "WHERE enagp_activedetailid = enagpdt_entityattributegroupdetailid AND enagpdt_entityattributegroupname = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entityattributegroups, entityattributegroupdetails
+                        WHERE enagp_activedetailid = enagpdt_entityattributegroupdetailid AND enagpdt_entityattributegroupname = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityAttributeGroupFactory.prepareStatement(query);
@@ -776,14 +802,18 @@ public class CoreControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityattributegroupdescriptions " +
-                        "WHERE enagpd_enagp_entityattributegroupid = ? AND enagpd_lang_languageid = ? AND enagpd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM entityattributegroupdescriptions
+                        WHERE enagpd_enagp_entityattributegroupid = ? AND enagpd_lang_languageid = ? AND enagpd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityattributegroupdescriptions " +
-                        "WHERE enagpd_enagp_entityattributegroupid = ? AND enagpd_lang_languageid = ? AND enagpd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entityattributegroupdescriptions
+                        WHERE enagpd_enagp_entityattributegroupid = ? AND enagpd_lang_languageid = ? AND enagpd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityAttributeGroupDescriptionFactory.prepareStatement(query);
@@ -823,16 +853,21 @@ public class CoreControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityattributegroupdescriptions, languages " +
-                        "WHERE enagpd_enagp_entityattributegroupid = ? AND enagpd_thrutime = ? " +
-                        "AND enagpd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM entityattributegroupdescriptions, languages
+                        WHERE enagpd_enagp_entityattributegroupid = ? AND enagpd_thrutime = ?
+                        AND enagpd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityattributegroupdescriptions " +
-                        "WHERE enagpd_enagp_entityattributegroupid = ? AND enagpd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entityattributegroupdescriptions
+                        WHERE enagpd_enagp_entityattributegroupid = ? AND enagpd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityAttributeGroupDescriptionFactory.prepareStatement(query);
@@ -970,28 +1005,34 @@ public class CoreControl
 
     public long countEntityAttributesByEntityType(EntityType entityType) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM entityattributes, entityattributedetails " +
-                "WHERE ena_activedetailid = enadt_entityattributedetailid AND enadt_ent_entitytypeid = ?",
+                """
+                SELECT COUNT(*)
+                FROM entityattributes, entityattributedetails
+                WHERE ena_activedetailid = enadt_entityattributedetailid AND enadt_ent_entitytypeid = ?
+                """,
                 entityType);
     }
 
     public long countEntityAttributesByEntityTypeAndEntityAttributeType(EntityType entityType, EntityAttributeType entityAttributeType) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM entityattributes, entityattributedetails " +
-                "WHERE ena_activedetailid = enadt_entityattributedetailid " +
-                "AND enadt_ent_entitytypeid = ? AND enadt_enat_entityattributetypeid = ?",
+                """
+                SELECT COUNT(*)
+                FROM entityattributes, entityattributedetails
+                WHERE ena_activedetailid = enadt_entityattributedetailid
+                AND enadt_ent_entitytypeid = ? AND enadt_enat_entityattributetypeid = ?
+                """,
                 entityType, entityAttributeType);
     }
 
     public long countEntityAttributesByEntityAttributeGroupAndEntityType(EntityAttributeGroup entityAttributeGroup, EntityType entityType) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM entityattributeentityattributegroups, entityattributes, entityattributedetails " +
-                        "WHERE enaenagp_enagp_entityattributegroupid = ? AND enaenagp_thrutime = ? " +
-                        "AND enaenagp_ena_entityattributeid = ena_entityattributeid " +
-                        "AND ena_lastdetailid = enadt_entityattributedetailid AND enadt_ent_entitytypeid = ?",
+                """
+                SELECT COUNT(*)
+                FROM entityattributeentityattributegroups, entityattributes, entityattributedetails
+                WHERE enaenagp_enagp_entityattributegroupid = ? AND enaenagp_thrutime = ?
+                AND enaenagp_ena_entityattributeid = ena_entityattributeid
+                AND ena_lastdetailid = enadt_entityattributedetailid AND enadt_ent_entitytypeid = ?
+                """,
                 entityAttributeGroup, Session.MAX_TIME, entityType);
     }
 
@@ -1013,16 +1054,20 @@ public class CoreControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityattributes, entityattributedetails " +
-                        "WHERE ena_activedetailid = enadt_entityattributedetailid " +
-                        "AND enadt_ent_entitytypeid = ? AND enadt_entityattributename = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM entityattributes, entityattributedetails
+                        WHERE ena_activedetailid = enadt_entityattributedetailid
+                        AND enadt_ent_entitytypeid = ? AND enadt_entityattributename = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityattributes, entityattributedetails " +
-                        "WHERE ena_activedetailid = enadt_entityattributedetailid " +
-                        "AND enadt_ent_entitytypeid = ? AND enadt_entityattributename = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entityattributes, entityattributedetails
+                        WHERE ena_activedetailid = enadt_entityattributedetailid
+                        AND enadt_ent_entitytypeid = ? AND enadt_entityattributename = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityAttributeFactory.prepareStatement(query);
@@ -1061,18 +1106,22 @@ public class CoreControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityattributes, entityattributedetails " +
-                        "WHERE ena_activedetailid = enadt_entityattributedetailid " +
-                        "AND enadt_ent_entitytypeid = ? " +
-                        "ORDER BY enadt_sortorder, enadt_entityattributename " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM entityattributes, entityattributedetails
+                        WHERE ena_activedetailid = enadt_entityattributedetailid
+                        AND enadt_ent_entitytypeid = ?
+                        ORDER BY enadt_sortorder, enadt_entityattributename
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityattributes, entityattributedetails " +
-                        "WHERE ena_activedetailid = enadt_entityattributedetailid " +
-                        "AND enadt_ent_entitytypeid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entityattributes, entityattributedetails
+                        WHERE ena_activedetailid = enadt_entityattributedetailid
+                        AND enadt_ent_entitytypeid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityAttributeFactory.prepareStatement(query);
@@ -1102,22 +1151,26 @@ public class CoreControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityattributes " +
-                        "JOIN entityattributedetails ON ena_activedetailid = enadt_entityattributedetailid " +
-                        "JOIN entitytypes ON enadt_ent_entitytypeid = ent_entitytypeid " +
-                        "JOIN entitytypedetails ON ent_lastdetailid = entdt_entitytypedetailid " +
-                        "JOIN componentvendors ON entdt_cvnd_componentvendorid = cvnd_componentvendorid " +
-                        "JOIN componentvendordetails ON cvnd_lastdetailid = cvndd_componentvendordetailid " +
-                        "WHERE enadt_entityattributename = ? " +
-                        "ORDER BY cvndd_componentvendorname, entdt_sortorder, entdt_entitytypename, enadt_sortorder, enadt_entityattributename " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM entityattributes
+                        JOIN entityattributedetails ON ena_activedetailid = enadt_entityattributedetailid
+                        JOIN entitytypes ON enadt_ent_entitytypeid = ent_entitytypeid
+                        JOIN entitytypedetails ON ent_lastdetailid = entdt_entitytypedetailid
+                        JOIN componentvendors ON entdt_cvnd_componentvendorid = cvnd_componentvendorid
+                        JOIN componentvendordetails ON cvnd_lastdetailid = cvndd_componentvendordetailid
+                        WHERE enadt_entityattributename = ?
+                        ORDER BY cvndd_componentvendorname, entdt_sortorder, entdt_entitytypename, enadt_sortorder, enadt_entityattributename
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityattributes " +
-                        "JOIN entityattributedetails ON ena_activedetailid = enadt_entityattributedetailid " +
-                        "WHERE enadt_entityattributename = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entityattributes
+                        JOIN entityattributedetails ON ena_activedetailid = enadt_entityattributedetailid
+                        WHERE enadt_entityattributename = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityAttributeFactory.prepareStatement(query);
@@ -1148,18 +1201,22 @@ public class CoreControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityattributes, entityattributedetails " +
-                        "WHERE ena_activedetailid = enadt_entityattributedetailid " +
-                        "AND enadt_ent_entitytypeid = ? AND enadt_enat_entityattributetypeid = ? " +
-                        "ORDER BY enadt_sortorder, enadt_entityattributename " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM entityattributes, entityattributedetails
+                        WHERE ena_activedetailid = enadt_entityattributedetailid
+                        AND enadt_ent_entitytypeid = ? AND enadt_enat_entityattributetypeid = ?
+                        ORDER BY enadt_sortorder, enadt_entityattributename
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityattributes, entityattributedetails " +
-                        "WHERE ena_activedetailid = enadt_entityattributedetailid " +
-                        "AND enadt_ent_entitytypeid = ? AND enadt_enat_entityattributetypeid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entityattributes, entityattributedetails
+                        WHERE ena_activedetailid = enadt_entityattributedetailid
+                        AND enadt_ent_entitytypeid = ? AND enadt_enat_entityattributetypeid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityAttributeFactory.prepareStatement(query);
@@ -1193,20 +1250,24 @@ public class CoreControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ "
-                        + "FROM entityattributeentityattributegroups, entityattributes, entityattributedetails "
-                        + "WHERE enaenagp_enagp_entityattributegroupid = ? AND enaenagp_thrutime = ? "
-                        + "AND enaenagp_ena_entityattributeid = ena_entityattributeid "
-                        + "AND ena_lastdetailid = enadt_entityattributedetailid AND enadt_ent_entitytypeid = ? "
-                        + "ORDER BY enaenagp_sortorder, enadt_sortorder, enadt_entityattributename " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM entityattributeentityattributegroups, entityattributes, entityattributedetails
+                        WHERE enaenagp_enagp_entityattributegroupid = ? AND enaenagp_thrutime = ?
+                        AND enaenagp_ena_entityattributeid = ena_entityattributeid
+                        AND ena_lastdetailid = enadt_entityattributedetailid AND enadt_ent_entitytypeid = ?
+                        ORDER BY enaenagp_sortorder, enadt_sortorder, enadt_entityattributename
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ "
-                        + "FROM entityattributeentityattributegroups, entityattributes, entityattributedetails "
-                        + "WHERE enaenagp_enagp_entityattributegroupid = ? AND enaenagp_thrutime = ? "
-                        + "AND enaenagp_ena_entityattributeid = ena_entityattributeid "
-                        + "AND ena_lastdetailid = enadt_entityattributedetailid AND enadt_ent_entitytypeid = ? "
-                        + "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entityattributeentityattributegroups, entityattributes, entityattributedetails
+                        WHERE enaenagp_enagp_entityattributegroupid = ? AND enaenagp_thrutime = ?
+                        AND enaenagp_ena_entityattributeid = ena_entityattributeid
+                        AND ena_lastdetailid = enadt_entityattributedetailid AND enadt_ent_entitytypeid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityAttributeFactory.prepareStatement(query);
@@ -1453,14 +1514,18 @@ public class CoreControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityattributedescriptions " +
-                        "WHERE enad_ena_entityattributeid = ? AND enad_lang_languageid = ? AND enad_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM entityattributedescriptions
+                        WHERE enad_ena_entityattributeid = ? AND enad_lang_languageid = ? AND enad_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityattributedescriptions " +
-                        "WHERE enad_ena_entityattributeid = ? AND enad_lang_languageid = ? AND enad_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entityattributedescriptions
+                        WHERE enad_ena_entityattributeid = ? AND enad_lang_languageid = ? AND enad_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityAttributeDescriptionFactory.prepareStatement(query);
@@ -1501,15 +1566,20 @@ public class CoreControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityattributedescriptions, languages " +
-                        "WHERE enad_ena_entityattributeid = ? AND enad_thrutime = ? AND enad_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM entityattributedescriptions, languages
+                        WHERE enad_ena_entityattributeid = ? AND enad_thrutime = ? AND enad_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityattributedescriptions " +
-                        "WHERE enad_ena_entityattributeid = ? AND enad_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entityattributedescriptions
+                        WHERE enad_ena_entityattributeid = ? AND enad_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityAttributeDescriptionFactory.prepareStatement(query);
@@ -1621,15 +1691,17 @@ public class CoreControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(1);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM entityattributeblobs "
-                + "WHERE enab_ena_entityattributeid = ? AND enab_thrutime = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM entityattributeblobs "
-                + "WHERE enab_ena_entityattributeid = ? AND enab_thrutime = ? "
-                + "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM entityattributeblobs
+                WHERE enab_ena_entityattributeid = ? AND enab_thrutime = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM entityattributeblobs
+                WHERE enab_ena_entityattributeid = ? AND enab_thrutime = ?
+                FOR UPDATE
+                """);
         getEntityAttributeBlobQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1708,15 +1780,17 @@ public class CoreControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(1);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM entityattributestrings "
-                + "WHERE enas_ena_entityattributeid = ? AND enas_thrutime = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM entityattributestrings "
-                + "WHERE enas_ena_entityattributeid = ? AND enas_thrutime = ? "
-                + "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM entityattributestrings
+                WHERE enas_ena_entityattributeid = ? AND enas_thrutime = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM entityattributestrings
+                WHERE enas_ena_entityattributeid = ? AND enas_thrutime = ?
+                FOR UPDATE
+                """);
         getEntityAttributeStringQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1796,15 +1870,17 @@ public class CoreControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(1);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM entityattributeintegers "
-                + "WHERE enai_ena_entityattributeid = ? AND enai_thrutime = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM entityattributeintegers "
-                + "WHERE enai_ena_entityattributeid = ? AND enai_thrutime = ? "
-                + "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM entityattributeintegers
+                WHERE enai_ena_entityattributeid = ? AND enai_thrutime = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM entityattributeintegers
+                WHERE enai_ena_entityattributeid = ? AND enai_thrutime = ?
+                FOR UPDATE
+                """);
         getEntityAttributeIntegerQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1888,15 +1964,17 @@ public class CoreControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(1);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM entityattributelongs "
-                + "WHERE enal_ena_entityattributeid = ? AND enal_thrutime = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM entityattributelongs "
-                + "WHERE enal_ena_entityattributeid = ? AND enal_thrutime = ? "
-                + "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM entityattributelongs
+                WHERE enal_ena_entityattributeid = ? AND enal_thrutime = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM entityattributelongs
+                WHERE enal_ena_entityattributeid = ? AND enal_thrutime = ?
+                FOR UPDATE
+                """);
         getEntityAttributeLongQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1975,9 +2053,11 @@ public class CoreControl
     
     public long countEntityAttributeNumericsByUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM entityattributenumerics " +
-                "WHERE enan_uomt_unitofmeasuretypeid = ? AND enan_thrutime = ?",
+                """
+                SELECT COUNT(*)
+                FROM entityattributenumerics
+                WHERE enan_uomt_unitofmeasuretypeid = ? AND enan_thrutime = ?
+                """,
                 unitOfMeasureType, Session.MAX_TIME);
     }
 
@@ -1987,14 +2067,18 @@ public class CoreControl
         Map<EntityPermission, String> queryMap = new HashMap<>(1);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM entityattributenumerics "
-                + "WHERE enan_ena_entityattributeid = ? AND enan_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM entityattributenumerics
+                WHERE enan_ena_entityattributeid = ? AND enan_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM entityattributenumerics "
-                + "WHERE enan_ena_entityattributeid = ? AND enan_thrutime = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM entityattributenumerics
+                WHERE enan_ena_entityattributeid = ? AND enan_thrutime = ?
+                FOR UPDATE
+                """);
         getEntityAttributeNumericQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -2070,9 +2154,11 @@ public class CoreControl
     
     public long countEntityAttributeListItemsByEntityListItemSequence(Sequence entityListItemSequence) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM entityattributelistitems " +
-                "WHERE enali_entitylistitemsequenceid = ? AND enali_thrutime = ?",
+                """
+                SELECT COUNT(*)
+                FROM entityattributelistitems
+                WHERE enali_entitylistitemsequenceid = ? AND enali_thrutime = ?
+                """,
                 entityListItemSequence, Session.MAX_TIME);
     }
 
@@ -2081,15 +2167,17 @@ public class CoreControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(1);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM entityattributelistitems "
-                + "WHERE enali_entitylistitemsequenceid = ? AND enali_thrutime = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM entityattributelistitems "
-                + "WHERE enali_entitylistitemsequenceid = ? AND enali_thrutime = ? "
-                + "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM entityattributelistitems
+                WHERE enali_entitylistitemsequenceid = ? AND enali_thrutime = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM entityattributelistitems
+                WHERE enali_entitylistitemsequenceid = ? AND enali_thrutime = ?
+                FOR UPDATE
+                """);
         getEntityAttributeListItemQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -2165,9 +2253,11 @@ public class CoreControl
 
     public long countEntityAttributeWorkflowsByWorkflow(Workflow workflow) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM entityattributeworkflows " +
-                        "WHERE enawkfl_wkfl_workflowid = ? AND enawkfl_thrutime = ?",
+                """
+                SELECT COUNT(*)
+                FROM entityattributeworkflows
+                WHERE enawkfl_wkfl_workflowid = ? AND enawkfl_thrutime = ?
+                """,
                 workflow, Session.MAX_TIME);
     }
 
@@ -2177,14 +2267,18 @@ public class CoreControl
         Map<EntityPermission, String> queryMap = new HashMap<>(1);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                        + "FROM entityattributeworkflows "
-                        + "WHERE enawkfl_ena_entityattributeid = ? AND enawkfl_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM entityattributeworkflows
+                WHERE enawkfl_ena_entityattributeid = ? AND enawkfl_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                        + "FROM entityattributeworkflows "
-                        + "WHERE enawkfl_ena_entityattributeid = ? AND enawkfl_thrutime = ? "
-                        + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM entityattributeworkflows
+                WHERE enawkfl_ena_entityattributeid = ? AND enawkfl_thrutime = ?
+                FOR UPDATE
+                """);
         getEntityAttributeWorkflowQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -2260,17 +2354,21 @@ public class CoreControl
 
     public long countEntityAttributeEntityAttributeGroupsByEntityAttribute(EntityAttribute entityAttribute) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM entityattributeentityattributegroups " +
-                "WHERE enaenagp_ena_entityattributeid = ? AND enaenagp_thrutime = ?",
+                """
+                SELECT COUNT(*)
+                FROM entityattributeentityattributegroups
+                WHERE enaenagp_ena_entityattributeid = ? AND enaenagp_thrutime = ?
+                """,
                 entityAttribute, Session.MAX_TIME);
     }
 
     public long countEntityAttributeEntityAttributeGroupsByEntityAttributeGroup(EntityAttributeGroup entityAttributeGroup) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM entityattributeentityattributegroups " +
-                "WHERE enaenagp_enagp_entityattributegroupid = ? AND enaenagp_thrutime = ?",
+                """
+                SELECT COUNT(*)
+                FROM entityattributeentityattributegroups
+                WHERE enaenagp_enagp_entityattributegroupid = ? AND enaenagp_thrutime = ?
+                """,
                 entityAttributeGroup, Session.MAX_TIME);
     }
 
@@ -2282,14 +2380,18 @@ public class CoreControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityattributeentityattributegroups " +
-                        "WHERE enaenagp_ena_entityattributeid = ? AND enaenagp_enagp_entityattributegroupid = ? AND enaenagp_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM entityattributeentityattributegroups
+                        WHERE enaenagp_ena_entityattributeid = ? AND enaenagp_enagp_entityattributegroupid = ? AND enaenagp_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityattributeentityattributegroups " +
-                        "WHERE enaenagp_ena_entityattributeid = ? AND enaenagp_enagp_entityattributegroupid = ? AND enaenagp_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entityattributeentityattributegroups
+                        WHERE enaenagp_ena_entityattributeid = ? AND enaenagp_enagp_entityattributegroupid = ? AND enaenagp_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityAttributeEntityAttributeGroupFactory.prepareStatement(query);
@@ -2330,17 +2432,21 @@ public class CoreControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ "
-                        + "FROM entityattributeentityattributegroups, entityattributegroups, entityattributegroupdetails "
-                        + "WHERE enaenagp_ena_entityattributeid = ? AND enaenagp_thrutime = ? "
-                        + "AND enaenagp_enagp_entityattributegroupid = enagp_entityattributegroupid AND enagp_lastdetailid = enagpdt_entityattributegroupdetailid "
-                        + "ORDER BY enaenagp_sortorder, enagpdt_sortorder, enagpdt_entityattributegroupname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM entityattributeentityattributegroups, entityattributegroups, entityattributegroupdetails
+                        WHERE enaenagp_ena_entityattributeid = ? AND enaenagp_thrutime = ?
+                        AND enaenagp_enagp_entityattributegroupid = enagp_entityattributegroupid AND enagp_lastdetailid = enagpdt_entityattributegroupdetailid
+                        ORDER BY enaenagp_sortorder, enagpdt_sortorder, enagpdt_entityattributegroupname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ "
-                        + "FROM entityattributeentityattributegroups "
-                        + "WHERE enaenagp_ena_entityattributeid = ? AND enaenagp_thrutime = ? "
-                        + "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entityattributeentityattributegroups
+                        WHERE enaenagp_ena_entityattributeid = ? AND enaenagp_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityAttributeEntityAttributeGroupFactory.prepareStatement(query);
@@ -2372,17 +2478,21 @@ public class CoreControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ "
-                        + "FROM entityattributeentityattributegroups, entityattributegroups, entityattributegroupdetails "
-                        + "WHERE enaenagp_enagp_entityattributegroupid = ? AND enaenagp_thrutime = ? "
-                        + "AND enaenagp_enagp_entityattributegroupid = enagp_entityattributegroupid AND enagp_lastdetailid = enagpdt_entityattributegroupdetailid "
-                        + "ORDER BY enaenagp_sortorder, enagpdt_sortorder, enagpdt_entityattributegroupname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM entityattributeentityattributegroups, entityattributegroups, entityattributegroupdetails
+                        WHERE enaenagp_enagp_entityattributegroupid = ? AND enaenagp_thrutime = ?
+                        AND enaenagp_enagp_entityattributegroupid = enagp_entityattributegroupid AND enagp_lastdetailid = enagpdt_entityattributegroupdetailid
+                        ORDER BY enaenagp_sortorder, enagpdt_sortorder, enagpdt_entityattributegroupname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ "
-                        + "FROM entityattributeentityattributegroups "
-                        + "WHERE enaenagp_enagp_entityattributegroupid = ? AND enaenagp_thrutime = ? "
-                        + "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entityattributeentityattributegroups
+                        WHERE enaenagp_enagp_entityattributegroupid = ? AND enaenagp_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityAttributeEntityAttributeGroupFactory.prepareStatement(query);
@@ -2532,9 +2642,11 @@ public class CoreControl
     
     public long countEntityListItems() {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM entitylistitems, entitylistitemdetails " +
-                "WHERE eli_activedetailid = elidt_entitylistitemdetailid");
+                """
+                SELECT COUNT(*)
+                FROM entitylistitems, entitylistitemdetails
+                WHERE eli_activedetailid = elidt_entitylistitemdetailid
+                """);
     }
 
     private EntityListItem getDefaultEntityListItem(EntityAttribute entityAttribute, EntityPermission entityPermission) {
@@ -2544,16 +2656,20 @@ public class CoreControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitylistitems, entitylistitemdetails " +
-                        "WHERE eli_activedetailid = elidt_entitylistitemdetailid " +
-                        "AND elidt_ena_entityattributeid = ? AND elidt_isdefault = 1";
+                query = """
+                        SELECT _ALL_
+                        FROM entitylistitems, entitylistitemdetails
+                        WHERE eli_activedetailid = elidt_entitylistitemdetailid
+                        AND elidt_ena_entityattributeid = ? AND elidt_isdefault = 1
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitylistitems, entitylistitemdetails " +
-                        "WHERE eli_activedetailid = elidt_entitylistitemdetailid " +
-                        "AND elidt_ena_entityattributeid = ? AND elidt_isdefault = 1 " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entitylistitems, entitylistitemdetails
+                        WHERE eli_activedetailid = elidt_entitylistitemdetailid
+                        AND elidt_ena_entityattributeid = ? AND elidt_isdefault = 1
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityListItemFactory.prepareStatement(query);
@@ -2587,16 +2703,20 @@ public class CoreControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitylistitems, entitylistitemdetails " +
-                        "WHERE eli_activedetailid = elidt_entitylistitemdetailid " +
-                        "AND elidt_ena_entityattributeid = ? AND elidt_entitylistitemname = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM entitylistitems, entitylistitemdetails
+                        WHERE eli_activedetailid = elidt_entitylistitemdetailid
+                        AND elidt_ena_entityattributeid = ? AND elidt_entitylistitemname = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitylistitems, entitylistitemdetails " +
-                        "WHERE eli_activedetailid = elidt_entitylistitemdetailid " +
-                        "AND elidt_ena_entityattributeid = ? AND elidt_entitylistitemname = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entitylistitems, entitylistitemdetails
+                        WHERE eli_activedetailid = elidt_entitylistitemdetailid
+                        AND elidt_ena_entityattributeid = ? AND elidt_entitylistitemname = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityListItemFactory.prepareStatement(query);
@@ -2635,16 +2755,20 @@ public class CoreControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitylistitems, entitylistitemdetails " +
-                        "WHERE eli_activedetailid = elidt_entitylistitemdetailid AND elidt_ena_entityattributeid = ? " +
-                        "ORDER BY elidt_sortorder, elidt_entitylistitemname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM entitylistitems, entitylistitemdetails
+                        WHERE eli_activedetailid = elidt_entitylistitemdetailid AND elidt_ena_entityattributeid = ?
+                        ORDER BY elidt_sortorder, elidt_entitylistitemname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitylistitems, entitylistitemdetails " +
-                        "WHERE eli_activedetailid = elidt_entitylistitemdetailid AND elidt_ena_entityattributeid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entitylistitems, entitylistitemdetails
+                        WHERE eli_activedetailid = elidt_entitylistitemdetailid AND elidt_ena_entityattributeid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityListItemFactory.prepareStatement(query);
@@ -2674,16 +2798,20 @@ public class CoreControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitylistitems, entitylistitemdetails " +
-                        "WHERE eli_activedetailid = elidt_entitylistitemdetailid AND elidt_entitylistitemname = ? " +
-                        "ORDER BY elidt_sortorder, elidt_entitylistitemname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM entitylistitems, entitylistitemdetails
+                        WHERE eli_activedetailid = elidt_entitylistitemdetailid AND elidt_entitylistitemname = ?
+                        ORDER BY elidt_sortorder, elidt_entitylistitemname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitylistitems, entitylistitemdetails " +
-                        "WHERE eli_activedetailid = elidt_entitylistitemdetailid AND elidt_entitylistitemname = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entitylistitems, entitylistitemdetails
+                        WHERE eli_activedetailid = elidt_entitylistitemdetailid AND elidt_entitylistitemname = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityListItemFactory.prepareStatement(query);
@@ -2708,9 +2836,11 @@ public class CoreControl
 
     public long countEntityListItems(EntityAttribute entityAttribute) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM entitylistitems, entitylistitemdetails " +
-                "WHERE eli_activedetailid = elidt_entitylistitemdetailid AND elidt_ena_entityattributeid = ?",
+                """
+                SELECT COUNT(*)
+                FROM entitylistitems, entitylistitemdetails
+                WHERE eli_activedetailid = elidt_entitylistitemdetailid AND elidt_ena_entityattributeid = ?
+                """,
                 entityAttribute);
     }
 
@@ -2889,14 +3019,18 @@ public class CoreControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitylistitemdescriptions " +
-                        "WHERE elid_eli_entitylistitemid = ? AND elid_lang_languageid = ? AND elid_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM entitylistitemdescriptions
+                        WHERE elid_eli_entitylistitemid = ? AND elid_lang_languageid = ? AND elid_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitylistitemdescriptions " +
-                        "WHERE elid_eli_entitylistitemid = ? AND elid_lang_languageid = ? AND elid_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entitylistitemdescriptions
+                        WHERE elid_eli_entitylistitemid = ? AND elid_lang_languageid = ? AND elid_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityListItemDescriptionFactory.prepareStatement(query);
@@ -2936,15 +3070,20 @@ public class CoreControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitylistitemdescriptions, languages " +
-                        "WHERE elid_eli_entitylistitemid = ? AND elid_thrutime = ? AND elid_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM entitylistitemdescriptions, languages
+                        WHERE elid_eli_entitylistitemid = ? AND elid_thrutime = ? AND elid_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitylistitemdescriptions " +
-                        "WHERE elid_eli_entitylistitemid = ? AND elid_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entitylistitemdescriptions
+                        WHERE elid_eli_entitylistitemid = ? AND elid_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityListItemDescriptionFactory.prepareStatement(query);
@@ -3086,16 +3225,20 @@ public class CoreControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityintegerranges, entityintegerrangedetails " +
-                        "WHERE enir_activedetailid = enirdt_entityintegerrangedetailid " +
-                        "AND enirdt_ena_entityattributeid = ? AND enirdt_isdefault = 1";
+                query = """
+                        SELECT _ALL_
+                        FROM entityintegerranges, entityintegerrangedetails
+                        WHERE enir_activedetailid = enirdt_entityintegerrangedetailid
+                        AND enirdt_ena_entityattributeid = ? AND enirdt_isdefault = 1
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityintegerranges, entityintegerrangedetails " +
-                        "WHERE enir_activedetailid = enirdt_entityintegerrangedetailid " +
-                        "AND enirdt_ena_entityattributeid = ? AND enirdt_isdefault = 1 " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entityintegerranges, entityintegerrangedetails
+                        WHERE enir_activedetailid = enirdt_entityintegerrangedetailid
+                        AND enirdt_ena_entityattributeid = ? AND enirdt_isdefault = 1
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityIntegerRangeFactory.prepareStatement(query);
@@ -3129,16 +3272,20 @@ public class CoreControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityintegerranges, entityintegerrangedetails " +
-                        "WHERE enir_activedetailid = enirdt_entityintegerrangedetailid " +
-                        "AND enirdt_ena_entityattributeid = ? AND enirdt_entityintegerrangename = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM entityintegerranges, entityintegerrangedetails
+                        WHERE enir_activedetailid = enirdt_entityintegerrangedetailid
+                        AND enirdt_ena_entityattributeid = ? AND enirdt_entityintegerrangename = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityintegerranges, entityintegerrangedetails " +
-                        "WHERE enir_activedetailid = enirdt_entityintegerrangedetailid " +
-                        "AND enirdt_ena_entityattributeid = ? AND enirdt_entityintegerrangename = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entityintegerranges, entityintegerrangedetails
+                        WHERE enir_activedetailid = enirdt_entityintegerrangedetailid
+                        AND enirdt_ena_entityattributeid = ? AND enirdt_entityintegerrangename = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityIntegerRangeFactory.prepareStatement(query);
@@ -3177,16 +3324,20 @@ public class CoreControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityintegerranges, entityintegerrangedetails " +
-                        "WHERE enir_activedetailid = enirdt_entityintegerrangedetailid AND enirdt_ena_entityattributeid = ? " +
-                        "ORDER BY enirdt_sortorder, enirdt_entityintegerrangename " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM entityintegerranges, entityintegerrangedetails
+                        WHERE enir_activedetailid = enirdt_entityintegerrangedetailid AND enirdt_ena_entityattributeid = ?
+                        ORDER BY enirdt_sortorder, enirdt_entityintegerrangename
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityintegerranges, entityintegerrangedetails " +
-                        "WHERE enir_activedetailid = enirdt_entityintegerrangedetailid AND enirdt_ena_entityattributeid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entityintegerranges, entityintegerrangedetails
+                        WHERE enir_activedetailid = enirdt_entityintegerrangedetailid AND enirdt_ena_entityattributeid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityIntegerRangeFactory.prepareStatement(query);
@@ -3211,9 +3362,11 @@ public class CoreControl
 
     public long countEntityIntegerRanges(EntityAttribute entityAttribute) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM entityintegerranges, entityintegerrangedetails " +
-                "WHERE enir_activedetailid = enirdt_entityintegerrangedetailid AND enirdt_ena_entityattributeid = ?",
+                """
+                SELECT COUNT(*)
+                FROM entityintegerranges, entityintegerrangedetails
+                WHERE enir_activedetailid = enirdt_entityintegerrangedetailid AND enirdt_ena_entityattributeid = ?
+                """,
                 entityAttribute);
     }
 
@@ -3384,14 +3537,18 @@ public class CoreControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityintegerrangedescriptions " +
-                        "WHERE enird_enir_entityintegerrangeid = ? AND enird_lang_languageid = ? AND enird_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM entityintegerrangedescriptions
+                        WHERE enird_enir_entityintegerrangeid = ? AND enird_lang_languageid = ? AND enird_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityintegerrangedescriptions " +
-                        "WHERE enird_enir_entityintegerrangeid = ? AND enird_lang_languageid = ? AND enird_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entityintegerrangedescriptions
+                        WHERE enird_enir_entityintegerrangeid = ? AND enird_lang_languageid = ? AND enird_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityIntegerRangeDescriptionFactory.prepareStatement(query);
@@ -3431,15 +3588,20 @@ public class CoreControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityintegerrangedescriptions, languages " +
-                        "WHERE enird_enir_entityintegerrangeid = ? AND enird_thrutime = ? AND enird_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM entityintegerrangedescriptions, languages
+                        WHERE enird_enir_entityintegerrangeid = ? AND enird_thrutime = ? AND enird_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityintegerrangedescriptions " +
-                        "WHERE enird_enir_entityintegerrangeid = ? AND enird_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entityintegerrangedescriptions
+                        WHERE enird_enir_entityintegerrangeid = ? AND enird_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityIntegerRangeDescriptionFactory.prepareStatement(query);
@@ -3581,16 +3743,20 @@ public class CoreControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitylongranges, entitylongrangedetails " +
-                        "WHERE enlr_activedetailid = enlrdt_entitylongrangedetailid " +
-                        "AND enlrdt_ena_entityattributeid = ? AND enlrdt_isdefault = 1";
+                query = """
+                        SELECT _ALL_
+                        FROM entitylongranges, entitylongrangedetails
+                        WHERE enlr_activedetailid = enlrdt_entitylongrangedetailid
+                        AND enlrdt_ena_entityattributeid = ? AND enlrdt_isdefault = 1
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitylongranges, entitylongrangedetails " +
-                        "WHERE enlr_activedetailid = enlrdt_entitylongrangedetailid " +
-                        "AND enlrdt_ena_entityattributeid = ? AND enlrdt_isdefault = 1 " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entitylongranges, entitylongrangedetails
+                        WHERE enlr_activedetailid = enlrdt_entitylongrangedetailid
+                        AND enlrdt_ena_entityattributeid = ? AND enlrdt_isdefault = 1
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityLongRangeFactory.prepareStatement(query);
@@ -3624,16 +3790,20 @@ public class CoreControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitylongranges, entitylongrangedetails " +
-                        "WHERE enlr_activedetailid = enlrdt_entitylongrangedetailid " +
-                        "AND enlrdt_ena_entityattributeid = ? AND enlrdt_entitylongrangename = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM entitylongranges, entitylongrangedetails
+                        WHERE enlr_activedetailid = enlrdt_entitylongrangedetailid
+                        AND enlrdt_ena_entityattributeid = ? AND enlrdt_entitylongrangename = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitylongranges, entitylongrangedetails " +
-                        "WHERE enlr_activedetailid = enlrdt_entitylongrangedetailid " +
-                        "AND enlrdt_ena_entityattributeid = ? AND enlrdt_entitylongrangename = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entitylongranges, entitylongrangedetails
+                        WHERE enlr_activedetailid = enlrdt_entitylongrangedetailid
+                        AND enlrdt_ena_entityattributeid = ? AND enlrdt_entitylongrangename = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityLongRangeFactory.prepareStatement(query);
@@ -3672,16 +3842,20 @@ public class CoreControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitylongranges, entitylongrangedetails " +
-                        "WHERE enlr_activedetailid = enlrdt_entitylongrangedetailid AND enlrdt_ena_entityattributeid = ? " +
-                        "ORDER BY enlrdt_sortorder, enlrdt_entitylongrangename " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM entitylongranges, entitylongrangedetails
+                        WHERE enlr_activedetailid = enlrdt_entitylongrangedetailid AND enlrdt_ena_entityattributeid = ?
+                        ORDER BY enlrdt_sortorder, enlrdt_entitylongrangename
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitylongranges, entitylongrangedetails " +
-                        "WHERE enlr_activedetailid = enlrdt_entitylongrangedetailid AND enlrdt_ena_entityattributeid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entitylongranges, entitylongrangedetails
+                        WHERE enlr_activedetailid = enlrdt_entitylongrangedetailid AND enlrdt_ena_entityattributeid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityLongRangeFactory.prepareStatement(query);
@@ -3706,9 +3880,11 @@ public class CoreControl
 
     public long countEntityLongRanges(EntityAttribute entityAttribute) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM entitylongranges, entitylongrangedetails " +
-                "WHERE enlr_activedetailid = enlrdt_entitylongrangedetailid AND enlrdt_ena_entityattributeid = ?",
+                """
+                SELECT COUNT(*)
+                FROM entitylongranges, entitylongrangedetails
+                WHERE enlr_activedetailid = enlrdt_entitylongrangedetailid AND enlrdt_ena_entityattributeid = ?
+                """,
                 entityAttribute);
     }
 
@@ -3879,14 +4055,18 @@ public class CoreControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitylongrangedescriptions " +
-                        "WHERE enlrd_enlr_entitylongrangeid = ? AND enlrd_lang_languageid = ? AND enlrd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM entitylongrangedescriptions
+                        WHERE enlrd_enlr_entitylongrangeid = ? AND enlrd_lang_languageid = ? AND enlrd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitylongrangedescriptions " +
-                        "WHERE enlrd_enlr_entitylongrangeid = ? AND enlrd_lang_languageid = ? AND enlrd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entitylongrangedescriptions
+                        WHERE enlrd_enlr_entitylongrangeid = ? AND enlrd_lang_languageid = ? AND enlrd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityLongRangeDescriptionFactory.prepareStatement(query);
@@ -3926,15 +4106,20 @@ public class CoreControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitylongrangedescriptions, languages " +
-                        "WHERE enlrd_enlr_entitylongrangeid = ? AND enlrd_thrutime = ? AND enlrd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM entitylongrangedescriptions, languages
+                        WHERE enlrd_enlr_entitylongrangeid = ? AND enlrd_thrutime = ? AND enlrd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitylongrangedescriptions " +
-                        "WHERE enlrd_enlr_entitylongrangeid = ? AND enlrd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entitylongrangedescriptions
+                        WHERE enlrd_enlr_entitylongrangeid = ? AND enlrd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityLongRangeDescriptionFactory.prepareStatement(query);
@@ -4072,14 +4257,18 @@ public class CoreControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitybooleandefaults " +
-                        "WHERE enbldef_ena_entityattributeid = ? AND enbldef_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM entitybooleandefaults
+                        WHERE enbldef_ena_entityattributeid = ? AND enbldef_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitybooleandefaults " +
-                        "WHERE enbldef_ena_entityattributeid = ? AND enbldef_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entitybooleandefaults
+                        WHERE enbldef_ena_entityattributeid = ? AND enbldef_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityBooleanDefaultFactory.prepareStatement(query);
@@ -4212,14 +4401,18 @@ public class CoreControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitybooleanattributes " +
-                        "WHERE enbla_ena_entityattributeid = ? AND enbla_eni_entityinstanceid = ? AND enbla_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM entitybooleanattributes
+                        WHERE enbla_ena_entityattributeid = ? AND enbla_eni_entityinstanceid = ? AND enbla_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitybooleanattributes " +
-                        "WHERE enbla_ena_entityattributeid = ? AND enbla_eni_entityinstanceid = ? AND enbla_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entitybooleanattributes
+                        WHERE enbla_ena_entityattributeid = ? AND enbla_eni_entityinstanceid = ? AND enbla_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityBooleanAttributeFactory.prepareStatement(query);
@@ -4257,10 +4450,12 @@ public class CoreControl
         
         try {
             var ps = entityBooleanAttributeFactory.prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM entitybooleanattributes " +
-                    "WHERE enbla_ena_entityattributeid = ? AND enbla_thrutime = ? " +
-                    "FOR UPDATE");
+                    """
+                    SELECT _ALL_
+                    FROM entitybooleanattributes
+                    WHERE enbla_ena_entityattributeid = ? AND enbla_thrutime = ?
+                    FOR UPDATE
+                    """);
             
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -4278,10 +4473,12 @@ public class CoreControl
         
         try {
             var ps = entityBooleanAttributeFactory.prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM entitybooleanattributes " +
-                    "WHERE enbla_eni_entityinstanceid = ? AND enbla_thrutime = ? " +
-                    "FOR UPDATE");
+                    """
+                    SELECT _ALL_
+                    FROM entitybooleanattributes
+                    WHERE enbla_eni_entityinstanceid = ? AND enbla_thrutime = ?
+                    FOR UPDATE
+                    """);
             
             ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -4395,14 +4592,18 @@ public class CoreControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitydatedefaults " +
-                        "WHERE enddef_ena_entityattributeid = ? AND enddef_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM entitydatedefaults
+                        WHERE enddef_ena_entityattributeid = ? AND enddef_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitydatedefaults " +
-                        "WHERE enddef_ena_entityattributeid = ? AND enddef_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entitydatedefaults
+                        WHERE enddef_ena_entityattributeid = ? AND enddef_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityDateDefaultFactory.prepareStatement(query);
@@ -4534,14 +4735,18 @@ public class CoreControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitydateattributes " +
-                        "WHERE enda_ena_entityattributeid = ? AND enda_eni_entityinstanceid = ? AND enda_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM entitydateattributes
+                        WHERE enda_ena_entityattributeid = ? AND enda_eni_entityinstanceid = ? AND enda_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitydateattributes " +
-                        "WHERE enda_ena_entityattributeid = ? AND enda_eni_entityinstanceid = ? AND enda_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entitydateattributes
+                        WHERE enda_ena_entityattributeid = ? AND enda_eni_entityinstanceid = ? AND enda_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityDateAttributeFactory.prepareStatement(query);
@@ -4579,10 +4784,12 @@ public class CoreControl
         
         try {
             var ps = entityDateAttributeFactory.prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM entitydateattributes " +
-                    "WHERE enda_ena_entityattributeid = ? AND enda_thrutime = ? " +
-                    "FOR UPDATE");
+                    """
+                    SELECT _ALL_
+                    FROM entitydateattributes
+                    WHERE enda_ena_entityattributeid = ? AND enda_thrutime = ?
+                    FOR UPDATE
+                    """);
             
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -4600,10 +4807,12 @@ public class CoreControl
         
         try {
             var ps = entityDateAttributeFactory.prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM entitydateattributes " +
-                    "WHERE enda_eni_entityinstanceid = ? AND enda_thrutime = ? " +
-                    "FOR UPDATE");
+                    """
+                    SELECT _ALL_
+                    FROM entitydateattributes
+                    WHERE enda_eni_entityinstanceid = ? AND enda_thrutime = ?
+                    FOR UPDATE
+                    """);
             
             ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -4717,14 +4926,18 @@ public class CoreControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityintegerdefaults " +
-                        "WHERE enidef_ena_entityattributeid = ? AND enidef_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM entityintegerdefaults
+                        WHERE enidef_ena_entityattributeid = ? AND enidef_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityintegerdefaults " +
-                        "WHERE enidef_ena_entityattributeid = ? AND enidef_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entityintegerdefaults
+                        WHERE enidef_ena_entityattributeid = ? AND enidef_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityIntegerDefaultFactory.prepareStatement(query);
@@ -4857,14 +5070,18 @@ public class CoreControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityintegerattributes " +
-                        "WHERE enia_ena_entityattributeid = ? AND enia_eni_entityinstanceid = ? AND enia_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM entityintegerattributes
+                        WHERE enia_ena_entityattributeid = ? AND enia_eni_entityinstanceid = ? AND enia_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityintegerattributes " +
-                        "WHERE enia_ena_entityattributeid = ? AND enia_eni_entityinstanceid = ? AND enia_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entityintegerattributes
+                        WHERE enia_ena_entityattributeid = ? AND enia_eni_entityinstanceid = ? AND enia_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityIntegerAttributeFactory.prepareStatement(query);
@@ -4902,10 +5119,12 @@ public class CoreControl
         
         try {
             var ps = entityIntegerAttributeFactory.prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM entityintegerattributes " +
-                    "WHERE enia_ena_entityattributeid = ? AND enia_thrutime = ? " +
-                    "FOR UPDATE");
+                    """
+                    SELECT _ALL_
+                    FROM entityintegerattributes
+                    WHERE enia_ena_entityattributeid = ? AND enia_thrutime = ?
+                    FOR UPDATE
+                    """);
             
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -4923,10 +5142,12 @@ public class CoreControl
         
         try {
             var ps = entityIntegerAttributeFactory.prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM entityintegerattributes " +
-                    "WHERE enia_eni_entityinstanceid = ? AND enia_thrutime = ? " +
-                    "FOR UPDATE");
+                    """
+                    SELECT _ALL_
+                    FROM entityintegerattributes
+                    WHERE enia_eni_entityinstanceid = ? AND enia_thrutime = ?
+                    FOR UPDATE
+                    """);
             
             ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -5040,14 +5261,18 @@ public class CoreControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitylistitemdefaults " +
-                        "WHERE eladef_ena_entityattributeid = ? AND eladef_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM entitylistitemdefaults
+                        WHERE eladef_ena_entityattributeid = ? AND eladef_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitylistitemdefaults " +
-                        "WHERE eladef_ena_entityattributeid = ? AND eladef_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entitylistitemdefaults
+                        WHERE eladef_ena_entityattributeid = ? AND eladef_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityListItemDefaultFactory.prepareStatement(query);
@@ -5086,14 +5311,18 @@ public class CoreControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ "
-                        + "FROM entitylistitemdefaults "
-                        + "WHERE eladef_eli_entitylistitemid = ? AND eladef_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM entitylistitemdefaults
+                        WHERE eladef_eli_entitylistitemid = ? AND eladef_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ "
-                        + "FROM entitylistitemdefaults "
-                        + "WHERE eladef_eli_entitylistitemid = ? AND eladef_thrutime = ? "
-                        + "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entitylistitemdefaults
+                        WHERE eladef_eli_entitylistitemid = ? AND eladef_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityListItemDefaultFactory.prepareStatement(query);
@@ -5217,14 +5446,18 @@ public class CoreControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitylistitemattributes " +
-                        "WHERE ela_ena_entityattributeid = ? AND ela_eni_entityinstanceid = ? AND ela_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM entitylistitemattributes
+                        WHERE ela_ena_entityattributeid = ? AND ela_eni_entityinstanceid = ? AND ela_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitylistitemattributes " +
-                        "WHERE ela_ena_entityattributeid = ? AND ela_eni_entityinstanceid = ? AND ela_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entitylistitemattributes
+                        WHERE ela_ena_entityattributeid = ? AND ela_eni_entityinstanceid = ? AND ela_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityListItemAttributeFactory.prepareStatement(query);
@@ -5264,16 +5497,21 @@ public class CoreControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ "
-                        + "FROM entitylistitemattributes, entityinstances "
-                        + "WHERE ela_eli_entitylistitemid = ? AND ela_thrutime = ? "
-                        + "AND ela_eni_entityinstanceid = eni_entityinstanceid "
-                        + "ORDER BY eni_entityuniqueid";
+                query = """
+                        SELECT _ALL_
+                        FROM entitylistitemattributes, entityinstances
+                        WHERE ela_eli_entitylistitemid = ? AND ela_thrutime = ?
+                        AND ela_eni_entityinstanceid = eni_entityinstanceid
+                        ORDER BY eni_entityuniqueid
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ "
-                        + "FROM entitylistitemattributes "
-                        + "WHERE ela_eli_entitylistitemid = ? AND ela_thrutime = ? "
-                        + "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entitylistitemattributes
+                        WHERE ela_eli_entitylistitemid = ? AND ela_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityListItemAttributeFactory.prepareStatement(query);
@@ -5302,10 +5540,12 @@ public class CoreControl
         
         try {
             var ps = entityListItemAttributeFactory.prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM entitylistitemattributes " +
-                    "WHERE ela_eni_entityinstanceid = ? AND ela_thrutime = ? " +
-                    "FOR UPDATE");
+                    """
+                    SELECT _ALL_
+                    FROM entitylistitemattributes
+                    WHERE ela_eni_entityinstanceid = ? AND ela_thrutime = ?
+                    FOR UPDATE
+                    """);
             
             ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -5419,14 +5659,18 @@ public class CoreControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitylongdefaults " +
-                        "WHERE enldef_ena_entityattributeid = ? AND enldef_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM entitylongdefaults
+                        WHERE enldef_ena_entityattributeid = ? AND enldef_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitylongdefaults " +
-                        "WHERE enldef_ena_entityattributeid = ? AND enldef_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entitylongdefaults
+                        WHERE enldef_ena_entityattributeid = ? AND enldef_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityLongDefaultFactory.prepareStatement(query);
@@ -5559,14 +5803,18 @@ public class CoreControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitylongattributes " +
-                        "WHERE enla_ena_entityattributeid = ? AND enla_eni_entityinstanceid = ? AND enla_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM entitylongattributes
+                        WHERE enla_ena_entityattributeid = ? AND enla_eni_entityinstanceid = ? AND enla_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitylongattributes " +
-                        "WHERE enla_ena_entityattributeid = ? AND enla_eni_entityinstanceid = ? AND enla_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entitylongattributes
+                        WHERE enla_ena_entityattributeid = ? AND enla_eni_entityinstanceid = ? AND enla_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityLongAttributeFactory.prepareStatement(query);
@@ -5604,10 +5852,12 @@ public class CoreControl
         
         try {
             var ps = entityLongAttributeFactory.prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM entitylongattributes " +
-                    "WHERE enla_ena_entityattributeid = ? AND enla_thrutime = ? " +
-                    "FOR UPDATE");
+                    """
+                    SELECT _ALL_
+                    FROM entitylongattributes
+                    WHERE enla_ena_entityattributeid = ? AND enla_thrutime = ?
+                    FOR UPDATE
+                    """);
             
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -5625,10 +5875,12 @@ public class CoreControl
         
         try {
             var ps = entityLongAttributeFactory.prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM entitylongattributes " +
-                    "WHERE enla_eni_entityinstanceid = ? AND enla_thrutime = ? " +
-                    "FOR UPDATE");
+                    """
+                    SELECT _ALL_
+                    FROM entitylongattributes
+                    WHERE enla_eni_entityinstanceid = ? AND enla_thrutime = ?
+                    FOR UPDATE
+                    """);
             
             ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -5747,12 +5999,14 @@ public class CoreControl
         List<EntityMultipleListItemDefault> entityMultipleListItemDefaults;
 
         try {
-            var ps = entityMultipleListItemDefaultFactory.prepareStatement(
-                    "SELECT _ALL_ "
-                            + "FROM entitymultiplelistitemdefaults, entitylistitems, entitylistitemdetails "
-                            + "WHERE emlidef_ena_entityattributeid = ? AND emlidef_thrutime = ? "
-                            + "AND emlidef_eli_entitylistitemid = eli_entitylistitemid AND eli_lastdetailid = elidt_entitylistitemdetailid "
-                            + "ORDER BY elidt_sortorder, elidt_entitylistitemname");
+            var ps = entityMultipleListItemDefaultFactory.prepareStatement("""
+                    SELECT _ALL_
+                    FROM entitymultiplelistitemdefaults, entitylistitems, entitylistitemdetails
+                    WHERE emlidef_ena_entityattributeid = ? AND emlidef_thrutime = ?
+                    AND emlidef_eli_entitylistitemid = eli_entitylistitemid AND eli_lastdetailid = elidt_entitylistitemdetailid
+                    ORDER BY elidt_sortorder, elidt_entitylistitemname
+                    _LIMIT_
+                    """);
 
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -5774,16 +6028,20 @@ public class CoreControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitymultiplelistitemdefaults " +
-                        "WHERE emlidef_ena_entityattributeid = ? AND emlidef_eli_entitylistitemid = ? " +
-                        "AND emlidef_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM entitymultiplelistitemdefaults
+                        WHERE emlidef_ena_entityattributeid = ? AND emlidef_eli_entitylistitemid = ?
+                        AND emlidef_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitymultiplelistitemdefaults " +
-                        "WHERE emlidef_ena_entityattributeid = ? AND emlidef_eli_entitylistitemid = ? " +
-                        "AND emlidef_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entitymultiplelistitemdefaults
+                        WHERE emlidef_ena_entityattributeid = ? AND emlidef_eli_entitylistitemid = ?
+                        AND emlidef_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityMultipleListItemDefaultFactory.prepareStatement(query);
@@ -5818,14 +6076,18 @@ public class CoreControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ "
-                        + "FROM entitymultiplelistitemdefaults "
-                        + "WHERE emlidef_eli_entitylistitemid = ? AND emlidef_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM entitymultiplelistitemdefaults
+                        WHERE emlidef_eli_entitylistitemid = ? AND emlidef_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ "
-                        + "FROM entitymultiplelistitemdefaults "
-                        + "WHERE emlidef_eli_entitylistitemid = ? AND emlidef_thrutime = ? "
-                        + "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entitymultiplelistitemdefaults
+                        WHERE emlidef_eli_entitylistitemid = ? AND emlidef_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityMultipleListItemDefaultFactory.prepareStatement(query);
@@ -5925,11 +6187,14 @@ public class CoreControl
         
         try {
             var ps = entityMultipleListItemAttributeFactory.prepareStatement(
-                    "SELECT _ALL_ "
-                    + "FROM entitymultiplelistitemattributes, entitylistitems, entitylistitemdetails "
-                    + "WHERE emlia_ena_entityattributeid = ? AND emlia_eni_entityinstanceid = ? AND emlia_thrutime = ? "
-                    + "AND emlia_eli_entitylistitemid = eli_entitylistitemid AND eli_lastdetailid = elidt_entitylistitemdetailid "
-                    + "ORDER BY elidt_sortorder, elidt_entitylistitemname");
+                    """
+                    SELECT _ALL_
+                    FROM entitymultiplelistitemattributes, entitylistitems, entitylistitemdetails
+                    WHERE emlia_ena_entityattributeid = ? AND emlia_eni_entityinstanceid = ? AND emlia_thrutime = ?
+                    AND emlia_eli_entitylistitemid = eli_entitylistitemid AND eli_lastdetailid = elidt_entitylistitemdetailid
+                    ORDER BY elidt_sortorder, elidt_entitylistitemname
+                    _LIMIT_
+                    """);
             
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, entityInstance.getPrimaryKey().getEntityId());
@@ -5952,16 +6217,20 @@ public class CoreControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitymultiplelistitemattributes " +
-                        "WHERE emlia_ena_entityattributeid = ? AND emlia_eni_entityinstanceid = ? AND emlia_eli_entitylistitemid = ? " +
-                        "AND emlia_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM entitymultiplelistitemattributes
+                        WHERE emlia_ena_entityattributeid = ? AND emlia_eni_entityinstanceid = ? AND emlia_eli_entitylistitemid = ?
+                        AND emlia_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitymultiplelistitemattributes " +
-                        "WHERE emlia_ena_entityattributeid = ? AND emlia_eni_entityinstanceid = ? AND emlia_eli_entitylistitemid = ? " +
-                        "AND emlia_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entitymultiplelistitemattributes
+                        WHERE emlia_ena_entityattributeid = ? AND emlia_eni_entityinstanceid = ? AND emlia_eli_entitylistitemid = ?
+                        AND emlia_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityMultipleListItemAttributeFactory.prepareStatement(query);
@@ -5997,16 +6266,21 @@ public class CoreControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ "
-                        + "FROM entitymultiplelistitemattributes, entityinstances "
-                        + "WHERE emlia_eli_entitylistitemid = ? AND emlia_thrutime = ? "
-                        + "AND emlia_eni_entityinstanceid = eni_entityinstanceid "
-                        + "ORDER BY eni_entityuniqueid";
+                query = """
+                        SELECT _ALL_
+                        FROM entitymultiplelistitemattributes, entityinstances
+                        WHERE emlia_eli_entitylistitemid = ? AND emlia_thrutime = ?
+                        AND emlia_eni_entityinstanceid = eni_entityinstanceid
+                        ORDER BY eni_entityuniqueid
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ "
-                        + "FROM entitymultiplelistitemattributes "
-                        + "WHERE emlia_eli_entitylistitemid = ? AND emlia_thrutime = ? "
-                        + "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entitymultiplelistitemattributes
+                        WHERE emlia_eli_entitylistitemid = ? AND emlia_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityMultipleListItemAttributeFactory.prepareStatement(query);
@@ -6035,10 +6309,12 @@ public class CoreControl
         
         try {
             var ps = entityMultipleListItemAttributeFactory.prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM entitymultiplelistitemattributes " +
-                    "WHERE emlia_eni_entityinstanceid = ? AND emlia_thrutime = ? " +
-                    "FOR UPDATE");
+                    """
+                    SELECT _ALL_
+                    FROM entitymultiplelistitemattributes
+                    WHERE emlia_eni_entityinstanceid = ? AND emlia_thrutime = ?
+                    FOR UPDATE
+                    """);
             
             ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -6149,14 +6425,18 @@ public class CoreControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitynameattributes " +
-                        "WHERE enna_ena_entityattributeid = ? AND enna_eni_entityinstanceid = ? AND enna_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM entitynameattributes
+                        WHERE enna_ena_entityattributeid = ? AND enna_eni_entityinstanceid = ? AND enna_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitynameattributes " +
-                        "WHERE enna_ena_entityattributeid = ? AND enna_eni_entityinstanceid = ? AND enna_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entitynameattributes
+                        WHERE enna_ena_entityattributeid = ? AND enna_eni_entityinstanceid = ? AND enna_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityNameAttributeFactory.prepareStatement(query);
@@ -6194,10 +6474,12 @@ public class CoreControl
         
         try {
             var ps = entityNameAttributeFactory.prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM entitynameattributes " +
-                    "WHERE enna_ena_entityattributeid = ? AND enna_thrutime = ? " +
-                    "FOR UPDATE");
+                    """
+                    SELECT _ALL_
+                    FROM entitynameattributes
+                    WHERE enna_ena_entityattributeid = ? AND enna_thrutime = ?
+                    FOR UPDATE
+                    """);
             
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -6215,10 +6497,12 @@ public class CoreControl
         
         try {
             var ps = entityNameAttributeFactory.prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM entitynameattributes " +
-                    "WHERE enna_eni_entityinstanceid = ? AND enna_thrutime = ? " +
-                    "FOR UPDATE");
+                    """
+                    SELECT _ALL_
+                    FROM entitynameattributes
+                    WHERE enna_eni_entityinstanceid = ? AND enna_thrutime = ?
+                    FOR UPDATE
+                    """);
             
             ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -6287,9 +6571,11 @@ public class CoreControl
         
         try {
             var ps = entityNameAttributeFactory.prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM entitynameattributes " +
-                    "WHERE enna_ena_entityattributeid = ? AND enna_nameattribute = ? AND enna_thrutime = ?");
+                    """
+                    SELECT _ALL_
+                    FROM entitynameattributes
+                    WHERE enna_ena_entityattributeid = ? AND enna_nameattribute = ? AND enna_thrutime = ?
+                    """);
             
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setString(2, nameAttribute);
@@ -6353,14 +6639,18 @@ public class CoreControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitystringdefaults " +
-                        "WHERE ensdef_ena_entityattributeid = ? AND ensdef_lang_languageid = ? AND ensdef_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM entitystringdefaults
+                        WHERE ensdef_ena_entityattributeid = ? AND ensdef_lang_languageid = ? AND ensdef_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitystringdefaults " +
-                        "WHERE ensdef_ena_entityattributeid = ? AND ensdef_lang_languageid = ? AND ensdef_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entitystringdefaults
+                        WHERE ensdef_ena_entityattributeid = ? AND ensdef_lang_languageid = ? AND ensdef_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityStringDefaultFactory.prepareStatement(query);
@@ -6400,16 +6690,21 @@ public class CoreControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitystringdefaults " +
-                        "JOIN languages ON ensdef_lang_languageid = lang_languageid " +
-                        "WHERE ensdef_ena_entityattributeid = ? AND ensdef_thrutime = ? " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM entitystringdefaults
+                        JOIN languages ON ensdef_lang_languageid = lang_languageid
+                        WHERE ensdef_ena_entityattributeid = ? AND ensdef_thrutime = ?
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitystringdefaults " +
-                        "WHERE ensdef_ena_entityattributeid = ? AND ensdef_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entitystringdefaults
+                        WHERE ensdef_ena_entityattributeid = ? AND ensdef_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityStringDefaultFactory.prepareStatement(query);
@@ -6539,14 +6834,18 @@ public class CoreControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitystringattributes " +
-                        "WHERE ensa_ena_entityattributeid = ? AND ensa_eni_entityinstanceid = ? AND ensa_lang_languageid = ? AND ensa_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM entitystringattributes
+                        WHERE ensa_ena_entityattributeid = ? AND ensa_eni_entityinstanceid = ? AND ensa_lang_languageid = ? AND ensa_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitystringattributes " +
-                        "WHERE ensa_ena_entityattributeid = ? AND ensa_eni_entityinstanceid = ? AND ensa_lang_languageid = ? AND ensa_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entitystringattributes
+                        WHERE ensa_ena_entityattributeid = ? AND ensa_eni_entityinstanceid = ? AND ensa_lang_languageid = ? AND ensa_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityStringAttributeFactory.prepareStatement(query);
@@ -6595,10 +6894,12 @@ public class CoreControl
         
         try {
             var ps = entityStringAttributeFactory.prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM entitystringattributes " +
-                    "WHERE ensa_ena_entityattributeid = ? AND ensa_thrutime = ? " +
-                    "FOR UPDATE");
+                    """
+                    SELECT _ALL_
+                    FROM entitystringattributes
+                    WHERE ensa_ena_entityattributeid = ? AND ensa_thrutime = ?
+                    FOR UPDATE
+                    """);
             
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -6616,10 +6917,12 @@ public class CoreControl
         
         try {
             var ps = entityStringAttributeFactory.prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM entitystringattributes " +
-                    "WHERE ensa_eni_entityinstanceid = ? AND ensa_thrutime = ? " +
-                    "FOR UPDATE");
+                    """
+                    SELECT _ALL_
+                    FROM entitystringattributes
+                    WHERE ensa_eni_entityinstanceid = ? AND ensa_thrutime = ?
+                    FOR UPDATE
+                    """);
             
             ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -6734,14 +7037,18 @@ public class CoreControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitygeopointdefaults " +
-                        "WHERE engeopntdef_ena_entityattributeid = ? AND engeopntdef_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM entitygeopointdefaults
+                        WHERE engeopntdef_ena_entityattributeid = ? AND engeopntdef_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitygeopointdefaults " +
-                        "WHERE engeopntdef_ena_entityattributeid = ? AND engeopntdef_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entitygeopointdefaults
+                        WHERE engeopntdef_ena_entityattributeid = ? AND engeopntdef_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityGeoPointDefaultFactory.prepareStatement(query);
@@ -6876,14 +7183,18 @@ public class CoreControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitygeopointattributes " +
-                        "WHERE engeopnta_ena_entityattributeid = ? AND engeopnta_eni_entityinstanceid = ? AND engeopnta_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM entitygeopointattributes
+                        WHERE engeopnta_ena_entityattributeid = ? AND engeopnta_eni_entityinstanceid = ? AND engeopnta_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitygeopointattributes " +
-                        "WHERE engeopnta_ena_entityattributeid = ? AND engeopnta_eni_entityinstanceid = ? AND engeopnta_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entitygeopointattributes
+                        WHERE engeopnta_ena_entityattributeid = ? AND engeopnta_eni_entityinstanceid = ? AND engeopnta_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityGeoPointAttributeFactory.prepareStatement(query);
@@ -6921,10 +7232,12 @@ public class CoreControl
         
         try {
             var ps = entityGeoPointAttributeFactory.prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM entitygeopointattributes " +
-                    "WHERE engeopnta_ena_entityattributeid = ? AND engeopnta_thrutime = ? " +
-                    "FOR UPDATE");
+                    """
+                    SELECT _ALL_
+                    FROM entitygeopointattributes
+                    WHERE engeopnta_ena_entityattributeid = ? AND engeopnta_thrutime = ?
+                    FOR UPDATE
+                    """);
             
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -6942,10 +7255,12 @@ public class CoreControl
         
         try {
             var ps = entityGeoPointAttributeFactory.prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM entitygeopointattributes " +
-                    "WHERE engeopnta_eni_entityinstanceid = ? AND engeopnta_thrutime = ? " +
-                    "FOR UPDATE");
+                    """
+                    SELECT _ALL_
+                    FROM entitygeopointattributes
+                    WHERE engeopnta_eni_entityinstanceid = ? AND engeopnta_thrutime = ?
+                    FOR UPDATE
+                    """);
             
             ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -7060,14 +7375,18 @@ public class CoreControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitytimedefaults " +
-                        "WHERE entdef_ena_entityattributeid = ? AND entdef_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM entitytimedefaults
+                        WHERE entdef_ena_entityattributeid = ? AND entdef_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitytimedefaults " +
-                        "WHERE entdef_ena_entityattributeid = ? AND entdef_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entitytimedefaults
+                        WHERE entdef_ena_entityattributeid = ? AND entdef_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityTimeDefaultFactory.prepareStatement(query);
@@ -7199,14 +7518,18 @@ public class CoreControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitytimeattributes " +
-                        "WHERE enta_ena_entityattributeid = ? AND enta_eni_entityinstanceid = ? AND enta_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM entitytimeattributes
+                        WHERE enta_ena_entityattributeid = ? AND enta_eni_entityinstanceid = ? AND enta_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitytimeattributes " +
-                        "WHERE enta_ena_entityattributeid = ? AND enta_eni_entityinstanceid = ? AND enta_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entitytimeattributes
+                        WHERE enta_ena_entityattributeid = ? AND enta_eni_entityinstanceid = ? AND enta_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityTimeAttributeFactory.prepareStatement(query);
@@ -7244,10 +7567,12 @@ public class CoreControl
         
         try {
             var ps = entityTimeAttributeFactory.prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM entitytimeattributes " +
-                    "WHERE enta_ena_entityattributeid = ? AND enta_thrutime = ? " +
-                    "FOR UPDATE");
+                    """
+                    SELECT _ALL_
+                    FROM entitytimeattributes
+                    WHERE enta_ena_entityattributeid = ? AND enta_thrutime = ?
+                    FOR UPDATE
+                    """);
             
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -7265,10 +7590,12 @@ public class CoreControl
         
         try {
             var ps = entityTimeAttributeFactory.prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM entitytimeattributes " +
-                    "WHERE enta_eni_entityinstanceid = ? AND enta_thrutime = ? " +
-                    "FOR UPDATE");
+                    """
+                    SELECT _ALL_
+                    FROM entitytimeattributes
+                    WHERE enta_eni_entityinstanceid = ? AND enta_thrutime = ?
+                    FOR UPDATE
+                    """);
             
             ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -7357,16 +7684,20 @@ public class CoreControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityblobattributes " +
-                        "WHERE enba_ena_entityattributeid = ? AND enba_eni_entityinstanceid = ? AND enba_lang_languageid = ? " +
-                        "AND enba_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM entityblobattributes
+                        WHERE enba_ena_entityattributeid = ? AND enba_eni_entityinstanceid = ? AND enba_lang_languageid = ?
+                        AND enba_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityblobattributes " +
-                        "WHERE enba_ena_entityattributeid = ? AND enba_eni_entityinstanceid = ? AND enba_lang_languageid = ? " +
-                        "AND enba_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entityblobattributes
+                        WHERE enba_ena_entityattributeid = ? AND enba_eni_entityinstanceid = ? AND enba_lang_languageid = ?
+                        AND enba_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityBlobAttributeFactory.prepareStatement(query);
@@ -7415,10 +7746,12 @@ public class CoreControl
         
         try {
             var ps = entityBlobAttributeFactory.prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM entityblobattributes " +
-                    "WHERE enba_ena_entityattributeid = ? AND enba_thrutime = ? " +
-                    "FOR UPDATE");
+                    """
+                    SELECT _ALL_
+                    FROM entityblobattributes
+                    WHERE enba_ena_entityattributeid = ? AND enba_thrutime = ?
+                    FOR UPDATE
+                    """);
             
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -7436,10 +7769,12 @@ public class CoreControl
         
         try {
             var ps = entityBlobAttributeFactory.prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM entityblobattributes " +
-                    "WHERE enba_eni_entityinstanceid = ? AND enba_thrutime = ? " +
-                    "FOR UPDATE");
+                    """
+                    SELECT _ALL_
+                    FROM entityblobattributes
+                    WHERE enba_eni_entityinstanceid = ? AND enba_thrutime = ?
+                    FOR UPDATE
+                    """);
             
             ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -7555,16 +7890,20 @@ public class CoreControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityclobattributes " +
-                        "WHERE enca_ena_entityattributeid = ? AND enca_eni_entityinstanceid = ? AND enca_lang_languageid = ? " +
-                        "AND enca_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM entityclobattributes
+                        WHERE enca_ena_entityattributeid = ? AND enca_eni_entityinstanceid = ? AND enca_lang_languageid = ?
+                        AND enca_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityclobattributes " +
-                        "WHERE enca_ena_entityattributeid = ? AND enca_eni_entityinstanceid = ? AND enca_lang_languageid = ? " +
-                        "AND enca_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entityclobattributes
+                        WHERE enca_ena_entityattributeid = ? AND enca_eni_entityinstanceid = ? AND enca_lang_languageid = ?
+                        AND enca_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityClobAttributeFactory.prepareStatement(query);
@@ -7613,10 +7952,12 @@ public class CoreControl
         
         try {
             var ps = entityClobAttributeFactory.prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM entityclobattributes " +
-                    "WHERE enca_ena_entityattributeid = ? AND enca_thrutime = ? " +
-                    "FOR UPDATE");
+                    """
+                    SELECT _ALL_
+                    FROM entityclobattributes
+                    WHERE enca_ena_entityattributeid = ? AND enca_thrutime = ?
+                    FOR UPDATE
+                    """);
             
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -7634,10 +7975,12 @@ public class CoreControl
         
         try {
             var ps = entityClobAttributeFactory.prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM entityclobattributes " +
-                    "WHERE enca_eni_entityinstanceid = ? AND enca_thrutime = ? " +
-                    "FOR UPDATE");
+                    """
+                    SELECT _ALL_
+                    FROM entityclobattributes
+                    WHERE enca_eni_entityinstanceid = ? AND enca_thrutime = ?
+                    FOR UPDATE
+                    """);
             
             ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -7719,26 +8062,29 @@ public class CoreControl
     }
     
     public long countEntityAttributeEntityTypesByEntityAttribute(EntityAttribute entityAttribute) {
-        return session.queryForLong(
-                "SELECT COUNT(*) "
-                + "FROM entityattributeentitytypes "
-                + "WHERE enaent_ena_entityattributeid = ? AND enaent_thrutime = ?",
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM entityattributeentitytypes
+                WHERE enaent_ena_entityattributeid = ? AND enaent_thrutime = ?
+                """,
                 entityAttribute, Session.MAX_TIME);
     }
 
     public long countEntityAttributeEntityTypesByAllowedEntityType(EntityType allowedEntityType) {
-        return session.queryForLong(
-                "SELECT COUNT(*) "
-                + "FROM entityattributeentitytypes "
-                + "WHERE enaent_allowedentitytypeid = ? AND enaent_thrutime = ?",
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM entityattributeentitytypes
+                WHERE enaent_allowedentitytypeid = ? AND enaent_thrutime = ?
+                """,
                 allowedEntityType, Session.MAX_TIME);
     }
 
     public boolean entityAttributeEntityTypeExists(EntityAttribute entityAttribute, EntityType allowedEntityType) {
-        return 1 == session.queryForLong(
-                "SELECT COUNT(*) "
-                + "FROM entityattributeentitytypes "
-                + "WHERE enaent_ena_entityattributeid = ? AND enaent_allowedentitytypeid = ? AND enaent_thrutime = ?",
+        return 1 == session.queryForLong("""
+                SELECT COUNT(*)
+                FROM entityattributeentitytypes
+                WHERE enaent_ena_entityattributeid = ? AND enaent_allowedentitytypeid = ? AND enaent_thrutime = ?
+                """,
                 entityAttribute, allowedEntityType, Session.MAX_TIME);
     }
 
@@ -7747,15 +8093,17 @@ public class CoreControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM entityattributeentitytypes "
-                + "WHERE enaent_ena_entityattributeid = ? AND enaent_allowedentitytypeid = ? AND enaent_thrutime = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM entityattributeentitytypes "
-                + "WHERE enaent_ena_entityattributeid = ? AND enaent_allowedentitytypeid = ? AND enaent_thrutime = ? "
-                + "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM entityattributeentitytypes
+                WHERE enaent_ena_entityattributeid = ? AND enaent_allowedentitytypeid = ? AND enaent_thrutime = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM entityattributeentitytypes
+                WHERE enaent_ena_entityattributeid = ? AND enaent_allowedentitytypeid = ? AND enaent_thrutime = ?
+                FOR UPDATE
+                """);
         getEntityAttributeEntityTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -7777,19 +8125,21 @@ public class CoreControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM entityattributeentitytypes, entitytypes, entitytypedetails, componentvendors, componentvendordetails "
-                + "WHERE enaent_ena_entityattributeid = ? AND enaent_thrutime = ? "
-                + "AND enaent_allowedentitytypeid = ent_entitytypeid AND ent_lastdetailid = entdt_entitytypedetailid "
-                + "AND entdt_cvnd_componentvendorid = cvnd_componentvendorid AND cvnd_lastdetailid = cvndd_componentvendordetailid "
-                + "ORDER BY entdt_sortorder, entdt_entitytypename, cvndd_componentvendorname "
-                + "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM entityattributeentitytypes "
-                + "WHERE enaent_ena_entityattributeid = ? AND enaent_thrutime = ? "
-                + "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM entityattributeentitytypes, entitytypes, entitytypedetails, componentvendors, componentvendordetails
+                WHERE enaent_ena_entityattributeid = ? AND enaent_thrutime = ?
+                AND enaent_allowedentitytypeid = ent_entitytypeid AND ent_lastdetailid = entdt_entitytypedetailid
+                AND entdt_cvnd_componentvendorid = cvnd_componentvendorid AND cvnd_lastdetailid = cvndd_componentvendordetailid
+                ORDER BY entdt_sortorder, entdt_entitytypename, cvndd_componentvendorname
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM entityattributeentitytypes
+                WHERE enaent_ena_entityattributeid = ? AND enaent_thrutime = ?
+                FOR UPDATE
+                """);
         getEntityAttributeEntityTypesByEntityAttributeQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -7811,17 +8161,20 @@ public class CoreControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM entityattributeentitytypes, entityattributes, entityattributedetails "
-                + "WHERE enaent_allowedentitytypeid = ? AND enaent_thrutime = ? "
-                + "AND enaent_ena_entityattributeid = ena_entityattributeid AND ena_lastdetailid = enadt_entityAttributedetailid "
-                + "ORDER BY enadt_sortorder, enadt_entityAttributename");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM entityattributeentitytypes "
-                + "WHERE enaent_ena_entityattributeid = ? AND enaent_thrutime = ? "
-                + "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM entityattributeentitytypes, entityattributes, entityattributedetails
+                WHERE enaent_allowedentitytypeid = ? AND enaent_thrutime = ?
+                AND enaent_ena_entityattributeid = ena_entityattributeid AND ena_lastdetailid = enadt_entityAttributedetailid
+                ORDER BY enadt_sortorder, enadt_entityAttributename
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM entityattributeentitytypes
+                WHERE enaent_ena_entityattributeid = ? AND enaent_thrutime = ?
+                FOR UPDATE
+                """);
         getEntityAttributeEntityTypesByAllowedEntityTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -7930,16 +8283,20 @@ public class CoreControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityentityattributes " +
-                        "WHERE eea_ena_entityattributeid = ? AND eea_eni_entityinstanceid = ? " +
-                        "AND eea_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM entityentityattributes
+                        WHERE eea_ena_entityattributeid = ? AND eea_eni_entityinstanceid = ?
+                        AND eea_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entityentityattributes " +
-                        "WHERE eea_ena_entityattributeid = ? AND eea_eni_entityinstanceid = ? " +
-                        "AND eea_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entityentityattributes
+                        WHERE eea_ena_entityattributeid = ? AND eea_eni_entityinstanceid = ?
+                        AND eea_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityEntityAttributeFactory.prepareStatement(query);
@@ -7977,10 +8334,12 @@ public class CoreControl
         
         try {
             var ps = entityEntityAttributeFactory.prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM entityentityattributes " +
-                    "WHERE eea_eni_entityinstanceid = ? AND eea_thrutime = ? " +
-                    "FOR UPDATE");
+                    """
+                    SELECT _ALL_
+                    FROM entityentityattributes
+                    WHERE eea_eni_entityinstanceid = ? AND eea_thrutime = ?
+                    FOR UPDATE
+                    """);
             
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -7998,10 +8357,12 @@ public class CoreControl
         
         try {
             var ps = entityEntityAttributeFactory.prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM entityentityattributes " +
-                    "WHERE eea_eni_entityinstanceid = ? AND eea_thrutime = ? " +
-                    "FOR UPDATE");
+                    """
+                    SELECT _ALL_
+                    FROM entityentityattributes
+                    WHERE eea_eni_entityinstanceid = ? AND eea_thrutime = ?
+                    FOR UPDATE
+                    """);
             
             ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -8019,10 +8380,12 @@ public class CoreControl
         
         try {
             var ps = entityEntityAttributeFactory.prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM entityentityattributes " +
-                    "WHERE eea_entityinstanceattributeid = ? AND eea_thrutime = ? " +
-                    "FOR UPDATE");
+                    """
+                    SELECT _ALL_
+                    FROM entityentityattributes
+                    WHERE eea_entityinstanceattributeid = ? AND eea_thrutime = ?
+                    FOR UPDATE
+                    """);
             
             ps.setLong(1, entityInstanceAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -8109,13 +8472,16 @@ public class CoreControl
         
         try {
             var ps = entityCollectionAttributeFactory.prepareStatement(
-                    "SELECT _ALL_ "
-                    + "FROM entitycollectionattributes, entityinstances, entitytypes, entitytypedetails, componentvendors, componentvendordetails "
-                    + "WHERE eca_ena_entityattributeid = ? AND eca_eni_entityinstanceid = ? AND eca_thrutime = ? "
-                    + "AND eca_entityinstanceattributeid = eni_entityinstanceid "
-                    + "AND eni_ent_entitytypeid = ent_entitytypeid AND ent_lastdetailid = entdt_entitytypedetailid "
-                    + "AND entdt_cvnd_componentvendorid = cvnd_componentvendorid AND cvnd_lastdetailid = cvndd_componentvendordetailid "
-                    + "ORDER BY cvndd_componentvendorname, entdt_sortorder, entdt_entitytypename, eni_entityuniqueid");
+                    """
+                    SELECT _ALL_
+                    FROM entitycollectionattributes, entityinstances, entitytypes, entitytypedetails, componentvendors, componentvendordetails
+                    WHERE eca_ena_entityattributeid = ? AND eca_eni_entityinstanceid = ? AND eca_thrutime = ?
+                    AND eca_entityinstanceattributeid = eni_entityinstanceid
+                    AND eni_ent_entitytypeid = ent_entitytypeid AND ent_lastdetailid = entdt_entitytypedetailid
+                    AND entdt_cvnd_componentvendorid = cvnd_componentvendorid AND cvnd_lastdetailid = cvndd_componentvendordetailid
+                    ORDER BY cvndd_componentvendorname, entdt_sortorder, entdt_entitytypename, eni_entityuniqueid
+                    _LIMIT_
+                    """);
 
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, entityInstance.getPrimaryKey().getEntityId());
@@ -8138,16 +8504,20 @@ public class CoreControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitycollectionattributes " +
-                        "WHERE eca_ena_entityattributeid = ? AND eca_eni_entityinstanceid = ? AND eca_entityinstanceattributeid = ? " +
-                        "AND eca_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM entitycollectionattributes
+                        WHERE eca_ena_entityattributeid = ? AND eca_eni_entityinstanceid = ? AND eca_entityinstanceattributeid = ?
+                        AND eca_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM entitycollectionattributes " +
-                        "WHERE eca_ena_entityattributeid = ? AND eca_eni_entityinstanceid = ? AND eca_entityinstanceattributeid = ? " +
-                        "AND eca_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM entitycollectionattributes
+                        WHERE eca_ena_entityattributeid = ? AND eca_eni_entityinstanceid = ? AND eca_entityinstanceattributeid = ?
+                        AND eca_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = entityCollectionAttributeFactory.prepareStatement(query);
@@ -8181,10 +8551,12 @@ public class CoreControl
         
         try {
             var ps = entityCollectionAttributeFactory.prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM entitycollectionattributes " +
-                    "WHERE eca_eni_entityinstanceid = ? AND eca_thrutime = ? " +
-                    "FOR UPDATE");
+                    """
+                    SELECT _ALL_
+                    FROM entitycollectionattributes
+                    WHERE eca_eni_entityinstanceid = ? AND eca_thrutime = ?
+                    FOR UPDATE
+                    """);
             
             ps.setLong(1, entityAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -8202,10 +8574,12 @@ public class CoreControl
         
         try {
             var ps = entityCollectionAttributeFactory.prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM entitycollectionattributes " +
-                    "WHERE eca_eni_entityinstanceid = ? AND eca_thrutime = ? " +
-                    "FOR UPDATE");
+                    """
+                    SELECT _ALL_
+                    FROM entitycollectionattributes
+                    WHERE eca_eni_entityinstanceid = ? AND eca_thrutime = ?
+                    FOR UPDATE
+                    """);
             
             ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
@@ -8223,10 +8597,12 @@ public class CoreControl
         
         try {
             var ps = entityCollectionAttributeFactory.prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM entitycollectionattributes " +
-                    "WHERE eca_entityinstanceattributeid = ? AND eca_thrutime = ? " +
-                    "FOR UPDATE");
+                    """
+                    SELECT _ALL_
+                    FROM entitycollectionattributes
+                    WHERE eca_entityinstanceattributeid = ? AND eca_thrutime = ?
+                    FOR UPDATE
+                    """);
             
             ps.setLong(1, entityInstanceAttribute.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
