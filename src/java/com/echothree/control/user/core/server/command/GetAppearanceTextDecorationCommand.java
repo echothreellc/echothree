@@ -24,7 +24,6 @@ import com.echothree.model.control.core.server.logic.TextLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -33,9 +32,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetAppearanceTextDecorationCommand
@@ -49,14 +48,24 @@ public class GetAppearanceTextDecorationCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.Appearance.name(), SecurityRoles.AppearanceTextDecoration.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
-                new FieldDefinition("AppearanceName", FieldType.ENTITY_NAME, true, null, null)
-                );
+                new FieldDefinition("AppearanceName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("TextDecorationName", FieldType.ENTITY_NAME, true, null, null)
+        );
     }
     
+    @Inject
+    AppearanceControl appearanceControl;
+
+    @Inject
+    AppearanceLogic appearanceLogic;
+
+    @Inject
+    TextLogic textLogic;
+
     /** Creates a new instance of GetAppearanceTextDecorationCommand */
     public GetAppearanceTextDecorationCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
@@ -66,14 +75,13 @@ public class GetAppearanceTextDecorationCommand
     protected BaseResult execute() {
         var result = CoreResultFactory.getGetAppearanceTextDecorationResult();
         var appearanceName = form.getAppearanceName();
-        var appearance = AppearanceLogic.getInstance().getAppearanceByName(this, appearanceName);
+        var appearance = appearanceLogic.getAppearanceByName(this, appearanceName);
         
         if(!hasExecutionErrors()) {
             var textDecorationName = form.getTextDecorationName();
-            var textDecoration = TextLogic.getInstance().getTextDecorationByName(this, textDecorationName);
+            var textDecoration = textLogic.getTextDecorationByName(this, textDecorationName);
             
             if(!hasExecutionErrors()) {
-                var appearanceControl = Session.getModelController(AppearanceControl.class);
                 var appearanceTextDecoration = appearanceControl.getAppearanceTextDecoration(appearance, textDecoration);
 
                 if(appearanceTextDecoration != null) {
