@@ -26,6 +26,9 @@ public interface GetApplicationEditorsResult
     
     ApplicationTransfer getApplication();
     void setApplication(ApplicationTransfer application);
+
+    Long getApplicationEditorCount();
+    void setApplicationEditorCount(Long applicationEditorCount);
     
     List<ApplicationEditorTransfer> getApplicationEditors();
     void setApplicationEditors(List<ApplicationEditorTransfer> applicationEditors);

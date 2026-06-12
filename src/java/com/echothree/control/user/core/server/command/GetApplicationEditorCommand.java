@@ -25,7 +25,6 @@ import com.echothree.model.control.core.server.logic.EditorLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -34,9 +33,9 @@ import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetApplicationEditorCommand
@@ -50,15 +49,24 @@ public class GetApplicationEditorCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ApplicationEditor.name(), SecurityRoles.Review.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ApplicationName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("EditorName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
     
+    @Inject
+    protected ApplicationControl applicationControl;
+
+    @Inject
+    protected ApplicationLogic applicationLogic;
+
+    @Inject
+    protected EditorLogic editorLogic;
+
     /** Creates a new instance of GetApplicationEditorCommand */
     public GetApplicationEditorCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
@@ -68,14 +76,13 @@ public class GetApplicationEditorCommand
     protected BaseResult execute() {
         var result = CoreResultFactory.getGetApplicationEditorResult();
         var applicationName = form.getApplicationName();
-        var application = ApplicationLogic.getInstance().getApplicationByName(this, applicationName);
+        var application = applicationLogic.getApplicationByName(this, applicationName);
         
         if(!hasExecutionErrors()) {
             var editorName = form.getEditorName();
-            var editor = EditorLogic.getInstance().getEditorByName(this, editorName);
+            var editor = editorLogic.getEditorByName(this, editorName);
             
             if(!hasExecutionErrors()) {
-                var applicationControl = Session.getModelController(ApplicationControl.class);
                 var applicationEditor = applicationControl.getApplicationEditor(application, editor);
                 
                 if(applicationEditor != null) {

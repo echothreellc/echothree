@@ -23,21 +23,24 @@ import com.echothree.model.control.core.server.logic.ApplicationLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.core.server.entity.Application;
+import com.echothree.model.data.core.server.entity.ApplicationEditor;
+import com.echothree.model.data.core.server.factory.ApplicationEditorFactory;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetApplicationEditorsCommand
-        extends BaseSimpleCommand<GetApplicationEditorsForm> {
+        extends BasePaginatedMultipleEntitiesCommand<ApplicationEditor, GetApplicationEditorsForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -47,31 +50,58 @@ public class GetApplicationEditorsCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ApplicationEditor.name(), SecurityRoles.List.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ApplicationName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
     
+    @Inject
+    protected ApplicationControl applicationControl;
+
+    @Inject
+    protected ApplicationLogic applicationLogic;
+
     /** Creates a new instance of GetApplicationEditorsCommand */
     public GetApplicationEditorsCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    protected Application application;
+
     @Override
-    protected BaseResult execute() {
-        var result = CoreResultFactory.getGetApplicationEditorsResult();
+    protected void handleForm() {
         var applicationName = form.getApplicationName();
-        var application = ApplicationLogic.getInstance().getApplicationByName(this, applicationName);
+
+        application = applicationLogic.getApplicationByName(this, applicationName);
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return application == null ? null : applicationControl.countApplicationEditorsByApplication(application);
+    }
+
+    @Override
+    protected Collection<ApplicationEditor> getEntities() {
+        return application == null ? null : applicationControl.getApplicationEditorsByApplication(application);
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<ApplicationEditor> entities) {
+        var result = CoreResultFactory.getGetApplicationEditorsResult();
         
-        if(!hasExecutionErrors()) {
-            var applicationControl = Session.getModelController(ApplicationControl.class);
+        if(application != null) {
             var userVisit = getUserVisit();
-            
+
             result.setApplication(applicationControl.getApplicationTransfer(userVisit, application));
-            result.setApplicationEditors(applicationControl.getApplicationEditorTransfersByApplication(userVisit, application));
+
+            if(session.hasLimit(ApplicationEditorFactory.class)) {
+                result.setApplicationEditorCount(getTotalEntities());
+            }
+
+            result.setApplicationEditors(applicationControl.getApplicationEditorTransfers(userVisit, entities));
         }
         
         return result;
