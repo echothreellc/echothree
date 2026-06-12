@@ -31,6 +31,9 @@ public interface GetEntityAttributeEntityTypesResult
     EntityTypeTransfer getEntityType();
     void setEntityType(EntityTypeTransfer entityType);
 
+    Long getEntityAttributeEntityTypeCount();
+    void setEntityAttributeEntityTypeCount(Long entityAttributeEntityTypeCount);
+
     List<EntityAttributeEntityTypeTransfer> getEntityAttributeEntityTypes();
     void setEntityAttributeEntityTypes(List<EntityAttributeEntityTypeTransfer> entityAttributeEntityTypes);
     
