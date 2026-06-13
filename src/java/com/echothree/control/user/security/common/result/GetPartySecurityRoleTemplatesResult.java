@@ -22,8 +22,11 @@ import java.util.List;
 
 public interface GetPartySecurityRoleTemplatesResult
         extends BaseResult {
-    
+
+    Long getPartySecurityRoleTemplateCount();
+    void setPartySecurityRoleTemplateCount(Long partySecurityRoleTemplateCount);
+
     List<PartySecurityRoleTemplateTransfer> getPartySecurityRoleTemplates();
     void setPartySecurityRoleTemplates(List<PartySecurityRoleTemplateTransfer> partySecurityRoleTemplates);
-    
+
 }
