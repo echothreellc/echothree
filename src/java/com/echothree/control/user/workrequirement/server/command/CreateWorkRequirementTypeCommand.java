@@ -27,7 +27,6 @@ import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.control.workrequirement.server.control.WorkRequirementControl;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.workflow.server.entity.WorkflowStep;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -147,7 +146,7 @@ public class CreateWorkRequirementTypeCommand
                                         workRequirementControl.createWorkRequirementTypeDescription(workRequirementType, getPreferredLanguage(), description, createdBy);
                                     }
 
-                                    var workEffortScopes = workEffortControl.getWorkEffortScopes(workEffortType);
+                                    var workEffortScopes = workEffortControl.getWorkEffortScopesByWorkEffortType(workEffortType);
                                     for(var workEffortScope : workEffortScopes) {
                                         workRequirementControl.createWorkRequirementScope(workEffortScope, workRequirementType, null,
                                                 null, null, null, null, createdBy);

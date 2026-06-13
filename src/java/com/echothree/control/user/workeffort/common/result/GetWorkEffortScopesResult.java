@@ -26,6 +26,9 @@ public interface GetWorkEffortScopesResult
     
     WorkEffortTypeTransfer getWorkEffortType();
     void setWorkEffortType(WorkEffortTypeTransfer workEffortType);
+
+    Long getWorkEffortScopeCount();
+    void setWorkEffortScopeCount(Long workEffortScopeCount);
     
     List<WorkEffortScopeTransfer> getWorkEffortScopes();
     void setWorkEffortScopes(List<WorkEffortScopeTransfer> workEffortScopes);
