@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.security.server.logic;
 
+import com.echothree.model.control.security.common.exception.UnknownPartySecurityRoleTemplateNameException;
 import com.echothree.model.control.security.server.control.SecurityControl;
 import com.echothree.model.control.training.common.training.PartyTrainingClassStatusConstants;
 import com.echothree.model.control.training.server.control.TrainingControl;
@@ -26,8 +27,11 @@ import com.echothree.model.data.security.server.entity.PartySecurityRoleTemplate
 import com.echothree.model.data.security.server.entity.PartySecurityRoleTemplateTrainingClass;
 import com.echothree.model.data.security.server.entity.SecurityRole;
 import com.echothree.model.data.training.server.entity.TrainingClass;
+import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
+import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.HashSet;
 import java.util.List;
@@ -37,7 +41,8 @@ import javax.enterprise.inject.spi.CDI;
 import javax.inject.Inject;
 
 @ApplicationScoped
-public class PartySecurityRoleTemplateLogic {
+public class PartySecurityRoleTemplateLogic
+        extends BaseLogic {
 
     @Inject
     protected SecurityControl securityControl;
@@ -51,6 +56,29 @@ public class PartySecurityRoleTemplateLogic {
 
     public static PartySecurityRoleTemplateLogic getInstance() {
         return CDI.current().select(PartySecurityRoleTemplateLogic.class).get();
+    }
+
+    // --------------------------------------------------------------------------------
+    //   Party Security Role Templates
+    // --------------------------------------------------------------------------------
+
+    public PartySecurityRoleTemplate getPartySecurityRoleTemplateByName(final ExecutionErrorAccumulator eea, final String partySecurityRoleTemplateName,
+            final EntityPermission entityPermission) {
+        var partySecurityRoleTemplate = securityControl.getPartySecurityRoleTemplateByName(partySecurityRoleTemplateName, entityPermission);
+
+        if(partySecurityRoleTemplate == null) {
+            handleExecutionError(UnknownPartySecurityRoleTemplateNameException.class, eea, ExecutionErrors.UnknownPartySecurityRoleTemplateName.name(), partySecurityRoleTemplateName);
+        }
+
+        return partySecurityRoleTemplate;
+    }
+
+    public PartySecurityRoleTemplate getPartySecurityRoleTemplateByName(final ExecutionErrorAccumulator eea, final String partySecurityRoleTemplateName) {
+        return getPartySecurityRoleTemplateByName(eea, partySecurityRoleTemplateName, EntityPermission.READ_ONLY);
+    }
+
+    public PartySecurityRoleTemplate getPartySecurityRoleTemplateByNameForUpdate(final ExecutionErrorAccumulator eea, final String partySecurityRoleTemplateName) {
+        return getPartySecurityRoleTemplateByName(eea, partySecurityRoleTemplateName, EntityPermission.READ_WRITE);
     }
 
     // --------------------------------------------------------------------------------

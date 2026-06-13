@@ -22,22 +22,22 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.security.server.control.SecurityControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.model.control.security.server.logic.PartySecurityRoleTemplateLogic;
+import com.echothree.model.data.security.server.entity.PartySecurityRoleTemplate;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetPartySecurityRoleTemplateCommand
-        extends BaseSimpleCommand<GetPartySecurityRoleTemplateForm> {
+        extends BaseSingleEntityCommand<PartySecurityRoleTemplate, GetPartySecurityRoleTemplateForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -47,13 +47,19 @@ public class GetPartySecurityRoleTemplateCommand
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.PartySecurityRoleTemplate.name(), SecurityRoles.Review.name())
-                        ))
-                ));
+                ))
+        ));
         
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartySecurityRoleTemplateName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
+    
+    @Inject
+    SecurityControl securityControl;
+
+    @Inject
+    PartySecurityRoleTemplateLogic partySecurityRoleTemplateLogic;
     
     /** Creates a new instance of GetPartySecurityRoleTemplateCommand */
     public GetPartySecurityRoleTemplateCommand() {
@@ -61,18 +67,18 @@ public class GetPartySecurityRoleTemplateCommand
     }
     
     @Override
-    protected BaseResult execute() {
-        var securityControl = Session.getModelController(SecurityControl.class);
+    protected PartySecurityRoleTemplate getEntity() {
+        return partySecurityRoleTemplateLogic.getPartySecurityRoleTemplateByName(this, form.getPartySecurityRoleTemplateName());
+    }
+
+    @Override
+    protected BaseResult getResult(PartySecurityRoleTemplate partySecurityRoleTemplate) {
         var result = SecurityResultFactory.getGetPartySecurityRoleTemplateResult();
-        var partySecurityRoleTemplateName = form.getPartySecurityRoleTemplateName();
-        var partySecurityRoleTemplate = securityControl.getPartySecurityRoleTemplateByName(partySecurityRoleTemplateName);
-        
+
         if(partySecurityRoleTemplate != null) {
             result.setPartySecurityRoleTemplate(securityControl.getPartySecurityRoleTemplateTransfer(getUserVisit(), partySecurityRoleTemplate));
-        } else {
-            addExecutionError(ExecutionErrors.UnknownPartySecurityRoleTemplateName.name(), partySecurityRoleTemplateName);
         }
-        
+
         return result;
     }
     
