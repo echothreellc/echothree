@@ -8,6 +8,7 @@
 - For Command classes that Get specific types of entities:
     - For Command classes getting multiple entities extend BasePaginatedMultipleEntitiesCommand
     - For Command classes getting a single entity extend BasePaginatedSingleEntityCommand
+    - getUserVisit should only be called once and then reused
 - For Command classes that Edit specific types of entities:
     - Extend BaseAbstractEditCommand
 - Use dependency injection when possible using `@Inject` annotation
