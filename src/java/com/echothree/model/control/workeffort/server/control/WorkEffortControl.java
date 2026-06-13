@@ -34,6 +34,8 @@ import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.model.data.workeffort.common.pk.WorkEffortPK;
+import com.echothree.model.data.workeffort.common.pk.WorkEffortScopePK;
 import com.echothree.model.data.workeffort.common.pk.WorkEffortTypePK;
 import com.echothree.model.data.workeffort.server.entity.WorkEffort;
 import com.echothree.model.data.workeffort.server.entity.WorkEffortScope;
@@ -138,20 +140,42 @@ public class WorkEffortControl
                         """);
     }
 
+    public long countWorkEffortTypesByEntityType(final EntityType entityType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM workefforttypes
+                        JOIN workefforttypedetails ON wetdt_workefforttypedetailid = wet_activedetailid
+                        WHERE wetdt_ent_entitytypeid = ?
+                        """, entityType);
+    }
+
+    public long countWorkEffortTypesBySequence(final Sequence workEffortSequence) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM workefforttypes
+                        JOIN workefforttypedetails ON wetdt_workefforttypedetailid = wet_activedetailid
+                        WHERE wetdt_workeffortsequenceid = ?
+                        """, workEffortSequence);
+    }
+
     private List<WorkEffortType> getWorkEffortTypes(EntityPermission entityPermission) {
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM workefforttypes, workefforttypedetails " +
-                    "WHERE wet_activedetailid = wetdt_workefforttypedetailid " +
-                    "ORDER BY wetdt_sortorder, wetdt_workefforttypename " +
-                    "_LIMIT_";
+            query = """
+                    SELECT _ALL_
+                    FROM workefforttypes, workefforttypedetails
+                    WHERE wet_activedetailid = wetdt_workefforttypedetailid
+                    ORDER BY wetdt_sortorder, wetdt_workefforttypename
+                    _LIMIT_
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM workefforttypes, workeffortscopedetails " +
-                    "WHERE wet_activedetailid = wetdt_workefforttypedetailid " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM workefforttypes, workeffortscopedetails
+                    WHERE wet_activedetailid = wetdt_workefforttypedetailid
+                    FOR UPDATE
+                    """;
         }
 
         var ps = WorkEffortTypeFactory.getInstance().prepareStatement(query);
@@ -174,16 +198,20 @@ public class WorkEffortControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workefforttypes, workefforttypedetails " +
-                        "WHERE wet_activedetailid = wetdt_workefforttypedetailid " +
-                        "AND wetdt_workefforttypename = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM workefforttypes, workefforttypedetails
+                        WHERE wet_activedetailid = wetdt_workefforttypedetailid
+                        AND wetdt_workefforttypename = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workefforttypes, workefforttypedetails " +
-                        "WHERE wet_activedetailid = wetdt_workefforttypedetailid " +
-                        "AND wetdt_workefforttypename = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM workefforttypes, workefforttypedetails
+                        WHERE wet_activedetailid = wetdt_workefforttypedetailid
+                        AND wetdt_workefforttypename = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = WorkEffortTypeFactory.getInstance().prepareStatement(query);
@@ -298,14 +326,18 @@ public class WorkEffortControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workefforttypedescriptions " +
-                        "WHERE wetd_wet_workefforttypeid = ? AND wetd_lang_languageid = ? AND wetd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM workefforttypedescriptions
+                        WHERE wetd_wet_workefforttypeid = ? AND wetd_lang_languageid = ? AND wetd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workefforttypedescriptions " +
-                        "WHERE wetd_wet_workefforttypeid = ? AND wetd_lang_languageid = ? AND wetd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM workefforttypedescriptions
+                        WHERE wetd_wet_workefforttypeid = ? AND wetd_lang_languageid = ? AND wetd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = WorkEffortTypeDescriptionFactory.getInstance().prepareStatement(query);
@@ -345,15 +377,20 @@ public class WorkEffortControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workefforttypedescriptions, languages " +
-                        "WHERE wetd_wet_workefforttypeid = ? AND wetd_thrutime = ? AND wetd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM workefforttypedescriptions, languages
+                        WHERE wetd_wet_workefforttypeid = ? AND wetd_thrutime = ? AND wetd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workefforttypedescriptions " +
-                        "WHERE wetd_wet_workefforttypeid = ? AND wetd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM workefforttypedescriptions
+                        WHERE wetd_wet_workefforttypeid = ? AND wetd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = WorkEffortTypeDescriptionFactory.getInstance().prepareStatement(query);
@@ -479,23 +516,61 @@ public class WorkEffortControl
         
         return workEffortScope;
     }
-    
-    private List<WorkEffortScope> getWorkEffortScopes(WorkEffortType workEffortType, EntityPermission entityPermission) {
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.WorkEffortScope */
+    public WorkEffortScope getWorkEffortScopeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new WorkEffortScopePK(entityInstance.getEntityUniqueId());
+
+        return WorkEffortScopeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public WorkEffortScope getWorkEffortScopeByEntityInstance(EntityInstance entityInstance) {
+        return getWorkEffortScopeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public WorkEffortScope getWorkEffortScopeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getWorkEffortScopeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countWorkEffortScopesByWorkEffortType(final WorkEffortType workEffortType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM workeffortscopes
+                        JOIN workeffortscopedetails ON wesdt_workeffortscopedetailid = wes_activedetailid
+                        WHERE wesdt_wet_workefforttypeid = ?
+                        """, workEffortType);
+    }
+
+    public long countWorkEffortScopesByWorkEffortSequence(final Sequence workEffortSequence) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM workeffortscopes
+                        JOIN workeffortscopedetails ON wesdt_workeffortscopedetailid = wes_activedetailid
+                        WHERE wesdt_workeffortsequenceid = ?
+                        """, workEffortSequence);
+    }
+
+    private List<WorkEffortScope> getWorkEffortScopesByWorkEffortType(WorkEffortType workEffortType, EntityPermission entityPermission) {
         List<WorkEffortScope> workEffortScopes;
         
         try {
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workeffortscopes, workeffortscopedetails " +
-                        "WHERE wes_activedetailid = wesdt_workeffortscopedetailid AND wesdt_wet_workefforttypeid = ? " +
-                        "ORDER BY wesdt_sortorder, wesdt_workeffortscopename";
+                query = """
+                        SELECT _ALL_
+                        FROM workeffortscopes, workeffortscopedetails
+                        WHERE wes_activedetailid = wesdt_workeffortscopedetailid AND wesdt_wet_workefforttypeid = ?
+                        ORDER BY wesdt_sortorder, wesdt_workeffortscopename
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workeffortscopes, workeffortscopedetails " +
-                        "WHERE wes_activedetailid = wesdt_workeffortscopedetailid AND wesdt_wet_workefforttypeid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM workeffortscopes, workeffortscopedetails
+                        WHERE wes_activedetailid = wesdt_workeffortscopedetailid AND wesdt_wet_workefforttypeid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = WorkEffortScopeFactory.getInstance().prepareStatement(query);
@@ -510,12 +585,12 @@ public class WorkEffortControl
         return workEffortScopes;
     }
     
-    public List<WorkEffortScope> getWorkEffortScopes(WorkEffortType workEffortType) {
-        return getWorkEffortScopes(workEffortType, EntityPermission.READ_ONLY);
+    public List<WorkEffortScope> getWorkEffortScopesByWorkEffortType(WorkEffortType workEffortType) {
+        return getWorkEffortScopesByWorkEffortType(workEffortType, EntityPermission.READ_ONLY);
     }
     
-    public List<WorkEffortScope> getWorkEffortScopesForUpdate(WorkEffortType workEffortType) {
-        return getWorkEffortScopes(workEffortType, EntityPermission.READ_WRITE);
+    public List<WorkEffortScope> getWorkEffortScopesByWorkEffortTypeForUpdate(WorkEffortType workEffortType) {
+        return getWorkEffortScopesByWorkEffortType(workEffortType, EntityPermission.READ_WRITE);
     }
     
     private WorkEffortScope getDefaultWorkEffortScope(WorkEffortType workEffortType, EntityPermission entityPermission) {
@@ -525,16 +600,20 @@ public class WorkEffortControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workeffortscopes, workeffortscopedetails " +
-                        "WHERE wes_activedetailid = wesdt_workeffortscopedetailid " +
-                        "AND wesdt_wet_workefforttypeid = ? AND wesdt_isdefault = 1";
+                query = """
+                        SELECT _ALL_
+                        FROM workeffortscopes, workeffortscopedetails
+                        WHERE wes_activedetailid = wesdt_workeffortscopedetailid
+                        AND wesdt_wet_workefforttypeid = ? AND wesdt_isdefault = 1
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workeffortscopes, workeffortscopedetails " +
-                        "WHERE wes_activedetailid = wesdt_workeffortscopedetailid " +
-                        "AND wesdt_wet_workefforttypeid = ? AND wesdt_isdefault = 1 " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM workeffortscopes, workeffortscopedetails
+                        WHERE wes_activedetailid = wesdt_workeffortscopedetailid
+                        AND wesdt_wet_workefforttypeid = ? AND wesdt_isdefault = 1
+                        FOR UPDATE
+                        """;
             }
 
             var ps = WorkEffortScopeFactory.getInstance().prepareStatement(query);
@@ -568,16 +647,20 @@ public class WorkEffortControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workeffortscopes, workeffortscopedetails " +
-                        "WHERE wes_activedetailid = wesdt_workeffortscopedetailid " +
-                        "AND wesdt_wet_workefforttypeid = ? AND wesdt_workeffortscopename = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM workeffortscopes, workeffortscopedetails
+                        WHERE wes_activedetailid = wesdt_workeffortscopedetailid
+                        AND wesdt_wet_workefforttypeid = ? AND wesdt_workeffortscopename = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workeffortscopes, workeffortscopedetails " +
-                        "WHERE wes_activedetailid = wesdt_workeffortscopedetailid " +
-                        "AND wesdt_wet_workefforttypeid = ? AND wesdt_workeffortscopename = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM workeffortscopes, workeffortscopedetails
+                        WHERE wes_activedetailid = wesdt_workeffortscopedetailid
+                        AND wesdt_wet_workefforttypeid = ? AND wesdt_workeffortscopename = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = WorkEffortScopeFactory.getInstance().prepareStatement(query);
@@ -611,7 +694,7 @@ public class WorkEffortControl
     
     public WorkEffortScopeChoicesBean getWorkEffortScopeChoices(String defaultWorkEffortScopeChoice, Language language,
             boolean allowNullChoice, WorkEffortType workEffortType) {
-        var workEffortScopes = getWorkEffortScopes(workEffortType);
+        var workEffortScopes = getWorkEffortScopesByWorkEffortType(workEffortType);
         var size = workEffortScopes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
@@ -647,8 +730,18 @@ public class WorkEffortControl
         return workEffortScopeTransferCache.getWorkEffortScopeTransfer(userVisit, workEffortScope);
     }
     
+    public List<WorkEffortScopeTransfer> getWorkEffortScopeTransfers(UserVisit userVisit, Collection<WorkEffortScope> workEffortScopes) {
+        var workEffortScopeTransfers = new ArrayList<WorkEffortScopeTransfer>(workEffortScopes.size());
+
+        workEffortScopes.forEach((workEffortScope) ->
+                workEffortScopeTransfers.add(workEffortScopeTransferCache.getWorkEffortScopeTransfer(userVisit, workEffortScope))
+        );
+
+        return workEffortScopeTransfers;
+    }
+
     public List<WorkEffortScopeTransfer> getWorkEffortScopeTransfers(UserVisit userVisit, WorkEffortType workEffortType) {
-        var workEffortScopes = getWorkEffortScopes(workEffortType);
+        var workEffortScopes = getWorkEffortScopesByWorkEffortType(workEffortType);
         List<WorkEffortScopeTransfer> workEffortScopeTransfers = new ArrayList<>(workEffortScopes.size());
         
         workEffortScopes.forEach((workEffortScope) ->
@@ -727,7 +820,7 @@ public class WorkEffortControl
             var defaultWorkEffortScope = getDefaultWorkEffortScope(workEffortType);
             
             if(defaultWorkEffortScope == null) {
-                var workEffortScopes = getWorkEffortScopesForUpdate(workEffortType);
+                var workEffortScopes = getWorkEffortScopesByWorkEffortTypeForUpdate(workEffortType);
                 
                 if(!workEffortScopes.isEmpty()) {
                     var iter = workEffortScopes.iterator();
@@ -752,7 +845,7 @@ public class WorkEffortControl
     }
     
     public void deleteWorkEffortScopesByWorkEffortType(WorkEffortType workEffortType, BasePK deletedBy) {
-        var workEffortScopes = getWorkEffortScopesForUpdate(workEffortType);
+        var workEffortScopes = getWorkEffortScopesByWorkEffortTypeForUpdate(workEffortType);
         
         workEffortScopes.forEach((workEffortScope) -> {
             deleteWorkEffortScope(workEffortScope, false, deletedBy);
@@ -782,14 +875,18 @@ public class WorkEffortControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workeffortscopedescriptions " +
-                        "WHERE wesd_wes_workeffortscopeid = ? AND wesd_lang_languageid = ? AND wesd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM workeffortscopedescriptions
+                        WHERE wesd_wes_workeffortscopeid = ? AND wesd_lang_languageid = ? AND wesd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workeffortscopedescriptions " +
-                        "WHERE wesd_wes_workeffortscopeid = ? AND wesd_lang_languageid = ? AND wesd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM workeffortscopedescriptions
+                        WHERE wesd_wes_workeffortscopeid = ? AND wesd_lang_languageid = ? AND wesd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = WorkEffortScopeDescriptionFactory.getInstance().prepareStatement(query);
@@ -829,15 +926,20 @@ public class WorkEffortControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workeffortscopedescriptions, languages " +
-                        "WHERE wesd_wes_workeffortscopeid = ? AND wesd_thrutime = ? AND wesd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                query = """
+                        SELECT _ALL_
+                        FROM workeffortscopedescriptions, languages
+                        WHERE wesd_wes_workeffortscopeid = ? AND wesd_thrutime = ? AND wesd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workeffortscopedescriptions " +
-                        "WHERE wesd_wes_workeffortscopeid = ? AND wesd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM workeffortscopedescriptions
+                        WHERE wesd_wes_workeffortscopeid = ? AND wesd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = WorkEffortScopeDescriptionFactory.getInstance().prepareStatement(query);
@@ -949,7 +1051,40 @@ public class WorkEffortControl
         
         return workEffort;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.WorkEffort */
+    public WorkEffort getWorkEffortByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new WorkEffortPK(entityInstance.getEntityUniqueId());
+
+        return WorkEffortFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public WorkEffort getWorkEffortByEntityInstance(EntityInstance entityInstance) {
+        return getWorkEffortByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public WorkEffort getWorkEffortByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getWorkEffortByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countWorkEffortsByOwningEntityInstanceId(final EntityInstance owningEntityInstanceId) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM workefforts
+                        JOIN workeffortdetails ON weffdt_workeffortdetailid = weff_activedetailid
+                        WHERE weffdt_owningentityinstanceid = ?
+                        """, owningEntityInstanceId);
+    }
+
+    public long countWorkEffortsByWorkEffortScope(final WorkEffortScope workEffortScope) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM workefforts
+                        JOIN workeffortdetails ON weffdt_workeffortdetailid = weff_activedetailid
+                        WHERE weffdt_wes_workeffortscopeid = ?
+                        """, workEffortScope);
+    }
+
     private List<WorkEffort> getWorkEffortsByWorkEffortScope(WorkEffortScope workEffortScope, EntityPermission entityPermission) {
         List<WorkEffort> workEfforts;
 
@@ -957,17 +1092,22 @@ public class WorkEffortControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workefforts, workeffortdetails " +
-                        "WHERE weff_activedetailid = weffdt_workeffortdetailid " +
-                        "AND weffdt_wes_workeffortscopeid = ? " +
-                        "ORDER BY weffdt_workeffortname";
+                query = """
+                        SELECT _ALL_
+                        FROM workefforts, workeffortdetails
+                        WHERE weff_activedetailid = weffdt_workeffortdetailid
+                        AND weffdt_wes_workeffortscopeid = ?
+                        ORDER BY weffdt_workeffortname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workefforts, workeffortdetails " +
-                        "WHERE weff_activedetailid = weffdt_workeffortdetailid " +
-                        "AND weffdt_wes_workeffortscopeid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM workefforts, workeffortdetails
+                        WHERE weff_activedetailid = weffdt_workeffortdetailid
+                        AND weffdt_wes_workeffortscopeid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = WorkEffortFactory.getInstance().prepareStatement(query);
@@ -997,17 +1137,22 @@ public class WorkEffortControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workefforts, workeffortdetails " +
-                        "WHERE weff_activedetailid = weffdt_workeffortdetailid " +
-                        "AND weffdt_owningentityinstanceid = ? " +
-                        "ORDER BY weffdt_workeffortname";
+                query = """
+                        SELECT _ALL_
+                        FROM workefforts, workeffortdetails
+                        WHERE weff_activedetailid = weffdt_workeffortdetailid
+                        AND weffdt_owningentityinstanceid = ?
+                        ORDER BY weffdt_workeffortname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workefforts, workeffortdetails " +
-                        "WHERE weff_activedetailid = weffdt_workeffortdetailid " +
-                        "AND weffdt_owningentityinstanceid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM workefforts, workeffortdetails
+                        WHERE weff_activedetailid = weffdt_workeffortdetailid
+                        AND weffdt_owningentityinstanceid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = WorkEffortFactory.getInstance().prepareStatement(query);
@@ -1037,16 +1182,20 @@ public class WorkEffortControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workefforts, workeffortdetails " +
-                        "WHERE weff_activedetailid = weffdt_workeffortdetailid " +
-                        "AND weffdt_workeffortname = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM workefforts, workeffortdetails
+                        WHERE weff_activedetailid = weffdt_workeffortdetailid
+                        AND weffdt_workeffortname = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workefforts, workeffortdetails " +
-                        "WHERE weff_activedetailid = weffdt_workeffortdetailid " +
-                        "AND weffdt_workeffortname = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM workefforts, workeffortdetails
+                        WHERE weff_activedetailid = weffdt_workeffortdetailid
+                        AND weffdt_workeffortname = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = WorkEffortFactory.getInstance().prepareStatement(query);
@@ -1076,16 +1225,20 @@ public class WorkEffortControl
             String query = null;
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workefforts, workeffortdetails " +
-                        "WHERE weff_activedetailid = weffdt_workeffortdetailid " +
-                        "AND weffdt_owningentityinstanceid = ? AND weffdt_wes_workeffortscopeid = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM workefforts, workeffortdetails
+                        WHERE weff_activedetailid = weffdt_workeffortdetailid
+                        AND weffdt_owningentityinstanceid = ? AND weffdt_wes_workeffortscopeid = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workefforts, workeffortdetails " +
-                        "WHERE weff_activedetailid = weffdt_workeffortdetailid " +
-                        "AND weffdt_owningentityinstanceid = ? AND weffdt_wes_workeffortscopeid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM workefforts, workeffortdetails
+                        WHERE weff_activedetailid = weffdt_workeffortdetailid
+                        AND weffdt_owningentityinstanceid = ? AND weffdt_wes_workeffortscopeid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = WorkEffortFactory.getInstance().prepareStatement(query);
