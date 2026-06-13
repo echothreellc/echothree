@@ -22,22 +22,26 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.control.warehouse.server.logic.WarehouseLogic;
+import com.echothree.model.data.warehouse.server.entity.Location;
+import com.echothree.model.data.warehouse.server.entity.LocationCapacity;
+import com.echothree.model.data.warehouse.server.factory.LocationCapacityFactory;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetLocationCapacitiesCommand
-        extends BaseSimpleCommand<GetLocationCapacitiesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<LocationCapacity, GetLocationCapacitiesForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -53,38 +57,65 @@ public class GetLocationCapacitiesCommand
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("WarehouseName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LocationName", FieldType.ENTITY_NAME, true, null, null)
-                );
+        );
     }
     
+    @Inject
+    WarehouseControl warehouseControl;
+
+    @Inject
+    WarehouseLogic warehouseLogic;
+
     /** Creates a new instance of GetLocationCapacitiesCommand */
     public GetLocationCapacitiesCommand() {
         super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    Location location;
+
     @Override
-    protected BaseResult execute() {
-        var warehouseControl = Session.getModelController(WarehouseControl.class);
-        var result = WarehouseResultFactory.getGetLocationCapacitiesResult();
+    protected void handleForm() {
         var warehouseName = form.getWarehouseName();
-        var warehouse = warehouseControl.getWarehouseByName(warehouseName);
-        
-        if(warehouse != null) {
+        var warehouse = warehouseLogic.getWarehouseByName(this, warehouseName, null, null, false);
+
+        if(!hasExecutionErrors()) {
             var locationName = form.getLocationName();
-            var location = warehouseControl.getLocationByName(warehouse.getParty(), locationName);
-            
-            if(location != null) {
-                var userVisit = getUserVisit();
-                
-                result.setLocation(warehouseControl.getLocationTransfer(userVisit, location));
-                result.setLocationCapacities(warehouseControl.getLocationCapacityTransfersByLocation(userVisit, location));
-            } else {
+
+            location = warehouseControl.getLocationByName(warehouse.getParty(), locationName);
+
+            if(location == null) {
                 addExecutionError(ExecutionErrors.UnknownLocationName.name(), locationName);
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownWarehouseName.name(), warehouseName);
         }
-        
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return hasExecutionErrors() ? null : warehouseControl.countLocationCapacitiesByLocation(location);
+    }
+
+    @Override
+    protected Collection<LocationCapacity> getEntities() {
+        return hasExecutionErrors() ? null : warehouseControl.getLocationCapacitiesByLocation(location);
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<LocationCapacity> entities) {
+        var result = WarehouseResultFactory.getGetLocationCapacitiesResult();
+
+        if(entities != null) {
+            var userVisit = getUserVisit();
+
+            result.setLocation(warehouseControl.getLocationTransfer(userVisit, location));
+
+            if(session.hasLimit(LocationCapacityFactory.class)) {
+                result.setLocationCapacityCount(getTotalEntities());
+            }
+
+            result.setLocationCapacities(warehouseControl.getLocationCapacityTransfers(userVisit, entities));
+        }
+
         return result;
     }
-    
+
 }
