@@ -247,9 +247,10 @@ public class WorkflowControl
     }
 
     public long countWorkflowStepTypes() {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM workflowsteptypes");
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM workflowsteptypes
+                """);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.WorkflowStepType */
@@ -272,15 +273,17 @@ public class WorkflowControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM workflowsteptypes " +
-                        "WHERE wkflst_workflowsteptypename = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM workflowsteptypes " +
-                        "WHERE wkflst_workflowsteptypename = ? " +
-                        "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM workflowsteptypes
+                WHERE wkflst_workflowsteptypename = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM workflowsteptypes
+                WHERE wkflst_workflowsteptypename = ?
+                FOR UPDATE
+                """);
         getWorkflowStepTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -301,15 +304,17 @@ public class WorkflowControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM workflowsteptypes " +
-                "WHERE wkflst_isdefault = 1");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM workflowsteptypes " +
-                "WHERE wkflst_isdefault = 1 " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM workflowsteptypes
+                WHERE wkflst_isdefault = 1
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM workflowsteptypes
+                WHERE wkflst_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultWorkflowStepTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -330,15 +335,17 @@ public class WorkflowControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM workflowsteptypes " +
-                "ORDER BY wkflst_sortorder, wkflst_workflowsteptypename " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM workflowsteptypes " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM workflowsteptypes
+                ORDER BY wkflst_sortorder, wkflst_workflowsteptypename
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM workflowsteptypes
+                FOR UPDATE
+                """);
         getWorkflowStepTypesQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -422,10 +429,11 @@ public class WorkflowControl
         WorkflowStepTypeDescription workflowStepTypeDescription;
         
         try {
-            var ps = WorkflowStepTypeDescriptionFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM workflowsteptypedescriptions " +
-                    "WHERE wkflstd_wkflst_workflowsteptypeid = ? AND wkflstd_lang_languageid = ?");
+            var ps = WorkflowStepTypeDescriptionFactory.getInstance().prepareStatement("""
+                    SELECT _ALL_
+                    FROM workflowsteptypedescriptions
+                    WHERE wkflstd_wkflst_workflowsteptypeid = ? AND wkflstd_lang_languageid = ?
+                    """);
             
             ps.setLong(1, workflowStepType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -477,18 +485,20 @@ public class WorkflowControl
     }
 
     public long countWorkflows() {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM workflows, workflowdetails " +
-                "WHERE wkfl_activedetailid = wkfldt_workflowdetailid");
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM workflows, workflowdetails
+                WHERE wkfl_activedetailid = wkfldt_workflowdetailid
+                """);
     }
 
     public long countWorkflowsBySelectorKind(SelectorKind selectorKind) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM workflowselectorkinds, workflows, workflowdetails " +
-                "WHERE wkflslk_slk_selectorkindid = ? AND wkflslk_thrutime = ? AND wkflslk_wkfl_workflowid = wkfl_workflowid " +
-                "AND wkfl_activedetailid = wkfldt_workflowdetailid",
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM workflowselectorkinds, workflows, workflowdetails
+                WHERE wkflslk_slk_selectorkindid = ? AND wkflslk_thrutime = ? AND wkflslk_wkfl_workflowid = wkfl_workflowid
+                AND wkfl_activedetailid = wkfldt_workflowdetailid
+                """,
                 selectorKind, Session.MAX_TIME);
     }
 
@@ -508,37 +518,40 @@ public class WorkflowControl
     }
 
     public List<Workflow> getWorkflows() {
-        var ps = WorkflowFactory.getInstance().prepareStatement(
-                "SELECT _ALL_ " +
-                "FROM workflows, workflowdetails " +
-                "WHERE wkfl_activedetailid = wkfldt_workflowdetailid " +
-                "ORDER BY wkfldt_sortorder, wkfldt_workflowname " +
-                "_LIMIT_");
+        var ps = WorkflowFactory.getInstance().prepareStatement("""
+                SELECT _ALL_
+                FROM workflows, workflowdetails
+                WHERE wkfl_activedetailid = wkfldt_workflowdetailid
+                ORDER BY wkfldt_sortorder, wkfldt_workflowname
+                _LIMIT_
+                """);
         
         return WorkflowFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
     
     public List<Workflow> getWorkflowsBySelectorKind(SelectorKind selectorKind) {
-        var ps = WorkflowFactory.getInstance().prepareStatement(
-                "SELECT _ALL_ " +
-                "FROM workflowselectorkinds, workflows, workflowdetails " +
-                "WHERE wkflslk_slk_selectorkindid = ? AND wkflslk_thrutime = ? " +
-                "AND wkflslk_wkfl_workflowid = wkfl_workflowid AND wkfl_lastdetailid = wkfldt_workflowdetailid " +
-                "ORDER BY wkfldt_sortorder, wkfldt_workflowname " +
-                "_LIMIT_");
+        var ps = WorkflowFactory.getInstance().prepareStatement("""
+                SELECT _ALL_
+                FROM workflowselectorkinds, workflows, workflowdetails
+                WHERE wkflslk_slk_selectorkindid = ? AND wkflslk_thrutime = ?
+                AND wkflslk_wkfl_workflowid = wkfl_workflowid AND wkfl_lastdetailid = wkfldt_workflowdetailid
+                ORDER BY wkfldt_sortorder, wkfldt_workflowname
+                _LIMIT_
+                """);
 
         return WorkflowFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps,
                 selectorKind, Session.MAX_TIME);
     }
     
     public List<Workflow> getWorkflowsByEntityType(final EntityType entityType) {
-        var ps = WorkflowFactory.getInstance().prepareStatement(
-                "SELECT _ALL_ "
-                + "FROM workflows, workflowdetails, workflowentitytypes "
-                + "WHERE wkfl_activedetailid = wkfldt_workflowdetailid "
-                + "AND wkfl_workflowid = wkflent_wkfl_workflowid AND wkflent_ent_entitytypeid = ? AND wkflent_thrutime = ? "
-                + "ORDER BY wkfldt_sortorder, wkfldt_workflowname "
-                + "_LIMIT_");
+        var ps = WorkflowFactory.getInstance().prepareStatement("""
+                SELECT _ALL_
+                FROM workflows, workflowdetails, workflowentitytypes
+                WHERE wkfl_activedetailid = wkfldt_workflowdetailid
+                AND wkfl_workflowid = wkflent_wkfl_workflowid AND wkflent_ent_entitytypeid = ? AND wkflent_thrutime = ?
+                ORDER BY wkfldt_sortorder, wkfldt_workflowname
+                _LIMIT_
+                """);
 
         return WorkflowFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps,
                 entityType, Session.MAX_TIME);
@@ -549,15 +562,17 @@ public class WorkflowControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM workflows, workflowdetails " +
-                "WHERE wkfl_activedetailid = wkfldt_workflowdetailid AND wkfldt_workflowname = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM workflows, workflowdetails " +
-                "WHERE wkfl_activedetailid = wkfldt_workflowdetailid AND wkfldt_workflowname = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM workflows, workflowdetails
+                WHERE wkfl_activedetailid = wkfldt_workflowdetailid AND wkfldt_workflowname = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM workflows, workflowdetails
+                WHERE wkfl_activedetailid = wkfldt_workflowdetailid AND wkfldt_workflowname = ?
+                FOR UPDATE
+                """);
         getWorkflowByNameQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -694,15 +709,17 @@ public class WorkflowControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM workflowdescriptions " +
-                "WHERE wkfld_wkfl_workflowid = ? AND wkfld_lang_languageid = ? AND wkfld_thrutime = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM workflowdescriptions " +
-                "WHERE wkfld_wkfl_workflowid = ? AND wkfld_lang_languageid = ? AND wkfld_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM workflowdescriptions
+                WHERE wkfld_wkfl_workflowid = ? AND wkfld_lang_languageid = ? AND wkfld_thrutime = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM workflowdescriptions
+                WHERE wkfld_wkfl_workflowid = ? AND wkfld_lang_languageid = ? AND wkfld_thrutime = ?
+                FOR UPDATE
+                """);
         getWorkflowDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -732,17 +749,19 @@ public class WorkflowControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
         
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM workflowdescriptions, languages " +
-                "WHERE wkfld_wkfl_workflowid = ? AND wkfld_thrutime = ? AND wkfld_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortorder, lang_languageisoname " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM workflowdescriptions " +
-                "WHERE wkfld_wkfl_workflowid = ? AND wkfld_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM workflowdescriptions, languages
+                WHERE wkfld_wkfl_workflowid = ? AND wkfld_thrutime = ? AND wkfld_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM workflowdescriptions
+                WHERE wkfld_wkfl_workflowid = ? AND wkfld_thrutime = ?
+                FOR UPDATE
+                """);
         getWorkflowDescriptionsByWorkflowQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -858,11 +877,12 @@ public class WorkflowControl
     }
 
     public long countWorkflowStepsByWorkflow(Workflow workflow) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM workflowsteps, workflowstepdetails " +
-                "WHERE wkfls_activedetailid = wkflsdt_workflowstepdetailid " +
-                "AND wkflsdt_wkfl_workflowid = ?",
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM workflowsteps, workflowstepdetails
+                WHERE wkfls_activedetailid = wkflsdt_workflowstepdetailid
+                AND wkflsdt_wkfl_workflowid = ?
+                """,
                 workflow);
     }
 
@@ -886,17 +906,19 @@ public class WorkflowControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM workflowsteps, workflowstepdetails " +
-                "WHERE wkfls_activedetailid = wkflsdt_workflowstepdetailid AND wkflsdt_wkfl_workflowid = ? " +
-                "AND wkflsdt_isdefault = 1");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM workflowsteps, workflowstepdetails " +
-                "WHERE wkfls_activedetailid = wkflsdt_workflowstepdetailid AND wkflsdt_wkfl_workflowid = ? " +
-                "AND wkflsdt_isdefault = 1 " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM workflowsteps, workflowstepdetails
+                WHERE wkfls_activedetailid = wkflsdt_workflowstepdetailid AND wkflsdt_wkfl_workflowid = ?
+                AND wkflsdt_isdefault = 1
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM workflowsteps, workflowstepdetails
+                WHERE wkfls_activedetailid = wkflsdt_workflowstepdetailid AND wkflsdt_wkfl_workflowid = ?
+                AND wkflsdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultWorkflowStepQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -922,18 +944,19 @@ public class WorkflowControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM workflowsteps, workflowstepdetails " +
-                "WHERE wkfls_activedetailid = wkflsdt_workflowstepdetailid AND wkflsdt_wkfl_workflowid = ? " +
-                "ORDER BY wkflsdt_sortorder, wkflsdt_workflowstepname " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM workflowsteps, workflowstepdetails " +
-                "WHERE wkfls_activedetailid = wkflsdt_workflowstepdetailid AND wkflsdt_wkfl_workflowid = ? " +
-                "ORDER BY wkflsdt_sortorder, wkflsdt_workflowstepname " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM workflowsteps, workflowstepdetails
+                WHERE wkfls_activedetailid = wkflsdt_workflowstepdetailid AND wkflsdt_wkfl_workflowid = ?
+                ORDER BY wkflsdt_sortorder, wkflsdt_workflowstepname
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM workflowsteps, workflowstepdetails
+                WHERE wkfls_activedetailid = wkflsdt_workflowstepdetailid AND wkflsdt_wkfl_workflowid = ?
+                FOR UPDATE
+                """);
         getWorkflowStepsByWorkflowQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -955,15 +978,17 @@ public class WorkflowControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM workflowsteps, workflowstepdetails " +
-                "WHERE wkfls_activedetailid = wkflsdt_workflowstepdetailid AND wkflsdt_wkfl_workflowid = ? AND wkflsdt_workflowstepname = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM workflowsteps, workflowstepdetails " +
-                "WHERE wkfls_activedetailid = wkflsdt_workflowstepdetailid AND wkflsdt_wkfl_workflowid = ? AND wkflsdt_workflowstepname = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM workflowsteps, workflowstepdetails
+                WHERE wkfls_activedetailid = wkflsdt_workflowstepdetailid AND wkflsdt_wkfl_workflowid = ? AND wkflsdt_workflowstepname = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM workflowsteps, workflowstepdetails
+                WHERE wkfls_activedetailid = wkflsdt_workflowstepdetailid AND wkflsdt_wkfl_workflowid = ? AND wkflsdt_workflowstepname = ?
+                FOR UPDATE
+                """);
         getWorkflowStepByNameQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -1176,14 +1201,18 @@ public class WorkflowControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workflowstepdescriptions " +
-                        "WHERE wkflsd_wkfls_workflowstepid = ? AND wkflsd_lang_languageid = ? AND wkflsd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM workflowstepdescriptions
+                        WHERE wkflsd_wkfls_workflowstepid = ? AND wkflsd_lang_languageid = ? AND wkflsd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workflowstepdescriptions " +
-                        "WHERE wkflsd_wkfls_workflowstepid = ? AND wkflsd_lang_languageid = ? AND wkflsd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM workflowstepdescriptions
+                        WHERE wkflsd_wkfls_workflowstepid = ? AND wkflsd_lang_languageid = ? AND wkflsd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = WorkflowStepDescriptionFactory.getInstance().prepareStatement(query);
@@ -1223,16 +1252,20 @@ public class WorkflowControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workflowstepdescriptions, languages " +
-                        "WHERE wkflsd_wkfls_workflowstepid = ? AND wkflsd_thrutime = ? AND wkflsd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM workflowstepdescriptions, languages
+                        WHERE wkflsd_wkfls_workflowstepid = ? AND wkflsd_thrutime = ? AND wkflsd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workflowstepdescriptions " +
-                        "WHERE wkflsd_wkfls_workflowstepid = ? AND wkflsd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM workflowstepdescriptions
+                        WHERE wkflsd_wkfls_workflowstepid = ? AND wkflsd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = WorkflowStepDescriptionFactory.getInstance().prepareStatement(query);
@@ -1363,15 +1396,17 @@ public class WorkflowControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM workflowentitytypes " +
-                "WHERE wkflent_wkfl_workflowid = ? AND wkflent_ent_entitytypeid = ? AND wkflent_thrutime = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM workflowentitytypes " +
-                "WHERE wkflent_wkfl_workflowid = ? AND wkflent_ent_entitytypeid = ? AND wkflent_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM workflowentitytypes
+                WHERE wkflent_wkfl_workflowid = ? AND wkflent_ent_entitytypeid = ? AND wkflent_thrutime = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM workflowentitytypes
+                WHERE wkflent_wkfl_workflowid = ? AND wkflent_ent_entitytypeid = ? AND wkflent_thrutime = ?
+                FOR UPDATE
+                """);
         getWorkflowEntityTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1393,18 +1428,20 @@ public class WorkflowControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM workflowentitytypes, entitytypes, entitytypedetails " +
-                "WHERE wkflent_wkfl_workflowid = ? AND wkflent_thrutime = ? " +
-                "AND wkflent_ent_entitytypeid = ent_entitytypeid AND ent_activedetailid = entdt_entitytypedetailid " +
-                "ORDER BY entdt_sortorder, entdt_entitytypename " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM workflowentitytypes " +
-                "WHERE wkflent_wkfl_workflowid = ? AND wkflent_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM workflowentitytypes, entitytypes, entitytypedetails
+                WHERE wkflent_wkfl_workflowid = ? AND wkflent_thrutime = ?
+                AND wkflent_ent_entitytypeid = ent_entitytypeid AND ent_activedetailid = entdt_entitytypedetailid
+                ORDER BY entdt_sortorder, entdt_entitytypename
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM workflowentitytypes
+                WHERE wkflent_wkfl_workflowid = ? AND wkflent_thrutime = ?
+                FOR UPDATE
+                """);
         getWorkflowEntityTypesByWorkflowQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -1426,18 +1463,20 @@ public class WorkflowControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM workflowentitytypes, workflows, workflowdetails " +
-                "WHERE wkflent_ent_entitytypeid = ? AND wkflent_thrutime = ? " +
-                "AND wkflent_wkfl_workflowid = wkfl_workflowid AND wkfl_lastdetailid = wkfldt_workflowdetailid " +
-                "ORDER BY wkfldt_sortorder, wkfldt_workflowname " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM workflowentitytypes " +
-                "WHERE wkflent_wkfl_workflowid = ? AND wkflent_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM workflowentitytypes, workflows, workflowdetails
+                WHERE wkflent_ent_entitytypeid = ? AND wkflent_thrutime = ?
+                AND wkflent_wkfl_workflowid = wkfl_workflowid AND wkfl_lastdetailid = wkfldt_workflowdetailid
+                ORDER BY wkfldt_sortorder, wkfldt_workflowname
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM workflowentitytypes
+                WHERE wkflent_wkfl_workflowid = ? AND wkflent_thrutime = ?
+                FOR UPDATE
+                """);
         getWorkflowEntityTypesByEntityTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1531,11 +1570,12 @@ public class WorkflowControl
     }
 
     public long countWorkflowEntrancesByWorkflow(Workflow workflow) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM workflowentrances, workflowentrancedetails " +
-                "WHERE wkflen_activedetailid = wkflendt_workflowentrancedetailid " +
-                "AND wkflendt_wkfl_workflowid = ?",
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM workflowentrances, workflowentrancedetails
+                WHERE wkflen_activedetailid = wkflendt_workflowentrancedetailid
+                AND wkflendt_wkfl_workflowid = ?
+                """,
                 workflow);
     }
 
@@ -1559,17 +1599,19 @@ public class WorkflowControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM workflowentrances, workflowentrancedetails " +
-                "WHERE wkflen_activedetailid = wkflendt_workflowentrancedetailid AND wkflendt_wkfl_workflowid = ? " +
-                "AND wkflendt_isdefault = 1 " +
-                "FOR UPDATE");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM workflowentrances, workflowentrancedetails " +
-                "WHERE wkflen_activedetailid = wkflendt_workflowentrancedetailid AND wkflendt_wkfl_workflowid = ? " +
-                "AND wkflendt_isdefault = 1");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM workflowentrances, workflowentrancedetails
+                WHERE wkflen_activedetailid = wkflendt_workflowentrancedetailid AND wkflendt_wkfl_workflowid = ?
+                AND wkflendt_isdefault = 1
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM workflowentrances, workflowentrancedetails
+                WHERE wkflen_activedetailid = wkflendt_workflowentrancedetailid AND wkflendt_wkfl_workflowid = ?
+                AND wkflendt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultWorkflowEntranceQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -1595,17 +1637,19 @@ public class WorkflowControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM workflowentrances, workflowentrancedetails " +
-                "WHERE wkflen_activedetailid = wkflendt_workflowentrancedetailid AND wkflendt_wkfl_workflowid = ? " +
-                "ORDER BY wkflendt_sortorder, wkflendt_workflowentrancename " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM workflowentrances, workflowentrancedetails " +
-                "WHERE wkflen_activedetailid = wkflendt_workflowentrancedetailid AND wkflendt_wkfl_workflowid = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM workflowentrances, workflowentrancedetails
+                WHERE wkflen_activedetailid = wkflendt_workflowentrancedetailid AND wkflendt_wkfl_workflowid = ?
+                ORDER BY wkflendt_sortorder, wkflendt_workflowentrancename
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM workflowentrances, workflowentrancedetails
+                WHERE wkflen_activedetailid = wkflendt_workflowentrancedetailid AND wkflendt_wkfl_workflowid = ?
+                FOR UPDATE
+                """);
         getWorkflowEntrancesByWorkflowQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -1627,17 +1671,19 @@ public class WorkflowControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM workflowentrances, workflowentrancedetails " +
-                "WHERE wkflen_activedetailid = wkflendt_workflowentrancedetailid AND wkflendt_wkfl_workflowid = ? " +
-                "AND wkflendt_workflowentrancename = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM workflowentrances, workflowentrancedetails " +
-                "WHERE wkflen_activedetailid = wkflendt_workflowentrancedetailid AND wkflendt_wkfl_workflowid = ? " +
-                "AND wkflendt_workflowentrancename = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM workflowentrances, workflowentrancedetails
+                WHERE wkflen_activedetailid = wkflendt_workflowentrancedetailid AND wkflendt_wkfl_workflowid = ?
+                AND wkflendt_workflowentrancename = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM workflowentrances, workflowentrancedetails
+                WHERE wkflen_activedetailid = wkflendt_workflowentrancedetailid AND wkflendt_wkfl_workflowid = ?
+                AND wkflendt_workflowentrancename = ?
+                FOR UPDATE
+                """);
         getWorkflowEntranceByNameQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -1737,7 +1783,7 @@ public class WorkflowControl
         if(defaultValue == null) {
             // defaultValue may not have been set if the Party didn't have access to the default choice. We'll just use
             // the first one from the value List. If there are no values, then we'll leave it null.
-            if(values.size() > 0) {
+            if(!values.isEmpty()) {
                 defaultValue = values.get(1);
             }
         }
@@ -1881,14 +1927,18 @@ public class WorkflowControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workflowentrancedescriptions " +
-                        "WHERE wkflend_wkflen_workflowentranceid = ? AND wkflend_lang_languageid = ? AND wkflend_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM workflowentrancedescriptions
+                        WHERE wkflend_wkflen_workflowentranceid = ? AND wkflend_lang_languageid = ? AND wkflend_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workflowentrancedescriptions " +
-                        "WHERE wkflend_wkflen_workflowentranceid = ? AND wkflend_lang_languageid = ? AND wkflend_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM workflowentrancedescriptions
+                        WHERE wkflend_wkflen_workflowentranceid = ? AND wkflend_lang_languageid = ? AND wkflend_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = WorkflowEntranceDescriptionFactory.getInstance().prepareStatement(query);
@@ -1928,16 +1978,20 @@ public class WorkflowControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workflowentrancedescriptions, languages " +
-                        "WHERE wkflend_wkflen_workflowentranceid = ? AND wkflend_thrutime = ? AND wkflend_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM workflowentrancedescriptions, languages
+                        WHERE wkflend_wkflen_workflowentranceid = ? AND wkflend_thrutime = ? AND wkflend_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workflowentrancedescriptions " +
-                        "WHERE wkflend_wkflen_workflowentranceid = ? AND wkflend_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM workflowentrancedescriptions
+                        WHERE wkflend_wkflen_workflowentranceid = ? AND wkflend_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = WorkflowEntranceDescriptionFactory.getInstance().prepareStatement(query);
@@ -2041,18 +2095,20 @@ public class WorkflowControl
     }
 
     public long countWorkflowEntranceSelectorsByWorkflowEntrance(WorkflowEntrance workflowEntrance) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM workflowentranceselectors " +
-                "WHERE wkflensl_wkflen_workflowentranceid = ? AND wkflensl_thrutime = ?",
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM workflowentranceselectors
+                WHERE wkflensl_wkflen_workflowentranceid = ? AND wkflensl_thrutime = ?
+                """,
                 workflowEntrance, Session.MAX_TIME);
     }
 
     public long countWorkflowEntranceSelectorsBySelector(Selector selector) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM workflowentranceselectors " +
-                "WHERE wkflensl_sl_selectorid = ? AND wkflensl_thrutime = ?",
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM workflowentranceselectors
+                WHERE wkflensl_sl_selectorid = ? AND wkflensl_thrutime = ?
+                """,
                 selector, Session.MAX_TIME);
     }
 
@@ -2063,18 +2119,22 @@ public class WorkflowControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workflowentranceselectors, workflowentrances, workflowentrancedetails, workflows, workflowdetails " +
-                        "WHERE wkflensl_wkflen_workflowentranceid = ? AND wkflensl_thrutime = ? " +
-                        "AND wkflensl_wkflen_workflowentranceid = wkflen_workflowentranceid AND wkflen_lastdetailid = wkflendt_workflowentrancedetailid " +
-                        "AND wkflendt_wkfl_workflowid = wkfl_workflowid AND wkfl_lastdetailid = wkfldt_workflowdetailid " +
-                        "ORDER BY wkflendt_sortorder, wkflendt_workflowentrancename, wkfldt_sortorder, wkfldt_workflowname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM workflowentranceselectors, workflowentrances, workflowentrancedetails, workflows, workflowdetails
+                        WHERE wkflensl_wkflen_workflowentranceid = ? AND wkflensl_thrutime = ?
+                        AND wkflensl_wkflen_workflowentranceid = wkflen_workflowentranceid AND wkflen_lastdetailid = wkflendt_workflowentrancedetailid
+                        AND wkflendt_wkfl_workflowid = wkfl_workflowid AND wkfl_lastdetailid = wkfldt_workflowdetailid
+                        ORDER BY wkflendt_sortorder, wkflendt_workflowentrancename, wkfldt_sortorder, wkfldt_workflowname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workflowentranceselectors " +
-                        "WHERE wkflensl_sl_selectorid = ? AND wkflensl_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM workflowentranceselectors
+                        WHERE wkflensl_sl_selectorid = ? AND wkflensl_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = WorkflowEntranceSelectorFactory.getInstance().prepareStatement(query);
@@ -2106,20 +2166,24 @@ public class WorkflowControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workflowentranceselectors, selectors, selectordetails, selectortypes, selectortypedetails, selectorkinds, selectorkinddetails " +
-                        "WHERE wkflensl_wkflen_workflowentranceid = ? AND wkflensl_thrutime = ? " +
-                        "AND wkflensl_sl_selectorid = sl_selectorid AND sl_lastdetailid = sldt_selectordetailid " +
-                        "AND sldt_slt_selectortypeid = slt_selectortypeid " +
-                        "AND slt_lastdetailid = sltdt_selectortypedetailid AND sltdt_slk_selectorkindid = slk_selectorkindid " +
-                        "AND slk_lastdetailid = slkdt_selectorkinddetailid " +
-                        "ORDER BY sldt_sortorder, sldt_selectorname, sltdt_sortorder, sltdt_selectortypename, slkdt_sortorder, slkdt_selectorkindname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM workflowentranceselectors, selectors, selectordetails, selectortypes, selectortypedetails, selectorkinds, selectorkinddetails
+                        WHERE wkflensl_wkflen_workflowentranceid = ? AND wkflensl_thrutime = ?
+                        AND wkflensl_sl_selectorid = sl_selectorid AND sl_lastdetailid = sldt_selectordetailid
+                        AND sldt_slt_selectortypeid = slt_selectortypeid
+                        AND slt_lastdetailid = sltdt_selectortypedetailid AND sltdt_slk_selectorkindid = slk_selectorkindid
+                        AND slk_lastdetailid = slkdt_selectorkinddetailid
+                        ORDER BY sldt_sortorder, sldt_selectorname, sltdt_sortorder, sltdt_selectortypename, slkdt_sortorder, slkdt_selectorkindname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workflowentranceselectors " +
-                        "WHERE wkflensl_wkflen_workflowentranceid = ? AND wkflensl_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM workflowentranceselectors
+                        WHERE wkflensl_wkflen_workflowentranceid = ? AND wkflensl_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = WorkflowEntranceSelectorFactory.getInstance().prepareStatement(query);
@@ -2150,21 +2214,25 @@ public class WorkflowControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workflowentrances, workflowentrancedetails, workflowentranceselectors, selectors, selectordetails, selectortypes, selectortypedetails, selectorkinds, selectorkinddetails " +
-                        "WHERE wkflen_activedetailid = wkflendt_workflowentrancedetailid AND wkflendt_wkfl_workflowid = ? " +
-                        "AND wkflen_workflowentranceid = wkflensl_wkflen_workflowentranceid AND wkflensl_thrutime = ? " +
-                        "AND wkflensl_sl_selectorid = sl_selectorid AND sl_lastdetailid = sldt_selectordetailid " +
-                        "AND sldt_slt_selectortypeid = slt_selectortypeid AND slt_lastdetailid = sltdt_selectortypedetailid AND sltdt_slk_selectorkindid = slk_selectorkindid AND slk_lastdetailid = slkdt_selectorkinddetailid " +
-                        "ORDER BY wkflendt_sortorder, wkflendt_workflowentrancename, sldt_sortorder, sldt_selectorname, " +
-                        "sltdt_sortorder, sltdt_selectortypename, slkdt_sortorder, slkdt_selectorkindname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM workflowentrances, workflowentrancedetails, workflowentranceselectors, selectors, selectordetails, selectortypes, selectortypedetails, selectorkinds, selectorkinddetails
+                        WHERE wkflen_activedetailid = wkflendt_workflowentrancedetailid AND wkflendt_wkfl_workflowid = ?
+                        AND wkflen_workflowentranceid = wkflensl_wkflen_workflowentranceid AND wkflensl_thrutime = ?
+                        AND wkflensl_sl_selectorid = sl_selectorid AND sl_lastdetailid = sldt_selectordetailid
+                        AND sldt_slt_selectortypeid = slt_selectortypeid AND slt_lastdetailid = sltdt_selectortypedetailid AND sltdt_slk_selectorkindid = slk_selectorkindid AND slk_lastdetailid = slkdt_selectorkinddetailid
+                        ORDER BY wkflendt_sortorder, wkflendt_workflowentrancename, sldt_sortorder, sldt_selectorname,
+                        sltdt_sortorder, sltdt_selectortypename, slkdt_sortorder, slkdt_selectorkindname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workflowentrances, workflowentrancedetails, workflowentranceselectors " +
-                        "WHERE wkflen_activedetailid = wkflendt_workflowentrancedetailid AND wkflendt_wkfl_workflowid = ? " +
-                        "AND wkflen_workflowentranceid = wkflensl_wkflen_workflowentranceid AND wkflensl_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM workflowentrances, workflowentrancedetails, workflowentranceselectors
+                        WHERE wkflen_activedetailid = wkflendt_workflowentrancedetailid AND wkflendt_wkfl_workflowid = ?
+                        AND wkflen_workflowentranceid = wkflensl_wkflen_workflowentranceid AND wkflensl_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = WorkflowEntranceSelectorFactory.getInstance().prepareStatement(query);
@@ -2196,14 +2264,18 @@ public class WorkflowControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workflowentranceselectors " +
-                        "WHERE wkflensl_wkflen_workflowentranceid = ? AND wkflensl_sl_selectorid = ? AND wkflensl_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM workflowentranceselectors
+                        WHERE wkflensl_wkflen_workflowentranceid = ? AND wkflensl_sl_selectorid = ? AND wkflensl_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workflowentranceselectors " +
-                        "WHERE wkflensl_wkflen_workflowentranceid = ? AND wkflensl_sl_selectorid = ? AND wkflensl_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM workflowentranceselectors
+                        WHERE wkflensl_wkflen_workflowentranceid = ? AND wkflensl_sl_selectorid = ? AND wkflensl_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = WorkflowEntranceSelectorFactory.getInstance().prepareStatement(query);
@@ -2282,18 +2354,20 @@ public class WorkflowControl
     }
 
     public long countWorkflowEntrancePartyTypesByWorkflowEntrance(WorkflowEntrance workflowEntrance) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM workflowentrancepartytypes " +
-                "WHERE wkflenptyp_wkflen_workflowentranceid = ? AND wkflenptyp_thrutime = ?",
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM workflowentrancepartytypes
+                WHERE wkflenptyp_wkflen_workflowentranceid = ? AND wkflenptyp_thrutime = ?
+                """,
                 workflowEntrance, Session.MAX_TIME);
     }
 
     public long countWorkflowEntrancePartyTypesByPartyType(PartyType partyType) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM workflowentrancepartytypes " +
-                "WHERE wkflenptyp_ptyp_partytypeid = ? AND wkflenptyp_thrutime = ?",
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM workflowentrancepartytypes
+                WHERE wkflenptyp_ptyp_partytypeid = ? AND wkflenptyp_thrutime = ?
+                """,
                 partyType, Session.MAX_TIME);
     }
 
@@ -2305,17 +2379,21 @@ public class WorkflowControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workflowentrancepartytypes, partytypes " +
-                        "WHERE wkflenptyp_wkflen_workflowentranceid = ? AND wkflenptyp_thrutime = ? " +
-                        "AND wkflenptyp_ptyp_partytypeid = ptyp_partytypeid " +
-                        "ORDER BY ptyp_sortorder, ptyp_partytypename " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM workflowentrancepartytypes, partytypes
+                        WHERE wkflenptyp_wkflen_workflowentranceid = ? AND wkflenptyp_thrutime = ?
+                        AND wkflenptyp_ptyp_partytypeid = ptyp_partytypeid
+                        ORDER BY ptyp_sortorder, ptyp_partytypename
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workflowentrancepartytypes " +
-                        "WHERE wkflenptyp_wkflen_workflowentranceid = ? AND wkflenptyp_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM workflowentrancepartytypes
+                        WHERE wkflenptyp_wkflen_workflowentranceid = ? AND wkflenptyp_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = WorkflowEntrancePartyTypeFactory.getInstance().prepareStatement(query);
@@ -2347,14 +2425,18 @@ public class WorkflowControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workflowentrancepartytypes " +
-                        "WHERE wkflenptyp_wkflen_workflowentranceid = ? AND wkflenptyp_ptyp_partytypeid = ? AND wkflenptyp_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM workflowentrancepartytypes
+                        WHERE wkflenptyp_wkflen_workflowentranceid = ? AND wkflenptyp_ptyp_partytypeid = ? AND wkflenptyp_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workflowentrancepartytypes " +
-                        "WHERE wkflenptyp_wkflen_workflowentranceid = ? AND wkflenptyp_ptyp_partytypeid = ? AND wkflenptyp_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM workflowentrancepartytypes
+                        WHERE wkflenptyp_wkflen_workflowentranceid = ? AND wkflenptyp_ptyp_partytypeid = ? AND wkflenptyp_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = WorkflowEntrancePartyTypeFactory.getInstance().prepareStatement(query);
@@ -2431,18 +2513,20 @@ public class WorkflowControl
     }
 
     public long countWorkflowEntranceSecurityRolesByWorkflowEntrancePartyType(WorkflowEntrancePartyType workflowEntrancePartyType) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM workflowentrancesecurityroles " +
-                "WHERE wkflensrol_wkflenptyp_workflowentrancepartytypeid = ? AND wkflensrol_thrutime = ?",
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM workflowentrancesecurityroles
+                WHERE wkflensrol_wkflenptyp_workflowentrancepartytypeid = ? AND wkflensrol_thrutime = ?
+                """,
                 workflowEntrancePartyType, Session.MAX_TIME);
     }
 
     public long countWorkflowEntranceSecurityRolesBySecurityRole(SecurityRole securityRole) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM workflowentrancesecurityroles " +
-                "WHERE wkflens_wkfls_worwkflensrol_srol_securityroleidkflowstepid = ? AND wkflensrol_thrutime = ?",
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM workflowentrancesecurityroles
+                WHERE wkflens_wkfls_worwkflensrol_srol_securityroleidkflowstepid = ? AND wkflensrol_thrutime = ?
+                """,
                 securityRole, session.MAX_TIME);
     }
 
@@ -2454,18 +2538,22 @@ public class WorkflowControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workflowentrancesecurityroles, securityroles, securityroledetails, securityrolegroups, securityrolegroupdetails " +
-                        "WHERE wkflensrol_wkflenptyp_workflowentrancepartytypeid = ? AND wkflensrol_thrutime = ? " +
-                        "AND wkflensrol_srol_securityroleid = srol_securityroleid AND srol_activedetailid = sroldt_securityroledetailid " +
-                        "AND sroldt_srg_securityrolegroupid = srg_securityrolegroupid AND srg_activedetailid = srgdt_securityrolegroupdetailid " +
-                        "ORDER BY sroldt_sortorder, sroldt_securityrolename, srgdt_sortorder, srgdt_securityrolegroupname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM workflowentrancesecurityroles, securityroles, securityroledetails, securityrolegroups, securityrolegroupdetails
+                        WHERE wkflensrol_wkflenptyp_workflowentrancepartytypeid = ? AND wkflensrol_thrutime = ?
+                        AND wkflensrol_srol_securityroleid = srol_securityroleid AND srol_activedetailid = sroldt_securityroledetailid
+                        AND sroldt_srg_securityrolegroupid = srg_securityrolegroupid AND srg_activedetailid = srgdt_securityrolegroupdetailid
+                        ORDER BY sroldt_sortorder, sroldt_securityrolename, srgdt_sortorder, srgdt_securityrolegroupname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workflowentrancesecurityroles " +
-                        "WHERE wkflensrol_wkflenptyp_workflowentrancepartytypeid = ? AND wkflensrol_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM workflowentrancesecurityroles
+                        WHERE wkflensrol_wkflenptyp_workflowentrancepartytypeid = ? AND wkflensrol_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = WorkflowEntranceSecurityRoleFactory.getInstance().prepareStatement(query);
@@ -2497,14 +2585,18 @@ public class WorkflowControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workflowentrancesecurityroles " +
-                        "WHERE wkflensrol_wkflenptyp_workflowentrancepartytypeid = ? AND wkflensrol_srol_securityroleid = ? AND wkflensrol_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM workflowentrancesecurityroles
+                        WHERE wkflensrol_wkflenptyp_workflowentrancepartytypeid = ? AND wkflensrol_srol_securityroleid = ? AND wkflensrol_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workflowentrancesecurityroles " +
-                        "WHERE wkflensrol_wkflenptyp_workflowentrancepartytypeid = ? AND wkflensrol_srol_securityroleid = ? AND wkflensrol_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM workflowentrancesecurityroles
+                        WHERE wkflensrol_wkflenptyp_workflowentrancepartytypeid = ? AND wkflensrol_srol_securityroleid = ? AND wkflensrol_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = WorkflowEntranceSecurityRoleFactory.getInstance().prepareStatement(query);
@@ -2579,19 +2671,21 @@ public class WorkflowControl
     }
 
     public long countWorkflowEntranceStepsByWorkflowEntrance(WorkflowEntrance workflowEntrance) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM workflowentrancesteps " +
-                "WHERE wkflens_wkflen_workflowentranceid = ? AND wkflens_thrutime = ?",
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM workflowentrancesteps
+                WHERE wkflens_wkflen_workflowentranceid = ? AND wkflens_thrutime = ?
+                """,
                 workflowEntrance, Session.MAX_TIME);
     }
     
     public long countWorkflowEntranceStepsByWorkflowStep(WorkflowStep workflowStep) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM workflowentrancesteps " +
-                "WHERE wkflens_wkfls_workflowstepid = ? AND wkflens_thrutime = ?",
-                workflowStep, session.MAX_TIME);
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM workflowentrancesteps
+                WHERE wkflens_wkfls_workflowstepid = ? AND wkflens_thrutime = ?
+                """,
+                workflowStep, Session.MAX_TIME);
     }
 
     private static final Map<EntityPermission, String> getWorkflowEntranceStepsByWorkflowStepQueries;
@@ -2599,16 +2693,18 @@ public class WorkflowControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM workflowentrancesteps " +
-                "WHERE wkflens_wkfls_workflowstepid = ? AND wkflens_thrutime = ? " +
-                "_LIMIT_"); // TODO: ORDER BY
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM workflowentrancesteps " +
-                "WHERE wkflens_wkfls_workflowstepid = ? AND wkflens_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM workflowentrancesteps
+                WHERE wkflens_wkfls_workflowstepid = ? AND wkflens_thrutime = ?
+                _LIMIT_
+                """); // TODO: ORDER BY
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM workflowentrancesteps
+                WHERE wkflens_wkfls_workflowstepid = ? AND wkflens_thrutime = ?
+                FOR UPDATE
+                """);
         getWorkflowEntranceStepsByWorkflowStepQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -2630,19 +2726,21 @@ public class WorkflowControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM workflowentrancesteps, workflowsteps, workflowstepdetails, workflows, workflowdetails " +
-                "WHERE wkflens_wkflen_workflowentranceid = ? AND wkflens_thrutime = ? " +
-                "AND wkflens_wkfls_workflowstepid = wkfls_workflowstepid AND wkfls_activedetailid = wkflsdt_workflowstepdetailid " +
-                "AND wkflsdt_wkfl_workflowid = wkfl_workflowid AND wkfl_activedetailid = wkfldt_workflowdetailid " +
-                "ORDER BY wkfldt_sortorder, wkfldt_workflowname, wkflsdt_sortorder, wkflsdt_workflowstepname " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM workflowentrancesteps " +
-                "WHERE wkflens_wkflen_workflowentranceid = ? AND wkflens_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM workflowentrancesteps, workflowsteps, workflowstepdetails, workflows, workflowdetails
+                WHERE wkflens_wkflen_workflowentranceid = ? AND wkflens_thrutime = ?
+                AND wkflens_wkfls_workflowstepid = wkfls_workflowstepid AND wkfls_activedetailid = wkflsdt_workflowstepdetailid
+                AND wkflsdt_wkfl_workflowid = wkfl_workflowid AND wkfl_activedetailid = wkfldt_workflowdetailid
+                ORDER BY wkfldt_sortorder, wkfldt_workflowname, wkflsdt_sortorder, wkflsdt_workflowstepname
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM workflowentrancesteps
+                WHERE wkflens_wkflen_workflowentranceid = ? AND wkflens_thrutime = ?
+                FOR UPDATE
+                """);
         getWorkflowEntranceStepsByWorkflowEntranceQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -2666,14 +2764,18 @@ public class WorkflowControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workflowentrancesteps " +
-                        "WHERE wkflens_wkflen_workflowentranceid = ? AND wkflens_wkfls_workflowstepid = ? AND wkflens_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM workflowentrancesteps
+                        WHERE wkflens_wkflen_workflowentranceid = ? AND wkflens_wkfls_workflowstepid = ? AND wkflens_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workflowentrancesteps " +
-                        "WHERE wkflens_wkflen_workflowentranceid = ? AND wkflens_wkfls_workflowstepid = ? AND wkflens_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM workflowentrancesteps
+                        WHERE wkflens_wkflen_workflowentranceid = ? AND wkflens_wkfls_workflowstepid = ? AND wkflens_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = WorkflowEntranceStepFactory.getInstance().prepareStatement(query);
@@ -2770,11 +2872,12 @@ public class WorkflowControl
     }
 
     public long countWorkflowDestinationsByWorkflowStep(WorkflowStep workflowStep) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM workflowdestinations, workflowdestinationdetails " +
-                "WHERE wkfldn_activedetailid = wkfldndt_workflowdestinationdetailid " +
-                "AND wkfldndt_wkfls_workflowstepid = ?",
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM workflowdestinations, workflowdestinationdetails
+                WHERE wkfldn_activedetailid = wkfldndt_workflowdestinationdetailid
+                AND wkfldndt_wkfls_workflowstepid = ?
+                """,
                 workflowStep);
     }
 
@@ -2798,17 +2901,19 @@ public class WorkflowControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM workflowdestinations, workflowdestinationdetails " +
-                "WHERE wkfldn_activedetailid = wkfldndt_workflowdestinationdetailid AND wkfldndt_wkfls_workflowstepid = ? " +
-                "AND wkfldndt_isdefault = 1");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM workflowdestinations, workflowdestinationdetails " +
-                "WHERE wkfldn_activedetailid = wkfldndt_workflowdestinationdetailid AND wkfldndt_wkfls_workflowstepid = ? " +
-                "AND wkfldndt_isdefault = 1 " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM workflowdestinations, workflowdestinationdetails
+                WHERE wkfldn_activedetailid = wkfldndt_workflowdestinationdetailid AND wkfldndt_wkfls_workflowstepid = ?
+                AND wkfldndt_isdefault = 1
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM workflowdestinations, workflowdestinationdetails
+                WHERE wkfldn_activedetailid = wkfldndt_workflowdestinationdetailid AND wkfldndt_wkfls_workflowstepid = ?
+                AND wkfldndt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultWorkflowDestinationQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -2834,17 +2939,19 @@ public class WorkflowControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM workflowdestinations, workflowdestinationdetails " +
-                "WHERE wkfldn_activedetailid = wkfldndt_workflowdestinationdetailid AND wkfldndt_wkfls_workflowstepid = ? " +
-                "ORDER BY wkfldndt_sortorder, wkfldndt_workflowdestinationname " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM workflowdestinations, workflowdestinationdetails " +
-                "WHERE wkfldn_activedetailid = wkfldndt_workflowdestinationdetailid AND wkfldndt_wkfls_workflowstepid = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM workflowdestinations, workflowdestinationdetails
+                WHERE wkfldn_activedetailid = wkfldndt_workflowdestinationdetailid AND wkfldndt_wkfls_workflowstepid = ?
+                ORDER BY wkfldndt_sortorder, wkfldndt_workflowdestinationname
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM workflowdestinations, workflowdestinationdetails
+                WHERE wkfldn_activedetailid = wkfldndt_workflowdestinationdetailid AND wkfldndt_wkfls_workflowstepid = ?
+                FOR UPDATE
+                """);
         getWorkflowDestinationsByWorkflowStepQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -2866,17 +2973,19 @@ public class WorkflowControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM workflowdestinations, workflowdestinationdetails " +
-                "WHERE wkfldn_activedetailid = wkfldndt_workflowdestinationdetailid AND wkfldndt_wkfls_workflowstepid = ? " +
-                "AND wkfldndt_workflowdestinationname = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM workflowdestinations, workflowdestinationdetails " +
-                "WHERE wkfldn_activedetailid = wkfldndt_workflowdestinationdetailid AND wkfldndt_wkfls_workflowstepid = ? " +
-                "AND wkfldndt_workflowdestinationname = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM workflowdestinations, workflowdestinationdetails
+                WHERE wkfldn_activedetailid = wkfldndt_workflowdestinationdetailid AND wkfldndt_wkfls_workflowstepid = ?
+                AND wkfldndt_workflowdestinationname = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM workflowdestinations, workflowdestinationdetails
+                WHERE wkfldn_activedetailid = wkfldndt_workflowdestinationdetailid AND wkfldndt_wkfls_workflowstepid = ?
+                AND wkfldndt_workflowdestinationname = ?
+                FOR UPDATE
+                """);
         getWorkflowDestinationByNameQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -3082,14 +3191,18 @@ public class WorkflowControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workflowdestinationdescriptions " +
-                        "WHERE wkfldnd_wkfldn_workflowdestinationid = ? AND wkfldnd_lang_languageid = ? AND wkfldnd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM workflowdestinationdescriptions
+                        WHERE wkfldnd_wkfldn_workflowdestinationid = ? AND wkfldnd_lang_languageid = ? AND wkfldnd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workflowdestinationdescriptions " +
-                        "WHERE wkfldnd_wkfldn_workflowdestinationid = ? AND wkfldnd_lang_languageid = ? AND wkfldnd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM workflowdestinationdescriptions
+                        WHERE wkfldnd_wkfldn_workflowdestinationid = ? AND wkfldnd_lang_languageid = ? AND wkfldnd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = WorkflowDestinationDescriptionFactory.getInstance().prepareStatement(query);
@@ -3129,16 +3242,20 @@ public class WorkflowControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workflowdestinationdescriptions, languages " +
-                        "WHERE wkfldnd_wkfldn_workflowdestinationid = ? AND wkfldnd_thrutime = ? AND wkfldnd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM workflowdestinationdescriptions, languages
+                        WHERE wkfldnd_wkfldn_workflowdestinationid = ? AND wkfldnd_thrutime = ? AND wkfldnd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workflowdestinationdescriptions " +
-                        "WHERE wkfldnd_wkfldn_workflowdestinationid = ? AND wkfldnd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM workflowdestinationdescriptions
+                        WHERE wkfldnd_wkfldn_workflowdestinationid = ? AND wkfldnd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = WorkflowDestinationDescriptionFactory.getInstance().prepareStatement(query);
@@ -3242,18 +3359,20 @@ public class WorkflowControl
     }
 
     public long countWorkflowDestinationSelectorsByWorkflowDestination(WorkflowDestination workflowDestination) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM workflowdestinationselectors " +
-                "WHERE wkfldnsl_wkfldn_workflowdestinationid = ? AND wkfldnsl_thrutime = ?",
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM workflowdestinationselectors
+                WHERE wkfldnsl_wkfldn_workflowdestinationid = ? AND wkfldnsl_thrutime = ?
+                """,
                 workflowDestination, Session.MAX_TIME);
     }
 
     public long countWorkflowDestinationSelectorsBySelector(Selector selector) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM workflowdestinationselectors " +
-                "WHERE wkfldnsl_sl_selectorid = ? AND wkfldnsl_thrutime = ?",
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM workflowdestinationselectors
+                WHERE wkfldnsl_sl_selectorid = ? AND wkfldnsl_thrutime = ?
+                """,
                 selector, Session.MAX_TIME);
     }
 
@@ -3264,19 +3383,23 @@ public class WorkflowControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workflowdestinationselectors, workflowdestinations, workflowdestinationdetails, workflowsteps, workflowstepdetails, workflows, workflowdetails " +
-                        "WHERE wkfldnsl_sl_selectorid = ? AND wkfldnsl_thrutime = ? " +
-                        "AND wkfldnsl_wkfldn_workflowdestinationid = wkfldn_workflowdestinationid AND wkfldn_lastdetailid AND wkfldndt_workflowdestinationdetailid " +
-                        "AND wkfldndt_wkfls_workflowstepid = wkfls_workflowstepid AND wkfls_lastdetailid = wkflsdt_workflowstepdetailid " +
-                        "AND wkflsdt_wkfl_workflowid = wkfl_workflowid AND wkfl_lastdetailid = wkfldt_workflowdetailid " +
-                        "ORDER BY wkfldndt_sortorder, wkfldndt_workflowdestinationname, wkflsdt_sortorder, wkflsdt_workflowstepname, wkfldt_sortorder, wkfldt_workflowname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM workflowdestinationselectors, workflowdestinations, workflowdestinationdetails, workflowsteps, workflowstepdetails, workflows, workflowdetails
+                        WHERE wkfldnsl_sl_selectorid = ? AND wkfldnsl_thrutime = ?
+                        AND wkfldnsl_wkfldn_workflowdestinationid = wkfldn_workflowdestinationid AND wkfldn_lastdetailid AND wkfldndt_workflowdestinationdetailid
+                        AND wkfldndt_wkfls_workflowstepid = wkfls_workflowstepid AND wkfls_lastdetailid = wkflsdt_workflowstepdetailid
+                        AND wkflsdt_wkfl_workflowid = wkfl_workflowid AND wkfl_lastdetailid = wkfldt_workflowdetailid
+                        ORDER BY wkfldndt_sortorder, wkfldndt_workflowdestinationname, wkflsdt_sortorder, wkflsdt_workflowstepname, wkfldt_sortorder, wkfldt_workflowname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workflowdestinationselectors " +
-                        "WHERE wkfldnsl_sl_selectorid = ? AND wkfldnsl_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM workflowdestinationselectors
+                        WHERE wkfldnsl_sl_selectorid = ? AND wkfldnsl_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = WorkflowDestinationSelectorFactory.getInstance().prepareStatement(query);
@@ -3307,20 +3430,24 @@ public class WorkflowControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workflowdestinationselectors, selectors, selectordetails, selectortypes, selectortypedetails, selectorkinds, selectorkinddetails " +
-                        "WHERE wkfldnsl_wkfldn_workflowdestinationid = ? AND wkfldnsl_thrutime = ? " +
-                        "AND wkfldnsl_sl_selectorid = sl_selectorid AND sl_lastdetailid = sldt_selectordetailid " +
-                        "AND sldt_slt_selectortypeid = slt_selectortypeid " +
-                        "AND slt_lastdetailid = sltdt_selectortypedetailid AND sltdt_slk_selectorkindid = slk_selectorkindid " +
-                        "AND slk_lastdetailid = slkdt_selectorkinddetailid " +
-                        "ORDER BY sldt_sortorder, sldt_selectorname, sltdt_sortorder, sltdt_selectortypename, slkdt_sortorder, slkdt_selectorkindname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM workflowdestinationselectors, selectors, selectordetails, selectortypes, selectortypedetails, selectorkinds, selectorkinddetails
+                        WHERE wkfldnsl_wkfldn_workflowdestinationid = ? AND wkfldnsl_thrutime = ?
+                        AND wkfldnsl_sl_selectorid = sl_selectorid AND sl_lastdetailid = sldt_selectordetailid
+                        AND sldt_slt_selectortypeid = slt_selectortypeid
+                        AND slt_lastdetailid = sltdt_selectortypedetailid AND sltdt_slk_selectorkindid = slk_selectorkindid
+                        AND slk_lastdetailid = slkdt_selectorkinddetailid
+                        ORDER BY sldt_sortorder, sldt_selectorname, sltdt_sortorder, sltdt_selectortypename, slkdt_sortorder, slkdt_selectorkindname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workflowdestinationselectors " +
-                        "WHERE wkfldnsl_wkfldn_workflowdestinationid = ? AND wkfldnsl_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM workflowdestinationselectors
+                        WHERE wkfldnsl_wkfldn_workflowdestinationid = ? AND wkfldnsl_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = WorkflowDestinationSelectorFactory.getInstance().prepareStatement(query);
@@ -3351,14 +3478,18 @@ public class WorkflowControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workflowdestinationselectors " +
-                        "WHERE wkfldnsl_wkfldn_workflowdestinationid = ? AND wkfldnsl_sl_selectorid = ? AND wkfldnsl_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM workflowdestinationselectors
+                        WHERE wkfldnsl_wkfldn_workflowdestinationid = ? AND wkfldnsl_sl_selectorid = ? AND wkfldnsl_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workflowdestinationselectors " +
-                        "WHERE wkfldnsl_wkfldn_workflowdestinationid = ? AND wkfldnsl_sl_selectorid = ? AND wkfldnsl_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM workflowdestinationselectors
+                        WHERE wkfldnsl_wkfldn_workflowdestinationid = ? AND wkfldnsl_sl_selectorid = ? AND wkfldnsl_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = WorkflowDestinationSelectorFactory.getInstance().prepareStatement(query);
@@ -3441,18 +3572,20 @@ public class WorkflowControl
     }
 
     public long countWorkflowDestinationPartyTypesByWorkflowDestination(WorkflowDestination workflowDestination) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM workflowdestinationpartytypes " +
-                "WHERE wkfldnptyp_wkfldn_workflowdestinationid = ? AND wkfldnptyp_thrutime = ?",
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM workflowdestinationpartytypes
+                WHERE wkfldnptyp_wkfldn_workflowdestinationid = ? AND wkfldnptyp_thrutime = ?
+                """,
                 workflowDestination, Session.MAX_TIME);
     }
 
     public long countWorkflowDestinationPartyTypesByPartyType(PartyType partyType) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM workflowdestinationpartytypes " +
-                "WHERE wkfldnptyp_ptyp_partytypeid = ? AND wkfldnptyp_thrutime = ?",
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM workflowdestinationpartytypes
+                WHERE wkfldnptyp_ptyp_partytypeid = ? AND wkfldnptyp_thrutime = ?
+                """,
                 partyType, Session.MAX_TIME);
     }
 
@@ -3464,17 +3597,21 @@ public class WorkflowControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workflowdestinationpartytypes, partytypes " +
-                        "WHERE wkfldnptyp_wkfldn_workflowdestinationid = ? AND wkfldnptyp_thrutime = ? " +
-                        "AND wkfldnptyp_ptyp_partytypeid = ptyp_partytypeid " +
-                        "ORDER BY ptyp_sortorder, ptyp_partytypename " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM workflowdestinationpartytypes, partytypes
+                        WHERE wkfldnptyp_wkfldn_workflowdestinationid = ? AND wkfldnptyp_thrutime = ?
+                        AND wkfldnptyp_ptyp_partytypeid = ptyp_partytypeid
+                        ORDER BY ptyp_sortorder, ptyp_partytypename
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workflowdestinationpartytypes " +
-                        "WHERE wkfldnptyp_wkfldn_workflowdestinationid = ? AND wkfldnptyp_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM workflowdestinationpartytypes
+                        WHERE wkfldnptyp_wkfldn_workflowdestinationid = ? AND wkfldnptyp_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = WorkflowDestinationPartyTypeFactory.getInstance().prepareStatement(query);
@@ -3506,14 +3643,18 @@ public class WorkflowControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workflowdestinationpartytypes " +
-                        "WHERE wkfldnptyp_wkfldn_workflowdestinationid = ? AND wkfldnptyp_ptyp_partytypeid = ? AND wkfldnptyp_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM workflowdestinationpartytypes
+                        WHERE wkfldnptyp_wkfldn_workflowdestinationid = ? AND wkfldnptyp_ptyp_partytypeid = ? AND wkfldnptyp_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workflowdestinationpartytypes " +
-                        "WHERE wkfldnptyp_wkfldn_workflowdestinationid = ? AND wkfldnptyp_ptyp_partytypeid = ? AND wkfldnptyp_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM workflowdestinationpartytypes
+                        WHERE wkfldnptyp_wkfldn_workflowdestinationid = ? AND wkfldnptyp_ptyp_partytypeid = ? AND wkfldnptyp_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = WorkflowDestinationPartyTypeFactory.getInstance().prepareStatement(query);
@@ -3539,10 +3680,11 @@ public class WorkflowControl
     }
     
     public long countWorkflowDestinationPartyTypes(WorkflowDestination workflowDestination) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM workflowdestinationpartytypes " +
-                "WHERE wkfldnptyp_wkfldn_workflowdestinationid = ?",
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM workflowdestinationpartytypes
+                WHERE wkfldnptyp_wkfldn_workflowdestinationid = ?
+                """,
                 workflowDestination);
     }
     
@@ -3598,18 +3740,20 @@ public class WorkflowControl
     }
 
     public long countWorkflowDestinationSecurityRolesByWorkflowDestinationPartyType(WorkflowDestinationPartyType workflowDestinationPartyType) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM workflowdestinationsecurityroles " +
-                "WHERE wkfldnsrol_wkfldnptyp_workflowdestinationpartytypeid = ? AND wkfldnsrol_thrutime = ?",
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM workflowdestinationsecurityroles
+                WHERE wkfldnsrol_wkfldnptyp_workflowdestinationpartytypeid = ? AND wkfldnsrol_thrutime = ?
+                """,
                 workflowDestinationPartyType, Session.MAX_TIME);
     }
 
     public long countWorkflowDestinationSecurityRolesBySecurityRole(SecurityRole securityRole) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM workflowdestinationsecurityroles " +
-                "WHERE wkfldnsrol_srol_securityroleid = ? AND wkfldnsrol_thrutime = ?",
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM workflowdestinationsecurityroles
+                WHERE wkfldnsrol_srol_securityroleid = ? AND wkfldnsrol_thrutime = ?
+                """,
                 securityRole, session.MAX_TIME);
     }
 
@@ -3621,18 +3765,22 @@ public class WorkflowControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workflowdestinationsecurityroles, securityroles, securityroledetails, securityrolegroups, securityrolegroupdetails " +
-                        "WHERE wkfldnsrol_wkfldnptyp_workflowdestinationpartytypeid = ? AND wkfldnsrol_thrutime = ? " +
-                        "AND wkfldnsrol_srol_securityroleid = srol_securityroleid AND srol_activedetailid = sroldt_securityroledetailid " +
-                        "AND sroldt_srg_securityrolegroupid = srg_securityrolegroupid AND srg_activedetailid = srgdt_securityrolegroupdetailid " +
-                        "ORDER BY sroldt_sortorder, sroldt_securityrolename, srgdt_sortorder, srgdt_securityrolegroupname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM workflowdestinationsecurityroles, securityroles, securityroledetails, securityrolegroups, securityrolegroupdetails
+                        WHERE wkfldnsrol_wkfldnptyp_workflowdestinationpartytypeid = ? AND wkfldnsrol_thrutime = ?
+                        AND wkfldnsrol_srol_securityroleid = srol_securityroleid AND srol_activedetailid = sroldt_securityroledetailid
+                        AND sroldt_srg_securityrolegroupid = srg_securityrolegroupid AND srg_activedetailid = srgdt_securityrolegroupdetailid
+                        ORDER BY sroldt_sortorder, sroldt_securityrolename, srgdt_sortorder, srgdt_securityrolegroupname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workflowdestinationsecurityroles " +
-                        "WHERE wkfldnsrol_wkfldnptyp_workflowdestinationpartytypeid = ? AND wkfldnsrol_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM workflowdestinationsecurityroles
+                        WHERE wkfldnsrol_wkfldnptyp_workflowdestinationpartytypeid = ? AND wkfldnsrol_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = WorkflowDestinationSecurityRoleFactory.getInstance().prepareStatement(query);
@@ -3664,14 +3812,18 @@ public class WorkflowControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workflowdestinationsecurityroles " +
-                        "WHERE wkfldnsrol_wkfldnptyp_workflowdestinationpartytypeid = ? AND wkfldnsrol_srol_securityroleid = ? AND wkfldnsrol_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM workflowdestinationsecurityroles
+                        WHERE wkfldnsrol_wkfldnptyp_workflowdestinationpartytypeid = ? AND wkfldnsrol_srol_securityroleid = ? AND wkfldnsrol_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workflowdestinationsecurityroles " +
-                        "WHERE wkfldnsrol_wkfldnptyp_workflowdestinationpartytypeid = ? AND wkfldnsrol_srol_securityroleid = ? AND wkfldnsrol_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM workflowdestinationsecurityroles
+                        WHERE wkfldnsrol_wkfldnptyp_workflowdestinationpartytypeid = ? AND wkfldnsrol_srol_securityroleid = ? AND wkfldnsrol_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = WorkflowDestinationSecurityRoleFactory.getInstance().prepareStatement(query);
@@ -3746,20 +3898,22 @@ public class WorkflowControl
     }
 
     public long countWorkflowDestinationStepsByWorkflowDestination(WorkflowDestination workflowDestination) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM workflowdestinationsteps " +
-                "WHERE wkfldns_wkfldn_workflowdestinationid = ? AND wkfldns_thrutime = ?",
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM workflowdestinationsteps
+                WHERE wkfldns_wkfldn_workflowdestinationid = ? AND wkfldns_thrutime = ?
+                """,
                 workflowDestination, Session.MAX_TIME);
     }
 
 
     public long countWorkflowDestinationStepsByWorkflowStep(WorkflowStep workflowStep) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM workflowdestinationsteps " +
-                "WHERE wkfldns_wkfls_workflowstepid = ? AND wkfldns_thrutime = ?",
-                workflowStep, session.MAX_TIME);
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM workflowdestinationsteps
+                WHERE wkfldns_wkfls_workflowstepid = ? AND wkfldns_thrutime = ?
+                """,
+                workflowStep, Session.MAX_TIME);
     }
 
     private static final Map<EntityPermission, String> getWorkflowDestinationStepsByWorkflowStepQueries;
@@ -3767,16 +3921,17 @@ public class WorkflowControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM workflowdestinationsteps " +
-                "WHERE wkfldns_wkfls_workflowstepid = ? AND wkfldns_thrutime = ? " +
-                "_LIMIT_"); // TODO: ORDER BY
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM workflowdestinationsteps " +
-                "WHERE wkfldns_wkfls_workflowstepid = ? AND wkfldns_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM workflowdestinationsteps
+                WHERE wkfldns_wkfls_workflowstepid = ? AND wkfldns_thrutime = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM workflowdestinationsteps
+                WHERE wkfldns_wkfls_workflowstepid = ? AND wkfldns_thrutime = ?
+                FOR UPDATE
+                """);
         getWorkflowDestinationStepsByWorkflowStepQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -3798,19 +3953,21 @@ public class WorkflowControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM workflowdestinationsteps, workflowsteps, workflowstepdetails, workflows, workflowdetails " +
-                "WHERE wkfldns_wkfldn_workflowdestinationid = ? AND wkfldns_thrutime = ? " +
-                "AND wkfldns_wkfls_workflowstepid = wkfls_workflowstepid AND wkfls_activedetailid = wkflsdt_workflowstepdetailid " +
-                "AND wkflsdt_wkfl_workflowid = wkfl_workflowid AND wkfl_activedetailid = wkfldt_workflowdetailid " +
-                "ORDER BY wkfldt_sortorder, wkfldt_workflowname, wkflsdt_sortorder, wkflsdt_workflowstepname " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM workflowdestinationsteps " +
-                "WHERE wkfldns_wkfldn_workflowdestinationid = ? AND wkfldns_thrutime = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM workflowdestinationsteps, workflowsteps, workflowstepdetails, workflows, workflowdetails
+                WHERE wkfldns_wkfldn_workflowdestinationid = ? AND wkfldns_thrutime = ?
+                AND wkfldns_wkfls_workflowstepid = wkfls_workflowstepid AND wkfls_activedetailid = wkflsdt_workflowstepdetailid
+                AND wkflsdt_wkfl_workflowid = wkfl_workflowid AND wkfl_activedetailid = wkfldt_workflowdetailid
+                ORDER BY wkfldt_sortorder, wkfldt_workflowname, wkflsdt_sortorder, wkflsdt_workflowstepname
+                _LIMIT_
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM workflowdestinationsteps
+                WHERE wkfldns_wkfldn_workflowdestinationid = ? AND wkfldns_thrutime = ?
+                FOR UPDATE
+                """);
         getWorkflowDestinationStepsByWorkflowDestinationQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -3834,14 +3991,18 @@ public class WorkflowControl
            String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workflowdestinationsteps " +
-                        "WHERE wkfldns_wkfldn_workflowdestinationid = ? AND wkfldns_wkfls_workflowstepid = ? AND wkfldns_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM workflowdestinationsteps
+                        WHERE wkfldns_wkfldn_workflowdestinationid = ? AND wkfldns_wkfls_workflowstepid = ? AND wkfldns_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workflowdestinationsteps " +
-                        "WHERE wkfldns_wkfldn_workflowdestinationid = ? AND wkfldns_wkfls_workflowstepid = ? AND wkfldns_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM workflowdestinationsteps
+                        WHERE wkfldns_wkfldn_workflowdestinationid = ? AND wkfldns_wkfls_workflowstepid = ? AND wkfldns_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = WorkflowDestinationStepFactory.getInstance().prepareStatement(query);
@@ -3919,18 +4080,20 @@ public class WorkflowControl
     }
 
     public long countWorkflowSelectorKindsByWorkflow(Workflow workflow) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM workflowselectorkinds " +
-                "WHERE wkflslk_wkfl_workflowid = ? AND wkflslk_thrutime = ?",
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM workflowselectorkinds
+                WHERE wkflslk_wkfl_workflowid = ? AND wkflslk_thrutime = ?
+                """,
                 workflow, Session.MAX_TIME);
     }
 
     public long countWorkflowSelectorKindsBySelectorKind(SelectorKind selectorKind) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM workflowselectorkinds " +
-                "WHERE wkflslk_slk_selectorkindid = ? AND wkflslk_thrutime = ?",
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM workflowselectorkinds
+                WHERE wkflslk_slk_selectorkindid = ? AND wkflslk_thrutime = ?
+                """,
                 selectorKind, Session.MAX_TIME);
     }
 
@@ -3942,18 +4105,22 @@ public class WorkflowControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workflowselectorkinds, selectorkinds, selectorkinddetails " +
-                        "WHERE wkflslk_wkfl_workflowid = ? AND wkflslk_thrutime = ? " +
-                        "AND wkflslk_slk_selectorkindid = slk_selectorkindid " +
-                        "AND slk_lastdetailid = slkdt_selectorkinddetailid " +
-                        "ORDER BY slkdt_sortorder, slkdt_selectorkindname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM workflowselectorkinds, selectorkinds, selectorkinddetails
+                        WHERE wkflslk_wkfl_workflowid = ? AND wkflslk_thrutime = ?
+                        AND wkflslk_slk_selectorkindid = slk_selectorkindid
+                        AND slk_lastdetailid = slkdt_selectorkinddetailid
+                        ORDER BY slkdt_sortorder, slkdt_selectorkindname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workflowselectorkinds " +
-                        "WHERE wkflslk_wkfl_workflowid = ? AND wkflslk_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM workflowselectorkinds
+                        WHERE wkflslk_wkfl_workflowid = ? AND wkflslk_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = WorkflowSelectorKindFactory.getInstance().prepareStatement(query);
@@ -3985,17 +4152,21 @@ public class WorkflowControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workflowselectorkinds, workflows, workflowdetails " +
-                        "WHERE wkflslk_slk_selectorkindid = ? AND wkflslk_thrutime = ? " +
-                        "AND wkflslk_wkfl_workflowid = wkfl_workflowid AND wkfl_lastdetailid = wkfldt_workflowdetailid " +
-                        "ORDER BY wkfldt_sortorder, wkfldt_workflowname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM workflowselectorkinds, workflows, workflowdetails
+                        WHERE wkflslk_slk_selectorkindid = ? AND wkflslk_thrutime = ?
+                        AND wkflslk_wkfl_workflowid = wkfl_workflowid AND wkfl_lastdetailid = wkfldt_workflowdetailid
+                        ORDER BY wkfldt_sortorder, wkfldt_workflowname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workflowselectorkinds " +
-                        "WHERE wkflslk_slk_selectorkindid = ? AND wkflslk_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM workflowselectorkinds
+                        WHERE wkflslk_slk_selectorkindid = ? AND wkflslk_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = WorkflowSelectorKindFactory.getInstance().prepareStatement(query);
@@ -4026,14 +4197,18 @@ public class WorkflowControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workflowselectorkinds " +
-                        "WHERE wkflslk_wkfl_workflowid = ? AND wkflslk_slk_selectorkindid = ? AND wkflslk_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM workflowselectorkinds
+                        WHERE wkflslk_wkfl_workflowid = ? AND wkflslk_slk_selectorkindid = ? AND wkflslk_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workflowselectorkinds " +
-                        "WHERE wkflslk_wkfl_workflowid = ? AND wkflslk_slk_selectorkindid = ? AND wkflslk_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM workflowselectorkinds
+                        WHERE wkflslk_wkfl_workflowid = ? AND wkflslk_slk_selectorkindid = ? AND wkflslk_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = WorkflowSelectorKindFactory.getInstance().prepareStatement(query);
@@ -4111,26 +4286,29 @@ public class WorkflowControl
     }
 
     public long countWorkflowEntityStatusesByEntityInstance(EntityInstance entityInstance) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM workflowentitystatuses " +
-                        "WHERE wkfles_eni_entityinstanceid = ? AND wkfles_thrutime = ?",
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM workflowentitystatuses
+                WHERE wkfles_eni_entityinstanceid = ? AND wkfles_thrutime = ?
+                """,
                 entityInstance, Session.MAX_TIME);
     }
 
     public long countWorkflowEntityStatusesByWorkflowStep(WorkflowStep workflowStep) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM workflowentitystatuses " +
-                        "WHERE wkfles_wkfls_workflowstepid = ? AND wkfles_thrutime = ?",
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM workflowentitystatuses
+                WHERE wkfles_wkfls_workflowstepid = ? AND wkfles_thrutime = ?
+                """,
                 workflowStep, Session.MAX_TIME);
     }
 
     public long countWorkflowEntityStatusesByWorkEffortScope(WorkEffortScope workEffortScope) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM workflowentitystatuses " +
-                        "WHERE wkfles_wes_workeffortscopeid = ? AND wkfles_thrutime = ?",
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM workflowentitystatuses
+                WHERE wkfles_wes_workeffortscopeid = ? AND wkfles_thrutime = ?
+                """,
                 workEffortScope, Session.MAX_TIME);
     }
 
@@ -4164,18 +4342,22 @@ public class WorkflowControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workflowentitystatuses, workflowsteps, workflowstepdetails, workflows, workflowdetails " +
-                        "WHERE wkfles_wes_workeffortscopeid = ? AND wkfles_thrutime = ? " +
-                        "AND wkfles_wkfls_workflowstepid = wkfls_activedetailid AND wkfls_activedetailid = wkflsdt_workflowstepdetailid " +
-                        "AND wkflsdt_wkfl_workflowid = wkfl_workflowid AND wkfl_activedetailid = wkfldt_workflowdetailid " +
-                        "ORDER BY wkfles_fromtime, wkflsdt_sortorder, wkflsdt_workflowstepname, wkfldt_sortorder, wkfldt_sortorder " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM workflowentitystatuses, workflowsteps, workflowstepdetails, workflows, workflowdetails
+                        WHERE wkfles_wes_workeffortscopeid = ? AND wkfles_thrutime = ?
+                        AND wkfles_wkfls_workflowstepid = wkfls_activedetailid AND wkfls_activedetailid = wkflsdt_workflowstepdetailid
+                        AND wkflsdt_wkfl_workflowid = wkfl_workflowid AND wkfl_activedetailid = wkfldt_workflowdetailid
+                        ORDER BY wkfldt_sortorder, wkfldt_workflowname, wkflsdt_sortorder, wkflsdt_workflowstepname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workflowentitystatuses " +
-                        "WHERE wkfles_wes_workeffortscopeid = ? AND wkfles_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM workflowentitystatuses
+                        WHERE wkfles_wes_workeffortscopeid = ? AND wkfles_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = WorkflowEntityStatusFactory.getInstance().prepareStatement(query);
@@ -4206,19 +4388,23 @@ public class WorkflowControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workflowentitystatuses, workflowstepdetails " +
-                        "WHERE wkfles_eni_entityinstanceid = ? AND wkfles_thrutime = ? " +
-                        "AND wkfles_wkfls_workflowstepid = wkflsdt_wkfls_workflowstepid " +
-                        "AND wkflsdt_wkfl_workflowid = ? AND wkflsdt_thrutime = ? " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM workflowentitystatuses, workflowstepdetails
+                        WHERE wkfles_eni_entityinstanceid = ? AND wkfles_thrutime = ?
+                        AND wkfles_wkfls_workflowstepid = wkflsdt_wkfls_workflowstepid
+                        AND wkflsdt_wkfl_workflowid = ? AND wkflsdt_thrutime = ?
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workflowentitystatuses, workflowstepdetails " +
-                        "WHERE wkfles_eni_entityinstanceid = ? AND wkfles_thrutime = ? " +
-                        "AND wkfles_wkfls_workflowstepid = wkflsdt_wkfls_workflowstepid " +
-                        "AND wkflsdt_wkfl_workflowid = ? AND wkflsdt_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM workflowentitystatuses, workflowstepdetails
+                        WHERE wkfles_eni_entityinstanceid = ? AND wkfles_thrutime = ?
+                        AND wkfles_wkfls_workflowstepid = wkflsdt_wkfls_workflowstepid
+                        AND wkflsdt_wkfl_workflowid = ? AND wkflsdt_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = WorkflowEntityStatusFactory.getInstance().prepareStatement(query);
@@ -4296,18 +4482,22 @@ public class WorkflowControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workflowentitystatuses, workflowsteps, workflowstepdetails, workflows, workflowdetails " +
-                        "WHERE wkfles_eni_entityinstanceid = ? AND wkfles_thrutime = ? " +
-                        "AND wkfles_wkfls_workflowstepid = wkfls_workflowstepid AND wkfls_lastdetailid = wkflsdt_workflowstepdetailid " +
-                        "AND wkflsdt_wkfl_workflowid = wkfl_workflowid AND wkfl_lastdetailid = wkfldt_wkfl_workflowid " +
-                        "ORDER BY wkflsdt_sortorder, wkflsdt_workflowstepname, wkfldt_sortorder, wkfldt_workflowname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM workflowentitystatuses, workflowsteps, workflowstepdetails, workflows, workflowdetails
+                        WHERE wkfles_eni_entityinstanceid = ? AND wkfles_thrutime = ?
+                        AND wkfles_wkfls_workflowstepid = wkfls_workflowstepid AND wkfls_lastdetailid = wkflsdt_workflowstepdetailid
+                        AND wkflsdt_wkfl_workflowid = wkfl_workflowid AND wkfl_lastdetailid = wkfldt_wkfl_workflowid
+                        ORDER BY wkflsdt_sortorder, wkflsdt_workflowstepname, wkfldt_sortorder, wkfldt_workflowname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM workflowentitystatuses " +
-                        "WHERE wkfles_eni_entityinstanceid = ? AND wkfles_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM workflowentitystatuses
+                        WHERE wkfles_eni_entityinstanceid = ? AND wkfles_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = WorkflowEntityStatusFactory.getInstance().prepareStatement(query);
@@ -4335,15 +4525,16 @@ public class WorkflowControl
         List<WorkflowEntityStatus> workflowEntityStatuses;
         
         try {
-            var ps = WorkflowEntityStatusFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM workflowentitystatuses, workflowsteps, workflowstepdetails, workflows, workflowdetails " +
-                    "WHERE wkfles_thrutime = ? " +
-                    "AND wkfles_wkfls_workflowstepid = wkfls_workflowstepid AND wkfls_activedetailid = wkflsdt_workflowstepdetailid " +
-                    "AND wkflsdt_wkfl_workflowid = ? " +
-                    "AND wkflsdt_wkfl_workflowid = wkfl_workflowid AND wkfl_activedetailid = wkfldt_workflowdetailid " +
-                    "ORDER BY wkfldt_sortorder, wkfldt_workflowname, wkflsdt_sortorder, wkflsdt_workflowstepname " +
-                    "_LIMIT_");
+            var ps = WorkflowEntityStatusFactory.getInstance().prepareStatement("""
+                    SELECT _ALL_
+                    FROM workflowentitystatuses, workflowsteps, workflowstepdetails, workflows, workflowdetails
+                    WHERE wkfles_thrutime = ?
+                    AND wkfles_wkfls_workflowstepid = wkfls_workflowstepid AND wkfls_activedetailid = wkflsdt_workflowstepdetailid
+                    AND wkflsdt_wkfl_workflowid = ?
+                    AND wkflsdt_wkfl_workflowid = wkfl_workflowid AND wkfl_activedetailid = wkfldt_workflowdetailid
+                    ORDER BY wkfldt_sortorder, wkfldt_workflowname, wkflsdt_sortorder, wkflsdt_workflowstepname
+                    _LIMIT_
+                    """);
             
             ps.setLong(1, Session.MAX_TIME);
             ps.setLong(2, workflow.getPrimaryKey().getEntityId());
@@ -4361,15 +4552,17 @@ public class WorkflowControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM workflowentitystatuses " +
-                        "WHERE wkfles_wkfls_workflowstepid = ? AND wkfles_thrutime = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM workflowentitystatuses " +
-                        "WHERE wkfles_wkfls_workflowstepid = ? AND wkfles_thrutime = ? " +
-                        "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM workflowentitystatuses
+                WHERE wkfles_wkfls_workflowstepid = ? AND wkfles_thrutime = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM workflowentitystatuses
+                WHERE wkfles_wkfls_workflowstepid = ? AND wkfles_thrutime = ?
+                FOR UPDATE
+                """);
         getWorkflowEntityStatusesByWorkflowStepQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -4514,15 +4707,17 @@ public class WorkflowControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM workflowtriggers " +
-                "WHERE wkfltrg_wkfles_workflowentitystatusid = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM workflowtriggers " +
-                "WHERE wkfltrg_wkfles_workflowentitystatusid = ? " +
-                "FOR UPDATE");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM workflowtriggers
+                WHERE wkfltrg_wkfles_workflowentitystatusid = ?
+                """);
+        queryMap.put(EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM workflowtriggers
+                WHERE wkfltrg_wkfles_workflowentitystatusid = ?
+                FOR UPDATE
+                """);
         getWorkflowTriggerQueries = Collections.unmodifiableMap(queryMap);
     }
     
@@ -4550,12 +4745,13 @@ public class WorkflowControl
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(1);
 
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM workflowtriggers " +
-                "WHERE wkfltrg_triggertime < ? " +
-                "ORDER BY wkfltrg_triggertime, wkfltrg_workflowtriggerid " +
-                "_LIMIT_");
+        queryMap.put(EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM workflowtriggers
+                WHERE wkfltrg_triggertime < ?
+                ORDER BY wkfltrg_triggertime, wkfltrg_workflowtriggerid
+                _LIMIT_
+                """);
         getWorkflowTriggersByTriggerTimeQueries = Collections.unmodifiableMap(queryMap);
     }
     
