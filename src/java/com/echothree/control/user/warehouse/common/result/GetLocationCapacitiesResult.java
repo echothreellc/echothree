@@ -29,5 +29,8 @@ public interface GetLocationCapacitiesResult
     
     List<LocationCapacityTransfer> getLocationCapacities();
     void setLocationCapacities(List<LocationCapacityTransfer> locationCapacities);
+
+    Long getLocationCapacityCount();
+    void setLocationCapacityCount(Long locationCapacityCount);
     
 }

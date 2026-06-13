@@ -18,8 +18,6 @@ package com.echothree.control.user.message.server.command;
 
 import com.echothree.control.user.message.common.form.GetMessageTypesForm;
 import com.echothree.control.user.message.common.result.MessageResultFactory;
-import com.echothree.model.control.core.server.control.ComponentControl;
-import com.echothree.model.control.core.server.control.EntityTypeControl;
 import com.echothree.model.control.core.server.logic.EntityTypeLogic;
 import com.echothree.model.control.message.server.control.MessageControl;
 import com.echothree.model.data.core.server.entity.EntityType;
@@ -47,12 +45,6 @@ public class GetMessageTypesCommand
         );
     }
     
-    @Inject
-    ComponentControl componentControl;
-
-    @Inject
-    EntityTypeControl entityTypeControl;
-
     @Inject
     MessageControl messageControl;
 
