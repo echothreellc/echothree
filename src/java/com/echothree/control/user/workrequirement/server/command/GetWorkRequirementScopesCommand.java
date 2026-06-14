@@ -20,69 +20,69 @@ import com.echothree.control.user.workrequirement.common.form.GetWorkRequirement
 import com.echothree.control.user.workrequirement.common.result.WorkRequirementResultFactory;
 import com.echothree.model.control.workeffort.server.control.WorkEffortControl;
 import com.echothree.model.control.workrequirement.server.control.WorkRequirementControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.workeffort.server.entity.WorkEffortScope;
+import com.echothree.model.data.workrequirement.server.entity.WorkRequirementScope;
+import com.echothree.model.data.workrequirement.server.entity.WorkRequirementType;
+import com.echothree.model.data.workrequirement.server.factory.WorkRequirementScopeFactory;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
+import java.util.Collection;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetWorkRequirementScopesCommand
-        extends BaseSimpleCommand<GetWorkRequirementScopesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<WorkRequirementScope, GetWorkRequirementScopesForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("WorkEffortTypeName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("WorkRequirementTypeName", FieldType.ENTITY_NAME, false, null, null),
-            new FieldDefinition("WorkEffortScopeName", FieldType.ENTITY_NAME, false, null, null)
+                new FieldDefinition("WorkEffortTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("WorkRequirementTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("WorkEffortScopeName", FieldType.ENTITY_NAME, false, null, null)
         );
     }
     
+    @Inject
+    WorkEffortControl workEffortControl;
+
+    @Inject
+    WorkRequirementControl workRequirementControl;
+
     /** Creates a new instance of GetWorkRequirementScopesCommand */
     public GetWorkRequirementScopesCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    private WorkRequirementType workRequirementType;
+    private WorkEffortScope workEffortScope;
+
     @Override
-    protected BaseResult execute() {
-        var workEffortControl = Session.getModelController(WorkEffortControl.class);
-        var result = WorkRequirementResultFactory.getGetWorkRequirementScopesResult();
+    protected void handleForm() {
         var workEffortTypeName = form.getWorkEffortTypeName();
         var workEffortType = workEffortControl.getWorkEffortTypeByName(workEffortTypeName);
-        
+
         if(workEffortType != null) {
-            var userVisit = getUserVisit();
             var workEffortScopeName = form.getWorkEffortScopeName();
             var workRequirementTypeName = form.getWorkRequirementTypeName();
             var parameterCount = (workEffortScopeName == null ? 0 : 1) + (workRequirementTypeName == null ? 0 : 1);
-            
-            result.setWorkEffortType(workEffortControl.getWorkEffortTypeTransfer(userVisit, workEffortType));
-            
+
             if(parameterCount == 1) {
-                var workRequirementControl = Session.getModelController(WorkRequirementControl.class);
-                
                 if(workEffortScopeName != null) {
-                    var workEffortScope = workEffortControl.getWorkEffortScopeByName(workEffortType, workEffortScopeName);
-                    
-                    if(workEffortScope != null) {
-                        result.setWorkEffortScope(workEffortControl.getWorkEffortScopeTransfer(userVisit, workEffortScope));
-                        result.setWorkRequirementScopes(workRequirementControl.getWorkRequirementScopeTransfersByWorkEffortScope(userVisit, workEffortScope));
-                    } else {
+                    workEffortScope = workEffortControl.getWorkEffortScopeByName(workEffortType, workEffortScopeName);
+
+                    if(workEffortScope == null) {
                         addExecutionError(ExecutionErrors.UnknownWorkEffortScopeName.name(), workEffortScopeName);
                     }
-                } else if(workRequirementTypeName != null) {
-                    var workRequirementType = workRequirementControl.getWorkRequirementTypeByName(workEffortType, workRequirementTypeName);
-                    
-                    if(workRequirementType != null) {
-                        result.setWorkRequirementType(workRequirementControl.getWorkRequirementTypeTransfer(userVisit, workRequirementType));
-                        result.setWorkRequirementScopes(workRequirementControl.getWorkRequirementScopeTransfersByWorkRequirementType(userVisit, workRequirementType));
-                    } else {
+                } else {
+                    workRequirementType = workRequirementControl.getWorkRequirementTypeByName(workEffortType, workRequirementTypeName);
+
+                    if(workRequirementType == null) {
                         addExecutionError(ExecutionErrors.UnknownWorkRequirementTypeName.name(), workRequirementTypeName);
                     }
                 }
@@ -92,8 +92,59 @@ public class GetWorkRequirementScopesCommand
         } else {
             addExecutionError(ExecutionErrors.UnknownWorkEffortTypeName.name(), workEffortTypeName);
         }
-        
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        Long totalEntities = null;
+
+        if(!hasExecutionErrors()) {
+            if(workEffortScope != null) {
+                totalEntities = workRequirementControl.countWorkRequirementScopesByWorkEffortScope(workEffortScope);
+            } else {
+                totalEntities = workRequirementControl.countWorkRequirementScopesByWorkRequirementType(workRequirementType);
+            }
+        }
+
+        return totalEntities;
+    }
+
+    @Override
+    protected Collection<WorkRequirementScope> getEntities() {
+        Collection<WorkRequirementScope> entities = null;
+
+        if(!hasExecutionErrors()) {
+            if(workEffortScope != null) {
+                entities = workRequirementControl.getWorkRequirementScopesByWorkEffortScope(workEffortScope);
+            } else {
+                entities = workRequirementControl.getWorkRequirementScopesByWorkRequirementType(workRequirementType);
+            }
+        }
+
+        return entities;
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<WorkRequirementScope> entities) {
+        var result = WorkRequirementResultFactory.getGetWorkRequirementScopesResult();
+
+        if(entities != null) {
+            var userVisit = getUserVisit();
+
+            if(workEffortScope != null) {
+                result.setWorkEffortScope(workEffortControl.getWorkEffortScopeTransfer(userVisit, workEffortScope));
+            } else {
+                result.setWorkRequirementType(workRequirementControl.getWorkRequirementTypeTransfer(userVisit, workRequirementType));
+            }
+
+            if(session.hasLimit(WorkRequirementScopeFactory.class)) {
+                result.setWorkRequirementScopeCount(getTotalEntities());
+            }
+
+            result.setWorkRequirementScopes(workRequirementControl.getWorkRequirementScopeTransfers(userVisit, entities));
+        }
+
         return result;
     }
-    
+
 }
