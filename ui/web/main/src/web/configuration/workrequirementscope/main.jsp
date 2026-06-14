@@ -30,9 +30,18 @@
                 <a href="<c:url value="/action/Portal" />"><fmt:message key="navigation.portal" /></a> &gt;&gt;
                 <a href="<c:url value="/action/Configuration/Main" />">Configuration</a> &gt;&gt;
                 <a href="<c:url value="/action/Configuration/WorkEffortType/Main" />">Work Effort Types</a> &gt;&gt;
-                <c:url var="workEffortScopesUrl" value="/action/Configuration/WorkEffortScope/Main">
-                    <c:param name="WorkEffortTypeName" value="${workEffortType.workEffortTypeName}" />
-                </c:url>
+                <c:choose>
+                    <c:when test="${workRequirementType != null}">
+                        <c:url var="workEffortScopesUrl" value="/action/Configuration/WorkEffortScope/Main">
+                            <c:param name="WorkEffortTypeName" value="${workRequirementType.workEffortType.workEffortTypeName}" />
+                        </c:url>
+                    </c:when>
+                    <c:when test="${workEffortScope != null}">
+                        <c:url var="workEffortScopesUrl" value="/action/Configuration/WorkEffortScope/Main">
+                            <c:param name="WorkEffortTypeName" value="${workEffortScope.workEffortType.workEffortTypeName}" />
+                        </c:url>
+                    </c:when>
+                </c:choose>
                 <a href="${workEffortScopesUrl}">Work Effort Scopes</a> &gt;&gt;
                 Work Requirement Scopes
             </h2>
