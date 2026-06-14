@@ -31,6 +31,9 @@ public interface GetReturnTypeShippingMethodsResult
     ShippingMethodTransfer getShippingMethod();
     void setShippingMethod(ShippingMethodTransfer shippingMethod);
     
+    Long getReturnTypeShippingMethodCount();
+    void setReturnTypeShippingMethodCount(Long returnTypeShippingMethodCount);
+
     List<ReturnTypeShippingMethodTransfer> getReturnTypeShippingMethods();
     void setReturnTypeShippingMethods(List<ReturnTypeShippingMethodTransfer> returnTypeShippingMethods);
     

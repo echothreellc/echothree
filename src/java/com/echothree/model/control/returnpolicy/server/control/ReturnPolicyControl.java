@@ -3148,6 +3148,22 @@ public class ReturnPolicyControl
         return getReturnTypeShippingMethodsByShippingMethod(shippingMethod, EntityPermission.READ_WRITE);
     }
     
+    public long countReturnTypeShippingMethodsByReturnType(ReturnType returnType) {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM returntypeshippingmethods
+                WHERE rtntypshm_rtntyp_returntypeid = ? AND rtntypshm_thrutime = ?
+                """, returnType, Session.MAX_TIME);
+    }
+
+    public long countReturnTypeShippingMethodsByShippingMethod(ShippingMethod shippingMethod) {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM returntypeshippingmethods
+                WHERE rtntypshm_shm_shippingmethodid = ? AND rtntypshm_thrutime = ?
+                """, shippingMethod, Session.MAX_TIME);
+    }
+
     public List<ReturnTypeShippingMethodTransfer> getReturnTypeShippingMethodTransfers(UserVisit userVisit, Collection<ReturnTypeShippingMethod> returnTypeShippingMethods) {
         List<ReturnTypeShippingMethodTransfer> returnTypeShippingMethodTransfers = new ArrayList<>(returnTypeShippingMethods.size());
         
