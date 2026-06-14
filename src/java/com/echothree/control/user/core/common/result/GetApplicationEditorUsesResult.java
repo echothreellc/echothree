@@ -27,6 +27,9 @@ public interface GetApplicationEditorUsesResult
     ApplicationTransfer getApplication();
     void setApplication(ApplicationTransfer application);
     
+    Long getApplicationEditorUseCount();
+    void setApplicationEditorUseCount(Long applicationEditorUseCount);
+
     List<ApplicationEditorUseTransfer> getApplicationEditorUses();
     void setApplicationEditorUses(List<ApplicationEditorUseTransfer> applicationEditorUses);
     
