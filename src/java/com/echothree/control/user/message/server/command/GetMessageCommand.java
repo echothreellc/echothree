@@ -19,78 +19,83 @@ package com.echothree.control.user.message.server.command;
 import com.echothree.control.user.message.common.form.GetMessageForm;
 import com.echothree.control.user.message.common.result.MessageResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
+import com.echothree.model.control.core.server.logic.ComponentVendorLogic;
+import com.echothree.model.control.core.server.logic.EntityTypeLogic;
 import com.echothree.model.control.message.server.control.MessageControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.message.server.entity.Message;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class GetMessageCommand
-        extends BaseSimpleCommand<GetMessageForm> {
+        extends BaseSingleEntityCommand<Message, GetMessageForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null),
-            new FieldDefinition("MessageTypeName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("MessageName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null),
+                new FieldDefinition("MessageTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("MessageName", FieldType.ENTITY_NAME, true, null, null)
         );
     }
     
+    @Inject
+    ComponentVendorLogic componentVendorLogic;
+
+    @Inject
+    EntityTypeLogic entityTypeLogic;
+
+    @Inject
+    MessageControl messageControl;
+
     /** Creates a new instance of GetMessageCommand */
     public GetMessageCommand() {
         super(null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = MessageResultFactory.getGetMessageResult();
+    protected Message getEntity() {
+        Message message = null;
         var componentVendorName = form.getComponentVendorName();
-        var componentVendor = componentControl.getComponentVendorByName(componentVendorName);
-        
-        if(componentVendor != null) {
-            var userVisit = getUserVisit();
-            var entityTypeName = form.getEntityTypeName();
-            var entityType = entityTypeControl.getEntityTypeByName(componentVendor, entityTypeName);
-            
-            result.setComponentVendor(componentControl.getComponentVendorTransfer(userVisit, componentVendor));
-            
-            if(entityType != null) {
-                var messageControl = Session.getModelController(MessageControl.class);
-                var messageTypeName = form.getMessageTypeName();
-                var messageType = messageControl.getMessageTypeByName(entityType, messageTypeName);
-                
-                result.setEntityType(entityTypeControl.getEntityTypeTransfer(userVisit, entityType));
-                
-                if(messageType != null) {
-                    var messageName = form.getMessageName();
-                    var message = messageControl.getMessageByName(messageType, messageName);
-                    
-                    result.setMessageType(messageControl.getMessageTypeTransfer(userVisit, messageType));
-                    
-                    if(message != null) {
-                        result.setMessage(messageControl.getMessageTransfer(userVisit, message));
-                        
-                        sendEvent(messageType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownMessageName.name(), messageName);
-                    }
+        var entityTypeName = form.getEntityTypeName();
+        var entityType = entityTypeLogic.getEntityTypeByName(this, componentVendorName, entityTypeName);
+
+        if(!hasExecutionErrors()) {
+            var messageTypeName = form.getMessageTypeName();
+            var messageType = messageControl.getMessageTypeByName(entityType, messageTypeName);
+
+            if(messageType != null) {
+                var messageName = form.getMessageName();
+
+                message = messageControl.getMessageByName(messageType, messageName);
+
+                if(message != null) {
+                    sendEvent(message.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
                 } else {
-                    addExecutionError(ExecutionErrors.UnknownMessageTypeName.name(), messageTypeName);
+                    addExecutionError(ExecutionErrors.UnknownMessageName.name(), messageName);
                 }
             } else {
-                addExecutionError(ExecutionErrors.UnknownEntityTypeName.name(), entityTypeName);
+                addExecutionError(ExecutionErrors.UnknownMessageTypeName.name(), messageTypeName);
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownComponentVendorName.name(), componentVendorName);
+        }
+
+        return message;
+    }
+    
+    @Override
+    protected BaseResult getResult(Message message) {
+        var result = MessageResultFactory.getGetMessageResult();
+        
+        if(message != null) {
+            result.setMessage(messageControl.getMessageTransfer(getUserVisit(), message));
         }
         
         return result;

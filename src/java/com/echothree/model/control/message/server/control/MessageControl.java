@@ -736,8 +736,7 @@ public class MessageControl
         return messageTransferCache.getMessageTransfer(userVisit, message);
     }
     
-    public List<MessageTransfer> getMessageTransfers(UserVisit userVisit, MessageType messageType) {
-        var messages = getMessagesByMessageType(messageType);
+    public List<MessageTransfer> getMessageTransfers(UserVisit userVisit, Collection<Message> messages) {
         List<MessageTransfer> messageTransfers = new ArrayList<>(messages.size());
         
         messages.forEach((message) ->
@@ -745,6 +744,10 @@ public class MessageControl
         );
         
         return messageTransfers;
+    }
+    
+    public List<MessageTransfer> getMessageTransfers(UserVisit userVisit, MessageType messageType) {
+        return getMessageTransfers(userVisit, getMessagesByMessageType(messageType));
     }
     
     private void updateMessageFromValue(MessageDetailValue messageDetailValue, boolean checkDefault,
