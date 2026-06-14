@@ -64,16 +64,9 @@ public class MainAction
             var commandResult = MessageUtil.getHome().getMessages(getUserVisitPK(request), commandForm);
             var executionResult = commandResult.getExecutionResult();
             var result = (GetMessagesResult)executionResult.getResult();
-            var componentVendorTransfer = result.getComponentVendor();
-            var entityTypeTransfer = result.getEntityType();
             var messageTypeTransfer = result.getMessageType();
             
-            request.setAttribute(AttributeConstants.COMPONENT_VENDOR, componentVendorTransfer);
-            request.setAttribute(AttributeConstants.COMPONENT_VENDOR_NAME, componentVendorTransfer.getComponentVendorName());
-            request.setAttribute(AttributeConstants.ENTITY_TYPE, entityTypeTransfer);
-            request.setAttribute(AttributeConstants.ENTITY_TYPE_NAME, entityTypeTransfer.getEntityTypeName());
             request.setAttribute(AttributeConstants.MESSAGE_TYPE, messageTypeTransfer);
-            request.setAttribute(AttributeConstants.MESSAGE_TYPE_NAME, messageTypeTransfer.getMessageTypeName());
             request.setAttribute(AttributeConstants.MESSAGES, result.getMessages());
             forwardKey = ForwardConstants.DISPLAY;
         } catch (NamingException ne) {
