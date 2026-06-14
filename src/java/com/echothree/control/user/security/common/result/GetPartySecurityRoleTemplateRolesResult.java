@@ -26,8 +26,11 @@ public interface GetPartySecurityRoleTemplateRolesResult
     
     PartySecurityRoleTemplateTransfer getPartySecurityRoleTemplate();
     void setPartySecurityRoleTemplate(PartySecurityRoleTemplateTransfer partySecurityRoleTemplate);
-    
+
+    Long getPartySecurityRoleTemplateRoleCount();
+    void setPartySecurityRoleTemplateRoleCount(Long partySecurityRoleTemplateRoleCount);
+
     List<PartySecurityRoleTemplateRoleTransfer> getPartySecurityRoleTemplateRoles();
     void setPartySecurityRoleTemplateRoles(List<PartySecurityRoleTemplateRoleTransfer> partySecurityRoleTemplateRoles);
-    
+
 }
