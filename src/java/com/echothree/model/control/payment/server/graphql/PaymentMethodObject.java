@@ -18,6 +18,7 @@ package com.echothree.model.control.payment.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
+import com.echothree.model.control.payment.common.PaymentMethodTypes;
 import com.echothree.model.control.payment.server.control.PaymentMethodControl;
 import com.echothree.model.control.selector.server.graphql.SelectorObject;
 import com.echothree.model.control.selector.server.graphql.SelectorSecurityUtils;
@@ -126,5 +127,31 @@ public class PaymentMethodObject
 
         return paymentMethodControl.getBestPaymentMethodDescription(paymentMethod, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
-    
+
+    private PaymentMethodTypes paymentMethodTypeEnum = null; // Optional, use getPaymentMethodTypeEnum()
+
+    protected PaymentMethodTypes getPaymentMethodTypeEnum() {
+        if(paymentMethodTypeEnum == null) {
+            paymentMethodTypeEnum = PaymentMethodTypes.valueOf(getPaymentMethodDetail().getPaymentMethodType().getLastDetail().getPaymentMethodTypeName());
+        }
+
+        return paymentMethodTypeEnum;
+    }
+
+    @GraphQLField
+    @GraphQLDescription("payment method")
+    public PaymentMethodInterface getPaymentMethod(final DataFetchingEnvironment env) {
+        var paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
+
+        return switch(getPaymentMethodTypeEnum()) {
+            case ACCOUNT -> null;
+            case CHECK -> new PaymentMethodCheckObject(paymentMethodControl.getPaymentMethodCheck(paymentMethod));
+            case COD -> null;
+            case CREDIT_CARD -> new PaymentMethodCreditCardObject(paymentMethodControl.getPaymentMethodCreditCard(paymentMethod));
+            case PREPAID -> null;
+            case GIFT_CARD -> null;
+            case GIFT_CERTIFICATE -> null;
+        };
+    }
+
 }
