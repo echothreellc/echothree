@@ -128,6 +128,8 @@ import com.echothree.control.user.core.server.command.GetTextTransformationsComm
 import com.echothree.control.user.customer.common.CustomerUtil;
 import com.echothree.control.user.customer.server.command.GetCustomerCommand;
 import com.echothree.control.user.customer.server.command.GetCustomerTypeCommand;
+import com.echothree.control.user.customer.server.command.GetCustomerTypePaymentMethodCommand;
+import com.echothree.control.user.customer.server.command.GetCustomerTypePaymentMethodsCommand;
 import com.echothree.control.user.customer.server.command.GetCustomerTypesCommand;
 import com.echothree.control.user.customer.server.command.GetCustomersCommand;
 import com.echothree.control.user.employee.common.EmployeeUtil;
@@ -523,6 +525,7 @@ import com.echothree.model.control.core.server.graphql.TextDecorationObject;
 import com.echothree.model.control.core.server.graphql.TextTransformationObject;
 import com.echothree.model.control.customer.server.graphql.CustomerObject;
 import com.echothree.model.control.customer.server.graphql.CustomerTypeObject;
+import com.echothree.model.control.customer.server.graphql.CustomerTypePaymentMethodObject;
 import com.echothree.model.control.employee.server.graphql.EmployeeObject;
 import com.echothree.model.control.filter.server.graphql.FilterAdjustmentAmountObject;
 import com.echothree.model.control.filter.server.graphql.FilterAdjustmentFixedAmountObject;
@@ -803,8 +806,10 @@ import com.echothree.model.data.core.server.entity.TextDecoration;
 import com.echothree.model.data.core.server.entity.TextTransformation;
 import com.echothree.model.data.customer.common.CustomerConstants;
 import com.echothree.model.data.customer.common.CustomerTypeConstants;
+import com.echothree.model.data.customer.common.CustomerTypePaymentMethodConstants;
 import com.echothree.model.data.customer.server.entity.Customer;
 import com.echothree.model.data.customer.server.entity.CustomerType;
+import com.echothree.model.data.customer.server.entity.CustomerTypePaymentMethod;
 import com.echothree.model.data.employee.common.PartyEmployeeConstants;
 import com.echothree.model.data.employee.server.entity.PartyEmployee;
 import com.echothree.model.data.filter.common.FilterAdjustmentTypeConstants;
@@ -7785,6 +7790,63 @@ public interface GraphQlQueries {
                             .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, customerTypes);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("customerTypePaymentMethod")
+    static CustomerTypePaymentMethodObject customerTypePaymentMethod(final DataFetchingEnvironment env,
+            @GraphQLName("customerTypeName") @GraphQLNonNull final String customerTypeName,
+            @GraphQLName("paymentMethodName") @GraphQLNonNull final String paymentMethodName) {
+        CustomerTypePaymentMethod customerTypePaymentMethod;
+
+        try {
+            var commandForm = CustomerUtil.getHome().getGetCustomerTypePaymentMethodForm();
+
+            commandForm.setCustomerTypeName(customerTypeName);
+            commandForm.setPaymentMethodName(paymentMethodName);
+
+
+            customerTypePaymentMethod = CDI.current().select(GetCustomerTypePaymentMethodCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return customerTypePaymentMethod == null ? null : new CustomerTypePaymentMethodObject(customerTypePaymentMethod);
+    }
+
+    @GraphQLField
+    @GraphQLName("customerTypePaymentMethods")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<CustomerTypePaymentMethodObject> customerTypePaymentMethods(final DataFetchingEnvironment env,
+            @GraphQLName("customerTypeName") @GraphQLNonNull final String customerTypeName) {
+        CountingPaginatedData<CustomerTypePaymentMethodObject> data;
+
+        try {
+            var commandForm = CustomerUtil.getHome().getGetCustomerTypePaymentMethodsForm();
+            var command = CDI.current().select(GetCustomerTypePaymentMethodsCommand.class).get();
+
+            commandForm.setCustomerTypeName(customerTypeName);
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, CustomerTypePaymentMethodConstants.COMPONENT_VENDOR_NAME, CustomerTypePaymentMethodConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var customerTypePaymentMethods = entities.stream()
+                            .map(CustomerTypePaymentMethodObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, customerTypePaymentMethods);
                 }
             }
         } catch (NamingException ex) {

@@ -22,6 +22,7 @@ import com.echothree.model.control.cancellationpolicy.server.graphql.Cancellatio
 import com.echothree.model.control.cancellationpolicy.server.graphql.CancellationPolicySecurityUtils;
 import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
 import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
 import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
@@ -42,6 +43,7 @@ import com.echothree.model.control.term.server.graphql.TermSecurityUtils;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.workflow.server.graphql.WorkflowEntranceObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowSecurityUtils;
+import com.echothree.model.data.customer.common.CustomerTypePaymentMethodConstants;
 import com.echothree.model.data.customer.common.CustomerTypeShippingMethodConstants;
 import com.echothree.model.data.customer.server.entity.CustomerType;
 import com.echothree.model.data.customer.server.entity.CustomerTypeDetail;
@@ -251,12 +253,32 @@ public class CustomerTypeObject
     }
 
     @GraphQLField
+    @GraphQLDescription("customer type payment methods")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<CustomerTypePaymentMethodObject> getCustomerTypePaymentMethods(final DataFetchingEnvironment env) {
+        if(CustomerSecurityUtils.getHasCustomerTypePaymentMethodsAccess(env)) {
+            var customerControl = Session.getModelController(CustomerControl.class);
+            var totalCount = customerControl.countCustomerTypePaymentMethodsByCustomerType(customerType);
+
+            try(var objectLimiter = new ObjectLimiter(env, CustomerTypePaymentMethodConstants.COMPONENT_VENDOR_NAME, CustomerTypePaymentMethodConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = customerControl.getCustomerTypePaymentMethodsByCustomerType(customerType);
+                var objects = entities.stream().map(CustomerTypePaymentMethodObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, objects);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
+
+    @GraphQLField
     @GraphQLDescription("customer type shipping methods")
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<CustomerTypeShippingMethodObject> getCustomerTypeShippingMethods(final DataFetchingEnvironment env) {
-//        if(CustomerSecurityUtils.getHasCustomerTypeShippingMethodsAccess(env)) {
-        var customerControl = Session.getModelController(CustomerControl.class);
+        if(CustomerSecurityUtils.getHasCustomerTypeShippingMethodsAccess(env)) {
+            var customerControl = Session.getModelController(CustomerControl.class);
             var totalCount = customerControl.countCustomerTypeShippingMethodsByCustomerType(customerType);
 
             try(var objectLimiter = new ObjectLimiter(env, CustomerTypeShippingMethodConstants.COMPONENT_VENDOR_NAME, CustomerTypeShippingMethodConstants.ENTITY_TYPE_NAME, totalCount)) {
@@ -265,9 +287,9 @@ public class CustomerTypeObject
 
                 return new CountedObjects<>(objectLimiter, objects);
             }
-//        } else {
-//            return Connections.emptyConnection();
-//        }
+        } else {
+            return Connections.emptyConnection();
+        }
     }
 
 }
