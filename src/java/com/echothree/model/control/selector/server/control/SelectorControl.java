@@ -249,9 +249,11 @@ public class SelectorControl
 
     public long countSelectorKinds() {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM selectorkinds, selectorkinddetails " +
-                        "WHERE slk_activedetailid = slkdt_selectorkinddetailid");
+                """
+                SELECT COUNT(*)
+                FROM selectorkinds, selectorkinddetails
+                WHERE slk_activedetailid = slkdt_selectorkinddetailid
+                """);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.SelectorKind */
@@ -276,14 +278,18 @@ public class SelectorControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM selectorkinds, selectorkinddetails "
-                + "WHERE slk_activedetailid = slkdt_selectorkinddetailid AND slkdt_selectorkindname = ?");
+                """
+                SELECT _ALL_
+                FROM selectorkinds, selectorkinddetails
+                WHERE slk_activedetailid = slkdt_selectorkinddetailid AND slkdt_selectorkindname = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM selectorkinds, selectorkinddetails "
-                + "WHERE slk_activedetailid = slkdt_selectorkinddetailid AND slkdt_selectorkindname = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM selectorkinds, selectorkinddetails
+                WHERE slk_activedetailid = slkdt_selectorkinddetailid AND slkdt_selectorkindname = ?
+                FOR UPDATE
+                """);
         getSelectorKindByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -314,14 +320,18 @@ public class SelectorControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM selectorkinds, selectorkinddetails "
-                + "WHERE slk_activedetailid = slkdt_selectorkinddetailid AND slkdt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM selectorkinds, selectorkinddetails
+                WHERE slk_activedetailid = slkdt_selectorkinddetailid AND slkdt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM selectorkinds, selectorkinddetails "
-                + "WHERE slk_activedetailid = slkdt_selectorkinddetailid AND slkdt_isdefault = 1 "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM selectorkinds, selectorkinddetails
+                WHERE slk_activedetailid = slkdt_selectorkinddetailid AND slkdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultSelectorKindQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -347,16 +357,20 @@ public class SelectorControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM selectorkinds, selectorkinddetails "
-                + "WHERE slk_activedetailid = slkdt_selectorkinddetailid "
-                + "ORDER BY slkdt_sortorder, slkdt_selectorkindname " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM selectorkinds, selectorkinddetails
+                WHERE slk_activedetailid = slkdt_selectorkinddetailid
+                ORDER BY slkdt_sortorder, slkdt_selectorkindname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM selectorkinds, selectorkinddetails "
-                + "WHERE slk_activedetailid = slkdt_selectorkinddetailid "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM selectorkinds, selectorkinddetails
+                WHERE slk_activedetailid = slkdt_selectorkinddetailid
+                FOR UPDATE
+                """);
         getSelectorKindsQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -515,14 +529,18 @@ public class SelectorControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM selectorkinddescriptions "
-                + "WHERE slkd_slk_selectorkindid = ? AND slkd_lang_languageid = ? AND slkd_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM selectorkinddescriptions
+                WHERE slkd_slk_selectorkindid = ? AND slkd_lang_languageid = ? AND slkd_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM selectorkinddescriptions "
-                + "WHERE slkd_slk_selectorkindid = ? AND slkd_lang_languageid = ? AND slkd_thrutime = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM selectorkinddescriptions
+                WHERE slkd_slk_selectorkindid = ? AND slkd_lang_languageid = ? AND slkd_thrutime = ?
+                FOR UPDATE
+                """);
         getSelectorKindDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -553,16 +571,20 @@ public class SelectorControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM selectorkinddescriptions, languages "
-                + "WHERE slkd_slk_selectorkindid = ? AND slkd_thrutime = ? AND slkd_lang_languageid = lang_languageid "
-                + "ORDER BY lang_sortorder, lang_languageisoname " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM selectorkinddescriptions, languages
+                WHERE slkd_slk_selectorkindid = ? AND slkd_thrutime = ? AND slkd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM selectorkinddescriptions "
-                + "WHERE slkd_slk_selectorkindid = ? AND slkd_thrutime = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM selectorkinddescriptions
+                WHERE slkd_slk_selectorkindid = ? AND slkd_thrutime = ?
+                FOR UPDATE
+                """);
         getSelectorKindDescriptionsBySelectorKindQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -680,9 +702,11 @@ public class SelectorControl
 
     public long countSelectorTypesBySelectorKind(SelectorKind selectorKind) {
         return session.queryForLong(
-                "SELECT COUNT(*) "
-                + "FROM selectortypes, selectortypedetails "
-                + "WHERE slt_activedetailid = sltdt_selectortypedetailid AND sltdt_slk_selectorkindid = ?",
+                """
+                SELECT COUNT(*)
+                FROM selectortypes, selectortypedetails
+                WHERE slt_activedetailid = sltdt_selectortypedetailid AND sltdt_slk_selectorkindid = ?
+                """,
                 selectorKind);
     }
 
@@ -708,16 +732,20 @@ public class SelectorControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM selectortypes, selectortypedetails "
-                + "WHERE slt_activedetailid = sltdt_selectortypedetailid AND sltdt_slk_selectorkindid = ? "
-                + "ORDER BY sltdt_sortorder, sltdt_selectortypename "
-                + "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM selectortypes, selectortypedetails
+                WHERE slt_activedetailid = sltdt_selectortypedetailid AND sltdt_slk_selectorkindid = ?
+                ORDER BY sltdt_sortorder, sltdt_selectortypename
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM selectortypes, selectortypedetails "
-                + "WHERE slt_activedetailid = sltdt_selectortypedetailid AND sltdt_slk_selectorkindid = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM selectortypes, selectortypedetails
+                WHERE slt_activedetailid = sltdt_selectortypedetailid AND sltdt_slk_selectorkindid = ?
+                FOR UPDATE
+                """);
         getSelectorTypesQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -740,16 +768,20 @@ public class SelectorControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM selectortypes, selectortypedetails "
-                + "WHERE slt_activedetailid = sltdt_selectortypedetailid "
-                + "AND sltdt_slk_selectorkindid = ? AND sltdt_isdefault = 1");
+                """
+                SELECT _ALL_
+                FROM selectortypes, selectortypedetails
+                WHERE slt_activedetailid = sltdt_selectortypedetailid
+                AND sltdt_slk_selectorkindid = ? AND sltdt_isdefault = 1
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM selectortypes, selectortypedetails "
-                + "WHERE slt_activedetailid = sltdt_selectortypedetailid "
-                + "AND sltdt_slk_selectorkindid = ? AND sltdt_isdefault = 1 "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM selectortypes, selectortypedetails
+                WHERE slt_activedetailid = sltdt_selectortypedetailid
+                AND sltdt_slk_selectorkindid = ? AND sltdt_isdefault = 1
+                FOR UPDATE
+                """);
         getDefaultSelectorTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -776,16 +808,20 @@ public class SelectorControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM selectortypes, selectortypedetails "
-                + "WHERE slt_activedetailid = sltdt_selectortypedetailid "
-                + "AND sltdt_slk_selectorkindid = ? AND sltdt_selectortypename = ?");
+                """
+                SELECT _ALL_
+                FROM selectortypes, selectortypedetails
+                WHERE slt_activedetailid = sltdt_selectortypedetailid
+                AND sltdt_slk_selectorkindid = ? AND sltdt_selectortypename = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM selectortypes, selectortypedetails "
-                + "WHERE slt_activedetailid = sltdt_selectortypedetailid "
-                + "AND sltdt_slk_selectorkindid = ? AND sltdt_selectortypename = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM selectortypes, selectortypedetails
+                WHERE slt_activedetailid = sltdt_selectortypedetailid
+                AND sltdt_slk_selectorkindid = ? AND sltdt_selectortypename = ?
+                FOR UPDATE
+                """);
         getSelectorTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -967,14 +1003,18 @@ public class SelectorControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM selectortypedescriptions "
-                + "WHERE sltd_slt_selectortypeid = ? AND sltd_lang_languageid = ? AND sltd_thrutime = ?");
+                """
+                SELECT _ALL_
+                FROM selectortypedescriptions
+                WHERE sltd_slt_selectortypeid = ? AND sltd_lang_languageid = ? AND sltd_thrutime = ?
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM selectortypedescriptions "
-                + "WHERE sltd_slt_selectortypeid = ? AND sltd_lang_languageid = ? AND sltd_thrutime = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM selectortypedescriptions
+                WHERE sltd_slt_selectortypeid = ? AND sltd_lang_languageid = ? AND sltd_thrutime = ?
+                FOR UPDATE
+                """);
         getSelectorTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1005,16 +1045,20 @@ public class SelectorControl
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
         queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM selectortypedescriptions, languages "
-                + "WHERE sltd_slt_selectortypeid = ? AND sltd_thrutime = ? AND sltd_lang_languageid = lang_languageid "
-                + "ORDER BY lang_sortorder, lang_languageisoname " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM selectortypedescriptions, languages
+                WHERE sltd_slt_selectortypeid = ? AND sltd_thrutime = ? AND sltd_lang_languageid = lang_languageid
+                ORDER BY lang_sortorder, lang_languageisoname
+                _LIMIT_
+                """);
         queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ "
-                + "FROM selectortypedescriptions "
-                + "WHERE sltd_slt_selectortypeid = ? AND sltd_thrutime = ? "
-                + "FOR UPDATE");
+                """
+                SELECT _ALL_
+                FROM selectortypedescriptions
+                WHERE sltd_slt_selectortypeid = ? AND sltd_thrutime = ?
+                FOR UPDATE
+                """);
         getSelectorTypeDescriptionsBySelectorTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -1111,10 +1155,12 @@ public class SelectorControl
     public List<SelectorBooleanType> getSelectorBooleanTypes() {
         List<SelectorBooleanType> selectorBooleanTypes;
         var ps = SelectorBooleanTypeFactory.getInstance().prepareStatement(
-                "SELECT _ALL_ " +
-                "FROM selectorbooleantypes " +
-                "ORDER BY slbt_sortorder, slbt_selectorbooleantypename " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM selectorbooleantypes
+                ORDER BY slbt_sortorder, slbt_selectorbooleantypename
+                _LIMIT_
+                """);
         
         selectorBooleanTypes = SelectorBooleanTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
         
@@ -1126,9 +1172,11 @@ public class SelectorControl
         
         try {
             var ps = SelectorBooleanTypeFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM selectorbooleantypes " +
-                    "WHERE slbt_selectorbooleantypename = ?");
+                    """
+                    SELECT _ALL_
+                    FROM selectorbooleantypes
+                    WHERE slbt_selectorbooleantypename = ?
+                    """);
             
             ps.setString(1, selectorBooleanTypeName);
             
@@ -1190,9 +1238,11 @@ public class SelectorControl
         
         try {
             var ps = SelectorBooleanTypeDescriptionFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM selectorbooleantypedescriptions " +
-                    "WHERE slbtd_slbt_selectorbooleantypeid = ? AND slbtd_lang_languageid = ?");
+                    """
+                    SELECT _ALL_
+                    FROM selectorbooleantypedescriptions
+                    WHERE slbtd_slbt_selectorbooleantypeid = ? AND slbtd_lang_languageid = ?
+                    """);
             
             ps.setLong(1, selectorBooleanType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -1236,10 +1286,12 @@ public class SelectorControl
     
     public List<SelectorComparisonType> getSelectorComparisonTypes() {
         var ps = SelectorComparisonTypeFactory.getInstance().prepareStatement(
-                "SELECT _ALL_ " +
-                "FROM selectorcomparisontypes " +
-                "ORDER BY slct_sortorder, slct_selectorcomparisontypename " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM selectorcomparisontypes
+                ORDER BY slct_sortorder, slct_selectorcomparisontypename
+                _LIMIT_
+                """);
         
         return SelectorComparisonTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
@@ -1249,9 +1301,11 @@ public class SelectorControl
         
         try {
             var ps = SelectorComparisonTypeFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM selectorcomparisontypes " +
-                    "WHERE slct_selectorcomparisontypename = ?");
+                    """
+                    SELECT _ALL_
+                    FROM selectorcomparisontypes
+                    WHERE slct_selectorcomparisontypename = ?
+                    """);
             
             ps.setString(1, selectorComparisonTypeName);
             
@@ -1312,9 +1366,11 @@ public class SelectorControl
         
         try {
             var ps = SelectorComparisonTypeDescriptionFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM selectorcomparisontypedescriptions " +
-                    "WHERE slctd_slct_selectorcomparisontypeid = ? AND slctd_lang_languageid = ?");
+                    """
+                    SELECT _ALL_
+                    FROM selectorcomparisontypedescriptions
+                    WHERE slctd_slct_selectorcomparisontypeid = ? AND slctd_lang_languageid = ?
+                    """);
             
             ps.setLong(1, selectorComparisonType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -1388,9 +1444,11 @@ public class SelectorControl
         
         try {
             var ps = SelectorNodeTypeFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM selectornodetypes " +
-                    "WHERE slnt_selectornodetypename = ?");
+                    """
+                    SELECT _ALL_
+                    FROM selectornodetypes
+                    WHERE slnt_selectornodetypename = ?
+                    """);
             
             ps.setString(1, selectorNodeTypeName);
             
@@ -1404,10 +1462,12 @@ public class SelectorControl
     
     public List<SelectorNodeType> getSelectorNodeTypes() {
         var ps = SelectorNodeTypeFactory.getInstance().prepareStatement(
-                "SELECT _ALL_ " +
-                "FROM selectornodetypes " +
-                "ORDER BY slnt_sortorder, slnt_selectornodetypename " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM selectornodetypes
+                ORDER BY slnt_sortorder, slnt_selectornodetypename
+                _LIMIT_
+                """);
         
         return SelectorNodeTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
@@ -1417,11 +1477,13 @@ public class SelectorControl
         
         try {
             var ps = SelectorNodeTypeFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM selectornodetypes, selectornodetypeuses " +
-                    "WHERE slnt_selectornodetypeid = slntu_slnt_selectornodetypeid AND slntu_slk_selectorkindid = ? " +
-                    "ORDER BY slnt_sortorder, slnt_selectornodetypename " +
-                    "_LIMIT_");
+                    """
+                    SELECT _ALL_
+                    FROM selectornodetypes, selectornodetypeuses
+                    WHERE slnt_selectornodetypeid = slntu_slnt_selectornodetypeid AND slntu_slk_selectorkindid = ?
+                    ORDER BY slnt_sortorder, slnt_selectornodetypename
+                    _LIMIT_
+                    """);
             
             ps.setLong(1, selectorKind.getPrimaryKey().getEntityId());
             
@@ -1469,9 +1531,11 @@ public class SelectorControl
         
         try {
             var ps = SelectorNodeTypeUseFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM selectornodetypeuses " +
-                    "WHERE slntu_slk_selectorkindid = ? AND slntu_slnt_selectornodetypeid = ?");
+                    """
+                    SELECT _ALL_
+                    FROM selectornodetypeuses
+                    WHERE slntu_slk_selectorkindid = ? AND slntu_slnt_selectornodetypeid = ?
+                    """);
             
             ps.setLong(1, selectorKind.getPrimaryKey().getEntityId());
             ps.setLong(2, selectorNodeType.getPrimaryKey().getEntityId());
@@ -1499,9 +1563,11 @@ public class SelectorControl
         
         try {
             var ps = SelectorNodeTypeDescriptionFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM selectornodetypedescriptions " +
-                    "WHERE slntd_slnt_selectornodetypeid = ? AND slntd_lang_languageid = ?");
+                    """
+                    SELECT _ALL_
+                    FROM selectornodetypedescriptions
+                    WHERE slntd_slnt_selectornodetypeid = ? AND slntd_lang_languageid = ?
+                    """);
             
             ps.setLong(1, selectorNodeType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -1545,10 +1611,12 @@ public class SelectorControl
     
     public List<SelectorTextSearchType> getSelectorTextSearchTypes() {
         var ps = SelectorTextSearchTypeFactory.getInstance().prepareStatement(
-                "SELECT _ALL_ " +
-                "FROM selectortextsearchtypes " +
-                "ORDER BY sltst_sortorder, sltst_selectortextsearchtypename " +
-                "_LIMIT_");
+                """
+                SELECT _ALL_
+                FROM selectortextsearchtypes
+                ORDER BY sltst_sortorder, sltst_selectortextsearchtypename
+                _LIMIT_
+                """);
         
         return SelectorTextSearchTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
@@ -1558,9 +1626,11 @@ public class SelectorControl
         
         try {
             var ps = SelectorTextSearchTypeFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM selectortextsearchtypes " +
-                    "WHERE sltst_selectortextsearchtypename = ?");
+                    """
+                    SELECT _ALL_
+                    FROM selectortextsearchtypes
+                    WHERE sltst_selectortextsearchtypename = ?
+                    """);
             
             ps.setString(1, selectorTextSearchTypeName);
             
@@ -1620,9 +1690,11 @@ public class SelectorControl
         
         try {
             var ps = SelectorTextSearchTypeDescriptionFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM selectortextsearchtypedescriptions " +
-                    "WHERE sltstd_sltst_selectortextsearchtypeid = ? AND sltstd_lang_languageid = ?");
+                    """
+                    SELECT _ALL_
+                    FROM selectortextsearchtypedescriptions
+                    WHERE sltstd_sltst_selectortextsearchtypeid = ? AND sltstd_lang_languageid = ?
+                    """);
             
             ps.setLong(1, selectorTextSearchType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
@@ -1687,9 +1759,11 @@ public class SelectorControl
 
     public long countSelectorsBySelectorType(SelectorType selectorType) {
         return session.queryForLong(
-                "SELECT COUNT(*) "
-                + "FROM selectors, selectordetails "
-                + "WHERE sl_activedetailid = sldt_selectordetailid AND sldt_slt_selectortypeid = ?",
+                """
+                SELECT COUNT(*)
+                FROM selectors, selectordetails
+                WHERE sl_activedetailid = sldt_selectordetailid AND sldt_slt_selectortypeid = ?
+                """,
                 selectorType);
     }
 
@@ -1716,14 +1790,18 @@ public class SelectorControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectors, selectordetails " +
-                        "WHERE sl_activedetailid = sldt_selectordetailid AND sldt_slt_selectortypeid = ? AND sldt_selectorname = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM selectors, selectordetails
+                        WHERE sl_activedetailid = sldt_selectordetailid AND sldt_slt_selectortypeid = ? AND sldt_selectorname = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectors, selectordetails " +
-                        "WHERE sl_activedetailid = sldt_selectordetailid AND sldt_slt_selectortypeid = ? AND sldt_selectorname = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM selectors, selectordetails
+                        WHERE sl_activedetailid = sldt_selectordetailid AND sldt_slt_selectortypeid = ? AND sldt_selectorname = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SelectorFactory.getInstance().prepareStatement(query);
@@ -1786,14 +1864,18 @@ public class SelectorControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectors, selectordetails " +
-                        "WHERE sl_activedetailid = sldt_selectordetailid AND sldt_slt_selectortypeid = ? AND sldt_isdefault = 1";
+                query = """
+                        SELECT _ALL_
+                        FROM selectors, selectordetails
+                        WHERE sl_activedetailid = sldt_selectordetailid AND sldt_slt_selectortypeid = ? AND sldt_isdefault = 1
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectors, selectordetails " +
-                        "WHERE sl_activedetailid = sldt_selectordetailid AND sldt_slt_selectortypeid = ? AND sldt_isdefault = 1 " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM selectors, selectordetails
+                        WHERE sl_activedetailid = sldt_selectordetailid AND sldt_slt_selectortypeid = ? AND sldt_isdefault = 1
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SelectorFactory.getInstance().prepareStatement(query);
@@ -1827,16 +1909,20 @@ public class SelectorControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectors, selectordetails " +
-                        "WHERE sl_activedetailid = sldt_selectordetailid AND sldt_slt_selectortypeid = ? " +
-                        "ORDER BY sldt_sortorder, sldt_selectorname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM selectors, selectordetails
+                        WHERE sl_activedetailid = sldt_selectordetailid AND sldt_slt_selectortypeid = ?
+                        ORDER BY sldt_sortorder, sldt_selectorname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectors, selectordetails " +
-                        "WHERE sl_activedetailid = sldt_selectordetailid AND sldt_slt_selectortypeid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM selectors, selectordetails
+                        WHERE sl_activedetailid = sldt_selectordetailid AND sldt_slt_selectortypeid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SelectorFactory.getInstance().prepareStatement(query);
@@ -1864,13 +1950,15 @@ public class SelectorControl
         
         try {
             var ps = SelectorFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ "
-                    + "FROM selectors, selectordetails, selectortypes, selectortypedetails "
-                    + "WHERE sl_activedetailid = sldt_selectordetailid AND sldt_slt_selectortypeid = slt_selectortypeid "
-                    + "AND slt_activedetailid = sltdt_selectortypedetailid "
-                    + "AND sltdt_slk_selectorkindid = ? "
-                    + "ORDER BY sltdt_sortorder, sltdt_selectortypename, sldt_sortorder, sldt_selectorname " +
-                    "_LIMIT_");
+                    """
+                    SELECT _ALL_
+                    FROM selectors, selectordetails, selectortypes, selectortypedetails
+                    WHERE sl_activedetailid = sldt_selectordetailid AND sldt_slt_selectortypeid = slt_selectortypeid
+                    AND slt_activedetailid = sltdt_selectortypedetailid
+                    AND sltdt_slk_selectorkindid = ?
+                    ORDER BY sltdt_sortorder, sltdt_selectortypename, sldt_sortorder, sldt_selectorname
+                    _LIMIT_
+                    """);
             
             ps.setLong(1, selectorKind.getPrimaryKey().getEntityId());
             
@@ -2043,14 +2131,18 @@ public class SelectorControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectordescriptions " +
-                        "WHERE sld_sl_selectorid = ? AND sld_lang_languageid = ? AND sld_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM selectordescriptions
+                        WHERE sld_sl_selectorid = ? AND sld_lang_languageid = ? AND sld_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectordescriptions " +
-                        "WHERE sld_sl_selectorid = ? AND sld_lang_languageid = ? AND sld_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM selectordescriptions
+                        WHERE sld_sl_selectorid = ? AND sld_lang_languageid = ? AND sld_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SelectorDescriptionFactory.getInstance().prepareStatement(query);
@@ -2092,16 +2184,20 @@ public class SelectorControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectordescriptions, languages " +
-                        "WHERE sld_sl_selectorid = ? AND sld_thrutime = ? AND sld_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM selectordescriptions, languages
+                        WHERE sld_sl_selectorid = ? AND sld_thrutime = ? AND sld_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectordescriptions " +
-                        "WHERE sld_sl_selectorid = ? AND sld_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM selectordescriptions
+                        WHERE sld_sl_selectorid = ? AND sld_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SelectorDescriptionFactory.getInstance().prepareStatement(query);
@@ -2199,14 +2295,18 @@ public class SelectorControl
 
     private static final Map<EntityPermission, String> getSelectorTimeQueries = Map.of(
             EntityPermission.READ_ONLY,
-            "SELECT _ALL_ " +
-                    "FROM selectortimes " +
-                    "WHERE sltm_sl_selectorid = ?",
+            """
+            SELECT _ALL_
+            FROM selectortimes
+            WHERE sltm_sl_selectorid = ?
+            """,
             EntityPermission.READ_WRITE,
-            "SELECT _ALL_ " +
-                    "FROM selectortimes " +
-                    "WHERE sltm_sl_selectorid = ? " +
-                    "FOR UPDATE"
+            """
+            SELECT _ALL_
+            FROM selectortimes
+            WHERE sltm_sl_selectorid = ?
+            FOR UPDATE
+            """
     );
 
     private SelectorTime getSelectorTime(Selector selector, EntityPermission entityPermission) {
@@ -2293,16 +2393,20 @@ public class SelectorControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectornodes, selectornodedetails " +
-                        "WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ? " +
-                        "AND slnddt_isrootselectornode = 1";
+                query = """
+                        SELECT _ALL_
+                        FROM selectornodes, selectornodedetails
+                        WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ?
+                        AND slnddt_isrootselectornode = 1
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectornodes, selectornodedetails " +
-                        "WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ? " +
-                        "AND slnddt_isrootselectornode = 1 " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM selectornodes, selectornodedetails
+                        WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ?
+                        AND slnddt_isrootselectornode = 1
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SelectorNodeFactory.getInstance().prepareStatement(query);
@@ -2336,16 +2440,20 @@ public class SelectorControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectornodes, selectornodedetails " +
-                        "WHERE slnd_activedetailid = slnddt_selectornodedetailid " +
-                        "AND slnddt_sl_selectorid = ? AND slnddt_selectornodename = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM selectornodes, selectornodedetails
+                        WHERE slnd_activedetailid = slnddt_selectornodedetailid
+                        AND slnddt_sl_selectorid = ? AND slnddt_selectornodename = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectornodes, selectornodedetails " +
-                        "WHERE slnd_activedetailid = slnddt_selectornodedetailid " +
-                        "AND slnddt_sl_selectorid = ? AND slnddt_selectornodename = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM selectornodes, selectornodedetails
+                        WHERE slnd_activedetailid = slnddt_selectornodedetailid
+                        AND slnddt_sl_selectorid = ? AND slnddt_selectornodename = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SelectorNodeFactory.getInstance().prepareStatement(query);
@@ -2384,16 +2492,20 @@ public class SelectorControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectornodes, selectornodedetails " +
-                        "WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ? " +
-                        "ORDER BY slnddt_selectornodename " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM selectornodes, selectornodedetails
+                        WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ?
+                        ORDER BY slnddt_selectornodename
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectornodes, selectornodedetails " +
-                        "WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM selectornodes, selectornodedetails
+                        WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SelectorNodeFactory.getInstance().prepareStatement(query);
@@ -2602,14 +2714,18 @@ public class SelectorControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectornodedescriptions " +
-                        "WHERE slndd_slnd_selectornodeid = ? AND slndd_lang_languageid = ? AND slndd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM selectornodedescriptions
+                        WHERE slndd_slnd_selectornodeid = ? AND slndd_lang_languageid = ? AND slndd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectornodedescriptions " +
-                        "WHERE slndd_slnd_selectornodeid = ? AND slndd_lang_languageid = ? AND slndd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM selectornodedescriptions
+                        WHERE slndd_slnd_selectornodeid = ? AND slndd_lang_languageid = ? AND slndd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SelectorNodeDescriptionFactory.getInstance().prepareStatement(query);
@@ -2651,16 +2767,20 @@ public class SelectorControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectornodedescriptions, languages " +
-                        "WHERE slndd_slnd_selectornodeid = ? AND slndd_thrutime = ? AND slndd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM selectornodedescriptions, languages
+                        WHERE slndd_slnd_selectornodeid = ? AND slndd_thrutime = ? AND slndd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectornodedescriptions " +
-                        "WHERE slndd_slnd_selectornodeid = ? AND slndd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM selectornodedescriptions
+                        WHERE slndd_slnd_selectornodeid = ? AND slndd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SelectorNodeDescriptionFactory.getInstance().prepareStatement(query);
@@ -2773,14 +2893,18 @@ public class SelectorControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectornodebooleans " +
-                        "WHERE slndbln_slnd_selectornodeid = ? AND slndbln_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM selectornodebooleans
+                        WHERE slndbln_slnd_selectornodeid = ? AND slndbln_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectornodebooleans " +
-                        "WHERE slndbln_slnd_selectornodeid = ? AND slndbln_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM selectornodebooleans
+                        WHERE slndbln_slnd_selectornodeid = ? AND slndbln_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SelectorNodeBooleanFactory.getInstance().prepareStatement(query);
@@ -2821,16 +2945,20 @@ public class SelectorControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectornodes, selectornodedetails, selectornodebooleans " +
-                        "WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ? " +
-                        "AND slnd_selectornodeid = slndbln_slnd_selectornodeid AND slndbln_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM selectornodes, selectornodedetails, selectornodebooleans
+                        WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ?
+                        AND slnd_selectornodeid = slndbln_slnd_selectornodeid AND slndbln_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectornodes, selectornodedetails, selectornodebooleans " +
-                        "WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ? " +
-                        "AND slnd_selectornodeid = slndbln_slnd_selectornodeid AND slndbln_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM selectornodes, selectornodedetails, selectornodebooleans
+                        WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ?
+                        AND slnd_selectornodeid = slndbln_slnd_selectornodeid AND slndbln_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SelectorNodeBooleanFactory.getInstance().prepareStatement(query);
@@ -2904,14 +3032,18 @@ public class SelectorControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectornodeworkflowsteps " +
-                        "WHERE slndws_slnd_selectornodeid = ? AND slndws_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM selectornodeworkflowsteps
+                        WHERE slndws_slnd_selectornodeid = ? AND slndws_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectornodeworkflowsteps " +
-                        "WHERE slndws_slnd_selectornodeid = ? AND slndws_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM selectornodeworkflowsteps
+                        WHERE slndws_slnd_selectornodeid = ? AND slndws_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SelectorNodeWorkflowStepFactory.getInstance().prepareStatement(query);
@@ -2952,16 +3084,20 @@ public class SelectorControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectornodes, selectornodedetails, selectornodeworkflowsteps " +
-                        "WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ? " +
-                        "AND slnd_selectornodeid = slndws_slnd_selectornodeid AND slndws_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM selectornodes, selectornodedetails, selectornodeworkflowsteps
+                        WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ?
+                        AND slnd_selectornodeid = slndws_slnd_selectornodeid AND slndws_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectornodes, selectornodedetails, selectornodeworkflowsteps " +
-                        "WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ? " +
-                        "AND slnd_selectornodeid = slndws_slnd_selectornodeid AND slndws_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM selectornodes, selectornodedetails, selectornodeworkflowsteps
+                        WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ?
+                        AND slnd_selectornodeid = slndws_slnd_selectornodeid AND slndws_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SelectorNodeWorkflowStepFactory.getInstance().prepareStatement(query);
@@ -3033,14 +3169,18 @@ public class SelectorControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectornodeentitylistitems " +
-                        "WHERE slndeli_slnd_selectornodeid = ? AND slndeli_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM selectornodeentitylistitems
+                        WHERE slndeli_slnd_selectornodeid = ? AND slndeli_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectornodeentitylistitems " +
-                        "WHERE slndeli_slnd_selectornodeid = ? AND slndeli_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM selectornodeentitylistitems
+                        WHERE slndeli_slnd_selectornodeid = ? AND slndeli_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SelectorNodeEntityListItemFactory.getInstance().prepareStatement(query);
@@ -3081,16 +3221,20 @@ public class SelectorControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectornodes, selectornodedetails, selectornodeentitylistitems " +
-                        "WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ? " +
-                        "AND slnd_selectornodeid = slndeli_slnd_selectornodeid AND slndeli_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM selectornodes, selectornodedetails, selectornodeentitylistitems
+                        WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ?
+                        AND slnd_selectornodeid = slndeli_slnd_selectornodeid AND slndeli_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectornodes, selectornodedetails, selectornodeentitylistitems " +
-                        "WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ? " +
-                        "AND slnd_selectornodeid = slndeli_slnd_selectornodeid AND slndeli_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM selectornodes, selectornodedetails, selectornodeentitylistitems
+                        WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ?
+                        AND slnd_selectornodeid = slndeli_slnd_selectornodeid AND slndeli_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SelectorNodeEntityListItemFactory.getInstance().prepareStatement(query);
@@ -3162,14 +3306,18 @@ public class SelectorControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectornoderesponsibilitytypes " +
-                        "WHERE slndrsptyp_rsptyp_responsibilitytypeid = ? AND slndrsptyp_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM selectornoderesponsibilitytypes
+                        WHERE slndrsptyp_rsptyp_responsibilitytypeid = ? AND slndrsptyp_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectornoderesponsibilitytypes " +
-                        "WHERE slndrsptyp_rsptyp_responsibilitytypeid = ? AND slndrsptyp_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM selectornoderesponsibilitytypes
+                        WHERE slndrsptyp_rsptyp_responsibilitytypeid = ? AND slndrsptyp_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SelectorNodeResponsibilityTypeFactory.getInstance().prepareStatement(query);
@@ -3210,16 +3358,20 @@ public class SelectorControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectornodes, selectornodedetails, selectornoderesponsibilitytypes " +
-                        "WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ? " +
-                        "AND slnd_selectornodeid = slndrsptyp_rsptyp_responsibilitytypeid AND slndrsptyp_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM selectornodes, selectornodedetails, selectornoderesponsibilitytypes
+                        WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ?
+                        AND slnd_selectornodeid = slndrsptyp_rsptyp_responsibilitytypeid AND slndrsptyp_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectornodes, selectornodedetails, selectornoderesponsibilitytypes " +
-                        "WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ? " +
-                        "AND slnd_selectornodeid = slndrsptyp_rsptyp_responsibilitytypeid AND slndrsptyp_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM selectornodes, selectornodedetails, selectornoderesponsibilitytypes
+                        WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ?
+                        AND slnd_selectornodeid = slndrsptyp_rsptyp_responsibilitytypeid AND slndrsptyp_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SelectorNodeResponsibilityTypeFactory.getInstance().prepareStatement(query);
@@ -3291,14 +3443,18 @@ public class SelectorControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectornodetrainingclasses " +
-                        "WHERE slndtrncls_slnd_selectornodeid = ? AND slndtrncls_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM selectornodetrainingclasses
+                        WHERE slndtrncls_slnd_selectornodeid = ? AND slndtrncls_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectornodetrainingclasses " +
-                        "WHERE slndtrncls_slnd_selectornodeid = ? AND slndtrncls_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM selectornodetrainingclasses
+                        WHERE slndtrncls_slnd_selectornodeid = ? AND slndtrncls_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SelectorNodeTrainingClassFactory.getInstance().prepareStatement(query);
@@ -3339,16 +3495,20 @@ public class SelectorControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectornodes, selectornodedetails, selectornodetrainingclasses " +
-                        "WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ? " +
-                        "AND slnd_selectornodeid = slndtrncls_slnd_selectornodeid AND slndtrncls_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM selectornodes, selectornodedetails, selectornodetrainingclasses
+                        WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ?
+                        AND slnd_selectornodeid = slndtrncls_slnd_selectornodeid AND slndtrncls_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectornodes, selectornodedetails, selectornodetrainingclasses " +
-                        "WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ? " +
-                        "AND slnd_selectornodeid = slndtrncls_slnd_selectornodeid AND slndtrncls_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM selectornodes, selectornodedetails, selectornodetrainingclasses
+                        WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ?
+                        AND slnd_selectornodeid = slndtrncls_slnd_selectornodeid AND slndtrncls_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SelectorNodeTrainingClassFactory.getInstance().prepareStatement(query);
@@ -3420,14 +3580,18 @@ public class SelectorControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectornodeskilltypes " +
-                        "WHERE slndskltyp_slnd_selectornodeid = ? AND slndskltyp_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM selectornodeskilltypes
+                        WHERE slndskltyp_slnd_selectornodeid = ? AND slndskltyp_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectornodeskilltypes " +
-                        "WHERE slndskltyp_slnd_selectornodeid = ? AND slndskltyp_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM selectornodeskilltypes
+                        WHERE slndskltyp_slnd_selectornodeid = ? AND slndskltyp_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SelectorNodeSkillTypeFactory.getInstance().prepareStatement(query);
@@ -3468,16 +3632,20 @@ public class SelectorControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectornodes, selectornodedetails, selectornodeskilltypes " +
-                        "WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ? " +
-                        "AND slnd_selectornodeid = slndskltyp_slnd_selectornodeid AND slndskltyp_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM selectornodes, selectornodedetails, selectornodeskilltypes
+                        WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ?
+                        AND slnd_selectornodeid = slndskltyp_slnd_selectornodeid AND slndskltyp_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectornodes, selectornodedetails, selectornodeskilltypes " +
-                        "WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ? " +
-                        "AND slnd_selectornodeid = slndskltyp_slnd_selectornodeid AND slndskltyp_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM selectornodes, selectornodedetails, selectornodeskilltypes
+                        WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ?
+                        AND slnd_selectornodeid = slndskltyp_slnd_selectornodeid AND slndskltyp_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SelectorNodeSkillTypeFactory.getInstance().prepareStatement(query);
@@ -3549,14 +3717,18 @@ public class SelectorControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectornodeitemcategories " +
-                        "WHERE slndic_slnd_selectornodeid = ? AND slndic_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM selectornodeitemcategories
+                        WHERE slndic_slnd_selectornodeid = ? AND slndic_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectornodeitemcategories " +
-                        "WHERE slndic_slnd_selectornodeid = ? AND slndic_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM selectornodeitemcategories
+                        WHERE slndic_slnd_selectornodeid = ? AND slndic_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SelectorNodeItemCategoryFactory.getInstance().prepareStatement(query);
@@ -3597,16 +3769,20 @@ public class SelectorControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectornodes, selectornodedetails, selectornodeitemcategories " +
-                        "WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ? " +
-                        "AND slnd_selectornodeid = slndic_slnd_selectornodeid AND slndic_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM selectornodes, selectornodedetails, selectornodeitemcategories
+                        WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ?
+                        AND slnd_selectornodeid = slndic_slnd_selectornodeid AND slndic_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectornodes, selectornodedetails, selectornodeitemcategories " +
-                        "WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ? " +
-                        "AND slnd_selectornodeid = slndic_slnd_selectornodeid AND slndic_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM selectornodes, selectornodedetails, selectornodeitemcategories
+                        WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ?
+                        AND slnd_selectornodeid = slndic_slnd_selectornodeid AND slndic_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SelectorNodeItemCategoryFactory.getInstance().prepareStatement(query);
@@ -3679,14 +3855,18 @@ public class SelectorControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectornodeitemaccountingcategories " +
-                        "WHERE slndiactgc_slnd_selectornodeid = ? AND slndiactgc_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM selectornodeitemaccountingcategories
+                        WHERE slndiactgc_slnd_selectornodeid = ? AND slndiactgc_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectornodeitemaccountingcategories " +
-                        "WHERE slndiactgc_slnd_selectornodeid = ? AND slndiactgc_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM selectornodeitemaccountingcategories
+                        WHERE slndiactgc_slnd_selectornodeid = ? AND slndiactgc_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SelectorNodeItemAccountingCategoryFactory.getInstance().prepareStatement(query);
@@ -3727,16 +3907,20 @@ public class SelectorControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectornodes, selectornodedetails, selectornodeitemaccountingcategories " +
-                        "WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ? " +
-                        "AND slnd_selectornodeid = slndiactgc_slnd_selectornodeid AND slndiactgc_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM selectornodes, selectornodedetails, selectornodeitemaccountingcategories
+                        WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ?
+                        AND slnd_selectornodeid = slndiactgc_slnd_selectornodeid AND slndiactgc_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectornodes, selectornodedetails, selectornodeitemaccountingcategories " +
-                        "WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ? " +
-                        "AND slnd_selectornodeid = slndiactgc_slnd_selectornodeid AND slndiactgc_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM selectornodes, selectornodedetails, selectornodeitemaccountingcategories
+                        WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ?
+                        AND slnd_selectornodeid = slndiactgc_slnd_selectornodeid AND slndiactgc_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SelectorNodeItemAccountingCategoryFactory.getInstance().prepareStatement(query);
@@ -3811,14 +3995,18 @@ public class SelectorControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectornodeitempurchasingcategories " +
-                        "WHERE slndiprchc_slnd_selectornodeid = ? AND slndiprchc_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM selectornodeitempurchasingcategories
+                        WHERE slndiprchc_slnd_selectornodeid = ? AND slndiprchc_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectornodeitempurchasingcategories " +
-                        "WHERE slndiprchc_slnd_selectornodeid = ? AND slndiprchc_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM selectornodeitempurchasingcategories
+                        WHERE slndiprchc_slnd_selectornodeid = ? AND slndiprchc_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SelectorNodeItemPurchasingCategoryFactory.getInstance().prepareStatement(query);
@@ -3859,16 +4047,20 @@ public class SelectorControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectornodes, selectornodedetails, selectornodeitempurchasingcategories " +
-                        "WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ? " +
-                        "AND slnd_selectornodeid = slndiprchc_slnd_selectornodeid AND slndiprchc_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM selectornodes, selectornodedetails, selectornodeitempurchasingcategories
+                        WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ?
+                        AND slnd_selectornodeid = slndiprchc_slnd_selectornodeid AND slndiprchc_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectornodes, selectornodedetails, selectornodeitempurchasingcategories " +
-                        "WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ? " +
-                        "AND slnd_selectornodeid = slndiprchc_slnd_selectornodeid AND slndiprchc_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM selectornodes, selectornodedetails, selectornodeitempurchasingcategories
+                        WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ?
+                        AND slnd_selectornodeid = slndiprchc_slnd_selectornodeid AND slndiprchc_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SelectorNodeItemPurchasingCategoryFactory.getInstance().prepareStatement(query);
@@ -3938,9 +4130,11 @@ public class SelectorControl
     
     public long countSelectorNodeGeoCodesByGeoCode(GeoCode geoCode) {
         return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM selectornodegeocodes " +
-                "WHERE slndgeo_geo_geocodeid = ? AND slndgeo_thrutime = ?",
+                """
+                SELECT COUNT(*)
+                FROM selectornodegeocodes
+                WHERE slndgeo_geo_geocodeid = ? AND slndgeo_thrutime = ?
+                """,
                 geoCode, Session.MAX_TIME);
     }
 
@@ -3951,14 +4145,18 @@ public class SelectorControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectornodegeocodes " +
-                        "WHERE slndgeo_slnd_selectornodeid = ? AND slndgeo_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM selectornodegeocodes
+                        WHERE slndgeo_slnd_selectornodeid = ? AND slndgeo_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectornodegeocodes " +
-                        "WHERE slndgeo_slnd_selectornodeid = ? AND slndgeo_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM selectornodegeocodes
+                        WHERE slndgeo_slnd_selectornodeid = ? AND slndgeo_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SelectorNodeGeoCodeFactory.getInstance().prepareStatement(query);
@@ -3999,16 +4197,20 @@ public class SelectorControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectornodes, selectornodedetails, selectornodegeocodes " +
-                        "WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ? " +
-                        "AND slnd_selectornodeid = slndgeo_slnd_selectornodeid AND slndgeo_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM selectornodes, selectornodedetails, selectornodegeocodes
+                        WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ?
+                        AND slnd_selectornodeid = slndgeo_slnd_selectornodeid AND slndgeo_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectornodes, selectornodedetails, selectornodegeocodes " +
-                        "WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ? " +
-                        "AND slnd_selectornodeid = slndgeo_slnd_selectornodeid AND slndgeo_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM selectornodes, selectornodedetails, selectornodegeocodes
+                        WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ?
+                        AND slnd_selectornodeid = slndgeo_slnd_selectornodeid AND slndgeo_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SelectorNodeGeoCodeFactory.getInstance().prepareStatement(query);
@@ -4080,14 +4282,18 @@ public class SelectorControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectornodepaymentmethods " +
-                        "WHERE slndpm_slnd_selectornodeid = ? AND slndpm_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM selectornodepaymentmethods
+                        WHERE slndpm_slnd_selectornodeid = ? AND slndpm_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectornodepaymentmethods " +
-                        "WHERE slndpm_slnd_selectornodeid = ? AND slndpm_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM selectornodepaymentmethods
+                        WHERE slndpm_slnd_selectornodeid = ? AND slndpm_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SelectorNodePaymentMethodFactory.getInstance().prepareStatement(query);
@@ -4128,16 +4334,20 @@ public class SelectorControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectornodes, selectornodedetails, selectornodepaymentmethods " +
-                        "WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ? " +
-                        "AND slnd_selectornodeid = slndpm_slnd_selectornodeid AND slndpm_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM selectornodes, selectornodedetails, selectornodepaymentmethods
+                        WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ?
+                        AND slnd_selectornodeid = slndpm_slnd_selectornodeid AND slndpm_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectornodes, selectornodedetails, selectornodepaymentmethods " +
-                        "WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ? " +
-                        "AND slnd_selectornodeid = slndpm_slnd_selectornodeid AND slndpm_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM selectornodes, selectornodedetails, selectornodepaymentmethods
+                        WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ?
+                        AND slnd_selectornodeid = slndpm_slnd_selectornodeid AND slndpm_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SelectorNodePaymentMethodFactory.getInstance().prepareStatement(query);
@@ -4209,14 +4419,18 @@ public class SelectorControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectornodepaymentprocessors " +
-                        "WHERE slndpprc_slnd_selectornodeid = ? AND slndpprc_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM selectornodepaymentprocessors
+                        WHERE slndpprc_slnd_selectornodeid = ? AND slndpprc_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectornodepaymentprocessors " +
-                        "WHERE slndpprc_slnd_selectornodeid = ? AND slndpprc_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM selectornodepaymentprocessors
+                        WHERE slndpprc_slnd_selectornodeid = ? AND slndpprc_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SelectorNodePaymentProcessorFactory.getInstance().prepareStatement(query);
@@ -4257,16 +4471,20 @@ public class SelectorControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectornodes, selectornodedetails, selectornodepaymentprocessors " +
-                        "WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ? " +
-                        "AND slnd_selectornodeid = slndpprc_slnd_selectornodeid AND slndpprc_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM selectornodes, selectornodedetails, selectornodepaymentprocessors
+                        WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ?
+                        AND slnd_selectornodeid = slndpprc_slnd_selectornodeid AND slndpprc_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectornodes, selectornodedetails, selectornodepaymentprocessors " +
-                        "WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ? " +
-                        "AND slnd_selectornodeid = slndpprc_slnd_selectornodeid AND slndpprc_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM selectornodes, selectornodedetails, selectornodepaymentprocessors
+                        WHERE slnd_activedetailid = slnddt_selectornodedetailid AND slnddt_sl_selectorid = ?
+                        AND slnd_selectornodeid = slndpprc_slnd_selectornodeid AND slndpprc_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SelectorNodePaymentProcessorFactory.getInstance().prepareStatement(query);
@@ -4334,14 +4552,18 @@ public class SelectorControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectorparties " +
-                        "WHERE slpar_sl_selectorid = ? AND slpar_par_partyid = ? AND slpar_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM selectorparties
+                        WHERE slpar_sl_selectorid = ? AND slpar_par_partyid = ? AND slpar_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectorparties " +
-                        "WHERE slpar_sl_selectorid = ? AND slpar_par_partyid = ? AND slpar_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM selectorparties
+                        WHERE slpar_sl_selectorid = ? AND slpar_par_partyid = ? AND slpar_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SelectorPartyFactory.getInstance().prepareStatement(query);
@@ -4379,17 +4601,21 @@ public class SelectorControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectorparties, parties, partydetails " +
-                        "WHERE slpar_sl_selectorid = ? AND slpar_thrutime = ? " +
-                        "AND slpar_par_partyid = par_partyid AND par_activedetailid = pardt_partydetailid " +
-                        "ORDER BY pardt_partyname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM selectorparties, parties, partydetails
+                        WHERE slpar_sl_selectorid = ? AND slpar_thrutime = ?
+                        AND slpar_par_partyid = par_partyid AND par_activedetailid = pardt_partydetailid
+                        ORDER BY pardt_partyname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM selectorparties " +
-                        "WHERE slpar_sl_selectorid = ? AND slpar_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM selectorparties
+                        WHERE slpar_sl_selectorid = ? AND slpar_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = SelectorPartyFactory.getInstance().prepareStatement(query);
