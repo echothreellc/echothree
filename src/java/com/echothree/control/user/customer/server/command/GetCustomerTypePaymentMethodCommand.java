@@ -21,18 +21,19 @@ import com.echothree.control.user.customer.common.result.CustomerResultFactory;
 import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.customer.server.logic.CustomerTypeLogic;
 import com.echothree.model.control.payment.server.logic.PaymentMethodLogic;
+import com.echothree.model.data.customer.server.entity.CustomerTypePaymentMethod;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import java.util.List;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 @Dependent
 public class GetCustomerTypePaymentMethodCommand
-        extends BaseSimpleCommand<GetCustomerTypePaymentMethodForm> {
+        extends BaseSingleEntityCommand<CustomerTypePaymentMethod, GetCustomerTypePaymentMethodForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
@@ -58,27 +59,36 @@ public class GetCustomerTypePaymentMethodCommand
     }
     
     @Override
-    protected BaseResult execute() {
-        var result = CustomerResultFactory.getGetCustomerTypePaymentMethodResult();
+    protected CustomerTypePaymentMethod getEntity() {
+        CustomerTypePaymentMethod customerTypePaymentMethod = null;
         var customerTypeName = form.getCustomerTypeName();
         var customerType = customerTypeLogic.getCustomerTypeByName(this, customerTypeName);
-        
+
         if(!hasExecutionErrors()) {
             var paymentMethodName = form.getPaymentMethodName();
             var paymentMethod = paymentMethodLogic.getPaymentMethodByName(this, paymentMethodName);
-            
+
             if(!hasExecutionErrors()) {
-                var customerTypePaymentMethod = customerControl.getCustomerTypePaymentMethod(customerType, paymentMethod);
-                
-                if(customerTypePaymentMethod != null) {
-                    result.setCustomerTypePaymentMethod(customerControl.getCustomerTypePaymentMethodTransfer(getUserVisit(), customerTypePaymentMethod));
-                } else {
+                customerTypePaymentMethod = customerControl.getCustomerTypePaymentMethod(customerType, paymentMethod);
+
+                if(customerTypePaymentMethod == null) {
                     addExecutionError(ExecutionErrors.UnknownCustomerTypePaymentMethod.name(), customerTypeName, paymentMethodName);
                 }
             }
         }
-        
+
+        return customerTypePaymentMethod;
+    }
+
+    @Override
+    protected BaseResult getResult(CustomerTypePaymentMethod customerTypePaymentMethod) {
+        var result = CustomerResultFactory.getGetCustomerTypePaymentMethodResult();
+
+        if(customerTypePaymentMethod != null) {
+            result.setCustomerTypePaymentMethod(customerControl.getCustomerTypePaymentMethodTransfer(getUserVisit(), customerTypePaymentMethod));
+        }
+
         return result;
     }
-    
+
 }
