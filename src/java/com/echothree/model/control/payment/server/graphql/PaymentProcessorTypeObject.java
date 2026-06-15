@@ -17,9 +17,16 @@
 package com.echothree.model.control.payment.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
+import com.echothree.model.control.payment.server.control.PaymentProcessorControl;
 import com.echothree.model.control.payment.server.control.PaymentProcessorTypeControl;
 import com.echothree.model.control.user.server.control.UserControl;
+import com.echothree.model.data.payment.common.PaymentProcessorConstants;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorType;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorTypeDetail;
 import com.echothree.util.server.persistence.Session;
@@ -27,7 +34,10 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 @GraphQLDescription("payment processor type object")
 @GraphQLName("PaymentProcessorType")
@@ -82,5 +92,25 @@ public class PaymentProcessorTypeObject
 
         return paymentProcessorTypeControl.getBestPaymentProcessorTypeDescription(paymentProcessorType, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
-    
+
+    @GraphQLField
+    @GraphQLDescription("payment processors")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<PaymentProcessorObject> getPaymentProcessors(final DataFetchingEnvironment env) {
+        if(PaymentSecurityUtils.getHasPaymentProcessorsAccess(env)) {
+            var paymentProcessorControl = Session.getModelController(PaymentProcessorControl.class);
+            var totalCount = paymentProcessorControl.countPaymentProcessorsByPaymentProcessorType(paymentProcessorType);
+
+            try(var objectLimiter = new ObjectLimiter(env, PaymentProcessorConstants.COMPONENT_VENDOR_NAME, PaymentProcessorConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = paymentProcessorControl.getPaymentProcessorsByPaymentProcessorType(paymentProcessorType);
+                var paymentProcessors = entities.stream().map(PaymentProcessorObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, paymentProcessors);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
+
 }
