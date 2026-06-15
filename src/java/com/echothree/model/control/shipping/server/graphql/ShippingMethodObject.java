@@ -16,12 +16,21 @@
 
 package com.echothree.model.control.shipping.server.graphql;
 
+import com.echothree.model.control.customer.server.control.CustomerControl;
+import com.echothree.model.control.customer.server.graphql.CustomerSecurityUtils;
+import com.echothree.model.control.customer.server.graphql.CustomerTypeShippingMethodObject;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.selector.server.graphql.SelectorObject;
 import com.echothree.model.control.selector.server.graphql.SelectorSecurityUtils;
 import com.echothree.model.control.shipping.server.control.ShippingControl;
 import com.echothree.model.control.user.server.control.UserControl;
+import com.echothree.model.data.customer.common.CustomerTypeShippingMethodConstants;
 import com.echothree.model.data.shipping.server.entity.ShippingMethod;
 import com.echothree.model.data.shipping.server.entity.ShippingMethodDetail;
 import com.echothree.util.server.persistence.Session;
@@ -29,7 +38,10 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 @GraphQLDescription("shipping method object")
 @GraphQLName("ShippingMethod")
@@ -108,6 +120,26 @@ public class ShippingMethodObject
         var userControl = Session.getModelController(UserControl.class);
 
         return shippingControl.getBestShippingMethodDescription(shippingMethod, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
+    }
+
+    @GraphQLField
+    @GraphQLDescription("customer type shipping methods")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<CustomerTypeShippingMethodObject> getCustomerTypeShippingMethods(final DataFetchingEnvironment env) {
+        if(CustomerSecurityUtils.getHasCustomerTypeShippingMethodsAccess(env)) {
+            var customerControl = Session.getModelController(CustomerControl.class);
+            var totalCount = customerControl.countCustomerTypeShippingMethodsByShippingMethod(shippingMethod);
+
+            try(var objectLimiter = new ObjectLimiter(env, CustomerTypeShippingMethodConstants.COMPONENT_VENDOR_NAME, CustomerTypeShippingMethodConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = customerControl.getCustomerTypeShippingMethodsByShippingMethod(shippingMethod);
+                var objects = entities.stream().map(CustomerTypeShippingMethodObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, objects);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
     }
 
 }
