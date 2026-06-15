@@ -16,6 +16,10 @@
 
 package com.echothree.model.control.payment.server.graphql;
 
+import com.echothree.control.user.payment.server.command.GetPaymentMethodCommand;
+import com.echothree.control.user.payment.server.command.GetPaymentMethodTypeCommand;
+import com.echothree.control.user.payment.server.command.GetPaymentMethodTypesCommand;
+import com.echothree.control.user.payment.server.command.GetPaymentMethodsCommand;
 import com.echothree.control.user.payment.server.command.GetPaymentProcessorActionTypeCommand;
 import com.echothree.control.user.payment.server.command.GetPaymentProcessorCommand;
 import com.echothree.control.user.payment.server.command.GetPaymentProcessorResultCodeCommand;
@@ -25,13 +29,45 @@ import com.echothree.control.user.payment.server.command.GetPaymentProcessorTran
 import com.echothree.control.user.payment.server.command.GetPaymentProcessorTypeCodeCommand;
 import com.echothree.control.user.payment.server.command.GetPaymentProcessorTypeCodeTypeCommand;
 import com.echothree.control.user.payment.server.command.GetPaymentProcessorTypeCommand;
+import com.echothree.control.user.payment.server.command.GetPaymentProcessorTypesCommand;
+import com.echothree.control.user.payment.server.command.GetPaymentProcessorsCommand;
+import com.echothree.control.user.shipping.server.command.GetShippingMethodCommand;
+import com.echothree.control.user.shipping.server.command.GetShippingMethodsCommand;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
 public interface PaymentSecurityUtils {
 
+    static boolean getHasPaymentMethodTypeAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetPaymentMethodTypeCommand.class);
+    }
+
+    static boolean getHasPaymentMethodTypesAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetPaymentMethodTypesCommand.class);
+    }
+
+    static boolean getHasPaymentMethodAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetPaymentMethodCommand.class);
+    }
+
+    static boolean getHasPaymentMethodsAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetPaymentMethodsCommand.class);
+    }
+
     static boolean getHasPaymentProcessorTypeAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetPaymentProcessorTypeCommand.class);
+    }
+
+    static boolean getHasPaymentProcessorTypesAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetPaymentProcessorTypesCommand.class);
+    }
+
+    static boolean getHasPaymentProcessorAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetPaymentProcessorCommand.class);
+    }
+
+    static boolean getHasPaymentProcessorsAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetPaymentProcessorsCommand.class);
     }
 
     static boolean getHasPaymentProcessorTransactionsAccess(final DataFetchingEnvironment env) {
@@ -48,10 +84,6 @@ public interface PaymentSecurityUtils {
 
     static boolean getHasPaymentProcessorTransactionCodesAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetPaymentProcessorTransactionCodesCommand.class);
-    }
-
-    static boolean getHasPaymentProcessorAccess(final DataFetchingEnvironment env) {
-        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetPaymentProcessorCommand.class);
     }
 
     static boolean getHasPaymentProcessorActionTypeAccess(final DataFetchingEnvironment env) {
