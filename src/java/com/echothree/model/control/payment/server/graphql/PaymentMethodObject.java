@@ -16,13 +16,22 @@
 
 package com.echothree.model.control.payment.server.graphql;
 
+import com.echothree.model.control.customer.server.control.CustomerControl;
+import com.echothree.model.control.customer.server.graphql.CustomerSecurityUtils;
+import com.echothree.model.control.customer.server.graphql.CustomerTypePaymentMethodObject;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.payment.common.PaymentMethodTypes;
 import com.echothree.model.control.payment.server.control.PaymentMethodControl;
 import com.echothree.model.control.selector.server.graphql.SelectorObject;
 import com.echothree.model.control.selector.server.graphql.SelectorSecurityUtils;
 import com.echothree.model.control.user.server.control.UserControl;
+import com.echothree.model.data.customer.common.CustomerTypePaymentMethodConstants;
 import com.echothree.model.data.payment.server.entity.PaymentMethod;
 import com.echothree.model.data.payment.server.entity.PaymentMethodDetail;
 import com.echothree.util.server.persistence.Session;
@@ -30,7 +39,10 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 @GraphQLDescription("payment method object")
 @GraphQLName("PaymentMethod")
@@ -152,6 +164,26 @@ public class PaymentMethodObject
             case GIFT_CARD -> null;
             case GIFT_CERTIFICATE -> null;
         };
+    }
+
+    @GraphQLField
+    @GraphQLDescription("customer type payment methods")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<CustomerTypePaymentMethodObject> getCustomerTypePaymentMethods(final DataFetchingEnvironment env) {
+        if(CustomerSecurityUtils.getHasCustomerTypePaymentMethodsAccess(env)) {
+            var customerControl = Session.getModelController(CustomerControl.class);
+            var totalCount = customerControl.countCustomerTypePaymentMethodsByPaymentMethod(paymentMethod);
+
+            try(var objectLimiter = new ObjectLimiter(env, CustomerTypePaymentMethodConstants.COMPONENT_VENDOR_NAME, CustomerTypePaymentMethodConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = customerControl.getCustomerTypePaymentMethodsByPaymentMethod(paymentMethod);
+                var objects = entities.stream().map(CustomerTypePaymentMethodObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, objects);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
     }
 
 }
