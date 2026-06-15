@@ -57,10 +57,13 @@ import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.payment.server.entity.PaymentMethod;
 import com.echothree.model.data.payment.server.entity.PaymentProcessor;
+import com.echothree.model.data.selector.common.pk.SelectorBooleanTypePK;
+import com.echothree.model.data.selector.common.pk.SelectorComparisonTypePK;
 import com.echothree.model.data.selector.common.pk.SelectorKindPK;
 import com.echothree.model.data.selector.common.pk.SelectorNodePK;
 import com.echothree.model.data.selector.common.pk.SelectorNodeTypePK;
 import com.echothree.model.data.selector.common.pk.SelectorPK;
+import com.echothree.model.data.selector.common.pk.SelectorTextSearchTypePK;
 import com.echothree.model.data.selector.common.pk.SelectorTypePK;
 import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.selector.server.entity.SelectorBooleanType;
@@ -259,9 +262,8 @@ public class SelectorControl
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.SelectorKind */
     public SelectorKind getSelectorKindByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new SelectorKindPK(entityInstance.getEntityUniqueId());
-        var selectorKind = SelectorKindFactory.getInstance().getEntityFromPK(entityPermission, pk);
 
-        return selectorKind;
+        return SelectorKindFactory.getInstance().getEntityFromPK(entityPermission, pk);
     }
 
     public SelectorKind getSelectorKindByEntityInstance(EntityInstance entityInstance) {
@@ -713,9 +715,8 @@ public class SelectorControl
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.SelectorType */
     public SelectorType getSelectorTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new SelectorTypePK(entityInstance.getEntityUniqueId());
-        var selectorType = SelectorTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
 
-        return selectorType;
+        return SelectorTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
     }
 
     public SelectorType getSelectorTypeByEntityInstance(EntityInstance entityInstance) {
@@ -1145,13 +1146,38 @@ public class SelectorControl
     //   Selector Boolean Types
     // --------------------------------------------------------------------------------
     
-    public SelectorBooleanType createSelectorBooleanType(String selectorBooleanTypeName, Boolean isDefault, Integer sortOrder) {
+    public SelectorBooleanType createSelectorBooleanType(String selectorBooleanTypeName, Boolean isDefault, Integer sortOrder,
+            BasePK createdBy) {
         var selectorBooleanType = SelectorBooleanTypeFactory.getInstance().create(selectorBooleanTypeName,
                 isDefault, sortOrder);
-        
+
+        sendEvent(selectorBooleanType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+
         return selectorBooleanType;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.SelectorBooleanType */
+    public SelectorBooleanType getSelectorBooleanTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new SelectorBooleanTypePK(entityInstance.getEntityUniqueId());
+
+        return SelectorBooleanTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public SelectorBooleanType getSelectorBooleanTypeByEntityInstance(EntityInstance entityInstance) {
+        return getSelectorBooleanTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public SelectorBooleanType getSelectorBooleanTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getSelectorBooleanTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countSelectorBooleanTypes() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM selectorbooleantypes
+                        """);
+    }
+
     public List<SelectorBooleanType> getSelectorBooleanTypes() {
         List<SelectorBooleanType> selectorBooleanTypes;
         var ps = SelectorBooleanTypeFactory.getInstance().prepareStatement(
@@ -1226,10 +1252,12 @@ public class SelectorControl
     // --------------------------------------------------------------------------------
     
     public SelectorBooleanTypeDescription createSelectorBooleanTypeDescription(SelectorBooleanType selectorBooleanType,
-            Language language, String description) {
+            Language language, String description, BasePK createdBy) {
         var selectorBooleanTypeDescription = SelectorBooleanTypeDescriptionFactory.getInstance().create(
                 selectorBooleanType, language, description);
-        
+
+        sendEvent(selectorBooleanType.getPrimaryKey(), EventTypes.MODIFY, selectorBooleanTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
+
         return selectorBooleanTypeDescription;
     }
     
@@ -1277,13 +1305,37 @@ public class SelectorControl
     // --------------------------------------------------------------------------------
     
     public SelectorComparisonType createSelectorComparisonType(String selectorComparisonTypeName, Boolean isDefault,
-            Integer sortOrder) {
-        var selectorComparisonType = SelectorComparisonTypeFactory.getInstance().create(
-                selectorComparisonTypeName, isDefault, sortOrder);
-        
+            Integer sortOrder, BasePK createdBy) {
+        var selectorComparisonType = SelectorComparisonTypeFactory.getInstance().create(selectorComparisonTypeName,
+                isDefault, sortOrder);
+
+        sendEvent(selectorComparisonType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+
         return selectorComparisonType;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.SelectorComparisonType */
+    public SelectorComparisonType getSelectorComparisonTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new SelectorComparisonTypePK(entityInstance.getEntityUniqueId());
+
+        return SelectorComparisonTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public SelectorComparisonType getSelectorComparisonTypeByEntityInstance(EntityInstance entityInstance) {
+        return getSelectorComparisonTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public SelectorComparisonType getSelectorComparisonTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getSelectorComparisonTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countSelectorComparisonTypes() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM selectorcomparisontypes
+                        """);
+    }
+
     public List<SelectorComparisonType> getSelectorComparisonTypes() {
         var ps = SelectorComparisonTypeFactory.getInstance().prepareStatement(
                 """
@@ -1355,9 +1407,11 @@ public class SelectorControl
     // --------------------------------------------------------------------------------
     
     public SelectorComparisonTypeDescription createSelectorComparisonTypeDescription(SelectorComparisonType selectorComparisonType,
-            Language language, String description) {
+            Language language, String description, BasePK createdBy) {
         var selectorComparisonTypeDescription = SelectorComparisonTypeDescriptionFactory.getInstance().create(selectorComparisonType, language, description);
-        
+
+        sendEvent(selectorComparisonType.getPrimaryKey(), EventTypes.MODIFY, selectorComparisonTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
+
         return selectorComparisonTypeDescription;
     }
     
@@ -1404,8 +1458,12 @@ public class SelectorControl
     //   Selector Node Types
     // --------------------------------------------------------------------------------
     
-    public SelectorNodeType createSelectorNodeType(String selectorNodeTypeName, Integer sortOrder) {
-        return SelectorNodeTypeFactory.getInstance().create(selectorNodeTypeName, sortOrder);
+    public SelectorNodeType createSelectorNodeType(String selectorNodeTypeName, Integer sortOrder, BasePK createdBy) {
+        var selectorNodeType = SelectorNodeTypeFactory.getInstance().create(selectorNodeTypeName, sortOrder);
+
+        sendEvent(selectorNodeType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+
+        return selectorNodeType;
     }
     
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.SelectorNodeType */
@@ -1518,43 +1576,15 @@ public class SelectorControl
     }
     
     // --------------------------------------------------------------------------------
-    //   Selector Node Type Uses
-    // --------------------------------------------------------------------------------
-    
-    public SelectorNodeTypeUse createSelectorNodeTypeUse(SelectorKind selectorKind, SelectorNodeType selectorNodeType,
-            Boolean isDefault) {
-        return SelectorNodeTypeUseFactory.getInstance().create(selectorKind, selectorNodeType, isDefault);
-    }
-    
-    public SelectorNodeTypeUse getSelectorNodeTypeUse(SelectorKind selectorKind, SelectorNodeType selectorNodeType) {
-        SelectorNodeTypeUse selectorNodeTypeUse;
-        
-        try {
-            var ps = SelectorNodeTypeUseFactory.getInstance().prepareStatement(
-                    """
-                    SELECT _ALL_
-                    FROM selectornodetypeuses
-                    WHERE slntu_slk_selectorkindid = ? AND slntu_slnt_selectornodetypeid = ?
-                    """);
-            
-            ps.setLong(1, selectorKind.getPrimaryKey().getEntityId());
-            ps.setLong(2, selectorNodeType.getPrimaryKey().getEntityId());
-            
-            selectorNodeTypeUse = SelectorNodeTypeUseFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return selectorNodeTypeUse;
-    }
-    
-    // --------------------------------------------------------------------------------
     //   Selector Node Type Descriptions
     // --------------------------------------------------------------------------------
     
-    public SelectorNodeTypeDescription createSelectorNodeTypeDescription(SelectorNodeType selectorNodeType, Language language, String description) {
+    public SelectorNodeTypeDescription createSelectorNodeTypeDescription(SelectorNodeType selectorNodeType, Language language,
+            String description, BasePK createdBy) {
         var selectorNodeTypeDescription = SelectorNodeTypeDescriptionFactory.getInstance().create(selectorNodeType, language, description);
-        
+
+        sendEvent(selectorNodeType.getPrimaryKey(), EventTypes.MODIFY, selectorNodeTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
+
         return selectorNodeTypeDescription;
     }
     
@@ -1596,19 +1626,78 @@ public class SelectorControl
         
         return description;
     }
-    
+
+    // --------------------------------------------------------------------------------
+    //   Selector Node Type Uses
+    // --------------------------------------------------------------------------------
+
+    public SelectorNodeTypeUse createSelectorNodeTypeUse(SelectorKind selectorKind, SelectorNodeType selectorNodeType,
+            Boolean isDefault, BasePK createdBy) {
+        var selectorNodeTypeUse = SelectorNodeTypeUseFactory.getInstance().create(selectorKind, selectorNodeType, isDefault);
+
+        sendEvent(selectorKind.getPrimaryKey(), EventTypes.CREATE, selectorNodeTypeUse.getPrimaryKey(), EventTypes.MODIFY, createdBy);
+
+        return selectorNodeTypeUse;
+    }
+
+    public SelectorNodeTypeUse getSelectorNodeTypeUse(SelectorKind selectorKind, SelectorNodeType selectorNodeType) {
+        SelectorNodeTypeUse selectorNodeTypeUse;
+
+        try {
+            var ps = SelectorNodeTypeUseFactory.getInstance().prepareStatement(
+                    """
+                    SELECT _ALL_
+                    FROM selectornodetypeuses
+                    WHERE slntu_slk_selectorkindid = ? AND slntu_slnt_selectornodetypeid = ?
+                    """);
+
+            ps.setLong(1, selectorKind.getPrimaryKey().getEntityId());
+            ps.setLong(2, selectorNodeType.getPrimaryKey().getEntityId());
+
+            selectorNodeTypeUse = SelectorNodeTypeUseFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return selectorNodeTypeUse;
+    }
+
     // --------------------------------------------------------------------------------
     //   Selector Text Search Types
     // --------------------------------------------------------------------------------
     
     public SelectorTextSearchType createSelectorTextSearchType(String selectorTextSearchTypeName, Boolean isDefault,
-            Integer sortOrder) {
-        var selectorTextSearchType = SelectorTextSearchTypeFactory.getInstance().create(
-                selectorTextSearchTypeName, isDefault, sortOrder);
-        
+            Integer sortOrder, BasePK createdBy) {
+        var selectorTextSearchType = SelectorTextSearchTypeFactory.getInstance().create(selectorTextSearchTypeName,
+                isDefault, sortOrder);
+
+        sendEvent(selectorTextSearchType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+
         return selectorTextSearchType;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.SelectorTextSearchType */
+    public SelectorTextSearchType getSelectorTextSearchTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new SelectorTextSearchTypePK(entityInstance.getEntityUniqueId());
+
+        return SelectorTextSearchTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public SelectorTextSearchType getSelectorTextSearchTypeByEntityInstance(EntityInstance entityInstance) {
+        return getSelectorTextSearchTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public SelectorTextSearchType getSelectorTextSearchTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getSelectorTextSearchTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countSelectorTextSearchTypes() {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM selectortextsearchtypes
+                        """);
+    }
+
     public List<SelectorTextSearchType> getSelectorTextSearchTypes() {
         var ps = SelectorTextSearchTypeFactory.getInstance().prepareStatement(
                 """
@@ -1679,9 +1768,12 @@ public class SelectorControl
     //   Selector Text Search Type Descriptions
     // --------------------------------------------------------------------------------
     
-    public SelectorTextSearchTypeDescription createSelectorTextSearchTypeDescription(SelectorTextSearchType selectorTextSearchType, Language language, String description) {
+    public SelectorTextSearchTypeDescription createSelectorTextSearchTypeDescription(SelectorTextSearchType selectorTextSearchType,
+            Language language, String description, BasePK createdBy) {
         var selectorTextSearchTypeDescription = SelectorTextSearchTypeDescriptionFactory.getInstance().create(selectorTextSearchType, language, description);
-        
+
+        sendEvent(selectorTextSearchType.getPrimaryKey(), EventTypes.MODIFY, selectorTextSearchTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
+
         return selectorTextSearchTypeDescription;
     }
     
@@ -1770,9 +1862,8 @@ public class SelectorControl
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.Selector */
     public Selector getSelectorByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new SelectorPK(entityInstance.getEntityUniqueId());
-        var selector = SelectorFactory.getInstance().getEntityFromPK(entityPermission, pk);
 
-        return selector;
+        return SelectorFactory.getInstance().getEntityFromPK(entityPermission, pk);
     }
 
     public Selector getSelectorByEntityInstance(EntityInstance entityInstance) {
@@ -2386,6 +2477,15 @@ public class SelectorControl
                         """, selector);
     }
 
+    public long countSelectorNodesBySelectorNodeType(final SelectorNodeType selectorNodeType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM selectornodes
+                        JOIN selectornodedetails ON slnddt_selectornodedetailid = slnd_activedetailid
+                        WHERE slnddt_slnt_selectornodetypeid = ?
+                        """, selectorNodeType);
+    }
+
     private SelectorNode getRootSelectorNode(Selector selector, EntityPermission entityPermission) {
         SelectorNode selectorNode;
         
@@ -2885,7 +2985,31 @@ public class SelectorControl
         
         return selectorNodeBoolean;
     }
-    
+
+    public long countSelectorNodeBooleansBySelectorBooleanType(final SelectorBooleanType selectorBooleanType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM selectornodebooleans
+                        WHERE slndbln_slbt_selectorbooleantypeid = ? AND slndbln_thrutime = ?
+                        """, selectorBooleanType, Session.MAX_TIME);
+    }
+
+    public long countSelectorNodeBooleansByLeftSelectorNode(final SelectorNode leftSelectorNode) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM selectornodebooleans
+                        WHERE slndbln_leftselectornodeid = ? AND slndbln_thrutime = ?
+                        """, leftSelectorNode, Session.MAX_TIME);
+    }
+
+    public long countSelectorNodeBooleansByRightSelectorNode(final SelectorNode rightSelectorNode) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM selectornodebooleans
+                        WHERE slndbln_rightselectornodeid = ? AND slndbln_thrutime = ?
+                        """, rightSelectorNode, Session.MAX_TIME);
+    }
+
     private SelectorNodeBoolean getSelectorNodeBoolean(SelectorNode selectorNode, EntityPermission entityPermission) {
         SelectorNodeBoolean selectorNodeBoolean;
         
@@ -3024,7 +3148,15 @@ public class SelectorControl
         
         return selectorNodeWorkflowStep;
     }
-    
+
+    public long countCampaignsByWorkflowStep(final WorkflowStep workflowStep) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM selectornodeworkflowsteps
+                        WHERE slndws_wkfls_workflowstepid = ? AND slndws_thrutime = ?
+                        """, workflowStep, Session.MAX_TIME);
+    }
+
     private SelectorNodeWorkflowStep getSelectorNodeWorkflowStep(SelectorNode selectorNode, EntityPermission entityPermission) {
         SelectorNodeWorkflowStep selectorNodeWorkflowStep;
         
@@ -3161,7 +3293,15 @@ public class SelectorControl
         
         return selectorNodeEntityListItem;
     }
-    
+
+    public long countSelectorNodeEntityListItemsBy(final EntityListItem entityListItem) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM selectornodeentitylistitems
+                        WHERE slndeli_eli_entitylistitemid = ? AND slndeli_thrutime = ?
+                        """, entityListItem, Session.MAX_TIME);
+    }
+
     private SelectorNodeEntityListItem getSelectorNodeEntityListItem(SelectorNode selectorNode, EntityPermission entityPermission) {
         SelectorNodeEntityListItem selectorNodeEntityListItem;
         
@@ -3298,7 +3438,15 @@ public class SelectorControl
         
         return selectorNodeResponsibilityType;
     }
-    
+
+    public long countSelectorNodeResponsibilityTypesByResponsibilityType(final ResponsibilityType responsibilityType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM selectornoderesponsibilitytypes
+                        WHERE slndrsptyp_rsptyp_responsibilitytypeid = ? AND slndrsptyp_thrutime = ?
+                        """, responsibilityType, Session.MAX_TIME);
+    }
+
     private SelectorNodeResponsibilityType getSelectorNodeResponsibilityType(SelectorNode selectorNode, EntityPermission entityPermission) {
         SelectorNodeResponsibilityType selectorNodeResponsibilityType;
         
@@ -3309,13 +3457,13 @@ public class SelectorControl
                 query = """
                         SELECT _ALL_
                         FROM selectornoderesponsibilitytypes
-                        WHERE slndrsptyp_rsptyp_responsibilitytypeid = ? AND slndrsptyp_thrutime = ?
+                        WHERE slndrsptyp_slnd_selectornodeid = ? AND slndrsptyp_thrutime = ?
                         """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = """
                         SELECT _ALL_
                         FROM selectornoderesponsibilitytypes
-                        WHERE slndrsptyp_rsptyp_responsibilitytypeid = ? AND slndrsptyp_thrutime = ?
+                        WHERE slndrsptyp_slnd_selectornodeid = ? AND slndrsptyp_thrutime = ?
                         FOR UPDATE
                         """;
             }
@@ -3422,7 +3570,7 @@ public class SelectorControl
     }
     
     // --------------------------------------------------------------------------------
-    //   Selector Node Training Class Types
+    //   Selector Node Training Classes
     // --------------------------------------------------------------------------------
     
     public SelectorNodeTrainingClass createSelectorNodeTrainingClass(SelectorNode selectorNode, TrainingClass trainingClass,
@@ -3435,7 +3583,15 @@ public class SelectorControl
         
         return selectorNodeTrainingClass;
     }
-    
+
+    public long countSelectorNodeTrainingClassesByTrainingClass(final TrainingClass trainingClass) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM selectornodetrainingclasses
+                        WHERE slndtrncls_trncls_trainingclassid = ? AND slndtrncls_thrutime = ?
+                        """, trainingClass, Session.MAX_TIME);
+    }
+
     private SelectorNodeTrainingClass getSelectorNodeTrainingClass(SelectorNode selectorNode, EntityPermission entityPermission) {
         SelectorNodeTrainingClass selectorNodeTrainingClass;
         
@@ -3572,7 +3728,15 @@ public class SelectorControl
         
         return selectorNodeSkillType;
     }
-    
+
+    public long countSelectorNodeSkillTypesBySkillType(final SkillType skillType) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM selectornodeskilltypes
+                        WHERE slndskltyp_skltyp_skilltypeid = ? AND slndskltyp_thrutime = ?
+                        """, skillType, Session.MAX_TIME);
+    }
+
     private SelectorNodeSkillType getSelectorNodeSkillType(SelectorNode selectorNode, EntityPermission entityPermission) {
         SelectorNodeSkillType selectorNodeSkillType;
         
@@ -3709,7 +3873,15 @@ public class SelectorControl
         
         return selectorNodeItemCategory;
     }
-    
+
+    public long countSelectorNodeItemCategoriesByItemCategory(final ItemCategory itemCategory) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM selectornodeitemcategories
+                        WHERE slndic_ic_itemcategoryid = ? AND slndic_thrutime = ?
+                        """, itemCategory, Session.MAX_TIME);
+    }
+
     private SelectorNodeItemCategory getSelectorNodeItemCategory(SelectorNode selectorNode, EntityPermission entityPermission) {
         SelectorNodeItemCategory selectorNodeItemCategory;
         
@@ -3847,7 +4019,15 @@ public class SelectorControl
         
         return selectorNodeItemAccountingCategory;
     }
-    
+
+    public long countSelectorNodeItemAccountingCategoriesByItemAccountingCategory(final ItemAccountingCategory itemAccountingCategory) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM selectornodeitemaccountingcategories
+                        WHERE slndiactgc_iactgc_itemaccountingcategoryid = ? AND slndiactgc_thrutime = ?
+                        """, itemAccountingCategory, Session.MAX_TIME);
+    }
+
     private SelectorNodeItemAccountingCategory getSelectorNodeItemAccountingCategory(SelectorNode selectorNode, EntityPermission entityPermission) {
         SelectorNodeItemAccountingCategory selectorNodeItemAccountingCategory;
         
@@ -3987,7 +4167,15 @@ public class SelectorControl
         
         return selectorNodeItemPurchasingCategory;
     }
-    
+
+    public long countSelectorNodeItemPurchasingCategoriesByItemPurchasingCategory(final ItemPurchasingCategory itemPurchasingCategory) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM selectornodeitempurchasingcategories
+                        WHERE slndiprchc_iprchc_itempurchasingcategoryid = ? AND slndiprchc_thrutime = ?
+                        """, itemPurchasingCategory, Session.MAX_TIME);
+    }
+
     private SelectorNodeItemPurchasingCategory getSelectorNodeItemPurchasingCategory(SelectorNode selectorNode, EntityPermission entityPermission) {
         SelectorNodeItemPurchasingCategory selectorNodeItemPurchasingCategory;
         
@@ -4274,7 +4462,15 @@ public class SelectorControl
         
         return selectorNodePaymentMethod;
     }
-    
+
+    public long countSelectorNodePaymentMethodByPaymentMethod(final PaymentMethod paymentMethod) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM selectornodepaymentmethods
+                        WHERE slndpm_pm_paymentmethodid = ? AND slndpm_thrutime = ?
+                        """, paymentMethod, Session.MAX_TIME);
+    }
+
     private SelectorNodePaymentMethod getSelectorNodePaymentMethod(SelectorNode selectorNode, EntityPermission entityPermission) {
         SelectorNodePaymentMethod selectorNodePaymentMethod;
         
@@ -4411,7 +4607,15 @@ public class SelectorControl
         
         return selectorNodePaymentProcessor;
     }
-    
+
+    public long countSelectorNodePaymentProcessorByPaymentProcessor(PaymentProcessor paymentProcessor) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM selectornodepaymentprocessors
+                        WHERE slndpprc_pprc_paymentprocessorid = ? AND slndpprc_thrutime = ?
+                        """, paymentProcessor, Session.MAX_TIME);
+    }
+
     private SelectorNodePaymentProcessor getSelectorNodePaymentProcessor(SelectorNode selectorNode, EntityPermission entityPermission) {
         SelectorNodePaymentProcessor selectorNodePaymentProcessor;
         
@@ -4544,7 +4748,23 @@ public class SelectorControl
         
         return selectorParty;
     }
-    
+
+    public long countSelectorPartiesBySelector(final Selector selector) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM selectorparties
+                        WHERE slpar_sl_selectorid = ? AND slpar_thrutime = ?
+                        """, selector, Session.MAX_TIME);
+    }
+
+    public long countSelectorPartiesByParty(final Party party) {
+        return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM selectorparties
+                        WHERE slpar_par_partyid = ? AND slpar_thrutime = ?
+                        """, party, Session.MAX_TIME);
+    }
+
     private SelectorParty getSelectorParty(Selector selector, Party party, EntityPermission entityPermission) {
         SelectorParty selectorParty;
         
