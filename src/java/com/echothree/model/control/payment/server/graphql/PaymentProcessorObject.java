@@ -23,9 +23,11 @@ import com.echothree.model.control.graphql.server.graphql.count.CountingDataConn
 import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
+import com.echothree.model.control.payment.server.control.PaymentMethodControl;
 import com.echothree.model.control.payment.server.control.PaymentProcessorControl;
 import com.echothree.model.control.payment.server.control.PaymentProcessorTransactionControl;
 import com.echothree.model.control.user.server.control.UserControl;
+import com.echothree.model.data.payment.common.PaymentMethodConstants;
 import com.echothree.model.data.payment.common.PaymentProcessorTransactionConstants;
 import com.echothree.model.data.payment.server.entity.PaymentProcessor;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorDetail;
@@ -113,6 +115,26 @@ public class PaymentProcessorObject
                 var paymentProcessorTransactions = entities.stream().map(PaymentProcessorTransactionObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                 return new CountedObjects<>(objectLimiter, paymentProcessorTransactions);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
+
+    @GraphQLField
+    @GraphQLDescription("payment methods")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<PaymentMethodObject> getPaymentMethods(final DataFetchingEnvironment env) {
+        if(PaymentSecurityUtils.getHasPaymentMethodsAccess(env)) {
+            var paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
+            var totalCount = paymentMethodControl.countPaymentMethodsByPaymentProcessor(paymentProcessor);
+
+            try(var objectLimiter = new ObjectLimiter(env, PaymentMethodConstants.COMPONENT_VENDOR_NAME, PaymentMethodConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = paymentMethodControl.getPaymentMethodsByPaymentProcessor(paymentProcessor);
+                var paymentMethods = entities.stream().map(PaymentMethodObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, paymentMethods);
             }
         } else {
             return Connections.emptyConnection();
