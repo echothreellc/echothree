@@ -34,6 +34,7 @@ import com.echothree.model.data.payment.server.value.PaymentProcessorDetailValue
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.cdi.CommandScope;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.sql.SQLException;
@@ -41,7 +42,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import com.echothree.util.server.cdi.CommandScope;
 
 @CommandScope
 public class PaymentProcessorControl
@@ -104,11 +104,21 @@ public class PaymentProcessorControl
     }
 
     public long countPaymentProcessors() {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM paymentprocessors, paymentprocessordetails " +
-                        "WHERE pprc_activedetailid = pprcdt_paymentprocessordetailid");
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM paymentprocessors, paymentprocessordetails
+                WHERE pprc_activedetailid = pprcdt_paymentprocessordetailid
+                """);
     }
+
+    public long countPaymentProcessorsByPaymentProcessorType(final PaymentProcessorType paymentProcessorType) {
+            return session.queryForLong("""
+                        SELECT COUNT(*)
+                        FROM paymentprocessors
+                        JOIN paymentprocessordetails ON pprcdt_paymentprocessordetailid = pprc_activedetailid
+                        WHERE pprcdt_pprctyp_paymentprocessortypeid = ?
+                        """, paymentProcessorType);
+        }
 
     public PaymentProcessorDetailValue getPaymentProcessorDetailValueForUpdate(PaymentProcessor paymentProcessor) {
         return paymentProcessor.getLastDetailForUpdate().getPaymentProcessorDetailValue().clone();
@@ -121,14 +131,18 @@ public class PaymentProcessorControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM paymentprocessors, paymentprocessordetails " +
-                        "WHERE pprc_activedetailid = pprcdt_paymentprocessordetailid AND pprcdt_paymentprocessorname = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM paymentprocessors, paymentprocessordetails
+                        WHERE pprc_activedetailid = pprcdt_paymentprocessordetailid AND pprcdt_paymentprocessorname = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM paymentprocessors, paymentprocessordetails " +
-                        "WHERE pprc_activedetailid = pprcdt_paymentprocessordetailid AND pprcdt_paymentprocessorname = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM paymentprocessors, paymentprocessordetails
+                        WHERE pprc_activedetailid = pprcdt_paymentprocessordetailid AND pprcdt_paymentprocessorname = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = PaymentProcessorFactory.getInstance().prepareStatement(query);
@@ -157,45 +171,96 @@ public class PaymentProcessorControl
 
     private List<PaymentProcessor> getPaymentProcessors(EntityPermission entityPermission) {
         String query = null;
-        
+
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM paymentprocessors, paymentprocessordetails " +
-                    "WHERE pprc_activedetailid = pprcdt_paymentprocessordetailid " +
-                    "ORDER BY pprcdt_sortorder, pprcdt_paymentprocessorname " +
-                    "_LIMIT_";
+            query = """
+                    SELECT _ALL_
+                    FROM paymentprocessors, paymentprocessordetails
+                    WHERE pprc_activedetailid = pprcdt_paymentprocessordetailid
+                    ORDER BY pprcdt_sortorder, pprcdt_paymentprocessorname
+                    _LIMIT_
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM paymentprocessors, paymentprocessordetails " +
-                    "WHERE pprc_activedetailid = pprcdt_paymentprocessordetailid " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM paymentprocessors, paymentprocessordetails
+                    WHERE pprc_activedetailid = pprcdt_paymentprocessordetailid
+                    FOR UPDATE
+                    """;
         }
 
         var ps = PaymentProcessorFactory.getInstance().prepareStatement(query);
-        
+
         return PaymentProcessorFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
     }
-    
+
     public List<PaymentProcessor> getPaymentProcessors() {
         return getPaymentProcessors(EntityPermission.READ_ONLY);
     }
-    
+
     public List<PaymentProcessor> getPaymentProcessorsForUpdate() {
         return getPaymentProcessors(EntityPermission.READ_WRITE);
+    }
+
+    private List<PaymentProcessor> getPaymentProcessorsByPaymentProcessorType(final PaymentProcessorType paymentProcessorType,
+            EntityPermission entityPermission) {
+        List<PaymentProcessor> paymentProcessors;
+        String query = null;
+
+        try {
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = """
+                        SELECT _ALL_
+                        FROM paymentprocessors, paymentprocessordetails
+                        WHERE pprc_activedetailid = pprcdt_paymentprocessordetailid
+                        ORDER BY pprcdt_sortorder, pprcdt_paymentprocessorname AND pprcdt_pprctyp_paymentprocessortypeid = ?
+                        _LIMIT_
+                        """;
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = """
+                        SELECT _ALL_
+                        FROM paymentprocessors, paymentprocessordetails
+                        WHERE pprc_activedetailid = pprcdt_paymentprocessordetailid AND pprcdt_pprctyp_paymentprocessortypeid = ?
+                        FOR UPDATE
+                        """;
+            }
+
+            var ps = PaymentProcessorFactory.getInstance().prepareStatement(query);
+
+            ps.setLong(1, paymentProcessorType.getPrimaryKey().getEntityId());
+
+            paymentProcessors = PaymentProcessorFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return paymentProcessors;
+    }
+
+    public List<PaymentProcessor> getPaymentProcessorsByPaymentProcessorType(final PaymentProcessorType paymentProcessorType) {
+        return getPaymentProcessorsByPaymentProcessorType(paymentProcessorType, EntityPermission.READ_ONLY);
+    }
+
+    public List<PaymentProcessor> getPaymentProcessorsByPaymentProcessorTypeForUpdate(final PaymentProcessorType paymentProcessorType) {
+        return getPaymentProcessorsByPaymentProcessorType(paymentProcessorType, EntityPermission.READ_WRITE);
     }
 
     public PaymentProcessor getDefaultPaymentProcessor(EntityPermission entityPermission) {
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-            query = "SELECT _ALL_ " +
-                    "FROM paymentprocessors, paymentprocessordetails " +
-                    "WHERE pprc_activedetailid = pprcdt_paymentprocessordetailid AND pprcdt_isdefault = 1";
+            query = """
+                    SELECT _ALL_
+                    FROM paymentprocessors, paymentprocessordetails
+                    WHERE pprc_activedetailid = pprcdt_paymentprocessordetailid AND pprcdt_isdefault = 1
+                    """;
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-            query = "SELECT _ALL_ " +
-                    "FROM paymentprocessors, paymentprocessordetails " +
-                    "WHERE pprc_activedetailid = pprcdt_paymentprocessordetailid AND pprcdt_isdefault = 1 " +
-                    "FOR UPDATE";
+            query = """
+                    SELECT _ALL_
+                    FROM paymentprocessors, paymentprocessordetails
+                    WHERE pprc_activedetailid = pprcdt_paymentprocessordetailid AND pprcdt_isdefault = 1
+                    FOR UPDATE
+                    """;
         }
 
         var ps = PaymentProcessorFactory.getInstance().prepareStatement(query);
@@ -367,14 +432,18 @@ public class PaymentProcessorControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM paymentprocessordescriptions " +
-                        "WHERE pprcd_pprc_paymentprocessorid = ? AND pprcd_lang_languageid = ? AND pprcd_thrutime = ?";
+                query = """
+                        SELECT _ALL_
+                        FROM paymentprocessordescriptions
+                        WHERE pprcd_pprc_paymentprocessorid = ? AND pprcd_lang_languageid = ? AND pprcd_thrutime = ?
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM paymentprocessordescriptions " +
-                        "WHERE pprcd_pprc_paymentprocessorid = ? AND pprcd_lang_languageid = ? AND pprcd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM paymentprocessordescriptions
+                        WHERE pprcd_pprc_paymentprocessorid = ? AND pprcd_lang_languageid = ? AND pprcd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = PaymentProcessorDescriptionFactory.getInstance().prepareStatement(query);
@@ -414,16 +483,20 @@ public class PaymentProcessorControl
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM paymentprocessordescriptions, languages " +
-                        "WHERE pprcd_pprc_paymentprocessorid = ? AND pprcd_thrutime = ? AND pprcd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname " +
-                        "_LIMIT_";
+                query = """
+                        SELECT _ALL_
+                        FROM paymentprocessordescriptions, languages
+                        WHERE pprcd_pprc_paymentprocessorid = ? AND pprcd_thrutime = ? AND pprcd_lang_languageid = lang_languageid
+                        ORDER BY lang_sortorder, lang_languageisoname
+                        _LIMIT_
+                        """;
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM paymentprocessordescriptions " +
-                        "WHERE pprcd_pprc_paymentprocessorid = ? AND pprcd_thrutime = ? " +
-                        "FOR UPDATE";
+                query = """
+                        SELECT _ALL_
+                        FROM paymentprocessordescriptions
+                        WHERE pprcd_pprc_paymentprocessorid = ? AND pprcd_thrutime = ?
+                        FOR UPDATE
+                        """;
             }
 
             var ps = PaymentProcessorDescriptionFactory.getInstance().prepareStatement(query);
