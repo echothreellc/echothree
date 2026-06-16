@@ -4863,8 +4863,7 @@ public class SelectorControl
         return selectorPartyTransferCache.getSelectorPartyTransfer(userVisit, selectorParty);
     }
     
-    public List<SelectorPartyTransfer> getSelectorPartyTransfers(UserVisit userVisit, Selector selector) {
-        var selectorParties = getSelectorPartiesBySelector(selector);
+    public List<SelectorPartyTransfer> getSelectorPartyTransfers(UserVisit userVisit, Collection<SelectorParty> selectorParties) {
         List<SelectorPartyTransfer> selectorPartyTransfers = new ArrayList<>(selectorParties.size());
         
         selectorParties.forEach((selectorParty) ->
@@ -4872,6 +4871,10 @@ public class SelectorControl
         );
         
         return selectorPartyTransfers;
+    }
+    
+    public List<SelectorPartyTransfer> getSelectorPartyTransfers(UserVisit userVisit, Selector selector) {
+        return getSelectorPartyTransfers(userVisit, getSelectorPartiesBySelector(selector));
     }
     
     public void deleteSelectorParty(SelectorParty selectorParty, BasePK deletedBy) {
