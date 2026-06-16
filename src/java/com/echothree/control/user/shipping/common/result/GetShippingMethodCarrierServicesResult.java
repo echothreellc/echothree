@@ -33,5 +33,8 @@ public interface GetShippingMethodCarrierServicesResult
     
     List<ShippingMethodCarrierServiceTransfer> getShippingMethodCarrierServices();
     void setShippingMethodCarrierServices(List<ShippingMethodCarrierServiceTransfer> shippingMethodCarrierServices);
-    
+
+    Long getShippingMethodCarrierServiceCount();
+    void setShippingMethodCarrierServiceCount(Long shippingMethodCarrierServiceCount);
+
 }
