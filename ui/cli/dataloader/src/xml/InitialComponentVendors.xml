@@ -1471,6 +1471,33 @@
             <entityType entityTypeName="SelectorTypeDescription" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Selector Type Description" />
             </entityType>
+            <entityType entityTypeName="SelectorBooleanType" keepAllHistory="false" isExtensible="true" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Selector Boolean Type" />
+            </entityType>
+            <entityType entityTypeName="SelectorBooleanTypeDescription" keepAllHistory="false" isExtensible="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Selector Boolean Type Description" />
+            </entityType>
+            <entityType entityTypeName="SelectorComparisonType" keepAllHistory="false" isExtensible="true" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Selector Comparison Type" />
+            </entityType>
+            <entityType entityTypeName="SelectorComparisonTypeDescription" keepAllHistory="false" isExtensible="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Selector Comparison Type Description" />
+            </entityType>
+            <entityType entityTypeName="SelectorNodeType" keepAllHistory="false" isExtensible="true" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Selector Node Type" />
+            </entityType>
+            <entityType entityTypeName="SelectorNodeTypeDescription" keepAllHistory="false" isExtensible="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Selector Node Type Description" />
+            </entityType>
+            <entityType entityTypeName="SelectorNodeTypeUse" keepAllHistory="false" isExtensible="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Selector Node Type Use" />
+            </entityType>
+            <entityType entityTypeName="SelectorTextSearchType" keepAllHistory="false" isExtensible="true" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Selector Text Search Type" />
+            </entityType>
+            <entityType entityTypeName="SelectorTextSearchTypeDescription" keepAllHistory="false" isExtensible="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Selector Text Search Type Description" />
+            </entityType>
             <entityType entityTypeName="Selector" keepAllHistory="false" isExtensible="true" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Selector" />
             </entityType>

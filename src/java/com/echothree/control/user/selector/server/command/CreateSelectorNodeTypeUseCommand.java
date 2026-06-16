@@ -16,15 +16,16 @@
 
 package com.echothree.control.user.selector.server.command;
 
-
 import com.echothree.control.user.selector.common.form.CreateSelectorNodeTypeUseForm;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.selector.server.control.SelectorControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import javax.enterprise.context.Dependent;
@@ -32,20 +33,25 @@ import javax.enterprise.context.Dependent;
 @Dependent
 public class CreateSelectorNodeTypeUseCommand
         extends BaseSimpleCommand<CreateSelectorNodeTypeUseForm> {
-    
+
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null)
+        ));
+
         FORM_FIELD_DEFINITIONS = List.of(
-            new FieldDefinition("SelectorKindName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("SelectorNodeTypeName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null)
+                new FieldDefinition("SelectorKindName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("SelectorNodeTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null)
         );
     }
     
     /** Creates a new instance of CreateSelectorNodeTypeUseCommand */
     public CreateSelectorNodeTypeUseCommand() {
-        super(null, FORM_FIELD_DEFINITIONS, false);
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
@@ -64,7 +70,7 @@ public class CreateSelectorNodeTypeUseCommand
                 if(selectorNodeTypeUse == null) {
                     var isDefault = Boolean.valueOf(form.getIsDefault());
                     
-                    selectorControl.createSelectorNodeTypeUse(selectorKind, selectorNodeType, isDefault);
+                    selectorControl.createSelectorNodeTypeUse(selectorKind, selectorNodeType, isDefault, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.DuplicateSelectorNodeTypeUse.name());
                 }
