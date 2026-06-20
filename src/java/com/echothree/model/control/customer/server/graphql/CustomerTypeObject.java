@@ -30,6 +30,8 @@ import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.inventory.server.graphql.AllocationPriorityObject;
 import com.echothree.model.control.inventory.server.graphql.InventorySecurityUtils;
+import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.graphql.OfferCustomerTypeObject;
 import com.echothree.model.control.offer.server.graphql.OfferSecurityUtils;
 import com.echothree.model.control.offer.server.graphql.OfferUseObject;
 import com.echothree.model.control.returnpolicy.server.graphql.ReturnPolicyObject;
@@ -47,6 +49,7 @@ import com.echothree.model.data.customer.common.CustomerTypePaymentMethodConstan
 import com.echothree.model.data.customer.common.CustomerTypeShippingMethodConstants;
 import com.echothree.model.data.customer.server.entity.CustomerType;
 import com.echothree.model.data.customer.server.entity.CustomerTypeDetail;
+import com.echothree.model.data.offer.common.OfferCustomerTypeConstants;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
@@ -286,6 +289,26 @@ public class CustomerTypeObject
                 var objects = entities.stream().map(CustomerTypeShippingMethodObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                 return new CountedObjects<>(objectLimiter, objects);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
+
+    @GraphQLField
+    @GraphQLDescription("offer customer types")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<OfferCustomerTypeObject> getOfferCustomerTypes(final DataFetchingEnvironment env) {
+        if(OfferSecurityUtils.getHasOfferCustomerTypesAccess(env)) {
+            var offerCustomerTypeControl = Session.getModelController(OfferControl.class);
+            var totalCount = offerCustomerTypeControl.countOfferCustomerTypesByCustomerType(customerType);
+
+            try(var objectLimiter = new ObjectLimiter(env, OfferCustomerTypeConstants.COMPONENT_VENDOR_NAME, OfferCustomerTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = offerCustomerTypeControl.getOfferCustomerTypesByCustomerType(customerType);
+                var offerCustomerTypes = entities.stream().map(OfferCustomerTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, offerCustomerTypes);
             }
         } else {
             return Connections.emptyConnection();

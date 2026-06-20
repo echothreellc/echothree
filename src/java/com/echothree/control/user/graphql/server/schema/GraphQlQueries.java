@@ -250,6 +250,8 @@ import com.echothree.control.user.item.server.command.GetRelatedItemTypesCommand
 import com.echothree.control.user.item.server.command.GetRelatedItemsCommand;
 import com.echothree.control.user.offer.common.OfferUtil;
 import com.echothree.control.user.offer.server.command.GetOfferCommand;
+import com.echothree.control.user.offer.server.command.GetOfferCustomerTypeCommand;
+import com.echothree.control.user.offer.server.command.GetOfferCustomerTypesCommand;
 import com.echothree.control.user.offer.server.command.GetOfferItemCommand;
 import com.echothree.control.user.offer.server.command.GetOfferItemPriceCommand;
 import com.echothree.control.user.offer.server.command.GetOfferItemPricesCommand;
@@ -586,6 +588,7 @@ import com.echothree.model.control.item.server.graphql.ItemVolumeTypeObject;
 import com.echothree.model.control.item.server.graphql.ItemWeightTypeObject;
 import com.echothree.model.control.item.server.graphql.RelatedItemObject;
 import com.echothree.model.control.item.server.graphql.RelatedItemTypeObject;
+import com.echothree.model.control.offer.server.graphql.OfferCustomerTypeObject;
 import com.echothree.model.control.offer.server.graphql.OfferItemObject;
 import com.echothree.model.control.offer.server.graphql.OfferItemPriceObject;
 import com.echothree.model.control.offer.server.graphql.OfferNameElementObject;
@@ -910,6 +913,7 @@ import com.echothree.model.data.item.server.entity.ItemWeightType;
 import com.echothree.model.data.item.server.entity.RelatedItem;
 import com.echothree.model.data.item.server.entity.RelatedItemType;
 import com.echothree.model.data.offer.common.OfferConstants;
+import com.echothree.model.data.offer.common.OfferCustomerTypeConstants;
 import com.echothree.model.data.offer.common.OfferItemConstants;
 import com.echothree.model.data.offer.common.OfferItemPriceConstants;
 import com.echothree.model.data.offer.common.OfferNameElementConstants;
@@ -917,6 +921,7 @@ import com.echothree.model.data.offer.common.UseConstants;
 import com.echothree.model.data.offer.common.UseNameElementConstants;
 import com.echothree.model.data.offer.common.UseTypeConstants;
 import com.echothree.model.data.offer.server.entity.Offer;
+import com.echothree.model.data.offer.server.entity.OfferCustomerType;
 import com.echothree.model.data.offer.server.entity.OfferItem;
 import com.echothree.model.data.offer.server.entity.OfferItemPrice;
 import com.echothree.model.data.offer.server.entity.OfferNameElement;
@@ -3901,6 +3906,64 @@ public interface GraphQlQueries {
                             .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, offerItemPrices);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("offerCustomerType")
+    static OfferCustomerTypeObject offerCustomerType(final DataFetchingEnvironment env,
+            @GraphQLName("offerName") @GraphQLNonNull final String offerName,
+            @GraphQLName("customerTypeName") @GraphQLNonNull final String customerTypeName) {
+        OfferCustomerType offerCustomerType;
+
+        try {
+            var commandForm = OfferUtil.getHome().getGetOfferCustomerTypeForm();
+
+            commandForm.setOfferName(offerName);
+            commandForm.setCustomerTypeName(customerTypeName);
+
+            offerCustomerType = CDI.current().select(GetOfferCustomerTypeCommand.class).get().getEntityForGraphQl(getUserVisitPK(env), commandForm);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return offerCustomerType == null ? null : new OfferCustomerTypeObject(offerCustomerType);
+    }
+
+    @GraphQLField
+    @GraphQLName("offerCustomerTypes")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<OfferCustomerTypeObject> offerCustomerTypes(final DataFetchingEnvironment env,
+            @GraphQLName("offerName") final String offerName,
+            @GraphQLName("customerTypeName") final String customerTypeName) {
+        CountingPaginatedData<OfferCustomerTypeObject> data;
+
+        try {
+            var commandForm = OfferUtil.getHome().getGetOfferCustomerTypesForm();
+            var command = CDI.current().select(GetOfferCustomerTypesCommand.class).get();
+
+            commandForm.setOfferName(offerName);
+            commandForm.setCustomerTypeName(customerTypeName);
+
+            var totalEntities = command.getTotalEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, OfferCustomerTypeConstants.COMPONENT_VENDOR_NAME, OfferCustomerTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl(getUserVisitPK(env), commandForm);
+
+                    var offerCustomerTypeObjects = entities.stream()
+                            .map(OfferCustomerTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, offerCustomerTypeObjects);
                 }
             }
         } catch (NamingException ex) {
