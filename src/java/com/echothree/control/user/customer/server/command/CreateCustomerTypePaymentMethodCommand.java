@@ -18,50 +18,71 @@ package com.echothree.control.user.customer.server.command;
 
 import com.echothree.control.user.customer.common.form.CreateCustomerTypePaymentMethodForm;
 import com.echothree.model.control.customer.server.control.CustomerControl;
-import com.echothree.model.control.payment.server.control.PaymentMethodControl;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.control.customer.server.logic.CustomerTypeLogic;
+import com.echothree.model.control.party.common.PartyTypes;
+import com.echothree.model.control.payment.server.logic.PaymentMethodLogic;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
-import com.echothree.util.server.persistence.Session;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
 public class CreateCustomerTypePaymentMethodCommand
         extends BaseSimpleCommand<CreateCustomerTypePaymentMethodForm> {
-    
+
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
+                        new SecurityRoleDefinition(SecurityRoleGroups.CustomerTypePaymentMethod.name(), SecurityRoles.Create.name())
+                ))
+        ));
+
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CustomerTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("PaymentMethodName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("DefaultSelectionPriority", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
-                );
+        );
     }
     
+    @Inject
+    CustomerControl customerControl;
+
+    @Inject
+    CustomerTypeLogic customerTypeLogic;
+
+    @Inject
+    PaymentMethodLogic paymentMethodLogic;
+
     /** Creates a new instance of CreateCustomerTypePaymentMethodCommand */
     public CreateCustomerTypePaymentMethodCommand() {
-        super(null, FORM_FIELD_DEFINITIONS, false);
+        super(COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
     protected BaseResult execute() {
-        var customerControl = Session.getModelController(CustomerControl.class);
         var customerTypeName = form.getCustomerTypeName();
-        var customerType = customerControl.getCustomerTypeByName(customerTypeName);
+        var customerType = customerTypeLogic.getCustomerTypeByName(this, customerTypeName);
         
-        if(customerType != null) {
-            var paymentMethodControl = Session.getModelController(PaymentMethodControl.class);
+        if(!hasExecutionErrors()) {
             var paymentMethodName = form.getPaymentMethodName();
-            var paymentMethod = paymentMethodControl.getPaymentMethodByName(paymentMethodName);
+            var paymentMethod = paymentMethodLogic.getPaymentMethodByName(this, paymentMethodName);
             
-            if(paymentMethod != null) {
+            if(!hasExecutionErrors()) {
                 var customerTypePaymentMethod = customerControl.getCustomerTypePaymentMethod(customerType,
                         paymentMethod);
                 
@@ -72,13 +93,9 @@ public class CreateCustomerTypePaymentMethodCommand
                     
                     customerControl.createCustomerTypePaymentMethod(customerType, paymentMethod, defaultSelectionPriority, isDefault, sortOrder, getPartyPK());
                 } else {
-                    addExecutionError(ExecutionErrors.DuplicateCustomerTypePaymentMethod.name());
+                    addExecutionError(ExecutionErrors.DuplicateCustomerTypePaymentMethod.name(), customerTypeName, paymentMethodName);
                 }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownPaymentMethodName.name(), paymentMethodName);
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownCustomerTypeName.name(), customerTypeName);
         }
         
         return null;
